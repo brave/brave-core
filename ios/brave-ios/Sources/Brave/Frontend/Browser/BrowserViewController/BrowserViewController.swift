@@ -1898,14 +1898,12 @@ public class BrowserViewController: UIViewController {
               // Cert validation takes precedence over all other errors
               tab.secureContentState = .invalidCert
               logSecureContentState(tab: tab, path: path, details: "Cert validation takes precedence over all other errors")
-
             } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
               // Network error takes precedence over missing cert
               // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
               // Our network interstitial page shows
               tab.secureContentState = .localhost
               logSecureContentState(tab: tab, path: path, details: "Network error takes precedence over missing cert")
-
             } else {
               // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
               // then we display .missingSSL
@@ -1932,12 +1930,10 @@ public class BrowserViewController: UIViewController {
           // All our checks failed, we show the page as insecure
           tab.secureContentState = .missingSSL
           logSecureContentState(tab: tab, path: path, details: "All our checks failed, we show the page as insecure")
-
         } else {
           // When there is no URL, it's likely a new tab.
           tab.secureContentState = .localhost
           logSecureContentState(tab: tab, path: path, details: "When there is no URL, it's likely a new tab")
-
         }
 
         if tabManager.selectedTab === tab {
@@ -1972,23 +1968,19 @@ public class BrowserViewController: UIViewController {
           if result == 0 {
             tab.secureContentState = .secure
             logSecureContentState(tab: tab, path: path, details: "Cert is valid!")
-
           } else if result == Int32.min {
             // Cert is valid but should be validated by the system
             // Let the system handle it and we'll show an error if the system cannot validate it
             try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
             tab.secureContentState = .secure
             logSecureContentState(tab: tab, path: path, details: "Cert is valid but should be validated by the system")
-
           } else {
             tab.secureContentState = .invalidCert
             logSecureContentState(tab: tab, path: path, details: "Invalid Cert")
-
           }
         } catch {
           tab.secureContentState = .invalidCert
           logSecureContentState(tab: tab, path: path, details: "Verify Trust Error")
-
         }
         
         self.updateURLBar()

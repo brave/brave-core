@@ -26,7 +26,11 @@ public struct DebugLogger {
     let calendar = Calendar.current
     let components = calendar.dateComponents([.year, .month, .day, .hour, .minute], from: date)
 
-    guard let year = components.year, let month = components.month, let day = components.day, let hour = components.hour, let minute = components.minute else {
+    guard let year = components.year, 
+          let month = components.month,
+          let day = components.day,
+          let hour = components.hour,
+          let minute = components.minute else {
       return
     }
     let time = "\(year)-\(month)-\(day) \(hour):\(minute)"
