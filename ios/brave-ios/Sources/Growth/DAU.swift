@@ -5,6 +5,7 @@ import Shared
 import BraveCore
 import os.log
 import Preferences
+import BraveShared
 
 public class DAU {
 
@@ -91,7 +92,7 @@ public class DAU {
   @objc private func sendPingToServerInternal() {
     guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       Logger.module.debug("dau, no changes detected, no server ping")
-      UrpLog.log("dau, no changes detected, no server ping")
+      DebugLogger.log(for: .urp, text: "dau, no changes detected, no server ping")
       return
     }
 
@@ -111,7 +112,7 @@ public class DAU {
     }
 
     Logger.module.debug("send ping to server, url: \(pingRequestUrl)")
-    UrpLog.log("send ping to server, url: \(pingRequestUrl)")
+    DebugLogger.log(for: .urp, text: "send ping to server, url: \(pingRequestUrl)")
 
     var request = URLRequest(url: pingRequestUrl)
     for (key, value) in paramsAndPrefs.headers {
@@ -125,7 +126,7 @@ public class DAU {
 
       if let e = error {
         Logger.module.error("status update error: \(e.localizedDescription)")
-        UrpLog.log("status update error: \(e)")
+        DebugLogger.log(for: .urp, text: "status update error: \(e)")
         return
       }
 
@@ -211,7 +212,7 @@ public class DAU {
 
     if let referralCode = UserReferralProgram.getReferralCode() {
       params.append(URLQueryItem(name: "ref", value: referralCode))
-      UrpLog.log("DAU ping with added ref, params: \(params)")
+      DebugLogger.log(for: .urp, text: "DAU ping with added ref, params: \(params)")
     }
 
     let lastPingTimestamp = [Int((date).timeIntervalSince1970)]

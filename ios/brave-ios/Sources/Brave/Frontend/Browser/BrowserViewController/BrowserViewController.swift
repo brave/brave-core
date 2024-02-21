@@ -1834,6 +1834,7 @@ public class BrowserViewController: UIViewController {
         }
         
         tab.secureContentState = .mixedContent
+        logSecureContentState(tab: tab, path: path)
       }
       
       if let url = tab.webView?.url,
@@ -1844,18 +1845,22 @@ public class BrowserViewController: UIViewController {
           if ErrorPageHelper.certificateError(for: url) != 0 {
             // Cert validation takes precedence over all other errors
             tab.secureContentState = .invalidCert
+            logSecureContentState(tab: tab, path: path, details: "Cert validation takes precedence over all other errors")
           } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
             // Network error takes precedence over missing cert
             // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
             // Our network interstitial page shows
             tab.secureContentState = .localhost
+            logSecureContentState(tab: tab, path: path, details: "Network error takes precedence over missing cert")
           } else {
             // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
             // then we display .missingSSL
             tab.secureContentState = .missingSSL
+            logSecureContentState(tab: tab, path: path, details: "Certificate is missing (no serverTrust)")
           }
         } else if url.isReaderModeURL || InternalURL.isValid(url: url) {
           tab.secureContentState = .localhost
+          logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
         }
       }
       
@@ -1868,6 +1873,7 @@ public class BrowserViewController: UIViewController {
       }
 
       tab.secureContentState = .unknown
+      logSecureContentState(tab: tab, path: path)
 
       guard let serverTrust = tab.webView?.serverTrust else {
         if let url = tab.webView?.url ?? tab.url {
@@ -1876,6 +1882,8 @@ public class BrowserViewController: UIViewController {
             (internalUrl.isAboutURL || internalUrl.isAboutHomeURL) {
 
             tab.secureContentState = .localhost
+            logSecureContentState(tab: tab, path: path, details: "Internal URL aboutURL or is aboutHomeURL")
+            
             if tabManager.selectedTab === tab {
               updateToolbarSecureContentState(.localhost)
             }
@@ -1889,15 +1897,20 @@ public class BrowserViewController: UIViewController {
             if ErrorPageHelper.certificateError(for: url) != 0 {
               // Cert validation takes precedence over all other errors
               tab.secureContentState = .invalidCert
+              logSecureContentState(tab: tab, path: path, details: "Cert validation takes precedence over all other errors")
+
             } else if NetworkErrorPageHandler.isNetworkError(errorCode: ErrorPageHelper.errorCode(for: url)) {
               // Network error takes precedence over missing cert
               // Because we cannot determine if a cert is missing yet, if we cannot connect to the server
               // Our network interstitial page shows
               tab.secureContentState = .localhost
+              logSecureContentState(tab: tab, path: path, details: "Network error takes precedence over missing cert")
+
             } else {
               // Since it's not a cert error explicitly, and it's not a network error, and the cert is missing (no serverTrust),
               // then we display .missingSSL
               tab.secureContentState = .missingSSL
+              logSecureContentState(tab: tab, path: path, details: "Certificate is missing (no serverTrust)")
             }
             
             if tabManager.selectedTab === tab {
@@ -1908,6 +1921,8 @@ public class BrowserViewController: UIViewController {
 
           if url.isReaderModeURL || InternalURL.isValid(url: url) {
             tab.secureContentState = .localhost
+            logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
+
             if tabManager.selectedTab === tab {
               updateToolbarSecureContentState(.localhost)
             }
@@ -1916,9 +1931,13 @@ public class BrowserViewController: UIViewController {
 
           // All our checks failed, we show the page as insecure
           tab.secureContentState = .missingSSL
+          logSecureContentState(tab: tab, path: path, details: "All our checks failed, we show the page as insecure")
+
         } else {
           // When there is no URL, it's likely a new tab.
           tab.secureContentState = .localhost
+          logSecureContentState(tab: tab, path: path, details: "When there is no URL, it's likely a new tab")
+
         }
 
         if tabManager.selectedTab === tab {
@@ -1930,6 +1949,8 @@ public class BrowserViewController: UIViewController {
       guard let scheme = tab.webView?.url?.scheme,
             let host = tab.webView?.url?.host else {
         tab.secureContentState = .unknown
+        logSecureContentState(tab: tab, path: path, details: "No webview URL host scheme)")
+
         self.updateURLBar()
         return
       }
@@ -1950,16 +1971,24 @@ public class BrowserViewController: UIViewController {
           // Cert is valid!
           if result == 0 {
             tab.secureContentState = .secure
+            logSecureContentState(tab: tab, path: path, details: "Cert is valid!")
+
           } else if result == Int32.min {
             // Cert is valid but should be validated by the system
             // Let the system handle it and we'll show an error if the system cannot validate it
             try await BraveCertificateUtils.evaluateTrust(serverTrust, for: host)
             tab.secureContentState = .secure
+            logSecureContentState(tab: tab, path: path, details: "Cert is valid but should be validated by the system")
+
           } else {
             tab.secureContentState = .invalidCert
+            logSecureContentState(tab: tab, path: path, details: "Invalid Cert")
+
           }
         } catch {
           tab.secureContentState = .invalidCert
+          logSecureContentState(tab: tab, path: path, details: "Verify Trust Error")
+
         }
         
         self.updateURLBar()
@@ -1969,6 +1998,24 @@ public class BrowserViewController: UIViewController {
     default:
       assertionFailure("Unhandled KVO key: \(kp)")
     }
+  }
+  
+  func logSecureContentState(tab: Tab, path: KVOConstants? = nil, details: String? = nil) {
+    var text = """
+    Tab URL: \(tab.url?.absoluteString ?? "Empty Tab URL")
+     Tab VebView URL: \(tab.webView?.url?.absoluteString ?? "Empty Webview URL")
+     Secure State: \(tab.secureContentState.rawValue)
+    """
+    
+    if let keyPath = path?.keyPath {
+      text.append("\n Value Observed: \(keyPath)\n")
+    }
+    
+    if let extraDetails = details {
+      text.append("\n Extra Details: \(extraDetails)\n")
+    }
+    
+    DebugLogger.log(for: .secureState, text:  text)
   }
 
   func updateForwardStatusIfNeeded(webView: WKWebView) {

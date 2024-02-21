@@ -9,6 +9,7 @@ import WebKit
 import os.log
 import AdServices
 import BraveCore
+import BraveShared
 
 public class UserReferralProgram {
 
@@ -45,20 +46,20 @@ public class UserReferralProgram {
 
     let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString, adReportsURL: adReportsURLString)
 
-    UrpLog.log("URP init, host: \(host)")
+    DebugLogger.log(for: .urp, text: "URP init, host: \(host)")
 
     self.service = urpService
   }
 
   /// Looks for referral and returns its landing page if possible.
   public func referralLookup(refCode: String? = nil, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
-    UrpLog.log("first run referral lookup")
+    DebugLogger.log(for: .urp, text: "first run referral lookup")
 
     let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
       guard let self = self else { return }
 
       if error == Growth.UrpError.endpointError {
-        UrpLog.log("URP look up had endpoint error, will retry on next launch.")
+        DebugLogger.log(for: .urp, text: "URP look up had endpoint error, will retry on next launch.")
         self.referralLookupRetry.timer?.invalidate()
         self.referralLookupRetry.timer = nil
 
@@ -83,14 +84,14 @@ public class UserReferralProgram {
       Preferences.URP.referralLookupOutstanding.value = false
       guard let ref = referral else {
         Logger.module.info("No referral code found")
-        UrpLog.log("No referral code found")
+        DebugLogger.log(for: .urp, text: "No referral code found")
         completion(nil, nil)
         return
       }
 
       if ref.isExtendedUrp() {
         completion(ref.referralCode, ref.offerPage)
-        UrpLog.log("Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
+        DebugLogger.log(for: .urp, text: "Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
         // We do not want to persist referral data for extended URPs
         return
       }
@@ -101,7 +102,7 @@ public class UserReferralProgram {
       self.referralLookupRetry.timer?.invalidate()
       self.referralLookupRetry.timer = nil
 
-      UrpLog.log("Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)")
+      DebugLogger.log(for: .urp, text: "Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)")
       // In case of network errors or getting `isFinalized = false`, we retry the api call.
       self.initRetryPingConnection(numberOfTimes: 30)
 
@@ -167,13 +168,13 @@ public class UserReferralProgram {
 
   public func pingIfEnoughTimePassed() {
     if !DeviceInfo.hasConnectivity() {
-      UrpLog.log("No internet connection, not sending update ping.")
+      DebugLogger.log(for: .urp, text: "No internet connection, not sending update ping.")
       return
     }
 
     guard let downloadId = Preferences.URP.downloadId.value else {
       Logger.module.info("Could not retrieve download id model from preferences.")
-      UrpLog.log("Update ping, no download id found.")
+      DebugLogger.log(for: .urp, text: "Update ping, no download id found.")
       return
     }
 
@@ -186,11 +187,11 @@ public class UserReferralProgram {
 
     if todayInSeconds <= checkDate {
       Logger.module.debug("Not enough time has passed for referral ping.")
-      UrpLog.log("Not enough time has passed for referral ping.")
+      DebugLogger.log(for: .urp, text: "Not enough time has passed for referral ping.")
       return
     }
 
-    UrpLog.log("Update ping")
+    DebugLogger.log(for: .urp, text: "Update ping")
     service.checkIfAuthorizedForGrant(with: downloadId) { initialized, error in
       guard let counter = Preferences.URP.retryCountdown.value else {
         Logger.module.error("Could not retrieve retry countdown from preferences.")
@@ -200,29 +201,29 @@ public class UserReferralProgram {
       var shouldRemoveData = false
 
       if error == .downloadIdNotFound {
-        UrpLog.log("Download id not found on server.")
+        DebugLogger.log(for: .urp, text: "Download id not found on server.")
         shouldRemoveData = true
       }
 
       if initialized == true {
-        UrpLog.log("Got initialized = true from server.")
+        DebugLogger.log(for: .urp, text: "Got initialized = true from server.")
         shouldRemoveData = true
       }
 
       // Last retry attempt
       if counter <= 1 {
-        UrpLog.log("Last retry and failed to get data from server.")
+        DebugLogger.log(for: .urp, text: "Last retry and failed to get data from server.")
         shouldRemoveData = true
       }
 
       if shouldRemoveData {
-        UrpLog.log("Removing all referral data from device")
+        DebugLogger.log(for: .urp, text: "Removing all referral data from device")
 
         Preferences.URP.downloadId.value = nil
         Preferences.URP.nextCheckDate.value = nil
         Preferences.URP.retryCountdown.value = nil
       } else {
-        UrpLog.log("Network error or isFinalized returned false, decrementing retry counter and trying again next time.")
+        DebugLogger.log(for: .urp, text: "Network error or isFinalized returned false, decrementing retry counter and trying again next time.")
         // Decrement counter, next retry happens on next day
         Preferences.URP.retryCountdown.value = counter - 1
         Preferences.URP.nextCheckDate.value = checkDate + 1.days
@@ -236,13 +237,13 @@ public class UserReferralProgram {
       Date().timeIntervalSince1970 >= referralCodeDeleteDate {
       Preferences.URP.referralCode.value = nil
       Preferences.URP.referralCodeDeleteDate.value = nil
-      UrpLog.log("Enough time has passed, removing referral code data")
+      DebugLogger.log(for: .urp, text: "Enough time has passed, removing referral code data")
       return nil
     } else if let referralCode = Preferences.URP.referralCode.value {
       // Appending ref code to dau ping if user used installed the app via
       // user referral program or apple search ad
       if Preferences.URP.referralCodeDeleteDate.value == nil {
-        UrpLog.log("Setting new date for deleting referral code.")
+        DebugLogger.log(for: .urp, text: "Setting new date for deleting referral code.")
         let timeToDelete = AppConstants.buildChannel.isPublic ? 90.days : 20.minutes
         Preferences.URP.referralCodeDeleteDate.value = Date().timeIntervalSince1970 + timeToDelete
       }

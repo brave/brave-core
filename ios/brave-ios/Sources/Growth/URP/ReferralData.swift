@@ -4,6 +4,7 @@ import Foundation
 import Shared
 import SwiftyJSON
 import os.log
+import BraveShared
 
 struct ReferralData {
 
@@ -25,7 +26,7 @@ struct ReferralData {
   init?(json: JSON) {
     guard let downloadId = json["download_id"].string, let code = json["referral_code"].string else {
       Logger.module.error("Failed to unwrap json to Referral struct.")
-      UrpLog.log("Failed to unwrap json to Referral struct. \(json)")
+      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Referral struct. \(json)")
       return nil
     }
 

@@ -44,7 +44,7 @@ struct UrpService {
   func referralCodeLookup(refCode: String?, completion: @escaping (ReferralData?, UrpError?) -> Void) {
     guard var endPoint = URL(string: host) else {
       completion(nil, .endpointError)
-      UrpLog.log("Host not a url: \(host)")
+      DebugLogger.log(for: .urp, text: "Host not a url: \(host)")
       return
     }
 
@@ -65,7 +65,7 @@ struct UrpService {
           Logger.module.debug("Referral code lookup response: \(String(data: data, encoding: .utf8) ?? "nil")")
         }
         
-        UrpLog.log("Referral code lookup response: \(data)")
+        DebugLogger.log(for: .urp, text: "Referral code lookup response: \(data)")
 
         let json = JSON(data)
         let referral = ReferralData(json: json)
@@ -73,7 +73,7 @@ struct UrpService {
 
       case .failure(let error):
         Logger.module.error("Referral code lookup response: \(error.localizedDescription)")
-        UrpLog.log("Referral code lookup response: \(error.localizedDescription)")
+        DebugLogger.log(for: .urp, text: "Referral code lookup response: \(error.localizedDescription)")
 
         completion(nil, .endpointError)
       }
@@ -94,7 +94,7 @@ struct UrpService {
         rawData: attributionDataToken,
         isRetryEnabled: isRetryEnabled,
         timeout: timeout)
-      UrpLog.log("Ad Attribution response: \(result)")
+      DebugLogger.log(for: .urp, text: "Ad Attribution response: \(result)")
       
       if let resultData = result as? Data {
         let jsonResponse = try JSONSerialization.jsonObject(with: resultData, options: []) as? [String: Any]
@@ -122,7 +122,7 @@ struct UrpService {
     
     do {
       let (result, _) = try await sessionManager.adGroupsReportApiRequest(endPoint: endPoint)
-      UrpLog.log("Ad Groups Report response: \(result)")
+      DebugLogger.log(for: .urp, text: "Ad Groups Report response: \(result)")
       
       if let resultData = result as? Data {
         let adGroupsReportData = try AdGroupReportData(data: resultData, keywordId: keywordId)

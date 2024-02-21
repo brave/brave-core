@@ -5,6 +5,7 @@
 
 import os.log
 import Foundation
+import BraveShared
 
 public enum SerializationError: Error {
   case missing(String)
@@ -64,14 +65,14 @@ public struct AdAttributionData {
     // They will indicate if the Apple Searhs Ads is clicked and for which campaign
     guard let attribution = json["attribution"] as? Bool else {
       Logger.module.error("Failed to unwrap json to Ad Attribution property.")
-      UrpLog.log("Failed to unwrap json to Ad Attribution property. \(json)")
+      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Ad Attribution property. \(json)")
       
       throw SerializationError.missing("Attribution Context")
     }
     
     guard let campaignId = json["campaignId"] as? Int else {
       Logger.module.error("Failed to unwrap json to Campaign Id property.")
-      UrpLog.log("Failed to unwrap json to Campaign Id property. \(json)")
+      DebugLogger.log(for: .urp, text: "Failed to unwrap json to Campaign Id property. \(json)")
       
       throw SerializationError.missing("Campaign Id")
     }
