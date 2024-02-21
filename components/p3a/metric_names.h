@@ -257,6 +257,8 @@ inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.UsageDaily.2",
     "Brave.Core.UsageDaily",
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Search.DefaultEngine.4",
     "Brave.Today.IsEnabled",
@@ -284,6 +286,8 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.AIChat.UsageMonthly",
     "Brave.AIChat.UsageWeekly",
     "Brave.Core.FailedHTTPSUpgrades",
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.PrivacyHub.Views",
