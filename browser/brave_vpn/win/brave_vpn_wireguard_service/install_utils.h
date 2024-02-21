@@ -8,22 +8,8 @@
 
 #include <string>
 
-namespace base {
-class CommandLine;
-class FilePath;
-}  // namespace base
-
-class WorkItem;
-
 namespace brave_vpn {
 
-// Caller should take care of deleting the returned work item.
-WorkItem* CreateWorkItemForWireguardServiceInstall(
-    const base::CommandLine& service_cmd);
-WorkItem* CreateWorkItemForVpnHelperServiceInstall(
-    const base::CommandLine& service_cmd);
-
-base::FilePath GetBraveVpnHelperServicePath();
 bool ConfigureBraveWireguardService(const std::wstring& service_name);
 bool InstallBraveWireguardService();
 bool UninstallBraveWireguardService();
