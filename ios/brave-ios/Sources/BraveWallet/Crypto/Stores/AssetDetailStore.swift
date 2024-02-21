@@ -48,7 +48,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     }
   }
   @Published private(set) var isLoadingAccountBalances: Bool = false
-  @Published private(set) var noneZeroBalanceAccounts: [AccountAssetViewModel] = []
+  @Published private(set) var nonZeroBalanceAccounts: [AccountAssetViewModel] = []
   @Published private(set) var transactionSections: [TransactionSection] = []
   @Published private(set) var isBuySupported: Bool = false
   @Published private(set) var isSendSupported: Bool = false
@@ -67,7 +67,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   var totalBalance: Double {
-    noneZeroBalanceAccounts
+    nonZeroBalanceAccounts
       .compactMap { Double($0.balance) }
       .reduce(0, +)
   }
@@ -236,7 +236,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         }
         
         // fetch accounts balance
-        self.noneZeroBalanceAccounts = await fetchAccountBalances(updatedAccounts, network: network)
+        self.nonZeroBalanceAccounts = await fetchAccountBalances(updatedAccounts, network: network)
         
         // fetch transactions
         let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
@@ -319,7 +319,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSendSupported = false
         self.isSwapSupported = false
         self.allAccountsForTokenCoin = []
-        self.noneZeroBalanceAccounts = []
+        self.nonZeroBalanceAccounts = []
         self.transactionSections =  []
       }
     }

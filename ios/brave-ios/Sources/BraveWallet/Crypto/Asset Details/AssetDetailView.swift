@@ -98,12 +98,12 @@ struct AssetDetailView: View {
 
   @ViewBuilder private var accountsBalanceView: some View {
     VStack {
-      if assetDetailStore.noneZeroBalanceAccounts.isEmpty {
+      if assetDetailStore.nonZeroBalanceAccounts.isEmpty {
         emptyAccountState
       } else {
         accountsBalanceHeader
         
-        ForEach(assetDetailStore.noneZeroBalanceAccounts) { viewModel in
+        ForEach(assetDetailStore.nonZeroBalanceAccounts) { viewModel in
           accontBalanceRow(viewModel)
         }
       }
@@ -274,7 +274,7 @@ struct AssetDetailView: View {
         tokenContentContainer
           .padding(.bottom, 12)
         
-        if (selectedContent == .accounts && !assetDetailStore.noneZeroBalanceAccounts.isEmpty) || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty) {
+        if (selectedContent == .accounts && !assetDetailStore.nonZeroBalanceAccounts.isEmpty) || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty) {
           Text(Strings.Wallet.coinGeckoDisclaimer)
             .multilineTextAlignment(.center)
             .font(.footnote)
