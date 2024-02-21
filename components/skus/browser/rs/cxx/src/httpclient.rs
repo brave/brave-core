@@ -85,9 +85,7 @@ impl From<ffi::HttpResponse<'_>> for Result<http::Response<Vec<u8>>, InternalErr
                         )
                     })?;
 
-                    if let Some(headers) = response.headers_mut() {
-                        headers.insert(key, value);
-                    }
+                    response.headers_mut().ok_or(InternalError::BorrowFailed)?.insert(key, value);
                 }
 
                 response
@@ -109,13 +107,7 @@ impl NativeClient {
         let context = Box::new(HttpRoundtripContext { tx, client: self.clone() });
 
         let fetcher = ffi::shim_executeRequest(
-            &*self
-                .inner
-                .try_borrow()
-                .map_err(|_| InternalError::BorrowFailed)?
-                .ctx
-                .try_borrow()
-                .map_err(|_| InternalError::BorrowFailed)?,
+            &self.ctx.try_borrow().map_err(|_| InternalError::BorrowFailed)?.ctx,
             &req,
             |context, resp| {
                 let _ = context.tx.send(resp.into());
