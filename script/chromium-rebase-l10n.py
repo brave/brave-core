@@ -16,11 +16,11 @@ import argparse
 import os.path
 import sys
 import glob
-from lib.l10n.grd_utils import (GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
+from lib.l10n.grd_utils import (braveify_grd_in_place,
+                                braveify_grd_tree,
+                                GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
-                                update_braveified_grd_tree_override,
-                                write_xml_file_from_tree,
-                                write_braveified_grd_override)
+                                write_xml_file_from_tree)
 from lxml import etree  # pylint: disable=import-error
 
 BRAVE_SOURCE_ROOT = os.path.abspath(os.path.dirname(os.path.dirname(__file__)))
@@ -118,10 +118,17 @@ def parse_args():
 
 def generate_overrides_and_replace_strings(source_string_path):
     # pylint: disable=too-many-locals
+    # Read the clean GRD and apply only branding replacements (e.g. Chrome ->
+    # Brave).
     original_xml_tree_with_branding_fixes = etree.parse(source_string_path)
-    update_braveified_grd_tree_override(
-        original_xml_tree_with_branding_fixes, True)
-    write_braveified_grd_override(source_string_path)
+    braveify_grd_tree(original_xml_tree_with_branding_fixes, True)
+    # Apply all replacements the the clean GRD.
+    braveify_grd_in_place(source_string_path)
+    # This tree has all replacements whereas the
+    # original_xml_tree_with_branding_fixes only has branding replacements. We
+    # don't need to write branding-only replacements to the _override file
+    # because we don't need to translate them - we apply branding replacements
+    # to the XTB files when we do pull_l10n.
     modified_xml_tree = etree.parse(source_string_path)
 
     original_messages = original_xml_tree_with_branding_fixes.xpath(
@@ -167,6 +174,15 @@ def generate_overrides_and_replace_strings(source_string_path):
     modified_messages = modified_xml_tree.xpath('//message')
     modified_parts = modified_xml_tree.xpath('//part')
     if len(modified_messages) > 0 or len(modified_parts) > 0:
+        # Fix output filenames to generate "brave" files instead of "chromium".
+        if os.path.basename(source_string_path) == 'brave_strings.grd':
+            for xtb_filename in modified_xml_tree.xpath(
+                "//file[re:test(@path, '.*\\.xtb')]",
+                namespaces={"re": "http://exslt.org/regular-expressions"}):
+                xtb_filename.attrib['path'] = \
+                    xtb_filename.attrib['path'].replace('chromium_strings',
+                                                        'brave_strings')
+        print(f'Writing override {override_string_path}')
         write_xml_file_from_tree(override_string_path, modified_xml_tree)
 
 
