@@ -98,12 +98,12 @@ struct AssetDetailView: View {
 
   @ViewBuilder private var accountsBalanceView: some View {
     VStack {
-      if assetDetailStore.accounts.isEmpty {
+      if assetDetailStore.noneZeroBalanceAccounts.isEmpty {
         emptyAccountState
       } else {
         accountsBalanceHeader
         
-        ForEach(assetDetailStore.accounts) { viewModel in
+        ForEach(assetDetailStore.noneZeroBalanceAccounts) { viewModel in
           accontBalanceRow(viewModel)
         }
       }
@@ -192,7 +192,7 @@ struct AssetDetailView: View {
             kind: .buy,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.accounts.isEmpty {
+          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
@@ -205,7 +205,7 @@ struct AssetDetailView: View {
             kind: .send,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.accounts.isEmpty {
+          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
@@ -218,7 +218,7 @@ struct AssetDetailView: View {
             kind: .swap,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.accounts.isEmpty {
+          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
@@ -274,7 +274,7 @@ struct AssetDetailView: View {
         tokenContentContainer
           .padding(.bottom, 12)
         
-        if (selectedContent == .accounts && !assetDetailStore.accounts.isEmpty) || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty) {
+        if (selectedContent == .accounts && !assetDetailStore.noneZeroBalanceAccounts.isEmpty) || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty) {
           Text(Strings.Wallet.coinGeckoDisclaimer)
             .multilineTextAlignment(.center)
             .font(.footnote)
@@ -446,6 +446,25 @@ struct AssetDetailView: View {
         isShowingAuroraBridgeAlert = false
       }
     }
+    .addAccount(
+      keyringStore: keyringStore,
+      networkStore: networkStore,
+      accountNetwork: networkStore.network(for: assetDetailStore.assetDetailToken),
+      isShowingConfirmation: $isPresentingAddAccountConfirmation,
+      isShowingAddAccount: $isPresentingAddAccount,
+      onConfirmAddAccount: { isPresentingAddAccount = true },
+      onCancelAddAccount: nil,
+      onAddAccountDismissed: {
+        Task { @MainActor in
+          if await assetDetailStore.handleDismissAddAccount() {
+            if let savedBSSDestination {
+              buySendSwapDestination = savedBSSDestination
+              self.savedBSSDestination = nil
+            }
+          }
+        }
+      }
+    )
   }
   
   private func onAccountCreationNeeded(_ destination: BuySendSwapDestination) {

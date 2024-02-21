@@ -156,7 +156,7 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual($0, "1%")
       }
       .store(in: &cancellables)
-    store.$accounts
+    store.$noneZeroBalanceAccounts
       .dropFirst()
       .sink { accounts in
         defer { assetDetailException.fulfill() }
@@ -368,7 +368,7 @@ class AssetDetailStoreTests: XCTestCase {
       .sink { values in
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.noneZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
 
           assetDetailBitcoinException.fulfill()
@@ -450,7 +450,7 @@ class AssetDetailStoreTests: XCTestCase {
       .sink {
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.noneZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
           
           assetDetailNonBitcoinException.fulfill()
@@ -484,7 +484,7 @@ class AssetDetailStoreTests: XCTestCase {
       .sink { values in
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.noneZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
           
           assetDetailNonBitcoinException.fulfill()

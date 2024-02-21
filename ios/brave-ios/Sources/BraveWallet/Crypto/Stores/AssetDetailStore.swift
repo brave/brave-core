@@ -48,7 +48,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     }
   }
   @Published private(set) var isLoadingAccountBalances: Bool = false
-  @Published private(set) var accounts: [AccountAssetViewModel] = []
+  @Published private(set) var noneZeroBalanceAccounts: [AccountAssetViewModel] = []
   @Published private(set) var transactionSections: [TransactionSection] = []
   @Published private(set) var isBuySupported: Bool = false
   @Published private(set) var isSendSupported: Bool = false
@@ -67,7 +67,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   var totalBalance: Double {
-    accounts
+    noneZeroBalanceAccounts
       .compactMap { Double($0.balance) }
       .reduce(0, +)
   }
@@ -119,6 +119,9 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   var isObserving: Bool {
     keyringServiceObserver != nil && txServiceObserver != nil && walletServiceObserver != nil
   }
+  
+  // All account info that has the same coin type as this asset's
+  var allAccountsForTokenCoin: [BraveWallet.AccountInfo] = []
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -207,7 +210,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
         
         // fetch accounts
-        let allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter { $0.coin == token.coin }
+        self.allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter { $0.coin == token.coin }
         var updatedAccounts = allAccountsForTokenCoin.map {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
@@ -233,7 +236,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         }
         
         // fetch accounts balance
-        self.accounts = await fetchAccountBalances(updatedAccounts, network: network)
+        self.noneZeroBalanceAccounts = await fetchAccountBalances(updatedAccounts, network: network)
         
         // fetch transactions
         let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
@@ -315,7 +318,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
-        self.accounts = []
+        self.allAccountsForTokenCoin = []
+        self.noneZeroBalanceAccounts = []
         self.transactionSections =  []
       }
     }
