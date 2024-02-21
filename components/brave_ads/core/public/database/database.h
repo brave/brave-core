@@ -31,10 +31,13 @@ class ADS_EXPORT Database final {
 
   ~Database();
 
-  void RunTransaction(mojom::DBTransactionInfoPtr transaction,
-                      mojom::DBCommandResponseInfo* command_response);
+  mojom::DBCommandResponseInfoPtr RunTransaction(
+      mojom::DBTransactionInfoPtr transaction);
 
  private:
+  void RunTransactionImpl(mojom::DBTransactionInfoPtr transaction,
+                          mojom::DBCommandResponseInfo* command_response);
+
   mojom::DBCommandResponseInfo::StatusType Initialize(
       int version,
       int compatible_version,
