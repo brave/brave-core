@@ -15,22 +15,22 @@ pub const CONFIG_FILE: &str = "audit.toml";
 
 /// `cargo audit` subcommands (presently only `audit`)
 #[derive(Command, Debug, Parser, Runnable)]
-#[clap(bin_name = "cargo")]
+#[command(bin_name = "cargo")]
 pub enum CargoAuditSubCommand {
     /// The `cargo audit` subcommand
-    #[clap(about = "Audit Cargo.lock files for vulnerable crates")]
+    #[command(about = "Audit Cargo.lock files for vulnerable crates")]
     Audit(AuditCommand),
 }
 
 /// `cargo audit` entrypoint
 #[derive(Command, Debug, Parser)]
-#[clap(author, version, about)]
+#[command(author, version, about)]
 pub struct CargoAuditCommand {
-    #[clap(subcommand)]
+    #[command(subcommand)]
     cmd: CargoAuditSubCommand,
 
     /// Increase verbosity setting
-    #[clap(short = 'v', long, help = "Increase verbosity")]
+    #[arg(short = 'v', long, help = "Increase verbosity")]
     pub verbose: bool,
 }
 

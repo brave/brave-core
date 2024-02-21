@@ -1,6 +1,9 @@
 //! Core auditing functionality
 
-use crate::{binary_format::BinaryFormat, config::AuditConfig, prelude::*, presenter::Presenter};
+use crate::{
+    binary_format::BinaryFormat, config::AuditConfig, error::display_err_with_source, prelude::*,
+    presenter::Presenter,
+};
 use rustsec::{registry, report, Error, ErrorKind, Lockfile, Warning, WarningKind};
 use std::{
     io::{self, Read},
@@ -70,17 +73,26 @@ impl Auditor {
             }
 
             let advisory_db_repo = result.unwrap_or_else(|e| {
-                status_err!("couldn't fetch advisory database: {}", e);
+                status_err!(
+                    "couldn't fetch advisory database: {}",
+                    display_err_with_source(&e)
+                );
                 exit(1);
             });
 
             rustsec::Database::load_from_repo(&advisory_db_repo).unwrap_or_else(|e| {
-                status_err!("error loading advisory database: {}", e);
+                status_err!(
+                    "error loading advisory database: {}",
+                    display_err_with_source(&e)
+                );
                 exit(1);
             })
         } else {
             rustsec::Database::open(&advisory_db_path).unwrap_or_else(|e| {
-                status_err!("error loading advisory database: {}", e);
+                status_err!(
+                    "error loading advisory database: {}",
+                    display_err_with_source(&e)
+                );
                 exit(1);
             })
         };
@@ -161,9 +173,10 @@ impl Auditor {
         let lockfile = match self.load_lockfile(lockfile_path) {
             Ok(l) => l,
             Err(e) => {
-                return Err(Error::new(
+                return Err(Error::with_source(
                     ErrorKind::NotFound,
-                    &format!("Couldn't load {}: {}", lockfile_path.display(), e),
+                    format!("Couldn't load {}", lockfile_path.display()),
+                    e,
                 ))
             }
         };
@@ -195,7 +208,7 @@ impl Auditor {
                     }
                 }
                 Err(e) => {
-                    status_err!("{}", e);
+                    status_err!("{}", display_err_with_source(&e));
                     summary.errors_encountered = true;
                 }
             }
@@ -282,7 +295,10 @@ impl Auditor {
                         let warning = Warning::new(WarningKind::Yanked, pkg, None, None, None);
                         result.push(warning);
                     }
-                    Err(e) => status_err!("couldn't check if the package is yanked: {}", e),
+                    Err(e) => status_err!(
+                        "couldn't check if the package is yanked: {}",
+                        display_err_with_source(&e)
+                    ),
                 }
             }
         }

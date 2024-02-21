@@ -2,6 +2,7 @@
 
 use abscissa_core::error::{BoxError, Context};
 use std::{
+    error::Error as ErrorTrait,
     fmt::{self, Display},
     io,
     ops::Deref,
@@ -111,4 +112,13 @@ impl std::error::Error for Error {
     fn source(&self) -> Option<&(dyn std::error::Error + 'static)> {
         self.0.source()
     }
+}
+
+/// Displays the error and also follows the chain of the `.source` fields,
+/// printing any errors that caused the top-level error.
+///
+/// This is required to properly present some `gix` errors to the user:
+/// <https://github.com/rustsec/rustsec/issues/1029#issuecomment-1777487808>
+pub fn display_err_with_source<E: ErrorTrait>(error: &E) -> String {
+    display_error_chain::DisplayErrorChain::new(error).to_string()
 }

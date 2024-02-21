@@ -4,6 +4,32 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 0.20.0 (2024-02-16)
+
+ - Completely rewritten `cargo audit fix` subcommand ([#1113])
+   - Now it edits `Cargo.lock` as opposed to `Cargo.toml`, and performs only semver-compatible upgrades.
+   - Fixes are performed by calling `cargo update`, migrating away from the unmaintained `cargo-edit-9` crate.
+   - The subcommand is still experimental, and its behavior may change in the future. It still requires enabling the non-default `fix` feature.
+ - Require `tame-index` 0.9.3 or later, fixing [issues with some enterprise firewalls](https://github.com/rustsec/rustsec/issues/1058). ([#1103])
+
+[#1103]: https://github.com/rustsec/rustsec/pull/1103
+[#1113]: https://github.com/rustsec/rustsec/pull/1113
+
+## 0.19.0 (2024-02-03)
+
+### Fixed
+
+ - Fix `--color=auto` always printing terminal escape sequences ([#1057])
+
+### Changed
+
+ - Display the chain of errors instead of just the top-level error for more complete error reporting ([#1063])
+ - Upgrade to clap 4.x and abscissa-core 0.7.x. This may have introduced minor changes to the command-line interface. This is the reason for the minor version bump. ([#1092])
+
+[#1057]: https://github.com/rustsec/rustsec/pull/1057
+[#1063]: https://github.com/rustsec/rustsec/pull/1063
+[#1092]: https://github.com/rustsec/rustsec/pull/1092
+
 ## 0.18.3 (2023-10-24)
 
 ### Fixed
