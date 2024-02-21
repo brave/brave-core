@@ -155,7 +155,7 @@ export const AssetGroupContainer = (props: Props) => {
   return (
     <StyledWrapper
       fullWidth={true}
-      isCollapsed={isCollapsed}
+      isCollapsed={isSkeleton || isCollapsed}
     >
       <CollapseButton
         onClick={onToggleCollapsed}
