@@ -572,8 +572,6 @@ dependencies = [
 [[package]]
 name = "cxxbridge-flags"
 version = "1.0.110"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "06fdd177fc61050d63f67f5bd6351fac6ab5526694ea8e359cd9cd3b75857f44"
 
 [[package]]
 name = "cxxbridge-macro"

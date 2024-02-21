@@ -401,6 +401,10 @@ package = "cxx"
 path = "../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-cmd-1.0.110"
 package = "cxxbridge-cmd"
 
+[patch.crates-io.cxxbridge-flags_v1]
+path = "../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.110"
+package = "cxxbridge-flags"
+
 [patch.crates-io.cxxbridge-macro_v1]
 path = "../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.110"
 package = "cxxbridge-macro"
