@@ -253,6 +253,8 @@
 <translation id="480565261566115689">מזער כרטיסיות</translation>
 <translation id="7194343495483122559">הרחב כרטיסיות</translation>
 <translation id="1199054713803577378">מזער כרטיסיות</translation>
+<translation id="1337946268962884806">הזמנה מותאמת אישית</translation>
+<translation id="8373664339577369248">הזמנה מותאמת אישית</translation>
 <translation id="8120600068258956006">הוסף לרשימת השמעה</translation>
 <translation id="650694591627983430">מדיה שנמצאת בדף זה</translation>
 <translation id="8525248723479742219">נגן מאוחר יותר</translation>
@@ -302,6 +304,9 @@
 <translation id="2800828306627475693">חזרה כבויה</translation>
 <translation id="1748244367114657861">חזרה פעם אחת</translation>
 <translation id="6421906998825794164">חזרה על הכל</translation>
+<translation id="6453210454707928697">הפעלת הפריט נכשלה</translation>
+<translation id="8741852840789907931">ייתכן שהתוקף של [<ph name="ITEM_NAME"/>] פג. האם ברצונכם לשחזר אותו?</translation>
+<translation id="6155018868740116868">שחזר</translation>
 <translation id="1727684853006449697">נגן Brave</translation>
 <translation id="9156965752763025780">‏השינויים שביצעת ייכנסו לתוקף בפעם הבאה שתפעיל מחדש את Brave‏.</translation>
 <translation id="7179921470347911571">הפעלה מחדש כעת</translation>
@@ -324,6 +329,8 @@
 <translation id="5860254591544742609">הצגת שורת הכותרת</translation>
 <translation id="5371926069408837914">הרחב את חלונית הכרטיסיות האנכיות בעת העברת העכבר כאשר היא מכווצת</translation>
 <translation id="3367129510799209147">מצב ריחוף בכרטיסייה</translation>
+<translation id="515949045075831661">הצג בצד ימין</translation>
+<translation id="3725395376319291415">הצג בצד שמאל</translation>
 <translation id="2113977810652731515">כרטיס</translation>
 <translation id="4096343215397759358">כרטיס עם תצוגה מקדימה</translation>
 <translation id="5297085818601043899">טיפים לכלי עבודה</translation>
@@ -360,7 +367,7 @@
 <translation id="4057614912106618659">Brave כבר נמצא בעגינה</translation>
 <translation id="3195845168740336657">הגדרות Shields</translation>
 <translation id="754769152790647708">מצב Shields</translation>
-<translation id="3615717588724840230">אתרים יכולים לחסום עוקבים, מודעות וטביעות אצבע באמצעות Shields</translation>
+<translation id="4868109105992358853">Shields יכולים לחסום עוקבים, פרסומות וטביעות אצבע</translation>
 <translation id="5690973901138662477">Shields פועל</translation>
 <translation id="4697275813919189958">Shields לא פועל</translation>
 <translation id="6303294677342628402">הגנות</translation>
@@ -415,7 +422,7 @@
 <translation id="5567412479632285879">Brave Rewards מושבתים</translation>
 <translation id="413570371620795359">פתח לוח תגמולים כדי לאפשר ולהתחיל לעבוד</translation>
 <translation id="1051600834033686945">פתח את הגדרות Brave Rewards המלאות</translation>
-<translation id="6333347122924254968">הצג את סמליל פרסי Brave בשורת הכתובת</translation>
+<translation id="8826461509529116322">הצג את לחצן Brave Rewards</translation>
 <translation id="9185018653595759199">חסימת רשתות חברתיות</translation>
 <translation id="863171915776379000">התר/י התחברויות לפייסבוק ופוסטים מוטבעים</translation>
 <translation id="5165042248369837294">אפשר ציוצי טוויטר מוטבעים</translation>
@@ -724,6 +731,7 @@
 אריה בעתיד וגם ינקה את היסטוריית הצ'אט שלך. מנקה את שלך
 היסטוריית הצ'אט תמחק את כל השיחות הקודמות שלך עם Brave
 מַזַל אַריֵה. לא ניתן לבטל פעולה זו.</translation>
+<translation id="5574059574002819179">התאם הצעות בהשלמה אוטומטית</translation>
 <translation id="8157373421434119674">היסטוריית נתונים וצ'אט</translation>
 <translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
 <translation id="349846214503465941">אפשר רשימת השמעה</translation>

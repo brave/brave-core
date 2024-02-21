@@ -100,7 +100,7 @@
 <translation id="8877432762827303535">ऑनलाइन चेक आउट</translation>
 <translation id="6583902294974160967">सपोर्ट</translation>
 <translation id="1799030480311994998">सुविधाएँ</translation>
-<translation id="2005732746077850308">Brave शील्ड औरamp;amp; गोपनीयता</translation>
+<translation id="2005732746077850308">Brave शील्ड और गोपनीयता</translation>
 <translation id="4692623383562244444">सर्च इंजन</translation>
 <translation id="1468415711258933398">साधारण टैब</translation>
 <translation id="3377025655491224618">निजी टैब</translation>
@@ -426,18 +426,10 @@
 <translation id="2394961582378297792">लॉग आउट हुआ</translation>
 <translation id="5308380583665731573">जुडिये</translation>
 <translation id="3368922792935385530">कनेक्टेड</translation>
-<translation id="8673913984316081937">आपके वॉलेट का सत्यापन वैकल्पिक है</translation>
-<translation id="8558636200953226885">लेकिन यदि आप सत्यापित करते हैं, तो आप कर सकते हैं...</translation>
-<translation id="8697510149346635496">BAT को वापस लें जो आप गोपनीयता-सम्मान वाले विज्ञापन देखने से कमाते हैं</translation>
-<translation id="1481480653609649134">क्रेडिट कार्ड और अन्य स्रोतों से अतिरिक्त BAT खरीदें</translation>
-<translation id="9096003370755878766">BAT को निकले जिसे आपने पहले अपने Brave Rewards वॉलेट में जोड़ा होगा</translation>
-<translation id="1554282356558968486">हमारी वॉलेट सेवा द्वारा प्रदान की जाती है</translation>
 <translation id="6569877533335686968">बनाए रखें</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">अनुरोध की गई सेवाओं के आधार पर आपको अपनी पहचान सत्यापित करने के लिए Uphold की आवश्यकता हो सकती है।</translation>
-<translation id="3200197118442451932">जब आप Brave पर अपना अकाउंट बनाते हैं तो Brave Software Inc. आपकी किसी भी व्यक्तिगत जानकारी को प्रोसेस, स्टोर या एक्सेस नहीं करता है, जिसे आप <ph name="WALLET_PROVIDER"/> को अपना अकाउंट बनाते समय देते हैं.</translation>
 <translation id="1665118090708049096">मेरे <ph name="WALLET_PROVIDER"/>अकाउंट पर जाएँ</translation>
 <translation id="4858636682078269312">अपने <ph name="WALLET_PROVIDER"/> अकाउंट में लॉग इन करें</translation>
 <translation id="8874184842967597500">कनेक्ट नहीं है</translation>
@@ -524,7 +516,7 @@
 <translation id="2225863440766607138">ट्रैकर्स</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">आपने <ph name="COUNT"/> ट्रैकर्स &amp; पिछले 3 घंटों में Brave ब्राउज़र वाले विज्ञापनों को ब्लॉक किया है।</translation>
-<translation id="3621193901658023971">ट्रैक और  &amp; विज्ञापनों को ब्लॉक करके Brave में मुख्य समाचार साइटों पर 6 गुना तेज़ी से ब्राउज़ करें।</translation>
+<translation id="5005713153542196658">ट्रैकर्स और विज्ञापनों को ब्लॉक करके Brave में मुख्य समाचार साइटों पर 6 गुना तेज़ी से ब्राउज़ करें।</translation>
 <translation id="7427567994475794038">कितने ट्रैकर्स और &amp; विज्ञापनों को बीते 3 घंटों में ब्लॉक किया गया देखने के लिए गोपनीयता रिपोर्ट को चालू करें।</translation>
 <translation id="2053891538879944400">आपने Brave ब्राउज़र के साथ <ph name="DATA"/> <ph name="DATA_TEXT"/> डेटा सेव किया है।</translation>
 <translation id="8640064498452534195">यह देखने के लिए कि आपने कितना डेटा सेव किया है, गोपनीयता रिपोर्ट को चालू करें।</translation>
@@ -589,6 +581,10 @@
 <translation id="8622329973403382303">पुरस्कार रॉकस्टार के रूप में इतिहास दर्ज होने के लिए यह कैसे काम करता है, यह जानने के लिए एक त्वरित टूर करें!</translation>
 <translation id="3479552764303398839">अभी नहीं</translation>
 <translation id="7138272885617540195">ऐप लिंक को Brave के बाहर के ऐप्स में खोलने की अनुमति दें</translation>
+<translation id="4954512758656527938">डिफ़ॉल्ट Ethereum वॉलेट</translation>
+<translation id="7701023802820268122">डिफ़ॉल्ट Solana वॉलेट</translation>
+<translation id="7701040980221191251">कुछ नहीं</translation>
+<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="8792121506918889955">WebRTC IP हैंडलिंग पॉलिसी</translation>
 <translation id="8798099450830957504">सामान्य</translation>
 <translation id="1822560017823072927">डिफ़ॉल्ट सार्वजनिक और निजी इंटरफेस</translation>
@@ -684,7 +680,6 @@
 <translation id="8475984867371585028">दिखाई देने वाले NFT संपादित करें</translation>
 <translation id="5050890334032852465">अकाउंट वॉचलिस्ट सेव करें</translation>
 <translation id="7755766175599167100">टोकन सर्च करें</translation>
-<translation id="8488282162676695335">Brave वॉलेट</translation>
 <translation id="3784455785234192852">लॉक करें</translation>
 <translation id="4412698727486357573">सहायता केंद्र</translation>
 <translation id="8796429300536029044">NFT की जानकारी</translation>
@@ -716,12 +711,12 @@
 <translation id="8272917646984397798">सभी कनेक्शन सुरक्षित करता है</translation>
 <translation id="1751947227857853925">100 Mbps तक तेज और असीमित कनेक्शन</translation>
 <translation id="1400240082805528049">24/7 सहायता</translation>
-<translation id="5051030058817632680">अनचाहे नेटवर्क कनेक्शन को ब्लॉक करता है</translation>
+<translation id="5892534145504632332">हर ऐप और अपने पूरे डिवाइस को सुरक्षित रखें</translation>
+<translation id="7195416926059527505">घर या सार्वजनिक Wi-Fi के लिए अधिक सुरक्षित</translation>
+<translation id="1354700000739359839">बिजली की तेजी से, 100 Mbps तक</translation>
 <translation id="3510283489391432976">Chooअपना भौगोलिक/देश का स्थान चुनें</translation>
-<translation id="4390800080658195654">आपको ऑनलाइन गुमनाम रखता है</translation>
-<translation id="639981156979733813">100  Mbps तक की स्पीड को सपोर्ट करता है</translation>
-<translation id="765343799669302337">WireGuard द्वारा सुरक्षित एनक्रिप्ट किए गए VPN टनल का इस्तेमाल किया जाता है.</translation>
-<translation id="1571230671455380494">हम आपकी जानकारी कभी शेयर नहीं करते या बेचते नहीं हैं</translation>
+<translation id="7695158478627528928">Brave कभी भी आपकी गतिविधि को लॉग नहीं करता है</translation>
+<translation id="4575683170451975058">1 सदस्यता पर 5 डिवाइस सुरक्षित रखें</translation>
 <translation id="276866628038850725">सभी प्लान में एक फ़्री 7-दिन का ट्रायल शामिल है!</translation>
 <translation id="1532536259167115948">मासिक सदस्यता <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">सालाना सदस्यता <ph name="TRIAL_TEXT"/></translation>
@@ -732,6 +727,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / साल.</translation>
 <translation id="2655185358771731232">7 दिनों के लिए मुफ़्त आज़माएँ. 7 दिनों के बाद, आपसे प्लान की कीमत ली जाएगी. सभी सब्सक्रिप्शन अपने आप रिन्यू होते हैं लेकिन रिन्यू होने से पहले कैंसिल किए जा सकते हैं.</translation>
 <translation id="6053992191006521518">फ़्री में आज़माएँ</translation>
+<translation id="3990956504562716932">7 दिनों के लिए मुफ़्त में आज़माएं</translation>
 <translation id="721747358270435486">VPN इंस्टॉल करें</translation>
 <translation id="836074276610740314">VPN प्रोफ़ाइल इंस्टॉल करें</translation>
 <translation id="8021842065465097929">Brave अब VPN प्रोफ़ाइल इंस्टॉल करेगा.</translation>
@@ -1116,71 +1112,6 @@
 <translation id="591648995518106347">रीडर मोड में योग्य आलेखों को अपने-आप लोड करता है</translation>
 <translation id="1295796122927221823">रीडर मोड में देखें</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/> पर <ph name="SYMBOL"/></translation>
-<translation id="295620834661738195">Brave प्लेलिस्ट</translation>
-<translation id="4850886885716139402">देखें</translation>
-<translation id="7392941176393379100">'<ph name="PLAYLIST_NAME"/>' में जोड़ा गया</translation>
-<translation id="8289472222022674331">आपका प्लेलिस्ट से जुड़ा डेटा प्रबंधित हो रहा है</translation>
-<translation id="7650602357673790368">डिफ़ॉल्ट रूप से, प्लेलिस्ट ऑफ़लाइन प्लेबैक (निजी &amp; साझा प्लेलिस्ट दोनों पर) के लिए, आपकी डिवाइस पर सामग्री को अपने-आप सेव कर लेगी। अगर आप WiFi का उपयोग नहीं कर रहे हैं, तो ऑटो सेव आपके सेल्युलर डेटा का इस्तेमाल करेगा।\n\nइस डिफ़ॉल्ट को बदलने के लिए सेटिंग का इस्तेमाल करें।</translation>
-<translation id="5900576657906675258">प्लेलिस्ट में आइटम जोड़ें</translation>
-<translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
-<translation id="1309636029062006520">अपने पसंदीदा ऑडियो और वीडियो की प्लेलिस्ट बनाएँ और कभी भी, कहीं भी चलाएँ।</translation>
-<translation id="3561815498111282415">ऑफ़लाइन के लिए ऑटो-सेव करें</translation>
-<translation id="1832424694374124654">प्लेलिस्ट के नए आइटम को अपने-आप आपके डिवाइस पर सेव करता है, ताकि आप उसे बिना इंटरनेट कनेक्शन के चला सकें।</translation>
-<translation id="8103022210423023846">ऑटो-सेव चालू है</translation>
-<translation id="3926329432879804185">ऑटो-सेव बंद है</translation>
-<translation id="7768812595186089508">Wi-Fi से कनेक्ट होने पर ही ऑटो-सेव करें</translation>
-<translation id="5939518447894949180">रीसेट करें</translation>
-<translation id="8199028711686989861">ऑफ़लाइन मोड स्टोरेज सहित प्लेलिस्ट से सभी वीडियो निकालें।</translation>
-<translation id="5916664084637901428">चालू</translation>
-<translation id="5860033963881614850">बंद</translation>
-<translation id="2920568868625746681">केवल Wifi</translation>
-<translation id="4590997608186539865">प्लेलिस्ट</translation>
-<translation id="7525067979554623046">बनाएं</translation>
-<translation id="5491049004699827548">अपनी पहली प्लेलिस्ट बनाएँ</translation>
-<translation id="5319108110887582146">अपने पसंदीदा ऑडियो और वीडियो की प्लेलिस्ट बनाएँ और कभी भी, कहीं से भी चलाएँ। ऑफ़लाइन भी।</translation>
-<translation id="6802849415466883498">प्लेलिस्ट बनाएँ</translation>
-<translation id="8525248723479742219">बाद में चलाएँ</translation>
-<translation id="7453007860684252933">ब्राउज़ करें और जोड़ें</translation>
-<translation id="9014883386413828317">अपनी पसंदीदा सामग्री जोड़ें। अपनी स्क्रीन के निचले दाएँ भाग में मौजूद ( + ) बटन देखें।</translation>
-<translation id="5928669500312007783">मीडिया के लिए ब्राउज़ करें</translation>
-<translation id="8152485753254079984">नई प्लेलिस्ट</translation>
-<translation id="9130105487623071247">प्लेलिस्ट का नाम</translation>
-<translation id="726581235416249619">बिना नाम वाली प्लेलिस्ट</translation>
-<translation id="1456254983411148628">डेटा निकालें</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> चयनित</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> आइटम</translation>
-<translation id="2317629745818459803">सभी चलाएँ</translation>
-<translation id="7544853251252956727">शफ़ल करें</translation>
-<translation id="2881339830231736485">हाल ही में चलाई गई</translation>
-<translation id="7636458383879257005">टैप करें, देर तक दबाएँ या खींचें</translation>
-<translation id="8120600068258956006">प्लेलिस्ट में जोड़ें</translation>
-<translation id="39991094779686024">प्लेलिस्ट</translation>
-<translation id="1710072605877822603">मीडिया जोड़ें</translation>
-<translation id="3874252678044305931">Brave प्लेलिस्ट में वीडियो डालें. कभी भी चलाएँ. ऑफ़लाइन भी.</translation>
-<translation id="8973629800378391099">अपने पसंदीदा कंटेंट की प्लेलिस्ट बनाएँ. मोबाइल का डेटा बचाएँ. बिना विज्ञापन के चलाएँ.</translation>
-<translation id="4936812987266342401">प्लेलिस्ट में वीडियो डालने के लिए बस एक बटन दबाएँ</translation>
-<translation id="6263657785571415306">कोई रुकावट नहीं : ब्राउज़ करते समय वीडियो डालें, बाद में देखें.</translation>
-<translation id="2839555636100404687">प्लेलिस्ट में चलाना बेहतर है</translation>
-<translation id="9079526681359439081">बैकग्राउंड में चलाएँ. लॉकस्क्रीन से कंट्रोल करें. और भी बहुत कुछ...</translation>
-<translation id="3620862810055853183">प्लेलिस्ट खोलें</translation>
-<translation id="3861012838874771868">प्लेलिस्ट की सेटिंग खोलें</translation>
-<translation id="5220099266891491416">'प्लेलिस्ट' बटन छिपाएँ</translation>
-<translation id="7416347631175891923">इसे आज़माएँ!</translation>
-<translation id="1173894706177603556">नाम बदलें</translation>
-<translation id="1620612903815671893">प्लेलिस्ट का ऑफ़लाइन डेटा निकालें</translation>
-<translation id="3261711068865275261">सभी ऑफ़लाइन डेटा निकालें</translation>
-<translation id="6653691766801349738">ऑफ़लाइन उपयोग करने के लिए प्लेलिस्ट रखें</translation>
-<translation id="8708086574143054053">ऑफ़लाइन उपयोग करने के लिए सभी प्लेलिस्ट रखें</translation>
-<translation id="3596306474342941843">प्लेलिस्ट हटाएँ</translation>
-<translation id="7765158879357617694">ले जाएं</translation>
-<translation id="3803384303807438047">आइटम का ऑफ़लाइन डेटा हटाएँ</translation>
-<translation id="4195643157523330669">नए टैब में खोलें</translation>
-<translation id="4243710787042215766">निजी टैब में खोलें</translation>
-<translation id="8261506727792406068">हटाएं</translation>
-<translation id="377872456482681602">कृपया पहले आइटम चुनें</translation>
-<translation id="6172429305139364624">प्लेलिस्ट वाला आइटम कैश नहीं किया गया है।\nकृपया आइटम को ऑफ़लाइन मोड के लिए कैश करें।</translation>
-<translation id="3631131732607750008">सामग्री की समय-सीमा समाप्त हो गई। कुछ सेकंड में फिर से कोशिश करें।</translation>
-<translation id="286472539388773794">प्लेलिस्ट के लिए मान्य नाम डालें</translation>
 <translation id="9085765419770918643">यहाँ अभी कोई NFT नहीं है।</translation>
 <translation id="8445532667841598737">कुछ को जोड़ने के लिए तैयार हैं? आयात करने के लिए बस नीचे दिए गए बटन पर क्लिक करें।</translation>
 <translation id="5925465310724910998">आप चाहते हैं कि आपके NFT अपने आप दिखाई दें?</translation>
@@ -1189,12 +1120,6 @@
 <translation id="622372328961630111">थर्ड पार्टी API के ज़रिए अपने NFT को वॉलेट में अपने आप जोड़ें. <ph name="BEGIN_LINK_1"/>और जानें.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">एड्रेस लुकअप टेबल अकाउंट</translation>
 <translation id="7659483790930268440">एड्रेस लुकअप टेबल इंडेक्स</translation>
-<translation id="7322560193401221004">फ़ाइल की प्लेबैक की स्थिति को याद रखें</translation>
-<translation id="7505951907514709271">जब कोई एक फ़ाइल हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
-<translation id="6835165453349969605">प्लेबैक के क्रम को याद रखें</translation>
-<translation id="6344103698928069918">जब कोई प्लेलिस्ट हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
-<translation id="8141583471142904652">लगातार सुनें</translation>
-<translation id="851432578283946230">अपने-आप प्लेलिस्ट के अगले आइटम को चलाता है</translation>
 <translation id="7853202427316060426">गतिविधि</translation>
 <translation id="4932733599132424254">तिथि</translation>
 <translation id="346505172740911461">मार्केट की कीमत</translation>
@@ -1211,6 +1136,80 @@
 <translation id="2471230424465522689">इसके पहले नहीं</translation>
 <translation id="4841860051609590575">अनुरोध आईडी</translation>
 <translation id="1179407411385015942">लियो AI की खूबियों वाला स्मार्ट असिस्टेंट है, जिसे सीधे आपके ब्राउज़र में बनाया गया है</translation>
+<translation id="4109670531935487117">एड्रेस बार में ऑटोकंप्लीट के सुझाव दिखाएँ</translation>
 <translation id="1250335737108905610">लियो का डेटा रिसेट करें और मिटाएँ</translation>
 <translation id="6165101586663336913">लियो असिस्टेंट को रीसेट करने के लिए आपको भविष्य में लियो का इस्तेमाल करने के लिए अपनी मंज़ूरी देनी होगी और इससे आपकी चैट हिस्ट्री भी मिट जाएगी. चैट हिस्ट्री मिटाने से आपने लियो के साथ पहले जो भी चैट की है, वे मिट जाएँगी. एक बार मिटाने के बाद ये वापस नहीं लाई जा सकतीं.</translation>
+<translation id="3692772534525889713">अन्य डिवाइस पर Brave Leo का उपयोग करने के लिए अपनी Play Store खरीदारी को अपने Brave अकाउंट से लिंक करें।</translation>
+<translation id="73236265316873967">Leo प्रीमियम</translation>
+<translation id="1166682575529520472">मासिक</translation>
+<translation id="451189393813405346">लियो से पूछें</translation>
+<translation id="7322560193401221004">फ़ाइल की प्लेबैक की स्थिति को याद रखें</translation>
+<translation id="7505951907514709271">जब कोई एक फ़ाइल हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
+<translation id="6835165453349969605">प्लेबैक के क्रम को याद रखें</translation>
+<translation id="6344103698928069918">जब कोई प्लेलिस्ट हो, तो पिछली बार जहाँ रोका गया था, वहीं से चलाएँ</translation>
+<translation id="8141583471142904652">लगातार सुनें</translation>
+<translation id="851432578283946230">अपने-आप प्लेलिस्ट के अगले आइटम को चलाता है</translation>
+<translation id="295620834661738195">Brave प्लेलिस्ट</translation>
+<translation id="4850886885716139402">देखें</translation>
+<translation id="7392941176393379100">'<ph name="PLAYLIST_NAME"/>' में जोड़ा गया</translation>
+<translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>
+<translation id="1309636029062006520">अपने पसंदीदा ऑडियो और वीडियो की प्लेलिस्ट बनाएँ और कभी भी, कहीं भी चलाएँ।</translation>
+<translation id="7899390017499980820">प्लेलिस्ट बटन में जोड़ें</translation>
+<translation id="6901152954398668317">मीडिया को जोड़ने या निकालने के लिए, क्विक एक्सेस के लिए "प्लेलिस्ट में जोड़ें" बटन दिखाएँ या छिपाएँ।</translation>
+<translation id="5939518447894949180">रीसेट करें</translation>
+<translation id="8199028711686989861">ऑफ़लाइन मोड स्टोरेज सहित प्लेलिस्ट से सभी वीडियो निकालें।</translation>
+<translation id="4590997608186539865">प्लेलिस्ट</translation>
+<translation id="7525067979554623046">बनाएं</translation>
+<translation id="8525248723479742219">बाद में चलाएँ</translation>
+<translation id="7453007860684252933">ब्राउज़ करें और जोड़ें</translation>
+<translation id="9014883386413828317">अपनी पसंदीदा सामग्री जोड़ें। अपनी स्क्रीन के निचले दाएँ भाग में मौजूद ( + ) बटन देखें।</translation>
+<translation id="5928669500312007783">मीडिया के लिए ब्राउज़ करें</translation>
+<translation id="8152485753254079984">नई प्लेलिस्ट</translation>
+<translation id="9130105487623071247">प्लेलिस्ट का नाम</translation>
+<translation id="726581235416249619">बिना नाम वाली प्लेलिस्ट</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> चयनित</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> आइटम</translation>
+<translation id="2317629745818459803">सभी चलाएँ</translation>
+<translation id="7544853251252956727">शफ़ल करें</translation>
+<translation id="2881339830231736485">हाल ही में चलाई गई</translation>
+<translation id="8120600068258956006">प्लेलिस्ट में जोड़ें</translation>
+<translation id="39991094779686024">प्लेलिस्ट</translation>
+<translation id="1710072605877822603">मीडिया जोड़ें</translation>
+<translation id="3874252678044305931">Brave प्लेलिस्ट में वीडियो डालें. कभी भी चलाएँ. ऑफ़लाइन भी.</translation>
+<translation id="8973629800378391099">अपने पसंदीदा कंटेंट की प्लेलिस्ट बनाएँ. मोबाइल का डेटा बचाएँ. बिना विज्ञापन के चलाएँ.</translation>
+<translation id="4936812987266342401">प्लेलिस्ट में वीडियो डालने के लिए बस एक बटन दबाएँ</translation>
+<translation id="6263657785571415306">कोई रुकावट नहीं : ब्राउज़ करते समय वीडियो डालें, बाद में देखें.</translation>
+<translation id="2839555636100404687">प्लेलिस्ट में चलाना बेहतर है</translation>
+<translation id="9079526681359439081">बैकग्राउंड में चलाएँ. लॉकस्क्रीन से कंट्रोल करें. और भी बहुत कुछ...</translation>
+<translation id="3620862810055853183">प्लेलिस्ट खोलें</translation>
+<translation id="3861012838874771868">प्लेलिस्ट की सेटिंग खोलें</translation>
+<translation id="5220099266891491416">'प्लेलिस्ट' बटन छिपाएँ</translation>
+<translation id="7416347631175891923">इसे आज़माएँ!</translation>
+<translation id="1173894706177603556">नाम बदलें</translation>
+<translation id="3596306474342941843">प्लेलिस्ट हटाएँ</translation>
+<translation id="7765158879357617694">ले जाएं</translation>
+<translation id="3803384303807438047">आइटम का ऑफ़लाइन डेटा हटाएँ</translation>
+<translation id="4195643157523330669">नए टैब में खोलें</translation>
+<translation id="4243710787042215766">निजी टैब में खोलें</translation>
+<translation id="8261506727792406068">हटाएं</translation>
+<translation id="377872456482681602">कृपया पहले आइटम चुनें</translation>
+<translation id="286472539388773794">प्लेलिस्ट के लिए मान्य नाम डालें</translation>
+<translation id="2824489375399072491">इससे शेयर करें:</translation>
+<translation id="5319532905552885478">मीडिया कंटेंट को पहले से ही डिफ़ॉल्ट प्लेलिस्ट में जोड़ा गया है</translation>
+<translation id="4802584673094436231">तैयार कर रहा है…</translation>
+<translation id="481455355267255546">अगला</translation>
+<translation id="5474757891469990756">प्रीमियम के साथ Leo की पूरी ताकत दिखाएँ:</translation>
+<translation id="4173478269537830374">विभिन्न AI मॉडल खोजें</translation>
+<translation id="3453542753968940696">विभिन्न कौशल वाले ताकतवर मॉडलों तक प्राथमिकता वाली एक्सेस।</translation>
+<translation id="3245401959451976966">अपनी रचनात्मकता को अनलॉक करें</translation>
+<translation id="5031778211368112461">एक्सेस मॉडल रचनात्मक कार्यों और कंटेंट जेनरेट करने के लिए बेहतर तरीके से अनुकूलित हैं।</translation>
+<translation id="4165928407303989823">विषय पर बने रहें</translation>
+<translation id="298783097210745222">छोटी मगर अहम बातचीतों के लिए अधिक सटीक जवाब पाएं।</translation>
+<translation id="2389665228467129817">लंबे समय तक चैट करें</translation>
+<translation id="4314705522985583059">लंबी बातचीत के लिए उच्च दर सीमा पाएं।</translation>
+<translation id="6365289557497555234">सभी सदस्यताएं अपने आप नवीनीकृत हो जाती हैं,\nलेकिन नवीनीकरण से पहले किसी भी समय रद्द की जा सकती हैं।</translation>
+<translation id="6637015365469044269">अभी अपग्रेड करें</translation>
+<translation id="614530507403667291">नई बातचीत के लिए डिफ़ॉल्ट मॉडल</translation>
+<translation id="4071849832011229600">डिफ़ॉल्ट मॉडल</translation>
+<translation id="7557539689487606886">प्रीमियम सदस्य बनें</translation>
 </translationbundle>

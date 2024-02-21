@@ -32,8 +32,10 @@
 <translation id="1060136083665017312">Spēļu sistēmas un konsoles</translation>
 <translation id="1060320201901229167">Aploksne Kaku 5</translation>
 <translation id="10614374240317010">Netiek saglabātas</translation>
+<translation id="1062407476771304334">Aizstāt</translation>
 <translation id="1064054731605354900">A3x5</translation>
 <translation id="106701514854093668">Datora grāmatzīmes</translation>
+<translation id="1067029985695494416">Detalizēta informācija par meklētājprogrammu</translation>
 <translation id="1068672505746868501">Nekad netulkot lapas šādā valodā: <ph name="SOURCE_LANGUAGE"/></translation>
 <translation id="1070333806075222467">Metāls (glancēts)</translation>
 <translation id="1070853536588271387">Hibrīdtransportlīdzekļi un ar alternatīvo degvielu darbināmi transportlīdzekļi</translation>
@@ -46,6 +48,7 @@
 <translation id="1078033282564106222">Atlasīta opcija Ēkas numurs</translation>
 <translation id="1080116354587839789">Ietilpināt pēc platuma</translation>
 <translation id="1081061862829655580">19. paplāte</translation>
+<translation id="1082026381988252344">Ritināt jūsu kopīgotās cilnes saturu un izmantot tālummaiņu</translation>
 <translation id="1089439967362294234">Nomainīt paroli</translation>
 <translation id="1090629319939036170">VR izvēlne</translation>
 <translation id="1094777233105318927">Informācija par jūsu pārlūku, OS, ierīci, instalēto programmatūru un failiem</translation>
@@ -81,6 +84,7 @@
 <translation id="1165174597379888365">Apmeklēta lapa</translation>
 <translation id="7108524493226474140">{COUNT,plural, =0{Nav}=1{No vienas vietnes (joprojām būsiet pierakstījies Brave kontā)}zero{No # vietnēm (joprojām būsiet pierakstījies Brave kontā)}one{No # vietnes (joprojām būsiet pierakstījies Brave kontā)}other{No # vietnēm (joprojām būsiet pierakstījies Brave kontā)}}</translation>
 <translation id="1165852471352757509">Dokumentālas TV pārraides</translation>
+<translation id="1167877250265821930">Neizdevās lejupielādēt šādu valodas pakotni: <ph name="LANGUAGE"/></translation>
 <translation id="1174644974616730562">Ķīniešu aploksne 1</translation>
 <translation id="1174723505405632867">Vai vēlaties atļaut vietnei <ph name="EMBEDDED_URL"/> izmantot sīkfailus un vietnes datus šeit: <ph name="TOP_LEVEL_URL"/>?
 
@@ -100,7 +104,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1195073053842921378">Šī adrese tiks dzēsta no šīs ierīces.</translation>
 <translation id="1195558154361252544">Paziņojumi tiek automātiski bloķēti visās vietnēs, izņemot tās, kurās atļāvāt to rādīšanu.</translation>
 <translation id="1197088940767939838">Oranža</translation>
-<translation id="1197761954713363183">Piekļuves atslēgas apstiprinājuma lapa ir aizvērta</translation>
 <translation id="1201402288615127009">Tālāk</translation>
 <translation id="1201895884277373915">Vairāk no šīs vietnes</translation>
 <translation id="1202892408424955784">Izsekotie produkti</translation>
@@ -125,7 +128,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1240347957665416060">Jūsu ierīces nosaukums</translation>
 <translation id="124116460088058876">Citas valodas…</translation>
 <translation id="1243027604378859286">Autors:</translation>
-<translation id="1246424317317450637">Treknraksts</translation>
 <translation id="1247030632403369975">Alumīnijs</translation>
 <translation id="1252209483516427155">Āra apģērbs</translation>
 <translation id="1253921432148366685"><ph name="TYPE_1"/>, <ph name="TYPE_2"/> (veikta sinhronizācija)</translation>
@@ -220,6 +222,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1406812885827747674">Atļaut šajā reizē</translation>
 <translation id="1407135791313364759">Atvērt visas</translation>
 <translation id="1408787208417187241">Trīskāršs skavojums augšdaļā</translation>
+<translation id="5488251800208457874">Citiem lietotājiem, kuri izmanto šo ierīci, netiks rādītas jūsu darbības, tādējādi varat veikt pārlūkošanu ar augstāku privātuma līmeni. Tas nemainīs to, kā tiek vākti dati jūsu apmeklētajās vietnēs un to izmantotajos pakalpojumos, tostarp Brave. Tiks saglabātas lejupielādes, grāmatzīmes un lasīšanas saraksta vienumi.</translation>
 <translation id="1410941016594047814">Aploksne Invite</translation>
 <translation id="1413407968866574823">Spraigas darbības un platformas spēles</translation>
 <translation id="1413809658975081374">Konfidencialitātes kļūda</translation>
@@ -241,10 +244,12 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="783200745622992168">Pārlūkā Brave ir iebūvētas drošības funkcijas, piemēram, Brave droša pārlūkošana, lai aizsargātu jūs pārlūkošanas laikā. Droša pārlūkošana <ph name="BEGIN_LINK"/>nesen konstatēja ļaunprātīgu programmatūru vietnē <ph name="SITE"/><ph name="END_LINK"/>, kas ir iegulta vietnē, kuru mēģināt apmeklēt.</translation>
 <translation id="1435940442311036198">Izmantot piekļuves atslēgu citā ierīcē</translation>
 <translation id="1436185428532214179">Var pieprasīt atļauju rediģēt failus un mapes jūsu ierīcē</translation>
+<translation id="1441816242347931036">Atveriet, lai turpinātu</translation>
 <translation id="1442386063175183758">Abpusējs locījums pa labi</translation>
 <translation id="1442987760062738829">Caurums</translation>
 <translation id="1446396933673057385">Informācijas uzticamības pārbaude</translation>
 <translation id="1447067628680007684">(x86_64)</translation>
+<translation id="1448166547804028941">Atslēgas “<ph name="DATA_CONTROLS_FIRST_KEY_SET"/>” nevar iestatīt tajā pašā vārdnīcā, kurā ir atslēgas “<ph name="DATA_CONTROLS_SECOND_KEY_SET"/>”.</translation>
 <translation id="1452803302401719440">Jūsu vecāku izvēlētie iestatījumi tagad gādā par jūsu drošību tiešsaistē</translation>
 <translation id="1455413310270022028">Dzēšgumija</translation>
 <translation id="1458140305240870199">Apakšveļa</translation>
@@ -256,12 +261,15 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1468653229182955856"><ph name="ONE_TIME_CODE"/> ir jūsu kods ietvaram <ph name="EMBEDDED_ORIGIN"/> vietnē <ph name="TOP_ORIGIN"/></translation>
 <translation id="1472675084647422956">Rādīt vairāk</translation>
 <translation id="1473183651233018052">JIS B10</translation>
+<translation id="1473495410389165587">Ievadiet vismaz trīs vārdus, lai saņemtu palīdzību rakstīšanā.</translation>
 <translation id="147358896496811705">2A0</translation>
 <translation id="1474576429883213321">Tīrīšanas pakalpojumi</translation>
 <translation id="1475299637784133125">Vai meklējat pārlūka versiju? Apmeklējiet vietni</translation>
 <translation id="1476595624592550506">Paroles maiņa</translation>
 <translation id="1482879811280872320">Riteņbraukšana</translation>
 <translation id="1483493594462132177">Sūtīt</translation>
+<translation id="1484449009683144042">Šis ir eksperimentāls MI rakstīšanas palīglīdzeklis un ne vienmēr darbojas pareizi.
+    <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="1492194039220927094">Politiku informatīvie ziņojumi:</translation>
 <translation id="14938948731065592">Datoru perifērijas ierīces</translation>
 <translation id="1495677929897281669">Atgriezties cilnē</translation>
@@ -341,6 +349,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1633941398432788136">Pasākumu plānošana</translation>
 <translation id="1634828734222219955">Kopā</translation>
 <translation id="163669211644121865">Nodokļu deklarāciju sagatavošana un plānošana</translation>
+<translation id="163826442096818926">Saīsināts</translation>
 <translation id="1639239467298939599">Notiek ielāde</translation>
 <translation id="1640180200866533862">Lietotāja politikas</translation>
 <translation id="1640244768702815859"><ph name="BEGIN_LINK"/>Apmeklējiet vietnes sākumlapu<ph name="END_LINK"/>.</translation>
@@ -405,6 +414,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6072474764708015774"><ph name="BEGIN_BOLD"/>Kā mēs izmantojam šos datus:<ph name="END_BOLD"/> pārlūkā Brave tiek reģistrētas tēmas, kas jūs interesē. Tēmu iezīmes ir iepriekš definētas, piemēram, Māksla un izklaide, Pirkumi un Sports. Vēlāk kāda jūsu apmeklēta vietne var pieprasīt pārlūkam Brave kopīgot jūsu tēmas (bet ne pārlūkošanas vēsturi), lai personalizētu jums rādītās reklāmas.</translation>
 <translation id="1746113442205726301">Attēla nobīde uz Y ass</translation>
 <translation id="1746531169546376413">Par 0 grādiem</translation>
+<translation id="1748225549612934682">Saīsiniet tekstu, lai saņemtu palīdzību rakstīšanā.</translation>
 <translation id="1751544761369730824">Dzēst vietni <ph name="SITE_NAME"/></translation>
 <translation id="1752021286346845558">8. pastkaste</translation>
 <translation id="1753068535428855445">Randiņi un iepazīšanās sludinājumi</translation>
@@ -445,6 +455,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1828959155404624835">Automašīnu noma</translation>
 <translation id="1834321415901700177">Šī vietne satur kaitnieciskas programmas</translation>
 <translation id="1838374766361614909">Notīrīt meklēšanas vaicājumu</translation>
+<translation id="1839331950812095887">jūsu domas dažos vārdos</translation>
 <translation id="1839551713262164453">Politikas vērtību validēšana neizdevās, tika konstatētas kļūdas</translation>
 <translation id="1842969606798536927">Maksāt</translation>
 <translation id="1846432862466000825">Plastmasa (arhīva)</translation>
@@ -495,6 +506,8 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1956486093533522234">Atrast, aizsargāt vai dzēst ierīci</translation>
 <translation id="1958218078413065209">Jūsu vislabākais rezultāts ir <ph name="SCORE"/>.</translation>
 <translation id="990584554013599191">Palīdzēt uzlabot drošību tīmeklī visiem, nosūtot Brave serveriem <ph name="BEGIN_WHITEPAPER_LINK"/>dažu apmeklēto lapu vietrāžus URL, ierobežotu sistēmas informāciju un daļu lapu satura<ph name="END_WHITEPAPER_LINK"/>. <ph name="BEGIN_PRIVACY_PAGE_LINK"/>Konfidencialitātes politika<ph name="END_PRIVACY_PAGE_LINK"/></translation>
+<translation id="4215502005480745839">Jūsu teksts un lapas saturs tiek nosūtīts uzņēmumam Brave un var tikt izmantots šīs funkcijas uzlabošanai.
+  <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="1962204205936693436"><ph name="DOMAIN"/> grāmatzīmes</translation>
 <translation id="889162891089808318">Parasti jūs izveidojat drošu savienojumu ar vietnēm, taču šoreiz Brave nevarēja izmantot drošu savienojumu. Iespējams, kāds uzbrucējs mēģina izsekot jūsu darbības vai mainīt jūsu tīkla savienojumu. <ph name="BEGIN_LEARN_MORE_LINK"/>Uzzināt vairāk<ph name="END_LEARN_MORE_LINK"/></translation>
 <translation id="1973335181906896915">Radās serializēšanas kļūda.</translation>
@@ -503,6 +516,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="1975457531113383421">Ievades paplāte</translation>
 <translation id="1975584088563498795">10. pastkaste</translation>
 <translation id="1978555033938440688">Aparātprogrammatūras versija</translation>
+<translation id="1979156660928743046">Multivides informācija</translation>
 <translation id="1988881251331415125">Ja nav pareizrakstības kļūdu, <ph name="BEGIN_LINK"/>mēģiniet palaist savienojamības diagnostiku<ph name="END_LINK"/>.</translation>
 <translation id="1991453785879639515">Kāpšana kalnos un alpīnisms</translation>
 <translation id="1991830984769263878">Automašīnu apdrošināšana</translation>
@@ -584,9 +598,11 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2126374524350484896">PDF izveides rīks:</translation>
 <translation id="2130448033692577677">Norādītās veidnes, iespējams, netiks lietotas, jo nav iestatīta politika DnsOverHttpsMode.</translation>
 <translation id="2130699163006053678">A3x7</translation>
+<translation id="2131200882015008178">Notiek šādas valodas pakotnes lejupielāde: <ph name="LANGUAGE"/> (<ph name="PERCENT"/>%)…</translation>
 <translation id="2135799067377889518">Vīriešu apģērbs</translation>
 <translation id="2137891579555018930">Tiek gaidīta atļauja…</translation>
 <translation id="213826338245044447">Mobilās grāmatzīmes</translation>
+<translation id="2141000681034340397">Rediģēt savu ievadi</translation>
 <translation id="214556005048008348">Atcelt maksājumu</translation>
 <translation id="2148613324460538318">Pievienot karti</translation>
 <translation id="2148716181193084225">Šodien</translation>
@@ -619,6 +635,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="219906046732893612">Mājas labiekārtošana</translation>
 <translation id="2202627062836089804">kartes aizmugurē</translation>
 <translation id="2204482073374652408">Atjaunināšana pabeigta!</translation>
+<translation id="2207770355672215546">Vienmēr atļaut ar jebkuru karti</translation>
 <translation id="2208053750671792556">Vai nesaņēmāt kodu? <ph name="IDS_AUTOFILL_CARD_UNMASK_OTP_INPUT_DIALOG_NEW_CODE_MESSAGE"/></translation>
 <translation id="22081806969704220">3. paplāte</translation>
 <translation id="2210794033760923560">Augšupielādēt pārskatu</translation>
@@ -668,7 +685,9 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2289385804009217824">Apgriešana</translation>
 <translation id="2292556288342944218">Piekļuve internetam ir bloķēta</translation>
 <translation id="2293443924986248631">Ja šis iestatījums ir ieslēgts, vietnes nevar izmantot sīkfailus, lai izsekotu jūsu darbības tīmeklī. Noteiktās vietnēs funkcijas var nedarboties.</translation>
+<translation id="2295831393422400053">Ieslēdziet iestatījumu “Uzlabot meklēšanu un pārlūkošanu”, lai izmantotu funkciju “Palīdzība rakstīšanā”.</translation>
 <translation id="2300306941146563769">Nav augšupielādēts</translation>
+<translation id="2301098101308036335">Kuras vietnes tika apmeklētas un to apmeklēšanas laiks.</translation>
 <translation id="2312234273148520048">Piedevas un mērces</translation>
 <translation id="2316087952091171402">Mazāk nekā <ph name="UPPER_ESTIMATE"/>. Dažas vietnes nākamā apmeklējuma laikā, iespējams, tiks ielādētas lēnāk.</translation>
 <translation id="2316159751672436664">Personalizēt pieejamības rīkus Brave OS iestatījumos</translation>
@@ -680,6 +699,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2328651992442742497">Atļauja piešķirta (noklusējums)</translation>
 <translation id="2328955282645810595">Celtniecības un motorizēti rīki</translation>
 <translation id="2330137317877982892"><ph name="CREDIT_CARD"/>, derīguma termiņš: <ph name="EXPIRATION_DATE_ABBR"/></translation>
+<translation id="2337044517221264923">Atsākt rakstīšanu</translation>
 <translation id="2337852623177822836">Iestatījumu kontrolē jūsu administrators</translation>
 <translation id="2340263603246777781"><ph name="ORIGIN"/> vēlas savienot pārī</translation>
 <translation id="2340549657492527534">Rāpuļi un abinieki</translation>
@@ -690,6 +710,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2354430244986887761">Izmantojot Brave drošo pārlūkošanu, nesen <ph name="BEGIN_LINK"/>tika atrastas kaitīgas lietotnes<ph name="END_LINK"/> vietnē <ph name="SITE"/>.</translation>
 <translation id="2355395290879513365">Uzbrucēji var skatīt attēlus, kurus skatāt šajā vietnē, un apmānīt jūs, pārveidojot šos attēlus.</translation>
 <translation id="2356070529366658676">Vaicāt</translation>
+<translation id="2356926036049612643">V8 optimizētājs</translation>
 <translation id="2357481397660644965">Jūsu ierīci pārvalda <ph name="DEVICE_MANAGER"/>, un jūsu kontu pārvalda <ph name="ACCOUNT_MANAGER"/>.</translation>
 <translation id="2359629602545592467">Vairākas</translation>
 <translation id="2359808026110333948">Turpināt</translation>
@@ -709,6 +730,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="238459632961158867">Tīmekļa vietne</translation>
 <translation id="5244533701344680487">Atjauniniet pārlūku Brave savos Brave iestatījumos.</translation>
 <translation id="2386255080630008482">Servera sertifikāts ir atsaukts.</translation>
+<translation id="239203817277685015">Uzlabots</translation>
 <translation id="239293030466334554">Kabrioleti</translation>
 <translation id="2392959068659972793">Rādīt politikas, kuru vērtība nav iestatīta</translation>
 <translation id="239429038616798445">Šis nosūtīšanas veids nav pieejams. Izmēģiniet citu veidu.</translation>
@@ -726,6 +748,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2441854154602066476">Maksājumu veidi, kas pieejami aizpildīšanai pieskaroties. Tastatūra ir paslēpta.</translation>
 <translation id="2448295565072560657">Perifērijas ierīces, kas ir pievienotas šai ierīcei, kamēr esat pieteicies</translation>
 <translation id="2450021089947420533">Meklēšanas ceļi</translation>
+<translation id="2452837234288608067">Pieprasījumu nevarēja izpildīt. Mēģiniet vēlreiz.</translation>
 <translation id="2456755709261364512">Akumulatora uzlādes līmenim ir jāpārsniedz <ph name="REQUIRED_BATTERY_PRECENT"/>%.</translation>
 <translation id="2462599289530201834">Meklēt: <ph name="KEYWORD_SHORT_NAME"/></translation>
 <translation id="2463739503403862330">Aizpildīt</translation>
@@ -737,6 +760,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2469153820345007638">Secība: no 1 līdz N</translation>
 <translation id="24699311393038040">Papīrs (pārklāts)</translation>
 <translation id="2470767536994572628">Ja rediģēsiet piezīmes, dokuments atkal pāries vienas lapas skatā un rotācija tiks atiestatīta.</translation>
+<translation id="2479148705183875116">Atvērt iestatījumus</translation>
 <translation id="2479410451996844060">Nederīgs meklēšanas URL.</translation>
 <translation id="6944854796979239513">Jūsu Brave kontā <ph name="USER_EMAIL"/></translation>
 <translation id="2482878487686419369">Paziņojumi</translation>
@@ -765,6 +789,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="253493526287553278">Skatīt akcijas koda informāciju</translation>
 <translation id="2535659140340599600">{COUNT,plural, =1{un vēl 1}zero{un vēl #}one{un vēl #}other{un vēl #}}</translation>
 <translation id="2536110899380797252">Pievienot adresi</translation>
+<translation id="3140033400151786080">Citiem lietotājiem, kuri izmanto šo ierīci, netiks rādītas jūsu darbības, tādējādi varat veikt pārlūkošanu ar augstāku privātuma līmeni. Tas nemainīs to, kā tiek vākti dati jūsu apmeklētajās vietnēs un to izmantotajos pakalpojumos, tostarp Brave. Tiks saglabātas lejupielādes un grāmatzīmes.</translation>
 <translation id="2539524384386349900">Noteikt</translation>
 <translation id="2542106216580219892">Sērfošana</translation>
 <translation id="2544546346215446551">Administrators restartēja jūsu ierīci</translation>
@@ -803,6 +828,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2610561535971892504">Noklikšķināt, lai kopētu</translation>
 <translation id="686139377353794280">Tiks dzēsti visi drošības kodi, kas ir saglabāti jūsu ierīcē un Brave kontā</translation>
 <translation id="2616412942031748191">Meklētājprogrammu optimizācija un mārketings</translation>
+<translation id="2619052155095999743">Ievietot</translation>
 <translation id="2625385379895617796">Norādītais laiks ir pārāk tālu nākotnē</translation>
 <translation id="262745152991669301">Var pieprasīt atļauju veidot savienojumu ar USB ierīcēm</translation>
 <translation id="2915787201097107005">Lai pārlūkprogrammā Brave izmantotu visaugstāko drošības līmeni, <ph name="BEGIN_ENHANCED_PROTECTION_LINK"/>ieslēdziet uzlaboto aizsardzību<ph name="END_ENHANCED_PROTECTION_LINK"/></translation>
@@ -833,6 +859,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2677696497921480781">Dzimšanas un vārda dienas</translation>
 <translation id="2677748264148917807">Iziet</translation>
 <translation id="2678468611080193228">Īslaicīgi atļaujiet izmantot trešo pušu sīkfailus. Tas nozīmē, ka aizsardzības līmenis būs zemāks, taču pastāv lielāka iespēja, ka darbosies vietnes funkcijas.</translation>
+<translation id="2686919536310834199">Sūtiet atsauksmes par funkciju “Palīdzība rakstīšanā”.</translation>
 <translation id="2687555958734450033">Optimāla ietilpināšana</translation>
 <translation id="2688186765492306706">500 x 760 mm</translation>
 <translation id="2688969097326701645">Jā, turpināt</translation>
@@ -860,6 +887,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2725927759457695883">Aizpildīt vārdu un uzvārdu</translation>
 <translation id="2726001110728089263">Sānu paplāte</translation>
 <translation id="2728127805433021124">Servera sertifikāts ir parakstīts, izmantojot vāju paraksta algoritmu.</translation>
+<translation id="272937284275742856">Notiek droša jūsu maksājumu informācijas pārbaude...</translation>
 <translation id="2730326759066348565"><ph name="BEGIN_LINK"/>Palaist savienojamības diagnostiku<ph name="END_LINK"/></translation>
 <translation id="2730600605555029057">Klasiskā mūzika</translation>
 <translation id="2731382536835015353">44 x 68 collas</translation>
@@ -905,7 +933,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2858134430383535011">200 x 300 mm</translation>
 <translation id="2859806420264540918">Šajā vietnē tiek rādītas traucējošas vai maldinošas reklāmas.</translation>
 <translation id="28618371182701850">Elektriski, ar uzlādējamiem akumulatoriem darbināmi transportlīdzekļi</translation>
-<translation id="287596039013813457">Draudzīga</translation>
 <translation id="28761159517501904">Filmas</translation>
 <translation id="1117301625415017890"><ph name="MANAGE_SECURITY_SETTINGS_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Lai Brave iestatījumos pārvaldītu funkciju “Droša pārlūkošana” un citas funkcijas, nospiediet tabulēšanas taustiņu un pēc tam — taustiņu Enter.</translation>
 <translation id="2878197950673342043">Plakāta locījums</translation>
@@ -943,6 +970,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2938225289965773019">atvērt <ph name="PROTOCOL"/> saites</translation>
 <translation id="2941878205777356567">Aploksne (9 x 12 collas)</translation>
 <translation id="2941952326391522266">Šis serveris nevarēja pierādīt, ka šī ir vietne <ph name="DOMAIN"/>; tās drošības sertifikāts ir saistīts ar domēnu <ph name="DOMAIN2"/>. Iespējams, tas ir nepareizas konfigurācijas dēļ vai arī kāds ir ļaunprātīgi izmantojis jūsu savienojumu.</translation>
+<translation id="2942492342931589800">Parasts</translation>
 <translation id="2942515540157583425">Darba piedāvājumi IT un tehnikas nozarē</translation>
 <translation id="2943895734390379394">Augšupielādes laiks:</translation>
 <translation id="2945026002409061480">Tiešsaistes kopienas</translation>
@@ -956,6 +984,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="2958544468932521864">Krikets</translation>
 <translation id="2959113999220720579">Sejas un ķermeņa kopšana</translation>
 <translation id="2962073860865348475">12 x 18 collas</translation>
+<translation id="2470357430970446202">saglabājiet to savā Brave kontā</translation>
 <translation id="2968103128155246731">Furgoni un minifurgoni</translation>
 <translation id="2972581237482394796">&amp;Pāratsaukt</translation>
 <translation id="2977665033722899841">Pašlaik ir atlasīta rinda “<ph name="ROW_NAME"/>”. <ph name="ROW_CONTENT"/></translation>
@@ -977,6 +1006,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3009036448238594149"><ph name="ACTION_IN_SUGGEST_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Lai pārlūkotu pieejamās darbības, nospiediet tabulēšanas taustiņu. Pēc tam, lai izpildītu atlasīto darbību, nospiediet Enter.</translation>
 <translation id="3013291976881901233">MIDI ierīces</translation>
 <translation id="3014553260345122294">Uzņēmējdarbības ziņas</translation>
+<translation id="3014726756341138577">Printera papildu funkcijas</translation>
 <translation id="301521992641321250">Automātiski bloķēta</translation>
 <translation id="3016780570757425217">uzzināt jūsu atrašanās vietu</translation>
 <translation id="3017086357773116182"><ph name="REMOVE_SUGGESTION_SUFFIX"/>, lai noņemtu ieteikumu, nospiediet tabulēšanas taustiņu un pēc tam — taustiņu Enter.</translation>
@@ -1083,7 +1113,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3240791268468473923">Ir atvērta lapa ar akreditācijas datiem, kas neatbilst drošu maksājumu akreditācijas datiem</translation>
 <translation id="324180406144491771">“<ph name="HOST_NAME"/>” saites ir bloķētas</translation>
 <translation id="3249151924975132674">Studiju un studējošā kredīti</translation>
-<translation id="3249845759089040423">Moderna</translation>
 <translation id="3250640885957938546">Reklamēšana un mārketings</translation>
 <translation id="3252772880526154546">Arhitektūra</translation>
 <translation id="3254301855501243548">18 x 22 collas</translation>
@@ -1134,6 +1163,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="334438173029876234">Skeitborda aprīkojums</translation>
 <translation id="3349952286488694786">SRA2</translation>
 <translation id="3355823806454867987">Mainīt starpniekservera iestatījumus...</translation>
+<translation id="335809815767823">Eksportētas</translation>
 <translation id="3359565626472459400">Laulība</translation>
 <translation id="3360103848165129075">Maksājumu apstrādātāja lapa</translation>
 <translation id="3360313521703038580">Ekoloģija un vide</translation>
@@ -1177,6 +1207,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3432601291244612633">Aizvērt lapu</translation>
 <translation id="3433111389595862568">Sadarbības un konferenču programmatūra</translation>
 <translation id="3433144818443565002">Balss un video tērzēšana</translation>
+<translation id="3044702330949941099">Brave paroļu pārvaldniekam ir nepieciešama plašāka piekļuve</translation>
 <translation id="343474037147570563">Jūsu augšupielādētie vai pievienotie faili tiek nosūtīti uz Brave Cloud vai trešajām pusēm, lai veiktu analīzi. Piemēram, šie faili var tikt pārmeklēti, lai konstatētu, vai tajos ir sensitīvi dati vai ļaunprātīga programmatūra, un uzglabāti saskaņā ar uzņēmuma politikām, turklāt tie var būt redzami jūsu administratoram.</translation>
 <translation id="3435557549311968410">Vienlaidu (īsā mala)</translation>
 <translation id="3435738964857648380">Drošība</translation>
@@ -1194,7 +1225,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3461266716147554923">Vietne <ph name="URL"/> vēlas skatīt starpliktuvē kopēto tekstu un attēlus.</translation>
 <translation id="3461824795358126837">Marķieris</translation>
 <translation id="3462200631372590220">Slēpt papildu informāciju</translation>
-<translation id="5410160270050057437">Šis PDF fails nav pieejams. Teksts iegūts. Pakalpojumu nodrošina Brave MI.</translation>
+<translation id="3465972433695735758">Šis PDF fails nav pieejams. Teksts iegūts. Pakalpojumu nodrošina Brave MI.</translation>
 <translation id="346601286295919445">Ķīmija</translation>
 <translation id="3468054117417088249"><ph name="TAB_SWITCH_SUFFIX"/>, šobrīd atvērta. Nospiediet tabulēšanas taustiņu, pēc tam — ievadīšanas taustiņu, lai atvērtu cilni.</translation>
 <translation id="3807334561457710885">Brave poga “Pielāgot fontus”. Aktivizējiet, lai pārlūkā Brave pielāgotu fontu izmērus un burtveidolus.</translation>
@@ -1282,6 +1313,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3632503704576938756">Ekrāna kopīgošana atsākta</translation>
 <translation id="3632892046558972264">Ekrāna kopīgošana apturēta</translation>
 <translation id="3634530185120165534">5. paplāte</translation>
+<translation id="3638102297696182302">Atsākt funkcijas “Palīdzība rakstīšanā” izmantošanu. Lai atvērtu funkcijas logu, nospiediet tabulēšanas taustiņu un taustiņu Enter.</translation>
 <translation id="3642196846309122856">Mēģiniet vēlreiz lejupielādēt savus failus.</translation>
 <translation id="3642638418806704195">Lietojumprogramma:</translation>
 <translation id="3646643500201740985">Reklāmas veiktspējas novērtēšana</translation>
@@ -1294,6 +1326,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3655670868607891010">Ja šo redzat bieži, izmēģiniet šos <ph name="HELP_LINK"/>.</translation>
 <translation id="365641980390710834">Ikdienas apģērbs</translation>
 <translation id="3658742229777143148">Pārskatīšana</translation>
+<translation id="3659521826520353662">Administratora definētās vietnes, kuras tiek apmeklētas un to apmeklēšanas laiks: <ph name="ALLOWLISTED_WEBSITES"/></translation>
 <translation id="3664782872746246217">Atslēgvārdi:</translation>
 <translation id="3665100783276035932">Vairumam vietņu ir jādarbojas paredzētajā veidā</translation>
 <translation id="3667704023705708645">Riska kapitāls</translation>
@@ -1308,6 +1341,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3678914302246317895">Ievadiet <ph name="OTP_LENGTH"/> ciparu verifikācijas kodu</translation>
 <translation id="3681007416295224113">Sertifikāta informācija</translation>
 <translation id="2659564324969662497">Brave nosaka, kādas tēmas jūs interesē, ņemot vērā jūsu neseno pārlūkošanas vēsturi.</translation>
+<translation id="3682094733650754138">Tika atlasīta adreses aizpildīšanas opcija</translation>
 <translation id="3689867156802445220">Ēkas numurs</translation>
 <translation id="3693327506115126094">Identitātes apstiprināšanas veida izvēle</translation>
 <translation id="974818914962304978">Poga “Izveidot vietni”. Aktivizējiet, lai ātri izveidotu jaunu vietni pakalpojumā Brave vietnes.</translation>
@@ -1338,12 +1372,14 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3736520371357197498">Ja apzināties drošības risku, varat <ph name="BEGIN_LINK"/>apmeklēt šo nedrošo vietni<ph name="END_LINK"/>, pirms ir noņemtas bīstamās programmas.</translation>
 <translation id="3736739313435669994">Bloķējāt savu darbību izsekošanu ar trešo pušu sīkfailiem vietnēs pārlūkošanas laikā. Lai <ph name="LINK"/>, pārejiet uz iestatījumiem.</translation>
 <translation id="3738166223076830879">Jūsu pārlūku pārvalda administrators.</translation>
+<translation id="3739842843727261045">Nospiežot pogu “Patīk”, varat norādīt, ka jums patīk šie rezultāti.</translation>
 <translation id="3740319564441798148">Tālsatiksmes autobusi un vilcieni</translation>
 <translation id="3740447166056383374">Pirms kopēšanas jāveic pārskatīšana</translation>
 <translation id="374325029554577103">Fitnesa tehnoloģijas produkti</translation>
 <translation id="3743765582345153106">Vienmēr pieprasīt apstiprināšanu, kad tiek izmantota automātiskā aizpilde</translation>
 <translation id="3744111561329211289">Sinhronizācija fonā</translation>
 <translation id="3744212718085287312">Vai vēlaties nākamreiz uzlabot drošību, izmantojot virtuālo karti?</translation>
+<translation id="8500803517201014627">Jūsu teksts, kā arī tās lapas saturs un vietrādis URL, kurā rakstāt tekstu, tiks nosūtīts uzņēmumam Brave, to pārskatīs cilvēki, un tas tiks izmantots šīs funkcijas uzlabošanai. Neievadiet personas informāciju (piemēram, medicīniskos datus vai finanšu informāciju) un neizmantojiet šo rīku vietnēs, kas ietver privātu vai sensitīvu informāciju.</translation>
 <translation id="3748009735914587286">Metāls (augsti glancēts)</translation>
 <translation id="3748148204939282805">Uzbrucēji vietnē <ph name="BEGIN_BOLD"/><ph name="SITE"/><ph name="END_BOLD"/> var mudināt jūs veikt bīstamas darbības, piemēram, instalēt programmatūru vai atklāt personas informāciju (piemēram, paroles, tālruņa numurus vai kredītkaršu datus). <ph name="BEGIN_LEARN_MORE_LINK"/>Uzziniet vairāk<ph name="END_LEARN_MORE_LINK"/>.</translation>
 <translation id="3748912308089554501">Aviācijas nozare</translation>
@@ -1380,6 +1416,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="3812398568375898177">Šis ir svarīgs atjauninājums, kas uzlabo Android lietotņu veiktspēju operētājsistēmā Brave OS.</translation>
 <translation id="3815434930383843058">8 x 12 collas</translation>
 <translation id="3816482573645936981">Vērtība (aizstāta)</translation>
+<translation id="382115839591654906"><ph name="CARD_NAME"/> CVC</translation>
 <translation id="3823019343150397277">IBAN</translation>
 <translation id="3823402221513322552">Jūsu pārlūku pārvalda <ph name="BROWSER_DOMAIN"/>, un jūsu profilu pārvalda <ph name="PROFILE_DOMAIN"/></translation>
 <translation id="382518646247711829">Ja izmantojat starpniekserveri...</translation>
@@ -1462,6 +1499,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4014895360827978999">Tirgotāju pakalpojumi un maksājumu sistēmas</translation>
 <translation id="4018819349042761761">Publiska atslēga</translation>
 <translation id="4023431997072828269">Tā kā šī veidlapa tiek iesniegta, izmantojot nedrošu savienojumu, jūsu informācija būs redzama citām personām.</translation>
+<translation id="4025325634010721551">Politikas ir ielādētas atkārtoti</translation>
 <translation id="4030383055268325496">&amp;Atsaukt pievienošanu</translation>
 <translation id="4030545038933060179">Kad šis iestatījums ir ieslēgts, šeit ir redzams saraksts ar tēmām, kuru pamatā ir jūsu nesenā pārlūkošanas vēsture</translation>
 <translation id="4031179711345676612">Mikrofona lietošana ir atļauta</translation>
@@ -1472,6 +1510,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="336808635693308470">Pārlūkā Brave tiek mēģināts automātiski rediģēt maksājuma veidus.</translation>
 <translation id="405399507749852140">Saņemiet paziņojumus, ja kādā vietnē tiek konstatēts cenas kritums.</translation>
 <translation id="4056223980640387499">Sēpija</translation>
+<translation id="4059523390906550209">Uzzināt vairāk par sensitīvu datu aizsardzību</translation>
 <translation id="4161619938555288542">Ļaujiet Brave palīdzēt jums atrast atlaides jūsu groziem</translation>
 <translation id="406358100705415968">Aizsargaprīkojums darba drošībai</translation>
 <translation id="4063924980214801036">Izmantojiet ierīces atbloķēšanu, lai ātrāk apstiprinātu kartes</translation>
@@ -1479,7 +1518,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4067098466788473230">Stipendijas mācībām</translation>
 <translation id="4067947977115446013">Derīgas adreses pievienošana</translation>
 <translation id="4070790659619547722">Izmantojot reklāmu izvērtēšanu, starp vietnēm tiek kopīgoti noteiktu veidu dati, lai izvērtētu šo lietotņu reklāmu veiktspēju, piemēram, diennakts laiku, kad reklāma tika parādīta jums.</translation>
-<translation id="4072193657607981494">Notiek politiku ielāde</translation>
 <translation id="4072486802667267160">Apstrādājot pasūtījumu, radās kļūda. Lūdzu, mēģiniet vēlreiz.</translation>
 <translation id="4073376909608563327">Nevarēja izmantot ierīces atbloķēšanu</translation>
 <translation id="4073797364926776829">Skatīt karti</translation>
@@ -1542,6 +1580,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4177501066905053472">Reklāmu tēmas</translation>
 <translation id="4179515394835346607"><ph name="ROW_NAME"/>: <ph name="ROW_CONTENT"/></translation>
 <translation id="4186035307311647330">Atcelt cenas izsekošanu</translation>
+<translation id="4191334393248735295">Garums</translation>
 <translation id="9150836098508392713">Poga “Skatīt Brave padomus”. Aktivizējiet, lai uzzinātu par Brave funkcijām.</translation>
 <translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
 <translation id="4196861286325780578">&amp;Atcelt pārvietošanas atsaukšanu</translation>
@@ -1612,6 +1651,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4312613361423056926">B2</translation>
 <translation id="4312866146174492540">Bloķēt (pēc noklusējuma)</translation>
 <translation id="4314815835985389558">Sinhronizācijas pārvaldība</translation>
+<translation id="4316057107946726368">Ievadiet pamatojuma ziņojumu, kura garums nepārsniedz <ph name="MAX_CHAR_COUNT"/> rakstzīmes. Izmantoto rakstzīmju skaits: <ph name="ACTUAL_CHAR_COUNT"/> no <ph name="MAX_CHAR_COUNT"/>.</translation>
 <translation id="4318213823155573975">Galvassegas</translation>
 <translation id="4318312030194671742">Paint priekšskatījuma burtliča pakalpojums</translation>
 <translation id="4318566738941496689">Jūsu ierīces nosaukums un tīkla adrese</translation>
@@ -1626,6 +1666,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4333295216031073611">Iepirkumu saraksts</translation>
 <translation id="4333561522337981382">Pārvaldīt logus visos jūsu displejos</translation>
 <translation id="4336219115486912529">{COUNT,plural, =1{Derīguma termiņš beigsies rīt}zero{Derīguma termiņš beigsies pēc # dienām}one{Derīguma termiņš beigsies pēc # dienas}other{Derīguma termiņš beigsies pēc # dienām}}</translation>
+<translation id="4336913590841287350">Šī politika vēl netiek atbalstīta kā lietotāja politika iOS ierīcēs.</translation>
 <translation id="5792122559159836842">Šī reklāma izmantoja pārāk daudz resursu jūsu ierīcē, tādēļ Brave to noņēma.</translation>
 <translation id="4340810192899866471">Importēt no JSON formāta</translation>
 <translation id="6116812392674177288">Šo datoru nepārvalda uzņēmums, tāpēc politika var automātiski instalēt tikai tos paplašinājumus, kas tiek mitināti Brave interneta veikalā. Brave interneta veikala atjauninājumu URL: <ph name="CWS_UPDATE_URL"/>.</translation>
@@ -1660,7 +1701,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4414515549596849729">sīkfaili un vietņu dati</translation>
 <translation id="4415156962929755728">Plastmasa (augsti glancēta)</translation>
 <translation id="4415426530740016218">Saņemšanas adrese</translation>
-<translation id="4425173294238317796">Piekļuves atslēgas apstiprinājuma lapa</translation>
 <translation id="4425750422187370446">Sporta apģērbs</translation>
 <translation id="443121186588148776">Seriālais ports</translation>
 <translation id="4432688616882109544"><ph name="HOST_NAME"/> nepieņēma jūsu pieteikšanās sertifikātu, vai arī pieteikšanās sertifikāts netika iesniegts.</translation>
@@ -1671,6 +1711,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="443673843213245140">Starpniekservera lietošana ir atspējota, bet ir norādīta atklāta starpniekservera konfigurācija.</translation>
 <translation id="4438821706955556403">Parastā cena</translation>
 <translation id="4441832193888514600">Ignorēta, jo šo politiku var iestatīt tikai kā mākoņa lietotāja politiku.</translation>
+<translation id="4445133368066241428">Populāras tēmas</translation>
 <translation id="7615139038297294584">Poga “Pārvaldīt vietnes iestatījumus”. Aktivizējiet, lai Brave iestatījumos pārvaldītu atļaujas un vietnēs glabātos datus.</translation>
 <translation id="4451135742916150903">Var pieprasīt atļauju veidot savienojumu ar HID ierīcēm</translation>
 <translation id="4451684391620232683">Lietotājam rādītais teksts:</translation>
@@ -1716,7 +1757,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="455113658016510503">A9</translation>
 <translation id="4556069465387849460">Jūs izmantojat ekrāna bloķēšanu paroļu aizpildei</translation>
 <translation id="4558551763791394412">Atspējojiet paplašinājumus.</translation>
-<translation id="456043042661026303">Tiek droši pārbaudīta jūsu maksājumu informācija…</translation>
 <translation id="4566017918361049074">Aktivitātes brīvā dabā</translation>
 <translation id="4569155249847375786">Verificēts</translation>
 <translation id="457875822857220463">Piegāde</translation>
@@ -1731,7 +1771,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4598556348158889687">Krātuves pārvaldība</translation>
 <translation id="4600084978141515058">Vegāniskā virtuve</translation>
 <translation id="4602465984861132303">Boulings</translation>
-<translation id="4606870351894164739">Pamanāma</translation>
 <translation id="8338928872956435647">Skatīt Brave padomus</translation>
 <translation id="460848736049414407">Bloķējis administrators</translation>
 <translation id="4610279718074907952">Šī vietne ir uzņēmuma <ph name="SET_OWNER"/> definētā grupā, un jūsu darbības ir redzamas visai grupai.</translation>
@@ -1745,6 +1784,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4629370161347991046">A4x6</translation>
 <translation id="4631649115723685955">Saistīta skaidras naudas atmaksa</translation>
 <translation id="4631881646528206880">Virtuālās kartes reģistrācija</translation>
+<translation id="4635278307999235413">Notiek datu sūtīšana uz administratora konsoli</translation>
 <translation id="4636930964841734540">Informācija</translation>
 <translation id="464342062220857295">Meklēšanas funkcijas</translation>
 <translation id="4644670975240021822">Pretēja secība, virspuse uz leju</translation>
@@ -1840,13 +1880,11 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4819347708020428563">Vai vēlaties rediģēt piezīmes noklusējuma skatā?</translation>
 <translation id="4822493756793346865">Parasto cenu pamatā ir informācija par pēdējām 90 dienām no veikaliem tīmeklī.</translation>
 <translation id="551961240839010112"><ph name="CREATE_GOOGLE_SHEET_FOCUSED_FRIENDLY_MATCH_TEXT"/>. Lai ātri izveidotu jaunu Brave izklājlapu, nospiediet tabulēšanas taustiņu un pēc tam — taustiņu Enter.</translation>
-<translation id="4825507807291741242">Efektīva</translation>
 <translation id="4826588772550366629">kameru un mikrofonu</translation>
 <translation id="4827283332383516812">Kartes dzēšana</translation>
 <translation id="4831993743164297314">Attēlliča papīrs</translation>
 <translation id="483241715238664915">Ieslēgt brīdinājumus</translation>
 <translation id="4834250788637067901">Maksājumu veidi, piedāvājumi un adreses no pakalpojuma Brave Pay</translation>
-<translation id="4838327282952368871">Mierīga</translation>
 <translation id="1923748633297576468">Nākamreiz maksājiet ātrāk un aizsargājiet savu karti ar nozarē vadošo Brave drošības risinājumu.</translation>
 <translation id="246176083348620700">Skatīt Brave vēsturi</translation>
 <translation id="484462545196658690">Autom.</translation>
@@ -1891,6 +1929,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="4918221908152712722">Instalējiet lietotni <ph name="APP_NAME"/> (nav nepieciešama lejupielāde)</translation>
 <translation id="4920457992177678649">Nekustamo īpašumu īre brīvdienām un neilgam laikam</translation>
 <translation id="4920710383559189047">Apvāks</translation>
+<translation id="1298471559729553235">Lai izmantotu paroļu pārvaldnieku ar savu operētājsistēmu, atkārtoti palaidiet pārlūku Brave un atļaujiet piekļuvi datora paroļu pārvaldniekam. Jūsu cilnes tiks atkal atvērtas pēc atkārtotas palaišanas.</translation>
 <translation id="4923459931733593730">Maksājums</translation>
 <translation id="4926049483395192435">Jābūt norādītai.</translation>
 <translation id="4926159001844873046">Vietnē <ph name="SITE"/> ir rakstīts</translation>
@@ -2011,7 +2050,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5153314898060540200">Smagais roks un progresīvā mūzika</translation>
 <translation id="5157504274688344097">Vairumtirgotāji un universālveikali</translation>
 <translation id="5158275234811857234">Vāks</translation>
-<translation id="5161262286013276579">Piekļuves atslēgas apstiprinājuma lapa ir atvērta</translation>
 <translation id="5161334686036120870">Temats:</translation>
 <translation id="5161506081086828129">9. izvades vieta</translation>
 <translation id="5164798890604758545">Tiek ievadīts teksts</translation>
@@ -2077,6 +2115,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5292714443869769806">Pāriet uz <ph name="OPERATING_SYSTEM"/> iestatījumiem</translation>
 <translation id="5293919335876685914">Kupejas</translation>
 <translation id="5296589789433599000">Kulinārija un receptes</translation>
+<translation id="5298618990685278995">melnraksta pirmo versiju;</translation>
 <translation id="5299298092464848405">Parsējot politiku, radās kļūda.</translation>
 <translation id="5299638840995777423">Robotika</translation>
 <translation id="5300062471671636390">Paslēpt ierīču sarakstu apraidei</translation>
@@ -2138,6 +2177,12 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5425241977284572032">{NUM_COOKIES,plural, =0{Nav bloķēta neviena vietne}=1{Bloķēta 1 vietne}zero{Bloķētas # vietnes}one{Bloķēta # vietne}other{Bloķētas # vietnes}}</translation>
 <translation id="5426179911063097041">No vietnes <ph name="SITE"/> tiek mēģināts nosūtīt paziņojumus.</translation>
 <translation id="5430298929874300616">Noņemt grāmatzīmi</translation>
+<translation id="8517215617486022589">Pārlūkā Brave <ph name="BEGIN_EMPHASIS"/>netiks saglabāta<ph name="END_EMPHASIS"/>:
+          <ph name="BEGIN_LIST"/>
+            <ph name="LIST_ITEM"/>jūsu pārlūkošanas vēsture;
+            <ph name="LIST_ITEM"/>sīkfaili un vietņu dati;
+            <ph name="LIST_ITEM"/>veidlapās ievadītā informācija.
+          <ph name="END_LIST"/></translation>
 <translation id="54430913453805768">Vietnē <ph name="URL"/> tiek pieprasīta atļauja kontrolēt un pārprogrammēt jūsu MIDI ierīces (SysEx)</translation>
 <translation id="5443468954631487277">Pretēja secība, virspuse uz augšu</translation>
 <translation id="5447235695608032700">Atļaujiet vietnei <ph name="SITE"/> izmantot informāciju, kas tajā saglabāta par jums.</translation>
@@ -2192,6 +2237,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5541086400771735334">7. pastkaste</translation>
 <translation id="5541546772353173584">E-pasta adreses pievienošana</translation>
 <translation id="5543722831081909240">Par 180 grādiem</translation>
+<translation id="555037537507405574">printera papildu funkcijas</translation>
 <translation id="555128936272638662">Mobilās un bezvadu ierīces</translation>
 <translation id="5551890439174915351">100 x 200 mm</translation>
 <translation id="6084314943327785510">Pārlūkā Brave tiek periodiski pārbaudītas jūsu paroles, salīdzinot tās ar tiešsaistē publicētiem sarakstiem. Šo pārbaužu laikā paroles un lietotājvārdi ir šifrēti, lai neviens tos nevarētu lasīt, tostarp Brave.</translation>
@@ -2271,7 +2317,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5699628521141772782">Piena produkti un olas</translation>
 <translation id="5700761515355162635">Trešo pušu sīkfailu ir atļauti</translation>
 <translation id="5701381305118179107">Centrēt</translation>
-<translation id="570530837424789914">Pārvaldīt...</translation>
 <translation id="5707154300732650394">Atsākt meklēšanas ceļu</translation>
 <translation id="57094364128775171">Ieteikt drošu paroli…</translation>
 <translation id="571403275720188526">(arm64)</translation>
@@ -2333,6 +2378,8 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5838732667866024867">Lai izpētītu cenu izmaiņas diagrammā, varat izmantot kreiso un labo bultiņu</translation>
 <translation id="7336369644051575343">Jūsu Brave kontā: <ph name="ACCOUNT"/></translation>
 <translation id="5841338463993781099">Vai saglabāt kontā?</translation>
+<translation id="5843987376989109187">Šī valoda vēl netiek atbalstīta.
+    <ph name="BEGIN_LINK"/>Uzziniet vairāk<ph name="END_LINK"/>.</translation>
 <translation id="5847181246682413476">Energoapgāde</translation>
 <translation id="5851548754964597211">Ciļņu saraksts</translation>
 <translation id="5852909432155870672">RA4</translation>
@@ -2342,7 +2389,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5866898949289125849">Jūs skatāt izstrādātāja rīku lapu</translation>
 <translation id="5869405914158311789">Šī vietne nav sasniedzama</translation>
 <translation id="5869522115854928033">Saglabātās paroles</translation>
-<translation id="5872318519182427835">Ietekmē šeit norādītās vietnes un to apakšdomēnus. Piemēram, ja pievienosiet domēnu “google.com”, tas nozīmē, ka trešo pušu sīkfaili var būt aktīvi vietnē mail.google.com, jo tā ir daļa no vietnes google.com.</translation>
 <translation id="5872692522325383488">IBAN ir saglabāts</translation>
 <translation id="5873297634595728366">Dīzeļautomašīnas</translation>
 <translation id="5877831137320480913">Skaistums un fitness</translation>
@@ -2376,6 +2422,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5925040402342933574">Optiskais disks (pusglancēts)</translation>
 <translation id="5926982310317673627">Sporta zāles un veselības klubi</translation>
 <translation id="5928444777041341328">Māja un dārzs</translation>
+<translation id="5930147475897662863">Ieslēdziet šo iestatījumu, lai izmantotu funkciju “Palīdzība rakstīšanā”.</translation>
 <translation id="5932224571077948991">Vietnē tiek rādītas traucējošas vai maldinošas reklāmas</translation>
 <translation id="5937560539988385583">Lapa pārtulkota</translation>
 <translation id="5938153366081463283">Pievienojiet virtuālu karti</translation>
@@ -2410,7 +2457,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6005659677094197001">Vienlaidu</translation>
 <translation id="6005765687956866568">Automātiski aizpildītā informācija tika notīrīta no veidlapas</translation>
 <translation id="6006365096047131769">3 x 5 collas</translation>
-<translation id="6006484371116297560">Klasiskais motīvs</translation>
 <translation id="6008122969617370890">Secība: no N līdz 1.</translation>
 <translation id="6008256403891681546">JCB</translation>
 <translation id="6014139350017893009">Transportlīdzekļu remonts un apkope</translation>
@@ -2442,6 +2488,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6051221802930200923">Pašlaik nevarat apmeklēt vietni <ph name="SITE"/>, jo tajā tiek izmantota sertifikātu piespraušana. Tā kā tīkla kļūdas un uzbrukumi parasti ir īslaicīgi, visticamāk, šī lapa vēlāk darbosies.</translation>
 <translation id="6051898664905071243">Lappušu skaits:</translation>
 <translation id="6052284303005792909">•</translation>
+<translation id="605237284704429106">Notiek IBAN aizpildīšana</translation>
 <translation id="3284406940349582552">Saglabātās adreses varat izmantot dažādos Brave produktos. Šī adrese ir saglabāta jūsu Brave kontā (<ph name="ACCOUNT"/>).</translation>
 <translation id="5814871361966482530">Lai uzzinātu vairāk par to, kā Brave tīklā tiek aizsargāti jūsu dati, skatiet mūsu konfidencialitātes politiku.</translation>
 <translation id="6055888660316801977">Lapa ar akreditācijas datiem, kas neatbilst drošu maksājumu akreditācijas datiem</translation>
@@ -2464,6 +2511,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6105460996796456817">Izveidot vietni</translation>
 <translation id="6106989379647458772">Tīmekļa lapa <ph name="PAGE"/> var būt īslaicīgi nepieejama, vai tā var būt pārvietota uz jaunu tīmekļa adresi.</translation>
 <translation id="6107012941649240045">Izsniegts</translation>
+<translation id="6107924765192360631">Sāciet ar dažiem vārdiem vai melnraksta pirmo versiju, lai saņemtu rakstīšanas ieteikumus.</translation>
 <translation id="8233947174119245051">Jūsu Brave kontam var būt citu veidu pārlūkošanas vēstures dati vietnē <ph name="BEGIN_LINK"/>myactivity.google.com<ph name="END_LINK"/>.</translation>
 <translation id="6116338172782435947">Skatīt starpliktuvē kopēto tekstu un attēlus</translation>
 <translation id="6117833587752089929">Fotopapīrs (satinēts)</translation>
@@ -2474,6 +2522,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="5972135347314259717">Brave Enterprise savienotāji</translation>
 <translation id="6126565365696310362">Ķīniešu aploksne 2</translation>
 <translation id="6127379762771434464">Vienums ir noņemts</translation>
+<translation id="6131824478727057281">atrašanās vieta</translation>
 <translation id="6133320744616005677">Atļaut arī turpmāk</translation>
 <translation id="6133984428121856852">Faila paplašinājums ir tukšs vai nepareizi veidots.</translation>
 <translation id="6139975341602920272">17 x 22 collas</translation>
@@ -2486,6 +2535,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6157754950574419155">Noņemt no vēstures visu</translation>
 <translation id="6157877588268064908">Lai skatītu nosūtīšanas veidus un prasības, atlasiet adresi.</translation>
 <translation id="6159554577634054750">Kaitēkļu apkarošana</translation>
+<translation id="6159908896951210943">Formāls</translation>
 <translation id="6160391204859821737">Reklāmu konfidencialitātes funkcijas ieslēgšana</translation>
 <translation id="6165508094623778733">Uzzināt vairāk</translation>
 <translation id="6167577165590485365">Pēdējais ienešanas mēģinājums:</translation>
@@ -2523,6 +2573,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6236290670123303279">Pārvaldīt iestatījumus</translation>
 <translation id="623825323736974198">Pārvaldiet vietnes, kas vienmēr būs aktīvas un netiks noņemtas, lai atbrīvotu atmiņu.</translation>
 <translation id="6240447795304464094">Brave Pay logotips</translation>
+<translation id="4174528239215311406">Lai izmantotu Brave paroļu pārvaldnieku ar savu operētājsistēmu, atkārtoti palaidiet pārlūku Brave un atļaujiet piekļuvi datora paroļu pārvaldniekam. Jūsu cilnes tiks atkal atvērtas pēc atkārtotas palaišanas.</translation>
 <translation id="6241121617266208201">Paslēpt ieteikumus</translation>
 <translation id="624499991300733384">Drukājamā satura salikšanas pakalpojums</translation>
 <translation id="6251906504834538140">{0,plural, =1{Faila pārvietošana ir bloķēta}zero{<ph name="FILE_COUNT"/> failu pārvietošana ir bloķēta}one{<ph name="FILE_COUNT"/> faila pārvietošana ir bloķēta}other{<ph name="FILE_COUNT"/> failu pārvietošana ir bloķēta}}</translation>
@@ -2533,13 +2584,13 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6263376278284652872"><ph name="DOMAIN"/> grāmatzīmes</translation>
 <translation id="6264376385120300461">Tomēr lejupielādēt</translation>
 <translation id="6264485186158353794">Atpakaļ drošībā</translation>
+<translation id="6264636978858465832">Paroļu pārvaldniekam ir nepieciešama plašāka piekļuve</translation>
 <translation id="6265794661083428563">Kopēt politikas <ph name="POLICY_NAME"/> vērtību</translation>
 <translation id="6266934640124581640">Gaiši zilganzaļa</translation>
 <translation id="6270066318535733958">Laivošana</translation>
 <translation id="1300170712564922349">Atsāciet meklēšanas ceļu, lai skatītu atbilstošās darbības savā Brave vēsturē</translation>
 <translation id="9136010393039243713">Brave atjauninājums</translation>
 <translation id="6279183038361895380">Lai tiktu parādīts kursors, nospiediet |<ph name="ACCELERATOR"/>|</translation>
-<translation id="628016388715774955">Tika atlasīta opcija Aizpildīt visu adresi</translation>
 <translation id="6280223929691119688">Nevar piegādāt uz šo adresi. Atlasiet citu adresi.</translation>
 <translation id="6284292079994426700">26 x 38 collas</translation>
 <translation id="6284517535531159884">Variantu izplatīšanas veids</translation>
@@ -2550,6 +2601,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6293309776179964942">JIS B5</translation>
 <translation id="6295618774959045776">CVC:</translation>
 <translation id="6295855836753816081">Notiek saglabāšana...</translation>
+<translation id="6298456705131259420">Iestatījums ietekmē šeit norādītās vietnes. Ievietojot “[*.]” domēna nosaukuma priekšā, tiek izveidots izņēmums visam domēnam. Piemēram, ja pievienojat domēnu “[*.]google.com”, tas nozīmē, ka trešo pušu sīkfaili var būt aktīvi arī vietnē mail.google.com, jo tā ir daļa no domēna google.com.</translation>
 <translation id="6300452962057769623">{0,plural, =0{Jūsu ierīce tiks restartēta tūlīt}=1{Jūsu ierīce tiks restartēta pēc 1 sekundes}zero{Jūsu ierīce tiks restartēta # sekundēm}one{Jūsu ierīce tiks restartēta # sekundes}other{Jūsu ierīce tiks restartēta # sekundēm}}</translation>
 <translation id="6301104306974789820">Saņemt cenu izsekošanas paziņojumus</translation>
 <translation id="6304398603974202180">Multivides programmatūra</translation>
@@ -2580,6 +2632,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6353505687280762741">{COUNT,plural, =0{Nav}=1{1 parole (šādiem domēniem: <ph name="DOMAIN_LIST"/>, sinhronizēta)}=2{2 paroles (šādiem domēniem: <ph name="DOMAIN_LIST"/>, sinhronizētas)}zero{# paroļu (šādiem domēniem: <ph name="DOMAIN_LIST"/>, sinhronizētas)}one{# parole (šādiem domēniem: <ph name="DOMAIN_LIST"/>, sinhronizētas)}other{# paroles (šādiem domēniem: <ph name="DOMAIN_LIST"/>, sinhronizētas)}}</translation>
 <translation id="6358088212770985041">rediģēt maksājumu veidus</translation>
 <translation id="6358450015545214790">Ko tas nozīmē?</translation>
+<translation id="6360213755783740931">Uzzināt vairāk par aizsardzību pret ļaunprātīgu programmatūru</translation>
 <translation id="6361757823711327522">B7</translation>
 <translation id="6363786367719063276">Skatīt žurnālus</translation>
 <translation id="6364095313648930329"><ph name="BEGIN_LINK"/>Pārbaudiet starpniekserveri, ugunsmūri un droša DNS servera konfigurāciju<ph name="END_LINK"/>.</translation>
@@ -2624,7 +2677,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6428450836711225518">Verificējiet savu tālruņa numuru</translation>
 <translation id="6429267199680088961">A4 Tab</translation>
 <translation id="7772223497488184427">Mainīt Brave paroli</translation>
-<translation id="6431119592588449664">Pārskats ir augšupielādēts</translation>
 <translation id="6432297414176614592">Vairāk par reklāmu tēmām</translation>
 <translation id="6432831586648556868">Darba piedāvājumi pārdošanas un mārketinga nozarē</translation>
 <translation id="6433490469411711332">Kontaktinformācijas rediģēšana</translation>
@@ -2636,6 +2688,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6443406338865242315">Kurus paplašinājumus un spraudņus esat instalējis</translation>
 <translation id="6446608382365791566">Papildu informācijas pievienošana</translation>
 <translation id="6447842834002726250">Sīkfaili</translation>
+<translation id="6448371595882710519">Uzzināt vairāk par datu pārvaldību</translation>
 <translation id="6450077999570164268">Quarto</translation>
 <translation id="6450212216969386944">Aploksne Chou 40</translation>
 <translation id="6451458296329894277">Apstiprināt veidlapas atkārtotu iesniegšanu</translation>
@@ -2660,12 +2713,14 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6491663123807473970">Vietnē <ph name="URL"/> tiek pieprasīta atļauja izmantot jūsu MIDI ierīces</translation>
 <translation id="6493924760403974580">Šī lietotne atbalsta tikai šo lielumu.</translation>
 <translation id="6494750904506170417">uznirstošie elementi un novirzīšana</translation>
+<translation id="6495664197699704593">Šī parole ir saglabāta tikai šajā ierīcē. Lai varētu to izmantot citās ierīcēs, <ph name="GOOGLE_PASSWORD_MANAGER"/>.</translation>
 <translation id="6497295192259406877">Uzņēmējdarbības operācijas</translation>
 <translation id="6499038740797743453">Vai atiestatīt paroli?</translation>
 <translation id="6502510275417601303">Brīdinājums par jaunu maksājumu iestatījumu ir aizvērts</translation>
 <translation id="6502626736864595182">Forumu un tērzētavu nodrošinātāji</translation>
 <translation id="6502991525169604759">Bez jūsu veiktajām izmaiņām</translation>
 <translation id="6506959208958864820">Aploksne</translation>
+<translation id="6507117483253822672">Drošāka rakstīšana jebkur tīmeklī</translation>
 <translation id="3960299545138990065">Restartējiet pārlūku Brave</translation>
 <translation id="6513005815064132016">Var pieprasīt atļauju izsekot kameras pozīciju</translation>
 <translation id="6517596291481585650">Brīdinājums! Šī politika netika apvienota kā saraksts atbilstoši politikā noteiktajam, jo tā nav saraksts.</translation>
@@ -2678,6 +2733,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6529602333819889595">&amp;Dzēšanas atsaukuma atcelšana</translation>
 <translation id="6535751101619004418">Valūta un valūtas maiņa</translation>
 <translation id="6536221421038631327">Noņemot no ierīces (<ph name="DEVICE_TYPE"/>) Passpoint abonementu, tiks noņemti saistītie tīkli. Sazinieties ar “<ph name="FRIENDLY_NAME"/>”, lai veiktu izmaiņas abonēšanas plānā. <ph name="LEARN_MORE"/></translation>
+<translation id="6539092367496845964">Radās kļūda. Vēlāk mēģiniet vēlreiz.</translation>
 <translation id="6540488083026747005">Jūs atļāvāt trešo pušu sīkfailus šajā vietnē</translation>
 <translation id="6540534463546766581">Kopfondi</translation>
 <translation id="6545864417968258051">Bluetooth meklēšana</translation>
@@ -2710,6 +2766,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6612010098632894193">Tiešsaistes video</translation>
 <translation id="5887670611153282204">Uzzināt vairāk par savu meklētājprogrammu pārlūkā Brave</translation>
 <translation id="6615297766614333076">2. izvades vieta</translation>
+<translation id="6619496928666593220">Nav aizpildīts IBAN</translation>
 <translation id="6624427990725312378">Kontaktinformācija</translation>
 <translation id="6628463337424475685"><ph name="ENGINE"/> meklēšana</translation>
 <translation id="6629652037942826935">Luksusa ceļojumi</translation>
@@ -2723,7 +2780,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6643016212128521049">Notīrīt</translation>
 <translation id="6645291930348198241">Piekļūt sīkfailiem un vietnes datiem</translation>
 <translation id="6645478838938543427">Paziņojums par cenas kritumu tiks nosūtīts uz adresi <ph name="EMAIL_ADDRESS"/>.</translation>
-<translation id="1375868315964791309">{COUNT,plural, =0{Nav}=1{No 1 vietnes (jūs netiksiet izrakstīts no sava Brave konta)}zero{No # vietnēm (jūs netiksiet izrakstīts no sava Brave konta)}one{No # vietnes (jūs netiksiet izrakstīts no sava Brave konta)}other{No # vietnēm (jūs netiksiet izrakstīts no sava Brave konta)}}</translation>
 <translation id="6678472970290886941">Jūsu administrators var attālināti mainīt jūsu pārlūka iestatījumus. Darbību šajā ierīcē var pārvaldīt arī ārpus Brave.</translation>
 <translation id="6648524591329069940">Serif fonts</translation>
 <translation id="6649510485211003056">195 x 270 mm</translation>
@@ -2771,6 +2827,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6732087373923685049">kamera</translation>
 <translation id="6737708609449480586">Konditorejas izstrādājumi</translation>
 <translation id="6738516213925468394">Jūsu dati tika šifrēti, izmantojot jūsu <ph name="BEGIN_LINK"/>sinhronizācijas ieejas frāzi<ph name="END_LINK"/>šādā datumā: <ph name="TIME"/>. Lai sāktu sinhronizāciju, ievadiet ieejas frāzi.</translation>
+<translation id="6740851646645036700">Patlaban esat sasniedzis rakstīšanas palīdzības ierobežojumu. Vēlāk mēģiniet vēlreiz.</translation>
 <translation id="674375294223700098">Nezināma servera sertifikāta kļūda.</translation>
 <translation id="6744009308914054259">Kamēr tiek gaidīts savienojums, varat apmeklēt Lejupielādes, lai lasītu rakstu bezsaistē.</translation>
 <translation id="6745592621698551453">Atjaunināt tūlīt</translation>
@@ -2804,7 +2861,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6807791860691150411">Izglītība</translation>
 <translation id="681021252041861472">Obligātais lauks</translation>
 <translation id="6810899417690483278">Pielāgošanas ID</translation>
-<translation id="681459028290894216">Aizpildīt visu adresi</translation>
 <translation id="6816109178681043245">Sporta preces</translation>
 <translation id="6817217109584391709">JavaScript</translation>
 <translation id="6820143000046097424">seriālie porti</translation>
@@ -2828,6 +2884,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="6860888819347870819">Drīkst pieprasīt atļauju aktivizēt režīmu “Attēls attēlā”</translation>
 <translation id="6864189428899665393">267 x 389 mm</translation>
 <translation id="686485648936420384">Patērētāju resursi</translation>
+<translation id="6865166112578825782">Aizpildiet adresi</translation>
 <translation id="6865412394715372076">Pašlaik nevar verificēt šo karti.</translation>
 <translation id="6868573634057275953">Atjaunināšanas atsākšana</translation>
 <translation id="6869334554832814367">Aizdevumi privātpersonām</translation>
@@ -2909,7 +2966,6 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="7004583254764674281">Izmantot Windows Hello, lai ātrāk apstiprinātu kartes</translation>
 <translation id="7006930604109697472">Tomēr sūtīt</translation>
 <translation id="7012363358306927923">China UnionPay</translation>
-<translation id="7013762323294215682">Šī piekļuves atslēga tiks saglabāta jūsu paroļu pārvaldniekā. Ikviens, kas var tam piekļūt, varēs izmantot šo piekļuves atslēgu.</translation>
 <translation id="7014042602717177828">Automašīnu audioiekārtas</translation>
 <translation id="7014741021609395734">Tālummaiņas līmenis</translation>
 <translation id="7016992613359344582">Šie naudas pieprasījumi var būt vienreizēji vai atkārtoti, un tie var nebūt uzreiz pamanāmi.</translation>
@@ -2979,6 +3035,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="7140087718106278457">Maksājumu veidu saraksts ir aizvērts.</translation>
 <translation id="714064300541049402">2. puses attēla nobīde uz X ass</translation>
 <translation id="7143682719845053166">PRC 32K</translation>
+<translation id="7144878232160441200">Mēģināt vēlreiz</translation>
 <translation id="7153549335910886479">{PAYMENT_METHOD,plural, =0{<ph name="PAYMENT_METHOD_PREVIEW"/>}=1{<ph name="PAYMENT_METHOD_PREVIEW"/> un vēl <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}zero{<ph name="PAYMENT_METHOD_PREVIEW"/> un vēl <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}one{<ph name="PAYMENT_METHOD_PREVIEW"/> un vēl <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}other{<ph name="PAYMENT_METHOD_PREVIEW"/> un vēl <ph name="NUMBER_OF_ADDITIONAL_PAYMENT_METHODS"/>}}</translation>
 <translation id="7153618581592392745">Lavandas krāsa</translation>
 <translation id="7156870133441232244">Serveris ir jājaunina uz protokolu TLS 1.2 vai jaunāku versiju.</translation>
@@ -3003,6 +3060,7 @@ Pretējā gadījumā šī iespēja būtu liegta saskaņā ar jūsu konfidenciali
 <translation id="7192537357091279678">Datoru diski un informācijas nesēji</translation>
 <translation id="7193661028827781021">Uzziņu materiāli</translation>
 <translation id="719464814642662924">Visa</translation>
+<translation id="7195852673246414183">Pēc šī iestatījuma ieslēgšanas atgriezieties šajā cilnē, lai sāktu rakstīt.</translation>
 <translation id="7199278868241956094">Oficio</translation>
 <translation id="7201591969684833065">Administrators var redzēt:</translation>
 <translation id="2540471381262404386">Iestatīt Brave kā sistēmas noklusējuma pārlūku</translation>
@@ -3063,6 +3121,7 @@ Papildu informācija:
 <translation id="7341357280245177602">Lietoti transportlīdzekļi</translation>
 <translation id="7346048084945669753">Ir saistīts:</translation>
 <translation id="7346062987309535530">Galda piederumi</translation>
+<translation id="7346081071264046066">“ar prieku sniegt apstiprinošu atbildi šim ielūgumam uz kāzām”</translation>
 <translation id="7352651011704765696">Radās problēma</translation>
 <translation id="7353601530677266744">Komandrinda</translation>
 <translation id="7354880545102894991">Zemo izmaksu un pēdējā brīža ceļojumu piedāvājumi</translation>
@@ -3107,7 +3166,6 @@ Papildu informācija:
       &lt;li&gt;Apmeklējiet &lt;a href="https://support.google.com/chrome/answer/6098869"&gt;Brave palīdzības centru&lt;/a&gt;, lai uzzinātu, kā neatgriezeniski noņemt programmatūru no datora.
       &lt;/ol&gt;</translation>
 <translation id="7408613996403626141">Rotaļlietas</translation>
-<translation id="7410471291937727359">Glīta</translation>
 <translation id="741204030948306876">Jā, piekrītu</translation>
 <translation id="7416351320495623771">Pārvaldīt paroles…</translation>
 <translation id="7418620734632363981">Programmēšana</translation>
@@ -3116,6 +3174,7 @@ Papildu informācija:
 <translation id="7422347648202898039">Etiķešu papīrs (ar aizsardzības elementiem)</translation>
 <translation id="4814329941923406129">Poga “Pārvaldīt sīkfailus”. Aktivizējiet, lai Brave iestatījumos pārvaldītu sīkfailu preferences.</translation>
 <translation id="7424421098814895617">Tika atlasīta opcija Dzēst adresi</translation>
+<translation id="7425037327577270384">Palīdzība rakstīšanā</translation>
 <translation id="7427366580982928791">Bērnu drošība internetā</translation>
 <translation id="7429429656042611765">Executive</translation>
 <translation id="288933326661929857">Verificējiet savu identitāti, lai Brave varētu ievadīt maksājuma informāciju.</translation>
@@ -3156,12 +3215,6 @@ Papildu informācija:
 <translation id="749865518782565832">Santehnikas darbi</translation>
 <translation id="7501663406926337752">Šo vietni ir atzīmējusi jūsu organizācija</translation>
 <translation id="7501853161948120656">Izglītojoši materiāli</translation>
-<translation id="2957285558977211818">Pārlūkā Brave <ph name="BEGIN_EMPHASIS"/>netiks saglabāta<ph name="END_EMPHASIS"/> šāda informācija:
-          <ph name="BEGIN_LIST"/>
-            <ph name="LIST_ITEM"/>jūsu pārlūkošanas vēsture;
-            <ph name="LIST_ITEM"/>sīkfaili un vietņu dati;
-            <ph name="LIST_ITEM"/>veidlapās ievadītā informācija.
-          <ph name="END_LIST"/></translation>
 <translation id="7507075214339298899">Aploksne 9</translation>
 <translation id="7508255263130623398">Atgrieztais politikas ierīces ID ir tukšs vai neatbilst pašreizējam ierīces ID.</translation>
 <translation id="7508577201115425418">Dokumentu un drukāšanas pakalpojumi</translation>
@@ -3177,11 +3230,13 @@ Papildu informācija:
 <translation id="7521825010239864438">Sadaļa “<ph name="SECTION"/>” ir paslēpta</translation>
 <translation id="8552966873255887118">Varat to izmantot Brave produktos.</translation>
 <translation id="7523408071729642236">Ražošana</translation>
+<translation id="7525067979554623046">Izveidot</translation>
 <translation id="7525804896095537619">Nosaukuma lauks nedrīkst būt tukšs.</translation>
 <translation id="7526934274050461096">Jūsu savienojums ar šo vietni nav privāts.</translation>
 <translation id="7529884293139707752">Mājmācība</translation>
 <translation id="7534987659046836932">Aploksne C7</translation>
 <translation id="7535087603100972091">Vērtība</translation>
+<translation id="796823723482603597">Nodrošina Brave</translation>
 <translation id="7537536606612762813">Obligāti</translation>
 <translation id="7542995811387359312">Automātiska kredītkartes numura ievadīšana ir atspējota, jo šai veidlapai netiek izmantots drošs savienojums.</translation>
 <translation id="7543525346216957623">Lūdziet kādam no vecākiem</translation>
@@ -3284,6 +3339,7 @@ Papildu informācija:
 <translation id="7701040980221191251">Nav</translation>
 <translation id="7701544340847569275">Atjaunināšana pabeigta ar kļūdām</translation>
 <translation id="7704050614460855821"><ph name="BEGIN_LINK"/>Apmeklēt vietni <ph name="SITE"/> (nav droša)<ph name="END_LINK"/></translation>
+<translation id="7705085181312584869">Palīdzība rakstīšanā</translation>
 <translation id="7705992072972338699">Optiskais disks (augsti glancēts)</translation>
 <translation id="770607638235926858">Slēpošana un snovbords</translation>
 <translation id="7706689436519265630">Jūsu kopētie vai pārvietotie faili tiek nosūtīti uz Brave mākoni vai trešajām pusēm, lai veiktu analīzi. Piemēram, saturs var tikt pārmeklēts, lai konstatētu, vai tajā nav ietverti sensitīvi dati vai ļaunprātīga programmatūra, un tas var tikt glabāts saskaņā ar uzņēmuma politikām.</translation>
@@ -3338,6 +3394,7 @@ Papildu informācija:
 <translation id="7802989406998618639">Ievadiet <ph name="NUMBER_OF_DIGITS"/> ciparu drošības kodu, kas ir norādīts <ph name="SIDE_OF_CARD"/>, lai banka varētu apstiprināt jūsu identitāti.</translation>
 <translation id="780301667611848630">Nē, paldies</translation>
 <translation id="7805768142964895445">Statuss</translation>
+<translation id="7805906048382884326">Aizvērt padomu</translation>
 <translation id="7810410097247356677">Lai nākamreiz veiktu maksājumu ātrāk, ierīcē saglabājiet kartes datus un šifrētu drošības kodu.</translation>
 <translation id="7812922009395017822">Mir</translation>
 <translation id="4670564340385807132">Vai noņemt veidlapas ieteikumu no pārlūka Brave?</translation>
@@ -3501,6 +3558,7 @@ Papildu informācija:
 <translation id="8161095570253161196">Atsākt pārlūkošanu</translation>
 <translation id="8163866351304776260">Četri caurumi kreisajā malā</translation>
 <translation id="8164078261547504572">Vai vēlaties saņemt e-pasta ziņojumus par cenu kritumu?</translation>
+<translation id="8169175551046720804">Atslēgas “<ph name="DATA_CONTROLS_KEYS"/>” nevar iestatīt vienā vārdnīcā</translation>
 <translation id="4351627595884993315">Pārlūkprogrammā Brave tiek piedāvāts saglabāt jūsu kartes Brave kontā, jo esat pierakstījies. Varat mainīt šo darbību iestatījumos.</translation>
 <translation id="8176440868214972690">Šīs ierīces administrators ir nosūtījis informāciju, piemēram, iestatījumus vai politikas, uz tālāk norādītajām vietnēm.</translation>
 <translation id="817820454357658398">Menstruālās higiēnas produkti</translation>
@@ -3574,6 +3632,7 @@ Papildu informācija:
 <translation id="8286036467436129157">Pierakstīties</translation>
 <translation id="8286799286781881307">Jūsu administratora atļautās lietojumprogrammas var tvert visus ekrānus, kas pievienoti jūsu ierīcei. Šī informācija var tikt apstrādāta ierīcē vai augšupielādēta jūsu organizācijas serveros.</translation>
 <translation id="8287123726498397887">Aploksne (apdrukāta)</translation>
+<translation id="8288320283441806607">Ieslēdziet iestatījumu “Uzlabot meklēšanu un pārlūkošanu”, lai izmantotu šo funkciju.</translation>
 <translation id="8288807391153049143">Rādīt sertifikātu</translation>
 <translation id="8289355894181816810">Sazinieties ar tīkla administratoru, ja neesat pārliecināts, ko tas nozīmē.</translation>
 <translation id="8292520987784410870">Vai vienmēr verificēt?</translation>
@@ -3621,6 +3680,7 @@ Papildu informācija:
 <translation id="8381674639488873545">Maksa var tikt pieprasīta vienreiz vai atkārtoti; iespējams, pieprasījums nebūs skaidri pamanāms. <ph name="BEGIN_LINK"/>Tik un tā rādīt<ph name="END_LINK"/></translation>
 <translation id="8389532092404711541">Parasti: <ph name="LOW_PRICE"/></translation>
 <translation id="8390725133630534698">Saskaņā ar administratora iestatīto politiku kopīgošana no <ph name="ORIGIN_NAME"/> uz <ph name="VM_NAME"/> ir bloķēta.</translation>
+<translation id="8392783408127179588">Notiek politiku atkārtota ielāde</translation>
 <translation id="8396522675989118466">Tas ir <ph name="NUMBER_OF_DIGITS"/> ciparu kods, kas norādīts šeit: <ph name="SIDE_OF_CARD"/></translation>
 <translation id="8398335999901363925">Maksājumu veidi, kas pieejami aizpildīšanai pieskaroties, ir atvērti pilnā augstumā.</translation>
 <translation id="8398446215576328011">Atcelt piemērotās politikas</translation>
@@ -3865,6 +3925,7 @@ Papildu informācija:
 <translation id="8877780815363510165">Makšķerēšana</translation>
 <translation id="8884537526797090108">Konfidenciālu saturu nevar ierakstīt</translation>
 <translation id="8888187300091017436">Matrači</translation>
+<translation id="8890048757975398817">Pārvaldīt ierīci <ph name="READERNAME"/> un iegūt piekļuvi viedkartei, kas ierīcei ir pieejama.</translation>
 <translation id="8891727572606052622">Nederīgs starpniekservera režīms.</translation>
 <translation id="8894794286471754040">Vispirms garākā mala</translation>
 <translation id="8897428486789851669">Peldēšana</translation>
@@ -3878,15 +3939,19 @@ Papildu informācija:
 <translation id="8919895429178014996">Paslēpt visus vienumus</translation>
 <translation id="8922013791253848639">Vienmēr atļaut reklāmu rādīšanu šajā vietnē</translation>
 <translation id="892588693504540538">Caurums augšējā labajā malā</translation>
+<translation id="8926389886865778422">Nejautāt atkārtoti</translation>
 <translation id="8930330541574156305">Nekustamais īpašums</translation>
 <translation id="8932102934695377596">Norādītais laiks ir pārāk tālu pagātnē</translation>
 <translation id="893332455753468063">Vārda pievienošana</translation>
 <translation id="8942355029279167844">Jūsu administrators atļāva lietotnei <ph name="APP_NAME"/> vākt diagnostikas datus, lai uzlabotu produkta lietošanas iespējas. Plašāku informāciju skatiet vietnē <ph name="BEGIN_LINK"/>https://www.parallels.com/pcep<ph name="END_LINK"/>.</translation>
 <translation id="8943282376843390568">Laima zaļa</translation>
 <translation id="8944485226638699751">Ierobežoti</translation>
+<translation id="8949410982325929394">Tonis</translation>
 <translation id="8949493680961858543">A1x4</translation>
 <translation id="8951415078585015151">Likumdošana un valdība</translation>
+<translation id="8952569554322479410">Vietnē tikko tika lūgta šāda piekļuves atļauja: <ph name="REQUEST_TYPE"/>. Veltiet minūti, lai aizpildītu atļauju, kas palīdzēs mums uzlabot to, kā vietnes pieprasa piekļuvi.</translation>
 <translation id="8954252855949068147">Apģērbs</translation>
+<translation id="8956124158020778855">Pēc šī iestatījuma ieslēgšanas atgriezieties šajā cilnē, lai sāktu rakstīt.</translation>
 <translation id="8957210676456822347">Caurlaides lapas autorizācija</translation>
 <translation id="8959282183248574156"><ph name="NICKNAME_COUNT"/>/<ph name="NICKNAME_MAX"/></translation>
 <translation id="8963117664422609631">Pāriet uz vietnes iestatījumiem</translation>
@@ -3925,13 +3990,13 @@ Papildu informācija:
 <translation id="9023536760430404133">Transportlīdzekļu riteņi un riepas</translation>
 <translation id="9025348182339809926">(nederīgs)</translation>
 <translation id="902590795160480390">Notiek PDF faila ielāde</translation>
-<translation id="9030265603405983977">Vienkrāsaina</translation>
 <translation id="9035022520814077154">Drošības kļūda</translation>
 <translation id="9035824888276246493">Saglabāt drošības kodus</translation>
 <translation id="9036306139374661733">Vai atļaut piekļuvi mikrofonam?</translation>
 <translation id="9038649477754266430">Ieteikumu pakalpojuma izmantošana ātrākai lapu ielādei</translation>
 <translation id="9039213469156557790">Turklāt šajā lapā ir citi resursi, kas nav droši. Kamēr šie resursi tiek pārsūtīti, tos var aplūkot citi, kā arī uzbrucējs var tos pārveidot, lai mainītu lapas uzvedību.</translation>
 <translation id="9042617223719777575">Liela ietilpība</translation>
+<translation id="9042827002460091668">Pārbaudiet interneta savienojumu un mēģiniet vēlreiz.</translation>
 <translation id="9044359186343685026">Izmantot Touch ID</translation>
 <translation id="9045525010788763347"><ph name="RESULT_MODIFIED_DATE"/> — <ph name="RESULT_PRODUCT_SOURCE"/></translation>
 <translation id="9048035366624198823">Lai varētu veikt šīs darbības, politikai <ph name="POLICY_NAME"/> ir jāiestata vērtība <ph name="POLICY_VALUE"/>: <ph name="ACTION_LIST"/>.</translation>
@@ -3939,6 +4004,7 @@ Papildu informācija:
 <translation id="9049981332609050619">Jūs centāties piekļūt <ph name="DOMAIN"/>, bet serveris piedāvāja nederīgu sertifikātu.</translation>
 <translation id="9050666287014529139">Ieejas frāze</translation>
 <translation id="9051072642122229460">Kafijas un espreso automāti</translation>
+<translation id="9051260467258969162">Vēlreiz <ph name="BEGIN_LINK"/>pierakstieties<ph name="END_LINK"/> un pēc tam atgriezieties šajā cilnē, lai saņemtu palīdzību rakstīšanā.</translation>
 <translation id="104719866786855422">Tiek izlaista jauna reklāmu konfidencialitātes funkcija, ko dēvē par reklāmu novērtēšanu. Lai palīdzētu vietnēs novērtēt reklāmu veiktspēju, Brave starp dažādām vietnēm kopīgo tikai ļoti ierobežotu informāciju, piemēram, par laiku, kad jums tika parādīta noteikta reklāma.</translation>
 <translation id="9056953843249698117">Veikals</translation>
 <translation id="9062620674789239642">Iespējams, tas ir pārvietots, rediģēts vai izdzēsts.</translation>
@@ -3958,6 +4024,7 @@ Papildu informācija:
 <translation id="9089260154716455634">Izslēgšanas stundu politika:</translation>
 <translation id="9090243919347147717">Pielikumi</translation>
 <translation id="9093723786115107672">Apģērbs gulēšanai</translation>
+<translation id="9094544726794842788">Nospiežot pogu “Nepatīk”, tiek atvērta veidlapa, kurā varat sniegt detalizētas atsauksmes par to, kāpēc jums nepatīk šie rezultāti.</translation>
 <translation id="9095388113577226029">Citas valodas…</translation>
 <translation id="7650489975492745604"><ph name="SET_CHROME_AS_DEFAULT_BROWSER_FOCUSED_FRIENDLY_MATCH_TEXT"/>; nospiediet tabulēšanas taustiņu un pēc tam — taustiņu Enter, lai iestatītu Brave kā sistēmas noklusējuma pārlūku iOS iestatījumos.</translation>
 <translation id="9096679202588811390">TV seriāli un pārraides</translation>
@@ -3969,12 +4036,10 @@ Papildu informācija:
 <translation id="9114524666733003316">Notiek kartes apstiprināšana...</translation>
 <translation id="3582535072753734287">Šo pārlūku nepārvalda uzņēmums vai cita organizācija. Darbību šajā ierīcē var pārvaldīt ārpus pārlūka Brave. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="7839260860373627374">Vairāk par reklāmām pārlūkā Brave</translation>
-<translation id="9117930699067497412">Dzīvīga</translation>
 <translation id="2628864952962474930"><ph name="HISTORY_CLUSTERS_SEARCH_FOCUSED_FRIENDLY_MATCH_TEXT"/>: nospiediet tabulēšanas taustiņu un pēc tam — ievadīšanas taustiņu, lai atsāktu meklēšanu un skatītu atbilstošās darbības savā Brave vēsturē.</translation>
 <translation id="9119042192571987207">Augšupielādēts</translation>
 <translation id="9122954576417194280">Izejvielu un nākotnes līgumu tirdzniecība</translation>
 <translation id="912327514020027767">Svārki</translation>
-<translation id="9128016270925453879">Politikas ir ielādētas</translation>
 <translation id="9128870381267983090">Izveidot savienojumu ar tīklu</translation>
 <translation id="9131119348384879525">Vai tvert konfidenciālu saturu?</translation>
 <translation id="9133985615769429248">Ja šo ierīci izmanto arī citas personas, varat izmantot ekrāna bloķēšanu, lai apstiprinātu savu identitāti ikreiz, kad izmantojat saglabātu paroli.</translation>
@@ -3988,6 +4053,7 @@ Papildu informācija:
 <translation id="9144951720726881238">Derīguma termiņš:</translation>
 <translation id="9148507642005240123">&amp;Atsaukt labojumu</translation>
 <translation id="9148599396704355100">Cena ir zema</translation>
+<translation id="9150025764986957246">Varat ievadīt, piemēram:</translation>
 <translation id="9150045010208374699">Izmantot jūsu videokameru</translation>
 <translation id="5874192512642998555">Jūsu administrators var attālināti mainīt jūsu pārlūka iestatījumus. Darbību šajā ierīcē var pārvaldīt arī ārpus Brave. <ph name="BEGIN_LINK"/>Uzzināt vairāk<ph name="END_LINK"/></translation>
 <translation id="9154194610265714752">Atjaunināts</translation>
@@ -3998,6 +4064,7 @@ Papildu informācija:
 <translation id="9164742147345933553">os://flags</translation>
 <translation id="9165305804774426672">Apmeklētās vietnes var arī noteikt to, kas jums patīk, ņemot vērā jūsu darbības vietnē. Piemēram, ja apmeklējat vietni, kurā tiek tirgoti garo distanču skriešanas apavi, vietne var izsecināt, ka interesējaties par maratonu skriešanu.</translation>
 <translation id="9166851138617700776">Plašāka informācija par vietnēs ieteiktajām reklāmām un reklāmu izvērtēšanu</translation>
+<translation id="9167594211215946097">Tieša piekļuve jūsu printeriem</translation>
 <translation id="9168814207360376865">Atļaut vietnēm pārbaudīt, vai jums ir saglabāti maksājumu veidi</translation>
 <translation id="9169664750068251925">Vienmēr bloķēt šajā vietnē</translation>
 <translation id="9169931577761441333">Pievienot lietotni <ph name="APP_NAME"/> sākuma ekrānam</translation>
@@ -4008,7 +4075,7 @@ Papildu informācija:
 <translation id="917450738466192189">Servera sertifikāts ir nederīgs.</translation>
 <translation id="9174623988242579721">Pielāgotas un sacīkšu automašīnas</translation>
 <translation id="9174917557437862841">Ciļņu pārslēgšanas poga. Nospiediet ievadīšanas taustiņu, lai pārslēgtu šo cilni.</translation>
-<translation id="7607398976534075583">Šis PDF fails nav pieejams. Notiek teksta iegūšana. Pakalpojumu nodrošina Brave MI.</translation>
+<translation id="9177283544810807743">Šis PDF fails nav pieejams. Notiek teksta iegūšana. Pakalpojumu nodrošina Brave MI.</translation>
 <translation id="5129795253416930127">Pārvaldiet savu maksājumu un kredītkaršu informāciju Brave iestatījumos.</translation>
 <translation id="9179907736442194268">Saņemiet e-pasta brīdinājumus, ja kādā vietnē tiek konstatēts cenas kritums.</translation>
 <translation id="9183302530794969518">Brave dokumenti</translation>
@@ -4034,6 +4101,7 @@ Papildu informācija:
 <translation id="7486559383537872796">Varat zaudēt piekļuvi savam Brave kontam. Brave iesaka nekavējoties nomainīt paroli. Jums tiks lūgts pierakstīties.</translation>
 <translation id="937457230470581909">Zooloģiskie dārzi, akvāriji un rezervāti</translation>
 <translation id="1818627928653838301"><ph name="BEGIN_BOLD"/>Kādi dati tiek izmantoti:<ph name="END_BOLD"/> reklāmu tēmas tiek noteiktas, pamatojoties uz jūsu neseno pārlūkošanas vēsturi — to vietņu sarakstu, kuras esat apmeklējis pārlūkā Brave šajā ierīcē.</translation>
+<translation id="937885410143139026">Dati ir nosūtīti uz administratora konsoli</translation>
 <translation id="939736085109172342">Jauna mape</translation>
 <translation id="940053046584497293">Ceļojumi un transports</translation>
 <translation id="6588091288231158998">Izmantot Brave kontā saglabātās paroles un piekļuves atslēgas</translation>
@@ -4087,8 +4155,6 @@ Papildu informācija:
 <translation id="6417973700199526943">Jūs aktivizējāt inkognito režīmu</translation>
 <translation id="375424491626359494">Lapas, ko atverat inkognito cilnēs, pēc visu inkognito ciļņu aizvēršanas nesaglabāsies jūsu pārlūka vēsturē, sīkfailu krātuvē vai meklēšanas vēsturē. Visi jūsu lejupielādētie faili un izveidotās grāmatzīmes tiks saglabātas.</translation>
 <translation id="8794378783472961468">Taču atcerieties, ka jūs neesat neredzams. Inkognito režīma aktivizēšana nenoslēpj jūsu pārlūkošanas aktivitātes no jūsu darba devēja, interneta pakalpojumu nodrošinātāja vai jūsu apmeklētajām tīmekļa vietnēm.</translation>
-<translation id="5673623523506565506">Tagad varat privāti pārlūkot saturu, un citas personas, kuras izmanto šo ierīci, nevarēs redzēt jūsu darbības. Tomēr lejupielādes un grāmatzīmes tiks saglabātas.</translation>
-<translation id="3812568169637430422">Tagad varat privāti pārlūkot saturu, un citas personas, kuras izmanto šo ierīci, nevarēs redzēt jūsu darbības. Tomēr lejupielādes, grāmatzīmes un lasīšanas saraksta vienumi tiks saglabāti.</translation>
 <translation id="6085043210649933880">Inkognito režīms Brave</translation>
 <translation id="3683567996395248272">Kas notiek inkognito režīmā?</translation>
 <translation id="5581758310848298360">Aizverot visas Brave privātās cilnes, jūsu darbības šajās cilnēs tiek noņemtas no šīs ierīces:
@@ -4144,5 +4210,4 @@ Papildu informācija:
 <translation id="8108906085747235166">Jautāt profilā</translation>
 <translation id="317153861231603077">Tā vietā jautājiet profilā</translation>
 <translation id="2977472760057091832">Atveriet saiti inkognito režīma logā</translation>
-<translation id="5129323533070334129">Vai saglabāt piekļuves atslēgu ārpus inkognito?</translation>
 </translationbundle>

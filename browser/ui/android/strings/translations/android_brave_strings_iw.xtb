@@ -428,18 +428,10 @@
 <translation id="2394961582378297792">התנתק</translation>
 <translation id="5308380583665731573">התחברות</translation>
 <translation id="3368922792935385530">מחובר</translation>
-<translation id="8673913984316081937">אימות הארנק שלך אינו אופציונלי</translation>
-<translation id="8558636200953226885">אבל אם תאמת/י, תוכל/י...</translation>
-<translation id="8697510149346635496">משיכת BAT שאת/ה מרוויח/ה מצפייה במודעות שמכבדות פרטיות</translation>
-<translation id="1481480653609649134">רכישת BAT נוספים באמצעות כרטיסי אשראי ומקורות אחרים</translation>
-<translation id="9096003370755878766">משיכת BAT שייתכן שהוספת בעבר לארנק Brave Rewards שלך</translation>
-<translation id="1554282356558968486">שירות הארנקים שלנו מסופק על ידי</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">ארנק bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold עשויה לדרוש ממך לאמת את זהותך על בסיס השירותים המבוקשים.</translation>
-<translation id="3200197118442451932">Brave Software Inc. אינה מעבדת, מאחסנת או ניגשת למידע האישי שאתה מספק ל-<ph name="WALLET_PROVIDER"/> כאשר אתה מקים חשבון אצלם.</translation>
 <translation id="1665118090708049096">עבור לחשבון <ph name="WALLET_PROVIDER"/> 1 שלי</translation>
 <translation id="4858636682078269312">כניסה לחשבון <ph name="WALLET_PROVIDER"/> שלך</translation>
 <translation id="8874184842967597500">לא מחובר</translation>
@@ -526,7 +518,7 @@
 <translation id="2225863440766607138">עוקבים</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">חסמתם <ph name="COUNT"/> עוקבים &amp; פרסומות עם דפדפן Brave ב-3 השעות האחרונות.</translation>
-<translation id="3621193901658023971">גלשו במהירות של עד פי 6 מהר יותר באתרי חדשות מרכזיים ב-Brave על ידי חסימת עוקבים &amp; פרסומות.</translation>
+<translation id="5005713153542196658">גלשו במהירות של עד פי 6 באתרי החדשות המוכרים ב-Brave על ידי חסימת עוקבים ופרסומות.</translation>
 <translation id="7427567994475794038">הפעילו דוחות פרטיות כדי לראות כמה עוקבים &amp; פרסומות נחסמו ב-3 השעות האחרונות.</translation>
 <translation id="2053891538879944400">חסכתם <ph name="DATA"/> <ph name="DATA_TEXT"/> נתונים עם דפדפן Brave.</translation>
 <translation id="8640064498452534195">הפעילו דוחות פרטיות כדי לראות כמה נתונים חסכתם.</translation>
@@ -591,6 +583,10 @@
 <translation id="8622329973403382303">ערכו סיור מהיר כדי לרענן ידיעתכם לגבי איך זה עובד להיכנס להיסטוריה בתור כוכב רוק של Rewards!</translation>
 <translation id="3479552764303398839">לא עכשיו</translation>
 <translation id="7138272885617540195">אפשר קישורי אפליקציות להיפתח באפליקציות מחוץ ל-Brave</translation>
+<translation id="4954512758656527938">ארנק ברירת המחדל של Ethereum</translation>
+<translation id="7701023802820268122">ארנק ברירת המחדל של Solana</translation>
+<translation id="7701040980221191251">ללא</translation>
+<translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="8792121506918889955">מדיניות טיפול ב- WebRTC IP</translation>
 <translation id="8798099450830957504">ברירת מחדל</translation>
 <translation id="1822560017823072927">ממשקים ברירת מחדל ציבוריים ופרטיים</translation>
@@ -686,7 +682,6 @@
 <translation id="8475984867371585028">ערוך NFT גלויים</translation>
 <translation id="5050890334032852465">שמור רשימת צפייה של החשבון</translation>
 <translation id="7755766175599167100">חפש אסימונים</translation>
-<translation id="8488282162676695335">ארנק Brave</translation>
 <translation id="3784455785234192852">נעל</translation>
 <translation id="4412698727486357573">מרכז העזרה</translation>
 <translation id="8796429300536029044">פרטי NFT</translation>
@@ -718,12 +713,12 @@
 <translation id="8272917646984397798">מאבטח את כל החיבורים</translation>
 <translation id="1751947227857853925">מהיר וללא הגבלה עד 100 Mbps</translation>
 <translation id="1400240082805528049">תמיכה 24/7</translation>
-<translation id="5051030058817632680">חוסם חיבורי רשת לא רצויים</translation>
+<translation id="5892534145504632332">הגנו על כל היישומים ועל המכשיר שלכם</translation>
+<translation id="7195416926059527505">בטוח יותר עבור רשת ה-Wi-Fi הביתית או הציבורית</translation>
+<translation id="1354700000739359839">מהירות שיא, עד 100Mbps</translation>
 <translation id="3510283489391432976">בחר את המיקום הגיאוגרפי/מדינה שלך</translation>
-<translation id="4390800080658195654">שומר על האנונימיות שלך ברשת</translation>
-<translation id="639981156979733813">תומך במהירויות של עד 100 Mbps</translation>
-<translation id="765343799669302337">משתמש במנהרת VPN מוצפנת מאובטחת של Wireguard</translation>
-<translation id="1571230671455380494">לעולם לא נשתף או נמכור את המידע שלך</translation>
+<translation id="7695158478627528928">Brave לעולם לא מנהלת רישומי יומן של הפעילות שלכם</translation>
+<translation id="4575683170451975058">הגנה על 5 מכשירים במנוי אחד</translation>
 <translation id="276866628038850725">כל התוכניות כוללות ניסיון חינם למשך 7 ימים!</translation>
 <translation id="1532536259167115948">מנוי חודשי <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">מנוי שנתי <ph name="TRIAL_TEXT"/></translation>
@@ -734,6 +729,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">נסה בחינם במשך 7 ימים. לאחר 7 ימים, תחויב במחיר התוכנית. כל המנויים מתחדשים אוטומטית אך ניתן לבטל אותם לפני חידושם.</translation>
 <translation id="6053992191006521518">נסה בחינם</translation>
+<translation id="3990956504562716932">נסו בחינם למשך 7 ימים</translation>
 <translation id="721747358270435486">התקן VPN</translation>
 <translation id="836074276610740314">התקן פרופיל VPN</translation>
 <translation id="8021842065465097929">Brave יתקין כעת פרופיל VPN.</translation>
@@ -1119,71 +1115,6 @@
 <translation id="591648995518106347">טוען באופן אוטומטי מאמרים כשירים במצב קורא</translation>
 <translation id="1295796122927221823">הצג במצב קורא</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/>על<ph name="NETWORK"/></translation>
-<translation id="295620834661738195">רשימת השמעה Brave</translation>
-<translation id="4850886885716139402">הצג</translation>
-<translation id="7392941176393379100">נוסף ל-'<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">ניהול נתוני רשימת ההשמעה שלך</translation>
-<translation id="7650602357673790368">כברירת מחדל, רשימת השמעה תשמור אוטומטית תוכן במכשיר שלך לצורך השמעה במצב לא מקוון (גם ברשימות השמעה פרטיות וגם ברשימות משותפות). אם אינך מחובר ל-WiFi, השמירה האוטומטית תשתמש בנתונים הסלולריים שלך.\n\nכדי לשנות את ברירת המחדל הזו, השתמש בהגדרות.</translation>
-<translation id="5900576657906675258">הוסף פריט לרשימת השמעה</translation>
-<translation id="349846214503465941">אפשר רשימת השמעה</translation>
-<translation id="1309636029062006520">צור רשימות השמעה של האודיו והסרטונים המועדפים עליך, והפעל בכל זמן ובכל מקום.</translation>
-<translation id="3561815498111282415">שמירה אוטומטית למצב לא מקוון</translation>
-<translation id="1832424694374124654">שומר אוטומטית פריטי רשימת השמעה חדשים במכשיר שלך כדי שתוכל לשחק ללא חיבור לאינטרנט.</translation>
-<translation id="8103022210423023846">תכונת השמירה האוטומטית מופעלת</translation>
-<translation id="3926329432879804185">תכונת השמירה האוטומטית כבויה</translation>
-<translation id="7768812595186089508">שמירה אוטומטית רק כאשר מחובר ל-Wi-Fi</translation>
-<translation id="5939518447894949180">אפס</translation>
-<translation id="8199028711686989861">הסר את כל הסרטונים מרשימת ההשמעה, כולל אחסון במצב לא מקוון.</translation>
-<translation id="5916664084637901428">פועל</translation>
-<translation id="5860033963881614850">כבוי</translation>
-<translation id="2920568868625746681">רשת אלחוטית בלבד</translation>
-<translation id="4590997608186539865">רשימת השמעה</translation>
-<translation id="7525067979554623046">צור</translation>
-<translation id="5491049004699827548">צור את רשימת ההשמעה הראשונה שלך</translation>
-<translation id="5319108110887582146">צור רשימת השמעה של האודיו והסרטונים המועדפים עליך והפעל בכל זמן ובכל מקום. אפילו במצב לא מקוון.</translation>
-<translation id="6802849415466883498">צור רשימת השמעה</translation>
-<translation id="8525248723479742219">נגן מאוחר יותר</translation>
-<translation id="7453007860684252933">עיין והוסף</translation>
-<translation id="9014883386413828317">הוסף את התוכן המועדף עליך. חפש את הלחצן (+) בחלק הימני התחתון של המסך.</translation>
-<translation id="5928669500312007783">עיין במדיה</translation>
-<translation id="8152485753254079984">רשימת השמעה חדשה</translation>
-<translation id="9130105487623071247">שם רשימת השמעה</translation>
-<translation id="726581235416249619">רשימת השמעה ללא שם</translation>
-<translation id="1456254983411148628">הסר נתונים</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/>נבחר</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/>פריטים</translation>
-<translation id="2317629745818459803">נגן הכל</translation>
-<translation id="7544853251252956727">ערבוב</translation>
-<translation id="2881339830231736485">נוגן לאחרונה</translation>
-<translation id="7636458383879257005">הקש, לחץ לחיצה ארוכה או גרור</translation>
-<translation id="8120600068258956006">הוסף לרשימת השמעה</translation>
-<translation id="39991094779686024">רשימות השמעה</translation>
-<translation id="1710072605877822603">הוסף מדיה</translation>
-<translation id="3874252678044305931">הוסף סרטונים לBrave Playlist. השמעה בכל עת. אפילו במצב לא מקוון.</translation>
-<translation id="8973629800378391099">צור רשימות השמעה של התוכן האהוב עליך. שמור נתונים סלולריים. והשמעה ללא פרסומות.</translation>
-<translation id="4936812987266342401">פשוט הקש על הכפתור כדי להוסיף סרטונים לפלייליסט</translation>
-<translation id="6263657785571415306">הישאר בזרימה: הוסף סרטונים בזמן שאתה גולש, צפה מאוחר יותר.</translation>
-<translation id="2839555636100404687">ההשמעה טובה יותר ברשימת השמעה</translation>
-<translation id="9079526681359439081">נגן ברקע. שליטה ממסך הנעילה. ועוד…</translation>
-<translation id="3620862810055853183">פתח את רשימת ההשמעה</translation>
-<translation id="3861012838874771868">פתח את הגדרות רשימת השמעה</translation>
-<translation id="5220099266891491416">כפתור הסתר רשימת השמעה</translation>
-<translation id="7416347631175891923">נסה זאת</translation>
-<translation id="1173894706177603556">שנה שם</translation>
-<translation id="1620612903815671893">הסר נתוני רשימת השמעה לא מקוונת</translation>
-<translation id="3261711068865275261">הסר את כל הנתונים הלא מקוונים</translation>
-<translation id="6653691766801349738">שמור רשימת השמעה לשימוש לא מקוון</translation>
-<translation id="8708086574143054053">שמור את כל הפלייליסטים לשימוש לא מקוון</translation>
-<translation id="3596306474342941843">מחק רשימת השמעה</translation>
-<translation id="7765158879357617694">העבר</translation>
-<translation id="3803384303807438047">מחק את הנתונים הלא מקוונים של הפריט</translation>
-<translation id="4195643157523330669">פתח בכרטיסייה חדשה</translation>
-<translation id="4243710787042215766">פתח בכרטיסייה פרטית</translation>
-<translation id="8261506727792406068">מחיקה</translation>
-<translation id="377872456482681602">אנא בחר פריטים תחילה</translation>
-<translation id="6172429305139364624">פריט רשימת ההשמעה אינו שמור.\nאנא שמור את הפריט במצב לא מקוון.</translation>
-<translation id="3631131732607750008">תוקף התוכן פג. נסה שוב בעוד מספר שניות.</translation>
-<translation id="286472539388773794">נא הזן  שם רשימת השמעה חוקי</translation>
 <translation id="9085765419770918643">אין כאן עדיין NFTs.</translation>
 <translation id="8445532667841598737">מוכן להוסיף כמה? פשוט לחץ על הלחצן למטה כדי לייבא.</translation>
 <translation id="5925465310724910998">רוצה שה-NFT שלך יוצגו באופן אוטומטי?</translation>
@@ -1192,12 +1123,6 @@
 <translation id="622372328961630111">הוסף אוטומטית NFTs שבבעלותך לארנק באמצעות ממשקי API של צד שלישי.<ph name="BEGIN_LINK_1"/>למד עוד.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">חשבון טבלת חיפוש כתובות:</translation>
 <translation id="7659483790930268440">אינדקס טבלת חיפוש כתובות:</translation>
-<translation id="7322560193401221004">זכור את מיקום השמעת הקבצים</translation>
-<translation id="7505951907514709271">עבור קבצים בודדים, המשך את הנגינה מנקודת ההשהיה האחרונה</translation>
-<translation id="6835165453349969605">זכור את עמדת השמעת הרשימה</translation>
-<translation id="6344103698928069918">עבור רשימת השמעה, המשך את ההשמעה מנקודת ההשהיה האחרונה</translation>
-<translation id="8141583471142904652">האזנה רציפה</translation>
-<translation id="851432578283946230">מנגן אוטומטית את הפריטים הבאים ברשימת ההשמעה שלך</translation>
 <translation id="7853202427316060426">פעילות</translation>
 <translation id="4932733599132424254">תאריך</translation>
 <translation id="346505172740911461">מחיר שוק</translation>
@@ -1214,6 +1139,80 @@
 <translation id="2471230424465522689">לא לפני</translation>
 <translation id="4841860051609590575">זיהוי בקשה</translation>
 <translation id="1179407411385015942">Leo הוא עוזר חכם המופעל על ידי AI, המובנה ישירות בדפדפן</translation>
+<translation id="4109670531935487117">להציג הצעות השלמה אוטומטית בשורת הכתובת</translation>
 <translation id="1250335737108905610">אפס ונקה את נתוני מזל אריה</translation>
 <translation id="6165101586663336913">איפוס עוזר Leo יחייב אותך להצטרף לשימוש ב-Leo בעתיד, וגם ינקה את היסטוריית הצ'אט שלך. ניקוי היסטוריית הצ'אט שלך ימחק את כל השיחות הקודמות שלך עם Leo. לא ניתן לבטל פעולה זו.</translation>
+<translation id="3692772534525889713">קשרו את הרכישה שלכם בחנות Play לחשבון Brave כדי להשתמש ב-Brave Leo במכשירים נוספים.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">חודשי</translation>
+<translation id="451189393813405346">תשאל את ליאו</translation>
+<translation id="7322560193401221004">זכור את מיקום השמעת הקבצים</translation>
+<translation id="7505951907514709271">עבור קבצים בודדים, המשך את הנגינה מנקודת ההשהיה האחרונה</translation>
+<translation id="6835165453349969605">זכור את עמדת השמעת הרשימה</translation>
+<translation id="6344103698928069918">עבור רשימת השמעה, המשך את ההשמעה מנקודת ההשהיה האחרונה</translation>
+<translation id="8141583471142904652">האזנה רציפה</translation>
+<translation id="851432578283946230">מנגן אוטומטית את הפריטים הבאים ברשימת ההשמעה שלך</translation>
+<translation id="295620834661738195">רשימת השמעה Brave</translation>
+<translation id="4850886885716139402">הצג</translation>
+<translation id="7392941176393379100">נוסף ל-'<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">אפשר רשימת השמעה</translation>
+<translation id="1309636029062006520">צור רשימות השמעה של האודיו והסרטונים המועדפים עליך, והפעל בכל זמן ובכל מקום.</translation>
+<translation id="7899390017499980820">כפתור הוסף לרשימת השמעה</translation>
+<translation id="6901152954398668317">הצג או הסתר כפתור "הוסף לרשימת השמעה" לגישה מהירה להוספה או הסרה של מדיה.</translation>
+<translation id="5939518447894949180">אפס</translation>
+<translation id="8199028711686989861">הסר את כל הסרטונים מרשימת ההשמעה, כולל אחסון במצב לא מקוון.</translation>
+<translation id="4590997608186539865">רשימת השמעה</translation>
+<translation id="7525067979554623046">צור</translation>
+<translation id="8525248723479742219">נגן מאוחר יותר</translation>
+<translation id="7453007860684252933">עיין והוסף</translation>
+<translation id="9014883386413828317">הוסף את התוכן המועדף עליך. חפש את הלחצן (+) בחלק הימני התחתון של המסך.</translation>
+<translation id="5928669500312007783">עיין במדיה</translation>
+<translation id="8152485753254079984">רשימת השמעה חדשה</translation>
+<translation id="9130105487623071247">שם רשימת השמעה</translation>
+<translation id="726581235416249619">רשימת השמעה ללא שם</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/>נבחר</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/>פריטים</translation>
+<translation id="2317629745818459803">נגן הכל</translation>
+<translation id="7544853251252956727">ערבוב</translation>
+<translation id="2881339830231736485">נוגן לאחרונה</translation>
+<translation id="8120600068258956006">הוסף לרשימת השמעה</translation>
+<translation id="39991094779686024">רשימות השמעה</translation>
+<translation id="1710072605877822603">הוסף מדיה</translation>
+<translation id="3874252678044305931">הוסף סרטונים לBrave Playlist. השמעה בכל עת. אפילו במצב לא מקוון.</translation>
+<translation id="8973629800378391099">צור רשימות השמעה של התוכן האהוב עליך. שמור נתונים סלולריים. והשמעה ללא פרסומות.</translation>
+<translation id="4936812987266342401">פשוט הקש על הכפתור כדי להוסיף סרטונים לפלייליסט</translation>
+<translation id="6263657785571415306">הישאר בזרימה: הוסף סרטונים בזמן שאתה גולש, צפה מאוחר יותר.</translation>
+<translation id="2839555636100404687">ההשמעה טובה יותר ברשימת השמעה</translation>
+<translation id="9079526681359439081">נגן ברקע. שליטה ממסך הנעילה. ועוד…</translation>
+<translation id="3620862810055853183">פתח את רשימת ההשמעה</translation>
+<translation id="3861012838874771868">פתח את הגדרות רשימת השמעה</translation>
+<translation id="5220099266891491416">כפתור הסתר רשימת השמעה</translation>
+<translation id="7416347631175891923">נסה זאת</translation>
+<translation id="1173894706177603556">שנה שם</translation>
+<translation id="3596306474342941843">מחק רשימת השמעה</translation>
+<translation id="7765158879357617694">העבר</translation>
+<translation id="3803384303807438047">מחק את הנתונים הלא מקוונים של הפריט</translation>
+<translation id="4195643157523330669">פתח בכרטיסייה חדשה</translation>
+<translation id="4243710787042215766">פתח בכרטיסייה פרטית</translation>
+<translation id="8261506727792406068">מחיקה</translation>
+<translation id="377872456482681602">אנא בחר פריטים תחילה</translation>
+<translation id="286472539388773794">נא הזן  שם רשימת השמעה חוקי</translation>
+<translation id="2824489375399072491">שתפו עם :</translation>
+<translation id="5319532905552885478">תוכן המדיה כבר נוסף לרשימת ההפעלה שהוגדרה כברירת מחדל</translation>
+<translation id="4802584673094436231">בהכנה...</translation>
+<translation id="481455355267255546">הבא בתור</translation>
+<translation id="5474757891469990756">בואו לגלות את העוצמה המרבית של Leo במנוי ה-Premium:</translation>
+<translation id="4173478269537830374">בואו לגלות את מודלי הבינה המלאכותית השונים</translation>
+<translation id="3453542753968940696">גישה מועדפת למודלים העוצמתיים בעלי המיומנויות השונות.</translation>
+<translation id="3245401959451976966">בואו לגלות את היצירתיות שבכם</translation>
+<translation id="5031778211368112461">קבלו גישה למודלים המותאמים למשימות היצירתיות ולייצור התוכן שלכם בצורה טובה יותר.</translation>
+<translation id="4165928407303989823">הישארו בנושאים שמעניינים אתכם</translation>
+<translation id="298783097210745222">קבלו תשובות מדויקות יותר בשיחות מורכבות יותר.</translation>
+<translation id="2389665228467129817">נהלו צ'טים ארוכים יותר</translation>
+<translation id="4314705522985583059">קבלו מגבלות קצב גבוהות יותר עבור שיחות ארוכות יותר.</translation>
+<translation id="6365289557497555234">כל המנויים מתחדשים באופן אוטומטי אך ניתן\nלבטלם בכל עת לפני החידוש.</translation>
+<translation id="6637015365469044269">שדרג כעת</translation>
+<translation id="614530507403667291">מודל ברירת מחדל לשיחות חדשות</translation>
+<translation id="4071849832011229600">מודל ברירת המחדל</translation>
+<translation id="7557539689487606886">עבור לפרימיום</translation>
 </translationbundle>

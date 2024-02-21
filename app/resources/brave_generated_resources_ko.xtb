@@ -254,6 +254,8 @@
 <translation id="480565261566115689">탭 최소화</translation>
 <translation id="7194343495483122559">탭 펼치기</translation>
 <translation id="1199054713803577378">탭 최소화</translation>
+<translation id="1337946268962884806">맞춤 순서</translation>
+<translation id="8373664339577369248">맞춤 순서</translation>
 <translation id="8120600068258956006">재생목록에 추가</translation>
 <translation id="650694591627983430">이 페이지에서 찾은 미디어</translation>
 <translation id="8525248723479742219">나중에 재생</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">반복 끔</translation>
 <translation id="1748244367114657861">한 개 반복</translation>
 <translation id="6421906998825794164">모두 반복</translation>
+<translation id="6453210454707928697">항목 재생 실패</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>]이(가) 만료되었을 수 있습니다. 복구하시겠습니까?</translation>
+<translation id="6155018868740116868">복구</translation>
 <translation id="1727684853006449697">Brave 플레이어</translation>
 <translation id="9156965752763025780">변경사항은 다음에 Brave을 다시 시작할 때 적용됩니다.</translation>
 <translation id="7179921470347911571">지금 다시 실행</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">제목 바 표시</translation>
 <translation id="5371926069408837914">접혀 있을 때 마우스 커서를 올리면 세로 탭 패널 펼치기</translation>
 <translation id="3367129510799209147">탭 호버 모드</translation>
+<translation id="515949045075831661">오른쪽에 표시</translation>
+<translation id="3725395376319291415">왼쪽에 표시</translation>
 <translation id="2113977810652731515">카드</translation>
 <translation id="4096343215397759358">미리보기가 있는 카드</translation>
 <translation id="5297085818601043899">툴팁</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Brave가 이미 도크에 있음</translation>
 <translation id="3195845168740336657">Shields 설정</translation>
 <translation id="754769152790647708">Shields 상태</translation>
-<translation id="3615717588724840230">Shields를 사용하면 사이트에서 트래커, 광고, 지문을 차단할 수 있습니다.</translation>
+<translation id="4868109105992358853">Shields는 트래커, 광고, 지문을 차단할 수 있습니다.</translation>
 <translation id="5690973901138662477">Shields 올림</translation>
 <translation id="4697275813919189958">Shields 내림</translation>
 <translation id="6303294677342628402">보호</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Brave Rewards 비활성화됨</translation>
 <translation id="413570371620795359">Rewards 패널을 열고 활성화하여 시작하세요.</translation>
 <translation id="1051600834033686945">Brave Rewards 설정 전체 열기</translation>
-<translation id="6333347122924254968">주소 표시줄에 Brave Rewards 아이콘 표시</translation>
+<translation id="8826461509529116322">Brave Rewards 버튼 표시</translation>
 <translation id="9185018653595759199">소셜 미디어 차단</translation>
 <translation id="863171915776379000">Facebook 로그인 및 내장 포스트를 허용합니다</translation>
 <translation id="5165042248369837294">Twitter 내장 트윗을 허용합니다</translation>
@@ -726,6 +733,7 @@
 동의해야 하며 채팅 기록이 지워집니다. 채팅 내역이 지워지면
 Brave 레오와 나눴던 모든 대화가 삭제됩니다.
 이 작업은 번복할 수 없습니다.</translation>
+<translation id="5574059574002819179">자동 완성 제안 조정</translation>
 <translation id="8157373421434119674">데이터 및 채팅 기록</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
 <translation id="349846214503465941">재생목록 활성화</translation>

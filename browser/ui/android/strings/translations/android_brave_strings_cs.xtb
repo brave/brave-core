@@ -427,18 +427,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2394961582378297792">Odhlášeno</translation>
 <translation id="5308380583665731573">Propojit</translation>
 <translation id="3368922792935385530">Připojeno</translation>
-<translation id="8673913984316081937">Ověřování vaší peněženky je volitelné</translation>
-<translation id="8558636200953226885">Pokud však provedete ověření, můžete...</translation>
-<translation id="8697510149346635496">Vyberte si BAT, které vyděláte zobrazováním reklam dodržujících soukromí.</translation>
-<translation id="1481480653609649134">Další BAT nakoupíte prostřednictvím platebních karet a jiných zdrojů</translation>
-<translation id="9096003370755878766">Vyberte si BAT, které jste nedávno přidali do peněženky Odměny Brave</translation>
-<translation id="1554282356558968486">Správa peněženky je zajišťována</translation>
 <translation id="6569877533335686968">Potvrdit</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Společnost Uphold může v závislosti na požadovaných službách vyžadovat ověření vaší totožnosti.</translation>
-<translation id="3200197118442451932">Společnost Brave Software Inc. nezpracovává, neukládá ani nepřistupuje k žádným osobním údajům, které poskytnete službě <ph name="WALLET_PROVIDER"/>, když si u ní vytvoříte účet.</translation>
 <translation id="1665118090708049096">Přejít do mého účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Přihlásit se do mého účtu <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Nepřipojeno</translation>
@@ -525,7 +517,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="2225863440766607138">Sledovací prvky</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Během posledních tří hodin jste v prohlížeči Brave zablokovali <ph name="COUNT"/> sledovacích prvků a reklam.</translation>
-<translation id="3621193901658023971">S prohlížečem Brave bude procházení hlavních zpravodajských webů až šestkrát rychlejší díky blokování sledovacích prvků a reklam.</translation>
+<translation id="5005713153542196658">Díky blokování trackerů a reklam se v Brave stránky hlavních zpravodajských webů načítají až 6x rychleji.</translation>
 <translation id="7427567994475794038">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik sledovacích prvků a reklam bylo v posledních třech hodinách zablokováno.</translation>
 <translation id="2053891538879944400">S prohlížečem Brave jste ušetřili <ph name="DATA"/> <ph name="DATA_TEXT"/> dat.</translation>
 <translation id="8640064498452534195">Zapněte funkci Hlášení o porušení soukromí a zjistěte, kolik dat jste ušetřili.</translation>
@@ -590,6 +582,10 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8622329973403382303">Podívejte se na krátkou prohlídku a zjistěte, jak se zapsat do historie jako Rewards rockstar!</translation>
 <translation id="3479552764303398839">Teď ne</translation>
 <translation id="7138272885617540195">Povolení otevírání odkazů na aplikace v aplikacích mimo Brave</translation>
+<translation id="4954512758656527938">Základní peněženka Ethereum</translation>
+<translation id="7701023802820268122">Základní peněženka Solana</translation>
+<translation id="7701040980221191251">Žádné</translation>
+<translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="8792121506918889955">Pravidla WebRTC pro zacházení s IP</translation>
 <translation id="8798099450830957504">Výchozí</translation>
 <translation id="1822560017823072927">Výchozí veřejná a soukromá rozhraní</translation>
@@ -685,7 +681,6 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8475984867371585028">Upravit viditelné NFT</translation>
 <translation id="5050890334032852465">Uložit seznam sledování účtu</translation>
 <translation id="7755766175599167100">Hledat tokeny</translation>
-<translation id="8488282162676695335">Peněženka Brave</translation>
 <translation id="3784455785234192852">Uzamknout</translation>
 <translation id="4412698727486357573">Centrum nápovědy</translation>
 <translation id="8796429300536029044">Detail NFT</translation>
@@ -717,12 +712,12 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="8272917646984397798">Zabezpečuje všechna připojení</translation>
 <translation id="1751947227857853925">Rychle a neomezeně až do 100 Mb/s</translation>
 <translation id="1400240082805528049">Nepřetržitá podpora</translation>
-<translation id="5051030058817632680">Blokuje nežádoucí síťová připojení</translation>
+<translation id="5892534145504632332">Chraňte každou aplikaci a celé zařízení</translation>
+<translation id="7195416926059527505">Bezpečnější na domácí i veřejné Wi-Fi</translation>
+<translation id="1354700000739359839">Blesková rychlost až 100 Mb/s</translation>
 <translation id="3510283489391432976">Zvolte zeměpisnou polohu/zemi</translation>
-<translation id="4390800080658195654">Zachovává anonymitu na síti</translation>
-<translation id="639981156979733813">Podporuje rychlost až 100 Mb/s</translation>
-<translation id="765343799669302337">Používá zabezpečený šifrovaný tunel VPN WireGuard</translation>
-<translation id="1571230671455380494">Vaše informace nikdy nesdílíme ani neprodáváme</translation>
+<translation id="7695158478627528928">Brave nikdy nezaznamenává vaši aktivitu</translation>
+<translation id="4575683170451975058">Na 1 předplatné ochrana až 5 zařízení</translation>
 <translation id="276866628038850725">Všechny tarify zahrnují 7denní zkušební verzi zdarma!</translation>
 <translation id="1532536259167115948">Měsíční předplatné <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Roční předplatné <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / rok.</translation>
 <translation id="2655185358771731232">Vyzkoušejte zdarma na 7 dní. Po 7 dnech vám bude účtována cena balíčku. Všechna předplatná se automaticky obnovují, ale lze je před obnovením zrušit.</translation>
 <translation id="6053992191006521518">Vyzkoušejte ZDARMA</translation>
+<translation id="3990956504562716932">Vyzkoušejte zdarma na 7 dní</translation>
 <translation id="721747358270435486">Instalace sítě VPN</translation>
 <translation id="836074276610740314">Nainstalovat profil VPN</translation>
 <translation id="8021842065465097929">Brave nyní nainstaluje profil VPN.</translation>
@@ -1117,71 +1113,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="591648995518106347">Automaticky zobrazit vhodné články v režimu čtečky</translation>
 <translation id="1295796122927221823">Zobrazit v režimu čtečky</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> na síti <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Seznam stop Brave</translation>
-<translation id="4850886885716139402">Zobrazit</translation>
-<translation id="7392941176393379100">Přidáno do '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Správa dat seznamu stop</translation>
-<translation id="7650602357673790368">Ve výchozím nastavení seznamy stop automaticky ukládají obsah do zařízení pro přehrávání offline (soukromé i sdílené seznamy). Pokud nejste připojeni k Wi-Fi, bude automatické ukládání používat mobilní data.\n\nV nastaveních můžete toto výchozí nastavení změnit.</translation>
-<translation id="5900576657906675258">Přidat položku do seznamu stop</translation>
-<translation id="349846214503465941">Aktivovat seznam stop</translation>
-<translation id="1309636029062006520">Vytvořte si seznamy stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli.</translation>
-<translation id="3561815498111282415">Automatické ukládání pro přehrávání offline</translation>
-<translation id="1832424694374124654">Automaticky ukládat nové položky seznamů stop do zařízení, abyste je mohli přehrávat i bez připojení k internetu.</translation>
-<translation id="8103022210423023846">Automatické ukládání zapnuto</translation>
-<translation id="3926329432879804185">Automatické ukládání vypnuto</translation>
-<translation id="7768812595186089508">Automaticky ukládat pouze s Wi-Fi připojením</translation>
-<translation id="5939518447894949180">Reset</translation>
-<translation id="8199028711686989861">Odstranit všechna videa ze seznamu stop, včetně úložiště pro přehrávání offline.</translation>
-<translation id="5916664084637901428">Zapnuto</translation>
-<translation id="5860033963881614850">Vypnuto</translation>
-<translation id="2920568868625746681">Pouze Wi-Fi</translation>
-<translation id="4590997608186539865">Seznam stop</translation>
-<translation id="7525067979554623046">Vytvořit</translation>
-<translation id="5491049004699827548">Vytvoření prvního seznamu stop</translation>
-<translation id="5319108110887582146">Vytvořte si seznam stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli. Dokonce i offline.</translation>
-<translation id="6802849415466883498">Vytvořit seznam stop</translation>
-<translation id="8525248723479742219">Přehrát později</translation>
-<translation id="7453007860684252933">Procházet a přidávat</translation>
-<translation id="9014883386413828317">Přidejte si to, co máte rádi. V pravé dolní části obrazovky je tlačítko ( + ).</translation>
-<translation id="5928669500312007783">Procházet média</translation>
-<translation id="8152485753254079984">Nový seznam stop</translation>
-<translation id="9130105487623071247">Název seznamu stop</translation>
-<translation id="726581235416249619">Seznam stop bez názvu</translation>
-<translation id="1456254983411148628">Odstranit data</translation>
-<translation id="2365883822666964139">Vybraných: <ph name="NUMBER"/></translation>
-<translation id="8617390509150638117">Položek: <ph name="NUMBER"/></translation>
-<translation id="2317629745818459803">Přehrát vše</translation>
-<translation id="7544853251252956727">Přehrávat náhodně</translation>
-<translation id="2881339830231736485">Nedávno přehrávané</translation>
-<translation id="7636458383879257005">Klepněte, dlouze stiskněte nebo přetáhněte</translation>
-<translation id="8120600068258956006">Přidat do seznamu stop</translation>
-<translation id="39991094779686024">Seznamy stop</translation>
-<translation id="1710072605877822603">Přidat média</translation>
-<translation id="3874252678044305931">Přidejte si videa do seznamu stop Brave. Můžete je později kdykoli sledovat, i offline</translation>
-<translation id="8973629800378391099">Vytvořte si seznamy stop svého oblíbeného obsahu. Ušetřete mobilní data. A přehrávejte si obsah bez reklam.</translation>
-<translation id="4936812987266342401">Klepnutím na tlačítko si videa přidáte do seznamu stop</translation>
-<translation id="6263657785571415306">Nenechte si nic ujít: Přidávejte si videa během prohlížení a prohlédněte si je později.</translation>
-<translation id="2839555636100404687">Přehrávání obsahu je lepší v seznamu stop</translation>
-<translation id="9079526681359439081">Přehrávejte obsah na pozadí. Ovládejte jej ze zamčené obrazovky. A mnohé další</translation>
-<translation id="3620862810055853183">Otevřít seznam stop</translation>
-<translation id="3861012838874771868">Otevřít nastavení seznamu stop</translation>
-<translation id="5220099266891491416">Skrýt tlačítko Seznam stop</translation>
-<translation id="7416347631175891923">Zkuste to!</translation>
-<translation id="1173894706177603556">Přejmenovat</translation>
-<translation id="1620612903815671893">Odstranit offline data seznamu stop</translation>
-<translation id="3261711068865275261">Odstranit všechna offline data</translation>
-<translation id="6653691766801349738">Připravit seznam stop pro použití offline</translation>
-<translation id="8708086574143054053">Připravit všechny seznamy stop pro použití offline</translation>
-<translation id="3596306474342941843">Odstranit seznam stop</translation>
-<translation id="7765158879357617694">Přesunout</translation>
-<translation id="3803384303807438047">Odstranit offline data položky</translation>
-<translation id="4195643157523330669">Otevřít na nové kartě</translation>
-<translation id="4243710787042215766">Otevřít v soukromé kartě</translation>
-<translation id="8261506727792406068">Smazat</translation>
-<translation id="377872456482681602">Nejprve vyberte položky</translation>
-<translation id="6172429305139364624">Položka seznamu stop není uložena.\nUložte položku pro použití offline.</translation>
-<translation id="3631131732607750008">Vypršela platnost obsahu. Zkuste to znovu za několik sekund.</translation>
-<translation id="286472539388773794">Zadejte platný název seznamu stop</translation>
 <translation id="9085765419770918643">Zatím tady nejsou žádná NFT.</translation>
 <translation id="8445532667841598737">Jste připraveni nějaká přidat? Import provede kliknutím na tlačítko níže.</translation>
 <translation id="5925465310724910998">Přejete si, aby se vaše tokeny NFT zobrazovaly automaticky?</translation>
@@ -1190,12 +1121,6 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="622372328961630111">Automaticky přidávat vlastní NFT do peněženky pomocí rozhraní API třetích stran. <ph name="BEGIN_LINK_1"/>Dozvědět se více.<ph name="END_LINK_1"/>.</translation>
 <translation id="7618347247876614969">Účet pro vyhledávací tabulku adres:</translation>
 <translation id="7659483790930268440">Index pro vyhledávací tabulku adres:</translation>
-<translation id="7322560193401221004">Zapamatovat pozici přehrání souboru</translation>
-<translation id="7505951907514709271">U jednotlivých souborů pokračovat v přehrávání od bodu posledního  pozastavení</translation>
-<translation id="6835165453349969605">Zapamatovat pozici v seznamu skladeb</translation>
-<translation id="6344103698928069918">V případě seznamu stop pokračovat v přehrávání od posledního pozastavení</translation>
-<translation id="8141583471142904652">Nepřetržité poslouchání</translation>
-<translation id="851432578283946230">Automaticky přehraje další položky ve vašem seznamu stop</translation>
 <translation id="7853202427316060426">Aktivita</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Tržní cena</translation>
@@ -1212,6 +1137,80 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="2471230424465522689">Nejdříve</translation>
 <translation id="4841860051609590575">ID požadavku</translation>
 <translation id="1179407411385015942">Leo je chytrý asistent využívající technologie umělé inteligence a je zabudovaný přímo v prohlížeči.</translation>
+<translation id="4109670531935487117">Zobrazovat návrhy automatického doplňování v adresním řádku</translation>
 <translation id="1250335737108905610">Resetovat a odstranit data asistenta Leo</translation>
 <translation id="6165101586663336913">Resetování asistenta Leo bude vyžadovat přihlášení k používání  asistenta Leo v budoucnu a také vymaže historii chatu. Vymazání historie chatu odstraní všechny vaše předchozí konverzace s asistentem Leo. Tuto akci nelze vrátit zpět.</translation>
+<translation id="3692772534525889713">Propojte nákup v obchodě Play se svým účtem Brave a používejte Brave Leo na jiných zařízeních.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Měsíčně</translation>
+<translation id="451189393813405346">Zeptat se Lea</translation>
+<translation id="7322560193401221004">Zapamatovat pozici přehrání souboru</translation>
+<translation id="7505951907514709271">U jednotlivých souborů pokračovat v přehrávání od bodu posledního  pozastavení</translation>
+<translation id="6835165453349969605">Zapamatovat pozici v seznamu skladeb</translation>
+<translation id="6344103698928069918">V případě seznamu stop pokračovat v přehrávání od posledního pozastavení</translation>
+<translation id="8141583471142904652">Nepřetržité poslouchání</translation>
+<translation id="851432578283946230">Automaticky přehraje další položky ve vašem seznamu stop</translation>
+<translation id="295620834661738195">Seznam stop Brave</translation>
+<translation id="4850886885716139402">Zobrazit</translation>
+<translation id="7392941176393379100">Přidáno do '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Aktivovat seznam stop</translation>
+<translation id="1309636029062006520">Vytvořte si seznamy stop z oblíbených audio a video záznamů a přehrávejte si je kdykoli a kdekoli.</translation>
+<translation id="7899390017499980820">Tlačítko Přidat do seznamu stop</translation>
+<translation id="6901152954398668317">Zobrazí nebo skryje tlačítko „Přidat do seznamu stop“ pro rychlý přístup k přidání nebo odebrání médií.</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Odstranit všechna videa ze seznamu stop, včetně úložiště pro přehrávání offline.</translation>
+<translation id="4590997608186539865">Seznam stop</translation>
+<translation id="7525067979554623046">Vytvořit</translation>
+<translation id="8525248723479742219">Přehrát později</translation>
+<translation id="7453007860684252933">Procházet a přidávat</translation>
+<translation id="9014883386413828317">Přidejte si to, co máte rádi. V pravé dolní části obrazovky je tlačítko ( + ).</translation>
+<translation id="5928669500312007783">Procházet média</translation>
+<translation id="8152485753254079984">Nový seznam stop</translation>
+<translation id="9130105487623071247">Název seznamu stop</translation>
+<translation id="726581235416249619">Seznam stop bez názvu</translation>
+<translation id="2365883822666964139">Vybraných: <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117">Položek: <ph name="NUMBER"/></translation>
+<translation id="2317629745818459803">Přehrát vše</translation>
+<translation id="7544853251252956727">Přehrávat náhodně</translation>
+<translation id="2881339830231736485">Nedávno přehrávané</translation>
+<translation id="8120600068258956006">Přidat do seznamu stop</translation>
+<translation id="39991094779686024">Seznamy stop</translation>
+<translation id="1710072605877822603">Přidat média</translation>
+<translation id="3874252678044305931">Přidejte si videa do seznamu stop Brave. Můžete je později kdykoli sledovat, i offline</translation>
+<translation id="8973629800378391099">Vytvořte si seznamy stop svého oblíbeného obsahu. Ušetřete mobilní data. A přehrávejte si obsah bez reklam.</translation>
+<translation id="4936812987266342401">Klepnutím na tlačítko si videa přidáte do seznamu stop</translation>
+<translation id="6263657785571415306">Nenechte si nic ujít: Přidávejte si videa během prohlížení a prohlédněte si je později.</translation>
+<translation id="2839555636100404687">Přehrávání obsahu je lepší v seznamu stop</translation>
+<translation id="9079526681359439081">Přehrávejte obsah na pozadí. Ovládejte jej ze zamčené obrazovky. A mnohé další</translation>
+<translation id="3620862810055853183">Otevřít seznam stop</translation>
+<translation id="3861012838874771868">Otevřít nastavení seznamu stop</translation>
+<translation id="5220099266891491416">Skrýt tlačítko Seznam stop</translation>
+<translation id="7416347631175891923">Zkuste to!</translation>
+<translation id="1173894706177603556">Přejmenovat</translation>
+<translation id="3596306474342941843">Odstranit seznam stop</translation>
+<translation id="7765158879357617694">Přesunout</translation>
+<translation id="3803384303807438047">Odstranit offline data položky</translation>
+<translation id="4195643157523330669">Otevřít na nové kartě</translation>
+<translation id="4243710787042215766">Otevřít v soukromé kartě</translation>
+<translation id="8261506727792406068">Smazat</translation>
+<translation id="377872456482681602">Nejprve vyberte položky</translation>
+<translation id="286472539388773794">Zadejte platný název seznamu stop</translation>
+<translation id="2824489375399072491">Sdílet s :</translation>
+<translation id="5319532905552885478">Mediální obsah je již přidán do výchozího seznamu skladeb</translation>
+<translation id="4802584673094436231">Příprava...</translation>
+<translation id="481455355267255546">Bude následovat</translation>
+<translation id="5474757891469990756">Odemkněte plnou sílu Lea s předplatným Premium:</translation>
+<translation id="4173478269537830374">Vyzkoušejte různé modely umělé inteligence</translation>
+<translation id="3453542753968940696">Přednostní přístup k výkonným modelům s různými dovednostmi.</translation>
+<translation id="3245401959451976966">Osvoboďte svou kreativitu</translation>
+<translation id="5031778211368112461">Přístup k modelům vhodnějším pro kreativní úkoly a vytváření obsahu.</translation>
+<translation id="4165928407303989823">Držte se tématu</translation>
+<translation id="298783097210745222">Přesnější odpovědi pro detailněji zaměřené konverzace.</translation>
+<translation id="2389665228467129817">Chatujte déle</translation>
+<translation id="4314705522985583059">Vyšší limity služby pro delší konverzace.</translation>
+<translation id="6365289557497555234">Všechna předplatná se automaticky obnovují,\nale lze je kdykoli před obnovením zrušit.</translation>
+<translation id="6637015365469044269">Upgradovat hned teď</translation>
+<translation id="614530507403667291">Výchozí model pro konverzace</translation>
+<translation id="4071849832011229600">Výchozí model</translation>
+<translation id="7557539689487606886">Přejít na verzi Premium</translation>
 </translationbundle>

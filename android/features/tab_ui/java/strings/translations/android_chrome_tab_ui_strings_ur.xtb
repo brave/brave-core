@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">پرانے ٹیبز کو بند کرنا چاہتے ہیں؟</translation>
 <translation id="1215127405478249895">ٹیبز کا جائزہ لیں</translation>
 <translation id="125153950246128346">دوسرا ٹیب دیکھنے کیلئے تھپتھپائیں</translation>
+<translation id="1326271443836399892">موجودہ ڈیکلٹر کی ترتیبات کا جائزہ لیں۔</translation>
 <translation id="3228718275011575753">سبھی پوشیدگی ٹیبز بند کریں؟</translation>
 <translation id="1657719826150349398">ٹیب کو نیچے منتقل کریں</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> ٹیب}other{<ph name="TABS_COUNT_MANY"/> ٹیبز}}</translation>
@@ -25,6 +26,7 @@
 <translation id="2977480621796371840">گروپ سے ہٹائیں</translation>
 <translation id="3008554597174452548">پروڈکٹ کو ٹریک کرنا بند کریں</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> سے قیمت میں <ph name="PRICE_DROP"/> گراوٹ</translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{آپ کے پاس <ph name="TABS_COUNT_ONE"/> آرکائیو کردہ ٹیب ہے}other{آپ کے پاس <ph name="TABS_COUNT_MANY"/> آرکائیو کردہ ٹیبز ہیں}}</translation>
 <translation id="3194464645767632461">درجہ بندی</translation>
 <translation id="3291470810748040983">کھلے ہوئے ٹیب میں قیمت کم ہونے پر آپ کو الرٹ کیا جائے گا</translation>
 <translation id="3328308545011660196">تجویز: <ph name="NUMBER_OF_TABS"/> ٹیبز متعلقہ معلوم ہوتے ہیں۔ ان کی گروپ بندی کریں؟</translation>
@@ -37,6 +39,7 @@
 <translation id="3996880007329611795">اطلاع حاصل کریں</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> ٹیبز متعلقہ معلوم ہوتے ہیں۔ ان کی گروپ بندی کریں؟</translation>
 <translation id="4212246570487010370">براؤز کرنا جاری رکھیں</translation>
+<translation id="427987768447457592">نیا ٹیب گروپ</translation>
 <translation id="4648718555153979859">آپ کے ٹیبز کو ایک ساتھ یہاں گروپ بند کیا گیا ہے</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> جائزہ)}other{(<ph name="REVIEWS_COUNT_MANY"/> جائزے)}}</translation>
 <translation id="4850886885716139402">دیکھیں</translation>
@@ -47,6 +50,7 @@
 <translation id="5073204694187207510">پوری اسکرین گرڈ کو چھپائیں</translation>
 <translation id="5076161749301278626">اسٹور کے جائزے دیکھیں؟</translation>
 <translation id="5082793167783849073">ایک گروپ بنا کر صفحات کا فوری طور پر موازنہ کریں۔ شروع کرنے کیلئے، کسی لنک کو ٹچ کریں اور دبائے رکھیں۔</translation>
+<translation id="5161254044473106830">عنوان درکار ہے</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{آپ کے پاس <ph name="TABS_COUNT_ONE"/> ٹیب ہے جس کا آپ نے حال ہی میں استعمال نہیں کیا ہے}other{آپ کے پاس <ph name="TABS_COUNT_MANY"/> ٹیبز ہیں جن کا آپ نے حال ہی میں استعمال نہیں کیا ہے}}</translation>
 <translation id="5339733443032484186">آپ کا آخری ٹیب</translation>
 <translation id="5490235265819901748">ٹیب گروپ پھیلا دیا گیا</translation>
@@ -88,7 +92,6 @@
 <translation id="7885132941432959125">ٹیب کو دائیں منتقل کریں</translation>
 <translation id="7966321538264951561">تجاویز مسترد کریں۔</translation>
 <translation id="8029301326595421733">اس اسٹور سے متعلق معلومات مکمل اونچائی پر کھلی ہے</translation>
-<translation id="814503310257431685">سبھی دیکھیں</translation>
 <translation id="8205266828577616993">ٹیب اوپر منتقل کریں</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> منتخب کردہ ٹیب بند کریں}other{<ph name="TABS_COUNT_MANY"/> منتخب کردہ ٹیبز بند کریں}}</translation>
 <translation id="8398929769197326728">نیا فولڈر - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -99,5 +102,6 @@
 <translation id="9090098097337832354">اس اسٹور سے متعلق معلومات بند ہے</translation>
 <translation id="9150694013019234766">اسکرین کے نچلے حصے کے قریب ٹیبز کے اپنے گروپ میں ٹیبز کے درمیان سوئچ کریں</translation>
 <translation id="9169594135889675189">گروپ میں نیا ٹیب شامل کریں</translation>
+<translation id="955558140275419384">اس ایڈیٹر میں داخل ہو کر ڈیکلٹر کے لیے تمام محفوظ شدہ ٹیبز کا جائزہ لیں۔</translation>
 <translation id="959682366969460160">منظم رہیں</translation>
 </translationbundle>
