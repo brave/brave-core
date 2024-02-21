@@ -259,10 +259,18 @@
 <translation id="8167256685618982116">Įjungdami <ph name="TITLE"/> sutinkate su <ph name="BEGIN_LINK1"/>paslaugų teikimo sąlygomis<ph name="END_LINK1"/> ir <ph name="BEGIN_LINK2"/>privatumo politika<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Saugojimo sąskaitos (reikia patvirtinti tapatybę)</translation>
 <translation id="1539433155512862005">Saugojimo sąskaitos – tai sąskaitos, kuriose teikiamos patikimų trečiųjų šalių paslaugos ir laikomi jūsų BAT.</translation>
+<translation id="6834831484510296932">Privatus saugojimas</translation>
+<translation id="4208917415153655958">Privatus saugojimas suteikia jums išskirtinę galimybę valdyti savo BAT, taip pat visišką atsakomybę už jo saugumą.</translation>
+<translation id="1953496742859481929">Pasirinkus privataus saugojimo piniginę, „Rewards“ bus išmokami tinkle „Solana“ kaip SPL-BAT.</translation>
 <translation id="6751803821780922506">Pasirinkite, kur norėtumėte gauti BAT</translation>
-<translation id="1233129511866436960">Sužinokite daugiau apie regionus ir palaikymą</translation>
+<translation id="3162035476318501831">Sužinokite daugiau apie regionus ir pagalbą.</translation>
 <translation id="7329170127335794328">Jūsų regione šiuo metu nepasiekiama</translation>
 <translation id="966956302643313970">Norėdami pradėti gauti „Basic Attention Token“ (BAT) atlygį, susiekite sąskaitą. Jūsų uždirbti BAT bus automatiškai pervedami į jūsų sąskaitą kiekvieną mėnesį.</translation>
+<translation id="4009439571146350519">Kitoje piniginėje, palaikančioje „Solana“</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Naudojimo sąlygos<ph name="TOS_LINK_END"/> ir <ph name="PP_LINK_BEGIN"/>Privatumo politika<ph name="PP_LINK_END"/>.</translation>
+<translation id="1692293127547800972">Kažkas nepavyko. Bandykite dar kartą</translation>
+<translation id="756341217015623253">Prisijukite arba registruokitės</translation>
+<translation id="2653844658857826081">NAUJA</translation>
 <translation id="1892970806832316900">Laukiama iki <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Oi! Jūsų naršyklė negali priimti „Brave“ privačios reklamos.</translation>
 <translation id="5177429570315095022">Reikia atnaujinti jūsų naršyklę, kad toliau matytumėte reklamas.</translation>
@@ -412,6 +420,7 @@
 <translation id="8533411848724153701">„Gemini“</translation>
 <translation id="6569877533335686968">Uphold“</translation>
 <translation id="6011108706830742093">„ZebPay“</translation>
+<translation id="5390923430722428146">Solana</translation>
 <translation id="6354568176665589146">Pasikartojantys</translation>
 <translation id="2799223571221894425">Paleisti iš naujo</translation>
 <translation id="1110535155349301542">pašalinti</translation>
@@ -474,7 +483,7 @@
 <translation id="326118736933420687">Peržiūrite „WebTorrent“ puslapį</translation>
 <translation id="7534079972563542000">„Unstoppable Domains“</translation>
 <translation id="4492298165410552103">Įjungti „Unstoppable Domains“ palaikymą „Brave“ naršyklėje?</translation>
-<translation id="3647533686160055812">Ieškodama .crypto (taip pat .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domenų pavadinimų, esančių „Unstoppable Domains“, „Brave“ naudos „Infura“ sistemą. „Brave“ slepia jūsų IP adresą. Jei įjungsite šią funkciją, „Infura“ matys, kad  kažkas bando apsilankyti šiuose domenuose, bet daugiau nieko nematys. Žr. „Infura“ <ph name="BEGIN_INFURA_TOU_LINK"/>naudojimo sąlygas<ph name="END_INFURA_TOU_LINK"/>ir<ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatumo politiką<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="9156229987230762013">Ieškodama .crypto (taip pat .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) domenų pavadinimų, esančių „Unstoppable Domains“, „Brave“ naudos „Infura“ sistemą. „Brave“ slepia jūsų IP adresą. Jei įjungsite šią funkciją, „Infura“ matys, kad  kažkas bando apsilankyti šiuose domenuose, bet daugiau nieko nematys. Žr. „Infura“ <ph name="BEGIN_INFURA_TOU_LINK"/>naudojimo sąlygas<ph name="END_INFURA_TOU_LINK"/>ir<ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatumo politiką<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Eterio pavadinimų paslauga</translation>
 <translation id="4335039108389860301">Įjungti eterio pavadinimų paslaugos (ENS) palaikymą „Brave“ naršyklėje?</translation>
 <translation id="4609973808011229683">Ieškodama .eth domenų pavadinimų, esančių „Ethereum Name Service“ (ENS), „Brave“ naudos „Infura“ sistemą. „Brave“ slepia jūsų IP adresą. Jei įjungsite šią funkciją, „Infura“ matys, kad kažkas bando apsilankyti šiuose .eth domenuose, bet daugiau nieko nematys. Žr. „Infura“ <ph name="BEGIN_INFURA_TOU_LINK"/>naudojimo sąlygas<ph name="END_INFURA_TOU_LINK"/> ir <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privatumo politiką<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -685,6 +694,9 @@
 <translation id="4214852687527104244">Nesijaudinkite.</translation>
 <translation id="5027616819996705541">Galite naršyti privačiai!</translation>
 <translation id="1886682615222609631">Iki šiol uždirbta</translation>
+<translation id="3479552764303398839">Ne dabar</translation>
+<translation id="4185473179105062442">Gaukite BAT tiesiogiai į privataus saugojimo kriptoadresą</translation>
+<translation id="5802986777701714573">Įtraukėme jums naują būdą mėnesio BAT atlygiams gauti. Prijunkite vieną iš mūsų partnerių paskyrą arba naudokitės nauja privataus saugojimo galimybe, kad uždirbtumėte jau dabar.</translation>
 <translation id="86107454835395919">Nustatyti kaip kasmėnesinį įnašą</translation>
 <translation id="6621880242105464352">Iš išsiųsto kiekio „Brave“ surenka <ph name="FEE_PCT"/> kaip apdorojimo mokestį.</translation>
 <translation id="1420756770787071946">Paremti šį kūrėją</translation>
@@ -715,6 +727,11 @@
 <translation id="1950340257946519340">Įvyko netikėta klaida</translation>
 <translation id="2605703631071131439">Prašome iš naujo atverti įnašų valdymo skydelį ir pabandyti dar kartą.</translation>
 <translation id="8855543392451028706">Sveiki atvykę! Vartotojai gali paremti turinio kūrėją išsiųsdami jiems įnašų. Tai yra padėkos būdas už kuriamą puikų turinį.</translation>
+<translation id="8015040694844000835">Palaikykite mėgstamus savo kūrėjus</translation>
+<translation id="3184314123468325238">Reikškite palankumą ir siųskite padėkos ženklus</translation>
+<translation id="1053740665683265460">Naudokitės savo „Web3“ pinigine ir siųskite vienkartinį įnašą šiam kūrėjui išreikšdami palankumą</translation>
+<translation id="6859705040495339375">Siųsite naudodamiesi „Web3“ pinigine</translation>
+<translation id="7615852194054434287">Regis, kūrėjas dar nėra nustatęs nuostatų gauti įnašus per „Web3“ pinigines.</translation>
 <translation id="7090992647511817643">paskyra</translation>
 <translation id="4822132585477111396">Grandinės ID</translation>
 <translation id="3269475789479462358">domenas</translation>
@@ -785,14 +802,11 @@
 <translation id="5061574358754621254">„CoinGecko“ pateikiami kainų duomenys</translation>
 <translation id="223536150967420869">Pirkti</translation>
 <translation id="538450413584738399">„Swap“</translation>
+<translation id="6810855196544084176">„Bridge“</translation>
 <translation id="3488255243387417752">Parduoti</translation>
 <translation id="5223034545851554347">Šioje sąskaitoje neturite pakankamai <ph name="TOKEN_SYMBOL"/>.</translation>
-<translation id="9113988219764868805">Siųsti žetoną</translation>
-<translation id="4254256922305105713">Siųsti NFT</translation>
-<translation id="3453833142586986467">Pasirinkti žetoną</translation>
-<translation id="554732459168975059">Pasirinkti NFT</translation>
-<translation id="5313430503143128212">Pasirinkti norimą siųsti žetoną</translation>
-<translation id="5784485862926111563">Pasirinkite norimą siųsti NFT</translation>
+<translation id="6585419509320235293">Pasirinkite siųstiną turtą</translation>
+<translation id="1018742998826182079">Pasirinkite sukeistiną turtą</translation>
 <translation id="2791691551852500015">Įveskite gavėjo adresą</translation>
 <translation id="570080709303714420">HALF</translation>
 <translation id="2784548701748328827">MAX</translation>
@@ -801,13 +815,17 @@
 <translation id="8530071505111489657">Nėra žetonų</translation>
 <translation id="615791330696335475">Ieškoti žetono pagal pavadinimą</translation>
 <translation id="5009335307032488349">Ieškoti NFT pagal pavadinimą, ID</translation>
+<translation id="8667560635828712526">Pasirinkite turtą</translation>
+<translation id="4853960199138416955">„Brave Wallet“ šiuo metu nepalaiko „Bitcoin NFT“ (rangų). Siunčiant BTC iš adreso, kuris turi rangus, jo rangai netyčia gali būti perduoti.</translation>
 <translation id="9209024278910716955">Pirkimas pasirinktame tinkle nepalaikomas</translation>
 <translation id="4982630604810554641">Ieškoma domeno...</translation>
 <translation id="5467044307473123584">„Brave“ palaiko blokų grandinėms nepriklausančių tinklų sietuvų naudojimą .eth domenų paieškai.</translation>
 <translation id="4896417414446851895">Atrodo, kad įvedėte ENS adresą. Šiai užklausai išspręsti turime pasitelkti trečiosios šalies vertimo priemonę, kuri gali matyti jūsų IP adresą ir domeną.</translation>
 <translation id="8646078615727397565">Naudoti ENS domeną</translation>
 <translation id="1191686659164947414">Operacija galėjo būti paveikta kenkėjiškų veiksmų</translation>
+<translation id="8914256532272191486">Jūsų sukeitimas bus atliktas atsižvelgiant į didžiausią čia jūsų nurodytą smukimo sumą. Pavyzdžiui, 1 % smukimas reiškia, kad esate pasirengę dėl rinkos sąlygų priimti iki 1 % mažiau.</translation>
 <translation id="632241521608275119">Nesutapimo paklaida</translation>
+<translation id="2493281414634883751">Įrašykite vertę nuo 0,5 % iki 99 %</translation>
 <translation id="4500473291496079954">Baigia galioti po</translation>
 <translation id="2236833281018938257">Piniginės adresas arba URL</translation>
 <translation id="928500657730628112">Piniginės adresas</translation>
@@ -1472,10 +1490,14 @@
 <translation id="3356580495013324916">Įveskite „Brave Wallet“ slaptažodį, ir pradėkite kurti atsarginę piniginės kopiją.</translation>
 <translation id="7545441766078366279">Patvirtinti <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Nepakankamas <ph name="TOKEN"/> likutis</translation>
+<translation id="3453833142586986467">Pasirinkti žetoną</translation>
 <translation id="4937657825850660613">Pusė</translation>
 <translation id="7639814793732182496">Maks.</translation>
 <translation id="6584782231358487640">Įveskite sumą</translation>
-<translation id="2335903728876796191">Ieškoma jums geriausios kainos</translation>
+<translation id="821928941440539212">Rasti geriausią pasiūlymą...</translation>
+<translation id="5450317966495183014">Gauti (apytiks.)</translation>
+<translation id="8747614139273050577">Iš žetono</translation>
+<translation id="1726158192333401896">Į žetoną</translation>
 <translation id="3835223348537121988">Likutis:</translation>
 <translation id="5709875713144853427">Pasirinkite žetoną, kurį norite mainyti</translation>
 <translation id="720404198240859011">Rodyti žetonus, kurie neturi likučio</translation>
@@ -1499,7 +1521,6 @@
 <translation id="8044899503464538266">Lėtas</translation>
 <translation id="3569512916300900704">Vidurkis</translation>
 <translation id="7019805045859631636">Greitas</translation>
-<translation id="1826671530876539299">Mainymo nustatymai</translation>
 <translation id="6778140392042462129">Keitimai</translation>
 <translation id="6173494033320397682">Tik tiesioginis maršrutas</translation>
 <translation id="2440960581098655899">Užtikrinami tik tiesioginiai maršrutai ir išjungiami padalyti pardavimo sandoriai</translation>
@@ -1582,6 +1603,28 @@
 <translation id="4611292653554630842">Prisijungti</translation>
 <translation id="1132794822159463424">Žiūrėti <ph name="PROVIDER"/></translation>
 <translation id="7875005109025196005">Platformos</translation>
+<translation id="7549266998497332690">Tęsti naudojantis <ph name="HOW_MANY"/> <ph name="ITEM_NAME_MAYBE_PLURAL"/></translation>
+<translation id="4204268048253692928">Galite bet kada pridėti tinklus Nuostatose.</translation>
+<translation id="4303748097351941030">Palaikomi tinklai</translation>
+<translation id="6937275455070754004">Pasirinkite, kurias blokų grandines naudoti savo piniginėje.</translation>
+<translation id="1164748583090434571">Rodyti „testnet“</translation>
+<translation id="1531836666020185856">Reklamuojama</translation>
+<translation id="3225021799163709119">Populiaru</translation>
+<translation id="6854651431635060919">Bandomųjų tinklų paskyra</translation>
+<translation id="3800173541008902040">Įgalinti patobulintų operacijų informaciją:</translation>
+<translation id="1215089823252478557">Žiūrėti numatomą balanso pokytį</translation>
+<translation id="2761574758015819991">Nustatyti galimai kenkėjiškas operacijas</translation>
+<translation id="168533464844528463">Padėti aptikti sukčiavimo apsimetant mėginimus</translation>
+<translation id="780301667611848630">Ačiū, ne</translation>
+<translation id="3435896845095436175">Įgalinti</translation>
+<translation id="7269757150305059881">„Brave“ bendradarbiauja su partneriu, kad teiktų šią paslaugą. Įgalinę sutinkate bendrinti nepasirašytas operacijas ir jų „DApp“ URL su mūsų partneriu.</translation>
+<translation id="7790932700072432983">Bet kada pakeiskite atidarę <ph name="TAG_BEFORE"/>Nuostatos<ph name="TAG_AFTER"/>.</translation>
+<translation id="8688672835843460752">Galima</translation>
+<translation id="5296640085393149413">Prieinamos jums naudoti lėšos.</translation>
+<translation id="3248185426436836442">Laukiama</translation>
+<translation id="2515906149804238711">Laukiantis pakeitimas jūsų piniginės likutyje.</translation>
+<translation id="7700365440186054030">Jūsų prieinamos lėšos ir visos dar nepatvirtintos operacijos.</translation>
+<translation id="4118601537508887039">Kai kurie likučiai gali būti neprieinami</translation>
 <translation id="3155170474926428993">„Tor“ paleidimo priemonė</translation>
 <translation id="3745016858329272300">Bendroji informacija</translation>
 <translation id="4045404575593562245">„Tor“ valdymo įvykiai</translation>
@@ -1595,7 +1638,6 @@
 <translation id="2376542729617592331">„Brave News“ funkcija yra palaikoma skelbimų. Jums rodomos privačios, anoniminės reklamos.
 <ph name="LINK_START"/>Sužinoti daugiau<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Įjungti „Brave“ naujienas</translation>
-<translation id="780301667611848630">Ačiū, ne</translation>
 <translation id="6265592479622441247">Grįžti į <ph name="BEGIN_BOLD"/>ataskaitų sritį<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Ieškoti svetainių, temų arba RSS srauto</translation>
 <translation id="1498364270401875204">Kanalai</translation>
@@ -1612,7 +1654,6 @@
 <translation id="6727452620418483718">Tiesioginiai rezultatai</translation>
 <translation id="7697251281928908970">Rašykite toliau, kad ieškotumėte šaltinių</translation>
 <translation id="4750394297954878236">Pasiūlymai</translation>
-<translation id="3225021799163709119">Populiaru</translation>
 <translation id="7436846601026966360">Keli šaltiniai, kurie jums gali patikti. Pasiūlymai yra anoniminiai ir  atitinkami tik jūsų įrenginiui.</translation>
 <translation id="7950715913905993008">Oi...</translation>
 <translation id="7158100730468448581">„Brave News“ nepavyko atnaujinti turinio.</translation>
@@ -1837,14 +1878,12 @@
 <translation id="5872363163901278000">Padidinti atkūrimo greitį</translation>
 <translation id="6129027151000961048">„Leo“</translation>
 <translation id="8637805148029768813">Šiuo metu apibendrinimo funkcija veikia tik tam tikruose straipsniuose ir kituose didelės apimties tinklalapiuose.</translation>
-<translation id="2346991295632453064">Sutikti ir pradėti</translation>
 <translation id="1223498995510244364">Apibendrinti</translation>
 <translation id="7491773233732232424">Apie „Leo“</translation>
-<translation id="70442873931504163">„Brave Leo“ yra DI išmanusis asistentas, kuris gali apibendrinti tinklalapius, transkribuoti vaizdo įrašus ir atsakyti į klausimus. „Brave Leo Premium“ naudoja pažangius<ph name="LINK_BEFORE"/>DI modelius<ph name="LINK_AFTER"/>, todėl pateikia dar subtilesnius atsakymus ir suteikia išankstinę prieigą prie naujų funkcijų.</translation>
-<translation id="3055739528128372229">Atsakymų tikslumas negarantuojamas, juose gali būti pateikta netiksli, klaidinanti ar melaginga informacija. Neteikite slaptos ar privačios informacijos ir atsargiai rinkitės atsakymus, susijusius su sveikata, finansais, asmeniniu saugumu ir pan.</translation>
-<translation id="7297681068636289435">"Leo" nerenka identifikatorių, pavyzdžiui, jūsų IP adreso, kuriuos būtų galima susieti su jumis. Jokių asmens duomenų nesaugo nei dirbtinio intelekto modelis, nei jokie 3-ioji šalis modelio teikėjai.</translation>
+<translation id="5208096220706490232">„Brave Leo“ yra privatus išmanusis DI padėjėjas, padedantis geriau naudotis internetu. Ribota „Leo“ prieiga yra nemokama. „Brave Leo Premium“ siūlo daugiau modelių, didesnius limitus ir anksti suteikia prenumeratoriams prieigas prie naujų funkcijų. Numatytasis modelis visiems naudotojams šiuo metu yra „Mixtral 8x7B“. Daugiau informacijos rasite <ph name="LINK_BEFORE"/>Brave wiki<ph name="LINK_AFTER"/>.</translation>
+<translation id="7189603330209995455">Kai užduodate „Leo“ klausimą, pagal numatymą jis gali siųsti „Brave Leo“ ir naudoti jūsų žiūrimo tinklalapio turinį arba bet kurį jūsų paryškintą puslapyje turinį, kad galėtų atsakyti. Atsakymų tikslumas neužtikrinamas, juose gali būti netikslios, klaidinamos ar neteisingos informacijos. „Leo“ naudoja gautus iš „Brave Search“ duomenis, kad pagerintų atsako kokybę. Neteikite neatskleistinos ar privačios informacijos ir atsargiai vertinkite visus atsakymus, susijusius su sveikata, finansais, asmens saugumu ar panašia informacija. Galite bet kada koreguoti „Leo“ parinktis nuostatose. Eikite į nuostatas &gt; „Leo“.</translation>
+<translation id="3038772045018370764">„Leo“ nerenka identifikatorių, pvz., IP adreso, kuriuos galima susieti su jumis. Jokie duomenys nenaudojami DI modeliams mokyti ir DI modeliai nelaiko jokių asmens duomenų (išskyrus „Anthropic“, kuris laiko duomenis 30 dienų, o vėliau juos pašalina). Daugiau informacijos žr. <ph name="LINK_BEFORE"/>privatumo politikoje<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Čia įveskite raginimą</translation>
-<translation id="334325425115922031">Siūlomi tolesni veiksmai</translation>
 <translation id="4524675003624341892">Siūlyti klausimus…</translation>
 <translation id="4567071417854988869">Apibendrinti šį vaizdo įrašą</translation>
 <translation id="7921782882718083488">Apibendrinti šį puslapį</translation>
@@ -1852,23 +1891,30 @@
 <translation id="1167803637855350748">Prisijungiant prie „Leo“ kilo tinklo problema, patikrinkite ryšį ir bandykite dar kartą.</translation>
 <translation id="5095201428204952524">Šiuo metu „Leo“ per daug užimta. Pabandykite dar kartą po kelių minučių.</translation>
 <translation id="7144878232160441200">Kartoti</translation>
-<translation id="7202619923031933110">Sveiki, aš Leo. Esu visiškai „Brave“ priglobiamas DI asistentas. Mane valdo „Mixtral 7B“ – „ Mistral AI“ sukurtas modelis, skirtas sudėtingesnėms užduotims atlikti.</translation>
+<translation id="2505565639170795978">Sveiki, aš Leo. Esu visiškai „Brave“ priglobiamas DI asistentas. Mane valdo „Llama 13B“ – našus ir daugeliui naudojimo atvejų pritaikomas „Meta“ sukurtas modelis.</translation>
+<translation id="8030558642460377506">Sveiki, aš esu „Leo“. Esu „Brave“ teikiamas, visapusę prieglobą naudojantis DI padėjėjas. Veikiu „Mixtral 8x7B“ pagrindu – šį modelį sukūrė „Mistral AI“ sudėtingesnėms užduotims vykyti.</translation>
 <translation id="2489317965865266353">Sveiki, aš Leo. Mane teikia „Brave“ ir naudoju „Claude Instant“ – „Anthropic“ sukurtą modelį, skirtą pokalbių ir teksto apdorojimo užduotims atlikti.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/>, sukurta <ph name="COMPANY_NAME"/></translation>
+<translation id="8944485226638699751">Apribota</translation>
 <translation id="6187065185557150870">Pokalbiai</translation>
 <translation id="2961040541145689181">Naujas pokalbis</translation>
 <translation id="7557539689487606886">Užsisakyti „Premium“</translation>
 <translation id="1691256669639196606">Tvarkyti prenumeratą</translation>
 <translation id="3037594989275592390">Kalbų modeliai</translation>
+<translation id="6637015365469044269">Naujinkite dabar</translation>
 <translation id="849535826888024304">Pasiektas atsakymų dažnio limitas</translation>
-<translation id="3834321271158315162">Užsisakykite „Premium“ prenumeratą ir gaukite didesnį atsakymų dažnį arba bandykite dar kartą
-vėliau</translation>
-<translation id="1239767708151339890">Prieiga prie pranašiausių didžiųjų kalbų modelių (LLM)</translation>
-<translation id="8021579987620496265">Didesnės dažnio ribos</translation>
+<translation id="6149863263423821329">Naudokitės didesnio atsako lygiu prenumeruodami „Premium“. Taip pat galite pereiti prie mūsų mažiau veiksmingo nemokamo „Llama2 13b“ modelio, norėdami tęsti.</translation>
+<translation id="4173478269537830374">Susipažinkite su skirtingais DI modeliais</translation>
+<translation id="3245401959451976966">Atraskite savo kūrybines galias</translation>
+<translation id="4165928407303989823">Žinokite aktualijas</translation>
+<translation id="2389665228467129817">Kalbėkitės ilgiau</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> / mėn.</translation>
-<translation id="377376641316998425">Išlaisvinti visą Leo potencialą</translation>
-<translation id="8363148882096737034">„Anthropic Claude“ + daugiau netrukus</translation>
-<translation id="886527905046308697">Prieigos pirmenybė ir padidinti atsakymų limitai</translation>
+<translation id="5151923271944811339">Perjungti į nemokamą modelį</translation>
+<translation id="5474757891469990756">Atskleiskite visas „Leo“ galimybes naudodamiesi „Premium“:</translation>
+<translation id="5552332211527367850">Pirmenybinė prieiga prie veiksmingų modelių naudojantis skirtingais įgūdžiais</translation>
+<translation id="5031778211368112461">Naudokitės geriau pritaikytais modeliais kūrybinėms užduotims atlikti ir turiniui generuoti.</translation>
+<translation id="298783097210745222">Gaukite tikslesnius detalesnių pokalbių atsakymus</translation>
+<translation id="4314705522985583059">Gaukite didesnius tarifų limitus ilgesniems pokalbiams.</translation>
 <translation id="1068954060985569277">Jūsų „Brave“ paskyros seansas baigėsi. Norėdami atnaujinti, apsilankykite savo paskyros puslapyje, tada grįžkite ir naudokitės „premium“ funkcijomis.</translation>
 <translation id="94736968936709953">Sėkmingai išsiųstas atsiliepimas</translation>
 <translation id="9109355817507033196">Atsakymas nepatiko</translation>
@@ -1892,6 +1938,7 @@ vėliau</translation>
 <translation id="7494736170250048402">Siųsti „Leo“ žinutę</translation>
 <translation id="4110772752544684964">Puslapis „Leo“ per ilgas. Pokalbyje gali trūkti tam tikro konteksto.</translation>
 <translation id="4370698775470316661">Šis pokalbis per ilgas ir negali tęstis. Gali būti kitų modelių, su kuriais „Leo“ gali palaikyti tikslumą ilgesniuose pokalbiuose.</translation>
+<translation id="6291843235651817590">Bendrosios paskirties pokalbiai</translation>
 <translation id="8193130769524604031">Išplėstinės pokalbių užduotys</translation>
 <translation id="3185367320601718531">Pokalbis ir teksto generavimas</translation>
 <translation id="3965507912994218570">"Leo" nustatymai</translation>
@@ -1902,9 +1949,10 @@ vėliau</translation>
 <translation id="861953757568623294">Galiu padėti apibendrinti straipsnius, išplėsdamas svetainės turinį ir ne tik. Nežinote, kur pradėti? Pabandykite tai:</translation>
 <translation id="5642775487085641191">Norite tiesiog pabendrauti?</translation>
 <translation id="8857222718794549840">Klauskite manęs bet ko! Galime bendrauti kokiomis tik norite temomis. Aš nuolat mokausi ir tobulėju, kad galėčiau teikti geresnius atsakymus.</translation>
-<translation id="989329677470075843">Susitarimas dėl privatumo</translation>
+<translation id="9051226419897869406">Privačiai kalbėkitės su „Brave Leo“</translation>
 <translation id="1173570303649278801">Atsakymui naudoti puslapio turinį</translation>
 <translation id="8599503173207256429">Įjunkite norėdami paklausti apie šį puslapį. Jo turinys bus nusiųstas „Brave“ Leo kartu su jūsų pranešimais.</translation>
+<translation id="318819763888864209">Visos prenumeratos atnaujinamos automatiškai, bet jas galima bet kada nutraukti iki atnaujinimo.</translation>
 <translation id="6303294677342628402">Skydai</translation>
 <translation id="8458987127502506209">Įgalinti „Brave“ skydus</translation>
 <translation id="7509914170164691086">Skydai įjungti <ph name="LINK_BEFORE"/><ph name="LINK_AFTER"/></translation>
@@ -1952,6 +2000,16 @@ vėliau</translation>
 <translation id="4986297793092101884">„Brave“ jau blokuoja trečiųjų šalių slapukus. Taip pat galime blokuoti pranešimus sutikti su slapukais.</translation>
 <translation id="535688588637568715">Taip, blokuoti pranešimus sutikti su slapukais</translation>
 <translation id="2808175374672429053">„Brave“ skydams pakaitiniai simboliai neleidžiami.</translation>
+<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
+      =0 {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> sekikliai įjungti <ph name="SITE_URL"/>}
+      =1 {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> ir 1 kitas sekiklis įjungtas <ph name="SITE_URL"/>}
+      other {Brave Shields blokuojamas <ph name="COMPANY_LIST"/> ir {BLOCKED_COUNT} kiti sekikliai įjungti <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Brave Shields blokuojamas 1 sekiklis įjungtas <ph name="SITE_URL"/>}
+      other {Brave Shields blokuojamas {BLOCKED_COUNT} sekikliai įjungti <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="2540598191934725677">Spustelėkite „Brave“ piktogramą, kad peržiūrėtumėte „Brave Shields“.</translation>
 <translation id="6294662480095808915">Privatumas, be jokių kalbų.</translation>
 <translation id="4366423156486478559">„Brave“ visuomet jus saugo – kad ir kurią nuorodą spustelėtumėte. Nustatykite „Brave“ numatytąja naršykle ir naršykite. Privačiai.</translation>
 <translation id="3830912418080848377">Importavimo nustatymai</translation>

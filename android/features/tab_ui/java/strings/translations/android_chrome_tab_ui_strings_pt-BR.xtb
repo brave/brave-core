@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Quer fechar as guias antigas?</translation>
 <translation id="1215127405478249895">Confira as guias</translation>
 <translation id="125153950246128346">Toque para ver outra guia</translation>
+<translation id="1326271443836399892">Revise as configurações atuais de organização.</translation>
 <translation id="1657719826150349398">Mover guia para baixo</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> guia}one{<ph name="TABS_COUNT_MANY"/> guia}other{<ph name="TABS_COUNT_MANY"/> guias}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Adicionar <ph name="TABS_COUNT_ONE"/> guia selecionada aos favoritos}one{Adicionar <ph name="TABS_COUNT_MANY"/> guia selecionada aos favoritos}other{Adicionar <ph name="TABS_COUNT_MANY"/> guias selecionadas aos favoritos}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Remover do grupo</translation>
 <translation id="3008554597174452548">Parar de monitorar o produto</translation>
 <translation id="3052964831964880138">Redução de <ph name="PRICE_DROP"/> no preço deste produto: <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Você tem <ph name="TABS_COUNT_ONE"/> guia arquivada}one{Você tem <ph name="TABS_COUNT_MANY"/> guia arquivada}other{Você tem <ph name="TABS_COUNT_MANY"/> guias arquivadas}}</translation>
 <translation id="3194464645767632461">nota</translation>
 <translation id="3291470810748040983">Você receberá um alerta quando houver um preço menor em uma guia aberta</translation>
 <translation id="3328308545011660196">Sugestão: <ph name="NUMBER_OF_TABS"/> guias parecem ser relacionadas. Agrupá-las?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Receber notificações</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> guias parecem ser relacionadas. Agrupá-las?</translation>
 <translation id="4212246570487010370">Continuar navegando</translation>
+<translation id="427987768447457592">Novo grupo de guias</translation>
 <translation id="4648718555153979859">Suas guias são agrupadas aqui</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> avaliação)}one{(<ph name="REVIEWS_COUNT_MANY"/> avaliação)}other{(<ph name="REVIEWS_COUNT_MANY"/> avaliações)}}</translation>
 <translation id="4850886885716139402">Ver</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Ocultar grade de tela cheia</translation>
 <translation id="5076161749301278626">Ver avaliações da loja?</translation>
 <translation id="5082793167783849073">Compare as páginas rapidamente criando um grupo. Para começar, toque em um link e mantenha-o pressionado.</translation>
+<translation id="5161254044473106830">O título é obrigatório</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Você tem <ph name="TABS_COUNT_ONE"/> guia que não usou recentemente}one{Você tem <ph name="TABS_COUNT_MANY"/> guia que não usou recentemente}other{Você tem <ph name="TABS_COUNT_MANY"/> guias que não usou recentemente}}</translation>
 <translation id="5339733443032484186">Sua última guia</translation>
 <translation id="5490235265819901748">Grupo de guias expandido</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Mover guia para a direita</translation>
 <translation id="7966321538264951561">Dispensar as sugestões.</translation>
 <translation id="8029301326595421733">As informações sobre a loja estão abertas no tamanho máximo</translation>
-<translation id="814503310257431685">Ver todos</translation>
 <translation id="8205266828577616993">Mover guia para cima</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Fechar <ph name="TABS_COUNT_ONE"/> guia selecionada}one{Fechar <ph name="TABS_COUNT_MANY"/> guia selecionada}other{Fechar <ph name="TABS_COUNT_MANY"/> guias selecionadas}}</translation>
 <translation id="8398929769197326728">Nova pasta (<ph name="CURRENT_TIMESTAMP_MS"/>)</translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">As informações sobre a loja estão fechadas</translation>
 <translation id="9150694013019234766">Alterne entre as guias do seu grupo de guias perto da parte inferior da tela</translation>
 <translation id="9169594135889675189">Adicionar nova guia ao grupo</translation>
+<translation id="955558140275419384">Acesse este editor para revisar todas as guias arquivadas para melhor organização.</translation>
 <translation id="959682366969460160">Organize-se</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
 =1 {Você encontrará sua aba fechada na seção 'Abas recentes' no menu principal do Brave. Sua aba Privada não estará disponível.}

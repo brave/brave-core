@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">می‌خواهید برگه‌های قدیمی را ببندید؟</translation>
 <translation id="1215127405478249895">مرور برگه‌ها</translation>
 <translation id="125153950246128346">برای دیدن برگه دیگر ضربه بزنید</translation>
+<translation id="1326271443836399892">تنظیمات فعلی مرتب کردن را مرور کنید.</translation>
 <translation id="1657719826150349398">انتقال برگه به پایین</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> برگه}one{<ph name="TABS_COUNT_MANY"/> برگه}other{<ph name="TABS_COUNT_MANY"/> برگه}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{نشانک‌گذاری <ph name="TABS_COUNT_ONE"/> برگه انتخاب‌شده}one{نشانک‌گذاری <ph name="TABS_COUNT_MANY"/> برگه انتخاب‌شده}other{نشانک‌گذاری <ph name="TABS_COUNT_MANY"/> برگه انتخاب‌شده}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">برداشتن از گروه</translation>
 <translation id="3008554597174452548">توقف پیگیری محصول</translation>
 <translation id="3052964831964880138"><ph name="PRICE_DROP"/> کاهش قیمت <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> برگه بایگانی‌شده دارید}one{<ph name="TABS_COUNT_MANY"/> برگه بایگانی‌شده دارید}other{<ph name="TABS_COUNT_MANY"/> برگه بایگانی‌شده دارید}}</translation>
 <translation id="3194464645767632461">رده‌بندی</translation>
 <translation id="3291470810748040983">وقتی در یکی از برگه‌های باز، قیمت کمتری وجود داشت، اعلان دریافت خواهید کرد</translation>
 <translation id="3328308545011660196">پیشنهاد: به نظر می‌رسد <ph name="NUMBER_OF_TABS"/> برگه مرتبط باشند. گروه‌بندی شوند؟</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">دریافت اعلان</translation>
 <translation id="4133493477912226187">به نظر می‌رسد <ph name="NUMBER_OF_TABS"/> برگه مرتبط باشند. گروه‌بندی شوند؟</translation>
 <translation id="4212246570487010370">ادامه مرور</translation>
+<translation id="427987768447457592">گروه برگه جدید</translation>
 <translation id="4648718555153979859">برگه‌هایتان اینجا باهم گروه‌بندی می‌شوند</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> مرور)}one{(<ph name="REVIEWS_COUNT_MANY"/> مرور)}other{(<ph name="REVIEWS_COUNT_MANY"/> مرور)}}</translation>
 <translation id="4850886885716139402">نما</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">پنهان کردن شبکه تمام‌صفحه</translation>
 <translation id="5076161749301278626">می‌خواهید مرورهای فروشگاه را ببینید؟</translation>
 <translation id="5082793167783849073">با ایجاد گروه، صفحه‌ها را سریع مقایسه کنید. برای شروع، پیوندی را لمس کنید و نگه دارید.</translation>
+<translation id="5161254044473106830">عنوان مورد نیاز است</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> برگه دارید که اخیراً از آن استفاده نکرده‌اید}one{<ph name="TABS_COUNT_MANY"/> برگه دارید که اخیراً از آن استفاده نکرده‌اید}other{<ph name="TABS_COUNT_MANY"/> برگه دارید که اخیراً از آن‌ها استفاده نکرده‌اید}}</translation>
 <translation id="5339733443032484186">آخرین برگه شما</translation>
 <translation id="5490235265819901748">گروه برگه گسترده شد</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">انتقال برگه به چپ</translation>
 <translation id="7966321538264951561">پیشنهادها رد شود.</translation>
 <translation id="8029301326595421733">اطلاعات مربوط به این فروشگاه به‌صورت کامل باز شده است</translation>
-<translation id="814503310257431685">نمایش همه</translation>
 <translation id="8205266828577616993">انتقال برگه به بالا</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{بستن <ph name="TABS_COUNT_ONE"/> برگه انتخابی}one{بستن <ph name="TABS_COUNT_MANY"/> برگه انتخابی}other{بستن <ph name="TABS_COUNT_MANY"/> برگه انتخابی}}</translation>
 <translation id="8398929769197326728">پوشه جدید - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">اطلاعات مربوط به این فروشگاه بسته شد</translation>
 <translation id="9150694013019234766">جابه‌جایی بین برگه‌ها در گروه برگه شما واقع در نزدیک پایین صفحه‌نمایش</translation>
 <translation id="9169594135889675189">افزودن برگه جدید به گروه</translation>
+<translation id="955558140275419384">با وارد کردن این ویرایشگر، همه برگه‌های بایگانی‌شده را برای مرتب کردن مرور کنید</translation>
 <translation id="959682366969460160">سازمان‌دهی شوید</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
 =1 {شما می‌توانید تب‌های بسته خود را در قسمت تب‌های اخیر در منوی اصلی Brave مشاهده کنید. تب خصوصی در دسترس نخواهد بود.}

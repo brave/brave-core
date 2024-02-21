@@ -254,6 +254,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Smanji kartice</translation>
 <translation id="7194343495483122559">Proširi kartice</translation>
 <translation id="1199054713803577378">Smanji kartice</translation>
+<translation id="1337946268962884806">Prilagođena narudžba</translation>
+<translation id="8373664339577369248">prilagođena narudžba</translation>
 <translation id="8120600068258956006">Dodaj na listu za reprodukovanje</translation>
 <translation id="650694591627983430">Mediji su pronađeni na ovoj stranici</translation>
 <translation id="8525248723479742219">Reprodukuj kasnije</translation>
@@ -303,6 +305,9 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Ponovite isključivanje</translation>
 <translation id="1748244367114657861">Ponovite jedan</translation>
 <translation id="6421906998825794164">Ponovite sve</translation>
+<translation id="6453210454707928697">Nije uspelo reprodukovanje stavke</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] je možda istekao. Da li želite da ga obnovite?</translation>
+<translation id="6155018868740116868">Obnoviti</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Промене ће ступити на снагу када следећи пут поново покренете Brave.</translation>
 <translation id="7179921470347911571">Ponovo pokreni sada</translation>
@@ -325,6 +330,8 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Prikaži naslovnu traku</translation>
 <translation id="5371926069408837914">Proširite ploču sa vertikalnim karticama kada pređete mišem kada je skupljena</translation>
 <translation id="3367129510799209147">Režim prelaska pokazivača preko kartice</translation>
+<translation id="515949045075831661">Prikazati na desnoj strani</translation>
+<translation id="3725395376319291415">Prikazati na levoj strani</translation>
 <translation id="2113977810652731515">Kartica</translation>
 <translation id="4096343215397759358">Kartica sa pregledom</translation>
 <translation id="5297085818601043899">Kratak opis</translation>
@@ -361,7 +368,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">Brave se već nalazi u Docku</translation>
 <translation id="3195845168740336657">Podešavanje štitova</translation>
 <translation id="754769152790647708">Status štitova</translation>
-<translation id="3615717588724840230">Sajtovi mogu da blokiraju praćenja, oglase i beleženje posebnih obeležja koristeći štitove</translation>
+<translation id="4868109105992358853">Štitovi mogu da blokiraju praćenja, oglase i otiske</translation>
 <translation id="5690973901138662477">Uključeni štitovi</translation>
 <translation id="4697275813919189958">Isključeni štitovi</translation>
 <translation id="6303294677342628402">Štitovi</translation>
@@ -416,7 +423,7 @@ Ili kasnije promenite u <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Brave nagrade su onemogućene</translation>
 <translation id="413570371620795359">Za aktiviranje i započinjanje otvorite tablu za nagrade</translation>
 <translation id="1051600834033686945">Otvorite kompletna podešavanja za Brave nagrade</translation>
-<translation id="6333347122924254968">Prikaži ikonu Brave nagrada na traci sa adresama</translation>
+<translation id="8826461509529116322">Dugme za prikaz Brave nagrada</translation>
 <translation id="9185018653595759199">Blokiranje društvenih medija</translation>
 <translation id="863171915776379000">Dozvoli prijavljivanje putem Facebook-a i ugrađene objave</translation>
 <translation id="5165042248369837294">Dozvoli Twitter ugrađene tvitove</translation>
@@ -726,6 +733,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 Leo u budućnosti i takođe će obrisati istoriju ćaskanja. Brisanjem
 istorije ćaskanja izbrisaćete sve vaše prethodne razgovore sa Brave
 Leom. Ova radnja se ne može opozvati.</translation>
+<translation id="5574059574002819179">Prilagoditi predloge automatskog završetka</translation>
 <translation id="8157373421434119674">Podaci i istorija ćaskanja</translation>
 <translation id="614530507403667291">Podrazumevani model za nove razgovore</translation>
 <translation id="349846214503465941">Omogući listu za reprodukovanje</translation>

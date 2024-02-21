@@ -255,6 +255,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="480565261566115689">Minimizar pestanas</translation>
 <translation id="7194343495483122559">Despregar pestanas</translation>
 <translation id="1199054713803577378">Minimizar pestanas</translation>
+<translation id="1337946268962884806">Orde personalizada</translation>
+<translation id="8373664339577369248">orde personalizada</translation>
 <translation id="8120600068258956006">Engadir a Lista de reprodución</translation>
 <translation id="650694591627983430">Atopouse contido multimedia nesta páxina</translation>
 <translation id="8525248723479742219">Reproducir máis tarde</translation>
@@ -304,6 +306,9 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="2800828306627475693">Repetición desactivada</translation>
 <translation id="1748244367114657861">Repetir un</translation>
 <translation id="6421906998825794164">Repetir todo</translation>
+<translation id="6453210454707928697">Non se puido reproducir o elemento</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] puido caducar. Gustaríache recuperalo?</translation>
+<translation id="6155018868740116868">Recuperar</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Os cambios aplicaranse a próxima vez que reinicies Brave.</translation>
 <translation id="7179921470347911571">Relanzamento agora</translation>
@@ -326,6 +331,8 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="5371926069408837914">Expandir as pestanas verticais ao pasar o punteiro do rato cando estean contraídas</translation>
 <translation id="3367129510799209147">Modo para ver os separadores ao pasar por riba</translation>
+<translation id="515949045075831661">Amosar á dereita</translation>
+<translation id="3725395376319291415">Amosar á esquerda</translation>
 <translation id="2113977810652731515">Tarxeta</translation>
 <translation id="4096343215397759358">Tarxeta con previsualización</translation>
 <translation id="5297085818601043899">Información sobre ferramentas</translation>
@@ -362,7 +369,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="4057614912106618659">Brave xa está no Dock</translation>
 <translation id="3195845168740336657">Configuración de Shields</translation>
 <translation id="754769152790647708">Estado de Shields</translation>
-<translation id="3615717588724840230">Os sitios poden bloquear rastrexadores, anuncios e pegadas dixitais mediante Shields</translation>
+<translation id="4868109105992358853">Os escudos poden bloquear rastreadores, anuncios e impresións dixitais</translation>
 <translation id="5690973901138662477">Subir en Shields</translation>
 <translation id="4697275813919189958">Baixar en Shields</translation>
 <translation id="6303294677342628402">Escudos</translation>
@@ -417,7 +424,7 @@ Se prefires, podes cambiar os permisos máis tarde en <ph name="SETTINGS_EXTENIO
 <translation id="5567412479632285879">As recompensas de Brave están desactivadas.</translation>
 <translation id="413570371620795359">Abre o panel de recompensas para activalo e comezar</translation>
 <translation id="1051600834033686945">Abrir a configuración completa de Recompensas de Brave</translation>
-<translation id="6333347122924254968">Mostrar a icona de Recompensas de Brave na barra de enderezos</translation>
+<translation id="8826461509529116322">Mostrar botón de Recompensas de Brave</translation>
 <translation id="9185018653595759199">Bloqueando redes sociais</translation>
 <translation id="863171915776379000">Permitir as conexións e publicacións incrustadas de Facebook</translation>
 <translation id="5165042248369837294">Permitir os chíos incrustados en Twitter</translation>
@@ -727,6 +734,7 @@ volver usar Sincronización, terás que crear unha conta nova e volver engadir o
 Leo no futuro e tamén borrará o seu historial de chats. Borrar o seu
 historial de chats eliminará todas as súas conversas anteriores con Brave
 Leo. Esta acción non se pode desfacer.</translation>
+<translation id="5574059574002819179">Axustar suxestións de autocompletado</translation>
 <translation id="8157373421434119674">Historial de datos e chat</translation>
 <translation id="614530507403667291">Modelo predeterminado para conversas novas</translation>
 <translation id="349846214503465941">Activar Lista de reprodución</translation>

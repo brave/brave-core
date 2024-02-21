@@ -429,18 +429,10 @@ Ali ste prepričani, da želite to storiti?</translation>
 <translation id="2394961582378297792">Odjavljeni</translation>
 <translation id="5308380583665731573">Povezovanje</translation>
 <translation id="3368922792935385530">Povezano</translation>
-<translation id="8673913984316081937">Potrditev veljavnosti denarnice ni obvezna</translation>
-<translation id="8558636200953226885">Če pa potrdite, lahko...</translation>
-<translation id="8697510149346635496">Umaknite BAT, ki ste ga zaslužili z ogledom oglasov, ki spoštujejo zasebnost</translation>
-<translation id="1481480653609649134">Nakup dodatnih BAT s kreditnimi karticami in drugimi viri</translation>
-<translation id="9096003370755878766">Umaknite BAT, ki ste ga morda že dodali v svojo denarnico Brave Rewards</translation>
-<translation id="1554282356558968486">Našo denarno storitev zagotovi</translation>
 <translation id="6569877533335686968">Podpri</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Platforma Uphold lahko zahteva, da preverite svojo identiteto na podlagi zahtevanih storitev.</translation>
-<translation id="3200197118442451932">Brave Software Inc. ne obdeluje, ne shranjuje in ne dostopa do nobenih osebnih podatkov, ki jih posredujete <ph name="WALLET_PROVIDER"/>ob ustvaritvi računa.</translation>
 <translation id="1665118090708049096">Pojdi v moj račun <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Prijavi se v svoj <ph name="WALLET_PROVIDER"/>račun</translation>
 <translation id="8874184842967597500">Povezava ni vzpostavljena</translation>
@@ -530,7 +522,7 @@ je v teku.
 <translation id="2225863440766607138">Sledilniki</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Z brskalnikom Brave ste v zadnjih 3 urah blokirali <ph name="COUNT"/> sledilnikov &amp; oglasov.</translation>
-<translation id="3621193901658023971">Blokirajte sledilnike &amp; oglasov in s pomočjo brskalnika Brave po največjih portalih z novicami brskajte tudi do 6-krat hitreje.</translation>
+<translation id="5005713153542196658">Brskajte do 6-krat hitreje na glavnih spletnih mestih z novicami v Brave, tako da blokirate &amp; oglasi.</translation>
 <translation id="7427567994475794038">Vključite prejemanje poročil o zasebnosti in preverite, koliko sledilnikov &amp; oglasov ste blokirali v zadnjih 3 urah.</translation>
 <translation id="2053891538879944400">Z brskalnikom Brave ste prihranili <ph name="DATA"/> <ph name="DATA_TEXT"/> podatkov.</translation>
 <translation id="8640064498452534195">Vključite prejemanje poročil o zasebnosti in preverite, kolikšno količino podatkov ste prihranili.</translation>
@@ -597,6 +589,10 @@ je v teku.
 <translation id="8622329973403382303">Na hitro si oglejte, kako vse skupaj deluje, da se boste zapisali v zgodovino kot zvezda Rewards!</translation>
 <translation id="3479552764303398839">Ne zdaj</translation>
 <translation id="7138272885617540195">Dovoli odpiranje povezav aplikacij v aplikacijah izven Brave</translation>
+<translation id="4954512758656527938">Privzeta denarnica Ethereum</translation>
+<translation id="7701023802820268122">Privzeta denarnica Solana</translation>
+<translation id="7701040980221191251">Brez</translation>
+<translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="8792121506918889955">Politika ravnanja z WebRTC IP</translation>
 <translation id="8798099450830957504">Privzeto</translation>
 <translation id="1822560017823072927">Privzeti javni in zasebni vmesniki</translation>
@@ -692,7 +688,6 @@ je v teku.
 <translation id="8475984867371585028">Uredite vidne NFT-je</translation>
 <translation id="5050890334032852465">Shrani seznam za spremljanje računa</translation>
 <translation id="7755766175599167100">Išči žetone</translation>
-<translation id="8488282162676695335">Denarnica Brave</translation>
 <translation id="3784455785234192852">Zakleni</translation>
 <translation id="4412698727486357573">Center za pomoč</translation>
 <translation id="8796429300536029044">Podrobnost NFT</translation>
@@ -724,12 +719,12 @@ je v teku.
 <translation id="8272917646984397798">Zavaruje vse povezave</translation>
 <translation id="1751947227857853925">Hitro in neomejeno do 100 Mbps</translation>
 <translation id="1400240082805528049">Non-stop podpora</translation>
-<translation id="5051030058817632680">Blokira neželene omrežne povezave</translation>
+<translation id="5892534145504632332">Zaščitite vsako aplikacijo in amp; amp; amp; celotno napravo</translation>
+<translation id="7195416926059527505">Varnejše za domači ali javni Wi-Fi</translation>
+<translation id="1354700000739359839">Svetlobna hitrost do 100 Mb/s</translation>
 <translation id="3510283489391432976">Izberite svojo geografsko lokacijo/državo</translation>
-<translation id="4390800080658195654">Na spletu ostanete anonimni</translation>
-<translation id="639981156979733813">Podpira hitrosti do 100 Mbps</translation>
-<translation id="765343799669302337">Uporablja WireGuard varen šifriran tunel VPN</translation>
-<translation id="1571230671455380494">Vaših podatkov nikoli ne delimo in ne prodajamo</translation>
+<translation id="7695158478627528928">Brave nikoli ne beleži vaših dejavnosti</translation>
+<translation id="4575683170451975058">Zaščitite 5 naprav z eno naročnino</translation>
 <translation id="276866628038850725">Vsi paketi imajo brezplačno 7-dnevno preskusno dobo!</translation>
 <translation id="1532536259167115948">Mesečna naročnina <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Letna naročnina <ph name="TRIAL_TEXT"/></translation>
@@ -740,6 +735,7 @@ je v teku.
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / leto</translation>
 <translation id="2655185358771731232">Poskusite brezplačno 7 dni. Po 7 dneh vam bomo zaračunali ceno paketa. Vse naročnine se samodejno obnovijo, vendar jih je mogoče preklicati pred podaljšanjem.</translation>
 <translation id="6053992191006521518">Poskusite BREZPLAČNO</translation>
+<translation id="3990956504562716932">Poskusite brezplačno 7 dni</translation>
 <translation id="721747358270435486">Namesti VPN</translation>
 <translation id="836074276610740314">Namesti VPN profil</translation>
 <translation id="8021842065465097929">Brave bo zdaj namestil VPN profil.</translation>
@@ -1124,71 +1120,6 @@ je v teku.
 <translation id="591648995518106347">Samodejno naloži ustrezne članke v načinu za branje</translation>
 <translation id="1295796122927221823">Ogled v bralnem načinu</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> na <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Seznam predvajanja Brave</translation>
-<translation id="4850886885716139402">Pogled</translation>
-<translation id="7392941176393379100">Dodano v '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Upravljanje podatkov seznama predvajanja</translation>
-<translation id="7650602357673790368">Seznam predvajanja bo privzeto samodejno shranil vsebino v vašo napravo za predvajanje brez povezave (na zasebnih in skupnih seznamih predvajanja). Če nimate povezave Wi-Fi, bo samodejno shranjevanje uporabilo vaše mobilne podatke.\n\nČe želite spremeniti to privzeto nastavitev, uporabite nastavitve.</translation>
-<translation id="5900576657906675258">Dodaj element na seznam predvajanja</translation>
-<translation id="349846214503465941">Omogoči seznam predvajanja</translation>
-<translation id="1309636029062006520">Ustvarite sezname predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli.</translation>
-<translation id="3561815498111282415">Samodejno shranjevanje za način brez povezave</translation>
-<translation id="1832424694374124654">Samodejno shrani nove elemente seznama predvajanja v vašo napravo, tako da lahko predvajate brez internetne povezave.</translation>
-<translation id="8103022210423023846">Samodejno shranjevanje je VKLOPLJENO</translation>
-<translation id="3926329432879804185">Samodejno shranjevanje je IZKLOPLJENO</translation>
-<translation id="7768812595186089508">Samodejno shrani le, ko je vzpostavljena povezava Wi-Fi</translation>
-<translation id="5939518447894949180">Ponastavi</translation>
-<translation id="8199028711686989861">Odstranite vse videoposnetke s seznama predvajanja, vključno s shranjevanjem v načinu brez povezave.</translation>
-<translation id="5916664084637901428">Vklop</translation>
-<translation id="5860033963881614850">Izklop</translation>
-<translation id="2920568868625746681">Samo WiFi</translation>
-<translation id="4590997608186539865">Seznam predvajanja</translation>
-<translation id="7525067979554623046">Ustvari</translation>
-<translation id="5491049004699827548">Ustvarite svoj prvi seznam predvajanja</translation>
-<translation id="5319108110887582146">Ustvarite seznam predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli. Tudi brez povezave.</translation>
-<translation id="6802849415466883498">Ustvari seznam predvajanja</translation>
-<translation id="8525248723479742219">Predvajaj kasneje</translation>
-<translation id="7453007860684252933">Prebrskaj in dodaj</translation>
-<translation id="9014883386413828317">Dodajte svojo najljubšo vsebino. Poiščite gumb ( + ) v spodnjem desnem delu zaslona.</translation>
-<translation id="5928669500312007783">Pobrskajte po medijih</translation>
-<translation id="8152485753254079984">Nov seznam predvajanja</translation>
-<translation id="9130105487623071247">Ime seznama predvajanja</translation>
-<translation id="726581235416249619">Neimenovan seznam predvajanja</translation>
-<translation id="1456254983411148628">Odstrani podatke</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> Izbrano</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> elementov</translation>
-<translation id="2317629745818459803">Predvajaj vse</translation>
-<translation id="7544853251252956727">Naključno predvajanje</translation>
-<translation id="2881339830231736485">Pred kratkim predvajano</translation>
-<translation id="7636458383879257005">Dotaknite se, pritisnite in držite ali povlecite</translation>
-<translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
-<translation id="39991094779686024">Seznami predvajanja</translation>
-<translation id="1710072605877822603">Dodaj medije</translation>
-<translation id="3874252678044305931">Dodajte videoposnetke na Seznam predvajanja Brave. Predvajanje kadarkoli. Tudi brez povezave.</translation>
-<translation id="8973629800378391099">Ustvarite sezname predvajanja svoje najljubše vsebine. Prihranite mobilne podatke. In predvajajte brez oglasov.</translation>
-<translation id="4936812987266342401">Za dodajanje videoposnetkov na seznam predvajanja se preprosto dotaknite gumba</translation>
-<translation id="6263657785571415306">Ostanite v toku: med brskanjem dodajte videoposnetke, oglejte si jih pozneje.</translation>
-<translation id="2839555636100404687">Predvajanje je boljše na Seznamu predvajanja</translation>
-<translation id="9079526681359439081">Predvajajte v ozadju. Upravljajte z zaklenjenega zaslona. In več…</translation>
-<translation id="3620862810055853183">Odpri seznam predvajanja</translation>
-<translation id="3861012838874771868">Odpri nastavitve seznama predvajanja</translation>
-<translation id="5220099266891491416">Gumb Skrij seznam predvajanja</translation>
-<translation id="7416347631175891923">Poskusite!</translation>
-<translation id="1173894706177603556">Preimenuj</translation>
-<translation id="1620612903815671893">Odstrani podatke brez povezave s seznama predvajanja</translation>
-<translation id="3261711068865275261">Odstranite vse podatke brez povezave</translation>
-<translation id="6653691766801349738">Ohrani seznam predvajanja za uporabo brez povezave</translation>
-<translation id="8708086574143054053">Ohrani vse sezname predvajanja za uporabo brez povezave</translation>
-<translation id="3596306474342941843">Izbriši seznam predvajanja</translation>
-<translation id="7765158879357617694">Premakni</translation>
-<translation id="3803384303807438047">Izbriši podatke brez povezave elementa</translation>
-<translation id="4195643157523330669">Odpri v novem zavihku</translation>
-<translation id="4243710787042215766">Odpri v zavihku brez beleženja zgodovine</translation>
-<translation id="8261506727792406068">Izbriši</translation>
-<translation id="377872456482681602">Najprej izberite elemente</translation>
-<translation id="6172429305139364624">Element seznama predvajanja ni predpomnjen.\nProsimo, predpomnite element za način brez povezave.</translation>
-<translation id="3631131732607750008">Vsebina je potekla. Poskusite ponovno čez nekaj sekund.</translation>
-<translation id="286472539388773794">Vnesite veljavno ime seznama predvajanja</translation>
 <translation id="9085765419770918643">Podatkov NFTs še ni.</translation>
 <translation id="8445532667841598737">Ste pripravljeni na dodajanje podatkov? Preprosto kliknite spodnji gumb za uvoz.</translation>
 <translation id="5925465310724910998">Želite, da se vaši NFT-ji samodejno prikažejo?</translation>
@@ -1197,12 +1128,6 @@ je v teku.
 <translation id="622372328961630111">Samodejno dodajte NFT-je, ki jih imate, v denarnico z uporabo API-jev tretjih oseb. <ph name="BEGIN_LINK_1"/>Več o tem.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Račun tabele za iskanje naslovov:</translation>
 <translation id="7659483790930268440">Indeks tabele za iskanje naslovov:</translation>
-<translation id="7322560193401221004">Zapomni si položaj predvajanja datoteke</translation>
-<translation id="7505951907514709271">Za posamezne datoteke nadaljujte predvajanje od točke zadnjega premora</translation>
-<translation id="6835165453349969605">Zapomni si položaj predvajanja seznama</translation>
-<translation id="6344103698928069918">Za seznam predvajanja nadaljujte predvajanje od točke zadnjega premora</translation>
-<translation id="8141583471142904652">Neprekinjeno poslušanje</translation>
-<translation id="851432578283946230">Samodejno predvaja naslednje elemente na seznamu predvajanja</translation>
 <translation id="7853202427316060426">Dejavnost</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Tržna cena</translation>
@@ -1219,6 +1144,80 @@ je v teku.
 <translation id="2471230424465522689">Ne pred</translation>
 <translation id="4841860051609590575">ID zahteve</translation>
 <translation id="1179407411385015942">Leo je pametni pomočnik, ki ga poganja AI, vgrajen neposredno v brskalnik</translation>
+<translation id="4109670531935487117">Prikaz predlogov za samodejno dokončanje v naslovni vrstici</translation>
 <translation id="1250335737108905610">Ponastavite in počistite Leo podatke</translation>
 <translation id="6165101586663336913">Če ponastavite pomočnika Leo, se boste morali prijaviti za uporabo Lea v prihodnosti, počistili pa boste tudi svojo zgodovino klepetov. Če izbrišete zgodovino klepeta, boste izbrisali vse prejšnje pogovore z Leom. Tega dejanja ni mogoče razveljaviti.</translation>
+<translation id="3692772534525889713">Povežite nakup v Trgovini Play z računom Brave in uporabljajte Brave Leo v drugih napravah.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Mesečno</translation>
+<translation id="451189393813405346">Vprašaj Lea</translation>
+<translation id="7322560193401221004">Zapomni si položaj predvajanja datoteke</translation>
+<translation id="7505951907514709271">Za posamezne datoteke nadaljujte predvajanje od točke zadnjega premora</translation>
+<translation id="6835165453349969605">Zapomni si položaj predvajanja seznama</translation>
+<translation id="6344103698928069918">Za seznam predvajanja nadaljujte predvajanje od točke zadnjega premora</translation>
+<translation id="8141583471142904652">Neprekinjeno poslušanje</translation>
+<translation id="851432578283946230">Samodejno predvaja naslednje elemente na seznamu predvajanja</translation>
+<translation id="295620834661738195">Seznam predvajanja Brave</translation>
+<translation id="4850886885716139402">Pogled</translation>
+<translation id="7392941176393379100">Dodano v '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Omogoči seznam predvajanja</translation>
+<translation id="1309636029062006520">Ustvarite sezname predvajanja svojih najljubših zvokov in videoposnetkov ter jih predvajajte kadar koli in kjer koli.</translation>
+<translation id="7899390017499980820">Gumb Dodaj na seznam predvajanja</translation>
+<translation id="6901152954398668317">Pokaži ali skrij gumb »Dodaj na seznam predvajanja« za hiter dostop do dodajanja ali odstranjevanja medijev.</translation>
+<translation id="5939518447894949180">Ponastavi</translation>
+<translation id="8199028711686989861">Odstranite vse videoposnetke s seznama predvajanja, vključno s shranjevanjem v načinu brez povezave.</translation>
+<translation id="4590997608186539865">Seznam predvajanja</translation>
+<translation id="7525067979554623046">Ustvari</translation>
+<translation id="8525248723479742219">Predvajaj kasneje</translation>
+<translation id="7453007860684252933">Prebrskaj in dodaj</translation>
+<translation id="9014883386413828317">Dodajte svojo najljubšo vsebino. Poiščite gumb ( + ) v spodnjem desnem delu zaslona.</translation>
+<translation id="5928669500312007783">Pobrskajte po medijih</translation>
+<translation id="8152485753254079984">Nov seznam predvajanja</translation>
+<translation id="9130105487623071247">Ime seznama predvajanja</translation>
+<translation id="726581235416249619">Neimenovan seznam predvajanja</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Izbrano</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elementov</translation>
+<translation id="2317629745818459803">Predvajaj vse</translation>
+<translation id="7544853251252956727">Naključno predvajanje</translation>
+<translation id="2881339830231736485">Pred kratkim predvajano</translation>
+<translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
+<translation id="39991094779686024">Seznami predvajanja</translation>
+<translation id="1710072605877822603">Dodaj medije</translation>
+<translation id="3874252678044305931">Dodajte videoposnetke na Seznam predvajanja Brave. Predvajanje kadarkoli. Tudi brez povezave.</translation>
+<translation id="8973629800378391099">Ustvarite sezname predvajanja svoje najljubše vsebine. Prihranite mobilne podatke. In predvajajte brez oglasov.</translation>
+<translation id="4936812987266342401">Za dodajanje videoposnetkov na seznam predvajanja se preprosto dotaknite gumba</translation>
+<translation id="6263657785571415306">Ostanite v toku: med brskanjem dodajte videoposnetke, oglejte si jih pozneje.</translation>
+<translation id="2839555636100404687">Predvajanje je boljše na Seznamu predvajanja</translation>
+<translation id="9079526681359439081">Predvajajte v ozadju. Upravljajte z zaklenjenega zaslona. In več…</translation>
+<translation id="3620862810055853183">Odpri seznam predvajanja</translation>
+<translation id="3861012838874771868">Odpri nastavitve seznama predvajanja</translation>
+<translation id="5220099266891491416">Gumb Skrij seznam predvajanja</translation>
+<translation id="7416347631175891923">Poskusite!</translation>
+<translation id="1173894706177603556">Preimenuj</translation>
+<translation id="3596306474342941843">Izbriši seznam predvajanja</translation>
+<translation id="7765158879357617694">Premakni</translation>
+<translation id="3803384303807438047">Izbriši podatke brez povezave elementa</translation>
+<translation id="4195643157523330669">Odpri v novem zavihku</translation>
+<translation id="4243710787042215766">Odpri v zavihku brez beleženja zgodovine</translation>
+<translation id="8261506727792406068">Izbriši</translation>
+<translation id="377872456482681602">Najprej izberite elemente</translation>
+<translation id="286472539388773794">Vnesite veljavno ime seznama predvajanja</translation>
+<translation id="2824489375399072491">Delite z :</translation>
+<translation id="5319532905552885478">Medijska vsebina je že dodana na privzeti seznam predvajanja</translation>
+<translation id="4802584673094436231">Priprava...</translation>
+<translation id="481455355267255546">Naslednje</translation>
+<translation id="5474757891469990756">Z aplikacijo Premium sprostite vse Leove moči:</translation>
+<translation id="4173478269537830374">Raziščite različne modele AI</translation>
+<translation id="3453542753968940696">Prednostni dostop do zmogljivih modelov z različnimi spretnostmi.</translation>
+<translation id="3245401959451976966">Odkrijte svojo ustvarjalnost</translation>
+<translation id="5031778211368112461">Modeli za dostop, ki so primernejši za ustvarjalne naloge in ustvarjanje vsebine.</translation>
+<translation id="4165928407303989823">Držite se teme</translation>
+<translation id="298783097210745222">Pridobite natančnejše odgovore za bolj poglobljene pogovore.</translation>
+<translation id="2389665228467129817">Klepetajte dlje časa</translation>
+<translation id="4314705522985583059">Pridobite višje cenovne omejitve za daljše pogovore.</translation>
+<translation id="6365289557497555234">Vse naročnine se samodejno podaljšajo, vendar jih lahko kadar koli pred podaljšanjem prekličete.</translation>
+<translation id="6637015365469044269">Posodobite zdaj</translation>
+<translation id="614530507403667291">Privzeti model za nove pogovore</translation>
+<translation id="4071849832011229600">Privzet model</translation>
+<translation id="7557539689487606886">Pojdi na Premium</translation>
 </translationbundle>
