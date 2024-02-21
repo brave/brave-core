@@ -11,6 +11,7 @@ mod storage;
 use std::cell::RefCell;
 use std::fmt;
 use std::rc::Rc;
+use std::thread;
 
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::{LocalPool, LocalSpawner};
@@ -21,19 +22,26 @@ use tracing::debug;
 pub use skus;
 
 use crate::httpclient::{HttpRoundtripContext, WakeupContext};
+use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
 use errors::result_to_string;
 
-pub struct NativeClientContext {
+pub struct NativeClientExecutor {
+    is_shutdown: bool,
+    pool: Option<LocalPool>,
+    spawner: LocalSpawner,
+    thread_id: thread::ThreadId,
+}
+
+#[derive(Clone)]
+pub struct NativeClientInner {
     environment: skus::Environment,
-    ctx: UniquePtr<ffi::SkusContext>,
+    executor: Rc<RefCell<NativeClientExecutor>>,
+    ctx: Rc<RefCell<UniquePtr<ffi::SkusContext>>>,
 }
 
 #[derive(Clone)]
 pub struct NativeClient {
-    is_shutdown: Rc<RefCell<bool>>,
-    pool: Rc<RefCell<LocalPool>>,
-    spawner: LocalSpawner,
-    ctx: Rc<RefCell<NativeClientContext>>,
+    inner: Rc<RefCell<NativeClientInner>>,
 }
 
 impl fmt::Debug for NativeClient {
@@ -44,11 +52,44 @@ impl fmt::Debug for NativeClient {
 
 impl NativeClient {
     fn try_run_until_stalled(&self) {
-        if *self.is_shutdown.borrow() {
+        let executor = self.inner.borrow().executor.clone();
+        if let Ok(mut executor) = executor.try_borrow_mut() {
+            executor.try_run_until_stalled()
+        };
+    }
+
+    fn get_spawner(&self) -> LocalSpawner {
+        self.inner.borrow().executor.borrow().spawner.clone()
+    }
+}
+
+impl NativeClientExecutor {
+    fn new() -> Self {
+        let pool = LocalPool::new();
+        let spawner = pool.spawner();
+        Self {
+            is_shutdown: false,
+            pool: Some(pool),
+            spawner,
+            thread_id: thread::current().id(),
+        }
+    }
+
+    fn shutdown(&mut self) {
+        // drop any existing futures
+        drop(self.pool.take());
+        // ensure lingering callbacks passed to c++ are short circuited
+        self.is_shutdown = true;
+    }
+
+    fn try_run_until_stalled(&mut self) {
+        // assert!(thread::current().id() == self.thread_id, "sdk called on a different thread!");
+        let _ = thread::current().id() == self.thread_id;
+        if self.is_shutdown {
             debug!("sdk is shutdown, exiting");
             return;
         }
-        if let Ok(mut pool) = self.pool.try_borrow_mut() {
+        if let Some(pool) = &mut self.pool {
             pool.run_until_stalled();
         }
     }
@@ -128,6 +169,9 @@ mod ffi {
     extern "Rust" {
         type HttpRoundtripContext;
         type WakeupContext;
+        type StoragePurgeContext;
+        type StorageSetContext;
+        type StorageGetContext;
 
         type CppSDK;
         fn initialize_sdk(ctx: UniquePtr<SkusContext>, env: String) -> Box<CppSDK>;
@@ -195,9 +239,26 @@ mod ffi {
             ctx: Box<WakeupContext>,
         );
 
-        fn shim_purge(ctx: Pin<&mut SkusContext>);
-        fn shim_set(ctx: Pin<&mut SkusContext>, key: &str, value: &str);
-        fn shim_get(ctx: Pin<&mut SkusContext>, key: &str) -> String;
+        fn shim_purge(
+            ctx: Pin<&mut SkusContext>,
+            done: fn(Box<StoragePurgeContext>, bool),
+            st_ctx: Box<StoragePurgeContext>,
+        );
+
+        fn shim_set(
+            ctx: Pin<&mut SkusContext>,
+            key: &str,
+            value: &str,
+            done: fn(Box<StorageSetContext>, bool),
+            st_ctx: Box<StorageSetContext>,
+        );
+
+        fn shim_get(
+            ctx: Pin<&mut SkusContext>,
+            key: &str,
+            done: fn(Box<StorageGetContext>, String, bool),
+            st_ctx: Box<StorageGetContext>,
+        );
 
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
@@ -230,14 +291,13 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
-    let pool = LocalPool::new();
-    let spawner = pool.spawner();
     let sdk = skus::sdk::SDK::new(
         NativeClient {
-            is_shutdown: Rc::new(RefCell::new(false)),
-            pool: Rc::new(RefCell::new(pool)),
-            spawner: spawner.clone(),
-            ctx: Rc::new(RefCell::new(NativeClientContext { environment: env.clone(), ctx })),
+            inner: Rc::new(RefCell::new(NativeClientInner {
+                environment: env.clone(),
+                executor: Rc::new(RefCell::new(NativeClientExecutor::new())),
+                ctx: Rc::new(RefCell::new(ctx)),
+            })),
         },
         env,
         None,
@@ -246,23 +306,21 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
     let sdk = Rc::new(sdk);
     {
         let sdk = sdk.clone();
+        let spawner = sdk.client.get_spawner();
         let init = async move { sdk.initialize().await };
         if spawner.spawn_local(init).is_err() {
             debug!("pool is shutdown");
         }
     }
 
-    sdk.client.pool.borrow_mut().run_until_stalled();
+    sdk.client.try_run_until_stalled();
 
     Box::new(CppSDK { sdk })
 }
 
 impl CppSDK {
     fn shutdown(&self) {
-        // drop any existing futures
-        drop(self.sdk.client.pool.take());
-        // ensure lingering callbacks passed to c++ are short circuited
-        *self.sdk.client.is_shutdown.borrow_mut() = true;
+        self.sdk.client.inner.borrow().executor.borrow_mut().shutdown();
     }
 
     fn refresh_order(
@@ -271,7 +329,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::RefreshOrderCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(refresh_order_task(self.sdk.clone(), callback, callback_state, order_id))
             .is_err()
@@ -288,7 +346,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::FetchOrderCredentialsCallbackState>,
         order_id: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(fetch_order_credentials_task(
                 self.sdk.clone(),
@@ -311,7 +369,7 @@ impl CppSDK {
         domain: String,
         path: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(prepare_credentials_presentation_task(
                 self.sdk.clone(),
@@ -334,7 +392,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CredentialSummaryCallbackState>,
         domain: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(credential_summary_task(
                 self.sdk.clone(),
@@ -357,7 +415,7 @@ impl CppSDK {
         order_id: String,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(submit_receipt_task(
                 self.sdk.clone(),
@@ -379,7 +437,7 @@ impl CppSDK {
         callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
         receipt: String,
     ) {
-        let spawner = self.sdk.client.spawner.clone();
+        let spawner = self.sdk.client.get_spawner();
         if spawner
             .spawn_local(create_order_from_receipt_task(
                 self.sdk.clone(),
@@ -563,11 +621,7 @@ async fn create_order_from_receipt_task(
     callback_state: UniquePtr<ffi::CreateOrderFromReceiptCallbackState>,
     receipt: String,
 ) {
-    match sdk
-        .create_order_from_receipt(&receipt)
-        .await
-        .map_err(|e| e.into())
-    {
+    match sdk.create_order_from_receipt(&receipt).await.map_err(|e| e.into()) {
         Ok(order_id) => callback.0(callback_state.into_raw(), ffi::SkusResult::Ok, &order_id),
         Err(e) => callback.0(callback_state.into_raw(), e, ""),
     }
