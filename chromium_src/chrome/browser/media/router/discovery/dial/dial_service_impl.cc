@@ -6,6 +6,7 @@
 #include "chrome/browser/media/router/discovery/dial/dial_service_impl.h"
 
 #include "components/version_info/version_info.h"
+#include "brave/components/version_info/version_info.h"
 
 namespace version_info {
 constexpr std::string_view GetProductNameForChrome() {
@@ -13,6 +14,9 @@ constexpr std::string_view GetProductNameForChrome() {
 }
 }  // namespace version_info
 
+// We want to match Chrome behaviour for M-SEARCH USER-AGENT string.
 #define GetProductName GetProductNameForChrome
+#define GetVersionNumber GetBraveChromiumVersionNumber
 #include "src/chrome/browser/media/router/discovery/dial/dial_service_impl.cc"
 #undef GetProductName
+#undef GetVersionNumber
