@@ -1782,7 +1782,7 @@ KeyringService::DecryptCipherFromX25519_XSalsa20_Poly1305ByDefaultKeyring(
 }
 
 std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
-    const mojom::AccountId& account_id,
+    const mojom::AccountIdPtr& account_id,
     const std::vector<uint8_t>& message) {
   auto* keyring =
       static_cast<SolanaKeyring*>(GetHDKeyringById(mojom::kSolanaKeyringId));
@@ -1790,7 +1790,7 @@ std::vector<uint8_t> KeyringService::SignMessageBySolanaKeyring(
     return std::vector<uint8_t>();
   }
 
-  return keyring->SignMessage(account_id.address, message);
+  return keyring->SignMessage(account_id->address, message);
 }
 
 void KeyringService::AddAccountsWithDefaultName(

@@ -73,13 +73,17 @@ class SolanaTransaction {
   bool operator==(const SolanaTransaction&) const;
   bool operator!=(const SolanaTransaction&) const;
 
-  // Serialize the message and sign it.
-  std::string GetSignedTransaction(KeyringService* keyring_service) const;
-  // Serialize and encode the message in Base64.
-  std::string GetBase64EncodedMessage() const;
+  // Serialize the message and sign it with the selected account.
+  std::string GetSignedTransaction(
+      KeyringService* keyring_service,
+      const mojom::AccountIdPtr& selected_account) const;
   std::optional<std::vector<uint8_t>> GetSignedTransactionBytes(
       KeyringService* keyring_service,
+      const mojom::AccountIdPtr& selected_account,
       const std::vector<uint8_t>* selected_account_signature = nullptr) const;
+
+  // Serialize and encode the message in Base64.
+  std::string GetBase64EncodedMessage() const;
 
   // Returns message bytes and signer addresses (public keys).
   std::optional<std::pair<std::vector<uint8_t>, std::vector<std::string>>>

@@ -143,7 +143,8 @@ void SolanaTxManager::OnGetLatestBlockhash(std::unique_ptr<SolanaTxMeta> meta,
   }
 
   json_rpc_service_->SendSolanaTransaction(
-      meta->chain_id(), meta->tx()->GetSignedTransaction(keyring_service_),
+      meta->chain_id(),
+      meta->tx()->GetSignedTransaction(keyring_service_, meta->from()),
       meta->tx()->send_options(),
       base::BindOnce(&SolanaTxManager::OnSendSolanaTransaction,
                      weak_ptr_factory_.GetWeakPtr(), meta->chain_id(),
@@ -653,7 +654,8 @@ void SolanaTxManager::ProcessSolanaHardwareSignature(
     return;
   }
   std::optional<std::vector<std::uint8_t>> transaction_bytes =
-      meta->tx()->GetSignedTransactionBytes(keyring_service_, &signature_bytes);
+      meta->tx()->GetSignedTransactionBytes(keyring_service_, meta->from(),
+                                            &signature_bytes);
   if (!transaction_bytes) {
     std::move(callback).Run(
         false,
