@@ -102,7 +102,7 @@ export const OnboardingDisclosures = () => {
               onboardingType === 'hardware'
                 ? WalletRoutes.OnboardingHardwareWalletNetworkSelection
                 : onboardingType === 'import'
-                ? WalletRoutes.OnboardingImportNetworkSelection
+                ? WalletRoutes.OnboardingRestoreWallet
                 : WalletRoutes.OnboardingNewWalletNetworkSelection
             )
           }}

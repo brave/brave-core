@@ -50,6 +50,10 @@ export const ErrorAlert = styled(Alert).attrs({
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
   width: 100%;
+
+  leo-alert {
+    align-items: center;
+  }
 `
 
 export const CloseButton = styled(Button).attrs({

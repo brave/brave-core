@@ -75,6 +75,7 @@ export const Subtitle = styled.p`
   font-weight: 400;
   margin: 0;
   padding: 16px 0 0 0;
+  line-height: 26px;
 `
 
 export const BackupInstructions = styled.p`

@@ -14,17 +14,15 @@ import * as leo from '@brave/leo/tokens/css'
 import { getLocale } from '../../../../../common/locale'
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 import {
+  useGetWalletsToImportQuery,
   useReportOnboardingActionMutation,
   useRestoreWalletMutation,
   useSetAutoLockMinutesMutation
 } from '../../../../common/slices/api.slice'
 
 // components
-import NewPasswordInput, {
-  NewPasswordValues
-} from '../../../../components/shared/password-input/new-password-input'
+import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { AutoLockSettings } from '../components/auto-lock-settings/auto-lock-settings'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 
 // options
@@ -33,15 +31,20 @@ import { autoLockOptions } from '../../../../options/auto-lock-options'
 // styles
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 import {
+  AlertWrapper,
   ErrorAlert,
   RecoveryPhraseContainer
 } from './restore-from-recovery-phrase-v3.style'
 import { ContinueButton } from '../onboarding.style'
+import { CreatePassword } from '../create-password/components/create-password'
 
 type RestoreWalletSteps = 'phrase' | 'password'
 const VALID_PHRASE_LENGTHS = [12, 15, 18, 21, 24]
 
 export const OnboardingRestoreFromRecoveryPhrase = () => {
+  // queries
+  const { data: importableWallets } = useGetWalletsToImportQuery()
+
   // mutations
   const [restoreWalletFromSeed, { isLoading: isCreatingWallet }] =
     useRestoreWalletMutation()
@@ -78,6 +81,26 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     () => phraseWords.join(' '),
     [phraseWords]
   )
+
+  const pageText = React.useMemo(() => {
+    switch (currentStep) {
+      case 'phrase':
+        return {
+          title: getLocale('braveWalletRestoreMyBraveWallet'),
+          subTitle: getLocale('braveWalletRestoreMyBraveWalletInstructions')
+        }
+      case 'password':
+        return {
+          title: getLocale('braveWalletCreatePasswordTitle'),
+          subTitle: getLocale('braveWalletCreatePasswordDescription')
+        }
+      default:
+        return {
+          title: '',
+          subTitle: ''
+        }
+    }
+  }, [currentStep])
 
   // methods
   const onPhraseWordChange = React.useCallback(
@@ -164,16 +187,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   return (
     <OnboardingContentLayout
-      title={getLocale(
-        currentStep === 'phrase'
-          ? 'braveWalletRestoreMyBraveWallet'
-          : 'braveWalletCreatePasswordTitle'
-      )}
-      subTitle={getLocale(
-        currentStep === 'phrase'
-          ? 'braveWalletRestoreMyBraveWalletInstructions'
-          : 'braveWalletCreatePasswordDescription'
-      )}
+      title={pageText.title}
+      subTitle={pageText.subTitle}
     >
       {currentStep === 'phrase' && (
         <>
@@ -211,6 +226,32 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             )}
           </Button>
           <VerticalSpace space='12px' />
+
+          {importableWallets?.isMetaMaskInitialized && (
+            <AlertWrapper>
+              <ErrorAlert
+                type='info'
+                mode='simple'
+              >
+                <div slot='icon'>
+                  <Icon name='metamask-color' />
+                </div>
+                {getLocale('braveWalletMetamaskDetected')}
+                <div slot='actions'>
+                  <Button
+                    kind='plain'
+                    size='small'
+                    onClick={() =>
+                      history.push(WalletRoutes.OnboardingImportMetaMask)
+                    }
+                  >
+                   {getLocale('braveWalletMetamaskImportUsePassword')}
+                  </Button>
+                </div>
+              </ErrorAlert>
+            </AlertWrapper>
+          )}
+
           {(phraseWords.length > 0 && !isCorrectPhraseLength) ||
           hasInvalidSeedError ? (
             <ErrorAlert>
@@ -228,19 +269,14 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
         <>
           <VerticalSpace space='68px' />
 
-          <NewPasswordInput
-            autoFocus={true}
+          <CreatePassword
+            autoLockDuration={autoLockDuration}
+            autoLockOptions={autoLockOptions}
+            onPasswordChange={handlePasswordChange}
             onSubmit={onContinue}
-            onChange={handlePasswordChange}
+            onAutoLockDurationChange={setAutoLockDuration}
           />
 
-          <VerticalSpace space='68px' />
-
-          <AutoLockSettings
-            options={autoLockOptions}
-            value={autoLockDuration}
-            onChange={setAutoLockDuration}
-          />
           <VerticalSpace space='24px' />
         </>
       )}

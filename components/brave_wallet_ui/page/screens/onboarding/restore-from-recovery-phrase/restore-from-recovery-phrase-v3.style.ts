@@ -8,6 +8,7 @@ import * as leo from '@brave/leo/tokens/css'
 import Alert from '@brave/leo/react/alert'
 
 import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
+import { Text } from '../../../../components/shared/style'
 
 export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   display: grid;
@@ -58,6 +59,14 @@ export const RecoveryBubble = styled.div`
   background-color: ${leo.color.container.background};
 `
 
+export const AlertWrapper = styled.div`
+  leo-button {
+    display: flex;
+    height: 20px;
+    flex-grow: 0;
+    align-items: center;
+  }
+`
 export const ErrorAlert = styled(Alert).attrs({
   kind: 'error',
   mode: 'simple'
@@ -65,4 +74,9 @@ export const ErrorAlert = styled(Alert).attrs({
   --leo-alert-center-position: 'center';
   --leo-alert-center-width: '100%';
   width: 100%;
+`
+
+export const InputLabel = styled(Text)`
+  line-height: 18px;
+  color: ${leo.color.text.primary};
 `

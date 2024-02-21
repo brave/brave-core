@@ -75,7 +75,7 @@ export const Subtitle = styled.p`
   font-size: 16px;
   font-style: normal;
   font-weight: 400;
-  letter-spacing: -0.2px;
+  line-height: 26px;
   margin: 0;
   padding: 0;
 `

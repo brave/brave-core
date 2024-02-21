@@ -22,17 +22,14 @@ import { WalletSelectors } from '../../../../common/selectors'
 import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // components
-import {
-  NewPasswordInput,
-  NewPasswordValues
-} from '../../../../components/shared/password-input/new-password-input'
+import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { AutoLockSettings } from '../components/auto-lock-settings/auto-lock-settings'
 
 // styles
 import { ContinueButton, NextButtonRow } from '../onboarding.style'
 import { VerticalSpace } from '../../../../components/shared/style'
+import { CreatePassword } from './components/create-password'
 
 interface OnboardingCreatePasswordProps {
   onWalletCreated: () => void
@@ -103,18 +100,12 @@ export const OnboardingCreatePassword = ({
     >
       <VerticalSpace space='68px' />
 
-      <NewPasswordInput
-        autoFocus={true}
+      <CreatePassword
+        autoLockDuration={autoLockDuration}
+        autoLockOptions={autoLockOptions}
+        onPasswordChange={handlePasswordChange}
         onSubmit={nextStep}
-        onChange={handlePasswordChange}
-      />
-
-      <VerticalSpace space='68px' />
-
-      <AutoLockSettings
-        options={autoLockOptions}
-        value={autoLockDuration}
-        onChange={setAutoLockDuration}
+        onAutoLockDurationChange={setAutoLockDuration}
       />
       <VerticalSpace space='24px' />
 

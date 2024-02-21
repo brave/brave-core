@@ -13,7 +13,7 @@ export const LockIconContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  width: 30px;
+  min-width: 30px;
   height: 30px;
   background-color: ${leo.color.purple[10]};
   border-radius: 50%;

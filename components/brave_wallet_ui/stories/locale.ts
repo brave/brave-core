@@ -209,16 +209,18 @@ provideStrings({
   braveWalletCreateWalletInsteadLink: 'Never mind, I’ll create a new wallet',
   braveWalletRestoreAlternateLength: 'I have a $1-word recovery phrase',
   braveWalletRestoreWalletError: 'Check you recovery phrase and try again.',
+  braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
+  braveWalletMetamaskDetected: 'Metamask wallet detected!',
+  braveWalletMetamaskImportUsePassword: 'Use password',
 
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
   braveWalletMetaMaskPasswordInputPlaceholder: 'Type MetaMask password',
   braveWalletImportFromMetaMaskSeedInstructions:
     'Type your MetaMask 12-24 word recovery phrase.',
-  braveWalletMetaMaskExtensionDetected:
-    'We detected the MetaMask extension in your browser',
+  braveWalletMetaMaskExtensionDetected: 'Import Metamask wallet',
   braveWalletMetaMaskExtensionImportDescription:
-    'Enter your MetaMask wallet password to easily import to Brave Wallet.',
+    'You can easily import your MetaMask wallet just by inputting your password.',
   braveWalletRestoreMyBraveWalletInstructions:
     'You can paste your entire recovery phrase into any field.',
   braveWalletRecoveryPhraseLengthError:
