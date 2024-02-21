@@ -254,6 +254,8 @@
 <translation id="480565261566115689">تصغير علامات التبويب</translation>
 <translation id="7194343495483122559">توسيع علامات التبويب</translation>
 <translation id="1199054713803577378">تصغير علامات التبويب</translation>
+<translation id="1337946268962884806">طلب مخصص</translation>
+<translation id="8373664339577369248">طلب مخصص</translation>
 <translation id="8120600068258956006">إضافة إلى قائمة التشغيل</translation>
 <translation id="650694591627983430">الوسائط الموجودة في هذه الصفحة</translation>
 <translation id="8525248723479742219">تشغيل لاحقًا</translation>
@@ -303,6 +305,10 @@
 <translation id="2800828306627475693">إيقاف التكرار</translation>
 <translation id="1748244367114657861">التكرر مرة واحدة</translation>
 <translation id="6421906998825794164">تكرار الكل</translation>
+<translation id="6453210454707928697">تعذّر  تشغيل العنصر</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 
+ قد يكون منتهي الصلاحية. هل ترغب في استعادته؟</translation>
+<translation id="6155018868740116868">الاستعادة</translation>
 <translation id="1727684853006449697">مشغّل Brave</translation>
 <translation id="9156965752763025780">‏ستسري التغييرات في المرة التالية التي تعيد فيها تشغيل Brave.</translation>
 <translation id="7179921470347911571">أعد التشغيل الآن</translation>
@@ -325,6 +331,8 @@
 <translation id="5860254591544742609">عرض شريط العناوين</translation>
 <translation id="5371926069408837914">قم بتوسيع لوحة علامات التبويب العمودية فور تحريك الماوس عند طيها</translation>
 <translation id="3367129510799209147">وضع المرور فوق علامة التبويب</translation>
+<translation id="515949045075831661">العرض على اليمين</translation>
+<translation id="3725395376319291415">العرض على اليسار</translation>
 <translation id="2113977810652731515">بطاقة</translation>
 <translation id="4096343215397759358">بطاقة مع معاينة</translation>
 <translation id="5297085818601043899">تعريف الأدوات</translation>
@@ -361,7 +369,7 @@
 <translation id="4057614912106618659">منصة Brave موجودة بالفعل في المرسى</translation>
 <translation id="3195845168740336657">إعدادات الدروع</translation>
 <translation id="754769152790647708">حالة الدروع</translation>
-<translation id="3615717588724840230">يمكن للمواقع حظر أدوات التعقب والإعلانات ومسح البصمات باستخدام الدروع</translation>
+<translation id="4868109105992358853">يمكن لــ Shields حظر أدوات التتبع والإعلانات وبصمات الأصابع</translation>
 <translation id="5690973901138662477">تفعيل الدروع</translation>
 <translation id="4697275813919189958">تعطيل الدروع</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
@@ -416,7 +424,7 @@
 <translation id="5567412479632285879">تم تعطيل Brave Rewards</translation>
 <translation id="413570371620795359">فتح لوحة المكافآت للتمكين والبدء</translation>
 <translation id="1051600834033686945">فتح إعدادات Brave Rewards بالكامل</translation>
-<translation id="6333347122924254968">إظهار رمز "مكافآت متصفح Brave" في شريط العنواين</translation>
+<translation id="8826461509529116322">إظهار زر مكافآت Brave</translation>
 <translation id="9185018653595759199">حجب وسائل التواصل الاجتماعي</translation>
 <translation id="863171915776379000">السماح بتسجيل الدخول إلى فيسبوك والمشاركات المدمجة</translation>
 <translation id="5165042248369837294">السماح بدمج تغريدات من تويتر</translation>
@@ -727,6 +735,7 @@
 Leo في المستقبل وسيقوم أيضًا بمحو سجل الدردشة الخاص بك. محو
 سيمحو سجل الدردشة جميع محادثاتك السابقة مع Brave
 Leo. لا يمكن التراجع عن هذا الإجراء.</translation>
+<translation id="5574059574002819179">ضبط اقتراحات الإكمال التلقائي</translation>
 <translation id="8157373421434119674">البيانات وتاريخ الدردشة</translation>
 <translation id="614530507403667291">النموذج التلقائي للمحادثات الجديدة</translation>
 <translation id="349846214503465941">تمكين قائمة التشغيل</translation>

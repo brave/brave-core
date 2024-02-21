@@ -256,6 +256,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="480565261566115689">Pomanjšajte zavihke</translation>
 <translation id="7194343495483122559">Razširite zavihke</translation>
 <translation id="1199054713803577378">Pomanjšajte zavihke</translation>
+<translation id="1337946268962884806">Naročilo po meri</translation>
+<translation id="8373664339577369248">naročilo po meri</translation>
 <translation id="8120600068258956006">Dodaj na seznam predvajanja</translation>
 <translation id="650694591627983430">Mediji, najdeni na tej strani</translation>
 <translation id="8525248723479742219">Predvajaj kasneje</translation>
@@ -305,6 +307,10 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="2800828306627475693">Ponovitev je izklopljena</translation>
 <translation id="1748244367114657861">Ponovi eno</translation>
 <translation id="6421906998825794164">Ponovi vse</translation>
+<translation id="6453210454707928697">Neuspešno predvajanje elementa</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 
+se lahko izteče. Ali ga želite obnoviti?</translation>
+<translation id="6155018868740116868">Obnovite</translation>
 <translation id="1727684853006449697">Brave predvajalnik</translation>
 <translation id="9156965752763025780">Spremembe bodo začele veljati ob naslednjem zagonu Bravea.</translation>
 <translation id="7179921470347911571">Znova zaženite zdaj</translation>
@@ -327,6 +333,8 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="5860254591544742609">Pokaži naslovno vrstico</translation>
 <translation id="5371926069408837914">Razširi ploščo z navpičnimi zavihki, ko premaknete miško, ko je strnjena</translation>
 <translation id="3367129510799209147">Način izbiranja na zavihku</translation>
+<translation id="515949045075831661">Prikaži na desni strani</translation>
+<translation id="3725395376319291415">Prikaži na levi strani</translation>
 <translation id="2113977810652731515">Kartica</translation>
 <translation id="4096343215397759358">Kartica s predogledom</translation>
 <translation id="5297085818601043899">Opis orodja</translation>
@@ -363,7 +371,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="4057614912106618659">Brave je že zasidran</translation>
 <translation id="3195845168740336657">Nastavitve ščita</translation>
 <translation id="754769152790647708">Stanje ščita</translation>
-<translation id="3615717588724840230">Spletna mesta lahko z uporabo ščitov blokirajo sledilnike, oglase in odvzem prstnih odtisov</translation>
+<translation id="4868109105992358853">Brave ščiti lahko blokirjo sledilce in oglase, ne spletnih mest.</translation>
 <translation id="5690973901138662477">Ščiti gor</translation>
 <translation id="4697275813919189958">Ščiti dol</translation>
 <translation id="6303294677342628402">Ščiti</translation>
@@ -418,7 +426,7 @@ Preberete si lahko <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>navodila o tem, kak
 <translation id="5567412479632285879">Brave Rewards je onemogočen</translation>
 <translation id="413570371620795359">Odprite ploščo z nagradami in začnite</translation>
 <translation id="1051600834033686945">Odprite celotne nastavitve Brave Nagrade</translation>
-<translation id="6333347122924254968">Pokaži ikono Brave Rewards v naslovni vrstici</translation>
+<translation id="8826461509529116322">Prikaži gumb Brave Rewards</translation>
 <translation id="9185018653595759199">Blokiranje družbenih medijev</translation>
 <translation id="863171915776379000">Dovoli prijavo v Facebook in vdelane objave nanj</translation>
 <translation id="5165042248369837294">Dovoli vdelane tvite s Twitterja</translation>
@@ -728,6 +736,7 @@ ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično 
 Leo v prihodnosti in bo počistil tudi vašo zgodovino klepetov. Čiščenje vašega
 zgodovina klepetov bo izbrisala vse vaše prejšnje pogovore z Brave
 Leo. Tega dejanja ni mogoče razveljaviti.</translation>
+<translation id="5574059574002819179">Prilagodite predloge za samodejno dokončanje</translation>
 <translation id="8157373421434119674">Podatki in zgodovina klepeta</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="349846214503465941">Omogoči seznam predvajanja</translation>

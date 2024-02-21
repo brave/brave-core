@@ -254,6 +254,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Minimizar separadores</translation>
 <translation id="7194343495483122559">Expandir separadores</translation>
 <translation id="1199054713803577378">Minimizar separadores</translation>
+<translation id="1337946268962884806">Ordem personalizada</translation>
+<translation id="8373664339577369248">ordem personalizada</translation>
 <translation id="8120600068258956006">Adicionar à lista de reprodução</translation>
 <translation id="650694591627983430">Multimédia encontrada nesta página</translation>
 <translation id="8525248723479742219">Reproduzir mais tarde</translation>
@@ -303,6 +305,9 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Desativar repetição</translation>
 <translation id="1748244367114657861">Repetir um</translation>
 <translation id="6421906998825794164">Repetir todos</translation>
+<translation id="6453210454707928697">Falha ao reproduzir elemento</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] pode ter expirado. Pretende recuperá-lo?</translation>
+<translation id="6155018868740116868">Recuperar</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">As alterações serão aplicadas da próxima vez que reiniciar o Brave.</translation>
 <translation id="7179921470347911571">Relançar Agora</translation>
@@ -325,6 +330,8 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Mostrar barra de título</translation>
 <translation id="5371926069408837914">Expandir o painel de separadores verticais ao passar o rato quando fechado</translation>
 <translation id="3367129510799209147">Modo de pairar sobre um separador</translation>
+<translation id="515949045075831661">Mostrar à direita</translation>
+<translation id="3725395376319291415">Mostrar à esquerda</translation>
 <translation id="2113977810652731515">Cartão</translation>
 <translation id="4096343215397759358">Cartão com pré-visualização</translation>
 <translation id="5297085818601043899">Descrição</translation>
@@ -361,7 +368,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">O Brave já está na estação de ancoragem</translation>
 <translation id="3195845168740336657">Definições das Proteções</translation>
 <translation id="754769152790647708">Estado das Proteções</translation>
-<translation id="3615717588724840230">Com as Proteções, os sites podem bloquear trackers, anúncios e impressões digitais</translation>
+<translation id="4868109105992358853">As Proteções podem bloquear rastreadores, anúncios e impressões digitais</translation>
 <translation id="5690973901138662477">Proteções ativadas</translation>
 <translation id="4697275813919189958">Proteções desativadas</translation>
 <translation id="6303294677342628402">Proteções</translation>
@@ -416,7 +423,7 @@ Ou altere mais tarde em <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">As Recompensas do Brave estão desativadas</translation>
 <translation id="413570371620795359">Abra o painel "Recompensas" para ativar e começar</translation>
 <translation id="1051600834033686945">Abrir definições completas das Recompensas Brave</translation>
-<translation id="6333347122924254968">Apresentar ícone das Recompensas Brave na barra de endereço</translation>
+<translation id="8826461509529116322">Mostrar botão das Recompensas Brave</translation>
 <translation id="9185018653595759199">Bloqueio das redes sociais</translation>
 <translation id="863171915776379000">Permitir logins e posts incorporados do Facebook</translation>
 <translation id="5165042248369837294">Permitir tweets incorporados do Twitter</translation>
@@ -725,6 +732,7 @@ Nota: se for selecionado um nó local, o recurso será solicitado diretamente do
 Leo no futuro. Também irá limpar o histórico de chat. A limpeza do 
 histórico de chat irá eliminar todas as conversas anteriores com o Brave
 Leo. Não é possível anular esta ação.</translation>
+<translation id="5574059574002819179">Ajustar sugestões de preenchimento automático</translation>
 <translation id="8157373421434119674">Histórico de dados e chat</translation>
 <translation id="614530507403667291">Modelo predefinido para novas conversas</translation>
 <translation id="349846214503465941">Ativar lista de reprodução</translation>

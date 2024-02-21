@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Eski sekmeleri kapatmak ister misiniz?</translation>
 <translation id="1215127405478249895">Sekmeleri inceleyin</translation>
 <translation id="125153950246128346">Başka bir sekmeyi görmek için dokunun</translation>
+<translation id="1326271443836399892">Mevcut dağınıklığı giderme ayarlarını inceleyin.</translation>
 <translation id="1657719826150349398">Sekmeyi aşağı taşı</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> sekme}other{<ph name="TABS_COUNT_MANY"/> sekme}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Seçili <ph name="TABS_COUNT_ONE"/> sekmeye yer işareti koy}other{Seçili <ph name="TABS_COUNT_MANY"/> sekmeye yer işareti koy}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Gruptan kaldır</translation>
 <translation id="3008554597174452548">Ürünü takip etmeyi bırak</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/> ürünün fiyatı <ph name="PRICE_DROP"/> düştü</translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Arşivlenmiş <ph name="TABS_COUNT_ONE"/> sekmeniz var}other{Arşivlenmiş <ph name="TABS_COUNT_MANY"/> sekmeniz var}}</translation>
 <translation id="3194464645767632461">puan</translation>
 <translation id="3291470810748040983">Açık bir sekmede daha düşük fiyat varsa uyarı alırsınız</translation>
 <translation id="3328308545011660196">Öneri: <ph name="NUMBER_OF_TABS"/> sekme birbiriyle ilgili görünüyor. Bunlar gruplandırılsın mı?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Haberdar olun</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> sekme birbiriyle ilgili görünüyor. Bunlar gruplandırılsın mı?</translation>
 <translation id="4212246570487010370">Göz atmaya devam edin</translation>
+<translation id="427987768447457592">Yeni sekme grubu</translation>
 <translation id="4648718555153979859">Sekmeleriniz burada gruplandırılır</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> yorum)}other{(<ph name="REVIEWS_COUNT_MANY"/> yorum)}}</translation>
 <translation id="4850886885716139402">Görüntüle</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Tam ekran ızgarayı gizler</translation>
 <translation id="5076161749301278626">Mağaza yorumları gösterilsin mi?</translation>
 <translation id="5082793167783849073">Grup oluşturarak sayfaları hızlıca karşılaştırın. Başlamak için bir bağlantıya dokunup basılı tutun.</translation>
+<translation id="5161254044473106830">Başlık gerekiyor</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Yakın zamanda kullanmadığınız <ph name="TABS_COUNT_ONE"/> sekme var}other{Yakın zamanda kullanmadığınız <ph name="TABS_COUNT_MANY"/> sekme var}}</translation>
 <translation id="5339733443032484186">Son sekmeniz</translation>
 <translation id="5490235265819901748">Sekme grubu genişletildi</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Sekmeyi sağa taşı</translation>
 <translation id="7966321538264951561">Önerileri kapat.</translation>
 <translation id="8029301326595421733">Bu mağazayla ilgili bilgiler tam ekranda açıldı</translation>
-<translation id="814503310257431685">Tümünü göster</translation>
 <translation id="8205266828577616993">Sekmeyi yukarı taşı</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Seçilen <ph name="TABS_COUNT_ONE"/> sekmeyi kapat}other{Seçilen <ph name="TABS_COUNT_MANY"/> sekmeyi kapat}}</translation>
 <translation id="8398929769197326728">Yeni Klasör - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">Bu mağazayla ilgili bilgiler kapatıldı</translation>
 <translation id="9150694013019234766">Ekranın altına yakın bir yerde bulunan sekme grubunuzdaki sekmeler arasında geçiş yapın</translation>
 <translation id="9169594135889675189">Gruba yeni sekme ekler</translation>
+<translation id="955558140275419384">Bu düzenleyiciye girerek arşivlenmiş tüm sekmeleri inceleyip dağınıklığı giderin.</translation>
 <translation id="959682366969460160">Organize çalışın</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {Kapatılan sekmelerinizi, Brave ana menüsündeki Son Sekmeler bölümünde bulabilirsiniz. Gizli sekmeniz burada bulunmaz.}

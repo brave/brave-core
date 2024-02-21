@@ -258,10 +258,18 @@
 <translation id="8167256685618982116">Käynnistämällä <ph name="TITLE"/> hyväksyt <ph name="BEGIN_LINK1"/>käyttöehdot<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>yksityisyyskäytännön<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Säilytystilit (vaatii henkilöllisyyden todentamisen)</translation>
 <translation id="1539433155512862005">Säilytystilit ovat tilejä luotetuilla kolmannen osapuolen palveluilla, jotka säilyttävät BATit puolestasi.</translation>
+<translation id="6834831484510296932">Oma säilö</translation>
+<translation id="4208917415153655958">Oma säilö antaa haltijalleen yksinomaisen määräysvallan omiin BAT:eihin sekä täyden vastuun niiden turvallisuudesta.</translation>
+<translation id="1953496742859481929">Jos oma säilö -lompakko on valittuna, palkinnot maksetaan SPL-BAT:eina Solana-verkossa.</translation>
 <translation id="6751803821780922506">Valitse, missä haluat vastaanottaa BATit</translation>
-<translation id="1233129511866436960">Lue lisää alueista ja tuesta</translation>
+<translation id="3162035476318501831">Perehdy alueisiin ja tukeen.</translation>
 <translation id="7329170127335794328">Ei tällä hetkellä käytettävissä alueellasi</translation>
 <translation id="966956302643313970">Aloittaaksesi Basic Attention Token (BAT) -palkkioiden ansaitsemisen yhdistä tili. Ansaitsemasi BATit siirretään automaattisesti tilillesi joka kuukausi.</translation>
+<translation id="4009439571146350519">Tai toiseen Solanaa tukevaan lompakkoon.</translation>
+<translation id="333231090524745752"><ph name="TOS_LINK_BEGIN"/>Käyttöehdot<ph name="TOS_LINK_END"/> ja <ph name="PP_LINK_BEGIN"/>yksityisyyskäytäntö<ph name="PP_LINK_END"/></translation>
+<translation id="1692293127547800972">Jokin meni pieleen. Yritä uudestaan.</translation>
+<translation id="756341217015623253">Kirjaudu sisään tai rekisteröidy</translation>
+<translation id="2653844658857826081">UUTTA</translation>
 <translation id="1892970806832316900">Vireillä <ph name="DATE"/> asti</translation>
 <translation id="7849926087559412554">Oho! Selaimesi ei voi vastaanottaa yksityisiä Brave-mainoksia.</translation>
 <translation id="5177429570315095022">Selaimesi on päivitettävä, jotta voit jatkaa mainosten näkemistä.</translation>
@@ -411,6 +419,7 @@
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="6011108706830742093">ZebPay</translation>
+<translation id="5390923430722428146">Solana</translation>
 <translation id="6354568176665589146">Toistuva</translation>
 <translation id="2799223571221894425">Käynnistä uudelleen</translation>
 <translation id="1110535155349301542">poista</translation>
@@ -473,7 +482,7 @@
 <translation id="326118736933420687">Katsot WebTorrent-sivua</translation>
 <translation id="7534079972563542000">Pysäyttämättömät verkkotunnukset</translation>
 <translation id="4492298165410552103">Otetaanko pysäyttämättömien verkkotunnisten tuki käyttöön Bravessa?</translation>
-<translation id="3647533686160055812">Brave tulee käyttämään Infuraa selvittääkseen .crypto (ja myös .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) -verkkotunnukset, jotka ovat pysäyttämättömissä verkkotunnuksissa. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Infura näkee, että joku yrittää vierailla näissä verkkotunnuksissa, muttei mitään muuta. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="9156229987230762013">Brave tulee käyttämään Infuraa selvittääkseen .crypto (ja myös .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) -verkkotunnukset, jotka ovat pysäyttämättömissä verkkotunnuksissa. Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Infura näkee, että joku yrittää vierailla näissä verkkotunnuksissa, muttei mitään muuta. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum-nimipalvelu</translation>
 <translation id="4335039108389860301">Haluatko ottaa ENS-palvelun (Ethereum Name Service) käyttöön Bravessa?</translation>
 <translation id="4609973808011229683">Brave tulee käyttämään Infuraa selvittääkseen .eth-verkkotunnukset, jotka ovat Ethereum-nimipalvelussa (ENS). Brave piilottaa IP-osoitteesi. Jos otat tämän käyttöön, Infura näkee, että joku yrittää vierailla näissä .eth-verkkotunnuksissa, muttei mitään muuta. Tutustu Infuran <ph name="BEGIN_INFURA_TOU_LINK"/>käyttöehtoihin<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>tietosuojakäytäntöön<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
@@ -683,6 +692,9 @@
 <translation id="4214852687527104244">Älä huolehdi.</translation>
 <translation id="5027616819996705541">Voit edelleen selata yksityisesti!</translation>
 <translation id="1886682615222609631">Ansiot tähän mennessä</translation>
+<translation id="3479552764303398839">Ei nyt</translation>
+<translation id="4185473179105062442">Vastaanota BAT suoraan oman säilön krypto-osoitteeseen.</translation>
+<translation id="5802986777701714573">Olemme lisänneet uuden tavan vastaanottaa kuukausittaiset BAT-palkinnot. Yhdistä jonkin yhteistyökumppanimme tiliin tai käytä uutta oma säilö -vaihtoehtoa ja aloita ansaitseminen nyt.</translation>
 <translation id="86107454835395919">Aseta kuukausittaiseksi lahjoitukseksi</translation>
 <translation id="6621880242105464352">Brave kerää <ph name="FEE_PCT"/> lähetetystä summasta käsittelymaksuna.</translation>
 <translation id="1420756770787071946">Tue tätä tuottajaa</translation>
@@ -713,6 +725,11 @@
 <translation id="1950340257946519340">Tapahtui odottamaton virhe</translation>
 <translation id="2605703631071131439">Avaa lahjoituspaneeli uudelleen ja yritä sitten uudelleen.</translation>
 <translation id="8855543392451028706">Tervetuloa! Voit tukea tätä sisällönluojaa lähettämällä hänelle lahjoituksia. Se on tapa kiittää häntä hienon sisällön luomisesta.</translation>
+<translation id="8015040694844000835">Tue suosikkitekijääsi</translation>
+<translation id="3184314123468325238">Näytä mieltymyksesi ja lähetä kiitollisuus-token</translation>
+<translation id="1053740665683265460">Käytä Web3-lompakkoasi kertaluonteisen lahjoituksen lähettämiseen kyseiselle tekijälle ja osoita hänelle näin arvostusta</translation>
+<translation id="6859705040495339375">Lähetä Web3-lompakon avulla</translation>
+<translation id="7615852194054434287">Näyttää siltä, että tätä tekijää ei ole vielä asetettu vastaanottamaan maksuja Web3-lompakoiden kautta.</translation>
 <translation id="7090992647511817643">tili</translation>
 <translation id="4822132585477111396">Ketjun tunnus</translation>
 <translation id="3269475789479462358">verkkotunnus</translation>
@@ -783,14 +800,11 @@
 <translation id="5061574358754621254">Hintatiedot tarjoaa CoinGecko</translation>
 <translation id="223536150967420869">Osta</translation>
 <translation id="538450413584738399">Swap</translation>
+<translation id="6810855196544084176">Siltaus</translation>
 <translation id="3488255243387417752">Myy</translation>
 <translation id="5223034545851554347">Sinulla ei ole tarpeeksi <ph name="TOKEN_SYMBOL"/> tällä tilillä.</translation>
-<translation id="9113988219764868805">Lähetä tokeni</translation>
-<translation id="4254256922305105713">Lähetä NFT</translation>
-<translation id="3453833142586986467">Valitse tokeni</translation>
-<translation id="554732459168975059">Valitse NFT</translation>
-<translation id="5313430503143128212">Valitse lähetettävä tokeni</translation>
-<translation id="5784485862926111563">Valitse lähetettävä NFT</translation>
+<translation id="6585419509320235293">Valitse lähetettävä varaerä</translation>
+<translation id="1018742998826182079">Valitse vaihdettava varaerä</translation>
 <translation id="2791691551852500015">Anna vastaanottajan osoite</translation>
 <translation id="570080709303714420">PUOLET</translation>
 <translation id="2784548701748328827">MAX</translation>
@@ -799,13 +813,17 @@
 <translation id="8530071505111489657">Ei käytettäviä tokeneita</translation>
 <translation id="615791330696335475">Hae tokenia nimen perusteella</translation>
 <translation id="5009335307032488349">Hae NFT:tä nimen, tunnuksen perusteella</translation>
+<translation id="8667560635828712526">Valitse varaerä</translation>
+<translation id="4853960199138416955">Brave Wallet ei tällä hetkellä tue Bitcoin NFT:itä (järjestyslukuja). BTC:n lähettäminen osoitteesta, johon sisältyy järjestyslukuja, saattaa johtaa järjestyslukujen tahattomaan siirtymiseen.</translation>
 <translation id="9209024278910716955">Ostosta ei tueta valitussa verkossa</translation>
 <translation id="4982630604810554641">Etsitään verkkotunnusta...</translation>
 <translation id="5467044307473123584">Brave tukee ketjujen ulkopuolisten yhdyskäytävien käyttämistä .eth-verkkotunnusten selvittämiseen.</translation>
 <translation id="4896417414446851895">Näyttää siltä, että olet syöttänyt ENS-osoitteen. Meidän täytyy käyttää kolmannen osapuolen ratkaisijaa selvittääksemme tämän pyynnön, joka saattaa nähdä IP-osoitteesi ja verkkotunnuksesi.</translation>
 <translation id="8646078615727397565">Käytä ENS-verkkotunnusta</translation>
 <translation id="1191686659164947414">Maksutapahtuma voidaan suorittaa etukäteen</translation>
+<translation id="8914256532272191486">Vaihtosi suoritetaan määrittelemäsi enimmäispudotusmäärän puitteissa. Esimerkiksi 1 %:n pudotus tarkoittaa sitä, että olet valmis hyväksymään enintään 1 % vähemmän markkinatilanteen vuoksi.</translation>
 <translation id="632241521608275119">Myöhästymisen toleranssi</translation>
+<translation id="2493281414634883751">Syötä arvoksi 0,5 % – 99 %.</translation>
 <translation id="4500473291496079954">Vanhenee:</translation>
 <translation id="2236833281018938257">Lompakon osoite tai URL</translation>
 <translation id="928500657730628112">Lompakon osoite</translation>
@@ -1470,10 +1488,14 @@
 <translation id="3356580495013324916">Anna Brave-lompakon salasana aloittaaksesi lompakon varmuuskopioinnin.</translation>
 <translation id="7545441766078366279">Hyväksy <ph name="TOKEN"/></translation>
 <translation id="3115303896544539834">Riittämätön <ph name="TOKEN"/> saldo</translation>
+<translation id="3453833142586986467">Valitse tokeni</translation>
 <translation id="4937657825850660613">Puoli</translation>
 <translation id="7639814793732182496">Maks</translation>
 <translation id="6584782231358487640">Syötä määrä</translation>
-<translation id="2335903728876796191">Etsitään sinulle paras hinta</translation>
+<translation id="821928941440539212">Parhaan noteerauksen löytäminen...</translation>
+<translation id="5450317966495183014">Vastaanota (arvio)</translation>
+<translation id="8747614139273050577">Tokenista</translation>
+<translation id="1726158192333401896">Tokeniin</translation>
 <translation id="3835223348537121988">Saldo:</translation>
 <translation id="5709875713144853427">Valitse vaihdettava tokeni</translation>
 <translation id="720404198240859011">Näytä tokenit, joissa ei ole saldoa</translation>
@@ -1497,7 +1519,6 @@
 <translation id="8044899503464538266">Hidas</translation>
 <translation id="3569512916300900704">Keskiverto</translation>
 <translation id="7019805045859631636">Nopea</translation>
-<translation id="1826671530876539299">Vaihda asetuksia</translation>
 <translation id="6778140392042462129">Vaihdot</translation>
 <translation id="6173494033320397682">Vain suora reitti</translation>
 <translation id="2440960581098655899">Se varmistaa vain suoran reitityksen ja myös poistaa jaetun kaupan pois käytöstä</translation>
@@ -1579,6 +1600,28 @@
 <translation id="4611292653554630842">Kirjaudu sisään</translation>
 <translation id="1132794822159463424">Näytä toimittajalla <ph name="PROVIDER"/></translation>
 <translation id="7875005109025196005">Käyttöympäristöt</translation>
+<translation id="7549266998497332690">Jatka seuraavasti: <ph name="HOW_MANY"/> <ph name="ITEM_NAME_MAYBE_PLURAL"/></translation>
+<translation id="4204268048253692928">Asetuksissa verkkoja voi lisätä milloin tahansa.</translation>
+<translation id="4303748097351941030">Tuetut verkot</translation>
+<translation id="6937275455070754004">Valitse, mitä lohkoketjuja lompakossasi käytetään.</translation>
+<translation id="1164748583090434571">Näytä testiverkot</translation>
+<translation id="1531836666020185856">Valitut ominaisuudet</translation>
+<translation id="3225021799163709119">Suositut</translation>
+<translation id="6854651431635060919">Testiverkkotili</translation>
+<translation id="3800173541008902040">Ota käyttöön parannetut liiketoimitiedot seuraaville:</translation>
+<translation id="1215089823252478557">Katso arvioitu saldomuutos</translation>
+<translation id="2761574758015819991">Tunnista mahdolliset pahansuovat liiketoimet</translation>
+<translation id="168533464844528463">Auta kalasteluyritysten havaitsemisessa</translation>
+<translation id="780301667611848630">Ei kiitos</translation>
+<translation id="3435896845095436175">Ota käyttöön</translation>
+<translation id="7269757150305059881">Brave työskentelee yhteistyökumppanin kanssa tämän palvelun tuottamiseksi. Ottamalla sen käyttöön suostut jakamaan allekirjoittamattomat liiketoimet ja niiden DApp-URL-osoitteet yhteistyökumppanimme kanssa.</translation>
+<translation id="7790932700072432983">Muuta milloin tahansa kohdassa<ph name="TAG_BEFORE"/>Asetukset<ph name="TAG_AFTER"/>.</translation>
+<translation id="8688672835843460752">Saatavilla</translation>
+<translation id="5296640085393149413">Käytettävissäsi olevat varat.</translation>
+<translation id="3248185426436836442">Odottaa</translation>
+<translation id="2515906149804238711">Odottava muutos lompakkosaldossa.</translation>
+<translation id="7700365440186054030">Käytettävissä olevat varat sekä kaikki vielä vahvistamattomat liiketoimet.</translation>
+<translation id="4118601537508887039">Jotkut saldot eivät välttämättä ole saatavilla.</translation>
 <translation id="3155170474926428993">Tor-laukaisin</translation>
 <translation id="3745016858329272300">Yleiset tiedot</translation>
 <translation id="4045404575593562245">Tor-hallinnointitapahtumat</translation>
@@ -1591,7 +1634,6 @@
 <translation id="7758665172236842395">Seuraa suosikkilähteitäsi, yhdessä syötteessä. Avaa välilehti Bravessa, vieritä alas ja… voila!</translation>
 <translation id="2376542729617592331">Brave-uutiset on mainoksilla tuettu palvelu, jossa on yksityisiä ja anonymisoituja mainoksia. <ph name="LINK_START"/>Lue lisää.<ph name="LINK_END"/>.</translation>
 <translation id="1765217911817124376">Ota Brave News käyttöön</translation>
-<translation id="780301667611848630">Ei kiitos</translation>
 <translation id="6265592479622441247">Takaisin <ph name="BEGIN_BOLD"/>hallintapaneeliin<ph name="END_BOLD"/></translation>
 <translation id="8981973962043893066">Hae sivustoja, aiheita tai RSS-syötteitä</translation>
 <translation id="1498364270401875204">Kanavat</translation>
@@ -1608,7 +1650,6 @@
 <translation id="6727452620418483718">Suorat tulokset</translation>
 <translation id="7697251281928908970">Jatka lähteiden hakemista</translation>
 <translation id="4750394297954878236">Ehdotukset</translation>
-<translation id="3225021799163709119">Suositut</translation>
 <translation id="7436846601026966360">Saatat pitää joistakin lähteistä. Ehdotukset ovat anonyymeja ja laitekohtaisia.</translation>
 <translation id="7950715913905993008">Hups...</translation>
 <translation id="7158100730468448581">Brave-uutiset ei voinut hakea sisältöä.</translation>
@@ -1833,14 +1874,12 @@
 <translation id="5872363163901278000">Lisää toistonopeutta</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="8637805148029768813">Yhteenvetäjä-ominaisuus on tällä hetkellä saatavilla vain valituille artikkeleille ja muille pitkille verkkosivuille.</translation>
-<translation id="2346991295632453064">Hyväksy ja aloita</translation>
 <translation id="1223498995510244364">Tee yhteenveto</translation>
 <translation id="7491773233732232424">Tietoja Leosta</translation>
-<translation id="70442873931504163">Braven Leo on tekoälyassistentti, joka voi tehdä yhteenvedon verkkosivuista, litteroida videoita ja vastata kysymyksiin. Braven Leo Premium käyttää kehittyneitä <ph name="LINK_BEFORE"/>tekoälymalleja<ph name="LINK_AFTER"/>, jotta saat entistä tarkempia vastauksia, ja antaa varhaisen pääsyn uusiin ominaisuuksiin.</translation>
-<translation id="3055739528128372229">Vastausten tarkkuutta ei taata, ja ne voivat sisältää epätarkkoja, harhaanjohtavia tai vääriä tietoja. Älä lähetä arkaluontoisia tai yksityisiä tietoja ja ole varovainen antaessasi terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin liittyviä vastauksia.</translation>
-<translation id="7297681068636289435">Leo ei kerää tunnisteita, kuten IP-osoitettasi, jotka voidaan linkittää sinuun. Tekoälymalli tai kolmannen osapuolen mallien toimittajat eivät säilytä henkilötietoja.</translation>
+<translation id="5208096220706490232">Brave Leo on älykäs yksityinen tekoälyavustaja, joka tehostaa internetin käyttöä. Leon käyttö yhdistetynä rajoitettuun pääsyyn on maksutonta. Brave Leo Premium tarjoaa enemmän malleja, korkeampia rajoja ja antaa tilaajille varhaisen pääsyn uusiin ominaisuuksiin. Kaikkien käyttäjien tämänhetkinen oletusmalli on Mixtral 8x7B. Katso lisätietoja <ph name="LINK_BEFORE"/>Brave wikistä<ph name="LINK_AFTER"/>.</translation>
+<translation id="7189603330209995455">Kun kysyt Leolta kysymyksen, se saattaa oletusarvoisesti käyttää ja lähettää Brave Leolle katsomasi verkkosivun sisältöä tai sivulla korostamaasi tekstiä vastauksen antamiseksi. Vastausten tarkkuutta ei taata, ja ne voivat sisältää epätarkkaa, harhaanjohtavaa tai virheellistä tietoa. Leo käyttää Brave-hausta peräisin olevaa dataa vastausten laadun parantamiseen. Älä lähetä arkaluonteisia tai yksityisiä tietoja ja ole varovainen terveyteen, talouteen, henkilökohtaiseen turvallisuuteen tai vastaaviin asioihin liittyvien vastausten kanssa. Asetuksissa Leon vaihtoehtoja voi säätää milloin tahansa. Siirry kohtaan Asetukset &gt; Leo.</translation>
+<translation id="3038772045018370764">Leo ei kerää tunnisteita, kuten IP-osoitettasi, joka voitaisiin yhdistää sinuun. Dataa ei käytetä tekoälymallien kouluttamiseen, eikä tekoälymalleissa säilytetä henkilökohtaista dataa (lukuun ottamatta Anthropicia, joka säilyttää dataa 30 päivää ennen sen poistamista). Katso lisätietoja <ph name="LINK_BEFORE"/>yksityisyyskäytännöstä<ph name="LINK_AFTER"/>.</translation>
 <translation id="7839853125981164613">Kirjoita kehote tähän</translation>
-<translation id="334325425115922031">Ehdotetut jatkotoimet</translation>
 <translation id="4524675003624341892">Ehdota kysymyksiä...</translation>
 <translation id="4567071417854988869">Tee yhteenveto tästä videosta</translation>
 <translation id="7921782882718083488">Tee yhteenveto tästä sivusta</translation>
@@ -1848,23 +1887,30 @@
 <translation id="1167803637855350748">Leoon yhteyden muodostamisessa oli verkko-ongelma, tarkista yhteys ja yritä uudelleen.</translation>
 <translation id="5095201428204952524">Leo on liian kiireinen juuri nyt. Yritä muutaman minuutin kuluttua uudelleen.</translation>
 <translation id="7144878232160441200">Yritä uudestaan</translation>
-<translation id="7202619923031933110">Hei, olen Leo. Olen Braven kokonaisuudessaan isännöimä tekoälyavustaja. Minua pyörittää Mixtral 7B, Mistral-tekoälyn edistyneiden tehtävien hoitamiseen luoma malli.</translation>
+<translation id="2505565639170795978">Hei, olen Leo. Olen Braven täysin ylläpitämä tekoälyassistentti. Palvelun tarjoaa Llama 13B, Metan luoma malli, joka on suorituskykyinen ja soveltuva moniin käyttötapauksiin.</translation>
+<translation id="8030558642460377506">Hei, olen Leo. Olen Braven kokonaisuudessaan isännöimä tekoälyavustaja. Minua pyörittää Mixtral 8x7B, joka on Mistral AI:n edistyneiden tehtävien hoitamiseen luoma malli.</translation>
 <translation id="2489317965865266353">Hei, olen Leo. Välityspalvelimeni on Brave, ja palvelun tarjoaa Claude Instant, Anthropicin luoma malli, joka tehostaa keskustelua ja tekstinkäsittelyä.</translation>
 <translation id="6206029817087805290"><ph name="MODEL_NAME"/> palveluntarjoaja <ph name="COMPANY_NAME"/></translation>
+<translation id="8944485226638699751">Rajoitettu</translation>
 <translation id="6187065185557150870">Chat</translation>
 <translation id="2961040541145689181">Uusi chat</translation>
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
 <translation id="1691256669639196606">Hallitse tilausta</translation>
 <translation id="3037594989275592390">Kielimallit</translation>
+<translation id="6637015365469044269">Päivitä nyt</translation>
 <translation id="849535826888024304">Vastausasteen raja saavutettu</translation>
-<translation id="3834321271158315162">Avaa korkeampi vastausaste liittymällä Premiumiin, tai yritä uudelleen
-        myöhemmin</translation>
-<translation id="1239767708151339890">Pääsy alan johtaviin LLM:iin</translation>
-<translation id="8021579987620496265">Korkeammat tiedonsiirtorajat</translation>
+<translation id="6149863263423821329">Tilaa Premium-jäsenyys, jolloin pääset käsiksi tavanomaista suurempaan vastausmäärään. Voit myös jatkaa vaihtamalla vähemmän tehokkaaseen Llama2 13b -ilmaismalliin.</translation>
+<translation id="4173478269537830374">Tutustu erilaisiin tekoälymalleihin</translation>
+<translation id="3245401959451976966">Vapauta luovuutesi</translation>
+<translation id="4165928407303989823">Pysy aiheessa</translation>
+<translation id="2389665228467129817">Juttele tavallista pidempään</translation>
 <translation id="8556044455877152001">USD $ <ph name="PRICE_VALUE"/> /kuukausi</translation>
-<translation id="377376641316998425">Vapauta Leon täysi potentiaali</translation>
-<translation id="8363148882096737034">Anthropic Claude + lisää tulossa pian</translation>
-<translation id="886527905046308697">Ensisijainen pääsy ja laajennetut vastausrajat</translation>
+<translation id="5151923271944811339">Vaihda ilmaiseen malliin</translation>
+<translation id="5474757891469990756">Päästä Leon täydet voimat valloilleen Premiumin avulla:</translation>
+<translation id="5552332211527367850">Enisijainen pääsy tehokkaisiin malleihin, joilla on erilaisilla taitoja</translation>
+<translation id="5031778211368112461">Pääset käsiksi malleihin, jotka sopivat paremmin luoviin tehtäviin ja sisällöntuotantoon.</translation>
+<translation id="298783097210745222">Saat tavanomaista tarkempia vastauksia vivahteikkaisiin keskusteluihin.</translation>
+<translation id="4314705522985583059">Määrärajasi nousevat tavanomaisesta pitkiä keskusteluja silmällä pitäen.</translation>
 <translation id="1068954060985569277">Brave-tilisi istunto on vanhentunut. Käy tilisivullasi päivittääksesi ja palaa sitten käyttämään premium-ominaisuuksia.</translation>
 <translation id="94736968936709953">Palautteen lähetys onnistui</translation>
 <translation id="9109355817507033196">Vastauksesta ei tykätty</translation>
@@ -1888,6 +1934,7 @@
 <translation id="7494736170250048402">Lähetä Leolle viesti</translation>
 <translation id="4110772752544684964">Sivu on liian pitkä Leolle. Keskustelusta saattaa puuttua kontekstia.</translation>
 <translation id="4370698775470316661">Tämä keskustelu on liian pitkä, eikä se voi jatkua. Saatavilla voi olla muita malleja, joiden avulla Leo pystyy säilyttämään tarkkuuden pidempiä keskusteluja varten.</translation>
+<translation id="6291843235651817590">Yleiskäyttöinen chat</translation>
 <translation id="8193130769524604031">Kehittyneet chat-tehtävät</translation>
 <translation id="3185367320601718531">Keskustelun ja tekstin tuottaminen</translation>
 <translation id="3965507912994218570">Leo-asetukset</translation>
@@ -1898,9 +1945,10 @@
 <translation id="861953757568623294">Voin auttaa artikkeleiden tiivistämisessä, sivuston sisällön laajentamisessa ja monessa muussa. Etkö tiedä, mistä aloittaa? Kokeile tätä:</translation>
 <translation id="5642775487085641191">Haluatko vain jutella?</translation>
 <translation id="8857222718794549840">Kysy minulta mitä vaan! Voimme puhua mistä tahansa haluamastasi aiheesta. Opiskelen ja kehityn koko ajan, jotta voisin antaa parempia vastauksia.</translation>
-<translation id="989329677470075843">Tietosuojasopimus</translation>
+<translation id="9051226419897869406">Juttele Brave Leon kanssa yksityisesti</translation>
 <translation id="1173570303649278801">Käytä vastauksessa verkkosivukontekstia</translation>
 <translation id="8599503173207256429">Siirry kysymään tietoa tästä verkkosivusta. Sen sisältö lähetetään Brave Leolle yhdessä viestisi kanssa.</translation>
+<translation id="318819763888864209">Kaikki tilaukset uusiutuvat automaattisesti, mutta ne ovat peruttavissa milloin tahansa ennen uusimista.</translation>
 <translation id="6303294677342628402">Suojaukset</translation>
 <translation id="8458987127502506209">Ota Brave-suojaus käyttöön</translation>
 <translation id="7509914170164691086">Suojaukset ovat käytössä <ph name="LINK_BEFORE"/>kohteelle<ph name="LINK_AFTER"/></translation>
@@ -1948,6 +1996,16 @@
 <translation id="4986297793092101884">Brave estää jo kolmannen osapuolen evästeet. Voimme myös estää evästeiden suostumusilmoitukset.</translation>
 <translation id="535688588637568715">Kyllä, estä evästeiden suostumusilmoitukset</translation>
 <translation id="2808175374672429053">Brave-suojaus ei salli jokerimerkkejä.</translation>
+<translation id="1255651682305188158">{BLOCKED_COUNT, plural,
+      =0 {Brave-suojat esti <ph name="COMPANY_LIST"/> jäljitintä kohteessa  <ph name="SITE_URL"/>}
+      =1 {Brave-suojat esti <ph name="COMPANY_LIST"/> ja 1 muun jäljittimen kohteessa <ph name="SITE_URL"/>}
+      other {Brave-suojat esti <ph name="COMPANY_LIST"/> ja {BLOCKED_COUNT} muuta jäljitintä kohteessa <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="7630425922041907505">{BLOCKED_COUNT, plural,
+      =1 {Brave-suojat esti 1 jäljittimen kohteessa <ph name="SITE_URL"/>}
+      other {Brave-suojat esti {BLOCKED_COUNT} jäljitintä kohteessa <ph name="SITE_URL"/>}
+    }</translation>
+<translation id="2540598191934725677">Tarkastele Brave-suojia napsauttamalla Brave-kuvaketta.</translation>
 <translation id="6294662480095808915">Yksityisyys. Oletuksena.</translation>
 <translation id="4366423156486478559">Hanki Brave-suojaus jokaiselle napsauttamallesi linkille. Aseta Brave oletukseksi ja selaa. Yksityisesti.</translation>
 <translation id="3830912418080848377">Tuo asetukset</translation>

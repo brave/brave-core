@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">要關閉舊分頁嗎？</translation>
 <translation id="1215127405478249895">查看分頁</translation>
 <translation id="125153950246128346">輕觸即可查看另一個分頁</translation>
+<translation id="1326271443836399892">查看目前的整理設定。</translation>
 <translation id="1657719826150349398">將分頁向下移</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> 個分頁}other{<ph name="TABS_COUNT_MANY"/> 個分頁}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{已將 <ph name="TABS_COUNT_ONE"/> 個選取的分頁加入書籤}other{已將 <ph name="TABS_COUNT_MANY"/> 個選取的分頁加入書籤}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">從群組中移除</translation>
 <translation id="3008554597174452548">停止追蹤產品</translation>
 <translation id="3052964831964880138">「<ph name="PRODUCT_NAME"/>」降價 <ph name="PRICE_DROP"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{你有 <ph name="TABS_COUNT_ONE"/> 個已封存的分頁}other{你有 <ph name="TABS_COUNT_MANY"/> 個已封存的分頁}}</translation>
 <translation id="3194464645767632461">評分</translation>
 <translation id="3291470810748040983">每當開啟的分頁中有降價商品，你就會收到通知</translation>
 <translation id="3328308545011660196">建議：似乎有 <ph name="NUMBER_OF_TABS"/> 個相關的分頁。要將這些分頁加入群組嗎？</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">接收通知</translation>
 <translation id="4133493477912226187">似乎有 <ph name="NUMBER_OF_TABS"/> 個相關的分頁。要將這些分頁加入群組嗎？</translation>
 <translation id="4212246570487010370">繼續瀏覽</translation>
+<translation id="427987768447457592">新分頁群組</translation>
 <translation id="4648718555153979859">你的分頁都集中顯示在這裡</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> 則評論)}other{(<ph name="REVIEWS_COUNT_MANY"/> 則評論)}}</translation>
 <translation id="4850886885716139402">檢視</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">隱藏全螢幕格狀檢視</translation>
 <translation id="5076161749301278626">要查看商店評論嗎？</translation>
 <translation id="5082793167783849073">建立群組以快速比較多個頁面。如要開始建立，請輕觸並按住連結。</translation>
+<translation id="5161254044473106830">請輸入標題</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{你有 <ph name="TABS_COUNT_ONE"/> 個最近未使用的分頁}other{你有 <ph name="TABS_COUNT_MANY"/> 個最近未使用分頁}}</translation>
 <translation id="5339733443032484186">最後一個分頁</translation>
 <translation id="5490235265819901748">已展開分頁群組</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">將分頁向右移</translation>
 <translation id="7966321538264951561">關閉建議項目。</translation>
 <translation id="8029301326595421733">這間店的資訊已開啟，顯示於整個畫面</translation>
-<translation id="814503310257431685">查看全部</translation>
 <translation id="8205266828577616993">將分頁上移</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{關閉 <ph name="TABS_COUNT_ONE"/> 個所選分頁}other{關閉 <ph name="TABS_COUNT_MANY"/> 個所選分頁}}</translation>
 <translation id="8398929769197326728">新資料夾 - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">這間店的資訊已關閉</translation>
 <translation id="9150694013019234766">在靠近畫面底部的分頁群組中切換分頁</translation>
 <translation id="9169594135889675189">在群組中新增分頁</translation>
+<translation id="955558140275419384">你可以使用這個編輯器查看及整理所有已封存的分頁。</translation>
 <translation id="959682366969460160">保持井然有序</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {你可以在 Brave 主選單下最近開啟的分頁找到關閉的分頁。無痕分頁將無法使用。}

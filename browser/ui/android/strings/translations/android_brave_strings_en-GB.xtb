@@ -427,18 +427,10 @@ Are you sure you want to do this?</translation>
 <translation id="2394961582378297792">Logged out</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="3368922792935385530">Connected</translation>
-<translation id="8673913984316081937">Verifying your wallet is optional</translation>
-<translation id="8558636200953226885">But if you verify, you can...</translation>
-<translation id="8697510149346635496">Withdraw BAT that you earn from viewing privacy-respecting ads</translation>
-<translation id="1481480653609649134">Purchase additional BAT with credit cards and other sources</translation>
-<translation id="9096003370755878766">Withdraw BAT that you may have previously added to your Brave Rewards wallet</translation>
-<translation id="1554282356558968486">Our wallet service is provided by</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold may require you to verify your identity based on services requested.</translation>
-<translation id="3200197118442451932">Brave Software Inc. does not process, store or access any of the personal information that you provide to <ph name="WALLET_PROVIDER"/> when you establish an account with them.</translation>
 <translation id="1665118090708049096">Go to my <ph name="WALLET_PROVIDER"/> account</translation>
 <translation id="4858636682078269312">Log in to your <ph name="WALLET_PROVIDER"/> account</translation>
 <translation id="8874184842967597500">Not connected</translation>
@@ -525,7 +517,7 @@ Are you sure you want to do this?</translation>
 <translation id="2225863440766607138">Trackers</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">You blocked <ph name="COUNT"/> trackers &amp; ads with Brave browser in the past 3 hours.</translation>
-<translation id="3621193901658023971">Browse up to 6x faster on major news sites in Brave by blocking trackers &amp; ads.</translation>
+<translation id="5005713153542196658">Browse up to 6x faster on major news sites in Brave by blocking trackers &amp; ads.</translation>
 <translation id="7427567994475794038">Turn on privacy reports to see how many trackers &amp; ads have been blocked in the past 3 hours.</translation>
 <translation id="2053891538879944400">You saved <ph name="DATA"/> <ph name="DATA_TEXT"/> data with Brave browser.</translation>
 <translation id="8640064498452534195">Turn on privacy reports to see how much data you've saved.</translation>
@@ -590,6 +582,10 @@ Are you sure you want to do this?</translation>
 <translation id="8622329973403382303">Take a quick tour to brush up on how it works to go down in history as a Rewards rockstar!</translation>
 <translation id="3479552764303398839">Not now</translation>
 <translation id="7138272885617540195">Allow app links to open in apps outside of Brave</translation>
+<translation id="4954512758656527938">Default Ethereum wallet</translation>
+<translation id="7701023802820268122">Default Solana wallet</translation>
+<translation id="7701040980221191251">None</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8792121506918889955">WebRTC IP handling policy</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Default public and private interfaces</translation>
@@ -685,7 +681,6 @@ Are you sure you want to do this?</translation>
 <translation id="8475984867371585028">Edit visible NFTs</translation>
 <translation id="5050890334032852465">Save account watchlist</translation>
 <translation id="7755766175599167100">Search tokens</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Lock</translation>
 <translation id="4412698727486357573">Help Centre</translation>
 <translation id="8796429300536029044">NFT Detail</translation>
@@ -717,12 +712,12 @@ Are you sure you want to do this?</translation>
 <translation id="8272917646984397798">Secures all connections</translation>
 <translation id="1751947227857853925">Fast and unlimited up to 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 support</translation>
-<translation id="5051030058817632680">Blocks unwanted network connections</translation>
+<translation id="5892534145504632332">Protect every app &amp; your whole device</translation>
+<translation id="7195416926059527505">Safer for home or public Wi-Fi</translation>
+<translation id="1354700000739359839">Lightning-fast, up to 100 Mbps</translation>
 <translation id="3510283489391432976">Choose your geo/country location</translation>
-<translation id="4390800080658195654">Keeps you anonymous online</translation>
-<translation id="639981156979733813">Supports speeds of up to 100 Mbps</translation>
-<translation id="765343799669302337">Uses WireGuard secure encrypted VPN tunnel</translation>
-<translation id="1571230671455380494">We never share or sell your info</translation>
+<translation id="7695158478627528928">Brave never logs your activity</translation>
+<translation id="4575683170451975058">Protect 5 devices on 1 subscription</translation>
 <translation id="276866628038850725">All plans include a free 7-day trial.</translation>
 <translation id="1532536259167115948">Monthly subscription <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Yearly subscription <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Are you sure you want to do this?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Try free for 7 days. After 7 days, you will be charged the plan price. All subscriptions are auto-renewed but can be cancelled before renewal.</translation>
 <translation id="6053992191006521518">Try for FREE</translation>
+<translation id="3990956504562716932">Try for free for 7 days</translation>
 <translation id="721747358270435486">Install VPN</translation>
 <translation id="836074276610740314">Install VPN profile</translation>
 <translation id="8021842065465097929">Brave will now install a VPN profile.</translation>
@@ -1117,71 +1113,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="591648995518106347">Automatically loads eligible articles in reader mode</translation>
 <translation id="1295796122927221823">View in reader mode</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> on <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Brave playlist</translation>
-<translation id="4850886885716139402">View</translation>
-<translation id="7392941176393379100">Added to '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Managing your playlist data</translation>
-<translation id="7650602357673790368">By default, playlist will auto save content to your device for offline playback (on both private &amp; shared playlists). If you’re not on WiFi, auto save will use your cellular data.\n\nTo change this default, use settings.</translation>
-<translation id="5900576657906675258">Add item to playlist</translation>
-<translation id="349846214503465941">Enable playlist</translation>
-<translation id="1309636029062006520">Make playlists of your favourite audio and videos, and play anytime, anywhere.</translation>
-<translation id="3561815498111282415">Auto-save for offline</translation>
-<translation id="1832424694374124654">Automatically saves new playlist items to your device so you can play without an Internet connection.</translation>
-<translation id="8103022210423023846">Auto-save ON</translation>
-<translation id="3926329432879804185">Auto-save OFF</translation>
-<translation id="7768812595186089508">Auto-save only when connected to Wi-Fi</translation>
-<translation id="5939518447894949180">Reset</translation>
-<translation id="8199028711686989861">Remove all videos from playlist, including offline mode storage.</translation>
-<translation id="5916664084637901428">On</translation>
-<translation id="5860033963881614850">Off</translation>
-<translation id="2920568868625746681">Wi-Fi only</translation>
-<translation id="4590997608186539865">Playlist</translation>
-<translation id="7525067979554623046">Create</translation>
-<translation id="5491049004699827548">Create your first playlist</translation>
-<translation id="5319108110887582146">Make a playlist of your favourite audio and videos and play anytime, anywhere. Even offline.</translation>
-<translation id="6802849415466883498">Create a playlist</translation>
-<translation id="8525248723479742219">Play later</translation>
-<translation id="7453007860684252933">Browse and add</translation>
-<translation id="9014883386413828317">Add your favourite content. Look for the ( + ) button in the lower-right part of your screen.</translation>
-<translation id="5928669500312007783">Browse for media</translation>
-<translation id="8152485753254079984">New playlist</translation>
-<translation id="9130105487623071247">Playlist name</translation>
-<translation id="726581235416249619">Untitled playlist</translation>
-<translation id="1456254983411148628">Remove data</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> selected</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
-<translation id="2317629745818459803">Play all</translation>
-<translation id="7544853251252956727">Shuffle</translation>
-<translation id="2881339830231736485">Recently played</translation>
-<translation id="7636458383879257005">Tap, long press or drag</translation>
-<translation id="8120600068258956006">Add to playlist</translation>
-<translation id="39991094779686024">Playlists</translation>
-<translation id="1710072605877822603">Add media</translation>
-<translation id="3874252678044305931">Add videos to Brave Playlist. Playback anytime. Even offline.</translation>
-<translation id="8973629800378391099">Make playlists of your favourite content. Save mobile data. And playback ad-free.</translation>
-<translation id="4936812987266342401">Just tap the button to add videos to a playlist</translation>
-<translation id="6263657785571415306">Stay in flow: add videos while you browse, watch later.</translation>
-<translation id="2839555636100404687">Playback is better in Playlist</translation>
-<translation id="9079526681359439081">Play in the background. Control from the lockscreen. And more …</translation>
-<translation id="3620862810055853183">Open playlist</translation>
-<translation id="3861012838874771868">Open playlist Settings</translation>
-<translation id="5220099266891491416">Hide playlist button</translation>
-<translation id="7416347631175891923">Try it!</translation>
-<translation id="1173894706177603556">Rename</translation>
-<translation id="1620612903815671893">Remove playlist offline data</translation>
-<translation id="3261711068865275261">Remove all offline data</translation>
-<translation id="6653691766801349738">Keep playlist for offline use</translation>
-<translation id="8708086574143054053">Keep all playlists for offline use</translation>
-<translation id="3596306474342941843">Delete playlist</translation>
-<translation id="7765158879357617694">Move</translation>
-<translation id="3803384303807438047">Delete item's offline data</translation>
-<translation id="4195643157523330669">Open in new tab</translation>
-<translation id="4243710787042215766">Open in Private tab</translation>
-<translation id="8261506727792406068">Delete</translation>
-<translation id="377872456482681602">Please select items first</translation>
-<translation id="6172429305139364624">Playlist item is not cached.\nPlease cache the item for offline mode.</translation>
-<translation id="3631131732607750008">Content expired. Try again in a few seconds.</translation>
-<translation id="286472539388773794">Please enter valid playlist name</translation>
 <translation id="9085765419770918643">No NFTs here yet.</translation>
 <translation id="8445532667841598737">Ready to add some? Just click the button below to import.</translation>
 <translation id="5925465310724910998">Want your NFTs displayed automatically?</translation>
@@ -1190,12 +1121,6 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="622372328961630111">Automatically add NFTs you own to the Wallet using third party APIs. <ph name="BEGIN_LINK_1"/>Learn more.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Address look-up table account:</translation>
 <translation id="7659483790930268440">Address look-up table index:</translation>
-<translation id="7322560193401221004">Remember file playback position</translation>
-<translation id="7505951907514709271">For individual files, resume playing from the point of last pause</translation>
-<translation id="6835165453349969605">Remember list playback position</translation>
-<translation id="6344103698928069918">For a playlist, resume playing from the point of last pause</translation>
-<translation id="8141583471142904652">Continuous Listening</translation>
-<translation id="851432578283946230">Automatically plays the next items in your playlist</translation>
 <translation id="7853202427316060426">Activity</translation>
 <translation id="4932733599132424254">Date</translation>
 <translation id="346505172740911461">Market price</translation>
@@ -1212,6 +1137,80 @@ If you don't accept this request, VPN will not reconnect and your Internet conne
 <translation id="2471230424465522689">Not before</translation>
 <translation id="4841860051609590575">Request ID</translation>
 <translation id="1179407411385015942">Leo is an AI-powered smart assistant, built right into the browser</translation>
+<translation id="4109670531935487117">Show autocomplete suggestions in address bar</translation>
 <translation id="1250335737108905610">Reset and clear Leo data</translation>
 <translation id="6165101586663336913">Resetting the Leo assistant will require you to opt-in to use Leo in the future and will also clear your chat history. Clearing your chat history will delete all your previous conversations with Leo. This action cannot be undone.</translation>
+<translation id="3692772534525889713">Link your Play Store purchase to your Brave account to use Brave Leo on other devices.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Monthly</translation>
+<translation id="451189393813405346">Ask Leo</translation>
+<translation id="7322560193401221004">Remember file playback position</translation>
+<translation id="7505951907514709271">For individual files, resume playing from the point of last pause</translation>
+<translation id="6835165453349969605">Remember list playback position</translation>
+<translation id="6344103698928069918">For a playlist, resume playing from the point of last pause</translation>
+<translation id="8141583471142904652">Continuous Listening</translation>
+<translation id="851432578283946230">Automatically plays the next items in your playlist</translation>
+<translation id="295620834661738195">Brave playlist</translation>
+<translation id="4850886885716139402">View</translation>
+<translation id="7392941176393379100">Added to '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Enable playlist</translation>
+<translation id="1309636029062006520">Make playlists of your favourite audio and videos, and play anytime, anywhere.</translation>
+<translation id="7899390017499980820">Add to playlist button</translation>
+<translation id="6901152954398668317">Show or hide "Add to playlist" button for quick access to add or remove media.</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Remove all videos from playlist, including offline mode storage.</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Create</translation>
+<translation id="8525248723479742219">Play later</translation>
+<translation id="7453007860684252933">Browse and add</translation>
+<translation id="9014883386413828317">Add your favourite content. Look for the ( + ) button in the lower-right part of your screen.</translation>
+<translation id="5928669500312007783">Browse for media</translation>
+<translation id="8152485753254079984">New playlist</translation>
+<translation id="9130105487623071247">Playlist name</translation>
+<translation id="726581235416249619">Untitled playlist</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> selected</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
+<translation id="2317629745818459803">Play all</translation>
+<translation id="7544853251252956727">Shuffle</translation>
+<translation id="2881339830231736485">Recently played</translation>
+<translation id="8120600068258956006">Add to playlist</translation>
+<translation id="39991094779686024">Playlists</translation>
+<translation id="1710072605877822603">Add media</translation>
+<translation id="3874252678044305931">Add videos to Brave Playlist. Playback anytime. Even offline.</translation>
+<translation id="8973629800378391099">Make playlists of your favourite content. Save mobile data. And playback ad-free.</translation>
+<translation id="4936812987266342401">Just tap the button to add videos to a playlist</translation>
+<translation id="6263657785571415306">Stay in flow: add videos while you browse, watch later.</translation>
+<translation id="2839555636100404687">Playback is better in Playlist</translation>
+<translation id="9079526681359439081">Play in the background. Control from the lockscreen. And more …</translation>
+<translation id="3620862810055853183">Open playlist</translation>
+<translation id="3861012838874771868">Open playlist Settings</translation>
+<translation id="5220099266891491416">Hide playlist button</translation>
+<translation id="7416347631175891923">Try it!</translation>
+<translation id="1173894706177603556">Rename</translation>
+<translation id="3596306474342941843">Delete playlist</translation>
+<translation id="7765158879357617694">Move</translation>
+<translation id="3803384303807438047">Delete item's offline data</translation>
+<translation id="4195643157523330669">Open in new tab</translation>
+<translation id="4243710787042215766">Open in Private tab</translation>
+<translation id="8261506727792406068">Delete</translation>
+<translation id="377872456482681602">Please select items first</translation>
+<translation id="286472539388773794">Please enter valid playlist name</translation>
+<translation id="2824489375399072491">Share with:</translation>
+<translation id="5319532905552885478">Media content is already added to the default playlist</translation>
+<translation id="4802584673094436231">Preparing …</translation>
+<translation id="481455355267255546">Up next</translation>
+<translation id="5474757891469990756">Unleash Leo's full powers with Premium:</translation>
+<translation id="4173478269537830374">Explore different AI models</translation>
+<translation id="3453542753968940696">Priority access to powerful models with different skills.</translation>
+<translation id="3245401959451976966">Unlock your creativity</translation>
+<translation id="5031778211368112461">Access models better suited for creative tasks and content generation.</translation>
+<translation id="4165928407303989823">Stay on topic</translation>
+<translation id="298783097210745222">Get more accurate answers for more nuanced conversations.</translation>
+<translation id="2389665228467129817">Chat for longer</translation>
+<translation id="4314705522985583059">Get higher rate limits for longer conversations.</translation>
+<translation id="6365289557497555234">All subscriptions are auto-renewed but can be\ncancelled at any time before renewal.</translation>
+<translation id="6637015365469044269">Upgrade now</translation>
+<translation id="614530507403667291">Default model for new conversations</translation>
+<translation id="4071849832011229600">Default model</translation>
+<translation id="7557539689487606886">Go Premium</translation>
 </translationbundle>

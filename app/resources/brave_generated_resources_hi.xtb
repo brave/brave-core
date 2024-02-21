@@ -255,6 +255,8 @@
 <translation id="480565261566115689">टैब को छोटा करें</translation>
 <translation id="7194343495483122559">टैब को बड़ा करें</translation>
 <translation id="1199054713803577378">टैब को छोटा करें</translation>
+<translation id="1337946268962884806">कस्टम ऑर्डर</translation>
+<translation id="8373664339577369248">कस्टम ऑर्डर</translation>
 <translation id="8120600068258956006">प्लेलिस्ट में जोड़ें</translation>
 <translation id="650694591627983430">इस पेज में मीडिया मिला</translation>
 <translation id="8525248723479742219">बाद में चलाएँ</translation>
@@ -304,6 +306,9 @@
 <translation id="2800828306627475693">दोहराना बंद करें</translation>
 <translation id="1748244367114657861">एक दोहराएं</translation>
 <translation id="6421906998825794164">सभी दोहराएं</translation>
+<translation id="6453210454707928697">आइटम चलाने में विफल</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] की समय सीमा समाप्त हो सकती है। क्या आप इसे रिकवर करना चाहेंगे?</translation>
+<translation id="6155018868740116868">रिकवर करें</translation>
 <translation id="1727684853006449697">Brave प्लेयर</translation>
 <translation id="9156965752763025780">अगली बार आपके द्वारा क्रोमियम पुन: लॉन्‍च करने पर आपके परिवर्तन प्रभावी होंगे.</translation>
 <translation id="7179921470347911571">अब पुनः प्रस्तुत करें</translation>
@@ -359,6 +364,8 @@ Binance
 <translation id="5860254591544742609">टाइटल बार दिखाएँ</translation>
 <translation id="5371926069408837914">जब वर्टिकल पैनल पर माउस का कर्सर जाए तो वह खुल जाए</translation>
 <translation id="3367129510799209147">टैब होवर मोड</translation>
+<translation id="515949045075831661">दाईं ओर दिखाएं</translation>
+<translation id="3725395376319291415">बाईं ओर दिखाएं</translation>
 <translation id="2113977810652731515">कार्ड</translation>
 <translation id="4096343215397759358">प्रीव्यू के साथ कार्ड</translation>
 <translation id="5297085818601043899">टूलटिप</translation>
@@ -395,7 +402,7 @@ Binance
 <translation id="4057614912106618659">Brave पहले से ही डॉक में है</translation>
 <translation id="3195845168740336657">शील्ड की सेटिंग</translation>
 <translation id="754769152790647708">शील्ड का स्टेटस</translation>
-<translation id="3615717588724840230">साइट शील्ड का इस्तेमाल करके ट्रैकर, विज्ञापन और फ़िंगरप्रिंटिंग को ब्लॉक कर सकती हैं</translation>
+<translation id="4868109105992358853">शील्ड्स, ट्रैकर, विज्ञापन और फ़िंगरप्रिंटिंग को ब्लॉक कर सकती हैं</translation>
 <translation id="5690973901138662477">शील्ड चालू हैं</translation>
 <translation id="4697275813919189958">शील्ड बंद हैं</translation>
 <translation id="6303294677342628402">सुरक्षा कवच</translation>
@@ -450,7 +457,7 @@ Binance
 <translation id="5567412479632285879">Brave रिवार्ड अक्षम है</translation>
 <translation id="413570371620795359">इस चालू करके शुरू करने के लिए रिवॉर्ड पैनल खोलें</translation>
 <translation id="1051600834033686945">Brave रिवॉर्ड की सेटिंग पर जाएँ</translation>
-<translation id="6333347122924254968">एड्रेस बार में Brave Rewards आइकॉन दिखाएं</translation>
+<translation id="8826461509529116322">Brave रिवॉर्ड बटन दिखाएं</translation>
 <translation id="9185018653595759199">सोशल मीडिया अवरुद्ध</translation>
 <translation id="863171915776379000">Facebook लॉगिन और एम्बेडेड पोस्ट की अनुमति दें</translation>
 <translation id="5165042248369837294">Twitter एम्बेडेड ट्वीट की अनुमति दें</translation>
@@ -760,6 +767,7 @@ Binance
 Leo का इस्तेमाल करने के लिए ऑप्ट-इन करना होगा और यह आपकी 
 सभी पिछली चैट को मिटा देगा. पिछली चैट को मिटाने का मतलब है कि Brave 
 लियो के साथ की गई आपकी सभी बातचीत मिट जाएगी. इन्हें बाद में फिर से हासिल नहीं किया जा सकता.</translation>
+<translation id="5574059574002819179">स्वत: पूर्ण सुझावों को एडजस्ट करें</translation>
 <translation id="8157373421434119674">डेटा और पिछले चैट</translation>
 <translation id="614530507403667291">नई बातचीत के लिए डिफ़ॉल्ट मॉडल</translation>
 <translation id="349846214503465941">प्लेलिस्ट सक्षम करें</translation>

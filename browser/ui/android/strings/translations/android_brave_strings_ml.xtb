@@ -51,6 +51,7 @@
 <translation id="8987927404178983737">മാസം</translation>
 <translation id="1383876407941801731">തിരയുക</translation>
 <translation id="3479552764303398839">ഇപ്പോഴല്ല</translation>
+<translation id="7701040980221191251">ഒന്നുമില്ല</translation>
 <translation id="8798099450830957504">സ്ഥിരസ്ഥിതി</translation>
 <translation id="1483493594462132177">അയയ്‌ക്കുക</translation>
 <translation id="4472575034687746823">ആരംഭിക്കാം</translation>
@@ -105,10 +106,9 @@
 <translation id="6736243959894955139">വിലാസം</translation>
 <translation id="308268297242056490">URI</translation>
 <translation id="3798449238516105146">പതിപ്പ്</translation>
+<translation id="5494920125229734069">എല്ലാം തിരഞ്ഞെടുക്കുക</translation>
 <translation id="4850886885716139402">കാണുക</translation>
 <translation id="5939518447894949180">റീസെറ്റ് ചെയ്യുക</translation>
-<translation id="5916664084637901428">ഓണാണ്</translation>
-<translation id="5860033963881614850">ഓഫാണ്</translation>
 <translation id="7525067979554623046">സൃഷ്‌ടിക്കുക</translation>
 <translation id="7544853251252956727">ഷഫിൾ ചെയ്യുക</translation>
 <translation id="1173894706177603556">പേരുമാറ്റുക</translation>
@@ -116,5 +116,4 @@
 <translation id="4195643157523330669">പുതിയ ടാബില്‍ തുറക്കുക</translation>
 <translation id="4243710787042215766">അദൃശ്യ ടാബിൽ തുറക്കുക</translation>
 <translation id="8261506727792406068">ഇല്ലാതാക്കുക</translation>
-<translation id="5494920125229734069">എല്ലാം തിരഞ്ഞെടുക്കുക</translation>
 </translationbundle>

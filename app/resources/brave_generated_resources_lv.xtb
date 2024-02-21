@@ -253,6 +253,8 @@
 <translation id="480565261566115689">Minimizēt cilnes</translation>
 <translation id="7194343495483122559">Izvērst cilnes</translation>
 <translation id="1199054713803577378">Minimizēt cilnes</translation>
+<translation id="1337946268962884806">Pielāgots pasūtījums</translation>
+<translation id="8373664339577369248">pielāgots pasūtījums</translation>
 <translation id="8120600068258956006">Pievienot atskaņošanas sarakstam</translation>
 <translation id="650694591627983430">Šajā lapā atrastā multivide</translation>
 <translation id="8525248723479742219">Atskaņot vēlāk</translation>
@@ -302,6 +304,9 @@
 <translation id="2800828306627475693">Atkārtošana izslēgta</translation>
 <translation id="1748244367114657861">Atkārtot vienu</translation>
 <translation id="6421906998825794164">Atkārtot visu</translation>
+<translation id="6453210454707928697">Neizdevās atskaņot vienumu</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] var būt beidzies derīguma termiņš. Vai vēlaties to atgūt?</translation>
+<translation id="6155018868740116868">Atgūt</translation>
 <translation id="1727684853006449697">Brave atskaņotājs</translation>
 <translation id="9156965752763025780">Izmaiņas stāsies spēkā, kad restartēsiet Brave.</translation>
 <translation id="7179921470347911571">Restartēt tūlīt</translation>
@@ -324,6 +329,8 @@
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
 <translation id="5371926069408837914">Ja vertikālo ciļņu panelis ir savērsts, izvērsiet to, pakustinot peli</translation>
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
+<translation id="515949045075831661">Parādīt labajā pusē</translation>
+<translation id="3725395376319291415">Parādīt kreisajā pusē</translation>
 <translation id="2113977810652731515">Karte</translation>
 <translation id="4096343215397759358">Karte ar priekšskatījumu</translation>
 <translation id="5297085818601043899">Rīka padoms</translation>
@@ -360,7 +367,7 @@
 <translation id="4057614912106618659">Brave jau ir dokā</translation>
 <translation id="3195845168740336657">Aizsarga iestatījumi</translation>
 <translation id="754769152790647708">Aizsargu statuss</translation>
-<translation id="3615717588724840230">Izmantojot aizsargus, vietnes var bloķēt izsekotājus, reklāmas un pirkstu nospiedumus</translation>
+<translation id="4868109105992358853">Aizsargi var bloķēt izsekotājus, reklāmas un pirkstu nospiedumus</translation>
 <translation id="5690973901138662477">Aizsargi ieslēgti</translation>
 <translation id="4697275813919189958">Aizsargi izslēgti</translation>
 <translation id="6303294677342628402">Aizsargi</translation>
@@ -415,7 +422,7 @@
 <translation id="5567412479632285879">Brave balvas ir atspējotas</translation>
 <translation id="413570371620795359">Atveriet balvu paneli, lai to iespējotu, un sāciet lietot</translation>
 <translation id="1051600834033686945">Atvērt visus Brave balvu iestatījumus</translation>
-<translation id="6333347122924254968">Rādīt Brave Atlīdzību ikonu adrešu joslā</translation>
+<translation id="8826461509529116322">Parādīt Brave atlīdzību pogu</translation>
 <translation id="9185018653595759199">Sociālo plašsaziņas līdzekļu bloķēšana</translation>
 <translation id="863171915776379000">Atļaut Facebook pieteikšanos un iegultās ziņas</translation>
 <translation id="5165042248369837294">Atļaut Twitter iegultos tvītus</translation>
@@ -725,6 +732,7 @@ Piezīme: Ja ir atlasīts lokālais mezgls, resurss tiks pieprasīts tieši no j
 Leo lietošanai nākotnē, un tā jūs notīrīsiet savu tērzēšanas vēsturi. Notīrot tērzēšanas vēsturi, 
 jūs izdzēsīsiet visas iepriekšējās sarunas ar Brave 
 Leo. Šo darbību nevar atsaukt.</translation>
+<translation id="5574059574002819179">Pielāgot automātiskās pabeigšanas ieteikumus</translation>
 <translation id="8157373421434119674">Dati un tērzēšanas vēsture</translation>
 <translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
 <translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>

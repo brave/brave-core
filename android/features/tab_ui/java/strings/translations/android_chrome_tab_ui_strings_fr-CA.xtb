@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Vous souhaitez fermer les anciens onglets?</translation>
 <translation id="1215127405478249895">Vérifier les onglets</translation>
 <translation id="125153950246128346">Touchez pour afficher un autre onglet</translation>
+<translation id="1326271443836399892">Vérifier les paramètres de désencombrement actuels.</translation>
 <translation id="1657719826150349398">Déplacer l'onglet vers le bas</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> onglet}one{<ph name="TABS_COUNT_MANY"/> onglet}other{<ph name="TABS_COUNT_MANY"/> onglets}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Ajouter <ph name="TABS_COUNT_ONE"/> onglet sélectionné aux favoris}one{Ajouter <ph name="TABS_COUNT_MANY"/> onglet sélectionné aux favoris}other{Ajouter <ph name="TABS_COUNT_MANY"/> onglets sélectionnés aux favoris}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Supprimer du groupe</translation>
 <translation id="3008554597174452548">Arrêter de suivre ce produit</translation>
 <translation id="3052964831964880138">Rabais de <ph name="PRICE_DROP"/> sur le <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Vous avez <ph name="TABS_COUNT_ONE"/> onglet archivé}one{Vous avez <ph name="TABS_COUNT_MANY"/> onglet archivé}other{Vous avez <ph name="TABS_COUNT_MANY"/> onglets archivés}}</translation>
 <translation id="3194464645767632461">note</translation>
 <translation id="3291470810748040983">Vous recevrez une alerte si un meilleur prix est détecté dans un onglet ouvert</translation>
 <translation id="3328308545011660196">Suggestion : <ph name="NUMBER_OF_TABS"/> onglets semblent liés. Voulez-vous les regrouper?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Recevoir des notifications</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> onglets semblent liés. Voulez-vous les regrouper?</translation>
 <translation id="4212246570487010370">Continuer la navigation</translation>
+<translation id="427987768447457592">Nouveau groupe d'onglets</translation>
 <translation id="4648718555153979859">Vos onglets sont regroupés ici</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> avis)}one{(<ph name="REVIEWS_COUNT_MANY"/> avis)}other{(<ph name="REVIEWS_COUNT_MANY"/> avis)}}</translation>
 <translation id="4850886885716139402">Affichage</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Masquer la grille plein écran</translation>
 <translation id="5076161749301278626">Afficher les avis sur le magasin?</translation>
 <translation id="5082793167783849073">Comparez rapidement des pages en créant un groupe. Pour commencer, maintenez le doigt sur un lien.</translation>
+<translation id="5161254044473106830">Titre requis</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Vous avez <ph name="TABS_COUNT_ONE"/> onglet que vous n'avez pas utilisé récemment}one{Vous avez <ph name="TABS_COUNT_MANY"/> onglet que vous n'avez pas utilisé récemment}other{Vous avez <ph name="TABS_COUNT_MANY"/> onglets que vous n'avez pas utilisés récemment}}</translation>
 <translation id="5339733443032484186">Votre dernier onglet</translation>
 <translation id="5490235265819901748">Groupe d'onglets développé</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Déplacer l'onglet vers la droite</translation>
 <translation id="7966321538264951561">Ignorer les suggestions.</translation>
 <translation id="8029301326595421733">Les renseignements à propos de ce magasin sont ouverts à pleine hauteur</translation>
-<translation id="814503310257431685">Tout afficher</translation>
 <translation id="8205266828577616993">Déplacer l'onglet vers le haut</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Fermer <ph name="TABS_COUNT_ONE"/> onglet sélectionné}one{Fermer <ph name="TABS_COUNT_MANY"/> onglet sélectionné}other{Fermer <ph name="TABS_COUNT_MANY"/> onglets sélectionnés}}</translation>
 <translation id="8398929769197326728">Nouveau dossier - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">Les renseignements à propos de ce magasin sont fermés</translation>
 <translation id="9150694013019234766">Basculez entre les onglets dans votre groupe d'onglets, près du bas de l'écran</translation>
 <translation id="9169594135889675189">Ajouter un onglet au groupe</translation>
+<translation id="955558140275419384">Vérifier tous les onglets archivés pour les désencombrer en entrant dans cet éditeur.</translation>
 <translation id="959682366969460160">Place à l'organisation</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
 =1 {Vous trouverez vos onglets fermés dans les onglets récents sous le menu principal de Brave. Votre onglet Privé ne sera pas disponible.}
