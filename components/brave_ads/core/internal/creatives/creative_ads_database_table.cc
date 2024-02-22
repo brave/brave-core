@@ -155,30 +155,6 @@ void GetForCreativeInstanceIdCallback(
   std::move(callback).Run(/*success=*/true, creative_instance_id, creative_ad);
 }
 
-void MigrateToV34(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Recreate table as it will be repopulated after downloading the catalog.
-  DropTable(transaction, "creative_ads");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE creative_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
-            creative_set_id TEXT NOT NULL,
-            per_day INTEGER NOT NULL DEFAULT 0,
-            per_week INTEGER NOT NULL DEFAULT 0,
-            per_month INTEGER NOT NULL DEFAULT 0,
-            total_max INTEGER NOT NULL DEFAULT 0,
-            value DOUBLE NOT NULL DEFAULT 0,
-            split_test_group TEXT,
-            target_url TEXT NOT NULL
-          );)";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 void CreativeAds::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -253,7 +229,7 @@ void CreativeAds::Create(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE creative_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             creative_set_id TEXT NOT NULL,
             per_day INTEGER NOT NULL DEFAULT 0,
             per_week INTEGER NOT NULL DEFAULT 0,
@@ -271,14 +247,23 @@ void CreativeAds::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 34: {
-      MigrateToV34(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void CreativeAds::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string CreativeAds::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -289,7 +274,7 @@ std::string CreativeAds::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_instance_id,
             creative_set_id,
             per_day,

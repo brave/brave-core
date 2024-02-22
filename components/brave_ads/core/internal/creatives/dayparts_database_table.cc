@@ -41,27 +41,6 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV34(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Recreate table as it will be repopulated after downloading the catalog.
-  DropTable(transaction, "dayparts");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE dayparts (
-            campaign_id TEXT NOT NULL,
-            days_of_week TEXT NOT NULL,
-            start_minute INT NOT NULL,
-            end_minute INT NOT NULL,
-            PRIMARY KEY (campaign_id, days_of_week, start_minute, end_minute),
-            UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT REPLACE
-          );)";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -102,8 +81,12 @@ void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
             days_of_week TEXT NOT NULL,
             start_minute INT NOT NULL,
             end_minute INT NOT NULL,
-            PRIMARY KEY (campaign_id, days_of_week, start_minute, end_minute),
-            UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT REPLACE
+            PRIMARY KEY (
+              campaign_id,
+              days_of_week,
+              start_minute,
+              end_minute
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 }
@@ -113,14 +96,23 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 34: {
-      MigrateToV34(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Dayparts::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string Dayparts::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -131,7 +123,7 @@ std::string Dayparts::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             campaign_id,
             days_of_week,
             start_minute,

@@ -347,10 +347,9 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  testing::UnorderedElementsAreArray(ConversionQueueItemList{
-                      conversion_queue_item_1, conversion_queue_item_2})));
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            ConversionQueueItemList{conversion_queue_item_1,
+                                                    conversion_queue_item_2}));
   database_table_.GetAll(callback.Get());
 }
 

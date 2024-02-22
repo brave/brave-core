@@ -43,27 +43,6 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV34(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Recreate table as it will be repopulated after downloading the catalog.
-  DropTable(transaction, "creative_new_tab_page_ad_wallpapers");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE creative_new_tab_page_ad_wallpapers (
-            creative_instance_id TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            focal_point_x INT NOT NULL,
-            focal_point_y INT NOT NULL,
-            PRIMARY KEY (creative_instance_id, image_url, focal_point_x, focal_point_y),
-            UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE
-          );)";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 void CreativeNewTabPageAdWallpapers::InsertOrUpdate(
@@ -112,8 +91,12 @@ void CreativeNewTabPageAdWallpapers::Create(
             image_url TEXT NOT NULL,
             focal_point_x INT NOT NULL,
             focal_point_y INT NOT NULL,
-            PRIMARY KEY (creative_instance_id, image_url, focal_point_x, focal_point_y),
-            UNIQUE(creative_instance_id, image_url, focal_point_x, focal_point_y) ON CONFLICT REPLACE
+            PRIMARY KEY (
+              creative_instance_id,
+              image_url,
+              focal_point_x,
+              focal_point_y
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 }
@@ -124,14 +107,24 @@ void CreativeNewTabPageAdWallpapers::Migrate(
   CHECK(transaction);
 
   switch (to_version) {
-    case 34: {
-      MigrateToV34(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void CreativeNewTabPageAdWallpapers::MigrateToV35(
+    mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -142,7 +135,7 @@ std::string CreativeNewTabPageAdWallpapers::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_instance_id,
             image_url,
             focal_point_x,

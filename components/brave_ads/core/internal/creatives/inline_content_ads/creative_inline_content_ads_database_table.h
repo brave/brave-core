@@ -84,6 +84,8 @@ class CreativeInlineContentAds final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
+  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeInlineContentAdList& creative_ads);
 

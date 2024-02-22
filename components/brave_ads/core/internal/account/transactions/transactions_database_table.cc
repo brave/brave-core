@@ -118,7 +118,7 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE transactions (
-            id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             created_at TIMESTAMP NOT NULL,
             creative_instance_id TEXT,
             value DOUBLE NOT NULL,
@@ -127,8 +127,6 @@ void MigrateToV18(mojom::DBTransactionInfo* transaction) {
             reconciled_at TIMESTAMP
           );)";
   transaction->commands.push_back(std::move(command));
-
-  CreateTableIndex(transaction, "transactions", "id");
 }
 
 void MigrateToV26(mojom::DBTransactionInfo* transaction) {
@@ -141,7 +139,7 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE transactions_temp (
-            id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             created_at TIMESTAMP NOT NULL,
             creative_instance_id TEXT,
             value DOUBLE NOT NULL,
@@ -162,8 +160,6 @@ void MigrateToV26(mojom::DBTransactionInfo* transaction) {
                    /*should_drop=*/true);
 
   RenameTable(transaction, "transactions_temp", "transactions");
-
-  CreateTableIndex(transaction, "transactions", "id");
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
@@ -219,6 +215,13 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
           WHERE
             confirmation_type == 'saved';)";
   transaction->commands.push_back(std::move(command));
+}
+
+void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // Optimize database query for `GetForDateRange`.
+  CreateTableIndex(transaction, "transactions", /*columns=*/{"created_at"});
 }
 
 }  // namespace
@@ -355,7 +358,7 @@ void Transactions::Create(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE transactions (
-            id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             created_at TIMESTAMP NOT NULL,
             creative_instance_id TEXT,
             value DOUBLE NOT NULL,
@@ -365,6 +368,9 @@ void Transactions::Create(mojom::DBTransactionInfo* transaction) {
             reconciled_at TIMESTAMP
           );)";
   transaction->commands.push_back(std::move(command));
+
+  // Optimize database query for `GetForDateRange`.
+  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"created_at"});
 }
 
 void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
@@ -389,6 +395,11 @@ void Transactions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 32: {
       MigrateToV32(transaction);
+      break;
+    }
+
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
@@ -419,12 +430,15 @@ std::string Transactions::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             id,
             created_at,
             creative_instance_id,
             value,
-            segment, ad_type, confirmation_type, reconciled_at
+            segment,
+            ad_type,
+            confirmation_type,
+            reconciled_at
           ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/8, binded_parameters_count)},

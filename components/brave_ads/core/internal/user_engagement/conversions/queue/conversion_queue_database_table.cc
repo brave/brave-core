@@ -241,7 +241,8 @@ void MigrateToV11(mojom::DBTransactionInfo* transaction) {
 void MigrateToV17(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  CreateTableIndex(transaction, "conversion_queue", "creative_instance_id");
+  CreateTableIndex(transaction, "conversion_queue",
+                   /*columns=*/{"creative_instance_id"});
 }
 
 void MigrateToV21(mojom::DBTransactionInfo* transaction) {
@@ -459,6 +460,20 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
   RenameTable(transaction, "conversion_queue_temp", "conversion_queue");
 }
 
+void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  DropTableIndex(transaction, "conversion_queue_creative_instance_id_index");
+
+  // Optimize database query for `GetNext`.
+  CreateTableIndex(transaction, "conversion_queue",
+                   /*columns=*/{"creative_instance_id", "process_at"});
+
+  // Optimize database query for `GetForCreativeInstanceId`.
+  CreateTableIndex(transaction, "conversion_queue",
+                   /*columns=*/{"was_processed", "process_at"});
+}
+
 }  // namespace
 
 ConversionQueue::ConversionQueue() : batch_size_(kDefaultBatchSize) {}
@@ -654,6 +669,14 @@ void ConversionQueue::Create(mojom::DBTransactionInfo* transaction) {
             was_processed INTEGER DEFAULT 0
           );)";
   transaction->commands.push_back(std::move(command));
+
+  // Optimize database query for `GetNext`.
+  CreateTableIndex(transaction, GetTableName(),
+                   /*columns=*/{"creative_instance_id", "process_at"});
+
+  // Optimize database query for `GetForCreativeInstanceId`.
+  CreateTableIndex(transaction, GetTableName(),
+                   /*columns=*/{"was_processed", "process_at"});
 }
 
 void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
@@ -700,6 +723,11 @@ void ConversionQueue::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV30(transaction);
       break;
     }
+
+    case 35: {
+      MigrateToV35(transaction);
+      break;
+    }
   }
 }
 
@@ -730,7 +758,7 @@ std::string ConversionQueue::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             ad_type,
             campaign_id,
             creative_set_id,

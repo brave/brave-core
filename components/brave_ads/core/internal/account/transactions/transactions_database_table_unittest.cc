@@ -73,9 +73,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
 
   // Assert
   base::MockCallback<GetTransactionsCallback> callback;
-  EXPECT_CALL(callback,
-              Run(/*success=*/true,
-                  ::testing::UnorderedElementsAreArray(transactions)));
+  EXPECT_CALL(callback, Run(/*success=*/true, transactions));
   const Transactions database_table;
   database_table.GetAll(callback.Get());
 }
