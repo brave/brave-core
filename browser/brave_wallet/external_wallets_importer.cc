@@ -383,6 +383,7 @@ void ExternalWalletsImporter::GetMnemonic(bool is_legacy_crypto_wallets,
   auto decrypted_keyrings =
       encryptor->DecryptForImporter(*data_decoded, *iv_decoded);
   if (!decrypted_keyrings) {
+    // Also try with legacy 10K iterations.
     std::unique_ptr<PasswordEncryptor> encryptor_10k =
         PasswordEncryptor::DeriveKeyFromPasswordUsingPbkdf2(
             password, *salt_decoded, 10000, 256);

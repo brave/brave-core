@@ -16,8 +16,8 @@
 
 namespace brave_wallet {
 namespace {
-// encrypted valid_mnemonic
-const char* valid_data =
+// encrypted valid_mnemonic with legacy 10K iterations for pbkdf2
+const char* valid_data_10K =
     "{\"data\": {\"KeyringController\": {\"vault\": "
     "\"{\\\"data\\\":"
     "\\\"CFJuPK8MgoieYbqCAc2aBQI4iToyI5KVwqkpMF6tKWkGt3r65pxFjwB2jylPkF0wrym4Or"
@@ -27,6 +27,7 @@ const char* valid_data =
     "\\\",\\\"iv\\\":\\\"fOHBjjQcsi1KmaeQ7xA7Aw==\\\", "
     "\\\"salt\\\":\\\"z1bTZtBY33d2l6CfiFs5V/eRQLS6Qsq5UtAQOIfaIps=\\\"}\"}}}";
 
+// encrypted mnemonic with 600K iterations for pbkdf2
 const char* valid_data_600K =
     "{\"data\": {\"KeyringController\": {\"vault\": "
     "\"{\\\"data\\\":"
@@ -174,7 +175,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   ImportInfo info;
   ImportError error;
   // empty password
-  SimulateGetImportInfo("", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 
@@ -219,16 +220,16 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   result = true;
   error = ImportError::kNone;
   // wrong password
-  SimulateGetImportInfo("123", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("123", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 }
 
-TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
   bool result = false;
   ImportInfo info;
   ImportError error;
-  SimulateGetImportInfo("brave4ever", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("brave4ever", valid_data_10K, &result, &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
