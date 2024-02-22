@@ -18,10 +18,8 @@ const IID& GetBraveVpnWireguardServiceIid();
 std::wstring GetBraveVpnWireguardTunnelServiceName();
 std::wstring GetBraveVpnWireguardServiceName();
 std::wstring GetBraveVpnWireguardServiceDisplayName();
-base::FilePath GetBraveVPNWireguardServiceInstallationPath(
-    const base::FilePath& target_path,
-    const base::Version& version);
-base::FilePath GetBraveVPNWireguardServiceExecutablePath();
+base::FilePath GetBraveVPNWireguardServiceExecutablePath(
+    const base::FilePath& root_dir);
 }  // namespace brave_vpn
 
 #endif  // BRAVE_BROWSER_BRAVE_VPN_WIN_SERVICE_DETAILS_H_
