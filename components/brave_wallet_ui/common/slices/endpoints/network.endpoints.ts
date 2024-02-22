@@ -14,9 +14,15 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 // utils
 import { handleEndpointError } from '../../../utils/api-utils'
 import { IsEip1559Changed } from '../../constants/action_types'
-import { NetworksRegistry } from '../entities/network.entity'
+import { NetworksRegistry, getNetworkId } from '../entities/network.entity'
 import { ACCOUNT_TAG_IDS } from './account.endpoints'
 import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
+import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
+import {
+  makeInitialFilteredOutNetworkKeys,
+  parseJSONFromLocalStorage
+} from '../../../utils/local-storage-utils'
+import { WalletActions } from '../wallet.slice'
 
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
@@ -63,14 +69,15 @@ export const networkEndpoints = ({
                 await api.jsonRpcService.getAllNetworks(
                   BraveWallet.CoinType.ZEC
                 )
-          ).networks : []
+              ).networks
+            : []
           return {
             data: [
               ...ethNetworks,
               ...solNetworks,
               ...filNetworks,
               ...btcNetworks,
-              ...zecNetworks,
+              ...zecNetworks
             ]
           }
         } catch (error) {
@@ -177,7 +184,12 @@ export const networkEndpoints = ({
       boolean,
       Array<Pick<BraveWallet.NetworkInfo, 'chainId' | 'coin'>>
     >({
-      queryFn: async (chains, { endpoint }, extraOptions, baseQuery) => {
+      queryFn: async (
+        chains,
+        { endpoint, dispatch },
+        extraOptions,
+        baseQuery
+      ) => {
         try {
           const { data: api, cache } = baseQuery(undefined)
 
@@ -190,6 +202,33 @@ export const networkEndpoints = ({
               const { success } = await api.jsonRpcService.addHiddenNetwork(
                 chain.coin,
                 chain.chainId
+              )
+
+              const networkKey = getNetworkId(chain)
+
+              // Get currently filtered-out network Keys in Local Storage
+              const currentFilteredOutNetworkKeys = parseJSONFromLocalStorage(
+                'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
+                makeInitialFilteredOutNetworkKeys()
+              )
+
+              // add network to hide list if not in the list already
+              const newFilteredOutNetworkKeys =
+                currentFilteredOutNetworkKeys.includes(networkKey)
+                  ? currentFilteredOutNetworkKeys
+                  : currentFilteredOutNetworkKeys.concat(networkKey)
+
+              // Update filtered-out network keys in Local Storage
+              window.localStorage.setItem(
+                LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
+                JSON.stringify(newFilteredOutNetworkKeys)
+              )
+
+              // Update Filtered Out Network Keys in Redux
+              dispatch(
+                WalletActions.setFilteredOutPortfolioNetworkKeys(
+                  newFilteredOutNetworkKeys
+                )
               )
 
               if (!success) {
