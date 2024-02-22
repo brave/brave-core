@@ -19,8 +19,19 @@ public class PlaylistStreamingObserverImpl implements PlaylistStreamingObserver 
 
     private PlaylistStreamingObserverImplDelegate mDelegate;
 
+    public PlaylistStreamingObserverImpl() {}
+
     public PlaylistStreamingObserverImpl(PlaylistStreamingObserverImplDelegate delegate) {
         mDelegate = delegate;
+    }
+
+    public PlaylistStreamingObserverImplDelegate getDelegate() {
+        return mDelegate;
+    }
+
+    public void setDelegate(
+            PlaylistStreamingObserverImplDelegate playlistStreamingObserverImplDelegate) {
+        mDelegate = playlistStreamingObserverImplDelegate;
     }
 
     @Override
