@@ -41,15 +41,17 @@ constexpr char kNewTabsCreated[] = "brave.new_tab_page.p3a_new_tabs_created";
 constexpr char kSponsoredNewTabsCreated[] =
     "brave.new_tab_page.p3a_sponsored_new_tabs_created";
 
-constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.2";
+constexpr char kNewTabsCreatedHistogramName[] = "Brave.NTP.NewTabsCreated.3";
 const int kNewTabsCreatedMetricBuckets[] = {0, 1, 2, 3, 4, 8, 15};
 constexpr char kSponsoredNewTabsHistogramName[] =
-    "Brave.NTP.SponsoredNewTabsCreated";
+    "Brave.NTP.SponsoredNewTabsCreated.2";
 constexpr int kSponsoredNewTabsBuckets[] = {0, 10, 20, 30, 40, 50};
 
 // Obsolete pref
 constexpr char kObsoleteCountToBrandedWallpaperPref[] =
     "brave.count_to_branded_wallpaper";
+
+constexpr base::TimeDelta kP3AReportInterval = base::Days(1);
 
 }  // namespace
 
@@ -130,6 +132,8 @@ ViewCounterService::ViewCounterService(
 
   OnUpdated(GetCurrentBrandedWallpaperData());
   OnUpdated(GetCurrentWallpaperData());
+
+  UpdateP3AValues();
 }
 
 ViewCounterService::~ViewCounterService() = default;
@@ -444,7 +448,7 @@ void ViewCounterService::MaybePrefetchNewTabPageAd() {
   ads_service_->PrefetchNewTabPageAd();
 }
 
-void ViewCounterService::UpdateP3AValues() const {
+void ViewCounterService::UpdateP3AValues() {
   uint64_t new_tab_count = new_tab_count_state_->GetHighestValueInWeek();
   p3a_utils::RecordToHistogramBucket(kNewTabsCreatedHistogramName,
                                      kNewTabsCreatedMetricBuckets,
@@ -462,6 +466,10 @@ void ViewCounterService::UpdateP3AValues() const {
                                        kSponsoredNewTabsBuckets,
                                        static_cast<int>(ratio));
   }
+
+  p3a_update_timer_.Start(FROM_HERE, base::Time::Now() + kP3AReportInterval,
+                          base::BindOnce(&ViewCounterService::UpdateP3AValues,
+                                         base::Unretained(this)));
 }
 
 }  // namespace ntp_background_images
