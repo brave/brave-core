@@ -1282,10 +1282,6 @@ void BraveWalletService::Base58Encode(
   std::move(callback).Run(std::move(encoded_addresses));
 }
 
-void BraveWalletService::DiscoverAssetsOnAllSupportedChains() {
-  DiscoverAssetsOnAllSupportedChains(false);
-}
-
 void BraveWalletService::DiscoverAssetsOnAllSupportedChains(
     bool bypass_rate_limit) {
   std::map<mojom::CoinType, std::vector<std::string>> addresses;

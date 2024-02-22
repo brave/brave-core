@@ -2033,7 +2033,7 @@ interface BraveWalletService {
 
   Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
 
-  DiscoverAssetsOnAllSupportedChains();
+  DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   GetNftDiscoveryEnabled() => (bool enabled);
 

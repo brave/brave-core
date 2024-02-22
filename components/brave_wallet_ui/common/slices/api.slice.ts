@@ -172,6 +172,7 @@ export const {
   useCompleteWalletBackupMutation,
   useConnectToSiteMutation,
   useCreateWalletMutation,
+  useDiscoverAssetsMutation,
   useEnableEnsOffchainLookupMutation,
   useGenerateBraveSwapFeeMutation,
   useGenerateReceiveAddressMutation,
@@ -195,7 +196,6 @@ export const {
   useGetERC20AllowanceQuery,
   useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,
-  useValidateUnifiedAddressQuery,
   useGetEVMTransactionSimulationQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,
@@ -316,7 +316,8 @@ export const {
   useUpdateUnapprovedTransactionNonceMutation,
   useUpdateUnapprovedTransactionSpendAllowanceMutation,
   useUpdateUserAssetVisibleMutation,
-  useUpdateUserTokenMutation
+  useUpdateUserTokenMutation,
+  useValidateUnifiedAddressQuery
 } = walletApi
 
 // Derived Data Queries

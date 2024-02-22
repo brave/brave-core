@@ -212,7 +212,7 @@ class BraveWalletService : public KeyedService,
   void Base58Encode(const std::vector<std::vector<std::uint8_t>>& addresses,
                     Base58EncodeCallback callback) override;
 
-  void DiscoverAssetsOnAllSupportedChains() override;
+  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit) override;
 
   void GetNftDiscoveryEnabled(GetNftDiscoveryEnabledCallback callback) override;
 
@@ -354,7 +354,6 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
-  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;

@@ -366,6 +366,28 @@ export const tokenEndpoints = ({
           )
         }
       }
+    }),
+    discoverAssets: mutation<true, void>({
+      queryFn: async (
+        _arg,
+        { endpoint, dispatch },
+        extraOptions,
+        baseQuery
+      ) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          api.braveWalletService.discoverAssetsOnAllSupportedChains(true)
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to start asset auto-discovery',
+            error
+          )
+        }
+      }
     })
   }
 }
