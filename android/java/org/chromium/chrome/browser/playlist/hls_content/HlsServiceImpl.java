@@ -84,7 +84,11 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                             playlistItemId,
                             playlistItem -> {
                                 if (playlistItem == null) {
-                                    removeContentAndStartNextDownload(playlistItemId);
+                                    PostTask.postTask(
+                                            TaskTraits.USER_VISIBLE_MAY_BLOCK,
+                                            () -> {
+                                                removeContentAndStartNextDownload(playlistItemId);
+                                            });
                                 }
                                 currentDownloadingPlaylistItemId = playlistItemId;
                                 HlsUtils.getManifestFile(
@@ -162,6 +166,9 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
 
     private void removeContentAndStartNextDownload(String playlistItemId) {
         PlaylistRepository playlistRepository = new PlaylistRepository(mContext);
+        if (playlistRepository == null) {
+            return;
+        }
         playlistRepository.deleteHlsContentQueueModel(playlistItemId);
         currentDownloadingPlaylistItemId = "";
         if (playlistRepository.getFirstHlsContentQueueModel() != null) {
@@ -191,12 +198,18 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
                                     playlistItem.mediaFileBytes,
                                     playlistItem.cached,
                                     false);
-                    VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+                    if (HlsUtils.isVideoPlaybackServiceRunning()) {
+                        VideoPlaybackService.Companion.addNewPlaylistItemModel(playlistItemModel);
+                    }
                 });
     }
 
     @Override
     public void onConnectionError(MojoException e) {
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+            mPlaylistService = null;
+        }
         if (ChromeSharedPreferences.getInstance()
                 .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)) {
             mPlaylistService = null;
@@ -211,5 +224,14 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
 
         mPlaylistService =
                 PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(HlsServiceImpl.this);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+            mPlaylistService = null;
+        }
+        super.onDestroy();
     }
 }

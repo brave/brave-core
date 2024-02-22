@@ -4033,9 +4033,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_PLAYLIST_TIME_TEXT" desc="Playlist duration time text" translateable="false">
       <ph name="TIME_TEXT">%1$s</ph>:
     </message>
-    <message name="IDS_PLAYLIST_DURATION_TEXT" desc="Playlist duration text" translateable="false">
-      <ph name="HOUR_TEXT">%1$s</ph><ph name="MINUTE_TEXT">%2$s</ph><ph name="SECOND_TEXT">%3$s</ph>
-    </message>
     <message name="IDS_PLAYLIST_PLEASE_SELECT_ITEMS" desc="Playlist select items error message text">
       Please select items first
     </message>

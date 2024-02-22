@@ -96,12 +96,17 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
     public void onDestroy() {
         if (mPlaylistService != null) {
             mPlaylistService.close();
+            mPlaylistService = null;
         }
         super.onDestroy();
     }
 
     @Override
     public void onConnectionError(MojoException e) {
+        if (mPlaylistService != null) {
+            mPlaylistService.close();
+            mPlaylistService = null;
+        }
         mPlaylistService = null;
         initPlaylistService();
     }
