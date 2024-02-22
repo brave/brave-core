@@ -17,6 +17,7 @@ import AIChatDataContext, {
   AIChatContext,
   defaultContext
 } from '../state/context'
+import { useArgs } from '@storybook/addons'
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -177,6 +178,7 @@ export default {
   },
   decorators: [
     (Story: any, options: any) => {
+      const [, setArgs] = useArgs()
       const [isGenerating] = React.useState(false)
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
@@ -191,12 +193,18 @@ export default {
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
+      const currentModel = MODELS.find(m => m.name === options.args.model)
+
+      const switchToBasicModel = () => {
+        const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
+        setArgs({ model: nonPremiumModel })
+      }
 
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
         allModels: MODELS,
-        currentModel: MODELS.find(m => m.name === options.args.model),
+        currentModel,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         isGenerating,
         isPremiumStatusFetching: false,
@@ -213,6 +221,7 @@ export default {
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
+        switchToBasicModel
       }
 
       return (
