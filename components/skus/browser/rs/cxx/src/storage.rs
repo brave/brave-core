@@ -3,10 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-use std::cell::RefMut;
-
 use async_trait::async_trait;
 use futures::channel::oneshot;
+use futures::lock::MutexGuard;
 use tracing::debug;
 
 use crate::{ffi, NativeClient, NativeClientInner};
@@ -27,12 +26,13 @@ pub struct StorageGetContext {
     client: NativeClientInner,
 }
 
+#[async_trait(?Send)]
 impl KVClient for NativeClient {
     type Store = NativeClientInner;
+    type StoreRef<'a> = MutexGuard<'a, NativeClientInner>;
 
-    #[allow(clippy::needless_lifetimes)]
-    fn get_store<'a>(&'a self) -> Result<RefMut<'a, NativeClientInner>, InternalError> {
-        self.inner.try_borrow_mut().or(Err(InternalError::BorrowFailed))
+    async fn get_store<'a>(&'a self) -> Result<MutexGuard<'a, NativeClientInner>, InternalError> {
+        Ok(self.inner.lock().await)
     }
 }
 

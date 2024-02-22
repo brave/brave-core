@@ -16,6 +16,7 @@ use std::thread;
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::{LocalPool, LocalSpawner};
 use futures::task::LocalSpawnExt;
+use futures::lock::Mutex;
 
 use tracing::debug;
 
@@ -41,7 +42,8 @@ pub struct NativeClientInner {
 
 #[derive(Clone)]
 pub struct NativeClient {
-    inner: Rc<RefCell<NativeClientInner>>,
+    executor: Rc<RefCell<NativeClientExecutor>>,
+    inner: Rc<Mutex<NativeClientInner>>,
 }
 
 impl fmt::Debug for NativeClient {
@@ -52,14 +54,14 @@ impl fmt::Debug for NativeClient {
 
 impl NativeClient {
     fn try_run_until_stalled(&self) {
-        let executor = self.inner.borrow().executor.clone();
+        let executor = self.executor.clone();
         if let Ok(mut executor) = executor.try_borrow_mut() {
             executor.try_run_until_stalled()
         };
     }
 
     fn get_spawner(&self) -> LocalSpawner {
-        self.inner.borrow().executor.borrow().spawner.clone()
+        self.executor.borrow().spawner.clone()
     }
 }
 
@@ -291,11 +293,13 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
 
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
+    let executor = Rc::new(RefCell::new(NativeClientExecutor::new()));
     let sdk = skus::sdk::SDK::new(
         NativeClient {
-            inner: Rc::new(RefCell::new(NativeClientInner {
+            executor: executor.clone(),
+            inner: Rc::new(Mutex::new(NativeClientInner {
                 environment: env.clone(),
-                executor: Rc::new(RefCell::new(NativeClientExecutor::new())),
+                executor,
                 ctx: Rc::new(RefCell::new(ctx)),
             })),
         },
@@ -320,7 +324,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
 
 impl CppSDK {
     fn shutdown(&self) {
-        self.sdk.client.inner.borrow().executor.borrow_mut().shutdown();
+        self.sdk.client.executor.borrow_mut().shutdown();
     }
 
     fn refresh_order(
