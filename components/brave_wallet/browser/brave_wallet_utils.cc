@@ -509,28 +509,6 @@ const std::vector<const mojom::NetworkInfo*>& GetKnownFilNetworks() {
   return *networks.get();
 }
 
-GURL BitcoinMainnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kBitcoinMainnetRpcUrl));
-  if (switch_url.is_valid()) {
-    return switch_url;
-  }
-
-  return GURL("https://bitcoin-mainnet.wallet.brave.com/");
-}
-
-GURL BitcoinTestnetRpcUrl() {
-  auto switch_url =
-      GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
-          switches::kBitcoinTestnetRpcUrl));
-  if (switch_url.is_valid()) {
-    return switch_url;
-  }
-
-  return GURL("https://blockstream.info/testnet/api/");
-}
-
 GURL ZCashMainnetRpcUrl() {
   auto switch_url =
       GURL(base::CommandLine::ForCurrentProcess()->GetSwitchValueASCII(
@@ -561,7 +539,7 @@ const mojom::NetworkInfo* GetBitcoinMainnet() {
        {"https://www.blockchain.com/explorer"},
        {},
        0,
-       {BitcoinMainnetRpcUrl()},
+       {GURL(kBitcoinMainnetRpcEndpoint)},
        "BTC",
        "Bitcoin",
        8,
@@ -581,7 +559,7 @@ const mojom::NetworkInfo* GetBitcoinTestnet() {
        {"https://blockstream.info/testnet"},
        {},
        0,
-       {BitcoinTestnetRpcUrl()},
+       {GURL(kBitcoinTestnetRpcEndpoint)},
        "BTC",
        "Bitcoin",
        8,
