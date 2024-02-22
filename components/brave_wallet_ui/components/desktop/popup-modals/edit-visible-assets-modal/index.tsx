@@ -347,8 +347,8 @@ export const EditVisibleAssetsModal = ({ onClose }: Props) => {
     [updatedTokensList, filteredTokenList, removedTokensList]
   )
 
-  const onClickDone = React.useCallback(() => {
-    onUpdateVisibleAssets(updatedTokensList)
+  const onClickDone = React.useCallback(async () => {
+    await onUpdateVisibleAssets(updatedTokensList)
     onClose()
   }, [updatedTokensList, onUpdateVisibleAssets, onClose])
 
