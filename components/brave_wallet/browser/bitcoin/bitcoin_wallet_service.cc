@@ -755,10 +755,12 @@ class DiscoverAccountTask : public base::RefCounted<DiscoverAccountTask> {
   base::WeakPtr<BitcoinWalletService> bitcoin_wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   const mojom::KeyringId keyring_id_;
+  const std::string chain_id_;
   const uint32_t account_index_;
 
-  DiscoveredBitcoinAccount result_;
   uint32_t active_requests_ = 0;
+  // Indexed by 0 and 1 for receive and change addresses discovery states
+  // respectively.
   State states_[2];
   bool account_is_used_ = false;
 
@@ -773,6 +775,7 @@ DiscoverAccountTask::DiscoverAccountTask(
     BitcoinWalletService::DiscoverAccountCallback callback)
     : bitcoin_wallet_service_(std::move(bitcoin_wallet_service)),
       keyring_id_(keyring_id),
+      chain_id_(GetNetworkForBitcoinKeyring(keyring_id_)),
       account_index_(account_index),
       callback_(std::move(callback)) {
   CHECK(IsBitcoinKeyring(keyring_id_));
@@ -814,7 +817,7 @@ void DiscoverAccountTask::MaybeQueueRequests(uint32_t state_index) {
     active_requests_++;
     state.last_requested_address = address->Clone();
     bitcoin_wallet_service_->bitcoin_rpc().GetAddressStats(
-        GetNetworkForBitcoinKeyring(keyring_id_), address->address_string,
+        chain_id_, address->address_string,
         base::BindOnce(&DiscoverAccountTask::OnGetAddressStats, this,
                        address->Clone()));
   }
@@ -844,20 +847,25 @@ void DiscoverAccountTask::WorkOnTask() {
     return;
   }
 
+  DiscoveredBitcoinAccount result;
+
+  result.next_unused_receive_index = 0;
   if (states_[kBitcoinReceiveIndex].last_transacted_address) {
-    result_.next_unused_receive_index =
+    result.next_unused_receive_index =
         1 +
         states_[kBitcoinReceiveIndex].last_transacted_address->key_id->index;
   }
+
+  result.next_unused_change_index = 0;
   if (states_[kBitcoinChangeIndex].last_transacted_address) {
-    result_.next_unused_change_index =
+    result.next_unused_change_index =
         1 + states_[kBitcoinChangeIndex].last_transacted_address->key_id->index;
   }
 
-  result_.account_index = account_index_;
-  result_.keyring_id = keyring_id_;
+  result.account_index = account_index_;
+  result.keyring_id = keyring_id_;
 
-  std::move(callback_).Run(base::ok(std::move(result_)));
+  std::move(callback_).Run(base::ok(std::move(result)));
 }
 
 void DiscoverAccountTask::OnGetAddressStats(
