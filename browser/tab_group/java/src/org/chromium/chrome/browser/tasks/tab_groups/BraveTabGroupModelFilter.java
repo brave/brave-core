@@ -1,14 +1,16 @@
-/**
- * Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2023 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
-
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 package org.chromium.chrome.browser.tasks.tab_groups;
+
+import android.util.Pair;
+
+import androidx.annotation.NonNull;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.BraveReflectionUtil;
+import org.chromium.base.Token;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabLaunchType;
@@ -30,10 +32,8 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
         super(tabModel);
     }
 
-    /**
-     * Call from {@link TabGroupModelFilter} will be redirected here via bytrcode.
-     */
-    public int getParentId(Tab tab) {
+    /** Call from {@link TabGroupModelFilter} will be redirected here via bytrcode. */
+    public Pair<Integer, Token> getParentIds(Tab tab) {
         if (linkClicked(tab.getLaunchType())
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, true)
@@ -41,12 +41,13 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
                 && !mIsResetting) {
             Tab parentTab = TabModelUtils.getTabById(getTabModel(), tab.getParentId());
             if (parentTab != null) {
-                return parentTab.getRootId();
+                return new Pair<>(parentTab.getRootId(), getOrCreateTabGroupId(parentTab));
             }
         }
         // Otherwise just call parent.
-        return (int) BraveReflectionUtil.InvokeMethod(
-                TabGroupModelFilter.class, this, "getParentId", Tab.class, tab);
+        return (Pair<Integer, Token>)
+                BraveReflectionUtil.InvokeMethod(
+                        TabGroupModelFilter.class, this, "getParentIds", Tab.class, tab);
     }
 
     /**
@@ -54,5 +55,11 @@ public abstract class BraveTabGroupModelFilter extends TabModelFilter {
      */
     private boolean linkClicked(@TabLaunchType int type) {
         return type == TabLaunchType.FROM_LINK || type == TabLaunchType.FROM_LONGPRESS_FOREGROUND;
+    }
+
+    private static Token getOrCreateTabGroupId(@NonNull Tab tab) {
+        return (Token)
+                BraveReflectionUtil.InvokeMethod(
+                        TabGroupModelFilter.class, null, "getOrCreateTabGroupId", Tab.class, tab);
     }
 }

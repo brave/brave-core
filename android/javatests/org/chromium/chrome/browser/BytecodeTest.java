@@ -13,6 +13,7 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.Callback;
 import org.chromium.base.FeatureMap;
+import org.chromium.base.Token;
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.shared_preferences.PreferenceKeyRegistry;
 import org.chromium.base.shared_preferences.SharedPreferencesManager;
@@ -695,11 +697,28 @@ public class BytecodeTest {
         Assert.assertTrue(methodExists("org/chromium/components/browser_ui/site_settings/Website",
                 "setContentSetting", true, void.class, BrowserContextHandle.class, int.class,
                 int.class));
-        Assert.assertTrue(methodExists("org/chromium/chrome/browser/tab/TabHelpers",
-                "initTabHelpers", true, void.class, Tab.class, Tab.class));
         Assert.assertTrue(
-                methodExists("org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getParentId", true, int.class, Tab.class));
+                methodExists(
+                        "org/chromium/chrome/browser/tab/TabHelpers",
+                        "initTabHelpers",
+                        true,
+                        void.class,
+                        Tab.class,
+                        Tab.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
+                        "getParentIds",
+                        true,
+                        Pair.class,
+                        Tab.class));
+        Assert.assertTrue(
+                methodExists(
+                        "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
+                        "getOrCreateTabGroupId",
+                        true,
+                        Token.class,
+                        Tab.class));
 
         Assert.assertTrue(
                 methodExists(
@@ -873,7 +892,8 @@ public class BytecodeTest {
                         Supplier.class,
                         HomeSurfaceTracker.class,
                         ObservableSupplier.class,
-                        ObservableSupplier.class));
+                        ObservableSupplier.class,
+                        OneshotSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/top/TopToolbarCoordinator",
