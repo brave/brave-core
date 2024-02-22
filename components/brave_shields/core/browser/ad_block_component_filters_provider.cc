@@ -10,6 +10,7 @@
 #include <utility>
 
 #include "base/files/file_path.h"
+#include "base/files/file_util.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_installer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider.h"
@@ -90,9 +91,16 @@ void AdBlockComponentFiltersProvider::UnregisterComponent() {
 
 void AdBlockComponentFiltersProvider::OnComponentReady(
     const base::FilePath& path) {
+  base::FilePath old_path = component_path_;
   component_path_ = path;
 
   NotifyObservers(engine_is_default_);
+
+  if (!old_path.empty()) {
+    base::ThreadPool::PostTask(
+        FROM_HERE, {base::TaskPriority::BEST_EFFORT},
+        base::BindOnce(IgnoreResult(&base::DeletePathRecursively), old_path));
+  }
 }
 
 void AdBlockComponentFiltersProvider::LoadFilterSet(
