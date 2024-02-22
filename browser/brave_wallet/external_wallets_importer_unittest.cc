@@ -16,8 +16,8 @@
 
 namespace brave_wallet {
 namespace {
-// encrypted valid_mnemonic
-const char* valid_data =
+// encrypted valid_mnemonic with legacy 10K iterations for pbkdf2
+const char* valid_data_10K =
     "{\"data\": {\"KeyringController\": {\"vault\": "
     "\"{\\\"data\\\":"
     "\\\"CFJuPK8MgoieYbqCAc2aBQI4iToyI5KVwqkpMF6tKWkGt3r65pxFjwB2jylPkF0wrym4Or"
@@ -26,6 +26,23 @@ const char* valid_data =
     "G6rrSt9Gw+hvyQ1v4DWvPChNgaBh7qZpYCUneYuk59ixY5scEIEbdf9nr8fgM1Xf37fLQ="
     "\\\",\\\"iv\\\":\\\"fOHBjjQcsi1KmaeQ7xA7Aw==\\\", "
     "\\\"salt\\\":\\\"z1bTZtBY33d2l6CfiFs5V/eRQLS6Qsq5UtAQOIfaIps=\\\"}\"}}}";
+
+// encrypted mnemonic with 600K iterations for pbkdf2
+const char* valid_data_600K =
+    "{\"data\": {\"KeyringController\": {\"vault\": "
+    "\"{\\\"data\\\":"
+    "\\\"Ch/424qkkgfpp9IQelclwYEylFdVwlaBPq2qZUItr5iPm+"
+    "bjzVN7QGViGyPXDnyHmMLIa1IWDsNAN0qibd4xAtD+"
+    "uTvgYLRpzg1tVEezqxLub7l2iF6GuNJoQSexHgDrSEmduoFv27Exw6oSPZ/"
+    "3pHKPHFWhD8b9RIpYdQHDNex4m39Dkim9fuMSretUe3xt7ZUe76bA6wgfhgPBqSXmj5KOx5gNH"
+    "uZ69qH+IJbjGhylkUN8BSbJMDjRz7JOhvXgZN34iTB8fNQhweLGTLCF0VVyaUObp9egF/"
+    "TGMTrQZFunqoSKsmywvDxI55REmcL8PLiszHI9Zbj5Vcan5GSRc2oKX3MGYBNG0oqqVVSYooaa"
+    "1jqLHeuc4f/RsAPDvKr8LQzGw/MHpZ51W2IClU6hk4CjkiBjIG/9TS6RQCQlJkf5Cd22meQH/"
+    "nrP3H+t3mrmqBGnkneP6+7Ne84+QZ+ysuhhy/"
+    "MQV3eST7lOreKwmX2mZwPBQz0WJBoIX6koGNGgcM6sdq6y/"
+    "Dl6V2XTbfom0GzLuDOcaxmy3w==\\\",\\\"iv\\\":\\\"UxlJX/"
+    "Bi0ur1E+KvUhXnUA==\\\",\\\"salt\\\":"
+    "\\\"ha59QKTWKPDqx83ZbPnCra3SFt37uLuZxF9nQamI3BM=\\\"}\"}}}";
 
 const char* valid_data_with_utf8_mnemonic =
     "{\"data\": {\"KeyringController\": {\"vault\": "
@@ -158,7 +175,7 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   ImportInfo info;
   ImportError error;
   // empty password
-  SimulateGetImportInfo("", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 
@@ -203,19 +220,33 @@ TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfoError) {
   result = true;
   error = ImportError::kNone;
   // wrong password
-  SimulateGetImportInfo("123", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("123", valid_data_10K, &result, &info, &error);
   EXPECT_FALSE(result);
   EXPECT_EQ(error, ImportError::kPasswordError);
 }
 
-TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo) {
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_10K_Iterations) {
   bool result = false;
   ImportInfo info;
   ImportError error;
-  SimulateGetImportInfo("brave4ever", valid_data, &result, &info, &error);
+  SimulateGetImportInfo("brave4ever", valid_data_10K, &result, &info, &error);
   EXPECT_TRUE(result);
   EXPECT_EQ(error, ImportError::kNone);
   EXPECT_EQ(info.mnemonic, kMnemonicDripCaution);
+  EXPECT_FALSE(info.is_legacy_crypto_wallets);
+  EXPECT_EQ(info.number_of_accounts, 1u);
+}
+
+TEST_F(ExternalWalletsImporterUnitTest, OnGetImportInfo_600K_Iterations) {
+  bool result = false;
+  ImportInfo info;
+  ImportError error;
+  SimulateGetImportInfo("12345qwert", valid_data_600K, &result, &info, &error);
+  EXPECT_TRUE(result);
+  EXPECT_EQ(error, ImportError::kNone);
+  EXPECT_EQ(info.mnemonic,
+            "try fossil lesson direct toddler favorite wedding opera camera "
+            "sand great hammer");
   EXPECT_FALSE(info.is_legacy_crypto_wallets);
   EXPECT_EQ(info.number_of_accounts, 1u);
 }
