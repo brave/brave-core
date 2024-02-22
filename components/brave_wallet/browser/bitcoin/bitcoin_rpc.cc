@@ -14,6 +14,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/json/rs/src/lib.rs.h"
@@ -161,6 +162,17 @@ const GURL MakePostTransactionUrl(const GURL& base_url) {
   return base_url.ReplaceComponents(replacements);
 }
 
+std::string EndpointHost(const GURL& request_url) {
+  DCHECK(request_url.is_valid());
+  return request_url.host();
+}
+
+bool ShouldThrottleEndpoint(const std::string& endpoint_host) {
+  // Don't throttle requests if host matches brave proxy.
+  return EndpointHost(GURL(brave_wallet::kBitcoinMainnetRpcEndpoint)) !=
+         endpoint_host;
+}
+
 std::optional<std::string> ConvertPlainStringToJsonArray(
     const std::string& json) {
   return base::StrCat({"[\"", json, "\"]"});
@@ -196,6 +208,11 @@ struct QueuedRequestData {
   GURL request_url;
   BitcoinRpc::RequestIntermediateCallback callback;
   BitcoinRpc::ResponseConversionCallback conversion_callback;
+};
+
+struct EndpointQueue {
+  uint32_t active_requests = 0;
+  base::circular_deque<QueuedRequestData> requests_queue;
 };
 
 BitcoinRpc::BitcoinRpc(
@@ -438,43 +455,51 @@ void BitcoinRpc::RequestInternal(
     APIRequestHelper::ResponseConversionCallback conversion_callback) {
   DCHECK(request_url.is_valid());
 
-  auto& request = requests_queue_.emplace_back();
+  auto endpoint_host = EndpointHost(request_url);
+
+  auto& endpoint = endpoints_[endpoint_host];
+
+  auto& request = endpoint.requests_queue.emplace_back();
   request.request_url = request_url;
   request.callback = std::move(callback);
   request.conversion_callback = std::move(conversion_callback);
 
-  MaybeStartQueuedRequest();
+  MaybeStartQueuedRequest(endpoint_host);
 }
 
-void BitcoinRpc::OnRequestInternalDone(RequestIntermediateCallback callback,
+void BitcoinRpc::OnRequestInternalDone(const std::string& endpoint_host,
+                                       RequestIntermediateCallback callback,
                                        APIRequestResult api_request_result) {
-  active_requests_--;
-  DCHECK_GE(active_requests_, 0u);
+  auto& endpoint = endpoints_[endpoint_host];
+  endpoint.active_requests--;
+  DCHECK_GE(endpoint.active_requests, 0u);
   std::move(callback).Run(std::move(api_request_result));
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE, base::BindOnce(&BitcoinRpc::MaybeStartQueuedRequest,
-                                weak_ptr_factory_.GetWeakPtr()));
+                                weak_ptr_factory_.GetWeakPtr(), endpoint_host));
 }
 
-void BitcoinRpc::MaybeStartQueuedRequest() {
+void BitcoinRpc::MaybeStartQueuedRequest(const std::string& endpoint_host) {
+  auto& endpoint = endpoints_[endpoint_host];
+
   auto rpc_throttle = features::kBitcoinRpcThrottle.Get();
-  if (rpc_throttle > 0 &&
-      active_requests_ >= static_cast<uint32_t>(rpc_throttle)) {
+  if (ShouldThrottleEndpoint(endpoint_host) && rpc_throttle > 0 &&
+      endpoint.active_requests >= static_cast<uint32_t>(rpc_throttle)) {
     return;
   }
-  if (requests_queue_.empty()) {
+  if (endpoint.requests_queue.empty()) {
     return;
   }
 
-  auto request = std::move(requests_queue_.front());
-  requests_queue_.pop_front();
+  auto request = std::move(endpoint.requests_queue.front());
+  endpoint.requests_queue.pop_front();
 
-  active_requests_++;
+  endpoint.active_requests++;
   api_request_helper_->Request(
       net::HttpRequestHeaders::kGetMethod, request.request_url, "", "",
       base::BindOnce(&BitcoinRpc::OnRequestInternalDone,
-                     weak_ptr_factory_.GetWeakPtr(),
+                     weak_ptr_factory_.GetWeakPtr(), endpoint_host,
                      std::move(request.callback)),
       {}, {.auto_retry_on_network_change = true},
       std::move(request.conversion_callback));

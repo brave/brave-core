@@ -23,7 +23,7 @@ namespace brave_wallet::bitcoin_rpc {
 
 using UnspentOutputs = std::vector<UnspentOutput>;
 
-struct QueuedRequestData;
+struct EndpointQueue;
 
 class BitcoinRpc {
  public:
@@ -77,9 +77,10 @@ class BitcoinRpc {
                        RequestIntermediateCallback callback,
                        APIRequestHelper::ResponseConversionCallback
                            conversion_callback = base::NullCallback());
-  void OnRequestInternalDone(RequestIntermediateCallback callback,
+  void OnRequestInternalDone(const std::string& endpoint_host,
+                             RequestIntermediateCallback callback,
                              APIRequestResult api_request_result);
-  void MaybeStartQueuedRequest();
+  void MaybeStartQueuedRequest(const std::string& endpoint_host);
 
   void OnGetChainHeight(GetChainHeightCallback callback,
                         APIRequestResult api_request_result);
@@ -98,8 +99,8 @@ class BitcoinRpc {
 
   const raw_ptr<PrefService> prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
-  uint32_t active_requests_ = 0;
-  base::circular_deque<QueuedRequestData> requests_queue_;
+  // Uses hostname as key. Tracks request throttling(if required) per host.
+  std::map<std::string, EndpointQueue> endpoints_;
   std::unique_ptr<APIRequestHelper> api_request_helper_;
   base::WeakPtrFactory<BitcoinRpc> weak_ptr_factory_{this};
 };
