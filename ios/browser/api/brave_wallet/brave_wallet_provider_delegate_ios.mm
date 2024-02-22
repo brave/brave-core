@@ -36,6 +36,10 @@ void BraveWalletProviderDelegateBridge::ShowWalletOnboarding() {
   [bridge_ showWalletOnboarding];
 }
 
+void BraveWalletProviderDelegateBridge::ShowWalletBackup() {
+  [bridge_ showWalletBackup];
+}
+
 void BraveWalletProviderDelegateBridge::ShowAccountCreation(
     mojom::CoinType type) {
   [bridge_ showAccountCreation:static_cast<BraveWalletCoinType>(type)];
