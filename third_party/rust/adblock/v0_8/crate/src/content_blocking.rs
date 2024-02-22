@@ -202,6 +202,8 @@ pub enum CbRuleCreationFailure {
     ScriptletInjectionsNotSupported,
     /// Valid content blocking rules can only include ASCII characters.
     RuleContainsNonASCII,
+    /// `from` as a `domain` alias is not currently supported in content blocking syntax.
+    FromNotSupported,
 }
 
 impl TryFrom<ParsedFilter> for CbRuleEquivalent {
@@ -403,8 +405,13 @@ impl TryFrom<NetworkFilter> for CbRuleEquivalent {
                 // Unwraps are okay here - any rules with opt_domains or opt_not_domains must have
                 // an options section delimited by a '$' character, followed by a `domain=` option.
                 let opts = &raw_line[find_char(b'$', raw_line.as_bytes()).unwrap() + "$".len()..];
+                let domain_start_index = if let Some(index) = memmem::find(opts.as_bytes(), b"domain=") {
+                    index
+                } else {
+                    return Err(CbRuleCreationFailure::FromNotSupported);
+                };
                 let domains_start =
-                    &opts[memmem::find(opts.as_bytes(), b"domain=").unwrap() + "domain=".len()..];
+                    &opts[domain_start_index + "domain=".len()..];
                 let domains = if let Some(comma) = find_char(b',', domains_start.as_bytes()) {
                     &domains_start[..comma]
                 } else {
@@ -1356,6 +1363,8 @@ mod filterset_tests {
             // unicode characters
             "||rgmechanics.info/uploads/660х90_",
             "||insaattrendy.com/Upload/bükerbanner*.jpg",
+            // from domain
+            "/siropu/am/core.min.js$script,important,from=~audi-sport.net|~hifiwigwam.com",
         ], Default::default());
 
         let (cb_rules, used_rules) = set.into_content_blocking()?;

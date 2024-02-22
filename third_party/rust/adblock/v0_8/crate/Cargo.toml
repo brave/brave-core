@@ -12,10 +12,10 @@
 [package]
 edition = "2021"
 name = "adblock"
-version = "0.8.7"
+version = "0.8.8"
 authors = [
-    "Andrius Aucinas <aaucinas@brave.com>",
     "Anton Lazarev <alazarev@brave.com>",
+    "Andrius Aucinas",
 ]
 exclude = [
     "*.md",
