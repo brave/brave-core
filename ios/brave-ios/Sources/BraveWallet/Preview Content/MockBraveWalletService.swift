@@ -390,5 +390,8 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   ) {
     completion(nil, "Error Message")
   }
+
+  func isPrivateWindow(_ completion: @escaping (Bool) -> Void) {
+  }
 }
 #endif
