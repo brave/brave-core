@@ -306,11 +306,13 @@ pub fn extract_dom(
     }
 
     if let Some(head) = dom::document_head(&dom) {
+        let mut base_content = String::default();
+
         let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
-        if let Some(base) = base_nodes.get(0) {
-            // We take the first one, because it is the only one that is effective.
-            content = base.to_string() + &content;
+        for base in base_nodes {
+            base_content += &base.to_string();
         }
+        content = base_content + &content;
     }
 
     if let Some(ref charset) = meta.charset {

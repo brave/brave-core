@@ -891,9 +891,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
     constexpr const char kCheckBaseTag[] = R"js(
-      document.head.getElementsByTagName('base')[0].outerHTML
+      document.head.getElementsByTagName('base')[0].outerHTML +
+      document.head.getElementsByTagName('base')[1].outerHTML
     )js";
-    EXPECT_EQ(R"(<base href="https://a.test/">)",
+    EXPECT_EQ(R"(<base href="https://a.test/"><base target="_blank">)",
               content::EvalJs(ActiveWebContents(), kCheckBaseTag,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
