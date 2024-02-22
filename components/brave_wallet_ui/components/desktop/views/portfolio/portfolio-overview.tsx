@@ -220,42 +220,46 @@ export const PortfolioOverview = () => {
     usersFilteredAccounts
   ])
 
-  // Filters the user's tokens based on the users
-  // filteredOutPortfolioNetworkKeys pref.
-  const visibleTokensForFilteredChains = React.useMemo(() => {
-    return userTokensWithRewards.filter(
-      (token) =>
-        !filteredOutPortfolioNetworkKeys.includes(
-          networkEntityAdapter
-            .selectId({
-              chainId: token.chainId,
-              coin: token.coin
-            })
-            .toString()
-        )
-    )
-  }, [filteredOutPortfolioNetworkKeys, userTokensWithRewards])
-
-  const userVisibleNfts = React.useMemo(() => {
-    return visibleTokensForFilteredChains.filter(
-      (token) => token.isErc721 || token.isNft
-    )
-  }, [visibleTokensForFilteredChains])
-
   const networksList = React.useMemo(() => {
     return displayRewardsInPortfolio && externalRewardsNetwork
       ? [externalRewardsNetwork].concat(networks)
       : networks
   }, [displayRewardsInPortfolio, externalRewardsNetwork, networks])
 
-  const visiblePortfolioNetworks = React.useMemo(() => {
-    return networksList.filter(
-      (network) =>
-        !filteredOutPortfolioNetworkKeys.includes(
-          networkEntityAdapter.selectId(network).toString()
-        )
+  const [visiblePortfolioNetworks, visiblePortfolioNetworkIds] =
+    React.useMemo(() => {
+      const visibleNetworks = networksList.filter(
+        (network) =>
+          !filteredOutPortfolioNetworkKeys.includes(
+            networkEntityAdapter.selectId(network).toString()
+          )
+      )
+      return [
+        visibleNetworks,
+        visibleNetworks.map(networkEntityAdapter.selectId)
+      ]
+    }, [networksList, filteredOutPortfolioNetworkKeys])
+
+  // Filters the user's tokens based on the users
+  // filteredOutPortfolioNetworkKeys pref and visible networks.
+  const visibleTokensForFilteredChains = React.useMemo(() => {
+    return userTokensWithRewards.filter((token) =>
+      visiblePortfolioNetworkIds.includes(
+        networkEntityAdapter
+          .selectId({
+            chainId: token.chainId,
+            coin: token.coin
+          })
+          .toString()
+      )
     )
-  }, [networksList, filteredOutPortfolioNetworkKeys])
+  }, [userTokensWithRewards, visiblePortfolioNetworkIds])
+
+  const userVisibleNfts = React.useMemo(() => {
+    return visibleTokensForFilteredChains.filter(
+      (token) => token.isErc721 || token.isNft
+    )
+  }, [visibleTokensForFilteredChains])
 
   const { data: tokenBalancesRegistry } =
     // wait to see if we need rewards before fetching
