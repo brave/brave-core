@@ -63,25 +63,24 @@ void PlaylistTabHelper::BindMediaResponderReceiver(
     return;
   }
 
-  // If `web_contents` is a background WebContents, we want to route the Mojom
-  // calls to the PlaylistTabHelper it belongs to.
-  auto* background_web_contents_helper =
-      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
-  auto* tab_helper = background_web_contents_helper
-                         ? background_web_contents_helper->GetTabHelper()
-                         : PlaylistTabHelper::FromWebContents(web_contents);
-  if (!tab_helper) {
-    return;
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
+  if (tab_helper) {
+    return tab_helper->BindMediaResponder(std::move(receiver), rfh);
   }
 
-  tab_helper->media_responder_receivers_.Bind(rfh, std::move(receiver));
+  auto* background_web_contents_helper =
+      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
+  if (background_web_contents_helper) {
+    background_web_contents_helper->BindMediaResponder(std::move(receiver),
+                                                       rfh);
+  }
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents),
-      service_(service),
-      media_responder_receivers_(contents, this) {
+      PlaylistMediaHandler(service, contents),
+      service_(service) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());
@@ -218,7 +217,7 @@ void PlaylistTabHelper::MaybeExtractMediaFromBackgroundWebContents(
   background_web_contents_ = content::WebContents::Create(create_params);
   background_web_contents_->SetAudioMuted(true);
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      background_web_contents_.get(), GetWeakPtr(),
+      background_web_contents_.get(), service_,
       service_->GetMediaSourceAPISuppressorScript(),
       service_->GetMediaDetectorScript(url), std::move(callback));
   auto load_url_params = content::NavigationController::LoadURLParams(url);
@@ -298,46 +297,6 @@ void PlaylistTabHelper::DidFinishNavigation(
   ResetData();
 
   UpdateSavedItemFromCurrentContents();
-}
-
-void PlaylistTabHelper::OnMediaDetected(base::Value media) {
-  const auto render_frame_host_id =
-      media_responder_receivers_.GetCurrentTargetFrame()->GetGlobalId();
-  DVLOG(2) << __FUNCTION__ << " " << render_frame_host_id;
-
-  auto* render_frame_host =
-      content::RenderFrameHost::FromID(render_frame_host_id);
-  if (!render_frame_host) {
-    return;
-  }
-
-  // Note that we have to go the GlobalRenderFrameHostId ==> RenderFrameHost ==>
-  // WebContents route, as it works for background WebContents, too (whereas
-  // just calling web_contents() does not).
-  auto* web_contents =
-      content::WebContents::FromRenderFrameHost(render_frame_host);
-  if (!web_contents) {
-    return;
-  }
-
-  DVLOG(2) << "Media:\n" << media;
-
-  service_->OnMediaDetected(std::move(media), web_contents);
-
-  if (web_contents == background_web_contents_.get()) {
-    DVLOG(2) << "Media: from background";
-    auto* background_webcontents_helper =
-        PlaylistBackgroundWebContentsHelper::FromWebContents(
-            background_web_contents_.get());
-    CHECK(background_webcontents_helper);
-    // TODO(sszaloki): bloah...
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            std::move(*background_webcontents_helper).GetSuccessCallback(),
-            true));
-    background_web_contents_.reset();
-  }
 }
 
 void PlaylistTabHelper::OnItemCreated(mojom::PlaylistItemPtr item) {
@@ -474,6 +433,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   }
 
   DVLOG(2) << __FUNCTION__ << " items.size(): " << items.size();
+  DVLOG(2) << __FUNCTION__ << " found_items_.size() from: " << found_items_.size();
 
   // There's no good heuristics on how to match an
   // `is_blob_from_media_source == false` item (in `items`) against an
@@ -508,7 +468,7 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     }
   }
 
-  DVLOG(2) << __FUNCTION__ << " found_items_.size(): " << found_items_.size();
+  DVLOG(2) << __FUNCTION__ << " found_items_.size() to: " << found_items_.size();
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);
   }

@@ -12,6 +12,7 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "components/prefs/pref_member.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
@@ -27,7 +28,7 @@ class PlaylistTabHelperObserver;
 class PlaylistTabHelper
     : public content::WebContentsUserData<PlaylistTabHelper>,
       public content::WebContentsObserver,
-      public mojom::PlaylistMediaResponder,
+      public PlaylistMediaHandler,
       public mojom::PlaylistServiceObserver {
  public:
   static void MaybeCreateForWebContents(content::WebContents* contents,
@@ -78,9 +79,6 @@ class PlaylistTabHelper
       content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
-
-  // mojom::PlaylistMediaResponder
-  void OnMediaDetected(base::Value media) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
@@ -141,9 +139,6 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
-
-  content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
-      media_responder_receivers_;
 
   std::unique_ptr<content::WebContents> background_web_contents_;
 
