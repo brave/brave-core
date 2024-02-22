@@ -1,9 +1,9 @@
 diff --git a/components/permissions/permission_util.cc b/components/permissions/permission_util.cc
-index 92ccf50905c56305669204ba575606827676b79c..7f8605c9f911ad7a4f686130eda4d99a0cf2d0bf 100644
+index 86d92b177d04fca82f3a8f005a2c2b0dd3c68725..ce93530c5cc0e618dfc3ff781220b00b47044b51 100644
 --- a/components/permissions/permission_util.cc
 +++ b/components/permissions/permission_util.cc
-@@ -343,6 +343,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
-       return ContentSettingsType::SPEAKER_SELECTION;
+@@ -353,6 +353,7 @@ ContentSettingsType PermissionUtil::PermissionTypeToContentSettingTypeSafe(
+       return ContentSettingsType::POINTER_LOCK;
      case PermissionType::NUM:
        break;
 +    PERMISSION_UTIL_PERMISSION_TYPE_TO_CONTENT_SETTINGS_TYPE

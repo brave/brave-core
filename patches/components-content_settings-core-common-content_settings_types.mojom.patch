@@ -1,12 +1,12 @@
 diff --git a/components/content_settings/core/common/content_settings_types.mojom b/components/content_settings/core/common/content_settings_types.mojom
-index 5e704d5151311dad1550ce63487a9a7f4ea823e1..c2765f06bc2d3337f8b2ad687be9510092119734 100644
+index 406f182232279b9a5accaa530891de906455b1a1..1dc2cd19cf575f5b4811e523e9aa14fb1afbb6c3 100644
 --- a/components/content_settings/core/common/content_settings_types.mojom
 +++ b/components/content_settings/core/common/content_settings_types.mojom
-@@ -398,6 +398,21 @@ enum ContentSettingsType {
-   // Whether an application can enumerate audio output device.
-   SPEAKER_SELECTION,
- 
--
+@@ -408,4 +408,22 @@ enum ContentSettingsType {
+   // Pointer Lock API allows a site to hide the cursor and have exclusive access
+   // to mouse inputs.
+   POINTER_LOCK,
++
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
 +  BRAVE_COSMETIC_FILTERING,
@@ -23,5 +23,5 @@ index 5e704d5151311dad1550ce63487a9a7f4ea823e1..c2765f06bc2d3337f8b2ad687be95100
 +  BRAVE_HTTPS_UPGRADE,
 +  BRAVE_REMEMBER_1P_STORAGE,
 +  BRAVE_LOCALHOST_ACCESS,
-   NUM_TYPES,
++  NUM_TYPES,
  };
