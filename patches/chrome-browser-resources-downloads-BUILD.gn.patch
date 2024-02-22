@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/resources/downloads/BUILD.gn b/chrome/browser/resources/downloads/BUILD.gn
-index b2ea96f64adf4a579ae67e18db648159be4ed388..ebdfa4e7cfabd9246c928df92364f5650fcc9b84 100644
+index eb4a58c7fd2b1e427a15256e2352c2f17b0218b3..a392dc106280f98d26a6c412bf51835daefe4d80 100644
 --- a/chrome/browser/resources/downloads/BUILD.gn
 +++ b/chrome/browser/resources/downloads/BUILD.gn
 @@ -54,4 +54,5 @@ build_webui("build") {
-     optimize_webui_host = "downloads"
+   if (optimize) {
      optimize_webui_in_files = [ "downloads.js" ]
    }
 +  import("//brave/browser/resources/downloads/sources.gni") non_web_component_files += brave_downloads_non_web_component_files exclude_ts_preprocess_files = brave_downloads_ts_local_files preprocess_deps = brave_downloads_preprocess_extra_deps

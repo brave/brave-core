@@ -1,11 +1,11 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-index 07f7e054264b9e139b4847e2db6185a4cb5f4312..2a787811bf2895ca23c61a8569b9783163428e28 100644
+index b14852f5727b2084923719a8c4e94b48c2f2ad5d..7126a556b6ee395a99f942c470842d1f94d10486 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationServiceImpl.java
-@@ -113,7 +113,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
-                         // the
-                         // NotificationPlatformBridge which will take care of delivering the
-                         // appropriate events.
+@@ -175,7 +175,7 @@ public class NotificationServiceImpl extends NotificationService.Impl {
+                                 .recordIntentHandlerJobStage(
+                                         NotificationUmaTracker.IntentHandlerJobStage.DISPATCH_EVENT,
+                                         intent.getAction());
 -                        if (!NotificationPlatformBridge.dispatchNotificationEvent(intent)) {
 +                        if (!BraveNotificationPlatformBridge.dispatchNotificationEvent(intent)) {
                              Log.w(TAG, "Unable to dispatch the notification event to Chrome.");

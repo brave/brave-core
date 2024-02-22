@@ -1,12 +1,12 @@
 diff --git a/tools/typescript/ts_library.gni b/tools/typescript/ts_library.gni
-index 3750d3f841c61a89b4232cc91f6874b4af12c344..c038dc1a3fc43100945ee7d791f043f1808da83a 100644
+index 3750d3f841c61a89b4232cc91f6874b4af12c344..362c306c3e9ebbbcdef3fac15831b02f98e3d996 100644
 --- a/tools/typescript/ts_library.gni
 +++ b/tools/typescript/ts_library.gni
-@@ -150,6 +150,7 @@ template("ts_library") {
-       # other ts_library() deps are automatically inferred from |deps| in
-       # path_mappings.py. Don't add any such mappings here.
-     ]
-+    import("//brave/tools/typescript/sources.gni") foreach(mapping, brave_path_mappings) { path_mappings += [ mapping[0] + rebase_path(mapping[1], target_gen_dir) ] }
+@@ -168,6 +168,7 @@ template("ts_library") {
+       ]
+     }
  
-     # The |platform| flag is used in path_mappings.py and validate_tsconfig.py,
-     # to limit some logic to certain platforms, like preventing special iOS
++    import("//brave/tools/typescript/sources.gni") foreach(mapping, brave_path_mappings) { path_mappings += [ mapping[0] + rebase_path(mapping[1], target_gen_dir) ] }
+     args += [ "--path_mappings" ] + path_mappings
+     if (defined(invoker.path_mappings)) {
+       args += invoker.path_mappings
