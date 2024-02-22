@@ -30,7 +30,7 @@ void BraveLocationBarModelDelegate::FormattedStringFromURL(
     std::u16string* new_formatted_url) {
   if (url.SchemeIs("chrome")) {
     base::ReplaceFirstSubstringAfterOffset(new_formatted_url, 0, u"chrome://",
-                                           u"brave://");
+                                           u"ping://");
   }
 
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)

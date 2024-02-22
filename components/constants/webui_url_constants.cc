@@ -45,8 +45,8 @@ const char kWalletSendPagePath[] = "/send";
 const char kWalletSwapPagePath[] = "/swap";
 const char kWalletDepositPagePath[] = "/deposit-funds";
 #endif  // BUILDFLAG(IS_ANDROID)
-const char kExtensionSettingsURL[] = "brave://settings/extensions";
-const char kWalletSettingsURL[] = "brave://settings/wallet";
+const char kExtensionSettingsURL[] = "ping://settings/extensions";
+const char kWalletSettingsURL[] = "ping://settings/wallet";
 const char kBraveSyncPath[] = "braveSync";
 const char kBraveSyncSetupPath[] = "braveSync/setup";
 const char kTorInternalsHost[] = "tor-internals";
