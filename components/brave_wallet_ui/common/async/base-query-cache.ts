@@ -389,11 +389,14 @@ export class BaseQueryCache {
         this.rewardsInfo = emptyRewardsInfo
         return this.rewardsInfo
       }
-
-      const balance = await rewardsProxyFetcher().fetchBalance()
-
       const { provider, status, links } =
         (await rewardsProxyFetcher().getExternalWallet()) || {}
+
+      if (!provider || provider === 'solana') {
+        return emptyRewardsInfo
+      }
+
+      const balance = await rewardsProxyFetcher().fetchBalance()
 
       this.rewardsInfo = {
         isRewardsEnabled: true,
