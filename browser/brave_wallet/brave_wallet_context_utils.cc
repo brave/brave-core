@@ -15,32 +15,24 @@
 namespace brave_wallet {
 
 bool IsAllowedForContext(content::BrowserContext* context) {
-  if (!context) {
+  if (!context || context->IsTor()) {
     return false;
   }
 
-  if (!IsAllowed(user_prefs::UserPrefs::Get(context))) {
+  auto* prefs = user_prefs::UserPrefs::Get(context);
+  if (!IsAllowed(prefs)) {
     return false;
   }
 
-  auto* profile = Profile::FromBrowserContext(context);
-  if (!brave::IsRegularProfile(context)) {
-    // If it's not a regular profile, then it's only allowed if it's a
-    // non-Tor incognito profile AND the user has enabled brave wallet in
-    // private tabs.
-    if (context->IsTor()) {
-      return false;
-    }
-
-    if (profile->IsIncognitoProfile()) {
-      auto* prefs = user_prefs::UserPrefs::Get(context);
-      return prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled);
-    }
-
-    return false;
+  if (brave::IsRegularProfile(context)) {
+    return true;
   }
 
-  return true;
+  if (Profile::FromBrowserContext(context)->IsIncognitoProfile()) {
+    return prefs->GetBoolean(kBraveWalletPrivateWindowsEnabled);
+  }
+
+  return false;
 }
 
 }  // namespace brave_wallet
