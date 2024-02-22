@@ -128,7 +128,13 @@ void BraveToolbarView::Init() {
   // This will allow us to move this window by dragging toolbar.
   // See brave_non_client_hit_test_helper.h
   views::SetHitTestComponent(this, HTCAPTION);
-  DCHECK_EQ(1u, children().size());
+  if (features::IsChromeRefresh2023()) {
+    // Upstream has two more children |background_view_left_| and
+    // |background_view_right_| behind the container view.
+    DCHECK_EQ(3u, children().size());
+  } else {
+    DCHECK_EQ(1u, children().size());
+  }
   views::SetHitTestComponent(children()[0], HTCAPTION);
 
   // For non-normal mode, we don't have to more.
