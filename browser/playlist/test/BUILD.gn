@@ -52,6 +52,7 @@ source_set("unit_tests") {
   defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
 
   sources = [
+    "mime_util_unittest.cc",
     "mock_playlist_service_observer.cc",
     "mock_playlist_service_observer.h",
     "playlist_download_requset_manager_unittest.cc",
