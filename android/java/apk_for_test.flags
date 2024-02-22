@@ -525,6 +525,30 @@
     public <init>(...);
 }
 
+-keep class org.chromium.chrome.browser.multiwindow.MultiInstanceManagerApi31 {
+    *** mInstanceId;
+    moveTabAction(...);
+    handleMenuOrKeyboardAction(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiInstanceManagerApi31 {
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.MultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
+    *** isOpenInOtherWindowSupported(...);
+    *** isMoveToOtherWindowSupported(...);
+    *** canEnterMultiWindowMode(...);
+    <init>(...);
+}
+
+-keep class org.chromium.chrome.browser.multiwindow.BraveMultiWindowUtils {
+    *** shouldShowManageWindowsMenu(...);
+    public <init>(...);
+}
+
 -keep class org.chromium.chrome.browser.notifications.permissions.NotificationPermissionRationaleDialogController {
     *** wrapDialogDismissalCallback(...);
     public <init>(...);
