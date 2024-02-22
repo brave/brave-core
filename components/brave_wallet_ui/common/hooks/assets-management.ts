@@ -117,46 +117,38 @@ export function useAssetManagement() {
 
   const onUpdateVisibleAssets = React.useCallback(
     async (updatedTokensList: BraveWallet.BlockchainToken[]) => {
-      // Gets a list of all added tokens and adds them to the
-      // userVisibleTokensInfo list
-      await eachLimit(
-        onlyInLeft(updatedTokensList, userVisibleTokensInfo),
-        10,
-        onAddUserAsset
+      // determine needed token updates
+      const addedTokens = onlyInLeft(updatedTokensList, userVisibleTokensInfo)
+      const removedTokens = onlyInLeft(userVisibleTokensInfo, updatedTokensList)
+      const tokensWithVisibilityChange = findTokensWithMismatchedVisibility(
+        updatedTokensList,
+        userVisibleTokensInfo
       )
 
-      // Gets a list of all removed tokens and removes them from the
-      // userVisibleTokensInfo list
-      await eachLimit(
-        onlyInLeft(userVisibleTokensInfo, updatedTokensList),
-        10,
-        async (token) => {
-          dispatch(WalletActions.removeUserAsset(token))
-          const tokenId = getAssetIdKey(token)
-          if (
-            userTokensRegistry &&
-            !isTokenIdRemoved(tokenId, userTokensRegistry.hiddenTokenIds)
-          ) {
-            await hideOrDeleteToken({ mode: 'hide', tokenId })
-          }
+      // add all added tokens to the userVisibleTokensInfo list
+      await eachLimit(addedTokens, 10, onAddUserAsset)
+
+      // remove all removed tokens them from the userVisibleTokensInfo list
+      await eachLimit(removedTokens, 10, async (token) => {
+        dispatch(WalletActions.removeUserAsset(token))
+        const tokenId = getAssetIdKey(token)
+        if (
+          userTokensRegistry &&
+          !isTokenIdRemoved(tokenId, userTokensRegistry.hiddenTokenIds)
+        ) {
+          await hideOrDeleteToken({ mode: 'hide', tokenId })
         }
-      )
+      })
 
       // Gets a list of custom tokens and native assets returned from
       // updatedTokensList payload then compares against userVisibleTokensInfo
       // list and updates the tokens visibility if it has changed.
-      await eachLimit(
-        findTokensWithMismatchedVisibility(
-          updatedTokensList,
-          userVisibleTokensInfo
-        ),
-        10,
-        async (token) =>
-          await updateUserAssetVisible({
-            token,
-            isVisible: token.visible
-          }).unwrap()
-      )
+      await eachLimit(tokensWithVisibilityChange, 10, async (token) => {
+        await updateUserAssetVisible({
+          token,
+          isVisible: token.visible
+        }).unwrap()
+      })
 
       // Refresh Balances, Prices and Price History when done.
       dispatch(WalletActions.refreshBalancesAndPriceHistory())
