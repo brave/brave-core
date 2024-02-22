@@ -96,7 +96,7 @@ class RunableConfiguration:
       if self.config.version is not None:
         expected_version = None
         if self.config.browser_type.is_brave:
-          expected_version = self.config.version.last_tag
+          expected_version = self.config.version.last_tag[1:]
         else:
           expected_version = self.config.version.chromium_version.to_string()
         self.binary.install_apk(expected_version)

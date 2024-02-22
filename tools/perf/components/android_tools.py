@@ -45,7 +45,7 @@ def InstallApk(apk_path: str, expected_version: Optional[str]) -> str:
   logging.debug('Installing: %s', apk_path)
   GetProcessOutput([adb, 'install', apk_path], check=True)
 
-  installed_version = 'v' + GetPackageVersion(package)
+  installed_version = GetPackageVersion(package)
   logging.debug('Installed version: %s', installed_version)
 
   # grant the permissions to prevent showing popup
