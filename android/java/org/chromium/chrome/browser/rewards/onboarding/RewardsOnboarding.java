@@ -140,20 +140,21 @@ public class RewardsOnboarding implements BraveRewardsObserver {
         View responseCloseButton = mErrorLayout.findViewById(R.id.response_modal_close);
         responseCloseButton.setOnClickListener(v -> { mPopupWindow.dismiss(); });
 
-        mPopupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                if (mBraveRewardsNativeWorker != null) {
-                    mBraveRewardsNativeWorker.RemoveObserver(RewardsOnboarding.this);
-                }
-            }
-        });
+        mPopupWindow.setOnDismissListener(
+                new PopupWindow.OnDismissListener() {
+                    @Override
+                    public void onDismiss() {
+                        if (mBraveRewardsNativeWorker != null) {
+                            mBraveRewardsNativeWorker.removeObserver(RewardsOnboarding.this);
+                        }
+                    }
+                });
 
         mPopupWindow.setWidth(deviceWidth);
         mPopupWindow.setContentView(mPopupView);
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
+        mBraveRewardsNativeWorker.addObserver(this);
     }
 
     public void showLikePopDownMenu() {
@@ -229,7 +230,7 @@ public class RewardsOnboarding implements BraveRewardsObserver {
                             requestNotificationPermission();
                         }
                         if (mCountrySpinner != null) {
-                            mBraveRewardsNativeWorker.CreateRewardsWallet(
+                            mBraveRewardsNativeWorker.createRewardsWallet(
                                     sortedCountryMap.get(
                                             mCountrySpinner.getSelectedItem().toString()));
                             shouldShowContinueProgress(true);

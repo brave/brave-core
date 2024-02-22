@@ -53,7 +53,8 @@ public class BravePreferenceFragment extends ChromeBaseSettingsFragment {
     public void onResume() {
         super.onResume();
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (braveRewardsNativeWorker == null || !braveRewardsNativeWorker.IsSupported()
+        if (braveRewardsNativeWorker == null
+                || !braveRewardsNativeWorker.isSupported()
                 || BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             if (getPreferenceScreen() == null) return;
             Preference braveRewardsDebugPreference =

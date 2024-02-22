@@ -87,9 +87,9 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
         View view = inflater.inflate(R.layout.rewards_tipping_banner_fragment, container, false);
         mCurrentTabId = getArguments().getInt(TAB_ID_EXTRA);
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
-        mBraveRewardsNativeWorker.GetPublisherBanner(
-                mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId));
+        mBraveRewardsNativeWorker.addObserver(this);
+        mBraveRewardsNativeWorker.getPublisherBanner(
+                mBraveRewardsNativeWorker.getPublisherId(mCurrentTabId));
         mContentView = view;
         return view;
     }
@@ -158,7 +158,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
             setLogo();
             background();
             checkForShowSocialLinkIcons();
-            mBraveRewardsNativeWorker.GetExternalWallet();
+            mBraveRewardsNativeWorker.getExternalWallet();
         } catch (JSONException e) {
             Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
         }
@@ -351,7 +351,7 @@ public class RewardsTippingBannerFragment extends Fragment implements BraveRewar
     public void onDestroyView() {
         super.onDestroyView();
         if (null != mBraveRewardsNativeWorker) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
         }
     }
 

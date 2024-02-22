@@ -6,8 +6,9 @@
 package org.chromium.chrome.browser.settings;
 
 import android.os.Bundle;
-import androidx.preference.PreferenceDialogFragmentCompat;
 import android.view.View;
+
+import androidx.preference.PreferenceDialogFragmentCompat;
 
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 
@@ -34,7 +35,7 @@ public class BraveRewardsResetPreferenceDialog extends PreferenceDialogFragmentC
     @Override
     public void onDialogClosed(boolean positive) {
         if (positive) {
-            BraveRewardsNativeWorker.getInstance().ResetTheWholeState();
+            BraveRewardsNativeWorker.getInstance().resetTheWholeState();
         }
     }
 }
