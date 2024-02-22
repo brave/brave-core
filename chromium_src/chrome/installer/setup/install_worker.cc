@@ -3,6 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+#include "chrome/installer/setup/install_worker.h"
+
 #include <shlobj.h>
 
 #include "base/check.h"
@@ -39,6 +41,7 @@
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_constants.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_helper/brave_vpn_helper_utils.h"
 #include "brave/browser/brave_vpn/win/brave_vpn_wireguard_service/install_utils.h"
+#include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
 
 namespace {
 
@@ -144,10 +147,42 @@ bool OneTimeVpnServiceCleanup(const base::FilePath& target_path,
   return true;
 }
 
+void UpdateBraveVpn(const base::FilePath& target_path,
+                    const base::Version& new_version,
+                    WorkItemList* install_list) {
+  // When one time cleanup happens, we don't want to install the services at
+  // that time. Service will be installed at the time of purchase.
+  if (OneTimeVpnServiceCleanup(target_path, new_version, install_list)) {
+    return;
+  }
+
+  // If the VPN service is installed, we should update installed services to
+  // make it have latest executable path.
+  if (brave_vpn::IsBraveVPNHelperServiceInstalled()) {
+    install_list->AddCallbackWorkItem(
+        base::BindOnce(
+            [](const base::FilePath& target_path, const CallbackWorkItem&) {
+              return brave_vpn::InstallBraveVPNHelperService(target_path);
+            },
+            target_path.AppendASCII(new_version.GetString())),
+        base::DoNothing());
+  }
+
+  if (brave_vpn::wireguard::IsWireguardServiceInstalled()) {
+    install_list->AddCallbackWorkItem(
+        base::BindOnce(
+            [](const base::FilePath& target_path, const CallbackWorkItem&) {
+              return brave_vpn::InstallBraveWireguardService(target_path);
+            },
+            target_path.AppendASCII(new_version.GetString())),
+        base::DoNothing());
+  }
+}
+
 }  // namespace installer
 
-#define AddUpdateDowngradeVersionItem                               \
-  OneTimeVpnServiceCleanup(target_path, new_version, install_list); \
+#define AddUpdateDowngradeVersionItem                     \
+  UpdateBraveVpn(target_path, new_version, install_list); \
   AddUpdateDowngradeVersionItem
 
 #endif  // BUILDFLAG(ENABLE_BRAVE_VPN)
