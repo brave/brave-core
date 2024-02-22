@@ -14,6 +14,7 @@ import org.json.JSONObject;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
+import org.chromium.base.metrics.RecordHistogram;
 import org.chromium.base.task.AsyncTask;
 import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.net.ChromiumNetworkAdapter;
@@ -32,6 +33,7 @@ public class BraveShieldsUtils {
     private static final String TAG = "Shields";
     public static final String PREF_SHIELDS_TOOLTIP = "shields_tooltip";
     public static boolean isTooltipShown;
+    public static final String WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME = "Brave.Webcompat.UISource";
 
     public interface BraveShieldsCallback {
         void braveShieldsSubmitted();
@@ -75,6 +77,8 @@ public class BraveShieldsUtils {
         private static void sendBraveShieldsFeedback(String domain, String apiKey) {
             assert BraveConfig.WEBCOMPAT_REPORT_ENDPOINT != null
                     && !BraveConfig.WEBCOMPAT_REPORT_ENDPOINT.isEmpty();
+
+        RecordHistogram.recordEnumeratedHistogram(WEBCOMPAT_UI_SOURCE_HISTOGRAM_NAME, 0, 2);
 
             Context context = ContextUtils.getApplicationContext();
             StringBuilder sb = new StringBuilder();

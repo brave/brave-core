@@ -24,6 +24,8 @@ inline constexpr char kDetailsField[] = "additionalDetails";
 inline constexpr char kContactField[] = "contactInfo";
 inline constexpr char kApiKeyField[] = "api_key";
 
+inline constexpr char kUISourceField[] = "ui_source";
+
 const char* GetAdBlockModeString(
     brave_shields::mojom::AdBlockMode ad_block_mode);
 const char* GetFingerprintModeString(

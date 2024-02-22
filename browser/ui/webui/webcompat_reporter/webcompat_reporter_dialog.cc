@@ -111,7 +111,7 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
-void OpenReporterDialog(content::WebContents* initiator) {
+void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   bool shields_enabled = false;
   brave_shields::mojom::FingerprintMode fp_block_mode =
       brave_shields::mojom::FingerprintMode::STANDARD;
@@ -138,6 +138,7 @@ void OpenReporterDialog(content::WebContents* initiator) {
   params_dict.Set(kAdBlockSettingField, GetAdBlockModeString(ad_block_mode));
   params_dict.Set(kFPBlockSettingField,
                   GetFingerprintModeString(fp_block_mode));
+  params_dict.Set(kUISourceField, static_cast<int>(source));
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);
