@@ -423,12 +423,12 @@ void BraveTabStrip::OnPaintBackground(gfx::Canvas* canvas) {
   // Unlike upstream, we are painting this view to an opaque layer in order to
   // support layer-based shadows under the active tab. Paint a background so
   // that all pixels are painted appropriately.
-  ui::ColorId color_id = ShouldShowVerticalTabs() ? kColorToolbar
-                         : GetWidget()->ShouldPaintAsActive()
-                             ? kColorTabBackgroundInactiveFrameActive
-                             : kColorTabBackgroundInactiveFrameInactive;
+  SkColor background_color =
+      ShouldShowVerticalTabs()
+          ? GetColorProvider()->GetColor(kColorToolbar)
+          : controller_->GetFrameColor(BrowserFrameActiveState::kUseCurrent);
 
-  canvas->DrawColor(GetColorProvider()->GetColor(color_id));
+  canvas->DrawColor(background_color);
 }
 
 BEGIN_METADATA(BraveTabStrip, TabStrip)
