@@ -7,6 +7,7 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
+#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
@@ -84,13 +85,22 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     EXPECT_FALSE(prefs()->GetBoolean(brave_wallet::prefs::kDisabledByPolicy));
     EXPECT_TRUE(brave_wallet::IsAllowed(prefs()));
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(profile()));
-    auto* incognito_profile =
-        CreateIncognitoBrowser(browser()->profile())->profile();
-    // By default the wallet should not be allowed for private window context.
+
+    auto* profile = browser()->profile();
+    auto* incognito_profile = CreateIncognitoBrowser(profile)->profile();
+    auto* guest_profile =
+        profile->GetPrimaryOTRProfile(true /*create_if_needed*/);
+    auto* tor_profile = TorProfileManager::GetInstance().GetTorProfile(profile);
+    // By default the wallet should not be allowed for private, guest, or tor.
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(incognito_profile));
-    // Setting pref should allow it.
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
+
+    // Setting pref should allow it for incognito, but not for guest, or tor.
     prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
   }
 }
 
