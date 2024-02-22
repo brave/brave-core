@@ -44,11 +44,11 @@
     "description": "Message for the `and` conjunction. Used to connect grammatically the `item blocked and connection upgrades` and its variant phrases"
   },
   "connectionsUpgraded": {
-    "message": "з'єднань оновлено",
+    "message": "з’єднань оновлено",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and more than one connection upgrade (plural)"
   },
   "connectionUpgraded": {
-    "message": "з'єднання оновлено",
+    "message": "з’єднання оновлено",
     "description": "Message for the main blocked resources text when there is at least one ad/track/script blocked and one connection upgrade (singular)"
   },
   "thirdPartyTrackersBlocked": {
@@ -72,11 +72,11 @@
     "description": "Message for the option in the ads and trackers blocking select field to allow all ads and trackers"
   },
   "connectionsUpgradedHTTPS": {
-    "message": "З'єднання оновлені до HTTPS",
+    "message": "З’єднання оновлені до HTTPS",
     "description": "Message for the connections upgraded row label and for the main blocked resources text when there is more than one connection upgraded (plural) and no other ads/trackers blocked"
   },
   "connectionUpgradedHTTPS": {
-    "message": "З'єднання оновлено до HTTPS",
+    "message": "З’єднання оновлено до HTTPS",
     "description": "Message for the main blocked resources text when there is one connection upgraded (singular) and no other ads/trackers blocked"
   },
   "scriptsBlocked": {

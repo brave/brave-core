@@ -263,18 +263,18 @@
 <translation id="19715420010996093">Selecciona el navegador Brave i clica 'Sempre'</translation>
 <translation id="3546439402724649282">Brave ja s'ha configurat com el teu navegador predeterminat.</translation>
 <translation id="8389661903259423907">Ja has configurat un navegador predeterminat. Pots modificar el navegador predeterminat a la configuració de l'aplicació.</translation>
-<translation id="1545749641540134597">Escanejar Codi QR</translation>
+<translation id="1545749641540134597">Escaneja codi QR</translation>
 <translation id="5317781812114905957">Instruccions</translation>
-<translation id="8515319483805157233">Per a cercar per codi QR, alinear el codi QR al centre del marc.</translation>
+<translation id="8515319483805157233">Per cercar per codi QR, alinea el codi QR al centre del marc.</translation>
 <translation id="2734870894159530879">Accedeix a <ph name="WALLET_PROVIDER"/> per veure el teu saldo</translation>
-<translation id="7658239707568436148">Cancel·lar</translation>
+<translation id="7658239707568436148">Cancel·la</translation>
 <translation id="1201402288615127009">Següent</translation>
 <translation id="8481779960444041069">Per millorar la teva privadesa, estableix Brave com el teu navegador predeterminat</translation>
 <translation id="1938402585819943124">Selecciona Brave a la pantalla següent.</translation>
 <translation id="8926389886865778422">No m'ho tornis a preguntar</translation>
 <translation id="745974920645827035">Cerca independent amb millor privadesa</translation>
-<translation id="4717018805430015801">Brave Search no fa un seguiment de tu, de les teves consultes ni dels teus clics.</translation>
-<translation id="5240031343741051161">Prova la Cerca de Brave</translation>
+<translation id="4717018805430015801">El cercador de Brave no fa un seguiment de tu, de les teves consultes ni dels teus clics.</translation>
+<translation id="5240031343741051161">Prova el cercador de Brave</translation>
 <translation id="5234764350956374838">Omet</translation>
 <translation id="6639570430554986719">GENER</translation>
 <translation id="1807352595146144483">FEBRER</translation>
@@ -427,18 +427,10 @@ Segur que vols continuar?</translation>
 <translation id="2394961582378297792">Sessió tancada</translation>
 <translation id="5308380583665731573">Connecta</translation>
 <translation id="3368922792935385530">Connectat</translation>
-<translation id="8673913984316081937">Verificar el moneder és opcional</translation>
-<translation id="8558636200953226885">Però si ho verifiques, pots...</translation>
-<translation id="8697510149346635496">Retirar BAT que guanyis per veure anuncis respectuosos amb la privacitat</translation>
-<translation id="1481480653609649134">Comprar BAT addicional amb targetes de crèdit o altres mètodes</translation>
-<translation id="9096003370755878766">Retirar BAT que hagis afegit al teu moneder de Gratificacions Brave</translation>
-<translation id="1554282356558968486">El nostre servei de moneder és proveït per</translation>
 <translation id="6569877533335686968">Mantenir</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold et pot demanar que verifiquis la teva identitat en funció dels serveis demanats.</translation>
-<translation id="3200197118442451932">Brave Software Inc. no processa, emmagatzema ni accedeix a cap informació personal que proporciones a <ph name="WALLET_PROVIDER"/> quan obres un compte amb ells.</translation>
 <translation id="1665118090708049096">Anar al meu compte <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Inicieu sessió al vostre compte de <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">No connectat</translation>
@@ -525,7 +517,7 @@ Segur que vols continuar?</translation>
 <translation id="2225863440766607138">Rastrejadors</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Heu bloquejat <ph name="COUNT"/> rastrejadors  &amp; anuncis amb el navegador Brave en les darreres 3 hores.</translation>
-<translation id="3621193901658023971">Navegueu fins a 6 vegades més ràpid als principals llocs de notícies amb Brave bloquejant els rastrejadors &amp; anuncis.</translation>
+<translation id="5005713153542196658">Navega fins a 6 vegades més ràpid als principals llocs de notícies amb Brave bloquejant els rastrejadors i anuncis.</translation>
 <translation id="7427567994475794038">Activeu els informes de privadesa per veure quants rastrejadors &amp;amp anuncis s'han bloquejat en les darreres 3 hores.</translation>
 <translation id="2053891538879944400">Heu desat <ph name="DATA"/> <ph name="DATA_TEXT"/> dades amb el navegador Brave.</translation>
 <translation id="8640064498452534195">Activeu els Informes de privadesa per veure quantes dades heu salvat.</translation>
@@ -590,6 +582,10 @@ Segur que vols continuar?</translation>
 <translation id="8622329973403382303">Feu un tour ràpid per a repassar com podeu passar a la història com una superestrella de Rewards!</translation>
 <translation id="3479552764303398839">Ara no</translation>
 <translation id="7138272885617540195">Permet que els enllaços d'aplicacions s'obrin en aplicacions fora de Brave</translation>
+<translation id="4954512758656527938">Cartera predeterminada d'Ethereum</translation>
+<translation id="7701023802820268122">Cartera predeterminada de Solana</translation>
+<translation id="7701040980221191251">Cap</translation>
+<translation id="8488282162676695335">Cartera de Brave</translation>
 <translation id="8792121506918889955">Política de gestió d'IP WebRTC</translation>
 <translation id="8798099450830957504">Predeterminat</translation>
 <translation id="1822560017823072927">Interfícies públiques i privades predeterminades</translation>
@@ -685,7 +681,6 @@ Segur que vols continuar?</translation>
 <translation id="8475984867371585028">Edita els NFT visibles</translation>
 <translation id="5050890334032852465">Guarda la llista de seguiment del compte</translation>
 <translation id="7755766175599167100">Cerca criptovalors</translation>
-<translation id="8488282162676695335">Cartera Brave</translation>
 <translation id="3784455785234192852">Bloqueig</translation>
 <translation id="4412698727486357573">Centre d'ajuda</translation>
 <translation id="8796429300536029044">Detall d'NFT</translation>
@@ -717,12 +712,12 @@ Segur que vols continuar?</translation>
 <translation id="8272917646984397798">Protegeix totes les connexions</translation>
 <translation id="1751947227857853925">Ràpid i il·limitat fins a 100 Mbps</translation>
 <translation id="1400240082805528049">Suport 24/7</translation>
-<translation id="5051030058817632680">Bloqueja les connexions de xarxa no desitjades</translation>
+<translation id="5892534145504632332">Protegeix totes les aplicacions i tot el teu dispositiu</translation>
+<translation id="7195416926059527505">Més segur per a la Wi-Fi pública o domèstica</translation>
+<translation id="1354700000739359839">Extremadament ràpid, fins a 100 Mbps</translation>
 <translation id="3510283489391432976">Trieu la vostra ubicació geogràfica/el vostre país</translation>
-<translation id="4390800080658195654">Manté el vostre anonimat en línia</translation>
-<translation id="639981156979733813">Admet velocitats de fins a 100 Mbps</translation>
-<translation id="765343799669302337">Utilitza el túnel VPN encriptat segur WireGuard</translation>
-<translation id="1571230671455380494">No compartim ni venem la vostra informació mai</translation>
+<translation id="7695158478627528928">Brave mai registra la teva activitat</translation>
+<translation id="4575683170451975058">Protegeix 5 dispositius en 1 subscripció</translation>
 <translation id="276866628038850725">Tots els plans inclouen una prova gratuïta de 7 dies!</translation>
 <translation id="1532536259167115948">Subscripció mensual <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Subscripció anual <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Segur que vols continuar?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> /any.</translation>
 <translation id="2655185358771731232">Prova-ho de franc durant 7 dies. Passats aquests 7 dies, se't cobrarà el preu del pla. Totes les subscripcions es renoven automàticament, però es poden cancel·lar abans de la renovació.</translation>
 <translation id="6053992191006521518">Proveu-lo GRATIS</translation>
+<translation id="3990956504562716932">Prova-ho gratis durant 7 dies</translation>
 <translation id="721747358270435486">Instal·leu la VPN</translation>
 <translation id="836074276610740314">Instal·leu el perfil de VPN</translation>
 <translation id="8021842065465097929">Ara, Brave instal·larà un perfil de VPN.</translation>
@@ -1117,71 +1113,6 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="591648995518106347">Carrega automàticament els articles elegibles en mode lector</translation>
 <translation id="1295796122927221823">Veure en mode de lector</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> a <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Llista de reproducció de Brave</translation>
-<translation id="4850886885716139402">Mostra</translation>
-<translation id="7392941176393379100">Afegit a '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Gestió de les dades de la llista de reproducció</translation>
-<translation id="7650602357673790368">De manera predeterminada, la llista de reproducció desarà automàticament el contingut al dispositiu per a la reproducció fora de línia (en ambdues llistes de reproducció privades i compartides). Si no esteu estàs connectat al WiFi, Desar automàticament utilitzarà les teves dades mòbils.\n\nPer a canviar aquest valor predeterminat, utilitza la configuració.</translation>
-<translation id="5900576657906675258">Afegeix un element a la llista de reproducció</translation>
-<translation id="349846214503465941">Activa la llista de reproducció</translation>
-<translation id="1309636029062006520">Fes llistes de reproducció del teus àudios i vídeos preferits i reprodueix-les en qualsevol moment, en qualsevol lloc.</translation>
-<translation id="3561815498111282415">Desa automàticament per a fora de línia</translation>
-<translation id="1832424694374124654">Desa automàticament els elements nous de la llista de reproducció al dispositiu perquè pugueu reproduir sense connexió a Internet.</translation>
-<translation id="8103022210423023846">Desa automàticament activat</translation>
-<translation id="3926329432879804185">Desa automàticament desactivat</translation>
-<translation id="7768812595186089508">Desa automàticament només quan estigui connectat a una Wi-Fi</translation>
-<translation id="5939518447894949180">Restableix</translation>
-<translation id="8199028711686989861">Elimina tots els vídeos de la llista de reproducció, inclòs l'emmagatzematge en mode fora de línia.</translation>
-<translation id="5916664084637901428">Activat</translation>
-<translation id="5860033963881614850">Desactivat</translation>
-<translation id="2920568868625746681">Només Wi-Fi</translation>
-<translation id="4590997608186539865">Llista de reproducció</translation>
-<translation id="7525067979554623046">Crea</translation>
-<translation id="5491049004699827548">Crea la primera llista de reproducció</translation>
-<translation id="5319108110887582146">Fes una llista de reproducció dels teus àudios i vídeos preferits i reprodueix-la en qualsevol moment, en qualsevol lloc. Fins i tot fora de línia.</translation>
-<translation id="6802849415466883498">Crea una llista de reproducció</translation>
-<translation id="8525248723479742219">Reprodueix més tard</translation>
-<translation id="7453007860684252933">Navega i afegeix</translation>
-<translation id="9014883386413828317">Afegeix el teu contingut preferit. Cerca el botó ( + ) a la part inferior dreta de la pantalla.</translation>
-<translation id="5928669500312007783">Navega per als fitxers multimèdia</translation>
-<translation id="8152485753254079984">Nova llista de reproducció</translation>
-<translation id="9130105487623071247">Nom de la llista de reproducció</translation>
-<translation id="726581235416249619">Llista de reproducció sense títol</translation>
-<translation id="1456254983411148628">Suprimeix les dades</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> seleccionat</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> elements</translation>
-<translation id="2317629745818459803">Reprodueix-ho tot</translation>
-<translation id="7544853251252956727">Aleatori</translation>
-<translation id="2881339830231736485">Reproduïdes recentment</translation>
-<translation id="7636458383879257005">Toca, mantén premut o arrossega</translation>
-<translation id="8120600068258956006">Afegeix a la llista de reproducció</translation>
-<translation id="39991094779686024">Llistes de reproducció</translation>
-<translation id="1710072605877822603">Afegeix contingut multimèdia</translation>
-<translation id="3874252678044305931">Afegeix vídeos a la llista de reproducció de Brave. Reproducció en qualsevol moment. Fins i tot sense connexió.</translation>
-<translation id="8973629800378391099">Crea llistes de reproducció del teu contingut preferit. Estalvia dades mòbils. I reprodueix sense anuncis.</translation>
-<translation id="4936812987266342401">Prem el botó per a afegir vídeos a una llista de reproducció</translation>
-<translation id="6263657785571415306">Estigues al corrent: afegeix vídeos mentre navegues i mira'ls  més tard.</translation>
-<translation id="2839555636100404687">La reproducció és millor a la llista de reproducció</translation>
-<translation id="9079526681359439081">Reprodueix en segon pla. Control des de la pantalla de bloqueig. I més...</translation>
-<translation id="3620862810055853183">Obre la llista de reproducció</translation>
-<translation id="3861012838874771868">Obre la configuració de la llista de reproducció</translation>
-<translation id="5220099266891491416">Amaga el botó de la llista de reproducció</translation>
-<translation id="7416347631175891923">Prova-ho!</translation>
-<translation id="1173894706177603556">Canvia el nom</translation>
-<translation id="1620612903815671893">Suprimeix les dades fora de línia de la llista de reproducció</translation>
-<translation id="3261711068865275261">Suprimeix totes les dades fora de línia</translation>
-<translation id="6653691766801349738">Mantén la llista de reproducció per a ús fora de línia</translation>
-<translation id="8708086574143054053">Mantén totes les llistes de reproducció per a ús fora de línia</translation>
-<translation id="3596306474342941843">Suprimeix la llista de reproducció</translation>
-<translation id="7765158879357617694">Mou</translation>
-<translation id="3803384303807438047">Suprimeix les dades fora de línia de l'element</translation>
-<translation id="4195643157523330669">Obre en una pestanya nova</translation>
-<translation id="4243710787042215766">Obre en pestanya d'incògnit</translation>
-<translation id="8261506727792406068">Suprimeix</translation>
-<translation id="377872456482681602">Selecciona primer els elements</translation>
-<translation id="6172429305139364624">L'element de la llista de reproducció no està a la memòria cau.\nMemòria cau de l'element per al mode fora de línia.</translation>
-<translation id="3631131732607750008">El contingut ha caducat. Torna-ho a provar d'aquí a uns segons.</translation>
-<translation id="286472539388773794">Introdueix un nom de llista de reproducció vàlid</translation>
 <translation id="9085765419770918643">Encara no hi ha cap NFT aquí.</translation>
 <translation id="8445532667841598737">Estàs preparat per a afegir-ne algun? Fes clic en el botó de sota per a importar.</translation>
 <translation id="5925465310724910998">Voleu mostrar automàticament els vostres NFT?</translation>
@@ -1190,12 +1121,6 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="622372328961630111">Afegiu automàticament els NFT que teniu en propietat al moneder fent servir les API de tercers. <ph name="BEGIN_LINK_1"/>Més informació.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Compte de la taula de cerca d'adreces:</translation>
 <translation id="7659483790930268440">Índex de la taula de cerca d'adreces:</translation>
-<translation id="7322560193401221004">Recorda la posició de reproducció del fitxer</translation>
-<translation id="7505951907514709271">Per a fitxers individuals, continua reproduint des del punt de la darrera pausa</translation>
-<translation id="6835165453349969605">Recorda la posició de reproducció de la llista</translation>
-<translation id="6344103698928069918">Per a una llista de reproducció, continua reproduint des del punt de la darrera pausa</translation>
-<translation id="8141583471142904652">Escoltar contínuament</translation>
-<translation id="851432578283946230">Reprodueix automàticament els elements següents a la llista de reproducció</translation>
 <translation id="7853202427316060426">Activitat</translation>
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Preu de mercat</translation>
@@ -1212,6 +1137,80 @@ Si no accepteu la sol·licitud, la VPN no es tornarà a connectar i la vostra co
 <translation id="2471230424465522689">No anterior a</translation>
 <translation id="4841860051609590575">ID de la sol·licitud</translation>
 <translation id="1179407411385015942">Leo és un assistent intel·ligent amb IA, integrat en el navegador</translation>
+<translation id="4109670531935487117">Mostra suggeriments d'autocompletat a la barra d'adreces</translation>
 <translation id="1250335737108905610">Reiniciar i esborrar les dades de Leo</translation>
 <translation id="6165101586663336913">Per restablir l'assistent Leo, haureu d'acceptar la utilització futura de Leo i també esborrar l'historial de xat. Quan esborreu l'historial de xat se suprimiran també totes les converses anteriors amb Leo. Aquesta acció no es pot desfer.</translation>
+<translation id="3692772534525889713">Enllaça la compra de la Play Store al teu compte de Brave per utilitzar la Brave Leo en altres dispositius.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Mensual</translation>
+<translation id="451189393813405346">Pregunteu-ho a Leo</translation>
+<translation id="7322560193401221004">Recorda la posició de reproducció del fitxer</translation>
+<translation id="7505951907514709271">Per a fitxers individuals, continua reproduint des del punt de la darrera pausa</translation>
+<translation id="6835165453349969605">Recorda la posició de reproducció de la llista</translation>
+<translation id="6344103698928069918">Per a una llista de reproducció, continua reproduint des del punt de la darrera pausa</translation>
+<translation id="8141583471142904652">Escoltar contínuament</translation>
+<translation id="851432578283946230">Reprodueix automàticament els elements següents a la llista de reproducció</translation>
+<translation id="295620834661738195">Llista de reproducció de Brave</translation>
+<translation id="4850886885716139402">Mostra</translation>
+<translation id="7392941176393379100">Afegit a '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Activa la llista de reproducció</translation>
+<translation id="1309636029062006520">Fes llistes de reproducció del teus àudios i vídeos preferits i reprodueix-les en qualsevol moment, en qualsevol lloc.</translation>
+<translation id="7899390017499980820">Botó d'afegir a la llista de reproducció</translation>
+<translation id="6901152954398668317">Mostra o oculta el botó «Afegeix a la llista de reproducció» per a un accés ràpid a afegir o eliminar continguts multimèdia.</translation>
+<translation id="5939518447894949180">Restableix</translation>
+<translation id="8199028711686989861">Elimina tots els vídeos de la llista de reproducció, inclòs l'emmagatzematge en mode fora de línia.</translation>
+<translation id="4590997608186539865">Llista de reproducció</translation>
+<translation id="7525067979554623046">Crea</translation>
+<translation id="8525248723479742219">Reprodueix més tard</translation>
+<translation id="7453007860684252933">Navega i afegeix</translation>
+<translation id="9014883386413828317">Afegeix el teu contingut preferit. Cerca el botó ( + ) a la part inferior dreta de la pantalla.</translation>
+<translation id="5928669500312007783">Navega per als fitxers multimèdia</translation>
+<translation id="8152485753254079984">Nova llista de reproducció</translation>
+<translation id="9130105487623071247">Nom de la llista de reproducció</translation>
+<translation id="726581235416249619">Llista de reproducció sense títol</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> seleccionat</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elements</translation>
+<translation id="2317629745818459803">Reprodueix-ho tot</translation>
+<translation id="7544853251252956727">Aleatori</translation>
+<translation id="2881339830231736485">Reproduïdes recentment</translation>
+<translation id="8120600068258956006">Afegeix a la llista de reproducció</translation>
+<translation id="39991094779686024">Llistes de reproducció</translation>
+<translation id="1710072605877822603">Afegeix contingut multimèdia</translation>
+<translation id="3874252678044305931">Afegeix vídeos a la llista de reproducció de Brave. Reproducció en qualsevol moment. Fins i tot sense connexió.</translation>
+<translation id="8973629800378391099">Crea llistes de reproducció del teu contingut preferit. Estalvia dades mòbils. I reprodueix sense anuncis.</translation>
+<translation id="4936812987266342401">Prem el botó per a afegir vídeos a una llista de reproducció</translation>
+<translation id="6263657785571415306">Estigues al corrent: afegeix vídeos mentre navegues i mira'ls  més tard.</translation>
+<translation id="2839555636100404687">La reproducció és millor a la llista de reproducció</translation>
+<translation id="9079526681359439081">Reprodueix en segon pla. Control des de la pantalla de bloqueig. I més...</translation>
+<translation id="3620862810055853183">Obre la llista de reproducció</translation>
+<translation id="3861012838874771868">Obre la configuració de la llista de reproducció</translation>
+<translation id="5220099266891491416">Amaga el botó de la llista de reproducció</translation>
+<translation id="7416347631175891923">Prova-ho!</translation>
+<translation id="1173894706177603556">Canvia el nom</translation>
+<translation id="3596306474342941843">Suprimeix la llista de reproducció</translation>
+<translation id="7765158879357617694">Mou</translation>
+<translation id="3803384303807438047">Suprimeix les dades fora de línia de l'element</translation>
+<translation id="4195643157523330669">Obre en una pestanya nova</translation>
+<translation id="4243710787042215766">Obre en pestanya d'incògnit</translation>
+<translation id="8261506727792406068">Suprimeix</translation>
+<translation id="377872456482681602">Selecciona primer els elements</translation>
+<translation id="286472539388773794">Introdueix un nom de llista de reproducció vàlid</translation>
+<translation id="2824489375399072491">Comparteix amb:</translation>
+<translation id="5319532905552885478">El contingut multimèdia ja és a la llista de reproducció predeterminada</translation>
+<translation id="4802584673094436231">S'està preparant...</translation>
+<translation id="481455355267255546">A continuació</translation>
+<translation id="5474757891469990756">Allibera tot el poder de Leo amb Premium:</translation>
+<translation id="4173478269537830374">Explora els diferents models d'IA</translation>
+<translation id="3453542753968940696">Accés prioritari a models potents amb diferents habilitats.</translation>
+<translation id="3245401959451976966">Dona curs a la teva creativitat</translation>
+<translation id="5031778211368112461">Accedeix a models més adequats per a tasques creatives i generació de continguts.</translation>
+<translation id="4165928407303989823">Segueix amb el tema</translation>
+<translation id="298783097210745222">Obtingues respostes més precises per a converses més detallades.</translation>
+<translation id="2389665228467129817">Xateja durant més temps</translation>
+<translation id="4314705522985583059">Aconsegueix límits de taxa més alts per a converses més llargues.</translation>
+<translation id="6365289557497555234">Totes les subscripcions es renoven automàticament, però es poden cancel·lar en qualsevol moment abans de la renovació.</translation>
+<translation id="6637015365469044269">Millora ara la subscripció</translation>
+<translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
+<translation id="4071849832011229600">Model predeterminat</translation>
+<translation id="7557539689487606886">Canvia a Premium</translation>
 </translationbundle>

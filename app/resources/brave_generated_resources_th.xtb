@@ -254,6 +254,8 @@
 <translation id="480565261566115689">ย่อแท็บ</translation>
 <translation id="7194343495483122559">ขยายแท็บ</translation>
 <translation id="1199054713803577378">ย่อแท็บ</translation>
+<translation id="1337946268962884806">คำสั่งซื้อที่กำหนดเอง</translation>
+<translation id="8373664339577369248">คำสั่งซื้อที่กำหนดเอง</translation>
 <translation id="8120600068258956006">เพิ่มไปยังเพลย์ลิสต์</translation>
 <translation id="650694591627983430">สื่อที่พบในหน้านี้</translation>
 <translation id="8525248723479742219">เล่นภายหลัง</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">ปิดการเล่นซ้ำ</translation>
 <translation id="1748244367114657861">เล่นซ้ำหนึ่งครั้ง</translation>
 <translation id="6421906998825794164">เล่นซ้ำทั้งหมด</translation>
+<translation id="6453210454707928697">ไม่สามารถเล่นรายการได้</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] อาจหมดอายุแล้ว คุณต้องการกู้คืนหรือไม่</translation>
+<translation id="6155018868740116868">กู้คืน</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">การเปลี่ยนแปลงของคุณจะมีผลในครั้งถัดไปที่คุณเปิด Brave ขึ้นอีก</translation>
 <translation id="7179921470347911571">เปิดใหม่อีกครั้ง</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">แสดงแถบหัวเรื่อง</translation>
 <translation id="5371926069408837914">ขยายหน้าต่างแท็บแนวตั้งเมื่อชี้เมาส์ขณะยุบอยู่</translation>
 <translation id="3367129510799209147">โหมดโฮเวอร์แท็บ</translation>
+<translation id="515949045075831661">แสดงทางด้านขวา</translation>
+<translation id="3725395376319291415">แสดงทางด้านซ้าย</translation>
 <translation id="2113977810652731515">การ์ด</translation>
 <translation id="4096343215397759358">การ์ดพร้อมตัวอย่าง</translation>
 <translation id="5297085818601043899">เคล็ดลับเครื่องมือ</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Brave อยู่ใน Dock แล้ว</translation>
 <translation id="3195845168740336657">การตั้งค่า Shields</translation>
 <translation id="754769152790647708">สถานะ Shields</translation>
-<translation id="3615717588724840230">เว็บไซต์สามารถบล็อกตัวติดตาม โฆษณา และการเก็บร่องรอยได้โดยใช้ Shields</translation>
+<translation id="4868109105992358853">เกราะป้องกันของ Brave สามารถบล็อกตัวติดตาม โฆษณา และการพิมพ์ลายนิ้วมือได้</translation>
 <translation id="5690973901138662477">เปิด Shields</translation>
 <translation id="4697275813919189958">ปิด Shields</translation>
 <translation id="6303294677342628402">ปกป้อง</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Brave รีวอร์ดปิดใช้งานอยู่</translation>
 <translation id="413570371620795359">เปิดรายการ Rewards เพื่อเปิดใช้งานและเริ่มต้น</translation>
 <translation id="1051600834033686945">เปิดการตั้งค่า Brave Rewards ทั้งหมด</translation>
-<translation id="6333347122924254968">แสดงไอคอน Brave Rewards ในแถบที่อยู่</translation>
+<translation id="8826461509529116322">แสดงปุ่ม Brave รีวอร์ด</translation>
 <translation id="9185018653595759199">การบล็อกโซเชียลมีเดีย</translation>
 <translation id="863171915776379000">อนุญาตให้เข้าสู่ระบบผ่าน Facebook และโพสต์แบบฝัง</translation>
 <translation id="5165042248369837294">อนุญาตให้ทวีตแบบฝังบน Twitter</translation>
@@ -726,6 +733,7 @@
 Leo ในอนาคต และจะล้างประวัติการแชทของคุณด้วย การล้าง
 ประวัติการแชทจะลบการสนทนาก่อนหน้าทั้งหมดของคุณกับ Brave
 Leo การดำเนินการนี้ไม่สามารถยกเลิกได้</translation>
+<translation id="5574059574002819179">ปรับคำแนะนำการเติมข้อความอัตโนมัติ</translation>
 <translation id="8157373421434119674">ข้อมูลและประวัติการแชท</translation>
 <translation id="614530507403667291">โมเดลเริ่มต้นสำหรับการสนทนาใหม่</translation>
 <translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>

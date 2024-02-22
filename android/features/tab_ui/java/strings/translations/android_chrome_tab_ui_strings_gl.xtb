@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Queres pechar as pestanas antigas?</translation>
 <translation id="1215127405478249895">Revisar as pestanas</translation>
 <translation id="125153950246128346">Toca para ver outra pestana</translation>
+<translation id="1326271443836399892">Revisar a configuración actual de organización.</translation>
 <translation id="1657719826150349398">Mover pestana cara abaixo</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> pestana}other{<ph name="TABS_COUNT_MANY"/> pestanas}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Engadir <ph name="TABS_COUNT_ONE"/> pestana seleccionada aos marcadores}other{Engadir <ph name="TABS_COUNT_MANY"/> pestanas seleccionadas aos marcadores}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Quitar do grupo</translation>
 <translation id="3008554597174452548">Deter seguimento do produto</translation>
 <translation id="3052964831964880138">Baixada de prezo de <ph name="PRICE_DROP"/> no seguinte produto: <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Tes <ph name="TABS_COUNT_ONE"/> pestana arquivada}other{Tes <ph name="TABS_COUNT_MANY"/> pestanas arquivadas}}</translation>
 <translation id="3194464645767632461">valoración</translation>
 <translation id="3291470810748040983">Recibirás unha alerta cando haxa un prezo máis baixo nunha das pestanas que tes abertas</translation>
 <translation id="3328308545011660196">Suxestión: Hai <ph name="NUMBER_OF_TABS"/> pestanas que parecen relacionadas. Queres agrupalas?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Recibir notificacións</translation>
 <translation id="4133493477912226187">Hai <ph name="NUMBER_OF_TABS"/> pestanas que parecen relacionadas. Queres agrupalas?</translation>
 <translation id="4212246570487010370">Continuar navegando</translation>
+<translation id="427987768447457592">Novo grupo de pestanas</translation>
 <translation id="4648718555153979859">As túas pestanas agrúpanse aquí</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> recensión)}other{(<ph name="REVIEWS_COUNT_MANY"/> recensións)}}</translation>
 <translation id="4850886885716139402">Vista</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Ocultar grade en pantalla completa</translation>
 <translation id="5076161749301278626">Queres ver recensións da tenda?</translation>
 <translation id="5082793167783849073">Crea un grupo para comparar rapidamente varias páxinas. Para comezar, mantén premida unha ligazón.</translation>
+<translation id="5161254044473106830">Título obrigatorio</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Hai <ph name="TABS_COUNT_ONE"/> pestana que non usaches recentemente}other{Hai <ph name="TABS_COUNT_MANY"/> pestanas que non usaches recentemente}}</translation>
 <translation id="5339733443032484186">A túa última pestana</translation>
 <translation id="5490235265819901748">Grupo de pestanas despregado</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Mover pestana cara á dereita</translation>
 <translation id="7966321538264951561">Ignorar estas suxestións.</translation>
 <translation id="8029301326595421733">A folla de información sobre esta tenda está aberta a pantalla completa</translation>
-<translation id="814503310257431685">Ver todo</translation>
 <translation id="8205266828577616993">Mover pestana cara arriba</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Pechar <ph name="TABS_COUNT_ONE"/> pestana seleccionada}other{Pechar <ph name="TABS_COUNT_MANY"/> pestanas seleccionadas}}</translation>
 <translation id="8398929769197326728">Cartafol novo: <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">A folla de información sobre esta tenda está pechada</translation>
 <translation id="9150694013019234766">Cambia dunha pestana a outra no grupo de pestanas da parte inferior da pantalla</translation>
 <translation id="9169594135889675189">Engadir nova pestana ao grupo</translation>
+<translation id="955558140275419384">Se entras neste editor, poderás revisar todas as pestanas arquivadas para organizalas.</translation>
 <translation id="959682366969460160">Organízate</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {Pode atopar as pestanas pechadas en Pestanas recentes, no menú principal de Brave. A pestana Privado non estará dispoñible.}

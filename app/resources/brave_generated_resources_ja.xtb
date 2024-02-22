@@ -254,6 +254,8 @@
 <translation id="480565261566115689">タブを最小化する</translation>
 <translation id="7194343495483122559">タブを拡大する</translation>
 <translation id="1199054713803577378">タブを最小化する</translation>
+<translation id="1337946268962884806">カスタムオーダー</translation>
+<translation id="8373664339577369248">カスタムオーダー</translation>
 <translation id="8120600068258956006">プレイリストに追加</translation>
 <translation id="650694591627983430">このページでメディアが見つかりました</translation>
 <translation id="8525248723479742219">後で再生する</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">繰り返しをオフ</translation>
 <translation id="1748244367114657861">1回繰り返し</translation>
 <translation id="6421906998825794164">すべてを繰り返し</translation>
+<translation id="6453210454707928697">アイテムの再生に失敗しました</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>]の有効期限が切れている可能性があります。復元しますか？</translation>
+<translation id="6155018868740116868">復元する</translation>
 <translation id="1727684853006449697">Braveプレーヤー</translation>
 <translation id="9156965752763025780">変更内容は次に Brave を再起動したときに有効になります。</translation>
 <translation id="7179921470347911571">今すぐ再起動</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">タイトルバーを表示</translation>
 <translation id="5371926069408837914">折りたたまれている状態でマウスオーバーすると、垂直タブパネルを展開</translation>
 <translation id="3367129510799209147">タブホバーモード</translation>
+<translation id="515949045075831661">右側に表示</translation>
+<translation id="3725395376319291415">左側に表示</translation>
 <translation id="2113977810652731515">カード</translation>
 <translation id="4096343215397759358">プレビュー付きカード</translation>
 <translation id="5297085818601043899">ツールヒント</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Braveは既にDockに登録されています</translation>
 <translation id="3195845168740336657">シールド設定</translation>
 <translation id="754769152790647708">シールドのステータス</translation>
-<translation id="3615717588724840230">シールドを使用して、サイトはトラッカー、広告、フィンガープリント採取をブロックできます</translation>
+<translation id="4868109105992358853">シールドはトラッカー、広告、フィンガープリントをブロックできます</translation>
 <translation id="5690973901138662477">シールドオン</translation>
 <translation id="4697275813919189958">シールドオフ</translation>
 <translation id="6303294677342628402">Shields</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Brave Rewardsは無効です</translation>
 <translation id="413570371620795359">報酬パネルから有効化してはじめましょう</translation>
 <translation id="1051600834033686945">Braveリワードの設定を開く</translation>
-<translation id="6333347122924254968">アドレスバーにBraveリワードのアイコンを表示</translation>
+<translation id="8826461509529116322">Brave Rewardsボタンを表示する</translation>
 <translation id="9185018653595759199">ソーシャルメディアのブロック</translation>
 <translation id="863171915776379000">Facebookのログインと埋め込み投稿を許可する</translation>
 <translation id="5165042248369837294">Twitterの埋め込みツイートを許可する</translation>
@@ -726,6 +733,7 @@
 Leoの利用をオプトインする必要があります。チャット履歴も消去されます。
 チャット履歴を消去すると、Brave 
 Leoとの会話がすべて削除されます。この操作を元に戻すことはできません。</translation>
+<translation id="5574059574002819179">オートコンプリートの候補を調整する</translation>
 <translation id="8157373421434119674">データ＆チャット履歴</translation>
 <translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
 <translation id="349846214503465941">プレイリストを有効にする</translation>

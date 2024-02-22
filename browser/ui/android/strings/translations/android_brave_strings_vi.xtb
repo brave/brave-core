@@ -427,18 +427,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2394961582378297792">Đã đăng xuất</translation>
 <translation id="5308380583665731573">Kết nối</translation>
 <translation id="3368922792935385530">Đã kết nối</translation>
-<translation id="8673913984316081937">Xác minh ví của bạn là không bắt buộc</translation>
-<translation id="8558636200953226885">Nhưng nếu xác minh, bạn có thể...</translation>
-<translation id="8697510149346635496">Rút BAT mà bạn kiếm được nhờ xem các quảng cáo tôn trọng quyền riêng tư</translation>
-<translation id="1481480653609649134">Mua thêm BAT bằng thẻ tín dụng và các nguồn tiền khác</translation>
-<translation id="9096003370755878766">Rút BAT mà trước đó có thể bạn đã thêm vào ví Phần thưởng Brave của mình</translation>
-<translation id="1554282356558968486">Dịch vụ ví của chúng tôi được cung cấp bởi</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold có thể sẽ cần bạn phải xác thực danh tính căn cứ vào các dịch vụ bạn yêu cầu.</translation>
-<translation id="3200197118442451932">Brave Software Inc. không xử lý, lưu trữ hoặc truy cập bất kỳ thông tin cá nhân nào mà bạn cung cấp cho <ph name="WALLET_PROVIDER"/> khi bạn thiết lập tài khoản với họ.</translation>
 <translation id="1665118090708049096">Đi đến tài khoản <ph name="WALLET_PROVIDER"/> của tôi</translation>
 <translation id="4858636682078269312">Đăng nhập vào tài khoản <ph name="WALLET_PROVIDER"/> của bạn</translation>
 <translation id="8874184842967597500">Chưa kết nối</translation>
@@ -525,7 +517,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="2225863440766607138">Trình theo dõi</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Bạn đã chặn <ph name="COUNT"/> trình theo dõi &amp; quảng cáo bằng trình duyệt Brave trong 3 giờ qua.</translation>
-<translation id="3621193901658023971">Duyệt web nhanh hơn lên đến 6 lần trên các trang web tin tức lớn trong trình duyệt Brave bằng cách chặn trình theo dõi &amp; quảng cáo.</translation>
+<translation id="5005713153542196658">Duyệt nhanh hơn tới 6 lần trên các trang tin tức lớn trong Brave bằng cách chặn trình theo dõi &amp; quảng cáo.</translation>
 <translation id="7427567994475794038">Hãy bật Báo cáo Quyền riêng tư để xem số lượng trình theo dõi &amp; quảng cáo đã bị chặn trong 3 giờ qua.</translation>
 <translation id="2053891538879944400">Bạn đã tiết kiệm <ph name="DATA"/> <ph name="DATA_TEXT"/> dữ liệu bằng trình duyệt Brave.</translation>
 <translation id="8640064498452534195">Bật Báo cáo Quyền riêng tư để xem lượng dữ liệu mà bạn đã tiết kiệm được.</translation>
@@ -590,6 +582,10 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8622329973403382303">Hãy tham gia một hành trình ngắn nhằm tìm hiểu cách thức hoạt động của nó để đi vào lịch sử với tư cách là một ngôi sao nhạc rock trong mục Phần thưởng!</translation>
 <translation id="3479552764303398839">Không phải bây giờ</translation>
 <translation id="7138272885617540195">Cho phép mở liên kết ứng dụng trong các ứng dụng bên ngoài Brave</translation>
+<translation id="4954512758656527938">Ví Ethereum mặc định</translation>
+<translation id="7701023802820268122">Ví Solana mặc định</translation>
+<translation id="7701040980221191251">Không</translation>
+<translation id="8488282162676695335">Ví Brave</translation>
 <translation id="8792121506918889955">Chính sách xử lý IP của WebRTC</translation>
 <translation id="8798099450830957504">Mặc định</translation>
 <translation id="1822560017823072927">Các giao diện công khai và riêng tư mặc định</translation>
@@ -685,7 +681,6 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8475984867371585028">Chỉnh sửa NFT nhìn thấy</translation>
 <translation id="5050890334032852465">Lưu danh sách theo dõi tài khoản</translation>
 <translation id="7755766175599167100">Tìm kiếm token</translation>
-<translation id="8488282162676695335">Ví Brave</translation>
 <translation id="3784455785234192852">Khóa</translation>
 <translation id="4412698727486357573">Trung tâm trợ giúp</translation>
 <translation id="8796429300536029044">Chi tiết NFT</translation>
@@ -717,12 +712,12 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="8272917646984397798">Bảo vệ an toàn mọi kết nối</translation>
 <translation id="1751947227857853925">Nhanh và không giới hạn lên đến 100 Mbps</translation>
 <translation id="1400240082805528049">Hỗ trợ 24/7</translation>
-<translation id="5051030058817632680">Chặn các kết nối mạng không mong muốn</translation>
+<translation id="5892534145504632332">Bảo vệ mọi ứng dụng &amp; toàn bộ thiết bị của bạn</translation>
+<translation id="7195416926059527505">An toàn hơn cho Wi-Fi gia đình hoặc công cộng</translation>
+<translation id="1354700000739359839">Nhanh như chớp, lên tới 100 Mbps</translation>
 <translation id="3510283489391432976">Chọn vị trí địa lý/quốc gia của bạn</translation>
-<translation id="4390800080658195654">Giữ bạn ẩn danh trên mạng</translation>
-<translation id="639981156979733813">Hỗ trợ tốc độ lên đến 100 Mbps</translation>
-<translation id="765343799669302337">Sử dụng đường hầm VPN được mã hóa an toàn của WireGuard</translation>
-<translation id="1571230671455380494">Chúng tôi sẽ không bao giờ chia sẻ hoặc bán thông tin của bạn</translation>
+<translation id="7695158478627528928">Brave không bao giờ ghi lại hoạt động của bạn</translation>
+<translation id="4575683170451975058">Bảo vệ 5 thiết bị trên 1 thuê bao</translation>
 <translation id="276866628038850725">Tất cả các gói đều bao gồm dùng thử 7 ngày miễn phí!</translation>
 <translation id="1532536259167115948">Đăng ký hàng tháng <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Đăng ký hàng năm <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / năm</translation>
 <translation id="2655185358771731232">Dùng thử miễn phí trong 7 ngày. Sau 7 ngày, bạn sẽ được tính phí theo giá gói. Tất cả các gói đăng ký được tự động gia hạn nhưng có thể hủy trước khi gia hạn.</translation>
 <translation id="6053992191006521518">Dùng thử MIỄN PHÍ</translation>
+<translation id="3990956504562716932">Dùng thử miễn phí trong 7 ngày</translation>
 <translation id="721747358270435486">Cài đặt VPN</translation>
 <translation id="836074276610740314">Cài đặt cấu hình VPN</translation>
 <translation id="8021842065465097929">Brave giờ sẽ cài đặt một cấu hình VPN.</translation>
@@ -1117,71 +1113,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="591648995518106347">Tự động tải các bài báo đủ điều kiện ở chế độ người đọc</translation>
 <translation id="1295796122927221823">Xem ở chế độ đọc</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> trên <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Danh sách phát Brave</translation>
-<translation id="4850886885716139402">Xem</translation>
-<translation id="7392941176393379100">Đã thêm vào '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Quản lý dữ liệu danh sách phát của bạn</translation>
-<translation id="7650602357673790368">Theo mặc định, Danh sách phát sẽ tự động lưu nội dung vào thiết bị của bạn để phát lại ngoại tuyến (trên cả danh sách phát riêng tư và danh sách phát được chia sẻ). Nếu bạn không sử dụng Wi-Fi, tính năng lưu tự động sẽ sử dụng dữ liệu di động của bạn.\n\nĐể thay đổi thiết lập mặc định này, hãy đi đến cài đặt.</translation>
-<translation id="5900576657906675258">Thêm mục vào Danh sách phát</translation>
-<translation id="349846214503465941">Bật Danh sách phát</translation>
-<translation id="1309636029062006520">Tạo danh sách phát âm thanh và video yêu thích của bạn và phát mọi lúc, mọi nơi.</translation>
-<translation id="3561815498111282415">Tự động lưu cho dùng Ngoại tuyến</translation>
-<translation id="1832424694374124654">Tự động lưu các mục danh sách phát mới vào thiết bị của bạn để bạn có thể phát mà không cần kết nối internet.</translation>
-<translation id="8103022210423023846">Tự động lưu BẬT</translation>
-<translation id="3926329432879804185">Tự động lưu TẮT</translation>
-<translation id="7768812595186089508">Chỉ tự động lưu khi được kết nối với Wi-Fi</translation>
-<translation id="5939518447894949180">Đặt lại</translation>
-<translation id="8199028711686989861">Xóa tất cả video khỏi Danh sách phát, bao gồm cả bộ nhớ ở chế độ ngoại tuyến.</translation>
-<translation id="5916664084637901428">Bật</translation>
-<translation id="5860033963881614850">Tắt</translation>
-<translation id="2920568868625746681">Chỉ wifi</translation>
-<translation id="4590997608186539865">Danh sách phát</translation>
-<translation id="7525067979554623046">Tạo</translation>
-<translation id="5491049004699827548">Tạo danh sách phát đầu tiên của bạn</translation>
-<translation id="5319108110887582146">Tạo danh sách phát âm thanh và video yêu thích của bạn và phát mọi lúc, mọi nơi. Ngay cả khi ngoại tuyến.</translation>
-<translation id="6802849415466883498">Tạo danh sách phát</translation>
-<translation id="8525248723479742219">Phát sau</translation>
-<translation id="7453007860684252933">Duyệt và thêm</translation>
-<translation id="9014883386413828317">Thêm nội dung yêu thích của bạn. Tìm nút (+) ở phần dưới bên phải màn hình của bạn.</translation>
-<translation id="5928669500312007783">Duyệt phương tiện</translation>
-<translation id="8152485753254079984">Danh sach mới</translation>
-<translation id="9130105487623071247">Tên danh sách phát</translation>
-<translation id="726581235416249619">Danh sách phát không có tiêu đề</translation>
-<translation id="1456254983411148628">Xóa dữ liệu</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> đã chọn</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> mục</translation>
-<translation id="2317629745818459803">Phát tất cả</translation>
-<translation id="7544853251252956727">Phát ngẫu nhiên</translation>
-<translation id="2881339830231736485">Đã phát gần đây</translation>
-<translation id="7636458383879257005">Nhấn, nhấn lâu hoặc kéo</translation>
-<translation id="8120600068258956006">Thêm vào Danh sách phát</translation>
-<translation id="39991094779686024">Danh sách phát</translation>
-<translation id="1710072605877822603">Thêm phương tiện</translation>
-<translation id="3874252678044305931">Thêm video vào Danh sách phát Brave. Phát lại bất cứ lúc nào. Ngay cả khi ngoại tuyến.</translation>
-<translation id="8973629800378391099">Tạo danh sách phát nội dung yêu thích của bạn. Tiết kiệm dữ liệu di động. Và phát lại không có quảng cáo.</translation>
-<translation id="4936812987266342401">Chỉ cần nhấn nút để thêm video vào danh sách phát</translation>
-<translation id="6263657785571415306">Luôn cập nhật: Thêm video trong quá trình bạn duyệt web, xem sau.</translation>
-<translation id="2839555636100404687">Phát lại tốt hơn trong Danh sách phát</translation>
-<translation id="9079526681359439081">Phát trong nền. Điều khiển từ màn hình khóa. Và hơn thế nữa…</translation>
-<translation id="3620862810055853183">Mở Danh sách phát</translation>
-<translation id="3861012838874771868">Mở cài đặt danh sách phát</translation>
-<translation id="5220099266891491416">Ẩn nút Danh sách phát</translation>
-<translation id="7416347631175891923">Thử ngay!</translation>
-<translation id="1173894706177603556">Đổi tên</translation>
-<translation id="1620612903815671893">Xóa dữ liệu ngoại tuyến danh sách phát</translation>
-<translation id="3261711068865275261">Xóa tất cả dữ liệu ngoại tuyến</translation>
-<translation id="6653691766801349738">Giữ danh sách phát để sử dụng ngoại tuyến</translation>
-<translation id="8708086574143054053">Giữ tất cả danh sách phát để sử dụng ngoại tuyến</translation>
-<translation id="3596306474342941843">Xóa danh sách phát</translation>
-<translation id="7765158879357617694">Di chuyển</translation>
-<translation id="3803384303807438047">Xóa dữ liệu ngoại tuyến của mục</translation>
-<translation id="4195643157523330669">Mở trong tab mới</translation>
-<translation id="4243710787042215766">Mở trong tab riêng tư</translation>
-<translation id="8261506727792406068">Xóa</translation>
-<translation id="377872456482681602">Vui lòng chọn các mục trước</translation>
-<translation id="6172429305139364624">Mục danh sách phát không được lưu vào bộ nhớ đệm.\nVui lòng lưu mục này vào bộ đệm cho chế độ ngoại tuyến.</translation>
-<translation id="3631131732607750008">Nội dung đã hết hạn. Hãy thử lại sau vài giây.</translation>
-<translation id="286472539388773794">Vui lòng nhập tên danh sách phát hợp lệ</translation>
 <translation id="9085765419770918643">Chưa có NFT nào ở đây.</translation>
 <translation id="8445532667841598737">Sẵn sàng để thêm một ít? Chỉ cần nhấp vào nút bên dưới để nhập.</translation>
 <translation id="5925465310724910998">Muốn NFT của bạn được hiển thị tự động?</translation>
@@ -1190,12 +1121,6 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="622372328961630111">Tự động thêm NFT mà bạn sở hữu vào Ví bằng API của bên thứ ba. <ph name="BEGIN_LINK_1"/>Tìm hiểu thêm.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Tài khoản bảng tra cứu địa chỉ:</translation>
 <translation id="7659483790930268440">Chỉ mục bảng tra cứu địa chỉ:</translation>
-<translation id="7322560193401221004">Ghi nhớ vị trí phát lại tập tin</translation>
-<translation id="7505951907514709271">Đối với các tệp riêng lẻ, hãy tiếp tục phát từ điểm tạm dừng cuối cùng</translation>
-<translation id="6835165453349969605">Ghi nhớ vị trí phát lại danh sách</translation>
-<translation id="6344103698928069918">Đối với danh sách phát, tiếp tục phát từ điểm tạm dừng cuối cùng</translation>
-<translation id="8141583471142904652">Nghe liên tục</translation>
-<translation id="851432578283946230">Tự động phát các mục tiếp theo trong danh sách phát của bạn</translation>
 <translation id="7853202427316060426">Hoạt động</translation>
 <translation id="4932733599132424254">Ngày</translation>
 <translation id="346505172740911461">Giá thị trường</translation>
@@ -1212,6 +1137,80 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="2471230424465522689">Không trước</translation>
 <translation id="4841860051609590575">Mã yêu cầu</translation>
 <translation id="1179407411385015942">Leo là trợ lý thông minh được hỗ trợ bởi AI, được tích hợp ngay trên trình duyệt</translation>
+<translation id="4109670531935487117">Hiển thị các đề xuất tự động hoàn thành trên thanh địa chỉ</translation>
 <translation id="1250335737108905610">Đặt lại và xóa dữ liệu Leo</translation>
 <translation id="6165101586663336913">Việc thiết lập lại trợ lý Leo sẽ yêu cầu bạn chọn tham gia sử dụng Brave Leo trong tương lai và cũng sẽ xóa lịch sử trò chuyện của bạn. Xóa lịch sử trò chuyện của bạn sẽ xóa tất cả các cuộc trò chuyện trước đó của bạn với Brave Leo. Hành động này không thể được hoàn tác.</translation>
+<translation id="3692772534525889713">Liên kết giao dịch mua trên Cửa hàng Play với tài khoản Brave của bạn để sử dụng Brave Leo trên các thiết bị khác.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Hàng tháng</translation>
+<translation id="451189393813405346">Hỏi Leo</translation>
+<translation id="7322560193401221004">Ghi nhớ vị trí phát lại tập tin</translation>
+<translation id="7505951907514709271">Đối với các tệp riêng lẻ, hãy tiếp tục phát từ điểm tạm dừng cuối cùng</translation>
+<translation id="6835165453349969605">Ghi nhớ vị trí phát lại danh sách</translation>
+<translation id="6344103698928069918">Đối với danh sách phát, tiếp tục phát từ điểm tạm dừng cuối cùng</translation>
+<translation id="8141583471142904652">Nghe liên tục</translation>
+<translation id="851432578283946230">Tự động phát các mục tiếp theo trong danh sách phát của bạn</translation>
+<translation id="295620834661738195">Danh sách phát Brave</translation>
+<translation id="4850886885716139402">Xem</translation>
+<translation id="7392941176393379100">Đã thêm vào '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Bật Danh sách phát</translation>
+<translation id="1309636029062006520">Tạo danh sách phát âm thanh và video yêu thích của bạn và phát mọi lúc, mọi nơi.</translation>
+<translation id="7899390017499980820">Thêm vào nút Danh sách phát</translation>
+<translation id="6901152954398668317">Hiển thị hoặc ẩn nút "Thêm vào danh sách phát" để truy cập nhanh để thêm hoặc xóa phương tiện.</translation>
+<translation id="5939518447894949180">Đặt lại</translation>
+<translation id="8199028711686989861">Xóa tất cả video khỏi Danh sách phát, bao gồm cả bộ nhớ ở chế độ ngoại tuyến.</translation>
+<translation id="4590997608186539865">Danh sách phát</translation>
+<translation id="7525067979554623046">Tạo</translation>
+<translation id="8525248723479742219">Phát sau</translation>
+<translation id="7453007860684252933">Duyệt và thêm</translation>
+<translation id="9014883386413828317">Thêm nội dung yêu thích của bạn. Tìm nút (+) ở phần dưới bên phải màn hình của bạn.</translation>
+<translation id="5928669500312007783">Duyệt phương tiện</translation>
+<translation id="8152485753254079984">Danh sach mới</translation>
+<translation id="9130105487623071247">Tên danh sách phát</translation>
+<translation id="726581235416249619">Danh sách phát không có tiêu đề</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> đã chọn</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> mục</translation>
+<translation id="2317629745818459803">Phát tất cả</translation>
+<translation id="7544853251252956727">Phát ngẫu nhiên</translation>
+<translation id="2881339830231736485">Đã phát gần đây</translation>
+<translation id="8120600068258956006">Thêm vào Danh sách phát</translation>
+<translation id="39991094779686024">Danh sách phát</translation>
+<translation id="1710072605877822603">Thêm phương tiện</translation>
+<translation id="3874252678044305931">Thêm video vào Danh sách phát Brave. Phát lại bất cứ lúc nào. Ngay cả khi ngoại tuyến.</translation>
+<translation id="8973629800378391099">Tạo danh sách phát nội dung yêu thích của bạn. Tiết kiệm dữ liệu di động. Và phát lại không có quảng cáo.</translation>
+<translation id="4936812987266342401">Chỉ cần nhấn nút để thêm video vào danh sách phát</translation>
+<translation id="6263657785571415306">Luôn cập nhật: Thêm video trong quá trình bạn duyệt web, xem sau.</translation>
+<translation id="2839555636100404687">Phát lại tốt hơn trong Danh sách phát</translation>
+<translation id="9079526681359439081">Phát trong nền. Điều khiển từ màn hình khóa. Và hơn thế nữa…</translation>
+<translation id="3620862810055853183">Mở Danh sách phát</translation>
+<translation id="3861012838874771868">Mở cài đặt danh sách phát</translation>
+<translation id="5220099266891491416">Ẩn nút Danh sách phát</translation>
+<translation id="7416347631175891923">Thử ngay!</translation>
+<translation id="1173894706177603556">Đổi tên</translation>
+<translation id="3596306474342941843">Xóa danh sách phát</translation>
+<translation id="7765158879357617694">Di chuyển</translation>
+<translation id="3803384303807438047">Xóa dữ liệu ngoại tuyến của mục</translation>
+<translation id="4195643157523330669">Mở trong tab mới</translation>
+<translation id="4243710787042215766">Mở trong tab riêng tư</translation>
+<translation id="8261506727792406068">Xóa</translation>
+<translation id="377872456482681602">Vui lòng chọn các mục trước</translation>
+<translation id="286472539388773794">Vui lòng nhập tên danh sách phát hợp lệ</translation>
+<translation id="2824489375399072491">Chia sẻ với:</translation>
+<translation id="5319532905552885478">Nội dung đa phương tiện đã được thêm vào danh sách phát mặc định</translation>
+<translation id="4802584673094436231">Đang chuẩn bị...</translation>
+<translation id="481455355267255546">Tiếp theo</translation>
+<translation id="5474757891469990756">Giải phóng toàn bộ sức mạnh của Leo với Premium:</translation>
+<translation id="4173478269537830374">Khám phá các mô hình AI khác nhau</translation>
+<translation id="3453542753968940696">Ưu tiên truy cập vào các mô hình mạnh mẽ với các kỹ năng khác nhau.</translation>
+<translation id="3245401959451976966">Mở khóa sự sáng tạo của bạn</translation>
+<translation id="5031778211368112461">Các mô hình truy cập phù hợp hơn cho các nhiệm vụ sáng tạo và tạo nội dung.</translation>
+<translation id="4165928407303989823">Tập trung vào chủ đề</translation>
+<translation id="298783097210745222">Nhận câu trả lời chính xác hơn cho các cuộc trò chuyện có nhiều sắc thái hơn.</translation>
+<translation id="2389665228467129817">Trò chuyện lâu hơn</translation>
+<translation id="4314705522985583059">Nhận giới hạn tốc độ cao hơn cho các cuộc trò chuyện dài hơn.</translation>
+<translation id="6365289557497555234">Tất cả đăng ký đều được tự động gia hạn nhưng có thể\nbị hủy bất kỳ lúc nào trước khi gia hạn.</translation>
+<translation id="6637015365469044269">Nâng cấp ngay</translation>
+<translation id="614530507403667291">Mô hình mặc định cho các cuộc trò chuyện mới</translation>
+<translation id="4071849832011229600">Mô hình mặc định</translation>
+<translation id="7557539689487606886">Lên Premium</translation>
 </translationbundle>

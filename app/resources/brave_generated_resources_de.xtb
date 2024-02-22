@@ -254,6 +254,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Tabs minimieren</translation>
 <translation id="7194343495483122559">Tabs erweitern</translation>
 <translation id="1199054713803577378">Tabs minimieren</translation>
+<translation id="1337946268962884806">Benutzerdefinierte Bestellung</translation>
+<translation id="8373664339577369248">benutzerdefinierte Bestellung</translation>
 <translation id="8120600068258956006">Zur Playlist hinzufügen</translation>
 <translation id="650694591627983430">Auf dieser Seite gefundene Medien</translation>
 <translation id="8525248723479742219">Später abspielen</translation>
@@ -303,6 +305,9 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Wiederholen aus</translation>
 <translation id="1748244367114657861">1 wiederholen</translation>
 <translation id="6421906998825794164">Alle wiederholen</translation>
+<translation id="6453210454707928697">Element konnte nicht abgespielt werden</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ist möglicherweise abgelaufen. Möchten Sie es wiederherstellen?</translation>
+<translation id="6155018868740116868">Wiederherstellen</translation>
 <translation id="1727684853006449697">Brave-Player</translation>
 <translation id="9156965752763025780">Ihre Änderungen werden beim nächsten Neustart von Brave wirksam.</translation>
 <translation id="7179921470347911571">Jetzt neustarten</translation>
@@ -325,6 +330,8 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Titelleiste</translation>
 <translation id="5371926069408837914">Wenn es minimiert ist, Menü für vertikale Tabs erweitern, wenn Maus darüber gehalten wird</translation>
 <translation id="3367129510799209147">„Mauszeiger über einen Tab“-Modus</translation>
+<translation id="515949045075831661">Rechts anzeigen</translation>
+<translation id="3725395376319291415">Links anzeigen</translation>
 <translation id="2113977810652731515">Karte</translation>
 <translation id="4096343215397759358">Karte mit Vorschau</translation>
 <translation id="5297085818601043899">Kurzinfo</translation>
@@ -361,7 +368,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">Brave befindet bereits im Dock.</translation>
 <translation id="3195845168740336657">Schutz-Einstellungen</translation>
 <translation id="754769152790647708">Schutz-Status</translation>
-<translation id="3615717588724840230">Websites können Tracker, Anzeigen und Fingerabdrücke mit dem Schutz blockieren.</translation>
+<translation id="4868109105992358853">Brave-Schutz kann Tracker, Anzeigen und Fingerabdrücke blockieren</translation>
 <translation id="5690973901138662477">Schutz aktiviert</translation>
 <translation id="4697275813919189958">Schutz deaktiviert</translation>
 <translation id="6303294677342628402">Schutz</translation>
@@ -416,7 +423,7 @@ Oder später ändern unter <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Brave Rewards ist deaktiviert</translation>
 <translation id="413570371620795359">Öffnen Sie das Prämienfenster, um es zu aktivieren und zu beginnen</translation>
 <translation id="1051600834033686945">Vollständige Brave Rewards-Einstellungen öffnen</translation>
-<translation id="6333347122924254968">Brave Rewards-Symbol in der Adressleiste anzeigen</translation>
+<translation id="8826461509529116322">Brave-Rewards-Button anzeigen</translation>
 <translation id="9185018653595759199">Social-Media-Sperrung</translation>
 <translation id="863171915776379000">Facebook-Anmeldungen und eingebettete Posts erlauben</translation>
 <translation id="5165042248369837294">Eingebettete Twitter-Nachrichten erlauben</translation>
@@ -727,6 +734,7 @@ erneut bereiterklären, Brave Leo zu nutzen. Außerdem wird Ihr Chatverlauf
 gelöscht. Wenn Sie Ihren Chatverlauf löschen, werden alle bisherigen
 Unterhaltungen mit Brave Leo entfernt. Dieser Vorgang kann nicht
 rückgängig gemacht werden.</translation>
+<translation id="5574059574002819179">Vorschläge für die automatische Vervollständigung anpassen</translation>
 <translation id="8157373421434119674">Daten- und Chatverlauf</translation>
 <translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
 <translation id="349846214503465941">Playlist aktivieren</translation>
