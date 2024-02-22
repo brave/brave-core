@@ -428,18 +428,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2394961582378297792">Oturum kapatıldı</translation>
 <translation id="5308380583665731573">Bağlan</translation>
 <translation id="3368922792935385530">Bağlı</translation>
-<translation id="8673913984316081937">Cüzdanınızı doğrulamak isteğe bağlı</translation>
-<translation id="8558636200953226885">Ama eğer doğrulayabilirseniz,</translation>
-<translation id="8697510149346635496">Gizliliğe saygı duyan reklamları görüntüleyerek kazandığınız BAT’ı geri çekin</translation>
-<translation id="1481480653609649134">Kredi kartları ve diğer kaynaklar ile ek BAT satın alın</translation>
-<translation id="9096003370755878766">Brave Rewards cüzdanınıza daha önce eklemiş olabileceğiniz BAT'ı geri çekin</translation>
-<translation id="1554282356558968486">Cüzdan hizmetimizi sağlayan:</translation>
 <translation id="6569877533335686968">Onayla</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Onaylama, talep ettiğiniz hizmetlere bağlı olarak kimliğinizi doğrulamanızı gerektirebilir.</translation>
-<translation id="3200197118442451932">Brave Software Inc., <ph name="WALLET_PROVIDER"/> için onunla bir hesap oluşturduğunuzda verdiğiniz kişisel bilgilerin hiçbirini işlemez, kaydetmez veya bunlara erişmez.</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/> hesabıma git</translation>
 <translation id="4858636682078269312"><ph name="WALLET_PROVIDER"/> hesabınıza giriş yapın</translation>
 <translation id="8874184842967597500">Bağlı değil</translation>
@@ -526,7 +518,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="2225863440766607138">İzleyiciler</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Brave tarayıcı ile son 3 saatte <ph name="COUNT"/> izleyici &amp; reklamı engellediniz.</translation>
-<translation id="3621193901658023971">Brave ile izleyicileri &amp; reklamları engelleyerek, başlıca haber sitelerinde 6 kata kadar daha hızlı gezinin.</translation>
+<translation id="5005713153542196658">Brave'de, izleyicileri ve reklamları engelleyerek büyük haber sitelerinde 6 kata kadar daha hızlı şekilde gezinin.</translation>
 <translation id="7427567994475794038">Son 3 saatte kaç izleyicinin &amp; reklamın engellendiğini görmek için Gizlilik Raporları'nı açın.</translation>
 <translation id="2053891538879944400">Brave tarayıcı ile <ph name="DATA"/> <ph name="DATA_TEXT"/> veri tasarruf ettiniz.</translation>
 <translation id="8640064498452534195">Ne kadar veri tasarruf ettiğinizi görmek için Gizlilik Raporları'nı açın.</translation>
@@ -591,6 +583,10 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8622329973403382303">Tarihe bir Rewards rock yıldızı olarak geçmek için, işlerin nasıl yürüdüğü konusunda tazelenmek amacıyla hızlı bir gezinti yapın!</translation>
 <translation id="3479552764303398839">Şimdi değil</translation>
 <translation id="7138272885617540195">Uygulama bağlantılarının Brave dışındaki uygulamalarda açılmasına izin ver</translation>
+<translation id="4954512758656527938">Varsayılan Ethereum cüzdanı</translation>
+<translation id="7701023802820268122">Varsayılan Solana cüzdanı</translation>
+<translation id="7701040980221191251">Yok</translation>
+<translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="8792121506918889955">WebRTC IP kullanım politikası</translation>
 <translation id="8798099450830957504">Varsayılan</translation>
 <translation id="1822560017823072927">Varsayılan genel ve özel arabirimler</translation>
@@ -686,7 +682,6 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8475984867371585028">Görünür NFT'leri düzenle</translation>
 <translation id="5050890334032852465">Hesap izleme listesini kaydet</translation>
 <translation id="7755766175599167100">Belirteçler ara</translation>
-<translation id="8488282162676695335">Brave Cüzdan</translation>
 <translation id="3784455785234192852">Kilit</translation>
 <translation id="4412698727486357573">Yardım merkezi</translation>
 <translation id="8796429300536029044">NFT Ayrıntıları</translation>
@@ -718,12 +713,12 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="8272917646984397798">Tüm bağlantıları güvenli hale getirir</translation>
 <translation id="1751947227857853925">100 Mbps'ye kadar hızlı ve sınırsız</translation>
 <translation id="1400240082805528049">7/24 destek</translation>
-<translation id="5051030058817632680">İstenmeyen ağ bağlantılarını engeller</translation>
+<translation id="5892534145504632332">Her uygulamayı ve tüm cihazınızı koruyun</translation>
+<translation id="7195416926059527505">Ev veya ortak Wi-Fi için daha güvenlidir</translation>
+<translation id="1354700000739359839">Çok hızlıdır, 100 Mbps'ye kadar</translation>
 <translation id="3510283489391432976">Coğrafi/ülke konumuzunu seçin</translation>
-<translation id="4390800080658195654">Çevrimiçiyken anonim kalmanızı sağlar</translation>
-<translation id="639981156979733813">100 Mbps'ye kadar olan hızları destekler</translation>
-<translation id="765343799669302337">WireGuard güvenlikli şifrelenmiş VPN geçidi kullanır</translation>
-<translation id="1571230671455380494">Bilgilerinizi asla paylaşmayacağız veya satmayacağız</translation>
+<translation id="7695158478627528928">Brave, sizin aktivitenizi asla kaydetmez</translation>
+<translation id="4575683170451975058">1 abonelikle 5 cihazı koruyun</translation>
 <translation id="276866628038850725">Tüm planlar 7 günlük ücretsiz deneme süresi içerir!</translation>
 <translation id="1532536259167115948">Aylık abonelik <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Yıllık abonelik <ph name="TRIAL_TEXT"/></translation>
@@ -734,6 +729,7 @@ Bunu yapmak istediğinizden emin misiniz?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yıl</translation>
 <translation id="2655185358771731232">7 günlüğüne ücretsiz deneyin. 7 gün sonra plan ücreti hesabınıza yansıtılır. Tüm abonelikler otomatik olarak yenilenir fakat yenilemeden önce iptal edilebilir.</translation>
 <translation id="6053992191006521518">ÜCRETSİZ olarak deneyin</translation>
+<translation id="3990956504562716932">7 Gün boyunca Ücretsiz deneyin</translation>
 <translation id="721747358270435486">VPN'i Yükle</translation>
 <translation id="836074276610740314">VPN Profilini Yükle</translation>
 <translation id="8021842065465097929">Brave şimdi bir VPN profili yükleyecek.</translation>
@@ -1118,71 +1114,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="591648995518106347">Uygun makaleleri otomatik olarak okuyucu moduna yükler</translation>
 <translation id="1295796122927221823">Okuyucu modunda görüntüle</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/> üzerinde <ph name="SYMBOL"/></translation>
-<translation id="295620834661738195">Brave Oynatma Listesi</translation>
-<translation id="4850886885716139402">Görüntüle</translation>
-<translation id="7392941176393379100">Şuna eklendi: "<ph name="PLAYLIST_NAME"/>"</translation>
-<translation id="8289472222022674331">Oynatma listesi verilerinizin yönetimi</translation>
-<translation id="7650602357673790368">Varsayılan olarak, Oynatma Listesi çevrimdışı oynatma (gizli ve paylaşılan çalma listelerinde) için içerikleri otomatik olarak cihazınıza kaydedecektir. WiFi'ye bağlı değilseniz, otomatik kaydetme hücresel verilerinizi kullanacaktır.\n\nBu varsayılan özelliği değiştirmek için ayarları kullanın.</translation>
-<translation id="5900576657906675258">Oynatma Listesine öğe ekle</translation>
-<translation id="349846214503465941">Oynatma Listesini etkinleştir</translation>
-<translation id="1309636029062006520">Favori ses ve videolarınızdan bir oynatma listesi oluşturun ve dilediğiniz yerde, dilediğiniz zaman oynatın.</translation>
-<translation id="3561815498111282415">Çevrimdışı kullanım için Otomatik Kaydet</translation>
-<translation id="1832424694374124654">Oynatma listesi öğelerinizi otomatik olarak cihazınıza kaydeder, böylece internet bağlantısı olmadan bunları oynatabilirsiniz.</translation>
-<translation id="8103022210423023846">Otomatik Kaydet AÇIK</translation>
-<translation id="3926329432879804185">Otomatik Kaydet KAPALI</translation>
-<translation id="7768812595186089508">Yalnızca Wi-Fi'ye bağlıyken Otomatik Kaydet</translation>
-<translation id="5939518447894949180">Reset</translation>
-<translation id="8199028711686989861">Çevrimdışı mod depolama alanı dahil olmak üzere tüm videoları Oynatma Listesinden kaldır.</translation>
-<translation id="5916664084637901428">Açık</translation>
-<translation id="5860033963881614850">Kapalı</translation>
-<translation id="2920568868625746681">Yalnızca WiFi</translation>
-<translation id="4590997608186539865">Oynatma listesi</translation>
-<translation id="7525067979554623046">Yarat</translation>
-<translation id="5491049004699827548">İlk oynatma listenizi oluşturun</translation>
-<translation id="5319108110887582146">Favori ses ve videolarınızdan oluşan bir oynatma listesi oluşturun ve dilediğiniz zaman, dilediğiniz yerde oynatın. Buna çevrimdışı da dahildir.</translation>
-<translation id="6802849415466883498">Oynatma Listesi oluştur</translation>
-<translation id="8525248723479742219">Daha Sonra Oynat</translation>
-<translation id="7453007860684252933">Göz at ve ekle</translation>
-<translation id="9014883386413828317">Favori içeriklerinizi ekleyin. Ekranınızın sağ alt köşesinde yer alan ( + ) düğmesini arayın.</translation>
-<translation id="5928669500312007783">Medya için göz at</translation>
-<translation id="8152485753254079984">Yeni oynatma listesi</translation>
-<translation id="9130105487623071247">Oynatma listesi adı</translation>
-<translation id="726581235416249619">Adsız oynatma listesi</translation>
-<translation id="1456254983411148628">Verileri Kaldır</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> Seçildi</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> öğe</translation>
-<translation id="2317629745818459803">Tümünü Oynat</translation>
-<translation id="7544853251252956727">Karıştır</translation>
-<translation id="2881339830231736485">Son oynatılanlar</translation>
-<translation id="7636458383879257005">Dokunun, uzun basın veya sürükleyin</translation>
-<translation id="8120600068258956006">Oynatma Listesine ekle</translation>
-<translation id="39991094779686024">Oynatma listeleri</translation>
-<translation id="1710072605877822603">Medya ekle</translation>
-<translation id="3874252678044305931">Brave Oynatma Listesine videolar ekleyin. İstediğiniz zaman tekrar oynatın. Çevrimdışıyken bile.</translation>
-<translation id="8973629800378391099">En sevdiğiniz içeriklerden oynatma listesi oluşturun. Mobil veriden tasarruf edin. Reklamsız bir şekilde tekrar oynatın.</translation>
-<translation id="4936812987266342401">Oynatma listesine videolar eklemek için düğmeye dokunun</translation>
-<translation id="6263657785571415306">Akışta kalın: Gezinirken videolar ekleyin, sonra izleyin.</translation>
-<translation id="2839555636100404687">Oynatma Listesinde tekrar oynatma daha güzel</translation>
-<translation id="9079526681359439081">Arka planda oynatın. Kilit ekranından kontrol edin. Ve daha fazlası...</translation>
-<translation id="3620862810055853183">Oynatma Listesi Aç</translation>
-<translation id="3861012838874771868">Oynatma Listesi Ayarlarını Aç</translation>
-<translation id="5220099266891491416">Oynatma Listesi Düğmesini Gizle</translation>
-<translation id="7416347631175891923">Deneyin!</translation>
-<translation id="1173894706177603556">Yeniden adlandır</translation>
-<translation id="1620612903815671893">Çevrimdışı oynatma listesi verilerini kaldır</translation>
-<translation id="3261711068865275261">Tüm çevrimdışı verileri kaldır</translation>
-<translation id="6653691766801349738">Oynatma listesini çevrimdışı kullanım için tut</translation>
-<translation id="8708086574143054053">Tüm oynatma listelerini çevrimdışı kullanım için tut</translation>
-<translation id="3596306474342941843">Oynatma listesini sil</translation>
-<translation id="7765158879357617694">Taşı</translation>
-<translation id="3803384303807438047">Öğenin çevrimdışı verilerini sil</translation>
-<translation id="4195643157523330669">Yeni sekmede aç</translation>
-<translation id="4243710787042215766">Gizli sekmede aç</translation>
-<translation id="8261506727792406068">Sil</translation>
-<translation id="377872456482681602">Lütfen önce öğeleri seçin</translation>
-<translation id="6172429305139364624">Oynatma listesi verileri önbelleğe alınmamış.\nLütfen çevrimdışı mod için öğeyi önbelleğe alın.</translation>
-<translation id="3631131732607750008">İçeriğin süresi doldu. Birkaç saniye içinde tekrar deneyin.</translation>
-<translation id="286472539388773794">Lütfen geçerli bir oynatma listesi ismi girin</translation>
 <translation id="9085765419770918643">Burada henüz NFT yok.</translation>
 <translation id="8445532667841598737">Eklemeye hazır mısınız? İçe aktarmak için sadece aşağıdaki düğmeye tıklayın.</translation>
 <translation id="5925465310724910998">NFT'leriniz otomatik olarak görüntülensin mi?</translation>
@@ -1191,12 +1122,6 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="622372328961630111">Üçüncü taraf API'ları kullanarak Cüzdanınıza otomatik olarak NFT ekleyin. <ph name="BEGIN_LINK_1"/>Daha fazla bilgi alın.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Adres Araması Tablo Hesabı:</translation>
 <translation id="7659483790930268440">Adres Araması Tablo Dizini:</translation>
-<translation id="7322560193401221004">Dosyanın oynatma konumunu hatırla</translation>
-<translation id="7505951907514709271">Ayrı dosyalarda en son durdurulan noktadan oynatmayı sürdürün</translation>
-<translation id="6835165453349969605">Listenin oynatma konumunu hatırla</translation>
-<translation id="6344103698928069918">Oynatma listelerinde en son durdurulan noktadan oynatmayı sürdürün</translation>
-<translation id="8141583471142904652">Sürekli Dinleme</translation>
-<translation id="851432578283946230">Otomatik olarak oynatma listesindeki sonraki öğeyi oynatır</translation>
 <translation id="7853202427316060426">Eylem</translation>
 <translation id="4932733599132424254">Tarih</translation>
 <translation id="346505172740911461">Piyasa Fiyatı</translation>
@@ -1213,6 +1138,80 @@ Bu talebi kabul etmezseniz VPN yeniden bağlanmaz ve internet bağlantınız gü
 <translation id="2471230424465522689">En erken</translation>
 <translation id="4841860051609590575">Talep kimliği</translation>
 <translation id="1179407411385015942">Leo, doğrudan tarayıcınıza dâhil edilmiş, gücünü yapay zekâdan alan bir akıllı asistandır</translation>
+<translation id="4109670531935487117">Adres çubuğunda otomatik tamamlamayı göster</translation>
 <translation id="1250335737108905610">Sıfırlayın ve Leo verilerini temizleyin</translation>
 <translation id="6165101586663336913">Leo asistanının sıfırlanması; ileride Leo'yu kullanmak istediğinizde asistanı kendiniz açmanızı gerektirecektir ve aynı zamanda sohbet geçmişinizi de temizleyecektir. Sohbet geçmişinin temizlenmesi, Leo ile yaptığınız önceki tüm görüşmeleri silecektir. Bu işlem geri alınamaz.</translation>
+<translation id="3692772534525889713">Brave Leo'yu diğer cihazlarda kullanmak için Play Store satın alma işleminizi Brave hesabınıza bağlayın.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Aylık</translation>
+<translation id="451189393813405346">Leo'ya Sorun</translation>
+<translation id="7322560193401221004">Dosyanın oynatma konumunu hatırla</translation>
+<translation id="7505951907514709271">Ayrı dosyalarda en son durdurulan noktadan oynatmayı sürdürün</translation>
+<translation id="6835165453349969605">Listenin oynatma konumunu hatırla</translation>
+<translation id="6344103698928069918">Oynatma listelerinde en son durdurulan noktadan oynatmayı sürdürün</translation>
+<translation id="8141583471142904652">Sürekli Dinleme</translation>
+<translation id="851432578283946230">Otomatik olarak oynatma listesindeki sonraki öğeyi oynatır</translation>
+<translation id="295620834661738195">Brave Oynatma Listesi</translation>
+<translation id="4850886885716139402">Görüntüle</translation>
+<translation id="7392941176393379100">Şuna eklendi: "<ph name="PLAYLIST_NAME"/>"</translation>
+<translation id="349846214503465941">Oynatma Listesini etkinleştir</translation>
+<translation id="1309636029062006520">Favori ses ve videolarınızdan bir oynatma listesi oluşturun ve dilediğiniz yerde, dilediğiniz zaman oynatın.</translation>
+<translation id="7899390017499980820">Oynatma Listesi Düğmesine Ekle</translation>
+<translation id="6901152954398668317">Medya eklemek veya kaldırmak üzere hızlı erişim için "Oynatma Listesine Ekle" düğmesini göster veya gizle.</translation>
+<translation id="5939518447894949180">Reset</translation>
+<translation id="8199028711686989861">Çevrimdışı mod depolama alanı dahil olmak üzere tüm videoları Oynatma Listesinden kaldır.</translation>
+<translation id="4590997608186539865">Oynatma listesi</translation>
+<translation id="7525067979554623046">Yarat</translation>
+<translation id="8525248723479742219">Daha Sonra Oynat</translation>
+<translation id="7453007860684252933">Göz at ve ekle</translation>
+<translation id="9014883386413828317">Favori içeriklerinizi ekleyin. Ekranınızın sağ alt köşesinde yer alan ( + ) düğmesini arayın.</translation>
+<translation id="5928669500312007783">Medya için göz at</translation>
+<translation id="8152485753254079984">Yeni oynatma listesi</translation>
+<translation id="9130105487623071247">Oynatma listesi adı</translation>
+<translation id="726581235416249619">Adsız oynatma listesi</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> Seçildi</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> öğe</translation>
+<translation id="2317629745818459803">Tümünü Oynat</translation>
+<translation id="7544853251252956727">Karıştır</translation>
+<translation id="2881339830231736485">Son oynatılanlar</translation>
+<translation id="8120600068258956006">Oynatma Listesine ekle</translation>
+<translation id="39991094779686024">Oynatma listeleri</translation>
+<translation id="1710072605877822603">Medya ekle</translation>
+<translation id="3874252678044305931">Brave Oynatma Listesine videolar ekleyin. İstediğiniz zaman tekrar oynatın. Çevrimdışıyken bile.</translation>
+<translation id="8973629800378391099">En sevdiğiniz içeriklerden oynatma listesi oluşturun. Mobil veriden tasarruf edin. Reklamsız bir şekilde tekrar oynatın.</translation>
+<translation id="4936812987266342401">Oynatma listesine videolar eklemek için düğmeye dokunun</translation>
+<translation id="6263657785571415306">Akışta kalın: Gezinirken videolar ekleyin, sonra izleyin.</translation>
+<translation id="2839555636100404687">Oynatma Listesinde tekrar oynatma daha güzel</translation>
+<translation id="9079526681359439081">Arka planda oynatın. Kilit ekranından kontrol edin. Ve daha fazlası...</translation>
+<translation id="3620862810055853183">Oynatma Listesi Aç</translation>
+<translation id="3861012838874771868">Oynatma Listesi Ayarlarını Aç</translation>
+<translation id="5220099266891491416">Oynatma Listesi Düğmesini Gizle</translation>
+<translation id="7416347631175891923">Deneyin!</translation>
+<translation id="1173894706177603556">Yeniden adlandır</translation>
+<translation id="3596306474342941843">Oynatma listesini sil</translation>
+<translation id="7765158879357617694">Taşı</translation>
+<translation id="3803384303807438047">Öğenin çevrimdışı verilerini sil</translation>
+<translation id="4195643157523330669">Yeni sekmede aç</translation>
+<translation id="4243710787042215766">Gizli sekmede aç</translation>
+<translation id="8261506727792406068">Sil</translation>
+<translation id="377872456482681602">Lütfen önce öğeleri seçin</translation>
+<translation id="286472539388773794">Lütfen geçerli bir oynatma listesi ismi girin</translation>
+<translation id="2824489375399072491">Şununla paylaş :</translation>
+<translation id="5319532905552885478">Medya içeriği, varsayılan oynatma listesine zaten eklendi</translation>
+<translation id="4802584673094436231">Hazırlanıyor...</translation>
+<translation id="481455355267255546">Sırada</translation>
+<translation id="5474757891469990756">Leo'nun tüm gücünü Premium ile özgür bırakın:</translation>
+<translation id="4173478269537830374">Farklı YZ modellerini keşfedin</translation>
+<translation id="3453542753968940696">Farklı yeteneklere sahip güçlü modellere öncelikli erişim.</translation>
+<translation id="3245401959451976966">Yaratıcılığınızı serbest bırakın</translation>
+<translation id="5031778211368112461">Yaratıcı görevler ve içerik oluşturma için daha uygun modellere erişin</translation>
+<translation id="4165928407303989823">Konudan kopmayın</translation>
+<translation id="298783097210745222">Daha incelikli sohbetler için daha isabetli yanıtlar alın.</translation>
+<translation id="2389665228467129817">Daha uzun sohbet edin</translation>
+<translation id="4314705522985583059">Daha uzun sohbetler için daha yüksek hız sınırları alın.</translation>
+<translation id="6365289557497555234">Tüm abonelikler otomatik olarak yenilenir, ancak\nyenilemeden önce istendiği zaman iptal edilebilir.</translation>
+<translation id="6637015365469044269">Şimdi yükselt</translation>
+<translation id="614530507403667291">Yeni konuşmalar için varsayılan model</translation>
+<translation id="4071849832011229600">Varsayılan model</translation>
+<translation id="7557539689487606886">Premium'a Geçin</translation>
 </translationbundle>

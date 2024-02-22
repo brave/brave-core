@@ -254,6 +254,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Minimera flikar</translation>
 <translation id="7194343495483122559">Expandera flikar</translation>
 <translation id="1199054713803577378">Minimera flikar</translation>
+<translation id="1337946268962884806">Anpassad beställning</translation>
+<translation id="8373664339577369248">anpassad beställning</translation>
 <translation id="8120600068258956006">Lägg till i spellista</translation>
 <translation id="650694591627983430">Media som hittades på den här sidan</translation>
 <translation id="8525248723479742219">Spela upp senare</translation>
@@ -303,6 +305,9 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Upprepa av</translation>
 <translation id="1748244367114657861">Upprepa en</translation>
 <translation id="6421906998825794164">Upprepa alla</translation>
+<translation id="6453210454707928697">Misslyckades att spela upp objektet</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] kan ha gått ut. Vill du återställa den?</translation>
+<translation id="6155018868740116868">Återställ</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Ändringarna tillämpas nästa gång du startar om Brave.</translation>
 <translation id="7179921470347911571">Starta om nu</translation>
@@ -325,6 +330,8 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Visa namnlist</translation>
 <translation id="5371926069408837914">Expandera panelens vertikala flikar när du för muspekaren över den när den är komprimerad</translation>
 <translation id="3367129510799209147">Läge för hovring av flikar</translation>
+<translation id="515949045075831661">Visa till höger</translation>
+<translation id="3725395376319291415">Visa till vänster</translation>
 <translation id="2113977810652731515">Kort</translation>
 <translation id="4096343215397759358">Kort med förhandsvisning</translation>
 <translation id="5297085818601043899">Verktygstips</translation>
@@ -361,7 +368,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">Brave är redan i docka</translation>
 <translation id="3195845168740336657">Shields-inställningar</translation>
 <translation id="754769152790647708">Shields-status</translation>
-<translation id="3615717588724840230">Webbplatser kan blockera spårare, annonser och fingeravtryck med Shields</translation>
+<translation id="4868109105992358853">Shields kan blockera spårare, annonser och fingeravtryck</translation>
 <translation id="5690973901138662477">Shields aktiverad</translation>
 <translation id="4697275813919189958">Shields inaktiverad</translation>
 <translation id="6303294677342628402">Sköldar</translation>
@@ -416,7 +423,7 @@ Eller ändra senare på <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Brave Rewards är inaktiverat</translation>
 <translation id="413570371620795359">Öppna Rewards-panelen för att aktivera och komma igång</translation>
 <translation id="1051600834033686945">Öppna inställningar för Brave Rewards</translation>
-<translation id="6333347122924254968">Visa ikonen Brave-belöningar i adressfältet</translation>
+<translation id="8826461509529116322">Visa Brave Rewards-knappen</translation>
 <translation id="9185018653595759199">Blockering av sociala media</translation>
 <translation id="863171915776379000">Tillåt Facebook-inloggningar och inbäddade poster</translation>
 <translation id="5165042248369837294">Tillåt inbäddade tweets från Twitter</translation>
@@ -726,6 +733,7 @@ Obs: Om lokal nod är vald kommer resurs att begäras direkt från din dator och
 Leo i framtiden och det kommer också att rensa din chatthistorik. När din
 chatthistorik rensas raderas alla dina tidigare konversationer med Brave
 Leo. Det går inte att ångra den här åtgärden.</translation>
+<translation id="5574059574002819179">Justera autokompletteringsförslag</translation>
 <translation id="8157373421434119674">Data och chatthistorik</translation>
 <translation id="614530507403667291">Standardmodell för nya konversationer</translation>
 <translation id="349846214503465941">Aktivera spellista</translation>

@@ -427,18 +427,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2394961582378297792">Deconectat</translation>
 <translation id="5308380583665731573">Conectare</translation>
 <translation id="3368922792935385530">Conectat</translation>
-<translation id="8673913984316081937">Verificarea portofelului dvs. este opțională</translation>
-<translation id="8558636200953226885">Dar dacă verificați, veți putea...</translation>
-<translation id="8697510149346635496">Retrageți BAT câștigat din vizualizarea reclamelor care țin de respectarea confidențialității</translation>
-<translation id="1481480653609649134">Achiziționați BAT suplimentar cu carduri de credit și alte surse</translation>
-<translation id="9096003370755878766">Retrageți BAT pe care poate l-ați adăugat anterior în portofelul Recompense Brave</translation>
-<translation id="1554282356558968486">Serviciul nostru de portofel este furnizat de</translation>
 <translation id="6569877533335686968">Susținere</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold s-ar putea să solicite să vă verificați identitatea pe baza serviciilor solicitate.</translation>
-<translation id="3200197118442451932">Brave Software Inc. nu prelucrează, nu stochează și nu accesează informațiile personale pentru care le oferiți <ph name="WALLET_PROVIDER"/> atunci când creați un cont la ei.</translation>
 <translation id="1665118090708049096">Accesați contul <ph name="WALLET_PROVIDER"/> meu</translation>
 <translation id="4858636682078269312">Conectați-vă la contul <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Neconectat</translation>
@@ -525,7 +517,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="2225863440766607138">Urmăriri</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Ați blocat <ph name="COUNT"/> urmăriri și reclame cu browserul Brave în ultimele 3 ore.</translation>
-<translation id="3621193901658023971">Navigați de până la 6 ori mai rapid pe website-urile principale de știri în Brave blocând urmăririle și reclamele.</translation>
+<translation id="5005713153542196658">Navigați de până la 6 ori mai rapid pe principalele site-uri de știri în Brave blocând urmăririle și reclamele.</translation>
 <translation id="7427567994475794038">Activați Rapoartele de confidențialitate pentru a vedea câte urmăriri și reclame au fost blocate în ultimele 3 ore.</translation>
 <translation id="2053891538879944400">Ați economisit <ph name="DATA"/> <ph name="DATA_TEXT"/> date cu browserul Brave.</translation>
 <translation id="8640064498452534195">Activați Rapoartele de confidențialitate pentru a vedea câte date ați economisit.</translation>
@@ -590,6 +582,10 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8622329973403382303">Fă un tur rapid pentru a vedea cum funcționează, pentru a intra în istorie ca un campion al Recompenselor!</translation>
 <translation id="3479552764303398839">Nu acum</translation>
 <translation id="7138272885617540195">Permiteți deschiderea linkurilor de aplicații în aplicații distincte de Brave</translation>
+<translation id="4954512758656527938">Portofelul implicit pentru Ethereum</translation>
+<translation id="7701023802820268122">Portofelul implicit pentru Solana</translation>
+<translation id="7701040980221191251">Niciuna</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8792121506918889955">Politică de manipulare IP WebRTC</translation>
 <translation id="8798099450830957504">Prestabilit</translation>
 <translation id="1822560017823072927">Interfețe implicite publice și private</translation>
@@ -685,7 +681,6 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8475984867371585028">Editați NFT-urile vizibile</translation>
 <translation id="5050890334032852465">Salvarea listei cu activele de urmărit</translation>
 <translation id="7755766175599167100">Căutați token-uri</translation>
-<translation id="8488282162676695335">Portofelul Brave</translation>
 <translation id="3784455785234192852">Blocați</translation>
 <translation id="4412698727486357573">Centrul de ajutor</translation>
 <translation id="8796429300536029044">Detaliu NFT</translation>
@@ -717,12 +712,12 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="8272917646984397798">Securizează toate conexiunile</translation>
 <translation id="1751947227857853925">Rapid și nelimitat, până la 100 Mbps</translation>
 <translation id="1400240082805528049">Asistență non-stop</translation>
-<translation id="5051030058817632680">Blochează conexiunile nedorite la rețea</translation>
+<translation id="5892534145504632332">Protejați-vă toate aplicațiile și dispozitivul</translation>
+<translation id="7195416926059527505">Siguranță sporită pentru rețele Wi-Fi de domiciliu și publice</translation>
+<translation id="1354700000739359839">Super viteze, de până la 100 Mbps</translation>
 <translation id="3510283489391432976">Selectați zona dvs. geografică/țara</translation>
-<translation id="4390800080658195654">Vă păstrați anonimitatea online</translation>
-<translation id="639981156979733813">Acceptă viteze de până la 100 Mbps</translation>
-<translation id="765343799669302337">Utilizează tunelul VPN criptat și securizat WireGuard</translation>
-<translation id="1571230671455380494">Nu distribuim și nu vindem niciodată datele dvs.</translation>
+<translation id="7695158478627528928">Brave nu vă înregistrează niciodată activitatea</translation>
+<translation id="4575683170451975058">Protejați-vă 5 dispozitive cu un singur abonament</translation>
 <translation id="276866628038850725">Toate abonamentele includ o perioadă de încercare de 7 zile!</translation>
 <translation id="1532536259167115948">Abonament lunar <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Abonament anual <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / an.</translation>
 <translation id="2655185358771731232">Încercați gratuit timp de 7 zile. După 7 zile, se va percepe valoarea abonamentului. Toate abonamentele se prelungesc automat, dar pot fi anulate înainte de prelungire.</translation>
 <translation id="6053992191006521518">Încercați GRATUIT</translation>
+<translation id="3990956504562716932">Încercați gratuit 7 zile</translation>
 <translation id="721747358270435486">Instalați VPN-ul</translation>
 <translation id="836074276610740314">Instalați profilul VPN</translation>
 <translation id="8021842065465097929">Brave va instala cum un profil VPN.</translation>
@@ -1118,71 +1114,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="591648995518106347">Încarcă automat articolele eligibile în modul cititor</translation>
 <translation id="1295796122927221823">Vizualizați în modul citire</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> pe <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Listă de redare Brave</translation>
-<translation id="4850886885716139402">Afișează</translation>
-<translation id="7392941176393379100">Adăugat(ă) la „<ph name="PLAYLIST_NAME"/>”</translation>
-<translation id="8289472222022674331">Se gestionează datele dvs. din lista de redare</translation>
-<translation id="7650602357673790368">În mod implicit, Lista de redare va salva automat conținutul pe dispozitivul dvs. pentru redare offline (atât în listele de redare private, cât și în cele partajate). Dacă nu sunteți pe Wi-Fi, salvarea automată va folosi datele dvs. de rețea celulară.\n\nPentru a schimba această valoare implicită, utilizați setările.</translation>
-<translation id="5900576657906675258">Adăugați un element în Lista de redare</translation>
-<translation id="349846214503465941">Activați Lista de redare</translation>
-<translation id="1309636029062006520">Creați liste de redare cu înregistrările dvs. audio și video preferate și redați-le oricând și oriunde.</translation>
-<translation id="3561815498111282415">Salvare automată pentru offline</translation>
-<translation id="1832424694374124654">Salvează în mod automat noile elemente din lista de redare pe dispozitiv, astfel încât să puteți reda fără o conexiune la internet.</translation>
-<translation id="8103022210423023846">Salvarea automată este ACTIVATĂ</translation>
-<translation id="3926329432879804185">Salvarea automată este DEZACTIVATĂ</translation>
-<translation id="7768812595186089508">Salvați în mod automat doar atunci când sunteți conectat(ă) la Wi-Fi</translation>
-<translation id="5939518447894949180">Resetează</translation>
-<translation id="8199028711686989861">Eliminați toate înregistrările video din lista de redare, inclusiv din modul de stocare offline.</translation>
-<translation id="5916664084637901428">Activat</translation>
-<translation id="5860033963881614850">Oprit</translation>
-<translation id="2920568868625746681">Doar prin Wi-Fi</translation>
-<translation id="4590997608186539865">Listă de redare</translation>
-<translation id="7525067979554623046">Creați</translation>
-<translation id="5491049004699827548">Creați prima dvs. listă de redare</translation>
-<translation id="5319108110887582146">Creați o listă de redare a înregistrărilor dvs. audio și video preferate și redați-le oricând și oriunde. Chiar și offline.</translation>
-<translation id="6802849415466883498">Creați o listă de redare</translation>
-<translation id="8525248723479742219">Redați mai târziu</translation>
-<translation id="7453007860684252933">Răsfoiți și adăugați</translation>
-<translation id="9014883386413828317">Adăugați conținutul dvs. preferat. Căutați butonul ( + ) în partea din dreapta jos a ecranului dvs.</translation>
-<translation id="5928669500312007783">Căutați conținut media</translation>
-<translation id="8152485753254079984">Listă de redare nouă</translation>
-<translation id="9130105487623071247">Denumirea listei de redare</translation>
-<translation id="726581235416249619">Listă de redare fără titlu</translation>
-<translation id="1456254983411148628">Eliminați datele</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> selectată(e)</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> (de) elemente</translation>
-<translation id="2317629745818459803">Redați tot</translation>
-<translation id="7544853251252956727">Redă aleatoriu</translation>
-<translation id="2881339830231736485">Redate recent</translation>
-<translation id="7636458383879257005">Atingeți, apăsați lung sau glisați</translation>
-<translation id="8120600068258956006">Adăugați la Lista de redare</translation>
-<translation id="39991094779686024">Liste de redare</translation>
-<translation id="1710072605877822603">Adăugați conținut media</translation>
-<translation id="3874252678044305931">Adăugați oricând videoclipuri în lista de redare Playlist. Chiar și când sunteți offline.</translation>
-<translation id="8973629800378391099">Alcătuiți liste de redare cu conținutul dvs. preferat. Salvați datele mobile și redați tot conținutul fără reclame.</translation>
-<translation id="4936812987266342401">Atingeți butonul pentru a adăuga videoclipuri într-o listă de redare</translation>
-<translation id="6263657785571415306">Nu ratați nimic: Adăugați videoclipuri în timp ce răsfoiți și urmăriți-le mai târziu.</translation>
-<translation id="2839555636100404687">Redarea e mai bună în listele de redare</translation>
-<translation id="9079526681359439081">Redați în fundal. Controlați din ecranul de blocare și multe altele...</translation>
-<translation id="3620862810055853183">Deschideți lista de redare</translation>
-<translation id="3861012838874771868">Deschideți setările listei de redare</translation>
-<translation id="5220099266891491416">Ascundeți butonul Listă de redare</translation>
-<translation id="7416347631175891923">Încercați!</translation>
-<translation id="1173894706177603556">Redenumește</translation>
-<translation id="1620612903815671893">Eliminați datele din lista de redare offline</translation>
-<translation id="3261711068865275261">Eliminați toate datele offline</translation>
-<translation id="6653691766801349738">Rețineți lista de redare pentru utilizare offline</translation>
-<translation id="8708086574143054053">Rețineți toate listele de redare pentru utilizare offline</translation>
-<translation id="3596306474342941843">Ștergeți lista de redare</translation>
-<translation id="7765158879357617694">Mută</translation>
-<translation id="3803384303807438047">Ștergeți datele offline ale elementului</translation>
-<translation id="4195643157523330669">Deschide în filă nouă</translation>
-<translation id="4243710787042215766">Deschideți în pagină privată</translation>
-<translation id="8261506727792406068">Șterge</translation>
-<translation id="377872456482681602">Selectați mai întâi elemente</translation>
-<translation id="6172429305139364624">Elementul din lista de redare nu se află în memoria cache.\nStocați elementul în memoria cache pentru modul offline.</translation>
-<translation id="3631131732607750008">Conținutul a expirat. Încercați din nou în câteva secunde.</translation>
-<translation id="286472539388773794">Introduceți un nume valid pentru lista de redare</translation>
 <translation id="9085765419770918643">Nu există încă NFT-uri aici.</translation>
 <translation id="8445532667841598737">Sunteți gata să adăugați ceva? Faceți clic pe butonul de mai jos pentru a importa.</translation>
 <translation id="5925465310724910998">Doriți ca NFT-urile dvs. să fie afișate automat?</translation>
@@ -1191,12 +1122,6 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="622372328961630111">Adăugați automat NFT-uri pe care le dețineți în Portofel folosind API-uri de la terțe părți. <ph name="BEGIN_LINK_1"/>Aflați mai multe.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Contul tabelului de căutare a adreselor:</translation>
 <translation id="7659483790930268440">Indexul tabelului de căutare a adreselor:</translation>
-<translation id="7322560193401221004">Rețineți poziția de redare a fișierului</translation>
-<translation id="7505951907514709271">Pentru fișiere individuale, reluați redarea din punctul în care ați întrerupt ultima dată</translation>
-<translation id="6835165453349969605">Rețineți poziția de redare a listei</translation>
-<translation id="6344103698928069918">Pentru o listă de redare, reluați redarea din punctul în care ați întrerupt ultima dată</translation>
-<translation id="8141583471142904652">Ascultare continuă</translation>
-<translation id="851432578283946230">Redă automat următoarele clipuri din lista de redare</translation>
 <translation id="7853202427316060426">Activitate</translation>
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Prețul pieței</translation>
@@ -1213,6 +1138,80 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="2471230424465522689">Nu înainte de</translation>
 <translation id="4841860051609590575">Solicitați ID</translation>
 <translation id="1179407411385015942">Leo este un asistent inteligent IA, creat direct în browser</translation>
+<translation id="4109670531935487117">Afișați sugestiile de completare automată în bara de adrese</translation>
 <translation id="1250335737108905610">Resetați și ștergeți datele Leo</translation>
 <translation id="6165101586663336913">Resetarea asistentului Leo necesită acceptarea folosirii Leo în viitor și va șterge istoricul de chat. Prin ștergerea istoricului de chat se vor șterge toate conversațiile anterioare cu Leo. Această acțiune nu poate fi anulată.</translation>
+<translation id="3692772534525889713">Conectați achiziția din Play Store la contul dumneavoastră Brave pentru a utiliza Brave Leo și pe alte dispozitive.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Lunar</translation>
+<translation id="451189393813405346">Întrebați-l pe Leo</translation>
+<translation id="7322560193401221004">Rețineți poziția de redare a fișierului</translation>
+<translation id="7505951907514709271">Pentru fișiere individuale, reluați redarea din punctul în care ați întrerupt ultima dată</translation>
+<translation id="6835165453349969605">Rețineți poziția de redare a listei</translation>
+<translation id="6344103698928069918">Pentru o listă de redare, reluați redarea din punctul în care ați întrerupt ultima dată</translation>
+<translation id="8141583471142904652">Ascultare continuă</translation>
+<translation id="851432578283946230">Redă automat următoarele clipuri din lista de redare</translation>
+<translation id="295620834661738195">Listă de redare Brave</translation>
+<translation id="4850886885716139402">Afișează</translation>
+<translation id="7392941176393379100">Adăugat(ă) la „<ph name="PLAYLIST_NAME"/>”</translation>
+<translation id="349846214503465941">Activați Lista de redare</translation>
+<translation id="1309636029062006520">Creați liste de redare cu înregistrările dvs. audio și video preferate și redați-le oricând și oriunde.</translation>
+<translation id="7899390017499980820">Butonul Adăugați la Lista de redare</translation>
+<translation id="6901152954398668317">Afișați sau ascundeți butonul „Adăugați la lista de redare” pentru acces rapid la adăugarea sau eliminarea conținutului media.</translation>
+<translation id="5939518447894949180">Resetează</translation>
+<translation id="8199028711686989861">Eliminați toate înregistrările video din lista de redare, inclusiv din modul de stocare offline.</translation>
+<translation id="4590997608186539865">Listă de redare</translation>
+<translation id="7525067979554623046">Creați</translation>
+<translation id="8525248723479742219">Redați mai târziu</translation>
+<translation id="7453007860684252933">Răsfoiți și adăugați</translation>
+<translation id="9014883386413828317">Adăugați conținutul dvs. preferat. Căutați butonul ( + ) în partea din dreapta jos a ecranului dvs.</translation>
+<translation id="5928669500312007783">Căutați conținut media</translation>
+<translation id="8152485753254079984">Listă de redare nouă</translation>
+<translation id="9130105487623071247">Denumirea listei de redare</translation>
+<translation id="726581235416249619">Listă de redare fără titlu</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> selectată(e)</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> (de) elemente</translation>
+<translation id="2317629745818459803">Redați tot</translation>
+<translation id="7544853251252956727">Redă aleatoriu</translation>
+<translation id="2881339830231736485">Redate recent</translation>
+<translation id="8120600068258956006">Adăugați la Lista de redare</translation>
+<translation id="39991094779686024">Liste de redare</translation>
+<translation id="1710072605877822603">Adăugați conținut media</translation>
+<translation id="3874252678044305931">Adăugați oricând videoclipuri în lista de redare Playlist. Chiar și când sunteți offline.</translation>
+<translation id="8973629800378391099">Alcătuiți liste de redare cu conținutul dvs. preferat. Salvați datele mobile și redați tot conținutul fără reclame.</translation>
+<translation id="4936812987266342401">Atingeți butonul pentru a adăuga videoclipuri într-o listă de redare</translation>
+<translation id="6263657785571415306">Nu ratați nimic: Adăugați videoclipuri în timp ce răsfoiți și urmăriți-le mai târziu.</translation>
+<translation id="2839555636100404687">Redarea e mai bună în listele de redare</translation>
+<translation id="9079526681359439081">Redați în fundal. Controlați din ecranul de blocare și multe altele...</translation>
+<translation id="3620862810055853183">Deschideți lista de redare</translation>
+<translation id="3861012838874771868">Deschideți setările listei de redare</translation>
+<translation id="5220099266891491416">Ascundeți butonul Listă de redare</translation>
+<translation id="7416347631175891923">Încercați!</translation>
+<translation id="1173894706177603556">Redenumește</translation>
+<translation id="3596306474342941843">Ștergeți lista de redare</translation>
+<translation id="7765158879357617694">Mută</translation>
+<translation id="3803384303807438047">Ștergeți datele offline ale elementului</translation>
+<translation id="4195643157523330669">Deschide în filă nouă</translation>
+<translation id="4243710787042215766">Deschideți în pagină privată</translation>
+<translation id="8261506727792406068">Șterge</translation>
+<translation id="377872456482681602">Selectați mai întâi elemente</translation>
+<translation id="286472539388773794">Introduceți un nume valid pentru lista de redare</translation>
+<translation id="2824489375399072491">Distribuiți lui:</translation>
+<translation id="5319532905552885478">Conținutul media a fost deja adăugat în lista de redare implicită</translation>
+<translation id="4802584673094436231">Se pregătește...</translation>
+<translation id="481455355267255546">Urmează</translation>
+<translation id="5474757891469990756">Dezlănțuiți întreaga putere a lui Leo cu Premium:</translation>
+<translation id="4173478269537830374">Explorați diverse modele de IA</translation>
+<translation id="3453542753968940696">Acces prioritar la modele puternice cu diverse competențe.</translation>
+<translation id="3245401959451976966">Stimulați-vă creativitatea</translation>
+<translation id="5031778211368112461">Accesați modele mai bine adaptate sarcinilor creative și generării de conținut.</translation>
+<translation id="4165928407303989823">Rămâneți mereu la subiect</translation>
+<translation id="298783097210745222">Obțineți răspunsuri mai precise în cadrul unor conversații nuanțate.</translation>
+<translation id="2389665228467129817">Prelungiți conversațiile</translation>
+<translation id="4314705522985583059">Atingeți limite de nivel mai înalt pentru conversațiile lungi.</translation>
+<translation id="6365289557497555234">Toate abonamentele se reînnoiesc automat, dar pot fi anulate în orice moment înainte de data scadentă a reînnoirii.</translation>
+<translation id="6637015365469044269">Faceți upgrade acum</translation>
+<translation id="614530507403667291">Model implicit pentru conversații noi</translation>
+<translation id="4071849832011229600">Modul implicit</translation>
+<translation id="7557539689487606886">Alegeți Premium</translation>
 </translationbundle>

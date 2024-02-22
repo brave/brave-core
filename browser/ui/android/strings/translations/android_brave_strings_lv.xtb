@@ -427,18 +427,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2394961582378297792">Izrakstījies</translation>
 <translation id="5308380583665731573">Pievienošana</translation>
 <translation id="3368922792935385530">pievienots</translation>
-<translation id="8673913984316081937">Maka apstiprināšana ir brīvprātīga</translation>
-<translation id="8558636200953226885">Bet pēc verificēšanas varēsiet...</translation>
-<translation id="8697510149346635496">Izņemt BAT, ko jūs nopelnāt no privātumu ievērojošu reklāmu skatījumiem</translation>
-<translation id="1481480653609649134">Iegādāties papildu BAT ar kredītkarti un citiem avotiem</translation>
-<translation id="9096003370755878766">Izņemt BAT, ko jūs varētu iepriekš būt pievienojis savam Brave atlīdzību makam</translation>
-<translation id="1554282356558968486">Mūsu maka pakalpojumu sniedz</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Atkarībā no pieprasītajiem pakalpojumiem Uphold var lūgt jums apliecināt savu identitāti.</translation>
-<translation id="3200197118442451932">Brave Software Inc. neapstrādā, neglabā un nepiekļūst nekādai personīgajai informācijai, ko jūs sniedzat <ph name="WALLET_PROVIDER"/>, izveidojot savu kontu.</translation>
 <translation id="1665118090708049096">Doties uz manu <ph name="WALLET_PROVIDER"/> kontu</translation>
 <translation id="4858636682078269312">Piesakies savā <ph name="WALLET_PROVIDER"/> kontā</translation>
 <translation id="8874184842967597500">Savienojums nav izveidots</translation>
@@ -525,7 +517,8 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="2225863440766607138">Izsekotāji</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Pēdējās 3 stundās Brave pārlūkā jūs esat nobloķējis <ph name="COUNT"/> izsekotājus un reklāmas.</translation>
-<translation id="3621193901658023971">Pārlūkojiet lielākās ziņu lapas ar Brave pat 6x ātrāk, bloķējot izsekotājus un reklāmas.</translation>
+<translation id="5005713153542196658">Pārlūkojiet līdz pat 6 reizēm ātrāk lielākajās Brave ziņu vietnēs, bloķējot izsekotājus un reklāmas.
+​</translation>
 <translation id="7427567994475794038">Ieslēdziet privātuma ziņojumus, lai redzētu, cik izsekotāju un reklāmu bloķēts pēdējo 3 stundu laikā.</translation>
 <translation id="2053891538879944400">Ar Brave pārlūku jūs esat ietaupījis <ph name="DATA"/> <ph name="DATA_TEXT"/> datu.</translation>
 <translation id="8640064498452534195">Ieslēdziet privātuma ziņojumus, lai redzētu, cik datu esat ietaupījis.</translation>
@@ -590,6 +583,10 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8622329973403382303">Izejiet ātru tūri, lai atsvaidzinātu zināšanas par to, kā tas darbojas, un iekļūtu vēsturē kā balvu rokzvaigzne!</translation>
 <translation id="3479552764303398839">Vēlāk</translation>
 <translation id="7138272885617540195">Ļaut lietotņu saites atvērt lietotnēs ārpus Brave</translation>
+<translation id="4954512758656527938">Noklusējuma Ethereum maks</translation>
+<translation id="7701023802820268122">Noklusējuma Solana maks</translation>
+<translation id="7701040980221191251">Neviens</translation>
+<translation id="8488282162676695335">Brave maks</translation>
 <translation id="8792121506918889955">WebRTC IP apstrādes politika</translation>
 <translation id="8798099450830957504">Noklusējums</translation>
 <translation id="1822560017823072927">Noklusējuma publiskie un privātie interfeisi</translation>
@@ -685,7 +682,6 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8475984867371585028">Rediģēt redzamos NFT</translation>
 <translation id="5050890334032852465">Saglabāt konta skatīšanās sarakstu</translation>
 <translation id="7755766175599167100">Meklēt žetonus</translation>
-<translation id="8488282162676695335">Brave maks</translation>
 <translation id="3784455785234192852">Bloķēt</translation>
 <translation id="4412698727486357573">Palīdzības centrs</translation>
 <translation id="8796429300536029044">NFT dati</translation>
@@ -717,12 +713,12 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="8272917646984397798">Aizsargā visus savienojumus.</translation>
 <translation id="1751947227857853925">Ātrs un neierobežots līdz 100 Mb/s.</translation>
 <translation id="1400240082805528049">Atbalsts visu diennakti</translation>
-<translation id="5051030058817632680">Bloķē nevēlamus tīkla savienojumus.</translation>
+<translation id="5892534145504632332">Pasargājiet visas lietotnes un jūsu ierīci kopumā</translation>
+<translation id="7195416926059527505">Drošāk mājas vai publiskajam Wi-Fi</translation>
+<translation id="1354700000739359839">Zibenīgi ātrs, līdz pat 100 Mbps</translation>
 <translation id="3510283489391432976">Izvēlieties atrašanās vietu/valsti.</translation>
-<translation id="4390800080658195654">Saglabā anonimitāti tiešsaistē.</translation>
-<translation id="639981156979733813">Atbalsta ātrumu līdz 100 Mb/s.</translation>
-<translation id="765343799669302337">Tiek izmantots drošs, šifrēts VPN tunelis ar WireGuard protokolu</translation>
-<translation id="1571230671455380494">Mēs nekad nedalāmies ar jūsu informāciju un nepārdodam to.</translation>
+<translation id="7695158478627528928">Brave nekad nereģistrē jūsu aktivitātes</translation>
+<translation id="4575683170451975058">Pasargājiet 5 ierīces ar 1 abonementu</translation>
 <translation id="276866628038850725">Visos plānos ir iekļauts 7 dienu bezmaksas izmēģinājums!</translation>
 <translation id="1532536259167115948">Ikmēneša abonements <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Gada abonements <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +729,7 @@ Vai tiešām vēlaties to darīt?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / gadā</translation>
 <translation id="2655185358771731232">Izmēģiniet 7 dienas bez maksas. Pēc 7 dienām jums tiks piemērota plāna cena. Visi abonementi tiek atjaunoti automātiski, bet tos iespējams atcelt pirms atjaunošanas.</translation>
 <translation id="6053992191006521518">Izmēģiniet BEZ MAKSAS.</translation>
+<translation id="3990956504562716932">7 dienas izmēģiniet bez maksas</translation>
 <translation id="721747358270435486">Instalējiet VPN.</translation>
 <translation id="836074276610740314">Instalējiet VPN profilu.</translation>
 <translation id="8021842065465097929">Brave tagad instalēs VPN profilu.</translation>
@@ -1117,71 +1114,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="591648995518106347">Automātiski ielādē atbilstošos rakstus lasītāja režīmā</translation>
 <translation id="1295796122927221823">Skatīt lasītāja režīmā</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> iekš <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Brave atskaņošanas saraksts</translation>
-<translation id="4850886885716139402">Skatīt</translation>
-<translation id="7392941176393379100">Pievienots "<ph name="PLAYLIST_NAME"/>"</translation>
-<translation id="8289472222022674331">Pārvalda jūsu atskaņošanas saraksta datus</translation>
-<translation id="7650602357673790368">Pēc noklusējuma atskaņošanas saraksts automātiski saglabās saturu jūsu ierīcē atskaņošanai bezsaistē (gan privātos, gan kopīgos atskaņošanas sarakstos). Ja jums nav Wi-Fi savienojuma, automātiskai saglabāšanai tiks izmantoti jūsu mobilā tīkla dati. Lai mainītu šo noklusējuma iestatījumu, dodieties uz iestatījumiem.</translation>
-<translation id="5900576657906675258">Pievienot vienumu atskaņošanas sarakstam</translation>
-<translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
-<translation id="1309636029062006520">Izveidot mīļāko audio un video materiālu atskaņošanas sarakstus un atskaņot tos jebkurā vietā un laikā.</translation>
-<translation id="3561815498111282415">Automātiski saglabāt bezsaistei</translation>
-<translation id="1832424694374124654">Jaunus atskaņošanas saraksta vienumus automātiski saglabā jūsu ierīcē, lai jūs tos varat atskaņot, kad nav interneta savienojuma.</translation>
-<translation id="8103022210423023846">Automātiska saglabāšana ieslēgta</translation>
-<translation id="3926329432879804185">Automātiska saglabāšana izslēgta</translation>
-<translation id="7768812595186089508">Automātiski saglabāt tikai tad, kad ir Wi-Fi savienojums</translation>
-<translation id="5939518447894949180">Atiestatīt</translation>
-<translation id="8199028711686989861">Izņemt visus video no atskaņošanas saraksta, ieskaitot tos, kas saglabāti bezsaistes režīmam.</translation>
-<translation id="5916664084637901428">Iesl.</translation>
-<translation id="5860033963881614850">Izsl.</translation>
-<translation id="2920568868625746681">Tikai Wi-Fi</translation>
-<translation id="4590997608186539865">Atskaņošanas saraksts</translation>
-<translation id="7525067979554623046">Izveidot</translation>
-<translation id="5491049004699827548">Izveidot pirmo atskaņošanas sarakstu</translation>
-<translation id="5319108110887582146">Izveidojiet iecienītāko audio un video materiālu atskaņošanas sarakstu un atskaņojiet to jebkurā vietā un laikā. Pat esot bezsaistē.</translation>
-<translation id="6802849415466883498">Izveidot atskaņošanas sarakstu</translation>
-<translation id="8525248723479742219">Atskaņot vēlāk</translation>
-<translation id="7453007860684252933">Pārlūkot un pievienot</translation>
-<translation id="9014883386413828317">Pievienojiet savu iecienītāko saturu. Meklējiet ( + ) pogu ekrāna apakšā, labajā pusē.</translation>
-<translation id="5928669500312007783">Pārlūkot multividi</translation>
-<translation id="8152485753254079984">Jauns atskaņošanas saraksts</translation>
-<translation id="9130105487623071247">Atskaņošanas saraksta nosaukums</translation>
-<translation id="726581235416249619">Atskaņošanas saraksts bez nosaukuma</translation>
-<translation id="1456254983411148628">Noņemt datus</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> atlasīts(-i)</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> vienums(-i)</translation>
-<translation id="2317629745818459803">Atskaņot visus</translation>
-<translation id="7544853251252956727">Sajaukt</translation>
-<translation id="2881339830231736485">Atskaņots nesen</translation>
-<translation id="7636458383879257005">Pieskarieties, turiet nospiestu vai velciet</translation>
-<translation id="8120600068258956006">Pievienot atskaņošanas sarakstam</translation>
-<translation id="39991094779686024">Atskaņošanas saraksti</translation>
-<translation id="1710072605877822603">Pievienot multividi</translation>
-<translation id="3874252678044305931">Pievienot video Brave atskaņošanas sarakstam. Atskaņot jebkurā brīdī, pat esot bezsaistē.</translation>
-<translation id="8973629800378391099">Izveidojiet sava iecienītākā satura atskaņošanas sarakstus. Saglabājiet mobilos datus. Un atskaņojiet bez reklāmām.</translation>
-<translation id="4936812987266342401">Lai atskaņošanas sarakstam pievienotu video, vienkārši pieskarieties pie pogas</translation>
-<translation id="6263657785571415306">Nepalaidiet garām: pievienojiet video, kamēr pārlūkojat, noskatieties vēlāk.</translation>
-<translation id="2839555636100404687">Atskaņošana ir labāka atskaņošanas sarakstā</translation>
-<translation id="9079526681359439081">Atskaņot fonā. Kontrolējiet bloķēšanas ekrānā. Un vēl...</translation>
-<translation id="3620862810055853183">Atvērt atskaņošanas sarakstu</translation>
-<translation id="3861012838874771868">Atvērt atskaņošanas saraksta iestatījumus</translation>
-<translation id="5220099266891491416">Paslēpt atskaņošanas saraksta pogu</translation>
-<translation id="7416347631175891923">Izmēģināt!</translation>
-<translation id="1173894706177603556">Pārdēvēt</translation>
-<translation id="1620612903815671893">Noņemt atskaņošanas saraksta bezsaistes datus</translation>
-<translation id="3261711068865275261">Noņemt visus bezsaistes datus</translation>
-<translation id="6653691766801349738">Saglabāt atskaņošanas sarakstu izmantošanai bezsaistē</translation>
-<translation id="8708086574143054053">Saglabāt visus atskaņošanas sarakstus izmantošanai bezsaistē</translation>
-<translation id="3596306474342941843">Dzēst atskaņošanas sarakstu</translation>
-<translation id="7765158879357617694">Pārvietot</translation>
-<translation id="3803384303807438047">Dzēst vienuma bezsaistes datus</translation>
-<translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
-<translation id="4243710787042215766">Atvērt inkognito cilnē</translation>
-<translation id="8261506727792406068">Dzēst</translation>
-<translation id="377872456482681602">Lūdzu, vispirms atlasiet vienumus</translation>
-<translation id="6172429305139364624">Atskaņošanas saraksta vienums nav kešatmiņā. Lūdzu, saglabājiet vienumu kešatmiņā izmantošanai bezsaistes režīmā.</translation>
-<translation id="3631131732607750008">Satura laiks ir beidzies. Mēģiniet vēlreiz pēc dažām sekundēm.</translation>
-<translation id="286472539388773794">Lūdzu, ievadiet derīgu atskaņošanas saraksta nosaukumu</translation>
 <translation id="9085765419770918643">Šeit vēl nav NFT.</translation>
 <translation id="8445532667841598737">Vai esat gatavs pievienot? Vienkārši noklikšķiniet uz pogas, lai importētu.</translation>
 <translation id="5925465310724910998">Vai vēlaties, lai jūsu NFT tiktu attēloti automātiski?</translation>
@@ -1190,12 +1122,6 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="622372328961630111">Automātiski pievienot jums piederošos NFT makam, izmantojot trešo personu API. <ph name="BEGIN_LINK_1"/>Uzzināt vairāk.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Adreses meklēšanas tabulas konts:</translation>
 <translation id="7659483790930268440">Adreses meklēšanas tabulas rādītājs:</translation>
-<translation id="7322560193401221004">Atcerēties faila atskaņošanas pozīciju</translation>
-<translation id="7505951907514709271">Individuālu failu atskaņošanu atsākt no pēdējās pauzes vietas</translation>
-<translation id="6835165453349969605">Atcerēties saraksta atskaņošanas pozīciju</translation>
-<translation id="6344103698928069918">Atskaņošanas saraksta atskaņošanu atsākt no pēdējās pauzes vietas</translation>
-<translation id="8141583471142904652">Nepārtraukta klausīšanās</translation>
-<translation id="851432578283946230">Automātiski atskaņo nākamos vienumus no jūsu atskaņošanas saraksta</translation>
 <translation id="7853202427316060426">Darbība</translation>
 <translation id="4932733599132424254">Datums</translation>
 <translation id="346505172740911461">Tirgus cena</translation>
@@ -1212,6 +1138,80 @@ Ja šo pieprasījumu nepieņemsiet, savienojums ar VPN netiks atkārtoti izveido
 <translation id="2471230424465522689">Ne pirms</translation>
 <translation id="4841860051609590575">Pieprasījuma ID</translation>
 <translation id="1179407411385015942">Leo ir mākslīgā intelekta nodrošināts viedais asistents, kas iestrādāts tieši pārlūkā</translation>
+<translation id="4109670531935487117">Rādīt automātiskās pabeigšanas ieteikumus adrešu joslā</translation>
 <translation id="1250335737108905610">Atiestatīt un notīrīt Leo datus</translation>
 <translation id="6165101586663336913">Lai atiestatītu asistentu Leo, jums jāpiekrīt turpmāk izmantot Leo, un tiks notīrīta jūsu tērzēšanas vēsture. Notīrot tērzēšanas vēsturi, tiks izdzēstas visas jūsu iepriekšējās sarunas ar Leo. Šo darbību nevar atsaukt.</translation>
+<translation id="3692772534525889713">Saistiet savu Play Store pirkumu ar savu Brave kontu, lai izmantotu Brave Leo citās ierīcēs.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Ikmēneša</translation>
+<translation id="451189393813405346">Jautāt Leo</translation>
+<translation id="7322560193401221004">Atcerēties faila atskaņošanas pozīciju</translation>
+<translation id="7505951907514709271">Individuālu failu atskaņošanu atsākt no pēdējās pauzes vietas</translation>
+<translation id="6835165453349969605">Atcerēties saraksta atskaņošanas pozīciju</translation>
+<translation id="6344103698928069918">Atskaņošanas saraksta atskaņošanu atsākt no pēdējās pauzes vietas</translation>
+<translation id="8141583471142904652">Nepārtraukta klausīšanās</translation>
+<translation id="851432578283946230">Automātiski atskaņo nākamos vienumus no jūsu atskaņošanas saraksta</translation>
+<translation id="295620834661738195">Brave atskaņošanas saraksts</translation>
+<translation id="4850886885716139402">Skatīt</translation>
+<translation id="7392941176393379100">Pievienots "<ph name="PLAYLIST_NAME"/>"</translation>
+<translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
+<translation id="1309636029062006520">Izveidot mīļāko audio un video materiālu atskaņošanas sarakstus un atskaņot tos jebkurā vietā un laikā.</translation>
+<translation id="7899390017499980820">Poga "Pievienot atskaņošanas sarakstam"</translation>
+<translation id="6901152954398668317">Rādīt vai paslēpt pogu "Pievienot atskaņošanas sarakstam", lai ātri pievienotu vai noņemtu multividi.</translation>
+<translation id="5939518447894949180">Atiestatīt</translation>
+<translation id="8199028711686989861">Izņemt visus video no atskaņošanas saraksta, ieskaitot tos, kas saglabāti bezsaistes režīmam.</translation>
+<translation id="4590997608186539865">Atskaņošanas saraksts</translation>
+<translation id="7525067979554623046">Izveidot</translation>
+<translation id="8525248723479742219">Atskaņot vēlāk</translation>
+<translation id="7453007860684252933">Pārlūkot un pievienot</translation>
+<translation id="9014883386413828317">Pievienojiet savu iecienītāko saturu. Meklējiet ( + ) pogu ekrāna apakšā, labajā pusē.</translation>
+<translation id="5928669500312007783">Pārlūkot multividi</translation>
+<translation id="8152485753254079984">Jauns atskaņošanas saraksts</translation>
+<translation id="9130105487623071247">Atskaņošanas saraksta nosaukums</translation>
+<translation id="726581235416249619">Atskaņošanas saraksts bez nosaukuma</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> atlasīts(-i)</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> vienums(-i)</translation>
+<translation id="2317629745818459803">Atskaņot visus</translation>
+<translation id="7544853251252956727">Sajaukt</translation>
+<translation id="2881339830231736485">Atskaņots nesen</translation>
+<translation id="8120600068258956006">Pievienot atskaņošanas sarakstam</translation>
+<translation id="39991094779686024">Atskaņošanas saraksti</translation>
+<translation id="1710072605877822603">Pievienot multividi</translation>
+<translation id="3874252678044305931">Pievienot video Brave atskaņošanas sarakstam. Atskaņot jebkurā brīdī, pat esot bezsaistē.</translation>
+<translation id="8973629800378391099">Izveidojiet sava iecienītākā satura atskaņošanas sarakstus. Saglabājiet mobilos datus. Un atskaņojiet bez reklāmām.</translation>
+<translation id="4936812987266342401">Lai atskaņošanas sarakstam pievienotu video, vienkārši pieskarieties pie pogas</translation>
+<translation id="6263657785571415306">Nepalaidiet garām: pievienojiet video, kamēr pārlūkojat, noskatieties vēlāk.</translation>
+<translation id="2839555636100404687">Atskaņošana ir labāka atskaņošanas sarakstā</translation>
+<translation id="9079526681359439081">Atskaņot fonā. Kontrolējiet bloķēšanas ekrānā. Un vēl...</translation>
+<translation id="3620862810055853183">Atvērt atskaņošanas sarakstu</translation>
+<translation id="3861012838874771868">Atvērt atskaņošanas saraksta iestatījumus</translation>
+<translation id="5220099266891491416">Paslēpt atskaņošanas saraksta pogu</translation>
+<translation id="7416347631175891923">Izmēģināt!</translation>
+<translation id="1173894706177603556">Pārdēvēt</translation>
+<translation id="3596306474342941843">Dzēst atskaņošanas sarakstu</translation>
+<translation id="7765158879357617694">Pārvietot</translation>
+<translation id="3803384303807438047">Dzēst vienuma bezsaistes datus</translation>
+<translation id="4195643157523330669">Atvērt jaunā cilnē</translation>
+<translation id="4243710787042215766">Atvērt inkognito cilnē</translation>
+<translation id="8261506727792406068">Dzēst</translation>
+<translation id="377872456482681602">Lūdzu, vispirms atlasiet vienumus</translation>
+<translation id="286472539388773794">Lūdzu, ievadiet derīgu atskaņošanas saraksta nosaukumu</translation>
+<translation id="2824489375399072491">Kopīgot ar:</translation>
+<translation id="5319532905552885478">Multivides saturs jau ir pievienots noklusējuma atskaņošanas sarakstam</translation>
+<translation id="4802584673094436231">Sagatavo...</translation>
+<translation id="481455355267255546">Nākamais</translation>
+<translation id="5474757891469990756">Atklājiet pilnu Leo potenciālu ar Premium:</translation>
+<translation id="4173478269537830374">Izpētiet dažādus AI modeļus</translation>
+<translation id="3453542753968940696">Prioritāra piekļuve jaudīgiem modeļiem ar dažādām prasmēm.</translation>
+<translation id="3245401959451976966">Atklājiet savu radošumu</translation>
+<translation id="5031778211368112461">Piekļuves modeļi labāk piemēroti radošiem uzdevumiem un satura veidošanai.</translation>
+<translation id="4165928407303989823">Palieciet pie tēmas</translation>
+<translation id="298783097210745222">Iegūstiet precīzākas atbildes daudz niansētākām sarunām.</translation>
+<translation id="2389665228467129817">Tērzējiet ilgāk</translation>
+<translation id="4314705522985583059">Iegūstiet augstākus likmes ierobežojumus ilgākām sarunām.</translation>
+<translation id="6365289557497555234">Visi abonementi tiek automātiski atjaunināti, bet tos jebkurā laikā pirms atjaunošanas var atcelt.</translation>
+<translation id="6637015365469044269">Atjaunināt tagad</translation>
+<translation id="614530507403667291">Nosklusējuma modelis jaunām sarunām</translation>
+<translation id="4071849832011229600">Noklusējuma modelis</translation>
+<translation id="7557539689487606886">Pāriet uz Premium</translation>
 </translationbundle>

@@ -254,6 +254,8 @@
 <translation id="480565261566115689">ট্যাবগুলো ছোট করুন</translation>
 <translation id="7194343495483122559">ট্যাবগুলো সম্প্রসারণ করুন</translation>
 <translation id="1199054713803577378">ট্যাবগুলো ছোট করুন</translation>
+<translation id="1337946268962884806">কাস্টম অর্ডার</translation>
+<translation id="8373664339577369248">কাস্টম অর্ডার</translation>
 <translation id="8120600068258956006">প্লেলিস্টে যোগ করুন</translation>
 <translation id="650694591627983430">এই পেজে মিডিয়া পাওয়া গেছে</translation>
 <translation id="8525248723479742219">পরে প্লে করুন</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">পুনরাবৃত্তি বন্ধ করুন</translation>
 <translation id="1748244367114657861">একটি পুনরাবৃত্তি করুন</translation>
 <translation id="6421906998825794164">সব পুনরাবৃত্তি করুন</translation>
+<translation id="6453210454707928697">আইটেম প্লে করা গেল না</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] মেয়াদ শেষ হয়ে যেতে পারে। আপনি কি এটিকে পুনরুদ্ধার করতে চান?</translation>
+<translation id="6155018868740116868">পুনরুদ্ধার করুন</translation>
 <translation id="1727684853006449697">Brave প্লেয়ার</translation>
 <translation id="9156965752763025780">আপনার পরিবর্তনগুলি পরবর্তী সময় আপনি Brave আবার চালু হলে ফলপ্রদ হবে৷</translation>
 <translation id="7179921470347911571">এখনই রিলঞ্চ করুন</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="5371926069408837914">বন্ধ হয়ে গেলে মাউসওভারে উল্লম্ব ট্যাব প্যানেল প্রসারিত করুন</translation>
 <translation id="3367129510799209147">ট্যাব হোভার মোড</translation>
+<translation id="515949045075831661">ডান দিকে দেখান</translation>
+<translation id="3725395376319291415">বাম দিকে দেখান</translation>
 <translation id="2113977810652731515">কার্ড</translation>
 <translation id="4096343215397759358">পূর্বরূপ সহ কার্ড</translation>
 <translation id="5297085818601043899">টুলটিপ</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Brave ইতিমধ্যেই ডকে রয়েছে</translation>
 <translation id="3195845168740336657">শিল্ড সেটিং</translation>
 <translation id="754769152790647708">শিল্ড স্টেটাস</translation>
-<translation id="3615717588724840230">শিল্ড ব্যবহার করে সাইট ট্র্যাকার, বিজ্ঞাপন ও ফিঙ্গারপ্রিন্ট ব্লক করতে পারে</translation>
+<translation id="4868109105992358853">শিল্ড ট্র্যাকার, বিজ্ঞাপন ও ফিঙ্গারপ্রিন্ট ব্লক করতে পারে</translation>
 <translation id="5690973901138662477">শিল্ড আপ</translation>
 <translation id="4697275813919189958">শিল্ড ডাউন</translation>
 <translation id="6303294677342628402">শিল্ড</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Brave পুরস্কার নিষ্ক্রিয় করা আছে</translation>
 <translation id="413570371620795359">চালু করে শুরু করতে পুরস্কারের প্যানেল খুলুন</translation>
 <translation id="1051600834033686945">সম্পূর্ণ Brave Rewards সেটিংস খুলুন</translation>
-<translation id="6333347122924254968">Brave রিওয়ার্ডগুলো দেখাতে বলছে</translation>
+<translation id="8826461509529116322">Brave রিওয়ার্ড বোতাম দেখান</translation>
 <translation id="9185018653595759199">সামাজিক মিডিয়া রোধক</translation>
 <translation id="863171915776379000">Facebook লগইন এবং সংস্থাপিত পোস্টগুলির অনুমতি দিন</translation>
 <translation id="5165042248369837294">Twitter সংস্থাপিত টুইটগুলির অনুমতি দিন</translation>
@@ -726,6 +733,7 @@
 ভবিষ্যতে Brave Leo বেছে নিতে হবে এবং সেইসাথে আপনাকে আপনার চ্যাটের ইতিহাসও পরিষ্কার করতে হবে। আপনার
 চ্যাটের ইতিহাস পরিষ্কার করলে তা Brave Leo-এর সাথে আপনার হওয়া আগে সমস্ত কথোপকথন
 মুছে দেবে। এই কার্য পূর্বাবস্থায় ফেরানো যাবে না।</translation>
+<translation id="5574059574002819179">স্বতঃসম্পূর্ণ পরামর্শ সামঞ্জস্যপূর্ণ করুন</translation>
 <translation id="8157373421434119674">ডেটা এবং চ্যাটের ইতিহাস</translation>
 <translation id="614530507403667291">নতুন কথোপকথনের জন্য ডিফল্ট মডেল</translation>
 <translation id="349846214503465941">প্লেলিস্ট সক্রিয় করুন</translation>

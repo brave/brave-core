@@ -427,18 +427,10 @@
 <translation id="2394961582378297792">ออกจากระบบ</translation>
 <translation id="5308380583665731573">เชื่อมต่อ</translation>
 <translation id="3368922792935385530">เชื่อมต่อแล้ว</translation>
-<translation id="8673913984316081937">สามารถเลือกยืนยันกระเป๋าเงินของคุณได้</translation>
-<translation id="8558636200953226885">แต่หากยืนยัน คุณจะสามารถ...</translation>
-<translation id="8697510149346635496">ถอน BAT ที่คุณได้รับจากการดูโฆษณาที่เคารพความเป็นส่วนตัว</translation>
-<translation id="1481480653609649134">ซื้อ BAT เพิ่มด้วยบัตรเครดิตและแหล่งอื่น ๆ</translation>
-<translation id="9096003370755878766">ถอน BAT ที่คุณอาจเพิ่มเข้าไปในกระเป๋าเงิน Brave Rewards ของคุณก่อนหน้านี้</translation>
-<translation id="1554282356558968486">บริการวอลเล็ทของเราให้บริการโดย</translation>
 <translation id="6569877533335686968">ส่งเสริม</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold อาจกำหนดให้คุณยืนยันตัวตนของคุณตามบริการที่ร้องขอ</translation>
-<translation id="3200197118442451932">Brave Software Inc. ไม่ได้ประมวลผล จัดเก็บ หรือเข้าถึงข้อมูลส่วนตัวใดๆ ที่คุณให้แก่ <ph name="WALLET_PROVIDER"/> เมื่อคุณจัดทำบัญชีด้วยข้อมูลเหล่านี้</translation>
 <translation id="1665118090708049096">ไปที่บัญชี <ph name="WALLET_PROVIDER"/> ของฉัน</translation>
 <translation id="4858636682078269312">ล็อกอินเข้าสู่บัญชี <ph name="WALLET_PROVIDER"/> ของคุณ</translation>
 <translation id="8874184842967597500">ไม่ได้เชื่อมต่อ</translation>
@@ -525,7 +517,7 @@
 <translation id="2225863440766607138">แอปติดตาม</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">คุณได้บล็อก <ph name="COUNT"/> แอปติดตามและโฆษณาด้วยเบราว์เซอร์ Brave ในช่วง 3 ชั่วโมงที่ผ่านมา</translation>
-<translation id="3621193901658023971">ค้นหาเว็บสำนักข่าวใหญ่ ๆ เร็วขึ้น 6 เท่า ใน Brave โดยการบล็อกโฆษณาและแอปติดตาม</translation>
+<translation id="5005713153542196658">ค้นหาเว็บสำนักข่าวใหญ่ ๆ เร็วขึ้น 6 เท่า ใน Brave โดยการบล็อกตัวติดตาม &amp; และโฆษณา</translation>
 <translation id="7427567994475794038">เปิดรายงานความเป็นส่วนตัวเพื่อดูว่ามีแอปติดตามและโฆษณาถูกบล็อกไปกี่แอปในช่วง 3 เดือนที่ผ่านมา</translation>
 <translation id="2053891538879944400">คุณรักษาข้อมูล <ph name="DATA"/> <ph name="DATA_TEXT"/> ด้วยเบราว์เซอร์ Brave</translation>
 <translation id="8640064498452534195">เปิดรายงานความเป็นส่วนตัวเพื่อดูว่าคุณได้รักษาข้อมูลไว้มากแค่ไหน</translation>
@@ -590,6 +582,10 @@
 <translation id="8622329973403382303">ดูบทแนะนำฉบับย่อเพื่อเติมเกร็ดความรู้ว่าคุณต้องทำอย่างไรเพื่อให้ถูกจารึกเป็นดาวเด่นแห่งวงการ Reward</translation>
 <translation id="3479552764303398839">ไม่ใช่ตอนนี้</translation>
 <translation id="7138272885617540195">อนุญาตให้เปิดลิงก์แอปในแอปนอก Brave</translation>
+<translation id="4954512758656527938">วอลเล็ต Ethereum เริ่มต้น</translation>
+<translation id="7701023802820268122">วอลเล็ต Solana เริ่มต้น</translation>
+<translation id="7701040980221191251">ไม่มี</translation>
+<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="8792121506918889955">นโยบายการจัดการ WebRTC IP</translation>
 <translation id="8798099450830957504">ค่าเริ่มต้น</translation>
 <translation id="1822560017823072927">อินเตอร์เฟซสาธารณะและส่วนตัวเริ่มต้น</translation>
@@ -685,7 +681,6 @@
 <translation id="8475984867371585028">แก้ไข NFT ที่จับต้องได้</translation>
 <translation id="5050890334032852465">บันทึกรายการเฝ้าดูของบัญชี</translation>
 <translation id="7755766175599167100">ค้นหาโทเค็น</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">ล็อค</translation>
 <translation id="4412698727486357573">ศูนย์ช่วยเหลือ</translation>
 <translation id="8796429300536029044">รายละเอียด NFT</translation>
@@ -717,12 +712,12 @@
 <translation id="8272917646984397798">รักษาความปลอดภัยให้กับทุกการเชื่อมต่อ</translation>
 <translation id="1751947227857853925">เร็วและไม่จำกัด สูงสุด 100 Mbps</translation>
 <translation id="1400240082805528049">การสนับสนุนทุกวันตลอด 24 ชม.</translation>
-<translation id="5051030058817632680">บล็อกการเชื่อมต่อเครือข่ายที่ไม่ต้องการ</translation>
+<translation id="5892534145504632332">คุ้มครองทุกแอป &amp; และทุกอุปกรณ์ของคุณ</translation>
+<translation id="7195416926059527505">ปลอดภัยกว่าสำหรับทั้ง Wi-Fi ในบ้านหรือสาธารณะ</translation>
+<translation id="1354700000739359839">ความเร็วสูงสุดถึง 100 Mbps</translation>
 <translation id="3510283489391432976">เลือกตำแหน่งที่ตั้งตามภูมิภาค/ประเทศของคุณ</translation>
-<translation id="4390800080658195654">ช่วยให้ตัวตนของคุณไม่เป็นที่เปิดเผยทางออนไลน์</translation>
-<translation id="639981156979733813">รองรับความเร็วที่ 100 Mbps</translation>
-<translation id="765343799669302337">ใช้อุโมงค์ VPN ที่เข้ารหัสอย่างปลอดภัยของ WireGuard</translation>
-<translation id="1571230671455380494">เราไม่มีวันแบ่งปันหรือขายข้อมูลของคุณ</translation>
+<translation id="7695158478627528928">Brave จะไม่บันทึกกิจกรรมของคุณ</translation>
+<translation id="4575683170451975058">คุ้มครองอุปกรณ์ถึง 5 เครื่องเพียงสมัครสมาชิกแค่ 1 ครั้ง</translation>
 <translation id="276866628038850725">ทุกแผนรวมช่วงเวลาทดลองใช้ฟรี 7 วัน!</translation>
 <translation id="1532536259167115948">สมัครสมาชิกรายเดือน <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">สมัครสมาชิกรายปี <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / ปี</translation>
 <translation id="2655185358771731232">ทดลองใช้ฟรีเป็นเวลา 7 วัน โดยหลังจาก 7 วันแล้ว ระบบจะเรียกเก็บเงินในราคาตามแผน ทั้งนี้ การสมัครสมาชิกทั้งหมดจะต่ออายุโดยอัตโนมัติ แต่สามารถยกเลิกได้ก่อนจะมีการต่ออายุ</translation>
 <translation id="6053992191006521518">ทดลองใช้ฟรี</translation>
+<translation id="3990956504562716932">ทดลองใช้ฟรี 7 วัน</translation>
 <translation id="721747358270435486">ติดตั้ง VPN</translation>
 <translation id="836074276610740314">ติดตั้งโปรไฟล์ VPN</translation>
 <translation id="8021842065465097929">Brave จะติดตั้งโปรไฟล์ VPN ในตอนนี้</translation>
@@ -1117,71 +1113,6 @@
 <translation id="591648995518106347">โหลดบทความที่มีสิทธิ์โดยอัตโนมัติในโหมดผู้อ่าน</translation>
 <translation id="1295796122927221823">ดูในโหมดผู้อ่าน</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> บน <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Brave เพลย์ลิสต์</translation>
-<translation id="4850886885716139402">มุมมอง</translation>
-<translation id="7392941176393379100">เพิ่มไปยัง '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">จัดการข้อมูลเพลย์ลิสต์ของคุณ</translation>
-<translation id="7650602357673790368">ตามค่าเริ่มต้น เพลย์ลิสต์จะบันทึกเนื้อหาลงในอุปกรณ์ของคุณโดยอัตโนมัติเพื่อเล่นแบบออฟไลน์ (ทั้งในเพลย์ลิสต์ส่วนตัว &amp; เพลย์ลิสต์ที่แชร์) หากคุณไม่ได้ใช้ WiFi การบันทึกอัตโนมัติจะใช้ข้อมูลเซลลูลาร์ของคุณ\n\nหากต้องการเปลี่ยนค่าเริ่มต้นนี้ ให้ไปที่การตั้งค่า</translation>
-<translation id="5900576657906675258">เพิ่มรายการลงในเพลย์ลิสต์</translation>
-<translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>
-<translation id="1309636029062006520">สร้างเพลย์ลิสต์เสียงและวิดีโอที่คุณชื่นชอบ และเล่นได้ทุกที่ทุกเวลา</translation>
-<translation id="3561815498111282415">บันทึกอัตโนมัติสำหรับเล่นออฟไลน์</translation>
-<translation id="1832424694374124654">บันทึกรายการเพลย์ลิสต์ใหม่ลงในอุปกรณ์ของคุณโดยอัตโนมัติ เพื่อให้คุณสามารถเล่นได้โดยไม่ต้องเชื่อมต่ออินเทอร์เน็ต</translation>
-<translation id="8103022210423023846">เปิดการบันทึกอัตโนมัติ</translation>
-<translation id="3926329432879804185">ปิดการบันทึกอัตโนมัติ</translation>
-<translation id="7768812595186089508">จะบันทึกอัตโนมัติเมื่อเชื่อมต่อกับ Wi-Fi เท่านั้น</translation>
-<translation id="5939518447894949180">รีเซ็ต</translation>
-<translation id="8199028711686989861">ลบวิดีโอทั้งหมดออกจากเพลย์ลิสต์ รวมถึงพื้นที่เก็บข้อมูลในโหมดออฟไลน์ด้วย</translation>
-<translation id="5916664084637901428">เปิด</translation>
-<translation id="5860033963881614850">ปิด</translation>
-<translation id="2920568868625746681">Wifi เท่านั้น</translation>
-<translation id="4590997608186539865">เพลย์ลิสต์</translation>
-<translation id="7525067979554623046">สร้าง</translation>
-<translation id="5491049004699827548">สร้างเพลย์ลิสต์แรกของคุณ</translation>
-<translation id="5319108110887582146">สร้างเพลย์ลิสต์เสียงและวิดีโอที่คุณชื่นชอบ และเล่นได้ทุกที่ทุกเวลาแม้จะออฟไลน์</translation>
-<translation id="6802849415466883498">สร้างเพลย์ลิสต์</translation>
-<translation id="8525248723479742219">เล่นภายหลัง</translation>
-<translation id="7453007860684252933">เรียกดูและเพิ่ม</translation>
-<translation id="9014883386413828317">เพิ่มเนื้อหาที่คุณชื่นชอบ หาปุ่ม ( + ) ที่ส่วนล่างด้านขวาของหน้าจอ</translation>
-<translation id="5928669500312007783">เรียกดูสื่อ</translation>
-<translation id="8152485753254079984">เพลย์ลิสต์ใหม่</translation>
-<translation id="9130105487623071247">ชื่อเพลย์ลิสต์</translation>
-<translation id="726581235416249619">เพลย์ลิสต์ที่ไม่มีชื่อ</translation>
-<translation id="1456254983411148628">ลบข้อมูล</translation>
-<translation id="2365883822666964139">เลือกแล้ว <ph name="NUMBER"/></translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> รายการ</translation>
-<translation id="2317629745818459803">เล่นทั้งหมด</translation>
-<translation id="7544853251252956727">สุ่มเพลง</translation>
-<translation id="2881339830231736485">เพิ่งเล่น</translation>
-<translation id="7636458383879257005">แตะ กดค้าง หรือลาก</translation>
-<translation id="8120600068258956006">เพิ่มไปยังเพลย์ลิสต์</translation>
-<translation id="39991094779686024">เพลย์ลิสต์</translation>
-<translation id="1710072605877822603">เพิ่มสื่อ</translation>
-<translation id="3874252678044305931">เพิ่มวิดีโอไปยัง Brave เพลย์ลิสต์ เล่นได้ทุกเมื่อแม้จะออฟไลน์</translation>
-<translation id="8973629800378391099">ทำให้เพลย์ลิสต์เป็นเนื้อหาที่คุณชื่นชอบ บันทึกอินเทอร์เน็ตมือถือแล้วเล่นโดยไม่มีโฆษณา</translation>
-<translation id="4936812987266342401">เพียงแตะที่ปุ่มเพื่อเพิ่มวิดีโอลงในเพลย์ลิสต์</translation>
-<translation id="6263657785571415306">อยู่ในโฟลว์: เพิ่มวิดีโอขณะท่องเว็บเพื่อรับชมภายหลัง</translation>
-<translation id="2839555636100404687">การเล่นจะดีขึ้นในเพลย์ลิสต์</translation>
-<translation id="9079526681359439081">เล่นวิดีโอในเบื้องหลัง ควบคุมจากหน้าจอล็อค และอื่นๆ…</translation>
-<translation id="3620862810055853183">เปิดเพลย์ลิสต์</translation>
-<translation id="3861012838874771868">เปิดการตั้งค่าเพลย์ลิสต์</translation>
-<translation id="5220099266891491416">ซ่อนปุ่มเพลย์ลิสต์</translation>
-<translation id="7416347631175891923">ลองเลย!</translation>
-<translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
-<translation id="1620612903815671893">ลบข้อมูลออฟไลน์ของเพลย์ลิสต์</translation>
-<translation id="3261711068865275261">ลบข้อมูลออฟไลน์ทั้งหมด</translation>
-<translation id="6653691766801349738">เก็บเพลย์ลิสต์ไว้ใช้แบบออฟไลน์</translation>
-<translation id="8708086574143054053">เก็บเพลย์ลิสต์ทั้งหมดไว้ใช้แบบออฟไลน์</translation>
-<translation id="3596306474342941843">ลบเพลย์ลิสต์</translation>
-<translation id="7765158879357617694">ย้าย</translation>
-<translation id="3803384303807438047">ลบข้อมูลออฟไลน์ของรายการ</translation>
-<translation id="4195643157523330669">เปิดในแท็บใหม่</translation>
-<translation id="4243710787042215766">เปิดในแท็บส่วนตัว</translation>
-<translation id="8261506727792406068">ลบ</translation>
-<translation id="377872456482681602">โปรดเลือกรายการก่อน</translation>
-<translation id="6172429305139364624">รายการเพลย์ลิสต์ไม่ได้ถูกแคช\nโปรดแคชรายการสำหรับโหมดออฟไลน์</translation>
-<translation id="3631131732607750008">เนื้อหาหมดอายุ ลองอีกครั้งในอีกไม่กี่วินาทีถัดไป</translation>
-<translation id="286472539388773794">โปรดใส่ชื่อเพลย์ลิสต์ที่ถูกต้อง</translation>
 <translation id="9085765419770918643">ที่นี่ยังไม่มี NFT</translation>
 <translation id="8445532667841598737">พร้อมที่จะเพิ่มแล้ว? แค่คลิกปุ่มด้านล่างเพื่อนำเข้า</translation>
 <translation id="5925465310724910998">ต้องการให้ NFT ของคุณแสดงอัตโนมัติใช่ไหม?</translation>
@@ -1190,12 +1121,6 @@
 <translation id="622372328961630111">เพิ่ม NFT ที่คุณเป็นเจ้าของไปยังกระเป๋าเงินโดยอัตโนมัติโดยใช้ API บุคคลที่สาม <ph name="BEGIN_LINK_1"/>เรียนรู้เพิ่มเติม<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">บัญชีตารางค้นหาที่อยู่:</translation>
 <translation id="7659483790930268440">ดัชนีตารางค้นหาที่อยู่:</translation>
-<translation id="7322560193401221004">จำตำแหน่งที่เล่นไฟล์</translation>
-<translation id="7505951907514709271">สำหรับไฟล์แต่ละไฟล์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
-<translation id="6835165453349969605">จำตำแหน่งเล่นในรายการ</translation>
-<translation id="6344103698928069918">สำหรับเพลย์ลิสต์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
-<translation id="8141583471142904652">การฟังอย่างต่อเนื่อง</translation>
-<translation id="851432578283946230">เล่นรายการถัดไปอัตโนมัติในเพลย์ลิสต์</translation>
 <translation id="7853202427316060426">กิจกรรม</translation>
 <translation id="4932733599132424254">วันที่</translation>
 <translation id="346505172740911461">ราคาตลาด</translation>
@@ -1212,6 +1137,80 @@
 <translation id="2471230424465522689">ไม่ใช่ก่อน</translation>
 <translation id="4841860051609590575">ขอ ID</translation>
 <translation id="1179407411385015942">Leo คือผู้ช่วยอัจฉริยะที่ทำงานด้วยระบบ AI ที่ถูกสร้างมาสำหรับบราวเซอร์นี้โดยเฉพาะ</translation>
+<translation id="4109670531935487117">แสดงคำแนะนำการเติมข้อความอัตโนมัติในแถบที่อยู่</translation>
 <translation id="1250335737108905610">รีเซ็ตและล้างข้อมูลของ Leo</translation>
 <translation id="6165101586663336913">การรีเซ็ตผู้ช่วย Leo จะทำให้คุณต้องเลือกใช้งาน Leo และจะเป็นการล้างประวัติการแชทของคุณอีกด้วย การล้างประวัติการแชทของคุณจะลบบทสนทนากับ Leo ทั้งหมดก่อนหน้านี้ การกระทำนี้ไม่สามารถถูกยกเลิกได้</translation>
+<translation id="3692772534525889713">ลิงก์การซื้อใน Play Store กับบัญชี Brave เพื่อใช้ Brave Leo บนอุปกรณ์อื่นๆ</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">รายเดือน</translation>
+<translation id="451189393813405346">ถาม Leo</translation>
+<translation id="7322560193401221004">จำตำแหน่งที่เล่นไฟล์</translation>
+<translation id="7505951907514709271">สำหรับไฟล์แต่ละไฟล์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
+<translation id="6835165453349969605">จำตำแหน่งเล่นในรายการ</translation>
+<translation id="6344103698928069918">สำหรับเพลย์ลิสต์ ให้เล่นไฟล์ต่อจากจุดที่หยุดชั่วคราวครั้งสุดท้าย</translation>
+<translation id="8141583471142904652">การฟังอย่างต่อเนื่อง</translation>
+<translation id="851432578283946230">เล่นรายการถัดไปอัตโนมัติในเพลย์ลิสต์</translation>
+<translation id="295620834661738195">Brave เพลย์ลิสต์</translation>
+<translation id="4850886885716139402">มุมมอง</translation>
+<translation id="7392941176393379100">เพิ่มไปยัง '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">เปิดใช้งานเพลย์ลิสต์</translation>
+<translation id="1309636029062006520">สร้างเพลย์ลิสต์เสียงและวิดีโอที่คุณชื่นชอบ และเล่นได้ทุกที่ทุกเวลา</translation>
+<translation id="7899390017499980820">ปุ่มเพิ่มไปยังเพลย์ลิสต์</translation>
+<translation id="6901152954398668317">แสดงหรือซ่อนปุ่ม "เพิ่มไปยังเพลย์ลิสต์" เพื่อเข้าถึงการเพิ่มหรือลบสื่ออย่างรวดเร็ว</translation>
+<translation id="5939518447894949180">รีเซ็ต</translation>
+<translation id="8199028711686989861">ลบวิดีโอทั้งหมดออกจากเพลย์ลิสต์ รวมถึงพื้นที่เก็บข้อมูลในโหมดออฟไลน์ด้วย</translation>
+<translation id="4590997608186539865">เพลย์ลิสต์</translation>
+<translation id="7525067979554623046">สร้าง</translation>
+<translation id="8525248723479742219">เล่นภายหลัง</translation>
+<translation id="7453007860684252933">เรียกดูและเพิ่ม</translation>
+<translation id="9014883386413828317">เพิ่มเนื้อหาที่คุณชื่นชอบ หาปุ่ม ( + ) ที่ส่วนล่างด้านขวาของหน้าจอ</translation>
+<translation id="5928669500312007783">เรียกดูสื่อ</translation>
+<translation id="8152485753254079984">เพลย์ลิสต์ใหม่</translation>
+<translation id="9130105487623071247">ชื่อเพลย์ลิสต์</translation>
+<translation id="726581235416249619">เพลย์ลิสต์ที่ไม่มีชื่อ</translation>
+<translation id="2365883822666964139">เลือกแล้ว <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> รายการ</translation>
+<translation id="2317629745818459803">เล่นทั้งหมด</translation>
+<translation id="7544853251252956727">สุ่มเพลง</translation>
+<translation id="2881339830231736485">เพิ่งเล่น</translation>
+<translation id="8120600068258956006">เพิ่มไปยังเพลย์ลิสต์</translation>
+<translation id="39991094779686024">เพลย์ลิสต์</translation>
+<translation id="1710072605877822603">เพิ่มสื่อ</translation>
+<translation id="3874252678044305931">เพิ่มวิดีโอไปยัง Brave เพลย์ลิสต์ เล่นได้ทุกเมื่อแม้จะออฟไลน์</translation>
+<translation id="8973629800378391099">ทำให้เพลย์ลิสต์เป็นเนื้อหาที่คุณชื่นชอบ บันทึกอินเทอร์เน็ตมือถือแล้วเล่นโดยไม่มีโฆษณา</translation>
+<translation id="4936812987266342401">เพียงแตะที่ปุ่มเพื่อเพิ่มวิดีโอลงในเพลย์ลิสต์</translation>
+<translation id="6263657785571415306">อยู่ในโฟลว์: เพิ่มวิดีโอขณะท่องเว็บเพื่อรับชมภายหลัง</translation>
+<translation id="2839555636100404687">การเล่นจะดีขึ้นในเพลย์ลิสต์</translation>
+<translation id="9079526681359439081">เล่นวิดีโอในเบื้องหลัง ควบคุมจากหน้าจอล็อค และอื่นๆ…</translation>
+<translation id="3620862810055853183">เปิดเพลย์ลิสต์</translation>
+<translation id="3861012838874771868">เปิดการตั้งค่าเพลย์ลิสต์</translation>
+<translation id="5220099266891491416">ซ่อนปุ่มเพลย์ลิสต์</translation>
+<translation id="7416347631175891923">ลองเลย!</translation>
+<translation id="1173894706177603556">เปลี่ยนชื่อ</translation>
+<translation id="3596306474342941843">ลบเพลย์ลิสต์</translation>
+<translation id="7765158879357617694">ย้าย</translation>
+<translation id="3803384303807438047">ลบข้อมูลออฟไลน์ของรายการ</translation>
+<translation id="4195643157523330669">เปิดในแท็บใหม่</translation>
+<translation id="4243710787042215766">เปิดในแท็บส่วนตัว</translation>
+<translation id="8261506727792406068">ลบ</translation>
+<translation id="377872456482681602">โปรดเลือกรายการก่อน</translation>
+<translation id="286472539388773794">โปรดใส่ชื่อเพลย์ลิสต์ที่ถูกต้อง</translation>
+<translation id="2824489375399072491">แชร์กับ :</translation>
+<translation id="5319532905552885478">เนื้อหาสื่อถูกเพิ่มเข้าไปในเพลย์ลิสต์เริ่มต้นแล้ว</translation>
+<translation id="4802584673094436231">กำลังเตรียม...</translation>
+<translation id="481455355267255546">รายการถัดไป</translation>
+<translation id="5474757891469990756">ปลดล็อกความสามารถของ Leo อย่างเต็มรูปแบบด้วย Premium:</translation>
+<translation id="4173478269537830374">สำรวจโมเดล AI อื่นๆ</translation>
+<translation id="3453542753968940696">สิทธิพิเศษในการเข้าถึงโมเดลที่ทรงพลังพร้อมทักษะที่แตกต่างก่อนใคร</translation>
+<translation id="3245401959451976966">ปลดล็อกความคิดสร้างสรรค์ของคุณ</translation>
+<translation id="5031778211368112461">โมเดลการเข้าถึงที่เหมาะสำหรับชิ้นงานสร้างสรรค์และการสร้างเนื้อหา</translation>
+<translation id="4165928407303989823">ไม่หลุดประเด็น</translation>
+<translation id="298783097210745222">ได้รับคำตอบที่แม่นยำมากขึ้นเพื่อการสนทนาที่แตกต่างมากขึ้น</translation>
+<translation id="2389665228467129817">แชทได้นานขึ้น</translation>
+<translation id="4314705522985583059">รับขีดจำกัดอัตราที่สูงขึ้นเพื่อการสนทนาที่ยาวนานขึ้น</translation>
+<translation id="6365289557497555234">การสมัครสมาชิกทั้งหมดจะได้รับการต่ออายุโดยอัตโนมัติ แต่สามารถ\nยกเลิกได้ทุกเมื่อก่อนต่ออายุ</translation>
+<translation id="6637015365469044269">อัปเกรดตอนนี้</translation>
+<translation id="614530507403667291">โมเดลเริ่มต้นสำหรับการสนทนาใหม่</translation>
+<translation id="4071849832011229600">โมเดลเริ่มต้น</translation>
+<translation id="7557539689487606886">ใช้งาน Premium</translation>
 </translationbundle>
