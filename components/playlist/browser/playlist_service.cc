@@ -512,21 +512,6 @@ void PlaylistService::NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
   }
 }
 
-void PlaylistService::NotifyMediaFilesUpdated(
-    const GURL& url,
-    const std::vector<mojom::PlaylistItemPtr>& items) {
-  DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
-           << " were updated: count =>" << items.size();
-
-  for (auto& observer : observers_) {
-    std::vector<mojom::PlaylistItemPtr> cloned_items;
-    base::ranges::transform(
-        items, std::back_inserter(cloned_items),
-        [](const auto& item_ptr) { return item_ptr->Clone(); });
-    observer->OnMediaFilesUpdated(url, std::move(cloned_items));
-  }
-}
-
 bool PlaylistService::HasPrefStorePlaylistItem(const std::string& id) const {
   const auto& items = prefs_->GetDict(kPlaylistItemsPref);
   const base::Value::Dict* playlist_info = items.FindDict(id);
@@ -1306,16 +1291,32 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::OnMediaDetected(base::Value media,
-                                      content::WebContents* contents) {
+void PlaylistService::AddObserverForStreaming(
+    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
+  streaming_observers_.Add(std::move(observer));
+}
+
+void PlaylistService::ClearObserverForStreaming() {
+  streaming_observers_.Clear();
+}
+
+void PlaylistService::OnMediaDetected(base::Value media, const GURL& url) {
   if (!*enabled_pref_) {
     return;
   }
 
-  CHECK(contents);
-  const GURL url = contents->GetLastCommittedURL();
   const auto items = GetPlaylistItems(std::move(media), url);
-  NotifyMediaFilesUpdated(url, items);
+
+  DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
+           << " were updated: count => " << items.size();
+
+  for (auto& observer : observers_) {
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(
+        items, std::back_inserter(cloned_items),
+        [](const auto& item_ptr) { return item_ptr->Clone(); });
+    observer->OnMediaFilesUpdated(url, std::move(cloned_items));
+  }
 }
 
 void PlaylistService::OnMediaFileDownloadProgressed(

@@ -8,7 +8,7 @@
 
 #include <string>
 
-#include "base/memory/weak_ptr.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -19,11 +19,10 @@ class WebContents;
 
 namespace playlist {
 
-class PlaylistTabHelper;
-
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
-      public content::WebContentsObserver {
+      public content::WebContentsObserver,
+      public PlaylistMediaHandler {
  public:
   PlaylistBackgroundWebContentsHelper(
       const PlaylistBackgroundWebContentsHelper&) = delete;
@@ -35,8 +34,6 @@ class PlaylistBackgroundWebContentsHelper final
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  PlaylistTabHelper* GetTabHelper() const;
-
   base::OnceCallback<void(bool)> GetSuccessCallback() &&;
 
  private:
@@ -45,12 +42,11 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
-      base::WeakPtr<PlaylistTabHelper> tab_helper,
+      PlaylistService* service,
       const std::string& media_source_api_suppressor,
       const std::string& media_detector,
       base::OnceCallback<void(bool)> success_callback);
 
-  base::WeakPtr<PlaylistTabHelper> tab_helper_;
   std::string media_source_api_suppressor_;
   std::string media_detector_;
   base::OnceCallback<void(bool)> success_callback_;
