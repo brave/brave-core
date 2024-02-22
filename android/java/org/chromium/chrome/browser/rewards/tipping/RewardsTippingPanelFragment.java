@@ -118,7 +118,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     private void init() {
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        mBraveRewardsNativeWorker.AddObserver(this);
+        mBraveRewardsNativeWorker.addObserver(this);
     }
 
     @Override
@@ -129,8 +129,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         mIsTablet = DeviceFormFactor.isNonMultiDisplayContextOnTablet(getActivity());
         if (getArguments() != null) {
             mCurrentTabId = getArguments().getInt(RewardsTippingBannerActivity.TAB_ID_EXTRA);
-            mBraveRewardsNativeWorker.GetPublisherBanner(
-                    mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId));
+            mBraveRewardsNativeWorker.getPublisherBanner(
+                    mBraveRewardsNativeWorker.getPublisherId(mCurrentTabId));
         }
         mContentView = view;
         mSendButton = view.findViewById(R.id.send_tip_button);
@@ -219,7 +219,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                     if (walletStatus == WalletStatus.LOGGED_OUT) {
                         setLogoutStateMessage();
                     } else {
-                        int pubStatus = mBraveRewardsNativeWorker.GetPublisherStatus(mCurrentTabId);
+                        int pubStatus = mBraveRewardsNativeWorker.getPublisherStatus(mCurrentTabId);
                         setPublisherNoteText(pubStatus, walletStatus);
                     }
                 } else {
@@ -270,10 +270,10 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     private void setAlreadyMonthlyContributionSetMessage() {
-        String pubId = mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId);
+        String pubId = mBraveRewardsNativeWorker.getPublisherId(mCurrentTabId);
 
         boolean isPreviouslyMonthlyContributionExist =
-                mBraveRewardsNativeWorker.IsCurrentPublisherInRecurrentDonations(pubId);
+                mBraveRewardsNativeWorker.isCurrentPublisherInRecurrentDonations(pubId);
         if (isPreviouslyMonthlyContributionExist) {
             showAlreadySetMonthlyContribution();
         }
@@ -430,8 +430,8 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                         mAmountSelected = selectedAmount();
 
                         if (mSendButton.isEnabled()) {
-                            mBraveRewardsNativeWorker.Donate(
-                                    mBraveRewardsNativeWorker.GetPublisherId(mCurrentTabId),
+                            mBraveRewardsNativeWorker.donate(
+                                    mBraveRewardsNativeWorker.getPublisherId(mCurrentTabId),
                                     mAmountSelected,
                                     isMonthly.isChecked());
                             mSendButton.setEnabled(false);
@@ -494,7 +494,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
         mCurrency1ValueTextView = view.findViewById(R.id.currencyOneEditText1);
         mCurrency2ValueTextView = view.findViewById(R.id.exchange_amount1);
         mCurrency1ValueEditTextView.addTextChangedListener(mTextChangeListener);
-        mRate = mBraveRewardsNativeWorker.GetWalletRate();
+        mRate = mBraveRewardsNativeWorker.getWalletRate();
         mRadioTipAmount[0] = view.findViewById(R.id.tipChoice1);
         mRadioTipAmount[1] = view.findViewById(R.id.tipChoice2);
         mRadioTipAmount[2] = view.findViewById(R.id.tipChoice3);
@@ -507,7 +507,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
 
     void setBalanceText() {
         double balance = DEFAULT_AMOUNT;
-        BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.GetWalletBalance();
+        BraveRewardsBalance rewards_balance = mBraveRewardsNativeWorker.getWalletBalance();
         if (rewards_balance != null) {
             balance = rewards_balance.getTotal();
             mBalance = balance;
@@ -564,7 +564,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     }
 
     private void initTipChoice(boolean isBat) {
-        mTipChoices = mBraveRewardsNativeWorker.GetTipChoices();
+        mTipChoices = mBraveRewardsNativeWorker.getTipChoices();
         if (mTipChoices.length < 3) {
             // when native not giving tip choices initialize with default values
             mTipChoices = new double[3];
@@ -700,7 +700,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
     public void onDestroyView() {
         super.onDestroyView();
         if (null != mBraveRewardsNativeWorker) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
         }
     }
 
@@ -726,7 +726,7 @@ public class RewardsTippingPanelFragment extends Fragment implements BraveReward
                 mWeb3Url = bannerInfo.getWeb3Url();
                 mWeb3WalletButton.setVisibility(View.VISIBLE);
             }
-            mBraveRewardsNativeWorker.GetExternalWallet();
+            mBraveRewardsNativeWorker.getExternalWallet();
         } catch (JSONException e) {
             Log.e(TAG, "TippingBanner -> CreatorPanel:onAttach JSONException error " + e);
         }
