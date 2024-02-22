@@ -40,39 +40,69 @@ struct ResourceRequest;
 
 namespace body_sniffer {
 
+// An interface for handlers that require the original content of the page.
 class BodyHandler {
  public:
   enum class Action {
+    // Default value, shouldn be never returned from OnBodyUpdated.
     kNone,
+    // The handler needs more data.
     kContinue,
+    // The handler has received enough data.
+    // Completed handlers are stopped to receive data updates notifications.
     kComplete,
+    // The handler decides to cancel the loading.
     kCancel,
+    // The handler decides to abort the loading.
     kAbort,
   };
 
   virtual ~BodyHandler() = default;
 
+  // Called on request start, returns true if request is interesting for this
+  // handler.
   virtual bool OnRequest(network::ResourceRequest* request) = 0;
+
+  // Called on response received, returns true if the handler wants to process
+  // this response.
   virtual bool ShouldProcess(
       const GURL& response_url,
       network::mojom::URLResponseHead* response_head) = 0;
+
+  // Called when the page content reaches the consumer.
   virtual void OnComplete() = 0;
+
+  // Called every time when url loader receives a chunk of data.
+  // is_complete is true when the last chunk is received.
   virtual Action OnBodyUpdated(const std::string& body, bool is_complete) = 0;
 
+  // If it returns true, the handler needs the entire page content to transform
+  // it (e.g. Distill).
   virtual bool IsTransformer() const = 0;
+
+  // Called only if the IsTransformer() returns true, all transformers
+  // receive the |body| in the order of creation. First one gets the original
+  // body, the second one will get the result of the first and so on.
   virtual void Transform(std::string body,
                          base::OnceCallback<void(std::string)> on_complete) = 0;
+
+  // Updates the response head.
   virtual void UpdateResponseHead(
       network::mojom::URLResponseHead* response_head) = 0;
 };
 
+// An interface for handlers that completely replace the original content of the
+// page.
 class BodyProducer {
  public:
   virtual ~BodyProducer() = default;
 
+  // Updates the original response head.
   virtual void UpdateResponseHead(
       network::mojom::URLResponseHead* response_head) = 0;
+  // Content to be sent to the consumer.
   virtual std::string TakeContent() = 0;
+  // Called when the content reaches the consumer.
   virtual void OnComplete() = 0;
 };
 
@@ -82,6 +112,13 @@ using BodyHandlersPtr = std::vector<std::unique_ptr<BodyHandler>>;
 using BodyProducerPtr = std::unique_ptr<BodyProducer>;
 using Handler = absl::variant<BodyProducerPtr, BodyHandlersPtr>;
 
+// When created with BodyHandlersPtr the BodySnifferURLLoader continuously
+// receives the content of the page and passes every chunk to handlers. If all
+// handlers decide to kComplete (or the entire body is received) then
+// BodySnifferURLLoader stops sniffing and forwards the content to the consumer.
+//
+// When created with BodyProducerPtr the BodySnifferURLLoader stops the original
+// producer and forwards producer's content to the consumer.
 class BodySnifferURLLoader : public network::mojom::URLLoaderClient,
                              public network::mojom::URLLoader {
  public:

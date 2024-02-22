@@ -20,7 +20,6 @@
 #include "brave/components/speedreader/speedreader_rewriter_service.h"
 #include "brave/components/speedreader/speedreader_service.h"
 #include "brave/components/speedreader/speedreader_util.h"
-#include "services/network/public/cpp/content_security_policy/content_security_policy.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace speedreader {
@@ -96,9 +95,6 @@ bool SpeedreaderBodyDistiller::ShouldProcess(
 }
 
 void SpeedreaderBodyDistiller::OnComplete() {
-  // TODO(keur, iefremov): This API could probably be improved with an enum
-  // indicating distill success, distill fail, load from cache.
-  // |complete_status_| has an |exists_in_cache| field.
   if (speedreader_delegate_) {
     speedreader_delegate_->OnDistillComplete(distillation_result_);
   }
