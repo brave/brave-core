@@ -53,6 +53,9 @@ export const Button = styled(WalletButton)<{
   justify-content: center;
   padding: ${(p) => (p.morePadding ? 10 : 8)}px 12px;
   white-space: nowrap;
+  :disabled {
+    cursor: not-allowed;
+  }
   &:hover {
     background-color: var(--button-background-hover);
   }
