@@ -626,7 +626,7 @@ void ConversationDriver::GenerateQuestions() {
 
 void ConversationDriver::OnSuggestedQuestionsResponse(
     int64_t navigation_id,
-    std::vector<std::string> result) {
+    base::expected<std::vector<std::string>, mojom::APIError> result) {
   // We might have navigated away whilst this async operation is in
   // progress, so check if we're the same navigation.
   if (navigation_id != current_navigation_id_) {
@@ -634,9 +634,16 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     return;
   }
 
-  suggestions_.insert(suggestions_.end(), result.begin(), result.end());
-  suggestion_generation_status_ =
-      mojom::SuggestionGenerationStatus::HasGenerated;
+  if (result.has_value()) {
+    suggestions_.insert(suggestions_.end(), result->begin(), result->end());
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::HasGenerated;
+  } else {
+    // TODO(nullhook): Set a specialized error state generated questions
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::CanGenerate;
+  }
+
   // Notify observers
   OnSuggestedQuestionsChanged();
   DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");
