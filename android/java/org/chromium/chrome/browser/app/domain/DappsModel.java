@@ -77,11 +77,12 @@ public class DappsModel implements KeyringServiceObserver {
             return;
         }
 
-        mKeyringService.getAllAccounts(allAccounts -> {
-            List<AccountInfo> accounts =
-                    Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
-            callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
-        });
+        mKeyringService.getAllAccounts(
+                allAccounts -> {
+                    List<AccountInfo> accounts =
+                            Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
+                    callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
+                });
     }
 
     public LiveData<List<SignTransactionRequest>> fetchSignTxRequest() {

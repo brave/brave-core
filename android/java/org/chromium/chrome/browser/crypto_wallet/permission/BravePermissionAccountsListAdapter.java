@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -38,49 +37,55 @@ public class BravePermissionAccountsListAdapter
         extends RecyclerView.Adapter<BravePermissionAccountsListAdapter.ViewHolder> {
 
     /**
-     * Mode determines different styles in the UI,
-     * and offers different interactions with the available accounts.
+     * Mode determines different styles in the UI, and offers different interactions with the
+     * available accounts.
      */
     public enum Mode {
         /**
-         * Multiple accounts can be selected to be connected to a DApp.
-         * ETH accounts support multiple account selection.
+         * Multiple accounts can be selected to be connected to a DApp. ETH accounts support
+         * multiple account selection.
+         *
          * @see BraveDappPermissionPromptDialog
          */
         MULTIPLE_ACCOUNT_SELECTION,
         /**
-         * Only a single account can be selected to be connected to a DApp.
-         * SOL accounts support single account selection.
+         * Only a single account can be selected to be connected to a DApp. SOL accounts support
+         * single account selection.
+         *
          * @see BraveDappPermissionPromptDialog
          */
         SINGLE_ACCOUNT_SELECTION,
         /**
-         * Account connection mode shows for every account supported by a given DApp
-         * its relative permission, giving also the ability to grant, or revoke it for that DApp.
+         * Account connection mode shows for every account supported by a given DApp its relative
+         * permission, giving also the ability to grant, or revoke it for that DApp.
+         *
          * @see org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment
          */
         ACCOUNT_CONNECTION
     }
+
     private final ExecutorService mExecutor;
     private final Handler mHandler;
     private final List<Integer> mCheckedPositions = new ArrayList<>();
     private int mSelectedPosition = -1;
-    @Nullable
-    private final PermissionListener mDelegate;
-    @Nullable
-    private final AccountChangeListener mAccountChangeListener;
-    @NonNull
-    private final Mode mMode;
-    @NonNull
-    private AccountInfo[] mAccountInfoArray;
+    @Nullable private final PermissionListener mDelegate;
+    @Nullable private final AccountChangeListener mAccountChangeListener;
+    @NonNull private final Mode mMode;
+    @NonNull private AccountInfo[] mAccountInfoArray;
     private HashSet<AccountInfo> mAccountsWithPermissions;
     private AccountInfo mSelectedAccount;
 
     public interface PermissionListener {
-        @NonNull HashSet<AccountInfo> getAccountsWithPermissions();
-        @Nullable AccountInfo getSelectedAccount();
+        @NonNull
+        HashSet<AccountInfo> getAccountsWithPermissions();
+
+        @Nullable
+        AccountInfo getSelectedAccount();
+
         void connectAccount(@NonNull final AccountInfo account);
+
         void disconnectAccount(@NonNull final AccountInfo account);
+
         void switchAccount(@NonNull final AccountInfo account);
     }
 
@@ -89,7 +94,10 @@ public class BravePermissionAccountsListAdapter
     }
 
     public BravePermissionAccountsListAdapter(
-            @NonNull final AccountInfo[] accountInfo, @NonNull final Mode mode, @Nullable final PermissionListener delegate, @Nullable final AccountChangeListener accountChangeListener) {
+            @NonNull final AccountInfo[] accountInfo,
+            @NonNull final Mode mode,
+            @Nullable final PermissionListener delegate,
+            @Nullable final AccountChangeListener accountChangeListener) {
         mAccountInfoArray = accountInfo;
         mMode = mode;
         mDelegate = delegate;
@@ -133,21 +141,26 @@ public class BravePermissionAccountsListAdapter
 
         ViewHolder viewHolder = new ViewHolder(view);
         if (mMode != Mode.ACCOUNT_CONNECTION) {
-            viewHolder.itemView.setOnClickListener(v -> {
-                if (viewHolder.accountRadioButton.getVisibility() == View.VISIBLE) {
-                    viewHolder.accountRadioButton.setChecked(true);
-                } else if (viewHolder.accountCheck.getVisibility() == View.VISIBLE) {
-                    viewHolder.accountCheck.setChecked(!viewHolder.accountCheck.isChecked());
-                }
-            });
+            viewHolder.itemView.setOnClickListener(
+                    v -> {
+                        if (viewHolder.accountRadioButton.getVisibility() == View.VISIBLE) {
+                            viewHolder.accountRadioButton.setChecked(true);
+                        } else if (viewHolder.accountCheck.getVisibility() == View.VISIBLE) {
+                            viewHolder.accountCheck.setChecked(
+                                    !viewHolder.accountCheck.isChecked());
+                        }
+                    });
         }
         return viewHolder;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
+    public void onBindViewHolder(
+            @NonNull ViewHolder holder, int position, @NonNull List<Object> payloads) {
         // Skip binding function when payload matches the previous selected position.
-        if (payloads.isEmpty() || !(payloads.get(0) instanceof Integer) || ((int) payloads.get(0)) != position) {
+        if (payloads.isEmpty()
+                || !(payloads.get(0) instanceof Integer)
+                || ((int) payloads.get(0)) != position) {
             super.onBindViewHolder(holder, position, payloads);
         }
     }
@@ -160,10 +173,11 @@ public class BravePermissionAccountsListAdapter
         Utils.setBlockiesBitmapResourceFromAccount(
                 mExecutor, mHandler, holder.iconImg, accountInfo, true, false);
 
-        switch(mMode) {
+        switch (mMode) {
             case SINGLE_ACCOUNT_SELECTION -> {
                 holder.accountRadioButton.setVisibility(View.VISIBLE);
-                if (mSelectedAccount != null && mSelectedAccount.address.equals(accountInfo.address)) {
+                if (mSelectedAccount != null
+                        && mSelectedAccount.address.equals(accountInfo.address)) {
                     holder.accountRadioButton.setChecked(true);
                 } else {
                     holder.accountRadioButton.setChecked(position == mSelectedPosition);
@@ -175,11 +189,13 @@ public class BravePermissionAccountsListAdapter
 
             case MULTIPLE_ACCOUNT_SELECTION -> {
                 holder.accountCheck.setVisibility(View.VISIBLE);
-                if (mSelectedAccount != null && mSelectedAccount.address.equals(accountInfo.address)) {
+                if (mSelectedAccount != null
+                        && mSelectedAccount.address.equals(accountInfo.address)) {
                     holder.accountCheck.setChecked(true);
                 }
                 holder.accountCheck.setOnCheckedChangeListener(
-                        (buttonView, checked) -> setUpListener(holder, accountInfo, checked, false));
+                        (buttonView, checked) ->
+                                setUpListener(holder, accountInfo, checked, false));
             }
 
             case ACCOUNT_CONNECTION -> {
@@ -187,8 +203,10 @@ public class BravePermissionAccountsListAdapter
                 boolean hasPermission = hasPermission(accountInfo.address);
                 boolean isConnected = accountInfo.address.equals(mSelectedAccount.address);
                 if (CoinType.SOL == mSelectedAccount.accountId.coin) {
-                    connectionButtonText = hasPermission ? R.string.brave_wallet_site_permissions_revoke
-                            : R.string.brave_wallet_site_permissions_trust;
+                    connectionButtonText =
+                            hasPermission
+                                    ? R.string.brave_wallet_site_permissions_revoke
+                                    : R.string.brave_wallet_site_permissions_trust;
                 } else {
                     if (hasPermission) {
                         if (isConnected) {
@@ -200,37 +218,45 @@ public class BravePermissionAccountsListAdapter
                         connectionButtonText = R.string.fragment_connect_account_connect;
                     }
                 }
-                holder.accountAction.setText(holder.accountAction.getContext().getResources().getString(
-                        connectionButtonText));
+                holder.accountAction.setText(
+                        holder.accountAction
+                                .getContext()
+                                .getResources()
+                                .getString(connectionButtonText));
 
                 holder.accountAction.setVisibility(View.VISIBLE);
-                holder.accountAction.setOnClickListener(v -> {
-                    if (mDelegate == null) {
-                        return;
-                    }
-                    if (CoinType.SOL == accountInfo.accountId.coin) {
-                        if (hasPermission) {
-                            mDelegate.disconnectAccount(accountInfo);
-                        } else {
-                            mDelegate.connectAccount(accountInfo);
-                        }
-                    } else {
-                        if (hasPermission) {
-                            if (isConnected) {
-                                mDelegate.disconnectAccount(accountInfo);
-                            } else {
-                                mDelegate.switchAccount(accountInfo);
+                holder.accountAction.setOnClickListener(
+                        v -> {
+                            if (mDelegate == null) {
+                                return;
                             }
-                        } else {
-                            mDelegate.connectAccount(accountInfo);
-                        }
-                    }
-                });
+                            if (CoinType.SOL == accountInfo.accountId.coin) {
+                                if (hasPermission) {
+                                    mDelegate.disconnectAccount(accountInfo);
+                                } else {
+                                    mDelegate.connectAccount(accountInfo);
+                                }
+                            } else {
+                                if (hasPermission) {
+                                    if (isConnected) {
+                                        mDelegate.disconnectAccount(accountInfo);
+                                    } else {
+                                        mDelegate.switchAccount(accountInfo);
+                                    }
+                                } else {
+                                    mDelegate.connectAccount(accountInfo);
+                                }
+                            }
+                        });
             }
         }
     }
 
-    private void setUpListener(@NonNull final ViewHolder holder, @NonNull final AccountInfo accountInfo, final boolean checked, final boolean singleSelection) {
+    private void setUpListener(
+            @NonNull final ViewHolder holder,
+            @NonNull final AccountInfo accountInfo,
+            final boolean checked,
+            final boolean singleSelection) {
         if (checked) {
             mCheckedPositions.add(holder.getBindingAdapterPosition());
             if (singleSelection) {
@@ -240,12 +266,13 @@ public class BravePermissionAccountsListAdapter
                 if (getItemCount() > 1) {
                     // Notify data set changed inside `Handler#post()` because of
                     // https://issuetracker.google.com/issues/37136189
-                    mHandler.post(() -> {
-                        // Pass the selected position in the payload so it will be
-                        // excluded from `onBindViewHolder(ViewHolder, int)`. Excluding
-                        // it from another binding will fully preserve animation selection.
-                        notifyItemRangeChanged(0, getItemCount(), mSelectedPosition);
-                    });
+                    mHandler.post(
+                            () -> {
+                                // Pass the selected position in the payload so it will be
+                                // excluded from `onBindViewHolder(ViewHolder, int)`. Excluding
+                                // it from another binding will fully preserve animation selection.
+                                notifyItemRangeChanged(0, getItemCount(), mSelectedPosition);
+                            });
                 }
             }
         } else {

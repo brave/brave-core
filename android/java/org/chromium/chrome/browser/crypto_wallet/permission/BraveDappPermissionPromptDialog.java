@@ -5,8 +5,6 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
-import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
@@ -37,6 +35,7 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.components.browser_ui.modaldialog.ModalDialogView;
@@ -55,9 +54,7 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Dialog to grant website permissions to use DApps.
- */
+/** Dialog to grant website permissions to use DApps. */
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ConnectionErrorHandler {
     private static final String TAG = "BraveDappPermission";
@@ -188,14 +185,21 @@ public class BraveDappPermissionPromptDialog
         assert mWalletModel != null;
         // Solana accounts support only single account selection,
         // while Ethereum account offer multiple selection mode.
-        final Mode mode = mCoinType == CoinType.SOL ? Mode.SINGLE_ACCOUNT_SELECTION : Mode.MULTIPLE_ACCOUNT_SELECTION;
-        mAccountsListAdapter = new BravePermissionAccountsListAdapter(new AccountInfo[0], mode, null,
-                (account, checked) -> {
-                    if (mPermissionDialogPositiveButton != null) {
-                        mPermissionDialogPositiveButton.setEnabled(
-                                getSelectedAccounts().length > 0);
-                    }
-                });
+        final Mode mode =
+                mCoinType == CoinType.SOL
+                        ? Mode.SINGLE_ACCOUNT_SELECTION
+                        : Mode.MULTIPLE_ACCOUNT_SELECTION;
+        mAccountsListAdapter =
+                new BravePermissionAccountsListAdapter(
+                        new AccountInfo[0],
+                        mode,
+                        null,
+                        (account, checked) -> {
+                            if (mPermissionDialogPositiveButton != null) {
+                                mPermissionDialogPositiveButton.setEnabled(
+                                        getSelectedAccounts().length > 0);
+                            }
+                        });
         mRecyclerView.setAdapter(mAccountsListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
