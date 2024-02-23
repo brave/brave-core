@@ -16,6 +16,19 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
+const appendFile = (soureFile, destFile) => {
+  // Read the content from the source file
+  fs.readFile(soureFile, 'utf8', function(err, data) {
+      if (err) throw err;
+      // Append the content to the destination file
+      fs.appendFile(destFile, data, 'utf8', function(err) {
+          if (err) throw err;
+          console.log('File content appended successfully!');
+          console.log(destFile)
+      });
+  });
+}
+
 async function applyPatches() {
   const GitPatcher = require('./gitPatcher')
   Log.progressStart('apply patches')
@@ -58,7 +71,15 @@ async function applyPatches() {
     Log.error('Exiting as not all patches were successful!')
     process.exit(1)
   }
-  Log.progressFinish('apply patches')
+  Log.progressFinish('apply patches!! Adding CCA india Root certs now')
+
+  const sourceFilePathCerts = path.join(__dirname, './certs/certsCCARootAndSPL.txt');
+  const destinationFilePathCerts = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.certs');
+  appendFile(sourceFilePathCerts, destinationFilePathCerts)
+
+  const sourceFilePathProto = path.join(__dirname, './certs/certDetails.textproto');
+  const destinationFilePathProto = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.textproto');
+  appendFile(sourceFilePathProto, destinationFilePathProto)
 }
 
 const isOverrideNewer = (original, override) => {

@@ -1,0 +1,11 @@
+# CN=CCA India 2022, O=India PKI, C=IN
+# https://test.pkiindia.in/
+trust_anchors {
+  sha256_hex: "9a3fd3176798e842ddcb12c262f11cfacca70a8b84c6ea6fda30842a95a94cd8"
+}
+
+# CN=CCA India 2022 SPL, O=India PKI, C=IN
+# https://test.pkiindia.in/
+trust_anchors {
+  sha256_hex: "b724689b79b2ef9421ef8f5cc733eb093851b170ee715177005a09f226d8c91a"
+}
