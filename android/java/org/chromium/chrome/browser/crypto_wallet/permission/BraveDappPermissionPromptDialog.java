@@ -39,7 +39,6 @@ import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccou
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.components.browser_ui.modaldialog.ModalDialogView;
-import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.LayoutInflaterUtils;
@@ -76,15 +75,20 @@ public class BraveDappPermissionPromptDialog
     private WalletModel mWalletModel;
 
     @CalledByNative
-    private static BraveDappPermissionPromptDialog create(long nativeDialogController,
-            @NonNull WindowAndroid windowAndroid, String favIconURL,
+    private static BraveDappPermissionPromptDialog create(
+            long nativeDialogController,
+            @NonNull WindowAndroid windowAndroid,
+            String favIconURL,
             @CoinType.EnumType int coinType) {
         return new BraveDappPermissionPromptDialog(
                 nativeDialogController, windowAndroid, favIconURL, coinType);
     }
 
-    public BraveDappPermissionPromptDialog(long nativeDialogController, WindowAndroid windowAndroid,
-                                           String favIconURL, @CoinType.EnumType int coinType) {
+    public BraveDappPermissionPromptDialog(
+            long nativeDialogController,
+            WindowAndroid windowAndroid,
+            String favIconURL,
+            @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
         mFavIconURL = favIconURL;
         mContext = windowAndroid.getActivity().get();
