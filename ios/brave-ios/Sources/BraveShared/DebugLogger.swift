@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import UIKit
+import Shared
 
 public enum LoggerType {
   case urp, secureState
@@ -20,6 +21,11 @@ public enum LoggerType {
 
 public struct DebugLogger {
   public static func log(for type: LoggerType, text: String) {
+    // Secure State Logger should not be invoked for public channels
+    guard AppConstants.buildChannel.isPublic, type == .secureState else {
+      return
+    }
+    
     var logs = UserDefaults.standard.string(forKey: type.prefsKey) ?? ""
 
     let date = Date()
