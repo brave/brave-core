@@ -10,6 +10,7 @@ import org.chromium.base.supplier.ObservableSupplierImpl;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsSizer;
 import org.chromium.chrome.browser.fullscreen.FullscreenManager;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -27,12 +28,24 @@ class BraveBottomControlsMediator extends BottomControlsMediator {
     private int mBottomControlsHeightSingle;
     private int mBottomControlsHeightDouble;
 
-    BraveBottomControlsMediator(WindowAndroid windowAndroid, PropertyModel model,
-            BrowserControlsSizer controlsSizer, FullscreenManager fullscreenManager,
-            TabObscuringHandler tabObscuringHandler, int bottomControlsHeight,
-            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier) {
-        super(windowAndroid, model, controlsSizer, fullscreenManager, tabObscuringHandler,
-                bottomControlsHeight, overlayPanelVisibilitySupplier);
+    BraveBottomControlsMediator(
+            WindowAndroid windowAndroid,
+            PropertyModel model,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            TabObscuringHandler tabObscuringHandler,
+            int bottomControlsHeight,
+            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier) {
+        super(
+                windowAndroid,
+                model,
+                controlsSizer,
+                fullscreenManager,
+                tabObscuringHandler,
+                bottomControlsHeight,
+                overlayPanelVisibilitySupplier,
+                edgeToEdgeControllerSupplier);
 
         mTabGroupUiVisibleSupplier.set(false);
         mBottomToolbarVisibleSupplier.set(false);
