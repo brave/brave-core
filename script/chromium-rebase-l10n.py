@@ -16,8 +16,7 @@ import argparse
 import os.path
 import sys
 import glob
-from lib.l10n.grd_utils import (braveify_grd_in_place,
-                                braveify_grd_tree,
+from lib.l10n.grd_utils import (braveify_grd_in_place, braveify_grd_tree,
                                 GOOGLE_CHROME_STRINGS_MIGRATION_MAP,
                                 get_override_file_path, textify,
                                 write_xml_file_from_tree)
@@ -48,8 +47,8 @@ def write_new_translations_to_xtb(xtb_path, messages):
     brave_xtb_xml_tree = etree.parse(xtb_path, parser)
     bundle_element = brave_xtb_xml_tree.xpath('//translationbundle')[0]
     for message in messages:
-        google_elem = brave_xtb_xml_tree.xpath(
-            '//translation[@id="{}"]'.format(message[0]))
+        google_elem = brave_xtb_xml_tree.xpath('//translation[@id="{}"]'.format(
+            message[0]))
         element = google_elem[0] if google_elem else etree.SubElement(
             bundle_element, 'translation')
         element.set('id', message[0])
@@ -78,9 +77,10 @@ def migrate_google_chrome_xtb_translations_for_messages(message_ids):
             print('Unable to find brave translation file {}'.format(
                 brave_xtb_path))
             return False
-        messages = [(message_id, google_xtb_xml_tree.xpath(
-            '//translation[@id="' + message_id + '"]')[0].text)
-                   for message_id in message_ids]
+        messages = [(message_id,
+                     google_xtb_xml_tree.xpath('//translation[@id="' +
+                                               message_id + '"]')[0].text)
+                    for message_id in message_ids]
 
         write_new_translations_to_xtb(brave_xtb_path, messages)
 
@@ -175,8 +175,8 @@ def generate_overrides_and_replace_strings(source_string_path):
         # Fix output filenames to generate "brave" files instead of "chromium".
         if os.path.basename(source_string_path) == 'brave_strings.grd':
             for xtb_filename in modified_xml_tree.xpath(
-                "//file[re:test(@path, '.*\\.xtb')]",
-                namespaces={"re": "http://exslt.org/regular-expressions"}):
+                    "//file[re:test(@path, '.*\\.xtb')]",
+                    namespaces={"re": "http://exslt.org/regular-expressions"}):
                 xtb_filename.attrib['path'] = \
                     xtb_filename.attrib['path'].replace('chromium_strings',
                                                         'brave_strings')

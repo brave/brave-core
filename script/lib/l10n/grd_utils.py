@@ -153,10 +153,9 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
         brave_source_root)
     chromium_xtb_files = get_xtb_files(chromium_grd_file_path)
     if len(xtb_files) != len(chromium_xtb_files):
-        assert False, (
-            f'XTB files counts in {grd_file_path} and ' +
-            f'{chromium_grd_file_path} do not match ( ' +
-            f'{len(xtb_files)} vs {len(chromium_xtb_files)}).')
+        assert False, (f'XTB files counts in {grd_file_path} and ' +
+                       f'{chromium_grd_file_path} do not match ( ' +
+                       f'{len(xtb_files)} vs {len(chromium_xtb_files)}).')
 
     grd_base_path = os.path.dirname(grd_file_path)
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
@@ -178,8 +177,10 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
         assert chromium_grd_strings[idx][0] == grd_string[0]
 
     # [2] is the string fingerprint
-    fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
-              (idx, _) in enumerate(grd_strings)}
+    fp_map = {
+        chromium_grd_strings[idx][2]: grd_strings[idx][2]
+        for (idx, _) in enumerate(grd_strings)
+    }
 
     xtb_file_paths = [os.path.join(
         grd_base_path, path) for (_, path) in xtb_files]
