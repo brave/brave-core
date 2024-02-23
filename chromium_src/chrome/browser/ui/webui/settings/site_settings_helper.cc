@@ -95,25 +95,23 @@ std::string_view ContentSettingsTypeToGroupName(ContentSettingsType type) {
   return ContentSettingsTypeToGroupName_ChromiumImpl(type);
 }
 
-const std::vector<ContentSettingsType>& GetVisiblePermissionCategories() {
-  static base::NoDestructor<std::vector<ContentSettingsType>> types{
-      {ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
-       ContentSettingsType::BRAVE_SOLANA,
-       ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
-       ContentSettingsType::BRAVE_LOCALHOST_ACCESS}};
-  static bool initialized = false;
-  if (!initialized) {
-    auto& base_types = GetVisiblePermissionCategories_ChromiumImpl();
-    types->insert(types->end(), base_types.begin(), base_types.end());
+std::vector<ContentSettingsType> GetVisiblePermissionCategories(
+    const std::string& origin,
+    Profile* profile) {
+  static constexpr ContentSettingsType extra_types[] = {
+      ContentSettingsType::AUTOPLAY, ContentSettingsType::BRAVE_ETHEREUM,
+      ContentSettingsType::BRAVE_SOLANA,
+      ContentSettingsType::BRAVE_GOOGLE_SIGN_IN,
+      ContentSettingsType::BRAVE_LOCALHOST_ACCESS};
 
-    if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
-      std::erase(*types, ContentSettingsType::SERIAL_GUARD);
-    }
+  auto types = GetVisiblePermissionCategories_ChromiumImpl(origin, profile);
 
-    initialized = true;
+  if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
+    std::erase(types, ContentSettingsType::SERIAL_GUARD);
   }
 
-  return *types;
+  types.insert(std::end(types), std::begin(extra_types), std::end(extra_types));
+  return types;
 }
 
 }  // namespace site_settings
