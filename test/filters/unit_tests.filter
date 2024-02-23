@@ -525,9 +525,6 @@
 # pages more quickly" (via prefetch::prefs::kNetworkPredictionOptions pref)
 -NavigationPredictorUserInteractionsTest.ProcessPointerEventUsingMLModel
 
-# This test fails because we disable kPartitionedCookies
--ExtensionCookiesTest.PartitionKeySerialization
-
 # These tests fail a CalledOnValidSequence check when calling FindPreference
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedDefaultValue
 -BrowserPrefsTest.MigrateObsoleteProfilePrefSyncRequestedSetToFalse
