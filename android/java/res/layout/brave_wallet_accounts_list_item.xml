@@ -5,7 +5,6 @@
      You can obtain one at https://mozilla.org/MPL/2.0/. */ -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
@@ -57,6 +56,13 @@
        android:layout_height="wrap_content"
        android:visibility="gone"
        android:layout_gravity="end" />
+
+    <com.google.android.material.radiobutton.MaterialRadioButton
+        android:id="@+id/account_radio_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_gravity="end" />
 
     <TextView
         android:id="@+id/account_action"
