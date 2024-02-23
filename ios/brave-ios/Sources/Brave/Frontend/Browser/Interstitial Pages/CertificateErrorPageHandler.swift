@@ -17,9 +17,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   }
 
   func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
-    let hasCertificate =
-      model.components.valueForQuery("certerror") != nil
-      && model.components.valueForQuery("peeruntrusted") == nil
+    let hasCertificate = model.components.valueForQuery("certerror") != nil
 
     guard let asset = Bundle.module.path(forResource: "CertificateError", ofType: "html") else {
       assert(false)

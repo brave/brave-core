@@ -67,24 +67,8 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
-      selectedTab.url?.origin != webView.url?.origin
-    {
-      if let url = webView.url {
-        if !InternalURL.isValid(url: url) {
-          // reset secure content state to unknown until page can be evaluated
-          selectedTab.sslPinningError = nil
-          selectedTab.sslPinningTrust = nil
-          selectedTab.secureContentState = .unknown
-          logSecureContentState(
-            tab: selectedTab,
-            details:
-              "DidStartProvisionalNavigation - Reset secure content state to unknown until page can be evaluated"
-          )
-
-          updateToolbarSecureContentState(.unknown)
-        }
-      }
-
+       selectedTab.url?.origin != webView.url?.origin {
+      
       // new site has a different origin, hide wallet icon.
       tabManager.selectedTab?.isWalletIconVisible = false
       // new site, reset connected addresses
@@ -746,21 +730,23 @@ extension BrowserViewController: WKNavigationDelegate {
     download.delegate = self
   }
 
-  nonisolated public func webView(
-    _ webView: WKWebView,
-    respondTo challenge: URLAuthenticationChallenge
-  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
 
+  @MainActor
+  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
     // If this is a certificate challenge, see if the certificate has previously been
     // accepted by the user.
     let host = challenge.protectionSpace.host
     let origin = "\(host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-      let trust = challenge.protectionSpace.serverTrust,
-      let cert = (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first,
-      profile.certStore.containsCertificate(cert, forOrigin: origin)
-    {
-      return (.useCredential, URLCredential(trust: trust))
+       let trust = challenge.protectionSpace.serverTrust {
+      
+      let cert = await Task<SecCertificate?, Never>.detached {
+        return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
+      }.value
+      
+      if let cert = cert, profile.certStore.containsCertificate(cert, forOrigin: origin) {
+        return (.useCredential, URLCredential(trust: trust))
+      }
     }
 
     // Certificate Pinning
@@ -782,13 +768,8 @@ extension BrowserViewController: WKNavigationDelegate {
         if result == Int32.min {
           // Cert is POTENTIALLY invalid and cannot be pinned
 
-          await MainActor.run {
-            // Handle the potential error later in `didFailProvisionalNavigation`
-            self.tab(for: webView)?.sslPinningTrust = serverTrust
-          }
-
           // Let WebKit handle the request and validate the cert
-          // This is the same as calling `BraveCertificateUtils.evaluateTrust`
+          // This is the same as calling `BraveCertificateUtils.evaluateTrust` but with more error info provided by WebKit
           return (.performDefaultHandling, nil)
         }
 
@@ -796,27 +777,19 @@ extension BrowserViewController: WKNavigationDelegate {
         Logger.module.error("CERTIFICATE_INVALID")
         let errorCode = CFNetworkErrors.braveCertificatePinningFailed.rawValue
 
-        let underlyingError = NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)]
-        )
+        let underlyingError = NSError(domain: kCFErrorDomainCFNetwork as String,
+                                      code: Int(errorCode),
+                                      userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)])
+        
+        let error = NSError(domain: kCFErrorDomainCFNetwork as String,
+                            code: Int(errorCode),
+                            userInfo: [NSURLErrorFailingURLErrorKey: webView.url as Any,
+                                       "NSErrorPeerCertificateChainKey": certificateChain,
+                                               NSUnderlyingErrorKey: underlyingError])
 
-        let error = await NSError(
-          domain: kCFErrorDomainCFNetwork as String,
-          code: Int(errorCode),
-          userInfo: [
-            NSURLErrorFailingURLErrorKey: webView.url as Any,
-            "NSErrorPeerCertificateChainKey": certificateChain,
-            NSUnderlyingErrorKey: underlyingError,
-          ]
-        )
-
-        await MainActor.run {
-          // Handle the error later in `didFailProvisionalNavigation`
-          self.tab(for: webView)?.sslPinningError = error
-        }
-
+        // Handle the error later in `didFailProvisionalNavigation`
+        self.tab(for: webView)?.sslPinningError = error
+        
         return (.cancelAuthenticationChallenge, nil)
       }
     }
@@ -825,39 +798,34 @@ extension BrowserViewController: WKNavigationDelegate {
     let protectionSpace = challenge.protectionSpace
     let credential = challenge.proposedCredential
     let previousFailureCount = challenge.previousFailureCount
-    return await Task { @MainActor in
-      guard
-        protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
-          || protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
-          || protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-        let tab = tab(for: webView)
-      else {
-        return (.performDefaultHandling, nil)
+
+    guard protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
+            protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
+            protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
+          let tab = tab(for: webView)
+    else {
+      return (.performDefaultHandling, nil)
+    }
+      
+    // The challenge may come from a background tab, so ensure it's the one visible.
+    tabManager.selectTab(tab)
+
+    do {
+      let credentials = try await Authenticator.handleAuthRequest(
+        self,
+        credential: credential,
+        protectionSpace: protectionSpace,
+        previousFailureCount: previousFailureCount
+      )
+      
+      if BasicAuthCredentialsManager.validDomains.contains(host) {
+        BasicAuthCredentialsManager.setCredential(origin: origin, credential: credentials.credentials)
       }
-
-      // The challenge may come from a background tab, so ensure it's the one visible.
-      tabManager.selectTab(tab)
-
-      do {
-        let credentials = try await Authenticator.handleAuthRequest(
-          self,
-          credential: credential,
-          protectionSpace: protectionSpace,
-          previousFailureCount: previousFailureCount
-        )
-
-        if BasicAuthCredentialsManager.validDomains.contains(host) {
-          BasicAuthCredentialsManager.setCredential(
-            origin: origin,
-            credential: credentials.credentials
-          )
-        }
-
-        return (.useCredential, credentials.credentials)
-      } catch {
-        return (.rejectProtectionSpace, nil)
-      }
-    }.value
+      
+      return (.useCredential, credentials.credentials)
+    } catch {
+      return (.rejectProtectionSpace, nil)
+    }
   }
 
   public func webView(_ webView: WKWebView, didCommit navigation: WKNavigation!) {
@@ -991,20 +959,6 @@ extension BrowserViewController: WKNavigationDelegate {
   ) {
     guard let tab = tab(for: webView) else { return }
 
-    // WebKit does not update certs on cancellation of a frame load
-    // So manually trigger the notification with the current cert
-    // Also, when Chromium cert validation passes, BUT Apple cert validation fails, the request is cancelled automatically by WebKit
-    // In such a case, the webView.serverTrust is `nil`. The only time we have a valid trust is when we received the challenge
-    // so we need to update the URL-Bar to show that serverTrust when WebKit's is nil.
-    logSecureContentState(tab: tab, details: "ObserveValue trigger in didFailProvisionalNavigation")
-
-    observeValue(
-      forKeyPath: KVOConstants.serverTrust.keyPath,
-      of: webView,
-      change: [.newKey: webView.serverTrust ?? tab.sslPinningTrust as Any, .kindKey: 1],
-      context: nil
-    )
-
     // Ignore the "Frame load interrupted" error that is triggered when we cancel a request
     // to open an external application and hand it over to UIApplication.openURL(). The result
     // will be that we switch to the external app, for example the app store, while keeping the
@@ -1036,23 +990,10 @@ extension BrowserViewController: WKNavigationDelegate {
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
 
-      // The certificate came from the WebKit SSL Handshake validation and the cert is untrusted
-      if webView.serverTrust == nil, let serverTrust = tab.sslPinningTrust,
-        error.userInfo["NSErrorPeerCertificateChainKey"] == nil
-      {
-        // Build a cert chain error to display in the cert viewer in such cases, as we aren't given one by WebKit
-        var userInfo = error.userInfo
-        userInfo["NSErrorPeerCertificateChainKey"] =
-          SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
-        userInfo["NSErrorPeerUntrustedByApple"] = true
-        error = NSError(domain: error.domain, code: error.code, userInfo: userInfo)
+      if tab == self.tabManager.selectedTab {
+        self.topToolbar.hideProgressBar()
       }
-
-      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
-      // Submitting same errornous URL using toolbar will cause progress bar get stuck
-      // Reseting the progress bar in case there is an error is necessary
-      topToolbar.hideProgressBar()
-
+      
       // If the local web server isn't working for some reason (Brave cellular data is
       // disabled in settings, for example), we'll fail to load the session restore URL.
       // We rely on loading that page to get the restore callback to reset the restoring
