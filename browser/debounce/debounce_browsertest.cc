@@ -27,6 +27,7 @@
 #include "content/public/test/browser_test.h"
 #include "content/public/test/browser_test_utils.h"
 #include "net/base/url_util.h"
+#include "services/network/public/cpp/resource_request.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 
 namespace {

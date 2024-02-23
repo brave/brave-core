@@ -35,6 +35,7 @@
 #include "content/public/test/test_navigation_observer.h"
 #include "net/dns/mock_host_resolver.h"
 #include "net/test/embedded_test_server/default_handlers.h"
+#include "services/network/public/mojom/cookie_manager.mojom.h"
 #include "url/gurl.h"
 
 using net::test_server::EmbeddedTestServer;
