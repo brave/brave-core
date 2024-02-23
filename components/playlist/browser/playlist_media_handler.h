@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_RESPONDER_IMPL_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_RESPONDER_IMPL_H_
 
+#include "base/functional/callback_forward.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
 
@@ -15,8 +16,9 @@ class PlaylistService;
 
 class PlaylistMediaHandler : public mojom::PlaylistMediaResponder {
  public:
-  PlaylistMediaHandler(PlaylistService* service,
-                       content::WebContents* contents);
+  PlaylistMediaHandler(content::WebContents* contents,
+                       base::RepeatingCallback<void(base::Value, const GURL&)>
+                           on_media_detected);
 
   ~PlaylistMediaHandler() override;
 
@@ -27,9 +29,9 @@ class PlaylistMediaHandler : public mojom::PlaylistMediaResponder {
       content::RenderFrameHost* render_frame_host);
 
  private:
-  raw_ptr<PlaylistService> service_;
   content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
       media_responder_receivers_;
+  base::RepeatingCallback<void(base::Value, const GURL&)> on_media_detected_;
 };
 
 }  // namespace playlist

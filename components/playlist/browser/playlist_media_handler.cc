@@ -11,9 +11,11 @@
 
 namespace playlist {
 
-PlaylistMediaHandler::PlaylistMediaHandler(PlaylistService* service,
-                                           content::WebContents* contents)
-    : service_(service), media_responder_receivers_(contents, this) {}
+PlaylistMediaHandler::PlaylistMediaHandler(
+    content::WebContents* contents,
+    base::RepeatingCallback<void(base::Value, const GURL&)> on_media_detected)
+    : media_responder_receivers_(contents, this),
+      on_media_detected_(std::move(on_media_detected)) {}
 
 PlaylistMediaHandler::~PlaylistMediaHandler() = default;
 
@@ -40,8 +42,7 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
            << (background_webcontents_helper ? " (background)" : "") << ":\n"
            << media;
 
-  service_->OnMediaDetected(std::move(media),
-                            web_contents->GetLastCommittedURL());
+  on_media_detected_.Run(std::move(media), web_contents->GetLastCommittedURL());
 
   if (background_webcontents_helper) {
     // TODO(sszaloki): bloah...
