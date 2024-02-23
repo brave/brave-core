@@ -54,14 +54,14 @@ import java.lang.ref.WeakReference;
 import java.util.List;
 
 /**
- * Dialog to grant website permissions to use Dapps
+ * Dialog to grant website permissions to use DApps.
  */
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ConnectionErrorHandler {
     private static final String TAG = "BraveDappPermission";
 
     private final ModalDialogManager mModalDialogManager;
-    private int mCoinType;
+    private final int mCoinType;
     private final Context mContext;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
@@ -99,7 +99,7 @@ public class BraveDappPermissionPromptDialog
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "BraveDappPermissionPromptDialog constructor " + e);
+            Log.e(TAG, "BraveDappPermissionPromptDialog", e);
         }
     }
 
@@ -162,7 +162,7 @@ public class BraveDappPermissionPromptDialog
     }
 
     @NonNull
-    private ViewGroup getPermissionModalViewContainer(View customView) {
+    private ViewGroup getPermissionModalViewContainer(@NonNull View customView) {
         ViewParent viewParent = customView.getParent();
         while (viewParent.getParent() != null) {
             viewParent = viewParent.getParent();
