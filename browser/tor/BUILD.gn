@@ -14,6 +14,7 @@ source_set("tor") {
   visibility = [
     ":*",
     "//brave/browser",
+    "//brave/browser/brave_wallet:browser_tests",
     "//brave/browser/decentralized_dns/test:unit_tests",
     "//brave/browser/ipfs/test:*",
     "//brave/browser/net:browser_tests",
