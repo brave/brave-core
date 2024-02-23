@@ -5,15 +5,16 @@
   "indentation" : {
     "spaces" : 2
   },
-  "indentConditionalCompilationBlocks" : true,
+  "indentConditionalCompilationBlocks" : false,
   "indentSwitchCaseLabels" : false,
   "lineBreakAroundMultilineExpressionChainComponents" : false,
   "lineBreakBeforeControlFlowKeywords" : false,
-  "lineBreakBeforeEachArgument" : false,
+  "lineBreakBeforeEachArgument" : true,
   "lineBreakBeforeEachGenericRequirement" : false,
   "lineLength" : 100,
   "maximumBlankLines" : 1,
-  "prioritizeKeepingFunctionOutputTogether" : false,
+  "multiElementCollectionTrailingCommas" : true,
+  "prioritizeKeepingFunctionOutputTogether" : true,
   "respectsExistingLineBreaks" : true,
   "rules" : {
     "AllPublicDeclarationsHaveDocumentation" : false,
@@ -21,7 +22,7 @@
     "AmbiguousTrailingClosureOverload" : true,
     "BeginDocumentationCommentWithOneLineSummary" : false,
     "DoNotUseSemicolons" : true,
-    "DontRepeatTypeInStaticProperties" : true,
+    "DontRepeatTypeInStaticProperties" : false,
     "FileScopedDeclarationPrivacy" : true,
     "FullyIndirectEnum" : true,
     "GroupNumericLiterals" : true,
