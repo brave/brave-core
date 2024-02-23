@@ -81,6 +81,7 @@
 <translation id="7291143854620707672">在使用此工作资料（例如创建书签、历史记录、密码和其他设置）时生成的任何 Brave 数据都可由工作资料管理员移除。<ph name="LEARN_MORE"/></translation>
 <translation id="6252796827759111076">继续使用 Brave</translation>
 <translation id="259935314519650377">未能缓存所下载的安装程序。错误：<ph name="UNPACK_CACHING_ERROR_CODE"/>。</translation>
+<translation id="7788346643684168549">提高 Brave 运行速度，让使用 JavaScript 的功能按预期运行（建议）</translation>
 <translation id="7387051847644272380">安装过程中出现操作系统错误。请重新下载 Brave。</translation>
 <translation id="2648689842065142443">如果您是与亲朋好友共用一部设备，他们将能够使用单独的账号进行浏览，并可随心所欲地设置 Brave</translation>
 <translation id="6384359666082467439">欢迎使用 Brave，<ph name="ACCOUNT_FIRST_NAME"/></translation>
@@ -115,6 +116,7 @@
 <translation id="2585240446624043880">Brave 无法读写其数据目录：
 
 <ph name="USER_DATA_DIRECTORY"/></translation>
+<translation id="2026315747406172223">V8 是 Brave 的 JavaScript 和 WebAssembly 引擎，用于提升网站性能</translation>
 <translation id="2423637317249323944">已安装 Brave 版本 <ph name="PRODUCT_VERSION"/></translation>
 <translation id="3286538390144397061">立即重新启动</translation>
 <translation id="2339258256897053758">缺少 Brave API 密钥，因此 Brave 的部分功能将无法使用。</translation>
@@ -132,7 +134,6 @@
 <translation id="4061445349373849749">为了保护您的隐私，如果您的兴趣保留时间超过 4 周，系统便会自动将其删除。随着您继续浏览，某项兴趣可能会再次出现在列表中。您也可以移除不希望纳入 Brave 考虑范围的兴趣。</translation>
 <translation id="691208314680168371">您的浏览记录，即您在此设备上使用 Brave 访问过的网站的记录。</translation>
 <translation id="1073077513148817424">另一账号已经登录。Brave 可为您创建一份专属的个人资料，以将您的浏览数据单独存储。</translation>
-<translation id="4250277591581952830">若要接收后续 Brave 更新，您需使用 macOS 10.15 或更高版本。该计算机目前使用的是 macOS 10.13。</translation>
 <translation id="7029305463989165490">若要从 <ph name="ORIGIN"/> 向您的 Android 手机发送电话号码，请在这两部设备上分别登录 Brave。</translation>
 <translation id="3667616615096815454">无法安装，服务器无法识别该应用。</translation>
 <translation id="4304059894777924102">Brave 无法检查您的密码。请检查您的互联网连接。</translation>
@@ -146,7 +147,6 @@
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
 <translation id="3744202345691150878">获取有关 Brave 操作系统的帮助</translation>
 <translation id="6009720635797285369">从 <ph name="ACCOUNT_EMAIL"/> 获取您的 Brave 浏览器信息</translation>
-<translation id="5111297589157398321">若要接收后续 Brave 更新，您需使用 macOS 10.15 或更高版本。该计算机目前使用的是 macOS 10.14。</translation>
 <translation id="6315734375101223238">自定义和控制 Brave。出了点需要您注意的状况 - 点击即可查看详情。</translation>
 <translation id="7130675370997202556">点击您的姓名即可打开Brave并开始浏览。</translation>
 <translation id="4920958997042285125"><ph name="EXISTING_USER"/>已登录这份 Brave 个人资料。Brave 可为您创建一份专属的个人资料，以将您的浏览数据单独存储。</translation>
@@ -204,6 +204,7 @@
 <translation id="2899369907387169108">在不登录账号的情况下使用 Brave</translation>
 <translation id="1912973375560256099">Brave的入站规则，允许mDNS流量。</translation>
 <translation id="711601904575862069">重新启动以更新 Brave(&amp;C)</translation>
+<translation id="8794694805872287186">若要接收后续 Brave 更新，您需使用 macOS 11 或更高版本。该计算机目前使用的是 macOS 10.15。</translation>
 <translation id="8797356639448065696">Brave处于后台运行模式。</translation>
 <translation id="7406627712452599344">访客使用Brave不会留下任何痕迹。</translation>
 <translation id="5952898964075639679">将您自己添加到Brave</translation>
@@ -231,7 +232,6 @@
 <translation id="1026406809507858026">{0,plural, =0{有一项可用的 Brave 更新}=1{有一项可用的 Brave 更新}other{有一项可用的 Brave 更新（已发布 # 天）}}</translation>
 <translation id="1023472437588692618">始终在关闭 Brave 时删除设备上的网站数据</translation>
 <translation id="5646769069113654257">请立即重启 Brave</translation>
-<translation id="1482073660249013898">这可能是个危险文件<ph name="LINE_BREAK"/>如果您提供了密码（密码会保存在您的设备上），Brave 可为您检查此下载内容</translation>
 <translation id="3117204675033805491">Brave LLC</translation>
 <translation id="2335583906071111058">以这种语言显示 Brave</translation>
 <translation id="569897634095159764">无法连接到互联网。代理服务器要求进行身份验证。</translation>
@@ -265,6 +265,7 @@
 <translation id="2542068854151299295">登录即可充分利用 Brave 的各项功能</translation>
 <translation id="4060970194201477024">您可在此处切换 Brave 个人资料</translation>
 <translation id="7815000350132166985">如果您允许使用 Cookie，Brave 便可能会使用 Cookie 进行预加载</translation>
+<translation id="6685697979743742605">这可能是个危险文件<ph name="LINE_BREAK"/>如果您提供了密码，Brave 可为您检查此下载内容。系统会将该文件的相关信息发送给 Brave 安全浏览功能，但文件内容和密码会保留在您的设备上。</translation>
 <translation id="3156047523158042818">Brave 可能还会发送 Cookie 和当前网址，具体取决于您的设置</translation>
 <translation id="6182736845697986886">更新服务器出现内部错误，因此安装失败。</translation>
 <translation id="4368341489795135329">请确保您已在“<ph name="TARGET_DEVICE_NAME"/>”上登录 Brave，然后再次尝试发送。</translation>
@@ -358,6 +359,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="5296583608321648908">若要接收后续 Brave 更新，您需使用 Windows 10 或更高版本。该计算机目前使用的是 Windows 7。</translation>
 <translation id="3962395975456095331">重新启动 Brave？</translation>
 <translation id="2619516027171717873">无法安装与当前运行的版本相同的 Brave。请关闭 Brave 并重试。</translation>
+<translation id="5337027666828618338">网站很可能会按预期运行。关闭所有 Brave 窗口后，您将会从大多数网站退出账号；但如果您已登录 Brave，则您的 Brave 账号不会退出。</translation>
 <translation id="3186363903915641692">{0,plural, =1{Brave 将在 1 分钟后重新启动}other{Brave 将在 # 分钟后重新启动}}</translation>
 <translation id="6378857626787254617">Brave 可以推测出您的兴趣。之后，您访问的网站可向 Brave 请求查看您的兴趣，以便向您展示个性化广告。</translation>
 <translation id="7583399374488819119"><ph name="COMPANY_NAME"/> 安装程序</translation>
@@ -387,6 +389,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2061155704815580583">Brave 需要为此网站授予位置信息权限</translation>
 <translation id="5334309298019785904">由于您的网域不支持同步，Brave 操作系统无法同步您的数据。</translation>
 <translation id="813913629614996137">正在初始化…</translation>
+<translation id="7550680632761245819">开启 Brave 的 JavaScript 和 WebAssembly 引擎额外保护功能</translation>
 <translation id="9067428552314418522">此文件存在危险，因此 Brave 已将其拦截。</translation>
 <translation id="7344826952831915813">Brave 屏蔽了此文件，因为这类文件包含危险内容</translation>
 <translation id="8207657266087451193">如果图片缺少有用的说明，则 Brave 会尝试为您提供一条说明。为便于创建说明，系统会将图片发送给 Brave。您可以随时在“设置”中关闭此功能。</translation>
