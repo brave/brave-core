@@ -111,6 +111,9 @@
         "components/permissions/permission_request_data.h": [
             "BRAVE_CHROMIUM_SRC_COMPONENTS_PERMISSIONS_PERMISSION_REQUEST_DATA_PERMISSION_CONTEXT_BASE",
         ],
+        "components/qr_code_generator/bitmap_generator.cc": [
+            "UI_GFX_PAINT_VECTOR_ICON_H_",
+        ],
         "sandbox/win/src/interceptors_64.h": [
             "TargetGetModuleFileNameExA64",
             "TargetGetModuleFileNameExW64",

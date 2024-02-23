@@ -5,16 +5,18 @@
 
 #include "brave/ios/browser/qr_code_generator/qrcode_models.h"
 
-namespace qrcode_generator {
+#include "components/qr_code_generator/bitmap_generator.h"
 
-GenerateQRCodeRequest::GenerateQRCodeRequest()
+namespace qr_code_generator {
+
+GenerateQRCodeOptions::GenerateQRCodeOptions()
     : data(),
       should_render(true),
       render_dino(true),
-      render_module_style(ModuleStyle::DEFAULT_SQUARES),
-      render_locator_style(LocatorStyle::DEFAULT_SQUARE) {}
+      render_module_style(ModuleStyle::kSquares),
+      render_locator_style(LocatorStyle::kSquare) {}
 
-GenerateQRCodeRequest::GenerateQRCodeRequest(const std::string& data,
+GenerateQRCodeOptions::GenerateQRCodeOptions(const std::string& data,
                                              bool should_render,
                                              bool render_dino,
                                              ModuleStyle render_module_style,
@@ -25,13 +27,13 @@ GenerateQRCodeRequest::GenerateQRCodeRequest(const std::string& data,
       render_module_style(render_module_style),
       render_locator_style(render_locator_style) {}
 
-GenerateQRCodeRequest::~GenerateQRCodeRequest() = default;
+GenerateQRCodeOptions::~GenerateQRCodeOptions() = default;
 
-GenerateQRCodeResponse::GenerateQRCodeResponse()
-    : error_code(QRCodeGeneratorError::NONE), bitmap(), data(), data_size() {}
+GenerateQRCodeResult::GenerateQRCodeResult()
+    : error_code(Error::kUnknownError), bitmap(), data(), data_size() {}
 
-GenerateQRCodeResponse::GenerateQRCodeResponse(
-    QRCodeGeneratorError error_code,
+GenerateQRCodeResult::GenerateQRCodeResult(
+    Error error_code,
     const SkBitmap& bitmap,
     const std::vector<std::uint8_t>& data,
     const gfx::Size& data_size)
@@ -40,6 +42,6 @@ GenerateQRCodeResponse::GenerateQRCodeResponse(
       data(data),
       data_size(data_size) {}
 
-GenerateQRCodeResponse::~GenerateQRCodeResponse() = default;
+GenerateQRCodeResult::~GenerateQRCodeResult() = default;
 
-}  // namespace qrcode_generator
+}  // namespace qr_code_generator
