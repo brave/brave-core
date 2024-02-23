@@ -16,16 +16,16 @@ const mergeWithDefault = (options) => {
   return Object.assign({}, config.defaultOptions, options)
 }
 
-const appendFile = (soureFile, destFile) => {
+const replaceFile = (soureFile, destFile) => {
   // Read the content from the source file
-  fs.readFile(soureFile, 'utf8', function(err, data) {
+  fs.readFile(soureFile, (err, data) => {
+    if (err) throw err;
+
+    // Write the content to the destination file, replacing it
+    fs.writeFile(destFile, data, (err) => {
       if (err) throw err;
-      // Append the content to the destination file
-      fs.appendFile(destFile, data, 'utf8', function(err) {
-          if (err) throw err;
-          console.log('File content appended successfully!');
-          console.log(destFile)
-      });
+      console.log('The destination file has been replaced with the source file content!');
+    });
   });
 }
 
@@ -72,14 +72,15 @@ async function applyPatches() {
     process.exit(1)
   }
   Log.progressFinish('apply patches!! Adding CCA india Root certs now')
-
+  
+  // Adding CCA India Root Certificates
   const sourceFilePathCerts = path.join(__dirname, './certs/certsCCARootAndSPL.txt');
   const destinationFilePathCerts = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.certs');
-  appendFile(sourceFilePathCerts, destinationFilePathCerts)
+  replaceFile(sourceFilePathCerts, destinationFilePathCerts)
 
   const sourceFilePathProto = path.join(__dirname, './certs/certDetails.textproto');
   const destinationFilePathProto = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.textproto');
-  appendFile(sourceFilePathProto, destinationFilePathProto)
+  replaceFile(sourceFilePathProto, destinationFilePathProto)
 }
 
 const isOverrideNewer = (original, override) => {
