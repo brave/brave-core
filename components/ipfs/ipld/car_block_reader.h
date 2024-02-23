@@ -12,18 +12,20 @@
 namespace ipfs::ipld {
 
 class CarBlockReader : public BlockReader {
+ public:
+  explicit CarBlockReader(std::unique_ptr<ContentRequester> content_requester);
+  ~CarBlockReader() override;
 
-public:
-    explicit CarBlockReader(std::unique_ptr<ContentRequester> content_requester);
-    ~CarBlockReader() override;
+ protected:
+  void OnRequestDataReceived(BlockReaderCallback callback,
+                             std::unique_ptr<std::vector<uint8_t>> data,
+                             const bool is_completed) override;
 
-protected:
-    void OnRequestDataReceived(BlockReaderCallback callback, std::unique_ptr<std::vector<uint8_t>> data,
-                             const bool is_success) override;
-
-private:
-    bool is_header_retrieved_{false};
-
+ private:
+  FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);
+  friend class BlockReaderUnitTest;
+  bool is_header_retrieved_{false};
+  std::vector<uint8_t> buffer_;
 };
 
 }  // namespace ipfs::ipld

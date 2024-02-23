@@ -54,7 +54,6 @@ void ContentRequester::Request(ContentRequestBufferCallback callback) {
   if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
-  data_ = std::make_unique<std::vector<uint8_t>>();
   buffer_ready_callback_ = std::move(callback);
   url_loader_ = CreateLoader();
   url_loader_->DownloadAsStream(url_loader_factory_.get(), this);
@@ -68,7 +67,8 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
 
   GURL url_res(url_);
   if (!IsPublicGatewayLink(url_, prefs_)) {
-    std::string cid, ipfs_path;
+    std::string cid;
+    std::string ipfs_path;
     ParseCIDAndPathFromIPFSUrl(url_, &cid, &ipfs_path);
     url_res = ipfs::ToPublicGatewayURL(url_, prefs_);
   }
@@ -80,11 +80,17 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
 
 void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
-  data_->insert(data_->end(), string_piece.begin(), string_piece.end());
+  auto data = std::make_unique<std::vector<uint8_t>>(string_piece.begin(), string_piece.end());
 
-  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data_->size() << " string_piece.size:" << string_piece.size();
+//  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
-  //TODO process every chunk here, dont wait for final complete
+  if (buffer_ready_callback_) {
+    buffer_ready_callback_.Run(std::move(data), false);
+  }
+
+  if(!resume) {
+    return;    
+  }
 
   // Continue to read data.
   std::move(resume).Run();
@@ -95,14 +101,11 @@ void ContentRequester::OnRetry(base::OnceClosure start_retry) {
 }
 
 void ContentRequester::OnComplete(bool success) {
-  LOG(INFO) << "[IPFS] OnComplete success:" << success
-            << "  bytes_received_:" << data_->size();
+//  LOG(INFO) << "[IPFS] OnComplete success:" << success;
   
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(std::move(data_), success);
+    buffer_ready_callback_.Run(nullptr, true);
   }
-
-  data_ = std::make_unique<std::vector<uint8_t>>();
 
   is_started_ = false;
   url_loader_.release();

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 #include <memory>
+#include "base/gtest_prod_util.h"
 #include "components/prefs/pref_service.h"
 #include "services/network/public/cpp/simple_url_loader_stream_consumer.h"
 #include "url/gurl.h"
@@ -21,11 +22,12 @@ class SimpleURLLoader;
 namespace ipfs::ipld {
 class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
  public:
- using ContentRequestBufferCallback =
-    base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool)>;
+  using ContentRequestBufferCallback =
+      base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>,
+                                   const bool)>;
 
   ~ContentRequester() override;
-  
+
   virtual void Request(ContentRequestBufferCallback callback);
   virtual bool IsStarted() const;
 
@@ -39,6 +41,9 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
   virtual std::unique_ptr<network::SimpleURLLoader> CreateLoader() const = 0;
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(CarContentRequesterUnitTest, ResponseByChunks);
+  FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);
+  friend class BlockReaderUnitTest;
   friend class CarContentRequesterUnitTest;
 
   // network::SimpleURLLoaderStreamConsumer implementations.
@@ -48,7 +53,6 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
   void OnComplete(bool success) override;
 
   GURL url_;
-  std::unique_ptr<std::vector<uint8_t>> data_;
   ContentRequestBufferCallback buffer_ready_callback_;
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   raw_ptr<PrefService> prefs_;

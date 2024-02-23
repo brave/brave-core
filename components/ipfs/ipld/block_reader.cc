@@ -8,14 +8,13 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/ipfs/ipld/content_requester.h"
 #include "brave/components/ipfs/ipld/block.h"
-
+#include "brave/components/ipfs/ipld/content_requester.h"
 
 namespace ipfs::ipld {
 
 BlockReader::BlockReader(std::unique_ptr<ContentRequester> content_requester)
-    : content_requester_(std::move(content_requester)){}
+    : content_requester_(std::move(content_requester)) {}
 
 BlockReader::~BlockReader() = default;
 
@@ -31,6 +30,13 @@ void BlockReader::Read(BlockReaderCallback callback) {
 
 base::raw_ptr<BlockFactory> BlockReader::GetBlockFactory() {
   return block_factory_.get();
+}
+
+base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool)>
+BlockReader::GetReadCallbackForTests(BlockReaderCallback callback) {
+  return base::BindRepeating(&BlockReader::OnRequestDataReceived,
+                             weak_ptr_factory_.GetWeakPtr(),
+                             std::move(callback));
 }
 
 }  // namespace ipfs::ipld

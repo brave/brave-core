@@ -23,9 +23,12 @@ class CarContentRequester : public ContentRequester {
 
   std::unique_ptr<network::SimpleURLLoader> CreateLoader() const override;
 
-  private:
-    friend class CarContentRequesterUnitTest;
-    bool only_metadata_;
+ private:
+  FRIEND_TEST_ALL_PREFIXES(CarContentRequesterUnitTest, ResponseByChunks);
+  FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);
+  friend class BlockReaderUnitTest;
+  friend class CarContentRequesterUnitTest;
+  bool only_metadata_;
 };
 
 }  // namespace ipfs::ipld

@@ -12,6 +12,7 @@
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "partition_alloc/pointers/raw_ptr.h"
+#include "base/gtest_prod_util.h"
 
 namespace ipfs::ipld {
 
@@ -35,9 +36,16 @@ class BlockReader {
 
   virtual void OnRequestDataReceived(BlockReaderCallback callback,
                                      std::unique_ptr<std::vector<uint8_t>> data,
-                                     const bool is_success) = 0;
+                                     const bool is_completed) = 0;
 
  private:
+ FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, BasicTestSteps);
+ FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);
+ friend class BlockReaderUnitTest;
+
+  base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>,
+                                   const bool)> GetReadCallbackForTests(BlockReaderCallback callback);
+
   std::unique_ptr<BlockFactory> block_factory_{std::make_unique<BlockFactory>()};
   std::unique_ptr<ContentRequester> content_requester_;
   base::WeakPtrFactory<BlockReader> weak_ptr_factory_{this};

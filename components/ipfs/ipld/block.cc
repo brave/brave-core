@@ -41,9 +41,8 @@ std::unique_ptr<std::vector<ipfs::ipld::DJLink>> ParseLinksFromMeta(
     }
 
     const auto& curr_item_dict = item.GetDict();
-
     const auto* name = curr_item_dict.FindString(kDjLinkName);
-    const auto size = curr_item_dict.FindInt(kDjLinkTsize);
+    const auto size = curr_item_dict.FindDouble(kDjLinkTsize);
     const auto* hash_dict = curr_item_dict.FindDict(kDjLinkHash);
 
     DCHECK(hash_dict);
