@@ -16,6 +16,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kExpandedStateShape, base::FEATURE_DISABLED_BY_DEFAULT},
     {kOmniboxSteadyStateHeight, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRichAutocompletion, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kStarterPackExpansion, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 BASE_FEATURE(kOmniboxTabSwitchByDefault,

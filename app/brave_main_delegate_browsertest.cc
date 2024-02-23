@@ -280,6 +280,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &omnibox::kExpandedStateShape,
       &omnibox::kOmniboxSteadyStateHeight,
       &omnibox::kRichAutocompletion,
+      &omnibox::kStarterPackExpansion,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
       &optimization_guide::features::kOptimizationHints,
       &optimization_guide::features::kRemoteOptimizationGuideFetching,
