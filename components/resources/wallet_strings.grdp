@@ -1105,4 +1105,32 @@
   <message name="IDS_BRAVE_WALLET_CLEAR_FILTERS" desc="Clear filters label">Clear filters</message>
   <message name="IDS_BRAVE_WALLET_SHOW_MORE" desc="Show more label">Show more</message>
   <message name="IDS_BRAVE_WALLET_DETAILS" desc="Details label">Details</message>
+  <message name="IDS_BRAVE_WALLET_BUTTON_RETRY" desc="Retry an action">Retry</message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_PREVIEW_FAILED" desc="Explaination that simulation of a transaction has failed">Transaction preview failed.</message>
+  <message name="IDS_BRAVE_WALLET_ESTIMATED_BALANCE_CHANGE" desc="Grouping header for estimated balance changes">Estimated balance change</message>
+  <message name="IDS_BRAVE_WALLET_APPROVAL_DETAILS" desc="Grouping header for estimated token approval details">Approval details</message>
+  <message name="IDS_BRAVE_WALLET_AUTHORITY_CHANGE" desc="Grouping header for estimated authority changes">Authority change</message>
+  <message name="IDS_BRAVE_WALLET_SCANNING_TRANSACTION" desc="Indication that a transaction is being scanned or simulated">Scanning transaction</message>
+  <message name="IDS_BRAVE_WALLET_STAKER" desc="The address that is staking tokens">Staker</message>
+  <message name="IDS_BRAVE_WALLET_WITHDRAWER" desc="The address that is withdrawing funds">Withdrawer</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_APPROVAL_TO_EOA" desc="Warning that token transfer permission is being given to someone else">You’re giving someone else permission to transfer tokens on your behalf.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_BULK_APPROVALS_REQUEST" desc="Warning that many tokens will be allowed to be transfered">This requests permission to transfer many tokens, which is usually an attempt at theft.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_COPY_CAT_DOMAIN" desc="Warning that the dapp may be a malicious copy">This site may be a fake</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_DANGLING_APPROVAL" desc="Warning that the dapp may be able to move tokens in the future">This DApp will be able to move tokens from your account later on.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_KNOWN_MALICIOUS" desc="Warning that the dapp is flagged">This site is flagged as high risk and will likely attempt to steal your funds.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_NEW_DOMAIN" desc="Warning that a dapp domain has not been verified yet">This domain hasn’t been verified yet. Continue only if you trust the site.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_POISONED_ADDRESS" desc="Warning that the address may be an impersonation">Double-check this address as it may be impersonating a previous contact of yours.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_SET_OWNER_AUTHORITY" desc="Warning that a token balance will be transferred to someone else">This transfers ownership of your token balance to someone else.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_SUSPECTED_MALICIOUS" desc="Warning that a site is flagged as unsafe">This site is flagged as unsafe and/or malicious. Continuing may result in losses.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_TOO_MANY_TRANSACTIONS_CRITICAL" desc="Critical warning that too many transactions would occur">This will approve over 200 actions. Unless planned, this may be malicious.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_TOO_MANY_TRANSACTIONS" desc="Warning that too many transactions would occur">This requests over 200 approvals; which is usually an attempt to drain your balances.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_TRADE_FOR_NOTHING" desc="Warning that funds are being traded for nothing in return">You’re exchanging tokens for nothing in return. This is likely a mistake.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_TRANSFERRING_ERC_20_TO_OWN_CONTRACT" desc="Warning that a token is being sent to it's own contract">You’re sending funds to a token’s own address where they’ll be lost forever.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_WARNING_USER_ACCOUNT_OWNER_CHANGE" desc="Warning that account ownership is being transferred to someone else">This transfers ownership of your account and balances to someone else.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_ERROR_INSUFFICIENT_FUNDS_FOR_FEE" desc="Error explaining that the user does not have enough funds to cover the network fee">Insufficient funds to cover the network gas fee.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_ERROR_INSUFFICIENT_FUNDS" desc="Error explaining that the user does not have enough funds to continue">Insufficient funds to complete the transaction.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_ERROR_TRANSACTION_REVERTED" desc="Error explaining that the transaction is likely to revert if submitted">Transaction is likely to fail and revert. Attempting will still incur gas costs.</message>
+  <message name="IDS_BRAVE_WALLET_SIMULATION_UNEXPECTED_ERROR" desc="Generic error explaining that the transaction simulation failed">Unexpected error with transaction preview. Approving may be unsafe.</message>
+  <message name="IDS_BRAVE_WALLET_NO_CHANGES" desc="Heading text that is displayed when no changes were detected during transaction simulation">No changes</message>
+  <message name="IDS_BRAVE_WALLET_NO_CHANGES_DETECTED" desc="Text to display when no changes were detected during transaction simulation">No changes detected</message>
 </grit-part>

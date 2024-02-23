@@ -32,10 +32,10 @@ export const InlineContractRow = styled(Row)`
   justify-content: flex-start;
   align-items: center;
   flex-direction: row;
-  gap: 4px;
   text-align: left;
-  font-size: 11px;
   vertical-align: center;
+  font: ${leo.font.xSmall.regular};
+  gap: 4px;
 `
 
 export const OriginIndicatorIconWrapper = styled.div`

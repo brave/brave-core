@@ -80,31 +80,33 @@ export const EnableTransactionSimulations: React.FC = () => {
           </Header>
 
           <CardContent>
-            <HeadingText>
-              {getLocale('braveWalletEnableEnhancedTransactionDetailsTitle')}
-            </HeadingText>
+            <div>
+              <HeadingText>
+                {getLocale('braveWalletEnableEnhancedTransactionDetailsTitle')}
+              </HeadingText>
 
-            <BulletPoints>{TX_SIMULATION_FEATURE_BULLETS}</BulletPoints>
+              <BulletPoints>{TX_SIMULATION_FEATURE_BULLETS}</BulletPoints>
 
-            <VerticalSpacer space={4} />
-            <VerticalDivider />
-            <VerticalSpacer space={8} />
+              <VerticalSpacer space={4} />
+              <VerticalDivider />
+              <VerticalSpacer space={8} />
 
-            <TermsText>
-              {getLocale('braveWalletTransactionSimulationTerms')}{' '}
-              <LearnMoreLink
-                href={TX_SIMULATION_TERMS_LINK}
-                rel='noopener noreferrer'
-              >
-                {getLocale('braveWalletLearnMore')}
-              </LearnMoreLink>
-            </TermsText>
+              <TermsText>
+                {getLocale('braveWalletTransactionSimulationTerms')}{' '}
+                <LearnMoreLink
+                  href={TX_SIMULATION_TERMS_LINK}
+                  rel='noopener noreferrer'
+                >
+                  {getLocale('braveWalletLearnMore')}
+                </LearnMoreLink>
+              </TermsText>
 
-            <TermsText>
-              {CHANGE_IN_SETTINGS_TEXT.beforeTag}
-              <strong>{CHANGE_IN_SETTINGS_TEXT.duringTag}</strong>
-              {CHANGE_IN_SETTINGS_TEXT.afterTag}
-            </TermsText>
+              <TermsText>
+                {CHANGE_IN_SETTINGS_TEXT.beforeTag}
+                <strong>{CHANGE_IN_SETTINGS_TEXT.duringTag}</strong>
+                {CHANGE_IN_SETTINGS_TEXT.afterTag}
+              </TermsText>
+            </div>
 
             <OptionsRow>
               <LeoSquaredButton

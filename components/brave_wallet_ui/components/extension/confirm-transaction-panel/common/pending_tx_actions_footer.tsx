@@ -11,6 +11,9 @@ import { ParsedTransaction } from '../../../../utils/tx-utils'
 
 // Utils
 import { getLocale } from '../../../../../common/locale'
+import {
+  translateSimulationWarning //
+} from '../../../../utils/tx-simulation-utils'
 
 // components
 import { TransactionWarnings } from './tx_warnings'
@@ -29,7 +32,7 @@ interface Props {
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
   isWarningCollapsed?: boolean
   isConfirmButtonDisabled: boolean
-  rejectAllTransactions: (() => Promise<void>) | (() => void)
+  rejectAllTransactions?: (() => Promise<void>) | (() => void)
   transactionDetails: ParsedTransaction | undefined
   transactionsQueueLength: number
   /** omit this prop if you don't want to display gas errors */
@@ -37,7 +40,7 @@ interface Props {
   /** omit this prop if you don't want to display the error */
   insufficientFundsError?: boolean
   onReject: () => void
-  onConfirm: () => Promise<void>
+  onConfirm: (() => Promise<void>) | (() => void)
 }
 
 type Warning = Pick<BraveWallet.BlowfishWarning, 'message' | 'severity'>
@@ -78,7 +81,10 @@ export function PendingTransactionActionsFooter({
   // memos
   const warnings: Warning[] = React.useMemo(() => {
     if (blowfishWarnings?.length) {
-      return blowfishWarnings
+      return blowfishWarnings.map((w) => ({
+        message: translateSimulationWarning(w),
+        severity: w.severity
+      }))
     }
 
     return [
@@ -172,7 +178,7 @@ export function PendingTransactionActionsFooter({
         />
       )}
 
-      {transactionsQueueLength > 1 && (
+      {rejectAllTransactions && transactionsQueueLength > 1 && (
         <Row padding={rejectAllButtonRowPadding}>
           <QueueStepButton onClick={rejectAllTransactions}>
             {getLocale('braveWalletQueueRejectAll').replace(
