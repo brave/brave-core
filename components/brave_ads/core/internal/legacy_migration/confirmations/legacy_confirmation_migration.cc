@@ -61,7 +61,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
              BLOG(1, "Migrating confirmation state");
 
-             const absl::optional<ConfirmationList> confirmations =
+             const std::optional<ConfirmationList> confirmations =
                  json::reader::ReadConfirmations(*json);
              if (!confirmations) {
                // Confirmation queue state does not exist.
