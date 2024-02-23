@@ -5,6 +5,8 @@
 
 package org.chromium.chrome.browser.crypto_wallet.permission;
 
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
@@ -184,14 +186,14 @@ public class BraveDappPermissionPromptDialog
     private void initAccounts() {
         assert mKeyringService != null;
         assert mWalletModel != null;
-        mAccountsListAdapter = new BravePermissionAccountsListAdapter(new AccountInfo[0], true,
-                new BravePermissionAccountsListAdapter.BravePermissionDelegate() {
-                    @Override
-                    public void onAccountCheckChanged(AccountInfo account, boolean isChecked) {
-                        if (mPermissionDialogPositiveButton != null) {
-                            mPermissionDialogPositiveButton.setEnabled(
-                                    getSelectedAccounts().length > 0);
-                        }
+        // Solana accounts support only single account selection,
+        // while Ethereum account offer multiple selection mode.
+        final Mode mode = mCoinType == CoinType.SOL ? Mode.SINGLE_ACCOUNT_SELECTION : Mode.MULTIPLE_ACCOUNT_SELECTION;
+        mAccountsListAdapter = new BravePermissionAccountsListAdapter(new AccountInfo[0], mode, null,
+                (account, checked) -> {
+                    if (mPermissionDialogPositiveButton != null) {
+                        mPermissionDialogPositiveButton.setEnabled(
+                                getSelectedAccounts().length > 0);
                     }
                 });
         mRecyclerView.setAdapter(mAccountsListAdapter);

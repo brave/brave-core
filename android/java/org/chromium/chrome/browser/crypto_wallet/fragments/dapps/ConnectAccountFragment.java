@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.dapps;
 
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.PermissionListener;
+
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -52,8 +55,7 @@ import java.util.Iterator;
 /**
  * Fragment used to connect Dapps to the crypto account.
  */
-public class ConnectAccountFragment extends BaseDAppsFragment
-        implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
+public class ConnectAccountFragment extends BaseDAppsFragment implements PermissionListener {
     private static final String TAG = "ConnectAccount";
 
     private TextView mWebSite;
@@ -92,7 +94,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
                             mAccountsWithPermissions.size()));
             if (mAccountsListAdapter == null) {
                 mAccountsListAdapter =
-                        new BravePermissionAccountsListAdapter(mAccountInfos, false, this);
+                        new BravePermissionAccountsListAdapter(mAccountInfos, Mode.ACCOUNT_CONNECTION, this, null);
                 mRecyclerView.setAdapter(mAccountsListAdapter);
                 LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
                 mRecyclerView.setLayoutManager(layoutManager);
