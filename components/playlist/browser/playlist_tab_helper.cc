@@ -7,6 +7,7 @@
 
 #include <utility>
 
+#include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
@@ -79,7 +80,10 @@ void PlaylistTabHelper::BindMediaResponderReceiver(
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents),
-      PlaylistMediaHandler(service, contents),
+      PlaylistMediaHandler(
+          contents,
+          base::BindRepeating(&PlaylistService::OnMediaDetected,
+                              service->GetWeakPtr())),
       service_(service) {
   Observe(contents);
   CHECK(service_);

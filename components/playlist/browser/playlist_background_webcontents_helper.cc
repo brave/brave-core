@@ -7,8 +7,8 @@
 
 #include <utility>
 
-#include "base/functional/callback_helpers.h"
 #include "base/logging.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -57,7 +57,10 @@ PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      PlaylistMediaHandler(service, web_contents),
+      PlaylistMediaHandler(
+          web_contents,
+          base::BindRepeating(&PlaylistService::OnMediaDetected,
+                              service->GetWeakPtr())),
       media_source_api_suppressor_(media_source_api_suppressor),
       media_detector_(media_detector),
       success_callback_(std::move(success_callback)) {}
