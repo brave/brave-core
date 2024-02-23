@@ -54,17 +54,15 @@
 
 @implementation BraveQRCodeGeneratorResult
 - (instancetype)initWithOptions:
-    (base::expected<qr_code_generator::QRImage, qr_code_generator::Error>)
-        options {
+    (base::expected<SkBitmap, qr_code_generator::Error>)options {
   if ((self = [super init])) {
     if (options.has_value()) {
-      auto qr_image = options.value();
+      const auto& qr_image = options.value();
 
       gfx::Image image = gfx::Image(gfx::ImageSkia::CreateFromBitmap(
-          qr_image.bitmap, [[UIScreen mainScreen] scale]));
+          qr_image, [[UIScreen mainScreen] scale]));
       _image = image.IsEmpty() ? [[UIImage alloc] init] : image.ToUIImage();
-      _dataSize =
-          CGSizeMake(qr_image.data_size.width(), qr_image.data_size.height());
+      _dataSize = CGSizeMake(qr_image.width(), qr_image.height());
 
       _errorCode = BraveQRCodeGeneratorErrorNone;
     } else {
