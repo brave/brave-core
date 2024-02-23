@@ -10,7 +10,7 @@ let package = Package(
     .library(name: "JitsiMeet", targets: ["JitsiMeet", "JitsiMeetSDK"]),
   ],
   dependencies: [
-    .package(url: "https://github.com/jitsi/webrtc", revision: "83690c8ecfd2d745eb0a41c77de6c4e740c18b80")
+    .package(url: "https://github.com/jitsi/webrtc", revision: "f20affccefa9c096a64ca15066f4b786a2ada1f6") // 111.0.2
   ],
   targets: [
     .target(name: "JitsiMeet", dependencies: [.product(name: "WebRTC", package: "webrtc")]),
