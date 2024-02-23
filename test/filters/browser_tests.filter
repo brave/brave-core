@@ -1006,17 +1006,6 @@
 # Thread profiler is disabled in Brave.
 -ThreadProfilerBrowserTest.*
 
-# These fail because we disable kPartitionedCookies
--All/BrowsingDataModelBrowserTest.LocalStorageRemovedBasedOnPartition/*
--All/EligibilityServiceBrowserTest.EligibilityChanged_NetworkContextUpdated/*
--All/EligibilityServiceBrowserTest.OnboardingChanged_NetworkContextUpdated/*
--EligibilityServiceSilentOnboardingBrowserTest.OnboardingChanged_NetworkContextUpdated
--ReadAnythingAppControllerTest.*
--StorageAccessAPIEnterprisePolicyBrowserTest.PartitionedStorage/*
--StorageAccessAPIWithNoRequiredTopLevelInteractionBrowserTest.TopLevelUserInteractionNotRequired
--StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameOriginCookieAccess_CrossSiteAncestorChain
--StorageAccessAPIWithoutImplicitGrantBrowserTest.NestedSameSiteCookieAccess_CrossSiteAncestorChain
-
 # These tests fail because we override CookieSettingsBase::IsCookieAccessAllowed
 # (specifically, CookieSettingsBase::IsCookieAccessAllowedImpl) and the override
 # allows access to the cookie to which Chromium disallows access
