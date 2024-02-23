@@ -362,7 +362,7 @@ extension URL {
     /// Site domains that should not inject night mode
     let majorsiteList = ["twitter", "youtube", "twitch",
                          "soundcloud", "github", "netflix",
-                         "imdb"]
+                         "imdb", "mail.proton"]
     
     let searchSiteList = ["search.brave", "google", "qwant",
                           "startpage", "duckduckgo", "presearch"]
