@@ -46,37 +46,6 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
       contents, service);
 }
 
-// static
-void PlaylistTabHelper::BindMediaResponderReceiver(
-    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
-    content::RenderFrameHost* rfh) {
-  // TODO(sszaloki): do we have to do a service check here?
-  // auto* playlist_service =
-  //     playlist::PlaylistServiceFactory::GetForBrowserContext(
-  //         rfh->GetBrowserContext());
-  // if (!playlist_service) {
-  //   // We don't support playlist on OTR profile.
-  //   return;
-  // }
-
-  auto* web_contents = content::WebContents::FromRenderFrameHost(rfh);
-  if (!web_contents) {
-    return;
-  }
-
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
-  if (tab_helper) {
-    return tab_helper->BindMediaResponder(std::move(receiver), rfh);
-  }
-
-  auto* background_web_contents_helper =
-      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
-  if (background_web_contents_helper) {
-    background_web_contents_helper->BindMediaResponder(std::move(receiver),
-                                                       rfh);
-  }
-}
-
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents),

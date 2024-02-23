@@ -24,7 +24,7 @@ class PlaylistMediaHandler : public mojom::PlaylistMediaResponder {
 
   void OnMediaDetected(base::Value media) override;
 
-  void BindMediaResponder(
+  void BindMediaResponderReceiver(
       mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
       content::RenderFrameHost* render_frame_host);
 

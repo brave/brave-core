@@ -54,7 +54,7 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
   }
 }
 
-void PlaylistMediaHandler::BindMediaResponder(
+void PlaylistMediaHandler::BindMediaResponderReceiver(
     mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
     content::RenderFrameHost* render_frame_host) {
   media_responder_receivers_.Bind(render_frame_host, std::move(receiver));
