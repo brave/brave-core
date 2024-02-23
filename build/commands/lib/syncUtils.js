@@ -130,7 +130,7 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = [
     'sync', '--nohooks', '--revision', 'src@' + requiredChromiumRef, '--reset',
-    '--with_tags', '--with_branch_heads', '--upstream'
+    '--upstream'
   ];
 
   if (syncWithForce) {
