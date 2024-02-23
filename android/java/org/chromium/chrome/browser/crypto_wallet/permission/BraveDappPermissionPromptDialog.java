@@ -64,7 +64,6 @@ public class BraveDappPermissionPromptDialog
     private final Context mContext;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
-    private WebContents mWebContents;
     private String mFavIconURL;
     private MaterialCardView mCvFavContainer;
     private ImageView mFavIconImage;
@@ -78,16 +77,15 @@ public class BraveDappPermissionPromptDialog
 
     @CalledByNative
     private static BraveDappPermissionPromptDialog create(long nativeDialogController,
-            @NonNull WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
+            @NonNull WindowAndroid windowAndroid, String favIconURL,
             @CoinType.EnumType int coinType) {
         return new BraveDappPermissionPromptDialog(
-                nativeDialogController, windowAndroid, webContents, favIconURL, coinType);
+                nativeDialogController, windowAndroid, favIconURL, coinType);
     }
 
     public BraveDappPermissionPromptDialog(long nativeDialogController, WindowAndroid windowAndroid,
-            WebContents webContents, String favIconURL, @CoinType.EnumType int coinType) {
+                                           String favIconURL, @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
-        mWebContents = webContents;
         mFavIconURL = favIconURL;
         mContext = windowAndroid.getActivity().get();
 

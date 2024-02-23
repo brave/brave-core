@@ -92,7 +92,6 @@ BraveDappPermissionPromptDialogController::GetOrCreateJavaObject() {
   return java_object_ = Java_BraveDappPermissionPromptDialog_create(
              env, reinterpret_cast<intptr_t>(this),
              view_android->GetWindowAndroid()->GetJavaObject(),
-             web_contents_->GetJavaWebContents(),
              base::android::ConvertUTF8ToJavaString(
                  env, fav_icon_url.is_valid() ? fav_icon_url.spec() : ""),
              static_cast<int32_t>(coin_type_));
