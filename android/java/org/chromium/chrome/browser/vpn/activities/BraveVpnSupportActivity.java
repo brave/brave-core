@@ -146,7 +146,7 @@ public class BraveVpnSupportActivity extends AsyncInitializationActivity {
     @Override
     protected void triggerLayoutInflation() {
         mFirstRunFlowSequencer =
-                new BraveFirstRunFlowSequencer(this, mProfileSupplier) {
+                new BraveFirstRunFlowSequencer(mProfileSupplier) {
                     @Override
                     public void onFlowIsKnown(Bundle freProperties) {
                         initializeViews();

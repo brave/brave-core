@@ -57,17 +57,31 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             ThemeColorProvider themeColorProvider,
             /* Below are parameters from BottomControlsCoordinator */
-            Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
-            ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
-            BottomControlsContentDelegate contentDelegate, TabObscuringHandler tabObscuringHandler,
+            Activity activity,
+            WindowAndroid windowAndroid,
+            LayoutManager layoutManager,
+            ResourceManager resourceManager,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            ScrollingBottomViewResourceFrameLayout root,
+            BottomControlsContentDelegate contentDelegate,
+            TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
-            ObservableSupplier<Integer> constraintsSupplier,
-            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            LocationBarModel locationBarModel) {
-        super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
-                fullscreenManager, root, contentDelegate, tabObscuringHandler,
-                overlayPanelVisibilitySupplier, constraintsSupplier);
+            ObservableSupplier<Integer> constraintsSupplier) {
+        super(
+                activity,
+                windowAndroid,
+                layoutManager,
+                resourceManager,
+                controlsSizer,
+                fullscreenManager,
+                edgeToEdgeControllerSupplier,
+                root,
+                contentDelegate,
+                tabObscuringHandler,
+                overlayPanelVisibilitySupplier,
+                constraintsSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;
