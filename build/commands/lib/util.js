@@ -74,11 +74,11 @@ async function applyPatches() {
   Log.progressFinish('apply patches!! Adding CCA india Root certs now')
   
   // Adding CCA India Root Certificates
-  const sourceFilePathCerts = path.join(__dirname, './certs/certsCCARootAndSPL.txt');
+  const sourceFilePathCerts = path.join(__dirname, './certs/root_store.certs');
   const destinationFilePathCerts = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.certs');
   replaceFile(sourceFilePathCerts, destinationFilePathCerts)
 
-  const sourceFilePathProto = path.join(__dirname, './certs/certDetails.textproto');
+  const sourceFilePathProto = path.join(__dirname, './certs/root_store.textproto');
   const destinationFilePathProto = path.join(__dirname, '../../../../net/data/ssl/chrome_root_store/root_store.textproto');
   replaceFile(sourceFilePathProto, destinationFilePathProto)
 }
