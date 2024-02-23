@@ -9,7 +9,6 @@ import org.jni_zero.JNINamespace;
 import org.jni_zero.NativeMethods;
 
 import org.chromium.chrome.browser.profiles.Profile;
-import org.chromium.chrome.browser.profiles.ProfileUtils;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.bindings.Interface;
 import org.chromium.mojo.bindings.Interface.Proxy.Handler;
@@ -33,8 +32,8 @@ public class PlaylistServiceFactoryAndroid {
 
     private PlaylistServiceFactoryAndroid() {}
 
-    public PlaylistService getPlaylistService(ConnectionErrorHandler connectionErrorHandler) {
-        Profile profile = ProfileUtils.getProfile(); // Always use regular profile
+    public PlaylistService getPlaylistService(
+            Profile profile, ConnectionErrorHandler connectionErrorHandler) {
         if (profile == null) {
             return null;
         }
