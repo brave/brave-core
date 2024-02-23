@@ -37,6 +37,7 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   // NOLINTNEXTLINE(runtime/references)
   BraveRenderViewContextMenu(content::RenderFrameHost& render_frame_host,
                              const content::ContextMenuParams& params);
+  ~BraveRenderViewContextMenu() override;
   // RenderViewContextMenuBase:
   bool IsCommandIdEnabled(int command_id) const override;
   void ExecuteCommand(int id, int event_flags) override;
@@ -66,6 +67,9 @@ class BraveRenderViewContextMenu : public RenderViewContextMenu_Chromium {
   void BuildAIChatMenu();
 
   ui::SimpleMenuModel ai_chat_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_tone_submenu_model_;
+  ui::SimpleMenuModel ai_chat_change_length_submenu_model_;
+  ui::SimpleMenuModel ai_chat_social_media_post_submenu_model_;
 #endif
 
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
