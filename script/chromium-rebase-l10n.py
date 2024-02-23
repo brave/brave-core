@@ -32,8 +32,9 @@ from grit.extern import tclib  # pylint: disable=import-error,wrong-import-posit
 
 
 def write_xtb_content(xtb_tree, source_string_path):
-    transformed_content = (b'<?xml version="1.0" ?>\n' + etree.tostring(
-        xtb_tree, pretty_print=True, xml_declaration=False, encoding='utf-8'))
+    transformed_content = (b'<?xml version="1.0" ?>\n' + \
+        etree.tostring(xtb_tree, pretty_print=True, xml_declaration=False,
+                       encoding='utf-8').strip())
     print(f'writing file {source_string_path}')
     transformed_content = transformed_content.replace(b'  <translation',
                                                       b'<translation')
@@ -42,27 +43,26 @@ def write_xtb_content(xtb_tree, source_string_path):
     print('-----------')
 
 
-def write_new_translation_to_xtb(xtb_path, message_id, text):
+def write_new_translations_to_xtb(xtb_path, messages):
     parser = etree.XMLParser(remove_blank_text=True, resolve_entities=False)
     brave_xtb_xml_tree = etree.parse(xtb_path, parser)
-    google_elem = brave_xtb_xml_tree.xpath(
-        '//translation[@id="{}"]'.format(message_id))
     bundle_element = brave_xtb_xml_tree.xpath('//translationbundle')[0]
-    element = google_elem[0] if google_elem else etree.SubElement(
-        bundle_element, 'translation')
-    element.set('id', message_id)
-    element.text = text
+    for message in messages:
+        google_elem = brave_xtb_xml_tree.xpath(
+            '//translation[@id="{}"]'.format(message[0]))
+        element = google_elem[0] if google_elem else etree.SubElement(
+            bundle_element, 'translation')
+        element.set('id', message[0])
+        element.text = message[1]
     write_xtb_content(brave_xtb_xml_tree, xtb_path)
 
 
-def migrate_google_chrome_xtb_translations_for_message(message_id):
+def migrate_google_chrome_xtb_translations_for_messages(message_ids):
     google_chrome_xtb_files = glob.glob(
         os.path.join(SRC_SOURCE_ROOT,
                      'chrome/app/resources/google_chrome_strings_*.xtb'))
     for google_xtb_path in google_chrome_xtb_files:
         google_xtb_xml_tree = etree.parse(google_xtb_path)
-        google_elem = google_xtb_xml_tree.xpath('//translation[@id="' +
-                                                message_id + '"]')[0]
         #print(google_xtb_path, google_elem.text)
         lang = os.path.basename(google_xtb_path).replace(
             'google_chrome_strings_', '').replace('.xtb', '')
@@ -78,8 +78,11 @@ def migrate_google_chrome_xtb_translations_for_message(message_id):
             print('Unable to find brave translation file {}'.format(
                 brave_xtb_path))
             return False
-        write_new_translation_to_xtb(brave_xtb_path, message_id,
-                                     google_elem.text)
+        messages = [(message_id, google_xtb_xml_tree.xpath(
+            '//translation[@id="' + message_id + '"]')[0].text)
+                   for message_id in message_ids]
+
+        write_new_translations_to_xtb(brave_xtb_path, messages)
 
     return True
 
@@ -91,23 +94,18 @@ def migrate_google_chrome_strings(brave_strings_xml_tree,
         SRC_SOURCE_ROOT, 'chrome/app/google_chrome_strings.grd')
     google_chrome_xml_tree = etree.parse(google_chrome_string_path)
 
+    message_ids = []
     for item in google_chrome_strings_map.keys():
         google_message_elem = google_chrome_xml_tree.xpath(
             '//message[@name="{}"]'.format(item))[0]
         message_text = google_message_elem.text.lstrip().rstrip()
-        message_id = tclib.GenerateMessageId(message_text)
-        if not migrate_google_chrome_xtb_translations_for_message(message_id):
-            print(
-                'Unable to migrate translations from google chrome: {}'.format(
-                    item))
-            return False
-
+        message_ids.append(tclib.GenerateMessageId(message_text))
         messages_element = brave_strings_xml_tree.xpath('//messages')[0]
         new_element = etree.SubElement(messages_element, 'message')
         new_element.set('name', google_chrome_strings_map[item])
         new_element.text = google_message_elem.text
         new_element.set('desc', google_message_elem.get('desc'))
-    return True
+    return migrate_google_chrome_xtb_translations_for_messages(message_ids)
 
 
 def parse_args():
