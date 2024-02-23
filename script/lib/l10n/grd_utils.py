@@ -109,8 +109,7 @@ def write_xml_file_from_tree(string_path, xml_tree):
         f.write(transformed_content)
 
 
-def update_braveified_grd_tree_override(source_xml_tree,
-                                        branding_replacements_only):
+def braveify_grd_tree(source_xml_tree, branding_replacements_only):
     """Takes in a grd(p) tree and replaces all messages and comments with Brave
        wording"""
     for elem in source_xml_tree.xpath('//message'):
@@ -119,11 +118,12 @@ def update_braveified_grd_tree_override(source_xml_tree,
         generate_braveified_node(elem, True, branding_replacements_only)
 
 
-def write_braveified_grd_override(source_string_path):
+def braveify_grd_in_place(source_string_path):
     """Takes in a grd file and replaces all messages and comments with Brave
        wording"""
     source_xml_tree = lxml.etree.parse(source_string_path)
-    update_braveified_grd_tree_override(source_xml_tree, False)
+    braveify_grd_tree(source_xml_tree, False)
+    print(f'Applying branding to {source_string_path}')
     write_xml_file_from_tree(source_string_path, source_xml_tree)
 
 
@@ -151,9 +151,11 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
     xtb_files = get_xtb_files(grd_file_path)
     chromium_grd_file_path = get_chromium_grd_src_with_fallback(grd_file_path,
         brave_source_root)
-    chromium_xtb_files = get_xtb_files(grd_file_path)
+    chromium_xtb_files = get_xtb_files(chromium_grd_file_path)
     if len(xtb_files) != len(chromium_xtb_files):
-        assert False, 'XTB files and Chromium XTB file length mismatch.'
+        assert False, (f'XTB files counts in {grd_file_path} and ' +
+                       f'{chromium_grd_file_path} do not match ( ' +
+                       f'{len(xtb_files)} vs {len(chromium_xtb_files)}).')
 
     grd_base_path = os.path.dirname(grd_file_path)
     chromium_grd_base_path = os.path.dirname(chromium_grd_file_path)
@@ -170,11 +172,15 @@ def update_xtbs_locally(grd_file_path, brave_source_root):
         brave_strings_string_ids = remove_google_chrome_strings(
             grd_strings, GOOGLE_CHROME_STRINGS_MIGRATION_MAP)
     assert len(grd_strings) == len(chromium_grd_strings)
+    # Verify that string names match
     for idx, grd_string in enumerate(grd_strings):
         assert chromium_grd_strings[idx][0] == grd_string[0]
 
-    fp_map = {chromium_grd_strings[idx][2]: grd_strings[idx][2] for
-              (idx, grd_string) in enumerate(grd_strings)}
+    # [2] is the string fingerprint
+    fp_map = {
+        chromium_grd_strings[idx][2]: grd_strings[idx][2]
+        for (idx, _) in enumerate(grd_strings)
+    }
 
     xtb_file_paths = [os.path.join(
         grd_base_path, path) for (_, path) in xtb_files]

@@ -18,7 +18,7 @@ branding_replacements = [
     (r'(Google)(?! Play)', r'Brave'),
     (r'Chromium', r'Brave'),
     (r'Chrome', r'Brave'),
-    (r'क्रोमियम', 'Brave'), # Chromium in Hindi
+    (r'क्रोमियम', r'Brave'),  # Chromium in Hindi
 ]
 
 
