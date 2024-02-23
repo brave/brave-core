@@ -117,7 +117,7 @@ guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
   }
 }
 
-let languageCodes = [ "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk", "nb", "sv", "tr" ]
+let languageCodes = [ "fr", "pl", "ru", "de", "zh", "zh_TW", "id_ID", "it", "ja", "ko_KR", "ms", "pt_BR", "es", "uk", "nb", "sv", "tr", "ca" ]
 let resourceURLs: [String: URL] = await {
   var urls: [String: URL] = [:]
   // Prepare files for each language first
