@@ -98,7 +98,7 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
 
   if (!old_path.empty()) {
     base::ThreadPool::PostTask(
-        FROM_HERE, {base::TaskPriority::BEST_EFFORT},
+        FROM_HERE, {base::TaskPriority::BEST_EFFORT, base::MayBlock()},
         base::BindOnce(IgnoreResult(&base::DeletePathRecursively), old_path));
   }
 }
