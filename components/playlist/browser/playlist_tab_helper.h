@@ -34,10 +34,6 @@ class PlaylistTabHelper
   static void MaybeCreateForWebContents(content::WebContents* contents,
                                         playlist::PlaylistService* service);
 
-  static void BindMediaResponderReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
-      content::RenderFrameHost* rfh);
-
   ~PlaylistTabHelper() override;
 
   const std::vector<mojom::PlaylistItemPtr>& saved_items() const {

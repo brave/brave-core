@@ -240,6 +240,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -582,8 +583,35 @@ void BraveContentBrowserClient::
           [](content::RenderFrameHost* render_frame_host,
              mojo::PendingAssociatedReceiver<
                  playlist::mojom::PlaylistMediaResponder> receiver) {
-            playlist::PlaylistTabHelper::BindMediaResponderReceiver(
-                std::move(receiver), render_frame_host);
+            // TODO(sszaloki): do we have to do a service check here?
+            // auto* playlist_service =
+            //     playlist::PlaylistServiceFactory::GetForBrowserContext(
+            //         rfh->GetBrowserContext());
+            // if (!playlist_service) {
+            //   // We don't support playlist on OTR profile.
+            //   return;
+            // }
+
+            auto* web_contents =
+                content::WebContents::FromRenderFrameHost(render_frame_host);
+            if (!web_contents) {
+              return;
+            }
+
+            auto* tab_helper =
+                playlist::PlaylistTabHelper::FromWebContents(web_contents);
+            if (tab_helper) {
+              return tab_helper->BindMediaResponderReceiver(std::move(receiver),
+                                                            render_frame_host);
+            }
+
+            auto* background_web_contents_helper =
+                playlist::PlaylistBackgroundWebContentsHelper::FromWebContents(
+                    web_contents);
+            if (background_web_contents_helper) {
+              background_web_contents_helper->BindMediaResponderReceiver(
+                  std::move(receiver), render_frame_host);
+            }
           },
           &render_frame_host));
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
