@@ -78,18 +78,9 @@ public class DappsModel implements KeyringServiceObserver {
         }
 
         mKeyringService.getAllAccounts(allAccounts -> {
-            if (coinType == CoinType.SOL) {
-                // only the selected account is used for solana dapps
-                if (allAccounts.solDappSelectedAccount != null) {
-                    List<AccountInfo> accounts = new ArrayList();
-                    accounts.add(allAccounts.solDappSelectedAccount);
-                    callback.call(new Pair<>(allAccounts.solDappSelectedAccount, accounts));
-                }
-            } else {
-                List<AccountInfo> accounts =
-                        Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
-                callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
-            }
+            List<AccountInfo> accounts =
+                    Utils.filterAccountsByCoin(allAccounts.accounts, coinType);
+            callback.call(new Pair<>(allAccounts.ethDappSelectedAccount, accounts));
         });
     }
 
