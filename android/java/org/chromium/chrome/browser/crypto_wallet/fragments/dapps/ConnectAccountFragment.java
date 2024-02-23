@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +50,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 
 /**
- * Fragment used to connect Dapps to the crypto account
+ * Fragment used to connect Dapps to the crypto account.
  */
 public class ConnectAccountFragment extends BaseDAppsFragment
         implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
@@ -177,11 +178,13 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
+    @NonNull
     public HashSet<AccountInfo> getAccountsWithPermissions() {
         return mAccountsWithPermissions;
     }
 
     @Override
+    @Nullable
     public AccountInfo getSelectedAccount() {
         return mSelectedAccount;
     }
@@ -216,7 +219,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void connectAccount(AccountInfo account) {
+    public void connectAccount(@NonNull final AccountInfo account) {
         Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (tab != null) {
             if (tab.getWebContents() != null) {
@@ -238,7 +241,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void disconnectAccount(AccountInfo account) {
+    public void disconnectAccount(@NonNull final AccountInfo account) {
         getBraveWalletService().resetPermission(account.accountId, success -> {
             if (!success) {
                 return;
@@ -262,7 +265,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void switchAccount(AccountInfo account) {
+    public void switchAccount(@NonNull final AccountInfo account) {
         getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {
             if (setSuccess) {
                 updateAccounts();
