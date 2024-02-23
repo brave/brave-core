@@ -40,7 +40,7 @@ export const OnboardingImportWalletType = () => {
         title='Hardware wallet'
         description='Connect your hardware wallet with Brave'
         icons={['trezor-color', 'wallet-ledger']}
-        onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
+        onClick={() => history.push(WalletRoutes.OnboardingHardwareWalletTerms)}
       />
       <VerticalSpace space='165px' />
     </OnboardingContentLayout>

@@ -23,6 +23,7 @@ import {
   StaticBackground,
   BackgroundGradientBottomLayer,
   BraveIcon,
+  HeaderWrapper,
   TitleSection
 } from './onboarding-content-layout.style'
 
@@ -67,7 +68,7 @@ export const OnboardingContentLayout = ({
           )}
         </Row>
         <VerticalSpace space='7px' />
-        <Content>
+        <HeaderWrapper>
           {typeof title === 'string' ? <Title>{title}</Title> : title}
 
           {subTitle ? (
@@ -77,8 +78,8 @@ export const OnboardingContentLayout = ({
               <VerticalSpace space='19px' />
             </>
           ) : null}
-          {children}
-        </Content>
+        </HeaderWrapper>
+        <Content>{children}</Content>
       </ContentWrapper>
     </StyledWrapper>
   )

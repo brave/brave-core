@@ -19,6 +19,16 @@ export const StyledWrapper = styled.div`
   }
 `
 
+export const HeaderWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: ${leo.spacing.xl};
+  justify-content: center;
+  align-items: center;
+  padding: 0px 40px 0 40px;
+`
+
 export const ContentWrapper = styled.div`
   display: flex;
   position: relative;
@@ -63,7 +73,8 @@ export const Title = styled.h3`
   font-family: Poppins;
   font-size: 32px;
   font-style: normal;
-  font-weight: 500;
+  font-weight: 600;
+  line-height: 42px;
   margin: 0;
   padding: 0;
 `
