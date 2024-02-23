@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +36,8 @@ import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.app.domain.WalletModel;
 import org.chromium.chrome.browser.crypto_wallet.fragments.CreateAccountBottomSheetFragment;
 import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.PermissionListener;
 import org.chromium.chrome.browser.crypto_wallet.util.AccountsPermissionsHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletUtils;
@@ -48,11 +51,8 @@ import org.chromium.url.GURL;
 import java.util.HashSet;
 import java.util.Iterator;
 
-/**
- * Fragment used to connect Dapps to the crypto account
- */
-public class ConnectAccountFragment extends BaseDAppsFragment
-        implements BravePermissionAccountsListAdapter.BravePermissionDelegate {
+/** Fragment used to connect Dapps to the crypto account. */
+public class ConnectAccountFragment extends BaseDAppsFragment implements PermissionListener {
     private static final String TAG = "ConnectAccount";
 
     private TextView mWebSite;
@@ -84,24 +84,28 @@ public class ConnectAccountFragment extends BaseDAppsFragment
         if (mSelectedAccount == null || mAccountInfos == null) return;
         AccountsPermissionsHelper accountsPermissionsHelper =
                 new AccountsPermissionsHelper(getBraveWalletService(), mAccountInfos);
-        accountsPermissionsHelper.checkAccounts(() -> {
-            mAccountsWithPermissions = accountsPermissionsHelper.getAccountsWithPermissions();
-            mAccountsConnected.setText(
-                    String.format(getResources().getString(R.string.wallet_accounts_connected),
-                            mAccountsWithPermissions.size()));
-            if (mAccountsListAdapter == null) {
-                mAccountsListAdapter =
-                        new BravePermissionAccountsListAdapter(mAccountInfos, false, this);
-                mRecyclerView.setAdapter(mAccountsListAdapter);
-                LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-                mRecyclerView.setLayoutManager(layoutManager);
-            } else {
-                mAccountsListAdapter.setAccounts(mAccountInfos);
-                mAccountsListAdapter.setAccountsWithPermissions(mAccountsWithPermissions);
-                mAccountsListAdapter.setSelectedAccount(mSelectedAccount);
-                mAccountsListAdapter.notifyDataSetChanged();
-            }
-        });
+        accountsPermissionsHelper.checkAccounts(
+                () -> {
+                    mAccountsWithPermissions =
+                            accountsPermissionsHelper.getAccountsWithPermissions();
+                    mAccountsConnected.setText(
+                            String.format(
+                                    getResources().getString(R.string.wallet_accounts_connected),
+                                    mAccountsWithPermissions.size()));
+                    if (mAccountsListAdapter == null) {
+                        mAccountsListAdapter =
+                                new BravePermissionAccountsListAdapter(
+                                        mAccountInfos, Mode.ACCOUNT_CONNECTION, this, null);
+                        mRecyclerView.setAdapter(mAccountsListAdapter);
+                        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
+                        mRecyclerView.setLayoutManager(layoutManager);
+                    } else {
+                        mAccountsListAdapter.setAccounts(mAccountInfos);
+                        mAccountsListAdapter.setAccountsWithPermissions(mAccountsWithPermissions);
+                        mAccountsListAdapter.setSelectedAccount(mSelectedAccount);
+                        mAccountsListAdapter.notifyDataSetChanged();
+                    }
+                });
     }
 
     @Override
@@ -177,11 +181,13 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
+    @NonNull
     public HashSet<AccountInfo> getAccountsWithPermissions() {
         return mAccountsWithPermissions;
     }
 
     @Override
+    @Nullable
     public AccountInfo getSelectedAccount() {
         return mSelectedAccount;
     }
@@ -216,7 +222,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void connectAccount(AccountInfo account) {
+    public void connectAccount(@NonNull final AccountInfo account) {
         Tab tab = BraveRewardsHelper.currentActiveChromeTabbedActivityTab();
         if (tab != null) {
             if (tab.getWebContents() != null) {
@@ -238,7 +244,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void disconnectAccount(AccountInfo account) {
+    public void disconnectAccount(@NonNull final AccountInfo account) {
         getBraveWalletService().resetPermission(account.accountId, success -> {
             if (!success) {
                 return;
@@ -262,7 +268,7 @@ public class ConnectAccountFragment extends BaseDAppsFragment
     }
 
     @Override
-    public void switchAccount(AccountInfo account) {
+    public void switchAccount(@NonNull final AccountInfo account) {
         getKeyringService().setSelectedAccount(account.accountId, setSuccess -> {
             if (setSuccess) {
                 updateAccounts();

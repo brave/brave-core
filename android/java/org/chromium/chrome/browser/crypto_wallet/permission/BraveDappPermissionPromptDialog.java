@@ -35,10 +35,10 @@ import org.chromium.chrome.browser.app.helpers.ImageLoader;
 import org.chromium.chrome.browser.crypto_wallet.BraveWalletServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.KeyringServiceFactory;
 import org.chromium.chrome.browser.crypto_wallet.fragments.dapps.ConnectAccountFragment;
+import org.chromium.chrome.browser.crypto_wallet.permission.BravePermissionAccountsListAdapter.Mode;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
 import org.chromium.components.browser_ui.modaldialog.ModalDialogView;
-import org.chromium.content_public.browser.WebContents;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.ui.LayoutInflaterUtils;
@@ -53,19 +53,16 @@ import org.chromium.ui.modelutil.PropertyModel;
 import java.lang.ref.WeakReference;
 import java.util.List;
 
-/**
- * Dialog to grant website permissions to use Dapps
- */
+/** Dialog to grant website permissions to use DApps. */
 public class BraveDappPermissionPromptDialog
         implements ModalDialogProperties.Controller, ConnectionErrorHandler {
     private static final String TAG = "BraveDappPermission";
 
     private final ModalDialogManager mModalDialogManager;
-    private int mCoinType;
+    private final int mCoinType;
     private final Context mContext;
     private long mNativeDialogController;
     private PropertyModel mPropertyModel;
-    private WebContents mWebContents;
     private String mFavIconURL;
     private MaterialCardView mCvFavContainer;
     private ImageView mFavIconImage;
@@ -78,17 +75,21 @@ public class BraveDappPermissionPromptDialog
     private WalletModel mWalletModel;
 
     @CalledByNative
-    private static BraveDappPermissionPromptDialog create(long nativeDialogController,
-            @NonNull WindowAndroid windowAndroid, WebContents webContents, String favIconURL,
+    private static BraveDappPermissionPromptDialog create(
+            long nativeDialogController,
+            @NonNull WindowAndroid windowAndroid,
+            String favIconURL,
             @CoinType.EnumType int coinType) {
         return new BraveDappPermissionPromptDialog(
-                nativeDialogController, windowAndroid, webContents, favIconURL, coinType);
+                nativeDialogController, windowAndroid, favIconURL, coinType);
     }
 
-    public BraveDappPermissionPromptDialog(long nativeDialogController, WindowAndroid windowAndroid,
-            WebContents webContents, String favIconURL, @CoinType.EnumType int coinType) {
+    public BraveDappPermissionPromptDialog(
+            long nativeDialogController,
+            WindowAndroid windowAndroid,
+            String favIconURL,
+            @CoinType.EnumType int coinType) {
         mNativeDialogController = nativeDialogController;
-        mWebContents = webContents;
         mFavIconURL = favIconURL;
         mContext = windowAndroid.getActivity().get();
 
@@ -99,7 +100,7 @@ public class BraveDappPermissionPromptDialog
             BraveActivity activity = BraveActivity.getBraveActivity();
             mWalletModel = activity.getWalletModel();
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "BraveDappPermissionPromptDialog constructor " + e);
+            Log.e(TAG, "BraveDappPermissionPromptDialog", e);
         }
     }
 
@@ -162,7 +163,7 @@ public class BraveDappPermissionPromptDialog
     }
 
     @NonNull
-    private ViewGroup getPermissionModalViewContainer(View customView) {
+    private ViewGroup getPermissionModalViewContainer(@NonNull View customView) {
         ViewParent viewParent = customView.getParent();
         while (viewParent.getParent() != null) {
             viewParent = viewParent.getParent();
@@ -184,16 +185,23 @@ public class BraveDappPermissionPromptDialog
     private void initAccounts() {
         assert mKeyringService != null;
         assert mWalletModel != null;
-        mAccountsListAdapter = new BravePermissionAccountsListAdapter(new AccountInfo[0], true,
-                new BravePermissionAccountsListAdapter.BravePermissionDelegate() {
-                    @Override
-                    public void onAccountCheckChanged(AccountInfo account, boolean isChecked) {
-                        if (mPermissionDialogPositiveButton != null) {
-                            mPermissionDialogPositiveButton.setEnabled(
-                                    getSelectedAccounts().length > 0);
-                        }
-                    }
-                });
+        // Solana accounts support only single account selection,
+        // while Ethereum account offer multiple selection mode.
+        final Mode mode =
+                mCoinType == CoinType.SOL
+                        ? Mode.SINGLE_ACCOUNT_SELECTION
+                        : Mode.MULTIPLE_ACCOUNT_SELECTION;
+        mAccountsListAdapter =
+                new BravePermissionAccountsListAdapter(
+                        new AccountInfo[0],
+                        mode,
+                        null,
+                        (account, checked) -> {
+                            if (mPermissionDialogPositiveButton != null) {
+                                mPermissionDialogPositiveButton.setEnabled(
+                                        getSelectedAccounts().length > 0);
+                            }
+                        });
         mRecyclerView.setAdapter(mAccountsListAdapter);
         LinearLayoutManager layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
