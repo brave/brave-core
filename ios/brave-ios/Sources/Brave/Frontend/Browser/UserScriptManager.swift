@@ -104,6 +104,7 @@ class UserScriptManager {
     case readyStateHelper
     case ethereumProvider
     case solanaProvider
+    case searchResultAd
     case youtubeQuality
     
     fileprivate var script: WKUserScript? {
@@ -118,7 +119,8 @@ class UserScriptManager {
       case .trackerProtectionStats: return ContentBlockerHelper.userScript
       case .ethereumProvider: return EthereumProviderScriptHandler.userScript
       case .solanaProvider: return SolanaProviderScriptHandler.userScript
-        
+      case .searchResultAd: return BraveSearchResultAdScriptHandler.userScript
+    
       // Always enabled scripts
       case .faviconFetcher: return FaviconScriptHandler.userScript
       case .rewardsReporting: return RewardsReportingScriptHandler.userScript

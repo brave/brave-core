@@ -367,6 +367,9 @@ class Tab: NSObject {
   /// A helper property that handles native to Brave Search communication.
   var braveSearchManager: BraveSearchManager?
 
+  /// A helper property that handles Brave Search Result Ads.
+  var braveSearchResultAdManager: BraveSearchResultAdManager?
+
   private lazy var refreshControl = UIRefreshControl().then {
     $0.addTarget(self, action: #selector(reload), for: .valueChanged)
   }

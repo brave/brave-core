@@ -2554,7 +2554,8 @@ extension BrowserViewController: TabDelegate {
       injectedScripts += [
         LoginsScriptHandler(tab: tab, profile: profile, passwordAPI: braveCore.passwordAPI),
         EthereumProviderScriptHandler(tab: tab),
-        SolanaProviderScriptHandler(tab: tab)
+        SolanaProviderScriptHandler(tab: tab),
+        BraveSearchResultAdScriptHandler(tab: tab)
       ]
     }
 

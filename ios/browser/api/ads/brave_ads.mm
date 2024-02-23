@@ -207,6 +207,10 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
   return brave_ads::ShouldAlwaysRunService();
 }
 
++ (BOOL)shouldSupportSearchResultAds {
+  return brave_ads::ShouldSupportSearchResultAds();
+}
+
 - (BOOL)isEnabled {
   return self.profilePrefService->GetBoolean(brave_rewards::prefs::kEnabled);
 }
@@ -1729,8 +1733,20 @@ static NSString* const kComponentUpdaterMetadataPrefKey =
       }));
 }
 
-// TODO(https://github.com/brave/brave-browser/issues/33469): Unify Brave Ads
-// search result attribution.
+- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+                         eventType:(BraveAdsSearchResultAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion {
+  if (![self isServiceRunning] || !searchResultAd) {
+    return;
+  }
+
+  ads->TriggerSearchResultAdEvent(
+      searchResultAd.cppObjPtr,
+      static_cast<brave_ads::mojom::SearchResultAdEventType>(eventType),
+      base::BindOnce(^(const bool success) {
+        completion(success);
+      }));
+}
 
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion {

@@ -60,6 +60,9 @@ OBJC_EXPORT
 /// disabled.
 + (BOOL)shouldAlwaysRunService;
 
+/// Returns `true` if search result ads are supported.
++ (BOOL)shouldSupportSearchResultAds;
+
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
 @property(nonatomic, assign, getter=isEnabled)
@@ -118,6 +121,10 @@ OBJC_EXPORT
                             eventType:
                                 (BraveAdsPromotedContentAdEventType)eventType
                            completion:(void (^)(BOOL success))completion;
+
+- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+                         eventType:(BraveAdsSearchResultAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion;
 
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion;
