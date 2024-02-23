@@ -10,10 +10,10 @@ import getNTPBrowserAPI from '../../api/background'
 import { addNewTopSite, editTopSite } from '../../api/topSites'
 import { brandedWallpaperLogoClicked } from '../../api/wallpaper'
 import {
-  BraveTalkWidget as BraveTalk, Clock, EditCards, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
+  BraveTalkWidget as BraveTalk, Clock, EditTopSite, OverrideReadabilityColor, RewardsWidget as Rewards, SearchPromotion
 } from '../../components/default'
 import BrandedWallpaperLogo from '../../components/default/brandedWallpaper/logo'
-import BraveNews, { GetDisplayAdContent } from '../../components/default/braveNews'
+import { GetDisplayAdContent } from '../../components/default/braveNews'
 import FooterInfo from '../../components/default/footer/footer'
 import * as Page from '../../components/default/page'
 import TopSitesGrid from './gridSites'
@@ -35,13 +35,15 @@ import Settings, { TabType as SettingsTabType } from './settings'
 
 import { BraveNewsContextProvider } from '../../components/default/braveNews/customize/Context'
 import BraveNewsHint from '../../components/default/braveNews/hint'
-import GridWidget from './gridWidget'
 import SponsoredImageClickArea from '../../components/default/sponsoredImage/sponsoredImageClickArea'
+import GridWidget from './gridWidget'
 
 import Icon, { setIconBasePath } from '@brave/leo/react/icon'
 setIconBasePath('chrome://resources/brave-icons')
 
 import * as style from './style'
+
+// const BraveNewsPeek =  React.lazy(() => import('../../../brave_news/browser/resources/Peek'))
 
 interface Props {
   newTabData: NewTab.State
@@ -393,42 +395,42 @@ class NewTabPage extends React.Component<Props, State> {
     if (this.props.newTabData.hideAllWidgets) {
       return null
     }
-    const {
-      widgetStackOrder,
-      braveRewardsSupported,
-      braveTalkSupported,
-      showRewards,
-      showBraveTalk
-    } = this.props.newTabData
-    const lookup = {
-      'rewards': {
-        display: braveRewardsSupported && showRewards,
-        render: this.renderRewardsWidget.bind(this)
-      },
-      'braveTalk': {
-        display: braveTalkSupported && showBraveTalk,
-        render: this.renderBraveTalkWidget.bind(this)
-      }
-    }
+    // const {
+    //   widgetStackOrder,
+    //   braveRewardsSupported,
+    //   braveTalkSupported,
+    //   showRewards,
+    //   showBraveTalk
+    // } = this.props.newTabData
+    // const lookup = {
+    //   'rewards': {
+    //     display: braveRewardsSupported && showRewards,
+    //     render: this.renderRewardsWidget.bind(this)
+    //   },
+    //   'braveTalk': {
+    //     display: braveTalkSupported && showBraveTalk,
+    //     render: this.renderBraveTalkWidget.bind(this)
+    //   }
+    // }
 
-    const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => {
-      if (!lookup.hasOwnProperty(widget)) {
-        return false
-      }
+    // const widgetList = widgetStackOrder.filter((widget: NewTab.StackWidget) => {
+    //   if (!lookup.hasOwnProperty(widget)) {
+    //     return false
+    //   }
 
-      return lookup[widget].display
-    })
+    //   return lookup[widget].display
+    // })
 
     return (
       <>
-        {widgetList.map((widget: NewTab.StackWidget, i: number) => {
+        {/* {widgetList.map((widget: NewTab.StackWidget, i: number) => {
           const isForeground = i === widgetList.length - 1
           return (
             <div key={`widget-${widget}`}>
               {lookup[widget].render(isForeground, i)}
             </div>
           )
-        })}
+        })} */}
       </>
     )
   }
@@ -450,7 +452,7 @@ class NewTabPage extends React.Component<Props, State> {
   renderCryptoContent () {
     const { newTabData } = this.props
     const { widgetStackOrder } = newTabData
-    const allWidgetsHidden = this.allWidgetsHidden()
+    // const allWidgetsHidden = this.allWidgetsHidden()
 
     if (!widgetStackOrder.length) {
       return null
@@ -459,9 +461,9 @@ class NewTabPage extends React.Component<Props, State> {
     return (
       <Page.GridItemWidgetStack>
         {this.getCryptoContent()}
-        {!allWidgetsHidden &&
+        {/* {!allWidgetsHidden &&
           <EditCards onEditCards={this.openSettingsEditCards} />
-        }
+        } */}
       </Page.GridItemWidgetStack>
     )
   }
@@ -692,7 +694,7 @@ class NewTabPage extends React.Component<Props, State> {
               </Page.GridItemNavigationBraveNews>
             }
           </Page.Page>
-        { newTabData.showToday &&
+        {/* { newTabData.showToday &&
         <BraveNews
           feed={this.props.todayData.feed}
           articleToScrollTo={this.props.todayData.articleScrollTo}
@@ -715,7 +717,7 @@ class NewTabPage extends React.Component<Props, State> {
           onVisitDisplayAd={this.props.actions.today.visitDisplayAd}
           getDisplayAd={this.props.getBraveNewsDisplayAd}
         />
-        }
+        } */}
         <Settings
           actions={actions}
           textDirection={newTabData.textDirection}
@@ -745,7 +747,7 @@ class NewTabPage extends React.Component<Props, State> {
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
           showBraveTalk={newTabData.showBraveTalk}
-          todayPublishers={this.props.todayData.publishers}
+          // todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}
