@@ -36,15 +36,14 @@ void StateMigrationV14::Migrate(ResultCallback callback) {
     return;
   }
 
-  std::move(callback).Run(
-      base::ranges::any_of(
-          std::vector{constant::kWalletBitflyer, constant::kWalletGemini,
-                      constant::kWalletUphold, constant::kWalletZebPay},
-          [this](const std::string& wallet_type) {
-            return MigrateExternalWallet(wallet_type);
-          })
-          ? mojom::Result::OK
-          : mojom::Result::FAILED);
+  std::vector providers{constant::kWalletBitflyer, constant::kWalletGemini,
+                        constant::kWalletUphold, constant::kWalletZebPay};
+
+  for (auto* provider : providers) {
+    MigrateExternalWallet(provider);
+  }
+
+  std::move(callback).Run(mojom::Result::OK);
 }
 
 }  // namespace brave_rewards::internal::state
