@@ -540,9 +540,9 @@ void SpeedreaderTabHelper::SetDocumentAttribute(const std::string& attribute,
       const attribute = '$1'
       const value = '$2'
       if (value == '') {
-        document.documentElement.removeAttribute(attribute)
+        document?.documentElement?.removeAttribute(attribute)
       } else {
-        document.documentElement.setAttribute(attribute, value)
+        document?.documentElement?.setAttribute(attribute, value)
       }
     })();
   )js";
