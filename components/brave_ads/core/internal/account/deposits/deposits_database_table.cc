@@ -113,7 +113,7 @@ void MigrateToV24(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE deposits (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             value DOUBLE NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
@@ -214,7 +214,8 @@ void Deposits::PurgeExpired(ResultCallback callback) const {
       R"(
           DELETE FROM
             $1
-          WHERE $2 >= expire_at;)",
+          WHERE
+            $2 >= expire_at;)",
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
@@ -235,7 +236,7 @@ void Deposits::Create(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE deposits (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             value DOUBLE NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
@@ -270,7 +271,7 @@ std::string Deposits::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_instance_id,
             value,
             expire_at
@@ -289,7 +290,7 @@ std::string Deposits::BuildInsertOrUpdateSql(mojom::DBCommandInfo* command,
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_instance_id,
             value,
             expire_at

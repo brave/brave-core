@@ -51,7 +51,7 @@ void MigrateToV27(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE embeddings (
-            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             embedding TEXT NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
@@ -93,7 +93,7 @@ void Embeddings::Create(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE embeddings (
-            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             embedding TEXT NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
@@ -122,7 +122,7 @@ std::string Embeddings::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_set_id,
             embedding
           ) VALUES $2;)",

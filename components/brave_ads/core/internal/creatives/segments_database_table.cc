@@ -37,25 +37,6 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV34(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Recreate table as it will be repopulated after downloading the catalog.
-  DropTable(transaction, "segments");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE segments (
-            creative_set_id TEXT NOT NULL,
-            segment TEXT NOT NULL,
-            PRIMARY KEY (creative_set_id, segment),
-            UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE
-          );)";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 void Segments::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -94,8 +75,10 @@ void Segments::Create(mojom::DBTransactionInfo* transaction) {
           CREATE TABLE segments (
             creative_set_id TEXT NOT NULL,
             segment TEXT NOT NULL,
-            PRIMARY KEY (creative_set_id, segment),
-            UNIQUE(creative_set_id, segment) ON CONFLICT REPLACE
+            PRIMARY KEY (
+              creative_set_id,
+              segment
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 }
@@ -105,14 +88,23 @@ void Segments::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 34: {
-      MigrateToV34(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Segments::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string Segments::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -123,7 +115,7 @@ std::string Segments::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_set_id,
             segment
           ) VALUES $2;)",

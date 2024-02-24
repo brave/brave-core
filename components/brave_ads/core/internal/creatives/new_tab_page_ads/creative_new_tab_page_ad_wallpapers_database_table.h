@@ -28,6 +28,8 @@ class CreativeNewTabPageAdWallpapers final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
+  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+
   std::string BuildInsertOrUpdateSql(
       mojom::DBCommandInfo* command,
       const CreativeNewTabPageAdList& creative_ads) const;

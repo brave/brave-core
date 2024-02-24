@@ -141,6 +141,13 @@ void MigrateToV29(mojom::DBTransactionInfo* transaction) {
   transaction->commands.push_back(std::move(command));
 }
 
+void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  CreateTableIndex(transaction, "text_embedding_html_events",
+                   /*columns=*/{"created_at"});
+}
+
 }  // namespace
 
 void TextEmbeddingHtmlEvents::LogEvent(
@@ -222,6 +229,8 @@ void TextEmbeddingHtmlEvents::Create(mojom::DBTransactionInfo* transaction) {
             embedding TEXT NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
+
+  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"created_at"});
 }
 
 void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
@@ -236,6 +245,11 @@ void TextEmbeddingHtmlEvents::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 29: {
       MigrateToV29(transaction);
+      break;
+    }
+
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
@@ -269,7 +283,7 @@ std::string TextEmbeddingHtmlEvents::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             created_at,
             locale,
             hashed_text_base64,

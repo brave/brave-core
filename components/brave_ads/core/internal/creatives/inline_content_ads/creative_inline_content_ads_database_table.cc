@@ -253,29 +253,6 @@ void GetAllCallback(GetCreativeInlineContentAdsCallback callback,
   std::move(callback).Run(/*success=*/true, segments, creative_ads);
 }
 
-void MigrateToV34(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  // Recreate table as it will be repopulated after downloading the catalog.
-  DropTable(transaction, "creative_inline_content_ads");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      R"(
-          CREATE TABLE creative_inline_content_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
-            creative_set_id TEXT NOT NULL,
-            campaign_id TEXT NOT NULL,
-            title TEXT NOT NULL,
-            description TEXT NOT NULL,
-            image_url TEXT NOT NULL,
-            dimensions TEXT NOT NULL,
-            cta_text TEXT NOT NULL
-          );)";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 CreativeInlineContentAds::CreativeInlineContentAds()
@@ -388,7 +365,6 @@ void CreativeInlineContentAds::GetForSegmentsAndDimensions(
   }
 
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
-
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::READ;
   command->sql = base::ReplaceStringPlaceholders(
@@ -574,7 +550,7 @@ void CreativeInlineContentAds::Create(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE creative_inline_content_ads (
-            creative_instance_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_instance_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             creative_set_id TEXT NOT NULL,
             campaign_id TEXT NOT NULL,
             title TEXT NOT NULL,
@@ -584,6 +560,10 @@ void CreativeInlineContentAds::Create(mojom::DBTransactionInfo* transaction) {
             cta_text TEXT NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
+
+  // Optimize database query for `GetForSegmentsAndDimensions` and
+  // `GetForDimensions`.
+  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"dimensions"});
 }
 
 void CreativeInlineContentAds::Migrate(mojom::DBTransactionInfo* transaction,
@@ -591,14 +571,24 @@ void CreativeInlineContentAds::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 34: {
-      MigrateToV34(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void CreativeInlineContentAds::MigrateToV35(
+    mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 void CreativeInlineContentAds::InsertOrUpdate(
     mojom::DBTransactionInfo* transaction,
@@ -624,7 +614,7 @@ std::string CreativeInlineContentAds::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_instance_id,
             creative_set_id,
             campaign_id,

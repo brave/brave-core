@@ -129,8 +129,10 @@ void MigrateToV23(mojom::DBTransactionInfo* transaction) {
             advertiser_public_key TEXT,
             observation_window INTEGER NOT NULL,
             expiry_timestamp TIMESTAMP NOT NULL,
-            PRIMARY KEY (creative_set_id, type),
-            UNIQUE(creative_set_id, type) ON CONFLICT REPLACE
+            PRIMARY KEY (
+              creative_set_id,
+              type
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 }
@@ -151,8 +153,10 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
             advertiser_public_key TEXT,
             observation_window INTEGER NOT NULL,
             expire_at TIMESTAMP NOT NULL,
-            PRIMARY KEY (creative_set_id, type),
-            UNIQUE(creative_set_id, type) ON CONFLICT REPLACE
+            PRIMARY KEY (
+              creative_set_id,
+              type
+            ) ON CONFLICT REPLACE
           );)";
   transaction->commands.push_back(std::move(command));
 
@@ -207,7 +211,7 @@ void MigrateToV30(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE creative_set_conversions_temp (
-            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             url_pattern TEXT NOT NULL,
             extract_verifiable_id INTEGER NOT NULL DEFAULT 1,
             verifiable_advertiser_public_key TEXT,
@@ -244,7 +248,7 @@ void MigrateToV31(mojom::DBTransactionInfo* transaction) {
   command->sql =
       R"(
           CREATE TABLE creative_set_conversions_temp (
-            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             url_pattern TEXT NOT NULL,
             verifiable_advertiser_public_key TEXT,
             observation_window INTEGER NOT NULL,
@@ -264,6 +268,14 @@ void MigrateToV31(mojom::DBTransactionInfo* transaction) {
 
   RenameTable(transaction, "creative_set_conversions_temp",
               "creative_set_conversions");
+}
+
+void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // Optimize database query for `GetUnexpired`.
+  CreateTableIndex(transaction, "creative_set_conversions",
+                   /*columns=*/{"expire_at"});
 }
 
 }  // namespace
@@ -333,18 +345,22 @@ std::string CreativeSetConversions::GetTableName() const {
 
 void CreativeSetConversions::Create(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
+
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
       R"(
           CREATE TABLE creative_set_conversions (
-            creative_set_id TEXT NOT NULL PRIMARY KEY UNIQUE ON CONFLICT REPLACE,
+            creative_set_id TEXT NOT NULL PRIMARY KEY ON CONFLICT REPLACE,
             url_pattern TEXT NOT NULL,
             verifiable_advertiser_public_key TEXT,
             observation_window INTEGER NOT NULL,
             expire_at TIMESTAMP NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
+
+  // Optimize database query for `GetUnexpired`.
+  CreateTableIndex(transaction, GetTableName(), /*columns=*/{"expire_at"});
 }
 
 void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
@@ -374,6 +390,11 @@ void CreativeSetConversions::Migrate(mojom::DBTransactionInfo* transaction,
 
     case 31: {
       MigrateToV31(transaction);
+      break;
+    }
+
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
@@ -406,7 +427,7 @@ std::string CreativeSetConversions::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             creative_set_id,
             url_pattern,
             verifiable_advertiser_public_key,

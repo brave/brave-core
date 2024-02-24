@@ -40,18 +40,36 @@ std::string BuildInsertSql(const std::string& from,
 
 }  // namespace
 
+void DropTableIndex(mojom::DBTransactionInfo* transaction,
+                    const std::string& index_name) {
+  CHECK(transaction);
+  CHECK(!index_name.empty());
+
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::EXECUTE;
+  command->sql =
+      R"(
+          DROP INDEX IF EXISTS
+            ad_events_created_at_index;)";
+  transaction->commands.push_back(std::move(command));
+}
+
 void CreateTableIndex(mojom::DBTransactionInfo* transaction,
                       const std::string& table_name,
-                      const std::string& key) {
+                      const std::vector<std::string>& columns) {
   CHECK(transaction);
   CHECK(!table_name.empty());
-  CHECK(!key.empty());
+  CHECK(!columns.empty());
 
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
-      "CREATE INDEX IF NOT EXISTS $1_$2_index ON $3 ($4);",
-      {table_name, key, table_name, key}, nullptr);
+      R"(
+          CREATE INDEX IF NOT EXISTS
+            $1_$2_index ON $3 ($4);)",
+      {table_name, base::JoinString(columns, "_"), table_name,
+       base::JoinString(columns, ", ")},
+      nullptr);
   transaction->commands.push_back(std::move(command));
 }
 
@@ -64,8 +82,8 @@ void DropTable(mojom::DBTransactionInfo* transaction,
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql = base::ReplaceStringPlaceholders(
       R"(
-          DROP
-            TABLE IF EXISTS $1;)",
+          DROP TABLE IF EXISTS
+            $1;)",
       {table_name}, nullptr);
   transaction->commands.push_back(std::move(command));
 }

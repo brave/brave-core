@@ -173,7 +173,7 @@ void MigrateToV13(mojom::DBTransactionInfo* transaction) {
 void MigrateToV17(mojom::DBTransactionInfo* transaction) {
   CHECK(transaction);
 
-  CreateTableIndex(transaction, "ad_events", "timestamp");
+  CreateTableIndex(transaction, "ad_events", /*columns=*/{"timestamp"});
 }
 
 void MigrateToV28(mojom::DBTransactionInfo* transaction) {
@@ -223,7 +223,7 @@ void MigrateToV28(mojom::DBTransactionInfo* transaction) {
 
   RenameTable(transaction, "ad_events_temp", "ad_events");
 
-  CreateTableIndex(transaction, "ad_events", "created_at");
+  CreateTableIndex(transaction, "ad_events", /*columns=*/{"created_at"});
 }
 
 void MigrateToV29(mojom::DBTransactionInfo* transaction) {
@@ -259,6 +259,20 @@ void MigrateToV32(mojom::DBTransactionInfo* transaction) {
           WHERE
             confirmation_type == 'saved';)";
   transaction->commands.push_back(std::move(command));
+}
+
+void MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  DropTableIndex(transaction, "ad_events_created_at_index");
+
+  // Optimize database query for `GetUnexpired`.
+  CreateTableIndex(transaction, "ad_events",
+                   /*columns=*/{"created_at"});
+
+  // Optimize database query for `GetUnexpiredForType`.
+  CreateTableIndex(transaction, "ad_events",
+                   /*columns=*/{"type", "created_at"});
 }
 
 }  // namespace
@@ -298,10 +312,10 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
                 creative_set_conversions
             )
             OR DATETIME(
-              (created_at / 1000000) -11644473600,
+              (created_at / 1000000) - 11644473600,
               'unixepoch'
             ) > DATETIME(
-              ($2 / 1000000) -11644473600,
+              ($2 / 1000000) - 11644473600,
               'unixepoch',
               '-3 months'
             )
@@ -346,10 +360,10 @@ void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
                   creative_set_conversions
               )
               OR DATETIME(
-                (created_at / 1000000) -11644473600,
+                (created_at / 1000000) - 11644473600,
                 'unixepoch'
               ) > DATETIME(
-                ($3 / 1000000) -11644473600,
+                ($3 / 1000000) - 11644473600,
                 'unixepoch',
                 '-3 months'
               )
@@ -517,6 +531,14 @@ void AdEvents::Create(mojom::DBTransactionInfo* transaction) {
             created_at TIMESTAMP NOT NULL
           );)";
   transaction->commands.push_back(std::move(command));
+
+  // Optimize database query for `GetUnexpired`.
+  CreateTableIndex(transaction, GetTableName(),
+                   /*columns=*/{"created_at"});
+
+  // Optimize database query for `GetUnexpiredForType`.
+  CreateTableIndex(transaction, GetTableName(),
+                   /*columns=*/{"type", "created_at"});
 }
 
 void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
@@ -553,6 +575,11 @@ void AdEvents::Migrate(mojom::DBTransactionInfo* transaction,
       MigrateToV32(transaction);
       break;
     }
+
+    case 35: {
+      MigrateToV35(transaction);
+      break;
+    }
   }
 }
 
@@ -581,7 +608,7 @@ std::string AdEvents::BuildInsertOrUpdateSql(
 
   return base::ReplaceStringPlaceholders(
       R"(
-          INSERT OR REPLACE INTO $1 (
+          INSERT INTO $1 (
             placement_id,
             type,
             confirmation_type,
