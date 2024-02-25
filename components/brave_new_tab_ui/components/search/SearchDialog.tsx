@@ -7,6 +7,7 @@ import styled, { keyframes } from 'styled-components'
 import SearchBox from './SearchBox';
 import SearchResults from './SearchResults';
 import { spacing } from '@brave/leo/tokens/css';
+import { createPortal } from 'react-dom';
 
 interface Props {
   onClose: () => void
@@ -120,7 +121,7 @@ export default function Component(props: Props) {
       (ref.current?.querySelector('leo-input') as HTMLElement)?.focus()
     })
   }, [])
-  return <Dialog ref={ref} offsetY={props.offsetY} onClick={e => {
+  return createPortal(<Dialog ref={ref} offsetY={props.offsetY} onClick={e => {
     const rect = e.currentTarget.getBoundingClientRect();
 
     const clickedInDialog = (
@@ -135,5 +136,5 @@ export default function Component(props: Props) {
   }}>
     <SearchBox />
     <SearchResults />
-  </Dialog>
+  </Dialog>, document.body)
 }
