@@ -122,6 +122,11 @@ export default function Component(props: Props) {
     })
   }, [])
   return createPortal(<Dialog ref={ref} offsetY={props.offsetY} onClick={e => {
+    // The dropdown uses position: fixed, so it isn't actually inside the dialog
+    // bounds, so check if the leo-input contained the click.
+    const input = e.nativeEvent.composedPath().find(t => (t as HTMLElement).tagName === 'LEO-INPUT')
+    if (input) return
+
     const rect = e.currentTarget.getBoundingClientRect();
 
     const clickedInDialog = (

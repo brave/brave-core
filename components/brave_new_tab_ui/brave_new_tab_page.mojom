@@ -46,6 +46,13 @@ interface PageHandlerFactory {
                     pending_receiver<PageHandler> handler);
 };
 
+struct SearchEngineInfo {
+  string name;
+  string keyword;
+  string origin;
+  url.mojom.Url favicon_url;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   // Choose custom background from local file system.
@@ -69,6 +76,8 @@ interface PageHandler {
   TryBraveSearchPromotion(string input, bool open_new_tab);
   DismissBraveSearchPromotion();
   IsSearchPromotionEnabled() => (bool enabled);
+
+  GetSearchEngines() => (array<SearchEngineInfo> search_engines);
 };
 
 // WebUI-side handler for requests from the browser.
