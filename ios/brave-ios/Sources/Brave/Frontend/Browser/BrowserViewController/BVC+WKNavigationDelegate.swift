@@ -73,6 +73,8 @@ extension BrowserViewController: WKNavigationDelegate {
           selectedTab.sslPinningError = nil
           selectedTab.sslPinningTrust = nil
           selectedTab.secureContentState = .unknown
+          logSecureContentState(tab: selectedTab, details: "DidStartProvisionalNavigation - Reset secure content state to unknown until page can be evaluated")
+
           updateToolbarSecureContentState(.unknown)
         }
       }
@@ -732,6 +734,8 @@ extension BrowserViewController: WKNavigationDelegate {
     // However, WebKit does NOT trigger the `serverTrust` observer when the URL changes, but the trust has not.
     // WebKit also does NOT trigger the `serverTrust` observer when the page is actually insecure (non-https).
     // So manually trigger it with the current trust.
+    logSecureContentState(tab: tab, details: "ObserveValue trigger in didCommit")
+
     observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
                  of: webView,
                  change: [.newKey: webView.serverTrust as Any, .kindKey: 1],
@@ -840,6 +844,8 @@ extension BrowserViewController: WKNavigationDelegate {
     // Also, when Chromium cert validation passes, BUT Apple cert validation fails, the request is cancelled automatically by WebKit
     // In such a case, the webView.serverTrust is `nil`. The only time we have a valid trust is when we received the challenge
     // so we need to update the URL-Bar to show that serverTrust when WebKit's is nil.
+    logSecureContentState(tab: tab, details: "ObserveValue trigger in didFailProvisionalNavigation")
+
     observeValue(forKeyPath: KVOConstants.serverTrust.keyPath,
                  of: webView,
                  change: [.newKey: webView.serverTrust ?? tab.sslPinningTrust as Any, .kindKey: 1],

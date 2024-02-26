@@ -810,9 +810,14 @@ class SettingsViewController: TableViewController {
             self.navigationController?.pushViewController(vc, animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(
+          text: "Secure Content State Debug",
+          selection: { [unowned self] in
+            self.navigationController?.pushViewController(DebugLogViewController(type: .secureState), animated: true)
+          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+        Row(
           text: "View URP Logs",
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(UrpLogsViewController(), animated: true)
+            self.navigationController?.pushViewController(DebugLogViewController(type: .urp), animated: true)
           }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
         Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
         Row(

@@ -268,7 +268,10 @@ extension BrowserViewController {
     }
     
     // Display Certificate Activity
-    if let secureState = tabManager.selectedTab?.secureContentState, secureState != .missingSSL && secureState != .unknown {
+    if let selectedTab = tabManager.selectedTab, 
+        selectedTab.secureContentState != .missingSSL && selectedTab.secureContentState != .unknown {    
+      logSecureContentState(tab: selectedTab, details: "Display Certificate Activity Settings")
+
       activities.append(
         BasicMenuActivity(
           title: Strings.displayCertificate,
