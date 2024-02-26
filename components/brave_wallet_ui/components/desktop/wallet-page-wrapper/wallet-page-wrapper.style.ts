@@ -311,7 +311,7 @@ export const BlockForHeight = styled.div`
 
 export const FeatureRequestButtonWrapper = styled.div`
   display: flex;
-  @media screen and (max-width: ${layoutSmallWidth}px) {
+  @media screen and (max-width: 1445px) {
     display: none;
   }
 `
