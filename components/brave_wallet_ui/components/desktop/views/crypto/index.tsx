@@ -206,7 +206,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
               }}
               onClick={() => {
                 if (isAndroid) {
-                  pageHandler.showApprovePanelUI()
+                  pageHandler.showWalletBackupUI()
                 } else {
                   onShowBackup()
                 }
