@@ -24,15 +24,6 @@ export const FullWidthChildrenColumn = styled(Column)`
   }
 `
 
-export const WarningInfoCircleIcon = styled(Icon).attrs({
-  name: 'warning-circle-outline'
-})`
-  --leo-icon-size: 16px;
-  width: 16px;
-  height: 16px;
-  color: ${leo.color.systemfeedback.warningIcon};
-`
-
 export const WarningButtonText = styled.span`
   color: ${leo.color.systemfeedback.errorIcon};
 `
