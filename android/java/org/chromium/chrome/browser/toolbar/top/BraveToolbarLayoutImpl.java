@@ -75,7 +75,6 @@ import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
-import org.chromium.chrome.browser.notifications.RewardsYouAreNotEarningDialog;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
@@ -479,17 +478,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             }
                         }
 
-                        if (mBraveShieldsButton != null
-                                && mBraveShieldsButton.isShown()
-                                && mBraveShieldsHandler != null
-                                && !mBraveShieldsHandler.isShowing()
-                                && url.getSpec().contains("rewards")
-                                && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
-                                        || BraveNotificationWarningDialog
-                                                .shouldShowRewardWarningDialog(getContext()))) {
-                            showNotificationNotEarningDialog();
-                        }
-
                         String countryCode = Locale.getDefault().getCountry();
                         if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                                 && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
@@ -499,21 +487,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                                 true)) {
                             ChromeSharedPreferences.getInstance()
                                     .writeBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
-                        }
-                    }
-
-                    private void showNotificationNotEarningDialog() {
-                        try {
-                            RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
-                                    RewardsYouAreNotEarningDialog.newInstance();
-                            rewardsYouAreNotEarningDialog.setCancelable(false);
-                            rewardsYouAreNotEarningDialog.show(
-                                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                                    RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
-
-                        } catch (BraveActivity.BraveActivityNotFoundException
-                                | IllegalStateException e) {
-                            Log.e(TAG, "showNotificationNotEarningDialog " + e);
                         }
                     }
 

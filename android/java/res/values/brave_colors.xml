@@ -317,7 +317,6 @@
     <color name="notification_badge_icon_color">#C2A5D1</color>
     <color name="notification_download_icon_color">#F092C5</color>
     <color name="notification_rationale_dialog_card_bg_color">@android:color/white</color>
-    <color name="you_are_not_earning_rewards_bg_color">#F8F9FA</color>
 
     <color name="tipping_details_description_text_color">#6B7084</color>
     <color name="link_icon_color">#6B7084</color>
