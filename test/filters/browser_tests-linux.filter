@@ -29,7 +29,6 @@
 -PageInfoBubbleViewBrowserTest.VerifyEnterprisePasswordReusePageInfoBubble
 -ServiceWorkerAndFalse/ExtensionBackForwardCacheBrowserTest.*
 -ServiceWorkerAndTrue/ExtensionBackForwardCacheBrowserTest.*
--ThirdPartyReduceAcceptLanguageBrowserTest.ThirdPartyIframeWithSubresourceRequests
 
 # This test fails because of the following CHECK in identity_test_utils.cc:
 # !primary_account_info.IsEmpty()
