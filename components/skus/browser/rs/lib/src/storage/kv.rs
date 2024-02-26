@@ -1,4 +1,9 @@
-use std::cell::RefMut;
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+use std::ops::DerefMut;
 use std::collections::HashMap;
 use std::fmt::Debug;
 
@@ -35,52 +40,53 @@ struct KVState {
     pub credentials: Option<CredentialsState>,
 }
 
-trait KVStoreHelpers<T: KVStore> {
-    fn get_state(&mut self) -> Result<KVState, InternalError>;
-    fn set_state(&mut self, state: &KVState) -> Result<(), InternalError>;
+#[async_trait(?Send)]
+trait KVStoreHelpers<C> {
+    async fn get_state(&mut self) -> Result<KVState, InternalError>;
+    async fn set_state(&mut self, state: &KVState) -> Result<(), InternalError>;
 }
 
+#[async_trait(?Send)]
 pub trait KVClient {
-    type Store;
+    type Store: KVStore;
+    type StoreRef<'a>: DerefMut<Target=Self::Store> where Self: 'a;
 
-    #[allow(clippy::needless_lifetimes)]
-    fn get_store<'a>(&'a self) -> Result<RefMut<'a, Self::Store>, InternalError>
-    where
-        Self::Store: KVStore;
+    async fn get_store<'a>(&'a self) -> Result<Self::StoreRef<'a>, InternalError>;
 }
 
+#[async_trait(?Send)]
 pub trait KVStore: Sized {
     fn env(&self) -> &Environment;
-    fn purge(&mut self) -> Result<(), InternalError>;
-    fn set(&mut self, key: &str, value: &str) -> Result<(), InternalError>;
-    fn get(&mut self, key: &str) -> Result<Option<String>, InternalError>;
+    async fn purge(&mut self) -> Result<(), InternalError>;
+    async fn set(&mut self, key: &str, value: &str) -> Result<(), InternalError>;
+    async fn get(&mut self, key: &str) -> Result<Option<String>, InternalError>;
 }
 
 fn key_from_environment(env: &Environment) -> String {
     format!("skus:{}", env)
 }
 
+#[async_trait(?Send)]
 impl<C> KVStoreHelpers<C> for C
 where
     C: KVStore,
 {
-    fn get_state(&mut self) -> Result<KVState, InternalError> {
+    async fn get_state(&mut self) -> Result<KVState, InternalError> {
         let key = key_from_environment(self.env());
-        if let Ok(Some(state)) = self.get("rewards:local") {
+        if let Ok(Some(state)) = self.get("rewards:local").await {
             // Perform a one time migration, clearing any old values
-            self.purge()?;
+            self.purge().await?;
             // and setting a new key with the prior value
-            self.set(&key, &state)?;
+            self.set(&key, &state).await?;
         }
-        let state = self.get(&key)?.unwrap_or_else(|| "{}".to_string());
+        let state = self.get(&key).await?.unwrap_or_else(|| "{}".to_string());
         Ok(serde_json::from_str(&state)?)
     }
 
-    fn set_state(&mut self, state: &KVState) -> Result<(), InternalError> {
+    async fn set_state(&mut self, state: &KVState) -> Result<(), InternalError> {
         let key = key_from_environment(self.env());
         event!(Level::DEBUG, "set state");
-        event!(Level::TRACE, state = %format!("{:#?}", state), "set state",);
-        self.set(&key, &serde_json::to_string(state)?)
+        self.set(&key, &serde_json::to_string(state)?).await
     }
 }
 
@@ -88,40 +94,39 @@ where
 impl<C> StorageClient for C
 where
     C: KVClient + Debug,
-    <C as KVClient>::Store: KVStore,
 {
     #[instrument]
     async fn clear(&self) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        store.purge()
+        let mut store = self.get_store().await?;
+        store.purge().await
     }
 
     #[instrument]
     async fn insert_wallet(&self, wallet: &Wallet) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.wallet.is_none() {
             state.wallet = Some(wallet.clone());
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
     async fn replace_promotions(&self, promotions: &[Promotion]) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         state.promotions = Some(promotions.to_vec());
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
     async fn get_orders(&self) -> Result<Option<Vec<Order>>, InternalError> {
-        let mut store = self.get_store()?;
-        let state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let state: KVState = store.get_state().await?;
         let orders = state.orders.map(|os| os.into_values().collect());
         event!(Level::DEBUG, orders = ?orders, "got orders");
         Ok(orders)
@@ -129,8 +134,8 @@ where
 
     #[instrument]
     async fn get_order(&self, order_id: &str) -> Result<Option<Order>, InternalError> {
-        let mut store = self.get_store()?;
-        let state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let state: KVState = store.get_state().await?;
         let order = state.orders.and_then(|mut orders| orders.remove(order_id));
         event!(Level::DEBUG, order = ?order, "got order");
         Ok(order)
@@ -139,8 +144,8 @@ where
     #[instrument]
     async fn has_credentials(&self, order_id: &str) -> Result<bool, InternalError> {
         let mut result: bool = false;
-        let mut store = self.get_store()?;
-        let state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let state: KVState = store.get_state().await?;
         event!(Level::DEBUG, has_credentials = ?!state.credentials.is_none(), "does order have credentials");
 
         if let Some(credentials) = state.credentials {
@@ -160,8 +165,8 @@ where
 
     #[instrument]
     async fn upsert_order(&self, order: &Order) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.orders.is_none() {
             state.orders = Some(HashMap::new());
@@ -171,14 +176,14 @@ where
             orders.insert(order.id.clone(), order.clone());
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
     #[cfg(feature = "e2e_test")]
     async fn delete_n_item_creds(&self, item_id: &str, n: usize) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(mut credentials) = state.credentials {
             // remove old creds
@@ -216,20 +221,20 @@ where
             }
             state.credentials = Some(credentials);
         }
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
     async fn delete_item_creds(&self, item_id: &str) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(mut credentials) = state.credentials {
             credentials.items.remove(item_id);
             state.credentials = Some(credentials);
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
@@ -237,8 +242,8 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<TimeLimitedV2Credentials>, InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState::default());
@@ -269,8 +274,8 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<SingleUseCredentials>, InternalError> {
-        let mut store = self.get_store()?;
-        let state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let state: KVState = store.get_state().await?;
         let credentials = state.credentials.and_then(|mut credentials| {
             if let Some(Credentials::SingleUse(credentials)) = credentials.items.remove(item_id) {
                 Some(credentials)
@@ -289,8 +294,8 @@ where
         request_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState::default());
@@ -328,7 +333,7 @@ where
             }
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
@@ -337,8 +342,8 @@ where
         item_id: &str,
         request_id: &str,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState::default());
@@ -358,7 +363,7 @@ where
             }
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
@@ -367,8 +372,8 @@ where
         item_id: &str,
         creds: Vec<Token>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState { items: HashMap::new() });
@@ -388,7 +393,7 @@ where
             }
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 
     #[instrument]
@@ -402,8 +407,8 @@ where
     ) -> Result<(), InternalError> {
         // each time this function is run, we are going to append a credential
 
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.get_mut(item_id) {
@@ -447,7 +452,7 @@ where
                         ));
                     }
                 }
-                return store.set_state(&state);
+                return store.set_state(&state).await;
             }
         }
         Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
@@ -460,8 +465,8 @@ where
         issuer_id: &str,
         unblinded_creds: Vec<UnblindedToken>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.get_mut(item_id) {
@@ -484,7 +489,7 @@ where
                         ));
                     }
                 }
-                return store.set_state(&state);
+                return store.set_state(&state).await;
             }
         }
         Err(InternalError::StorageWriteFailed("Item credentials were not initiated".to_string()))
@@ -496,8 +501,8 @@ where
         item_id: &str,
         index: usize,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.get_mut(item_id) {
@@ -514,7 +519,7 @@ where
                                         tlv2_cred.unblinded_creds.as_mut()
                                     {
                                         unblinded_creds[index].spent = true;
-                                        return store.set_state(&state);
+                                        return store.set_state(&state).await;
                                     }
                                 }
                             }
@@ -537,8 +542,8 @@ where
         item_id: &str,
         index: usize,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if let Some(credentials) = state.credentials.as_mut() {
             if let Some(item_credentials) = credentials.items.get_mut(item_id) {
@@ -547,7 +552,7 @@ where
                         if let Some(unblinded_creds) = item_credentials.unblinded_creds.as_mut() {
                             unblinded_creds[index].spent = true;
 
-                            return store.set_state(&state);
+                            return store.set_state(&state).await;
                         }
                     }
                     _ => {
@@ -566,8 +571,8 @@ where
         &self,
         item_id: &str,
     ) -> Result<Option<TimeLimitedCredentials>, InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState { items: HashMap::new() });
@@ -599,8 +604,8 @@ where
         item_id: &str,
         creds: Vec<TimeLimitedCredential>,
     ) -> Result<(), InternalError> {
-        let mut store = self.get_store()?;
-        let mut state: KVState = store.get_state()?;
+        let mut store = self.get_store().await?;
+        let mut state: KVState = store.get_state().await?;
 
         if state.credentials.is_none() {
             state.credentials = Some(CredentialsState { items: HashMap::new() });
@@ -617,6 +622,6 @@ where
             credentials.items.insert(item_id.to_string(), creds);
         }
 
-        store.set_state(&state)
+        store.set_state(&state).await
     }
 }
