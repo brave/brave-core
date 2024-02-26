@@ -81,7 +81,7 @@ pub struct Meta {
     pub title: String,
     pub author: Option<String>,
     pub description: Option<String>,
-    pub charset: Option<String>,
+    pub charset: Option<Handle>,
     pub last_modified: Option<OffsetDateTime>,
     pub preserved_meta: Vec<Handle>,
 }
@@ -188,18 +188,10 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     _ => (),
                 }
             }
-        } else if let Some(charset) = attribute.get(local_name!("charset")) {
-            meta_tags.charset = Some(charset.to_string());
-        } else if let Some(http_equiv) = attribute.get(local_name!("http-equiv")) {
+        } else if attribute.get(local_name!("charset")).is_some() {
+            meta_tags.charset = Some(node.clone());
+        } else if attribute.get(local_name!("http-equiv")).is_some() {
             meta_tags.preserved_meta.push(node.clone());
-
-            if http_equiv.to_ascii_lowercase() == "content-type" {
-                if let Some(content) = attribute.get(local_name!("content")) {
-                    if let Some(charset) = content.split("charset=").nth(1) {
-                        meta_tags.charset = Some(charset.trim().to_string());
-                    }
-                }
-            }
         }
     }
 
@@ -293,16 +285,13 @@ pub fn extract_dom(
         _ => top_candidate.to_string(),
     };
 
-    for node in meta.preserved_meta.iter() {
-        if let Some(data) = node.as_element() {
-            let attributes = data.attributes.borrow();
+    if !meta.preserved_meta.is_empty() {
+        let mut meta_equiv = String::default();
 
-            let mut val: String = String::from("<meta ");
-            for attr in attributes.map.iter() {
-                val += &format!(" {}=\"{}\" ", attr.0.local, attr.1.value);
-            }
-            content = val + ">" + &content;
+        for node in meta.preserved_meta.iter() {
+            meta_equiv += &node.to_string();
         }
+        content = meta_equiv + &content;
     }
 
     if let Some(head) = dom::document_head(&dom) {
@@ -319,8 +308,7 @@ pub fn extract_dom(
         // Since we strip out the entire head, we need to include charset if one
         // was provided. Otherwise the browser will use the default encoding,
         // and surprisingly it's not utf-8 ;)
-        let charset_blob = format!("<meta charset=\"{}\"/>", charset);
-        content = charset_blob + &content;
+        content = charset.to_string() + &content;
     }
     if !meta.title.is_empty() {
         let title_blob = format!("<title>{}</title>", &meta.title);
