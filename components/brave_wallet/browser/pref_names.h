@@ -78,6 +78,8 @@ inline constexpr char kBraveWalletLastDiscoveredAssetsAt[] =
     "brave.wallet.last_discovered_assets_at";
 inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
 inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
+inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
+    "brave.wallet.private_windows_enabled";
 
 // Added 02/2023 to migrate transactions to contain the
 // chain_id for each one.
@@ -103,8 +105,5 @@ inline constexpr char kBraveWalletUserAssetsDeprecated[] =
 // Added 01/2024 to migrate transactions DB to one-level dict.
 inline constexpr char kBraveWalletTransactionsDBFormatMigrated[] =
     "brave.wallet.transactions_db_format_migrated";
-
-inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
-    "brave.wallet.private_windows_enabled";
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_PREF_NAMES_H_
