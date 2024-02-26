@@ -24,25 +24,34 @@
 #include "brave/components/version_info/version_info.h"
 #include "components/prefs/pref_service.h"
 
+#if !BUILDFLAG(IS_IOS)
+#include "brave/components/brave_referrals/common/pref_names.h"
+#endif  // !BUILDFLAG(IS_IOS)
+
 namespace p3a {
 
 namespace {
-const char kMetricNameAttributeName[] = "metric_name";
-const char kMetricValueAttributeName[] = "metric_value";
-const char kPlatformAttributeName[] = "platform";
-const char kChannelAttributeName[] = "channel";
-const char kYosAttributeName[] = "yos";
-const char kWosAttributeName[] = "wos";
-const char kMosAttributeName[] = "mos";
-const char kWoiAttributeName[] = "woi";
-const char kYoiAttributeName[] = "yoi";
-const char kCountryCodeAttributeName[] = "country_code";
-const char kVersionAttributeName[] = "version";
-const char kCadenceAttributeName[] = "cadence";
+constexpr char kMetricNameAttributeName[] = "metric_name";
+constexpr char kMetricValueAttributeName[] = "metric_value";
+constexpr char kPlatformAttributeName[] = "platform";
+constexpr char kChannelAttributeName[] = "channel";
+constexpr char kYosAttributeName[] = "yos";
+constexpr char kWosAttributeName[] = "wos";
+constexpr char kMosAttributeName[] = "mos";
+constexpr char kWoiAttributeName[] = "woi";
+constexpr char kYoiAttributeName[] = "yoi";
+constexpr char kCountryCodeAttributeName[] = "country_code";
+constexpr char kVersionAttributeName[] = "version";
+constexpr char kCadenceAttributeName[] = "cadence";
+constexpr char kRefAttributeName[] = "ref";
 
-const char kSlowCadence[] = "slow";
-const char kTypicalCadence[] = "typical";
-const char kExpressCadence[] = "express";
+constexpr char kSlowCadence[] = "slow";
+constexpr char kTypicalCadence[] = "typical";
+constexpr char kExpressCadence[] = "express";
+
+constexpr char kOrganicRefPrefix[] = "BRV";
+constexpr char kRefNone[] = "none";
+constexpr char kRefOther[] = "other";
 
 }  // namespace
 
@@ -123,7 +132,8 @@ base::Value::Dict GenerateP3AMessageDict(std::string_view metric_name,
 std::string GenerateP3AConstellationMessage(std::string_view metric_name,
                                             uint64_t metric_value,
                                             const MessageMetainfo& meta,
-                                            const std::string& upload_type) {
+                                            const std::string& upload_type,
+                                            bool include_refcode) {
   base::Time::Exploded exploded;
   meta.date_of_install.LocalExplode(&exploded);
   DCHECK_GE(exploded.year, 999);
@@ -151,6 +161,10 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
     }};
   }
 
+  if (include_refcode) {
+    attributes.push_back({kRefAttributeName, meta.ref});
+  }
+
   std::vector<std::string> serialized_attributes(attributes.size());
 
   std::transform(attributes.begin(), attributes.end(),
@@ -166,9 +180,11 @@ std::string GenerateP3AConstellationMessage(std::string_view metric_name,
 void MessageMetainfo::Init(PrefService* local_state,
                            std::string brave_channel,
                            std::string week_of_install) {
+  local_state_ = local_state;
   platform = brave_stats::GetPlatformIdentifier();
   channel = brave_channel;
   InitVersion();
+  InitRef();
 
   if (!week_of_install.empty()) {
     date_of_install = brave_stats::GetYMDAsDate(week_of_install);
@@ -190,11 +206,12 @@ void MessageMetainfo::Init(PrefService* local_state,
 
   VLOG(2) << "Message meta: " << platform << " " << channel << " " << version
           << " " << woi << " " << country_code_from_timezone << " "
-          << country_code_from_locale;
+          << country_code_from_locale << " " << ref;
 }
 
 void MessageMetainfo::Update() {
   date_of_survey = base::Time::Now();
+  InitRef();
 }
 
 void MessageMetainfo::InitVersion() {
@@ -207,6 +224,22 @@ void MessageMetainfo::InitVersion() {
     version = full_version;
   } else {
     version = base::StrCat({version_numbers[0], ".", version_numbers[1]});
+  }
+}
+
+void MessageMetainfo::InitRef() {
+  std::string referral_code;
+#if !BUILDFLAG(IS_IOS)
+  if (local_state_ && local_state_->HasPrefPath(kReferralPromoCode)) {
+    referral_code = local_state_->GetString(kReferralPromoCode);
+  }
+#endif  // !BUILDFLAG(IS_IOS)
+  if (referral_code.empty()) {
+    ref = kRefNone;
+  } else if (base::StartsWith(referral_code, kOrganicRefPrefix)) {
+    ref = referral_code;
+  } else {
+    ref = kRefOther;
   }
 }
 
