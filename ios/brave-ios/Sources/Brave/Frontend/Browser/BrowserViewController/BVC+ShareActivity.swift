@@ -301,7 +301,10 @@ extension BrowserViewController {
     }
 
     // Display Certificate Activity
-    if let tabURL = tabManager.selectedTab?.webView?.url, tabManager.selectedTab?.webView?.serverTrust != nil || ErrorPageHelper.hasCertificates(for: tabURL) {
+    if let tabURL = tabManager.selectedTab?.webView?.url,
+      tabManager.selectedTab?.webView?.serverTrust != nil
+        || ErrorPageHelper.hasCertificates(for: tabURL)
+    {
       if let selectedTab = tabManager.selectedTab {
         logSecureContentState(tab: selectedTab, details: "Display Certificate Activity Settings")
       }
@@ -316,7 +319,7 @@ extension BrowserViewController {
       )
     }
 
-    // Report Web-compat Issue Actibity
+    // Report Web-compat Issue Activity
     activities.append(
       BasicMenuActivity(
         title: Strings.Shields.reportABrokenSite,

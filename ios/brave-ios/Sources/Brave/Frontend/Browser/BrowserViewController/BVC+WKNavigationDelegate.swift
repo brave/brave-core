@@ -67,8 +67,9 @@ extension BrowserViewController: WKNavigationDelegate {
 
     // check if web view is loading a different origin than the one currently loaded
     if let selectedTab = tabManager.selectedTab,
-       selectedTab.url?.origin != webView.url?.origin {
-      
+      selectedTab.url?.origin != webView.url?.origin
+    {
+
       // new site has a different origin, hide wallet icon.
       tabManager.selectedTab?.isWalletIconVisible = false
       // new site, reset connected addresses
@@ -730,20 +731,25 @@ extension BrowserViewController: WKNavigationDelegate {
     download.delegate = self
   }
 
-
   @MainActor
-  public func webView(_ webView: WKWebView, respondTo challenge: URLAuthenticationChallenge) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+
+  public func webView(
+    _ webView: WKWebView,
+    respondTo challenge: URLAuthenticationChallenge
+  ) async -> (URLSession.AuthChallengeDisposition, URLCredential?) {
+
     // If this is a certificate challenge, see if the certificate has previously been
     // accepted by the user.
     let host = challenge.protectionSpace.host
     let origin = "\(host):\(challenge.protectionSpace.port)"
     if challenge.protectionSpace.authenticationMethod == NSURLAuthenticationMethodServerTrust,
-       let trust = challenge.protectionSpace.serverTrust {
-      
+      let trust = challenge.protectionSpace.serverTrust
+    {
+
       let cert = await Task<SecCertificate?, Never>.detached {
         return (SecTrustCopyCertificateChain(trust) as? [SecCertificate])?.first
       }.value
-      
+
       if let cert = cert, profile.certStore.containsCertificate(cert, forOrigin: origin) {
         return (.useCredential, URLCredential(trust: trust))
       }
@@ -777,19 +783,25 @@ extension BrowserViewController: WKNavigationDelegate {
         Logger.module.error("CERTIFICATE_INVALID")
         let errorCode = CFNetworkErrors.braveCertificatePinningFailed.rawValue
 
-        let underlyingError = NSError(domain: kCFErrorDomainCFNetwork as String,
-                                      code: Int(errorCode),
-                                      userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)])
-        
-        let error = NSError(domain: kCFErrorDomainCFNetwork as String,
-                            code: Int(errorCode),
-                            userInfo: [NSURLErrorFailingURLErrorKey: webView.url as Any,
-                                       "NSErrorPeerCertificateChainKey": certificateChain,
-                                               NSUnderlyingErrorKey: underlyingError])
+        let underlyingError = NSError(
+          domain: kCFErrorDomainCFNetwork as String,
+          code: Int(errorCode),
+          userInfo: ["_kCFStreamErrorCodeKey": Int(errorCode)]
+        )
+
+        let error = NSError(
+          domain: kCFErrorDomainCFNetwork as String,
+          code: Int(errorCode),
+          userInfo: [
+            NSURLErrorFailingURLErrorKey: webView.url as Any,
+            "NSErrorPeerCertificateChainKey": certificateChain,
+            NSUnderlyingErrorKey: underlyingError,
+          ]
+        )
 
         // Handle the error later in `didFailProvisionalNavigation`
         self.tab(for: webView)?.sslPinningError = error
-        
+
         return (.cancelAuthenticationChallenge, nil)
       }
     }
@@ -799,14 +811,15 @@ extension BrowserViewController: WKNavigationDelegate {
     let credential = challenge.proposedCredential
     let previousFailureCount = challenge.previousFailureCount
 
-    guard protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic ||
-            protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest ||
-            protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
-          let tab = tab(for: webView)
+    guard
+      protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPBasic
+        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodHTTPDigest
+        || protectionSpace.authenticationMethod == NSURLAuthenticationMethodNTLM,
+      let tab = tab(for: webView)
     else {
       return (.performDefaultHandling, nil)
     }
-      
+
     // The challenge may come from a background tab, so ensure it's the one visible.
     tabManager.selectTab(tab)
 
@@ -817,11 +830,14 @@ extension BrowserViewController: WKNavigationDelegate {
         protectionSpace: protectionSpace,
         previousFailureCount: previousFailureCount
       )
-      
+
       if BasicAuthCredentialsManager.validDomains.contains(host) {
-        BasicAuthCredentialsManager.setCredential(origin: origin, credential: credentials.credentials)
+        BasicAuthCredentialsManager.setCredential(
+          origin: origin,
+          credential: credentials.credentials
+        )
       }
-      
+
       return (.useCredential, credentials.credentials)
     } catch {
       return (.rejectProtectionSpace, nil)
@@ -993,7 +1009,7 @@ extension BrowserViewController: WKNavigationDelegate {
       if tab == self.tabManager.selectedTab {
         self.topToolbar.hideProgressBar()
       }
-      
+
       // If the local web server isn't working for some reason (Brave cellular data is
       // disabled in settings, for example), we'll fail to load the session restore URL.
       // We rely on loading that page to get the restore callback to reset the restoring
@@ -1059,16 +1075,7 @@ extension BrowserViewController {
     // External dialog should not be shown for non-active tabs #6687 - #7835
     let isVisibleTab = tab?.isTabVisible() == true
 
-    // Check user trying to open on NTP like external link browsing
-    var isAboutHome = false
-    if let url = tab?.url {
-      isAboutHome = InternalURL(url)?.isAboutHomeURL == true
-    }
-
-    // Finally check non-active tab
-    let isNonActiveTab = isAboutHome ? false : tab?.url?.host != topToolbar.currentURL?.host
-
-    if !isVisibleTab || isNonActiveTab {
+    if !isVisibleTab {
       return false
     }
 

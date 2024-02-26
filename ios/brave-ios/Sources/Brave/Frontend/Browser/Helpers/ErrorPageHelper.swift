@@ -184,7 +184,7 @@ extension ErrorPageHelper {
   static func hasCertificates(for url: URL) -> Bool {
     return (url as NSURL).valueForQueryParameter(key: "badcerts") != nil
   }
-  
+
   static func serverTrust(from errorURL: URL) throws -> SecTrust? {
     guard let internalUrl = InternalURL(errorURL),
       internalUrl.isErrorPage,
