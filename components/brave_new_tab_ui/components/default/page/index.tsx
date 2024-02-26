@@ -67,8 +67,8 @@ const StyledPage = styled('div') <PageProps>`
 
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
-  position: fixed;
-  top: 0;
+  position: sticky;
+  top: calc(100vh - var(--ntp-fixed-content-height));
   z-index: 6;
   width: 100%;
   display: grid;
@@ -365,7 +365,6 @@ function getPageBackground(p: HasImageProps) {
 export const App = styled('div') <AppProps & HasImageProps>`
   --bg-opacity: ${p => p.imageHasLoaded ? 1 : 0};
   position: relative;
-  padding-top: var(--ntp-fixed-content-height, "0px");
   box-sizing: border-box;
   display: flex;
   flex: 1;
