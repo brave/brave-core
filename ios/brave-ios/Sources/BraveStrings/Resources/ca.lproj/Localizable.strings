@@ -1,0 +1,63 @@
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"BackTitle" = "Enrere";
+
+/* Hardware shortcut to close all tabs from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseAllTabsFromTabTrayKeyCodeTitle" = "Tanca totes les pestanyes";
+
+/* Hardware shortcut to close the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"CloseTabFromTabTrayKeyCodeTitle" = "Tanca la pestanya seleccionada";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"CloseTabTitle" = "Tanca la pestanya";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ForwardTitle" = "Endavant";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewPrivateTabTitle" = "Nova pestanya d'incògnit";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"NewTabTitle" = "Pestanya nova";
+
+/* Hardware shortcut to open a new tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenNewTabFromTabTrayKeyCodeTitle" = "Obre una pestanya nova";
+
+/* Hardware shortcut open the selected tab from the tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"OpenSelectedTabFromTabTrayKeyCodeTitle" = "Obre la pestanya seleccionada";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts used for opening recently closed tab. */
+"RecentlyClosedTabTitle" = "Torna a obrir la pestanya tancada";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ReloadPageTitle" = "Torna a carregar la pàgina";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"SelectLocationBarTitle" = "Selecciona la barra d'ubicació";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"showBookmarksTitle" = "Mostra les adreces d'interès";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowNextTabTitle" = "Mostra la pestanya següent";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ShowPreviousTabTitle" = "Mostra la pestanya anterior";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts which is for Showing Brave Shields */
+"showShieldsTitle" = "Obre Escuts de Brave";
+
+/* Hardware shortcut to open the tab tray from a tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"ShowTabTrayFromTabKeyCodeTitle" = "Mostra totes les pestanyes";
+
+/* Hardware shortcut for non-private tab or tab. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToNonPBMKeyCodeTitle" = "Mode de navegació normal";
+
+/* Hardware shortcut switch to the private browsing tab or tab tray. Shown in the Discoverability overlay when the hardware Command Key is held down. */
+"SwitchToPBMKeyCodeTitle" = "Mode de navegació d'incògnit";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomInTitle" = "Amplia";
+
+/* Label to display in the Discoverability overlay for keyboard shortcuts */
+"ZoomOutTitle" = "Allunya";
+

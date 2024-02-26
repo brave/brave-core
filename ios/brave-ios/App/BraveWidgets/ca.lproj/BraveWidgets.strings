@@ -1,0 +1,291 @@
+/* (No Comment) */
+"0W40Cl" = "Pestanya nova";
+
+/* (No Comment) */
+"5ixvGX-tYwiRd" = "Hi ha ${count} opcions que coincideixen amb 'Temps estalviat (est.)’.";
+
+/* (No Comment) */
+"5ixvGX-vjA5pZ" = "Hi ha ${count} opcions que coincideixen amb 'Dades estalviades (est.)’.";
+
+/* (No Comment) */
+"5ixvGX-xcI3h9" = "Hi ha ${count} opcions que coincideixen amb 'Anuncis bloquejats’.";
+
+/* (No Comment) */
+"7Ds8rk" = "Configuració preferida de la pantalla de bloqueig";
+
+/* (No Comment) */
+"7JYzOv" = "Tipus";
+
+/* (No Comment) */
+"7MuqiB" = "Drecera";
+
+/* (No Comment) */
+"8pcZ6L" = "Widget preferit de la pantalla de bloqueig";
+
+/* (No Comment) */
+"8vyYRy" = "#3";
+
+/* (No Comment) */
+"9E2oRR" = "#1";
+
+/* (No Comment) */
+"AGMpus" = "Configuració de les dreceres";
+
+/* (No Comment) */
+"bUXzTx" = "Tipus d'estadística";
+
+/* (No Comment) */
+"crhbMy" = "Adreces d'interès";
+
+/* (No Comment) */
+"D5r3nt" = "URL";
+
+/* (No Comment) */
+"e13lS3-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
+
+/* (No Comment) */
+"e13lS3-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
+
+/* (No Comment) */
+"e13lS3-FGO5qW" = "Només per confirmar, volies 'Llista de reproducció de Brave'?";
+
+/* (No Comment) */
+"e13lS3-jXiFQY" = "Només per confirmar, volies 'Cartera de Brave'?";
+
+/* (No Comment) */
+"e13lS3-nthxSL" = "Només per confirmar, volies 'Descàrregues'?";
+
+/* (No Comment) */
+"e13lS3-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
+
+/* (No Comment) */
+"e13lS3-VBH4G6" = "Només per confirmar, volies 'Historial'?";
+
+/* (No Comment) */
+"e13lS3-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
+
+/* (No Comment) */
+"e13lS3-XCyA8c" = "Només per confirmar, volies 'Notícies de Brave'?";
+
+/* (No Comment) */
+"e13lS3-Y7TWy8" = "Només per confirmar, volies 'Cerca'?";
+
+/* (No Comment) */
+"EUS9FL" = "Drecera del widget";
+
+/* (No Comment) */
+"FGO5qW" = "Llista de reproducció de Brave";
+
+/* (No Comment) */
+"gpCwrM" = "Configuració de les estadístiques";
+
+/* (No Comment) */
+"hssb67" = "Configuració del widget de drecera";
+
+/* (No Comment) */
+"iB2TOM" = "Entrada preferida";
+
+/* (No Comment) */
+"joEZJM" = "#2";
+
+/* (No Comment) */
+"jXiFQY" = "Cartera de Brave";
+
+/* (No Comment) */
+"L1fziM-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
+
+/* (No Comment) */
+"L1fziM-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
+
+/* (No Comment) */
+"L1fziM-FGO5qW" = "Hi ha ${count} opcions que coincideixen amb 'Llista de reproducció de Brave’.";
+
+/* (No Comment) */
+"L1fziM-jXiFQY" = "Hi ha ${count} opcions que coincideixen amb 'Cartera de Brave’.";
+
+/* (No Comment) */
+"L1fziM-nthxSL" = "Hi ha ${count} opcions que coincideixen amb 'Descàrregues’.";
+
+/* (No Comment) */
+"L1fziM-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
+
+/* (No Comment) */
+"L1fziM-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
+
+/* (No Comment) */
+"L1fziM-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
+
+/* (No Comment) */
+"L1fziM-XCyA8c" = "Hi ha ${count} opcions que coincideixen amb 'Notícies de Brave’.";
+
+/* (No Comment) */
+"L1fziM-Y7TWy8" = "Hi ha ${count} opcions que coincideixen amb 'Cerca’.";
+
+/* (No Comment) */
+"nthxSL" = "Descàrregues";
+
+/* (No Comment) */
+"nXONef" = "Preferit";
+
+/* (No Comment) */
+"qKrzyX" = "Escaneja codi QR";
+
+/* (No Comment) */
+"r2EI05-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
+
+/* (No Comment) */
+"r2EI05-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
+
+/* (No Comment) */
+"r2EI05-FGO5qW" = "Només per confirmar, volies 'Llista de reproducció de Brave'?";
+
+/* (No Comment) */
+"r2EI05-jXiFQY" = "Només per confirmar, volies 'Cartera de Brave'?";
+
+/* (No Comment) */
+"r2EI05-nthxSL" = "Només per confirmar, volies 'Descàrregues'?";
+
+/* (No Comment) */
+"r2EI05-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
+
+/* (No Comment) */
+"r2EI05-VBH4G6" = "Només per confirmar, volies 'Historial'?";
+
+/* (No Comment) */
+"r2EI05-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
+
+/* (No Comment) */
+"r2EI05-XCyA8c" = "Només per confirmar, volies 'Notícies de Brave'?";
+
+/* (No Comment) */
+"r2EI05-Y7TWy8" = "Només per confirmar, volies 'Cerca'?";
+
+/* (No Comment) */
+"sdOBtj-tYwiRd" = "Només per confirmar, volies 'Temps estalviat (est.)’?";
+
+/* (No Comment) */
+"sdOBtj-vjA5pZ" = "Només per confirmar, volies 'Dades estalviades (est.)’?";
+
+/* (No Comment) */
+"sdOBtj-xcI3h9" = "Només per confirmar, volies 'Anuncis bloquejats’?";
+
+/* (No Comment) */
+"tNCrcE-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
+
+/* (No Comment) */
+"tNCrcE-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
+
+/* (No Comment) */
+"tNCrcE-FGO5qW" = "Hi ha ${count} opcions que coincideixen amb 'Llista de reproducció de Brave’.";
+
+/* (No Comment) */
+"tNCrcE-jXiFQY" = "Hi ha ${count} opcions que coincideixen amb 'Cartera de Brave’.";
+
+/* (No Comment) */
+"tNCrcE-nthxSL" = "Hi ha ${count} opcions que coincideixen amb 'Descàrregues’.";
+
+/* (No Comment) */
+"tNCrcE-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
+
+/* (No Comment) */
+"tNCrcE-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
+
+/* (No Comment) */
+"tNCrcE-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
+
+/* (No Comment) */
+"tNCrcE-XCyA8c" = "Hi ha ${count} opcions que coincideixen amb 'Notícies de Brave’.";
+
+/* (No Comment) */
+"tNCrcE-Y7TWy8" = "Hi ha ${count} opcions que coincideixen amb 'Cerca’.";
+
+/* (No Comment) */
+"tVvJ9c" = "Widget de configuració d'estadístiques";
+
+/* (No Comment) */
+"TxuMja-0W40Cl" = "Hi ha ${count} opcions que coincideixen amb 'Pestanya nova’.";
+
+/* (No Comment) */
+"TxuMja-crhbMy" = "Hi ha ${count} opcions que coincideixen amb 'Adreces d'interès’.";
+
+/* (No Comment) */
+"TxuMja-FGO5qW" = "Hi ha ${count} opcions que coincideixen amb 'Llista de reproducció de Brave’.";
+
+/* (No Comment) */
+"TxuMja-jXiFQY" = "Hi ha ${count} opcions que coincideixen amb 'Cartera de Brave’.";
+
+/* (No Comment) */
+"TxuMja-nthxSL" = "Hi ha ${count} opcions que coincideixen amb 'Descàrregues’.";
+
+/* (No Comment) */
+"TxuMja-qKrzyX" = "Hi ha ${count} opcions que coincideixen amb 'Escaneja el codi QR’.";
+
+/* (No Comment) */
+"TxuMja-VBH4G6" = "Hi ha ${count} opcions que coincideixen amb 'Historial’.";
+
+/* (No Comment) */
+"TxuMja-vs094F" = "Hi ha ${count} opcions que coincideixen amb 'Nova pestanya d'incògnit’.";
+
+/* (No Comment) */
+"TxuMja-XCyA8c" = "Hi ha ${count} opcions que coincideixen amb 'Notícies de Brave’.";
+
+/* (No Comment) */
+"TxuMja-Y7TWy8" = "Hi ha ${count} opcions que coincideixen amb 'Cerca’.";
+
+/* (No Comment) */
+"tYwiRd" = "Temps estalviat (est.)";
+
+/* (No Comment) */
+"VBH4G6" = "Historial";
+
+/* (No Comment) */
+"vjA5pZ" = "Dades estalviades (est.)";
+
+/* (No Comment) */
+"vs094F" = "Nova pestanya d'incògnit";
+
+/* (No Comment) */
+"xcI3h9" = "Anuncis bloquejats";
+
+/* (No Comment) */
+"XCyA8c" = "Notícies de Brave";
+
+/* (No Comment) */
+"XkwBGY" = "Configuració de la drecera de la pantalla de bloqueig";
+
+/* (No Comment) */
+"Y7TWy8" = "Cerca";
+
+/* (No Comment) */
+"YQiQuz-0W40Cl" = "Només per confirmar, volies 'Pestanya nova'?";
+
+/* (No Comment) */
+"YQiQuz-crhbMy" = "Només per confirmar, volies 'Adreces d'interès'?";
+
+/* (No Comment) */
+"YQiQuz-FGO5qW" = "Només per confirmar, volies 'Llista de reproducció de Brave'?";
+
+/* (No Comment) */
+"YQiQuz-jXiFQY" = "Només per confirmar, volies 'Cartera de Brave'?";
+
+/* (No Comment) */
+"YQiQuz-nthxSL" = "Només per confirmar, volies 'Descàrregues'?";
+
+/* (No Comment) */
+"YQiQuz-qKrzyX" = "Només per confirmar, volies 'Escaneja el codi QR'?";
+
+/* (No Comment) */
+"YQiQuz-VBH4G6" = "Només per confirmar, volies 'Historial'?";
+
+/* (No Comment) */
+"YQiQuz-vs094F" = "Només per confirmar, volies 'Nova pestanya d'incògnit’?";
+
+/* (No Comment) */
+"YQiQuz-XCyA8c" = "Només per confirmar, volies 'Notícies de Brave'?";
+
+/* (No Comment) */
+"YQiQuz-Y7TWy8" = "Només per confirmar, volies 'Cerca'?";
+
+/* (No Comment) */
+"ziTvSZ" = "Configuració del widget de dreceres";
+
