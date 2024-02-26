@@ -46,6 +46,10 @@ browser/ui/webui/brave_rewards_ui.cc @brave/rewards-client
 browser/ui/webui/brave_rewards_ui.h @brave/rewards-client
 components/brave_rewards/ @brave/rewards-client
 components/services/bat_rewards/ @brave/rewards-client
+components/brave_rewards/core/common/signer.cc @brave/sec-team
+components/brave_rewards/core/common/signer.h @brave/sec-team
+components/brave_rewards/core/common/request_signer.cc @brave/sec-team
+components/brave_rewards/core/common/request_signer.h @brave/sec-team
 
 # Ads
 browser/brave_ads/**/*.cc @brave/ads-client
