@@ -22,8 +22,10 @@ public enum LoggerType {
 public struct DebugLogger {
   public static func log(for type: LoggerType, text: String) {
     // Secure State Logger should not be invoked for public channels
-    guard AppConstants.buildChannel.isPublic, type == .secureState else {
-      return
+    if type == .secureState {
+      guard !AppConstants.buildChannel.isPublic else {
+        return
+      }
     }
     
     var logs = UserDefaults.standard.string(forKey: type.prefsKey) ?? ""
