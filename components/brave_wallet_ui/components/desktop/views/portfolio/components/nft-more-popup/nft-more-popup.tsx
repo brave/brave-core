@@ -70,13 +70,13 @@ export const NftMorePopup = (props: Props) => {
       {isTokenSpam ? (
         // show mark as not junk if a token is junk/spam
         <PopupButton onClick={onUnSpam}>
-          <ButtonIcon name='disable-outline' />
+          <ButtonIcon name='junk-false' />
           <PopupButtonText>{getLocale('braveWalletNftUnspam')}</PopupButtonText>
         </PopupButton>
       ) : (
         // show mark as spam option if a token is not marked as junk
         <PopupButton onClick={onMarkAsSpam}>
-          <ButtonIcon name='trash' />
+          <ButtonIcon name='junk-true' />
           <PopupButtonText>
             {getLocale('braveWalletNftMoveToSpam')}
           </PopupButtonText>
