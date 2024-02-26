@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
@@ -42,6 +43,7 @@ import org.chromium.components.browser_ui.accessibility.BraveAccessibilitySettin
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
@@ -209,6 +211,17 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setCustomTabPreference();
+        setAutofillPrivateWindowPreference();
+    }
+
+    private void setAutofillPrivateWindowPreference() {
+        boolean isAutofillPrivateWindow =
+                UserPrefs.get(getProfile()).getBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS);
+        Preference preference = findPreference(PREF_AUTOFILL_PRIVATE_WINDOW);
+        preference.setOnPreferenceChangeListener(this);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
+        }
     }
 
     private void setCustomTabPreference() {
@@ -459,6 +472,9 @@ public class BraveMainPreferencesBase
         String key = preference.getKey();
         if (PREF_CLOSING_ALL_TABS_CLOSES_BRAVE.equals(key)) {
             CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
+        } else if (PREF_AUTOFILL_PRIVATE_WINDOW.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS, (boolean) newValue);
         }
 
         return true;
