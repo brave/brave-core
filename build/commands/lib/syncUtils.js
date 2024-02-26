@@ -189,9 +189,25 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   return true
 }
 
+async function checkInternalDepsEndpoint() {
+  if (!config.useBraveHermeticToolchain) {
+    return true
+  }
+
+  try {
+    const response = await fetch(
+      `${config.internalDepsUrl}/windows-hermetic-toolchain/test.txt`,
+      { method: 'HEAD', signal: AbortSignal.timeout(5000) }
+    )
+    return response.ok
+  } catch (error) {
+    return false
+  }
+}
 
 module.exports = {
   maybeInstallDepotTools,
   buildDefaultGClientConfig,
-  syncChromium
+  syncChromium,
+  checkInternalDepsEndpoint
 }

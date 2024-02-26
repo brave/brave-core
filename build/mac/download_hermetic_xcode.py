@@ -14,7 +14,7 @@ from urllib.error import URLError  # pylint: disable=no-name-in-module,import-er
 import pkg_resources
 
 import deps
-from deps_config import DEPS_PACKAGES_URL, MAC_TOOLCHAIN_ROOT
+from deps_config import DEPS_PACKAGES_INTERNAL_URL, MAC_TOOLCHAIN_ROOT
 
 def LoadPList(path):
     """Loads Plist at |path| and returns it as a dictionary."""
@@ -24,7 +24,7 @@ def LoadPList(path):
 # This contains binaries from Xcode 14.3, along with the macOS 13.3 SDK
 XCODE_VERSION = '15.0'
 HERMETIC_XCODE_BINARY = (
-    DEPS_PACKAGES_URL +
+    DEPS_PACKAGES_INTERNAL_URL +
     '/xcode-hermetic-toolchain/xcode-hermetic-toolchain-xcode-' +
     XCODE_VERSION + '-sdk-14.0-13.3.tar.gz')
 

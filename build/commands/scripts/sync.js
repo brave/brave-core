@@ -99,6 +99,11 @@ async function RunCommand() {
   await util.applyPatches()
 
   if (!program.nohooks) {
+    if (!await syncUtil.checkInternalDepsEndpoint()) {
+      Log.warn(
+        'The internal dependencies endpoint is unreachable, which may block toolchain downloads. Please check your VPN connection.'
+      )
+    }
     // Run hooks for the root .gclient, this will include Chromium and Brave
     // hooks. Don't cache the result, just always rerun this step, because it's
     // pretty quick in a no-op scenario.
