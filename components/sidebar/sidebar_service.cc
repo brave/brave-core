@@ -27,6 +27,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "components/grit/brave_components_strings.h"
@@ -84,11 +85,13 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
                                           version_info::Channel channel) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterListPref(kSidebarHiddenBuiltInItems);
-  registry->RegisterIntegerPref(
-      kSidebarShowOption,
-      channel == Channel::STABLE
-          ? static_cast<int>(ShowSidebarOption::kShowNever)
-          : static_cast<int>(ShowSidebarOption::kShowAlways));
+
+  ShowSidebarOption option = ShowSidebarOption::kShowAlways;
+  if (channel == Channel::STABLE &&
+      !base::FeatureList::IsEnabled(features::kSidebarShowAlwaysOnStable)) {
+    option = ShowSidebarOption::kShowNever;
+  }
+  registry->RegisterIntegerPref(kSidebarShowOption, static_cast<int>(option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
   registry->RegisterIntegerPref(
