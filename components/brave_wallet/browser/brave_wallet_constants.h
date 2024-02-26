@@ -1461,6 +1461,11 @@ inline constexpr char kSolanaPrefKey[] = "solana";
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";
 
+inline constexpr char kBitcoinMainnetRpcEndpoint[] =
+    "https://bitcoin-mainnet.wallet.brave.com/";
+inline constexpr char kBitcoinTestnetRpcEndpoint[] =
+    "https://blockstream.info/testnet/api/";
+
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();
 const base::flat_map<std::string, std::string>&

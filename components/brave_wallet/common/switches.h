@@ -12,12 +12,6 @@ namespace switches {
 // Allows auto unlocking wallet password with command line.
 inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
 
-// Bitcoin rpc mainnet endpoint.
-inline constexpr char kBitcoinMainnetRpcUrl[] = "bitcoin-mainnet-rpc-url";
-
-// Bitcoin rpc testnet endpoint.
-inline constexpr char kBitcoinTestnetRpcUrl[] = "bitcoin-testnet-rpc-url";
-
 // Ratios service dev URL
 inline constexpr char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
 
