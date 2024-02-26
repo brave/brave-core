@@ -43,6 +43,11 @@ public class BraveLeoSettingsLauncherHelper {
         }
     }
 
+    @CalledByNative
+    private static void openURL(String url) {
+        BraveLeoUtils.openURL(url);
+    }
+
     private static SettingsLauncher getLauncher() {
         return sLauncher != null ? sLauncher : new SettingsLauncherImpl();
     }
