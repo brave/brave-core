@@ -101,7 +101,7 @@
     <PreferenceCategory
         android:key="online_checkout_section"
         android:order="21"
-        android:title="@string/prefs_section_online_checkout"/>
+        android:title="@string/prefs_section_autofill"/>
     <PreferenceCategory
         android:key="support_section"
         android:order="24"
