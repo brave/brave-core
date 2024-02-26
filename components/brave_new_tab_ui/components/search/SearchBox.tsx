@@ -30,9 +30,6 @@ const searchEngines: SearchEngine[] = [{
   icon: 'bing-color'
 }]
 
-interface Props {
-}
-
 const SearchInput = styled(Input)`
   --leo-control-padding: 6px;
 
@@ -56,8 +53,8 @@ const Option = styled.div`
     gap: ${spacing.m};
 `
 
-export const omniboxController: PageHandlerRemote = PageHandler.getRemote()
-  ; (window as any).omnibox = omniboxController;
+export const omniboxController: PageHandlerRemote = PageHandler.getRemote();
+(window as any).omnibox = omniboxController;
 
 class SearchPage implements PageInterface {
   private receiver = new PageReceiver(this)
@@ -66,7 +63,7 @@ class SearchPage implements PageInterface {
   private selectionListeners: Array<(selection: OmniboxPopupSelection) => void> = []
 
   constructor() {
-    omniboxController.setPage(this.receiver.$.bindNewPipeAndPassRemote());
+    omniboxController.setPage(this.receiver.$.bindNewPipeAndPassRemote())
   }
 
   addResultListener(listener: (result?: AutocompleteResult) => void) {
@@ -98,7 +95,7 @@ class SearchPage implements PageInterface {
 
 export const search = new SearchPage()
 
-export default function SearchBox(props: Props) {
+export default function SearchBox() {
   const [query, setQuery] = React.useState('')
   const [searchEngine, setSearchEngine] = React.useState('Brave')
 
