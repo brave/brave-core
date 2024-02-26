@@ -77,6 +77,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_NOTIFICATIONS = "notifications";
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
+    private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
@@ -327,6 +328,7 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_PAYMENT_METHODS).setOrder(++onlineCheckoutSectionOrder);
         findPreference(PREF_ADDRESSES).setOrder(++onlineCheckoutSectionOrder);
+        findPreference(PREF_AUTOFILL_PRIVATE_WINDOW).setOrder(++onlineCheckoutSectionOrder);
 
         int supportSectionOrder = onlineCheckoutSectionOrder;
         findPreference(PREF_SUPPORT_SECTION).setOrder(++supportSectionOrder);
@@ -380,6 +382,7 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_privacy_reports);
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
+        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_addresses);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
