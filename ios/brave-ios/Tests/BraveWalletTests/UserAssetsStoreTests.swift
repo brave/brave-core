@@ -65,7 +65,8 @@ class UserAssetsStoreTests: XCTestCase {
                 .mockERC721NFTToken.copy(asVisibleAsset: true),
                 .mockUSDCToken
               ],
-              sortOrder: 0)
+              sortOrder: 1
+            )
           )
         } else if network.chainId == BraveWallet.SolanaMainnet {
           result.append(
@@ -76,7 +77,8 @@ class UserAssetsStoreTests: XCTestCase {
                 .mockSolanaNFTToken.copy(asVisibleAsset: true),
                 .mockSpdToken
               ],
-              sortOrder: 1)
+              sortOrder: 0
+            )
           )
         } else if network.chainId == BraveWallet.FilecoinMainnet {
           result.append(
@@ -85,7 +87,8 @@ class UserAssetsStoreTests: XCTestCase {
               tokens: [
                 BraveWallet.NetworkInfo.mockFilecoinMainnet.nativeToken.copy(asVisibleAsset: true)
               ],
-              sortOrder: 1)
+              sortOrder: 2
+            )
           )
         }
       }

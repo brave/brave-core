@@ -153,31 +153,33 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
       }
       
       let visibleIds = allUserAssets.flatMap(\.tokens).filter(\.visible).map { $0.id + $0.chainId }
-      assetStores = (allUserAssets + allTokens).flatMap { assetsForNetwork in
-        assetsForNetwork.tokens.map { token in
-          var isCustomToken: Bool {
-            if token.contractAddress.isEmpty {
-              return false
+      assetStores = (allUserAssets + allTokens)
+        .sorted(by: { $0.sortOrder < $1.sortOrder })
+        .flatMap { assetsForNetwork in
+          assetsForNetwork.tokens.map { token in
+            var isCustomToken: Bool {
+              if token.contractAddress.isEmpty {
+                return false
+              }
+              // Any token with a tokenId should be considered a custom token.
+              if !token.tokenId.isEmpty {
+                return true
+              }
+              return !allTokens.flatMap(\.tokens).contains(where: {
+                $0.contractAddress(in: assetsForNetwork.network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
+              })
             }
-            // Any token with a tokenId should be considered a custom token.
-            if !token.tokenId.isEmpty {
-              return true
-            }
-            return !allTokens.flatMap(\.tokens).contains(where: {
-              $0.contractAddress(in: assetsForNetwork.network).caseInsensitiveCompare(token.contractAddress) == .orderedSame
-            })
+            return AssetStore(
+              rpcService: rpcService,
+              network: assetsForNetwork.network,
+              token: token,
+              ipfsApi: self.ipfsApi,
+              userAssetManager: assetManager,
+              isCustomToken: isCustomToken,
+              isVisible: visibleIds.contains(where: { $0 == (token.id + token.chainId) })
+            )
           }
-          return AssetStore(
-            rpcService: rpcService,
-            network: assetsForNetwork.network,
-            token: token,
-            ipfsApi: self.ipfsApi,
-            userAssetManager: assetManager,
-            isCustomToken: isCustomToken,
-            isVisible: visibleIds.contains(where: { $0 == (token.id + token.chainId) })
-          )
         }
-      }
     }
   }
 
