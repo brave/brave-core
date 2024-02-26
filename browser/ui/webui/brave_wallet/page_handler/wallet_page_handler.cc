@@ -28,4 +28,6 @@ void WalletPageHandler::ShowApprovePanelUI() {
 #endif
 }
 
-void WalletPageHandler::ShowWalletBackupUI() {}
+void WalletPageHandler::ShowWalletBackupUI() {
+  NOTREACHED();
+}
