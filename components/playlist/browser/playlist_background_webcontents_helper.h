@@ -18,8 +18,6 @@ class WebContents;
 
 namespace playlist {
 
-class PlaylistService;
-
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
@@ -42,7 +40,6 @@ class PlaylistBackgroundWebContentsHelper final
 
   PlaylistBackgroundWebContentsHelper(
       content::WebContents* web_contents,
-      PlaylistService* service,
       const std::string& media_source_api_suppressor,
       const std::string& media_detector);
 
