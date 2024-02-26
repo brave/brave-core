@@ -6,32 +6,48 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_RESPONDER_IMPL_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_RESPONDER_IMPL_H_
 
+#include <variant>
+
 #include "base/functional/callback_forward.h"
+#include "base/values.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/render_frame_host_receiver_set.h"
+#include "content/public/browser/web_contents_user_data.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
-class PlaylistService;
+class PlaylistMediaHandler final
+    : public content::WebContentsUserData<PlaylistMediaHandler>,
+      public mojom::PlaylistMediaResponder {
+  using Signature = void(base::Value, const GURL&);
+  using OnMediaDetectedCallback =
+      std::variant<base::OnceCallback<Signature>,
+                   base::RepeatingCallback<Signature>>;
 
-class PlaylistMediaHandler : public mojom::PlaylistMediaResponder {
  public:
-  PlaylistMediaHandler(content::WebContents* contents,
-                       base::RepeatingCallback<void(base::Value, const GURL&)>
-                           on_media_detected);
-
+  PlaylistMediaHandler(const PlaylistMediaHandler&) = delete;
+  PlaylistMediaHandler& operator=(const PlaylistMediaHandler&) = delete;
   ~PlaylistMediaHandler() override;
+
+  static void BindMediaResponderReceiver(
+      content::RenderFrameHost* render_frame_host,
+      mojo::PendingAssociatedReceiver<playlist::mojom::PlaylistMediaResponder>
+          receiver);
+
+ private:
+  friend class content::WebContentsUserData<PlaylistMediaHandler>;
+
+  PlaylistMediaHandler(content::WebContents* web_contents,
+                       OnMediaDetectedCallback on_media_detected);
 
   void OnMediaDetected(base::Value media) override;
 
-  void BindMediaResponderReceiver(
-      mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
-      content::RenderFrameHost* render_frame_host);
-
- private:
   content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
       media_responder_receivers_;
-  base::RepeatingCallback<void(base::Value, const GURL&)> on_media_detected_;
+  OnMediaDetectedCallback on_media_detected_;
+
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 }  // namespace playlist

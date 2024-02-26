@@ -8,7 +8,6 @@
 
 #include <string>
 
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -19,10 +18,11 @@ class WebContents;
 
 namespace playlist {
 
+class PlaylistService;
+
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
-      public content::WebContentsObserver,
-      public PlaylistMediaHandler {
+      public content::WebContentsObserver {
  public:
   PlaylistBackgroundWebContentsHelper(
       const PlaylistBackgroundWebContentsHelper&) = delete;
@@ -44,12 +44,10 @@ class PlaylistBackgroundWebContentsHelper final
       content::WebContents* web_contents,
       PlaylistService* service,
       const std::string& media_source_api_suppressor,
-      const std::string& media_detector,
-      base::OnceCallback<void(bool)> success_callback);
+      const std::string& media_detector);
 
   std::string media_source_api_suppressor_;
   std::string media_detector_;
-  base::OnceCallback<void(bool)> success_callback_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

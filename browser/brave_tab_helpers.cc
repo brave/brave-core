@@ -97,6 +97,8 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #endif
 
@@ -208,9 +210,19 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  playlist::PlaylistTabHelper::MaybeCreateForWebContents(
-      web_contents, playlist::PlaylistServiceFactory::GetForBrowserContext(
-                        web_contents->GetBrowserContext()));
+  auto* playlist_service =
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          web_contents->GetBrowserContext());
+  if (!playlist_service) {
+    return;
+  }
+
+  playlist::PlaylistMediaHandler::CreateForWebContents(
+      web_contents,
+      base::BindRepeating(&playlist::PlaylistService::OnMediaDetected,
+                          playlist_service->GetWeakPtr()));
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents,
+                                                         playlist_service);
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
