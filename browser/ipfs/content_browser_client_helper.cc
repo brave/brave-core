@@ -29,6 +29,9 @@
 #include "content/public/browser/render_view_host.h"
 #include "content/public/common/url_constants.h"
 #include "url/gurl.h"
+#include "content/public/browser/web_contents.h"
+#include "content/public/browser/navigation_entry.h"
+#include "base/logging.h"
 
 namespace {
 
@@ -54,6 +57,19 @@ std::size_t GetIPFSCidOrHostEndPos(GURL const* url,
 
   return url->host().length();
 }
+//constexpr const char kWebContentsUrlDelegateKey[] = "ipfs-webcontents-url-delegate-key";
+class IpfsWebContentsUrlDelegate : public content::WebContentsUrlDelegate {
+public:
+ const GURL& OnGetVirtualUrl(content::NavigationEntry* entry) override {
+   ipfs_modified_url_ = entry ? entry->GetVirtualURL() : GURL::EmptyGURL();
+   LOG(INFO) << "[EXT] GURL& OnGetVirtualUrl( ipfs_modified_url_:"
+             << ipfs_modified_url_;
+   return ipfs_modified_url_;
+ }
+
+private:
+  GURL ipfs_modified_url_;
+};
 
 }  // namespace
 
@@ -63,6 +79,7 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
   if (!brave::IsRegularProfile(browser_context)) {
     return false;
   }
+  LOG(INFO) << "[EXT] HandleIPFSURLRewrite #1 url:" << *url;
   // This is needed for triggering ReverseRewrite later.
   if (url->SchemeIs("http") &&
       (base::EndsWith(url->host_piece(), kIpfsLocalhost) ||
@@ -83,9 +100,15 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
       // We instead will translate the URL later.
       IsIPFSLocalGateway(prefs) &&
       (url->SchemeIs(kIPFSScheme) || url->SchemeIs(kIPNSScheme))) {
-    return TranslateIPFSURI(
+    bool result = TranslateIPFSURI(
         *url, url, GetDefaultIPFSLocalGateway(chrome::GetChannel()), false);
+    if(result) {
+      browser_context->SetUserData(content::WebContentsUrlDelegate::kWebContentsUrlDelegateKey, std::make_unique<IpfsWebContentsUrlDelegate>());
+    }
+//LOG(INFO) << "[EXT] HandleIPFSURLRewrite #20 :" << (browser_context->GetUserData("ipfs-webcontents-url-delegate-key") != nullptr) << " PID:" << getpid() << " browser_context:" << browser_context;
+    return result;
   }
+  LOG(INFO) << "[EXT] HandleIPFSURLRewrite #30 url:" << *url;
 
   if (url->DomainIs(kLocalhostIP)) {
     GURL::Replacements replacements;
@@ -115,6 +138,7 @@ bool HandleIPFSURLRewrite(GURL* url, content::BrowserContext* browser_context) {
       return true;
     }
   }
+  LOG(INFO) << "[EXT] HandleIPFSURLRewrite #100 url:" << *url;
 
   return false;
 }

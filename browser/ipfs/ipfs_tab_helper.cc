@@ -30,6 +30,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_controller.h"
+#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents_delegate.h"
 #include "content/public/common/url_constants.h"
@@ -37,6 +38,7 @@
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
 #include "url/origin.h"
+#include "content/public/browser/web_contents.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "brave/browser/infobars/brave_global_infobar_service_factory.h"
@@ -99,6 +101,17 @@ void SetupIPFSProtocolHandler(const std::string& protocol) {
   base::MakeRefCounted<shell_integration::DefaultSchemeClientWorker>(protocol)
       ->StartCheckIsDefault(base::BindOnce(isDefaultCallback, protocol));
 }
+
+// class IpfsWebContentsUrlDelegate : public content::WebContentsUrlDelegate {
+// public:
+// const GURL& OnGetVirtualUrl(content::NavigationEntry *entry) override {
+//   ipfs_modified_url_ = entry ? entry->GetVirtualURL() : GURL::EmptyGURL();
+// LOG(INFO) << "[EXT] GURL& OnGetVirtualUrl( ipfs_modified_url_:" << ipfs_modified_url_;
+//   return ipfs_modified_url_;
+// }
+// private:
+//   GURL ipfs_modified_url_;
+// };
 
 }  // namespace
 
@@ -173,6 +186,7 @@ IPFSTabHelper::IPFSTabHelper(content::WebContents* web_contents)
       kIPFSResolveMethod,
       base::BindRepeating(&IPFSTabHelper::UpdateDnsLinkButtonState,
                           base::Unretained(this)));
+LOG(INFO) << "[EXT] IPFSTabHelper::IPFSTabHelper";
 }
 
 // static
@@ -182,8 +196,11 @@ bool IPFSTabHelper::MaybeCreateForWebContents(
           web_contents->GetBrowserContext())) {
     return false;
   }
-
+LOG(INFO) << "[EXT] IPFSTabHelper::MaybeCreateForWebContents";
+//<< "\r\nStack:\r\n" << base::debug::StackTrace();
   CreateForWebContents(web_contents);
+
+  //web_contents->GetBrowserContext()->SetUserData("ipfs-webcontents-url-delegate-key", std::make_unique<IpfsWebContentsUrlDelegate>());
   return true;
 }
 

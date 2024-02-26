@@ -16,6 +16,7 @@ mod ffi {
         fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48];
         fn transaction_sign(is_mainnet: bool, transaction: &str, private_key: &[u8]) -> String;
         fn is_valid_cid(cid: &str) -> bool;
+        fn convert_to_cidv1(cidv0_str: &str) ->  String;
     }
 }
 
@@ -36,4 +37,11 @@ fn bls_private_key_to_public_key(private_key: &[u8]) -> [u8; 48] {
 
 pub fn is_valid_cid(cid_str: &str) -> bool {
   return cid::Cid::from_str(cid_str).is_ok();
+}
+
+pub fn convert_to_cidv1(cidv0_str: &str) ->  String {
+    match cid::Cid::from_str(cidv0_str).map(|cidv0| cidv0.into_v1()) {
+        Ok(cidv1) => cidv1.unwrap().to_string(),
+        Err(_) => String::new()
+    }
 }

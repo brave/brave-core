@@ -92,6 +92,8 @@ KeyedService* IpfsServiceFactory::BuildServiceInstanceFor(
   auto* ipfs_updater = g_brave_browser_process
                            ? g_brave_browser_process->ipfs_client_updater()
                            : nullptr;
+LOG(INFO) << "[EXT] IpfsServiceFactory::BuildServiceInstanceFor";
+//context->SetUserData("ipfs-webcontents-url-delegate-key", std::make_unique<IpfsWebContentsUrlDelegate>());                           
 #if BUILDFLAG(ENABLE_EXTENSIONS)
   RecordIPFSCompanionInstalled(extensions::ExtensionRegistry::Get(context));
 #endif

@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipfs_utils.h"
 
+#include <iterator>
 #include <optional>
 #include <string>
 #include <string_view>
@@ -143,6 +144,12 @@ bool IsValidCID(const std::string& cid) {
   if (!cid.size())
     return false;
   return filecoin::is_valid_cid(cid);
+}
+
+std::string ConvertToCIDv1(const std::string& cidv0_str) {
+  if (!cidv0_str.size())
+    return "";
+  return filecoin::convert_to_cidv1(cidv0_str).c_str();
 }
 
 bool IsValidIPNSCID(const std::string& cid) {
