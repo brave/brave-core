@@ -128,18 +128,8 @@ BraveRewardsIsSupportedFunction::~BraveRewardsIsSupportedFunction() = default;
 
 ExtensionFunction::ResponseAction BraveRewardsIsSupportedFunction::Run() {
   Profile* profile = Profile::FromBrowserContext(browser_context());
-  bool is_supported = ::brave_rewards::IsSupportedForProfile(
-      profile, ::brave_rewards::IsSupportedOptions::kSkipRegionCheck);
+  bool is_supported = ::brave_rewards::IsSupportedForProfile(profile);
   return RespondNow(WithArguments(is_supported));
-}
-
-BraveRewardsIsUnsupportedRegionFunction::
-    ~BraveRewardsIsUnsupportedRegionFunction() = default;
-
-ExtensionFunction::ResponseAction
-BraveRewardsIsUnsupportedRegionFunction::Run() {
-  bool is_unsupported_region = ::brave_rewards::IsUnsupportedRegion();
-  return RespondNow(WithArguments(is_unsupported_region));
 }
 
 BraveRewardsRecordNTPPanelTriggerFunction::

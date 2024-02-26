@@ -45,7 +45,6 @@ export function RewardsContextAdapter (props: { children: React.ReactNode }) {
 export interface RewardsProps {
   rewardsEnabled: boolean
   userType: string
-  isUnsupportedRegion: boolean
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   balance?: number
@@ -156,7 +155,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       rewardsEnabled={props.rewardsEnabled}
       userType={userTypeFromString(props.userType)}
       vbatDeadline={props.parameters.vbatDeadline}
-      isUnsupportedRegion={props.isUnsupportedRegion}
       declaredCountry={props.declaredCountry}
       needsBrowserUpgradeToServeAds={props.needsBrowserUpgradeToServeAds}
       rewardsBalance={optional(props.balance)}

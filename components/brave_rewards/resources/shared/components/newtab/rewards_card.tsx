@@ -27,7 +27,6 @@ import { TermsOfService } from '../terms_of_service'
 import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
-import { UnsupportedRegionCard } from './unsupported_region_card'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
@@ -58,7 +57,6 @@ interface Props {
   rewardsEnabled: boolean
   userType: UserType
   vbatDeadline: number | undefined
-  isUnsupportedRegion: boolean
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: Optional<number>
@@ -198,17 +196,6 @@ export function RewardsCard (props: Props) {
         }
         </style.pendingRewards>
       </style.balance>
-    )
-  }
-
-  function renderRewardsUnsupportedRegion () {
-    return (
-      <style.root>
-        <RewardsCardHeader />
-        <style.unsupportedRegionCard>
-          <UnsupportedRegionCard />
-        </style.unsupportedRegionCard>
-      </style.root>
     )
   }
 
@@ -406,10 +393,6 @@ export function RewardsCard (props: Props) {
         {renderSettingsLink()}
       </style.root>
     )
-  }
-
-  if (props.isUnsupportedRegion) {
-    return renderRewardsUnsupportedRegion()
   }
 
   if (!props.rewardsEnabled) {

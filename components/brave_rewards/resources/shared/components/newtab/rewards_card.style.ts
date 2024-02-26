@@ -48,10 +48,6 @@ export const cardHeaderText = styled.div`
   margin-top: 2px;
 `
 
-export const unsupportedRegionCard = styled.div`
-  margin-top: 24px;
-`
-
 export const optInIcon = styled.div`
   margin-top: 14px;
   margin-left: auto;
