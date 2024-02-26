@@ -58,10 +58,10 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
-    NpmConfig = JSON.parse(list.stdout.toString())
+    const unusedNpmConfig = JSON.parse(list.stdout.toString())
 
     // Show deprecation warning if any brave-related variable is found in .npmrc.
-    for (const key in NpmConfig) {
+    for (const key in unusedNpmConfig) {
       if (typeof key !== 'string') {
         continue;
       }
@@ -77,7 +77,7 @@ const getNPMConfig = (key, default_value = undefined) => {
           key.startsWith('uphold') ||
           key.startsWith('zebpay')) {
         Log.warn(
-          `Warning: found ${key.replace(/-/g, '_')} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all Brave-core configuration to src/brave/.env immediately to avoid potential issues.\n` +
+          `Warning: ${key.replace(/-/g, '_')} and all other Brave-core related variables in .npmrc are ignored. Please migrate to src/brave/.env.\n` +
           'Internal wiki: https://github.com/brave/devops/wiki/%60.env%60-config-for-Brave-Developers\n' +
           'Public wiki: https://github.com/brave/brave-browser/wiki/Build-configuration\n' +
           'If the found variable is not related to Brave-core, please ignore this warning.'
@@ -86,8 +86,8 @@ const getNPMConfig = (key, default_value = undefined) => {
       }
     }
 
-    // Merge in config from `.env` file
-    dotenv.config({ processEnv: NpmConfig, override: true })
+    NpmConfig = {}
+    dotenv.config({ processEnv: NpmConfig })
     for (const [key, value] of Object.entries(NpmConfig)) {
       if (value === 'true' || value === 'false') {
         NpmConfig[key] = value === 'true'
@@ -95,17 +95,9 @@ const getNPMConfig = (key, default_value = undefined) => {
     }
   }
 
-  // NpmConfig has the multiple copy of the same variable: one from .npmrc
-  // (that we want to) and one from the environment.
-  // https://docs.npmjs.com/cli/v7/using-npm/config#environment-variables
   const npmConfigValue = NpmConfig[key.join('_')]
   if (npmConfigValue !== undefined)
     return npmConfigValue
-
-  // Shouldn't be used in general but added for backward compatibilty.
-  const npmConfigDeprecatedValue = NpmConfig[key.join('-').replace(/_/g, '-')]
-  if (npmConfigDeprecatedValue !== undefined)
-    return npmConfigDeprecatedValue
 
   const packageConfigValue = packageConfig(key)
   if (packageConfigValue !== undefined)
