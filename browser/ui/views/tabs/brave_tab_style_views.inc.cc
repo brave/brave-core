@@ -10,6 +10,21 @@ namespace {
 
 using tabs::features::HorizontalTabsUpdateEnabled;
 
+// Returns a value indicating if the browser frame view is "condensed", i.e.
+// that its frame border is somehow collapsed, as in fullscreen or when
+// maximized, or in Linux when caption buttons and the title bar are not
+// displayed. For tabs, this is important for Fitts' law; ensuring that when the
+// browser occupies the full screen, tabs can be selected by moving the pointer
+// to the edge of the screen.
+bool IsBrowserFrameCondensed(const Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+  auto* browser_view = BrowserView::GetBrowserViewForBrowser(browser);
+  DCHECK(browser_view);
+  return browser_view->frame()->GetFrameView()->IsFrameCondensed();
+}
+
 ////////////////////////////////////////////////////////////////////////////////
 // BraveGM2TabStyle
 //
@@ -122,11 +137,28 @@ SkPath BraveVerticalTabStyle::GetPath(
           gfx::OutsetsF::VH(brave_tabs::kHorizontalTabVerticalSpacing * scale,
                             brave_tabs::kHorizontalTabGap / 2 * scale);
 
+      // Note that upstream's `ShouldExtendHitTest` does not currently take into
+      // account some "condensed" frame scenarios on Linux.
+      bool frame_condensed =
+          IsBrowserFrameCondensed(tab()->controller()->GetBrowser());
+
       // We should only extend the hit test bounds into the top margin if the
-      // window is maximized or in fullscreen mode. Otherwise, we want the space
-      // above the visual tab shape to be available for window-dragging.
-      if (!ShouldExtendHitTest()) {
+      // browser frame is "condensed" (e.g. maximized, fullscreen, or otherwise
+      // occupying the entire screen area). Otherwise, we want the space above
+      // the visual tab shape to be available for window-dragging.
+      if (!frame_condensed) {
         hit_test_outsets.set_top(0);
+      }
+
+      // We also want the first tab (taking RTL into account) to be selectable
+      // in maximized or fullscreen mode by clicking at the very edge of the
+      // screen.
+      if (frame_condensed && tab()->controller()->IsTabFirst(tab())) {
+        if (tab()->GetMirrored()) {
+          hit_test_outsets.set_right(brave_tabs::kHorizontalTabInset * scale);
+        } else {
+          hit_test_outsets.set_left(brave_tabs::kHorizontalTabInset * scale);
+        }
       }
 
       aligned_bounds.Outset(hit_test_outsets);

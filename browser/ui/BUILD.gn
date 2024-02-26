@@ -342,6 +342,8 @@ source_set("ui") {
       "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
+      "views/frame/brave_tab_strip_region_view.cc",
+      "views/frame/brave_tab_strip_region_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
