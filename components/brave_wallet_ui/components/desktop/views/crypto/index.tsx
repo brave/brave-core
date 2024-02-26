@@ -111,6 +111,11 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   // methods
   const onShowBackup = React.useCallback(() => {
+    if (isAndroid) {
+      pageHandler.showWalletBackupUI()
+      return
+    }
+
     if (isPanel) {
       chrome.tabs.create(
         {
@@ -204,13 +209,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
               onDismiss={() => {
                 setDismissBackupWarning(true)
               }}
-              onClick={() => {
-                if (isAndroid) {
-                  pageHandler.showWalletBackupUI()
-                } else {
-                  onShowBackup()
-                }
-              }}
+              onClick={onShowBackup}
               bannerType='danger'
               buttonText={getLocale('braveWalletBackupButton')}
               description={getLocale('braveWalletBackupWarningText')}
