@@ -20,14 +20,6 @@ buildflag_header("buildflags") {
   flags = [
     "ENABLE_AI_CHAT=$enable_ai_chat",
     "SERVICE_KEY_AICHAT=\"$service_key_aichat\"",
+    "ENABLE_AI_CHAT_FEATURE_FLAG=true",
   ]
-
-  # Enable for desktop (all channels) and android (only dev,
-  # nightly and beta channels).
-  if (!is_android || (brave_channel == "beta" || brave_channel == "nightly" ||
-                      brave_channel == "development")) {
-    flags += [ "ENABLE_AI_CHAT_FEATURE_FLAG=true" ]
-  } else {
-    flags += [ "ENABLE_AI_CHAT_FEATURE_FLAG=false" ]
-  }
 }
