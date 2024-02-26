@@ -7,16 +7,10 @@
 
 const path = require('path')
 const fs = require('fs')
-const os = require('os')
 const assert = require('assert')
-const { spawnSync } = require('child_process')
 const dotenv = require('dotenv')
 const Log = require('./logging')
 
-let npmCommand = 'npm'
-if (process.platform === 'win32') {
-  npmCommand += '.cmd'
-}
 let NpmConfig = null
 
 let dirName = __dirname
@@ -26,16 +20,6 @@ if (process.platform === 'win32') {
 }
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
-
-const run = (cmd, args = []) => {
-  const prog = spawnSync(cmd, args)
-  if (prog.status !== 0) {
-    console.log(prog.stdout && prog.stdout.toString())
-    console.error(prog.stderr && prog.stderr.toString())
-    process.exit(1)
-  }
-  return prog
-}
 
 var packageConfig = function (key, sourceDir = braveCoreDir) {
   let packages = { config: {} }
@@ -57,35 +41,6 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 
 const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
-    const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
-    const unusedNpmConfig = JSON.parse(list.stdout.toString())
-
-    // Show deprecation warning if any brave-related variable is found in .npmrc.
-    for (const key in unusedNpmConfig) {
-      if (typeof key !== 'string') {
-        continue;
-      }
-      if (key.startsWith('bitflyer') ||
-          key.startsWith('brave') ||
-          key.startsWith('gemini') ||
-          key.startsWith('google') ||
-          key.startsWith('rewards') ||
-          key.startsWith('p3a') ||
-          key.startsWith('rbe') ||
-          key.startsWith('sardine') ||
-          key.startsWith('updater') ||
-          key.startsWith('uphold') ||
-          key.startsWith('zebpay')) {
-        Log.warn(
-          `Warning: ${key.replace(/-/g, '_')} and all other Brave-core related variables in .npmrc are ignored. Please migrate to src/brave/.env.\n` +
-          'Internal wiki: https://github.com/brave/devops/wiki/%60.env%60-config-for-Brave-Developers\n' +
-          'Public wiki: https://github.com/brave/brave-browser/wiki/Build-configuration\n' +
-          'If the found variable is not related to Brave-core, please ignore this warning.'
-        )
-        break
-      }
-    }
-
     NpmConfig = {}
     dotenv.config({ processEnv: NpmConfig })
     for (const [key, value] of Object.entries(NpmConfig)) {
