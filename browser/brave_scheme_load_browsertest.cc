@@ -129,6 +129,21 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
     EXPECT_EQ(1, private_browser->tab_strip_model()->count());
   }
 
+  void TestURLIsLoadedInPrivateWindow(const std::string& url) {
+    Browser* private_browser = CreateIncognitoBrowser(nullptr);
+    TabStripModel* private_model = private_browser->tab_strip_model();
+    EXPECT_EQ("about:blank",
+              private_model->GetActiveWebContents()->GetVisibleURL().spec());
+
+    NavigateParams params(private_browser, GURL(url),
+                          ui::PAGE_TRANSITION_TYPED);
+    Navigate(&params);
+    base::RunLoop().RunUntilIdle();
+
+    EXPECT_EQ(url,
+              private_model->GetActiveWebContents()->GetVisibleURL().spec());
+  }
+
   base::RepeatingClosure quit_closure_;
 };
 
@@ -297,6 +312,7 @@ IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
   prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
   EXPECT_TRUE(
       IsURLAllowedInIncognito(GURL("brave://wallet"), browser()->profile()));
+  TestURLIsLoadedInPrivateWindow("chrome://wallet/crypto/onboarding/welcome");
 }
 
 IN_PROC_BROWSER_TEST_F(BraveSchemeLoadBrowserTest,
