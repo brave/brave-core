@@ -56,6 +56,7 @@ class Image;
 namespace playlist {
 
 class MediaDetectorComponentManager;
+class PlaylistBackgroundWebContents;
 
 // This class is key interface for playlist. Client will ask any playlist
 // related requests to this class. This handles youtube playlist download
@@ -412,6 +413,8 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
+  std::unique_ptr<PlaylistBackgroundWebContents> background_web_contents_;
+
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 
   PlaylistP3A playlist_p3a_;
@@ -420,8 +423,6 @@ class PlaylistService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;
 
   BooleanPrefMember enabled_pref_;
-
-  raw_ptr<content::BrowserContext> context_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;

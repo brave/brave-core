@@ -8,7 +8,6 @@
 #include <utility>
 
 #include "base/logging.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -50,7 +49,6 @@ PlaylistBackgroundWebContentsHelper::GetSuccessCallback() && {
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
-    PlaylistService* service,
     const std::string& media_source_api_suppressor,
     const std::string& media_detector)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(

@@ -7,6 +7,7 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 
 #include <algorithm>
+#include <memory>
 #include <utility>
 
 #include "base/check_is_test.h"
@@ -18,9 +19,9 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
-#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
@@ -29,7 +30,6 @@
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
 #include "third_party/blink/public/common/web_preferences/web_preferences.h"
@@ -66,14 +66,15 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
     : delegate_(std::move(delegate)),
       base_dir_(context->GetPath().Append(kBaseDirName)),
       playlist_p3a_(local_state, browser_first_run_time),
-      prefs_(user_prefs::UserPrefs::Get(context)),
-      context_(context) {
+      prefs_(user_prefs::UserPrefs::Get(context)) {
   media_file_download_manager_ =
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
   media_detector_component_manager_ = manager;
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
+  background_web_contents_ =
+      std::make_unique<PlaylistBackgroundWebContents>(context, this);
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -95,6 +96,8 @@ void PlaylistService::Shutdown() {
   thumbnail_downloader_.reset();
   task_runner_.reset();
   playlist_streaming_.reset();
+  background_web_contents_.reset();
+
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -703,57 +706,17 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
   if (items.size() == 1 && ShouldExtractMediaFromBackgroundWebContents(items)) {
-    const GURL url = items[0]->page_source;
-
-    content::WebContents::CreateParams create_params(context_, nullptr);
-    create_params.is_never_visible = true;
-    static std::unique_ptr<content::WebContents> background_web_contents =
-        content::WebContents::Create(create_params);
-
-    PlaylistMediaHandler::CreateForWebContents(
-        background_web_contents.get(),
+    background_web_contents_->Add(
+        items[0]->page_source,
         base::BindOnce(
             &PlaylistService::Callback, GetWeakPtr(), playlist_id,
             can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
             std::move(callback)));
-
-    background_web_contents->SetAudioMuted(true);
-    PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-        background_web_contents.get(), this,
-        GetMediaSourceAPISuppressorScript(), GetMediaDetectorScript(url));
-    auto load_url_params = content::NavigationController::LoadURLParams(url);
-
-    if (ShouldUseFakeUA(url) ||
-        base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-      DVLOG(2) << __func__ << " Faked UA to detect media files";
-
-      blink::UserAgentOverride user_agent(
-          "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-          "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-          "Mobile/15E148 "
-          "Safari/604.1",
-          /* user_agent_metadata */ {});
-      background_web_contents->SetUserAgentOverride(
-          user_agent,
-          /* override_in_new_tabs= */ true);
-      load_url_params.override_user_agent =
-          content::NavigationController::UA_OVERRIDE_TRUE;
-    }
-
-    content::NavigationController& controller =
-        background_web_contents->GetController();
-    controller.LoadURLWithParams(load_url_params);
-
-    if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-      for (int i = 0; i < controller.GetEntryCount(); ++i) {
-        controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
-      }
-    }
   } else {
-  AddMediaFilesFromItems(
-      playlist_id,
-      can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-      std::move(callback), std::move(items));
+    AddMediaFilesFromItems(
+        playlist_id,
+        can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+        std::move(callback), std::move(items));
   }
 }
 
@@ -1097,10 +1060,14 @@ void PlaylistService::RecoverLocalDataForItem(
       [](base::WeakPtr<PlaylistService> service,
          mojom::PlaylistItemPtr old_item,
          RecoverLocalDataForItemCallback callback,
-         std::vector<mojom::PlaylistItemPtr> found_items) {
+         base::Value::List media,
+         const GURL& url) {
         if (!service) {
           return;
         }
+
+        const std::vector<mojom::PlaylistItemPtr> found_items =
+            service->GetPlaylistItems(std::move(media), url);
 
         DCHECK(old_item);
         if (found_items.empty()) {
@@ -1138,10 +1105,8 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  CHECK(false);
-  // TODO(sszaloki):
-  // Background `WebContents` are now created by `PlaylistTabHelper`s,
-  // but then this flow doesn't really fit in the picture.
+  background_web_contents_->Add(item->page_source,
+                                std::move(update_media_src_and_recover));
 }
 
 void PlaylistService::RemoveLocalDataForItemsInPlaylist(
