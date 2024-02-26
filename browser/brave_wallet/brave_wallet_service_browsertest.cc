@@ -6,6 +6,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -88,13 +89,10 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
 
   void TestIsPrivateWindow(BraveWalletService* wallet_service,
                            bool expected_result) {
-    base::RunLoop run_loop;
-    wallet_service->IsPrivateWindow(
-        base::BindLambdaForTesting([&](bool result) {
-          EXPECT_EQ(result, expected_result);
-          run_loop.Quit();
-        }));
-    run_loop.Run();
+    base::MockCallback<base::OnceCallback<void(bool)>> callback;
+    EXPECT_CALL(callback, Run(expected_result)).Times(1);
+
+    wallet_service->IsPrivateWindow(callback.Get());
   }
 
   BraveWalletService* wallet_service() { return wallet_service_; }
