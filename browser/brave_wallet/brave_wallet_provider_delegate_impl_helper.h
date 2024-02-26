@@ -21,7 +21,7 @@ namespace brave_wallet {
 // ...etc.
 void ShowPanel(content::WebContents* web_contents);
 
-// Show native Brave Wallet backup UI.
+// Show native Brave Wallet backup UI - Used only by Android.
 void ShowWalletBackup();
 
 // Show wallet onboarding page.

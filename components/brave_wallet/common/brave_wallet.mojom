@@ -426,7 +426,7 @@ interface PageHandler {
   // Used by the brave://wallet page to open up the approval panel
   ShowApprovePanelUI();
 
-  // Used by the brave://wallet page to open up the backup UI.
+  // Android only - Used by the brave://wallet page to open up the backup UI.
   ShowWalletBackupUI();
 };
 
