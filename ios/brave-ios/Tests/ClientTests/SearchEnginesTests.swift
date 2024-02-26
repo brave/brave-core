@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Preferences
@@ -11,9 +11,9 @@ import XCTest
 
 class SearchEnginesTests: XCTestCase {
 
-  private let DefaultSearchEngineName = "Google"
+  private let defaultSearchEngineName = "Google"
   // BRAVE TODO: This list is not accurate because Brave uses many more engines
-  private let ExpectedEngineNames = ["Qwant", "Bing", "DuckDuckGo", "Google", "StartPage"]
+  private let expectedEngineNames = ["Qwant", "Bing", "DuckDuckGo", "Google", "StartPage"]
 
   override func setUp() {
     super.setUp()
@@ -32,9 +32,9 @@ class SearchEnginesTests: XCTestCase {
     // Verify that the set of shipped engines includes the expected subset.
     let profile = MockProfile()
     let engines = SearchEngines(files: profile.files).orderedEngines
-    XCTAssertTrue((engines?.count)! >= ExpectedEngineNames.count)
+    XCTAssertTrue((engines?.count)! >= expectedEngineNames.count)
 
-    for engineName in ExpectedEngineNames {
+    for engineName in expectedEngineNames {
       XCTAssertTrue(((engines?.filter { engine in engine.shortName == engineName })?.count)! > 0)
     }
   }
@@ -43,14 +43,14 @@ class SearchEnginesTests: XCTestCase {
     // If this is our first run, Google should be first for the en locale.
     let profile = MockProfile()
     let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
-    XCTAssertEqual(engines.defaultEngine(forType: .standard).shortName, DefaultSearchEngineName)
+    XCTAssertEqual(engines.defaultEngine(forType: .standard).shortName, defaultSearchEngineName)
     // The default is `DefaultSearchEngineName` for both regular and private browsing.
     // Different search engine options might apply to certain regions.
     // Default locale for running tests should be en_US.
-    XCTAssertEqual(engines.defaultEngine(forType: .privateMode).shortName, DefaultSearchEngineName)
+    XCTAssertEqual(engines.defaultEngine(forType: .privateMode).shortName, defaultSearchEngineName)
 
     let orderedEngines = engines.orderedEngines.compactMap { $0.shortName }
-    XCTAssert(orderedEngines.contains(DefaultSearchEngineName))
+    XCTAssert(orderedEngines.contains(defaultSearchEngineName))
   }
 
   func testAddingAndDeletingCustomEngines() {
@@ -115,7 +115,7 @@ class SearchEnginesTests: XCTestCase {
     let engines = SearchEngines(files: profile.files)
 
     engines.orderedEngines = [
-      ExpectedEngineNames[4], ExpectedEngineNames[2], ExpectedEngineNames[0],
+      expectedEngineNames[4], expectedEngineNames[2], expectedEngineNames[0],
     ].map { name in
       for engine in engines.orderedEngines {
         if engine.shortName == name {
@@ -125,15 +125,15 @@ class SearchEnginesTests: XCTestCase {
       XCTFail("Could not find engine: \(name)")
       return engines.orderedEngines.first!
     }
-    XCTAssertEqual(engines.orderedEngines[0].shortName, ExpectedEngineNames[4])
-    XCTAssertEqual(engines.orderedEngines[1].shortName, ExpectedEngineNames[2])
-    XCTAssertEqual(engines.orderedEngines[2].shortName, ExpectedEngineNames[0])
+    XCTAssertEqual(engines.orderedEngines[0].shortName, expectedEngineNames[4])
+    XCTAssertEqual(engines.orderedEngines[1].shortName, expectedEngineNames[2])
+    XCTAssertEqual(engines.orderedEngines[2].shortName, expectedEngineNames[0])
 
     let engines2 = SearchEngines(files: profile.files)
     // The ordering should have been persisted.
-    XCTAssertEqual(engines2.orderedEngines[0].shortName, ExpectedEngineNames[4])
-    XCTAssertEqual(engines2.orderedEngines[1].shortName, ExpectedEngineNames[2])
-    XCTAssertEqual(engines2.orderedEngines[2].shortName, ExpectedEngineNames[0])
+    XCTAssertEqual(engines2.orderedEngines[0].shortName, expectedEngineNames[4])
+    XCTAssertEqual(engines2.orderedEngines[1].shortName, expectedEngineNames[2])
+    XCTAssertEqual(engines2.orderedEngines[2].shortName, expectedEngineNames[0])
   }
 
   func testQuickSearchEngines() {

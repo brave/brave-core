@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -55,8 +55,8 @@ public class ReaderModeHandler: InternalSchemeResponse {
       let readabilityResult = try ReaderModeHandler.readerModeCache.get(readerModeUrl)
       // We have this page in our cache, so we can display it. Just grab the correct style from the
       // profile and then generate HTML from the Readability results.
-      var readerModeStyle = DefaultReaderModeStyle
-      if let dict = profile.prefs.dictionaryForKey(ReaderModeProfileKeyStyle) {
+      var readerModeStyle = defaultReaderModeStyle
+      if let dict = profile.prefs.dictionaryForKey(readerModeProfileKeyStyle) {
         if let style = ReaderModeStyle(dict: dict) {
           readerModeStyle = style
         }

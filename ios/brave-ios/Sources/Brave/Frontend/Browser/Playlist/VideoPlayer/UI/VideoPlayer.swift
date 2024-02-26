@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
 import AVKit
@@ -377,8 +377,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
         if currentDraggingDirection == .verticalDirection {
 
-          // Vertical dragging adjusts volume.
-          let vDragRatio = 4 * gestureRecognizer.translation(in: self).y / bounds.height  // (-0.5 ... 0.5) * 4
+          // Vertical dragging adjusts volume. (-0.5 ... 0.5) * 4
+          let vDragRatio = 4 * gestureRecognizer.translation(in: self).y / bounds.height
 
           if vDragRatio != 0 && self.dragStartedVolume >= 0 {
             if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
@@ -391,8 +391,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
           // End of vertical panning processing.
         } else {
 
-          // Otherwise it's a horizontal pan.
-          let dragRatio = gestureRecognizer.translation(in: self).x / bounds.width  // (-0.5 ... 0.5)*1
+          // Otherwise it's a horizontal pan. (-0.5 ... 0.5)*1
+          let dragRatio = gestureRecognizer.translation(in: self).x / bounds.width
           var vidDurationSeconds = 0.0
           if let currentItem = currentPlayer.currentItem {
             vidDurationSeconds =
@@ -430,8 +430,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
                 / CGFloat((currentItem.duration.timescale)),
               preferredTimescale: currentItem.duration.timescale
             )
-
-            controlsView.trackBar.setTimeRange(currentTime: trackbarPos, endTime: trackbarLen)  // Move the slider.
+            // Move the slider.
+            controlsView.trackBar.setTimeRange(currentTime: trackbarPos, endTime: trackbarLen)
             seek(to: finalSeconds)  // And rewind the video.
           }
           // End of horizontal panning processing.

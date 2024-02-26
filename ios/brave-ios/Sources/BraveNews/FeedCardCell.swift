@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Foundation
@@ -33,7 +33,7 @@ public class FeedCardCell<Content: FeedCardContent>: UICollectionViewCell, Colle
   public override func preferredLayoutAttributesFitting(
     _ layoutAttributes: UICollectionViewLayoutAttributes
   ) -> UICollectionViewLayoutAttributes {
-    // swiftlint:disable:next force_cast
+
     let attributes = layoutAttributes.copy() as! UICollectionViewLayoutAttributes
     // Let iPads have a bit larger cards since theres more room
     if traitCollection.horizontalSizeClass == .regular {

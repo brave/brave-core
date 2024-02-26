@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -18,7 +18,7 @@ public struct WalletConstants {
   static let braveSwapJupiterFee: Double = 0.0085
 
   /// The wei value used for unlimited allowance in an ERC 20 transaction.
-  static let MAX_UINT256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+  static let maxUInt256 = "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
 
   /// The `URLOrigin` used for transactions/requests from Brave Wallet.
   static let braveWalletOrigin: URLOrigin = .init(url: URL(string: "chrome://wallet")!)

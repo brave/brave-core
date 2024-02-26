@@ -1,4 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
 import BraveShared
@@ -15,7 +17,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     let button = self.createCameraButton()
     button.setTitle(Strings.grantCameraAccess, for: .normal)
     button.tintColor = .white
-    button.addTarget(self, action: #selector(SEL_cameraAccess), for: .touchUpInside)
+    button.addTarget(self, action: #selector(cameraAccess), for: .touchUpInside)
     return button
   }()
 
@@ -84,7 +86,7 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     cameraOverlayView.frame = bounds
   }
 
-  @objc func SEL_cameraAccess() {
+  @objc func cameraAccess() {
     startCapture()
   }
 

@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -367,7 +367,8 @@ extension BraveWalletJsonRpcService {
       }
       let allChains = await group.reduce([BraveWallet.NetworkInfo](), { $0 + $1 }).filter {
         network in
-        if !Preferences.Wallet.showTestNetworks.value && respectTestnetPreference {  // filter out test networks
+        // filter out test networks
+        if !Preferences.Wallet.showTestNetworks.value && respectTestnetPreference {
           return !WalletConstants.supportedTestNetworkChainIds.contains(where: {
             $0 == network.chainId
           })

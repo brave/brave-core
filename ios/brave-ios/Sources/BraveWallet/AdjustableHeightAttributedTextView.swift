@@ -76,11 +76,11 @@ struct AttributedTextView: UIViewRepresentable {
 
     func textView(
       _ textView: UITextView,
-      shouldInteractWith URL: URL,
+      shouldInteractWith url: URL,
       in characterRange: NSRange,
       interaction: UITextItemInteraction
     ) -> Bool {
-      parent.openLink?(URL)
+      parent.openLink?(url)
       return false
     }
   }

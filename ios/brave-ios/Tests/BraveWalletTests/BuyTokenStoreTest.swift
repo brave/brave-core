@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -207,7 +207,8 @@ class BuyTokenStoreTests: XCTestCase {
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
-      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet)  // verify network switched to SolanaMainnet
+      // verify network switched to SolanaMainnet
+      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet)
       selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
       completion(true)
     }

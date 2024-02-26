@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
 import Favicon
@@ -109,7 +109,7 @@ class TabCell: UICollectionViewCell {
     self.titleLabel = UILabel()
     self.titleLabel.isUserInteractionEnabled = false
     self.titleLabel.numberOfLines = 1
-    self.titleLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFontBold
+    self.titleLabel.font = DynamicFontHelper.defaultHelper.defaultSmallFontBold
     self.titleLabel.textColor = .black
     self.titleLabel.backgroundColor = .clear
 
@@ -213,7 +213,7 @@ class TabCell: UICollectionViewCell {
     // Reset any close animations.
     backgroundHolder.transform = .identity
     backgroundHolder.alpha = 1
-    titleLabel.font = DynamicFontHelper.defaultHelper.DefaultSmallFontBold
+    titleLabel.font = DynamicFontHelper.defaultHelper.defaultSmallFontBold
     layer.shadowOffset = .zero
     layer.shadowPath = nil
     layer.shadowOpacity = 0

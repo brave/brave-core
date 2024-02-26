@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Foundation
@@ -51,7 +51,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
-          case let .signMessage(requests):
+          case .signMessage(let requests):
             SignMessageRequestContainerView(
               store: cryptoStore.signMessageRequestStore(for: requests),
               keyringStore: keyringStore,
@@ -59,26 +59,26 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               networkStore: cryptoStore.networkStore,
               onDismiss: onDismiss
             )
-          case let .signMessageError(signMessageErrors):
+          case .signMessageError(let signMessageErrors):
             SignMessageErrorView(
               signMessageErrors: signMessageErrors,
               cryptoStore: cryptoStore
             )
-          case let .getEncryptionPublicKey(request):
+          case .getEncryptionPublicKey(let request):
             EncryptionView(
               request: .getEncryptionPublicKey(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
               onDismiss: onDismiss
             )
-          case let .decrypt(request):
+          case .decrypt(let request):
             EncryptionView(
               request: .decrypt(request),
               cryptoStore: cryptoStore,
               keyringStore: keyringStore,
               onDismiss: onDismiss
             )
-          case let .signTransaction(requests):
+          case .signTransaction(let requests):
             SignTransactionView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
@@ -86,7 +86,7 @@ struct RequestContainerView<DismissContent: ToolbarContent>: View {
               cryptoStore: cryptoStore,
               onDismiss: onDismiss
             )
-          case let .signAllTransactions(requests):
+          case .signAllTransactions(let requests):
             SignTransactionView(
               keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,

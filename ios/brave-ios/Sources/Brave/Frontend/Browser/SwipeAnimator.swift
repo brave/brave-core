@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -14,7 +14,7 @@ struct SwipeAnimationParameters {
   let recenterAnimationDuration: TimeInterval
 }
 
-private let DefaultParameters =
+private let defaultSwipeAnimationParameters =
   SwipeAnimationParameters(
     totalRotationInDegrees: 10,
     deleteThreshold: 80,
@@ -44,7 +44,7 @@ class SwipeAnimator: NSObject {
     return CGPoint(x: animatingView.frame.width / 2, y: animatingView.frame.height / 2)
   }
 
-  init(animatingView: UIView, params: SwipeAnimationParameters = DefaultParameters) {
+  init(animatingView: UIView, params: SwipeAnimationParameters = defaultSwipeAnimationParameters) {
     self.animatingView = animatingView
     self.params = params
 

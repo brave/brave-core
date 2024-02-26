@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveStrings
@@ -136,17 +136,17 @@ struct SignMessageRequestView: View {
 
   /// Cancel and Sign buttons
   @ViewBuilder private var buttons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     .disabled(requestIndex != 0)
-    Button(action: {  // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
         .imageScale(.large)
     }
@@ -168,9 +168,9 @@ struct NextIndexButton: View {
         String.localizedStringWithFormat(Strings.Wallet.transactionCount, currentIndex + 1, count)
       )
       .fontWeight(.semibold)
-      Button(action: {
+      Button {
         nextTapped()
-      }) {
+      } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
           .foregroundColor(Color(.braveBlurpleTint))

@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -29,7 +29,7 @@ struct EditPermissionsView: View {
   private var customAllowanceAmountInWei: String {
     if customAllowance == Strings.Wallet.editPermissionsApproveUnlimited {
       // when user taps 'Set Unlimited' button we updated `customAllowance` to `Strings.Wallet.editPermissionsApproveUnlimited`
-      return WalletConstants.MAX_UINT256
+      return WalletConstants.maxUInt256
     }
 
     var decimals: Int = 18
@@ -105,11 +105,11 @@ struct EditPermissionsView: View {
           )
           .keyboardType(.decimalPad)
           .foregroundColor(Color(.braveLabel))
-          if proposedAllowance.caseInsensitiveCompare(WalletConstants.MAX_UINT256) != .orderedSame {
-            Button(action: {
+          if proposedAllowance.caseInsensitiveCompare(WalletConstants.maxUInt256) != .orderedSame {
+            Button {
               customAllowance = Strings.Wallet.editPermissionsApproveUnlimited
               resignFirstResponder()
-            }) {
+            } label: {
               Text(Strings.Wallet.editPermissionsSetUnlimited)
                 .foregroundColor(Color(.braveBlurpleTint))
                 .font(.footnote)
@@ -118,7 +118,7 @@ struct EditPermissionsView: View {
         }
       }
 
-      Button(action: {
+      Button {
         confirmationStore.editAllowance(
           transaction: activeTransaction,
           spenderAddress: activeTransaction.txArgs[safe: 0] ?? "",
@@ -130,7 +130,7 @@ struct EditPermissionsView: View {
             isShowingAlert = true
           }
         }
-      }) {
+      } label: {
         Text(Strings.Wallet.saveButtonTitle)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
@@ -168,7 +168,7 @@ struct EditPermissionsView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
       EditPermissionsView(
-        proposedAllowance: WalletConstants.MAX_UINT256,
+        proposedAllowance: WalletConstants.maxUInt256,
         confirmationStore: .previewStore,
         keyringStore: .previewStoreWithWalletCreated,
         networkStore: .previewStore

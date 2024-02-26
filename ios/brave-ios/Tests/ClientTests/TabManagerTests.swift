@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Preferences
 import Shared
@@ -146,28 +146,6 @@ open class MockTabManagerDelegate: TabManagerDelegate {
       Preferences.Privacy.privateBrowsingOnly.value = false
     }
   }
-
-  // BRAVE TODO: We no longer "store tabs", happens async from CoreData, so this test has to reflect CD instead
-  /*
-     func testTabManagerCallsTabManagerStateDelegateOnStoreChangesWithNormalTabs() {
-     let profile = TabManagerMockProfile()
-     let manager = TabManager(prefs: profile.prefs, imageStore: nil)
-     let stateDelegate = MockTabManagerStateDelegate()
-     manager.stateDelegate = stateDelegate
-     let configuration = WKWebViewConfiguration()
-     configuration.processPool = WKProcessPool()
-
-     // test that non-private tabs are saved to the db
-     // add some non-private tabs to the tab manager
-     for _ in 0..<3 {
-     let tab = Tab(configuration: configuration)
-     tab.url = URL(string: "http://yahoo.com")!
-     manager.configureTab(tab, request: URLRequest(url: tab.url!), flushToDisk: false, zombie: false)
-     }
-
-     XCTAssertEqual(stateDelegate.numberOfTabsStored, 3, "Expected state delegate to have been called with 3 tabs, but called with \(stateDelegate.numberOfTabsStored)")
-     }
-     */
 
   func testTabManagerDoesNotCallTabManagerStateDelegateOnStoreChangesWithPrivateTabs() {
     let stateDelegate = MockTabManagerStateDelegate()

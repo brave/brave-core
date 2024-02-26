@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Shared
@@ -82,7 +82,7 @@ class RewardsInternalsPromotionListController: TableViewController {
         Row(
           text: Strings.RewardsInternals.amount,
           detailText:
-            "\(batFormatter.string(from: NSNumber(value: promo.approximateValue)) ?? "0.0") \(Strings.BAT)"
+            "\(batFormatter.string(from: NSNumber(value: promo.approximateValue)) ?? "0.0") \(Strings.batSymbol)"
         ),
         Row(text: Strings.RewardsInternals.type, detailText: promo.type.displayText),
         Row(

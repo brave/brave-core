@@ -110,7 +110,8 @@ public class WebcompatReporter {
       try container.encodeIfPresent(report.additionalDetails, forKey: .additionalDetails)
       try container.encodeIfPresent(report.contactInfo, forKey: .contactInfo)
       try container.encodeIfPresent(languageCode, forKey: .languages)
-      try container.encode(true, forKey: .languageFarblingEnabled)  // This is always enabled in iOS web-kit
+      // languageFarblingEnabled is always enabled in iOS WebKit
+      try container.encode(true, forKey: .languageFarblingEnabled)
       try container.encode(report.areShieldsEnabled, forKey: .shieldsEnabled)
       try container.encode(report.isVPNEnabled, forKey: .braveVPNEnabled)
       try container.encode(report.adBlockListTitles.joined(separator: ","), forKey: .adBlockLists)

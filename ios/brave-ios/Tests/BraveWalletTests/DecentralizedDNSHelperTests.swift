@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -48,7 +48,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .loadInterstitial(service) = result else {
+    guard case .loadInterstitial(let service) = result else {
       XCTFail("Expected to load interstitial")
       return
     }
@@ -84,7 +84,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .load(url) = result else {
+    guard case .load(let url) = result else {
       XCTFail("Expected to load url")
       return
     }
@@ -139,7 +139,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .loadInterstitial(service) = result else {
+    guard case .loadInterstitial(let service) = result else {
       XCTFail("Expected to load interstitial")
       return
     }
@@ -177,7 +177,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .load(url) = result else {
+    guard case .load(let url) = result else {
       XCTFail("Expected to load url")
       return
     }
@@ -232,7 +232,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .loadInterstitial(service) = result else {
+    guard case .loadInterstitial(let service) = result else {
       XCTFail("Expected to load interstitial")
       return
     }
@@ -262,7 +262,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .load(url) = result else {
+    guard case .load(let url) = result else {
       XCTFail("Expected to load url")
       return
     }
@@ -316,7 +316,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .loadInterstitial(service) = result else {
+    guard case .loadInterstitial(let service) = result else {
       XCTFail("Expected to load interstitial")
       return
     }
@@ -346,7 +346,7 @@ import XCTest
     }
 
     let result = await sut.lookup(domain: domain)
-    guard case let .load(url) = result else {
+    guard case .load(let url) = result else {
       XCTFail("Expected to load url")
       return
     }

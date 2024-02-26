@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -187,9 +187,9 @@ struct SaferSignMessageRequestContainerView: View {
           .frame(maxWidth: .infinity, alignment: .leading)
         }
         Spacer()
-        Button(action: {
+        Button {
           isShowingDetails.toggle()
-        }) {
+        } label: {
           Text(detailsButtonTitle)
             .fontWeight(.medium)
             .foregroundColor(Color(braveSystemName: .textInteractive))
@@ -221,17 +221,17 @@ struct SaferSignMessageRequestContainerView: View {
 
   /// Cancel and Sign buttons
   @ViewBuilder private var buttons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     .disabled(requestIndex != 0)
-    Button(action: {  // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
         .imageScale(.large)
     }

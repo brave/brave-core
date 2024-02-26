@@ -1,4 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -374,7 +376,7 @@ extension CachedAdBlockEngine.Source {
     case .adBlock, .filterList, .filterListURL:
       // This engine source type is enabled only if shields are enabled
       // for the given domain
-      return domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true)
+      return domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true)
     }
   }
 }

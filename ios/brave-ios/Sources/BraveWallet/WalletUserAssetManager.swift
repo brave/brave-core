@@ -195,7 +195,8 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
       let groupId = network.walletUserAssetGroupId
       if let walletUserAssets = WalletUserAssetGroup.getGroup(groupId: groupId)?.walletUserAssets?
         .filter({ $0.isSpam == isSpam && ($0.isERC721 || $0.isNFT) && $0.isDeletedByUser == false })
-      {  // Even though users can only spam/unspam NFTs, but we put the NFT filter here to make sure only NFTs are returned
+      {
+        // Even though users can only spam/unspam NFTs, but we put the NFT filter here to make sure only NFTs are returned
         let networkAsset = NetworkAssets(
           network: network,
           tokens: walletUserAssets.map(\.blockchainToken),
@@ -217,7 +218,8 @@ public class WalletUserAssetManager: WalletUserAssetManagerType, WalletObserverS
 
   public func addUserAsset(_ asset: BraveWallet.BlockchainToken, completion: (() -> Void)?) {
     if let existedAsset = WalletUserAsset.getUserAsset(asset: asset) {
-      if existedAsset.isDeletedByUser {  // this asset was added before but user marked as deleted after
+      if existedAsset.isDeletedByUser {
+        // this asset was added before but user marked as deleted after
         WalletUserAsset.updateUserAsset(
           for: asset,
           visible: true,

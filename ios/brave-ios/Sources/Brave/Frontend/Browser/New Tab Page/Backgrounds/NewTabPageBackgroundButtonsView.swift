@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -22,7 +22,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
     /// Displays a brands logo button
     case brandLogo(_ logo: NTPSponsoredImageLogo)
     /// Displays a button with a little QR code image
-    case QRCode
+    case qrCode
   }
   /// A block executed when a user taps one of the active buttons.
   var tappedActiveButton: ((UIControl) -> Void)?
@@ -42,7 +42,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       case .brandLogo(let logo):
         sponsorLogoButton.imageView.image = UIImage(contentsOfFile: logo.imagePath.path)
         activeView = sponsorLogoButton
-      case .QRCode:
+      case .qrCode:
         activeView = qrCodeButton
       }
     }

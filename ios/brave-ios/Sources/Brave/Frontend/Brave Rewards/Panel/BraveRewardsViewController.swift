@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -67,7 +67,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   }
 
   private var rewardsView: BraveRewardsView {
-    view as! BraveRewardsView  // swiftlint:disable:this force_cast
+    view as! BraveRewardsView
   }
 
   override func loadView() {
@@ -208,7 +208,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     guard let publisher = publisher else { return }
     rewards.rewardsAPI?.refreshPublisher(withId: publisher.id) { [weak self] status in
       guard let self = self else { return }
-      let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo  // swiftlint:disable:this force_cast
+      let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo
       copy.status = status
       self.publisher = copy
 

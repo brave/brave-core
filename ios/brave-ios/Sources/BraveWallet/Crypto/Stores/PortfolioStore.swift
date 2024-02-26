@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -18,9 +18,9 @@ public enum AssetGroupType: Equatable, Identifiable {
   public var id: String {
     switch self {
     case .none: return "Group.none"
-    case let .network(network):
+    case .network(let network):
       return "Group.network.\(network.id)"
-    case let .account(account):
+    case .account(let account):
       return "Group.account.\(account.id)"
     }
   }
@@ -38,9 +38,9 @@ extension WalletAssetGroupViewModel {
     switch groupType {
     case .none:
       return ""
-    case let .network(network):
+    case .network(let network):
       return network.chainName
-    case let .account(account):
+    case .account(let account):
       return account.name
     }
   }
@@ -49,7 +49,7 @@ extension WalletAssetGroupViewModel {
     switch groupType {
     case .none, .network:
       return nil
-    case let .account(account):
+    case .account(let account):
       return account.address.truncatedAddress
     }
   }
@@ -66,7 +66,7 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
     assets.reduce(0) { partialResult, asset in
       let balance: Double
       switch groupType {
-      case let .account(account):
+      case .account(let account):
         balance = asset.balanceForAccounts[account.address] ?? 0
       case .none, .network:
         balance = asset.totalBalance
@@ -98,7 +98,7 @@ public struct AssetViewModel: Identifiable, Equatable {
   var quantity: String {
     let balance: Double
     switch groupType {
-    case let .account(account):
+    case .account(let account):
       balance = balanceForAccounts[account.address] ?? 0
     case .none, .network:
       balance = totalBalance
@@ -110,7 +110,7 @@ public struct AssetViewModel: Identifiable, Equatable {
   func fiatAmount(currencyFormatter: NumberFormatter) -> String {
     let balance: Double
     switch groupType {
-    case let .account(account):
+    case .account(let account):
       balance = balanceForAccounts[account.address] ?? 0
     case .none, .network:
       balance = totalBalance
@@ -500,7 +500,8 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
               group.addTask { @MainActor in
                 let token = tokenNetworkAccounts.token
                 var tokenBalances = tokenBalancesCache[token.id] ?? [:]
-                for account in tokenNetworkAccounts.accounts {  // fetch balance for this token for each account
+                // fetch balance for this token for each account
+                for account in tokenNetworkAccounts.accounts {
                   let balanceForToken = await rpcService.balance(
                     for: token,
                     in: account,
@@ -704,7 +705,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
       .sorted(by: { lhs, rhs in
         AssetViewModel.sorted(by: filters.sortOrder, lhs: lhs, rhs: rhs)
       })
-    case let .network(network):
+    case .network(let network):
       guard
         let networkAssets =
           allVisibleUserAssets
@@ -739,7 +740,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         .sorted(by: { lhs, rhs in
           AssetViewModel.sorted(by: filters.sortOrder, lhs: lhs, rhs: rhs)
         })
-    case let .account(account):
+    case .account(let account):
       return
         allVisibleUserAssets
         .filter {

@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -26,13 +26,13 @@ private struct EditTokenView: View {
   }
 
   var body: some View {
-    Button(action: {
+    Button {
       if assetStore.token.isErc721, assetStore.token.tokenId.isEmpty {
         tokenNeedsTokenId = assetStore.token
       } else {
         assetStore.isVisible.toggle()
       }
-    }) {
+    } label: {
       HStack(spacing: 8) {
         if assetStore.token.isErc721 || assetStore.token.isNft {
           NFTIconView(
@@ -102,9 +102,9 @@ struct EditUserAssetsView: View {
   }
 
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
@@ -113,9 +113,9 @@ struct EditUserAssetsView: View {
   }
 
   private var addCustomAssetButton: some View {
-    Button(action: {
+    Button {
       isAddingCustomAsset = true
-    }) {
+    } label: {
       Image(systemName: "plus")
     }
   }
@@ -144,12 +144,9 @@ struct EditUserAssetsView: View {
                 if store.isCustomToken {
                   EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
                     .swipeActions(edge: .trailing) {
-                      Button(
-                        role: .destructive,
-                        action: {
-                          removeCustomToken(store.token)
-                        }
-                      ) {
+                      Button(role: .destructive) {
+                        removeCustomToken(store.token)
+                      } label: {
                         Label(Strings.Wallet.delete, systemImage: "trash")
                       }
                     }
@@ -181,9 +178,9 @@ struct EditUserAssetsView: View {
           addCustomAssetButton
         }
         ToolbarItemGroup(placement: .confirmationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.done)
               .foregroundColor(Color(.braveBlurpleTint))
           }

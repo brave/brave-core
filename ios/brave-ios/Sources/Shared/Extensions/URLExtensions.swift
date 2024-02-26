@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import UIKit
@@ -109,11 +109,9 @@ extension URL {
     return results
   }
 
-  /**
-     * Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
-     *
-     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => foo
-     **/
+  /// Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
+  ///
+  /// E.g., https://m.foo.com/bar/baz?noo=abc#123  => foo
   public var hostSLD: String {
     guard let publicSuffix = self.publicSuffix, let baseDomain = self.baseDomain else {
       return self.normalizedHost() ?? self.absoluteString
@@ -192,13 +190,10 @@ extension URL {
     return urlString
   }
 
-  /**
-    Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix
-    with the base private domain attached to the front. For example, for the URL www.bbc.co.uk, the base domain
-    would be bbc.co.uk. The base domain includes the public suffix (co.uk) + one level down (bbc).
-
-    :returns: The base domain string for the given host name.
-    */
+  /// Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix
+  /// with the base private domain attached to the front. For example, for the URL www.bbc.co.uk, the base domain
+  /// would be bbc.co.uk. The base domain includes the public suffix (co.uk) + one level down (bbc).
+  /// - returns The base domain string for the given host name.
   public var baseDomain: String? {
     guard !isIPv6, let host = host else { return nil }
 
@@ -211,13 +206,11 @@ extension URL {
     return registry.isEmpty ? nil : registry
   }
 
-  /**
-     * Returns just the domain, but with the same scheme.
-     *
-     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com
-     *
-     * Any failure? Return this URL.
-     */
+  /// Returns just the domain, but with the same scheme.
+  ///
+  /// E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com
+  ///
+  /// Any failure? Return this URL.
   public var domainURL: URL {
     if let normalized = self.normalizedHost() {
       // Use URLComponents instead of URL since the former correctly preserves
@@ -269,12 +262,9 @@ extension URL {
     return host
   }
 
-  /**
-    Returns the public portion of the host name determined by the public suffix list found here: https://publicsuffix.org/list/.
-    For example for the url www.bbc.co.uk, based on the entries in the TLD list, the public suffix would return co.uk.
-
-    :returns: The public suffix for within the given hostname.
-    */
+  /// Returns the public portion of the host name determined by the public suffix list found here: https://publicsuffix.org/list/.
+  /// For example for the url www.bbc.co.uk, based on the entries in the TLD list, the public suffix would return co.uk.
+  /// - returns The public suffix for within the given hostname.
   public var publicSuffix: String? {
     let registry = (self as NSURL).registry
     return registry.isEmpty ? nil : registry
@@ -318,10 +308,8 @@ extension URL {
     return host?.contains(":") ?? false
   }
 
-  /**
-     Returns whether the URL's scheme is one of those listed on the official list of URI schemes.
-     This only accepts permanent schemes: historical and provisional schemes are not accepted.
-     */
+  /// Returns whether the URL's scheme is one of those listed on the official list of URI schemes.
+  /// This only accepts permanent schemes: historical and provisional schemes are not accepted.
   public var schemeIsValid: Bool {
     guard let scheme = scheme else { return false }
     return supportedSchemes.contains(scheme.lowercased())
@@ -520,7 +508,7 @@ extension String {
 
   public var bookmarkletURL: URL? {
     if self.isBookmarklet,
-      let escaped = self.addingPercentEncoding(withAllowedCharacters: .URLAllowed)
+      let escaped = self.addingPercentEncoding(withAllowedCharacters: .urlAllowed)
     {
       return URL(string: escaped)
     }

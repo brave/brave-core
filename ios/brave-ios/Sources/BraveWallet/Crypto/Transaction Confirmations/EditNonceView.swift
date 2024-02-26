@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -29,7 +29,7 @@ struct EditNonceView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       Section {
-        Button(action: {
+        Button {
           if let value = Int(nonce) {
             let nonceHex = "0x\(String(format: "%02x", value))"
             confirmationStore.editNonce(
@@ -43,7 +43,7 @@ struct EditNonceView: View {
               }
             }
           }
-        }) {
+        } label: {
           Text(Strings.Wallet.saveButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))

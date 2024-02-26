@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import Foundation
@@ -152,6 +152,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   // Regardless of cause, cfurlErrorServerCertificateUntrusted is currently returned in all cases.
   // Check the other cases in case this gets fixed in the future.
   // NOTE: In rare cases like Bad Cipher algorithm, it can show cfurlErrorSecureConnectionFailed
+  // swift-format-ignore
   static let CFNetworkErrorsCertErrors: [CFNetworkErrors] = [
     .cfurlErrorSecureConnectionFailed,
     .cfurlErrorServerCertificateHasBadDate,
@@ -166,6 +167,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   // Regardless of cause, NSURLErrorServerCertificateUntrusted is currently returned in all cases.
   // Check the other cases in case this gets fixed in the future.
   // NOTE: In rare cases like Bad Cipher algorithm, it can show NSURLErrorSecureConnectionFailed
+  // swift-format-ignore
   static let NSURLCertErrors = [
     NSURLErrorSecureConnectionFailed,
     NSURLErrorServerCertificateHasBadDate,
@@ -181,6 +183,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
 
   // From: Security.SecBase / <Security/SecureTransport.h>
   // kCFStreamErrorDomainSSL
+  // swift-format-ignore
   static let CertErrorCodes = [
     errSSLProtocol: "SSL_PROTOCOL_ERROR",
     errSSLNegotiation: "SSL_NEGOTIATION_ERROR",

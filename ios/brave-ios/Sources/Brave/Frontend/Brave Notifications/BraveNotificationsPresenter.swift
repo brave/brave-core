@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -87,10 +87,12 @@ class BraveNotificationsPresenter: UIViewController {
       switch notification.presentationOrigin {
       case .top:
         $0.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-        $0.top.greaterThanOrEqualTo(view).offset(4)  // Makes sure in landscape its at least 4px from the top
+        // Makes sure in landscape its at least 4px from the top
+        $0.top.greaterThanOrEqualTo(view).offset(4)
       case .bottom:
         $0.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-        $0.bottom.lessThanOrEqualTo(view).inset(4)  // Makes sure in landscape its at least 4px from the bottom
+        // Makes sure in landscape its at least 4px from the bottom
+        $0.bottom.lessThanOrEqualTo(view).inset(4)
       }
 
       if UIDevice.current.userInterfaceIdiom != .pad {

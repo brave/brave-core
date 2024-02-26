@@ -251,7 +251,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { userVisibleNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -341,7 +342,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { hidingUnownedExpectation.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -458,7 +460,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { userHiddenNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -537,7 +540,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { userSpamNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -611,7 +615,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { userSpamNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -695,7 +700,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { userSpamNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -763,7 +769,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { groupByAccountVisibleExpectation.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -862,7 +869,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { groupByAccountHiddenNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -966,7 +974,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { groupByNetworkVisibleExpectation.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedUserNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return
@@ -1058,7 +1067,8 @@ class NFTStoreTests: XCTestCase {
       .collect(3)
       .sink { userNFTGroups in
         defer { groupByAccountHiddenNFTsException.fulfill() }
-        XCTAssertEqual(userNFTGroups.count, 3)  // empty nfts, populated w/ balance nfts, populated w/ metadata
+        // empty nfts, populated w/ balance nfts, populated w/ metadata
+        XCTAssertEqual(userNFTGroups.count, 3)
         guard let lastUpdatedNFTGroups = userNFTGroups.last else {
           XCTFail("Unexpected test result")
           return

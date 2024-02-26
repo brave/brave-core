@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 import XCTest
@@ -461,7 +461,7 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testencodeReaderModeURL() {
-    let ReaderURL = "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
+    let readerURL = "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
     let goodurls = [
       (
         "https://en.m.wikipedia.org/wiki/Main_Page",
@@ -471,7 +471,7 @@ class NSURLExtensionsTests: XCTestCase {
         )
       )
     ]
-    goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.encodeReaderModeURL(ReaderURL), $0.1) }
+    goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.encodeReaderModeURL(readerURL), $0.1) }
   }
 
   func testhavingRemovedAuthorisationComponents() {

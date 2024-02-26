@@ -1,13 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
-private let DiskReaderModeCacheSharedInstance = DiskReaderModeCache()
-private let MemoryReaderModeCacheSharedInstance = MemoryReaderModeCache()
-
-let ReaderModeCacheErrorDomain = "com.mozilla.client.readermodecache."
+private let readerModeCacheErrorDomain = "com.mozilla.client.readermodecache."
 enum ReaderModeCacheErrorCode: Int {
   case noPathsFound = 0
 }
@@ -41,9 +38,7 @@ class MemoryReaderModeCache: ReaderModeCache {
     self.cache = cache
   }
 
-  class var sharedInstance: ReaderModeCache {
-    return MemoryReaderModeCacheSharedInstance
-  }
+  static let sharedInstance = MemoryReaderModeCache()
 
   func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws {
     cache.setObject(
@@ -56,7 +51,7 @@ class MemoryReaderModeCache: ReaderModeCache {
     guard let resultWrapper = cache.object(forKey: url as AnyObject) as? ReadabilityResultWrapper
     else {
       throw NSError(
-        domain: ReaderModeCacheErrorDomain,
+        domain: readerModeCacheErrorDomain,
         code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
         userInfo: nil
       )
@@ -80,14 +75,12 @@ class MemoryReaderModeCache: ReaderModeCache {
 /// more space. Whether that is a good idea or not is not sure. We have a bug on file to investigate
 /// and improve at a later time.
 class DiskReaderModeCache: ReaderModeCache {
-  class var sharedInstance: ReaderModeCache {
-    return DiskReaderModeCacheSharedInstance
-  }
+  static let sharedInstance = DiskReaderModeCache()
 
   func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws {
     guard let (cacheDirectoryPath, contentFilePath) = cachePathsForURL(url) else {
       throw NSError(
-        domain: ReaderModeCacheErrorDomain,
+        domain: readerModeCacheErrorDomain,
         code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
         userInfo: nil
       )
@@ -114,7 +107,7 @@ class DiskReaderModeCache: ReaderModeCache {
     }
 
     throw NSError(
-      domain: ReaderModeCacheErrorDomain,
+      domain: readerModeCacheErrorDomain,
       code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
       userInfo: nil
     )

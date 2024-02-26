@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Foundation
@@ -117,12 +117,9 @@ struct ManageWebsiteDataView: View {
               }
               .frame(maxWidth: .infinity, alignment: .leading)
               .swipeActions(edge: .trailing) {
-                Button(
-                  role: .destructive,
-                  action: {
-                    removeRecords([record])
-                  }
-                ) {
+                Button(role: .destructive) {
+                  removeRecords([record])
+                } label: {
                   Label(Strings.removeDataRecord, systemImage: "trash")
                 }
               }
@@ -149,22 +146,22 @@ struct ManageWebsiteDataView: View {
       )
       .toolbar {
         ToolbarItemGroup(placement: .confirmationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.done)
               .foregroundColor(Color(.braveBlurpleTint))
           }
         }
         ToolbarItemGroup(placement: .bottomBar) {
-          Button(action: {
+          Button {
             withAnimation {
               editMode = editMode.isEditing ? .inactive : .active
               if editMode == .inactive {
                 selectedRecordsIds = []
               }
             }
-          }) {
+          } label: {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
               .foregroundColor(
                 visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint)
@@ -172,7 +169,7 @@ struct ManageWebsiteDataView: View {
           }
           .disabled(visibleRecords.isEmpty)
           Spacer()
-          Button(action: {
+          Button {
             if isEditMode {
               let idsToRemove = visibleSelectedRecordIds(visibleRecords)
               removeRecordsWithIds(Array(idsToRemove))
@@ -180,7 +177,7 @@ struct ManageWebsiteDataView: View {
             } else {
               removeRecords(visibleRecords)
             }
-          }) {
+          } label: {
             Text(removeButtonTitle(visibleRecords: visibleRecords))
               .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : .red)
               .animation(nil, value: isEditMode)

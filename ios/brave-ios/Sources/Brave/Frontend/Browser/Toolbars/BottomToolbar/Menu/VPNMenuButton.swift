@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -100,7 +100,9 @@ struct VPNMenuButton: View {
     .padding(.horizontal, 14)
     .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
     .background(
-      Button(action: { toggleVPN(!BraveVPN.isConnected) }) {
+      Button {
+        toggleVPN(!BraveVPN.isConnected)
+      } label: {
         Color.clear
       }
       .buttonStyle(TableCellButtonStyle())

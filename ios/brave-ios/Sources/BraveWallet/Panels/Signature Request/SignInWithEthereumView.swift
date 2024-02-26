@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveStrings
@@ -144,15 +144,15 @@ struct SignInWithEthereumView: View {
   }
 
   @ViewBuilder private var buttons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Text(Strings.cancelButtonTitle)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {  // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Text(Strings.Wallet.siweSignInButtonTitle)
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))

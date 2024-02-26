@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -158,7 +158,8 @@ class AccountActivityStoreTests: XCTestCase {
 
   func testUpdateEthereumAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockEthAccount
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockEthDecimalBalance: Double = 0.0896
@@ -183,8 +184,9 @@ class AccountActivityStoreTests: XCTestCase {
       attributes: nil
     )
 
+    // default in mainnet
     let ethSendTxCopy =
-      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo  // default in mainnet
+      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
     let goerliSwapTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
@@ -339,7 +341,8 @@ class AccountActivityStoreTests: XCTestCase {
 
   func testUpdateSolanaAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockSolAccount
     let mockLamportBalance: UInt64 = 3_876_535_000  // ~3.8765 SOL
     let mockSolDecimalBalance: Double = 3.8765  // rounded
@@ -517,7 +520,8 @@ class AccountActivityStoreTests: XCTestCase {
 
   func testUpdateFilecoinAccount() {
     Preferences.Wallet.showTestNetworks.value = true
-    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let account: BraveWallet.AccountInfo = .mockFilAccount
 
     let transactionData: BraveWallet.FilTxData = .init(

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -20,12 +20,11 @@ open class WeakList<T: AnyObject>: Sequence {
     self.items = items.map { WeakRef($0) }
   }
 
-  /**
-     * Adds an item to the list.
-     * Note that every insertion iterates through the list to find any "holes" (items that have
-     * been deallocated) to reuse them, so this class may not be appropriate in situations where
-     * insertion is frequent.
-     */
+  /// Adds an item to the list.
+  ///
+  /// Note that every insertion iterates through the list to find any "holes" (items that have
+  /// been deallocated) to reuse them, so this class may not be appropriate in situations where
+  /// insertion is frequent.
   open func insert(_ item: T) {
     // Reuse any existing slots that have been deallocated.
     for wrapper in items where wrapper.value == nil {

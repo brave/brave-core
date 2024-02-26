@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
 import DesignSystem
@@ -65,11 +65,11 @@ class MenuItemFactory {
       switch self {
       case .news:
         return Strings.OptionsMenu.braveNewsItemDescription
-      case let .playlist(subtitle):
+      case .playlist(let subtitle):
         return subtitle
       case .talk:
         return Strings.OptionsMenu.braveTalkItemDescription
-      case let .wallet(subtitle):
+      case .wallet(let subtitle):
         return subtitle
       default:
         return nil

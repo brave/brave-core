@@ -1,7 +1,7 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -237,17 +237,17 @@ struct NFTDetailView: View {
       ToolbarItemGroup(placement: .navigationBarTrailing) {
         Menu {
           if nftDetailStore.nft.visible {
-            Button(action: {
+            Button {
               buySendSwapDestination = BuySendSwapDestination(
                 kind: .send,
                 initialToken: nftDetailStore.nft
               )
-            }) {
+            } label: {
               Label(Strings.Wallet.nftDetailSendNFTButtonTitle, braveSystemImage: "leo.send")
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
-          Button(action: {
+          Button {
             if nftDetailStore.nft.visible {  // a collected visible NFT, mark as hidden
               nftDetailStore.updateNFTStatus(
                 visible: false,
@@ -267,7 +267,7 @@ struct NFTDetailView: View {
                 }
               )
             }
-          }) {
+          } label: {
             if nftDetailStore.nft.visible {  // a collected visible NFT
               Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
             } else if nftDetailStore.nft.isSpam {  // a spam NFT
@@ -276,9 +276,9 @@ struct NFTDetailView: View {
               Label(Strings.Wallet.nftUnhide, braveSystemImage: "leo.eye.on")
             }
           }
-          Button(action: {
+          Button {
             isPresentingRemoveAlert = true
-          }) {
+          } label: {
             Label(Strings.Wallet.nftRemoveFromWallet, braveSystemImage: "leo.trash")
           }
         } label: {

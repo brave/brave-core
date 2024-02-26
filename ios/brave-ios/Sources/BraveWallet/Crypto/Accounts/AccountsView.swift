@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -134,9 +134,9 @@ struct AccountsView: View {
               )
               .toolbar {
                 ToolbarItem(placement: .navigationBarLeading) {
-                  Button(action: {
+                  Button {
                     selectedAccountForExport = nil
-                  }) {
+                  } label: {
                     Text(Strings.cancelButtonTitle)
                       .foregroundColor(Color(.braveBlurpleTint))
                   }
@@ -240,45 +240,41 @@ private struct AccountCardView: View {
 
   private var buttons: some View {
     HStack(spacing: 12) {
-      /*
-       TODO: Accounts Block Explorer #8638
-      Button(action: {
-        action(.viewOnBlockExplorer)
-      }) {
-        RoundedRectangle(cornerRadius: 8)
-          .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
-          .frame(width: 36, height: 36)
-          .overlay {
-            Image(braveSystemName: "leo.web3.blockexplorer")
-              .foregroundColor(Color(braveSystemName: .iconInteractive))
-          }
-      }
-      */
+      // TODO: Accounts Block Explorer brave/brave-ios#8638
+      // Button {
+      //   action(.viewOnBlockExplorer)
+      // } label: {
+      //   RoundedRectangle(cornerRadius: 8)
+      //     .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+      //     .frame(width: 36, height: 36)
+      //     .overlay {
+      //       Image(braveSystemName: "leo.web3.blockexplorer")
+      //         .foregroundColor(Color(braveSystemName: .iconInteractive))
+      //     }
+      // }
       Menu {
-        Button(action: {
+        Button {
           action(.viewDetails)
-        }) {
+        } label: {
           Label(Strings.Wallet.viewDetails, braveSystemImage: "leo.eye.on")
         }
-        Button(action: {
+        Button {
           action(.editDetails)
-        }) {
+        } label: {
           Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
         }
         Divider()
-        Button(action: {
+        Button {
           action(.exportAccount)
-        }) {
+        } label: {
           Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
         }
-        /*
-         TODO: Account Deposit UI #8639
-        Button(action: {
-          action(.depositToAccount)
-        }) {
-          Label("Deposit", braveSystemImage: "leo.qr.code")
-        }
-        */
+        // TODO: Account Deposit UI brave/brave-ios#8639
+        // Button {
+        //   action(.depositToAccount)
+        // } label: {
+        //   Label("Deposit", braveSystemImage: "leo.qr.code")
+        // }
       } label: {
         RoundedRectangle(cornerRadius: 8)
           .stroke(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
@@ -321,9 +317,9 @@ private struct AccountCardView: View {
   }
 
   var body: some View {
-    Button(action: {
+    Button {
       action(.viewDetails)
-    }) {
+    } label: {
       VStack(spacing: 0) {
         topSectionContent()
           .background(colorScheme == .dark ? Color.black.opacity(0.5) : Color.white.opacity(0.5))

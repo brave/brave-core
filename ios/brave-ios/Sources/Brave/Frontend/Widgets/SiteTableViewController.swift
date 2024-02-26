@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
 import Storage
@@ -23,7 +23,7 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
 
-    titleLabel.font = DynamicFontHelper.defaultHelper.DeviceFontMediumBold
+    titleLabel.font = DynamicFontHelper.defaultHelper.deviceFontMediumBold
     titleLabel.textColor = .braveLabel
 
     contentView.addSubview(titleLabel)
@@ -37,8 +37,8 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
       make.right.equalTo(contentView).offset(-SiteTableViewControllerUX.headerTextMargin).priority(
         999
       )
-      make.left.greaterThanOrEqualTo(contentView)  // Fallback for when the left space constraint breaks
-      make.right.lessThanOrEqualTo(contentView)  // Fallback for when the right space constraint breaks
+      make.left.greaterThanOrEqualTo(contentView)  // Fallback for when the left constraint breaks
+      make.right.lessThanOrEqualTo(contentView)  // Fallback for when the right constraint breaks
       make.centerY.equalTo(contentView)
     }
   }
@@ -53,8 +53,8 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
 public class SiteTableViewController: LoadingViewController, UITableViewDelegate,
   UITableViewDataSource
 {
-  fileprivate let CellIdentifier = "CellIdentifier"
-  fileprivate let HeaderIdentifier = "HeaderIdentifier"
+  fileprivate let cellIdentifier = "CellIdentifier"
+  fileprivate let headerIdentifier = "HeaderIdentifier"
   var profile: Profile! {
     didSet {
       reloadData()
@@ -76,8 +76,8 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     tableView.do {
       $0.delegate = self
       $0.dataSource = self
-      $0.register(SiteTableViewCell.self, forCellReuseIdentifier: CellIdentifier)
-      $0.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: HeaderIdentifier)
+      $0.register(SiteTableViewCell.self, forCellReuseIdentifier: cellIdentifier)
+      $0.register(SiteTableViewHeader.self, forHeaderFooterViewReuseIdentifier: headerIdentifier)
       $0.layoutMargins = .zero
       $0.keyboardDismissMode = .onDrag
       $0.backgroundColor = .secondaryBraveBackground
@@ -110,7 +110,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     _ tableView: UITableView,
     cellForRowAt indexPath: IndexPath
   ) -> UITableViewCell {
-    let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath)
+    let cell = tableView.dequeueReusableCell(withIdentifier: cellIdentifier, for: indexPath)
     if self.tableView(tableView, hasFullWidthSeparatorForRowAtIndexPath: indexPath) {
       cell.separatorInset = .zero
     }
@@ -118,7 +118,7 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
   }
 
   public func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-    return tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderIdentifier)
+    return tableView.dequeueReusableHeaderFooterView(withIdentifier: headerIdentifier)
   }
 
   public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat

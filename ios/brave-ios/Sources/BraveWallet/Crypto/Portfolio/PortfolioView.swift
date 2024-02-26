@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -177,9 +177,9 @@ struct PortfolioAssetGroupHeaderView: View {
   var body: some View {
     VStack(spacing: 0) {
       HStack {
-        if case let .network(networkInfo) = group.groupType {
+        if case .network(let networkInfo) = group.groupType {
           NetworkIconView(network: networkInfo, length: 32)
-        } else if case let .account(accountInfo) = group.groupType {
+        } else if case .account(let accountInfo) = group.groupType {
           Blockie(address: accountInfo.address)
             .frame(width: 32, height: 32)
             .clipShape(RoundedRectangle(cornerRadius: 4))

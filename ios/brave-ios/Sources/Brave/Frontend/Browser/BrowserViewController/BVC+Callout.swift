@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -17,18 +17,16 @@ import SwiftUI
 // MARK: - Callouts
 
 extension BrowserViewController {
-  /*
-   Check FullScreenCalloutType to make alterations to priority of pop-over variation
-
-   Priority:
-   - P3A
-   - VPN Update Billing
-   - Bottom Bar
-   - VPN Promotion
-   - Default Browser
-   - Rewards
-   - VPN Link Receipt
-  */
+  /// Check FullScreenCalloutType to make alterations to priority of pop-over variation
+  ///
+  /// Priority:
+  /// - P3A
+  /// - VPN Update Billing
+  /// - Bottom Bar
+  /// - VPN Promotion
+  /// - Default Browser
+  /// - Rewards
+  /// - VPN Link Receipt
   func presentFullScreenCallouts() {
     for type in FullScreenCalloutType.allCases {
       presentScreenCallout(for: type)

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveWallet
@@ -434,7 +434,7 @@ class Tab: NSObject {
       self.webView = webView
       self.webView?.addObserver(
         self,
-        forKeyPath: KVOConstants.URL.keyPath,
+        forKeyPath: KVOConstants.url.keyPath,
         options: .new,
         context: nil
       )
@@ -466,13 +466,11 @@ class Tab: NSObject {
       return
     }
 
-    /*
-     * Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
-     * and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
-     * This approach is chosen to achieve removing tab history in the event of removing  browser history
-     * Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
-     * And alternative would be to reload webpages which will be costly and also can cause unexpected results
-     */
+    // Clear selector is used on WKWebView backForwardList because backForwardList list is only exposed with a getter
+    // and this method Removes all items except the current one in the tab list so when another url is added it will add the list properly
+    // This approach is chosen to achieve removing tab history in the event of removing  browser history
+    // Best way perform this is to clear the backforward list and in our case there is no drawback to clear the list
+    // And alternative would be to reload webpages which will be costly and also can cause unexpected results
     let argument: [Any] = ["_c", "lea", "r"]
 
     let method = argument.compactMap { $0 as? String }.joined()
@@ -537,7 +535,7 @@ class Tab: NSObject {
     contentScriptManager.uninstall(from: self)
 
     if let webView = webView {
-      webView.removeObserver(self, forKeyPath: KVOConstants.URL.keyPath)
+      webView.removeObserver(self, forKeyPath: KVOConstants.url.keyPath)
       tabDelegate?.tab(self, willDeleteWebView: webView)
     }
     webView = nil
@@ -908,7 +906,7 @@ class Tab: NSObject {
     context: UnsafeMutableRawPointer?
   ) {
     guard let webView = object as? BraveWebView, webView == self.webView,
-      let path = keyPath, path == KVOConstants.URL.keyPath
+      let path = keyPath, path == KVOConstants.url.keyPath
     else {
       return assertionFailure("Unhandled KVO key: \(keyPath ?? "nil")")
     }
@@ -1180,7 +1178,7 @@ extension Tab {
       // If the backup search results happen before the Brave Search loads
       // The method we pass data to is undefined.
       // For such case we do not call that method or remove the search backup manager.
-      // swiftlint:disable:next safe_javascript
+
       self.webView?.evaluateJavaScript("window.onFetchedBackupResults === undefined") {
         result,
         error in

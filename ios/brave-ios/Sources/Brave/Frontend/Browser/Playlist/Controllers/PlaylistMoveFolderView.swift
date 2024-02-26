@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -188,9 +188,9 @@ struct PlaylistMoveFolderView: View {
             .multilineTextAlignment(.leading)
         ) {
 
-          Button(action: {
+          Button {
             selectedFolder = PlaylistManager.shared.currentFolder
-          }) {
+          } label: {
             PlaylistFolderView(
               isSourceFolder: true,
               folder: PlaylistManager.shared.currentFolder,
@@ -217,9 +217,9 @@ struct PlaylistMoveFolderView: View {
 
           // Show the "Saved" folder
           if PlaylistManager.shared.currentFolder?.uuid != savedFolder.first?.uuid {
-            Button(action: {
+            Button {
               selectedFolder = savedFolder.first
-            }) {
+            } label: {
               PlaylistFolderView(
                 isSourceFolder: false,
                 folder: savedFolder.first,
@@ -232,9 +232,9 @@ struct PlaylistMoveFolderView: View {
           ForEach(
             folders.filter { $0.uuid != PlaylistManager.shared.currentFolder?.uuid }
           ) { folder in
-            Button(action: {
+            Button {
               selectedFolder = folder
-            }) {
+            } label: {
               PlaylistFolderView(
                 isSourceFolder: false,
                 folder: folder,

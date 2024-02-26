@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -58,9 +58,9 @@ public struct OnboardingVPNDetailsView: View {
       }
       .frame(maxWidth: .infinity)
       .padding(.bottom, 8)
-      Button(action: {
+      Button {
         learnMore?()
-      }) {
+      } label: {
         Text(Strings.learnMore)
           .font(.title3.weight(.medium))
           .padding(EdgeInsets(top: 12, leading: 24, bottom: 12, trailing: 24))

@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
 import BraveUI
@@ -38,9 +38,9 @@ struct PlaylistFolderSharingManagementView: View {
           .padding(.bottom, UX.vPadding)
 
         VStack(spacing: UX.vMidSpacing) {
-          Button(action: {
+          Button {
             onAddToPlaylistPressed?()
-          }) {
+          } label: {
             Text(Strings.PlaylistFolderSharing.offlineManagementViewAddButtonTitle)
               .foregroundColor(Color(.bravePrimary))
               .frame(maxWidth: .infinity)
@@ -48,9 +48,9 @@ struct PlaylistFolderSharingManagementView: View {
           .frame(minHeight: 44.0)
           .buttonStyle(BraveFilledButtonStyle(size: .normal))
 
-          Button(action: {
+          Button {
             onSettingsPressed?()
-          }) {
+          } label: {
             Text(Strings.PlaylistFolderSharing.offlineManagementViewSettingsButtonTitle)
               .foregroundColor(Color(.bravePrimary))
               .frame(maxWidth: .infinity)
@@ -58,9 +58,9 @@ struct PlaylistFolderSharingManagementView: View {
           .frame(minHeight: 44.0)
           .buttonStyle(BraveOutlineButtonStyle(size: .normal))
 
-          Button(action: {
+          Button {
             onCancelPressed?()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .frame(maxWidth: .infinity)
               .font(BraveButtonSize.normal.font)

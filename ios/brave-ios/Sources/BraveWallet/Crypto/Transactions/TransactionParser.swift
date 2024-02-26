@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -167,21 +167,20 @@ enum TransactionParser {
             radix: .decimal,
             decimals: Int(network.nativeToken.decimals)
           )?.trimmingTrailingZeros ?? ""
-        /* Example
-         Send 1 FIL
-
-         fromAddress="t1xqhfiydm2yq6augugonr4zpdllh77iw53aesdes"
-         toAddress="t895quq7gkjh6ebshr7qi2ud7vycel4m7x6dvsekf"
-         sendTokenSymbol="FL"
-         sendValue="1000000000000000000"
-         sendValueFormatted="1"
-         gasPremiumValue="100911"
-         gasLimitValue="1527953"
-         gasFeeCapValue="101965"
-         gasPremiumValueFormatted="0.000000000000100911"
-         gasLimitValueFormatted="0.000000000001527953"
-         gasFeeCapValueFormatted="0.000000000000101965"
-         */
+        // Example
+        // Send 1 FIL
+        //
+        // fromAddress="t1xqhfiydm2yq6augugonr4zpdllh77iw53aesdes"
+        // toAddress="t895quq7gkjh6ebshr7qi2ud7vycel4m7x6dvsekf"
+        // sendTokenSymbol="FL"
+        // sendValue="1000000000000000000"
+        // sendValueFormatted="1"
+        // gasPremiumValue="100911"
+        // gasLimitValue="1527953"
+        // gasFeeCapValue="101965"
+        // gasPremiumValueFormatted="0.000000000000100911"
+        // gasLimitValueFormatted="0.000000000001527953"
+        // gasFeeCapValueFormatted="0.000000000000101965"
         return .init(
           transaction: transaction,
           namedFromAddress: NamedAddresses.name(
@@ -225,15 +224,14 @@ enum TransactionParser {
                 * (Double(fromValueFormatted) ?? 0)
             )
           ) ?? "$0.00"
-        /* Example:
-         Send 0.1234 ETH
-
-         fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
-         toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
-         fromTokenSymbol="ETH"
-         fromValue="0x1b667a56d488000"
-         fromValueFormatted="0.1234"
-         */
+        // Example:
+        // Send 0.1234 ETH
+        //
+        // fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
+        // toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
+        // fromTokenSymbol="ETH"
+        // fromValue="0x1b667a56d488000"
+        // fromValueFormatted="0.1234"
         return .init(
           transaction: transaction,
           namedFromAddress: NamedAddresses.name(
@@ -294,15 +292,13 @@ enum TransactionParser {
             )
           ) ?? "$0.00"
       }
-      /*
-       fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
-       toAddress="0x7c24aed73d82c9d98a1b86bc2c8d2452c40419f8"
-       tokenContractAddress="0xaD6D458402F60fD3Bd25163575031ACDce07538D"
-       fromValue="0x5ff20a91f724000"
-       fromAmount="0.4321"
-       fromFiat="$0.43"
-       token.symbol="DAI"
-       */
+      // fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
+      // toAddress="0x7c24aed73d82c9d98a1b86bc2c8d2452c40419f8"
+      // tokenContractAddress="0xaD6D458402F60fD3Bd25163575031ACDce07538D"
+      // fromValue="0x5ff20a91f724000"
+      // fromAmount="0.4321"
+      // fromFiat="$0.43"
+      // token.symbol="DAI"
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
@@ -379,22 +375,21 @@ enum TransactionParser {
               * (Double(formattedMinBuyAmount) ?? 0)
           )
         ) ?? "$0.00"
-      /* Example:
-       USDC -> DAI
-       Sell Amount: 1.5
-
-       fillPath = "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d"
-       fromTokenAddress = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
-       fromToken.symbol = "USDC"
-       sellAmountValue = "0x16e360"
-       formattedSellAmount = "1.5"
-       fromFiat = "$187.37"
-       toTokenAddress = "0xad6d458402f60fd3bd25163575031acdce07538d"
-       toToken.symbol = "DAI"
-       minBuyAmountValue = "0x1bd02ca9a7c244e"
-       formattedMinBuyAmount = "0.125259433834718286"
-       minBuyAmountFiat = "$6.67"
-       */
+      // Example:
+      // USDC -> DAI
+      // Sell Amount: 1.5
+      //
+      // fillPath = "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d"
+      // fromTokenAddress = "0x07865c6e87b9f70255377e024ace6630c1eaa37f"
+      // fromToken.symbol = "USDC"
+      // sellAmountValue = "0x16e360"
+      // formattedSellAmount = "1.5"
+      // fromFiat = "$187.37"
+      // toTokenAddress = "0xad6d458402f60fd3bd25163575031acdce07538d"
+      // toToken.symbol = "DAI"
+      // minBuyAmountValue = "0x1bd02ca9a7c244e"
+      // formattedMinBuyAmount = "0.125259433834718286"
+      // minBuyAmountFiat = "$6.67"
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
@@ -440,7 +435,7 @@ enum TransactionParser {
         userAssets: userAssets,
         allTokens: allTokens
       )
-      let isUnlimited = value.caseInsensitiveCompare(WalletConstants.MAX_UINT256) == .orderedSame
+      let isUnlimited = value.caseInsensitiveCompare(WalletConstants.maxUInt256) == .orderedSame
       let approvalAmount: String
       let approvalFiat: String
       if isUnlimited {
@@ -461,17 +456,16 @@ enum TransactionParser {
             )
           ) ?? "$0.00"
       }
-      /* Example:
-       Approve DAI
-       Proposed 0.1 DAI approval limit
-
-       isUnlimited=false
-       fromAddress="0x7c24aED73D82c9D98a1B86Bc2C8d2452c40419F8"
-       token.symbol="DAI"
-       tokenContractAddress="0xaD6D458402F60fD3Bd25163575031ACDce07538D"
-       approvalValue="0x2386f26fc10000"
-       approvalAmount="0.01"
-       */
+      // Example:
+      // Approve DAI
+      // Proposed 0.1 DAI approval limit
+      //
+      // isUnlimited=false
+      // fromAddress="0x7c24aED73D82c9D98a1B86Bc2C8d2452c40419F8"
+      // token.symbol="DAI"
+      // tokenContractAddress="0xaD6D458402F60fD3Bd25163575031ACDce07538D"
+      // approvalValue="0x2386f26fc10000"
+      // approvalAmount="0.01"
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
@@ -568,15 +562,14 @@ enum TransactionParser {
               * (Double(fromValueFormatted) ?? 0)
           )
         ) ?? "$0.00"
-      /* Example:
-       Send 0.1234 SOL
-
-       fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
-       toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
-       fromTokenSymbol="SOL"
-       fromValue="0x1b667a56d488000"
-       fromValueFormatted="0.1234"
-       */
+      // Example:
+      // Send 0.1234 SOL
+      //
+      // fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
+      // toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
+      // fromTokenSymbol="SOL"
+      // fromValue="0x1b667a56d488000"
+      // fromValueFormatted="0.1234"
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
@@ -643,15 +636,14 @@ enum TransactionParser {
             ) ?? "$0.00"
         }
       }
-      /* Example:
-       Send 0.1234 SMB
-
-       fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
-       toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
-       fromTokenSymbol="SMB"
-       fromValue="0x1b667a56d488000"
-       fromValueFormatted="0.1234"
-       */
+      // Example:
+      // Send 0.1234 SMB
+      //
+      // fromAddress="0x882F5a2c1C429e6592D801486566D0753BC1dD04"
+      // toAddress="0x4FC29eDF46859A67c5Bfa894C77a4E3C69353202"
+      // fromTokenSymbol="SMB"
+      // fromValue="0x1b667a56d488000"
+      // fromValueFormatted="0.1234"
       return .init(
         transaction: transaction,
         namedFromAddress: NamedAddresses.name(
@@ -935,23 +927,23 @@ struct ParsedTransaction: Equatable {
   /// Gas fee for the transaction if available
   var gasFee: GasFee? {
     switch details {
-    case let .ethSend(details),
-      let .erc20Transfer(details),
-      let .solSystemTransfer(details),
-      let .solSplTokenTransfer(details):
+    case .ethSend(let details),
+      .erc20Transfer(let details),
+      .solSystemTransfer(let details),
+      .solSplTokenTransfer(let details):
       return details.gasFee
-    case let .ethSwap(details):
+    case .ethSwap(let details):
       return details.gasFee
-    case let .ethErc20Approve(details):
+    case .ethErc20Approve(let details):
       return details.gasFee
-    case let .solDappTransaction(details),
-      let .solSwapTransaction(details):
+    case .solDappTransaction(let details),
+      .solSwapTransaction(let details):
       return details.gasFee
-    case let .erc721Transfer(details):
+    case .erc721Transfer(let details):
       return details.gasFee
     case .other:
       return nil
-    case let .filSend(details):
+    case .filSend(let details):
       return details.gasFee
     }
   }
@@ -1190,7 +1182,7 @@ extension ParsedTransaction {
   }
 
   var ethSwap: EthSwapDetails? {
-    guard case let .ethSwap(ethSwapDetails) = details else { return nil }
+    guard case .ethSwap(let ethSwapDetails) = details else { return nil }
     return ethSwapDetails
   }
 }

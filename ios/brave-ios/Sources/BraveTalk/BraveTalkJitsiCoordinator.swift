@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import JitsiMeetSDK
@@ -63,7 +63,8 @@ import Shared
 
   public func toggleMute() {
     guard Self.isIntegrationEnabled else { return }
-    isMuted.toggle()  // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    // The SDK doesn't seem to call `audioMutedChanged` when we call setAudioMuted below…
+    isMuted.toggle()
     jitsiMeetView?.setAudioMuted(isMuted)
   }
 

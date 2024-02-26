@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -46,7 +46,8 @@ struct AddAccountView: View {
     self.preSelectedCoin = preSelectedCoin
     self.onCreate = onCreate
     self.onDismiss = onDismiss
-    if let preSelectedFilecoinNetwork, preSelectedFilecoinNetwork.coin == .fil {  // make sure the prefilled
+    // make sure the prefilled
+    if let preSelectedFilecoinNetwork, preSelectedFilecoinNetwork.coin == .fil {
       // network is a Filecoin network
       self.preSelectedFilecoinNetwork = preSelectedFilecoinNetwork
       _filNetwork = .init(initialValue: preSelectedFilecoinNetwork)
@@ -171,9 +172,9 @@ struct AddAccountView: View {
     .navigationTitle(navigationTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
-      trailing: Button(action: {
+      trailing: Button {
         addAccount(for: preSelectedCoin ?? (selectedCoin ?? .eth))
-      }) {
+      } label: {
         Text(Strings.Wallet.add)
       }
       .buttonStyle(BraveFilledButtonStyle(size: .small))
@@ -246,10 +247,10 @@ struct AddAccountView: View {
     }
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: {
+        Button {
           onDismiss?()
           presentationMode.dismiss()
-        }) {
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -357,7 +358,9 @@ struct AddAccountView: View {
             privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey
           )
         if isJsonImportSupported {
-          Button(action: { isPresentingImport = true }) {
+          Button {
+            isPresentingImport = true
+          } label: {
             HStack {
               Text(Strings.Wallet.importButtonTitle)
                 .foregroundColor(.accentColor)

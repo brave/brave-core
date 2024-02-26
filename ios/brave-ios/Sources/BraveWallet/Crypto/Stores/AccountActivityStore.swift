@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -155,7 +155,8 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   func update() {
     Task { @MainActor in
       let networksForAccountCoin = await rpcService.allNetworks(for: [account.coin])
-      let networksForAccount = networksForAccountCoin.filter {  // .fil coin type has two different keyring ids
+      let networksForAccount = networksForAccountCoin.filter {
+        // .fil coin type has two different keyring ids
         $0.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
       }
       // Include user deleted for case user sent an NFT

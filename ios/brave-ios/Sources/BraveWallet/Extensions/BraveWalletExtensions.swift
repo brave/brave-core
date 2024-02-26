@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -60,65 +60,65 @@ extension BraveWallet.TransactionInfo {
   var ethTxToAddress: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.to ?? ""
-     } else {
-     return txDataUnion.ethTxData?.to ?? ""
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.to ?? ""
+    //    } else {
+    //      return txDataUnion.ethTxData?.to ?? ""
+    //    }
     txDataUnion.ethTxData1559?.baseData.to ?? ""
   }
   var ethTxValue: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.value ?? ""
-     } else {
-     return txDataUnion.ethTxData?.value ?? ""
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.value ?? ""
+    //    } else {
+    //      return txDataUnion.ethTxData?.value ?? ""
+    //    }
     txDataUnion.ethTxData1559?.baseData.value ?? ""
   }
 
   var ethTxGasLimit: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.gasLimit ?? ""
-     } else {
-     return txDataUnion.ethTxData?.gasLimit ?? ""
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.gasLimit ?? ""
+    //    } else {
+    //      return txDataUnion.ethTxData?.gasLimit ?? ""
+    //    }
     txDataUnion.ethTxData1559?.baseData.gasLimit ?? ""
   }
 
   var ethTxGasPrice: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.gasPrice ?? ""
-     } else {
-     return txDataUnion.ethTxData?.gasPrice ?? ""
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.gasPrice ?? ""
+    //    } else {
+    //      return txDataUnion.ethTxData?.gasPrice ?? ""
+    //    }
     txDataUnion.ethTxData1559?.baseData.gasPrice ?? ""
   }
 
   var ethTxData: [NSNumber] {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.data ?? .init()
-     } else {
-     return txDataUnion.ethTxData?.data ?? .init()
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.data ?? .init()
+    //    } else {
+    //      return txDataUnion.ethTxData?.data ?? .init()
+    //    }
     txDataUnion.ethTxData1559?.baseData.data ?? .init()
   }
 
   var ethTxNonce: String {
     // Eth transaction are all coming as `ethTxData1559`
     // Comment below out for future proper eth transaction separation (EIP1559 and non-EIP1559)
-    /*if isEIP1559Transaction {
-     return txDataUnion.ethTxData1559?.baseData.nonce ?? .init()
-     } else {
-     return txDataUnion.ethTxData?.nonce ?? .init()
-     }*/
+    //    if isEIP1559Transaction {
+    //      return txDataUnion.ethTxData1559?.baseData.nonce ?? .init()
+    //    } else {
+    //      return txDataUnion.ethTxData?.nonce ?? .init()
+    //    }
     txDataUnion.ethTxData1559?.baseData.nonce ?? ""
   }
 }

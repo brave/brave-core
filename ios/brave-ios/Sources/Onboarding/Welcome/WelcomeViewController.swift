@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -29,7 +29,8 @@ private enum WelcomeViewID: Int {
 public class WelcomeViewController: UIViewController {
   private var state: WelcomeViewCalloutState?
   private let p3aUtilities: BraveP3AUtils  // Privacy Analytics
-  private let attributionManager: AttributionManager  // Manager to handle daily active user and user referral
+  // Manager to handle daily active user and user referral
+  private let attributionManager: AttributionManager
 
   public convenience init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
     self.init(state: .loading, p3aUtilities: p3aUtilities, attributionManager: attributionManager)

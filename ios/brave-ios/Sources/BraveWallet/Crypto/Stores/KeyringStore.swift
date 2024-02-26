@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -484,7 +484,8 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         self.updateInfo()
         self.resetKeychainStoredPassword()
       }
-      for coin in WalletConstants.supportedCoinTypes(.dapps) {  // only coin types support dapps have permission management
+      // only coin types support dapps have permission management
+      for coin in WalletConstants.supportedCoinTypes(.dapps) {
         Domain.clearAllWalletPermissions(for: coin)
       }
       Preferences.Wallet.sortOrderFilter.reset()

@@ -1,13 +1,13 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
 import WebKit
 
-private let MessageOpenInSafari = "openInSafari"
-private let MessageCertVisitOnce = "certVisitOnce"
+private let messageOpenInSafari = "openInSafari"
+private let messageCertVisitOnce = "certVisitOnce"
 
 extension ErrorPageHelper: TabContentScript {
 
@@ -38,9 +38,9 @@ extension ErrorPageHelper: TabContentScript {
     else { return }
 
     switch type {
-    case MessageOpenInSafari:
+    case messageOpenInSafari:
       UIApplication.shared.open(originalURL, options: [:])
-    case MessageCertVisitOnce:
+    case messageCertVisitOnce:
       if let cert = CertificateErrorPageHandler.certsFromErrorURL(errorURL)?.first,
         let host = originalURL.host
       {

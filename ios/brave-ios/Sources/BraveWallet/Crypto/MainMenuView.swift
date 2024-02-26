@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Preferences
 import Strings
@@ -28,10 +28,10 @@ struct MainMenuView: View {
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
-        Button(action: {
+        Button {
           presentationMode.dismiss()
           keyringStore.lock()
-        }) {
+        } label: {
           MenuRowView(
             iconBraveSystemName: "leo.lock",
             title: Strings.Wallet.lockWallet
@@ -39,9 +39,9 @@ struct MainMenuView: View {
         }
         .frame(height: rowHeight)
 
-        Button(action: {
+        Button {
           isShowingBackup = true
-        }) {
+        } label: {
           MenuRowView(
             iconBraveSystemName: "leo.safe",
             title: "Back Up Now"
@@ -49,10 +49,10 @@ struct MainMenuView: View {
         }
         .frame(height: rowHeight)
 
-        Button(action: {
+        Button {
           isShowingSettings = true
           presentationMode.dismiss()
-        }) {
+        } label: {
           MenuRowView(
             iconBraveSystemName: "leo.settings",
             title: Strings.Wallet.walletSettings
@@ -69,9 +69,9 @@ struct MainMenuView: View {
         }
 
         Divider()
-        Button(action: {
+        Button {
           openWalletURL(WalletConstants.braveWalletSupportURL)
-        }) {
+        } label: {
           MenuRowView(
             iconBraveSystemName: "leo.help.outline",
             title: Strings.Wallet.helpCenter,
@@ -141,9 +141,9 @@ struct MainMenuView: View {
   }
 
   @ViewBuilder private var accountsMenuItems: some View {
-    Button(action: {
+    Button {
       self.isShowingAddAccount = true
-    }) {
+    } label: {
       MenuRowView(
         iconBraveSystemName: "leo.plus.add",
         title: Strings.Wallet.addAccountTitle

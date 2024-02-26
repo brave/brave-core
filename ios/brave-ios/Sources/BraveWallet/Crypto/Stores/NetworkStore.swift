@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -174,7 +174,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     // fetch all networks for all coin types
     self.allChains = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
 
-    let customChainIds = await rpcService.customNetworks(.eth)  // only support Ethereum custom chains
+    // only support Ethereum custom chains
+    let customChainIds = await rpcService.customNetworks(.eth)
     self.customChains = allChains.filter { customChainIds.contains($0.chainId) }
   }
 

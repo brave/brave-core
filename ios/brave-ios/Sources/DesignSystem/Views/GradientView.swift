@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 import UIKit
@@ -24,7 +24,7 @@ public class GradientView: UIView {
 
   /// The gradient layer which you may modify
   public var gradientLayer: CAGradientLayer {
-    return layer as! CAGradientLayer  // swiftlint:disable:this force_cast
+    return layer as! CAGradientLayer
   }
 
   public override class var layerClass: AnyClass {
@@ -109,7 +109,7 @@ public class BraveGradientButton: UIButton {
 
   /// The gradient layer which you may modify
   public var gradientLayer: CAGradientLayer {
-    return layer as! CAGradientLayer  // swiftlint:disable:this force_cast
+    return layer as! CAGradientLayer
   }
 
   public override class var layerClass: AnyClass {

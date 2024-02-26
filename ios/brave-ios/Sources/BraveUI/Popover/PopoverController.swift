@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SnapKit
@@ -531,14 +531,12 @@ extension PopoverController {
       constant c: CGFloat = 0.55,
       dimension d: CGFloat
     ) -> CGFloat {
-      /*
-             f(x, d, c) = (x * d * c) / (d + c * x)
-
-             where,
-             x – distance from the edge
-             c – constant (UIScrollView uses 0.55)
-             d – dimension, either width or height
-             */
+      // f(x, d, c) = (x * d * c) / (d + c * x)
+      //
+      // where,
+      // x – distance from the edge
+      // c – constant (UIScrollView uses 0.55)
+      // d – dimension, either width or height
       return (x * d * c) / (d + c * x)
     }
 
@@ -763,7 +761,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
 
     containerView.transform = .identity  // Reset to get unaltered frame
     let translationDelta = anchorPointDelta(from: popoverContext, popoverRect: containerView.frame)
-    containerView.transform = oldTransform  // Make sure to animate transform from a possibly altered transform
+    // Make sure to animate transform from a possibly altered transform
+    containerView.transform = oldTransform
 
     UIView.animate(
       withDuration: 0.15,
@@ -776,10 +775,11 @@ extension PopoverController: BasicAnimationControllerDelegate {
         )
         .scaledBy(x: 0.001, y: 0.001)
         .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
+      },
+      completion: { finished in
+        context.completeTransition(finished)
       }
-    ) { finished in
-      context.completeTransition(finished)
-    }
+    )
   }
 }
 

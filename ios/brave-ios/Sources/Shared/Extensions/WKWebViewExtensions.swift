@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import JavaScriptCore
@@ -75,7 +75,7 @@ extension WKWebView {
     }
 
     DispatchQueue.main.async {
-      // swiftlint:disable:next safe_javascript
+
       self.evaluateJavaScript(javascript, in: frame, in: contentWorld) { result in
         switch result {
         case .success(let value):

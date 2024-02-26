@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Data
@@ -47,7 +47,8 @@ class ManageSiteConnectionsStore: ObservableObject, WalletObserverStore {
   /// Fetch all site connections with 1+ accounts connected
   func fetchSiteConnections() {
     var connections = [SiteConnection]()
-    for coin in WalletConstants.supportedCoinTypes(.dapps) {  // only coin types support dapps have site connection screen
+    // only coin types support dapps have site connection screen
+    for coin in WalletConstants.supportedCoinTypes(.dapps) {
       let domains = Domain.allDomainsWithWalletPermissions(for: coin)
       connections.append(
         contentsOf: domains.map {

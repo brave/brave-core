@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -39,7 +39,7 @@ public class OnboardingRewardsAgreementViewController: UIViewController {
   required init(coder: NSCoder) { fatalError() }
 
   private var contentView: View {
-    return view as! View  // swiftlint:disable:this force_cast
+    return view as! View
   }
 
   public override func loadView() {
@@ -306,13 +306,13 @@ extension OnboardingRewardsAgreementViewController.View: UITextViewDelegate {
   @objc
   func textView(
     _ textView: UITextView,
-    shouldInteractWith URL: URL,
+    shouldInteractWith url: URL,
     in characterRange: NSRange,
     interaction: UITextItemInteraction
   ) -> Bool {
-    if URL.absoluteString == "brave_terms_of_service" {
+    if url.absoluteString == "brave_terms_of_service" {
       onTermsOfServicePressed?()
-    } else if URL.absoluteString == "brave_privacy_policy" {
+    } else if url.absoluteString == "brave_privacy_policy" {
       onPrivacyPolicyPressed?()
     }
     return false

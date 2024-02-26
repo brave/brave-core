@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
 import UIKit
@@ -295,13 +295,13 @@ class FontTypeButton: UIButton {
       setTitle(Strings.readerModeFontButtonSansSerifTitle, for: [])
       titleLabel?.font = UIFont(
         name: "FiraSans-Book",
-        size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize
+        size: DynamicFontHelper.defaultHelper.readerStandardFontSize
       )
     case .serif:
       setTitle(Strings.readerModeFontButtonSerifTitle, for: [])
       titleLabel?.font = UIFont(
         name: "NewYorkMedium-Regular",
-        size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize
+        size: DynamicFontHelper.defaultHelper.readerStandardFontSize
       )
     }
   }
@@ -339,7 +339,7 @@ class FontSizeButton: UIButton {
     // TODO Does this need to change with the selected font type? Not sure if makes sense for just +/-
     titleLabel?.font = UIFont(
       name: "FiraSans-Light",
-      size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+      size: DynamicFontHelper.defaultHelper.readerBigFontSize
     )
   }
 }
@@ -364,12 +364,12 @@ class FontSizeLabel: UILabel {
       case .sansSerif:
         font = UIFont(
           name: "FiraSans-Book",
-          size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+          size: DynamicFontHelper.defaultHelper.readerBigFontSize
         )
       case .serif:
         font = UIFont(
           name: "NewYorkMedium-Regular",
-          size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+          size: DynamicFontHelper.defaultHelper.readerBigFontSize
         )
       }
     }

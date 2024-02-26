@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveStrings
@@ -23,14 +23,14 @@ struct SignMessageErrorView: View {
           signMessageErrorIndexDisplay
         }
         errorContainer
-        Button(action: {
+        Button {
           guard let currentRequest = signMessageErrors[safe: currentIndex] else { return }
           let isLastRequest = signMessageErrors.count <= 1
           cryptoStore.handleWebpageRequestResponse(.signMessageError(errorId: currentRequest.id))
           if isLastRequest {
             presentationMode.dismiss()
           }
-        }) {
+        } label: {
           Text(Strings.Wallet.confirmedTransactionCloseButtonTitle)
             .frame(maxWidth: .infinity)
         }
@@ -56,13 +56,13 @@ struct SignMessageErrorView: View {
         )
       )
       .fontWeight(.semibold)
-      Button(action: {
+      Button {
         if currentIndex + 1 < signMessageErrors.count {
           currentIndex += 1
         } else {
           currentIndex = 0
         }
-      }) {
+      } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
           .foregroundColor(Color(.braveBlurpleTint))

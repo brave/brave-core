@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import CustomDump
@@ -162,8 +162,8 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
-    guard case let .ethSend(expectedDetails) = expectedParsedTransaction.details,
-      case let .ethSend(parsedDetails) = parsedTransaction.details
+    guard case .ethSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .ethSend(let parsedDetails) = parsedTransaction.details
     else {
       XCTFail("Incorrectly parsed ethSend transaction")
       return
@@ -211,7 +211,8 @@ class TransactionParserTests: XCTestCase {
       txStatus: .confirmed,
       txType: .erc20Transfer,
       txParams: [],
-      txArgs: ["0x0987654321098765432109876543210987654321", "0x5ff20a91f724000"],  // toAddress, 0.4321
+      // toAddress, 0.4321
+      txArgs: ["0x0987654321098765432109876543210987654321", "0x5ff20a91f724000"],
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
@@ -298,7 +299,8 @@ class TransactionParserTests: XCTestCase {
       txType: .ethSwap,
       txParams: [],
       txArgs: [
-        "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeead6d458402f60fd3bd25163575031acdce07538d",  // eth -> dai
+        // eth -> dai
+        "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeead6d458402f60fd3bd25163575031acdce07538d",
         "0x1b6951ef585a000",  // 0.12345 eth
         "0x5c6f2d76e910358b",  // 6.660592362643797387 dai
       ],
@@ -391,7 +393,8 @@ class TransactionParserTests: XCTestCase {
       txType: .ethSwap,
       txParams: [],
       txArgs: [
-        "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d",  // usdc -> dai
+        // usdc -> dai
+        "0x07865c6e87b9f70255377e024ace6630c1eaa37fad6d458402f60fd3bd25163575031acdce07538d",
         "0x16e360",  // 1.5 USDC
         "0x1bd02ca9a7c244e",  // ~0.1253 DAI
       ],
@@ -571,7 +574,8 @@ class TransactionParserTests: XCTestCase {
       txStatus: .confirmed,
       txType: .erc20Approve,
       txParams: [],
-      txArgs: ["", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],  // unlimited
+      // unlimited
+      txArgs: ["", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
       createdTime: Date(),
       submittedTime: Date(),
       confirmedTime: Date(),
@@ -803,8 +807,8 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
-    guard case let .solSystemTransfer(expectedDetails) = expectedParsedTransaction.details,
-      case let .solSystemTransfer(parsedDetails) = parsedTransaction.details
+    guard case .solSystemTransfer(let expectedDetails) = expectedParsedTransaction.details,
+      case .solSystemTransfer(let parsedDetails) = parsedTransaction.details
     else {
       XCTFail("Incorrectly parsed solanaSystemTransfer transaction")
       return
@@ -1257,8 +1261,8 @@ class TransactionParserTests: XCTestCase {
     XCTAssertEqual(expectedParsedTransaction.namedFromAddress, parsedTransaction.namedFromAddress)
     XCTAssertEqual(expectedParsedTransaction.toAddress, parsedTransaction.toAddress)
     XCTAssertEqual(expectedParsedTransaction.networkSymbol, parsedTransaction.networkSymbol)
-    guard case let .filSend(expectedDetails) = expectedParsedTransaction.details,
-      case let .filSend(parsedDetails) = parsedTransaction.details
+    guard case .filSend(let expectedDetails) = expectedParsedTransaction.details,
+      case .filSend(let parsedDetails) = parsedTransaction.details
     else {
       XCTFail("Incorrectly parsed filecoinSendTransfer transaction")
       return

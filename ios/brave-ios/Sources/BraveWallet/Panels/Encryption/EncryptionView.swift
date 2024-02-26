@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -15,9 +15,9 @@ struct EncryptionView: View {
 
     var address: String {
       switch self {
-      case let .getEncryptionPublicKey(request):
+      case .getEncryptionPublicKey(let request):
         return request.accountId.address
-      case let .decrypt(request):
+      case .decrypt(let request):
         return request.accountId.address
       }
     }
@@ -105,7 +105,7 @@ struct EncryptionView: View {
               + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
           }
           .padding(20)
-        } else if case let .decrypt(decryptRequest) = request {
+        } else if case .decrypt(let decryptRequest) = request {
           ScrollView {
             SensitiveTextView(
               text: decryptRequest.unsafeMessage,
@@ -117,7 +117,9 @@ struct EncryptionView: View {
           .overlay(
             Group {
               if !isShowingDecryptMessage {
-                Button(action: { isShowingDecryptMessage.toggle() }) {
+                Button {
+                  isShowingDecryptMessage.toggle()
+                } label: {
                   Text(Strings.Wallet.decryptRequestReveal)
                 }
                 .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -179,7 +181,9 @@ struct EncryptionView: View {
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { onDismiss() }) {
+        Button {
+          onDismiss()
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -209,16 +213,16 @@ struct EncryptionView: View {
   }
 
   @ViewBuilder private var buttons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       handleAction(approved: false)
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {  // approve
+    Button {  // approve
       handleAction(approved: true)
-    }) {
+    } label: {
       Label(approveButtonTitle, braveSystemImage: "leo.check.circle-filled")
         .imageScale(.large)
     }

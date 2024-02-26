@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import Shared
@@ -8,7 +8,8 @@ import SnapKit
 import UIKit
 import WebKit
 
-let DefaultTimeoutTimeInterval = 10.0  // Seconds.  We'll want some telemetry on load times in the wild.
+// Seconds.  We'll want some telemetry on load times in the wild.
+let defaultTimeoutTimeInterval = 10.0
 
 /// A controller that manages a single web view and provides a way for
 /// the user to navigate back to Settings.
@@ -61,7 +62,7 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
   // The web view that displays content.
   var webView: BraveWebView!
 
-  fileprivate func startLoading(_ timeout: Double = DefaultTimeoutTimeInterval) {
+  fileprivate func startLoading(_ timeout: Double = defaultTimeoutTimeInterval) {
     if self.isLoaded {
       return
     }

@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -111,9 +111,9 @@ struct PortfolioAssetsView: View {
   /// Builds the list of assets without any grouping or expandable / collapse behaviour.
   @ViewBuilder private func ungroupedAssets(_ group: AssetGroupViewModel) -> some View {
     ForEach(group.assets) { asset in
-      Button(action: {
+      Button {
         selectedToken = asset.token
-      }) {
+      } label: {
         PortfolioAssetView(
           image: AssetIconView(
             token: asset.token,
@@ -145,9 +145,9 @@ struct PortfolioAssetsView: View {
       content: {
         LazyVStack(spacing: 8) {
           ForEach(group.assets) { asset in
-            Button(action: {
+            Button {
               selectedToken = asset.token
-            }) {
+            } label: {
               PortfolioAssetView(
                 image: AssetIconView(
                   token: asset.token,
@@ -166,7 +166,7 @@ struct PortfolioAssetsView: View {
         }
       },
       label: {
-        if case let .account(account) = group.groupType {
+        if case .account(let account) = group.groupType {
           AddressView(address: account.address) {
             PortfolioAssetGroupHeaderView(group: group)
           }

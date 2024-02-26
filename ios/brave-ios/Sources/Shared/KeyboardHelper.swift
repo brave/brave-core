@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -63,9 +63,7 @@ open class KeyboardHelper: NSObject {
     return Singleton.instance
   }
 
-  /**
-     * Starts monitoring the keyboard state.
-     */
+  /// Starts monitoring the keyboard state.
   open func startObserving() {
     NotificationCenter.default.addObserver(
       self,
@@ -85,10 +83,8 @@ open class KeyboardHelper: NSObject {
     NotificationCenter.default.removeObserver(self)
   }
 
-  /**
-     * Adds a delegate to the helper.
-     * Delegates are weakly held.
-     */
+  /// Adds a delegate to the helper.
+  /// Delegates are weakly held.
   open func addDelegate(_ delegate: KeyboardHelperDelegate) {
     // Reuse any existing slots that have been deallocated.
     for weakDelegate in delegates where weakDelegate.delegate == nil {

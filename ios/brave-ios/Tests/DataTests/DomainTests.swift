@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveShields
@@ -62,10 +62,10 @@ class DomainTests: CoreDataTestCase {
 
   @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
 
     XCTAssertEqual(domain.bookmarks?.count, 0)
     XCTAssertEqual(domain.url, url.domainURL.absoluteString)
@@ -75,26 +75,26 @@ class DomainTests: CoreDataTestCase {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url, shield: .AllOff, isOn: true, isPrivateBrowsing: false)
+      Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: true, isPrivateBrowsing: false)
     }
 
     XCTAssertFalse(
-      domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true)
+      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
     )
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
     XCTAssertFalse(
-      domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true)
+      domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true)
     )
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url, shield: .AllOff, isOn: false, isPrivateBrowsing: false)
+      Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: false, isPrivateBrowsing: false)
     }
 
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
   }
 
   /// Tests non-HTTPSE shields
@@ -102,7 +102,7 @@ class DomainTests: CoreDataTestCase {
     backgroundSaveAndWaitForExpectation {
       Domain.setBraveShield(
         forUrl: url2HTTPS,
-        shield: .AdblockAndTp,
+        shield: .adblockAndTp,
         isOn: false,
         isPrivateBrowsing: false
       )
@@ -111,20 +111,20 @@ class DomainTests: CoreDataTestCase {
     let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
     // These should be the same in this situation
     XCTAssertFalse(
-      domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true)
+      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
     )
 
     backgroundSaveAndWaitForExpectation {
       Domain.setBraveShield(
         forUrl: url2HTTPS,
-        shield: .AdblockAndTp,
+        shield: .adblockAndTp,
         isOn: true,
         isPrivateBrowsing: false
       )
     }
 
     domain.managedObjectContext?.refreshAllObjects()
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
   }
 
   func testWalletEthDappPermission() {

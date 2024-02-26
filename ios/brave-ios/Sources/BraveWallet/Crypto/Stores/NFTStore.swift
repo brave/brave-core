@@ -440,7 +440,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
       .optionallySort(shouldSort: true) { first, second in
         first.token.symbol < second.token.symbol
       }
-    case let .network(network):
+    case .network(let network):
       guard
         let networkNFTs =
           allUserNFTs
@@ -466,7 +466,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         .optionallySort(shouldSort: true) { first, second in
           first.token.symbol < second.token.symbol
         }
-    case let .account(account):
+    case .account(let account):
       return
         allUserNFTs
         .filter {
@@ -574,7 +574,8 @@ public class NFTStore: ObservableObject, WalletObserverStore {
         allUserMarkedSpamNFTs.first { $0.network.chainId == network.chainId }?.tokens ?? []
       let simpleHashSpamNFTsOnNetwork =
         updatedSimpleHashSpamNFTs.first { $0.network.chainId == network.chainId }?.tokens ?? []
-      var spamNFTUnion: [BraveWallet.BlockchainToken] = userMarkedSpamNFTsOnNetwork  // we take all spam marked by user
+      // we take all spam marked by user
+      var spamNFTUnion: [BraveWallet.BlockchainToken] = userMarkedSpamNFTsOnNetwork
       // then iterate through spams from SimpleHash
       for simpleHashSpam in simpleHashSpamNFTsOnNetwork
       where !userMarkedSpamNFTsOnNetwork.contains(where: { userSpam in

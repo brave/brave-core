@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -34,9 +34,9 @@ struct CustomNetworkListView: View {
 
   @ViewBuilder private var customNetworksList: some View {
     ForEach(customNetworks) { network in
-      Button(action: {
+      Button {
         isPresentingNetworkDetails = .init(from: network)
-      }) {
+      } label: {
         HStack {
           VStack(alignment: .leading, spacing: 2) {
             Text(network.chainName)
@@ -75,12 +75,9 @@ struct CustomNetworkListView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .swipeActions(edge: .trailing) {
-        Button(
-          role: .destructive,
-          action: {
-            removeNetwork(network)
-          }
-        ) {
+        Button(role: .destructive) {
+          removeNetwork(network)
+        } label: {
           Label(Strings.Wallet.delete, systemImage: "trash")
         }
       }
@@ -128,9 +125,9 @@ struct CustomNetworkListView: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
-        Button(action: {
+        Button {
           isPresentingNetworkDetails = .init()
-        }) {
+        } label: {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
             .foregroundColor(Color(.braveBlurpleTint))
         }

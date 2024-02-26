@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -25,25 +25,25 @@ enum PendingRequest: Equatable {
 extension PendingRequest: Identifiable {
   var id: String {
     switch self {
-    case let .transactions(transactions):
+    case .transactions(let transactions):
       return "transactions-\(transactions.map(\.id))"
-    case let .addChain(request):
+    case .addChain(let request):
       return "addChain-\(request.networkInfo.chainId)"
-    case let .switchChain(chainRequest):
+    case .switchChain(let chainRequest):
       return "switchChain-\(chainRequest.chainId)"
-    case let .addSuggestedToken(tokenRequest):
+    case .addSuggestedToken(let tokenRequest):
       return "addSuggestedToken-\(tokenRequest.token.id)"
-    case let .signMessage(signRequests):
+    case .signMessage(let signRequests):
       return "signMessage-\(signRequests.map(\.id))"
-    case let .signMessageError(signMessageErrorRequests):
+    case .signMessageError(let signMessageErrorRequests):
       return "signMessageError-\(signMessageErrorRequests.map(\.id))"
-    case let .getEncryptionPublicKey(request):
+    case .getEncryptionPublicKey(let request):
       return "getEncryptionPublicKey-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case let .decrypt(request):
+    case .decrypt(let request):
       return "decrypt-\(request.accountId.uniqueKey)-\(request.requestId)"
-    case let .signTransaction(requests):
+    case .signTransaction(let requests):
       return "signTransaction-\(requests.map(\.id))"
-    case let .signAllTransactions(requests):
+    case .signAllTransactions(let requests):
       return "signAllTransactions-\(requests.map(\.id))"
     }
   }
@@ -639,14 +639,12 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       if !pendingTransactions.isEmpty {
         newPendingRequest = .transactions(pendingTransactions)
       } else if let store = confirmationStore, !store.isReadyToBeDismissed {
-        /*
-         We need to check if Tx Confirmation modal is ready
-         to be dismissed. It could be not ready as there is no pending tx
-         but an active tx is being shown its different state like
-         loading, submitted, completed or failed.
-         As such we need to continue displaying Tx Confirmation until the
-         user taps Ok/Close on the status overlay.
-         */
+        // We need to check if Tx Confirmation modal is ready
+        // to be dismissed. It could be not ready as there is no pending tx
+        // but an active tx is being shown its different state like
+        // loading, submitted, completed or failed.
+        // As such we need to continue displaying Tx Confirmation until the
+        // user taps Ok/Close on the status overlay.
         newPendingRequest = .transactions([])
       } else {
         // check for webpage requests
@@ -743,9 +741,9 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     completion: ((_ error: String?) -> Void)? = nil
   ) {
     switch response {
-    case let .switchChain(approved, requestId):
+    case .switchChain(let approved, let requestId):
       rpcService.notifySwitchChainRequestProcessed(requestId, approved: approved)
-    case let .addNetwork(approved, chainId):
+    case .addNetwork(let approved, let chainId):
       // for add network request, approval requires network call so we must
       // wait for `onAddEthereumChainRequestCompleted` to know success/failure
       if approved, let completion {
@@ -757,7 +755,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
       }
       return
-    case let .addSuggestedToken(approved, token):
+    case .addSuggestedToken(let approved, let token):
       if approved {
         userAssetManager.addUserAsset(token) { [weak self] in
           self?.updateAssets()
@@ -767,22 +765,22 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         approved,
         contractAddresses: [token.contractAddress]
       )
-    case let .signMessage(approved, id):
+    case .signMessage(let approved, let id):
       walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
-    case let .signMessageError(errorId):
+    case .signMessageError(let errorId):
       walletService.notifySignMessageErrorProcessed(errorId)
-    case let .getEncryptionPublicKey(approved, requestId):
+    case .getEncryptionPublicKey(let approved, let requestId):
       walletService.notifyGetPublicKeyRequestProcessed(requestId, approved: approved)
-    case let .decrypt(approved, requestId):
+    case .decrypt(let approved, let requestId):
       walletService.notifyDecryptRequestProcessed(requestId, approved: approved)
-    case let .signTransaction(approved, id):
+    case .signTransaction(let approved, let id):
       walletService.notifySignTransactionRequestProcessed(
         approved,
         id: id,
         signature: nil,
         error: nil
       )
-    case let .signAllTransactions(approved, id):
+    case .signAllTransactions(let approved, let id):
       walletService.notifySignAllTransactionsRequestProcessed(
         approved,
         id: id,

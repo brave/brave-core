@@ -1,14 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import WebKit
-
-private let ReadabilityServiceSharedInstance = ReadabilityService()
-
-private let ReadabilityTaskDefaultTimeout = 15
-private let ReadabilityServiceDefaultConcurrency = 1
 
 enum ReadabilityOperationResult {
   case success(ReadabilityResult)
@@ -104,7 +99,7 @@ extension ReadabilityOperation: WKNavigationDelegate {
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     webView.evaluateSafeJavaScript(
-      functionName: "\(ReaderModeNamespace).checkReadability",
+      functionName: "\(readerModeNamespace).checkReadability",
       contentWorld: ReaderModeScriptHandler.scriptSandbox
     )
   }
@@ -137,15 +132,14 @@ extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
 }
 
 class ReadabilityService {
-  class var sharedInstance: ReadabilityService {
-    return ReadabilityServiceSharedInstance
-  }
+  static let sharedInstance = ReadabilityService()
+  private let readabilityServiceDefaultConcurrency = 1
 
   private var queue: OperationQueue
 
   init() {
     queue = OperationQueue()
-    queue.maxConcurrentOperationCount = ReadabilityServiceDefaultConcurrency
+    queue.maxConcurrentOperationCount = readabilityServiceDefaultConcurrency
   }
 
   func process(_ url: URL, cache: ReaderModeCache) {

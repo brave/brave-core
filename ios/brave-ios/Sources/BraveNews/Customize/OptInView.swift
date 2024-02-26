@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveStrings
 import BraveUI
@@ -33,13 +33,13 @@ struct OptInView: View {
           .foregroundColor(Color(.braveLabel))
       }
       VStack(spacing: 16) {
-        Button(action: {
+        Button {
           isLoading = true
           Task {
             try await tappedTurnOn()
             isLoading = false
           }
-        }) {
+        } label: {
           Text(Strings.BraveNews.turnOnBraveNews)
             .opacity(isLoading ? 0 : 1)
             .overlay(

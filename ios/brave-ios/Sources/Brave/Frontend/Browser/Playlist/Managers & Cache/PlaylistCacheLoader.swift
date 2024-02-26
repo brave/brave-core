@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
 import BraveCore
@@ -82,14 +82,14 @@ class LivePlaylistWebLoader: UIView, PlaylistWebLoader {
       }
 
       self.certStore = browserViewController.profile.certStore
-      let KVOs: [KVOConstants] = [
+      let kvos: [KVOConstants] = [
         .estimatedProgress, .loading, .canGoBack,
-        .canGoForward, .URL, .title,
+        .canGoForward, .url, .title,
         .hasOnlySecureContent, .serverTrust,
       ]
 
       browserViewController.tab(tab, didCreateWebView: webView)
-      KVOs.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.keyPath) }
+      kvos.forEach { webView.removeObserver(browserViewController, forKeyPath: $0.keyPath) }
 
       // When creating a tab, TabManager automatically adds a uiDelegate
       // This webView is invisible and we don't want any UI being handled.
@@ -401,7 +401,7 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
         tab.contentBlocker.set(ruleLists: ruleLists)
 
         let isScriptsEnabled = !domainForShields.isShieldExpected(
-          .NoScript,
+          .noScript,
           considerAllShieldsOption: true
         )
         preferences.allowsContentJavaScript = isScriptsEnabled

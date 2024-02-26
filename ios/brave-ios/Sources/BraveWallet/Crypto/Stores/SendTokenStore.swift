@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -228,7 +228,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           // offchain resolve is for ENS-only, for other coin types the address is invalid
           self.isOffchainResolveRequired = false
         }
-        self.update()  // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
+        // `selectedSendToken` & `selectedSendTokenBalance` need updated for new chain
+        self.update()
         self.validateSendAddress()  // `sendAddress` may no longer be valid if coin type changed
       }
     )

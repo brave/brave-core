@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -118,9 +118,9 @@ struct AddCustomAssetView: View {
           header: WalletListHeaderView(title: Text(Strings.Wallet.customTokenNetworkHeader))
         ) {
           HStack {
-            Button(action: {
+            Button {
               isPresentingNetworkSelection = true
-            }) {
+            } label: {
               Text(
                 networkSelectionStore.networkSelectionInForm?.chainName
                   ?? Strings.Wallet.customTokenNetworkButtonTitle
@@ -183,13 +183,11 @@ struct AddCustomAssetView: View {
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
           Section {
-            Button(
-              action: {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                  showAdvanced.toggle()
-                }
+            Button {
+              withAnimation(.easeInOut(duration: 0.25)) {
+                showAdvanced.toggle()
               }
-            ) {
+            } label: {
               VStack {
                 HStack {
                   Text(Strings.Wallet.addCustomTokenAdvanced)
@@ -262,18 +260,18 @@ struct AddCustomAssetView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
         }
         ToolbarItemGroup(placement: .navigationBarTrailing) {
-          Button(action: {
+          Button {
             resignFirstResponder()
             addCustomToken()
-          }) {
+          } label: {
             Text(Strings.Wallet.add)
           }
           .disabled(addButtonDisabled)

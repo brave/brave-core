@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -21,7 +21,9 @@ struct DateRangeView: View {
   }
 
   @ViewBuilder private func button(for range: BraveWallet.AssetPriceTimeframe) -> some View {
-    Button(action: { selectedRange = range }) {
+    Button {
+      selectedRange = range
+    } label: {
       Text(verbatim: range.displayString)
         .accessibility(label: Text(verbatim: range.accessibilityLabel))
     }
@@ -106,7 +108,8 @@ private struct OptionButtonStyle: ButtonStyle {
   func makeBody(configuration: Configuration) -> some View {
     configuration.label
       .foregroundColor(.white)
-      .colorMultiply(isSelected ? Color(.braveBackground) : Color(.secondaryBraveLabel))  // To animate text color
+      // To animate text color
+      .colorMultiply(isSelected ? Color(.braveBackground) : Color(.secondaryBraveLabel))
       .padding(.horizontal, 6)
       .padding(.vertical, 4)
       .background(

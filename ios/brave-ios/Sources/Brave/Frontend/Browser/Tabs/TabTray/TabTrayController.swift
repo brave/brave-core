@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -97,7 +97,8 @@ class TabTrayController: AuthenticationController {
   var isTabTrayBeingSearched = false
   var tabTraySearchQuery: String?
   var tabTrayMode: TabTrayMode = .local
-  private var isExternallyPresented: Bool  // The tab tray is presented by an action outside the application like shortcuts
+  // The tab tray is presented by an action outside the application like shortcuts
+  private var isExternallyPresented: Bool
   private var privateModeCancellable: AnyCancellable?
   private var initialScrollCompleted = false
   private var localAuthObservers = Set<AnyCancellable>()

@@ -292,13 +292,13 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     Preferences.AppState.isOnboardingActive.value = false
   }
 
-  func scene(_ scene: UIScene, openURLContexts URLContexts: Set<UIOpenURLContext>) {
+  func scene(_ scene: UIScene, openURLContexts contexts: Set<UIOpenURLContext>) {
     guard let scene = scene as? UIWindowScene else {
       Logger.module.error("[SCENE] - Scene is not a UIWindowScene")
       return
     }
 
-    URLContexts.forEach({
+    contexts.forEach({
       guard
         let routerpath = NavigationPath(
           url: $0.url,

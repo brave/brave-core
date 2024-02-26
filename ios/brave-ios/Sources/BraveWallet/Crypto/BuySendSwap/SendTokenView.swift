@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -85,9 +85,9 @@ struct SendTokenView: View {
               Menu(
                 content: {
                   Text(keyringStore.selectedAccount.address.zwspOutput)
-                  Button(action: {
+                  Button {
                     UIPasteboard.general.string = keyringStore.selectedAccount.address
-                  }) {
+                  } label: {
                     Label(
                       Strings.Wallet.copyAddressButtonTitle,
                       braveSystemImage: "leo.copy.plain-text"
@@ -103,7 +103,9 @@ struct SendTokenView: View {
             }
           }
         ) {
-          Button(action: { self.isShowingSelectAccountTokenView = true }) {
+          Button {
+            self.isShowingSelectAccountTokenView = true
+          } label: {
             HStack {
               if let token = sendTokenStore.selectedSendToken {
                 if token.isErc721 || token.isNft {
@@ -185,20 +187,20 @@ struct SendTokenView: View {
               )
               .autocorrectionDisabled()
               .textInputAutocapitalization(.never)
-              Button(action: {
+              Button {
                 if let string = UIPasteboard.general.string {
                   sendTokenStore.sendAddress = string
                 }
-              }) {
+              } label: {
                 Label(Strings.Wallet.pasteFromPasteboard, braveSystemImage: "leo.copy.plain-text")
                   .labelStyle(.iconOnly)
                   .foregroundColor(Color(.primaryButtonTint))
                   .font(.body)
               }
               .buttonStyle(PlainButtonStyle())
-              Button(action: {
+              Button {
                 isShowingScanner = true
-              }) {
+              } label: {
                 Label(Strings.Wallet.scanQRCodeAccessibilityLabel, braveSystemImage: "leo.qr.code")
                   .labelStyle(.iconOnly)
                   .foregroundColor(Color(.primaryButtonTint))
@@ -222,9 +224,9 @@ struct SendTokenView: View {
                     .font(.body)
                     .foregroundColor(Color(.secondaryBraveLabel))
                     .fixedSize(horizontal: false, vertical: true)
-                  Button(action: {
+                  Button {
                     openURL(WalletConstants.braveWalletENSOffchainURL)
-                  }) {
+                  } label: {
                     Text(Strings.Wallet.learnMoreButton)
                       .foregroundColor(Color(.braveBlurpleTint))
                   }
@@ -306,7 +308,9 @@ struct SendTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { onDismiss() }) {
+          Button {
+            onDismiss()
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

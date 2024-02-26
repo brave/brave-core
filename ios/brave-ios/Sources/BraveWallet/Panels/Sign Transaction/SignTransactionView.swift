@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -229,9 +229,9 @@ struct SignTransactionView: View {
   @ViewBuilder private var buttons: some View {
     if showWarning {
       cancelButton
-      Button(action: {  // Continue
+      Button {  // Continue
         showWarning = false
-      }) {
+      } label: {
         Text(Strings.Wallet.continueButtonTitle)
           .imageScale(.large)
       }
@@ -239,7 +239,7 @@ struct SignTransactionView: View {
       .disabled(txIndex != 0)
     } else {
       cancelButton
-      Button(action: {  // approve
+      Button {  // approve
         switch request {
         case .signTransaction(_):
           cryptoStore.handleWebpageRequestResponse(
@@ -254,7 +254,7 @@ struct SignTransactionView: View {
         if normalizedRequests.count == 1 {
           onDismiss()
         }
-      }) {
+      } label: {
         Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
           .fixedSize(horizontal: true, vertical: false)
           .imageScale(.large)
@@ -265,7 +265,7 @@ struct SignTransactionView: View {
   }
 
   @ViewBuilder private var cancelButton: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       switch request {
       case .signTransaction(_):
         cryptoStore.handleWebpageRequestResponse(
@@ -279,7 +279,7 @@ struct SignTransactionView: View {
       if normalizedRequests.count == 1 {
         onDismiss()
       }
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .fixedSize(horizontal: true, vertical: false)
         .imageScale(.large)
@@ -309,9 +309,9 @@ struct SignTransactionView: View {
         Text(Strings.Wallet.solanaSignTransactionWarning)
           .font(.subheadline)
           .foregroundColor(Color(.braveErrorLabel))
-        Button(action: {
+        Button {
           openWalletURL(WalletConstants.signTransactionRiskLink)
-        }) {
+        } label: {
           Text(Strings.Wallet.learnMoreButton)
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurpleTint))

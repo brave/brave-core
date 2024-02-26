@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShields
@@ -41,8 +41,8 @@ extension BrowserViewController {
   func maybeRecordInitialShieldsP3A() {
     if Preferences.Shields.initialP3AStateReported.value { return }
     defer { Preferences.Shields.initialP3AStateReported.value = true }
-    recordShieldsUpdateP3A(shield: .AdblockAndTp)
-    recordShieldsUpdateP3A(shield: .FpProtection)
+    recordShieldsUpdateP3A(shield: .adblockAndTp)
+    recordShieldsUpdateP3A(shield: .fpProtection)
   }
 
   func recordShieldsUpdateP3A(shield: BraveShield) {
@@ -55,7 +55,7 @@ extension BrowserViewController {
       .r(31...),
     ]
     switch shield {
-    case .AdblockAndTp:
+    case .adblockAndTp:
       // Q51 On how many domains has the user set the adblock setting to be lower (block less) than the default?
       let adsBelowGlobalCount = Domain.totalDomainsWithAdblockShieldsLoweredFromGlobal()
       UmaHistogramRecordValueToBucket(
@@ -70,7 +70,7 @@ extension BrowserViewController {
         buckets: buckets,
         value: adsAboveGlobalCount
       )
-    case .FpProtection:
+    case .fpProtection:
       // Q53 On how many domains has the user set the FP setting to be lower (block less) than the default?
       let fingerprintingBelowGlobalCount =
         Domain.totalDomainsWithFingerprintingProtectionLoweredFromGlobal()
@@ -87,7 +87,7 @@ extension BrowserViewController {
         buckets: buckets,
         value: fingerprintingAboveGlobalCount
       )
-    case .AllOff, .NoScript:
+    case .allOff, .noScript:
       break
     }
   }

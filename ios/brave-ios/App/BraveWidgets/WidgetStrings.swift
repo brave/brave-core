@@ -141,6 +141,7 @@ extension Strings {
       value: "Downloads",
       comment: "Title for downloads menu item"
     )
+    // swift-format-ignore
     public static let QRCode = NSLocalizedString(
       "widgets.QRCode",
       bundle: widgetBundle,

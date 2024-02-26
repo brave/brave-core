@@ -59,7 +59,8 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
     account: String? = nil,
     context: NSManagedObjectContext? = nil
   ) -> [WalletUserAssetBalance]? {
-    if asset == nil, account == nil {  // all `WalletAssetBalnce` with no restriction on assets or accounts
+    if asset == nil, account == nil {
+      // all `WalletAssetBalnce` with no restriction on assets or accounts
       return WalletUserAssetBalance.all()
     } else if let asset, account == nil {
       let predicate = NSPredicate(

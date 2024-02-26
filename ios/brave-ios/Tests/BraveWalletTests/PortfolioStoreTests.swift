@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -844,7 +844,8 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {  // only select Ethereum networks
+        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
+          // only select Ethereum networks
           .init(isSelected: $0.coin == .eth || $0.coin == .fil, model: $0)
         }
       )
@@ -1038,7 +1039,8 @@ import XCTest
           return
         }
         XCTAssertEqual(ethAccount1Group.groupType, .account(self.ethAccount1))
-        XCTAssertEqual(ethAccount1Group.assets.count, 1)  // ETH Mainnet (USDC, ETH Goerli hidden for small balance)
+        // ETH Mainnet (USDC, ETH Goerli hidden for small balance)
+        XCTAssertEqual(ethAccount1Group.assets.count, 1)
         // ETH Mainnet (value ~= $2741.7510399999996)
         XCTAssertEqual(
           ethAccount1Group.assets[safe: 0]?.token.symbol,
@@ -1311,7 +1313,8 @@ import XCTest
         ].map {
           .init(isSelected: true, model: $0)
         },
-        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {  // hide ethNetwork
+        networks: [ethNetwork, goerliNetwork, solNetwork, filMainnet, filTestnet].map {
+          // hide ethNetwork
           .init(isSelected: $0 != ethNetwork, model: $0)
         }
       )

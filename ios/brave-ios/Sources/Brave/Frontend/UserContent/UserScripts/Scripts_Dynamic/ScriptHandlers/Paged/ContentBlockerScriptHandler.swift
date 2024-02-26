@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShields
@@ -80,7 +80,7 @@ extension ContentBlockerHelper: TabContentScript {
           }
 
           if dto.resourceType == .script
-            && domain.isShieldExpected(.NoScript, considerAllShieldsOption: true)
+            && domain.isShieldExpected(.noScript, considerAllShieldsOption: true)
           {
             self.stats = self.stats.adding(scriptCount: 1)
             BraveGlobalShieldStats.shared.scripts += 1

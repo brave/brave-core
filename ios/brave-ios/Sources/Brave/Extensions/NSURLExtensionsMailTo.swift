@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -13,10 +13,8 @@ public struct MailToMetadata {
 
 extension URL {
 
-  /**
-     Extracts the metadata associated with a mailto: URL according to RFC 2368
-     https://tools.ietf.org/html/rfc2368
-     */
+  /// Extracts the metadata associated with a mailto: URL according to RFC 2368
+  /// https://tools.ietf.org/html/rfc2368
   public func mailToMetadata() -> MailToMetadata? {
     guard scheme == "mailto" else {
       return nil

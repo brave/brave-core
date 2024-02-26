@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
 import AVKit
@@ -998,11 +998,12 @@ extension PlaylistViewController: VideoViewDelegate {
     )
   }
 
+  /// - throws: MediaPlaybackError
   func load(
     _ videoView: VideoView,
     asset: AVURLAsset,
     autoPlayEnabled: Bool
-  ) async throws /*`MediaPlaybackError`*/ {
+  ) async throws {
     // Task will be nil if the playback has stopped, but not paused
     // If it is paused, and we're loading another track, don't bother clearing the player
     // as this will break PIP

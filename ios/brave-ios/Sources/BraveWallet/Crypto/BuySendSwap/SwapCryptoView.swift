@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -30,7 +30,9 @@ struct ShortcutAmountGrid: View {
   var body: some View {
     HStack(spacing: 8) {
       ForEach(Amount.allCases, id: \.rawValue) { amount in
-        Button(action: { action(amount) }) {
+        Button {
+          action(amount)
+        } label: {
           Text(amount.label)
             .lineLimit(1)
             .minimumScaleFactor(0.75)
@@ -79,11 +81,11 @@ struct SlippageGrid: View {
     HStack(spacing: 8) {
       ForEach(Option.predefinedOptions, id: \.id) { option in
         let isSelected = isPredefinedOptionSelected(option.id)
-        Button(action: {
+        Button {
           customSlippage = nil
           selectedSlippage = option
           resignFirstResponder()
-        }) {
+        } label: {
           Text(option.localizedString)
             .lineLimit(1)
             .minimumScaleFactor(0.75)
@@ -172,9 +174,9 @@ struct MarketPriceView: View {
       }
       .accessibilityElement(children: .combine)
       Spacer()
-      Button(action: {
+      Button {
         swapTokenStore.fetchPriceQuote(base: .perSellAsset)
-      }) {
+      } label: {
         Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "leo.refresh")
           .labelStyle(.iconOnly)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -340,9 +342,9 @@ struct SwapCryptoView: View {
         ShortcutAmountGrid(action: { amount in
           swapTokensStore.suggestedAmountTapped(amount)
         })
-        Button(action: {
+        Button {
           swapTokensStore.swapSelectedTokens()
-        }) {
+        } label: {
           Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
             .labelStyle(.iconOnly)
             .font(.body)
@@ -420,17 +422,16 @@ struct SwapCryptoView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
-      /*
-       MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
-       */
-      /*header: Picker(Strings.Wallet.swapOrderTypeLabel, selection: $orderType) {
-        Text(Strings.Wallet.swapMarketOrderType).tag(OrderType.market)
-        Text(Strings.Wallet.swapLimitOrderType).tag(OrderType.limit)
-      }
-        .pickerStyle(SegmentedPickerStyle())
-        .resetListHeaderStyle()
-        .padding(.bottom, 15)
-        .listRowBackground(Color(.clear))*/
+      //      MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
+      //
+      //      header: Picker(Strings.Wallet.swapOrderTypeLabel, selection: $orderType) {
+      //        Text(Strings.Wallet.swapMarketOrderType).tag(OrderType.market)
+      //        Text(Strings.Wallet.swapLimitOrderType).tag(OrderType.limit)
+      //      }
+      //        .pickerStyle(SegmentedPickerStyle())
+      //        .resetListHeaderStyle()
+      //        .padding(.bottom, 15)
+      //        .listRowBackground(Color(.clear))
       header: MarketPriceView(swapTokenStore: swapTokensStore)
         .listRowBackground(Color(UIColor.braveGroupedBackground))
         .resetListHeaderStyle()
@@ -447,11 +448,11 @@ struct SwapCryptoView: View {
         }
       }
     ) {
-      Button(action: {
+      Button {
         withAnimation(.easeInOut(duration: 0.25)) {
           hideSlippage.toggle()
         }
-      }) {
+      } label: {
         HStack {
           Text(Strings.Wallet.swapCryptoSlippageTitle)
             .font(.subheadline)
@@ -502,9 +503,9 @@ struct SwapCryptoView: View {
         .padding(.top, 16)
         .resetListHeaderStyle()
     ) {
-      Button(action: {
+      Button {
         isSwapDisclaimerVisible = true
-      }) {
+      } label: {
         HStack {
           Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
@@ -588,9 +589,9 @@ struct SwapCryptoView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             onDismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -119,14 +119,11 @@ struct DappsSettings: View {
                   siteConnection: siteConnection
                 )
                 .swipeActions(edge: .trailing) {
-                  Button(
-                    role: .destructive,
-                    action: {
-                      withAnimation {
-                        siteConnectionStore.removeAllPermissions(from: [siteConnection])
-                      }
+                  Button(role: .destructive) {
+                    withAnimation {
+                      siteConnectionStore.removeAllPermissions(from: [siteConnection])
                     }
-                  ) {
+                  } label: {
                     Label(Strings.Wallet.delete, systemImage: "trash")
                   }
                 }
@@ -158,9 +155,9 @@ struct DappsSettings: View {
     .toolbar {
       ToolbarItemGroup(placement: .bottomBar) {
         Spacer()
-        Button(action: {
+        Button {
           isShowingConfirmAlert = true
-        }) {
+        } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
               siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
@@ -263,20 +260,17 @@ private struct SiteConnectionDetailView: View {
             name: siteConnectionStore.accountInfo(for: address)?.name ?? ""
           )
           .swipeActions(edge: .trailing) {
-            Button(
-              role: .destructive,
-              action: {
-                withAnimation(.default) {
-                  if let url = URL(string: siteConnection.url) {
-                    siteConnectionStore.removePermissions(
-                      for: siteConnection.coin,
-                      from: [address],
-                      url: url
-                    )
-                  }
+            Button(role: .destructive) {
+              withAnimation(.default) {
+                if let url = URL(string: siteConnection.url) {
+                  siteConnectionStore.removePermissions(
+                    for: siteConnection.coin,
+                    from: [address],
+                    url: url
+                  )
                 }
               }
-            ) {
+            } label: {
               Label(Strings.Wallet.delete, systemImage: "trash")
             }
           }
@@ -303,9 +297,9 @@ private struct SiteConnectionDetailView: View {
     .toolbar {
       ToolbarItemGroup(placement: .bottomBar) {
         Spacer()
-        Button(action: {
+        Button {
           isShowingConfirmAlert = true
-        }) {
+        } label: {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
             .foregroundColor(
               siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red

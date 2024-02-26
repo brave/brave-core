@@ -1,16 +1,16 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
-public let PopoverArrowHeight: CGFloat = 8.0
-
 open class PopoverNavigationController: UINavigationController, PopoverContentComponent {
+
+  private static let popoverArrowHeight: CGFloat = 8.0
 
   private class NavigationBar: UINavigationBar {
     override var frame: CGRect {
-      get { return super.frame.with { $0.origin.y = PopoverArrowHeight } }
+      get { return super.frame.with { $0.origin.y = popoverArrowHeight } }
       set { super.frame = newValue }
     }
     override var barPosition: UIBarPosition {

@@ -5,9 +5,6 @@ import Shared
 import Storage
 import WebKit
 
-private let MozDomain = "mozilla"
-private let MozErrorDownloadsNotEnabled = 100
-
 struct ErrorPageModel {
   let requestURL: URL
   let originalURL: URL

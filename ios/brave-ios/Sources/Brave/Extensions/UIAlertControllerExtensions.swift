@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
 import UIKit
@@ -10,16 +10,12 @@ typealias UIAlertActionCallback = (UIAlertAction) -> Void
 // MARK: - Extension methods for building specific UIAlertController instances used across the app
 extension UIAlertController {
 
-  /**
-     Builds the Alert view that asks the user if they wish to opt into crash reporting.
-
-     - parameter sendReportCallback: Send report option handler
-     - parameter alwaysSendCallback: Always send option handler
-     - parameter dontSendCallback:   Dont send option handler
-     - parameter neverSendCallback:  Never send option handler
-
-     - returns: UIAlertController for opting into crash reporting after a crash occurred
-     */
+  /// Builds the Alert view that asks the user if they wish to opt into crash reporting.
+  /// - parameter sendReportCallback: Send report option handler
+  /// - parameter alwaysSendCallback: Always send option handler
+  /// - parameter dontSendCallback:   Dont send option handler
+  /// - parameter neverSendCallback:  Never send option handler
+  /// - returns: UIAlertController for opting into crash reporting after a crash occurred
   class func crashOptInAlert(
     _ sendReportCallback: @escaping UIAlertActionCallback,
     alwaysSendCallback: @escaping UIAlertActionCallback,
@@ -57,14 +53,10 @@ extension UIAlertController {
     return alert
   }
 
-  /**
-     Builds the Alert view that asks the user if they wish to restore their tabs after a crash.
-
-     - parameter okayCallback: Okay option handler
-     - parameter noCallback:   No option handler
-
-     - returns: UIAlertController for asking the user to restore tabs after a crash
-     */
+  /// Builds the Alert view that asks the user if they wish to restore their tabs after a crash.
+  /// - parameter okayCallback: Okay option handler
+  /// - parameter noCallback:   No option handler
+  /// - returns: UIAlertController for asking the user to restore tabs after a crash
   class func restoreTabsAlert(
     okayCallback: @escaping UIAlertActionCallback,
     noCallback: @escaping UIAlertActionCallback
@@ -126,15 +118,11 @@ extension UIAlertController {
     return alert
   }
 
-  /**
-     Creates an alert view to warn the user that their logins will either be completely deleted in the
-     case of local-only logins or deleted across synced devices in synced account logins.
-
-     - parameter deleteCallback: Block to run when delete is tapped.
-     - parameter hasSyncedLogins: Boolean indicating the user has logins that have been synced.
-
-     - returns: UIAlertController instance
-     */
+  /// Creates an alert view to warn the user that their logins will either be completely deleted in the
+  /// case of local-only logins or deleted across synced devices in synced account logins.
+  /// - parameter deleteCallback: Block to run when delete is tapped.
+  /// - parameter hasSyncedLogins: Boolean indicating the user has logins that have been synced.
+  /// - returns: UIAlertController instance
   class func deleteLoginAlertWithDeleteCallback(
     _ deleteCallback: @escaping UIAlertActionCallback,
     hasSyncedLogins: Bool
@@ -172,23 +160,21 @@ extension UIAlertController {
     return deleteAlert
   }
 
-  // Enabled this facade for much easier discoverability, instead of using class directly
-  /**
-     Creates an alert view to collect a string from the user
-
-     - parameter title: String to display as the alert title.
-     - parameter message: String to display as the alert message.
-     - parameter startingText: String to prefill the textfield with.
-     - parameter placeholder: String to use for the placeholder text on the text field.
-     - parameter keyboardType: Keyboard type of the text field.
-     - parameter startingText2: String to prefill the second optional textfield with.
-     - parameter placeholder2: String to use for the placeholder text on the second optional text field.
-     - parameter keyboardType2: Keyboard type of the text second optional field.
-     - parameter forcedInput: Bool whether the user needs to enter _something_ in order to enable OK button.
-     - parameter callbackOnMain: Block to run on main thread when the user performs an action.
-
-     - returns: UIAlertController instance
-     */
+  /// Creates an alert view to collect a string from the user
+  ///
+  /// Enabled this facade for much easier discoverability, instead of using class directly
+  ///
+  /// - parameter title: String to display as the alert title.
+  /// - parameter message: String to display as the alert message.
+  /// - parameter startingText: String to prefill the textfield with.
+  /// - parameter placeholder: String to use for the placeholder text on the text field.
+  /// - parameter keyboardType: Keyboard type of the text field.
+  /// - parameter startingText2: String to prefill the second optional textfield with.
+  /// - parameter placeholder2: String to use for the placeholder text on the second optional text field.
+  /// - parameter keyboardType2: Keyboard type of the text second optional field.
+  /// - parameter forcedInput: Bool whether the user needs to enter _something_ in order to enable OK button.
+  /// - parameter callbackOnMain: Block to run on main thread when the user performs an action.
+  /// - returns: UIAlertController instance
   class func userTextInputAlert(
     title: String,
     message: String,

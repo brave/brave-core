@@ -1,7 +1,7 @@
 // Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import OSLog
@@ -25,7 +25,7 @@ struct BraveTalkLogsView: View {
         }
       }
     }
-    .navigationBarItems(trailing: ShareButton())
+    .navigationBarItems(trailing: shareButton())
     .task {
       logs = await getLogs()
       fileURL = createTemporaryLogFile()
@@ -33,7 +33,7 @@ struct BraveTalkLogsView: View {
     }
   }
 
-  @ViewBuilder private func ShareButton() -> some View {
+  @ViewBuilder private func shareButton() -> some View {
     if #available(iOS 16, *) {
       ShareLink(item: fileURL ?? URL(string: "disabled")!)
         .disabled(fileURL == nil || logs.isEmpty)

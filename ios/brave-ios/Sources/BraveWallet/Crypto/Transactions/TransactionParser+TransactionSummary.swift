@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Strings
@@ -93,7 +93,7 @@ extension TransactionParser {
       )
     }
     switch parsedTransaction.details {
-    case let .ethSend(details):
+    case .ethSend(let details):
       let title = String.localizedStringWithFormat(
         Strings.Wallet.transactionSendTitle,
         details.fromAmount,
@@ -109,7 +109,7 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .erc20Transfer(details):
+    case .erc20Transfer(let details):
       let title = String.localizedStringWithFormat(
         Strings.Wallet.transactionSendTitle,
         details.fromAmount,
@@ -125,7 +125,7 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .ethSwap(details):
+    case .ethSwap(let details):
       let fromAmount = details.fromAmount
       let fromTokenSymbol = details.fromToken?.symbol ?? ""
       let toAmount = details.minBuyAmount
@@ -146,7 +146,7 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .ethErc20Approve(details):
+    case .ethErc20Approve(let details):
       let title: String
       if details.isUnlimited {
         title = String.localizedStringWithFormat(
@@ -170,7 +170,7 @@ extension TransactionParser {
         gasFee: details.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .erc721Transfer(details):
+    case .erc721Transfer(let details):
       let title: String
       if let token = details.fromToken {
         title = "\(Strings.Wallet.send) 1 \(token.symbol)"
@@ -186,7 +186,7 @@ extension TransactionParser {
         gasFee: nil,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .solSystemTransfer(details), let .solSplTokenTransfer(details):
+    case .solSystemTransfer(let details), .solSplTokenTransfer(let details):
       let title = String.localizedStringWithFormat(
         Strings.Wallet.transactionSendTitle,
         details.fromAmount,
@@ -218,7 +218,7 @@ extension TransactionParser {
         gasFee: parsedTransaction.gasFee,
         networkSymbol: parsedTransaction.networkSymbol
       )
-    case let .filSend(details):
+    case .filSend(let details):
       let title = String.localizedStringWithFormat(
         Strings.Wallet.transactionSendTitle,
         details.sendAmount,

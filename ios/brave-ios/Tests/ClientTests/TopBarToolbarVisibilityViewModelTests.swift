@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import XCTest
 
@@ -222,7 +222,8 @@ import XCTest
       action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 100))
     )
     XCTAssertNil(viewModel.interactiveTransitionProgress)
-    XCTAssertEqual(viewModel.toolbarState, .expanded)  // Let go inside transition distance threshold = expanded
+    // Let go inside transition distance threshold = expanded
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
   }
 
   /// Tests scrolling upwards with toolbars already collapsed but not decelerating when letting go of the drag
@@ -245,7 +246,8 @@ import XCTest
       action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 0))
     )
     XCTAssertNil(viewModel.interactiveTransitionProgress)
-    XCTAssertEqual(viewModel.toolbarState, .collapsed)  // No velocity/deceleration so not enough to expand
+    // No velocity/deceleration so not enough to expand
+    XCTAssertEqual(viewModel.toolbarState, .collapsed)
   }
 
   /// Tests scrolling upwards with toolbars already collapsed but not decelerating when letting go of the drag
@@ -269,7 +271,8 @@ import XCTest
       action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: 50, yVelocity: 400))
     )
     XCTAssertNil(viewModel.interactiveTransitionProgress)
-    XCTAssertEqual(viewModel.toolbarState, .expanded)  // No velocity/deceleration so not enough to expand
+    // No velocity/deceleration so not enough to expand
+    XCTAssertEqual(viewModel.toolbarState, .expanded)
   }
 
   /// Tests rubber banding against the bottom of the scroll view and ending the drag with low velocity
@@ -297,7 +300,8 @@ import XCTest
       action: .endedDrag(snapshot: snapshot, panData: .init(yTranslation: -50, yVelocity: -100))
     )
     XCTAssertNil(viewModel.interactiveTransitionProgress)
-    XCTAssertEqual(viewModel.toolbarState, .collapsed)  // No velocity/deceleration so not enough to expand
+    // No velocity/deceleration so not enough to expand
+    XCTAssertEqual(viewModel.toolbarState, .collapsed)
   }
 
   /// Tests rubber banding against the bottom of the scroll view
@@ -333,7 +337,8 @@ import XCTest
   func testExpandedDragNearBottomEdgeAllowedToCollapse() {
     let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
     var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
-      contentOffset: .init(x: 0, y: 370),  // Minimum required content offset to collapse is 960 - 480 - 100
+      // Minimum required content offset to collapse is 960 - 480 - 100
+      contentOffset: .init(x: 0, y: 370),
       contentInset: .zero,
       contentHeight: 960,
       frameHeight: 480,
@@ -363,8 +368,9 @@ import XCTest
   /// interactively collapse at all
   func testExpandedDragNearBottomEdgeNotEnoughSpaceToCollapse() {
     let viewModel = ToolbarVisibilityViewModel(estimatedTransitionDistance: 100)
+    // Minimum required content offset to collapse is 960 - 480 - 100
     var snapshot: ToolbarVisibilityViewModel.ScrollViewSnapshot = .init(
-      contentOffset: .init(x: 0, y: 460),  // Minimum required content offset to collapse is 960 - 480 - 100
+      contentOffset: .init(x: 0, y: 460),
       contentInset: .zero,
       contentHeight: 960,
       frameHeight: 480,

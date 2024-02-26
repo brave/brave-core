@@ -47,13 +47,13 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
         domain: originalURL.host ?? originalURL.absoluteString
       )
       switch result {
-      case let .load(resolvedURL):
+      case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme {
           handleIPFSSchemeURL(resolvedURL)
         } else {
           finishEditingAndSubmit(resolvedURL)
         }
-      case let .loadInterstitial(service):
+      case .loadInterstitial(let service):
         // ENS interstitial -> ENS Offchain interstitial possible
         showWeb3ServiceInterstitialPage(service: service, originalURL: originalURL)
       case .none:

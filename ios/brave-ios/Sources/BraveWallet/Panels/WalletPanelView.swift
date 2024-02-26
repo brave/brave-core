@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Data
@@ -50,7 +50,8 @@ public struct WalletPanelContainerView: View {
       return .loading
     }
     // keyring fetched & wallet setup, wallet is locked
-    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {  // wallet is locked
+    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {
+      // wallet is locked
       return .unlock
     }
     return .panel
@@ -337,7 +338,9 @@ struct WalletPanelView: View {
   }
 
   private var pendingRequestsButton: some View {
-    Button(action: { presentWalletWithContext(.pendingRequests) }) {
+    Button {
+      presentWalletWithContext(.pendingRequests)
+    } label: {
       Image(braveSystemName: "leo.notification.dot")
         .foregroundColor(Color(.braveLabel))
         .frame(minWidth: 30, minHeight: 44)
@@ -360,14 +363,20 @@ struct WalletPanelView: View {
 
   private var menuButton: some View {
     Menu {
-      Button(action: { keyringStore.lock() }) {
+      Button {
+        keyringStore.lock()
+      } label: {
         Label(Strings.Wallet.lock, braveSystemImage: "leo.lock")
       }
-      Button(action: { presentWalletWithContext(.settings) }) {
+      Button {
+        presentWalletWithContext(.settings)
+      } label: {
         Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
       }
       Divider()
-      Button(action: { openWalletURL(WalletConstants.braveWalletSupportURL) }) {
+      Button {
+        openWalletURL(WalletConstants.braveWalletSupportURL)
+      } label: {
         Label(Strings.Wallet.helpCenter, braveSystemImage: "leo.info.outline")
       }
     } label: {

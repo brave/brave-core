@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -8,21 +8,15 @@ import UIKit
 
 class ThirdPartySearchAlerts: UIAlertController {
 
-  /**
-    Allows the keyboard to pop back up after an alertview.
-    **/
+  /// Allows the keyboard to pop back up after an alertview.
   override var canBecomeFirstResponder: Bool {
     return false
   }
 
-  /**
-   Builds the Alert view that asks if the users wants to add a third party search engine.
-
-   - parameter engine: To add engine details to alert
-   - parameter completion: Okay option handler.
-   - returns: UIAlertController for asking the user to add a search engine
-  **/
-
+  /// Builds the Alert view that asks if the users wants to add a third party search engine.
+  /// - parameter engine: To add engine details to alert
+  /// - parameter completion: Okay option handler.
+  /// - returns: UIAlertController for asking the user to add a search engine
   static func addThirdPartySearchEngine(
     _ engine: OpenSearchEngine,
     completion: @escaping (UIAlertAction) -> Void

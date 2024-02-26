@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
 import LocalAuthentication
@@ -208,9 +208,11 @@ private struct WalletUnlockStyleModifier<Failure: LocalizedError & Equatable>: V
         )
       HStack(alignment: .firstTextBaseline, spacing: 4) {
         Image(braveSystemName: "leo.warning.triangle-outline")
-        Text(error?.localizedDescription ?? " ")  // maintain space when not showing an error, `hidden()` below
+        // maintain space when not showing an error, `hidden()` below
+        Text(error?.localizedDescription ?? " ")
           .fixedSize(horizontal: false, vertical: true)
-          .animation(nil, value: error?.localizedDescription)  // Dont animate the text change, just alpha
+          // Dont animate the text change, just alpha
+          .animation(nil, value: error?.localizedDescription)
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       .transition(

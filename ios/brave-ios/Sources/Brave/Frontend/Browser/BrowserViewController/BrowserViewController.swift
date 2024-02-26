@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveNews
@@ -33,12 +33,13 @@ import class Combine.AnyCancellable
 import BraveTalk
 #endif
 
+// swift-format-ignore
 private let KVOs: [KVOConstants] = [
   .estimatedProgress,
   .loading,
   .canGoBack,
   .canGoForward,
-  .URL,
+  .url,
   .title,
   .hasOnlySecureContent,
   .serverTrust,
@@ -198,10 +199,14 @@ public class BrowserViewController: UIViewController {
 
   var keyboardState: KeyboardState?
 
-  var pendingToast: Toast?  // A toast that might be waiting for BVC to appear before displaying
-  var downloadToast: DownloadToast?  // A toast that is showing the combined download progress
-  var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine If AddToListActivity should be added
-  var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?  // A boolean to determine if OpenInPlaylistActivity should be shown
+  /// A toast that might be waiting for BVC to appear before displaying
+  var pendingToast: Toast?
+  /// A toast that is showing the combined download progress
+  var downloadToast: DownloadToast?
+  /// A boolean to determine If AddToListActivity should be added
+  var addToPlayListActivityItem: (enabled: Bool, item: PlaylistInfo?)?
+  /// A boolean to determine if OpenInPlaylistActivity should be shown
+  var openInPlaylistActivityItem: (enabled: Bool, item: PlaylistInfo?)?
   var shouldDownloadNavigationResponse: Bool = false
   var pendingDownloads = [WKDownload: PendingDownload]()
 
@@ -1923,7 +1928,7 @@ public class BrowserViewController: UIViewController {
           topToolbar.updateProgressBar(1)
         }
       }
-    case .URL:
+    case .url:
       guard let tab = tabManager[webView] else { break }
 
       // Special case for "about:blank" popups, if the webView.url is nil, keep the tab url as "about:blank"
@@ -2568,7 +2573,7 @@ public class BrowserViewController: UIViewController {
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
         // ignore the result because we are being called back asynchronous when the readermode status changes.
         webView.evaluateSafeJavaScript(
-          functionName: "\(ReaderModeNamespace).checkReadability",
+          functionName: "\(readerModeNamespace).checkReadability",
           contentWorld: ReaderModeScriptHandler.scriptSandbox
         )
 
@@ -2698,11 +2703,12 @@ public class BrowserViewController: UIViewController {
         ? toolbarVisibilityViewModel.transitionDistance - view.safeAreaInsets.bottom : 0)
     // Changing the web view size while scrolling and a PDF is visible causes strange flickering, so only show
     // final expanded/collapsed states while a PDF is visible
-    if let progress = progress, tab.mimeType != MIMEType.PDF {
+    if let progress = progress, tab.mimeType != MIMEType.pdf {
       switch state {
       case .expanded:
         toolbarTopConstraint?.update(offset: -min(headerHeight, max(0, headerHeight * progress)))
-        topToolbar.locationContainer.alpha = max(0, min(1, 1 - (progress * 1.5)))  // Have it disappear a bit faster
+        // Have it disappear a bit (1.5x) faster
+        topToolbar.locationContainer.alpha = max(0, min(1, 1 - (progress * 1.5)))
         toolbarBottomConstraint?.update(offset: min(footerHeight, max(0, footerHeight * progress)))
       case .collapsed:
         toolbarTopConstraint?.update(

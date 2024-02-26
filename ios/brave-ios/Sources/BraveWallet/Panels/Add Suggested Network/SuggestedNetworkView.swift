@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -19,9 +19,9 @@ struct SuggestedNetworkView: View {
   var mode: Mode
   var originInfo: BraveWallet.OriginInfo {
     switch mode {
-    case let .addNetwork(request):
+    case .addNetwork(let request):
       return request.originInfo
-    case let .switchNetworks(request):
+    case .switchNetworks(let request):
       return request.originInfo
     }
   }
@@ -59,9 +59,9 @@ struct SuggestedNetworkView: View {
 
   private var chain: BraveWallet.NetworkInfo? {
     switch mode {
-    case let .addNetwork(request):
+    case .addNetwork(let request):
       return request.networkInfo
-    case let .switchNetworks(request):
+    case .switchNetworks(let request):
       return networkStore.allChains.first(where: { $0.chainId == request.chainId })
     }
   }
@@ -125,9 +125,9 @@ struct SuggestedNetworkView: View {
     VStack {
       Menu {
         Text(keyringStore.selectedAccount.address.zwspOutput)
-        Button(action: {
+        Button {
           UIPasteboard.general.string = keyringStore.selectedAccount.address
-        }) {
+        } label: {
           Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
             .font(.body)
         }
@@ -272,7 +272,7 @@ struct SuggestedNetworkView: View {
     .onAppear {
       // this can occur when Add Network is dismissed while still loading...
       // we need to show loading state again, and handle success/failure response
-      if case let .addNetwork(request) = mode,
+      if case .addNetwork(let request) = mode,
         cryptoStore.addNetworkDappRequestCompletion[request.networkInfo.chainId] != nil
       {
         self.isLoading = true
@@ -303,9 +303,9 @@ struct SuggestedNetworkView: View {
   }
 
   @ViewBuilder private var actionButtons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       handleAction(approved: false)
-    }) {
+    } label: {
       HStack {
         Image(systemName: "xmark")
         Text(Strings.cancelButtonTitle)
@@ -333,12 +333,12 @@ struct SuggestedNetworkView: View {
   private func handleAction(approved: Bool) {
     isLoading = true
     switch mode {
-    case let .addNetwork(request):
+    case .addNetwork(let request):
       cryptoStore.handleWebpageRequestResponse(
         .addNetwork(approved: approved, chainId: request.networkInfo.chainId),
         completion: handleAddNetworkCompletion
       )
-    case let .switchNetworks(request):
+    case .switchNetworks(let request):
       cryptoStore.handleWebpageRequestResponse(
         .switchChain(approved: approved, requestId: request.requestId),
         completion: { _ in

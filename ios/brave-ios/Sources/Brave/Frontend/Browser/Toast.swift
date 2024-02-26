@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SnapKit
@@ -53,15 +53,16 @@ class Toast: UIView {
         animations: {
           self.animationConstraint?.update(offset: 0)
           self.layoutIfNeeded()
-        }
-      ) { finished in
-        self.displayState = .showing
-        if let duration = duration {
-          DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
-            self.dismiss(false)
+        },
+        completion: { finished in
+          self.displayState = .showing
+          if let duration = duration {
+            DispatchQueue.main.asyncAfter(deadline: .now() + duration) {
+              self.dismiss(false)
+            }
           }
         }
-      }
+      )
     }
   }
 
@@ -79,14 +80,15 @@ class Toast: UIView {
       animations: {
         self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
         self.layoutIfNeeded()
+      },
+      completion: { finished in
+        self.displayState = .dismissed
+        self.removeFromSuperview()
+        if !buttonPressed {
+          self.completionHandler?(false)
+        }
       }
-    ) { finished in
-      self.displayState = .dismissed
-      self.removeFromSuperview()
-      if !buttonPressed {
-        self.completionHandler?(false)
-      }
-    }
+    )
   }
 
   @objc func handleTap(_ gestureRecognizer: UIGestureRecognizer) {

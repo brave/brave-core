@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -452,7 +452,8 @@ extension PlaylistListViewController: UITableViewDelegate {
 
     let parameters = UIPreviewParameters()
     parameters.visiblePath = UIBezierPath(roundedRect: cell.contentView.frame, cornerRadius: 12.0)
-    parameters.backgroundColor = .clear  // If we set this to any other colour, UIKit renders white lol
+    // If we set this to any other colour, UIKit renders white lol
+    parameters.backgroundColor = .clear
 
     return UITargetedPreview(view: cell, parameters: parameters)
   }

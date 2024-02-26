@@ -78,9 +78,9 @@ extension BrowserViewController: TopToolbarDelegate {
           topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
           guard !Task.isCancelled else { return }  // user pressed stop, or typed new url
           switch result {
-          case let .loadInterstitial(service):
+          case .loadInterstitial(let service):
             showWeb3ServiceInterstitialPage(service: service, originalURL: url)
-          case let .load(resolvedURL):
+          case .load(let resolvedURL):
             if resolvedURL.isIPFSScheme {
               handleIPFSSchemeURL(resolvedURL)
             } else {
@@ -272,10 +272,10 @@ extension BrowserViewController: TopToolbarDelegate {
           topToolbar.locationView.loading = tabManager.selectedTab?.loading ?? false
           guard !Task.isCancelled else { return true }  // user pressed stop, or typed new url
           switch result {
-          case let .loadInterstitial(service):
+          case .loadInterstitial(let service):
             showWeb3ServiceInterstitialPage(service: service, originalURL: fixupURL)
             return true
-          case let .load(resolvedURL):
+          case .load(let resolvedURL):
             if resolvedURL.isIPFSScheme {
               return handleIPFSSchemeURL(resolvedURL)
             } else {

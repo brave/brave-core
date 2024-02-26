@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -199,7 +199,8 @@ import XCTest
       completion(mockSOLLamportBalance, .success, "")  // sol balance
     }
     rpcService._splTokenAccountBalance = { _, _, _, completion in
-      completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "")  // sol nft balance
+      // sol nft balance
+      completion("\(mockNFTBalance)", UInt8(0), "\(mockNFTBalance)", .success, "")
     }
     rpcService._solTokenMetadata = { tokenChainId, tokenMintAddress, completion in
       guard tokenChainId == self.allUserAssets[4].chainId,
@@ -282,7 +283,8 @@ import XCTest
         )
         XCTAssertEqual(accountSections[safe: 0]?.tokenBalances[safe: 0]?.balance, mockETHBalance)
         XCTAssertEqual(accountSections[safe: 0]?.tokenBalances[safe: 0]?.price, "$2,741.75")
-        XCTAssertNil(accountSections[safe: 0]?.tokenBalances[safe: 1])  // no USDC balance, token hidden
+        // no USDC balance, token hidden
+        XCTAssertNil(accountSections[safe: 0]?.tokenBalances[safe: 1])
 
         // Ethereum Account 2
         XCTAssertEqual(accountSections[safe: 1]?.account, self.mockEthAccount2)
@@ -308,7 +310,8 @@ import XCTest
         XCTAssertEqual(accountSections[safe: 1]?.tokenBalances[safe: 1]?.price, "$4.00")
         let ethAccount2EthBalance = accountSections[safe: 1]?.tokenBalances[safe: 0]?.balance ?? 0
         let ethAccount2USDCBalance = accountSections[safe: 1]?.tokenBalances[safe: 1]?.balance ?? 0
-        XCTAssertTrue(ethAccount2EthBalance < ethAccount2USDCBalance)  // eth has smaller balance, but usdc on testnet
+        // eth has smaller balance, but usdc on testnet
+        XCTAssertTrue(ethAccount2EthBalance < ethAccount2USDCBalance)
 
         // Solana Account 1
         XCTAssertEqual(accountSections[safe: 2]?.account, .mockSolAccount)

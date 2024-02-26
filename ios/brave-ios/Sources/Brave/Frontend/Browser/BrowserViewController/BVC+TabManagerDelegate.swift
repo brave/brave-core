@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -91,7 +91,7 @@ extension BrowserViewController: TabManagerDelegate {
       // after a short 100ms delay. *facepalm*
       //
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1516524
-      if tab.mimeType == MIMEType.PDF {
+      if tab.mimeType == MIMEType.pdf {
         let previousZoomScale = webView.scrollView.zoomScale
         let previousContentOffset = webView.scrollView.contentOffset
 

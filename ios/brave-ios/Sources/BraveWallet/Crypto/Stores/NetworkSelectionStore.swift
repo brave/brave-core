@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -38,7 +38,7 @@ class NetworkSelectionStore: ObservableObject, WalletObserverStore {
 
   @MainActor func selectNetwork(_ network: BraveWallet.NetworkInfo) async -> Bool {
     switch mode {
-    case let .select(isForOrigin):
+    case .select(let isForOrigin):
       let error = await networkStore.setSelectedChain(network, isForOrigin: isForOrigin)
       switch error {
       case .selectedChainHasNoAccounts:

@@ -1,14 +1,14 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import Fuzi
 import Shared
 import UIKit
 
-private let TypeSearch = "text/html"
-private let TypeSuggest = "application/x-suggestions+json"
+private let typeSearch = "text/html"
+private let typeSuggest = "application/x-suggestions+json"
 
 class OpenSearchEngine: NSObject, NSSecureCoding {
   static let preferredIconSize = 30
@@ -52,9 +52,9 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   let searchTemplate: String
   let suggestTemplate: String?
 
-  fileprivate let SearchTermComponent = "{searchTerms}"
-  fileprivate let LocaleTermComponent = "{moz:locale}"
-  fileprivate let RegionalClientComponent = "{customClient}"
+  fileprivate let searchTermComponent = "{searchTerms}"
+  fileprivate let localeTermComponent = "{moz:locale}"
+  fileprivate let regionalClientComponent = "{customClient}"
 
   fileprivate lazy var searchQueryComponentKey: String? = self.getQueryArgFromTemplate()
 
@@ -115,9 +115,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return true
   }
 
-  /**
-     * Returns the search URL for the given query.
-     */
+  /// Returns the search URL for the given query.
   func searchURLForQuery(
     _ query: String,
     locale: Locale = Locale.current,
@@ -131,10 +129,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     )
   }
 
-  /**
-     * Return the arg that we use for searching for this engine
-     * Problem: the search terms may not be a query arg, they may be part of the URL - how to deal with this?
-     **/
+  /// Return the arg that we use for searching for this engine
+  /// Problem: the search terms may not be a query arg, they may be part of the URL - how to deal with this?
   fileprivate func getQueryArgFromTemplate() -> String? {
     // we have the replace the templates SearchTermComponent in order to make the template
     // a valid URL, otherwise we cannot do the conversion to NSURLComponents
@@ -142,8 +138,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     let placeholder = "PLACEHOLDER"
     let template =
       searchTemplate
-      .replacingOccurrences(of: SearchTermComponent, with: placeholder)
-      .replacingOccurrences(of: RegionalClientComponent, with: placeholder)
+      .replacingOccurrences(of: searchTermComponent, with: placeholder)
+      .replacingOccurrences(of: regionalClientComponent, with: placeholder)
     let components = URLComponents(string: template)
     let searchTerm = components?.queryItems?.filter { item in
       return item.value == placeholder
@@ -152,9 +148,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return term[0].name
   }
 
-  /**
-     * check that the URL host contains the name of the search engine somewhere inside it
-     **/
+  /// check that the URL host contains the name of the search engine somewhere inside it
   fileprivate func isSearchURLForEngine(_ url: URL?) -> Bool {
     guard let urlHost = url?.hostSLD,
       let queryEndIndex = searchTemplate.range(of: "?")?.lowerBound,
@@ -163,9 +157,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return urlHost == templateURL.hostSLD
   }
 
-  /**
-     * Returns the query that was used to construct a given search URL
-     **/
+  /// Returns the query that was used to construct a given search URL
   func queryForSearchURL(_ url: URL?) -> String? {
     if isSearchURLForEngine(url) {
       if let key = searchQueryComponentKey,
@@ -177,9 +169,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return nil
   }
 
-  /**
-     * Returns the search suggestion URL for the given query.
-     */
+  /// Returns the search suggestion URL for the given query.
   func suggestURLForQuery(_ query: String, locale: Locale = Locale.current) -> URL? {
     if let suggestTemplate = suggestTemplate {
       return getURLFromTemplate(suggestTemplate, query: query, locale: locale)
@@ -200,7 +190,7 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
 
     // Escape the search template as well in case it contains not-safe characters like symbols
     let templateAllowedSet = NSMutableCharacterSet()
-    templateAllowedSet.formUnion(with: .URLAllowed)
+    templateAllowedSet.formUnion(with: .urlAllowed)
 
     // Allow brackets since we use them in our template as our insertion point
     templateAllowedSet.formUnion(with: CharacterSet(charactersIn: "{}"))
@@ -216,19 +206,19 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     let urlString =
       encodedSearchTemplate
       .replacingOccurrences(
-        of: SearchTermComponent,
+        of: searchTermComponent,
         with: escapedQuery,
         options: .literal,
         range: nil
       )
       .replacingOccurrences(
-        of: LocaleTermComponent,
+        of: localeTermComponent,
         with: localeString,
         options: .literal,
         range: nil
       )
       .replacingOccurrences(
-        of: RegionalClientComponent,
+        of: regionalClientComponent,
         with: regionalClientParam(locale),
         options: .literal,
         range: nil
@@ -319,7 +309,7 @@ class OpenSearchParser {
         return nil
       }
 
-      if type != TypeSearch && type != TypeSuggest {
+      if type != typeSearch && type != typeSuggest {
         // Not a supported search type.
         continue
       }
@@ -354,7 +344,7 @@ class OpenSearchParser {
         }
       }
 
-      if type == TypeSearch {
+      if type == typeSearch {
         searchTemplate = template
       } else {
         suggestTemplate = template

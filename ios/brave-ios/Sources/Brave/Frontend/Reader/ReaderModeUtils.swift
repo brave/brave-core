@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -25,7 +25,8 @@ struct ReaderModeUtils {
       let tmpl = try? String(contentsOfFile: tmplPath, encoding: .utf8)
     else { return nil }
 
-    return tmpl.replacingOccurrences(of: "%READER-TITLE-NONCE%", with: titleNonce)  // This MUST be the first line/replacement!
+    // This MUST be the first line/replacement!
+    return tmpl.replacingOccurrences(of: "%READER-TITLE-NONCE%", with: titleNonce)
 
       .replacingOccurrences(of: "%READER-CSS%", with: css)
       .replacingOccurrences(of: "%READER-STYLE%", with: initialStyle.encode())

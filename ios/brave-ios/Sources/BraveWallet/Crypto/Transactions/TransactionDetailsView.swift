@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -35,7 +35,8 @@ struct TransactionDetailsView: View {
             HStack {
               VStack(alignment: .leading) {
                 rowTitle(Strings.Wallet.transactionDetailsTxHashTitle)
-                Text(parsedTransaction.transaction.txHash.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
+                // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.transaction.txHash.zwspOutput)
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
               }
@@ -64,7 +65,8 @@ struct TransactionDetailsView: View {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoFromTitle)
               AddressView(address: parsedTransaction.fromAddress) {
-                Text(parsedTransaction.fromAddress.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
+                // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.fromAddress.zwspOutput)
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
                 if isLocalAccount(
@@ -89,7 +91,8 @@ struct TransactionDetailsView: View {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoToTitle)
               AddressView(address: parsedTransaction.toAddress) {
-                Text(parsedTransaction.toAddress.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
+                // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.toAddress.zwspOutput)
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
                 if isLocalAccount(

@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -82,7 +82,8 @@ struct AssetIconView: View {
   @ViewBuilder private var tokenNetworkLogo: some View {
     if let network,
       shouldShowNetworkIcon,  // explicitly show/not show network logo
-      !network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName,  // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
+      // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
+      !network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName,
       let image = network.networkLogoImage
     {
       Image(uiImage: image)

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveStrings
@@ -32,9 +32,7 @@ protocol TabLocationViewDelegate {
 private struct TabLocationViewUX {
   static let spacing: CGFloat = 8
   static let statusIconSize: CGFloat = 18
-  static let TPIconSize: CGFloat = 24
   static let buttonSize = CGSize(width: 44, height: 34.0)
-  static let URLBarPadding = 4
   static let progressBarHeight: CGFloat = 3
 }
 
@@ -344,7 +342,8 @@ class TabLocationView: UIView {
 
     placeholderLabel.snp.makeConstraints {
       $0.top.bottom.equalToSuperview()
-      $0.leading.equalToSuperview().inset(TabLocationViewUX.spacing * 2)  // Needs double spacing to line up
+      // Needs double spacing to line up
+      $0.leading.equalToSuperview().inset(TabLocationViewUX.spacing * 2)
       $0.trailing.lessThanOrEqualTo(trailingTabOptionsStackView.snp.leading)
     }
 
@@ -436,7 +435,7 @@ class TabLocationView: UIView {
     placeholderLabel.textColor = browserColors.textTertiary
     readerModeButton.unselectedTintColor = browserColors.iconDefault
     readerModeButton.selectedTintColor = browserColors.iconActive
-    // swiftlint:disable:next force_cast
+
     (urlDisplayLabel as! DisplayURLLabel).clippingFade.gradientLayer.colors = [
       browserColors.containerBackground,
       browserColors.containerBackground.withAlphaComponent(0.0),

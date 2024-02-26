@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -82,7 +82,8 @@ class SwapStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     let ex = expectation(description: "default-sell-buy-token-on-main")
-    XCTAssertNil(store.selectedFromToken)  // `prefilledToken` not set until validated in `prepare()`
+    // `prefilledToken` not set until validated in `prepare()`
+    XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
     let testAccountInfo: BraveWallet.AccountInfo = .init()
     store.prepare(with: testAccountInfo) {
@@ -121,7 +122,8 @@ class SwapStoreTests: XCTestCase {
     }
     // simulate network switch when `setNetwork` is called
     rpcService._setNetwork = { chainId, coin, origin, completion in
-      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet)  // verify network switched to SolanaMainnet
+      // verify network switched to SolanaMainnet
+      XCTAssertEqual(chainId, BraveWallet.SolanaMainnet)
       selectedNetwork = coin == .eth ? .mockMainnet : .mockSolana
       completion(true)
     }
@@ -149,7 +151,8 @@ class SwapStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
     let ex = expectation(description: "default-sell-buy-token-on-main")
-    XCTAssertNil(store.selectedFromToken)  // `prefilledToken` not set until validated in `prepare()`
+    // `prefilledToken` not set until validated in `prepare()`
+    XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
     let testAccountInfo: BraveWallet.AccountInfo = .init()
     store.prepare(with: testAccountInfo) {
@@ -254,7 +257,8 @@ class SwapStoreTests: XCTestCase {
       userAssetManager: TestableWalletUserAssetManager(),
       prefilledToken: daiToken
     )
-    XCTAssertNil(store.selectedFromToken)  // `prefilledToken` not set until validated in `prepare()`
+    // `prefilledToken` not set until validated in `prepare()`
+    XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
     let fromTokenExpectation = expectation(description: "update-sendTokenExpectation")
     store.$selectedFromToken

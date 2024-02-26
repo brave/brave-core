@@ -1,7 +1,7 @@
-/* Copyright 2024 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Preferences
@@ -40,9 +40,9 @@ struct NFTsGridView: View {
   private var nftGrid: some View {
     LazyVGrid(columns: nftGrids) {
       ForEach(assets) { nft in
-        Button(action: {
+        Button {
           selectedAsset(nft.token)
-        }) {
+        } label: {
           VStack(alignment: .leading, spacing: 4) {
             nftImage(nft)
               .overlay(alignment: .bottomTrailing) {

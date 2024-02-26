@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -89,9 +89,9 @@ struct BuyTokenView: View {
           }
           Section(
             header: HStack {
-              Button(action: {
+              Button {
                 isShowingProviderSelection = true
-              }) {
+              } label: {
                 Text(Strings.Wallet.purchaseMethodButtonTitle)
               }
               .buttonStyle(BraveFilledButtonStyle(size: .normal))
@@ -110,7 +110,9 @@ struct BuyTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { onDismiss() }) {
+          Button {
+            onDismiss()
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

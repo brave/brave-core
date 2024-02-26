@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -55,14 +55,14 @@ public struct CryptoView: View {
   @ToolbarContentBuilder
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
+      Button {
         if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext
         {
           request.decisionHandler(.rejected)
           onPermittedAccountsUpdated([])
         }
         dismissAction()
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -255,9 +255,9 @@ public struct CryptoView: View {
             SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
               .toolbar {
                 ToolbarItemGroup(placement: .destructiveAction) {
-                  Button(action: {
+                  Button {
                     dismissAction()
-                  }) {
+                  } label: {
                     Text(Strings.CancelString)
                   }
                 }
@@ -268,7 +268,8 @@ public struct CryptoView: View {
         }
       }
     }
-    .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
+    // Animate unlock dismiss (required for some reason)
+    .animation(.default, value: visibleScreen)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
     .environment(
       \.openURL,
@@ -304,9 +305,9 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
   private var pendingRequestToolbarDismissContent: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
+      Button {
         cryptoStore.isPresentingPendingRequest = false
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import MobileCoreServices
@@ -11,22 +11,22 @@ import WebKit
 
 struct MIMEType {
   static let bitmap = "image/bmp"
-  static let CSS = "text/css"
-  static let GIF = "image/gif"
+  static let css = "text/css"
+  static let gif = "image/gif"
   static let javaScript = "text/javascript"
-  static let JPEG = "image/jpeg"
-  static let HTML = "text/html"
+  static let jpeg = "image/jpeg"
+  static let html = "text/html"
   static let octetStream = "application/octet-stream"
   static let passbook = "application/vnd.apple.pkpass"
-  static let PDF = "application/pdf"
+  static let pdf = "application/pdf"
   static let plainText = "text/plain"
-  static let PNG = "image/png"
+  static let png = "image/png"
   static let webP = "image/webp"
   static let xHTML = "application/xhtml+xml"
 
   private static let webViewViewableTypes: [String] = [
-    MIMEType.bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.plainText,
-    MIMEType.PNG, MIMEType.webP, MIMEType.xHTML,
+    MIMEType.bitmap, MIMEType.gif, MIMEType.jpeg, MIMEType.html, MIMEType.pdf, MIMEType.plainText,
+    MIMEType.png, MIMEType.webP, MIMEType.xHTML,
   ]
 
   static func canShowInWebView(_ mimeType: String) -> Bool {
@@ -43,7 +43,7 @@ struct MIMEType {
 
 extension String {
   var isKindOfHTML: Bool {
-    return [MIMEType.HTML, MIMEType.xHTML].contains(self)
+    return [MIMEType.html, MIMEType.xHTML].contains(self)
   }
 }
 

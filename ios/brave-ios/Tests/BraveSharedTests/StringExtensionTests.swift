@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import XCTest
@@ -33,7 +33,7 @@ class StringExtensionTests: XCTestCase {
     let urlString = "https://example.com/test%"
     let urlStringEncoded = "https://example.com/test%25"
     XCTAssertEqual(
-      urlString.addingPercentEncoding(withAllowedCharacters: .URLAllowed),
+      urlString.addingPercentEncoding(withAllowedCharacters: .urlAllowed),
       urlStringEncoded
     )
   }

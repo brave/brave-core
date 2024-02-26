@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -450,19 +450,19 @@ struct PendingTransactionView: View {
   }
 
   @ViewBuilder private var rejectConfirmButtons: some View {
-    Button(action: {
+    Button {
       confirmationStore.reject(transaction: confirmationStore.activeParsedTransaction.transaction) {
         _ in
       }
-    }) {
+    } label: {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {
+    Button {
       confirmationStore.isTxSubmitting = true
       confirmationStore.confirm(transaction: confirmationStore.activeParsedTransaction.transaction)
       { _ in }
-    }) {
+    } label: {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
@@ -477,7 +477,8 @@ struct PendingTransactionView: View {
         // Current network, transaction buttons
         HStack(alignment: .top) {
           if confirmationStore.activeParsedTransaction.transaction.txType != .ethSwap {
-            Text(confirmationStore.activeParsedTransaction.network.chainName)  // network shown below each token for swap
+            // network shown below each token for swap
+            Text(confirmationStore.activeParsedTransaction.network.chainName)
           }
           Spacer()
           VStack(alignment: .trailing) {
@@ -506,13 +507,13 @@ struct PendingTransactionView: View {
 
         // Cancel / Confirm buttons
         if confirmationStore.unapprovedTxs.count > 1 {
-          Button(action: {
+          Button {
             confirmationStore.rejectAllTransactions { success in
               if success {
                 onDismiss()
               }
             }
-          }) {
+          } label: {
             Text(
               String.localizedStringWithFormat(
                 Strings.Wallet.rejectAllTransactions,

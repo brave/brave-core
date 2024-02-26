@@ -69,7 +69,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     }
 
     shieldsUpSwitch.isOn =
-      domain?.isShieldExpected(.AllOff, considerAllShieldsOption: false) == false
+      domain?.isShieldExpected(.allOff, considerAllShieldsOption: false) == false
 
     shieldControlMapping.forEach { shield, view in
       if let domain = domain {
@@ -77,13 +77,13 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
         view.toggleSwitch.isOn = domain.isShieldExpected(shield, considerAllShieldsOption: false)
       } else {
         switch shield {
-        case .AdblockAndTp:
+        case .adblockAndTp:
           view.toggleSwitch.isOn = ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
-        case .AllOff:
+        case .allOff:
           assertionFailure()
-        case .FpProtection:
+        case .fpProtection:
           view.toggleSwitch.isOn = Preferences.Shields.fingerprintingProtection.value
-        case .NoScript:
+        case .noScript:
           view.toggleSwitch.isOn = Preferences.Shields.blockScripts.value
         }
       }
@@ -101,7 +101,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   private func updateBraveShieldState(shield: BraveShield, on: Bool) {
     guard let url = url else { return }
-    let allOff = shield == .AllOff
+    let allOff = shield == .allOff
     // `.AllOff` uses inverse logic. Technically we set "all off" when the switch is OFF, unlike all the others
     // If the new state is the same as the global preference, reset it to nil so future shield state queries
     // respect the global preference rather than the overridden value. (Prevents toggling domain state from
@@ -224,13 +224,13 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   /// Groups the shield types with their control and global preference
   private lazy var shieldControlMapping: [(BraveShield, AdvancedShieldsView.ToggleView)] = [
-    (.AdblockAndTp, shieldsView.advancedShieldView.adsTrackersControl),
-    (.NoScript, shieldsView.advancedShieldView.blockScriptsControl),
-    (.FpProtection, shieldsView.advancedShieldView.fingerprintingControl),
+    (.adblockAndTp, shieldsView.advancedShieldView.adsTrackersControl),
+    (.noScript, shieldsView.advancedShieldView.blockScriptsControl),
+    (.fpProtection, shieldsView.advancedShieldView.fingerprintingControl),
   ]
 
   var shieldsView: View {
-    return view as! View  // swiftlint:disable:this force_cast
+    return view as! View
   }
 
   override func loadView() {
@@ -319,11 +319,11 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   @objc private func shieldsOverrideSwitchValueChanged() {
     let isOn = shieldsUpSwitch.isOn
     self.updateGlobalShieldState(isOn, animated: true)
-    self.updateBraveShieldState(shield: .AllOff, on: isOn)
+    self.updateBraveShieldState(shield: .allOff, on: isOn)
     // Wait a fraction of a second to allow DB write to complete otherwise it will not use the updated
     // shield settings when reloading the page
     DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-      self.shieldsSettingsChanged?(self, .AllOff)
+      self.shieldsSettingsChanged?(self, .allOff)
     }
   }
 

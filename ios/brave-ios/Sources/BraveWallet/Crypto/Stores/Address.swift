@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -46,8 +46,10 @@ extension String {
 
   /// Check if the string is a valid FIL address
   var isFILAddress: Bool {
-    if starts(with: BraveWallet.FilecoinMainnet) || starts(with: BraveWallet.FilecoinTestnet) {  // FIL address has to start with `f` or `t`
-      if count == 41 || count == 86 || count == 44 {  // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+    // FIL address has to start with `f` or `t`
+    if starts(with: BraveWallet.FilecoinMainnet) || starts(with: BraveWallet.FilecoinTestnet) {
+      // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+      if count == 41 || count == 86 || count == 44 {
         return true
       }
     }

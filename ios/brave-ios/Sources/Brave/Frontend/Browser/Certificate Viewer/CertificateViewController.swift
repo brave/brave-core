@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -145,7 +145,7 @@ private struct CertificateView: View {
         CertificateKeyValueView(
           title: Strings.CertificateViewer.signatureAlgorithmTitle,
           value:
-            "\(signatureAlgorithmDescription) (\(model.signature.absoluteObjectIdentifier.isEmpty ? BraveCertificateUtils.oid_to_absolute_oid(oid: model.signature.objectIdentifier) : model.signature.absoluteObjectIdentifier))"
+            "\(signatureAlgorithmDescription) (\(model.signature.absoluteObjectIdentifier.isEmpty ? BraveCertificateUtils.oidToAbsoluteOID(oid: model.signature.objectIdentifier) : model.signature.absoluteObjectIdentifier))"
         ),
 
         // Signature Algorithm Parameters
@@ -287,7 +287,7 @@ extension CertificateView {
       algorithm += " \(Strings.CertificateViewer.encryptionTitle) "
       if publicKeyInfo.absoluteObjectIdentifier.isEmpty {
         algorithm +=
-          " (\(BraveCertificateUtils.oid_to_absolute_oid(oid: publicKeyInfo.objectIdentifier)))"
+          " (\(BraveCertificateUtils.oidToAbsoluteOID(oid: publicKeyInfo.objectIdentifier)))"
       } else {
         algorithm += " (\(publicKeyInfo.absoluteObjectIdentifier))"
       }

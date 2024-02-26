@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 import os.log
@@ -63,13 +63,11 @@ extension String {
     return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
   }
 
-  /*
-     Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-     - Parameter length: Desired maximum lengths of a string
-     - Parameter trailing: A 'String' that will be appended after the truncation.
-
-     - Returns: 'String' object.
-     */
+  /// Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
+  /// - Parameter length: Desired maximum lengths of a string
+  /// - Parameter trailing: A 'String' that will be appended after the truncation.
+  ///
+  /// - Returns: 'String' object.
   public func truncate(length: Int, trailing: String = "…") -> String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }

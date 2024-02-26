@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import WebKit
@@ -231,16 +231,16 @@ class DownloadHelperTests: XCTestCase {
   private func allMIMETypes() -> [String] {
     return [
       MIMEType.bitmap,
-      MIMEType.CSS,
-      MIMEType.GIF,
+      MIMEType.css,
+      MIMEType.gif,
       MIMEType.javaScript,
-      MIMEType.JPEG,
-      MIMEType.HTML,
+      MIMEType.jpeg,
+      MIMEType.html,
       MIMEType.octetStream,
       MIMEType.passbook,
-      MIMEType.PDF,
+      MIMEType.pdf,
       MIMEType.plainText,
-      MIMEType.PNG,
+      MIMEType.png,
       MIMEType.webP,
       MIMEType.xHTML,
     ]

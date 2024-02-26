@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -187,7 +187,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   private var timer: Timer?
   private let batSymbol = "BAT"
   private let daiSymbol = "DAI"
-  private let USDCSymbol = "USDC"
+  private let usdcSymbol = "USDC"
   private var prefilledToken: BraveWallet.BlockchainToken?
   /// The JupiterQuote currently being displayed for Solana swap. The quote needs preserved to create the swap transaction.
   private var jupiterQuote: BraveWallet.JupiterQuote?
@@ -404,12 +404,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return false
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
+    // these values are already in wei
     let gasPrice =
-      "0x\(weiFormatter.weiString(from: swapResponse.gasPrice, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+      "0x\(weiFormatter.weiString(from: swapResponse.gasPrice, radix: .hex, decimals: 0) ?? "0")"
     let gasLimit =
-      "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+      "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"
     let value =
-      "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+      "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"
     let data: [NSNumber] = .init(hexString: swapResponse.data) ?? .init()
 
     if network.isEip1559 {
@@ -548,7 +549,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     // The transaction confirmation screen for ERC20 approve() shows a loud
     // security notice, and still allows users to edit the default approval
     // amount.
-    let allowance = WalletConstants.MAX_UINT256
+    let allowance = WalletConstants.maxUInt256
     self.isMakingTx = true
     defer { self.isMakingTx = false }
     let network = await rpcService.network(accountInfo.coin, origin: nil)
@@ -724,7 +725,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           decimals: Int(fromToken.decimals)
         ) ?? ""
       ) ?? 0
-    guard status == .success, amountToSend > allowanceValue else { return }  // no problem with its allowance
+    // no problem with its allowance
+    guard status == .success, amountToSend > allowanceValue else { return }
     self.state = .lowAllowance(spenderAddress)
   }
 
@@ -913,7 +915,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     case .error, .idle:
       // will never come here
       return false
-    case let .lowAllowance(spenderAddress):
+    case .lowAllowance(let spenderAddress):
       return await createERC20ApprovalTransaction(spenderAddress)
     case .swap:
       switch accountInfo.coin {
@@ -1035,13 +1037,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           }
         } else if network.chainId == BraveWallet.SolanaMainnet {
           if let fromToken = selectedFromToken,
-            fromToken.symbol.uppercased() == USDCSymbol.uppercased()
+            fromToken.symbol.uppercased() == usdcSymbol.uppercased()
           {
             selectedToToken = allTokens.first(where: {
-              $0.symbol.uppercased() != USDCSymbol.uppercased()
+              $0.symbol.uppercased() != usdcSymbol.uppercased()
             })
           } else if let usdcToken = allTokens.first(where: {
-            $0.symbol.uppercased() == USDCSymbol.uppercased()
+            $0.symbol.uppercased() == usdcSymbol.uppercased()
           }) {
             selectedToToken = usdcToken
           } else {  // if USDC is unavailable

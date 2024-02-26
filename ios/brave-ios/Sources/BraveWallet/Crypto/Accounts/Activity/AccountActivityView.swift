@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -35,14 +35,14 @@ struct AccountActivityView: View {
       ToolbarItem(placement: .navigationBarTrailing) {
         Menu(
           content: {
-            Button(action: {
+            Button {
               isPresentingEditAccount = true
-            }) {
+            } label: {
               Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
             }
-            Button(action: {
+            Button {
               isPresentingExportAccount = true
-            }) {
+            } label: {
               Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
             }
           },
@@ -82,9 +82,9 @@ struct AccountActivityView: View {
             )
             .toolbar {
               ToolbarItem(placement: .navigationBarLeading) {
-                Button(action: {
+                Button {
                   isPresentingExportAccount = false
-                }) {
+                } label: {
                   Text(Strings.cancelButtonTitle)
                     .foregroundColor(Color(.braveBlurpleTint))
                 }

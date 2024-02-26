@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import GuardianConnect
@@ -12,7 +12,7 @@ import UIKit
 class InstallVPNViewController: VPNSetupLoadingController {
 
   private var installVPNView: View {
-    return view as! View  // swiftlint:disable:this force_cast
+    return view as! View
   }
 
   private var installVPNProfileRetryCount = 0

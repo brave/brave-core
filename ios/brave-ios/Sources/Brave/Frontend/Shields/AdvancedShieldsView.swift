@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveShields
@@ -132,12 +132,12 @@ extension AdvancedShieldsView {
 
     override var accessibilityLabel: String? {
       get { titleLabel.accessibilityLabel }
-      set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+      set { assertionFailure() }
     }
 
     override var accessibilityValue: String? {
       get { toggleSwitch.accessibilityValue }
-      set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+      set { assertionFailure() }
     }
 
     @objc private func switchValueChanged() {

@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Foundation
@@ -58,9 +58,9 @@ struct AssetSearchView: View {
   }
 
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
@@ -100,7 +100,9 @@ struct AssetSearchView: View {
                 .frame(maxWidth: .infinity)
             } else {
               ForEach(filteredTokens) { assetViewModel in
-                Button(action: { selectedToken = assetViewModel.token }) {
+                Button {
+                  selectedToken = assetViewModel.token
+                } label: {
                   SearchAssetView(
                     title: title(for: assetViewModel.token),
                     symbol: assetViewModel.token.symbol,
@@ -177,9 +179,9 @@ struct AssetSearchView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

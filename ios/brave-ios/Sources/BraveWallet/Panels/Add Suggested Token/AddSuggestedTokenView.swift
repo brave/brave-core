@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -45,14 +45,14 @@ struct AddSuggestedTokenView: View {
               .foregroundColor(Color(.bravePrimary))
           }
           .accessibilityElement(children: .combine)
-          Button(action: {
+          Button {
             if let tokenNetwork = tokenNetwork,
               let baseURL = tokenNetwork.blockExplorerUrls.first.map(URL.init(string:)),
               let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)")
             {
               openWalletURL(url)
             }
-          }) {
+          } label: {
             HStack {
               Text(token.contractAddress.truncatedAddress)
               Image(systemName: "arrow.up.forward.square")
@@ -112,24 +112,24 @@ struct AddSuggestedTokenView: View {
   }
 
   @ViewBuilder private var actionButtons: some View {
-    Button(action: {  // cancel
+    Button {  // cancel
       cryptoStore.handleWebpageRequestResponse(
         .addSuggestedToken(approved: false, token: token)
       )
       onDismiss()
-    }) {
+    } label: {
       HStack {
         Image(systemName: "xmark")
         Text(Strings.cancelButtonTitle)
       }
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: {  // approve
+    Button {  // approve
       cryptoStore.handleWebpageRequestResponse(
         .addSuggestedToken(approved: true, token: token)
       )
       onDismiss()
-    }) {
+    } label: {
       HStack {
         Image(braveSystemName: "leo.check.circle-filled")
         Text(Strings.Wallet.add)

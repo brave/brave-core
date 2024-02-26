@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import XCTest
 
@@ -26,34 +26,34 @@ class CertificateUtilsTest: XCTestCase {
 
   func testAbsolute_OID_To_OID() {
     let testOIDs: [String: [UInt8]] = [
-      "0": [], /* Invalid format */
+      "0": [],  // Invalid format
       "1.1": [0x06, 0x01, 0x29],
-      "X.YY.ZZZZ": [], /* Invalid format */
-      "0.40.9999": [], /* Invalid arc-2: 40 */
+      "X.YY.ZZZZ": [],  // Invalid format
+      "0.40.9999": [],  // Invalid arc-2: 40
       "0.35.9999": [0x06, 0x03, 0x23, 0xCE, 0x0F],
       "1.35.9999": [0x06, 0x03, 0x4B, 0xCE, 0x0F],
-      "1.40.9999": [], /* Invalid arc-2: 40 */
-      "1.999.9999": [], /* Invalid arc-2: 999 */
-      "1.30.999999999999999999999999999": [], /* Larger than 64-bit UInt per arc */
+      "1.40.9999": [],  // Invalid arc-2: 40
+      "1.999.9999": [],  // Invalid arc-2: 999
+      "1.30.999999999999999999999999999": [],  // Larger than 64-bit UInt per arc
       "2.999.9999": [0x06, 0x04, 0x88, 0x37, 0xCE, 0x0F],
-      "3.999.9999": [], /* Invalid arc-1: 3 */
+      "3.999.9999": [],  // Invalid arc-1: 3
       "1.2.840.113549.1.1.11": [
         0x06, 0x09, 0x2A, 0x86, 0x48, 0x86, 0xF7, 0x0D, 0x01, 0x01, 0x0B,
-      ], /* SHA256 with RSA Encryption */
+      ],  // SHA256 with RSA Encryption
       "1.2.840.10045.4.3.2": [
         0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x04, 0x03, 0x02,
-      ], /* ECDSA Signature with SHA-256 */
+      ],  // ECDSA Signature with SHA-256
       "1.2.840.10045.2.1": [
         0x06, 0x07, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x02, 0x01,
-      ], /* Elliptic Curve Public Key */
+      ],  // Elliptic Curve Public Key
       "1.2.840.10045.3.1.7": [
         0x06, 0x08, 0x2A, 0x86, 0x48, 0xCE, 0x3D, 0x03, 0x01, 0x07,
-      ] /* Elliptic Curve secp256r1 */,
+      ],  // Elliptic Curve secp256r1,
     ]
 
     for test in testOIDs {
       do {
-        let result: [UInt8] = try BraveCertificateUtils.absolute_oid_to_oid(oid: test.key)
+        let result: [UInt8] = try BraveCertificateUtils.absoluteOIDToOID(oid: test.key)
         XCTAssertEqual(test.value, result, test.key)
       } catch {
         XCTAssertEqual(test.value, [], test.key)
@@ -63,10 +63,10 @@ class CertificateUtilsTest: XCTestCase {
 
   func testOID_To_Absolute_OID() {
     let testOIDs: [[UInt8]: String] = [
-      []: "", /* Invalid format */
-      [0x06, 0x03, 0x88, 0x37, 0xCE, 0x0F]: "", /* Invalid length of 0x03, 4 bytes following */
+      []: "",  // Invalid format
+      [0x06, 0x03, 0x88, 0x37, 0xCE, 0x0F]: "",  // Invalid length of 0x03, 4 bytes following
       [0x06, 0x01, 0x29]: "1.1",
-      [0x06, 0x03, 0x28, 0xCE, 0x0F]: "1.0.9999", /* Invalid arc-2: 40 */
+      [0x06, 0x03, 0x28, 0xCE, 0x0F]: "1.0.9999",  // Invalid arc-2: 40
       [0x06, 0x03, 0x23, 0xCE, 0x0F]: "0.35.9999",
       [0x06, 0x03, 0x4B, 0xCE, 0x0F]: "1.35.9999",
       [0x06, 0x04, 0x88, 0x37, 0xCE, 0x0F]: "2.999.9999",
@@ -78,7 +78,7 @@ class CertificateUtilsTest: XCTestCase {
 
     for test in testOIDs {
       do {
-        let result: String = try BraveCertificateUtils.oid_to_absolute_oid(oid: test.key)
+        let result: String = try BraveCertificateUtils.oidToAbsoluteOID(oid: test.key)
         XCTAssertEqual(test.value, result, test.value)
       } catch {
         XCTAssertEqual(test.value, "", test.value)

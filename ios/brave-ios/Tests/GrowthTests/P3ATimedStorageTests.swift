@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Growth
@@ -204,48 +204,6 @@ class P3ATimedStorageTests: XCTestCase {
     XCTAssertEqual(try XCTUnwrap(storage.maximumValue), highValue)
     XCTAssertEqual(storage.combinedValue, highValue)
   }
-
-  /*
-  TEST_F(TimePeriodStorageTest, GetsHighestValueInWeekFromReplacement) {
-    InitStorage(30);
-    // Add a low value a couple days after a high value,
-    // should return highest day value.
-    uint64_t low_value = 50;
-    uint64_t high_value = 75;
-    state_->ReplaceTodaysValueIfGreater(high_value);
-    clock_->Advance(base::Days(2));
-    state_->ReplaceTodaysValueIfGreater(low_value);
-    EXPECT_EQ(state_->GetHighestValueInPeriod(), high_value);
-    // Sanity check disparate days were not replaced
-    EXPECT_EQ(state_->GetPeriodSum(), high_value + low_value);
-  }
-
-  TEST_F(TimePeriodStorageTest, ReplaceIfGreaterForDate) {
-    InitStorage(30);
-
-    state_->AddDelta(4);
-    clock_->Advance(base::Days(1));
-    state_->AddDelta(2);
-    clock_->Advance(base::Days(1));
-    state_->AddDelta(1);
-    clock_->Advance(base::Days(1));
-
-    // should replace
-    state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(2), 3);
-    // should not replace
-    state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(3), 3);
-
-    EXPECT_EQ(state_->GetPeriodSum(), 8U);
-
-    // should insert new daily value
-    state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(4), 3);
-    EXPECT_EQ(state_->GetPeriodSum(), 11U);
-
-    // should store, but should not be in sum because it's too old
-    state_->ReplaceIfGreaterForDate(clock_->Now() - base::Days(31), 10);
-    EXPECT_EQ(state_->GetPeriodSum(), 11U);
-  }
-  */
 
   /// ---------
   /// Test Cases from brave-core's similar `WeeklyEventStorageTest` (`weekly_event_storage_unittest.cc`)

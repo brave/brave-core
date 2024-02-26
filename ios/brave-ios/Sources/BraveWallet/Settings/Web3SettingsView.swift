@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -216,7 +216,7 @@ private struct WalletSettingsView: View {
     }
     Section {
       Picker(selection: $settingsStore.currencyCode) {
-        ForEach(CurrencyCode.allCurrencyCodes) { currencyCode in
+        ForEach(CurrencyCode.allCodes) { currencyCode in
           Text(currencyCode.code)
             .foregroundColor(Color(.secondaryBraveLabel))
             .tag(currencyCode)
@@ -310,14 +310,18 @@ private struct WalletSettingsView: View {
       footer: Text(Strings.Wallet.settingsResetTransactionFooter)
         .foregroundColor(Color(.secondaryBraveLabel))
     ) {
-      Button(action: { isShowingResetTransactionAlert = true }) {
+      Button {
+        isShowingResetTransactionAlert = true
+      } label: {
         Text(Strings.Wallet.settingsResetTransactionTitle)
           .foregroundColor(Color(.braveBlurpleTint))
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section {
-      Button(action: { isShowingResetWalletAlert = true }) {
+      Button {
+        isShowingResetWalletAlert = true
+      } label: {
         Text(Strings.Wallet.settingsResetButtonTitle)
           .foregroundColor(.red)
       }  // iOS 15: .role(.destructive)
@@ -351,12 +355,10 @@ struct WalletSettingsView_Previews: PreviewProvider {
 }
 #endif
 
-/*
- Section containing the follow preferences:
- - Allow SNS Resolve (Ask/Enabled/Disabled)
- - Allow ENS Resolve (Ask/Enabled/Disabled)
- - Allow ENS Offchain Resolve (Ask/Enabled/Disabled)
- */
+// Section containing the follow preferences:
+// - Allow SNS Resolve (Ask/Enabled/Disabled)
+// - Allow ENS Resolve (Ask/Enabled/Disabled)
+// - Allow ENS Offchain Resolve (Ask/Enabled/Disabled)
 private struct Web3DomainSettingsView: View {
 
   @ObservedObject var settingsStore: SettingsStore

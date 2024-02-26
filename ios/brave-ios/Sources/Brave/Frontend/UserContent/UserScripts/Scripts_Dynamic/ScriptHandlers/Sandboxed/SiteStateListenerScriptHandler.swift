@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShields
 import Foundation
@@ -73,7 +73,7 @@ class SiteStateListenerScriptHandler: TabContentScript {
       if let pageData = tab.currentPageData {
         Task { @MainActor in
           let domain = pageData.domain(persistent: !tab.isPrivate)
-          guard domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) else {
+          guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
             return
           }
 

@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import CommonCrypto
 import Foundation
@@ -192,7 +192,7 @@ public class Cryptography {
         CFGetTypeID(item) == SecAccessControlGetTypeID()
       {
 
-        let accessControl = item as! SecAccessControl  // swiftlint:disable:this force_cast
+        let accessControl = item as! SecAccessControl
         return String(describing: accessControl).contains("bio")
       }
     }
@@ -219,7 +219,7 @@ public class Cryptography {
       || error == errSecInteractionNotAllowed
     {
       if let result = result, CFGetTypeID(result) == SecKeyGetTypeID() {
-        return CryptographicKey(key: result as! SecKey, keyId: id)  // swiftlint:disable:this force_cast
+        return CryptographicKey(key: result as! SecKey, keyId: id)
       }
       return nil
     }

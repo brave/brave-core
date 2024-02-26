@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 // IMPORTANT!: Please take into consideration when adding new imports to
@@ -11,8 +11,6 @@ import Foundation
 import Shared
 import Storage
 import os.log
-
-public let ProfileRemoteTabsSyncDelay: TimeInterval = 0.1
 
 class ProfileFileAccessor: FileAccessor {
   convenience init(profile: Profile) {
@@ -81,15 +79,15 @@ public protocol Profile: AnyObject {
   func localName() -> String
 }
 
-private let PrefKeyClientID = "PrefKeyClientID"
+private let prefKeyClientID = "PrefKeyClientID"
 extension Profile {
   var clientID: String {
     let clientID: String
-    if let id = prefs.stringForKey(PrefKeyClientID) {
+    if let id = prefs.stringForKey(prefKeyClientID) {
       clientID = id
     } else {
       clientID = UUID().uuidString
-      prefs.setString(clientID, forKey: PrefKeyClientID)
+      prefs.setString(clientID, forKey: prefKeyClientID)
     }
     return clientID
   }
@@ -102,19 +100,17 @@ open class BrowserProfile: Profile {
 
   public let files: FileAccessor
 
-  /**
-     * N.B., BrowserProfile is used from our extensions, often via a pattern like
-     *
-     *   BrowserProfile(…).foo.saveSomething(…)
-     *
-     * This can break if BrowserProfile's initializer does async work that
-     * subsequently — and asynchronously — expects the profile to stick around:
-     * see Bug 1218833. Be sure to only perform synchronous actions here.
-     *
-     * A SyncDelegate can be provided in this initializer, or once the profile is initialized.
-     * However, if we provide it here, it's assumed that we're initializing it from the application,
-     * and initialize the logins.db.
-     */
+  /// N.B., BrowserProfile is used from our extensions, often via a pattern like
+  ///
+  ///   BrowserProfile(…).foo.saveSomething(…)
+  ///
+  /// This can break if BrowserProfile's initializer does async work that
+  /// subsequently — and asynchronously — expects the profile to stick around:
+  /// see Bug 1218833. Be sure to only perform synchronous actions here.
+  ///
+  /// A SyncDelegate can be provided in this initializer, or once the profile is initialized.
+  /// However, if we provide it here, it's assumed that we're initializing it from the application,
+  /// and initialize the logins.db.
   public init(localName: String, clear: Bool = false) {
     Logger.module.debug("Initing profile \(localName) on thread \(Thread.current).")
     self.name = localName

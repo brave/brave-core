@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Data
 import Favicon
@@ -709,7 +709,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         NSAttributedString(
           string: Strings.searchSuggestionOpenTabActionTitle,
           attributes: [
-            .font: DynamicFontHelper.defaultHelper.SmallSizeBoldWeightAS,
+            .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
             .foregroundColor: browserColors.textSecondary,
           ]
         )
@@ -719,7 +719,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         NSAttributedString(
           string: " · \(site.url)",
           attributes: [
-            .font: DynamicFontHelper.defaultHelper.SmallSizeRegularWeightAS,
+            .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
             .foregroundColor: browserColors.textSecondary,
           ]
         )

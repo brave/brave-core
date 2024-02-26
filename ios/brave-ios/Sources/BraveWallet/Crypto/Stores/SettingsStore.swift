@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -271,14 +271,14 @@ struct CurrencyCode: Hashable, Identifiable {
   static let xdr: Self = .init(code: "XDR", symbol: "XDR")
   static let zap: Self = .init(code: "ZAR", symbol: "R")
 
-  static let allCurrencyCodes: [CurrencyCode] = [
+  static let allCodes: [CurrencyCode] = [
     aed, ars, aud, bdt, bhd, bmd, brl, cad, chf, clp, czk, dkk, eur, gbp, hkd, huf, idr, ils, inr,
     jpy, krw, kwd, lkr, mmk, mxn, myr, ngn, nok, nzd, php, pkr, pln, rub, sar, sek, sgd, thb, `try`,
     twd, uah, usd, vef, vnd, xag, xau, xdr, zap,
   ]
 
   static func symbol(for currencyCode: String) -> String {
-    if let currency = CurrencyCode.allCurrencyCodes.first(where: {
+    if let currency = CurrencyCode.allCodes.first(where: {
       $0.code.caseInsensitiveCompare(currencyCode) == .orderedSame
     }) {
       return currency.symbol

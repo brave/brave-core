@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import Shared
@@ -18,7 +18,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
   UIGestureRecognizerDelegate
 {
 
-  fileprivate let BackForwardListCellIdentifier = "BackForwardListViewController"
+  fileprivate let backForwardListCellIdentifier = "BackForwardListViewController"
   fileprivate var profile: Profile
   fileprivate lazy var sites = [String: Site]()
   fileprivate var dismissing = false
@@ -33,7 +33,7 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     tableView.alwaysBounceVertical = false
     tableView.register(
       BackForwardTableViewCell.self,
-      forCellReuseIdentifier: self.BackForwardListCellIdentifier
+      forCellReuseIdentifier: self.backForwardListCellIdentifier
     )
     tableView.backgroundColor = BackForwardViewUX.backgroundColor
     return tableView
@@ -229,10 +229,10 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-    // swiftlint:disable:next force_cast
+
     let cell =
       self.tableView.dequeueReusableCell(
-        withIdentifier: BackForwardListCellIdentifier,
+        withIdentifier: backForwardListCellIdentifier,
         for: indexPath
       ) as! BackForwardTableViewCell
     let item = listData[indexPath.item]

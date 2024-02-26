@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BigNumber
 import BraveCore
@@ -321,7 +321,8 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         allNetworks = await rpcService.allNetworksForSupportedCoins()
       }
       guard let network = allNetworks.first(where: { $0.chainId == transaction.chainId }) else {
-        if !transaction.chainId.isEmpty {  // default `BraveWallet.TransactionInfo()` has empty chainId
+        // default `BraveWallet.TransactionInfo()` has empty chainId
+        if !transaction.chainId.isEmpty {
           // Transactions should be removed if their network is removed
           // https://github.com/brave/brave-browser/issues/30234
           assertionFailure(
@@ -447,7 +448,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     for parsedTransaction: ParsedTransaction,
     allTokens: [BraveWallet.BlockchainToken]
   ) async {
-    guard case let .ethErc20Approve(details) = parsedTransaction.details else {
+    guard case .ethErc20Approve(let details) = parsedTransaction.details else {
       return
     }
 
@@ -543,10 +544,10 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
     transactionDetails = activeTransactionDetails
 
     switch activeParsedTransaction.details {
-    case let .ethSend(details),
-      let .erc20Transfer(details),
-      let .solSystemTransfer(details),
-      let .solSplTokenTransfer(details):
+    case .ethSend(let details),
+      .erc20Transfer(let details),
+      .solSystemTransfer(let details),
+      .solSplTokenTransfer(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""
@@ -594,7 +595,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         )
       }
 
-    case let .ethErc20Approve(details):
+    case .ethErc20Approve(let details):
       value = details.approvalAmount
       symbol = details.token?.symbol ?? ""
       proposedAllowance = details.approvalValue
@@ -637,7 +638,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
         // async fetch current allowance to not delay updating transaction details (will re-parse after fetching current allowance)
         await fetchCurrentAllowance(for: activeParsedTransaction, allTokens: allTokens)
       }
-    case let .ethSwap(details):
+    case .ethSwap(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
       fiat = details.fromFiat ?? ""
@@ -679,7 +680,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           currencyFormatter: currencyFormatter
         )
       }
-    case let .erc721Transfer(details):
+    case .erc721Transfer(let details):
       symbol = details.fromToken?.symbol ?? ""
       value = details.fromAmount
 
@@ -720,7 +721,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           currencyFormatter: currencyFormatter
         )
       }
-    case let .solDappTransaction(details), let .solSwapTransaction(details):
+    case .solDappTransaction(let details), .solSwapTransaction(let details):
       symbol = details.symbol ?? ""
       value = details.fromAmount
       transactionDetails = details.instructions
@@ -755,7 +756,7 @@ public class TransactionConfirmationStore: ObservableObject, WalletObserverStore
           }
         }
       }
-    case let .filSend(details):
+    case .filSend(let details):
       symbol = details.sendToken?.symbol ?? ""
       value = details.sendAmount
       fiat = details.sendFiat ?? ""

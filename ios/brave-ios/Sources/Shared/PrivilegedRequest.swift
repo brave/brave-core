@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
-private let REQUEST_KEY_PRIVILEGED = "privileged"
+private let privilegedRequestKey = "privileged"
 
 /// Request that is allowed to load local resources.
 ///
@@ -42,7 +42,7 @@ public class PrivilegedRequest: NSMutableURLRequest {
   }
 
   fileprivate func setPrivileged() {
-    URLProtocol.setProperty(true, forKey: REQUEST_KEY_PRIVILEGED, in: self)
+    URLProtocol.setProperty(true, forKey: privilegedRequestKey, in: self)
   }
 }
 
@@ -51,6 +51,6 @@ extension URLRequest {
     if let url = url, let internalUrl = InternalURL(url) {
       return internalUrl.isAuthorized
     }
-    return URLProtocol.property(forKey: REQUEST_KEY_PRIVILEGED, in: self) != nil
+    return URLProtocol.property(forKey: privilegedRequestKey, in: self) != nil
   }
 }

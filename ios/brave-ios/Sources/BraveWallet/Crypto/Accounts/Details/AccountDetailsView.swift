@@ -1,14 +1,12 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
 import BraveUI
 import CoreImage
-// For some reason SwiftLint thinks this is a duplicate import
-// swiftlint:disable:next duplicate_imports
 import CoreImage.CIFilterBuiltins
 import Strings
 import SwiftUI
@@ -89,7 +87,9 @@ struct AccountDetailsView: View {
         }
         if account.isImported {
           Section {
-            Button(action: { isPresentingRemoveConfirmation = true }) {
+            Button {
+              isPresentingRemoveConfirmation = true
+            } label: {
               Text(Strings.Wallet.accountRemoveButtonTitle)
                 .foregroundColor(.red)
                 .multilineTextAlignment(.center)
@@ -113,7 +113,9 @@ struct AccountDetailsView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { presentationMode.dismiss() }) {
+          Button {
+            presentationMode.dismiss()
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -173,7 +175,9 @@ private struct AccountDetailsHeaderView: View {
             }
           }
         )
-      Button(action: { UIPasteboard.general.string = address }) {
+      Button {
+        UIPasteboard.general.string = address
+      } label: {
         HStack {
           Text(address)
             .foregroundColor(Color(.secondaryBraveLabel))

@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveUI
@@ -203,7 +203,8 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     self.mode = mode
 
     let chainIdInDecimal: String
-    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) {  // BraveWallet.NetworkInfo.chainId should always in hex
+    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) {
+      // BraveWallet.NetworkInfo.chainId should always in hex
       chainIdInDecimal = "\(intValue)"
     } else {
       chainIdInDecimal = network.chainId
@@ -393,9 +394,9 @@ struct CustomNetworkDetailsView: View {
           if networkStore.isAddingNewNetwork {
             ProgressView()
           } else {
-            Button(action: {
+            Button {
               addCustomNetwork()
-            }) {
+            } label: {
               Text(Strings.Wallet.saveButtonTitle)
                 .foregroundColor(Color(.braveBlurpleTint))
             }
@@ -403,9 +404,9 @@ struct CustomNetworkDetailsView: View {
         }
       }
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: {
+        Button {
           presentationMode.dismiss()
-        }) {
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -449,7 +450,9 @@ struct CustomNetworkDetailsView: View {
       if model.mode.isViewMode {
         Text(item.wrappedValue.input)
           .contextMenu {
-            Button(action: { UIPasteboard.general.string = item.wrappedValue.input }) {
+            Button {
+              UIPasteboard.general.string = item.wrappedValue.input
+            } label: {
               Label(Strings.Wallet.copyToPasteboard, braveSystemImage: "leo.copy.plain-text")
             }
           }
@@ -475,9 +478,12 @@ struct CustomNetworkDetailsView: View {
     if model.networkDecimals.input.isEmpty {
       model.networkDecimals.error = Strings.Wallet.customNetworkEmptyErrMsg
     }
-    if model.rpcUrls.first(where: { !$0.input.isEmpty && $0.error == nil }) == nil {  // has no valid url
-      if let index = model.rpcUrls.firstIndex(where: { $0.input.isEmpty }) {  // find the first empty entry
-        model.rpcUrls[index].error = Strings.Wallet.customNetworkEmptyErrMsg  // set the empty err msg
+    // has no valid url
+    if model.rpcUrls.first(where: { !$0.input.isEmpty && $0.error == nil }) == nil {
+      // find the first empty entry
+      if let index = model.rpcUrls.firstIndex(where: { $0.input.isEmpty }) {
+        // set the empty err msg
+        model.rpcUrls[index].error = Strings.Wallet.customNetworkEmptyErrMsg
       }
     }
 

@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -343,7 +343,7 @@ struct FiltersDisplaySettingsView: View {
   }
 
   private var networkFilters: some View {
-    NavigationLink(destination: {
+    NavigationLink {
       NetworkFilterView(
         networks: networks,
         networkStore: networkStore,
@@ -353,7 +353,7 @@ struct FiltersDisplaySettingsView: View {
           networks = selectedNetworks
         }
       )
-    }) {
+    } label: {
       FilterDetailRowView(
         title: Strings.Wallet.selectNetworksTitle,
         description: Strings.Wallet.selectNetworksDescription,
@@ -385,7 +385,7 @@ struct FiltersDisplaySettingsView: View {
 
   private var saveChangesContainer: some View {
     VStack {
-      Button(action: {
+      Button {
         let filters = Filters(
           groupBy: groupBy,
           sortOrder: sortOrder,
@@ -397,7 +397,7 @@ struct FiltersDisplaySettingsView: View {
         )
         save(filters)
         dismiss()
-      }) {
+      } label: {
         Text(Strings.Wallet.saveChangesButtonTitle)
           .fontWeight(.semibold)
           .frame(maxWidth: .infinity)
@@ -406,7 +406,9 @@ struct FiltersDisplaySettingsView: View {
       .buttonStyle(BraveFilledButtonStyle(size: .large))
       .disabled(isSaveChangesDisabled)
 
-      Button(action: { dismiss() }) {
+      Button {
+        dismiss()
+      } label: {
         Text(Strings.CancelString)
           .fontWeight(.semibold)
           .foregroundColor(Color(uiColor: WalletV2Design.textInteractive))
@@ -602,7 +604,9 @@ struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View
       Menu(
         content: {
           ForEach(allOptions) { option in
-            Button(action: { selection = option }) {
+            Button {
+              selection = option
+            } label: {
               HStack {
                 Image(braveSystemName: "leo.check.normal")
                   .resizable()

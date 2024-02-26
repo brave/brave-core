@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Shared
@@ -288,7 +288,8 @@ import XCTest
     let provider: BraveWallet.TestSolanaProvider = .init()
     provider._signMessage = {
       [kTestPublicKey, kTestSignature] blobMsg, displayEncoding, completion in
-      XCTAssertNotNil(displayEncoding)  // displayEncoding provided as optional arg, should be non-nil
+      // displayEncoding provided as optional arg, should be non-nil
+      XCTAssertNotNil(displayEncoding)
       completion(
         .success,
         "",

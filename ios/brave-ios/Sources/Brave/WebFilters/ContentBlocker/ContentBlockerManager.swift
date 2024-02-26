@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShields
@@ -395,7 +395,7 @@ actor ContentBlockerManager {
     var results = Set<GenericBlocklistType>()
 
     // Get domain specific rule types
-    if domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) {
+    if domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) {
       results = results.union([.blockAds, .blockTrackers])
     }
 
@@ -421,7 +421,7 @@ actor ContentBlockerManager {
       return .generic(genericType)
     }
 
-    guard domain.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true) else {
+    guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else {
       return Set(genericRuleLists)
     }
 

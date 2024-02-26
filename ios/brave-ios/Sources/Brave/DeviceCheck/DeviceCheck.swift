@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DeviceCheck
@@ -381,12 +381,12 @@ extension DeviceCheckClient {
           }
 
           if T.self == Data.self {
-            continuation.resume(returning: data as! T)  // swiftlint:disable:this force_cast
+            continuation.resume(returning: data as! T)
             return
           }
 
           if T.self == String.self {
-            continuation.resume(returning: String(data: data, encoding: .utf8) as! T)  // swiftlint:disable:this force_cast
+            continuation.resume(returning: String(data: data, encoding: .utf8) as! T)
             return
           }
 

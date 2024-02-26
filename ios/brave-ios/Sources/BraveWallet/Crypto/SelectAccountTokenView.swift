@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import SwiftUI
@@ -54,7 +54,9 @@ struct SelectAccountTokenView: View {
     )
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { presentationMode.dismiss() }) {
+        Button {
+          presentationMode.dismiss()
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -63,7 +65,9 @@ struct SelectAccountTokenView: View {
         networkFilterButton
         Spacer()
         if shouldShowZeroBalanceButton {
-          Button(action: { store.isHidingZeroBalances.toggle() }) {
+          Button {
+            store.isHidingZeroBalances.toggle()
+          } label: {
             Text(
               store.isHidingZeroBalances
                 ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
@@ -87,9 +91,9 @@ struct SelectAccountTokenView: View {
   }
 
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
@@ -148,9 +152,9 @@ struct SelectAccountTokenView: View {
               Menu(
                 content: {
                   Text(accountSection.account.address.zwspOutput)
-                  Button(action: {
+                  Button {
                     UIPasteboard.general.string = accountSection.account.address
-                  }) {
+                  } label: {
                     Label(
                       Strings.Wallet.copyAddressButtonTitle,
                       braveSystemImage: "leo.copy.plain-text"
@@ -174,10 +178,10 @@ struct SelectAccountTokenView: View {
     _ accountSection: SelectAccountTokenStore.AccountSection
   ) -> some View {
     ForEach(accountSection.tokenBalances) { tokenBalance in
-      Button(action: {
+      Button {
         store.didSelect(accountSection.account, tokenBalance.token)
         presentationMode.dismiss()
-      }) {
+      } label: {
         if tokenBalance.token.isErc721 || tokenBalance.token.isNft {
           NFTAssetView(
             image: NFTIconView(

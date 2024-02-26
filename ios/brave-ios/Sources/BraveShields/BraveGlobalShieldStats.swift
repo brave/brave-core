@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Combine
 import Foundation
@@ -97,7 +97,8 @@ open class BraveGlobalShieldStats {
     if let counterLocaleStr = Int(counter).decimalFormattedString {
       return counterLocaleStr + text
     } else {
-      return "0" + Strings.Shields.shieldsTimeStatsSeconds  // If decimalFormattedString returns nil, default to "0s"
+      // If decimalFormattedString returns nil, default to "0s"
+      return "0" + Strings.Shields.shieldsTimeStatsSeconds
     }
   }
 

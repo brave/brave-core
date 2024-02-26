@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -98,11 +98,14 @@ class TransactionsActivityStoreTests: XCTestCase {
       completion(self.tokenRegistry[coin] ?? [])
     }
 
-    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
+    // default in mainnet
     let ethNFTSendTxCopy =
-      BraveWallet.TransactionInfo.previewERC721Send.copy() as! BraveWallet.TransactionInfo  // default in mainnet
+      BraveWallet.TransactionInfo.previewERC721Send.copy() as! BraveWallet.TransactionInfo
+    // default in mainnet
     let ethSendTxCopy =
-      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo  // default in mainnet
+      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
     let goerliSwapTxCopy =
       BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId

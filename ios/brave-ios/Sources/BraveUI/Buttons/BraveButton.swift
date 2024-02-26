@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SnapKit
 import UIKit
@@ -100,13 +100,14 @@ open class BraveButton: UIButton {
           withDuration: 0.25,
           animations: {
             loaderView.alpha = self.isLoading ? 1.0 : 0.0
+          },
+          completion: { _ in
+            if !self.isLoading {
+              loaderView.stop()
+              loaderView.removeFromSuperview()
+            }
           }
-        ) { _ in
-          if !self.isLoading {
-            loaderView.stop()
-            loaderView.removeFromSuperview()
-          }
-        }
+        )
       }
     }
   }

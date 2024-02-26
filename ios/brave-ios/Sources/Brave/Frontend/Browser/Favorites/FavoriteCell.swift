@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
 import BraveUI
@@ -37,7 +37,7 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
       UILayoutPriority.defaultHigh,
       for: NSLayoutConstraint.Axis.vertical
     )
-    $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
+    $0.font = DynamicFontHelper.defaultHelper.defaultSmallFont
     $0.textAlignment = UI.labelAlignment
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
     $0.numberOfLines = 2
@@ -112,7 +112,7 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
 
   static func height(forWidth width: CGFloat) -> CGFloat {
     let imageHeight = (width - 24)
-    let labelHeight = (DynamicFontHelper.defaultHelper.DefaultSmallFont.lineHeight * 2)
+    let labelHeight = (DynamicFontHelper.defaultHelper.defaultSmallFont.lineHeight * 2)
     return ceil(imageHeight + UI.spacing + labelHeight)
   }
 }

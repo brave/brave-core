@@ -344,7 +344,7 @@ var package = Package(
     .plugin(name: "LoggerPlugin", capability: .buildTool()),
     .plugin(
       name: "LeoAssetsPlugin",
-      capability: .buildTool() /*, dependencies: ["LeoAssetCatalogGenerator"]*/
+      capability: .buildTool()
     ),
     .executableTarget(name: "LeoAssetCatalogGenerator"),
   ],

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -263,10 +263,10 @@ extension BrowserViewController: WKNavigationDelegate {
         return (.cancel, preferences)
       }
       switch result {
-      case let .loadInterstitial(service):
+      case .loadInterstitial(let service):
         showWeb3ServiceInterstitialPage(service: service, originalURL: requestURL)
         return (.cancel, preferences)
-      case let .load(resolvedURL):
+      case .load(let resolvedURL):
         if resolvedURL.isIPFSScheme {
           handleIPFSSchemeURL(resolvedURL)
           return (.cancel, preferences)
@@ -340,12 +340,12 @@ extension BrowserViewController: WKNavigationDelegate {
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
           .requestBlocking: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
 
           // The tracker protection script
           // This script will track what is blocked and increase stats
           .trackerProtectionStats: requestURL.isWebPage(includeDataURIs: false)
-            && domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
+            && domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
 
           // Add Brave search result ads processing script
           // This script will process search result ads on the Brave search page.
@@ -498,7 +498,7 @@ extension BrowserViewController: WKNavigationDelegate {
           persistent: !isPrivateBrowsing
         )
         let isScriptsEnabled = !domainForShields.isShieldExpected(
-          .NoScript,
+          .noScript,
           considerAllShieldsOption: true
         )
 
@@ -1703,7 +1703,7 @@ extension BrowserViewController: WKUIDelegate {
 
     // For main frame only and if shields are enabled
     guard requestURL.isWebPage(includeDataURIs: false),
-      domainForMainFrame.isShieldExpected(.AdblockAndTp, considerAllShieldsOption: true),
+      domainForMainFrame.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true),
       navigationAction.targetFrame?.isMainFrame == true
     else { return nil }
 

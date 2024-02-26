@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import Combine
@@ -334,7 +334,8 @@ import XCTest
 
   /// Test that `nextTransaction` will update `activeTransactionId` property in order of transaction created time.
   func testNextTransaction() async {
-    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    // Monday, November 8, 2021 7:27:51 PM
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)
     let sendCopy =
       BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
     sendCopy.chainId = BraveWallet.GoerliChainId

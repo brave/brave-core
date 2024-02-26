@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
 import BraveCore
@@ -21,10 +21,10 @@ struct AddressQRCodeScannerView: View {
       #if targetEnvironment(simulator)
       ZStack {
         Color.black.ignoresSafeArea()
-        Button(action: {
+        Button {
           address = "0xaa32"
           presentationMode.dismiss()
-        }) {
+        } label: {
           Text("Click here to simulate scan")
             .foregroundColor(.white)
         }
@@ -32,9 +32,9 @@ struct AddressQRCodeScannerView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -52,9 +52,9 @@ struct AddressQRCodeScannerView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Favicon
@@ -29,7 +29,7 @@ class SnackButton: UIButton {
     super.init(frame: .zero)
 
     setTitle(title, for: .normal)
-    titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
+    titleLabel?.font = DynamicFontHelper.defaultHelper.defaultMediumFont
     setTitleColor(.braveBlurpleTint, for: .highlighted)
     setTitleColor(.braveLabel, for: .normal)
     addTarget(self, action: #selector(onClick), for: .touchUpInside)
@@ -73,7 +73,7 @@ class SnackBar: UIView {
 
   private lazy var textLabel: UILabel = {
     let label = UILabel()
-    label.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
+    label.font = DynamicFontHelper.defaultHelper.defaultMediumFont
     label.lineBreakMode = .byWordWrapping
     label.setContentCompressionResistancePriority(.required, for: .horizontal)
     label.backgroundColor = nil
@@ -157,11 +157,9 @@ class SnackBar: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  /**
-     * Called to check if the snackbar should be removed or not. By default, Snackbars persist forever.
-     * Override this class or use a class like CountdownSnackbar if you want things expire
-     * - returns: true if the snackbar should be kept alive
-     */
+  /// Called to check if the snackbar should be removed or not. By default, Snackbars persist forever.
+  /// Override this class or use a class like CountdownSnackbar if you want things expire
+  /// - returns: true if the snackbar should be kept alive
   func shouldPersist(_ tab: Tab) -> Bool {
     return true
   }

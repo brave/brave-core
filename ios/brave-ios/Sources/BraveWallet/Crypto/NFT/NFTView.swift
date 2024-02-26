@@ -172,9 +172,9 @@ struct NFTView: View {
   @ViewBuilder private func nftGridsPlainView(_ group: NFTGroupViewModel) -> some View {
     LazyVGrid(columns: nftGrids) {
       ForEach(group.assets) { nft in
-        Button(action: {
+        Button {
           selectedNFTViewModel = nft
-        }) {
+        } label: {
           VStack(alignment: .leading, spacing: 4) {
             nftImage(nft)
               .overlay(alignment: .bottomTrailing) {
@@ -215,7 +215,7 @@ struct NFTView: View {
           }
         }
         .contextMenu {
-          Button(action: {
+          Button {
             if nft.token.visible {  // a collected visible NFT, mark as hidden
               nftStore.updateNFTStatus(
                 nft.token,
@@ -231,7 +231,7 @@ struct NFTView: View {
                 isDeletedByUser: false
               )
             }
-          }) {
+          } label: {
             if nft.token.visible {  // a collected visible NFT
               Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
             } else if nft.token.isSpam {  // a spam NFT
@@ -240,9 +240,9 @@ struct NFTView: View {
               Label(Strings.Wallet.nftUnhide, braveSystemImage: "leo.eye.on")
             }
           }
-          Button(action: {
+          Button {
             nftToBeRemoved = nft
-          }) {
+          } label: {
             Label(Strings.Wallet.nftRemoveFromWallet, braveSystemImage: "leo.trash")
           }
         }
@@ -266,7 +266,7 @@ struct NFTView: View {
             .padding(.top)
         },
         label: {
-          if case let .account(account) = group.groupType {
+          if case .account(let account) = group.groupType {
             AddressView(address: account.address) {
               PortfolioAssetGroupHeaderView(group: group)
             }

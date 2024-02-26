@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Foundation
@@ -135,9 +135,9 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       alignment: .bottomTrailing,
       content: {
         if isConfirmationButtonVisible {
-          Button(action: {
+          Button {
             cryptoStore.isPresentingPendingRequest = true
-          }) {
+          } label: {
             Image(braveSystemName: "leo.notification.dot")
               .font(.system(size: 18))
               .foregroundColor(.white)
@@ -248,15 +248,17 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   @ToolbarContentBuilder private var sharedToolbarItems: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if selectedTab == .portfolio {
-        Button(action: {
+        Button {
           cryptoStore.isPresentingAssetSearch = true
-        }) {
+        } label: {
           Label(Strings.Wallet.searchTitle, systemImage: "magnifyingglass")
             .labelStyle(.iconOnly)
             .foregroundColor(Color(.braveBlurpleTint))
         }
       }
-      Button(action: { self.isShowingMainMenu = true }) {
+      Button {
+        self.isShowingMainMenu = true
+      } label: {
         Label(
           Strings.Wallet.otherWalletActionsAccessibilityTitle,
           braveSystemImage: "leo.more.horizontal"

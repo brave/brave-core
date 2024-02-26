@@ -1,9 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-/* Created and contributed by Nikolai Ruhe and rewritten in Swift.
- * https://github.com/NikolaiRuhe/NRFoundation */
+// Created and contributed by Nikolai Ruhe and rewritten in Swift.
+// https://github.com/NikolaiRuhe/NRFoundation
 
 import Foundation
 
@@ -75,14 +75,10 @@ extension FileManager {
     return false
   }
 
-  /**
-     Returns the precise size of the given directory on disk.
-
-     - parameter url:    Directory URL
-     - parameter prefix: Prefix of files to check for size
-
-     - throws: Error reading/operating on disk.
-     */
+  /// Returns the precise size of the given directory on disk.
+  /// - parameter url:    Directory URL
+  /// - parameter prefix: Prefix of files to check for size
+  /// - throws: Error reading/operating on disk.
   public func getAllocatedSizeOfDirectoryAtURL(
     _ url: URL,
     forFilesPrefixedWith prefix: String

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SnapKit
@@ -249,14 +249,14 @@ class BottomSheetViewController: UIViewController {
       withDuration: animationDuration,
       animations: {
         self.yPosition = nextYPosition
-
+      },
+      completion: { _ in
+        if nextYPosition > 0 {
+          self.view.removeFromSuperview()
+          self.removeFromParent()
+        }
       }
-    ) { _ in
-      if nextYPosition > 0 {
-        self.view.removeFromSuperview()
-        self.removeFromParent()
-      }
-    }
+    )
   }
 
   private func show() {
@@ -275,11 +275,12 @@ class BottomSheetViewController: UIViewController {
       withDuration: animationDuration,
       animations: {
         self.yPosition = self.view.frame.maxY
+      },
+      completion: { _ in
+        self.view.removeFromSuperview()
+        self.removeFromParent()
       }
-    ) { _ in
-      self.view.removeFromSuperview()
-      self.removeFromParent()
-    }
+    )
   }
 
   // Distance travelled after decelerating to zero velocity at a constant rate (credit: a WWDC video)

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -8,7 +8,7 @@ import SwiftyJSON
 import WebKit
 import os.log
 
-let ReaderModeProfileKeyStyle = "readermode.style"
+let readerModeProfileKeyStyle = "readermode.style"
 
 enum ReaderModeMessageType: String {
   case stateChange = "ReaderModeStateChange"
@@ -158,7 +158,7 @@ struct ReaderModeStyle {
   }
 }
 
-let DefaultReaderModeStyle = ReaderModeStyle(
+let defaultReaderModeStyle = ReaderModeStyle(
   theme: .light,
   fontType: .sansSerif,
   fontSize: ReaderModeFontSize.defaultSize
@@ -256,7 +256,7 @@ protocol ReaderModeScriptHandlerDelegate: AnyObject {
   )
 }
 
-let ReaderModeNamespace = "window.__firefox__.reader"
+let readerModeNamespace = "window.__firefox__.reader"
 
 class ReaderModeScriptHandler: TabContentScript {
   weak var delegate: ReaderModeScriptHandlerDelegate?
@@ -337,11 +337,11 @@ class ReaderModeScriptHandler: TabContentScript {
     }
   }
 
-  var style: ReaderModeStyle = DefaultReaderModeStyle {
+  var style: ReaderModeStyle = defaultReaderModeStyle {
     didSet {
       if state == ReaderModeState.active {
         tab?.webView?.evaluateSafeJavaScript(
-          functionName: "\(ReaderModeNamespace).setStyle",
+          functionName: "\(readerModeNamespace).setStyle",
           args: [style.encode()],
           contentWorld: Self.scriptSandbox,
           escapeArgs: false

@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
 import Data
@@ -307,14 +307,15 @@ class PlaylistToast: Toast {
       animations: {
         self.animationConstraint?.update(offset: SimpleToastUX.toastHeight)
         self.layoutIfNeeded()
+      },
+      completion: { finished in
+        self.displayState = .dismissed
+        self.removeFromSuperview()
+        if !buttonPressed {
+          self.completionHandler?(false)
+        }
       }
-    ) { finished in
-      self.displayState = .dismissed
-      self.removeFromSuperview()
-      if !buttonPressed {
-        self.completionHandler?(false)
-      }
-    }
+    )
   }
 
   private var shadowLayerZOrder: Int {

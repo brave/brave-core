@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -22,16 +22,15 @@ extension HTTPCookie {
   ) {
     let cookieStore = WKWebsiteDataStore.default().httpCookieStore
 
-    /* For reason unkown the callback to getAllCookies is not called, when the save is done from Settings.
-         A possibility is https://bugs.webkit.org/show_bug.cgi?id=188242
-         Even with the issue being fixed it still sometimes doesn't work.
-         The network process is in suspened maybe?
-
-         And for some reason fetch cookie records preemptively guarantees this works.
-         Best guess is that fetching records brings network process to active.
-
-         Same applies to setting cookies back below.
-         */
+    // For reason unkown the callback to getAllCookies is not called, when the save is done from
+    // Settings. A possibility is https://bugs.webkit.org/show_bug.cgi?id=188242
+    // Even with the issue being fixed it still sometimes doesn't work.
+    // The network process is in suspened maybe?
+    //
+    // And for some reason fetch cookie records preemptively guarantees this works.
+    // Best guess is that fetching records brings network process to active.
+    //
+    // Same applies to setting cookies back below.
     WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in }
     cookieStore.getAllCookies { cookies in
       guard let baseDir = directory else {

@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
 import Shared
@@ -119,7 +119,7 @@ class ShieldsSwitch: UIControl {
     get {
       "\(Strings.Shields.statusTitle): \(isOn ? Strings.Shields.statusValueUp : Strings.Shields.statusValueDown)"
     }
-    set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+    set { assertionFailure() }
   }
 
   @available(*, unavailable)

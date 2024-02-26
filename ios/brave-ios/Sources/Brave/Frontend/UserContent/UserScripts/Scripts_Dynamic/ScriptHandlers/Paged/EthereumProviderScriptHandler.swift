@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -77,7 +77,8 @@ class EthereumProviderScriptHandler: TabContentScript {
     guard let tab = tab,
       !tab.isPrivate,
       let provider = tab.walletEthProvider,
-      !message.frameInfo.securityOrigin.host.isEmpty,  // Fail if there is no last committed URL yet
+      // Fail if there is no last committed URL yet
+      !message.frameInfo.securityOrigin.host.isEmpty,
       message.frameInfo.isMainFrame,  // Fail the request came from 3p origin
       JSONSerialization.isValidJSONObject(message.body),
       let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),

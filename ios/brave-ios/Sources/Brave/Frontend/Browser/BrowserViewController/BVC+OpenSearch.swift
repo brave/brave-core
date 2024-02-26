@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Favicon
 import Shared
@@ -80,17 +80,13 @@ extension BrowserViewController {
       supportsAutoAdd = true
     }
 
-    /*
-         This is how we access hidden views in the WKContentView
-         Using the public headers we can find the keyboard accessoryView which is not usually available.
-         Specific values here are from the WKContentView headers.
-         https://github.com/JaviSoto/iOS9-Runtime-Headers/blob/master/Frameworks/WebKit.framework/WKContentView.h
-         */
+    // This is how we access hidden views in the WKContentView
+    // Using the public headers we can find the keyboard accessoryView which is not usually available.
+    // Specific values here are from the WKContentView headers.
+    // https://github.com/JaviSoto/iOS9-Runtime-Headers/blob/master/Frameworks/WebKit.framework/WKContentView.h
     guard let webContentView = UIView.findSubViewWithFirstResponder(webView) else {
-      /*
-             In some cases the URL bar can trigger the keyboard notification. In that case the webview isnt the first responder
-             and a search button should not be added.
-             */
+      // In some cases the URL bar can trigger the keyboard notification. In that case the webview isnt the first responder
+      // and a search button should not be added.
       return supportsAutoAdd
     }
 

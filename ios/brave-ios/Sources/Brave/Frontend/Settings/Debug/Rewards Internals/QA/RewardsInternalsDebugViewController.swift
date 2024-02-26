@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
@@ -102,12 +102,12 @@ class RewardsInternalsDebugViewController: TableViewController {
       let keyMaps = [
         "anonymous": Strings.RewardsInternals.anonymous,
         "uphold": "Uphold",
-        "blinded": "Rewards \(Strings.BAT)",
+        "blinded": "Rewards \(Strings.batSymbol)",
       ]
       let walletRows = balance.wallets.map { (key, value) -> Row in
         Row(
           text: keyMaps[key] ?? key,
-          detailText: "\(batFormatter.string(from: value) ?? "0.0") \(Strings.BAT)"
+          detailText: "\(batFormatter.string(from: value) ?? "0.0") \(Strings.batSymbol)"
         )
       }
       sections.append(
@@ -117,7 +117,7 @@ class RewardsInternalsDebugViewController: TableViewController {
             Row(
               text: Strings.RewardsInternals.totalBalance,
               detailText:
-                "\(batFormatter.string(from: NSNumber(value: balance.total)) ?? "0.0") \(Strings.BAT)"
+                "\(batFormatter.string(from: NSNumber(value: balance.total)) ?? "0.0") \(Strings.batSymbol)"
             )
           ] + walletRows
         )

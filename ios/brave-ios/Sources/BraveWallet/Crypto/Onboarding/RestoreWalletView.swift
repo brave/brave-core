@@ -1,7 +1,7 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import DesignSystem
 import Foundation
@@ -66,16 +66,22 @@ struct RestoreWalletView: View {
       let oldInput = oldValue[safe: indexOnDifference],
       let newInput = newValue[safe: indexOnDifference]
     {  // there is a new input on `indexOnDifference`
-      if abs(newInput.count - oldInput.count) > 1 {  // we consider this is a copy and paste from `UIPasteboard`
+      // we consider this is a copy and paste from `UIPasteboard`
+      if abs(newInput.count - oldInput.count) > 1 {
         let phrases = newInput.split(separator: " ")
-        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) {  // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
+        // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
+        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) {
           let currentLength = recoveryWords.count
           var newPhrases = Array(repeating: "", count: currentLength)
           for (index, pastedWord) in phrases.enumerated() {
             newPhrases[index] = String(pastedWord)
           }
           recoveryWords = newPhrases
-        } else {  // user copy and paste some phrases, we will auto-fill in from the `indexOfDifference` (where user pastes) to the last input field. This also means, if user passtes more phrases than number of input fields remaining, we won't exceed and will stop pasting at the last input field.
+        } else {
+          // user copy and paste some phrases, we will auto-fill in from the `indexOfDifference`
+          // (where user pastes) to the last input field. This also means, if user passtes more
+          // phrases than number of input fields remaining, we won't exceed and will stop pasting
+          // at the last input field.
           var startIndex = indexOnDifference
           var recoveryWordsCopy = recoveryWords
           for phrase in phrases {

@@ -1,4 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShields
@@ -13,23 +15,33 @@ public final class Domain: NSManagedObject, CRUD {
 
   @NSManaged public var url: String?
   @NSManaged public var visits: Int32
-  @NSManaged public var topsite: Bool  // not currently used. Should be used once proper frecency code is in.
+  // not currently used. Should be used once proper frecency code is in.
+  @NSManaged public var topsite: Bool
   @NSManaged public var blockedFromTopSites: Bool  // don't show ever on top sites
 
+  // swift-format-ignore
   @NSManaged public var shield_allOff: NSNumber?
+  // swift-format-ignore
   @NSManaged public var shield_adblockAndTp: NSNumber?
 
+  // swift-format-ignore
   @available(*, deprecated, message: "Per domain HTTPSE shield is currently unused.")
   @NSManaged public var shield_httpse: NSNumber?
 
+  // swift-format-ignore
   @NSManaged public var shield_noScript: NSNumber?
+  // swift-format-ignore
   @NSManaged public var shield_fpProtection: NSNumber?
+  // swift-format-ignore
   @NSManaged public var shield_safeBrowsing: NSNumber?
 
   @NSManaged public var bookmarks: NSSet?
 
+  // swift-format-ignore
   @NSManaged public var wallet_permittedAccounts: String?
+  // swift-format-ignore
   @NSManaged public var zoom_level: NSNumber?
+  // swift-format-ignore
   @NSManaged public var wallet_solanaPermittedAcccounts: String?
 
   private var urlComponents: URLComponents? {
@@ -46,7 +58,7 @@ public final class Domain: NSManagedObject, CRUD {
   /// - Warning: This does not consider the "all off" setting
   /// This also takes into consideration certain domains that are always aggressive.
   @MainActor public var blockAdsAndTrackingLevel: ShieldLevel {
-    guard isShieldExpected(.AdblockAndTp, considerAllShieldsOption: false) else { return .disabled }
+    guard isShieldExpected(.adblockAndTp, considerAllShieldsOption: false) else { return .disabled }
     let globalLevel = ShieldPreferences.blockAdsAndTrackingLevel
 
     switch globalLevel {
@@ -69,7 +81,7 @@ public final class Domain: NSManagedObject, CRUD {
   ///
   /// - Warning: This does not consider the "all off" setting
   @MainActor public var finterprintProtectionLevel: ShieldLevel {
-    guard isShieldExpected(.FpProtection, considerAllShieldsOption: false) else { return .disabled }
+    guard isShieldExpected(.fpProtection, considerAllShieldsOption: false) else { return .disabled }
     // We don't have aggressive finterprint protection in iOS
     return .standard
   }
@@ -153,15 +165,15 @@ public final class Domain: NSManagedObject, CRUD {
   ) -> Bool {
     let isShieldOn = { () -> Bool in
       switch shield {
-      case .AllOff:
+      case .allOff:
         return self.shield_allOff?.boolValue ?? false
-      case .AdblockAndTp:
+      case .adblockAndTp:
         return self.shield_adblockAndTp?.boolValue
           ?? ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
-      case .FpProtection:
+      case .fpProtection:
         return self.shield_fpProtection?.boolValue
           ?? Preferences.Shields.fingerprintingProtection.value
-      case .NoScript:
+      case .noScript:
         return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
       }
     }()
@@ -450,10 +462,10 @@ extension Domain {
 
     let setting = (isOn == shield.globalPreference ? nil : isOn) as NSNumber?
     switch shield {
-    case .AllOff: shield_allOff = setting
-    case .AdblockAndTp: shield_adblockAndTp = setting
-    case .FpProtection: shield_fpProtection = setting
-    case .NoScript: shield_noScript = setting
+    case .allOff: shield_allOff = setting
+    case .adblockAndTp: shield_adblockAndTp = setting
+    case .fpProtection: shield_fpProtection = setting
+    case .noScript: shield_noScript = setting
     }
   }
 

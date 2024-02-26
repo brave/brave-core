@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -20,21 +20,19 @@ public class DynamicFontHelper: NSObject {
 
   override init() {
     defaultStandardFontSize =
-      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).pointSize  // 14pt -> 17pt -> 23pt
+      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body).pointSize
     deviceFontSize =
       defaultStandardFontSize
       * (UIDevice.current.userInterfaceIdiom == .pad ? iPadFactor : iPhoneFactor)
     defaultMediumFontSize =
-      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote).pointSize  // 12pt -> 13pt -> 19pt
+      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .footnote).pointSize
     defaultSmallFontSize =
-      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption2).pointSize  // 11pt -> 11pt -> 17pt
+      UIFontDescriptor.preferredFontDescriptor(withTextStyle: .caption2).pointSize
 
     super.init()
   }
 
-  /**
-     * Starts monitoring the ContentSizeCategory chantes
-     */
+  /// Starts monitoring the ContentSizeCategory chantes
   public func startObserving() {
     NotificationCenter.default.addObserver(
       self,
@@ -48,141 +46,123 @@ public class DynamicFontHelper: NSObject {
     NotificationCenter.default.removeObserver(self)
   }
 
-  /**
-     * Device specific
-     */
+  /// Device specific
   fileprivate var deviceFontSize: CGFloat
 
-  var DeviceFont: UIFont {
+  var deviceFont: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize, weight: UIFont.Weight.medium)
   }
-  var DeviceFontLight: UIFont {
+  var deviceFontLight: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize, weight: UIFont.Weight.light)
   }
-  var DeviceFontSmall: UIFont {
+  var deviceFontSmall: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize - 1, weight: UIFont.Weight.medium)
   }
-  var DeviceFontSmallLight: UIFont {
+  var deviceFontSmallLight: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize - 1, weight: UIFont.Weight.light)
   }
-  var DeviceFontSmallHistoryPanel: UIFont {
+  var deviceFontSmallHistoryPanel: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize - 3, weight: UIFont.Weight.light)
   }
-  var DeviceFontHistoryPanel: UIFont {
+  var deviceFontHistoryPanel: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize)
   }
-  var DeviceFontSmallBold: UIFont {
+  var deviceFontSmallBold: UIFont {
     return UIFont.boldSystemFont(ofSize: deviceFontSize - 1)
   }
-  var DeviceFontLarge: UIFont {
+  var deviceFontLarge: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize + 3)
   }
-  var DeviceFontMedium: UIFont {
+  var deviceFontMedium: UIFont {
     return UIFont.systemFont(ofSize: deviceFontSize + 1)
   }
-  var DeviceFontLargeBold: UIFont {
+  var deviceFontLargeBold: UIFont {
     return UIFont.boldSystemFont(ofSize: deviceFontSize + 2)
   }
-  var DeviceFontMediumBold: UIFont {
+  var deviceFontMediumBold: UIFont {
     return UIFont.boldSystemFont(ofSize: deviceFontSize + 1)
   }
-  var DeviceFontExtraLargeBold: UIFont {
+  var deviceFontExtraLargeBold: UIFont {
     return UIFont.boldSystemFont(ofSize: deviceFontSize + 4)
   }
 
-  /*
-     Activity Stream supports dynamic fonts up to a certain point. Large fonts dont work.
-     Max out the supported font size.
-     Small = 14, medium = 18, larger = 20
-     */
-
-  var MediumSizeRegularWeightAS: UIFont {
+  var mediumSizeRegularWeightAS: UIFont {
     let size = min(deviceFontSize, 18)
     return UIFont.systemFont(ofSize: size)
   }
 
-  var LargeSizeRegularWeightAS: UIFont {
+  var largeSizeRegularWeightAS: UIFont {
     let size = min(deviceFontSize + 2, 20)
     return UIFont.systemFont(ofSize: size)
   }
 
-  var MediumSizeHeavyWeightAS: UIFont {
+  var mediumSizeHeavyWeightAS: UIFont {
     let size = min(deviceFontSize + 2, 18)
     return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.heavy)
   }
-  var SmallSizeMediumWeightAS: UIFont {
+  var smallSizeMediumWeightAS: UIFont {
     let size = min(defaultSmallFontSize, 14)
     return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.medium)
   }
 
-  var SmallSizeBoldWeightAS: UIFont {
+  var smallSizeBoldWeightAS: UIFont {
     let size = min(defaultSmallFontSize, 14)
     return UIFont.systemFont(ofSize: size, weight: UIFont.Weight.bold)
   }
 
-  var MediumSizeBoldFontAS: UIFont {
+  var mediumSizeBoldFontAS: UIFont {
     let size = min(deviceFontSize, 18)
     return UIFont.boldSystemFont(ofSize: size)
   }
 
-  var SmallSizeRegularWeightAS: UIFont {
+  var smallSizeRegularWeightAS: UIFont {
     let size = min(defaultSmallFontSize, 14)
     return UIFont.systemFont(ofSize: size)
   }
 
-  /**
-     * Small
-     */
+  /// Small
   fileprivate var defaultSmallFontSize: CGFloat
 
-  var DefaultSmallFont: UIFont {
+  var defaultSmallFont: UIFont {
     return UIFont.systemFont(ofSize: defaultSmallFontSize, weight: UIFont.Weight.regular)
   }
-  var DefaultSmallFontBold: UIFont {
+  var defaultSmallFontBold: UIFont {
     return UIFont.boldSystemFont(ofSize: defaultSmallFontSize)
   }
 
-  /**
-     * Medium
-     */
+  /// Medium
   fileprivate var defaultMediumFontSize: CGFloat
 
-  var DefaultMediumFont: UIFont {
+  var defaultMediumFont: UIFont {
     return UIFont.systemFont(ofSize: defaultMediumFontSize, weight: UIFont.Weight.regular)
   }
-  var DefaultMediumBoldFont: UIFont {
+  var defaultMediumBoldFont: UIFont {
     return UIFont.boldSystemFont(ofSize: defaultMediumFontSize)
   }
 
-  /**
-     * Standard
-     */
+  /// Standard
   fileprivate var defaultStandardFontSize: CGFloat
 
-  var DefaultStandardFont: UIFont {
+  var defaultStandardFont: UIFont {
     return UIFont.systemFont(ofSize: defaultStandardFontSize, weight: UIFont.Weight.regular)
   }
-  var DefaultStandardFontBold: UIFont {
+  var defaultStandardFontBold: UIFont {
     return UIFont.boldSystemFont(ofSize: defaultStandardFontSize)
   }
 
-  /**
-     * Reader mode
-     */
-  var ReaderStandardFontSize: CGFloat {
+  /// Reader mode
+  var readerStandardFontSize: CGFloat {
     return defaultStandardFontSize - 2
   }
-  var ReaderBigFontSize: CGFloat {
+  var readerBigFontSize: CGFloat {
     return defaultStandardFontSize + 5
   }
 
-  /**
-     * Intro mode
-     */
-  var IntroStandardFontSize: CGFloat {
+  /// Intro mode
+  var introStandardFontSize: CGFloat {
     return min(defaultStandardFontSize - 1, 16)
   }
-  var IntroBigFontSize: CGFloat {
+  var introBigFontSize: CGFloat {
     return min(defaultStandardFontSize + 1, 18)
   }
 
