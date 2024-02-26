@@ -12,7 +12,7 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/skus/browser/rs/cxx/src/lib.rs.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.116/include/cxx.h"
+#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.117/include/cxx.h"
 
 namespace skus {
 

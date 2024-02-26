@@ -16,7 +16,7 @@
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
-#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.116/include/cxx.h"
+#include "third_party/rust/chromium_crates_io/vendor/cxx-1.0.117/include/cxx.h"
 
 class SkusUrlLoaderImplUnitTest : public testing::Test {
  public:
