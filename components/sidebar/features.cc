@@ -11,4 +11,9 @@ BASE_FEATURE(kSidebarShowAlwaysOnStable,
              "SidebarShowAlwaysOnStable",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+const base::FeatureParam<bool> kOpenOneShotLeoPanel{
+    &kSidebarShowAlwaysOnStable,
+    /*name=*/"OpenOneShotLeoPanel",
+    /*default_value=*/false};
+
 }  // namespace sidebar::features

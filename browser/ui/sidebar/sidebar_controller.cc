@@ -14,8 +14,11 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/sidebar/features.h"
+#include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
 #include "chrome/browser/history/history_service_factory.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_navigator.h"
 #include "chrome/browser/ui/browser_navigator_params.h"
@@ -25,6 +28,7 @@
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "components/prefs/pref_service.h"
 
 namespace sidebar {
 
@@ -92,6 +96,12 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
   // Only an item for panel can get activated.
   if (item.open_in_panel) {
     sidebar_model_->SetActiveIndex(index);
+
+    if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
+        item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
+      // Prevent one-time leo panel open.
+      browser_->profile()->GetPrefs()->SetBoolean(kLeoPanelOneTimeOpen, true);
+    }
     return;
   }
 

@@ -91,6 +91,7 @@ void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
       !base::FeatureList::IsEnabled(features::kSidebarShowAlwaysOnStable)) {
     option = ShowSidebarOption::kShowNever;
   }
+  registry->RegisterBooleanPref(kLeoPanelOneTimeOpen, false);
   registry->RegisterIntegerPref(kSidebarShowOption, static_cast<int>(option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);

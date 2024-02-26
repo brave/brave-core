@@ -7,11 +7,15 @@
 #define BRAVE_COMPONENTS_SIDEBAR_FEATURES_H_
 
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace sidebar::features {
 
 // Whether to show the sidebar always on stable channel.
 BASE_DECLARE_FEATURE(kSidebarShowAlwaysOnStable);
+
+// Whether to open the leo panel only once.
+extern const base::FeatureParam<bool> kOpenOneShotLeoPanel;
 
 }  // namespace sidebar::features
 

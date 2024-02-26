@@ -21,16 +21,22 @@ source_set("sidebar") {
     "sidebar_model.h",
     "sidebar_service_factory.cc",
     "sidebar_service_factory.h",
+    "sidebar_tab_helper.cc",
+    "sidebar_tab_helper.h",
     "sidebar_utils.cc",
     "sidebar_utils.h",
   ]
 
   deps = [
     "//base",
+    "//brave/browser/profiles:util",
     "//brave/components/sidebar",
     "//chrome/browser/profiles",
+    "//chrome/common:channel_info",
     "//components/keyed_service/content",
     "//components/keyed_service/core",
+    "//components/prefs",
+    "//components/user_prefs",
     "//content/public/browser",
     "//content/public/common",
     "//extensions/buildflags",
