@@ -73,6 +73,7 @@ mod ffi {
             request_type: &CxxString,
             third_party_request: bool,
         ) -> String;
+        pub fn serialize(&self) -> Vec<u8>;
         /// Deserializes and loads a binary-serialized Engine.
         fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool;
         /// Adds a resource to the engine resource set.

@@ -183,6 +183,15 @@ impl Engine {
             .unwrap_or_default()
     }
 
+    /// A 0-length vector will be returned if there was any issue during serialization. Be sure to
+    /// handle that case.
+    pub fn serialize(&self) -> Vec<u8> {
+        match self.engine.serialize_raw() {
+            Ok(v) => v,
+            Err(_e) => vec![],
+        }
+    }
+
     pub fn deserialize(&mut self, serialized: &CxxVector<u8>) -> bool {
         self.engine.deserialize(serialized.as_slice()).is_ok()
     }
