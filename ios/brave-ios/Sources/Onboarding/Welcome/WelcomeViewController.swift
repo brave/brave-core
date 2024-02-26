@@ -405,9 +405,10 @@ public class WelcomeViewController: UIViewController {
     controller.calloutView.isLoading = true
     
     let attributionManager = controller.attributionManager
-    var featureLinkType: FeatureLinkageType?
     
     Task { @MainActor in
+      var featureLinkType: FeatureLinkageType?
+
       do {
         if controller.p3aUtilities.isP3AEnabled {
           switch attributionManager.activeFetureLinkageLogic {
