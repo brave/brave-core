@@ -1,5 +1,3 @@
-#!/usr/bin/swift
-
 import Foundation
 
 guard let apiKey = ProcessInfo.processInfo.environment["PASSWORD"] else {
