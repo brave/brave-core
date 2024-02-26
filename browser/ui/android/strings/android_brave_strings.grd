@@ -465,10 +465,10 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
         Autofill
       </message>
       <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_TITLE" desc="Title for Autofill in private window option in settings">
-        Make auto-fill available in private windows
+        Autofill in private tabs
       </message>
       <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_SUMMARY" desc="Summary for Autofill in private window option in settings">
-        Saved information can be auto-filled in private windows
+        Saved information can be auto-filled in private tabs
       </message>
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
