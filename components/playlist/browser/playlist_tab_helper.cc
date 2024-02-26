@@ -49,10 +49,6 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
     : WebContentsUserData(*contents),
-      PlaylistMediaHandler(
-          contents,
-          base::BindRepeating(&PlaylistService::OnMediaDetected,
-                              service->GetWeakPtr())),
       service_(service) {
   Observe(contents);
   CHECK(service_);
@@ -172,61 +168,6 @@ bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
 
 void PlaylistTabHelper::MaybeExtractMediaFromBackgroundWebContents(
     base::OnceCallback<void(bool)> callback) {
-  if (!ShouldExtractMediaFromBackgroundWebContents()) {
-    std::move(callback).Run(true);
-    return;
-  }
-
-  if (background_web_contents_) {
-    // in progress...
-    return;
-  }
-
-  const GURL url = web_contents()->GetLastCommittedURL();
-
-  content::WebContents::CreateParams create_params(
-      web_contents()->GetBrowserContext(), nullptr);
-  create_params.is_never_visible = true;
-  background_web_contents_ = content::WebContents::Create(create_params);
-  background_web_contents_->SetAudioMuted(true);
-  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      background_web_contents_.get(), service_,
-      service_->GetMediaSourceAPISuppressorScript(),
-      service_->GetMediaDetectorScript(url), std::move(callback));
-  auto load_url_params = content::NavigationController::LoadURLParams(url);
-
-  if (service_->ShouldUseFakeUA(url) ||
-      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    DVLOG(2) << __func__ << " Faked UA to detect media files";
-
-    blink::UserAgentOverride user_agent(
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-        "Mobile/15E148 "
-        "Safari/604.1",
-        /* user_agent_metadata */ {});
-    background_web_contents_->SetUserAgentOverride(
-        user_agent,
-        /* override_in_new_tabs= */ true);
-    load_url_params.override_user_agent =
-        content::NavigationController::UA_OVERRIDE_TRUE;
-  }
-
-  content::NavigationController& controller =
-      background_web_contents_->GetController();
-  controller.LoadURLWithParams(load_url_params);
-
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    for (int i = 0; i < controller.GetEntryCount(); ++i) {
-      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
-    }
-  }
-
-  media_extraction_from_background_web_contents_timer_.Start(
-      FROM_HERE, base::Seconds(10),
-      base::BindOnce(
-          &PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout,
-          weak_ptr_factory_.GetWeakPtr()));
 }
 
 void PlaylistTabHelper::ReadyToCommitNavigation(

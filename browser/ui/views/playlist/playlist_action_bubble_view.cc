@@ -409,9 +409,10 @@ PlaylistActionAddBubble::PlaylistActionAddBubble(
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
 
-  playlist_tab_helper_->MaybeExtractMediaFromBackgroundWebContents(
-      base::BindOnce(&PlaylistActionAddBubble::OnMediaExtracted,
-                     weak_ptr_factory_.GetWeakPtr()));
+  // playlist_tab_helper_->MaybeExtractMediaFromBackgroundWebContents(
+  //     base::BindOnce(&PlaylistActionAddBubble::OnMediaExtracted,
+  //                    weak_ptr_factory_.GetWeakPtr()));
+  OnMediaExtracted(true);
 }
 
 PlaylistActionAddBubble::~PlaylistActionAddBubble() = default;

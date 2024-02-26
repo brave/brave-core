@@ -5,19 +5,47 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
-#include "brave/components/playlist/browser/playlist_service.h"
+#include "base/functional/overloaded.h"
 #include "content/public/browser/web_contents.h"
 
 namespace playlist {
 
-PlaylistMediaHandler::PlaylistMediaHandler(
-    content::WebContents* contents,
-    base::RepeatingCallback<void(base::Value, const GURL&)> on_media_detected)
-    : media_responder_receivers_(contents, this),
-      on_media_detected_(std::move(on_media_detected)) {}
-
 PlaylistMediaHandler::~PlaylistMediaHandler() = default;
+
+void PlaylistMediaHandler::BindMediaResponderReceiver(
+    content::RenderFrameHost* render_frame_host,
+    mojo::PendingAssociatedReceiver<playlist::mojom::PlaylistMediaResponder>
+        receiver) {
+  // TODO(sszaloki): do we have to do a service check here?
+  // auto* playlist_service =
+  //     playlist::PlaylistServiceFactory::GetForBrowserContext(
+  //         rfh->GetBrowserContext());
+  // if (!playlist_service) {
+  //   // We don't support playlist on OTR profile.
+  //   return;
+  // }
+
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  auto* media_handler = PlaylistMediaHandler::FromWebContents(web_contents);
+  if (media_handler) {
+    media_handler->media_responder_receivers_.Bind(render_frame_host,
+                                                   std::move(receiver));
+  }
+}
+
+PlaylistMediaHandler::PlaylistMediaHandler(
+    content::WebContents* web_contents,
+    OnMediaDetectedCallback on_media_detected)
+    : content::WebContentsUserData<PlaylistMediaHandler>(*web_contents),
+      media_responder_receivers_(web_contents, this),
+      on_media_detected_(std::move(on_media_detected)) {
+  std::visit([](auto& callback) { CHECK(callback); }, on_media_detected_);
+}
 
 void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
   const auto render_frame_host_id =
@@ -35,29 +63,29 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
     return;
   }
 
-  auto* background_webcontents_helper =
-      PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents);
+  static const std::string kFunction = __FUNCTION__;
+  std::visit(
+      base::Overloaded{
+          [&](base::OnceCallback<Signature>& on_media_detected) {
+            if (on_media_detected) {
+              DVLOG(2) << render_frame_host_id << " - " << kFunction
+                       << " (background):\n"
+                       << media;
 
-  DVLOG(2) << render_frame_host_id << " - " << __FUNCTION__
-           << (background_webcontents_helper ? " (background)" : "") << ":\n"
-           << media;
+              std::move(on_media_detected)
+                  .Run(std::move(media), web_contents->GetLastCommittedURL());
+            }
+          },
+          [&](base::RepeatingCallback<Signature>& on_media_detected) {
+            DVLOG(2) << render_frame_host_id << " - " << kFunction << ":\n"
+                     << media;
 
-  on_media_detected_.Run(std::move(media), web_contents->GetLastCommittedURL());
-
-  if (background_webcontents_helper) {
-    // TODO(sszaloki): bloah...
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(
-            std::move(*background_webcontents_helper).GetSuccessCallback(),
-            true));
-  }
+            on_media_detected.Run(std::move(media),
+                                  web_contents->GetLastCommittedURL());
+          }},
+      on_media_detected_);
 }
 
-void PlaylistMediaHandler::BindMediaResponderReceiver(
-    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver,
-    content::RenderFrameHost* render_frame_host) {
-  media_responder_receivers_.Bind(render_frame_host, std::move(receiver));
-}
+WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistMediaHandler);
 
 }  // namespace playlist

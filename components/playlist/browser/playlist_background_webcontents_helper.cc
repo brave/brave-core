@@ -45,25 +45,19 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
 
 base::OnceCallback<void(bool)>
 PlaylistBackgroundWebContentsHelper::GetSuccessCallback() && {
-  return success_callback_ ? std::move(success_callback_) : base::DoNothing();
+  return base::DoNothing();
 }
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
     PlaylistService* service,
     const std::string& media_source_api_suppressor,
-    const std::string& media_detector,
-    base::OnceCallback<void(bool)> success_callback)
+    const std::string& media_detector)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      PlaylistMediaHandler(
-          web_contents,
-          base::BindRepeating(&PlaylistService::OnMediaDetected,
-                              service->GetWeakPtr())),
       media_source_api_suppressor_(media_source_api_suppressor),
-      media_detector_(media_detector),
-      success_callback_(std::move(success_callback)) {}
+      media_detector_(media_detector) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);
 

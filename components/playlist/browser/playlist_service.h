@@ -284,6 +284,12 @@ class PlaylistService : public KeyedService,
                               AddMediaFilesCallback callback,
                               std::vector<mojom::PlaylistItemPtr> items);
 
+  void Callback(const std::string& playlist_id,
+                bool cache,
+                AddMediaFilesCallback callback,
+                base::Value media,
+                const GURL& url);
+
   // Returns true when we should try getting media from a background web
   // contents that is different from the given |contents|. which means it could
   // have impact on performance/memory.
@@ -414,6 +420,8 @@ class PlaylistService : public KeyedService,
   raw_ptr<PrefService> prefs_ = nullptr;
 
   BooleanPrefMember enabled_pref_;
+
+  raw_ptr<content::BrowserContext> context_;
 
 #if BUILDFLAG(IS_ANDROID)
   mojo::ReceiverSet<mojom::PlaylistService> receivers_;
