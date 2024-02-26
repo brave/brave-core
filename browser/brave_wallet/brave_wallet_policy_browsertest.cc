@@ -7,8 +7,8 @@
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/brave_wallet/brave_wallet_context_utils.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
-#include "brave/browser/tor/tor_profile_manager.h"
 #include "brave/browser/ui/brave_browser.h"
+#include "brave/browser/ui/browser_commands.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
@@ -89,15 +89,21 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
 
     auto* profile = browser()->profile();
     auto* incognito_profile = CreateIncognitoBrowser(profile)->profile();
-    auto* tor_profile = TorProfileManager::GetInstance().GetTorProfile(profile);
-
     ui_test_utils::BrowserChangeObserver browser_creation_observer(
         nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
-    profiles::SwitchToGuestProfile(base::DoNothing());
+    profiles::SwitchToGuestProfile();
     Browser* guest_browser = browser_creation_observer.Wait();
     DCHECK(guest_browser);
     auto* guest_profile = guest_browser->profile();
-    EXPECT_TRUE(guest_profile->IsGuestSession());
+    ASSERT_TRUE(guest_profile->IsGuestSession());
+
+    ui_test_utils::BrowserChangeObserver tor_browser_creation_observer(
+        nullptr, ui_test_utils::BrowserChangeObserver::ChangeType::kAdded);
+    brave::NewOffTheRecordWindowTor(browser());
+    Browser* tor_browser = tor_browser_creation_observer.Wait();
+    DCHECK(tor_browser);
+    auto* tor_profile = tor_browser->profile();
+    ASSERT_TRUE(tor_profile->IsTor());
 
     // By default the wallet should not be allowed for private, guest, or tor.
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(incognito_profile));
@@ -108,7 +114,7 @@ IN_PROC_BROWSER_TEST_P(BraveWalletPolicyTest, IsBraveWalletDisabled) {
     prefs()->SetBoolean(kBraveWalletPrivateWindowsEnabled, true);
     EXPECT_TRUE(brave_wallet::IsAllowedForContext(incognito_profile));
     EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
-    EXPECT_FALSE(brave_wallet::IsAllowedForContext(tor_profile));
+    EXPECT_FALSE(brave_wallet::IsAllowedForContext(guest_profile));
   }
 }
 
