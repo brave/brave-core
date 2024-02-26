@@ -12,6 +12,7 @@
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
@@ -174,7 +175,12 @@ TEST_F(SidebarModelTest, CanUseNotAddedBuiltInItemInsteadOfTest) {
 
   // Remove builtin talk item and check builtin talk item will be used
   // instead of adding |talk| url.
-  service()->RemoveItemAt(0);
+  const auto items = service()->items();
+  const auto talk_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kBraveTalk,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(talk_iter, items.cend());
+  service()->RemoveItemAt(std::distance(items.cbegin(), talk_iter));
   EXPECT_TRUE(HiddenDefaultSidebarItemsContains(service(), talk));
 }
 
@@ -197,6 +203,15 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
   // Check active index is changed to 2 when new item is added at 1.
   model()->AddItem(item_2, 1, true);
   EXPECT_THAT(model()->active_index(), Optional(2u));
+}
+
+// Check leo item is top-most item.
+TEST_F(SidebarModelTest, TopItemTest) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  const auto first_item = service()->items()[0];
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kChatUI);
+#endif
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {
