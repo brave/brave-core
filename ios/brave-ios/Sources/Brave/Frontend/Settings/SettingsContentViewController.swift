@@ -2,18 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveShared
 import Shared
 import SnapKit
 import UIKit
 import WebKit
-import BraveShared
 
 let DefaultTimeoutTimeInterval = 10.0  // Seconds.  We'll want some telemetry on load times in the wild.
 
-/**
- * A controller that manages a single web view and provides a way for
- * the user to navigate back to Settings.
- */
+/// A controller that manages a single web view and provides a way for
+/// the user to navigate back to Settings.
 class SettingsContentViewController: UIViewController, WKNavigationDelegate {
   let interstitialBackgroundColor: UIColor
   var settingsTitle: NSAttributedString?
@@ -24,13 +22,15 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     didSet {
       if isLoaded {
         UIView.transition(
-          from: interstitialView, to: webView,
+          from: interstitialView,
+          to: webView,
           duration: 0.5,
           options: .transitionCrossDissolve,
           completion: { finished in
             self.interstitialView.removeFromSuperview()
             self.interstitialSpinnerView.stopAnimating()
-          })
+          }
+        )
       }
     }
   }
@@ -40,13 +40,15 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
       if isError {
         interstitialErrorView.isHidden = false
         UIView.transition(
-          from: interstitialSpinnerView, to: interstitialErrorView,
+          from: interstitialSpinnerView,
+          to: interstitialErrorView,
           duration: 0.5,
           options: .transitionCrossDissolve,
           completion: { finished in
             self.interstitialSpinnerView.removeFromSuperview()
             self.interstitialSpinnerView.stopAnimating()
-          })
+          }
+        )
       }
     }
   }
@@ -64,7 +66,13 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
       return
     }
     if timeout > 0 {
-      self.timer = Timer.scheduledTimer(timeInterval: timeout, target: self, selector: #selector(didTimeOut), userInfo: nil, repeats: false)
+      self.timer = Timer.scheduledTimer(
+        timeInterval: timeout,
+        target: self,
+        selector: #selector(didTimeOut),
+        userInfo: nil,
+        repeats: false
+      )
     } else {
       self.timer = nil
     }
@@ -158,7 +166,11 @@ class SettingsContentViewController: UIViewController, WKNavigationDelegate {
     self.isError = true
   }
 
-  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+  func webView(
+    _ webView: WKWebView,
+    didFailProvisionalNavigation navigation: WKNavigation!,
+    withError error: Error
+  ) {
     didTimeOut()
   }
 

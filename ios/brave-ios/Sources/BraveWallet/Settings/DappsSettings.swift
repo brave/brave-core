@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Preferences
 import BraveCore
 import BraveUI
+import Preferences
+import SwiftUI
 
 struct DappsSettings: View {
   var coin: BraveWallet.CoinType
@@ -15,7 +15,7 @@ struct DappsSettings: View {
   @ObservedObject var allowProviderAccess: Preferences.Option<Bool>
   @State private var filterText: String = ""
   @State private var isShowingConfirmAlert: Bool = false
-  
+
   init(
     coin: BraveWallet.CoinType,
     siteConnectionStore: ManageSiteConnectionsStore
@@ -35,7 +35,7 @@ struct DappsSettings: View {
       self.allowProviderAccess = Preferences.Wallet.allowEthProviderAccess
     }
   }
-  
+
   private var defaultWalletTitle: String {
     switch coin {
     case .eth:
@@ -46,7 +46,7 @@ struct DappsSettings: View {
       return ""
     }
   }
-  
+
   private var allowProviderAccessTitle: String {
     switch coin {
     case .eth:
@@ -57,15 +57,16 @@ struct DappsSettings: View {
       return ""
     }
   }
-  
+
   private var visibleSiteConnections: [SiteConnection] {
     siteConnectionStore.siteConnections.filter(by: coin, text: filterText)
   }
-  
+
   var body: some View {
     List {
-      Section(header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
-        .foregroundColor(Color(.secondaryBraveLabel))
+      Section(
+        header: Text(Strings.Wallet.dappsSettingsGeneralSectionTitle)
+          .foregroundColor(Color(.secondaryBraveLabel))
       ) {
         Group {
           HStack {
@@ -118,11 +119,14 @@ struct DappsSettings: View {
                   siteConnection: siteConnection
                 )
                 .swipeActions(edge: .trailing) {
-                  Button(role: .destructive, action: {
-                    withAnimation {
-                      siteConnectionStore.removeAllPermissions(from: [siteConnection])
+                  Button(
+                    role: .destructive,
+                    action: {
+                      withAnimation {
+                        siteConnectionStore.removeAllPermissions(from: [siteConnection])
+                      }
                     }
-                  }) {
+                  ) {
                     Label(Strings.Wallet.delete, systemImage: "trash")
                   }
                 }
@@ -142,7 +146,9 @@ struct DappsSettings: View {
     }
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-    .navigationTitle(String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle))
+    .navigationTitle(
+      String.localizedStringWithFormat(Strings.Wallet.dappsSettingsNavTitle, coin.localizedTitle)
+    )
     .navigationBarTitleDisplayMode(.inline)
     .searchable(
       text: $filterText,
@@ -156,7 +162,9 @@ struct DappsSettings: View {
           isShowingConfirmAlert = true
         }) {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
-            .foregroundColor(siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red)
+            .foregroundColor(
+              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+            )
         }
         .disabled(siteConnectionStore.siteConnections.isEmpty)
       }
@@ -165,7 +173,15 @@ struct DappsSettings: View {
     .alert(isPresented: $isShowingConfirmAlert) {
       Alert(
         title: Text(Strings.Wallet.warningAlertConfirmation),
-        message: Text(String.localizedStringWithFormat(Strings.Wallet.dappsSettingsRemoveAllWarning, visibleSiteConnections.count, visibleSiteConnections.count == 1 ? Strings.Wallet.dappsSettingsWebsiteSingular : Strings.Wallet.dappsSettingsWebsitePlural)),
+        message: Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.dappsSettingsRemoveAllWarning,
+            visibleSiteConnections.count,
+            visibleSiteConnections.count == 1
+              ? Strings.Wallet.dappsSettingsWebsiteSingular
+              : Strings.Wallet.dappsSettingsWebsitePlural
+          )
+        ),
         primaryButton: Alert.Button.destructive(
           Text(Strings.Wallet.manageSiteConnectionsConfirmAlertRemove),
           action: removeAll
@@ -174,7 +190,7 @@ struct DappsSettings: View {
       )
     }
   }
-  
+
   func removeAll() {
     siteConnectionStore.removeAllPermissions(from: visibleSiteConnections)
     filterText = ""
@@ -182,9 +198,9 @@ struct DappsSettings: View {
 }
 
 private struct SiteRow: View {
-  
+
   let siteConnection: SiteConnection
-  
+
   private var connectedAddresses: String {
     let account = Strings.Wallet.manageSiteConnectionsAccountSingular
     let accounts = Strings.Wallet.manageSiteConnectionsAccountPlural
@@ -194,7 +210,7 @@ private struct SiteRow: View {
       siteConnection.connectedAddresses.count == 1 ? account : accounts
     )
   }
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(verbatim: siteConnection.url)
@@ -210,7 +226,7 @@ private struct SiteRow: View {
     }
     .padding(.vertical, 6)
   }
-  
+
   @ViewBuilder private var accountBlockies: some View {
     if siteConnection.connectedAddresses.isEmpty {
       EmptyView()
@@ -223,36 +239,57 @@ private struct SiteRow: View {
 }
 
 private struct SiteConnectionDetailView: View {
-  
+
   let siteConnection: SiteConnection
   @ObservedObject var siteConnectionStore: ManageSiteConnectionsStore
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   @State private var isShowingConfirmAlert = false
-  
+
   var body: some View {
     List {
-      Section(header: Text(String.localizedStringWithFormat(Strings.Wallet.manageSiteConnectionsDetailHeader, siteConnection.coin.localizedTitle))) {
+      Section(
+        header: Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.manageSiteConnectionsDetailHeader,
+            siteConnection.coin.localizedTitle
+          )
+        )
+      ) {
         ForEach(siteConnection.connectedAddresses, id: \.self) { address in
-          AccountView(address: address, name: siteConnectionStore.accountInfo(for: address)?.name ?? "")
-            .swipeActions(edge: .trailing) {
-              Button(role: .destructive, action: {
+          AccountView(
+            address: address,
+            name: siteConnectionStore.accountInfo(for: address)?.name ?? ""
+          )
+          .swipeActions(edge: .trailing) {
+            Button(
+              role: .destructive,
+              action: {
                 withAnimation(.default) {
                   if let url = URL(string: siteConnection.url) {
-                    siteConnectionStore.removePermissions(for: siteConnection.coin, from: [address], url: url)
+                    siteConnectionStore.removePermissions(
+                      for: siteConnection.coin,
+                      from: [address],
+                      url: url
+                    )
                   }
                 }
-              }) {
-                Label(Strings.Wallet.delete, systemImage: "trash")
               }
+            ) {
+              Label(Strings.Wallet.delete, systemImage: "trash")
             }
+          }
         }
         .onDelete { indexSet in
           let addressesToRemove = indexSet.map({ siteConnection.connectedAddresses[$0] })
           withAnimation(.default) {
             if let url = URL(string: siteConnection.url) {
-              siteConnectionStore.removePermissions(for: siteConnection.coin, from: addressesToRemove, url: url)
+              siteConnectionStore.removePermissions(
+                for: siteConnection.coin,
+                from: addressesToRemove,
+                url: url
+              )
             }
           }
         }
@@ -270,7 +307,9 @@ private struct SiteConnectionDetailView: View {
           isShowingConfirmAlert = true
         }) {
           Text(Strings.Wallet.manageSiteConnectionsRemoveAll)
-            .foregroundColor(siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red)
+            .foregroundColor(
+              siteConnectionStore.siteConnections.isEmpty ? Color(.braveDisabled) : .red
+            )
         }
       }
     }

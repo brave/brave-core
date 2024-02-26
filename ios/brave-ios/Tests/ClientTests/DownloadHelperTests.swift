@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import XCTest
 import Foundation
 import WebKit
+import XCTest
 
 @testable import Brave
 
@@ -14,16 +14,40 @@ class DownloadHelperTests: XCTestCase {
   func test_init_whenMIMETypeIsNil_initializeCorrectly() {
     let response = anyResponse(mimeType: nil)
 
-    var sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    var sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: true)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: false,
+      forceDownload: true
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: false)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: false,
+      forceDownload: false
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: true)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: true
+    )
     XCTAssertNotNil(sut)
   }
 
@@ -33,16 +57,40 @@ class DownloadHelperTests: XCTestCase {
 
       let response = anyResponse(mimeType: mimeType)
 
-      var sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+      var sut = DownloadHelper(
+        request: anyRequest(),
+        response: response,
+        cookieStore: cookieStore(),
+        canShowInWebView: true,
+        forceDownload: false
+      )
       XCTAssertNil(sut)
 
-      sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: true)
+      sut = DownloadHelper(
+        request: anyRequest(),
+        response: response,
+        cookieStore: cookieStore(),
+        canShowInWebView: false,
+        forceDownload: true
+      )
       XCTAssertNotNil(sut)
 
-      sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: false)
+      sut = DownloadHelper(
+        request: anyRequest(),
+        response: response,
+        cookieStore: cookieStore(),
+        canShowInWebView: false,
+        forceDownload: false
+      )
       XCTAssertNotNil(sut)
 
-      sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: true)
+      sut = DownloadHelper(
+        request: anyRequest(),
+        response: response,
+        cookieStore: cookieStore(),
+        canShowInWebView: true,
+        forceDownload: true
+      )
       XCTAssertNotNil(sut)
     }
   }
@@ -50,22 +98,52 @@ class DownloadHelperTests: XCTestCase {
   func test_init_whenMIMETypeIsOctetStream_initializeCorrectly() {
     let response = anyResponse(mimeType: MIMEType.octetStream)
 
-    var sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    var sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: true)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: false,
+      forceDownload: true
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: true, forceDownload: true)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: true
+    )
     XCTAssertNotNil(sut)
 
-    sut = DownloadHelper(request: anyRequest(), response: response, cookieStore: cookieStore(), canShowInWebView: false, forceDownload: false)
+    sut = DownloadHelper(
+      request: anyRequest(),
+      response: response,
+      cookieStore: cookieStore(),
+      canShowInWebView: false,
+      forceDownload: false
+    )
     XCTAssertNotNil(sut)
   }
 
   func test_downloadAlert_whenRequestURLIsWrong_deliversEmptyResult() {
     let request = anyRequest(urlString: "wrong-url.com")
-    let sut = DownloadHelper(request: request, response: anyResponse(mimeType: nil), cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    let sut = DownloadHelper(
+      request: request,
+      response: anyResponse(mimeType: nil),
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })
 
@@ -74,7 +152,13 @@ class DownloadHelperTests: XCTestCase {
 
   func test_downloadAlert_deliversCorrectTitle() {
     let request = anyRequest(urlString: "http://some-domain.com/some-image.jpg")
-    let sut = DownloadHelper(request: request, response: anyResponse(mimeType: nil), cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    let sut = DownloadHelper(
+      request: request,
+      response: anyResponse(mimeType: nil),
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })
 
@@ -83,11 +167,19 @@ class DownloadHelperTests: XCTestCase {
 
   func test_downloadAlert_okActionButtonSendsCorrectMessage() {
     let request = anyRequest()
-    let sut = DownloadHelper(request: request, response: anyResponse(mimeType: nil), cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    let sut = DownloadHelper(
+      request: request,
+      response: anyResponse(mimeType: nil),
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
     let okActionIndex = 0
 
     var receivedMessages = [String]()
-    let okAction: (HTTPDownload) -> Void = { download in receivedMessages.append(download.request.url!.absoluteString) }
+    let okAction: (HTTPDownload) -> Void = { download in
+      receivedMessages.append(download.request.url!.absoluteString)
+    }
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: okAction)
     downloadAlert?.tapButton(atIndex: okActionIndex)
 
@@ -95,7 +187,13 @@ class DownloadHelperTests: XCTestCase {
   }
 
   func test_downloadAlert_deliversCorrectCancelButton() {
-    let sut = DownloadHelper(request: anyRequest(), response: anyResponse(mimeType: nil), cookieStore: cookieStore(), canShowInWebView: true, forceDownload: false)
+    let sut = DownloadHelper(
+      request: anyRequest(),
+      response: anyResponse(mimeType: nil),
+      cookieStore: cookieStore(),
+      canShowInWebView: true,
+      forceDownload: false
+    )
 
     let downloadAlert = sut?.downloadAlert(from: UIView(), okAction: { _ in })
 
@@ -106,11 +204,20 @@ class DownloadHelperTests: XCTestCase {
   // MARK: - Helpers
 
   private func anyRequest(urlString: String = "http://any-url.com") -> URLRequest {
-    return URLRequest(url: URL(string: urlString)!, cachePolicy: anyCachePolicy(), timeoutInterval: 60.0)
+    return URLRequest(
+      url: URL(string: urlString)!,
+      cachePolicy: anyCachePolicy(),
+      timeoutInterval: 60.0
+    )
   }
 
   private func anyResponse(mimeType: String?) -> URLResponse {
-    return URLResponse(url: URL(string: "http://any-url.com")!, mimeType: mimeType, expectedContentLength: 10, textEncodingName: nil)
+    return URLResponse(
+      url: URL(string: "http://any-url.com")!,
+      mimeType: mimeType,
+      expectedContentLength: 10,
+      textEncodingName: nil
+    )
   }
 
   private func cookieStore() -> WKHTTPCookieStore {
@@ -122,29 +229,30 @@ class DownloadHelperTests: XCTestCase {
   }
 
   private func allMIMETypes() -> [String] {
-    return [MIMEType.bitmap,
-            MIMEType.CSS,
-            MIMEType.GIF,
-            MIMEType.javaScript,
-            MIMEType.JPEG,
-            MIMEType.HTML,
-            MIMEType.octetStream,
-            MIMEType.passbook,
-            MIMEType.PDF,
-            MIMEType.plainText,
-            MIMEType.PNG,
-            MIMEType.webP,
-            MIMEType.xHTML]
+    return [
+      MIMEType.bitmap,
+      MIMEType.CSS,
+      MIMEType.GIF,
+      MIMEType.javaScript,
+      MIMEType.JPEG,
+      MIMEType.HTML,
+      MIMEType.octetStream,
+      MIMEType.passbook,
+      MIMEType.PDF,
+      MIMEType.plainText,
+      MIMEType.PNG,
+      MIMEType.webP,
+      MIMEType.xHTML,
+    ]
   }
-} 
+}
 
-private extension UIAlertController {
-  typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
+extension UIAlertController {
+  fileprivate typealias AlertHandler = @convention(block) (UIAlertAction) -> Void
 
-  func tapButton(atIndex index: Int) {
+  fileprivate func tapButton(atIndex index: Int) {
     guard let block = actions[index].value(forKey: "handler") else { return }
     let handler = unsafeBitCast(block as AnyObject, to: AlertHandler.self)
     handler(actions[index])
   }
 }
-

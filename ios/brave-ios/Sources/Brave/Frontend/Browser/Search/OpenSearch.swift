@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
 import BraveShared
 import Fuzi
+import Shared
+import UIKit
 
 private let TypeSearch = "text/html"
 private let TypeSuggest = "application/x-suggestions+json"
@@ -59,8 +59,13 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   fileprivate lazy var searchQueryComponentKey: String? = self.getQueryArgFromTemplate()
 
   init(
-    engineID: String? = nil, shortName: String, referenceURL: String? = nil, image: UIImage, searchTemplate: String,
-    suggestTemplate: String? = nil, isCustomEngine: Bool
+    engineID: String? = nil,
+    shortName: String,
+    referenceURL: String? = nil,
+    image: UIImage,
+    searchTemplate: String,
+    suggestTemplate: String? = nil,
+    isCustomEngine: Bool
   ) {
     self.shortName = shortName
     self.referenceURL = referenceURL
@@ -76,7 +81,9 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     // to be decoded using decodeBool. This catches the upgrade case to ensure that we are always able to fetch a keyed valye for isCustomEngine
     // http://stackoverflow.com/a/40034694
     let isCustomEngine = aDecoder.decodeBool(forKey: "isCustomEngine")
-    guard let searchTemplate = aDecoder.decodeObject(of: NSString.self, forKey: "searchTemplate") as String?,
+    guard
+      let searchTemplate = aDecoder.decodeObject(of: NSString.self, forKey: "searchTemplate")
+        as String?,
       let shortName = aDecoder.decodeObject(of: NSString.self, forKey: "shortName") as String?,
       let image = aDecoder.decodeObject(of: UIImage.self, forKey: "image")
     else {
@@ -90,7 +97,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     self.isCustomEngine = isCustomEngine
     self.image = image
     self.engineID = aDecoder.decodeObject(of: NSString.self, forKey: "engineID") as String?
-    self.suggestTemplate = aDecoder.decodeObject(of: NSString.self, forKey: "suggestTemplate") as String?
+    self.suggestTemplate =
+      aDecoder.decodeObject(of: NSString.self, forKey: "suggestTemplate") as String?
   }
 
   func encode(with aCoder: NSCoder) {
@@ -110,12 +118,17 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   /**
      * Returns the search URL for the given query.
      */
-  func searchURLForQuery(_ query: String, locale: Locale = Locale.current, isBraveSearchPromotion: Bool = false) -> URL? {
+  func searchURLForQuery(
+    _ query: String,
+    locale: Locale = Locale.current,
+    isBraveSearchPromotion: Bool = false
+  ) -> URL? {
     return getURLFromTemplate(
       searchTemplate,
       query: query,
       locale: locale,
-      isBraveSearchPromotion: isBraveSearchPromotion)
+      isBraveSearchPromotion: isBraveSearchPromotion
+    )
   }
 
   /**
@@ -156,7 +169,8 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   func queryForSearchURL(_ url: URL?) -> String? {
     if isSearchURLForEngine(url) {
       if let key = searchQueryComponentKey,
-        let value = url?.getQuery()[key] {
+        let value = url?.getQuery()[key]
+      {
         return value.replacingOccurrences(of: "+", with: " ").removingPercentEncoding
       }
     }
@@ -173,8 +187,14 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     return nil
   }
 
-  fileprivate func getURLFromTemplate(_ searchTemplate: String, query: String, locale: Locale, isBraveSearchPromotion: Bool = false) -> URL? {
-    guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed) else {
+  fileprivate func getURLFromTemplate(
+    _ searchTemplate: String,
+    query: String,
+    locale: Locale,
+    isBraveSearchPromotion: Bool = false
+  ) -> URL? {
+    guard let escapedQuery = query.addingPercentEncoding(withAllowedCharacters: .searchTermsAllowed)
+    else {
       return nil
     }
 
@@ -188,24 +208,38 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
     guard
       let encodedSearchTemplate = searchTemplate.addingPercentEncoding(
         withAllowedCharacters:
-          templateAllowedSet as CharacterSet)
+          templateAllowedSet as CharacterSet
+      )
     else { return nil }
 
     let localeString = locale.identifier
     let urlString =
       encodedSearchTemplate
-      .replacingOccurrences(of: SearchTermComponent, with: escapedQuery, options: .literal, range: nil)
-      .replacingOccurrences(of: LocaleTermComponent, with: localeString, options: .literal, range: nil)
       .replacingOccurrences(
-        of: RegionalClientComponent, with: regionalClientParam(locale),
-        options: .literal, range: nil)
+        of: SearchTermComponent,
+        with: escapedQuery,
+        options: .literal,
+        range: nil
+      )
+      .replacingOccurrences(
+        of: LocaleTermComponent,
+        with: localeString,
+        options: .literal,
+        range: nil
+      )
+      .replacingOccurrences(
+        of: RegionalClientComponent,
+        with: regionalClientParam(locale),
+        options: .literal,
+        range: nil
+      )
 
     var searchUrl = URL(string: urlString)
-    
+
     if isBraveSearchPromotion {
       searchUrl = searchUrl?.withQueryParam("action", value: "makeDefault")
     }
-    
+
     return searchUrl
   }
 
@@ -222,14 +256,12 @@ class OpenSearchEngine: NSObject, NSSecureCoding {
   }
 }
 
-/**
- * OpenSearch XML parser.
- *
- * This parser accepts standards-compliant OpenSearch 1.1 XML documents in addition to
- * the Firefox-specific search plugin format.
- *
- * OpenSearch spec: http://www.opensearch.org/Specifications/OpenSearch/1.1
- */
+/// OpenSearch XML parser.
+///
+/// This parser accepts standards-compliant OpenSearch 1.1 XML documents in addition to
+/// the Firefox-specific search plugin format.
+///
+/// OpenSearch spec: http://www.opensearch.org/Specifications/OpenSearch/1.1
 class OpenSearchParser {
   fileprivate let pluginMode: Bool
 
@@ -246,7 +278,13 @@ class OpenSearchParser {
     return parse(data, engineID: engineID, referenceURL: referenceURL)
   }
 
-  func parse(_ data: Data, engineID: String = "", referenceURL: String? = nil, image: UIImage? = nil, isCustomEngine: Bool = false) -> OpenSearchEngine? {
+  func parse(
+    _ data: Data,
+    engineID: String = "",
+    referenceURL: String? = nil,
+    image: UIImage? = nil,
+    isCustomEngine: Bool = false
+  ) -> OpenSearchEngine? {
     guard let indexer = try? XMLDocument(data: data),
       let docIndexer = indexer.root
     else {
@@ -357,13 +395,22 @@ class OpenSearchParser {
     } else if let imageElement = largestImageElement,
       let imageURL = URL(string: imageElement.stringValue),
       let imageData = try? Data(contentsOf: imageURL),
-      let image = UIImage.imageFromDataThreadSafe(imageData) {
+      let image = UIImage.imageFromDataThreadSafe(imageData)
+    {
       uiImage = image
     } else {
       print("Error: Invalid search image data")
       return nil
     }
 
-    return OpenSearchEngine(engineID: engineID, shortName: shortName, referenceURL: referenceURL, image: uiImage, searchTemplate: searchTemplate, suggestTemplate: suggestTemplate, isCustomEngine: isCustomEngine)
+    return OpenSearchEngine(
+      engineID: engineID,
+      shortName: shortName,
+      referenceURL: referenceURL,
+      image: uiImage,
+      searchTemplate: searchTemplate,
+      suggestTemplate: suggestTemplate,
+      isCustomEngine: isCustomEngine
+    )
   }
 }

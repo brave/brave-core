@@ -15,9 +15,9 @@ public protocol KeychainType: AnyObject {
 }
 
 public class Keychain: KeychainType {
-  
+
   public init() {}
-  
+
   public func storePasswordInKeychain(key: String, password: String) -> OSStatus {
     guard let passwordData = password.data(using: .utf8) else { return errSecInvalidData }
     #if targetEnvironment(simulator)
@@ -48,7 +48,7 @@ public class Keychain: KeychainType {
     #endif
     return SecItemAdd(query as CFDictionary, nil)
   }
-  
+
   @discardableResult
   public func resetPasswordInKeychain(key: String) -> Bool {
     let query: [String: Any] = [
@@ -58,7 +58,7 @@ public class Keychain: KeychainType {
     let status = SecItemDelete(query as CFDictionary)
     return status == errSecSuccess
   }
-  
+
   public func isPasswordStoredInKeychain(key: String) -> Bool {
     let context = LAContext()
     context.interactionNotAllowed = true
@@ -76,7 +76,7 @@ public class Keychain: KeychainType {
     return status == errSecInteractionNotAllowed
     #endif
   }
-  
+
   public func getPasswordFromKeychain(key: String) -> String? {
     let query: [String: Any] = [
       kSecClass as String: kSecClassGenericPassword,
@@ -102,21 +102,21 @@ public class TestableKeychain: KeychainType {
   public var _resetPasswordInKeychain: ((_ key: String) -> Bool)?
   public var _isPasswordStoredInKeychain: ((_ key: String) -> Bool)?
   public var _getPasswordFromKeychain: ((_ key: String) -> String?)?
-  
+
   public init() {}
-  
+
   public func storePasswordInKeychain(key: String, password: String) -> OSStatus {
     _storePasswordInKeychain?(key, password) ?? OSStatus(0)
   }
-  
+
   public func resetPasswordInKeychain(key: String) -> Bool {
     _resetPasswordInKeychain?(key) ?? false
   }
-  
+
   public func isPasswordStoredInKeychain(key: String) -> Bool {
     _isPasswordStoredInKeychain?(key) ?? false
   }
-  
+
   public func getPasswordFromKeychain(key: String) -> String? {
     _getPasswordFromKeychain?(key)
   }

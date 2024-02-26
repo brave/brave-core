@@ -2,16 +2,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import Shared
-import Data
-import BraveShared
-import WebKit
 import BraveCore
 import BraveNews
+import BraveShared
+import Data
 import Favicon
-import os.log
+import Foundation
 import Playlist
+import Shared
+import WebKit
+import os.log
 
 // A base protocol for something that can be cleared.
 protocol Clearable {
@@ -52,9 +52,15 @@ class CookiesAndCacheClearable: Clearable {
     UserDefaults.standard.synchronize()
     // need event loop to run to autorelease UIWebViews fully
     try await Task.sleep(nanoseconds: NSEC_PER_MSEC * 100)
-    await WKWebsiteDataStore.default().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
+    await WKWebsiteDataStore.default().removeData(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
+    )
     UserDefaults.standard.synchronize()
-    await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(), modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
+    await BraveWebView.sharedNonPersistentStore().removeData(
+      ofTypes: WKWebsiteDataStore.allWebsiteDataTypes(),
+      modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
+    )
     UserDefaults.standard.synchronize()
     for coin in [BraveWallet.CoinType.eth, BraveWallet.CoinType.sol] {
       await Domain.clearAllWalletPermissions(for: coin)
@@ -89,8 +95,11 @@ class CacheClearable: Clearable {
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearDiskCache()
     WebImageCacheWithNoPrivacyProtectionManager.shared.clearMemoryCache()
     FaviconFetcher.clearCache()
-    
-    await BraveWebView.sharedNonPersistentStore().removeData(ofTypes: localStorageClearables, modifiedSince: Date(timeIntervalSinceReferenceDate: 0))
+
+    await BraveWebView.sharedNonPersistentStore().removeData(
+      ofTypes: localStorageClearables,
+      modifiedSince: Date(timeIntervalSinceReferenceDate: 0)
+    )
   }
 }
 
@@ -108,7 +117,7 @@ class HistoryClearable: Clearable {
 
   func clear() async throws {
     return await withCheckedContinuation { continuation in
-      self.historyAPI.deleteAll() {
+      self.historyAPI.deleteAll {
         NotificationCenter.default.post(name: .privateDataClearedHistory, object: nil)
         continuation.resume()
       }
@@ -191,7 +200,7 @@ class PlayListCacheClearable: Clearable {
   func clear() async throws {
     PlaylistCarplayManager.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: true)
-    
+
     // Backup in case there is folder corruption, so we delete the cache anyway
     if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
       do {
@@ -214,7 +223,7 @@ class PlayListDataClearable: Clearable {
   func clear() async throws {
     PlaylistCarplayManager.shared.destroyPiP()
     PlaylistManager.shared.deleteAllItems(cacheOnly: false)
-    
+
     // Backup in case there is folder corruption, so we delete the cache anyway
     if let playlistDirectory = PlaylistDownloadManager.playlistDirectory {
       do {

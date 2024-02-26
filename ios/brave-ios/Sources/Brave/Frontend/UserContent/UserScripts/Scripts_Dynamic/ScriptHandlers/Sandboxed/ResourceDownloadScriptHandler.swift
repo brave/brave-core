@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
+import Data
 import Foundation
 import WebKit
-import Data
-import BraveShared
 
 struct DownloadedResourceResponse: Decodable {
   let statusCode: Int
@@ -49,17 +49,25 @@ class ResourceDownloadScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentEnd,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
-    
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       return
@@ -74,7 +82,11 @@ class ResourceDownloadScriptHandler: TabContentScript {
   }
 
   static func downloadResource(for tab: Tab, url: URL) {
-    tab.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.downloadManager.download", args: [url.absoluteString], contentWorld: self.scriptSandbox) { _, error in
+    tab.webView?.evaluateSafeJavaScript(
+      functionName: "window.__firefox__.downloadManager.download",
+      args: [url.absoluteString],
+      contentWorld: self.scriptSandbox
+    ) { _, error in
       if let error = error {
         tab.temporaryDocument?.onDocumentDownloaded(document: nil, error: error)
       }

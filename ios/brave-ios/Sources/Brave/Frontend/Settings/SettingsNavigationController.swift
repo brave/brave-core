@@ -14,7 +14,7 @@ class SettingsNavigationController: UINavigationController {
       self.setNeedsUpdateOfSupportedInterfaceOrientations()
     }
   }
-  
+
   @objc func done() {
     if let delegate = popoverDelegate {
       delegate.dismissPresentedModalViewController(self, animated: true)

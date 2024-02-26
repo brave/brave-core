@@ -3,28 +3,28 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import Data
 import Foundation
+import Playlist
 import Preferences
 import Shared
-import Data
 import UIKit
-import Playlist
 
 class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegate {
 
   private var playerView: VideoView?
   private let isPrivateBrowsing: Bool
   weak var delegate: PlaylistViewControllerDelegate?
-  
+
   init(isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -51,18 +51,33 @@ class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegat
   }
 
   private func layoutBarButtons() {
-    let exitBarButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onExit(_:)))
-    let sideListBarButton = UIBarButtonItem(image: UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!, style: .done, target: self, action: #selector(onDisplayModeChange))
+    let exitBarButton = UIBarButtonItem(
+      barButtonSystemItem: .done,
+      target: self,
+      action: #selector(onExit(_:))
+    )
+    let sideListBarButton = UIBarButtonItem(
+      image: UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!,
+      style: .done,
+      target: self,
+      action: #selector(onDisplayModeChange)
+    )
 
     navigationItem.rightBarButtonItem =
-      PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? exitBarButton : sideListBarButton
+      PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left
+      ? exitBarButton : sideListBarButton
     navigationItem.leftBarButtonItem =
-      PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? sideListBarButton : exitBarButton
+      PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left
+      ? sideListBarButton : exitBarButton
   }
 
   private func addGestureRecognizers() {
-    let slideToRevealGesture = UISwipeGestureRecognizer(target: self, action: #selector(handleGesture))
-    slideToRevealGesture.direction = PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? .right : .left
+    let slideToRevealGesture = UISwipeGestureRecognizer(
+      target: self,
+      action: #selector(handleGesture)
+    )
+    slideToRevealGesture.direction =
+      PlayListSide(rawValue: Preferences.Playlist.listViewSide.value) == .left ? .right : .left
 
     view.addGestureRecognizer(slideToRevealGesture)
   }
@@ -115,7 +130,8 @@ class PlaylistDetailViewController: UIViewController, UIGestureRecognizerDelegat
   @objc
   private func onDisplayModeChange() {
     updateSplitViewDisplayMode(
-      to: splitViewController?.displayMode == .oneOverSecondary ? .secondaryOnly : .oneOverSecondary)
+      to: splitViewController?.displayMode == .oneOverSecondary ? .secondaryOnly : .oneOverSecondary
+    )
   }
 
   public func setVideoPlayer(_ videoPlayer: VideoView?) {
@@ -150,27 +166,35 @@ extension PlaylistDetailViewController {
     if let item = item {
       let alert = UIAlertController(
         title: Strings.PlayList.expiredAlertTitle,
-        message: Strings.PlayList.expiredAlertDescription, preferredStyle: .alert)
+        message: Strings.PlayList.expiredAlertDescription,
+        preferredStyle: .alert
+      )
       alert.addAction(
         UIAlertAction(
-          title: Strings.PlayList.reopenButtonTitle, style: .default,
+          title: Strings.PlayList.reopenButtonTitle,
+          style: .default,
           handler: { _ in
 
             if let url = URL(string: item.pageSrc) {
               self.dismiss(animated: true, completion: nil)
-              
+
               self.delegate?.openURLInNewTab(
                 url,
                 isPrivate: self.isPrivateBrowsing,
-                isPrivileged: false)
+                isPrivileged: false
+              )
             }
-          }))
+          }
+        )
+      )
       alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
       self.present(alert, animated: true, completion: nil)
     } else {
       let alert = UIAlertController(
         title: Strings.PlayList.expiredAlertTitle,
-        message: Strings.PlayList.expiredAlertDescription, preferredStyle: .alert)
+        message: Strings.PlayList.expiredAlertDescription,
+        preferredStyle: .alert
+      )
       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
       self.present(alert, animated: true, completion: nil)
     }
@@ -178,8 +202,13 @@ extension PlaylistDetailViewController {
 
   func displayLoadingResourceError() {
     let alert = UIAlertController(
-      title: Strings.PlayList.sorryAlertTitle, message: Strings.PlayList.loadResourcesErrorAlertDescription, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: nil))
+      title: Strings.PlayList.sorryAlertTitle,
+      message: Strings.PlayList.loadResourcesErrorAlertDescription,
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: nil)
+    )
 
     self.present(alert, animated: true, completion: nil)
   }

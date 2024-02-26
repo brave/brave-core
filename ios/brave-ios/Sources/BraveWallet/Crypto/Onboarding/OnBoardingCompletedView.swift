@@ -3,19 +3,19 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import DesignSystem
 import LocalAuthentication
+import SwiftUI
 
 struct OnboardingCompletedView: View {
   var keyringStore: KeyringStore
-  
+
   @State private var isBiometricCompleted: Bool = false
-  
+
   private var isBiometricsAvailable: Bool {
     LAContext().canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil)
   }
-  
+
   var body: some View {
     if isBiometricsAvailable && !isBiometricCompleted {
       BiometricView(

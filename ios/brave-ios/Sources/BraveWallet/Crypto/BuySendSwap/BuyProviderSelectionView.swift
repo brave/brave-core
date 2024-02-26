@@ -3,20 +3,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
-import DesignSystem
 import BraveCore
+import DesignSystem
 import OrderedCollections
+import SwiftUI
 
 struct BuyProviderSelectionView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @Environment(\.openURL) private var openWalletURL
-  
+
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
-  
+
   var body: some View {
     List {
       Section(
@@ -47,15 +47,22 @@ struct BuyProviderSelectionView: View {
                 .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
               Button {
                 Task { @MainActor in
-                  guard let url = await buyTokenStore.fetchBuyUrl(
-                    provider: provider,
-                    account: keyringStore.selectedAccount
-                  ) else { return }
+                  guard
+                    let url = await buyTokenStore.fetchBuyUrl(
+                      provider: provider,
+                      account: keyringStore.selectedAccount
+                    )
+                  else { return }
                   openWalletURL(url)
                 }
               } label: {
-                Text(String.localizedStringWithFormat(Strings.Wallet.providerSelectionButtonTitle, provider.shortName))
-                  .foregroundColor(Color(.bravePrimary))
+                Text(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.providerSelectionButtonTitle,
+                    provider.shortName
+                  )
+                )
+                .foregroundColor(Color(.bravePrimary))
               }
               .buttonStyle(BraveOutlineButtonStyle(size: .normal))
               Spacer()

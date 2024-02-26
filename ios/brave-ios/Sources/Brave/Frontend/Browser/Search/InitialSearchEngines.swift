@@ -83,7 +83,9 @@ class InitialSearchEngines {
     engines.filter { !$0.id.excludedFromOnboarding(for: locale) }
   }
 
-  static let braveSearchDefaultRegions = ["US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN"]
+  static let braveSearchDefaultRegions = [
+    "US", "CA", "GB", "FR", "DE", "AD", "AT", "ES", "MX", "BR", "AR", "IN",
+  ]
   static let yandexDefaultRegions = ["AM", "AZ", "BY", "KG", "KZ", "MD", "RU", "TJ", "TM", "TZ"]
   static let ecosiaEnabledRegions = [
     "AT", "AU", "BE", "CA", "DK", "ES", "FI", "GR", "HU", "IT",
@@ -158,11 +160,11 @@ class InitialSearchEngines {
     if Self.braveSearchDefaultRegions.contains(region) {
       defaultSearchEngine = .braveSearch
     }
-    
+
     if Self.naverDefaultRegions.contains(region) {
       defaultSearchEngine = .naver
     }
-    
+
     if Self.daumEnabledRegions.contains(region) {
       replaceOrInsert(engineId: .daum, customId: nil)
     }

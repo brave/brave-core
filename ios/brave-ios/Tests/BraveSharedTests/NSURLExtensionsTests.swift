@@ -4,26 +4,27 @@
 
 import UIKit
 import XCTest
+
 @testable import Shared
 
-private extension String {
-  var isIPv6: Bool {
+extension String {
+  fileprivate var isIPv6: Bool {
     return self.contains(":")
   }
-  
-  var baseDomain: String? {
+
+  fileprivate var baseDomain: String? {
     guard !NSURL.isHostIPAddress(host: self) else { return nil }
 
     // If this is just a hostname and not a FQDN, use the entire hostname.
     if !self.contains(".") {
       return self
     }
-    
+
     let registry = NSURL.domainAndRegistry(host: self)
     return registry.isEmpty ? nil : registry
   }
-  
-  var publicSuffix: String? {
+
+  fileprivate var publicSuffix: String? {
     let registry = NSURL.registry(host: self)
     return registry.isEmpty ? nil : registry
   }
@@ -83,26 +84,26 @@ class NSURLExtensionsTests: XCTestCase {
       XCTFail("Actual url is nil")
     }
   }
-  
+
   func testSchemelessAbsouluteDisplayString() {
     // Test removes HTTP scheme from URL
     let testURL1 = URL(string: "http://brave.com")
-    
+
     if let actual = testURL1?.schemelessAbsoluteDisplayString {
       XCTAssertEqual(actual, "brave.com")
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTP scheme and trailing slash from URL
     let testURL2 = URL(string: "http://brave.com/")
-    
+
     if let actual = testURL2?.schemelessAbsoluteDisplayString {
       XCTAssertEqual(actual, "brave.com")
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTP scheme but not trailing slash because path is not empty
     let testURL3 = URL(string: "http://brave.com/foo/")
     if let actual = testURL3?.schemelessAbsoluteDisplayString {
@@ -110,7 +111,7 @@ class NSURLExtensionsTests: XCTestCase {
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTPS scheme from URL
     let testURL4 = URL(string: "https://brave.com")
     if let actual = testURL4?.schemelessAbsoluteDisplayString {
@@ -118,7 +119,7 @@ class NSURLExtensionsTests: XCTestCase {
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTPS scheme and trailing slash from URL
     let testURL5 = URL(string: "https://brave.com/")
     if let actual = testURL5?.schemelessAbsoluteDisplayString {
@@ -126,7 +127,7 @@ class NSURLExtensionsTests: XCTestCase {
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTPS scheme but not trailing slash because path is not empty
     let testURL6 = URL(string: "https://brave.com/foo/")
     if let actual = testURL6?.schemelessAbsoluteDisplayString {
@@ -134,7 +135,7 @@ class NSURLExtensionsTests: XCTestCase {
     } else {
       XCTFail("Actual url is nil")
     }
-    
+
     // Test removes HTTPS scheme and www
     let testURL7 = URL(string: "https://www.brave.com")
     if let actual = testURL7?.schemelessAbsoluteDisplayString {
@@ -283,7 +284,8 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testBugzillaURLDomain() {
-    let url = "https://bugzilla.mozilla.org/enter_bug.cgi?format=guided#h=dupes|Data%20%26%20BI%20Services%20Team|"
+    let url =
+      "https://bugzilla.mozilla.org/enter_bug.cgi?format=guided#h=dupes|Data%20%26%20BI%20Services%20Team|"
     let nsURL = url.asURL
     XCTAssertNotNil(nsURL, "URL parses.")
 
@@ -390,8 +392,14 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testoriginalURLFromErrorURL() {
     let goodurls = [
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", URL(string: "http://mozilla.com")),
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=internal%3A//local/about/home/%23panel%3D1", URL(string: "internal://local/about/home/#panel=1")),
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+        URL(string: "http://mozilla.com")
+      ),
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=internal%3A//local/about/home/%23panel%3D1",
+        URL(string: "internal://local/about/home/#panel=1")
+      ),
     ]
     let badurls = [
       "http://google.com",
@@ -421,7 +429,7 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testisReaderModeURL() {
     let goodurls = [
-      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fbrave%2Ecom",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fbrave%2Ecom"
     ]
     let badurls = [
       "http://google.com",
@@ -436,7 +444,10 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testdecodeReaderModeURL() {
     let goodurls = [
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage", URL(string: "https://en.m.wikipedia.org/wiki/Main_Page"))
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage",
+        URL(string: "https://en.m.wikipedia.org/wiki/Main_Page")
+      )
     ]
     let badurls = [
       "http://google.com",
@@ -452,18 +463,29 @@ class NSURLExtensionsTests: XCTestCase {
   func testencodeReaderModeURL() {
     let ReaderURL = "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
     let goodurls = [
-      ("https://en.m.wikipedia.org/wiki/Main_Page", URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage"))
+      (
+        "https://en.m.wikipedia.org/wiki/Main_Page",
+        URL(
+          string:
+            "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage"
+        )
+      )
     ]
     goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.encodeReaderModeURL(ReaderURL), $0.1) }
   }
 
   func testhavingRemovedAuthorisationComponents() {
     let goodurls = [
-      ("https://Aladdin:OpenSesame@www.example.com/index.html", "https://www.example.com/index.html"),
+      (
+        "https://Aladdin:OpenSesame@www.example.com/index.html",
+        "https://www.example.com/index.html"
+      ),
       ("https://www.example.com/noauth", "https://www.example.com/noauth"),
     ]
 
-    goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.havingRemovedAuthorisationComponents().absoluteString, $0.1) }
+    goodurls.forEach {
+      XCTAssertEqual(URL(string: $0.0)!.havingRemovedAuthorisationComponents().absoluteString, $0.1)
+    }
   }
 
   func testschemeIsValid() {
@@ -543,12 +565,18 @@ class NSURLExtensionsTests: XCTestCase {
     ]
     urls.forEach { XCTAssertEqual(URL(string: $0.0)!.withoutWWW.absoluteString, $0.1) }
   }
-  
+
   func testdomainWithoutFragment() {
     let urls = [
       ("https://www.example.com/index.html#Fragment", "https://www.example.com/index.html"),
-      ("https://mail.example.com/index.html?Key=Value#Fragment", "https://mail.example.com/index.html?Key=Value"),
-      ("https://mail.example.co.uk/index.html?Key=Value&Key2=Value2#Fragment", "https://mail.example.co.uk/index.html?Key=Value&Key2=Value2"),
+      (
+        "https://mail.example.com/index.html?Key=Value#Fragment",
+        "https://mail.example.com/index.html?Key=Value"
+      ),
+      (
+        "https://mail.example.co.uk/index.html?Key=Value&Key2=Value2#Fragment",
+        "https://mail.example.co.uk/index.html?Key=Value&Key2=Value2"
+      ),
     ]
     urls.forEach { XCTAssertEqual(URL(string: $0.0)!.withoutFragment.absoluteString, $0.1) }
   }
@@ -564,14 +592,26 @@ class NSURLExtensionsTests: XCTestCase {
 
   func testdisplayURL() {
     let goodurls = [
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F", "https://en.m.wikipedia.org/wiki/"),
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F",
+        "https://en.m.wikipedia.org/wiki/"
+      ),
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+        "http://mozilla.com"
+      ),
       ("https://mail.example.co.uk/index.html", "https://mail.example.co.uk/index.html"),
-      ("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=http%3A//mozilla.com", "http://mozilla.com"),
-      ("\(InternalURL.scheme)://user:pass@\(InternalURL.host)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com", "http://mozilla.com"),
+      (
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=http%3A//mozilla.com",
+        "http://mozilla.com"
+      ),
+      (
+        "\(InternalURL.scheme)://user:pass@\(InternalURL.host)/\(InternalURL.Path.errorpage.rawValue)/error.html?url=http%3A//mozilla.com",
+        "http://mozilla.com"
+      ),
     ]
     let badurls = [
-      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F",
+      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2F"
     ]
 
     goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.displayURL?.absoluteString, $0.1) }
@@ -608,7 +648,9 @@ class NSURLExtensionsTests: XCTestCase {
     let params = ["a": "1", "b": "2", "c": "3"]
 
     let urlParams = url.getQuery()
-    params.forEach { XCTAssertEqual(urlParams[$0], $1, "The values in params should be the same in urlParams") }
+    params.forEach {
+      XCTAssertEqual(urlParams[$0], $1, "The values in params should be the same in urlParams")
+    }
   }
 
   func testWithQueryParam() {
@@ -627,8 +669,13 @@ class NSURLExtensionsTests: XCTestCase {
     let urlA = URL(string: "http://brave.com?url=https://foo.com")
     let urlB = URL(string: "http://brave.com/?url=https://foo.com")
     let urlC = URL(string: "http://brave.com?url=https://foo.com/meh")
-    let urlD = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com")
-    let urlE = URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com/meh")
+    let urlD = URL(
+      string: "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com"
+    )
+    let urlE = URL(
+      string:
+        "\(InternalURL.baseUrl)/\(InternalURL.Path.errorpage)/foo.hmtl?url=https://foo.com/meh"
+    )
 
     for url in [urlA, urlB, urlC, urlD, urlE] {
       if url == nil {
@@ -641,7 +688,10 @@ class NSURLExtensionsTests: XCTestCase {
     XCTAssertNotEqual(InternalURL(urlB!)?.originalURLFromErrorPage, urlB)
     XCTAssertNotEqual(InternalURL(urlC!)?.originalURLFromErrorPage, urlC)
     XCTAssertEqual(InternalURL(urlD!)?.originalURLFromErrorPage?.absoluteString, "https://foo.com")
-    XCTAssertEqual(InternalURL(urlE!)?.originalURLFromErrorPage?.absoluteString, "https://foo.com/meh")
+    XCTAssertEqual(
+      InternalURL(urlE!)?.originalURLFromErrorPage?.absoluteString,
+      "https://foo.com/meh"
+    )
   }
 
   func testAppendPathComponentsHelper() {
@@ -659,7 +709,8 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testHidingFromDataDetectors() {
-    guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue) else {
+    guard let detector = try? NSDataDetector(types: NSTextCheckingResult.CheckingType.link.rawValue)
+    else {
       XCTFail()
       return
     }
@@ -669,7 +720,11 @@ class NSURLExtensionsTests: XCTestCase {
       let url = URL(string: u)!
 
       let original = url.absoluteDisplayString.replacingOccurrences(of: ".", with: "\u{2024}")
-      let matches = detector.matches(in: original, options: [], range: NSMakeRange(0, original.count))
+      let matches = detector.matches(
+        in: original,
+        options: [],
+        range: NSMakeRange(0, original.count)
+      )
       guard matches.count > 0 else {
         print("\(url) doesn't match as a URL")
         continue
@@ -678,7 +733,11 @@ class NSURLExtensionsTests: XCTestCase {
       let modified = url.absoluteDisplayString.replacingOccurrences(of: ".", with: "\u{2024}")
       XCTAssertNotEqual(original, modified)
 
-      let newMatches = detector.matches(in: modified, options: [], range: NSMakeRange(0, modified.count))
+      let newMatches = detector.matches(
+        in: modified,
+        options: [],
+        range: NSMakeRange(0, modified.count)
+      )
 
       XCTAssertEqual(0, newMatches.count, "\(modified) is not a valid URL")
     }
@@ -727,7 +786,7 @@ class NSURLExtensionsTests: XCTestCase {
       XCTAssertNil($0.bookmarkletCodeComponent)
     }
   }
-  
+
   func testDisplayString() {
     func checkDisplayURLString(testURL: URL?, displayString: String) {
       if let actual = testURL?.displayURL?.absoluteString {
@@ -736,7 +795,7 @@ class NSURLExtensionsTests: XCTestCase {
         XCTFail("Actual url is nil")
       }
     }
-    
+
     let urlMap = [
       URL(string: "https://www.youtube.com"): "https://www.youtube.com",
       URL(string: "http://google.com"): "http://google.com",
@@ -744,13 +803,20 @@ class NSURLExtensionsTests: XCTestCase {
       URL(string: "http://brave.com/foo/"): "http://brave.com/foo/",
       URL(string: "http://brave.com/foo"): "http://brave.com/foo",
       URL(string: "blob://http://brave.com/foo"): "blob://http//brave.com/foo",
-      URL(string: "blob://02C00302-CE62-4DAE-AD70-FDEE19594856"): "blob://02C00302-CE62-4DAE-AD70-FDEE19594856",
+      URL(string: "blob://02C00302-CE62-4DAE-AD70-FDEE19594856"):
+        "blob://02C00302-CE62-4DAE-AD70-FDEE19594856",
       URL(string: "file:///Users/brave/documents/foo.txt"): "file://foo.txt",
       URL(string: "file://http://brave.com/foo.txt"): "file://foo.txt",
-      URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=http%3A%2F%2Fbrave.com%2Ffoo"): "http://brave.com/foo",
-      URL(string: "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"): "blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"
+      URL(
+        string:
+          "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=http%3A%2F%2Fbrave.com%2Ffoo"
+      ): "http://brave.com/foo",
+      URL(
+        string:
+          "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url=blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876"
+      ): "blob:https://brave.com/66823669-a00d-4c54-b1d6-f86df100b876",
     ]
-    
+
     urlMap.forEach {
       checkDisplayURLString(testURL: $0, displayString: $1)
     }

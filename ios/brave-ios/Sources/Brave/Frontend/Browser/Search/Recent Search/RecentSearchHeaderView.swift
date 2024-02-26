@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveUI
+import Foundation
 import Shared
+import UIKit
 
 class RecentSearchHeaderView: UICollectionReusableView {
   private struct DesignUX {
@@ -143,13 +143,15 @@ class RecentSearchHeaderView: UICollectionReusableView {
       top: -DesignUX.paddingY,
       left: -DesignUX.paddingX,
       bottom: -DesignUX.paddingY,
-      right: -DesignUX.paddingX)
+      right: -DesignUX.paddingX
+    )
 
     let contentEdgeInsets = UIEdgeInsets(
       top: DesignUX.paddingY,
       left: DesignUX.paddingX,
       bottom: DesignUX.paddingY,
-      right: DesignUX.paddingX)
+      right: DesignUX.paddingX
+    )
 
     if showRecentSearches {
       showButton.do {
@@ -209,9 +211,11 @@ class RecentSearchHeaderView: UICollectionReusableView {
 
     themeViews()
   }
-  
+
   public override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
-    let adjustedBounds = hideClearButton.frame.inset(by: UIEdgeInsets(top: -25.0, left: -25.0, bottom: 0.0, right: -25.0))
+    let adjustedBounds = hideClearButton.frame.inset(
+      by: UIEdgeInsets(top: -25.0, left: -25.0, bottom: 0.0, right: -25.0)
+    )
 
     if adjustedBounds.contains(point) {
       return hideClearButton

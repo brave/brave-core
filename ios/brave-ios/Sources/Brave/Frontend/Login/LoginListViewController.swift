@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
+import BraveCore
 import BraveShared
 import BraveUI
-import Preferences
-import Storage
-import Data
-import BraveCore
-import Favicon
 import Combine
+import Data
+import Favicon
+import Preferences
+import Shared
+import Storage
+import UIKit
 
 class LoginListViewController: LoginAuthViewController {
 
@@ -41,7 +41,8 @@ class LoginListViewController: LoginAuthViewController {
   private var searchLoginTimer: Timer?
   private let searchController = UISearchController(searchResultsController: nil)
   private let emptyStateOverlayView = EmptyStateOverlayView(
-    overlayDetails: EmptyOverlayStateDetails(title: Strings.Login.loginListEmptyScreenTitle))
+    overlayDetails: EmptyOverlayStateDetails(title: Strings.Login.loginListEmptyScreenTitle)
+  )
 
   private var localAuthObservers = Set<AnyCancellable>()
 
@@ -51,7 +52,7 @@ class LoginListViewController: LoginAuthViewController {
     self.windowProtection = windowProtection
     self.passwordAPI = passwordAPI
     dataSource = LoginListDataSource(with: passwordAPI)
-    
+
     super.init(windowProtection: windowProtection, requiresAuthentication: true)
 
     // Adding the Password store observer in constructor to watch credentials changes
@@ -64,8 +65,9 @@ class LoginListViewController: LoginAuthViewController {
         DispatchQueue.main.async {
           self.fetchLoginInfo()
         }
-      })
-    
+      }
+    )
+
     windowProtection?.cancelPressed
       .sink { [weak self] _ in
         self?.navigationController?.popViewController(animated: true)
@@ -94,7 +96,8 @@ class LoginListViewController: LoginAuthViewController {
         title: Strings.settingsSearchDoneButton,
         style: .done,
         target: self,
-        action: #selector(dismissAnimated))
+        action: #selector(dismissAnimated)
+      )
     }
 
     navigationItem.do {
@@ -106,7 +109,8 @@ class LoginListViewController: LoginAuthViewController {
     definesPresentationContext = true
 
     tableView.tableFooterView = SettingsTableSectionHeaderFooterView(
-      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))
+      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
+    )
   }
 
   override func viewWillAppear(_ animated: Bool) {
@@ -163,39 +167,48 @@ extension LoginListViewController {
     return dataSource.fetchNumberOfRowsInSection(section: section)
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
     // Save Login Toggle
     if section == 0, !dataSource.isCredentialsBeingSearched {
       return 0
     }
-    
+
     return UX.headerHeight
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     func createSaveToggleCell() -> UITableViewCell {
       let toggle = UISwitch().then {
         $0.addTarget(self, action: #selector(didToggleSaveLogins), for: .valueChanged)
         $0.isOn = Preferences.General.saveLogins.value
       }
-      
-      let cell = tableView.dequeueReusableCell(withIdentifier: Constants.saveLoginsRowIdentifier, for: indexPath).then {
+
+      let cell = tableView.dequeueReusableCell(
+        withIdentifier: Constants.saveLoginsRowIdentifier,
+        for: indexPath
+      ).then {
         $0.textLabel?.text = Strings.saveLogins
         $0.separatorInset = .zero
         $0.accessoryView = searchController.isActive ? nil : toggle
         $0.selectionStyle = .none
       }
-      
+
       return cell
     }
-    
+
     func createCredentialFormCell(passwordForm: PasswordForm?) -> LoginListTableViewCell {
       guard let loginInfo = passwordForm else {
         return LoginListTableViewCell()
       }
-      
+
       let cell = tableView.dequeueReusableCell(for: indexPath) as LoginListTableViewCell
-      
+
       cell.do {
         $0.detailTextLabel?.font = .preferredFont(forTextStyle: .subheadline)
         $0.setLines(loginInfo.displayURLString, detailText: loginInfo.usernameValue)
@@ -215,33 +228,35 @@ extension LoginListViewController {
           $0.loadFavicon(for: signOnRealmURL, isPrivateBrowsing: false)
         }
       }
-      
+
       return cell
     }
-    
+
     if let form = dataSource.fetchPasswordFormFor(indexPath: indexPath) {
       return createCredentialFormCell(passwordForm: form)
     }
-    
+
     if !dataSource.isCredentialsBeingSearched, indexPath.section == 0 {
       return createSaveToggleCell()
     }
-    
+
     return UITableViewCell()
   }
-  
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  {
     let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
-    
+
     let savedLoginHeaderText = Strings.Login.loginListSavedLoginsHeaderTitle.uppercased()
     let neverSavedHeaderText = Strings.Login.loginListNeverSavedHeaderTitle.uppercased()
-    
+
     var titleHeaderText = ""
-    
+
     if dataSource.isCredentialsBeingSearched {
       switch section {
       case 0:
-        titleHeaderText = dataSource.credentialList.isEmpty ? neverSavedHeaderText : savedLoginHeaderText
+        titleHeaderText =
+          dataSource.credentialList.isEmpty ? neverSavedHeaderText : savedLoginHeaderText
       case 1:
         titleHeaderText = dataSource.blockedList.isEmpty ? "" : neverSavedHeaderText
       default:
@@ -250,33 +265,38 @@ extension LoginListViewController {
     } else {
       switch section {
       case 1:
-        titleHeaderText = dataSource.credentialList.isEmpty ? neverSavedHeaderText : savedLoginHeaderText
+        titleHeaderText =
+          dataSource.credentialList.isEmpty ? neverSavedHeaderText : savedLoginHeaderText
       case 2:
         titleHeaderText = dataSource.blockedList.isEmpty ? "" : neverSavedHeaderText
       default:
         titleHeaderText = ""
       }
     }
-    
+
     headerView.titleLabel.text = titleHeaderText
-    
+
     return headerView
   }
 
-  override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+  override func tableView(
+    _ tableView: UITableView,
+    willSelectRowAt indexPath: IndexPath
+  ) -> IndexPath? {
     func showInformationController(for form: PasswordForm) {
       let loginDetailsViewController = LoginInfoViewController(
         passwordAPI: passwordAPI,
         credentials: form,
-        windowProtection: windowProtection)
+        windowProtection: windowProtection
+      )
       loginDetailsViewController.settingsDelegate = settingsDelegate
       navigationController?.pushViewController(loginDetailsViewController, animated: true)
     }
-    
+
     if tableView.isEditing {
       return nil
     }
-    
+
     if let form = dataSource.fetchPasswordFormFor(indexPath: indexPath) {
       showInformationController(for: form)
       return indexPath
@@ -287,19 +307,22 @@ extension LoginListViewController {
 
   override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     if indexPath.section == 0, !dataSource.isCredentialsBeingSearched {
-     return
+      return
     }
-    
+
     searchController.isActive = false
-      
+
     tableView.isEditing = false
     setEditing(false, animated: false)
-      
+
     fetchLoginInfo()
   }
 
   // Determine whether to show delete button in edit mode
-  override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+  override func tableView(
+    _ tableView: UITableView,
+    editingStyleForRowAt indexPath: IndexPath
+  ) -> UITableViewCell.EditingStyle {
     if indexPath.section == 0, !dataSource.isCredentialsBeingSearched {
       return .none
     }
@@ -308,11 +331,18 @@ extension LoginListViewController {
   }
 
   // Determine whether to indent while in edit mode for deletion
-  override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+  override func tableView(
+    _ tableView: UITableView,
+    shouldIndentWhileEditingRowAt indexPath: IndexPath
+  ) -> Bool {
     return !(indexPath.section == 0 && !dataSource.isCredentialsBeingSearched)
   }
 
-  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+  override func tableView(
+    _ tableView: UITableView,
+    commit editingStyle: UITableViewCell.EditingStyle,
+    forRowAt indexPath: IndexPath
+  ) {
     if editingStyle == .delete {
       if let form = dataSource.fetchPasswordFormFor(indexPath: indexPath) {
         showDeleteLoginWarning(with: form)
@@ -328,11 +358,13 @@ extension LoginListViewController {
     let alert = UIAlertController(
       title: Strings.deleteLoginAlertTitle,
       message: Strings.Login.loginEntryDeleteAlertMessage,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alert.addAction(
       UIAlertAction(
-        title: Strings.deleteLoginButtonTitle, style: .destructive,
+        title: Strings.deleteLoginButtonTitle,
+        style: .destructive,
         handler: { [weak self] _ in
           guard let self = self else { return }
 
@@ -340,12 +372,14 @@ extension LoginListViewController {
           self.setEditing(false, animated: false)
           self.passwordAPI.removeLogin(credential)
           self.fetchLoginInfo()
-        }))
+        }
+      )
+    )
 
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
     present(alert, animated: true, completion: nil)
   }
-  
+
   private func fetchLoginInfo(_ searchQuery: String? = nil) {
     dataSource.fetchLoginInfo(searchQuery) { [weak self] editEnabled in
       self?.tableView.reloadData()
@@ -380,7 +414,13 @@ extension LoginListViewController: UISearchResultsUpdating {
     }
 
     searchLoginTimer =
-      Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(fetchSearchResults(timer:)), userInfo: query, repeats: false)
+      Timer.scheduledTimer(
+        timeInterval: 0.1,
+        target: self,
+        selector: #selector(fetchSearchResults(timer:)),
+        userInfo: query,
+        repeats: false
+      )
   }
 
   @objc private func fetchSearchResults(timer: Timer) {
@@ -411,36 +451,36 @@ extension LoginListViewController: UISearchControllerDelegate {
 }
 
 private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
-    
+
   struct UX {
     static let labelOffset = 11.0
     static let imageSize = 32.0
   }
-    
+
   let imageIconView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.tintColor = .braveLabel
   }
-    
+
   let labelStackView = UIStackView().then {
     $0.axis = .vertical
     $0.alignment = .leading
     $0.setContentCompressionResistancePriority(.defaultLow, for: .horizontal)
   }
-  
+
   let titleLabel = UILabel().then {
     $0.textColor = .braveLabel
     $0.font = .preferredFont(forTextStyle: .footnote)
   }
-  
+
   let descriptionLabel = UILabel().then {
     $0.textColor = .secondaryBraveLabel
     $0.font = .preferredFont(forTextStyle: .subheadline)
   }
-  
+
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
+
     contentView.addSubview(imageIconView)
     contentView.addSubview(labelStackView)
 
@@ -453,7 +493,7 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
       $0.centerY.equalToSuperview()
       $0.size.equalTo(UX.imageSize)
     }
-    
+
     labelStackView.snp.makeConstraints {
       $0.leading.equalTo(imageIconView.snp.trailing).offset(TwoLineCellUX.borderViewMargin)
       $0.trailing.equalToSuperview().offset(-UX.labelOffset)
@@ -461,12 +501,12 @@ private class LoginListTableViewCell: UITableViewCell, TableViewReusable {
       $0.bottom.equalToSuperview().offset(-UX.labelOffset)
     }
   }
-    
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   func setLines(_ text: String?, detailText: String?) {
     titleLabel.text = text
     descriptionLabel.text = detailText

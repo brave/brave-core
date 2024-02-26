@@ -2,8 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import XCTest
 import BraveShared
+import XCTest
 
 class StringExtensionTests: XCTestCase {
 
@@ -18,7 +18,8 @@ class StringExtensionTests: XCTestCase {
     let postfixedString = "\(urlString) The url is before this text"
     XCTAssertEqual(url, postfixedString.firstURL)
 
-    let stringWithMultipleURLs = "\(urlString) This one has more than one url https://duckduckgo.com"
+    let stringWithMultipleURLs =
+      "\(urlString) This one has more than one url https://duckduckgo.com"
     XCTAssertEqual(url, stringWithMultipleURLs.firstURL)
 
     let stringWithNoURLs = "This one is just text"
@@ -31,7 +32,10 @@ class StringExtensionTests: XCTestCase {
   func testURLEncoding() {
     let urlString = "https://example.com/test%"
     let urlStringEncoded = "https://example.com/test%25"
-    XCTAssertEqual(urlString.addingPercentEncoding(withAllowedCharacters: .URLAllowed), urlStringEncoded)
+    XCTAssertEqual(
+      urlString.addingPercentEncoding(withAllowedCharacters: .URLAllowed),
+      urlStringEncoded
+    )
   }
 
   func testWords() {
@@ -43,16 +47,21 @@ class StringExtensionTests: XCTestCase {
       That will get stripped!\r
       """
 
-    XCTAssertEqual(longMultilinedText.words, ["Multiple", "words", "On", "multiple", "lines", "That", "will", "get", "stripped"])
+    XCTAssertEqual(
+      longMultilinedText.words,
+      ["Multiple", "words", "On", "multiple", "lines", "That", "will", "get", "stripped"]
+    )
 
     let wordsWithPunctuation = "\"It's a wonderful life—isn't it…\""
     XCTAssertEqual(wordsWithPunctuation.words, ["It's", "a", "wonderful", "life", "isn't", "it"])
   }
 
   func testJavascriptEscapedString() {
-    let originalString = "function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\u{2028}"
+    let originalString =
+      "function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\u{2028}"
 
-    let expectedString = "\"function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\\\\u2028\""
+    let expectedString =
+      "\"function(){window.google={kEI:\'UZe4YMHZE8HBkwWpkIPoBg\',kEXPI:\'31\',kBL:\'ckvK\'};google.sn=\'web\';google.kHL=\'en\';}\\\\u2028\""
 
     XCTAssertEqual(originalString.javaScriptEscapedString, expectedString)
   }

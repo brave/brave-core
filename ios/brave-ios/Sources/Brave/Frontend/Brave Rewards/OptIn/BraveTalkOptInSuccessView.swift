@@ -3,15 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveShared
 import BraveUI
 import Shared
-import BraveShared
+import UIKit
 
 extension BraveTalkOptInSuccessViewController {
   class View: UIView {
 
-    private let image = UIImageView(image: UIImage(named: "optin_check_circle", in: .module, compatibleWith: nil)!).then {
+    private let image = UIImageView(
+      image: UIImage(named: "optin_check_circle", in: .module, compatibleWith: nil)!
+    ).then {
       $0.contentMode = .scaleAspectFit
     }
 
@@ -33,7 +35,9 @@ extension BraveTalkOptInSuccessViewController {
       $0.textAlignment = .center
     }
 
-    private let optinBackground = UIImageView(image: UIImage(named: "optin_bg", in: .module, compatibleWith: nil)!).then {
+    private let optinBackground = UIImageView(
+      image: UIImage(named: "optin_bg", in: .module, compatibleWith: nil)!
+    ).then {
       $0.contentMode = .scaleAspectFit
     }
 
@@ -54,7 +58,8 @@ extension BraveTalkOptInSuccessViewController {
         $0.addStackViewItems(
           .view(image),
           .view(title),
-          .view(body))
+          .view(body)
+        )
 
         $0.layoutMargins = .init(top: 44, left: 32, bottom: 24, right: 32)
         $0.isLayoutMarginsRelativeArrangement = true

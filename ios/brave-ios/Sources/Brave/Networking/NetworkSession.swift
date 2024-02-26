@@ -2,18 +2,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import Combine
+import Foundation
 
 typealias NetworkSessionDataResponse = (Data, URLResponse)
 
 protocol NetworkSession: Sendable {
-  func dataRequest(with url: URL, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void)
-  func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void)
-  
+  func dataRequest(
+    with url: URL,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  )
+  func dataRequest(
+    with urlRequest: URLRequest,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  )
+
   func dataRequest(with url: URL) -> AnyPublisher<NetworkSessionDataResponse, Error>
   func dataRequest(with urlRequest: URLRequest) -> AnyPublisher<NetworkSessionDataResponse, Error>
-  
+
   func dataRequest(with url: URL) async throws -> NetworkSessionDataResponse
   func dataRequest(with urlRequest: URLRequest) async throws -> NetworkSessionDataResponse
 }
@@ -28,10 +34,14 @@ extension URLSession: NetworkSession {
       url: url,
       statusCode: code,
       httpVersion: "HTTP/1.1",
-      headerFields: [:])!
+      headerFields: [:]
+    )!
   }
-  
-  func dataRequest(with url: URL, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+
+  func dataRequest(
+    with url: URL,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  ) {
     self.dataTask(with: url) { data, response, error in
       if let error = error {
         completion(.failure(error))
@@ -40,8 +50,11 @@ extension URLSession: NetworkSession {
       }
     }.resume()
   }
-  
-  func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+
+  func dataRequest(
+    with urlRequest: URLRequest,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  ) {
     self.dataTask(with: urlRequest) { data, response, error in
       if let error = error {
         completion(.failure(error))
@@ -50,14 +63,14 @@ extension URLSession: NetworkSession {
       }
     }.resume()
   }
-  
+
   func dataRequest(with url: URL) -> AnyPublisher<NetworkSessionDataResponse, Error> {
     return self.dataTaskPublisher(for: url)
       .map({ ($0, $1) })
       .mapError({ $0 as Error })
       .eraseToAnyPublisher()
   }
-  
+
   func dataRequest(with urlRequest: URLRequest) -> AnyPublisher<NetworkSessionDataResponse, Error> {
     return self.dataTaskPublisher(for: urlRequest)
       .map({ ($0, $1) })

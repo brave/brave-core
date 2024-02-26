@@ -3,20 +3,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
 import DesignSystem
-import Strings
-import struct Shared.AppConstants
+import Foundation
 import Preferences
+import Strings
+import SwiftUI
+
+import struct Shared.AppConstants
 
 struct RestoreWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
   // Used to dismiss all of Wallet
   let dismissAction: () -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   @State private var isBraveLegacyWallet: Bool = false
   @State private var isRevealRecoveryWords: Bool = true
   @State private var recoveryWords: [String] = .init(repeating: "", count: 12)
@@ -24,23 +25,23 @@ struct RestoreWalletView: View {
   @State private var isShowingCreateNewPassword: Bool = false
   @State private var isShowingPhraseError: Bool = false
   @State private var isShowingCompleteState: Bool = false
-  
+
   private var numberOfColumns: Int {
     sizeCategory.isAccessibilityCategory ? 2 : 3
   }
-  
+
   private var isLegacyWallet: Bool {
     recoveryWords.count == 24
   }
-  
+
   private var isContinueDisabled: Bool {
     !recoveryWords.allSatisfy({ !$0.isEmpty }) || keyringStore.isRestoringWallet
   }
-  
+
   private var isShowingCreatingWallet: Bool {
     keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
   }
-  
+
   private var errorLabel: some View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
@@ -57,22 +58,24 @@ struct RestoreWalletView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }
-  
+
   private func handleRecoveryWordsChanged(oldValue: [String], newValue: [String]) {
-    let indexOnDifference = zip(oldValue, newValue).enumerated().first(where: { $1.0 != $1.1 }).map { $0.0 }
+    let indexOnDifference = zip(oldValue, newValue).enumerated().first(where: { $1.0 != $1.1 }).map
+    { $0.0 }
     if let indexOnDifference,
-       let oldInput = oldValue[safe: indexOnDifference],
-       let newInput = newValue[safe: indexOnDifference] { // there is a new input on `indexOnDifference`
-      if abs(newInput.count - oldInput.count) > 1 { // we consider this is a copy and paste from `UIPasteboard`
+      let oldInput = oldValue[safe: indexOnDifference],
+      let newInput = newValue[safe: indexOnDifference]
+    {  // there is a new input on `indexOnDifference`
+      if abs(newInput.count - oldInput.count) > 1 {  // we consider this is a copy and paste from `UIPasteboard`
         let phrases = newInput.split(separator: " ")
-        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) { // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
+        if (!isLegacyWallet && phrases.count == 12) || (isLegacyWallet && phrases.count == 24) {  // user copies and pastes the entire recovery phrases, we will auto-fill in all the recovery phrases
           let currentLength = recoveryWords.count
           var newPhrases = Array(repeating: "", count: currentLength)
           for (index, pastedWord) in phrases.enumerated() {
             newPhrases[index] = String(pastedWord)
           }
           recoveryWords = newPhrases
-        } else { // user copy and paste some phrases, we will auto-fill in from the `indexOfDifference` (where user pastes) to the last input field. This also means, if user passtes more phrases than number of input fields remaining, we won't exceed and will stop pasting at the last input field.
+        } else {  // user copy and paste some phrases, we will auto-fill in from the `indexOfDifference` (where user pastes) to the last input field. This also means, if user passtes more phrases than number of input fields remaining, we won't exceed and will stop pasting at the last input field.
           var startIndex = indexOnDifference
           var recoveryWordsCopy = recoveryWords
           for phrase in phrases {
@@ -108,15 +111,27 @@ struct RestoreWalletView: View {
           ForEach(self.recoveryWords.indices, id: \.self) { index in
             VStack(alignment: .leading, spacing: 10) {
               if isRevealRecoveryWords {
-                TextField(String.localizedStringWithFormat(Strings.Wallet.restoreWalletPhrasePlaceholder, (index + 1)), text: $recoveryWords[index])
-                  .customPrivacySensitive()
-                  .autocapitalization(.none)
-                  .disableAutocorrection(true)
-                  .foregroundColor(Color(.braveLabel))
+                TextField(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.restoreWalletPhrasePlaceholder,
+                    (index + 1)
+                  ),
+                  text: $recoveryWords[index]
+                )
+                .customPrivacySensitive()
+                .autocapitalization(.none)
+                .disableAutocorrection(true)
+                .foregroundColor(Color(.braveLabel))
               } else {
-                SecureField(String.localizedStringWithFormat(Strings.Wallet.restoreWalletPhrasePlaceholder, (index + 1)), text: $recoveryWords[index])
-                  .customPrivacySensitive()
-                  .textContentType(.newPassword)
+                SecureField(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.restoreWalletPhrasePlaceholder,
+                    (index + 1)
+                  ),
+                  text: $recoveryWords[index]
+                )
+                .customPrivacySensitive()
+                .textContentType(.newPassword)
               }
               Divider()
             }
@@ -136,12 +151,20 @@ struct RestoreWalletView: View {
             // regular(12) to legacy(24)
             // or legacy(24) to regular(12)
             resignFirstResponder()
-            recoveryWords = .init(repeating: "", count: isLegacyWallet ? .regularWalletRecoveryPhraseNumber : .legacyWalletRecoveryPhraseNumber)
+            recoveryWords = .init(
+              repeating: "",
+              count: isLegacyWallet
+                ? .regularWalletRecoveryPhraseNumber : .legacyWalletRecoveryPhraseNumber
+            )
             isShowingPhraseError = false
           } label: {
-            Text(isLegacyWallet ? Strings.Wallet.restoreWalletImportFromRegularBraveWallet : Strings.Wallet.restoreWalletImportFromLegacyBraveWallet)
-              .fontWeight(.medium)
-              .foregroundColor(Color(.braveBlurpleTint))
+            Text(
+              isLegacyWallet
+                ? Strings.Wallet.restoreWalletImportFromRegularBraveWallet
+                : Strings.Wallet.restoreWalletImportFromLegacyBraveWallet
+            )
+            .fontWeight(.medium)
+            .foregroundColor(Color(.braveBlurpleTint))
           }
           Spacer()
           Button {
@@ -153,7 +176,11 @@ struct RestoreWalletView: View {
         }
         Button {
           if let newPassword, !newPassword.isEmpty {
-            keyringStore.restoreWallet(words: recoveryWords, password: newPassword, isLegacyBraveWallet: isLegacyWallet) { isMnemonicValid in
+            keyringStore.restoreWallet(
+              words: recoveryWords,
+              password: newPassword,
+              isLegacyBraveWallet: isLegacyWallet
+            ) { isMnemonicValid in
               if isMnemonicValid {
                 isShowingPhraseError = false
                 keyringStore.resetKeychainStoredPassword()
@@ -192,7 +219,7 @@ struct RestoreWalletView: View {
     .toolbar(content: {
       ToolbarItem(placement: .navigationBarLeading) {
         if isShowingCreatingWallet {
-          Button(action: dismissAction) { // dismiss all of wallet
+          Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
               .foregroundColor(Color(.braveBlurpleTint))
@@ -222,11 +249,16 @@ struct RestoreWalletView: View {
       keyringStore.reportP3AOnboarding(action: .startRestore)
     }
   }
-  
+
   private func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
-  
+
   private func restoreWallet(_ password: String) {
     newPassword = password
     isShowingCreateNewPassword = false

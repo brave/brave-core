@@ -3,14 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import CoreData
 import BraveShared
-import Favicon
 import BraveWidgetsModels
+import CoreData
+import Favicon
+import Foundation
 
 extension BrowserViewController: NSFetchedResultsControllerDelegate {
-  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerDidChangeContent(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>
+  ) {
     updateWidgetFavoritesData()
   }
 
@@ -25,7 +27,10 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
           let favorite: WidgetFavorite
         }
 
-        let widgets = await withTaskGroup(of: IndexedWidgetFavorite.self, returning: [WidgetFavorite].self) { group in
+        let widgets = await withTaskGroup(
+          of: IndexedWidgetFavorite.self,
+          returning: [WidgetFavorite].self
+        ) { group in
           // MUST copy `favs` array.
           // If we don't, operating on `favs` is undefined behaviour on iOS 14! - Brandon T.
           // This causes a terribly difficult to find bug on iOS 14 (dangling pointer).
@@ -34,26 +39,36 @@ extension BrowserViewController: NSFetchedResultsControllerDelegate {
             guard let url = fav.url?.asURL else {
               continue
             }
-            
+
             let title = fav.title
-            
+
             group.addTask {
               if let favicon = FaviconFetcher.getIconFromCache(for: url) {
-                return IndexedWidgetFavorite(index: index, favorite: .init(url: url, title: title, favicon: favicon))
+                return IndexedWidgetFavorite(
+                  index: index,
+                  favorite: .init(url: url, title: title, favicon: favicon)
+                )
               }
-              
-              let favicon = try? await FaviconFetcher.loadIcon(url: url, kind: .largeIcon, persistent: true)
-              return IndexedWidgetFavorite(index: index, favorite: .init(url: url, title: title, favicon: favicon))
+
+              let favicon = try? await FaviconFetcher.loadIcon(
+                url: url,
+                kind: .largeIcon,
+                persistent: true
+              )
+              return IndexedWidgetFavorite(
+                index: index,
+                favorite: .init(url: url, title: title, favicon: favicon)
+              )
             }
           }
-          
+
           var results = [IndexedWidgetFavorite]()
           for await result in group {
             results.append(result)
           }
           return results.sorted { $0.index < $1.index }.map { $0.favorite }
         }
-        
+
         FavoritesWidgetData.updateWidgetData(widgets)
       }
     }

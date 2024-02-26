@@ -1,13 +1,13 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
-import Data
-import BraveShared
 import BraveCore
+import BraveShared
 import BraveUI
-import os.log
+import Data
 import Preferences
+import Shared
+import UIKit
+import os.log
 
 /// Sometimes during heavy operations we want to prevent user from navigating back, changing screen etc.
 protocol NavigationPrevention {
@@ -16,18 +16,18 @@ protocol NavigationPrevention {
 }
 
 class SyncWelcomeViewController: SyncViewController {
-  
+
   private enum ActionType {
     case newUser, existingUser, internalSettings
   }
-  
+
   private enum SyncDeviceLimitLevel {
     case safe, approvalNeeded, blocked
   }
-  
+
   private enum DeviceRetriavalError: Error {
     case decodeError, fetchError, deviceNumberError
-    
+
     // Text localization not necesseray, only used for logs
     var errorDescription: String {
       switch self {
@@ -40,7 +40,7 @@ class SyncWelcomeViewController: SyncViewController {
       }
     }
   }
-  
+
   private var overlayView: UIView?
 
   override var isLoading: Bool {
@@ -90,7 +90,10 @@ class SyncWelcomeViewController: SyncViewController {
   lazy var syncImage: UIImageView = {
     let imageView = UIImageView(image: UIImage(named: "sync-art", in: .module, compatibleWith: nil))
     // Shrinking image a bit on smaller devices.
-    imageView.setContentCompressionResistancePriority(UILayoutPriority(rawValue: 250), for: .vertical)
+    imageView.setContentCompressionResistancePriority(
+      UILayoutPriority(rawValue: 250),
+      for: .vertical
+    )
     imageView.contentMode = .scaleAspectFit
 
     return imageView
@@ -161,15 +164,17 @@ class SyncWelcomeViewController: SyncViewController {
   private let syncAPI: BraveSyncAPI
   private let syncProfileServices: BraveSyncProfileServiceIOS
 
-  init(syncAPI: BraveSyncAPI,
-       syncProfileServices: BraveSyncProfileServiceIOS,
-       tabManager: TabManager,
-       windowProtection: WindowProtection?,
-       isModallyPresented: Bool = false) {
+  init(
+    syncAPI: BraveSyncAPI,
+    syncProfileServices: BraveSyncProfileServiceIOS,
+    tabManager: TabManager,
+    windowProtection: WindowProtection?,
+    isModallyPresented: Bool = false
+  ) {
     self.syncAPI = syncAPI
     self.syncProfileServices = syncProfileServices
     self.tabManager = tabManager
-    
+
     super.init(windowProtection: windowProtection, isModallyPresented: isModallyPresented)
   }
 
@@ -192,7 +197,9 @@ class SyncWelcomeViewController: SyncViewController {
     }
 
     // Adding top margin to the image.
-    let syncImageStackView = UIStackView(arrangedSubviews: [UIView.spacer(.vertical, amount: 60), syncImage])
+    let syncImageStackView = UIStackView(arrangedSubviews: [
+      UIView.spacer(.vertical, amount: 60), syncImage,
+    ])
     syncImageStackView.axis = .vertical
     mainStackView.addArrangedSubview(syncImageStackView)
 
@@ -211,7 +218,12 @@ class SyncWelcomeViewController: SyncViewController {
     buttonsStackView.addArrangedSubview(newToSyncButton)
     mainStackView.addArrangedSubview(buttonsStackView)
 
-    navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "gearshape"), style: .plain, target: self, action: #selector(onSyncInternalsAction))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(
+      image: UIImage(systemName: "gearshape"),
+      style: .plain,
+      target: self,
+      action: #selector(onSyncInternalsAction)
+    )
   }
 
   // MARK: Actions
@@ -221,30 +233,34 @@ class SyncWelcomeViewController: SyncViewController {
     let addDevice = SyncSelectDeviceTypeViewController()
     addDevice.syncInitHandler = { [weak self] (title, type) in
       guard let self = self else { return }
-      
+
       func pushAddDeviceVC() {
         self.syncServiceObserver = nil
         guard self.syncAPI.isInSyncGroup else {
           addDevice.disableNavigationPrevention()
-          let alert = UIAlertController(title: Strings.syncUnsuccessful, message: Strings.syncUnableCreateGroup, preferredStyle: .alert)
+          let alert = UIAlertController(
+            title: Strings.syncUnsuccessful,
+            message: Strings.syncUnableCreateGroup,
+            preferredStyle: .alert
+          )
           alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
           addDevice.present(alert, animated: true, completion: nil)
           return
         }
-        
+
         let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
         view.addDeviceHandler = self.pushSettings
         view.navigationItem.hidesBackButton = true
         self.navigationController?.pushViewController(view, animated: true)
       }
-      
+
       if self.syncAPI.isInSyncGroup {
         pushAddDeviceVC()
         return
       }
-      
+
       addDevice.enableNavigationPrevention()
-      
+
       // DidJoinSyncChain result should be also checked when creating a new chain
       self.syncAPI.setDidJoinSyncChain { result in
         if result {
@@ -252,7 +268,7 @@ class SyncWelcomeViewController: SyncViewController {
             guard let self else { return }
             self.syncServiceObserver = nil
             self.syncDeviceInfoObserver = nil
-            
+
             pushAddDeviceVC()
           }
         } else {
@@ -261,11 +277,14 @@ class SyncWelcomeViewController: SyncViewController {
           self.navigationController?.popViewController(animated: true)
         }
       }
-      
-      self.syncAPI.joinSyncGroup(codeWords: self.syncAPI.getSyncCode(), syncProfileService: self.syncProfileServices)
+
+      self.syncAPI.joinSyncGroup(
+        codeWords: self.syncAPI.getSyncCode(),
+        syncProfileService: self.syncProfileServices
+      )
       self.handleSyncSetupFailure()
     }
-    
+
     navigationController?.pushViewController(addDevice, animated: true)
   }
 
@@ -275,23 +294,23 @@ class SyncWelcomeViewController: SyncViewController {
     pairCamera.delegate = self
     navigationController?.pushViewController(pairCamera, animated: true)
   }
-  
+
   @objc
   private func onSyncInternalsAction() {
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
-      
+
       let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
         $0.title = Strings.braveSyncInternalsTitle
         $0.loadURL("brave://sync-internals")
       }
-      
+
       navigationController?.pushViewController(syncInternalsController, animated: true)
     }
   }
 
   // MARK: Internal
-  
+
   private func pushSettings() {
     if !DeviceInfo.hasConnectivity() {
       present(SyncAlerts.noConnection, animated: true)
@@ -303,18 +322,21 @@ class SyncWelcomeViewController: SyncViewController {
       syncAPI: syncAPI,
       syncProfileService: syncProfileServices,
       tabManager: tabManager,
-      windowProtection: windowProtection)
-    
+      windowProtection: windowProtection
+    )
+
     navigationController?.pushViewController(syncSettingsVC, animated: true)
   }
-  
+
   /// Sync setup failure is handled here because it can happen from few places in children VCs(new chain, qr code, codewords)
   /// This makes all presented Sync View Controllers to dismiss, cleans up any sync setup and shows user a friendly message.
   private func handleSyncSetupFailure() {
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
 
-      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive && !self.syncAPI.isInitialSyncFeatureSetupComplete {
+      if !self.syncAPI.isInSyncGroup && !self.syncAPI.isSyncFeatureActive
+        && !self.syncAPI.isInitialSyncFeatureSetupComplete
+      {
         let bvc = self.currentScene?.browserViewController
         self.dismiss(animated: true) {
           bvc?.present(SyncAlerts.initializationError, animated: true)
@@ -325,14 +347,23 @@ class SyncWelcomeViewController: SyncViewController {
 }
 
 extension SyncWelcomeViewController: SyncPairControllerDelegate {
-  func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String) {
-    syncOnWordsEntered(controller, codeWords: syncAPI.syncCode(fromHexSeed: hexCode), isCodeScanned: true)
+  func syncOnScannedHexCode(_ controller: UIViewController & NavigationPrevention, hexCode: String)
+  {
+    syncOnWordsEntered(
+      controller,
+      codeWords: syncAPI.syncCode(fromHexSeed: hexCode),
+      isCodeScanned: true
+    )
   }
 
-  func syncOnWordsEntered(_ controller: UIViewController & NavigationPrevention, codeWords: String, isCodeScanned: Bool) {
+  func syncOnWordsEntered(
+    _ controller: UIViewController & NavigationPrevention,
+    codeWords: String,
+    isCodeScanned: Bool
+  ) {
     // Start Loading after Sync chain code words are entered
     controller.enableNavigationPrevention()
-    
+
     // Join the sync chain but do not enable any sync type
     // This includes the bookmark default type
     runPostJoinSyncActions(using: controller, isCodeScanned: isCodeScanned)
@@ -342,8 +373,11 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
     syncAPI.joinSyncGroup(codeWords: codeWords, syncProfileService: syncProfileServices)
     handleSyncSetupFailure()
   }
-  
-  private func runPostJoinSyncActions(using controller: UIViewController & NavigationPrevention, isCodeScanned: Bool) {
+
+  private func runPostJoinSyncActions(
+    using controller: UIViewController & NavigationPrevention,
+    isCodeScanned: Bool
+  ) {
     // DidJoinSyncChain is checking If the chain user trying to join is deleted recently
     // returning an error accordingly - only error is Deleted Sync Chain atm
     syncAPI.setDidJoinSyncChain { result in
@@ -354,19 +388,20 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
           guard let self else { return }
           self.syncServiceObserver = nil
           self.syncDeviceInfoObserver = nil
-          
+
           // Stop Loading after device list can be fetched
           controller.disableNavigationPrevention()
-                    
+
           let deviceLimit = retrieveDeviceLimitLevel()
           guard let deviceLimitLevel = deviceLimit.level else {
             clearSyncChainWithAlert(
               title: Strings.genericErrorTitle,
               message: Strings.Sync.syncDeviceFetchErrorAlertDescription,
-              controller: controller)
+              controller: controller
+            )
             return
           }
-          
+
           switch deviceLimitLevel {
           case .safe:
             self.enableDefaultTypeAndPushSettings()
@@ -375,7 +410,7 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
 
             // Showing and alert with device list; if user answers no - leave chain, if yes - enable the bookmarks type
             var alertMessage = ""
-            
+
             if !devicesSyncChain.isEmpty {
               for device in devicesSyncChain where !device.name.isEmpty {
                 if device.isCurrentDevice {
@@ -386,32 +421,40 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
                   alertMessage += "\n\(device.name)"
                 }
               }
-              
+
               alertMessage = "\n\(Strings.Sync.syncDevicesInSyncChainTitle):\n" + alertMessage
             }
-            
+
             alertMessage += "\n\n \(Strings.Sync.syncJoinChainCodewordsWarning)"
 
             let alert = UIAlertController(
               title: Strings.Sync.syncJoinChainWarningTitle,
               message: alertMessage,
-              preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .default) { _ in
-              self.leaveIncompleteSyncChain()
-            })
-            alert.addAction(UIAlertAction(title: Strings.confirm, style: .default) { _ in
-              self.enableDefaultTypeAndPushSettings()
-            })
+              preferredStyle: .alert
+            )
+            alert.addAction(
+              UIAlertAction(title: Strings.cancelButtonTitle, style: .default) { _ in
+                self.leaveIncompleteSyncChain()
+              }
+            )
+            alert.addAction(
+              UIAlertAction(title: Strings.confirm, style: .default) { _ in
+                self.enableDefaultTypeAndPushSettings()
+              }
+            )
             present(alert, animated: true, completion: nil)
           case .blocked:
             // Devices 10 and more - add alert to block and prevent sync
             let alert = UIAlertController(
               title: Strings.genericErrorTitle,
               message: Strings.Sync.syncMaximumDeviceReachedErrorDescription,
-              preferredStyle: .alert)
-            alert.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
-              self.leaveIncompleteSyncChain()
-            })
+              preferredStyle: .alert
+            )
+            alert.addAction(
+              UIAlertAction(title: Strings.OKString, style: .default) { _ in
+                self.leaveIncompleteSyncChain()
+              }
+            )
             present(alert, animated: true, completion: nil)
           }
         }
@@ -422,25 +465,28 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
         self.clearSyncChainWithAlert(
           title: Strings.Sync.syncChainAlreadyDeletedAlertTitle,
           message: Strings.Sync.syncChainAlreadyDeletedAlertDescription,
-          controller: controller)
+          controller: controller
+        )
       }
     }
   }
-  
-  private func retrieveDeviceLimitLevel() -> (level: SyncDeviceLimitLevel?, error: DeviceRetriavalError?) {
+
+  private func retrieveDeviceLimitLevel() -> (
+    level: SyncDeviceLimitLevel?, error: DeviceRetriavalError?
+  ) {
     let deviceListJSON = syncAPI.getDeviceListJSON()
     let deviceList = fetchSyncDeviceList(listJSON: deviceListJSON)
-    
+
     if let error = deviceList.error {
       return (nil, error)
     }
-    
+
     guard let devices = deviceList.devices else {
       return (nil, DeviceRetriavalError.deviceNumberError)
     }
-    
+
     var deviceLimitLevel: SyncDeviceLimitLevel?
-    
+
     switch devices.count {
     case 1...4:
       deviceLimitLevel = .safe
@@ -452,32 +498,36 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
       Logger.module.error("\(DeviceRetriavalError.deviceNumberError.errorDescription)")
       return (nil, DeviceRetriavalError.deviceNumberError)
     }
-    
+
     return (deviceLimitLevel, nil)
   }
-  
+
   private func fetchNamesOfDevicesInSyncChain() -> [(name: String, isCurrentDevice: Bool)] {
     let deviceListJSON = syncAPI.getDeviceListJSON()
     let deviceList = fetchSyncDeviceList(listJSON: deviceListJSON)
-    
+
     if deviceList.error != nil {
       return []
     }
-    
+
     guard let devices = deviceList.devices else {
       return []
     }
-    
+
     return devices.map { ($0.name ?? "", $0.isCurrentDevice) }
   }
-  
-  private func fetchSyncDeviceList(listJSON: String?) -> (devices: [BraveSyncDevice]?, error: DeviceRetriavalError?) {
+
+  private func fetchSyncDeviceList(
+    listJSON: String?
+  ) -> (devices: [BraveSyncDevice]?, error: DeviceRetriavalError?) {
     if let json = listJSON, let data = json.data(using: .utf8) {
       do {
         let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
         return (devices, nil)
       } catch {
-        Logger.module.error("\(DeviceRetriavalError.decodeError.errorDescription) - \(error.localizedDescription)")
+        Logger.module.error(
+          "\(DeviceRetriavalError.decodeError.errorDescription) - \(error.localizedDescription)"
+        )
         return (nil, DeviceRetriavalError.decodeError)
       }
     } else {
@@ -485,32 +535,39 @@ extension SyncWelcomeViewController: SyncPairControllerDelegate {
       return (nil, DeviceRetriavalError.fetchError)
     }
   }
-  
+
   private func enableDefaultTypeAndPushSettings() {
     // Enable default sync type Bookmarks and push settings
     Preferences.Chromium.syncBookmarksEnabled.value = true
     syncAPI.enableSyncTypes(syncProfileService: syncProfileServices)
     pushSettings()
   }
-  
+
   private func leaveIncompleteSyncChain() {
     syncAPI.leaveSyncGroup()
     navigationController?.popToRootViewController(animated: true)
   }
-  
-  private func clearSyncChainWithAlert(title: String, message: String, controller: UIViewController & NavigationPrevention) {
+
+  private func clearSyncChainWithAlert(
+    title: String,
+    message: String,
+    controller: UIViewController & NavigationPrevention
+  ) {
     let alert = UIAlertController(
       title: title,
       message: message,
-      preferredStyle: .alert)
-    
-    alert.addAction(UIAlertAction(title: Strings.OKString, style: .default) { _ in
-      self.syncAPI.leaveSyncGroup()
-      
-      controller.disableNavigationPrevention()
-      self.navigationController?.popViewController(animated: true)
-    })
-    
+      preferredStyle: .alert
+    )
+
+    alert.addAction(
+      UIAlertAction(title: Strings.OKString, style: .default) { _ in
+        self.syncAPI.leaveSyncGroup()
+
+        controller.disableNavigationPrevention()
+        self.navigationController?.popViewController(animated: true)
+      }
+    )
+
     present(alert, animated: true, completion: nil)
   }
 }

@@ -7,11 +7,11 @@ import SwiftUI
 
 public struct SectionFooterErrorView: View {
   private let errorMessage: String?
-  
+
   public init(errorMessage: String?) {
     self.errorMessage = errorMessage
   }
-  
+
   public var body: some View {
     if let errorMessage {
       HStack(alignment: .firstTextBaseline, spacing: 4) {

@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Preferences
 import BraveUI
+import Combine
+import Foundation
+import LocalAuthentication
+import Preferences
 import Shared
 import UIKit
-import LocalAuthentication
-import Combine
 
 class LoginAuthViewController: UITableViewController {
 
@@ -22,7 +22,7 @@ class LoginAuthViewController: UITableViewController {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
     super.init(nibName: nil, bundle: nil)
-    
+
     windowProtection?.isCancellable = true
   }
 
@@ -34,26 +34,38 @@ class LoginAuthViewController: UITableViewController {
     super.viewWillAppear(animated)
 
     if requiresAuthentication, Preferences.Privacy.lockWithPasscode.value {
-      askForAuthentication() { [weak self] success, error in
+      askForAuthentication { [weak self] success, error in
         if !success, error != .userCancel {
           self?.navigationController?.popViewController(animated: true)
         }
       }
     }
-    
+
     NotificationCenter.default.do {
       $0.addObserver(
-        self, selector: #selector(removeBackgroundedBlur),
-        name: UIApplication.willEnterForegroundNotification, object: nil)
+        self,
+        selector: #selector(removeBackgroundedBlur),
+        name: UIApplication.willEnterForegroundNotification,
+        object: nil
+      )
       $0.addObserver(
-        self, selector: #selector(removeBackgroundedBlur),
-        name: UIApplication.didBecomeActiveNotification, object: nil)
+        self,
+        selector: #selector(removeBackgroundedBlur),
+        name: UIApplication.didBecomeActiveNotification,
+        object: nil
+      )
       $0.addObserver(
-        self, selector: #selector(blurContents),
-        name: UIApplication.willResignActiveNotification, object: nil)
+        self,
+        selector: #selector(blurContents),
+        name: UIApplication.willResignActiveNotification,
+        object: nil
+      )
       $0.addObserver(
-        self, selector: #selector(blurContents),
-        name: UIApplication.didEnterBackgroundNotification, object: nil)
+        self,
+        selector: #selector(blurContents),
+        name: UIApplication.didEnterBackgroundNotification,
+        object: nil
+      )
     }
   }
 
@@ -70,11 +82,14 @@ class LoginAuthViewController: UITableViewController {
     }
 
     if !windowProtection.isPassCodeAvailable {
-      showSetPasscodeError() {
+      showSetPasscodeError {
         completion?(false, .passcodeNotSet)
       }
     } else {
-      windowProtection.presentAuthenticationForViewController(determineLockWithPasscode: false, viewType: .passwords) { status, error in
+      windowProtection.presentAuthenticationForViewController(
+        determineLockWithPasscode: false,
+        viewType: .passwords
+      ) { status, error in
         completion?(status, error)
       }
     }
@@ -84,14 +99,19 @@ class LoginAuthViewController: UITableViewController {
     let alert = UIAlertController(
       title: Strings.Login.loginInfoSetPasscodeAlertTitle,
       message: Strings.Login.loginInfoSetPasscodeAlertDescription,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alert.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
+      UIAlertAction(
+        title: Strings.OKString,
+        style: .default,
+        handler: { _ in
           completion()
-      })
+        }
+      )
     )
-    
+
     present(alert, animated: true, completion: nil)
   }
 
@@ -118,7 +138,9 @@ class LoginAuthViewController: UITableViewController {
 
     let blurContentView = UIView(frame: view.frame)
     let snapshotImageView = UIImageView(image: snapshot)
-    let blurVisualEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterialDark))
+    let blurVisualEffectView = UIVisualEffectView(
+      effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
+    )
 
     view.addSubview(blurContentView)
 

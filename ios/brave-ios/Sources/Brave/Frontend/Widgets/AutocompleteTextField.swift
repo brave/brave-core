@@ -4,15 +4,21 @@
 
 // This code is loosely based on https://github.com/Antol/APAutocompleteTextField
 
-import UIKit
-import Shared
 import BraveUI
+import Shared
+import UIKit
 
 /// Delegate for the text field events. Since AutocompleteTextField owns the UITextFieldDelegate,
 /// callers must use this instead.
 protocol AutocompleteTextFieldDelegate: AnyObject {
-  func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didEnterText text: String)
-  func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didDeleteAutoSelectedText text: String)
+  func autocompleteTextField(
+    _ autocompleteTextField: AutocompleteTextField,
+    didEnterText text: String
+  )
+  func autocompleteTextField(
+    _ autocompleteTextField: AutocompleteTextField,
+    didDeleteAutoSelectedText text: String
+  )
   func autocompleteTextFieldShouldReturn(_ autocompleteTextField: AutocompleteTextField) -> Bool
   func autocompleteTextFieldShouldClear(_ autocompleteTextField: AutocompleteTextField) -> Bool
   func autocompleteTextFieldDidBeginEditing(_ autocompleteTextField: AutocompleteTextField)
@@ -76,14 +82,22 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
 
   fileprivate func commonInit() {
     super.delegate = self
-    super.addTarget(self, action: #selector(AutocompleteTextField.textDidChange), for: .editingChanged)
+    super.addTarget(
+      self,
+      action: #selector(AutocompleteTextField.textDidChange),
+      for: .editingChanged
+    )
     notifyTextChanged = debounce(
       0.1,
       action: {
         if self.isEditing {
-          self.autocompleteDelegate?.autocompleteTextField(self, didEnterText: self.text?.preferredSearchSuggestionText ?? "")
+          self.autocompleteDelegate?.autocompleteTextField(
+            self,
+            didEnterText: self.text?.preferredSearchSuggestionText ?? ""
+          )
         }
-      })
+      }
+    )
 
     notifyTextDeleted = debounce(
       0.1,
@@ -93,16 +107,32 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
           if text?.isEmpty == true && self.autocompleteTextLabel?.text?.isEmpty == false {
             text = self.autocompleteTextLabel?.text
           }
-          self.autocompleteDelegate?.autocompleteTextField(self, didDeleteAutoSelectedText: text?.preferredSearchSuggestionText ?? "")
+          self.autocompleteDelegate?.autocompleteTextField(
+            self,
+            didDeleteAutoSelectedText: text?.preferredSearchSuggestionText ?? ""
+          )
         }
-      })
+      }
+    )
   }
 
   override public var keyCommands: [UIKeyCommand]? {
     return [
-      UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(self.handleKeyCommand(sender:))),
-      UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(self.handleKeyCommand(sender:))),
-      UIKeyCommand(input: UIKeyCommand.inputEscape, modifierFlags: [], action: #selector(self.handleKeyCommand(sender:))),
+      UIKeyCommand(
+        input: UIKeyCommand.inputLeftArrow,
+        modifierFlags: [],
+        action: #selector(self.handleKeyCommand(sender:))
+      ),
+      UIKeyCommand(
+        input: UIKeyCommand.inputRightArrow,
+        modifierFlags: [],
+        action: #selector(self.handleKeyCommand(sender:))
+      ),
+      UIKeyCommand(
+        input: UIKeyCommand.inputEscape,
+        modifierFlags: [],
+        action: #selector(self.handleKeyCommand(sender:))
+      ),
     ]
   }
 
@@ -188,7 +218,11 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
   // `shouldChangeCharactersInRange` is called before the text changes, and textDidChange is called after.
   // Since the text has changed, remove the completion here, and textDidChange will fire the callback to
   // get the new autocompletion.
-  public func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+  public func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
     lastReplacement = string
     return true
   }
@@ -207,9 +241,15 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
       return
     }
 
-    let suggestionText = String(suggestion.suffix(from: suggestion.index(suggestion.startIndex, offsetBy: normalized.count)))
+    let suggestionText = String(
+      suggestion.suffix(from: suggestion.index(suggestion.startIndex, offsetBy: normalized.count))
+    )
     let autocompleteText = NSMutableAttributedString(string: suggestionText)
-    autocompleteText.addAttribute(NSAttributedString.Key.backgroundColor, value: highlightColor, range: NSRange(location: 0, length: suggestionText.count))
+    autocompleteText.addAttribute(
+      NSAttributedString.Key.backgroundColor,
+      value: highlightColor,
+      range: NSRange(location: 0, length: suggestionText.count)
+    )
     autocompleteTextLabel?.removeFromSuperview()  // should be nil. But just in case
     autocompleteTextLabel = createAutocompleteLabelWith(autocompleteText)
     if let l = autocompleteTextLabel {
@@ -219,7 +259,7 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     }
   }
 
-  override public  func caretRect(for position: UITextPosition) -> CGRect {
+  override public func caretRect(for position: UITextPosition) -> CGRect {
     return hideCursor ? CGRect.zero : super.caretRect(for: position)
   }
 
@@ -233,7 +273,11 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     label.textColor = self.textColor
     label.textAlignment = .left
 
-    let enteredTextSize = self.attributedText?.boundingRect(with: self.frame.size, options: NSStringDrawingOptions.usesLineFragmentOrigin, context: nil)
+    let enteredTextSize = self.attributedText?.boundingRect(
+      with: self.frame.size,
+      options: NSStringDrawingOptions.usesLineFragmentOrigin,
+      context: nil
+    )
     frame.origin.x = (enteredTextSize?.width.rounded() ?? 0)
     // The autocomplete label overlaps whole uitextfield covering the clear button.
     // The label's frame must be slightly shorter to make the clear button visible.
@@ -281,13 +325,13 @@ public class AutocompleteTextField: UITextField, UITextFieldDelegate {
     removeCompletion()
 
     let isKeyboardReplacingText = lastReplacement != nil
-    let noMarkedText = markedTextRange == nil // Should not add typed text before marked text is confirmed by user
+    let noMarkedText = markedTextRange == nil  // Should not add typed text before marked text is confirmed by user
 
-    guard isKeyboardReplacingText, noMarkedText  else {
+    guard isKeyboardReplacingText, noMarkedText else {
       hideCursor = false
       return
     }
-    
+
     notifyTextChanged?()
   }
 

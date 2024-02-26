@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
-import BraveUI
 import BraveStrings
+import BraveUI
+import Shared
+import SwiftUI
 
 public struct OnboardingBottomBarView: View {
   public var dismiss: (() -> Void)?
@@ -15,7 +15,7 @@ public struct OnboardingBottomBarView: View {
   public init() {}
 
   public var body: some View {
-    VStack() {
+    VStack {
       Button {
         dismiss?()
       } label: {

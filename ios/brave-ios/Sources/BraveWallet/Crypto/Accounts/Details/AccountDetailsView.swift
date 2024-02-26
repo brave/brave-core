@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import SwiftUI
 import BraveCore
+import BraveShared
+import BraveUI
 import CoreImage
 // For some reason SwiftLint thinks this is a duplicate import
 // swiftlint:disable:next duplicate_imports
 import CoreImage.CIFilterBuiltins
 import Strings
-import BraveShared
-import BraveUI
+import SwiftUI
+import UIKit
 
 struct AccountDetailsView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -24,7 +24,7 @@ struct AccountDetailsView: View {
   @State private var isPresentingRemoveConfirmation: Bool = false
 
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   private var isDoneDisabled: Bool {
     name.isEmpty || !name.isValidAccountName
   }
@@ -50,7 +50,11 @@ struct AccountDetailsView: View {
           content: {
             Group {
               if #available(iOS 16, *) {
-                TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name, axis: .vertical)
+                TextField(
+                  Strings.Wallet.accountDetailsNamePlaceholder,
+                  text: $name,
+                  axis: .vertical
+                )
               } else {
                 TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
               }
@@ -76,7 +80,9 @@ struct AccountDetailsView: View {
           }
         )
         Section {
-          NavigationLink(destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)) {
+          NavigationLink(
+            destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
+          ) {
             Text(Strings.Wallet.accountPrivateKey)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -89,12 +95,15 @@ struct AccountDetailsView: View {
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             }
-            .sheet(isPresented: $isPresentingRemoveConfirmation, content: {
-              RemoveAccountConfirmationView(
-                account: account,
-                keyringStore: keyringStore
-              )
-            })
+            .sheet(
+              isPresented: $isPresentingRemoveConfirmation,
+              content: {
+                RemoveAccountConfirmationView(
+                  account: account,
+                  keyringStore: keyringStore
+                )
+              }
+            )
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         }
@@ -117,7 +126,7 @@ struct AccountDetailsView: View {
         }
       }
     }
-    .accentColor(Color(.braveBlurpleTint)) // needed for navigation bar back button(s)
+    .accentColor(Color(.braveBlurpleTint))  // needed for navigation bar back button(s)
     .onAppear {
       if name.isEmpty {
         // Wait until next runloop pass to fix bug where body isn't recomputed based on state change
@@ -140,7 +149,8 @@ private struct AccountDetailsHeaderView: View {
     filter.message = addressData
     filter.correctionLevel = "H"
     if let image = filter.outputImage,
-      let cgImage = context.createCGImage(image, from: image.extent) {
+      let cgImage = context.createCGImage(image, from: image.extent)
+    {
       return UIImage(cgImage: cgImage)
     }
     return nil

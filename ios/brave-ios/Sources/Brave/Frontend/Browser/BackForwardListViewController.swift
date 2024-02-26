@@ -2,19 +2,21 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
 import BraveShared
-import WebKit
-import Storage
+import Shared
 import SnapKit
+import Storage
+import UIKit
+import WebKit
 
 private struct BackForwardViewUX {
   static let rowHeight: CGFloat = 50
   static let backgroundColor: UIColor = .braveBackground
 }
 
-class BackForwardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIGestureRecognizerDelegate {
+class BackForwardListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate,
+  UIGestureRecognizerDelegate
+{
 
   fileprivate let BackForwardListCellIdentifier = "BackForwardListViewController"
   fileprivate var profile: Profile
@@ -29,7 +31,10 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     tableView.dataSource = self
     tableView.delegate = self
     tableView.alwaysBounceVertical = false
-    tableView.register(BackForwardTableViewCell.self, forCellReuseIdentifier: self.BackForwardListCellIdentifier)
+    tableView.register(
+      BackForwardTableViewCell.self,
+      forCellReuseIdentifier: self.BackForwardListCellIdentifier
+    )
     tableView.backgroundColor = BackForwardViewUX.backgroundColor
     return tableView
   }()
@@ -46,10 +51,11 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
   var listData = [WKBackForwardListItem]()
 
   var tableHeight: CGFloat {
-    get {
-      assert(Thread.isMainThread, "tableHeight interacts with UIKit components - cannot call from background thread.")
-      return min(BackForwardViewUX.rowHeight * CGFloat(listData.count), self.view.frame.height / 2)
-    }
+    assert(
+      Thread.isMainThread,
+      "tableHeight interacts with UIKit components - cannot call from background thread."
+    )
+    return min(BackForwardViewUX.rowHeight * CGFloat(listData.count), self.view.frame.height / 2)
   }
 
   var backForwardTransitionDelegate: UIViewControllerTransitioningDelegate? {
@@ -86,7 +92,9 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
   }
 
   func homeAndNormalPagesOnly(_ bfList: WKBackForwardList) {
-    let items = bfList.forwardList.reversed() + [bfList.currentItem].compactMap({ $0 }) + bfList.backList.reversed()
+    let items =
+      bfList.forwardList.reversed() + [bfList.currentItem].compactMap({ $0 })
+      + bfList.backList.reversed()
 
     // error url's are OK as they are used to populate history on session restore.
     listData = items.filter {
@@ -116,7 +124,10 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     tableView.scrollToRow(at: moveToIndexPath, at: .middle, animated: false)
   }
 
-  override func willTransition(to newCollection: UITraitCollection, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func willTransition(
+    to newCollection: UITraitCollection,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.willTransition(to: newCollection, with: coordinator)
     guard let bvc = self.bvc else {
       return
@@ -134,11 +145,16 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     }
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.viewWillTransition(to: size, with: coordinator)
     let correctHeight = {
       self.tableView.snp.updateConstraints { make in
-        make.height.equalTo(min(BackForwardViewUX.rowHeight * CGFloat(self.listData.count), size.height / 2))
+        make.height.equalTo(
+          min(BackForwardViewUX.rowHeight * CGFloat(self.listData.count), size.height / 2)
+        )
       }
     }
     coordinator.animate(alongsideTransition: nil) { _ in
@@ -157,12 +173,16 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     self.verticalConstraints = []
     tableView.snp.makeConstraints { make in
       if snappedToBottom {
-        verticalConstraints += [make.bottom.equalTo(self.view).offset(-bvc.footer.frame.height).constraint]
+        verticalConstraints += [
+          make.bottom.equalTo(self.view).offset(-bvc.footer.frame.height).constraint
+        ]
       } else {
-        verticalConstraints += [make.top.equalTo(self.view).offset(bvc.header.frame.height).constraint]
+        verticalConstraints += [
+          make.top.equalTo(self.view).offset(bvc.header.frame.height).constraint
+        ]
       }
     }
-    shadow.snp.makeConstraints() { make in
+    shadow.snp.makeConstraints { make in
       if snappedToBottom {
         verticalConstraints += [
           make.bottom.equalTo(tableView.snp.top).constraint,
@@ -189,7 +209,10 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
     dismiss(animated: true, completion: nil)
   }
 
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldReceive touch: UITouch
+  ) -> Bool {
     if touch.view?.isDescendant(of: tableView) ?? true {
       return false
     }
@@ -207,7 +230,11 @@ class BackForwardListViewController: UIViewController, UITableViewDataSource, UI
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // swiftlint:disable:next force_cast
-    let cell = self.tableView.dequeueReusableCell(withIdentifier: BackForwardListCellIdentifier, for: indexPath) as! BackForwardTableViewCell
+    let cell =
+      self.tableView.dequeueReusableCell(
+        withIdentifier: BackForwardListCellIdentifier,
+        for: indexPath
+      ) as! BackForwardTableViewCell
     let item = listData[indexPath.item]
     let urlString = { () -> String in
       guard let url = InternalURL(item.url), let extracted = url.extractedUrlParam else {

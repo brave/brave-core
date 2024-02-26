@@ -2,16 +2,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 class AdvancedControlsBarView: UIControl {
 
   var isShowingAdvancedControls: Bool = false {
     didSet {
-      imageView.transform = CGAffineTransform(rotationAngle: isShowingAdvancedControls ? CGFloat.pi : 0)
+      imageView.transform = CGAffineTransform(
+        rotationAngle: isShowingAdvancedControls ? CGFloat.pi : 0
+      )
     }
   }
 
@@ -83,10 +85,16 @@ class AdvancedControlsBarView: UIControl {
   override func endTracking(_ touch: UITouch?, with event: UIEvent?) {
     if isTouchInside {
       UIView.animate(
-        withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState],
+        withDuration: 0.5,
+        delay: 0,
+        usingSpringWithDamping: 0.7,
+        initialSpringVelocity: 0,
+        options: [.beginFromCurrentState],
         animations: {
           self.isShowingAdvancedControls.toggle()
-        }, completion: nil)
+        },
+        completion: nil
+      )
     }
     super.endTracking(touch, with: event)
   }

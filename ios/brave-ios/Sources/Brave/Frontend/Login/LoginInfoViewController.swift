@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Storage
-import Shared
 import BraveCore
-import UIKit
 import BraveUI
 import Combine
+import Foundation
+import Shared
+import Storage
+import UIKit
 
 class LoginInfoViewController: LoginAuthViewController {
 
@@ -74,7 +74,11 @@ class LoginInfoViewController: LoginAuthViewController {
 
   // MARK: Lifecycle
 
-  init(passwordAPI: BravePasswordAPI, credentials: PasswordForm, windowProtection: WindowProtection?) {
+  init(
+    passwordAPI: BravePasswordAPI,
+    credentials: PasswordForm,
+    windowProtection: WindowProtection?
+  ) {
     self.passwordAPI = passwordAPI
     self.credentials = credentials
     super.init(windowProtection: windowProtection)
@@ -92,7 +96,8 @@ class LoginInfoViewController: LoginAuthViewController {
 
           // Observe password changes for an form with same signOnRealm and Username
           let observedForm = formList.first {
-            $0.signOnRealm == self.credentials.signOnRealm && $0.usernameElement == self.credentials.usernameElement
+            $0.signOnRealm == self.credentials.signOnRealm
+              && $0.usernameElement == self.credentials.usernameElement
           }
 
           if let passwordForm = observedForm {
@@ -102,7 +107,8 @@ class LoginInfoViewController: LoginAuthViewController {
         default:
           break
         }
-      })
+      }
+    )
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -121,7 +127,11 @@ class LoginInfoViewController: LoginAuthViewController {
 
     navigationItem.do {
       $0.title = URL(string: credentials.signOnRealm)?.baseDomain ?? ""
-      $0.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .edit, target: self, action: #selector(edit))
+      $0.rightBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .edit,
+        target: self,
+        action: #selector(edit)
+      )
       $0.rightBarButtonItem?.isEnabled = !credentials.isBlockedByUser
     }
 
@@ -131,7 +141,8 @@ class LoginInfoViewController: LoginAuthViewController {
       $0.register(LoginInfoTableViewCell.self)
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
       $0.tableFooterView = SettingsTableSectionHeaderFooterView(
-        frame: CGRect(width: tableView.bounds.width, height: 1.0))
+        frame: CGRect(width: tableView.bounds.width, height: 1.0)
+      )
       $0.estimatedRowHeight = 44.0
       $0.sectionHeaderTopPadding = 0
     }
@@ -142,13 +153,17 @@ class LoginInfoViewController: LoginAuthViewController {
 
 extension LoginInfoViewController {
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  {
     let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
     headerView.titleLabel.text = Strings.Login.loginInfoDetailsHeaderTitle.uppercased()
     return headerView
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
     switch section {
     case Section.delete.rawValue:
       // This is added because of the undesired separator over the Delete Row.
@@ -161,7 +176,10 @@ extension LoginInfoViewController {
     }
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     switch indexPath.section {
     case Section.information.rawValue:
       switch indexPath.row {
@@ -225,7 +243,10 @@ extension LoginInfoViewController {
       let cell = tableView.dequeueReusableCell(for: indexPath) as CenteredButtonCell
 
       cell.do {
-        $0.textLabel?.text = String(format: Strings.Login.loginInfoCreatedHeaderTitle, formattedCreationDate)
+        $0.textLabel?.text = String(
+          format: Strings.Login.loginInfoCreatedHeaderTitle,
+          formattedCreationDate
+        )
         $0.tintColor = .secondaryBraveLabel
         $0.selectionStyle = .none
         $0.backgroundColor = .secondaryBraveBackground
@@ -253,11 +274,12 @@ extension LoginInfoViewController {
     guard section == Section.information.rawValue else {
       return 1
     }
-    
-  return credentials.isBlockedByUser ? 1 : InfoItem.allCases.count
+
+    return credentials.isBlockedByUser ? 1 : InfoItem.allCases.count
   }
 
-  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat
+  {
     switch indexPath.section {
     case Section.information.rawValue:
       return UX.informationRowHeight
@@ -289,19 +311,21 @@ extension LoginInfoViewController {
 extension LoginInfoViewController {
 
   @objc private func edit() {
-    askForAuthentication() { [weak self] status, _ in
+    askForAuthentication { [weak self] status, _ in
       guard let self = self, status else { return }
-      
+
       self.isEditingFieldData = true
       self.cellForItem(InfoItem.usernameItem)?.descriptionTextField.becomeFirstResponder()
-      
+
       self.navigationItem.rightBarButtonItem =
         UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(self.done))
     }
   }
 
   private func showActionMenu(for indexPath: IndexPath) {
-    if indexPath.section == Section.createdDate.rawValue || indexPath.section == Section.delete.rawValue {
+    if indexPath.section == Section.createdDate.rawValue
+      || indexPath.section == Section.delete.rawValue
+    {
       return
     }
 
@@ -315,7 +339,7 @@ extension LoginInfoViewController {
 
   @objc private func done() {
     isEditingFieldData = false
-    
+
     updateLoginInfo { [weak self] success in
       guard let self = self else { return }
 
@@ -349,22 +373,29 @@ extension LoginInfoViewController {
     let alert = UIAlertController(
       title: Strings.deleteLoginAlertTitle,
       message: Strings.Login.loginEntryDeleteAlertMessage,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alert.addAction(
       UIAlertAction(
-        title: Strings.deleteLoginButtonTitle, style: .destructive,
+        title: Strings.deleteLoginButtonTitle,
+        style: .destructive,
         handler: { _ in
           self.passwordAPI.removeLogin(self.credentials)
           self.navigationController?.popViewController(animated: true)
-        }))
+        }
+      )
+    )
 
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
     present(alert, animated: true, completion: nil)
   }
 
   private func cellForItem(_ infoItem: InfoItem) -> LoginInfoTableViewCell? {
-    guard let cell = tableView.cellForRow(at: IndexPath(row: infoItem.rawValue, section: 0)) as? LoginInfoTableViewCell else {
+    guard
+      let cell = tableView.cellForRow(at: IndexPath(row: infoItem.rawValue, section: 0))
+        as? LoginInfoTableViewCell
+    else {
       return nil
     }
 
@@ -375,7 +406,7 @@ extension LoginInfoViewController {
 // MARK: LoginInfoTableViewCellDelegate
 
 extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
-  
+
   func shouldReturnAfterEditingTextField(_ cell: LoginInfoTableViewCell) -> Bool {
     switch cell.tag {
     case InfoItem.usernameItem.rawValue:
@@ -412,22 +443,23 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
   }
 
   func didSelectReveal(_ cell: LoginInfoTableViewCell, completion: ((Bool) -> Void)?) {
-    askForAuthentication() { status, _ in
+    askForAuthentication { status, _ in
       completion?(status)
     }
   }
-  
+
   func didSelectCopyWebsite(_ cell: LoginInfoTableViewCell, authenticationRequired: Bool) {
     func addPasswordToPasteBoardWithExpiry() {
       let expireDate = Date().addingTimeInterval(5.minutes)
 
       UIPasteboard.general.setItems(
         [[UIPasteboard.typeAutomatic: cell.descriptionTextField.text ?? ""]],
-        options: [UIPasteboard.OptionsKey.expirationDate: expireDate])
+        options: [UIPasteboard.OptionsKey.expirationDate: expireDate]
+      )
     }
-    
+
     if authenticationRequired {
-      askForAuthentication() { status, _ in
+      askForAuthentication { status, _ in
         if status {
           addPasswordToPasteBoardWithExpiry()
         }
@@ -436,7 +468,7 @@ extension LoginInfoViewController: LoginInfoTableViewCellDelegate {
       addPasswordToPasteBoardWithExpiry()
     }
   }
-  
+
   func textFieldDidEndEditing(_ cell: LoginInfoTableViewCell) {
     if cell.tag == InfoItem.passwordItem.rawValue {
       cell.displayDescriptionAsPassword = true

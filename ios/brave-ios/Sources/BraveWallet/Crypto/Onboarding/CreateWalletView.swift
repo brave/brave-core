@@ -3,17 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
 import BraveUI
 import DesignSystem
+import Foundation
 import Strings
+import SwiftUI
+
 import struct Shared.AppConstants
 
 private enum ValidationError: LocalizedError, Equatable {
   case requirementsNotMet
   case inputsDontMatch
-  
+
   var errorDescription: String? {
     switch self {
     case .requirementsNotMet:
@@ -41,9 +42,9 @@ struct CreateWalletView: View {
   /// Using a local flag for the view instead of `keyringStore.isCreatingWallet` so we
   /// only show `CreatingWalletView` on the `RestoreWalletView` when restoring.
   @State private var isShowingCreatingWallet: Bool = false
-  
+
   @FocusState private var isFieldFocused: Bool
-  
+
   init(
     keyringStore: KeyringStore,
     setupOption: OnboardingSetupOption,
@@ -95,13 +96,13 @@ struct CreateWalletView: View {
       }
     }
   }
-  
+
   private func handleInputChange(_ value: String) {
     validationError = nil
     isInputsMatch = false
     validatePassword()
   }
-  
+
   @ViewBuilder func passwordStatusView(_ status: PasswordStatus) -> some View {
     HStack(spacing: 4) {
       ProgressView(value: status.percentage)
@@ -114,7 +115,7 @@ struct CreateWalletView: View {
         .padding(.leading, 20)
     }
   }
-  
+
   private func errorLabel(_ error: ValidationError?) -> some View {
     HStack(spacing: 12) {
       Image(braveSystemName: "leo.warning.circle-filled")
@@ -132,10 +133,10 @@ struct CreateWalletView: View {
     )
     .hidden(isHidden: error == nil)
   }
-  
+
   private var isContinueDisabled: Bool {
-    validationError != nil || password.isEmpty || repeatedPassword.isEmpty ||
-    keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
+    validationError != nil || password.isEmpty || repeatedPassword.isEmpty
+      || keyringStore.isCreatingWallet || keyringStore.isRestoringWallet
   }
 
   var body: some View {
@@ -173,14 +174,20 @@ struct CreateWalletView: View {
               Text(Strings.Wallet.repeatedPasswordPlaceholder)
                 .foregroundColor(.primary)
               HStack(spacing: 8) {
-                SecureField(Strings.Wallet.repeatedPasswordPlaceholder, text: $repeatedPassword, onCommit: createWallet)
-                  .textContentType(.newPassword)
+                SecureField(
+                  Strings.Wallet.repeatedPasswordPlaceholder,
+                  text: $repeatedPassword,
+                  onCommit: createWallet
+                )
+                .textContentType(.newPassword)
                 Spacer()
                 if isInputsMatch {
-                  Text("\(Image(braveSystemName: "leo.check.normal")) \(Strings.Wallet.repeatedPasswordMatch)")
-                    .multilineTextAlignment(.trailing)
-                    .font(.footnote)
-                    .foregroundColor(.secondary)
+                  Text(
+                    "\(Image(braveSystemName: "leo.check.normal")) \(Strings.Wallet.repeatedPasswordMatch)"
+                  )
+                  .multilineTextAlignment(.trailing)
+                  .font(.footnote)
+                  .foregroundColor(.secondary)
                 }
               }
               Divider()
@@ -226,7 +233,7 @@ struct CreateWalletView: View {
     .toolbar(content: {
       ToolbarItem(placement: .navigationBarLeading) {
         if isShowingCreatingWallet {
-          Button(action: dismissAction) { // dismiss all of wallet
+          Button(action: dismissAction) {  // dismiss all of wallet
             Image("wallet-dismiss", bundle: .module)
               .renderingMode(.template)
               .foregroundColor(Color(.braveBlurpleTint))
@@ -264,7 +271,7 @@ struct CreateWalletView_Previews: PreviewProvider {
 /// View shown as an overlay over `CreateWalletView` or `RestoreWalletView`
 /// when waiting for Wallet to be created & wallet data files downloaded.
 struct CreatingWalletView: View {
-  
+
   var body: some View {
     VStack(spacing: 24) {
       Spacer()

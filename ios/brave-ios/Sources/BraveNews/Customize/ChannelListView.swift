@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveStrings
+import BraveUI
 import Foundation
 import SwiftUI
-import BraveUI
-import BraveStrings
 
 struct ChannelListContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
-  
+
   var body: some View {
     ChannelListView(
       channels: Array(dataSource.channels),
@@ -26,7 +26,7 @@ struct ChannelListContainerView: View {
 private struct ChannelListView: View {
   var channels: [String]
   var isFollowingChannel: (String) -> Binding<Bool>
-  
+
   var body: some View {
     List {
       ForEach(channels.sorted(), id: \.self) { channel in

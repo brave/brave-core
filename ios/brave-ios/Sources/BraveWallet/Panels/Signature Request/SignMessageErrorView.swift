@@ -3,19 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveStrings
 import BraveCore
+import BraveStrings
 import DesignSystem
+import SwiftUI
 
 struct SignMessageErrorView: View {
-  
+
   var signMessageErrors: [BraveWallet.SignMessageError]
   var cryptoStore: CryptoStore
-  
+
   @State private var currentIndex: Int = 0
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 16) {
@@ -45,11 +45,17 @@ struct SignMessageErrorView: View {
     .navigationTitle(Strings.Wallet.securityRiskDetectedTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
-  
+
   private var signMessageErrorIndexDisplay: some View {
     HStack {
-      Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, currentIndex + 1, signMessageErrors.count))
-        .fontWeight(.semibold)
+      Text(
+        String.localizedStringWithFormat(
+          Strings.Wallet.transactionCount,
+          currentIndex + 1,
+          signMessageErrors.count
+        )
+      )
+      .fontWeight(.semibold)
       Button(action: {
         if currentIndex + 1 < signMessageErrors.count {
           currentIndex += 1
@@ -64,7 +70,7 @@ struct SignMessageErrorView: View {
     }
     .frame(maxWidth: .infinity, alignment: .trailing)
   }
-  
+
   private var errorContainer: some View {
     VStack(spacing: 0) {
       if let currentSignMessageError = signMessageErrors[safe: currentIndex] {

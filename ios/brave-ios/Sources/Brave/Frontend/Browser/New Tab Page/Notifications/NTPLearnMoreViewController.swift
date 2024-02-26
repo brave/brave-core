@@ -2,11 +2,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import Preferences
 import BraveCore
+import Preferences
 import SafariServices
+import Shared
+import UIKit
 
 protocol NTPLearnMoreViewDelegate: AnyObject {
   func learnMoreTapped()
@@ -60,7 +60,8 @@ class NTPLearnMoreViewController: BottomSheetViewController {
         headerText: Strings.NTP.sponsoredImageDescription,
         tosText: false,
         learnMoreButtonText: Strings.NTP.learnMoreAboutSI,
-        headerBodySpacing: 8)
+        headerBodySpacing: 8
+      )
     case .dontShow:
       assertionFailure()
       return nil

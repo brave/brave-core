@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 
 class OpenTabsStateObserver: BraveServiceStateObserver, OpenTabsSessionStateObserver {
 
@@ -24,15 +24,15 @@ class OpenTabsStateObserver: BraveServiceStateObserver, OpenTabsSessionStateObse
   func openTabsSyncStateChanged() {
     listener(.openTabsSyncStateChanged)
   }
-  
+
   func openTabsSyncCycleCompleted() {
     listener(.openTabsSyncCycleCompleted)
   }
-  
+
   func openTabsSyncConfigurationCompleted() {
     listener(.openTabsSyncConfigurationCompleted)
   }
-  
+
   func openTabsSyncShutdown() {
     listener(.openTabsSyncShutdown)
   }

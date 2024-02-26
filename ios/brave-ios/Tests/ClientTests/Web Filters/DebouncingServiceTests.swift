@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
+
 @testable import Brave
 
 class DebouncingServiceTests: XCTestCase {
@@ -254,8 +255,16 @@ class DebouncingServiceTests: XCTestCase {
     // A constructed url
     let baseURL = URL(string: "https://match-all.com/")!
     let landingURL1 = URL(string: "https://example.com/")!
-    let originalURL1 = baseURL.addRedirectParam(landingURL1, base64Encode: true, paramName: "_match_all")
-    let originalURL2 = baseURL.addRedirectParam(landingURL1, base64Encode: true, paramName: "_not_match_all")
+    let originalURL1 = baseURL.addRedirectParam(
+      landingURL1,
+      base64Encode: true,
+      paramName: "_match_all"
+    )
+    let originalURL2 = baseURL.addRedirectParam(
+      landingURL1,
+      base64Encode: true,
+      paramName: "_not_match_all"
+    )
 
     // When
     // A redirect is returned
@@ -266,7 +275,7 @@ class DebouncingServiceTests: XCTestCase {
     XCTAssertEqual(redirectChain1.last?.url, landingURL1)
     XCTAssertNil(redirectChain2.last)
   }
-  
+
   /// Test regex rule where `prepend_scheme` is specified
   func testRegexRuleWithPrependScheme() {
     // Given
@@ -293,7 +302,7 @@ class DebouncingServiceTests: XCTestCase {
     // Then
     XCTAssertEqual(redirectChain1.last?.url, landingURL1)
     XCTAssertEqual(redirectChain2.last?.url, landingURL2)
-    
+
     XCTAssertNil(
       redirectChain3.last?.url,
       "This should be nil because scheme is not there but we don't want to support ://some-url types of schemeless urls"
@@ -311,14 +320,18 @@ class DebouncingServiceTests: XCTestCase {
       "This should return nil because the host of the source and destination urls is the same"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified
   func testRegexRuleWithNoPrependScheme() {
     // Given
     // A constructed url
     let baseURL = URL(string: "https://brave.com")!
     let startURL1 = baseURL.appendingPathComponent("https://braveattentiontoken.example")
-    let startURL2 = baseURL.appendingPathComponent("https://braveattentiontoken.example".addingPercentEncoding(withAllowedCharacters: .URLAllowed)!)
+    let startURL2 = baseURL.appendingPathComponent(
+      "https://braveattentiontoken.example".addingPercentEncoding(
+        withAllowedCharacters: .URLAllowed
+      )!
+    )
     let startURL3 = baseURL.appendingPathComponent("http://braveattentiontoken.example/")
     let startURL4 = baseURL.appendingPathComponent("http://93.184.216.34")
     let startURL5 = baseURL.appendingPathComponent("ftp://braveattentiontoken.example")
@@ -349,7 +362,7 @@ class DebouncingServiceTests: XCTestCase {
     XCTAssertEqual(redirectChain2.last?.url, landingURL1And2)
     XCTAssertEqual(redirectChain3.last?.url, landingURL3)
     XCTAssertEqual(redirectChain4.last?.url, landingURL4)
-    
+
     XCTAssertNil(
       redirectChain5.last,
       "This should be nil because the scheme is not `http` or `https`"
@@ -375,7 +388,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should return nil because it is not a valid eTLD+1"
     )
   }
-  
+
   /// Test several restrictions to debouncing
   func testDebounceRestrictions() {
     // Given
@@ -405,7 +418,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should be nil because the scheme is not http or https"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified and `base64` action is specified
   func testRegexRuleWithBase64DecodedURL() {
     // Given
@@ -445,7 +458,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should return nil because the destination is not base64 encoded"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified and `base64` action is specified
   func testInvalidRegex() {
     // Given
@@ -463,7 +476,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should be nil because the regex rule is invalid"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified and `base64` action is specified
   func testRegexWithMultipleMatches() {
     // Given
@@ -481,7 +494,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should be nil because the regex rule has multiple matches"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified and `base64` action is specified
   func testLongRegex() {
     // Given
@@ -499,7 +512,7 @@ class DebouncingServiceTests: XCTestCase {
       "This should be nil because the regex rule has multiple matches"
     )
   }
-  
+
   /// Test regex rule where `prepend_scheme` is not specified and `base64` action is specified
   func testRegexRuleWithInvalidURL() {
     // Given
@@ -538,19 +551,30 @@ class DebouncingServiceTests: XCTestCase {
     // Returns valid debounced links
     let extractURL = URL(string: "https://example.com")!
     for includedURL in includedURLs {
-      XCTAssertEqual(service.redirectChain(for: includedURL).last?.url, extractURL, "When handling '\(includedURL)'")
+      XCTAssertEqual(
+        service.redirectChain(for: includedURL).last?.url,
+        extractURL,
+        "When handling '\(includedURL)'"
+      )
     }
 
     // Then
     // Returns nil for excluded items
     for excludedURL in excludedURLs {
-      XCTAssertNil(service.redirectChain(for: excludedURL).last?.url, "When handling '\(excludedURL)'")
+      XCTAssertNil(
+        service.redirectChain(for: excludedURL).last?.url,
+        "When handling '\(excludedURL)'"
+      )
     }
   }
 }
 
-private extension URL {
-  func addRedirectParam(_ redirectURL: URL, base64Encode: Bool = false, paramName: String = "url") -> URL {
+extension URL {
+  fileprivate func addRedirectParam(
+    _ redirectURL: URL,
+    base64Encode: Bool = false,
+    paramName: String = "url"
+  ) -> URL {
     var queryValue = redirectURL.absoluteString
 
     if base64Encode {
@@ -559,8 +583,8 @@ private extension URL {
 
     return self.withQueryParam(paramName, value: queryValue)
   }
-  
-  var base64Encoded: String {
+
+  fileprivate var base64Encoded: String {
     self.absoluteString.toBase64()
   }
 }

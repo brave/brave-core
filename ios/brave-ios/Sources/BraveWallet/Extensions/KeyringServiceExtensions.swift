@@ -3,14 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import OrderedCollections
 
 extension BraveWalletKeyringService {
-  
+
   /// Check if any wallet account has been created given a coin type and a chain id
-  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType, chainId: String) async -> Bool {
+  @MainActor func isAccountAvailable(for coin: BraveWallet.CoinType, chainId: String) async -> Bool
+  {
     // KeyringId must be checked with chainId for Filecoin, BTC (2 keyring types).
     let keyringId = BraveWallet.KeyringId.keyringId(for: coin, on: chainId)
     // `KeyringInfo.isKeyringCreated` insufficient check as this value can

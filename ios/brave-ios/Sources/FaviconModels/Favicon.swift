@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import Shared
+import UIKit
 
 /// Structure representing a Favicon
 public class Favicon: Codable {
@@ -13,14 +13,18 @@ public class Favicon: Codable {
   public let isMonogramImage: Bool
   public let backgroundColor: UIColor
 
-  public static let defaultImage = UIImage(named: "defaultFavicon",
-                                           in: .module,
-                                           compatibleWith: nil)!
+  public static let defaultImage = UIImage(
+    named: "defaultFavicon",
+    in: .module,
+    compatibleWith: nil
+  )!
 
-  public static let `default` = Favicon(image: Favicon.defaultImage,
-                                        isMonogramImage: false,
-                                        backgroundColor: .clear)
-  
+  public static let `default` = Favicon(
+    image: Favicon.defaultImage,
+    isMonogramImage: false,
+    backgroundColor: .clear
+  )
+
   public var hasTransparentBackground: Bool {
     backgroundColor.rgba == UIColor.clear.rgba
   }
@@ -51,7 +55,7 @@ public class Favicon: Codable {
     try container.encode(isMonogramImage, forKey: .isMonogramImage)
     try container.encode(backgroundColor.rgba, forKey: .backgroundColor)
   }
-  
+
   private enum CodingKeys: CodingKey {
     case image
     case imageScale

@@ -12,7 +12,7 @@ extension Gradient {
   init(braveSystemName gradient: FigmaGradient) {
     self.init(
       stops: gradient.stops.map { stop in
-          .init(color: Color(stop.color), location: CGFloat(stop.position))
+        .init(color: Color(stop.color), location: CGFloat(stop.position))
       }
     )
   }
@@ -21,7 +21,10 @@ extension Gradient {
 extension LinearGradient {
   /// Create a SwiftUI LinearGradient from a Brave design system gradient
   public init(braveSystemName gradient: FigmaGradient) {
-    assert(gradient.type == .axial, "Attempting to create a LinearGradient with a non-linear Brave defined gradient")
+    assert(
+      gradient.type == .axial,
+      "Attempting to create a LinearGradient with a non-linear Brave defined gradient"
+    )
     self.init(
       gradient: Gradient(braveSystemName: gradient),
       startPoint: .init(x: gradient.startPoint.x, y: gradient.startPoint.y),

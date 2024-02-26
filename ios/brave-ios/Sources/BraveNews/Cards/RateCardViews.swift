@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import Foundation
 import UIKit
-import BraveStrings
 
 /// The actions you can perform on a rate card item
 public enum RatingCardAction: Equatable {
@@ -48,7 +48,7 @@ public class SmallRateCardView: FeedCardBackgroundButton, FeedCardContent {
     self.contextMenuDelegate = contextMenuDelegate
 
     isAccessibilityElement = true
-    
+
     feedView.titleLabel.text = Strings.BraveNews.rateBraveCardTitle
     feedView.descriptionLabel.do {
       $0.text = Strings.BraveNews.rateBraveCardSubtitle
@@ -63,13 +63,17 @@ public class SmallRateCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 
   @objc private func tappedSelf() {
     rateCardActionHandler?(.rateBrave)
   }
-  
+
   // MARK: - FeedCardContent
 
   public var actionHandler: ((Int, FeedItemAction) -> Void)? {
@@ -90,7 +94,10 @@ public class SmallHeadlineRatePairCardView: UIView, FeedCardContent {
     $0.spacing = 20
   }
 
-  public let smallHeadlineRateCardViews: (smallHeadline: SmallHeadlineCardView, ratingCard: SmallRateCardView) = (SmallHeadlineCardView(), SmallRateCardView())
+  public let smallHeadlineRateCardViews:
+    (smallHeadline: SmallHeadlineCardView, ratingCard: SmallRateCardView) = (
+      SmallHeadlineCardView(), SmallRateCardView()
+    )
 
   public required init() {
     super.init(frame: .zero)
@@ -105,8 +112,9 @@ public class SmallHeadlineRatePairCardView: UIView, FeedCardContent {
     smallHeadlineRateCardViews.ratingCard.rateCardActionHandler = { [weak self] action in
       self?.rateCardActionHandler?(action)
     }
-    
-    smallHeadlineRateCardViews.smallHeadline.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
+
+    smallHeadlineRateCardViews.smallHeadline.contextMenu = FeedItemMenu({
+      [weak self] _ -> UIMenu? in
       return self?.contextMenu?.menu?(0)
     })
     smallHeadlineRateCardViews.ratingCard.contextMenu = FeedItemMenu({ [weak self] _ -> UIMenu? in
@@ -118,33 +126,37 @@ public class SmallHeadlineRatePairCardView: UIView, FeedCardContent {
       let openInNewPrivateTabHandler: MenuActionHandler = { [weak self] in
         self?.rateCardActionHandler?(.hideCard)
       }
-      
+
       func mapDeferredHandler(_ handler: @escaping MenuActionHandler) -> UIActionHandler {
         return UIAction.deferredActionHandler { _ in
           handler()
         }
       }
       var openInAppStore: UIAction {
-        .init(title: Strings.BraveNews.rateBraveCardRateActionTitle,
-              image: UIImage(braveSystemNamed: "leo.thumb.up"),
-              handler: mapDeferredHandler(appRatingCardPressedHandler))
+        .init(
+          title: Strings.BraveNews.rateBraveCardRateActionTitle,
+          image: UIImage(braveSystemNamed: "leo.thumb.up"),
+          handler: mapDeferredHandler(appRatingCardPressedHandler)
+        )
       }
 
       var dismissCardRate: UIAction {
-        .init(title: Strings.BraveNews.rateBraveCardHideActionTitle,
-              image: UIImage(braveSystemNamed: "leo.eye.off"),
-              attributes: .destructive,
-              handler: mapDeferredHandler(openInNewPrivateTabHandler))
+        .init(
+          title: Strings.BraveNews.rateBraveCardHideActionTitle,
+          image: UIImage(braveSystemNamed: "leo.eye.off"),
+          attributes: .destructive,
+          handler: mapDeferredHandler(openInNewPrivateTabHandler)
+        )
       }
       let openActions: [UIAction] = [
         openInAppStore,
-        dismissCardRate
+        dismissCardRate,
       ].compactMap { $0 }
-      
+
       let children: [UIMenu] = [
         UIMenu(title: "", options: [.displayInline], children: openActions)
       ]
-      
+
       return UIMenu(title: Strings.BraveNews.rateBraveCardActionSheetTitle, children: children)
     })
 

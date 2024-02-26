@@ -8,7 +8,7 @@ import SwiftUI
 struct AddressView<Content: View>: View {
   var address: String
   var content: () -> Content
-  
+
   init(
     address: String,
     @ViewBuilder content: @escaping () -> Content
@@ -16,7 +16,7 @@ struct AddressView<Content: View>: View {
     self.address = address
     self.content = content
   }
-  
+
   var body: some View {
     content()
       .contextMenu {

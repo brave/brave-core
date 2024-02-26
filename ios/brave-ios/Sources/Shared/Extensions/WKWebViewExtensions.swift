@@ -11,8 +11,12 @@ enum JavascriptError: Error {
   case invalid
 }
 
-public extension WKWebView {
-  func generateJSFunctionString(functionName: String, args: [Any?], escapeArgs: Bool = true) -> (javascript: String, error: Error?) {
+extension WKWebView {
+  public func generateJSFunctionString(
+    functionName: String,
+    args: [Any?],
+    escapeArgs: Bool = true
+  ) -> (javascript: String, error: Error?) {
     var sanitizedArgs = [String]()
     for arg in args {
       if let arg = arg {
@@ -44,11 +48,23 @@ public extension WKWebView {
     return ("\(functionName)(\(sanitizedArgs.joined(separator: ", ")))", nil)
   }
 
-  func evaluateSafeJavaScript(functionName: String, args: [Any] = [], frame: WKFrameInfo? = nil, contentWorld: WKContentWorld, escapeArgs: Bool = true, asFunction: Bool = true, completion: ((Any?, Error?) -> Void)? = nil) {
+  public func evaluateSafeJavaScript(
+    functionName: String,
+    args: [Any] = [],
+    frame: WKFrameInfo? = nil,
+    contentWorld: WKContentWorld,
+    escapeArgs: Bool = true,
+    asFunction: Bool = true,
+    completion: ((Any?, Error?) -> Void)? = nil
+  ) {
     var javascript = functionName
 
     if asFunction {
-      let js = generateJSFunctionString(functionName: functionName, args: args, escapeArgs: escapeArgs)
+      let js = generateJSFunctionString(
+        functionName: functionName,
+        args: args,
+        escapeArgs: escapeArgs
+      )
       if js.error != nil {
         if let completionHandler = completion {
           completionHandler(nil, js.error)
@@ -70,8 +86,8 @@ public extension WKWebView {
       }
     }
   }
-  
-  @discardableResult @MainActor func evaluateSafeJavaScript(
+
+  @discardableResult @MainActor public func evaluateSafeJavaScript(
     functionName: String,
     args: [Any] = [],
     frame: WKFrameInfo? = nil,
@@ -86,14 +102,15 @@ public extension WKWebView {
         frame: frame,
         contentWorld: contentWorld,
         escapeArgs: escapeArgs,
-        asFunction: asFunction) { value, error in
-          continuation.resume(returning: (value, error))
-        }
+        asFunction: asFunction
+      ) { value, error in
+        continuation.resume(returning: (value, error))
+      }
     }
   }
-  
+
   @discardableResult
-  @MainActor func evaluateSafeJavaScriptThrowing(
+  @MainActor public func evaluateSafeJavaScriptThrowing(
     functionName: String,
     args: [Any] = [],
     frame: WKFrameInfo? = nil,
@@ -109,15 +126,15 @@ public extension WKWebView {
       escapeArgs: escapeArgs,
       asFunction: asFunction
     )
-    
+
     if let error = result.1 {
       throw error
     } else {
       return result.0
     }
   }
-  
-  var sampledPageTopColor: UIColor? {
+
+  public var sampledPageTopColor: UIColor? {
     let selector = Selector("_sampl\("edPageTopC")olor")
     if responds(to: selector), let result = perform(selector) {
       return result.takeUnretainedValue() as? UIColor

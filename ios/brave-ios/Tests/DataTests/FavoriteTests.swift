@@ -2,11 +2,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
-import XCTest
-@testable import Data
+import Foundation
 import TestHelpers
+import XCTest
+
+@testable import Data
 
 class FavoriteTests: CoreDataTestCase {
 
@@ -207,7 +208,9 @@ class FavoriteTests: CoreDataTestCase {
 
   @discardableResult
   private func makeFavorites(_ count: Int) -> [Favorite] {
-    let bookmarks = (0..<count).map { createAndWait(url: URL(string: "http://brave.com/\($0)"), title: "brave") }
+    let bookmarks = (0..<count).map {
+      createAndWait(url: URL(string: "http://brave.com/\($0)"), title: "brave")
+    }
     XCTAssertEqual(bookmarks.count, count)
     XCTAssertEqual(try! DataController.viewContext.count(for: fetchRequest), bookmarks.count)
     return bookmarks

@@ -8,11 +8,11 @@ import DesignSystem
 import SwiftUI
 
 struct EncryptionView: View {
-  
+
   enum EncryptionType: Hashable {
     case getEncryptionPublicKey(BraveWallet.GetEncryptionPublicKeyRequest)
     case decrypt(BraveWallet.DecryptRequest)
-    
+
     var address: String {
       switch self {
       case let .getEncryptionPublicKey(request):
@@ -21,7 +21,7 @@ struct EncryptionView: View {
         return request.accountId.address
       }
     }
-    
+
     var originInfo: BraveWallet.OriginInfo {
       switch self {
       case .getEncryptionPublicKey(let request):
@@ -31,22 +31,24 @@ struct EncryptionView: View {
       }
     }
   }
-  
+
   var request: EncryptionType
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   var onDismiss: () -> Void
-  
+
   @State private var isShowingDecryptMessage = false
 
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address.caseInsensitiveCompare(request.address) == .orderedSame }) ?? keyringStore.selectedAccount
+    keyringStore.allAccounts.first(where: {
+      $0.address.caseInsensitiveCompare(request.address) == .orderedSame
+    }) ?? keyringStore.selectedAccount
   }
-  
+
   private var navigationTitle: String {
     switch request {
     case .getEncryptionPublicKey:
@@ -55,7 +57,7 @@ struct EncryptionView: View {
       return Strings.Wallet.decryptRequestTitle
     }
   }
-  
+
   private var subtitle: String {
     switch request {
     case .getEncryptionPublicKey:
@@ -64,13 +66,16 @@ struct EncryptionView: View {
       return Strings.Wallet.decryptRequestSubtitle
     }
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 12) {
         VStack(spacing: 8) {
           Blockie(address: request.address)
-            .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
+            .frame(
+              width: min(blockieSize, maxBlockieSize),
+              height: min(blockieSize, maxBlockieSize)
+            )
           AddressView(address: account.address) {
             VStack(spacing: 4) {
               Text(account.name)
@@ -96,7 +101,8 @@ struct EncryptionView: View {
       Group {
         if case .getEncryptionPublicKey = request {
           ScrollView {
-            Text(originInfo: request.originInfo) + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
+            Text(originInfo: request.originInfo)
+              + Text(" \(Strings.Wallet.getEncryptionPublicKeyRequestMessage)")
           }
           .padding(20)
         } else if case let .decrypt(decryptRequest) = request {
@@ -136,7 +142,7 @@ struct EncryptionView: View {
         Color(.secondaryBraveGroupedBackground)
       )
       .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-      
+
       buttonsContainer
         .padding(.top, 20)
         .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
@@ -192,7 +198,7 @@ struct EncryptionView: View {
       }
     }
   }
-  
+
   private var approveButtonTitle: String {
     switch request {
     case .getEncryptionPublicKey:
@@ -201,16 +207,16 @@ struct EncryptionView: View {
       return Strings.Wallet.decryptRequestApprove
     }
   }
-  
+
   @ViewBuilder private var buttons: some View {
-    Button(action: { // cancel
+    Button(action: {  // cancel
       handleAction(approved: false)
     }) {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: { // approve
+    Button(action: {  // approve
       handleAction(approved: true)
     }) {
       Label(approveButtonTitle, braveSystemImage: "leo.check.circle-filled")
@@ -218,13 +224,17 @@ struct EncryptionView: View {
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
   }
-  
+
   private func handleAction(approved: Bool) {
     switch request {
     case .getEncryptionPublicKey(let request):
-      cryptoStore.handleWebpageRequestResponse(.getEncryptionPublicKey(approved: approved, requestId: request.requestId))
+      cryptoStore.handleWebpageRequestResponse(
+        .getEncryptionPublicKey(approved: approved, requestId: request.requestId)
+      )
     case .decrypt(let request):
-      cryptoStore.handleWebpageRequestResponse(.decrypt(approved: approved, requestId: request.requestId))
+      cryptoStore.handleWebpageRequestResponse(
+        .decrypt(approved: approved, requestId: request.requestId)
+      )
     }
     onDismiss()
   }
@@ -253,7 +263,7 @@ struct EncryptionView_Previews: PreviewProvider {
           accountId: account.accountId,
           unsafeMessage: "Secret message"
         )
-      )
+      ),
     ]
     Group {
       ForEach(requests, id: \.self) { request in
@@ -261,7 +271,7 @@ struct EncryptionView_Previews: PreviewProvider {
           request: request,
           cryptoStore: .previewStore,
           keyringStore: .previewStoreWithWalletCreated,
-          onDismiss: { }
+          onDismiss: {}
         )
       }
     }

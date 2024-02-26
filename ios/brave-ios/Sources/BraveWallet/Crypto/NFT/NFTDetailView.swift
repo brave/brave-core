@@ -3,31 +3,31 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveCore
-import DesignSystem
 import BraveUI
+import DesignSystem
 import SDWebImageSwiftUI
+import SwiftUI
 
 struct NFTDetailView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var nftDetailStore: NFTDetailStore
-  @Binding var buySendSwapDestination: BuySendSwapDestination? 
+  @Binding var buySendSwapDestination: BuySendSwapDestination?
   var onNFTMetadataRefreshed: ((NFTMetadata) -> Void)?
   var onNFTStatusUpdated: (() -> Void)?
-  
+
   @Environment(\.openURL) private var openWalletURL
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-  
+
   @State private var isPresentingRemoveAlert: Bool = false
-  
+
   @ViewBuilder private var noImageView: some View {
     Text(Strings.Wallet.nftDetailImageNotAvailable)
       .foregroundColor(Color(.secondaryBraveLabel))
       .frame(maxWidth: .infinity, minHeight: 300)
   }
-  
+
   @ViewBuilder private var nftLogo: some View {
     if let image = nftDetailStore.networkInfo?.nativeTokenLogoImage, !nftDetailStore.isLoading {
       Image(uiImage: image)
@@ -40,20 +40,25 @@ struct NFTDetailView: View {
         }
     }
   }
-  
+
   @ViewBuilder private var nftImage: some View {
-    NFTImageView(urlString: nftDetailStore.nftMetadata?.imageURLString ?? "", isLoading: nftDetailStore.isLoading) {
+    NFTImageView(
+      urlString: nftDetailStore.nftMetadata?.imageURLString ?? "",
+      isLoading: nftDetailStore.isLoading
+    ) {
       noImageView
     }
     .cornerRadius(10)
     .frame(maxWidth: .infinity, minHeight: 300)
   }
-  
+
   private var isSVGImage: Bool {
-    guard let nftMetadata = nftDetailStore.nftMetadata, let imageUrlString = nftMetadata.imageURLString else { return false }
+    guard let nftMetadata = nftDetailStore.nftMetadata,
+      let imageUrlString = nftMetadata.imageURLString
+    else { return false }
     return imageUrlString.hasPrefix("data:image/svg") || imageUrlString.hasSuffix(".svg")
   }
-  
+
   var body: some View {
     Form {
       Section {
@@ -126,14 +131,19 @@ struct NFTDetailView: View {
               }
             }
           }
-          if nftDetailStore.nft.isErc721, let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16) {
+          if nftDetailStore.nft.isErc721,
+            let tokenId = Int(nftDetailStore.nft.tokenId.removingHexPrefix, radix: 16)
+          {
             NFTDetailRow(title: Strings.Wallet.nftDetailTokenID) {
               Text("\(tokenId)")
                 .font(.subheadline)
                 .foregroundColor(Color(.braveLabel))
             }
           }
-          NFTDetailRow(title: nftDetailStore.nft.isErc721 ? Strings.Wallet.contractAddressAccessibilityLabel : Strings.Wallet.tokenMintAddress) {
+          NFTDetailRow(
+            title: nftDetailStore.nft.isErc721
+              ? Strings.Wallet.contractAddressAccessibilityLabel : Strings.Wallet.tokenMintAddress
+          ) {
             Button {
               if let url = nftDetailStore.networkInfo?.nftBlockExplorerURL(nftDetailStore.nft) {
                 openWalletURL(url)
@@ -155,16 +165,21 @@ struct NFTDetailView: View {
             }
           }
           NFTDetailRow(title: Strings.Wallet.nftDetailTokenStandard) {
-            Text(nftDetailStore.nft.isErc721 ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL)
-              .font(.subheadline)
-              .foregroundColor(Color(.braveLabel))
+            Text(
+              nftDetailStore.nft.isErc721
+                ? Strings.Wallet.nftDetailERC721 : Strings.Wallet.nftDetailSPL
+            )
+            .font(.subheadline)
+            .foregroundColor(Color(.braveLabel))
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
         Text(Strings.Wallet.nftDetailOverview)
       }
-      if let nftMetadata = nftDetailStore.nftMetadata, let description = nftMetadata.description, !description.isEmpty {
+      if let nftMetadata = nftDetailStore.nftMetadata, let description = nftMetadata.description,
+        !description.isEmpty
+      {
         Section {
           Text(description)
             .font(.subheadline)
@@ -199,17 +214,23 @@ struct NFTDetailView: View {
       }
     }
     .listBackgroundColor(Color(.braveGroupedBackground))
-    .onChange(of: nftDetailStore.nftMetadata, perform: { newValue in
-      if let newMetadata = newValue {
-        onNFTMetadataRefreshed?(newMetadata)
+    .onChange(
+      of: nftDetailStore.nftMetadata,
+      perform: { newValue in
+        if let newMetadata = newValue {
+          onNFTMetadataRefreshed?(newMetadata)
+        }
       }
-    })
-    .onChange(of: keyringStore.isWalletLocked, perform: { isLocked in
-      guard isLocked else { return }
-      if isPresentingRemoveAlert {
-        isPresentingRemoveAlert = false
+    )
+    .onChange(
+      of: keyringStore.isWalletLocked,
+      perform: { isLocked in
+        guard isLocked else { return }
+        if isPresentingRemoveAlert {
+          isPresentingRemoveAlert = false
+        }
       }
-    })
+    )
     .background(Color(UIColor.braveGroupedBackground).ignoresSafeArea())
     .navigationBarTitle(nftDetailStore.nft.nftDetailTitle)
     .toolbar {
@@ -227,21 +248,31 @@ struct NFTDetailView: View {
             .buttonStyle(BraveFilledButtonStyle(size: .large))
           }
           Button(action: {
-            if nftDetailStore.nft.visible { // a collected visible NFT, mark as hidden
-              nftDetailStore.updateNFTStatus(visible: false, isSpam: false, isDeletedByUser: false, completion: {
-                onNFTStatusUpdated?()
-              })
-            } else { // either a hidden NFT or a junk NFT, mark as visible
-              nftDetailStore.updateNFTStatus(visible: true, isSpam: false, isDeletedByUser: false, completion: {
-                onNFTStatusUpdated?()
-              })
+            if nftDetailStore.nft.visible {  // a collected visible NFT, mark as hidden
+              nftDetailStore.updateNFTStatus(
+                visible: false,
+                isSpam: false,
+                isDeletedByUser: false,
+                completion: {
+                  onNFTStatusUpdated?()
+                }
+              )
+            } else {  // either a hidden NFT or a junk NFT, mark as visible
+              nftDetailStore.updateNFTStatus(
+                visible: true,
+                isSpam: false,
+                isDeletedByUser: false,
+                completion: {
+                  onNFTStatusUpdated?()
+                }
+              )
             }
           }) {
-            if nftDetailStore.nft.visible { // a collected visible NFT
+            if nftDetailStore.nft.visible {  // a collected visible NFT
               Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
-            } else if nftDetailStore.nft.isSpam { // a spam NFT
+            } else if nftDetailStore.nft.isSpam {  // a spam NFT
               Label(Strings.Wallet.nftUnspam, braveSystemImage: "leo.disable.outline")
-            } else { // a hidden but not spam NFT
+            } else {  // a hidden but not spam NFT
               Label(Strings.Wallet.nftUnhide, braveSystemImage: "leo.eye.on")
             }
           }
@@ -251,9 +282,12 @@ struct NFTDetailView: View {
             Label(Strings.Wallet.nftRemoveFromWallet, braveSystemImage: "leo.trash")
           }
         } label: {
-          Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, braveSystemImage: "leo.more.horizontal")
-            .labelStyle(.iconOnly)
-            .foregroundColor(Color(.braveBlurpleTint))
+          Label(
+            Strings.Wallet.otherWalletActionsAccessibilityTitle,
+            braveSystemImage: "leo.more.horizontal"
+          )
+          .labelStyle(.iconOnly)
+          .foregroundColor(Color(.braveBlurpleTint))
         }
       }
     }
@@ -263,10 +297,15 @@ struct NFTDetailView: View {
         primaryButton: .init(
           title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
           action: { _ in
-            nftDetailStore.updateNFTStatus(visible: false, isSpam: nftDetailStore.nft.isSpam, isDeletedByUser: true, completion: {
-              onNFTStatusUpdated?()
-              presentationMode.dismiss()
-            })
+            nftDetailStore.updateNFTStatus(
+              visible: false,
+              isSpam: nftDetailStore.nft.isSpam,
+              isDeletedByUser: true,
+              completion: {
+                onNFTStatusUpdated?()
+                presentationMode.dismiss()
+              }
+            )
             isPresentingRemoveAlert = false
           }
         ),
@@ -287,7 +326,8 @@ struct NFTDetailView: View {
               .foregroundStyle(Color(.secondaryBraveLabel))
           }
           .padding(.bottom, 28)
-        })
+        }
+      )
     )
   }
 }
@@ -295,7 +335,7 @@ struct NFTDetailView: View {
 struct NFTDetailRow<ValueContent: View>: View {
   var title: String
   var valueContent: () -> ValueContent
-  
+
   init(
     title: String,
     @ViewBuilder valueContent: @escaping () -> ValueContent

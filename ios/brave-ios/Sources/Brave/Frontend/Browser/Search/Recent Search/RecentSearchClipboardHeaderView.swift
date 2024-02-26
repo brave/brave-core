@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveUI
+import Foundation
 import Shared
+import UIKit
 
 class RecentSearchClipboardHeaderView: UICollectionReusableView {
   let button = UIButton().then {
@@ -14,9 +14,24 @@ class RecentSearchClipboardHeaderView: UICollectionReusableView {
     let paddingX: CGFloat = 15.0
     let paddingY: CGFloat = 10.0
     $0.setImage(image, for: .normal)
-    $0.imageEdgeInsets = UIEdgeInsets(top: 0.0, left: 0.0, bottom: 0.0, right: image.size.width / 2.0)
-    $0.titleEdgeInsets = UIEdgeInsets(top: -paddingY, left: paddingX, bottom: -paddingY, right: -paddingX * 2.0)
-    $0.contentEdgeInsets = UIEdgeInsets(top: paddingY, left: paddingX, bottom: paddingY, right: paddingX * 2.0)
+    $0.imageEdgeInsets = UIEdgeInsets(
+      top: 0.0,
+      left: 0.0,
+      bottom: 0.0,
+      right: image.size.width / 2.0
+    )
+    $0.titleEdgeInsets = UIEdgeInsets(
+      top: -paddingY,
+      left: paddingX,
+      bottom: -paddingY,
+      right: -paddingX * 2.0
+    )
+    $0.contentEdgeInsets = UIEdgeInsets(
+      top: paddingY,
+      left: paddingX,
+      bottom: paddingY,
+      right: paddingX * 2.0
+    )
     $0.contentHorizontalAlignment = .left
     $0.imageView?.contentMode = .scaleAspectFit
     $0.setTitle(Strings.recentSearchPasteAndGo, for: .normal)

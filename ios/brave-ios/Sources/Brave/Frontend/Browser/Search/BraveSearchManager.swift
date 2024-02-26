@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Combine
-import Shared
 import BraveShared
+import Combine
+import Foundation
+import Shared
+import UserAgent
 import WebKit
 import os.log
-import UserAgent
 
 // A helper class to handle Brave Search fallback needs.
 class BraveSearchManager: NSObject {
@@ -48,14 +48,16 @@ class BraveSearchManager: NSObject {
   }
 
   private var cancellables: Set<AnyCancellable> = []
-  
+
   private let authManager = BasicAuthCredentialsManager()
-    
-  static let validDomains = ["search.brave.com", "search.brave.software",
-                             "search.bravesoftware.com", "safesearch.brave.com",
-                             "safesearch.brave.software",
-                             "safesearch.bravesoftware.com",
-                             "search-dev-local.brave.com"]
+
+  static let validDomains = [
+    "search.brave.com", "search.brave.software",
+    "search.bravesoftware.com", "safesearch.brave.com",
+    "safesearch.brave.software",
+    "safesearch.bravesoftware.com",
+    "search-dev-local.brave.com",
+  ]
 
   static func isValidURL(_ url: URL) -> Bool {
     validDomains.contains(url.host ?? "")
@@ -109,7 +111,8 @@ class BraveSearchManager: NSObject {
     var request = URLRequest(
       url: url,
       cachePolicy: .reloadIgnoringLocalAndRemoteCacheData,
-      timeoutInterval: 5)
+      timeoutInterval: 5
+    )
 
     let cookieStorage = HTTPCookieStorage()
     domainCookies.forEach { cookieStorage.setCookie($0) }
@@ -193,14 +196,19 @@ class BraveSearchManager: NSObject {
     components.queryItems = queryItems
 
     guard let url = components.url else { return }
-    var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 5)
+    var request = URLRequest(
+      url: url,
+      cachePolicy: .reloadIgnoringLocalCacheData,
+      timeoutInterval: 5
+    )
 
     // Must be set, without it the fallback results may be not retrieved correctly.
     request.addValue(UserAgent.userAgentForDesktopMode, forHTTPHeaderField: "User-Agent")
 
     request.addValue(
       "text/html;charset=UTF-8, text/plain;charset=UTF-8",
-      forHTTPHeaderField: "Accept")
+      forHTTPHeaderField: "Accept"
+    )
 
     var timer: PerformanceTimer?
     if callbackLog != nil {
@@ -225,7 +233,10 @@ class BraveSearchManager: NSObject {
         guard let stringFromData = String(data: output.data, encoding: .utf8),
           let escapedString = stringFromData.javaScriptEscapedString
         else {
-          throw DecodingError.typeMismatch(String.self, .init(codingPath: [], debugDescription: "Failed to decode string from data"))
+          throw DecodingError.typeMismatch(
+            String.self,
+            .init(codingPath: [], debugDescription: "Failed to decode string from data")
+          )
         }
 
         self?.callbackLog?.fallbackData = output.data

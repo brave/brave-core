@@ -2,13 +2,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import Shared
-import Preferences
-import Storage
-import WebKit
-import SwiftyJSON
 import BraveCore
+import Foundation
+import Preferences
+import Shared
+import Storage
+import SwiftyJSON
+import WebKit
 import os.log
 
 class LoginsScriptHandler: TabContentScript {
@@ -30,13 +30,17 @@ class LoginsScriptHandler: TabContentScript {
   static let messageHandlerName = "loginsScriptMessageHandler"
   static let userScript: WKUserScript? = nil
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
       assertionFailure("Missing required security token.")
       return
     }
-    
+
     guard let body = message.body as? [String: AnyObject] else {
       return
     }
@@ -67,7 +71,8 @@ class LoginsScriptHandler: TabContentScript {
               formSubmitURL: res["formSubmitURL"] as? String ?? "",
               logins: logins,
               requestId: requestId,
-              frameInfo: message.frameInfo)
+              frameInfo: message.frameInfo
+            )
           }
         }
       } else if type == "submit" {
@@ -137,7 +142,11 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func addSnackBarForPrompt(for login: PasswordForm, isUpdating: Bool, _ completion: @escaping () -> Void) {
+  private func addSnackBarForPrompt(
+    for login: PasswordForm,
+    isUpdating: Bool,
+    _ completion: @escaping () -> Void
+  ) {
     guard let username = login.usernameValue else {
       return
     }
@@ -148,15 +157,21 @@ class LoginsScriptHandler: TabContentScript {
     }
 
     let promptMessage = String(
-      format: isUpdating ? Strings.updateLoginUsernamePrompt : Strings.saveLoginUsernamePrompt, username,
-      login.displayURLString)
+      format: isUpdating ? Strings.updateLoginUsernamePrompt : Strings.saveLoginUsernamePrompt,
+      username,
+      login.displayURLString
+    )
 
     snackBar = TimerSnackBar(
       text: promptMessage,
-      img: isUpdating ? UIImage(named: "key", in: .module, compatibleWith: nil)! : UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!)
+      img: isUpdating
+        ? UIImage(named: "key", in: .module, compatibleWith: nil)!
+        : UIImage(named: "shields-menu-icon", in: .module, compatibleWith: nil)!
+    )
 
     let dontSaveORUpdate = SnackButton(
-      title: isUpdating ? Strings.loginsHelperDontUpdateButtonTitle : Strings.loginsHelperDontSaveButtonTitle,
+      title: isUpdating
+        ? Strings.loginsHelperDontUpdateButtonTitle : Strings.loginsHelperDontSaveButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.dontSaveUpdateButton"
     ) { [unowned self] bar in
       self.tab?.removeSnackbar(bar)
@@ -165,7 +180,8 @@ class LoginsScriptHandler: TabContentScript {
     }
 
     let saveORUpdate = SnackButton(
-      title: isUpdating ? Strings.loginsHelperUpdateButtonTitle : Strings.loginsHelperSaveLoginButtonTitle,
+      title: isUpdating
+        ? Strings.loginsHelperUpdateButtonTitle : Strings.loginsHelperSaveLoginButtonTitle,
       accessibilityIdentifier: "UpdateLoginPrompt.saveUpdateButton"
     ) { [unowned self] bar in
       self.tab?.removeSnackbar(bar)
@@ -182,7 +198,12 @@ class LoginsScriptHandler: TabContentScript {
     }
   }
 
-  private func autoFillRequestedCredentials(formSubmitURL: String, logins: [PasswordForm], requestId: String, frameInfo: WKFrameInfo) {
+  private func autoFillRequestedCredentials(
+    formSubmitURL: String,
+    logins: [PasswordForm],
+    requestId: String,
+    frameInfo: WKFrameInfo
+  ) {
     let securityOrigin = frameInfo.securityOrigin
 
     var jsonObj = [String: Any]()
@@ -200,7 +221,8 @@ class LoginsScriptHandler: TabContentScript {
           url: currentURL,
           frameScheme: securityOrigin.protocol,
           frameHost: securityOrigin.host,
-          framePort: securityOrigin.port)
+          framePort: securityOrigin.port
+        )
       else {
         return nil
       }
@@ -244,7 +266,12 @@ extension LoginsScriptHandler {
   ///   - frameHost: Host of frameInfo
   ///   - framePort: Port of frameInfo
   /// - Returns: Boolean indicating url and frameInfo has same elements
-  static func checkIsSameFrame(url: URL, frameScheme: String, frameHost: String, framePort: Int) -> Bool {
+  static func checkIsSameFrame(
+    url: URL,
+    frameScheme: String,
+    frameHost: String,
+    framePort: Int
+  ) -> Bool {
     // Prevent XSS on non main frame
     // Check the frame origin host belongs to the same security origin host
     guard let currentHost = url.host, !currentHost.isEmpty, currentHost == frameHost else {

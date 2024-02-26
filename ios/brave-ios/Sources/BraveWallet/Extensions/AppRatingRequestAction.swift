@@ -8,7 +8,7 @@ import SwiftUI
 
 struct AppRatingRequestAction {
   private var action: () -> Void
-  
+
   init(action: @escaping () -> Void) {
     self.action = action
   }

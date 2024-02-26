@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
-import Preferences
 import BraveUI
+import Preferences
+import Shared
+import SwiftUI
 
 struct WebsiteRedirectsSettingsView: View {
   @ObservedObject private var reddit = Preferences.WebsiteRedirects.reddit
   @ObservedObject private var npr = Preferences.WebsiteRedirects.npr
-  
+
   var body: some View {
     List {
       Section {
@@ -23,7 +23,7 @@ struct WebsiteRedirectsSettingsView: View {
       } footer: {
         Text(Strings.redditRedirectFooter)
       }
-      
+
       Section {
         Toggle(isOn: $npr.value) {
           Text("npr.org \(Image(systemName: "arrow.right")) text.npr.org")

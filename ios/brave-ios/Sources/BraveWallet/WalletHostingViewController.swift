@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveShared
+import BraveUI
+import Combine
 import Foundation
 import SwiftUI
-import BraveCore
-import Combine
-import BraveUI
-import BraveShared
 
 /// Methods for handling actions that occur while the user is interacting with Brave Wallet that require
 /// some integration with the browser
@@ -22,7 +22,11 @@ public protocol BraveWalletDelegate: AnyObject {
   /// This will be called after the wallet UI is dismissed
   func requestAppReview()
   /// Present Wallet with or without dismiss the Wallet Panel depends on the value of the `presentWalletWithContext`
-  func walletPanel(_ panel: WalletPanelHostingController, presentWalletWithContext: PresentingContext, walletStore: WalletStore)
+  func walletPanel(
+    _ panel: WalletPanelHostingController,
+    presentWalletWithContext: PresentingContext,
+    walletStore: WalletStore
+  )
 }
 
 /// The context of which wallet is being presented. Controls what content is shown when the wallet is unlocked
@@ -32,7 +36,10 @@ public enum PresentingContext {
   /// Shows the user any pending requests made by webpages such as transaction confirmations, adding networks, switch networks, add tokens, sign message, etc.
   case pendingRequests
   /// Shows when a webpage wants to connect with the users wallet
-  case requestPermissions(_ request: WebpagePermissionRequest, onPermittedAccountsUpdated: (_ permittedAccounts: [String]) -> Void)
+  case requestPermissions(
+    _ request: WebpagePermissionRequest,
+    onPermittedAccountsUpdated: (_ permittedAccounts: [String]) -> Void
+  )
   /// Shows the user only the unlock/setup screen then dismisses to view an unlocked panel
   case panelUnlockOrSetup
   /// Shows the user available wallet accounts to use
@@ -54,7 +61,7 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
   public weak var delegate: BraveWalletDelegate?
   private var cancellable: AnyCancellable?
   private var walletStore: WalletStore?
-  
+
   public init(
     walletStore: WalletStore,
     webImageDownloader: WebImageDownloaderType,
@@ -81,9 +88,9 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
       self.delegate?.requestAppReview()
     }
     cancellable = walletStore.keyringStore.$isWalletLocked
-      .dropFirst() // Drop initial value
+      .dropFirst()  // Drop initial value
       .removeDuplicates()
-      .dropFirst() // Drop first async fetch of keyring
+      .dropFirst()  // Drop first async fetch of keyring
       .sink { [weak self] isLocked in
         if !isLocked {
           onUnlock?()
@@ -96,49 +103,50 @@ public class WalletHostingViewController: UIHostingController<CryptoView> {
         // and dismiss the first sheet ourselves to ensure we dont get stuck with a child view visible
         // while the wallet is locked.
         if #unavailable(iOS 16.4),
-           let self = self,
-           isLocked,
-           let presentedViewController = self.presentedViewController,
-           !presentedViewController.isBeingDismissed {
+          let self = self,
+          isLocked,
+          let presentedViewController = self.presentedViewController,
+          !presentedViewController.isBeingDismissed
+        {
           self.dismiss(animated: true)
         }
       }
     self.walletStore = walletStore
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   deinit {
     gesture.view?.removeGestureRecognizer(gesture)
     walletStore?.isPresentingFullWallet = false
   }
-  
+
   private let gesture: WalletInteractionGestureRecognizer
-  
+
   public override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
     view.window?.addGestureRecognizer(gesture)
-    
+
     DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
     if #available(iOS 16.0, *) {
       self.setNeedsUpdateOfSupportedInterfaceOrientations()
     }
   }
-  
+
   public override func viewDidLoad() {
     super.viewDidLoad()
     walletStore?.isPresentingFullWallet = true
   }
-  
+
   // MARK: -
-  
+
   public override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
     [.portrait, .portraitUpsideDown]
   }
-  
+
   public override var shouldAutorotate: Bool {
     true
   }

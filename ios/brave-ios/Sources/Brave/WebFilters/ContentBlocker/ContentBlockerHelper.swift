@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import WebKit
-import Shared
-import Data
 import BraveShared
 import Combine
+import Data
+import Shared
+import WebKit
 import os.log
 
 private let log = ContentBlockerManager.log
@@ -31,7 +31,9 @@ struct ContentBlockingConfig {
 }
 
 struct NoImageModeDefaults {
-  static let script = "[{'trigger':{'url-filter':'.*','resource-type':['image']},'action':{'type':'block'}}]".replacingOccurrences(of: "'", with: "\"")
+  static let script =
+    "[{'trigger':{'url-filter':'.*','resource-type':['image']},'action':{'type':'block'}}]"
+    .replacingOccurrences(of: "'", with: "\"")
   static let scriptName = "images"
 }
 
@@ -44,7 +46,7 @@ enum BlockingStrength: String {
 
 class ContentBlockerHelper {
   private(set) weak var tab: Tab?
-  
+
   /// The rule lists that are loaded into the current tab
   private var setRuleLists: Set<WKContentRuleList> = []
 
@@ -64,12 +66,12 @@ class ContentBlockerHelper {
   init(tab: Tab) {
     self.tab = tab
   }
-  
+
   @MainActor func set(ruleLists: Set<WKContentRuleList>) {
     guard ruleLists != setRuleLists else { return }
     var addedIds: [String] = []
     var removedIds: [String] = []
-    
+
     // Remove unwanted rule lists
     for ruleList in setRuleLists.subtracting(ruleLists) {
       // It's added but we don't want it. So we remove it.
@@ -77,19 +79,19 @@ class ContentBlockerHelper {
       setRuleLists.remove(ruleList)
       removedIds.append(ruleList.identifier)
     }
-    
+
     // Add missing rule lists
     for ruleList in ruleLists.subtracting(setRuleLists) {
       tab?.webView?.configuration.userContentController.add(ruleList)
       setRuleLists.insert(ruleList)
       addedIds.append(ruleList.identifier)
     }
-    
+
     let parts = [
       addedIds.sorted(by: { $0 < $1 }).map({ " + \($0)" }).joined(separator: "\n"),
-      removedIds.sorted(by: { $0 < $1 }).map({ " - \($0)" }).joined(separator: "\n")
+      removedIds.sorted(by: { $0 < $1 }).map({ " - \($0)" }).joined(separator: "\n"),
     ]
-    
+
     ContentBlockerManager.log.debug("Set rule lists:\n\(parts.joined(separator: "\n"))")
   }
 }

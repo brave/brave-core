@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import FaviconModels
 import Foundation
 import Shared
 import WidgetKit
-import FaviconModels
 import os.log
 
 public struct WidgetFavorite: Codable {
@@ -23,7 +23,9 @@ public struct WidgetFavorite: Codable {
 
 public class FavoritesWidgetData {
   private static var widgetDataRoot: URL? {
-    FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier)?.appendingPathComponent("widget_data")
+    FileManager.default.containerURL(
+      forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
+    )?.appendingPathComponent("widget_data")
   }
 
   private static var widgetDataPath: URL? {
@@ -50,7 +52,10 @@ public class FavoritesWidgetData {
     guard let rootPath = widgetDataRoot, let dataPath = widgetDataPath else { return }
     do {
       let widgetData = try JSONEncoder().encode(favs)
-      try FileManager.default.createDirectory(atPath: rootPath.path, withIntermediateDirectories: true)
+      try FileManager.default.createDirectory(
+        atPath: rootPath.path,
+        withIntermediateDirectories: true
+      )
       try widgetData.write(to: dataPath)
       WidgetCenter.shared.reloadTimelines(ofKind: "FavoritesWidget")
     } catch {

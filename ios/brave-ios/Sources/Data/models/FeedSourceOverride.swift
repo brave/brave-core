@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
+import Foundation
 
 public final class FeedSourceOverride: NSManagedObject, CRUD {
   @NSManaged public var enabled: Bool
@@ -38,12 +38,19 @@ public final class FeedSourceOverride: NSManagedObject, CRUD {
     deleteAll()
   }
 
-  class func getInternal(fromId id: String, context: NSManagedObjectContext = DataController.viewContext) -> FeedSourceOverride? {
+  class func getInternal(
+    fromId id: String,
+    context: NSManagedObjectContext = DataController.viewContext
+  ) -> FeedSourceOverride? {
     let predicate = NSPredicate(format: "\(#keyPath(FeedSourceOverride.publisherID)) == %@", id)
     return first(where: predicate, context: context)
   }
 
-  class func setEnabledInternal(forId id: String, enabled: Bool, context: WriteContext = .new(inMemory: false)) {
+  class func setEnabledInternal(
+    forId id: String,
+    enabled: Bool,
+    context: WriteContext = .new(inMemory: false)
+  ) {
     DataController.perform(context: context) { context in
       if let source = getInternal(fromId: id, context: context) {
         source.enabled = enabled
@@ -53,7 +60,11 @@ public final class FeedSourceOverride: NSManagedObject, CRUD {
     }
   }
 
-  class func insertInternal(publisherID: String, enabled: Bool, context: WriteContext = .new(inMemory: false)) {
+  class func insertInternal(
+    publisherID: String,
+    enabled: Bool,
+    context: WriteContext = .new(inMemory: false)
+  ) {
     DataController.perform(context: context) { context in
       let source = FeedSourceOverride(entity: entity(in: context), insertInto: context)
 

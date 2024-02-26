@@ -19,7 +19,7 @@ extension UIView {
     guard size.width > 0, size.height > 0 else {
       return nil
     }
-    
+
     UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale * quality)
     drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
     let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -32,7 +32,11 @@ extension UIView {
      * Takes a screenshot of the view with the given aspect ratio.
      * An aspect ratio of 0 means capture the entire view.
      */
-  func screenshot(_ aspectRatio: CGFloat = 0, offset: CGPoint? = nil, quality: CGFloat = 1) -> UIImage? {
+  func screenshot(
+    _ aspectRatio: CGFloat = 0,
+    offset: CGPoint? = nil,
+    quality: CGFloat = 1
+  ) -> UIImage? {
     assert(aspectRatio >= 0)
 
     var size: CGSize
@@ -65,7 +69,11 @@ extension UIView {
      */
   func addRoundedCorners(_ cornersToRound: UIRectCorner, cornerRadius: CGSize, color: UIColor) {
     let rect = bounds
-    let maskPath = UIBezierPath(roundedRect: rect, byRoundingCorners: cornersToRound, cornerRadii: cornerRadius)
+    let maskPath = UIBezierPath(
+      roundedRect: rect,
+      byRoundingCorners: cornersToRound,
+      cornerRadii: cornerRadius
+    )
 
     // Create the shape layer and set its path
     let maskLayer = CAShapeLayer()
@@ -95,7 +103,9 @@ extension UIView {
       return firstResponderSubview
     }
 
-    guard let firstSubview = subviews.first(where: { !($0 is UIRefreshControl) }) else { return nil }
+    guard let firstSubview = subviews.first(where: { !($0 is UIRefreshControl) }) else {
+      return nil
+    }
 
     return findSubViewWithFirstResponder(firstSubview)
   }

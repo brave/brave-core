@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import WebKit
 import Shared
+import WebKit
 import os.log
 
 public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
@@ -21,11 +21,11 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public let tagId: String
   public let order: Int32
   public let isInvisible: Bool
-  
+
   public var id: String {
     tagId
   }
-  
+
   public init(pageSrc: String) {
     self.name = ""
     self.src = ""
@@ -56,7 +56,20 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.isInvisible = false
   }
 
-  public init(name: String, src: String, pageSrc: String, pageTitle: String, mimeType: String, duration: TimeInterval, lastPlayedOffset: TimeInterval, detected: Bool, dateAdded: Date, tagId: String, order: Int32, isInvisible: Bool) {
+  public init(
+    name: String,
+    src: String,
+    pageSrc: String,
+    pageTitle: String,
+    mimeType: String,
+    duration: TimeInterval,
+    lastPlayedOffset: TimeInterval,
+    detected: Bool,
+    dateAdded: Date,
+    tagId: String,
+    order: Int32,
+    isInvisible: Bool
+  ) {
     self.name = name
     self.src = src
     self.pageSrc = pageSrc
@@ -79,7 +92,8 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     self.pageTitle = try container.decode(String.self, forKey: .pageTitle)
     self.mimeType = try container.decodeIfPresent(String.self, forKey: .mimeType) ?? ""
     self.duration = try container.decodeIfPresent(TimeInterval.self, forKey: .duration) ?? 0.0
-    self.lastPlayedOffset = try container.decodeIfPresent(TimeInterval.self, forKey: .lastPlayedOffset) ?? 0.0
+    self.lastPlayedOffset =
+      try container.decodeIfPresent(TimeInterval.self, forKey: .lastPlayedOffset) ?? 0.0
     self.detected = try container.decodeIfPresent(Bool.self, forKey: .detected) ?? false
     self.tagId = try container.decodeIfPresent(String.self, forKey: .tagId) ?? UUID().uuidString
     self.dateAdded = Date()
@@ -94,7 +108,10 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
     }
 
     do {
-      let data = try JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed])
+      let data = try JSONSerialization.data(
+        withJSONObject: message.body,
+        options: [.fragmentsAllowed]
+      )
       return try JSONDecoder().decode(PlaylistInfo.self, from: data)
     } catch {
       Logger.module.error("Error Decoding PlaylistInfo: \(error.localizedDescription)")
@@ -102,14 +119,16 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
 
     return nil
   }
-  
+
   public func hash(into hasher: inout Hasher) {
     hasher.combine(pageSrc.asURL?.normalizedHostAndPath ?? pageSrc)
     hasher.combine(tagId)
   }
-  
+
   public static func == (lhs: Self, rhs: Self) -> Bool {
-    if let lhsPageSrc = lhs.pageSrc.asURL?.normalizedHostAndPath, let rhsPageSrc = rhs.pageSrc.asURL?.normalizedHostAndPath {
+    if let lhsPageSrc = lhs.pageSrc.asURL?.normalizedHostAndPath,
+      let rhsPageSrc = rhs.pageSrc.asURL?.normalizedHostAndPath
+    {
       return lhsPageSrc == rhsPageSrc && lhs.tagId == rhs.tagId
     }
     return lhs.pageSrc == rhs.pageSrc && lhs.tagId == rhs.tagId
@@ -118,7 +137,9 @@ public struct PlaylistInfo: Codable, Identifiable, Hashable, Equatable {
   public static func fixSchemelessURLs(src: String, pageSrc: String) -> String {
     if src.hasPrefix("//") {
       return "\(URL(string: pageSrc)?.scheme ?? ""):\(src)"
-    } else if src.hasPrefix("/"), let url = URL(string: src, relativeTo: URL(string: pageSrc))?.absoluteString {
+    } else if src.hasPrefix("/"),
+      let url = URL(string: src, relativeTo: URL(string: pageSrc))?.absoluteString
+    {
       return url
     }
     return src

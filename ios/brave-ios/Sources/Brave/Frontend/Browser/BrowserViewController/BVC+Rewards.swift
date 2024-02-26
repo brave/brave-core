@@ -2,18 +2,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
-import Data
-import Shared
 import BraveShared
-import Preferences
 import BraveUI
+import Data
+import Favicon
+import Foundation
 import Onboarding
+import Preferences
+import Shared
 import Storage
 import WebKit
 import os.log
-import Favicon
 
 // TODO: Move this log to the Rewards/Ads target once we move Rewards/Ads files.
 public let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
@@ -25,14 +25,18 @@ extension BrowserViewController {
       self.topToolbar.rewardsButton.isHidden = true
       return
     }
-    self.topToolbar.rewardsButton.isHidden = Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
-    self.topToolbar.rewardsButton.iconState = rewards.isEnabled || rewards.isTurningOnRewards ? .enabled : (Preferences.Rewards.rewardsToggledOnce.value ? .disabled : .initial)
+    self.topToolbar.rewardsButton.isHidden =
+      Preferences.Rewards.hideRewardsIcon.value || privateBrowsingManager.isPrivateBrowsing
+    self.topToolbar.rewardsButton.iconState =
+      rewards.isEnabled || rewards.isTurningOnRewards
+      ? .enabled : (Preferences.Rewards.rewardsToggledOnce.value ? .disabled : .initial)
   }
 
   func showBraveRewardsPanel() {
     if !Preferences.FullScreenCallout.rewardsCalloutCompleted.value,
       Preferences.Onboarding.isNewRetentionUser.value == true,
-      !Preferences.Rewards.rewardsToggledOnce.value {
+      !Preferences.Rewards.rewardsToggledOnce.value
+    {
 
       let controller = OnboardingRewardsAgreementViewController()
       controller.onOnboardingStateChanged = { [weak self] controller, state in
@@ -44,19 +48,21 @@ extension BrowserViewController {
 
       Preferences.FullScreenCallout.rewardsCalloutCompleted.value = true
       present(controller, animated: true)
-      topToolbar.rewardsButton.iconState = Preferences.Rewards.rewardsToggledOnce.value ? (rewards.isEnabled || rewards.isTurningOnRewards ? .enabled : .disabled) : .initial
+      topToolbar.rewardsButton.iconState =
+        Preferences.Rewards.rewardsToggledOnce.value
+        ? (rewards.isEnabled || rewards.isTurningOnRewards ? .enabled : .disabled) : .initial
       return
     }
 
     updateRewardsButtonState()
 
     guard let tab = tabManager.selectedTab else { return }
-    
+
     if #available(iOS 16.0, *) {
       // System components sit on top so we want to dismiss it
       tab.webView?.findInteraction?.dismissFindNavigator()
     }
-    
+
     let braveRewardsPanel = BraveRewardsViewController(
       tab: tab,
       rewards: rewards
@@ -73,7 +79,9 @@ extension BrowserViewController {
     popover.present(from: topToolbar.rewardsButton, on: self)
     popover.popoverDidDismiss = { [weak self] _ in
       guard let self = self else { return }
-      if let tabId = self.tabManager.selectedTab?.rewardsId, self.rewards.rewardsAPI?.selectedTabId == 0 {
+      if let tabId = self.tabManager.selectedTab?.rewardsId,
+        self.rewards.rewardsAPI?.selectedTabId == 0
+      {
         // Show the tab currently visible
         self.rewards.rewardsAPI?.selectedTabId = tabId
       }
@@ -86,13 +94,16 @@ extension BrowserViewController {
     guard
       let rewardsAPI = rewards.rewardsAPI,
       case let promotions = rewardsAPI.pendingPromotions.filter({ $0.status == .active }),
-      !promotions.isEmpty else {
+      !promotions.isEmpty
+    else {
       return
     }
     Task {
       for promo in promotions {
         let success = await rewardsAPI.claimPromotion(promo)
-        adsRewardsLog.info("[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)")
+        adsRewardsLog.info(
+          "[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)"
+        )
       }
     }
   }
@@ -154,7 +165,9 @@ extension BrowserViewController {
     }
     rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
       DispatchQueue.main.async {
-        guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab, tab.rewardsId == tabId else { return }
+        guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab,
+          tab.rewardsId == tabId
+        else { return }
         self.publisher = publisher
       }
     }
@@ -183,14 +196,23 @@ extension Tab {
     let group = DispatchGroup()
     group.enter()
 
-    webView.evaluateSafeJavaScript(functionName: "new XMLSerializer().serializeToString", args: ["document"], contentWorld: WKContentWorld.defaultClient, escapeArgs: false) { html, _ in
+    webView.evaluateSafeJavaScript(
+      functionName: "new XMLSerializer().serializeToString",
+      args: ["document"],
+      contentWorld: WKContentWorld.defaultClient,
+      escapeArgs: false
+    ) { html, _ in
       htmlBlob = html as? String
       group.leave()
     }
 
     if shouldClassifyLoadsForAds {
       group.enter()
-      webView.evaluateSafeJavaScript(functionName: "document?.body?.innerText", contentWorld: .defaultClient, asFunction: false) { text, _ in
+      webView.evaluateSafeJavaScript(
+        functionName: "document?.body?.innerText",
+        contentWorld: .defaultClient,
+        asFunction: false
+      ) { text, _ in
         classifierText = text as? String
         group.leave()
       }
@@ -201,9 +223,12 @@ extension Tab {
         adsRewardsLog.warning("No favicon found in \(self) to report to rewards panel")
       }
       rewards.reportLoadedPage(
-        url: url, redirectionURLs: urls.isEmpty ? [url] : urls,
+        url: url,
+        redirectionURLs: urls.isEmpty ? [url] : urls,
         tabId: Int(self.rewardsId),
-        html: htmlBlob ?? "", adsInnerText: classifierText)
+        html: htmlBlob ?? "",
+        adsInnerText: classifierText
+      )
     }
   }
 
@@ -220,7 +245,10 @@ extension BrowserViewController: BraveAdsCaptchaHandler {
     }
     Task {
       do {
-        try await rewards.rewardsAPI?.solveAdaptiveCaptcha(paymentId: paymentId, captchaId: captchaId)
+        try await rewards.rewardsAPI?.solveAdaptiveCaptcha(
+          paymentId: paymentId,
+          captchaId: captchaId
+        )
       } catch {
         // Increase failure count, stop attempting attestation altogether passed a specific count
         Preferences.Rewards.adaptiveCaptchaFailureCount.value += 1

@@ -12,9 +12,9 @@ struct RecoveryPhrasePager: View {
   var pagerHeight: CGFloat = 8
   var activePagerColor: Color = Color(.braveBlurpleTint)
   var inactivePagerColor: Color = Color(.braveDisabled)
-  
+
   @Binding var activeIndex: Int
-  
+
   var body: some View {
     HStack(spacing: 4) {
       ForEach(0..<pageNumber, id: \.self) { index in

@@ -49,7 +49,10 @@ public struct DocumentOpenerView: UIViewControllerRepresentable {
     init(_ completion: @escaping ([URL]) -> Void) {
       onCompletion = completion
     }
-    public func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+    public func documentPicker(
+      _ controller: UIDocumentPickerViewController,
+      didPickDocumentsAt urls: [URL]
+    ) {
       DispatchQueue.main.async {
         self.onCompletion(urls)
       }

@@ -2,23 +2,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
-import BraveShared
-import Preferences
-import Static
-import LocalAuthentication
-import SwiftyJSON
-import Data
-import WebKit
 import BraveCore
-import SwiftUI
-import BraveWallet
+import BraveNews
+import BraveShared
 import BraveUI
 import BraveVPN
-import BraveNews
+import BraveWallet
+import Data
 import Growth
+import LocalAuthentication
 import NetworkExtension
+import Preferences
+import Shared
+import Static
+import SwiftUI
+import SwiftyJSON
+import UIKit
+import WebKit
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -95,11 +95,11 @@ class SettingsViewController: TableViewController {
 
     super.init(style: .insetGrouped)
   }
-  
+
   deinit {
     keyringStore?.tearDown()
     cryptoStore?.tearDown()
-    
+
     NotificationCenter.default.removeObserver(self)
   }
 
@@ -120,11 +120,13 @@ class SettingsViewController: TableViewController {
     view.backgroundColor = .braveGroupedBackground
     view.tintColor = .braveBlurpleTint
     navigationController?.view.backgroundColor = .braveGroupedBackground
-    
+
     NotificationCenter.default.addObserver(
       self,
       selector: #selector(vpnConfigChanged(notification:)),
-      name: .NEVPNStatusDidChange, object: nil)
+      name: .NEVPNStatusDidChange,
+      object: nil
+    )
   }
 
   private func displayRewardsDebugMenu() {
@@ -134,7 +136,9 @@ class SettingsViewController: TableViewController {
   }
 
   private func displayBraveNewsDebugMenu() {
-    let settings = UIHostingController(rootView: BraveNewsDebugSettingsView(dataSource: feedDataSource))
+    let settings = UIHostingController(
+      rootView: BraveNewsDebugSettingsView(dataSource: feedDataSource)
+    )
     navigationController?.pushViewController(settings, animated: true)
   }
 
@@ -144,7 +148,7 @@ class SettingsViewController: TableViewController {
 
     navigationController?.pushViewController(hostingController, animated: true)
   }
-  
+
   /// The function for refreshing VPN status for menu
   /// - Parameter notification: NEVPNStatusDidChange
   @objc private func vpnConfigChanged(notification: NSNotification) {
@@ -226,7 +230,9 @@ class SettingsViewController: TableViewController {
               return
             }
             UIApplication.shared.open(settingsUrl)
-          }, cellClass: MultilineButtonCell.self)
+          },
+          cellClass: MultilineButtonCell.self
+        )
       ]
     )
 
@@ -235,48 +241,51 @@ class SettingsViewController: TableViewController {
 
   private func makeFeaturesSection() -> Static.Section {
     weak var spinner: SpinnerView?
-    
+
     var section = Static.Section(
       header: .title(Strings.features),
       rows: [
         Row(
           text: Strings.braveShieldsAndPrivacy,
           selection: { [unowned self] in
-            let controller = UIHostingController(rootView: AdvancedShieldsSettingsView(
-              profile: self.profile,
-              tabManager: self.tabManager,
-              feedDataSource: self.feedDataSource,
-              historyAPI: self.historyAPI,
-              p3aUtilities: self.p3aUtilities,
-              clearDataCallback: { [weak self] isLoading, isHistoryCleared in
-                guard let view = self?.navigationController?.view, view.window != nil else {
-                  assertionFailure()
-                  return
+            let controller = UIHostingController(
+              rootView: AdvancedShieldsSettingsView(
+                profile: self.profile,
+                tabManager: self.tabManager,
+                feedDataSource: self.feedDataSource,
+                historyAPI: self.historyAPI,
+                p3aUtilities: self.p3aUtilities,
+                clearDataCallback: { [weak self] isLoading, isHistoryCleared in
+                  guard let view = self?.navigationController?.view, view.window != nil else {
+                    assertionFailure()
+                    return
+                  }
+
+                  if isLoading, spinner == nil {
+                    let newSpinner = SpinnerView()
+                    newSpinner.present(on: view)
+                    spinner = newSpinner
+                  } else {
+                    spinner?.dismiss()
+                    spinner = nil
+                  }
+
+                  if isHistoryCleared {
+                    // Donate Clear Browser History for suggestions
+                    let clearBrowserHistoryActivity = ActivityShortcutManager.shared
+                      .createShortcutActivity(type: .clearBrowsingHistory)
+                    self?.userActivity = clearBrowserHistoryActivity
+                    clearBrowserHistoryActivity.becomeCurrent()
+                  }
                 }
-                
-                if isLoading, spinner == nil {
-                  let newSpinner = SpinnerView()
-                  newSpinner.present(on: view)
-                  spinner = newSpinner
-                } else {
-                  spinner?.dismiss()
-                  spinner = nil
-                }
-                
-                if isHistoryCleared {
-                  // Donate Clear Browser History for suggestions
-                  let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
-                  self?.userActivity = clearBrowserHistoryActivity
-                  clearBrowserHistoryActivity.becomeCurrent()
-                }
-              }
-            ))
-            
+              )
+            )
+
             controller.rootView.openURLAction = { [unowned self] url in
               self.settingsDelegate?.settingsOpenURLInNewTab(url)
               self.dismiss(animated: true)
             }
-            
+
             self.navigationController?.pushViewController(controller, animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.shield.done"),
@@ -301,7 +310,10 @@ class SettingsViewController: TableViewController {
               }
             }
             self.navigationController?.pushViewController(rewardsVC, animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.product.bat-outline"), accessory: .disclosureIndicator)
+          },
+          image: UIImage(braveSystemNamed: "leo.product.bat-outline"),
+          accessory: .disclosureIndicator
+        )
       ]
     }
 
@@ -309,11 +321,14 @@ class SettingsViewController: TableViewController {
       Row(
         text: Strings.BraveNews.braveNews,
         selection: { [unowned self] in
-          let controller = NewsSettingsViewController(dataSource: self.feedDataSource, openURL: { [weak self] url in
-            guard let self else { return }
-            self.dismiss(animated: true)
-            self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
-          })
+          let controller = NewsSettingsViewController(
+            dataSource: self.feedDataSource,
+            openURL: { [weak self] url in
+              guard let self else { return }
+              self.dismiss(animated: true)
+              self.settingsDelegate?.settingsOpenURLs([url], loadImmediately: true)
+            }
+          )
           controller.viewDidDisappear = {
             if Preferences.Review.braveNewsCriteriaPassed.value {
               AppReviewManager.shared.isRevisedReviewRequired = true
@@ -321,7 +336,10 @@ class SettingsViewController: TableViewController {
             }
           }
           self.navigationController?.pushViewController(controller, animated: true)
-        }, image: UIImage(braveSystemNamed: "leo.product.brave-news"), accessory: .disclosureIndicator)
+        },
+        image: UIImage(braveSystemNamed: "leo.product.brave-news"),
+        accessory: .disclosureIndicator
+      )
     )
 
     vpnRow = vpnSettingsRow()
@@ -335,7 +353,10 @@ class SettingsViewController: TableViewController {
         selection: { [unowned self] in
           let playlistSettings = PlaylistSettingsViewController()
           self.navigationController?.pushViewController(playlistSettings, animated: true)
-        }, image: UIImage(braveSystemNamed: "leo.product.playlist"), accessory: .disclosureIndicator)
+        },
+        image: UIImage(braveSystemNamed: "leo.product.playlist"),
+        accessory: .disclosureIndicator
+      )
     )
 
     return section
@@ -348,9 +369,16 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.searchEngines,
           selection: { [unowned self] in
-            let viewController = SearchSettingsTableViewController(profile: self.profile, privateBrowsingManager: tabManager.privateBrowsingManager)
+            let viewController = SearchSettingsTableViewController(
+              profile: self.profile,
+              privateBrowsingManager: tabManager.privateBrowsingManager
+            )
             self.navigationController?.pushViewController(viewController, animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.search"), accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          image: UIImage(braveSystemNamed: "leo.search"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: Strings.sync,
           selection: { [unowned self] in
@@ -359,13 +387,14 @@ class SettingsViewController: TableViewController {
                 self.present(SyncAlerts.noConnection, animated: true)
                 return
               }
-              
+
               let syncSettingsViewController = SyncSettingsTableViewController(
                 syncAPI: syncAPI,
                 syncProfileService:
                   syncProfileServices,
                 tabManager: tabManager,
-                windowProtection: windowProtection)  
+                windowProtection: windowProtection
+              )
 
               self.navigationController?
                 .pushViewController(syncSettingsViewController, animated: true)
@@ -374,18 +403,36 @@ class SettingsViewController: TableViewController {
                 syncAPI: syncAPI,
                 syncProfileServices: syncProfileServices,
                 tabManager: tabManager,
-                windowProtection: windowProtection)
-              
-              self.navigationController?.pushViewController(syncWelcomeViewController, animated: true)
+                windowProtection: windowProtection
+              )
+
+              self.navigationController?.pushViewController(
+                syncWelcomeViewController,
+                animated: true
+              )
             }
-          }, image: UIImage(braveSystemNamed: "leo.sync"), accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self),
-        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(braveSystemNamed: "leo.folder.open")),
+          },
+          image: UIImage(braveSystemNamed: "leo.sync"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        .boolRow(
+          title: Strings.bookmarksLastVisitedFolderTitle,
+          option: Preferences.General.showLastVisitedBookmarksFolder,
+          image: UIImage(braveSystemNamed: "leo.folder.open")
+        ),
         Row(
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(ShortcutSettingsViewController(), animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.siri.shorcut"), accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+            self.navigationController?.pushViewController(
+              ShortcutSettingsViewController(),
+              animated: true
+            )
+          },
+          image: UIImage(braveSystemNamed: "leo.siri.shorcut"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
       ]
     )
 
@@ -394,7 +441,8 @@ class SettingsViewController: TableViewController {
         .boolRow(
           title: Strings.alwaysRequestDesktopSite,
           option: Preferences.UserAgent.alwaysRequestDesktopSite,
-          image: UIImage(braveSystemNamed: "leo.window.cursor"))
+          image: UIImage(braveSystemNamed: "leo.window.cursor")
+        )
       )
     }
 
@@ -402,9 +450,13 @@ class SettingsViewController: TableViewController {
       .boolRow(
         title: Strings.enablePullToRefresh,
         option: Preferences.General.enablePullToRefresh,
-        image: UIImage(braveSystemNamed: "leo.browser.refresh")),
-      .boolRow(title: Strings.blockPopups, option: Preferences.General.blockPopups,
-               image: UIImage(braveSystemNamed: "leo.shield.block")),
+        image: UIImage(braveSystemNamed: "leo.browser.refresh")
+      ),
+      .boolRow(
+        title: Strings.blockPopups,
+        option: Preferences.General.blockPopups,
+        image: UIImage(braveSystemNamed: "leo.shield.block")
+      ),
     ])
 
     let websiteRedirectsRow = Row(
@@ -412,7 +464,11 @@ class SettingsViewController: TableViewController {
       selection: { [unowned self] in
         let controller = UIHostingController(rootView: WebsiteRedirectsSettingsView())
         self.navigationController?.pushViewController(controller, animated: true)
-      }, image: UIImage(braveSystemNamed: "leo.swap.horizontal"), accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+      },
+      image: UIImage(braveSystemNamed: "leo.swap.horizontal"),
+      accessory: .disclosureIndicator,
+      cellClass: MultilineSubtitleCell.self
+    )
     general.rows.append(websiteRedirectsRow)
 
     return general
@@ -432,14 +488,25 @@ class SettingsViewController: TableViewController {
         Row(
           text: Strings.showTabsBar,
           image: UIImage(braveSystemNamed: "leo.window.tab"),
-          accessory: .switchToggle(value: Preferences.General.tabBarVisibility.value != TabBarVisibility.never.rawValue, {
-            Preferences.General.tabBarVisibility.value = $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue
-          }),
+          accessory: .switchToggle(
+            value: Preferences.General.tabBarVisibility.value != TabBarVisibility.never.rawValue,
+            {
+              Preferences.General.tabBarVisibility.value =
+                $0 ? TabBarVisibility.always.rawValue : TabBarVisibility.never.rawValue
+            }
+          ),
           cellClass: MultilineValue1Cell.self
         )
       )
     } else {
-      var row = Row(text: Strings.showTabsBar, detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?.displayString, image: UIImage(braveSystemNamed: "leo.window.tab"), accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+      var row = Row(
+        text: Strings.showTabsBar,
+        detailText: TabBarVisibility(rawValue: Preferences.General.tabBarVisibility.value)?
+          .displayString,
+        image: UIImage(braveSystemNamed: "leo.window.tab"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
+      )
       row.selection = { [unowned self] in
         // Show options for tab bar visibility
         let optionsViewController = OptionSelectionViewController<TabBarVisibility>(
@@ -458,14 +525,16 @@ class SettingsViewController: TableViewController {
     }
 
     let autoCloseSetting =
-    Preferences
+      Preferences
       .AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value)?.displayString
     var autoCloseTabsRow =
-    Row(
-      text: Strings.Settings.autocloseTabsSetting,
-      detailText: autoCloseSetting, image: UIImage(braveSystemNamed: "leo.window.tabs"),
-      accessory: .disclosureIndicator,
-      cellClass: MultilineSubtitleCell.self)
+      Row(
+        text: Strings.Settings.autocloseTabsSetting,
+        detailText: autoCloseSetting,
+        image: UIImage(braveSystemNamed: "leo.window.tabs"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineSubtitleCell.self
+      )
     autoCloseTabsRow.selection = { [unowned self] in
       let optionsViewController = OptionSelectionViewController<Preferences.AutoCloseTabsOption>(
         options: Preferences.AutoCloseTabsOption.allCases,
@@ -473,7 +542,11 @@ class SettingsViewController: TableViewController {
           Preferences.AutoCloseTabsOption(rawValue: Preferences.General.autocloseTabs.value),
         optionChanged: { _, option in
           Preferences.General.autocloseTabs.value = option.rawValue
-          self.dataSource.reloadCell(row: autoCloseTabsRow, section: tabs, displayText: option.displayString)
+          self.dataSource.reloadCell(
+            row: autoCloseTabsRow,
+            section: tabs,
+            displayText: option.displayString
+          )
         }
       )
       optionsViewController.headerText = Strings.Settings.autocloseTabsSetting
@@ -483,17 +556,23 @@ class SettingsViewController: TableViewController {
     }
 
     tabs.rows.append(autoCloseTabsRow)
-    
+
     if !Preferences.Privacy.privateBrowsingOnly.value {
       let privateTabsRow = Row(
         text: Strings.TabsSettings.privateTabsSettingsTitle,
         selection: { [unowned self] in
-          let vc = UIHostingController(rootView: PrivateTabsView(tabManager: tabManager, askForAuthentication: self.askForLocalAuthentication))
+          let vc = UIHostingController(
+            rootView: PrivateTabsView(
+              tabManager: tabManager,
+              askForAuthentication: self.askForLocalAuthentication
+            )
+          )
           self.navigationController?.pushViewController(vc, animated: true)
         },
         image: UIImage(braveSystemNamed: "leo.product.private-window"),
-        accessory: .disclosureIndicator)
-      
+        accessory: .disclosureIndicator
+      )
+
       tabs.rows.append(privateTabsRow)
     }
 
@@ -505,20 +584,29 @@ class SettingsViewController: TableViewController {
       header: .title(Strings.displaySettingsSection),
       rows: []
     )
-    
-    display.rows.append(.init(
-      text: Strings.Settings.mediaRootSetting,
-      selection: { [unowned self] in
-        let vc = UIHostingController(rootView: MediaSettingsView())
-        self.navigationController?.pushViewController(vc, animated: true)
-      },
-      image: UIImage(braveSystemNamed: "leo.media.player"),
-      accessory: .disclosureIndicator,
-      cellClass: MultilineValue1Cell.self
-    ))
 
-    let themeSubtitle = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?.displayString
-    var row = Row(text: Strings.themesDisplayBrightness, detailText: themeSubtitle, image: UIImage(braveSystemNamed: "leo.appearance"), accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self)
+    display.rows.append(
+      .init(
+        text: Strings.Settings.mediaRootSetting,
+        selection: { [unowned self] in
+          let vc = UIHostingController(rootView: MediaSettingsView())
+          self.navigationController?.pushViewController(vc, animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.media.player"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
+      )
+    )
+
+    let themeSubtitle = DefaultTheme(rawValue: Preferences.General.themeNormalMode.value)?
+      .displayString
+    var row = Row(
+      text: Strings.themesDisplayBrightness,
+      detailText: themeSubtitle,
+      image: UIImage(braveSystemNamed: "leo.appearance"),
+      accessory: .disclosureIndicator,
+      cellClass: MultilineSubtitleCell.self
+    )
     row.selection = { [unowned self] in
       let optionsViewController = OptionSelectionViewController<DefaultTheme>(
         options: DefaultTheme.normalThemesOptions,
@@ -531,7 +619,7 @@ class SettingsViewController: TableViewController {
       optionsViewController.headerText = Strings.themesDisplayBrightness
       optionsViewController.footerText = Strings.themesDisplayBrightnessFooter
       optionsViewController.navigationItem.title = Strings.themesDisplayBrightness
-      
+
       let nightModeSection = Section(
         header: .title(Strings.NightMode.sectionTitle.uppercased()),
         rows: [
@@ -542,7 +630,8 @@ class SettingsViewController: TableViewController {
             onValueChange: { [unowned self] enabled in
               NightModeScriptHandler.setNightMode(tabManager: tabManager, enabled: enabled)
             },
-            image: UIImage(braveSystemNamed: "leo.theme.dark"))
+            image: UIImage(braveSystemNamed: "leo.theme.dark")
+          )
         ],
         footer: .title(Strings.NightMode.sectionDescription)
       )
@@ -551,28 +640,32 @@ class SettingsViewController: TableViewController {
       self.navigationController?.pushViewController(optionsViewController, animated: true)
     }
     display.rows.append(row)
-    display.rows.append(Row(
-      text: Strings.NTP.settingsTitle,
-      selection: { [unowned self] in
-        self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
-      },
-      image: UIImage(braveSystemNamed: "leo.window.tab-new"),
-      accessory: .disclosureIndicator,
-      cellClass: MultilineValue1Cell.self
-    ))
+    display.rows.append(
+      Row(
+        text: Strings.NTP.settingsTitle,
+        selection: { [unowned self] in
+          self.navigationController?.pushViewController(NTPTableViewController(), animated: true)
+        },
+        image: UIImage(braveSystemNamed: "leo.window.tab-new"),
+        accessory: .disclosureIndicator,
+        cellClass: MultilineValue1Cell.self
+      )
+    )
 
     // We do NOT persistently save page-zoom settings in Private Browsing
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       display.rows.append(
-        Row(text: Strings.PageZoom.settingsTitle,
-            selection: { [weak self] in
-              let controller = PageZoomSettingsController()
-              controller.navigationItem.title = Strings.PageZoom.settingsTitle
-              self?.navigationController?.pushViewController(controller, animated: true)
-            },
-            image: UIImage(braveSystemNamed: "leo.font.size"),
-            accessory: .disclosureIndicator,
-            cellClass: MultilineValue1Cell.self)
+        Row(
+          text: Strings.PageZoom.settingsTitle,
+          selection: { [weak self] in
+            let controller = PageZoomSettingsController()
+            controller.navigationItem.title = Strings.PageZoom.settingsTitle
+            self?.navigationController?.pushViewController(controller, animated: true)
+          },
+          image: UIImage(braveSystemNamed: "leo.font.size"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        )
       )
     }
 
@@ -580,11 +673,13 @@ class SettingsViewController: TableViewController {
       .boolRow(
         title: Strings.showBookmarkButtonInTopToolbar,
         option: Preferences.General.showBookmarkToolbarShortcut,
-        image: UIImage(braveSystemNamed: "leo.product.bookmarks")),
+        image: UIImage(braveSystemNamed: "leo.product.bookmarks")
+      ),
       .boolRow(
         title: Strings.hideRewardsIcon,
         option: Preferences.Rewards.hideRewardsIcon,
-        image: UIImage(braveSystemNamed: "leo.product.bat-outline")),
+        image: UIImage(braveSystemNamed: "leo.product.bat-outline")
+      ),
     ])
 
     return display
@@ -595,10 +690,12 @@ class SettingsViewController: TableViewController {
   private func vpnSettingsRow() -> Row {
 
     let (text, color) = { () -> (String, UIColor) in
-      if Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue {
+      if Preferences.VPN.vpnReceiptStatus.value
+        == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
+      {
         return (Strings.VPN.updateActionCellTitle, .braveErrorLabel)
       }
-      
+
       switch BraveVPN.vpnState {
       case .notPurchased:
         return ("", UIColor.black)
@@ -614,7 +711,8 @@ class SettingsViewController: TableViewController {
     }()
 
     return Row(
-      text: Strings.VPN.vpnName, detailText: text,
+      text: Strings.VPN.vpnName,
+      detailText: text,
       selection: { [unowned self] in
 
         let vc = { () -> UIViewController? in
@@ -633,26 +731,31 @@ class SettingsViewController: TableViewController {
         }()
 
         guard let vcToShow = vc else { return }
-        
+
         if VPNProductInfo.isComplete {
           self.navigationController?.pushViewController(vcToShow, animated: true)
         } else {
           let alert = UIAlertController(
             title: Strings.VPN.errorCantGetPricesTitle,
             message: Strings.VPN.errorCantGetPricesBody,
-            preferredStyle: .alert)
+            preferredStyle: .alert
+          )
 
           alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
           self.present(alert, animated: true, completion: nil)
         }
       },
-      image: Preferences.VPN.vpnReceiptStatus.value == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
+      image: Preferences.VPN.vpnReceiptStatus.value
+        == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
         ? UIImage(braveSystemNamed: "leo.warning.triangle-filled")?
-            .withRenderingMode(.alwaysOriginal)
-            .withTintColor(.braveErrorLabel)
+          .withRenderingMode(.alwaysOriginal)
+          .withTintColor(.braveErrorLabel)
         : UIImage(braveSystemNamed: "leo.product.vpn"),
       accessory: .disclosureIndicator,
-      cellClass: ColoredDetailCell.self, context: [ColoredDetailCell.colorKey: color], uuid: "vpnrow")
+      cellClass: ColoredDetailCell.self,
+      context: [ColoredDetailCell.colorKey: color],
+      uuid: "vpnrow"
+    )
   }
 
   private lazy var securitySection: Static.Section = {
@@ -663,17 +766,22 @@ class SettingsViewController: TableViewController {
           text: Strings.Privacy.browserLock,
           detailText: Strings.Privacy.browserLockDescription,
           image: UIImage(braveSystemNamed: "leo.biometric.login"),
-          accessory: .view(SwitchAccessoryView(initialValue: Preferences.Privacy.lockWithPasscode.value, valueChange: { [unowned self] isOn in
-            if isOn {
-              Preferences.Privacy.lockWithPasscode.value = isOn
-            } else {
-              self.askForLocalAuthentication { [weak self] success, error in
-                if success {
+          accessory: .view(
+            SwitchAccessoryView(
+              initialValue: Preferences.Privacy.lockWithPasscode.value,
+              valueChange: { [unowned self] isOn in
+                if isOn {
                   Preferences.Privacy.lockWithPasscode.value = isOn
+                } else {
+                  self.askForLocalAuthentication { [weak self] success, error in
+                    if success {
+                      Preferences.Privacy.lockWithPasscode.value = isOn
+                    }
+                  }
                 }
               }
-            }
-          })),
+            )
+          ),
           cellClass: MultilineSubtitleCell.self,
           uuid: Preferences.Privacy.lockWithPasscode.key
         ),
@@ -682,10 +790,17 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             let loginsPasswordsViewController = LoginListViewController(
               passwordAPI: self.passwordAPI,
-              windowProtection: self.windowProtection)
+              windowProtection: self.windowProtection
+            )
             loginsPasswordsViewController.settingsDelegate = self.settingsDelegate
-            self.navigationController?.pushViewController(loginsPasswordsViewController, animated: true)
-          }, image: UIImage(braveSystemNamed: "leo.outside"), accessory: .disclosureIndicator)
+            self.navigationController?.pushViewController(
+              loginsPasswordsViewController,
+              animated: true
+            )
+          },
+          image: UIImage(braveSystemNamed: "leo.outside"),
+          accessory: .disclosureIndicator
+        ),
       ]
     )
   }()
@@ -701,18 +816,23 @@ class SettingsViewController: TableViewController {
             self.dismiss(animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.bug"),
-          cellClass: MultilineValue1Cell.self),
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: Strings.rateBrave,
           selection: { [unowned self] in
             // Rate Brave
-            guard let writeReviewURL = URL(string: "https://itunes.apple.com/app/id1052879175?action=write-review")
+            guard
+              let writeReviewURL = URL(
+                string: "https://itunes.apple.com/app/id1052879175?action=write-review"
+              )
             else { return }
             UIApplication.shared.open(writeReviewURL)
             self.dismiss(animated: true)
           },
           image: UIImage(braveSystemNamed: "leo.message.bubble-smile"),
-          cellClass: MultilineValue1Cell.self),
+          cellClass: MultilineValue1Cell.self
+        ),
       ]
     )
   }()
@@ -721,8 +841,10 @@ class SettingsViewController: TableViewController {
     let version = String(
       format: Strings.versionTemplate,
       Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
-      Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "")
-    let coreVersion = "BraveCore \(BraveCoreVersionInfo.braveCoreVersion) (\(BraveCoreVersionInfo.chromiumVersion))"
+      Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
+    )
+    let coreVersion =
+      "BraveCore \(BraveCoreVersionInfo.braveCoreVersion) (\(BraveCoreVersionInfo.chromiumVersion))"
     return Static.Section(
       header: .title(Strings.about),
       rows: [
@@ -730,37 +852,57 @@ class SettingsViewController: TableViewController {
           text: version,
           selection: { [unowned self] in
             let device = UIDevice.current
-            let actionSheet = UIAlertController(title: version, message: coreVersion, preferredStyle: .actionSheet)
+            let actionSheet = UIAlertController(
+              title: version,
+              message: coreVersion,
+              preferredStyle: .actionSheet
+            )
             actionSheet.popoverPresentationController?.sourceView = self.view
             actionSheet.popoverPresentationController?.sourceRect = self.view.bounds
             let iOSVersion = "\(device.systemName) \(UIDevice.current.systemVersion)"
 
             let deviceModel = String(format: Strings.deviceTemplate, device.modelName, iOSVersion)
-            let copyDebugInfoAction = UIAlertAction(title: Strings.copyAppInfoToClipboard, style: .default) { _ in
+            let copyDebugInfoAction = UIAlertAction(
+              title: Strings.copyAppInfoToClipboard,
+              style: .default
+            ) { _ in
               UIPasteboard.general.strings = [version, coreVersion, deviceModel]
             }
-            
-            let copyAppInfoAction = UIAlertAction(title: Strings.copyAppSizeInfoToClipboard, style: .default) { _ in
-              UIPasteboard.general.setSecureString(AppStorageDebugComposer.compose(),
-                                                   expirationDate: Date().addingTimeInterval(2.minutes))
+
+            let copyAppInfoAction = UIAlertAction(
+              title: Strings.copyAppSizeInfoToClipboard,
+              style: .default
+            ) { _ in
+              UIPasteboard.general.setSecureString(
+                AppStorageDebugComposer.compose(),
+                expirationDate: Date().addingTimeInterval(2.minutes)
+              )
             }
-            
-            let viewMoreDetails = UIAlertAction(title: Strings.viewAllVersionInfo, style: .default) { [unowned self, weak actionSheet] _ in
+
+            let viewMoreDetails = UIAlertAction(title: Strings.viewAllVersionInfo, style: .default)
+            { [unowned self, weak actionSheet] _ in
               let versionController = ChromeWebViewController(privateBrowsing: false).then {
                 $0.loadURL("brave://version/?show-variations-cmd")
               }
-              
-              actionSheet?.dismiss(animated: true, completion: {
-                self.present(versionController, animated: true)
-              })
+
+              actionSheet?.dismiss(
+                animated: true,
+                completion: {
+                  self.present(versionController, animated: true)
+                }
+              )
             }
 
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
             actionSheet.addAction(viewMoreDetails)
-            actionSheet.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+            actionSheet.addAction(
+              UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
+            )
             self.navigationController?.present(actionSheet, animated: true, completion: nil)
-          }, cellClass: MultilineValue1Cell.self),
+          },
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: Strings.privacyPolicy,
           selection: { [unowned self] in
@@ -769,7 +911,9 @@ class SettingsViewController: TableViewController {
             privacy.navigationItem.title = Strings.privacyPolicy
             self.navigationController?.pushViewController(privacy, animated: true)
           },
-          accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: Strings.termsOfUse,
           selection: { [unowned self] in
@@ -778,7 +922,9 @@ class SettingsViewController: TableViewController {
             toc.navigationItem.title = Strings.termsOfUse
             self.navigationController?.pushViewController(toc, animated: true)
           },
-          accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: Strings.settingsLicenses,
           selection: { [unowned self] in
@@ -786,7 +932,9 @@ class SettingsViewController: TableViewController {
               $0.url = URL(string: "\(InternalURL.baseUrl)/\(AboutLicenseHandler.path)")
             }
             self.navigationController?.pushViewController(licenses, animated: true)
-          }, accessory: .disclosureIndicator),
+          },
+          accessory: .disclosureIndicator
+        ),
       ]
     )
   }()
@@ -802,45 +950,74 @@ class SettingsViewController: TableViewController {
           selection: { [unowned self] in
             let vc = UIHostingController(rootView: SandboxInspectorView())
             self.navigationController?.pushViewController(vc, animated: true)
-          }, accessory: .disclosureIndicator),
+          },
+          accessory: .disclosureIndicator
+        ),
         Row(
           text: "Adblock Debug",
           selection: { [unowned self] in
             let vc = AdblockDebugMenuTableViewController(style: .grouped)
             self.navigationController?.pushViewController(vc, animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "Secure Content State Debug",
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(DebugLogViewController(type: .secureState), animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+            self.navigationController?.pushViewController(
+              DebugLogViewController(type: .secureState),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "View URP Logs",
           selection: { [unowned self] in
-            self.navigationController?.pushViewController(DebugLogViewController(type: .urp), animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+            self.navigationController?.pushViewController(
+              DebugLogViewController(type: .urp),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(text: "URP Code: \(UserReferralProgram.getReferralCode() ?? "--")"),
         Row(
           text: "BraveCore Switches",
           selection: { [unowned self] in
             let controller = UIHostingController(rootView: BraveCoreDebugSwitchesView())
             self.navigationController?.pushViewController(controller, animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineSubtitleCell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineSubtitleCell.self
+        ),
         Row(
           text: "View Rewards Debug Menu",
           selection: { [unowned self] in
             self.displayRewardsDebugMenu()
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "View Brave News Debug Menu",
           selection: { [unowned self] in
             self.displayBraveNewsDebugMenu()
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "View Brave Search Debug Menu",
           selection: { [unowned self] in
             self.displayBraveSearchDebugMenu()
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "View Chromium Local State",
           selection: { [unowned self] in
@@ -855,7 +1032,8 @@ class SettingsViewController: TableViewController {
                 systemItem: .search,
                 primaryAction: .init { [weak webView] _ in
                   guard let findInteraction = webView?.findInteraction,
-                        !findInteraction.isFindNavigatorVisible else {
+                    !findInteraction.isFindNavigatorVisible
+                  else {
                     return
                   }
                   findInteraction.searchText = ""
@@ -864,7 +1042,9 @@ class SettingsViewController: TableViewController {
               )
             }
             self.navigationController?.pushViewController(localStateController, animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
         ),
         Row(
           text: "View Brave Histogram (p3a) Logs",
@@ -880,7 +1060,8 @@ class SettingsViewController: TableViewController {
                 systemItem: .search,
                 primaryAction: .init { [weak webView] _ in
                   guard let findInteraction = webView?.findInteraction,
-                        !findInteraction.isFindNavigatorVisible else {
+                    !findInteraction.isFindNavigatorVisible
+                  else {
                     return
                   }
                   findInteraction.searchText = ""
@@ -889,34 +1070,56 @@ class SettingsViewController: TableViewController {
               )
             }
             self.navigationController?.pushViewController(histogramsController, animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "VPN Logs",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(VPNLogsViewController(), animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "Brave Talk Logs",
           selection: { [unowned self] in
             let controller = UIHostingController(rootView: BraveTalkLogsView())
             self.navigationController?.pushViewController(controller, animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "Retention Preferences Debug Menu",
           selection: { [unowned self] in
             self.navigationController?.pushViewController(
-              RetentionPreferencesDebugMenuViewController(p3aUtilities: p3aUtilities, attributionManager: attributionManager),
-              animated: true)
-          }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self),
+              RetentionPreferencesDebugMenuViewController(
+                p3aUtilities: p3aUtilities,
+                attributionManager: attributionManager
+              ),
+              animated: true
+            )
+          },
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
         Row(
           text: "Load all QA Links",
           selection: { [unowned self] in
-            let url = URL(string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json")!
+            let url = URL(
+              string: "https://raw.githubusercontent.com/brave/qa-resources/master/testlinks.json"
+            )!
             let string = try? String(contentsOf: url)
-            let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap { URL(string: $0.stringValue) }
+            let urls = JSON(parseJSON: string!)["links"].arrayValue.compactMap {
+              URL(string: $0.stringValue)
+            }
             self.settingsDelegate?.settingsOpenURLs(urls, loadImmediately: false)
             self.dismiss(animated: true)
-          }, cellClass: MultilineButtonCell.self),
+          },
+          cellClass: MultilineButtonCell.self
+        ),
         Row(
           text: "Create 1000 Tabs",
           selection: { [unowned self] in
@@ -929,28 +1132,35 @@ class SettingsViewController: TableViewController {
         Row(
           text: "CRASH!!!",
           selection: { [unowned self] in
-            let alert = UIAlertController(title: "Force crash?", message: nil, preferredStyle: .alert)
+            let alert = UIAlertController(
+              title: "Force crash?",
+              message: nil,
+              preferredStyle: .alert
+            )
             alert.addAction(
               UIAlertAction(title: "Crash app", style: .destructive) { _ in
                 fatalError()
-              })
+              }
+            )
             alert.addAction(UIAlertAction(title: "Cancel", style: .cancel, handler: nil))
             self.present(alert, animated: true, completion: nil)
-          }, cellClass: MultilineButtonCell.self),
+          },
+          cellClass: MultilineButtonCell.self
+        ),
       ]
     )
   }()
 
   private func setUpSections() {
     var copyOfSections = self.makeSections()
-    
+
     if let featureSectionIndex = copyOfSections.firstIndex(where: {
       $0.uuid == self.featureSectionUUID.uuidString
     }) {
       let walletRowIndex = copyOfSections[featureSectionIndex].rows.firstIndex(where: {
         $0.uuid == self.walletRowUUID.uuidString
       })
-      
+
       if walletRowIndex == nil {
         let settingsStore = cryptoStore?.settingsStore
         copyOfSections[featureSectionIndex].rows.append(
@@ -964,19 +1174,23 @@ class SettingsViewController: TableViewController {
                 settingsStore: settingsStore,
                 networkStore: cryptoStore?.networkStore,
                 keyringStore: keyringStore
-              ).environment(\.openURL, .init(handler: { [weak self] url in
-                guard let self = self else { return .discarded }
-                (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
-                  self.settingsDelegate?.settingsOpenURLInNewTab(url)
-                }
-                return .handled
-              }))
+              ).environment(
+                \.openURL,
+                .init(handler: { [weak self] url in
+                  guard let self = self else { return .discarded }
+                  (self.presentingViewController ?? self).dismiss(animated: true) { [self] in
+                    self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                  }
+                  return .handled
+                })
+              )
               let vc = UIHostingController(rootView: web3SettingsView)
               self.navigationController?.pushViewController(vc, animated: true)
             },
             image: UIImage(braveSystemNamed: "leo.product.brave-wallet"),
             accessory: .disclosureIndicator,
-            uuid: self.walletRowUUID.uuidString)
+            uuid: self.walletRowUUID.uuidString
+          )
         )
       } else if let index = walletRowIndex {
         copyOfSections.remove(at: index)

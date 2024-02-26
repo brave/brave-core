@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 class QRCodePopupView: UIKitPopupView {
 
@@ -30,7 +30,11 @@ class QRCodePopupView: UIKitPopupView {
       let scaleY = barcodeSize / img.extent.size.height
 
       let resultQrImage = img.transformed(by: CGAffineTransform(scaleX: scaleX, y: scaleY))
-      let barcode = UIImage(ciImage: resultQrImage, scale: UIScreen.main.scale, orientation: UIImage.Orientation.down)
+      let barcode = UIImage(
+        ciImage: resultQrImage,
+        scale: UIScreen.main.scale,
+        orientation: UIImage.Orientation.down
+      )
       $0.image = barcode
     }
   }
@@ -48,7 +52,10 @@ class QRCodePopupView: UIKitPopupView {
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(
+      UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template,
+      for: .normal
+    )
     $0.tintColor = .braveLabel
   }
 

@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import Favicon
 import Shared
 import Storage
 import UIKit
 import WebKit
-import Favicon
 import os.log
 
 // MARK: - OpenSearch
@@ -33,16 +33,25 @@ extension BrowserViewController {
     if let tab = tabManager[webView],
       let openSearchMetaData = tab.pageMetadata?.search,
       let url = webView.url,
-      url.isSecureWebPage() {
+      url.isSecureWebPage()
+    {
       return updateAddOpenSearchEngine(
-        webView, referenceObject: OpenSearchReference(reference: openSearchMetaData.href, title: openSearchMetaData.title))
+        webView,
+        referenceObject: OpenSearchReference(
+          reference: openSearchMetaData.href,
+          title: openSearchMetaData.title
+        )
+      )
     }
 
     return false
   }
 
   @discardableResult
-  private func updateAddOpenSearchEngine(_ webView: WKWebView, referenceObject: OpenSearchReference) -> Bool {
+  private func updateAddOpenSearchEngine(
+    _ webView: WKWebView,
+    referenceObject: OpenSearchReference
+  ) -> Bool {
     var supportsAutoAdd = true
 
     // Add Reference Object as Open Search Engine
@@ -88,7 +97,9 @@ extension BrowserViewController {
     if UIDevice.isIpad {
       if customSearchBarButtonItemGroup == nil {
         customSearchBarButtonItemGroup = UIBarButtonItemGroup(
-          barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)], representativeItem: nil)
+          barButtonItems: [UIBarButtonItem(customView: customSearchEngineButton)],
+          representativeItem: nil
+        )
       } else {
         webContentView.inputAssistantItem.trailingBarButtonGroups.removeAll(
           where: { $0.barButtonItems.contains(where: { $0.customView != nil }) })
@@ -152,7 +163,12 @@ extension BrowserViewController {
       url = constructedReferenceURL
     }
 
-    downloadOpenSearchXML(url, reference: reference, title: title, favicon: tabManager.selectedTab?.displayFavicon)
+    downloadOpenSearchXML(
+      url,
+      reference: reference,
+      title: title,
+      favicon: tabManager.selectedTab?.displayFavicon
+    )
   }
 
   func downloadOpenSearchXML(_ url: URL, reference: String, title: String, favicon: Favicon?) {
@@ -166,16 +182,19 @@ extension BrowserViewController {
     NetworkManager().downloadResource(with: url) { result in
       switch result {
       case .success(let response):
-        guard let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
-          response.data,
-          referenceURL: reference,
-          image: icon,
-          isCustomEngine: true) else {
+        guard
+          let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
+            response.data,
+            referenceURL: reference,
+            image: icon,
+            isCustomEngine: true
+          )
+        else {
           return
         }
 
         self.addSearchEngine(openSearchEngine)
-        
+
       case .failure(let error):
         Logger.module.error("\(error.localizedDescription)")
       }
@@ -186,26 +205,32 @@ extension BrowserViewController {
     var customEngineAlert: UIAlertController
 
     // Checking existance of search engine with same name
-    if let existingEngine = profile.searchEngines.orderedEngines.first(where: { $0.shortName.lowercased() == engine.shortName.lowercased() }) {
+    if let existingEngine = profile.searchEngines.orderedEngines.first(where: {
+      $0.shortName.lowercased() == engine.shortName.lowercased()
+    }) {
       customEngineAlert = ThirdPartySearchAlerts.engineAlreadyExists(existingEngine)
       present(customEngineAlert, animated: true)
       return
     }
-    
+
     // Checking Search Template is a secure URL
-    if let searchTemplateURL = URL(string: engine.searchTemplate), !searchTemplateURL.isSecureWebPage() {
+    if let searchTemplateURL = URL(string: engine.searchTemplate),
+      !searchTemplateURL.isSecureWebPage()
+    {
       customEngineAlert = ThirdPartySearchAlerts.insecureSearchTemplateURL(engine)
       present(customEngineAlert, animated: true)
       return
     }
-    
+
     // Checking Suggest Template is a secure URL
-    if let suggestTemplate = engine.suggestTemplate, let suggestTemplateURL = URL(string: suggestTemplate), !suggestTemplateURL.isSecureWebPage() {
+    if let suggestTemplate = engine.suggestTemplate,
+      let suggestTemplateURL = URL(string: suggestTemplate), !suggestTemplateURL.isSecureWebPage()
+    {
       customEngineAlert = ThirdPartySearchAlerts.insecureSearchTemplateURL(engine)
       present(customEngineAlert, animated: true)
       return
     }
-    
+
     customEngineAlert = ThirdPartySearchAlerts.addThirdPartySearchEngine(engine) { alertAction in
       if alertAction.style == .cancel {
         return
@@ -216,7 +241,10 @@ extension BrowserViewController {
         self.view.endEditing(true)
 
         let toast = SimpleToast()
-        toast.showAlertWithText(Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle, bottomContainer: self.webViewContainer)
+        toast.showAlertWithText(
+          Strings.CustomSearchEngine.thirdPartySearchEngineAddedToastTitle,
+          bottomContainer: self.webViewContainer
+        )
 
         self.customSearchEngineButton.action = .disabled
       } catch {

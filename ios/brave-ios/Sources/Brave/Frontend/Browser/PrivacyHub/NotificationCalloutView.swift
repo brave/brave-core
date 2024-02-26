@@ -3,35 +3,35 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
-import Shared
-import Preferences
 import DesignSystem
+import Preferences
+import Shared
+import SwiftUI
 import os.log
 
 extension PrivacyReportsView {
   struct NotificationCalloutView: View {
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
     @Environment(\.sizeCategory) private var sizeCategory
-    
+
     private func askForNotificationAuthorization() {
       let center = UNUserNotificationCenter.current()
-      
+
       center.requestAuthorization(options: [.alert, .sound, .badge]) { granted, error in
-        
+
         if let error = error {
           Logger.module.warning("requestAuthorization: \(error.localizedDescription)")
           return
         }
-        
+
         DispatchQueue.main.async {
           Preferences.PrivacyReports.shouldShowNotificationPermissionCallout.value = false
           PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
         }
       }
     }
-    
+
     var closeButton: some View {
       Button(
         action: {
@@ -39,10 +39,11 @@ extension PrivacyReportsView {
         },
         label: {
           Image(systemName: "xmark")
-        })
-        .accessibilityLabel(Text(Strings.close))
+        }
+      )
+      .accessibilityLabel(Text(Strings.close))
     }
-    
+
     private var enableNotificationsButton: some View {
       Button(
         action: askForNotificationAuthorization,
@@ -51,7 +52,10 @@ extension PrivacyReportsView {
             if sizeCategory.isAccessibilityCategory {
               Text(Strings.PrivacyHub.notificationCalloutButtonText)
             } else {
-              Label(Strings.PrivacyHub.notificationCalloutButtonText, braveSystemImage: "leo.notification")
+              Label(
+                Strings.PrivacyHub.notificationCalloutButtonText,
+                braveSystemImage: "leo.notification"
+              )
             }
           }
           .font(.callout)
@@ -63,14 +67,16 @@ extension PrivacyReportsView {
           )
           .clipShape(Capsule())
           .fixedSize(horizontal: false, vertical: true)
-        })
+        }
+      )
     }
-    
+
     var body: some View {
       Group {
         VStack {
           if horizontalSizeClass == .compact
-              || (horizontalSizeClass == .regular && sizeCategory.isAccessibilityCategory) {
+            || (horizontalSizeClass == .regular && sizeCategory.isAccessibilityCategory)
+          {
             HStack(alignment: .top) {
               HStack {
                 if !sizeCategory.isAccessibilityCategory {
@@ -84,7 +90,7 @@ extension PrivacyReportsView {
               closeButton
             }
             .frame(maxWidth: .infinity)
-            
+
             enableNotificationsButton
               .frame(maxWidth: .infinity)
           } else {
@@ -92,7 +98,7 @@ extension PrivacyReportsView {
               Spacer()
               closeButton
             }
-            
+
             HStack(spacing: 24) {
               Image("brave_document", bundle: .module)
               Text(Strings.PrivacyHub.notificationCalloutBody)

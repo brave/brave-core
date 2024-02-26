@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveShared
-import Shared
 import LocalAuthentication
+import Shared
+import UIKit
 
 public class LoadingViewController: UIViewController {
 
@@ -37,29 +37,34 @@ public class LoadingViewController: UIViewController {
 public class AuthenticationController: LoadingViewController {
   let windowProtection: WindowProtection?
   let requiresAuthentication: Bool
-  
+
   // MARK: Lifecycle
 
-  init(windowProtection: WindowProtection? = nil,
-       requiresAuthentication: Bool = false,
-       isCancellable: Bool = false,
-       unlockScreentitle: String = "") {
+  init(
+    windowProtection: WindowProtection? = nil,
+    requiresAuthentication: Bool = false,
+    isCancellable: Bool = false,
+    unlockScreentitle: String = ""
+  ) {
     self.windowProtection = windowProtection
     self.requiresAuthentication = requiresAuthentication
-    
+
     super.init(nibName: nil, bundle: nil)
-    
+
     self.windowProtection?.isCancellable = isCancellable
     self.windowProtection?.unlockScreentitle = unlockScreentitle
   }
-  
+
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   /// A method to ask biometric authentication to user
   /// - Parameter completion: block returning authentication status
-  func askForAuthentication(viewType: AuthViewType, completion: ((Bool, LAError.Code?) -> Void)? = nil) {
+  func askForAuthentication(
+    viewType: AuthViewType,
+    completion: ((Bool, LAError.Code?) -> Void)? = nil
+  ) {
     guard let windowProtection = windowProtection else {
       completion?(false, nil)
       return
@@ -75,17 +80,19 @@ public class AuthenticationController: LoadingViewController {
       }
     } else {
       windowProtection.presentAuthenticationForViewController(
-        determineLockWithPasscode: false, viewType: viewType) { status, error in
-          completion?(status, error)
+        determineLockWithPasscode: false,
+        viewType: viewType
+      ) { status, error in
+        completion?(status, error)
       }
     }
   }
-  
+
   /// An alert presenter for passcode error to warn user to setup passcode to use feature
   /// - Parameter completion: block after Ok button is pressed
   func showSetPasscodeError(viewType: AuthViewType, completion: @escaping (() -> Void)) {
     var alertMessage: String?
-    
+
     switch viewType {
     case .sync:
       alertMessage = Strings.Sync.syncSetPasscodeAlertDescription
@@ -94,18 +101,23 @@ public class AuthenticationController: LoadingViewController {
     default:
       alertMessage = nil
     }
-    
+
     let alert = UIAlertController(
       title: Strings.Sync.syncSetPasscodeAlertTitle,
       message: alertMessage,
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
 
     alert.addAction(
-      UIAlertAction(title: Strings.OKString, style: .default, handler: { _ in
-        completion()
-      })
+      UIAlertAction(
+        title: Strings.OKString,
+        style: .default,
+        handler: { _ in
+          completion()
+        }
+      )
     )
-    
+
     present(alert, animated: true, completion: nil)
   }
 }

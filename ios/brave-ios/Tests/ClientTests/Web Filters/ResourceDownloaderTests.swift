@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
+
 @testable import Brave
 
 class ResourceDownloaderTests: XCTestCase {
@@ -11,29 +12,37 @@ class ResourceDownloaderTests: XCTestCase {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resources")
     let resource = BraveS3Resource.adBlockRules
-    let firstDownloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
-      for: [resource], statusCode: 200, etag: "123"
-    ))
-    let secondDownloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
-      for: [resource], statusCode: 304, etag: "123"
-    ))
-    
+    let firstDownloader = ResourceDownloader<BraveS3Resource>(
+      networkManager: NetworkManager.makeNetworkManager(
+        for: [resource],
+        statusCode: 200,
+        etag: "123"
+      )
+    )
+    let secondDownloader = ResourceDownloader<BraveS3Resource>(
+      networkManager: NetworkManager.makeNetworkManager(
+        for: [resource],
+        statusCode: 304,
+        etag: "123"
+      )
+    )
+
     Task {
       do {
         // When
         // We do first download
         let result = try await firstDownloader.download(resource: resource)
-        
+
         // Then
         // We get a download result
         XCTAssertNotNil(try resource.downloadedData())
         XCTAssertNotNil(try resource.createdEtag())
         XCTAssertTrue(result.isModified)
-        
+
         // When
         // We re-download
         let result2 = try await secondDownloader.download(resource: resource)
-        
+
         // Then
         // We get a non modified result
         XCTAssertNotNil(try resource.downloadedData())
@@ -44,21 +53,24 @@ class ResourceDownloaderTests: XCTestCase {
       } catch {
         XCTFail(error.localizedDescription)
       }
-      
+
       expectation.fulfill()
     }
-    
+
     wait(for: [expectation], timeout: 5)
   }
-  
+
   func testFailedResourceDownload() throws {
     // Given
     let expectation = XCTestExpectation(description: "Test downloading resource")
     let resource = BraveS3Resource.adBlockRules
-    let downloader = ResourceDownloader<BraveS3Resource>(networkManager: NetworkManager.makeNetworkManager(
-      for: [resource], statusCode: 404
-    ))
-    
+    let downloader = ResourceDownloader<BraveS3Resource>(
+      networkManager: NetworkManager.makeNetworkManager(
+        for: [resource],
+        statusCode: 404
+      )
+    )
+
     Task {
       do {
         // When
@@ -68,7 +80,7 @@ class ResourceDownloaderTests: XCTestCase {
         // Then
         // We get an error
       }
-      
+
       expectation.fulfill()
     }
 

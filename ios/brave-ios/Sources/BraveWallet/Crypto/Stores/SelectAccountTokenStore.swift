@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
-  
+
   struct AccountSection: Equatable, Identifiable {
     struct TokenBalance: Equatable, Identifiable {
       var id: String { token.id }
@@ -16,7 +16,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       let balance: Double?
       let price: String?
       let nftMetadata: NFTMetadata?
-      
+
       init(
         token: BraveWallet.BlockchainToken,
         network: BraveWallet.NetworkInfo,
@@ -35,11 +35,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     let account: BraveWallet.AccountInfo
     let tokenBalances: [TokenBalance]
   }
-  
+
   /// The networks to filter the tokens/accounts by.
   @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
-      guard !oldValue.isEmpty else { return } // ignore initial assignment, all networks selected
+      guard !oldValue.isEmpty else { return }  // ignore initial assignment, all networks selected
       updateAccountSections()
     }
   }
@@ -71,7 +71,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     }
   }
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
-  
+
   private var allNetworks: [BraveWallet.NetworkInfo] = []
   private var balancesFetched: Bool = false
   /// Cache of balances of each asset for each account. [account.address: [token.id: balance]]
@@ -80,7 +80,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private var pricesForTokensCache: [String: String] = [:]
   /// Cache of metadata for NFTs. The key(s) is the token's `id`.
   private var metadataCache: [String: NFTMetadata] = [:]
-  
+
   let didSelect: (BraveWallet.AccountInfo, BraveWallet.BlockchainToken) -> Void
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -89,11 +89,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
   private let ipfsApi: IpfsAPI
   private let assetManager: WalletUserAssetManagerType
   private var walletServiceObserver: WalletServiceObserver?
-  
+
   var isObserving: Bool {
     walletServiceObserver != nil
   }
-  
+
   init(
     didSelect: @escaping (BraveWallet.AccountInfo, BraveWallet.BlockchainToken) -> Void,
     keyringService: BraveWalletKeyringService,
@@ -112,14 +112,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
     self.query = query ?? ""
-    
+
     self.setupObservers()
   }
-  
+
   func tearDown() {
     walletServiceObserver = nil
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
     self.walletServiceObserver = WalletServiceObserver(
@@ -132,14 +132,16 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
           // A network was added or removed, update our network filters for the change.
           guard let rpcService = self?.rpcService else { return }
           self?.networkFilters = await rpcService.allNetworksForSupportedCoins().map { network in
-            let existingSelectionValue = self?.networkFilters.first(where: { $0.model.chainId == network.chainId})?.isSelected
+            let existingSelectionValue = self?.networkFilters.first(where: {
+              $0.model.chainId == network.chainId
+            })?.isSelected
             return .init(isSelected: existingSelectionValue ?? true, model: network)
           }
         }
       }
     )
   }
-  
+
   func resetFilters() {
     isHidingZeroBalances = true
     networkFilters = allNetworks.map {
@@ -148,14 +150,14 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     query = ""
     updateAccountSections()
   }
-  
+
   // All user accounts.
   private var allAccounts: [BraveWallet.AccountInfo] = []
   // All user visible assets, key is `Identifiable.id` of `BlockchainToken`.
   private var userVisibleAssets: [String: BraveWallet.BlockchainToken] = [:]
   // All user accounts.
   private var userVisibleNetworkAssets: [NetworkAssets] = []
-  
+
   func setup() {
     Task { @MainActor in
       let allAccounts = await keyringService.allAccounts().accounts
@@ -171,9 +173,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       )
       let allVisibleUserAssets = allNetworkAssets.flatMap(\.tokens)
       self.userVisibleAssets = allVisibleUserAssets.reduce(
-        into: [String: BraveWallet.BlockchainToken](), {
+        into: [String: BraveWallet.BlockchainToken](),
+        {
           $0[$1.id] = $1
-        })
+        }
+      )
       // show accounts with all supported tokens until balances are fetched
       self.accountSections = await buildAccountSections(
         selectedNetworks: networkFilters.filter(\.isSelected).map(\.model),
@@ -188,16 +192,16 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         currencyFormatter: currencyFormatter
       )
       self.isSetup = true
-      
+
       // fetch balances for visible assets, fetch prices for tokens with balance
       self.fetchAccountBalances(networkAssets: allNetworkAssets)
-      
+
       // fetch metadata for visible NFT assets (user may select to show 0 balance)
       let allVisibleNFTs = allVisibleUserAssets.filter { $0.isNft || $0.isErc721 }
       self.fetchNFTMetadata(for: allVisibleNFTs)
     }
   }
-  
+
   func updateAccountSections() {
     Task { @MainActor in
       self.accountSections = await buildAccountSections(
@@ -214,7 +218,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       )
     }
   }
-  
+
   /// Fetch the balances for each account for the given `allNetworkAssets`, store in cache and update `accountSections`, and then fetch prices for tokens with non-zero balance.
   func fetchAccountBalances(networkAssets: [NetworkAssets]) {
     guard !self.allAccounts.isEmpty else { return }
@@ -225,17 +229,21 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         of: [String: [String: Double]].self,
         body: { group in
           for account in allAccounts {
-            group.addTask { // get balance for all tokens this account supports
-              let balancesForTokens: [String: Double] = await self.rpcService.fetchBalancesForTokens(
-                account: account, 
-                networkAssets: networkAssets
-              )
+            group.addTask {  // get balance for all tokens this account supports
+              let balancesForTokens: [String: Double] = await self.rpcService
+                .fetchBalancesForTokens(
+                  account: account,
+                  networkAssets: networkAssets
+                )
               return [account.address: balancesForTokens]
             }
           }
-          return await group.reduce(into: [String: [String: Double]](), { partialResult, new in
-            partialResult.merge(with: new)
-          })
+          return await group.reduce(
+            into: [String: [String: Double]](),
+            { partialResult, new in
+              partialResult.merge(with: new)
+            }
+          )
         }
       )
       for account in allAccounts {
@@ -257,14 +265,15 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
         let tokenIdsWithAccountBalance = accountBalance.filter { $1 > 0 }.map(\.key)
         tokenIdsWithAccountBalance.forEach { tokensIdsWithBalance.insert($0) }
       }
-      let assetRatioIdsForTokensWithBalance = tokensIdsWithBalance
+      let assetRatioIdsForTokensWithBalance =
+        tokensIdsWithBalance
         .compactMap { tokenId in
           userVisibleAssets[tokenId]?.assetRatioId
         }
       self.fetchTokenPrices(for: assetRatioIdsForTokensWithBalance)
     }
   }
-  
+
   /// Fetch the prices for the given `assetRatioIds`, store in cache and update `accountSections`.
   func fetchTokenPrices(for assetRatioIds: [String]) {
     guard !assetRatioIds.isEmpty else { return }
@@ -280,7 +289,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.updateAccountSections()
     }
   }
-  
+
   func fetchNFTMetadata(for userVisibleNFTs: [BraveWallet.BlockchainToken]) {
     guard !userVisibleNFTs.isEmpty else { return }
     Task { @MainActor in
@@ -289,7 +298,7 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
       self.updateAccountSections()
     }
   }
-  
+
   /// Builds the array of `AccountSection`s for display, taking into account selected networks and filter query.
   private func buildAccountSections(
     selectedNetworks: [BraveWallet.NetworkInfo],
@@ -304,20 +313,24 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
     currencyFormatter: NumberFormatter
   ) async -> [AccountSection] {
     let accountSections: [AccountSection] = allAccounts.compactMap { account in
-      let tokensForAccountCoin: [BraveWallet.BlockchainToken] = userVisibleAssets
+      let tokensForAccountCoin: [BraveWallet.BlockchainToken] =
+        userVisibleAssets
         .filter({ $0.coin == account.coin })
-      let accountTokenBalances: [AccountSection.TokenBalance] = tokensForAccountCoin
+      let accountTokenBalances: [AccountSection.TokenBalance] =
+        tokensForAccountCoin
         .compactMap { token in
-          if !query.isEmpty, // only if we have a filter query
-             !(token.symbol.localizedCaseInsensitiveContains(query) ||
-               token.name.localizedCaseInsensitiveContains(query)) {
+          if !query.isEmpty,  // only if we have a filter query
+            !(token.symbol.localizedCaseInsensitiveContains(query)
+              || token.name.localizedCaseInsensitiveContains(query))
+          {
             // token does not match query
             return nil
           }
           // network for must be selected
           if let tokenNetwork = selectedNetworks.first(where: { $0.chainId == token.chainId }),
-             // network must support account keyring
-             tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber) {
+            // network must support account keyring
+            tokenNetwork.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+          {
             let balance = balancesCache[account.address]?[token.id] ?? 0
             if hideZeroBalances, balance <= 0 {
               // token has no balance, user is hiding zero balance tokens.
@@ -325,8 +338,11 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
             }
             var price: String?
             if let tokenPrice = pricesCache[token.assetRatioId.lowercased()],
-               balance > 0 {
-              price = currencyFormatter.string(from: NSNumber(value: (Double(tokenPrice) ?? 0) * balance))
+              balance > 0
+            {
+              price = currencyFormatter.string(
+                from: NSNumber(value: (Double(tokenPrice) ?? 0) * balance)
+              )
             }
             return AccountSection.TokenBalance(
               token: token,
@@ -338,28 +354,29 @@ class SelectAccountTokenStore: ObservableObject, WalletObserverStore {
           }
           return nil
         }
-      
+
       if accountTokenBalances.isEmpty && balancesFetched {
         // don't show this account section without token balances
         return nil
       }
-      
+
       return AccountSection(
         account: account,
-        tokenBalances: accountTokenBalances
+        tokenBalances:
+          accountTokenBalances
           .sorted { lhs, rhs in
             if lhs.network.isKnownTestnet && rhs.network.isKnownTestnet {
               return (lhs.balance ?? 0) > (rhs.balance ?? 0)
             } else if lhs.network.isKnownTestnet {
-              return false // sort test networks to end of list
+              return false  // sort test networks to end of list
             } else if rhs.network.isKnownTestnet {
-              return true // sort test networks to end of list
+              return true  // sort test networks to end of list
             }
             return (lhs.balance ?? 0) > (rhs.balance ?? 0)
           }
       )
     }
-    
+
     return accountSections
   }
 }

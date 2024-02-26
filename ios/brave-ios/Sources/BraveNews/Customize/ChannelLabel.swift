@@ -10,10 +10,10 @@ struct ChannelLabel: View {
   var title: String
   var subtitle: String?
   @Binding var isFollowing: Bool
-  
+
   @ScaledMetric private var imageSize: CGFloat = 32.0
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   @ViewBuilder private func containerView(
     @ViewBuilder content: () -> some View
   ) -> some View {
@@ -31,7 +31,7 @@ struct ChannelLabel: View {
       }
     }
   }
-  
+
   var body: some View {
     containerView {
       Label {
@@ -68,8 +68,8 @@ private let channelGlyphMap: [String: String] = [
   "Health": "leo.news.health",
   "Home": "leo.news.home",
   "Crypto": "leo.bitcoin",
-  "Technology": "leo.news.technology", // Deprecated
-  "Entertainment": "leo.news.filmandtv", // Deprecated
+  "Technology": "leo.news.technology",  // Deprecated
+  "Entertainment": "leo.news.filmandtv",  // Deprecated
   "Top News": "leo.news.topnews",
   "Culture": "leo.news.culture",
   "Travel": "leo.news.travel",

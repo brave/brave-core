@@ -4,46 +4,51 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import DesignSystem
 import Strings
 import SwiftUI
-import BraveUI
 
 struct EditPermissionsView: View {
-  
+
   let proposedAllowance: String
   @ObservedObject var confirmationStore: TransactionConfirmationStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var customAllowance: String = ""
   @State private var isShowingAlert = false
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   private var activeTransaction: BraveWallet.TransactionInfo {
-    confirmationStore.unapprovedTxs.first(where: { $0.id == confirmationStore.activeTransactionId }) ?? (confirmationStore.unapprovedTxs.first ?? .init())
+    confirmationStore.unapprovedTxs.first(where: { $0.id == confirmationStore.activeTransactionId })
+      ?? (confirmationStore.unapprovedTxs.first ?? .init())
   }
-  
+
   private var customAllowanceAmountInWei: String {
     if customAllowance == Strings.Wallet.editPermissionsApproveUnlimited {
       // when user taps 'Set Unlimited' button we updated `customAllowance` to `Strings.Wallet.editPermissionsApproveUnlimited`
       return WalletConstants.MAX_UINT256
     }
-    
+
     var decimals: Int = 18
     if case .ethErc20Approve(let details) = confirmationStore.activeParsedTransaction.details {
       decimals = Int(details.token?.decimals ?? networkStore.defaultSelectedChain.decimals)
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: decimals))
-    let customAllowanceInWei = weiFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"
+    let customAllowanceInWei =
+      weiFormatter.weiString(from: customAllowance, radix: .hex, decimals: decimals) ?? "0"
     return customAllowanceInWei.addingHexPrefix
   }
-  
+
   private var accountName: String {
-    NamedAddresses.name(for: activeTransaction.fromAccountId.address, accounts: keyringStore.allAccounts)
+    NamedAddresses.name(
+      for: activeTransaction.fromAccountId.address,
+      accounts: keyringStore.allAccounts
+    )
   }
-  
+
   init(
     proposedAllowance: String,
     confirmationStore: TransactionConfirmationStore,
@@ -55,15 +60,20 @@ struct EditPermissionsView: View {
     self.keyringStore = keyringStore
     self.networkStore = networkStore
   }
-  
+
   var body: some View {
     List {
       Section(
-        header: Text(String.localizedStringWithFormat(Strings.Wallet.editPermissionsAllowanceHeader, accountName))
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .font(.footnote)
-          .resetListHeaderStyle()
-          .padding(.vertical)
+        header: Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.editPermissionsAllowanceHeader,
+            accountName
+          )
+        )
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .font(.footnote)
+        .resetListHeaderStyle()
+        .padding(.vertical)
       ) {
         VStack(alignment: .leading, spacing: 2) {
           Text(Strings.Wallet.editPermissionsProposedAllowanceHeader)
@@ -75,7 +85,7 @@ struct EditPermissionsView: View {
         .font(.footnote)
         .padding(.vertical, 6)
       }
-      
+
       Section(
         header: Text(Strings.Wallet.editPermissionsCustomAllowanceHeader)
           .foregroundColor(Color(.secondaryBraveLabel))
@@ -93,8 +103,8 @@ struct EditPermissionsView: View {
               }
             }
           )
-            .keyboardType(.decimalPad)
-            .foregroundColor(Color(.braveLabel))
+          .keyboardType(.decimalPad)
+          .foregroundColor(Color(.braveLabel))
           if proposedAllowance.caseInsensitiveCompare(WalletConstants.MAX_UINT256) != .orderedSame {
             Button(action: {
               customAllowance = Strings.Wallet.editPermissionsApproveUnlimited
@@ -107,18 +117,19 @@ struct EditPermissionsView: View {
           }
         }
       }
-      
+
       Button(action: {
         confirmationStore.editAllowance(
           transaction: activeTransaction,
           spenderAddress: activeTransaction.txArgs[safe: 0] ?? "",
-          amount: customAllowanceAmountInWei) { success in
-            if success {
-              presentationMode.dismiss()
-            } else {
-              isShowingAlert = true
-            }
+          amount: customAllowanceAmountInWei
+        ) { success in
+          if success {
+            presentationMode.dismiss()
+          } else {
+            isShowingAlert = true
           }
+        }
       }) {
         Text(Strings.Wallet.saveButtonTitle)
       }
@@ -141,9 +152,14 @@ struct EditPermissionsView: View {
       )
     }
   }
-  
+
   private func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
 }
 

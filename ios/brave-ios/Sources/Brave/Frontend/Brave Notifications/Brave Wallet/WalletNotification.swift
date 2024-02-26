@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import UIKit
 
 class WalletNotification: BraveNotification {
   struct Constant {
     static let id = "wallet-notification"
   }
-  
+
   enum Action {
     /// The user clicked the wallet connection notification
     case connectWallet
@@ -20,19 +20,19 @@ class WalletNotification: BraveNotification {
     /// The user ignored the wallet connection notification for a given amount of time for it to automatically dismiss
     case timedOut
   }
-  
+
   var priority: BraveNotificationPriority
   var view: UIView
   var id: String { WalletNotification.Constant.id }
   var dismissAction: (() -> Void)?
   var presentationOrigin: PresentationOrigin
-  
+
   private let handler: (Action) -> Void
-  
+
   func willDismiss(timedOut: Bool) {
     handler(timedOut ? .timedOut : .dismissed)
   }
-  
+
   init(
     priority: BraveNotificationPriority,
     origin: URLOrigin,
@@ -45,13 +45,16 @@ class WalletNotification: BraveNotification {
     self.handler = handler
     self.setup()
   }
-  
+
   private func setup() {
     guard let walletPanel = view as? WalletConnectionView else { return }
-    let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedWalletConnectionView(_:)))
+    let tapGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tappedWalletConnectionView(_:))
+    )
     walletPanel.addGestureRecognizer(tapGesture)
   }
-  
+
   @objc private func tappedWalletConnectionView(_ sender: WalletConnectionView) {
     dismissAction?()
     handler(.connectWallet)

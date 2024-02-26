@@ -7,13 +7,13 @@ import BraveCore
 import SwiftUI
 
 struct TransactionsActivityView: View {
-  
+
   @ObservedObject var store: TransactionsActivityStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var isPresentingNetworkFilter = false
   @State private var transactionDetails: TransactionDetailsStore?
-  
+
   var body: some View {
     TransactionsListView(
       transactionSections: store.transactionSections,

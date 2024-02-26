@@ -2,11 +2,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
-import BraveShared
-import UIKit
 import SwiftUI
+import UIKit
 
 extension ShieldsViewController {
   class View: UIView {

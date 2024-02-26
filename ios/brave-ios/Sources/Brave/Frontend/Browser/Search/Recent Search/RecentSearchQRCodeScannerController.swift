@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import AVFoundation
-import Shared
 import BraveShared
+import Foundation
+import Shared
 import UIKit
 
 class RecentSearchQRCodeScannerController: UIViewController {
@@ -16,7 +16,11 @@ class RecentSearchQRCodeScannerController: UIViewController {
   private var onDidScan: (_ string: String) -> Void
 
   public static var hasCameraSupport: Bool {
-    !AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: .video, position: .back).devices.isEmpty
+    !AVCaptureDevice.DiscoverySession(
+      deviceTypes: [.builtInWideAngleCamera],
+      mediaType: .video,
+      position: .back
+    ).devices.isEmpty
   }
 
   public static var hasCameraPermissions: Bool {
@@ -38,7 +42,11 @@ class RecentSearchQRCodeScannerController: UIViewController {
     super.viewDidLoad()
 
     title = Strings.recentSearchScannerTitle
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(tappedDone))
+    navigationItem.rightBarButtonItem = UIBarButtonItem(
+      barButtonSystemItem: .done,
+      target: self,
+      action: #selector(tappedDone)
+    )
 
     view.addSubview(scannerView)
     scannerView.snp.makeConstraints {
@@ -50,7 +58,7 @@ class RecentSearchQRCodeScannerController: UIViewController {
       // Feedback indicating code scan is finalized
       AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
       UIImpactFeedbackGenerator(style: .medium).bzzt()
-      
+
       self.didScan = true
       self.onDidScan(string)
       self.dismiss(animated: true, completion: nil)
@@ -68,22 +76,27 @@ class RecentSearchQRCodeScannerController: UIViewController {
 
     scannerView.cameraView.stopRunning()
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     if let orientation = view.window?.windowScene?.interfaceOrientation {
-        scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(ui: orientation)
+      scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
+        AVCaptureVideoOrientation(ui: orientation)
     }
     scannerView.cameraView.startRunning()
   }
-  
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+
+  override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     scannerView.cameraView.stopRunning()
-    
+
     coordinator.animate(alongsideTransition: nil) { [weak self] _ in
       guard let self else { return }
-      
+
       if let orientation = self.view.window?.windowScene?.interfaceOrientation {
-          self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation = AVCaptureVideoOrientation(ui: orientation)
+        self.scannerView.cameraView.videoPreviewLayer?.connection?.videoOrientation =
+          AVCaptureVideoOrientation(ui: orientation)
       }
       self.scannerView.cameraView.startRunning()
     }

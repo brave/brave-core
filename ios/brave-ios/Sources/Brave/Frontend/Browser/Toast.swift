@@ -31,7 +31,12 @@ class Toast: UIView {
     superview?.addGestureRecognizer(gestureRecognizer)
   }
 
-  func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval, duration: DispatchTimeInterval?, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
+  func showToast(
+    viewController: UIViewController? = nil,
+    delay: DispatchTimeInterval,
+    duration: DispatchTimeInterval?,
+    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+  ) {
     self.viewController = viewController
 
     self.displayState = .pendingShow

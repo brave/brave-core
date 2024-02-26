@@ -23,7 +23,7 @@ struct CosmeticFilterModel: Codable {
   /// A boolean indicating if generic hide is enabled on the web frame
   /// and given to the `SelectorsPollerScript.js` script during its initialization.
   let genericHide: Bool
-  
+
   enum CodingKeys: String, CodingKey {
     case hideSelectors = "hide_selectors"
     case styleSelectors = "style_selectors"

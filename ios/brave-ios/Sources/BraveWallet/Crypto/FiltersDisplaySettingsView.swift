@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveCore
 import DesignSystem
 import Preferences
+import SwiftUI
 
 public enum GroupBy: Int, CaseIterable, Identifiable, UserDefaultsEncodable {
   case none
   case accounts
   case networks
-  
+
   var title: String {
     switch self {
     case .none: return Strings.Wallet.groupByNoneOptionTitle
@@ -32,7 +32,7 @@ public enum SortOrder: Int, CaseIterable, Identifiable, UserDefaultsEncodable {
   case alphaAsc
   /// Z-A
   case alphaDesc
-  
+
   var title: String {
     switch self {
     case .valueAsc: return Strings.Wallet.lowToHighSortOption
@@ -59,10 +59,11 @@ struct Filters {
   var accounts: [Selectable<BraveWallet.AccountInfo>]
   /// All networks and if they are currently selected. Default is all selected except known test networks.
   var networks: [Selectable<BraveWallet.NetworkInfo>]
-  
+
   init(
     groupBy: GroupBy = GroupBy(rawValue: Preferences.Wallet.groupByFilter.value) ?? .none,
-    sortOrder: SortOrder = SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.value) ?? .valueDesc,
+    sortOrder: SortOrder = SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.value)
+      ?? .valueDesc,
     isHidingSmallBalances: Bool = Preferences.Wallet.isHidingSmallBalancesFilter.value,
     isHidingUnownedNFTs: Bool = Preferences.Wallet.isHidingUnownedNFTsFilter.value,
     isShowingNFTNetworkLogo: Bool = Preferences.Wallet.isShowingNFTNetworkLogoFilter.value,
@@ -77,24 +78,26 @@ struct Filters {
     self.accounts = accounts
     self.networks = networks
   }
-  
+
   func save() {
     Preferences.Wallet.groupByFilter.value = groupBy.rawValue
     Preferences.Wallet.sortOrderFilter.value = sortOrder.rawValue
     Preferences.Wallet.isHidingSmallBalancesFilter.value = isHidingSmallBalances
     Preferences.Wallet.isShowingNFTNetworkLogoFilter.value = isShowingNFTNetworkLogo
     Preferences.Wallet.isHidingUnownedNFTsFilter.value = isHidingUnownedNFTs
-    Preferences.Wallet.nonSelectedAccountsFilter.value = accounts
+    Preferences.Wallet.nonSelectedAccountsFilter.value =
+      accounts
       .filter({ !$0.isSelected })
       .map(\.model.address)
-    Preferences.Wallet.nonSelectedNetworksFilter.value = networks
+    Preferences.Wallet.nonSelectedNetworksFilter.value =
+      networks
       .filter({ !$0.isSelected })
       .map(\.model.chainId)
   }
 }
 
 struct FiltersDisplaySettingsView: View {
-  
+
   /// How the assets are grouped. Unavailable until Portfolio supports grouping.
   @State var groupBy: GroupBy
   /// Ascending order is smallest fiat to largest fiat. Default is descending order.
@@ -107,23 +110,23 @@ struct FiltersDisplaySettingsView: View {
   @State var isShowingNFTNetworkLogo: Bool
   /// If we should disable `Hide Unowned`
   @State var isHidingUnownedNFTsDisabled: Bool
-  
+
   /// All accounts and if they are currently selected. Default is all accounts selected.
   @State var accounts: [Selectable<BraveWallet.AccountInfo>]
   /// All networks and if they are currently selected. Default is all selected except known test networks.
   @State var networks: [Selectable<BraveWallet.NetworkInfo>]
-  
+
   let isNFTFilters: Bool
   let networkStore: NetworkStore
   let save: (Filters) -> Void
-  
+
   private let originalFilters: Filters
-  
+
   /// Returns true if all accounts are selected
   var allAccountsSelected: Bool {
     accounts.allSatisfy(\.isSelected)
   }
-  
+
   /// Returns true if all visible networks are selected
   var allNetworksSelected: Bool {
     networks
@@ -135,16 +138,16 @@ struct FiltersDisplaySettingsView: View {
       }
       .allSatisfy(\.isSelected)
   }
-  
+
   @State private var isShowingNetworksDetail: Bool = false
   @Environment(\.dismiss) private var dismiss
-  
+
   /// Size of the circle containing the icon for each filter.
   /// The `relativeTo: .headline` should match icon's `TextStyle` in `FilterLabelView`.
   @ScaledMetric(relativeTo: .headline) private var iconContainerSize: CGFloat = 40
   private var maxIconContainerSize: CGFloat = 80
   private let rowPadding: CGFloat = 16
-  
+
   init(
     filters: Filters,
     isNFTFilters: Bool,
@@ -154,7 +157,9 @@ struct FiltersDisplaySettingsView: View {
     self._groupBy = State(initialValue: filters.groupBy)
     self._sortOrder = State(initialValue: filters.sortOrder)
     self._isHidingSmallBalances = State(initialValue: filters.isHidingSmallBalances)
-    self._isHidingUnownedNFTs = State(initialValue: filters.groupBy == .accounts ? true : filters.isHidingUnownedNFTs)
+    self._isHidingUnownedNFTs = State(
+      initialValue: filters.groupBy == .accounts ? true : filters.isHidingUnownedNFTs
+    )
     self._isShowingNFTNetworkLogo = State(initialValue: filters.isShowingNFTNetworkLogo)
     self._isHidingUnownedNFTsDisabled = State(initialValue: filters.groupBy == .accounts)
     self._accounts = State(initialValue: filters.accounts)
@@ -164,7 +169,7 @@ struct FiltersDisplaySettingsView: View {
     self.save = save
     self.originalFilters = filters
   }
-  
+
   var body: some View {
     NavigationView {
       ScrollView {
@@ -172,25 +177,25 @@ struct FiltersDisplaySettingsView: View {
           if isNFTFilters {
             groupByRow
               .padding(.vertical, rowPadding)
-            
+
             showNFTNetworkLogo
               .padding(.vertical, rowPadding)
-            
+
             hideUnownedNFTs
               .padding(.vertical, rowPadding)
-          } else { // Portfolio filters
+          } else {  // Portfolio filters
             groupByRow
               .padding(.vertical, rowPadding)
-            
+
             sortAssets
               .padding(.vertical, rowPadding)
-            
+
             hideSmallBalances
               .padding(.vertical, rowPadding)
           }
 
           DividerLine()
-          
+
           accountFilters
             .padding(.vertical, rowPadding)
 
@@ -200,20 +205,26 @@ struct FiltersDisplaySettingsView: View {
         }
         .padding(.horizontal)
       }
-      .onChange(of: groupBy, perform: { newValue in
-        if isNFTFilters {
-          if newValue == .accounts {
-            isHidingUnownedNFTs = true
-            isHidingUnownedNFTsDisabled = true
-          } else {
-            isHidingUnownedNFTsDisabled = false
+      .onChange(
+        of: groupBy,
+        perform: { newValue in
+          if isNFTFilters {
+            if newValue == .accounts {
+              isHidingUnownedNFTs = true
+              isHidingUnownedNFTsDisabled = true
+            } else {
+              isHidingUnownedNFTsDisabled = false
+            }
           }
         }
-      })
+      )
       .background(Color(uiColor: WalletV2Design.containerBackground))
-      .safeAreaInset(edge: .bottom, content: {
-        saveChangesContainer
-      })
+      .safeAreaInset(
+        edge: .bottom,
+        content: {
+          saveChangesContainer
+        }
+      )
       .navigationTitle(Strings.Wallet.filtersAndDisplaySettings)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -227,7 +238,7 @@ struct FiltersDisplaySettingsView: View {
       }
     }
   }
-  
+
   private var groupByRow: some View {
     FilterPickerRowView(
       title: Strings.Wallet.groupByTitle,
@@ -242,7 +253,7 @@ struct FiltersDisplaySettingsView: View {
       Text(groupBy.title)
     }
   }
-  
+
   private var sortAssets: some View {
     FilterPickerRowView(
       title: Strings.Wallet.sortAssetsTitle,
@@ -257,7 +268,7 @@ struct FiltersDisplaySettingsView: View {
       Text(sortOrder.title)
     }
   }
-  
+
   private var hideSmallBalances: some View {
     Toggle(isOn: $isHidingSmallBalances) {
       FilterLabelView(
@@ -271,7 +282,7 @@ struct FiltersDisplaySettingsView: View {
     }
     .tint(Color(.braveBlurpleTint))
   }
-  
+
   private var hideUnownedNFTs: some View {
     Toggle(isOn: $isHidingUnownedNFTs) {
       FilterLabelView(
@@ -286,7 +297,7 @@ struct FiltersDisplaySettingsView: View {
     .tint(Color(.braveBlurpleTint))
     .disabled(isHidingUnownedNFTsDisabled)
   }
-  
+
   private var showNFTNetworkLogo: some View {
     Toggle(isOn: $isShowingNFTNetworkLogo) {
       FilterLabelView(
@@ -300,34 +311,37 @@ struct FiltersDisplaySettingsView: View {
     }
     .tint(Color(.braveBlurpleTint))
   }
-  
+
   private var accountFilters: some View {
-    NavigationLink(destination: {
-      AccountFilterView(
-        accounts: $accounts
-      )
-    }, label: {
-      FilterDetailRowView(
-        title: Strings.Wallet.selectAccountsTitle,
-        description: Strings.Wallet.selectAccountsDescription,
-        icon: .init(
-          braveSystemName: "leo.user.accounts",
-          iconContainerSize: iconContainerSize
-        ),
-        selectionView: {
-          if allAccountsSelected {
-            AllSelectedView(title: Strings.Wallet.allAccountsLabel)
-          } else if accounts.contains(where: { $0.isSelected }) { // at least 1 selected
-            MultipleAccountBlockiesView(
-              accountAddresses: accounts.filter(\.isSelected).map(\.model.address)
-            )
+    NavigationLink(
+      destination: {
+        AccountFilterView(
+          accounts: $accounts
+        )
+      },
+      label: {
+        FilterDetailRowView(
+          title: Strings.Wallet.selectAccountsTitle,
+          description: Strings.Wallet.selectAccountsDescription,
+          icon: .init(
+            braveSystemName: "leo.user.accounts",
+            iconContainerSize: iconContainerSize
+          ),
+          selectionView: {
+            if allAccountsSelected {
+              AllSelectedView(title: Strings.Wallet.allAccountsLabel)
+            } else if accounts.contains(where: { $0.isSelected }) {  // at least 1 selected
+              MultipleAccountBlockiesView(
+                accountAddresses: accounts.filter(\.isSelected).map(\.model.address)
+              )
+            }
           }
-        }
-      )
-    })
+        )
+      }
+    )
     .buttonStyle(FadeButtonStyle())
   }
-  
+
   private var networkFilters: some View {
     NavigationLink(destination: {
       NetworkFilterView(
@@ -350,7 +364,7 @@ struct FiltersDisplaySettingsView: View {
         selectionView: {
           if allNetworksSelected {
             AllSelectedView(title: Strings.Wallet.allNetworksLabel)
-          } else if networks.contains(where: { $0.isSelected }) { // at least 1 selected
+          } else if networks.contains(where: { $0.isSelected }) {  // at least 1 selected
             MultipleNetworkIconsView(
               networks: networks.filter(\.isSelected).map(\.model)
             )
@@ -360,17 +374,15 @@ struct FiltersDisplaySettingsView: View {
     }
     .buttonStyle(FadeButtonStyle())
   }
-  
+
   private var isSaveChangesDisabled: Bool {
-    originalFilters.groupBy == groupBy &&
-    originalFilters.sortOrder == sortOrder &&
-    originalFilters.isHidingSmallBalances == isHidingSmallBalances &&
-    originalFilters.isHidingUnownedNFTs == isHidingUnownedNFTs &&
-    originalFilters.isShowingNFTNetworkLogo == isShowingNFTNetworkLogo &&
-    originalFilters.accounts == accounts &&
-    originalFilters.networks == networks
+    originalFilters.groupBy == groupBy && originalFilters.sortOrder == sortOrder
+      && originalFilters.isHidingSmallBalances == isHidingSmallBalances
+      && originalFilters.isHidingUnownedNFTs == isHidingUnownedNFTs
+      && originalFilters.isShowingNFTNetworkLogo == isShowingNFTNetworkLogo
+      && originalFilters.accounts == accounts && originalFilters.networks == networks
   }
-  
+
   private var saveChangesContainer: some View {
     VStack {
       Button(action: {
@@ -393,7 +405,7 @@ struct FiltersDisplaySettingsView: View {
       }
       .buttonStyle(BraveFilledButtonStyle(size: .large))
       .disabled(isSaveChangesDisabled)
-      
+
       Button(action: { dismiss() }) {
         Text(Strings.CancelString)
           .fontWeight(.semibold)
@@ -410,29 +422,33 @@ struct FiltersDisplaySettingsView: View {
     )
     .shadow(color: Color.black.opacity(0.04), radius: 16, x: 0, y: -8)
   }
-  
+
   private var isResetDisabled: Bool {
     groupBy == GroupBy(rawValue: Preferences.Wallet.groupByFilter.defaultValue) ?? .none
-    && sortOrder == SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue) ?? .valueDesc
-    && isHidingSmallBalances == Preferences.Wallet.isHidingSmallBalancesFilter.defaultValue
-    && isHidingUnownedNFTs == Preferences.Wallet.isHidingUnownedNFTsFilter.defaultValue
-    && isShowingNFTNetworkLogo == Preferences.Wallet.isShowingNFTNetworkLogoFilter.defaultValue
-    && accounts.allSatisfy(\.isSelected)
-    && networks.allSatisfy { selectableNetwork in
-      let isTestnet = WalletConstants.supportedTestNetworkChainIds.contains(selectableNetwork.model.chainId)
-      return selectableNetwork.isSelected == !isTestnet
-    }
+      && sortOrder == SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue)
+        ?? .valueDesc
+      && isHidingSmallBalances == Preferences.Wallet.isHidingSmallBalancesFilter.defaultValue
+      && isHidingUnownedNFTs == Preferences.Wallet.isHidingUnownedNFTsFilter.defaultValue
+      && isShowingNFTNetworkLogo == Preferences.Wallet.isShowingNFTNetworkLogoFilter.defaultValue
+      && accounts.allSatisfy(\.isSelected)
+      && networks.allSatisfy { selectableNetwork in
+        let isTestnet = WalletConstants.supportedTestNetworkChainIds.contains(
+          selectableNetwork.model.chainId
+        )
+        return selectableNetwork.isSelected == !isTestnet
+      }
   }
-  
+
   func resetToDefaults() {
     /// Assets are not grouped by default
     self.groupBy = GroupBy(rawValue: Preferences.Wallet.groupByFilter.defaultValue) ?? .none
     // Fiat value in descending order (largest fiat to smallest) by default
-    self.sortOrder = SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue) ?? .valueDesc
+    self.sortOrder =
+      SortOrder(rawValue: Preferences.Wallet.sortOrderFilter.defaultValue) ?? .valueDesc
     self.isHidingSmallBalances = Preferences.Wallet.isHidingSmallBalancesFilter.defaultValue
     self.isHidingUnownedNFTs = Preferences.Wallet.isHidingUnownedNFTsFilter.defaultValue
     self.isShowingNFTNetworkLogo = Preferences.Wallet.isShowingNFTNetworkLogoFilter.defaultValue
-    
+
     // All accounts selected by default
     self.accounts = self.accounts.map {
       .init(isSelected: true, model: $0.model)
@@ -443,13 +459,13 @@ struct FiltersDisplaySettingsView: View {
       return .init(isSelected: !isTestnet, model: $0.model)
     }
   }
-  
+
   func selectAllAccounts() {
     self.accounts = self.accounts.map {
       .init(isSelected: true, model: $0.model)
     }
   }
-  
+
   func selectAllNetworks() {
     self.networks = self.networks.map {
       .init(isSelected: true, model: $0.model)
@@ -469,14 +485,14 @@ struct FiltersDisplaySettingsView_Previews: PreviewProvider {
         isShowingNFTNetworkLogo: false,
         accounts: [
           .init(isSelected: true, model: .mockEthAccount),
-          .init(isSelected: true, model: .mockSolAccount)
+          .init(isSelected: true, model: .mockSolAccount),
         ],
         networks: [
           .init(isSelected: true, model: .mockMainnet),
           .init(isSelected: true, model: .mockSolana),
           .init(isSelected: true, model: .mockPolygon),
           .init(isSelected: false, model: .mockSolanaTestnet),
-          .init(isSelected: false, model: .mockGoerli)
+          .init(isSelected: false, model: .mockGoerli),
         ]
       ),
       isNFTFilters: false,
@@ -489,7 +505,7 @@ struct FiltersDisplaySettingsView_Previews: PreviewProvider {
 
 private struct AllSelectedView: View {
   let title: String
-  
+
   var body: some View {
     Text(title)
       .foregroundColor(Color(uiColor: WalletV2Design.extendedGray50))
@@ -508,11 +524,11 @@ struct FilterIconInfo {
 
 // View with icon, title and description.
 private struct FilterLabelView: View {
-  
+
   let title: String
   let description: String
   let icon: FilterIconInfo?
-  
+
   var body: some View {
     HStack {
       if let icon {
@@ -566,15 +582,15 @@ private struct FilterDetailRowView<SelectionView: View>: View {
 
 /// Displays provided options in a context menu allowing a single selection.
 struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View>: View {
-  
+
   let title: String
   let description: String
   let icon: FilterIconInfo?
-  
+
   let allOptions: [T]
   @Binding var selection: T
   let content: (T) -> Content
-  
+
   var body: some View {
     HStack {
       FilterLabelView(
@@ -583,24 +599,27 @@ struct FilterPickerRowView<T: Equatable & Identifiable & Hashable, Content: View
         icon: icon
       )
       Spacer()
-      Menu(content: {
-        ForEach(allOptions) { option in
-          Button(action: { selection = option }) {
-            HStack {
-              Image(braveSystemName: "leo.check.normal")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .hidden(isHidden: selection.id != option.id)
-              content(option)
+      Menu(
+        content: {
+          ForEach(allOptions) { option in
+            Button(action: { selection = option }) {
+              HStack {
+                Image(braveSystemName: "leo.check.normal")
+                  .resizable()
+                  .aspectRatio(contentMode: .fit)
+                  .hidden(isHidden: selection.id != option.id)
+                content(option)
+              }
             }
           }
+        },
+        label: {
+          HStack(spacing: 8) {
+            content(selection)
+            Image(braveSystemName: "leo.carat.down")
+          }
         }
-      }, label: {
-        HStack(spacing: 8) {
-          content(selection)
-          Image(braveSystemName: "leo.carat.down")
-        }
-      })
+      )
       .osAvailabilityModifiers({
         if #unavailable(iOS 17) {
           // Prior to iOS 17, if selection changes from outside

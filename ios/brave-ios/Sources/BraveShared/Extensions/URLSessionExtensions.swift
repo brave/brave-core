@@ -2,10 +2,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import Combine
 import Foundation
 import Shared
 import os.log
-import Combine
 
 extension URLSession {
   @discardableResult
@@ -25,7 +25,8 @@ extension URLSession {
         headers: headers,
         parameters: parameters,
         rawData: rawData,
-        encoding: encoding)
+        encoding: encoding
+      )
 
       let task = self.dataTask(with: request) { data, response, error in
         if let error = error {
@@ -33,11 +34,21 @@ extension URLSession {
         }
 
         guard let data = data else {
-          return completion(.failure(NSError(domain: "com.brave.url.session.build-request", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data returned from the server"])))
+          return completion(
+            .failure(
+              NSError(
+                domain: "com.brave.url.session.build-request",
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: "No data returned from the server"]
+              )
+            )
+          )
         }
 
         do {
-          completion(.success(try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)))
+          completion(
+            .success(try JSONSerialization.jsonObject(with: data, options: .mutableLeaves))
+          )
         } catch {
           completion(.failure(error))
         }
@@ -49,7 +60,7 @@ extension URLSession {
       return nil
     }
   }
-  
+
   public func request(
     _ url: URL,
     method: HTTPMethod = .get,
@@ -65,8 +76,9 @@ extension URLSession {
         headers: headers,
         parameters: parameters,
         rawData: rawData,
-        encoding: encoding)
-      
+        encoding: encoding
+      )
+
       return dataTaskPublisher(for: request)
         .tryMap({ data, response in
           try JSONSerialization.jsonObject(with: data, options: .mutableLeaves)
@@ -79,7 +91,7 @@ extension URLSession {
       return Fail(error: error).eraseToAnyPublisher()
     }
   }
-  
+
   public func request(
     _ url: URL,
     method: HTTPMethod = .get,
@@ -97,10 +109,11 @@ extension URLSession {
         parameters: parameters,
         rawData: rawData,
         encoding: encoding,
-        timeoutInterval: timeout)
-      
+        timeoutInterval: timeout
+      )
+
       return try await data(for: request)
-    } catch {     
+    } catch {
       Logger.module.error("\(error.localizedDescription)")
       throw error
     }
@@ -140,10 +153,13 @@ extension URLSession {
     case .textPlain:
       request.setValue("text/plain", forHTTPHeaderField: "Content-Type")
       request.httpBody = rawData
-      
+
     case .json:
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      request.httpBody = try JSONSerialization.data(withJSONObject: parameters, options: .prettyPrinted)
+      request.httpBody = try JSONSerialization.data(
+        withJSONObject: parameters,
+        options: .prettyPrinted
+      )
 
     case .query:
       var queryParameters = [URLQueryItem]()
@@ -152,10 +168,13 @@ extension URLSession {
           queryParameters.append(URLQueryItem(name: item.key, value: value))
         } else {
           throw NSError(
-            domain: "com.brave.url.session.build-request", code: -1,
+            domain: "com.brave.url.session.build-request",
+            code: -1,
             userInfo: [
-              NSLocalizedDescriptionKey: "Invalid Parameter cannot be serialized to query url: \(item.key)"
-            ])
+              NSLocalizedDescriptionKey:
+                "Invalid Parameter cannot be serialized to query url: \(item.key)"
+            ]
+          )
         }
       }
 

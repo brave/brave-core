@@ -2,9 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
+import Shared
+import UIKit
 
 class RewardsButton: UIButton {
 
@@ -20,7 +20,9 @@ class RewardsButton: UIButton {
     }
   }
 
-  private let lookAtMeBadge = UIImageView(image: UIImage(named: "rewards-look-at-me", in: .module, compatibleWith: nil)!).then {
+  private let lookAtMeBadge = UIImageView(
+    image: UIImage(named: "rewards-look-at-me", in: .module, compatibleWith: nil)!
+  ).then {
     $0.isHidden = true
     $0.isUserInteractionEnabled = false
   }
@@ -38,7 +40,7 @@ class RewardsButton: UIButton {
     addSubview(lookAtMeBadge)
 
     updateView()
-    
+
     lookAtMeBadge.snp.makeConstraints {
       $0.centerY.equalTo(imageView!.snp.centerY).offset(-8)
       $0.leading.equalTo(imageView!.snp.centerX)

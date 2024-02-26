@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CodableHelpers
+import Foundation
 
 public struct FeedItem: Identifiable, Hashable, Comparable {
   public var score: Double
@@ -14,33 +14,33 @@ public struct FeedItem: Identifiable, Hashable, Comparable {
   public static func < (lhs: Self, rhs: Self) -> Bool {
     lhs.score < rhs.score
   }
-  
+
   public func hash(into hasher: inout Hasher) {
     hasher.combine(content.urlHash)
     hasher.combine(source.id)
   }
-  
+
   public var id: String {
     "\(content.urlHash)-\(source.id)"
   }
-  
+
   public static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.source.id == rhs.source.id && lhs.content.urlHash == rhs.content.urlHash
   }
 }
 
 extension FeedItem {
-  
+
   public struct SourceSimilarity: Equatable, Decodable {
     public var sourceID: String
     public var relativeScore: Double
-    
+
     enum CodingKeys: String, CodingKey {
       case sourceID = "source"
       case relativeScore = "score"
     }
   }
-  
+
   public struct Source: Hashable, Decodable, Identifiable {
     public var id: String
     public var isDefault: Bool?
@@ -54,11 +54,11 @@ extension FeedItem {
     public var destinationDomains: [String]
     public var backgroundColor: String?
     public var localeDetails: [LocaleDetails]?
-    
+
     public func rank(of locale: String) -> Int {
       localeDetails?.first(where: { $0.locale == locale })?.rank ?? Int.max
     }
-    
+
     enum CodingKeys: String, CodingKey {
       case id = "publisher_id"
       case isDefault = "enabled"
@@ -72,15 +72,15 @@ extension FeedItem {
       case backgroundColor = "background_color"
       case localeDetails = "locales"
     }
-    
+
     public func hash(into hasher: inout Hasher) {
       hasher.combine(id)
     }
-    
+
     public static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.id == rhs.id
     }
-    
+
     public struct LocaleDetails: Hashable, Decodable {
       public var channels: Set<String>
       public var locale: String
@@ -133,12 +133,12 @@ extension FeedItem {
     public var baseScore: Double?
     public var offersCategory: String?
     public var creativeInstanceID: String?
-    
+
     public func hash(into hasher: inout Hasher) {
       hasher.combine(urlHash)
       hasher.combine(publisherID)
     }
-    
+
     public static func == (lhs: Self, rhs: Self) -> Bool {
       lhs.urlHash == rhs.urlHash && lhs.publisherID == rhs.publisherID
     }

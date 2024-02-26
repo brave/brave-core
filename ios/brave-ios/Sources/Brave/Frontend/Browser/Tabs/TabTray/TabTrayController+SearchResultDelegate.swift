@@ -11,15 +11,16 @@ extension TabTrayController: UISearchResultsUpdating {
 
   func updateSearchResults(for searchController: UISearchController) {
     guard let query = searchController.searchBar.text else { return }
-    
+
     invalidateSearchTimer()
-    
+
     searchTabTrayTimer = Timer.scheduledTimer(
       timeInterval: 0.1,
       target: self,
       selector: #selector(fetchSearchResults(timer:)),
       userInfo: query,
-      repeats: false)
+      repeats: false
+    )
   }
 
   @objc private func fetchSearchResults(timer: Timer) {
@@ -27,9 +28,9 @@ extension TabTrayController: UISearchResultsUpdating {
       tabTraySearchQuery = ""
       return
     }
-    
+
     tabTraySearchQuery = query
-    
+
     refreshDataSource()
   }
 
@@ -46,7 +47,7 @@ extension TabTrayController: UISearchControllerDelegate {
   func willPresentSearchController(_ searchController: UISearchController) {
     isTabTrayBeingSearched = true
     tabTraySearchQuery = nil
-    
+
     switch tabTrayMode {
     case .local:
       tabTrayView.collectionView.reloadData()
@@ -58,7 +59,7 @@ extension TabTrayController: UISearchControllerDelegate {
   func willDismissSearchController(_ searchController: UISearchController) {
     invalidateSearchTimer()
     isTabTrayBeingSearched = false
-    
+
     switch tabTrayMode {
     case .local:
       tabTrayView.collectionView.reloadData()

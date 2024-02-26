@@ -3,24 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
 import BraveCore
 import DesignSystem
+import Strings
+import SwiftUI
 
 struct AddSuggestedTokenView: View {
   var token: BraveWallet.BlockchainToken
   var originInfo: BraveWallet.OriginInfo
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.openURL) private var openWalletURL
-  
+
   private var tokenNetwork: BraveWallet.NetworkInfo? {
     cryptoStore.networkStore.allChains.first(where: { $0.chainId == token.chainId })
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 22) {
@@ -47,8 +47,9 @@ struct AddSuggestedTokenView: View {
           .accessibilityElement(children: .combine)
           Button(action: {
             if let tokenNetwork = tokenNetwork,
-               let baseURL = tokenNetwork.blockExplorerUrls.first.map(URL.init(string:)),
-               let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)") {
+              let baseURL = tokenNetwork.blockExplorerUrls.first.map(URL.init(string:)),
+              let url = baseURL?.appendingPathComponent("token/\(token.contractAddress)")
+            {
               openWalletURL(url)
             }
           }) {
@@ -89,15 +90,15 @@ struct AddSuggestedTokenView: View {
                 startPoint: .top,
                 endPoint: .bottom
               )
-                .ignoresSafeArea()
-                .allowsHitTesting(false)
+              .ignoresSafeArea()
+              .allowsHitTesting(false)
             )
         }
       },
       alignment: .bottom
     )
   }
-  
+
   @ViewBuilder private var actionButtonContainer: some View {
     if sizeCategory.isAccessibilityCategory {
       VStack {
@@ -111,7 +112,7 @@ struct AddSuggestedTokenView: View {
   }
 
   @ViewBuilder private var actionButtons: some View {
-    Button(action: { // cancel
+    Button(action: {  // cancel
       cryptoStore.handleWebpageRequestResponse(
         .addSuggestedToken(approved: false, token: token)
       )
@@ -123,7 +124,7 @@ struct AddSuggestedTokenView: View {
       }
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
-    Button(action: { // approve
+    Button(action: {  // approve
       cryptoStore.handleWebpageRequestResponse(
         .addSuggestedToken(approved: true, token: token)
       )
@@ -149,7 +150,7 @@ struct AddSuggestedTokenView_Previews: PreviewProvider {
         eTldPlusOne: "uniswap.org"
       ),
       cryptoStore: .previewStore,
-      onDismiss: { }
+      onDismiss: {}
     )
   }
 }

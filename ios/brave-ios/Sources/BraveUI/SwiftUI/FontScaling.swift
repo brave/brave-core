@@ -24,7 +24,11 @@ struct ScaledFont: ViewModifier {
 
 /// Extension so font scaling can be used on `View` as a modifier.
 extension View {
-  func scaledFont(size: CGFloat, weight: Font.Weight = .regular, design: Font.Design = .default) -> some View {
+  func scaledFont(
+    size: CGFloat,
+    weight: Font.Weight = .regular,
+    design: Font.Design = .default
+  ) -> some View {
     return self.modifier(ScaledFont(size: size, weight: weight, design: design))
   }
 }

@@ -4,9 +4,7 @@
 
 import UIKit
 
-/**
- * The keyboard state at the time of notification.
- */
+/// The keyboard state at the time of notification.
 public struct KeyboardState {
   public let animationDuration: Double
   public let animationCurve: UIView.AnimationCurve
@@ -14,7 +12,8 @@ public struct KeyboardState {
 
   fileprivate init(_ userInfo: [AnyHashable: Any]) {
     self.userInfo = userInfo
-    animationDuration = (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.2
+    animationDuration =
+      (userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? Double) ?? 0.2
     // HACK: UIViewAnimationCurve doesn't expose the keyboard animation used (curveValue = 7),
     // so UIViewAnimationCurve(rawValue: curveValue) returns nil. As a workaround, get a
     // reference to an EaseIn curve, then change the underlying pointer data with that ref.
@@ -41,13 +40,17 @@ public struct KeyboardState {
 }
 
 public protocol KeyboardHelperDelegate: AnyObject {
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState)
-  func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState)
+  func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillShowWithState state: KeyboardState
+  )
+  func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillHideWithState state: KeyboardState
+  )
 }
 
-/**
- * Convenience class for observing keyboard state.
- */
+/// Convenience class for observing keyboard state.
 open class KeyboardHelper: NSObject {
   open var currentState: KeyboardState?
 
@@ -64,8 +67,18 @@ open class KeyboardHelper: NSObject {
      * Starts monitoring the keyboard state.
      */
   open func startObserving() {
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillShow),
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillHide),
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
   }
 
   deinit {

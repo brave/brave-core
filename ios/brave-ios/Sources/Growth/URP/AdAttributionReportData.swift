@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import os.log
-import Foundation
 import BraveShared
+import Foundation
+import os.log
 
 public enum SerializationError: Error {
   case missing(String)
@@ -40,13 +40,15 @@ public struct AdAttributionData {
   // The keyword id for the campaign which will be used for feature link
   let keywordId: Int?
 
-  init(attribution: Bool,
-       organizationId: Int? = nil,
-       conversionType: String? = nil,
-       campaignId: Int,
-       countryOrRegion: String? = nil,
-       adGroupId: Int? = nil,
-       keywordId: Int? = nil ) {
+  init(
+    attribution: Bool,
+    organizationId: Int? = nil,
+    conversionType: String? = nil,
+    campaignId: Int,
+    countryOrRegion: String? = nil,
+    adGroupId: Int? = nil,
+    keywordId: Int? = nil
+  ) {
     self.attribution = attribution
     self.organizationId = organizationId
     self.conversionType = conversionType
@@ -60,29 +62,29 @@ public struct AdAttributionData {
     guard let json = json else {
       throw SerializationError.invalid("Invalid json Dictionary", "")
     }
-    
+
     // Attribution and campaignId are the major properties here
     // They will indicate if the Apple Searhs Ads is clicked and for which campaign
     guard let attribution = json["attribution"] as? Bool else {
       Logger.module.error("Failed to unwrap json to Ad Attribution property.")
       DebugLogger.log(for: .urp, text: "Failed to unwrap json to Ad Attribution property. \(json)")
-      
+
       throw SerializationError.missing("Attribution Context")
     }
-    
+
     guard let campaignId = json["campaignId"] as? Int else {
       Logger.module.error("Failed to unwrap json to Campaign Id property.")
       DebugLogger.log(for: .urp, text: "Failed to unwrap json to Campaign Id property. \(json)")
-      
+
       throw SerializationError.missing("Campaign Id")
     }
-    
+
     if let conversionType = json["conversionType"] as? String {
       guard conversionType == "Download" || conversionType == "Redownload" else {
         throw SerializationError.invalid("Conversion Type", conversionType)
       }
     }
-    
+
     self.attribution = attribution
     self.organizationId = json["orgId"] as? Int
     self.conversionType = json["conversionType"] as? String
@@ -106,9 +108,9 @@ public struct AdGroupReportData {
     let keyword: String
     let keywordId: Int
   }
-  
+
   public let productKeyword: String
-  
+
   init(data: Data, keywordId: Int) throws {
     do {
       let decoder = JSONDecoder()

@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Static
-import Shared
-import Preferences
-import UIKit
-import BraveUI
-import Onboarding
 import BraveCore
+import BraveUI
+import Foundation
 import Growth
+import Onboarding
+import Preferences
+import Shared
+import Static
+import UIKit
 
 class RetentionPreferencesDebugMenuViewController: TableViewController {
   private let p3aUtilities: BraveP3AUtils
@@ -20,7 +20,7 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
   init(p3aUtilities: BraveP3AUtils, attributionManager: AttributionManager) {
     self.p3aUtilities = p3aUtilities
     self.attributionManager = attributionManager
-    
+
     super.init(style: .insetGrouped)
   }
 
@@ -45,7 +45,8 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
     let alert = UIAlertController(
       title: "Value can't be changed!",
       message: "This is debug flag value cant be changed.",
-      preferredStyle: .alert)
+      preferredStyle: .alert
+    )
     alert.addAction(.init(title: "OK", style: .default, handler: nil))
 
     present(alert, animated: true, completion: nil)
@@ -59,11 +60,17 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
         .init(
           text: "Start Onboarding",
           selection: { [unowned self] in
-            let onboardingController = WelcomeViewController(state: .loading, p3aUtilities: self.p3aUtilities, attributionManager: attributionManager)
+            let onboardingController = WelcomeViewController(
+              state: .loading,
+              p3aUtilities: self.p3aUtilities,
+              attributionManager: attributionManager
+            )
             onboardingController.modalPresentationStyle = .fullScreen
 
             present(onboardingController, animated: false)
-          }, cellClass: MultilineButtonCell.self)
+          },
+          cellClass: MultilineButtonCell.self
+        )
       ]
     )
 
@@ -80,23 +87,30 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
           toggleValue: Preferences.DebugFlag.skipOnboardingIntro ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          }),
+          }
+        ),
         .boolRow(
           title: "Skip Education Pop-ups",
-          detailText: "Flag for hide/show education pop-ups. Includes onboarding ad block notifications and cookie consent notice blocking callout",
+          detailText:
+            "Flag for hide/show education pop-ups. Includes onboarding ad block notifications and cookie consent notice blocking callout",
           toggleValue: Preferences.DebugFlag.skipEduPopups ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          }),
+          }
+        ),
         .boolRow(
           title: "Skip NTP Callouts",
-          detailText: "Flag for hide/show full screen callouts. Includes Default Browser, Rewards, Sync",
+          detailText:
+            "Flag for hide/show full screen callouts. Includes Default Browser, Rewards, Sync",
           toggleValue: Preferences.DebugFlag.skipNTPCallouts ?? false,
           valueChange: { [unowned self] _ in
             self.presentDebugFlagAlert()
-          }),
+          }
+        ),
       ],
-      footer: .title("These are the debug flags that enables entire features and set to false for Debug scheme in order to provide faster development.")
+      footer: .title(
+        "These are the debug flags that enables entire features and set to false for Debug scheme in order to provide faster development."
+      )
     )
     return shields
   }()
@@ -107,14 +121,16 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
       rows: [
         .boolRow(
           title: "Retention User",
-          detailText: "Flag showing if the user installed the application after new onboarding is added.",
+          detailText:
+            "Flag showing if the user installed the application after new onboarding is added.",
           toggleValue: Preferences.Onboarding.isNewRetentionUser.value ?? false,
           valueChange: {
             if $0 {
               let status = $0
               Preferences.Onboarding.isNewRetentionUser.value = status
             }
-          }),
+          }
+        ),
         .boolRow(
           title: "NTP Education Shown",
           detailText: "Flag tracking NTP Education should be loaded after onboarding of user.",
@@ -124,7 +140,8 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.ntpCalloutCompleted.value = status
             }
-          }),
+          }
+        ),
         .boolRow(
           title: "VPN Callout Shown",
           detailText: "Flag determining if VPN callout is shown to user.",
@@ -134,7 +151,8 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.vpnPromotionCalloutCompleted.value = status
             }
-          }),
+          }
+        ),
         .boolRow(
           title: "Rewards Callout Shown",
           detailText: "Flag determining if Rewards callout is shown to user.",
@@ -144,7 +162,8 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.FullScreenCallout.rewardsCalloutCompleted.value = status
             }
-          }),
+          }
+        ),
         .boolRow(
           title: "Default Browser Callout Shown",
           detailText: "Flag determining if DefaultBrowser callout is shown to user.",
@@ -154,9 +173,12 @@ class RetentionPreferencesDebugMenuViewController: TableViewController {
               let status = $0
               Preferences.DefaultBrowserIntro.completed.value = status
             }
-          }),
+          }
+        ),
       ],
-      footer: .title("These are the preferences that stored in preferences for determining the If certain elements are shown to user.")
+      footer: .title(
+        "These are the preferences that stored in preferences for determining the If certain elements are shown to user."
+      )
     )
     return shields
   }()

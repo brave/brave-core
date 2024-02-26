@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveUI
+import GuardianConnect
 import Lottie
 import NetworkExtension
-import GuardianConnect
+import Shared
+import UIKit
 
 public class BraveVPNPickerViewController: UIViewController {
 
@@ -57,10 +57,14 @@ public class BraveVPNPickerViewController: UIViewController {
 
   public override func viewDidLoad() {
     tableView.register(VPNRegionCell.self)
-    
-    NotificationCenter.default.addObserver(self, selector: #selector(vpnConfigChanged(notification:)),
-                                           name: .NEVPNStatusDidChange, object: nil)
-    
+
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(vpnConfigChanged(notification:)),
+      name: .NEVPNStatusDidChange,
+      object: nil
+    )
+
     view.addSubview(tableView)
     tableView.snp.makeConstraints {
       $0.edges.equalToSuperview()
@@ -71,12 +75,12 @@ public class BraveVPNPickerViewController: UIViewController {
     super.viewWillAppear(animated)
     tableView.reloadData()
   }
-  
+
   deinit {
     NotificationCenter.default.removeObserver(self)
   }
-  
-  @objc func vpnConfigChanged(notification: NSNotification) { }
+
+  @objc func vpnConfigChanged(notification: NSNotification) {}
 
   func showSuccessAlert(text: String) {
     let animation = AnimationView(name: "vpncheckmark", bundle: .module).then {
@@ -84,25 +88,31 @@ public class BraveVPNPickerViewController: UIViewController {
       $0.contentMode = .scaleAspectFill
       $0.play()
     }
-    
-    let popup = AlertPopupView(imageView: animation,
-                               title: text, message: "",
-                               titleWeight: .semibold, titleSize: 18,
-                               dismissHandler: { true })
-    
+
+    let popup = AlertPopupView(
+      imageView: animation,
+      title: text,
+      message: "",
+      titleWeight: .semibold,
+      titleSize: 18,
+      dismissHandler: { true }
+    )
+
     popup.showWithType(showType: .flyUp, autoDismissTime: 1.5)
   }
-  
+
   func showErrorAlert(title: String, message: String?) {
     DispatchQueue.main.async {
-      let alert = AlertController(title: Strings.VPN.regionPickerErrorTitle,
-                                  message: Strings.VPN.regionPickerErrorMessage,
-                                  preferredStyle: .alert)
+      let alert = AlertController(
+        title: Strings.VPN.regionPickerErrorTitle,
+        message: Strings.VPN.regionPickerErrorMessage,
+        preferredStyle: .alert
+      )
       let okAction = UIAlertAction(title: Strings.OKString, style: .default) { _ in
         self.dismiss(animated: true)
       }
       alert.addAction(okAction)
-      
+
       self.present(alert, animated: true)
     }
   }

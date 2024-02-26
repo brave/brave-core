@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import SwiftUI
 import Strings
+import SwiftUI
 
 extension Text {
   /// Creates a text view that displays a URLOrigin, bolding the eTLD+1.
@@ -19,13 +19,15 @@ extension Text {
         let originStart = origin[origin.startIndex..<range.lowerBound]
         let etldPlusOne = origin[range.lowerBound..<range.upperBound]
         let originEnd = origin[range.upperBound...]
-        self = Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold() + Text(String(originEnd).zwspOutput)
+        self =
+          Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold()
+          + Text(String(originEnd).zwspOutput)
       } else {
         self = Text(origin)
       }
     }
   }
-  
+
   /// Creates a text view that displays a BraveWallet.OriginInfo, bolding the eTLD+1.
   init(originInfo: BraveWallet.OriginInfo) {
     // Internal Transaction from Brave:
@@ -43,7 +45,9 @@ extension Text {
         let originStart = origin[origin.startIndex..<range.lowerBound]
         let etldPlusOne = origin[range.lowerBound..<range.upperBound]
         let originEnd = origin[range.upperBound...]
-        self = Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold() + Text(String(originEnd).zwspOutput)
+        self =
+          Text(String(originStart).zwspOutput) + Text(etldPlusOne).bold()
+          + Text(String(originEnd).zwspOutput)
       } else {
         self = Text(origin)
       }

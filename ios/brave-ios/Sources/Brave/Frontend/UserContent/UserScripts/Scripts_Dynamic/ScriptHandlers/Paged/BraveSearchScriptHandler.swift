@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
-import Shared
-import Preferences
 import BraveCore
+import Foundation
+import Preferences
+import Shared
+import WebKit
 import os.log
 
 class BraveSearchScriptHandler: TabContentScript {
@@ -28,7 +28,7 @@ class BraveSearchScriptHandler: TabContentScript {
     self.profile = profile
     self.rewards = rewards
   }
-  
+
   static let scriptName = "BraveSearchScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -37,12 +37,16 @@ class BraveSearchScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
   private enum Method: Int {
@@ -67,7 +71,7 @@ class BraveSearchScriptHandler: TabContentScript {
       assertionFailure("Missing required security token.")
       return
     }
-    
+
     let allowedHosts = DomainUserScript.braveSearchHelper.associatedDomains
 
     guard let requestHost = message.frameInfo.request.url?.host,
@@ -105,7 +109,9 @@ class BraveSearchScriptHandler: TabContentScript {
     }
 
     let maximumPromptCount = Preferences.Search.braveSearchDefaultBrowserPromptCount
-    if Self.canSetAsDefaultCounter >= maxCountOfDefaultBrowserPromptsPerSession || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal {
+    if Self.canSetAsDefaultCounter >= maxCountOfDefaultBrowserPromptsPerSession
+      || maximumPromptCount.value >= maxCountOfDefaultBrowserPromptsTotal
+    {
       Logger.module.debug("Maximum number of tries of Brave Search website prompts reached")
       replyHandler(false, nil)
       return
@@ -120,7 +126,10 @@ class BraveSearchScriptHandler: TabContentScript {
   }
 
   private func handleSetBraveSearchDefault(replyHandler: (Any?, String?) -> Void) {
-    profile.searchEngines.updateDefaultEngine(OpenSearchEngine.EngineNames.brave, forType: .standard)
+    profile.searchEngines.updateDefaultEngine(
+      OpenSearchEngine.EngineNames.brave,
+      forType: .standard
+    )
     replyHandler(nil, nil)
   }
 }

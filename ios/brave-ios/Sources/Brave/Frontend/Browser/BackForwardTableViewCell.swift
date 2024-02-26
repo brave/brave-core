@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Storage
-import Shared
 import Favicon
+import Shared
+import Storage
+import UIKit
 
 class BackForwardTableViewCell: UITableViewCell {
 
@@ -43,7 +43,7 @@ class BackForwardTableViewCell: UITableViewCell {
     label.textColor = BackForwardViewCellUX.textColor
     return label
   }()
-  
+
   var isPrivateBrowsing: Bool = false
 
   var connectingForwards = true {
@@ -71,7 +71,9 @@ class BackForwardTableViewCell: UITableViewCell {
       if let s = site {
         if InternalURL.isValid(url: s.tileURL) {
           faviconView.backgroundColor = .white
-          faviconView.image = UIImage(sharedNamed: "brave.logo")?.imageWithInsets(insets: .init(equalInset: 4))
+          faviconView.image = UIImage(sharedNamed: "brave.logo")?.imageWithInsets(
+            insets: .init(equalInset: 4)
+          )
         } else {
           faviconView.loadFavicon(for: s.tileURL, isPrivateBrowsing: isPrivateBrowsing)
         }

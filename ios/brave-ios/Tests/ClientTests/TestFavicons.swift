@@ -2,33 +2,42 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import XCTest
-import Storage
-@testable import Brave
-import Shared
 import Data
 import Favicon
+import Foundation
+import Shared
+import Storage
+import XCTest
+
+@testable import Brave
 
 @MainActor class TestFavicons: ProfileTest {
-  
+
   override func setUp() {
     super.setUp()
-    
+
     DataController.shared.initializeOnce()
   }
 
   func testBundledFavicons() async throws {
-    let favicon = try await BundledFaviconRenderer.loadIcon(url: URL(string: "http://www.google.de")!)
+    let favicon = try await BundledFaviconRenderer.loadIcon(
+      url: URL(string: "http://www.google.de")!
+    )
     XCTAssertNotNil(favicon.image)
-    let favicon2 = try await BundledFaviconRenderer.loadIcon(url: URL(string: "http://vancouver.craigslist.ca")!)
+    let favicon2 = try await BundledFaviconRenderer.loadIcon(
+      url: URL(string: "http://vancouver.craigslist.ca")!
+    )
     XCTAssertNotNil(favicon2.image)
   }
 
   func testImageViewLoad() {
     let expectation = XCTestExpectation(description: "favicon.load")
     let imageView = UIImageView()
-    imageView.loadFavicon(for: URL(string: "http://www.google.de")!, isPrivateBrowsing: false, monogramFallbackCharacter: nil) { _ in 
+    imageView.loadFavicon(
+      for: URL(string: "http://www.google.de")!,
+      isPrivateBrowsing: false,
+      monogramFallbackCharacter: nil
+    ) { _ in
       // Should be a default icon therefore not truly async
       XCTAssertNotNil(imageView.image)
       expectation.fulfill()

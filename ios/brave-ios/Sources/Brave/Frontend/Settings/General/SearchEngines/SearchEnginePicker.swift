@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 
 class SearchEnginePicker: UITableViewController {
   weak var delegate: SearchEnginePickerDelegate?
@@ -33,7 +33,12 @@ class SearchEnginePicker: UITableViewController {
 
     navigationItem.title = type == .standard ? Strings.standardTabSearch : Strings.privateTabSearch
     if showCancel {
-      navigationItem.leftBarButtonItem = UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(cancel))
+      navigationItem.leftBarButtonItem = UIBarButtonItem(
+        title: Strings.cancelButtonTitle,
+        style: .plain,
+        target: self,
+        action: #selector(cancel)
+      )
     }
     tableView.tableFooterView = UIView()
   }
@@ -42,14 +47,19 @@ class SearchEnginePicker: UITableViewController {
     return engines.count
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let engine = engines[indexPath.item]
     let cell = UITableViewCell(style: .default, reuseIdentifier: nil)
     cell.textLabel?.text = engine.displayName
     cell.imageView?.image = engine.image.createScaled(
       CGSize(
         width: OpenSearchEngine.preferredIconSize,
-        height: OpenSearchEngine.preferredIconSize))
+        height: OpenSearchEngine.preferredIconSize
+      )
+    )
     if engine.shortName == selectedSearchEngineName {
       cell.accessoryType = .checkmark
     }

@@ -2,15 +2,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@testable import Brave
 import Foundation
 import Shared
 import Storage
 import XCTest
 
+@testable import Brave
+
 class MockFiles: FileAccessor {
   init() {
-    let docPath = NSSearchPathForDirectoriesInDomains(.applicationSupportDirectory, .userDomainMask, true)[0]
+    let docPath = NSSearchPathForDirectoriesInDomains(
+      .applicationSupportDirectory,
+      .userDomainMask,
+      true
+    )[0]
     super.init(rootPath: (docPath as NSString).appendingPathComponent("testing"))
   }
 }

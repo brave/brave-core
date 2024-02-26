@@ -4,14 +4,14 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
-import Preferences
 import Growth
+import Preferences
+import Shared
 
 public enum FullScreenCalloutType: CaseIterable {
   /*
    The order will effect the priority
-   
+
    Priority:
    - P3A
    - VPN Update Billing
@@ -70,7 +70,9 @@ public struct FullScreenCalloutManager {
 
     let rightNow = Date()
 
-    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(AppConstants.buildChannel.isPublic ? calloutType.period.days : calloutType.period.minutes)
+    let nextShowDate = appRetentionLaunchDate.addingTimeInterval(
+      AppConstants.buildChannel.isPublic ? calloutType.period.days : calloutType.period.minutes
+    )
 
     if rightNow > nextShowDate {
       calloutType.preferenceValue.value = true

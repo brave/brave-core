@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveStrings
 import Foundation
 import SwiftUI
-import BraveStrings
 
 struct FollowToggle: View {
   @Binding var isFollowing: Bool
-  
+
   var body: some View {
     Toggle(isOn: $isFollowing) {
-      Text(isFollowing ? Strings.BraveNews.unfollowToggleTitle : Strings.BraveNews.followToggleTitle)
-        .lineLimit(1)
-        .fixedSize(horizontal: true, vertical: false)
+      Text(
+        isFollowing ? Strings.BraveNews.unfollowToggleTitle : Strings.BraveNews.followToggleTitle
+      )
+      .lineLimit(1)
+      .fixedSize(horizontal: true, vertical: false)
     }
     .animation(.spring(response: 0.4, dampingFraction: 0.75, blendDuration: 0), value: isFollowing)
     .toggleStyle(FollowToggleStyle())
@@ -22,7 +24,7 @@ struct FollowToggle: View {
 
   private struct FollowToggleStyle: ToggleStyle {
     @Environment(\.pixelLength) private var pixelLength
-    
+
     func makeBody(configuration: Configuration) -> some View {
       let isFollowing = configuration.isOn
       Button {
@@ -49,7 +51,7 @@ struct FollowToggle: View {
       .buttonStyle(SpringButtonStyle())
     }
   }
-  
+
   private struct SpringButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
       configuration.label

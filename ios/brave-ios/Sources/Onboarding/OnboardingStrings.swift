@@ -12,36 +12,41 @@ extension Strings {
       "introducingBravePlaylist",
       bundle: .module,
       value: "Introducing Brave Playlist",
-      comment: "A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name"
+      comment:
+        "A title shown on the first 2 steps of onboarding for Brave Playlist. Brave Playlist is a product name"
     )
-    
+
     // -------------------
     // Onboarding Stage 1
     // -------------------
-    
+
     public static let playlistOnboardingDescription = NSLocalizedString(
       "playlistOnboardingDescription",
       bundle: .module,
-      value: "Create playlists with content you love. Add media from any page.\nPlay anytime. Even offline!",
-      comment: "A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist'"
+      value:
+        "Create playlists with content you love. Add media from any page.\nPlay anytime. Even offline!",
+      comment:
+        "A body of text explaining the feature that will be displayed under a title reading 'Introducing Brave Playlist'"
     )
     public static let advanceInitialOnboardingButtonTitle = NSLocalizedString(
       "advanceInitialOnboardingButtonTitle",
       bundle: .module,
       value: "Discover How",
-      comment: "A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature'"
+      comment:
+        "A button title shown below language introducing the Brave Playlist feature. i.e. 'Discover how to use use this feature'"
     )
     public static let dismissOnboardingButtonTitle = NSLocalizedString(
       "dismissOnboardingButtonTitle",
       bundle: .module,
       value: "Dismiss",
-      comment: "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+      comment:
+        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
     )
-    
+
     // -------------------
     // Onboarding Stage 2
     // -------------------
-    
+
     public static let playlistInfoFeaturePointTitleOne = NSLocalizedString(
       "playlistInfoFeaturePointTitleOne",
       bundle: .module,
@@ -82,48 +87,54 @@ extension Strings {
       "advanceStep2OnboardingButtonTitle",
       bundle: .module,
       value: "Try It Out!",
-      comment: "A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist"
+      comment:
+        "A button title that when tapped will advance the onboarding to guide a user to add some content to Playlist"
     )
     public static let dismissStep2OnboardingButtonTitle = NSLocalizedString(
       "dismissStep2OnboardingButtonTitle",
       bundle: .module,
       value: "Maybe Later",
-      comment: "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+      comment:
+        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
     )
-    
+
     // -------------------
     // Onboarding Stage 3
     // -------------------
-    
+
     public static let userActionPrompt = NSLocalizedString(
       "userActionPrompt",
       bundle: .module,
       value: "Tap %@ to add your first item",
-      comment: "%@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature"
+      comment:
+        "%@ will be replaced by the text 'Add to Playlist' and an icon. Guides the user to tap an icon just above to add some content to the playlist feature"
     )
-    
+
     public static let userActionPromptAddToPlaylist = NSLocalizedString(
       "userActionPromptFill",
       bundle: .module,
       value: "Add to Playlist",
-      comment: "Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\""
+      comment:
+        "Will be shown next to an icon inside of some other text. i.e. \"Tap 'Add to Playlist' to add your first item\""
     )
-    
+
     // -------------------
     // Onboarding Stage 4
     // -------------------
-    
+
     public static let confirmationTitle = NSLocalizedString(
       "confirmationTitle",
       bundle: .module,
       value: "Good Job",
-      comment: "Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon."
+      comment:
+        "Guides the user to tap on an icon where the onboarding is pointing to. '%@' will be replaced with said icon."
     )
     public static let confirmationSubtitle = NSLocalizedString(
       "confirmationSubtitle",
       bundle: .module,
       value: "Content added to %@",
-      comment: "Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later'"
+      comment:
+        "Shown below a title that confirms the user completed the task of adding something to playlist. %@ will be replaced with the folder the content was added to. i.e. 'Content added to Play Later'"
     )
     public static let confirmationPrompt = NSLocalizedString(
       "confirmationPrompt",
@@ -141,7 +152,8 @@ extension Strings {
       "dismissStep4OnboardingButtonTitle",
       bundle: .module,
       value: "Close",
-      comment: "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
+      comment:
+        "A button title that allows the user to dismiss the popup explaining the Brave Playlist feature"
     )
   }
 }

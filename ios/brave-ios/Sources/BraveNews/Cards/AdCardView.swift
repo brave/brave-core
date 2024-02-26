@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Foundation
 import UIKit
-import BraveUI
 
 public class AdCardView: FeedCardBackgroundButton, FeedCardContent {
   public var actionHandler: ((Int, FeedItemAction) -> Void)?
@@ -55,7 +55,11 @@ public class AdCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored"
+      )
+    }
   }
 
   @objc private func tappedSelf() {
@@ -86,7 +90,8 @@ private class BraveAdCalloutView: UIView {
           $0.snp.makeConstraints {
             $0.size.equalTo(14)
           }
-        }),
+        }
+      ),
       .view(
         UILabel().then {
           $0.text = "Ad"
@@ -98,7 +103,8 @@ private class BraveAdCalloutView: UIView {
             return metrics.scaledFont(for: font)
           }()
           $0.adjustsFontForContentSizeCategory = true
-        })
+        }
+      )
     )
     addSubview(stackView)
     stackView.snp.makeConstraints {

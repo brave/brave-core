@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SnapKit
-import Preferences
 import Combine
+import Foundation
+import Preferences
+import SnapKit
+import UIKit
 
 class HeaderContainerView: UIView {
-  
+
   let expandedBarStackView = UIStackView().then {
     $0.axis = .vertical
   }
@@ -23,23 +23,23 @@ class HeaderContainerView: UIView {
     }
   }
   let line = UIView()
-  
+
   /// Container view for both the expanded & collapsed variants of the bar
   let contentView = UIView()
-  
+
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
-  
+
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    
+
     super.init(frame: .zero)
-    
+
     addSubview(contentView)
     contentView.addSubview(expandedBarStackView)
     contentView.addSubview(collapsedBarContainerView)
     addSubview(line)
-    
+
     contentView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -50,9 +50,9 @@ class HeaderContainerView: UIView {
     expandedBarStackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     updateColors()
-    
+
     privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
@@ -62,10 +62,10 @@ class HeaderContainerView: UIView {
       })
       .store(in: &cancellables)
   }
-  
+
   override func updateConstraints() {
     super.updateConstraints()
-    
+
     collapsedBarContainerView.snp.remakeConstraints {
       if isUsingBottomBar {
         $0.top.equalToSuperview()
@@ -84,13 +84,13 @@ class HeaderContainerView: UIView {
       $0.height.equalTo(1.0 / UIScreen.main.scale)
     }
   }
-  
+
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
     line.backgroundColor = browserColors.dividerSubtle
     backgroundColor = browserColors.chromeBackground
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()

@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
 import BraveCore
-import Swift
+import Foundation
 import Strings
+import Swift
+import SwiftUI
 
 /// Displays a summary of a given transaction
 struct TransactionSummaryView: View {
-  
+
   let summary: TransactionSummary
   let displayAccountCreator: Bool
-  
+
   init(
     summary: TransactionSummary,
     displayAccountCreator: Bool = false
@@ -22,12 +22,12 @@ struct TransactionSummaryView: View {
     self.summary = summary
     self.displayAccountCreator = displayAccountCreator
   }
-  
+
   private let relativeTimeFormatter = RelativeDateTimeFormatter().then {
     $0.unitsStyle = .full
     $0.dateTimeStyle = .numeric
   }
-  
+
   @ViewBuilder private var subtitle: some View {
     // For the time being, use the same subtitle label until we have the ability to parse
     // Swap from/to addresses
@@ -36,11 +36,13 @@ struct TransactionSummaryView: View {
     Text("\(from) \(Image(systemName: "arrow.right")) \(to)")
       .accessibilityLabel(
         String.localizedStringWithFormat(
-          Strings.Wallet.transactionFromToAccessibilityLabel, from, to
+          Strings.Wallet.transactionFromToAccessibilityLabel,
+          from,
+          to
         )
       )
   }
-  
+
   private var metadata: Text {
     let date = Text(summary.createdTime, formatter: relativeTimeFormatter)
     if displayAccountCreator {
@@ -48,7 +50,7 @@ struct TransactionSummaryView: View {
     }
     return date
   }
-  
+
   var body: some View {
     HStack(spacing: 12) {
       BlockieGroup(
@@ -67,7 +69,10 @@ struct TransactionSummaryView: View {
             Text(
               String.localizedStringWithFormat(
                 Strings.Wallet.transactionSummaryFee,
-                gasFee.fee, summary.networkSymbol, gasFee.fiat)
+                gasFee.fee,
+                summary.networkSymbol,
+                gasFee.fiat
+              )
             )
           }
           .accessibilityElement(children: .combine)

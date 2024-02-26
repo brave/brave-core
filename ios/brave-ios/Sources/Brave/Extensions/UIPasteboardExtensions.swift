@@ -18,7 +18,7 @@ extension UIPasteboard {
       return url
     }
   }
-  
+
   func asyncURL() async -> URL? {
     return await Task.detached {
       return self.syncURL

@@ -42,7 +42,11 @@ public class HeadlineCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 
   @objc private func tappedSelf() {
@@ -73,7 +77,8 @@ public class SmallHeadlinePairCardView: UIView, FeedCardContent {
     $0.spacing = 20
   }
 
-  public let smallHeadelineCardViews: (left: SmallHeadlineCardView, right: SmallHeadlineCardView) = (SmallHeadlineCardView(), SmallHeadlineCardView())
+  public let smallHeadelineCardViews: (left: SmallHeadlineCardView, right: SmallHeadlineCardView) =
+    (SmallHeadlineCardView(), SmallHeadlineCardView())
 
   public required init() {
     super.init(frame: .zero)

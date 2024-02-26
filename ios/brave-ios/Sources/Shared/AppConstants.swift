@@ -36,7 +36,7 @@ public enum AppBuildChannel: String {
       return "invalid"
     }
   }
-  
+
   public var dauServerChannelParam: String {
     switch self {
     case .release:
@@ -51,11 +51,11 @@ public enum AppBuildChannel: String {
 
 public struct KVOConstants: Equatable {
   public var keyPath: String
-  
+
   public init(keyPath: String) {
     self.keyPath = keyPath
   }
-  
+
   public static let loading: Self = .init(keyPath: "loading")
   public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
   public static let URL: Self = .init(keyPath: "URL")

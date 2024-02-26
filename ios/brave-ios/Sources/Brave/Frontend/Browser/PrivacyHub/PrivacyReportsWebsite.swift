@@ -10,7 +10,7 @@ struct PrivacyReportsWebsite: Identifiable {
   /// Due to our Favicon Fetcher logic we have to store the favicon url in certain format in order to fetch it properly.
   let faviconUrl: String
   let count: Int
-  
+
   var id: String {
     domain
   }

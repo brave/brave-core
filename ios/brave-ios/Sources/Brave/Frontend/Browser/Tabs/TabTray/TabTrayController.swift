@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import SwiftUI
 import BraveCore
-import Preferences
+import BraveShared
+import BraveUI
 import Combine
 import Data
-import SnapKit
-import BraveUI
 import LocalAuthentication
-import BraveShared
+import Preferences
+import Shared
+import SnapKit
+import SwiftUI
+import UIKit
 
 protocol TabTrayDelegate: AnyObject {
   /// Notifies the delegate that order of tabs on tab tray has changed.
@@ -25,20 +25,20 @@ class TabTrayController: AuthenticationController {
 
   typealias DataSource = UICollectionViewDiffableDataSource<TabTraySection, Tab>
   typealias Snapshot = NSDiffableDataSourceSnapshot<TabTraySection, Tab>
-  
+
   // MARK: Internal
-  
+
   enum TabTraySection {
     case main
   }
-  
+
   enum TabTrayMode {
     case local
     case sync
   }
-  
+
   // MARK: SyncStatusState
-  
+
   enum SyncStatusState {
     case noSyncChain
     case openTabsDisabled
@@ -48,29 +48,27 @@ class TabTrayController: AuthenticationController {
 
   let tabManager: TabManager
   let braveCore: BraveCoreMain
-  
+
   private var openTabsSessionServiceListener: OpenTabsSessionStateListener?
   private var syncServicStateListener: AnyObject?
 
   weak var delegate: TabTrayDelegate?
   weak var toolbarUrlActionsDelegate: ToolbarUrlActionsDelegate?
-  
+
   private var emptyPanelState: SyncStatusState {
-    get {
-      if Preferences.Chromium.syncEnabled.value {
-        if !Preferences.Chromium.syncOpenTabsEnabled.value {
-          return .openTabsDisabled
-        }
-      } else {
-        return .noSyncChain
+    if Preferences.Chromium.syncEnabled.value {
+      if !Preferences.Chromium.syncOpenTabsEnabled.value {
+        return .openTabsDisabled
       }
-      
-      if sessionList.count > 0 {
-        return .activeSessions
-      }
-      
-      return .noSyncedSessions
+    } else {
+      return .noSyncChain
     }
+
+    if sessionList.count > 0 {
+      return .activeSessions
+    }
+
+    return .noSyncedSessions
   }
 
   private(set) lazy var dataSource =
@@ -78,8 +76,9 @@ class TabTrayController: AuthenticationController {
       collectionView: tabTrayView.collectionView,
       cellProvider: { [weak self] collectionView, indexPath, tab -> UICollectionViewCell? in
         self?.cellProvider(collectionView: collectionView, indexPath: indexPath, tab: tab)
-      })
-  
+      }
+    )
+
   private(set) var sessionList = [OpenDistantSession]()
   var hiddenSections = Set<Int>()
 
@@ -98,23 +97,23 @@ class TabTrayController: AuthenticationController {
   var isTabTrayBeingSearched = false
   var tabTraySearchQuery: String?
   var tabTrayMode: TabTrayMode = .local
-  private var isExternallyPresented: Bool // The tab tray is presented by an action outside the application like shortcuts
+  private var isExternallyPresented: Bool  // The tab tray is presented by an action outside the application like shortcuts
   private var privateModeCancellable: AnyCancellable?
   private var initialScrollCompleted = false
   private var localAuthObservers = Set<AnyCancellable>()
-  
+
   // MARK: User Interface Elements
-  
+
   private struct UX {
     static let horizontalInset = 5.0
     static let buttonEdgeInset = 10.0
     static let segmentedControlTopInset = 16.0
   }
-  
+
   private let containerView = UIView()
-  
+
   private let tabContentView = UIView()
-  
+
   private var tabTypeSelectorItems = [UIImage]()
   private lazy var tabTypeSelector: UISegmentedControl = {
     let segmentedControl = UISegmentedControl(items: tabTypeSelectorItems).then {
@@ -123,20 +122,25 @@ class TabTrayController: AuthenticationController {
     }
     return segmentedControl
   }()
-  
+
   var tabTrayView = TabTrayContainerView().then {
     $0.isHidden = false
   }
-  
+
   var tabSyncView = TabSyncContainerView().then {
     $0.isHidden = true
   }
-  
+
   let newTabButton = UIButton(type: .system).then {
     $0.setImage(UIImage(named: "add_tab", in: .module, compatibleWith: nil)!.template, for: .normal)
     $0.accessibilityLabel = Strings.tabTrayAddTabAccessibilityLabel
     $0.accessibilityIdentifier = "TabTrayController.addTabButton"
-    $0.contentEdgeInsets = .init(top: 0, left: UX.buttonEdgeInset, bottom: 0, right: UX.buttonEdgeInset)
+    $0.contentEdgeInsets = .init(
+      top: 0,
+      left: UX.buttonEdgeInset,
+      bottom: 0,
+      right: UX.buttonEdgeInset
+    )
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
 
@@ -165,47 +169,58 @@ class TabTrayController: AuthenticationController {
       $0.alpha = 0
     }
   }
-  
+
   private var searchBarView: TabTraySearchBar?
   let tabTraySearchController = UISearchController(searchResultsController: nil)
 
   private lazy var emptyStateOverlayView: UIView = EmptyStateOverlayView(
-    overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound))
+    overlayDetails: EmptyOverlayStateDetails(title: Strings.noSearchResultsfound)
+  )
 
   override var preferredStatusBarStyle: UIStatusBarStyle {
     if tabManager.privateBrowsingManager.isPrivateBrowsing {
       return .lightContent
     }
-    
+
     return view.overrideUserInterfaceStyle == .light ? .darkContent : .lightContent
   }
 
   // MARK: Lifecycle
-  
-  init(isExternallyPresented: Bool = false, tabManager: TabManager, braveCore: BraveCoreMain, windowProtection: WindowProtection?) {
+
+  init(
+    isExternallyPresented: Bool = false,
+    tabManager: TabManager,
+    braveCore: BraveCoreMain,
+    windowProtection: WindowProtection?
+  ) {
     self.isExternallyPresented = isExternallyPresented
     self.tabManager = tabManager
     self.braveCore = braveCore
-    
-    super.init(windowProtection: windowProtection, isCancellable: true, unlockScreentitle: "Private Browsing is Locked")
+
+    super.init(
+      windowProtection: windowProtection,
+      isCancellable: true,
+      unlockScreentitle: "Private Browsing is Locked"
+    )
 
     if !UIAccessibility.isReduceMotionEnabled {
       transitioningDelegate = self
       modalPresentationStyle = .fullScreen
     }
-    
+
     // Adding the Open Tabs session observer in constructor to watch synced sessions updating
     openTabsSessionServiceListener = braveCore.openTabsAPI.add(
       OpenTabsStateObserver { [weak self] stateChange in
         guard let self = self else { return }
-        
+
         if case .openTabsSyncCycleCompleted = stateChange {
           if !self.isTabTrayBeingSearched {
             self.reloadOpenTabsSession()
           }
         }
-      })
-    
+      }
+    )
+
     // Adding State Sync Observer to watch the states change in sync chain
     syncServicStateListener = braveCore.syncAPI.addServiceStateObserver { [weak self] in
       guard let self = self else { return }
@@ -223,7 +238,7 @@ class TabTrayController: AuthenticationController {
 
   deinit {
     tabManager.removeDelegate(self)
-    
+
     // Remove the open tabs service observer
     if let observer = openTabsSessionServiceListener {
       braveCore.openTabsAPI.removeObserver(observer)
@@ -265,15 +280,17 @@ class TabTrayController: AuthenticationController {
       $0.dragInteractionEnabled = true
       $0.backgroundView = UIView().then {
         $0.backgroundColor = .clear
-        $0.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(tappedCollectionViewBackground)))
+        $0.addGestureRecognizer(
+          UITapGestureRecognizer(target: self, action: #selector(tappedCollectionViewBackground))
+        )
       }
     }
-    
+
     tabSyncView.tableView.do {
       $0.dataSource = self
       $0.delegate = self
     }
-    
+
     tabSyncView.actionHandler = { [weak self] status in
       self?.presentSyncSettings(status: status)
     }
@@ -282,8 +299,14 @@ class TabTrayController: AuthenticationController {
 
     doneButton.addTarget(self, action: #selector(doneAction), for: .touchUpInside)
     newTabButton.addTarget(self, action: #selector(newTabAction), for: .touchUpInside)
-    newTabButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(tappedButton(_:))))
-    privateModeButton.addTarget(self, action: #selector(togglePrivateModeAction), for: .touchUpInside)
+    newTabButton.addGestureRecognizer(
+      UILongPressGestureRecognizer(target: self, action: #selector(tappedButton(_:)))
+    )
+    privateModeButton.addTarget(
+      self,
+      action: #selector(togglePrivateModeAction),
+      for: .touchUpInside
+    )
 
     navigationController?.isToolbarHidden = false
 
@@ -294,7 +317,7 @@ class TabTrayController: AuthenticationController {
       UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: self, action: nil),
       UIBarButtonItem(customView: doneButton),
     ]
-    
+
     privateModeCancellable = tabManager.privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
@@ -302,97 +325,106 @@ class TabTrayController: AuthenticationController {
       .sink(receiveValue: { [weak self] _ in
         self?.updateColors()
       })
-    
+
     windowProtection?.cancelPressed
       .sink { [weak self] _ in
         self?.navigationController?.popViewController(animated: true)
-    }.store(in: &localAuthObservers)
-    
+      }.store(in: &localAuthObservers)
+
     windowProtection?.finalizedAuthentication
       .sink { [weak self] success, viewType in
         if success, viewType == .tabTray {
           self?.toggleModeChanger()
         }
         self?.navigationController?.popViewController(animated: true)
-    }.store(in: &localAuthObservers)
-  
+      }.store(in: &localAuthObservers)
+
     reloadOpenTabsSession()
     updateColors()
-    
+
     becomeFirstResponder()
   }
-  
+
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
-    
+
     // Navigate tabs from other devices
     if isExternallyPresented {
       tabTypeSelector.selectedSegmentIndex = 1
       tabTypeSelector.sendActions(for: UIControl.Event.valueChanged)
     }
   }
-  
+
   override func loadView() {
     createTypeSelectorItems()
     layoutTabTray()
   }
-  
+
   override var canBecomeFirstResponder: Bool {
     return true
   }
-  
+
   private func layoutTabTray() {
     let contentStackView = UIStackView().then {
       $0.axis = .vertical
       $0.alignment = .center
-      $0.layoutMargins = UIEdgeInsets(top: UX.segmentedControlTopInset, left: 0, bottom: 0, right: 0)
+      $0.layoutMargins = UIEdgeInsets(
+        top: UX.segmentedControlTopInset,
+        left: 0,
+        bottom: 0,
+        right: 0
+      )
       $0.isLayoutMarginsRelativeArrangement = true
     }
-        
+
     contentStackView.addArrangedSubview(tabTypeSelector)
     contentStackView.setCustomSpacing(UX.segmentedControlTopInset, after: tabTypeSelector)
     contentStackView.addArrangedSubview(tabContentView)
-    
+
     containerView.addSubview(contentStackView)
-    
+
     contentStackView.snp.makeConstraints {
       $0.edges.equalTo(containerView.safeAreaLayoutGuide)
     }
-    
+
     tabTypeSelector.snp.makeConstraints {
       $0.width.equalTo(contentStackView.snp.width).dividedBy(2)
     }
-    
+
     tabContentView.addSubview(tabTrayView)
     tabContentView.addSubview(tabSyncView)
-    
+
     tabTrayView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     tabSyncView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     view = containerView
   }
-  
+
   private func createTypeSelectorItems() {
-    tabTypeSelectorItems = [UIImage(braveSystemNamed: "leo.browser.mobile-tabs")!.template,
-                            UIImage(braveSystemNamed: "leo.smartphone.laptop")!.template]
+    tabTypeSelectorItems = [
+      UIImage(braveSystemNamed: "leo.browser.mobile-tabs")!.template,
+      UIImage(braveSystemNamed: "leo.smartphone.laptop")!.template,
+    ]
   }
-  
+
   @objc func typeSelectionDidChange(_ sender: UISegmentedControl) {
     tabTrayMode = sender.selectedSegmentIndex == 0 ? .local : .sync
 
     tabTrayView.isHidden = tabTrayMode == .sync
     tabSyncView.isHidden = tabTrayMode == .local
-    
-    searchBarView?.searchBar.placeholder = tabTrayMode == .local ? Strings.tabTraySearchBarTitle : Strings.OpenTabs.tabTrayOpenTabSearchBarTitle
-    
+
+    searchBarView?.searchBar.placeholder =
+      tabTrayMode == .local
+      ? Strings.tabTraySearchBarTitle : Strings.OpenTabs.tabTrayOpenTabSearchBarTitle
+
     refreshDataSource()
   }
-  
+
   func refreshDataSource() {
     switch tabTrayMode {
     case .local:
@@ -401,7 +433,7 @@ class TabTrayController: AuthenticationController {
       reloadOpenTabsSession(for: tabTraySearchQuery)
     }
   }
-  
+
   private func updateColors() {
     let privateBrowsingManager = tabManager.privateBrowsingManager
     let browserColors = privateBrowsingManager.browserColors
@@ -410,7 +442,7 @@ class TabTrayController: AuthenticationController {
     newTabButton.tintColor = browserColors.iconDefault
     privateModeButton.setTitleColor(browserColors.textSecondary, for: .normal)
     privateModeButton.setTitleColor(browserColors.textPrimary, for: .selected)
-    
+
     let toolbarAppearance = UIToolbarAppearance()
     toolbarAppearance.configureWithOpaqueBackground()
     toolbarAppearance.backgroundColor = browserColors.chromeBackground
@@ -421,7 +453,7 @@ class TabTrayController: AuthenticationController {
       $0.compactAppearance = toolbarAppearance
       $0.scrollEdgeAppearance = toolbarAppearance
     }
-    
+
     let navBarAppearance = UINavigationBarAppearance()
     navBarAppearance.configureWithOpaqueBackground()
     navBarAppearance.backgroundColor = browserColors.chromeBackground
@@ -432,11 +464,11 @@ class TabTrayController: AuthenticationController {
       $0.compactAppearance = navBarAppearance
       $0.scrollEdgeAppearance = navBarAppearance
     }
-    
+
     // Need to force a relayout for the nav controller for the appearance to take affect
     navigationController?.view.setNeedsLayout()
     navigationController?.view.layoutIfNeeded()
-    
+
     setNeedsStatusBarAppearanceUpdate()
   }
 
@@ -447,44 +479,56 @@ class TabTrayController: AuthenticationController {
     if initialScrollCompleted { return }
 
     if let selectedTab = tabManager.selectedTab,
-      let selectedIndexPath = dataSource.indexPath(for: selectedTab) {
+      let selectedIndexPath = dataSource.indexPath(for: selectedTab)
+    {
       DispatchQueue.main.async {
-        self.tabTrayView.collectionView.scrollToItem(at: selectedIndexPath, at: .centeredVertically, animated: false)
+        self.tabTrayView.collectionView.scrollToItem(
+          at: selectedIndexPath,
+          at: .centeredVertically,
+          animated: false
+        )
       }
 
       initialScrollCompleted = true
     }
   }
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
     searchBarView?.frame = navigationController?.navigationBar.frame ?? .zero
     navigationItem.titleView = searchBarView
-    
+
     searchBarView?.setNeedsLayout()
     searchBarView?.layoutIfNeeded()
   }
-  
+
   override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
-    guard !tabManager.privateBrowsingManager.isPrivateBrowsing, let recentlyClosedTab = RecentlyClosed.all().first else {
+    guard !tabManager.privateBrowsingManager.isPrivateBrowsing,
+      let recentlyClosedTab = RecentlyClosed.all().first
+    else {
       return
     }
-    
+
     if motion == .motionShake {
       let alert = UIAlertController(
         title: Strings.Hotkey.recentlyClosedTabTitle,
-        message: Strings.RecentlyClosed.recentlyClosedShakeActionDescription, preferredStyle: .alert)
-      
+        message: Strings.RecentlyClosed.recentlyClosedShakeActionDescription,
+        preferredStyle: .alert
+      )
+
       alert.addAction(
         UIAlertAction(
-          title: Strings.RecentlyClosed.recentlyClosedOpenActionTitle, style: .default,
+          title: Strings.RecentlyClosed.recentlyClosedOpenActionTitle,
+          style: .default,
           handler: { [weak self] _ in
             self?.tabManager.addAndSelectRecentlyClosed(recentlyClosedTab)
             RecentlyClosed.remove(with: recentlyClosedTab.url)
-          }))
+          }
+        )
+      )
       alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
-      
+
       self.present(alert, animated: true, completion: nil)
     }
   }
@@ -497,8 +541,9 @@ class TabTrayController: AuthenticationController {
     snapshot.appendItems(tabManager.tabsForCurrentMode(for: query))
     dataSource.apply(snapshot, animatingDifferences: true) { [weak self] in
       guard let self = self else { return }
-      
-      let isSearchResultEmpty = self.dataSource.snapshot().numberOfItems == 0 && self.isTabTrayBeingSearched
+
+      let isSearchResultEmpty =
+        self.dataSource.snapshot().numberOfItems == 0 && self.isTabTrayBeingSearched
       self.updateEmptyPanelState(isHidden: !isSearchResultEmpty)
     }
   }
@@ -520,7 +565,8 @@ class TabTrayController: AuthenticationController {
         collectionView
         .dequeueReusableCell(
           withReuseIdentifier: TabCell.identifier,
-          for: indexPath) as? TabCell
+          for: indexPath
+        ) as? TabCell
     else { return UICollectionViewCell() }
 
     cell.configure(with: tab)
@@ -531,33 +577,39 @@ class TabTrayController: AuthenticationController {
 
     cell.closedTab = { [weak self] tab in
       self?.remove(tab: tab)
-      UIAccessibility.post(notification: .announcement, argument: Strings.tabTrayClosingTabAccessibilityNotificationText)
+      UIAccessibility.post(
+        notification: .announcement,
+        argument: Strings.tabTrayClosingTabAccessibilityNotificationText
+      )
     }
 
     return cell
   }
-  
+
   func reloadOpenTabsSession(for query: String? = nil) {
     // Fetch all synced session from devices with open tabs information
     // Query is nil when search bar is inactive
     sessionList = fetchSyncedSessions(for: query)
-    
+
     tabSyncView.do {
       $0.tableView.reloadData()
       $0.updateSyncStatusPanel(for: emptyPanelState)
     }
-    
-    updateEmptyPanelState(isHidden: !(isTabTrayBeingSearched && sessionList.isEmpty && !(query?.isEmpty ?? true)))
+
+    updateEmptyPanelState(
+      isHidden: !(isTabTrayBeingSearched && sessionList.isEmpty && !(query?.isEmpty ?? true))
+    )
   }
-  
+
   private func fetchSyncedSessions(for query: String? = nil) -> [OpenDistantSession] {
     let allSessions = braveCore.openTabsAPI.getSyncedSessions()
     var queriedSessions = [OpenDistantSession]()
-    
+
     if let query = query, !query.isEmpty {
       for session in allSessions {
         let queriedSyncedTabList = session.tabs.filter {
-          ($0.title?.lowercased().contains(query) ?? false) || ($0.url.baseDomain?.contains(query) ?? false)
+          ($0.title?.lowercased().contains(query) ?? false)
+            || ($0.url.baseDomain?.contains(query) ?? false)
         }
 
         if !queriedSyncedTabList.isEmpty {
@@ -565,10 +617,10 @@ class TabTrayController: AuthenticationController {
           queriedSessions.append(session)
         }
       }
-      
+
       return queriedSessions
     }
-    
+
     return allSessions
   }
 
@@ -589,7 +641,7 @@ class TabTrayController: AuthenticationController {
       }
     }
   }
-  
+
   // MARK: - Actions
 
   @objc func doneAction() {
@@ -615,23 +667,23 @@ class TabTrayController: AuthenticationController {
       tabManager.addTabAndSelect(isPrivate: privateMode)
     }
   }
-  
+
   @objc private func tappedButton(_ gestureRecognizer: UIGestureRecognizer) {
     if tabManager.privateBrowsingManager.isPrivateBrowsing {
       return
     }
-    
+
     var recentlyClosedTabsView = RecentlyClosedTabsView(tabManager: tabManager)
     recentlyClosedTabsView.onRecentlyClosedSelected = { [weak self] recentlyClosed in
       guard let self else { return }
-      
+
       self.tabManager.addAndSelectRecentlyClosed(recentlyClosed)
       // After opening the Recently Closed in a new tab delete it from list
       RecentlyClosed.remove(with: recentlyClosed.url)
-      
+
       self.dismiss(animated: false)
     }
-    
+
     present(UIHostingController(rootView: recentlyClosedTabsView), animated: true)
   }
 
@@ -647,10 +699,10 @@ class TabTrayController: AuthenticationController {
       toggleModeChanger()
     }
   }
-  
+
   func toggleModeChanger() {
     tabTraySearchController.isActive = false
-    
+
     // Mode Change action disabled while drap-drop is active
     // Added to prevent Diffable Data source crash
     if tabTrayView.collectionView.hasActiveDrag || tabTrayView.collectionView.hasActiveDrop {
@@ -659,21 +711,24 @@ class TabTrayController: AuthenticationController {
 
     // Record the selected index before mode navigation
     if privateMode {
-      tabManager.privateTabSelectedIndex = Preferences.Privacy.persistentPrivateBrowsing.value ? tabManager.selectedIndex : 0
+      tabManager.privateTabSelectedIndex =
+        Preferences.Privacy.persistentPrivateBrowsing.value ? tabManager.selectedIndex : 0
     } else {
       tabManager.normalTabSelectedIndex = tabManager.selectedIndex
     }
-    
+
     tabManager.willSwitchTabMode(leavingPBM: privateMode)
     privateMode.toggle()
-    
+
     // When we switch from Private => Regular make sure we reset _selectedIndex, fix for bug #888
     tabManager.resetSelectedIndex()
     if privateMode {
       tabTypeSelector.selectedSegmentIndex = 0
       tabTypeSelector.sendActions(for: UIControl.Event.valueChanged)
-      
-      if !Preferences.Privacy.persistentPrivateBrowsing.value || tabManager.tabsForCurrentMode.isEmpty {
+
+      if !Preferences.Privacy.persistentPrivateBrowsing.value
+        || tabManager.tabsForCurrentMode.isEmpty
+      {
         tabTrayView.showPrivateModeInfo()
         // New private tab is created immediately to reflect changes on NTP.
         // If user drags the modal down or dismisses it, a new private tab will be ready.
@@ -683,16 +738,18 @@ class TabTrayController: AuthenticationController {
         if tabManager.tabsForCurrentMode.isEmpty {
           tabManager.addTabAndSelect(isPrivate: true)
         }
-        
-        let privateModeTabSelected = tabManager.tabsForCurrentMode[safe: tabManager.privateTabSelectedIndex] ?? tabManager.tabsForCurrentMode.last
+
+        let privateModeTabSelected =
+          tabManager.tabsForCurrentMode[safe: tabManager.privateTabSelectedIndex]
+          ?? tabManager.tabsForCurrentMode.last
 
         if Preferences.Privacy.persistentPrivateBrowsing.value {
           tabManager.selectTab(privateModeTabSelected)
         }
-        
+
         tabTrayView.hidePrivateModeInfo()
         tabTrayView.collectionView.reloadData()
-        
+
         // When you go back from normal mode, current tab should be selected
         // in case private tabs are persistent
         if Preferences.Privacy.persistentPrivateBrowsing.value {
@@ -702,18 +759,20 @@ class TabTrayController: AuthenticationController {
       }
     } else {
       tabTrayView.hidePrivateModeInfo()
-      
+
       // When you go back from private mode, a previous current tab is selected
       // Reloding the collection view in order to mark the selecte the tab
-      let normalModeTabSelected = tabManager.tabsForCurrentMode[safe: tabManager.normalTabSelectedIndex] ?? tabManager.tabsForCurrentMode.last
+      let normalModeTabSelected =
+        tabManager.tabsForCurrentMode[safe: tabManager.normalTabSelectedIndex]
+        ?? tabManager.tabsForCurrentMode.last
 
       tabManager.selectTab(normalModeTabSelected)
       tabTrayView.collectionView.reloadData()
-      
+
       scrollToSelectedTab(normalModeTabSelected)
       navigationController?.setNavigationBarHidden(false, animated: false)
     }
-    
+
     tabTypeSelector.isHidden = privateMode
   }
 
@@ -721,7 +780,7 @@ class TabTrayController: AuthenticationController {
     // Initially add the tab to recently closed and remove it from Tab Data after
     tabManager.addTabToRecentlyClosed(tab)
     tabManager.removeTab(tab)
-    
+
     let query = isTabTrayBeingSearched ? tabTraySearchQuery : nil
     applySnapshot(for: query)
   }
@@ -730,40 +789,45 @@ class TabTrayController: AuthenticationController {
     tabManager.removeTabsWithUndoToast(tabManager.tabsForCurrentMode)
     applySnapshot()
   }
-  
+
   private func presentSyncSettings(status: SyncStatusState) {
     switch status {
-      case .noSyncChain:
-        openInsideSettingsNavigation(
-          with: SyncWelcomeViewController(
-            syncAPI: braveCore.syncAPI,
-            syncProfileServices: braveCore.syncProfileService,
-            tabManager: tabManager,
-            windowProtection: windowProtection,
-            isModallyPresented: true))
-      case .openTabsDisabled, .noSyncedSessions:
-        if !DeviceInfo.hasConnectivity() {
-          present(SyncAlerts.noConnection, animated: true)
-          return
-        }
-      
-        let syncSettingsScreen = SyncSettingsTableViewController(
-          isModallyPresented: true,
+    case .noSyncChain:
+      openInsideSettingsNavigation(
+        with: SyncWelcomeViewController(
           syncAPI: braveCore.syncAPI,
-          syncProfileService: braveCore.syncProfileService,
+          syncProfileServices: braveCore.syncProfileService,
           tabManager: tabManager,
-          windowProtection: windowProtection)
-       
-        syncSettingsScreen.syncStatusDelegate = self
-      
-        openInsideSettingsNavigation(with: syncSettingsScreen)
-      default:
+          windowProtection: windowProtection,
+          isModallyPresented: true
+        )
+      )
+    case .openTabsDisabled, .noSyncedSessions:
+      if !DeviceInfo.hasConnectivity() {
+        present(SyncAlerts.noConnection, animated: true)
         return
+      }
+
+      let syncSettingsScreen = SyncSettingsTableViewController(
+        isModallyPresented: true,
+        syncAPI: braveCore.syncAPI,
+        syncProfileService: braveCore.syncProfileService,
+        tabManager: tabManager,
+        windowProtection: windowProtection
+      )
+
+      syncSettingsScreen.syncStatusDelegate = self
+
+      openInsideSettingsNavigation(with: syncSettingsScreen)
+    default:
+      return
     }
   }
-  
+
   func openInsideSettingsNavigation(with viewController: UIViewController) {
-    let settingsNavigationController = SettingsNavigationController(rootViewController: viewController).then {
+    let settingsNavigationController = SettingsNavigationController(
+      rootViewController: viewController
+    ).then {
       $0.popoverDelegate = self
       $0.isModalInPresentation = true
       $0.modalPresentationStyle =
@@ -771,22 +835,31 @@ class TabTrayController: AuthenticationController {
     }
 
     settingsNavigationController.navigationBar.topItem?.leftBarButtonItem =
-      UIBarButtonItem(barButtonSystemItem: .done, target: settingsNavigationController, action: #selector(settingsNavigationController.done))
-    
+      UIBarButtonItem(
+        barButtonSystemItem: .done,
+        target: settingsNavigationController,
+        action: #selector(settingsNavigationController.done)
+      )
+
     DeviceOrientation.shared.changeOrientationToPortraitOnPhone()
 
     present(settingsNavigationController, animated: true)
   }
-  
+
   private func scrollToSelectedTab(_ tab: Tab?) {
     if let selectedTab = tab,
-       let selectedIndexPath = dataSource.indexPath(for: selectedTab) {
+      let selectedIndexPath = dataSource.indexPath(for: selectedTab)
+    {
       DispatchQueue.main.async {
-        self.tabTrayView.collectionView.scrollToItem(at: selectedIndexPath, at: .centeredVertically, animated: false)
+        self.tabTrayView.collectionView.scrollToItem(
+          at: selectedIndexPath,
+          at: .centeredVertically,
+          animated: false
+        )
       }
     }
   }
-  
+
   @objc private func tappedCollectionViewBackground() {
     if traitCollection.horizontalSizeClass == .compact {
       doneAction()
@@ -797,8 +870,9 @@ class TabTrayController: AuthenticationController {
 // MARK: PresentingModalViewControllerDelegate
 
 extension TabTrayController: PresentingModalViewControllerDelegate {
-  
-  func dismissPresentedModalViewController(_ modalViewController: UIViewController, animated: Bool) {
+
+  func dismissPresentedModalViewController(_ modalViewController: UIViewController, animated: Bool)
+  {
     modalViewController.dismiss(animated: true) { [weak self] in
       self?.reloadOpenTabsSession()
     }
@@ -845,7 +919,10 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
 
     guard var visibleCells = collectionView.visibleCells as? [TabCell] else { return nil }
     var bounds = collectionView.bounds
-    bounds = bounds.offsetBy(dx: collectionView.contentInset.left, dy: collectionView.contentInset.top)
+    bounds = bounds.offsetBy(
+      dx: collectionView.contentInset.left,
+      dy: collectionView.contentInset.top
+    )
     bounds.size.width -= collectionView.contentInset.left + collectionView.contentInset.right
     bounds.size.height -= collectionView.contentInset.top + collectionView.contentInset.bottom
     // visible cells do sometimes return also not visible cells when attempting to go past the last cell with VoiceOver right-flick gesture; so make sure we have only visible cells (yeah...)
@@ -871,9 +948,16 @@ extension TabTrayController: UIScrollViewAccessibilityDelegate {
     if firstTabRow == lastTabRow {
       return String(
         format: Strings.tabTraySingleTabPositionFormatVoiceOverText,
-        NSNumber(value: firstTabRow), NSNumber(value: tabCount))
+        NSNumber(value: firstTabRow),
+        NSNumber(value: tabCount)
+      )
     } else {
-      return String(format: Strings.tabTrayMultiTabPositionFormatVoiceOverText, NSNumber(value: firstTabRow as Int), NSNumber(value: lastTabRow), NSNumber(value: tabCount))
+      return String(
+        format: Strings.tabTrayMultiTabPositionFormatVoiceOverText,
+        NSNumber(value: firstTabRow as Int),
+        NSNumber(value: lastTabRow),
+        NSNumber(value: tabCount)
+      )
     }
   }
 }

@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SwiftUI
 import BraveStrings
 import BraveUI
 import Preferences
+import SwiftUI
+import UIKit
 
 extension FeedDataSource.Environment {
   fileprivate var name: String {
@@ -37,7 +37,7 @@ extension FeedDataSource {
 public struct BraveNewsDebugSettingsView: View {
   private let feedDataSource: FeedDataSource
   private let dismissAction: (() -> Void)?
-  
+
   public init(dataSource: FeedDataSource, dismissAction: (() -> Void)? = nil) {
     self.feedDataSource = dataSource
     self.dismissAction = dismissAction
@@ -45,22 +45,22 @@ public struct BraveNewsDebugSettingsView: View {
     self._environment = .init(wrappedValue: dataSource.environment)
     self._localeOverride = .init(wrappedValue: dataSource.selectedLocale)
   }
-  
+
   @State private var environment: FeedDataSource.Environment = .production
   @State private var localeOverride: String = "en_US"
   @State private var fileList: [NewsFile]?
-  
+
   private struct NewsFile: Identifiable, Equatable {
     var url: URL
     var name: String
     var size: Int
     var modifiedDate: Date
-    
+
     var id: String {
       url.absoluteString
     }
   }
-  
+
   public var body: some View {
     List {
       Section {
@@ -159,10 +159,12 @@ public struct BraveNewsDebugSettingsView: View {
               HStack {
                 VStack(alignment: .leading) {
                   Text(file.name)
-                  Text("\(Text(file.modifiedDate, format: .dateTime)) · \(Text(file.size.formatted(.byteCount(style: .file))).monospacedDigit())")
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .foregroundColor(.secondary)
-                    .font(.footnote)
+                  Text(
+                    "\(Text(file.modifiedDate, format: .dateTime)) · \(Text(file.size.formatted(.byteCount(style: .file))).monospacedDigit())"
+                  )
+                  .frame(maxWidth: .infinity, alignment: .leading)
+                  .foregroundColor(.secondary)
+                  .font(.footnote)
                 }
               }
               .padding(.vertical, 2)
@@ -213,7 +215,7 @@ public struct BraveNewsDebugSettingsView: View {
       fileList = await fetchFileList()
     }
   }
-  
+
   private func fetchFileList() async -> [NewsFile] {
     let resourceKeys: [URLResourceKey] = [.nameKey, .contentModificationDateKey, .fileSizeKey]
     let urls = await feedDataSource.fetchCachedFiles(
@@ -223,8 +225,9 @@ public struct BraveNewsDebugSettingsView: View {
       do {
         let values = try url.resourceValues(forKeys: Set(resourceKeys))
         guard let name = values.name,
-              let size = values.fileSize,
-              let modifiedDate = values.contentModificationDate else {
+          let size = values.fileSize,
+          let modifiedDate = values.contentModificationDate
+        else {
           return nil
         }
         return .init(url: url, name: name, size: size, modifiedDate: modifiedDate)

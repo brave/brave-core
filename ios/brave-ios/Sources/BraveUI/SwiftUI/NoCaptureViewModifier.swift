@@ -16,7 +16,10 @@ private struct NoCaptureViewModifier: ViewModifier {
         isCaptured = UIScreen.main.isCaptured
       }
       .onReceive(
-        NotificationCenter.default.publisher(for: UIScreen.capturedDidChangeNotification, object: nil)
+        NotificationCenter.default.publisher(
+          for: UIScreen.capturedDidChangeNotification,
+          object: nil
+        )
       ) { notification in
         isCaptured = (notification.object as? UIScreen)?.isCaptured ?? UIScreen.main.isCaptured
       }

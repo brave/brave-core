@@ -2,14 +2,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveShared
 import CoreData
 import Data
-import Shared
-import BraveShared
-import Growth
-import os.log
 import DesignSystem
+import Growth
+import Shared
+import UIKit
+import os.log
 
 class AddEditBookmarkTableViewController: UITableViewController {
 
@@ -50,10 +50,14 @@ class AddEditBookmarkTableViewController: UITableViewController {
     switch mode {
     case .addBookmark(let title, let url):
       return BookmarkDetailsView(title: title, url: url, isPrivateBrowsing: isPrivateBrowsing)
-    case .addFolder(let title), .addFolderUsingTabs(title: let title, _):
+    case .addFolder(let title), .addFolderUsingTabs(let title, _):
       return FolderDetailsViewTableViewCell(title: title, viewHeight: UX.cellHeight)
     case .editBookmark(let bookmark), .editFavorite(let bookmark):
-      return BookmarkDetailsView(title: bookmark.title, url: bookmark.url, isPrivateBrowsing: isPrivateBrowsing)
+      return BookmarkDetailsView(
+        title: bookmark.title,
+        url: bookmark.url,
+        isPrivateBrowsing: isPrivateBrowsing
+      )
     case .editFolder(let folder):
       return FolderDetailsViewTableViewCell(title: folder.title, viewHeight: UX.cellHeight)
     }
@@ -105,7 +109,9 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var rootLevelFolderCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.product.bookmarks")!).then {
+    let cell = IndentedImageTableViewCell(
+      image: UIImage(braveSystemNamed: "leo.product.bookmarks")!
+    ).then {
       $0.folderName.text = self.rootFolderName
       $0.tag = SpecialCell.rootLevel.rawValue
       if case .rootLevel = saveLocation, presentationMode == .folderHierarchy {
@@ -117,13 +123,14 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private var favoritesCell: IndentedImageTableViewCell {
-    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.heart.outline")!).then {
-      $0.folderName.text = Strings.favoritesRootLevelCellTitle
-      $0.tag = SpecialCell.favorites.rawValue
-      if case .favorites = saveLocation, presentationMode == .folderHierarchy {
-        $0.accessoryType = .checkmark
+    let cell = IndentedImageTableViewCell(image: UIImage(braveSystemNamed: "leo.heart.outline")!)
+      .then {
+        $0.folderName.text = Strings.favoritesRootLevelCellTitle
+        $0.tag = SpecialCell.favorites.rawValue
+        if case .favorites = saveLocation, presentationMode == .folderHierarchy {
+          $0.accessoryType = .checkmark
+        }
       }
-    }
 
     return cell
   }
@@ -205,7 +212,12 @@ class AddEditBookmarkTableViewController: UITableViewController {
     // This is a trick to get a self-sizing header view.
     header.setNeedsUpdateConstraints()
     header.updateConstraintsIfNeeded()
-    header.frame = CGRect(x: 0, y: 0, width: tableView.bounds.width, height: tableView.bounds.height)
+    header.frame = CGRect(
+      x: 0,
+      y: 0,
+      width: tableView.bounds.width,
+      height: tableView.bounds.height
+    )
     var newFrame = header.frame
     header.setNeedsLayout()
     header.layoutIfNeeded()
@@ -319,7 +331,12 @@ class AddEditBookmarkTableViewController: UITableViewController {
         bookmarkManager.delete(bookmark)
         Favorite.add(url: url, title: title)
       case .folder(let folder):
-        bookmarkManager.updateWithNewLocation(bookmark, customTitle: title, url: url, location: folder)
+        bookmarkManager.updateWithNewLocation(
+          bookmark,
+          customTitle: title,
+          url: url,
+          location: folder
+        )
       }
 
     case .editFolder(let folder):
@@ -331,7 +348,12 @@ class AddEditBookmarkTableViewController: UITableViewController {
       case .favorites:
         assertionFailure("Folders can't be saved to favorites")
       case .folder(let folderSaveLocation):
-        bookmarkManager.updateWithNewLocation(folder, customTitle: title, url: nil, location: folderSaveLocation)
+        bookmarkManager.updateWithNewLocation(
+          folder,
+          customTitle: title,
+          url: nil,
+          location: folderSaveLocation
+        )
       }
 
     case .editFavorite(let favorite):
@@ -382,7 +404,8 @@ class AddEditBookmarkTableViewController: UITableViewController {
           bookmarkManager.add(
             url: tabURL,
             title: fetchedTab.title,
-            parentFolder: parentFolder)
+            parentFolder: parentFolder
+          )
         }
       }
     }
@@ -399,14 +422,16 @@ class AddEditBookmarkTableViewController: UITableViewController {
     }
   }
 
-  override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String? {
+  override func tableView(_ tableView: UITableView, titleForFooterInSection section: Int) -> String?
+  {
     switch saveLocation {
     case .favorites: return Strings.favoritesLocationFooterText
     default: return nil
     }
   }
 
-  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String?
+  {
     return Strings.editBookmarkTableLocationHeader
   }
 
@@ -439,13 +464,18 @@ class AddEditBookmarkTableViewController: UITableViewController {
   }
 
   private func showNewFolderVC() {
-    let vc = AddEditBookmarkTableViewController(bookmarkManager: bookmarkManager,
-                                                mode: .addFolder(title: Strings.newFolderDefaultName),
-                                                isPrivateBrowsing: isPrivateBrowsing)
+    let vc = AddEditBookmarkTableViewController(
+      bookmarkManager: bookmarkManager,
+      mode: .addFolder(title: Strings.newFolderDefaultName),
+      isPrivateBrowsing: isPrivateBrowsing
+    )
     navigationController?.pushViewController(vc, animated: true)
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
 
     switch presentationMode {
     case .currentSelection:
@@ -480,12 +510,15 @@ class AddEditBookmarkTableViewController: UITableViewController {
       if indentedFolder.folder.parent == nil {
         cell.customImage.image = UIImage(braveSystemNamed: "leo.product.bookmarks")
       } else {
-        cell.customImage.image = UIImage(braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open" : "leo.folder")
+        cell.customImage.image = UIImage(
+          braveSystemNamed: hasChildrenFolders == true ? "leo.folder.open" : "leo.folder"
+        )
       }
 
       if let folder = saveLocation.getFolder, folder.objectID == indentedFolder.folder.objectID {
         cell.accessoryType = .checkmark
-      } else if case .rootLevel = saveLocation, indentedFolder.folder.objectID == self.rootFolderId {
+      } else if case .rootLevel = saveLocation, indentedFolder.folder.objectID == self.rootFolderId
+      {
         cell.accessoryType = .checkmark
       }
 
@@ -519,7 +552,13 @@ extension AddEditBookmarkTableViewController: BookmarkDetailsViewDelegate {
 // MARK: - NSFetchedResultsControllerDelegate
 
 extension AddEditBookmarkTableViewController: BookmarksV2FetchResultsDelegate {
-  func controller(_ controller: BookmarksV2FetchResultsController, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  func controller(
+    _ controller: BookmarksV2FetchResultsController,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
     reloadData()
   }
 

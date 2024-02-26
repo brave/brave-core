@@ -5,6 +5,7 @@
 
 import Foundation
 import XCTest
+
 @testable import BraveNews
 
 extension FeedCardGenerator {
@@ -21,16 +22,58 @@ extension FeedCardGenerator {
 }
 
 final class CardGeneratorTests: XCTestCase {
-  
+
   private static let mockSources: [FeedItem.Source] = [
-    .init(id: "1", isDefault: false, category: "Top News", name: "Top News", destinationDomains: [], localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]),
-    .init(id: "2", isDefault: false, category: "Top News", name: "Top News 2", destinationDomains: [], localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]),
-    .init(id: "3", isDefault: false, category: "Top News", name: "Top News 3", destinationDomains: [], localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]),
-    .init(id: "4", isDefault: false, category: "Technology", name: "Technology", destinationDomains: [], localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]),
-    .init(id: "5", isDefault: false, category: "Technology", name: "Technology 2", destinationDomains: [], localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]),
-    .init(id: "6", isDefault: false, category: "Technology", name: "Technology 3", destinationDomains: [], localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]),
+    .init(
+      id: "1",
+      isDefault: false,
+      category: "Top News",
+      name: "Top News",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]
+    ),
+    .init(
+      id: "2",
+      isDefault: false,
+      category: "Top News",
+      name: "Top News 2",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]
+    ),
+    .init(
+      id: "3",
+      isDefault: false,
+      category: "Top News",
+      name: "Top News 3",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]
+    ),
+    .init(
+      id: "4",
+      isDefault: false,
+      category: "Technology",
+      name: "Technology",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]
+    ),
+    .init(
+      id: "5",
+      isDefault: false,
+      category: "Technology",
+      name: "Technology 2",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]
+    ),
+    .init(
+      id: "6",
+      isDefault: false,
+      category: "Technology",
+      name: "Technology 3",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Technology"], locale: "ja_JP")]
+    ),
   ]
-  
+
   private static let scoredItems: [FeedItem] = Range<Int>(1...6)
     .compactMap { id -> FeedItem? in
       guard let source = mockSources.first(where: { $0.id == String(id) }) else { return nil }
@@ -49,7 +92,7 @@ final class CardGeneratorTests: XCTestCase {
         source: source
       )
     }
-  
+
   /// Tests that no cards will generate when the user follows no sources or channels within the list of items
   func testEmptyFollowList() async throws {
     let sequence: [FeedSequenceElement] = [
@@ -66,13 +109,13 @@ final class CardGeneratorTests: XCTestCase {
     let cards = try await generator.allCards
     XCTAssertTrue(cards.isEmpty)
   }
-  
+
   /// Tests that following a channel will render cards from sources that the user doesn't follow explicilty
   func testFollowedChannel() async throws {
     let sequence: [FeedSequenceElement] = [
       .repeating([
-        .headline(paired: false),
-      ]),
+        .headline(paired: false)
+      ])
     ]
     let generator = FeedCardGenerator(
       scoredItems: Self.scoredItems,
@@ -91,13 +134,13 @@ final class CardGeneratorTests: XCTestCase {
     XCTAssertFalse(cards.isEmpty)
     XCTAssertEqual(cards.map(\.items).flatMap { $0 }, expectedItems)
   }
-  
+
   /// Tests that hidden sources dont generate cards even if they exist in a followed channel
   func testHiddenSources() async throws {
     let sequence: [FeedSequenceElement] = [
       .repeating([
-        .headline(paired: false),
-      ]),
+        .headline(paired: false)
+      ])
     ]
     let generator = FeedCardGenerator(
       scoredItems: Self.scoredItems,
@@ -117,7 +160,7 @@ final class CardGeneratorTests: XCTestCase {
     XCTAssertFalse(cards.isEmpty)
     XCTAssertEqual(cards.map(\.items).flatMap { $0 }, expectedItems)
   }
-  
+
   /// Tests that an empty sequence results in no cards
   func testEmptySequence() async throws {
     let generator = FeedCardGenerator(
@@ -131,11 +174,11 @@ final class CardGeneratorTests: XCTestCase {
     let cards = try await generator.allCards
     XCTAssertTrue(cards.isEmpty)
   }
-  
+
   /// Tests a finite sequence that only generates cards until rules run out
   func testFiniteSequence() async throws {
     let sequence: [FeedSequenceElement] = [
-      .headline(paired: false),
+      .headline(paired: false)
     ]
     let generator = FeedCardGenerator(
       scoredItems: Self.scoredItems,
@@ -154,13 +197,13 @@ final class CardGeneratorTests: XCTestCase {
       XCTFail()
     }
   }
-  
+
   /// Tests generating cards using a repeating sequence that will fill cards until there are none left to fill
   func testRepeatingSequence() async throws {
     let sequence: [FeedSequenceElement] = [
       .repeating([
-        .headline(paired: false),
-      ]),
+        .headline(paired: false)
+      ])
     ]
     let generator = FeedCardGenerator(
       scoredItems: Self.scoredItems,
@@ -175,15 +218,17 @@ final class CardGeneratorTests: XCTestCase {
     })
     let cards = try await generator.allCards
     XCTAssertEqual(cards.count, expectedItems.count)
-    XCTAssertTrue(cards.allSatisfy({
-      if case .headline = $0 {
-        return true
-      }
-      return false
-    }))
+    XCTAssertTrue(
+      cards.allSatisfy({
+        if case .headline = $0 {
+          return true
+        }
+        return false
+      })
+    )
     XCTAssertEqual(cards.map(\.items).flatMap { $0 }, expectedItems)
   }
-  
+
   /// Tests generating a category group card, which by default will always be a Top News category initially
   func testInitialCategoryGroup() async throws {
     let sequence: [FeedSequenceElement] = [
@@ -202,23 +247,46 @@ final class CardGeneratorTests: XCTestCase {
     })
     let cards = try await generator.allCards
     XCTAssertEqual(cards.count, 1)
-    XCTAssertTrue(cards.allSatisfy({
-      if case .group = $0 {
-        return true
-      }
-      return false
-    }))
+    XCTAssertTrue(
+      cards.allSatisfy({
+        if case .group = $0 {
+          return true
+        }
+        return false
+      })
+    )
     XCTAssertEqual(cards.map(\.items).flatMap { $0 }, expectedItems)
   }
-  
+
   /// Tests generating a deals card with feed items that have the `deals` content type and an offers category
   func testDealsCard() async throws {
     let sequence: [FeedSequenceElement] = [
       .deals
     ]
-    let dealsSource = FeedItem.Source(id: "1", isDefault: false, category: "Deals", name: "Deals", destinationDomains: [], backgroundColor: nil, localeDetails: [.init(channels: ["Brave"], locale: "en_US")])
+    let dealsSource = FeedItem.Source(
+      id: "1",
+      isDefault: false,
+      category: "Deals",
+      name: "Deals",
+      destinationDomains: [],
+      backgroundColor: nil,
+      localeDetails: [.init(channels: ["Brave"], locale: "en_US")]
+    )
     let dealsItems: [FeedItem] = (1...3).map {
-      .init(score: Double($0), content: .init(publishTime: Date(), title: "", description: "", contentType: .deals, publisherID: dealsSource.id, urlHash: "\($0)", baseScore: Double($0), offersCategory: "Deal"), source: dealsSource)
+      .init(
+        score: Double($0),
+        content: .init(
+          publishTime: Date(),
+          title: "",
+          description: "",
+          contentType: .deals,
+          publisherID: dealsSource.id,
+          urlHash: "\($0)",
+          baseScore: Double($0),
+          offersCategory: "Deal"
+        ),
+        source: dealsSource
+      )
     }
     let generator = FeedCardGenerator(
       scoredItems: dealsItems,
@@ -236,30 +304,64 @@ final class CardGeneratorTests: XCTestCase {
       XCTFail()
     }
   }
-  
+
   /// Tests that feed items are scored properly when following a source that is also included in channel
   func testScoringFromSourcesAndChannelFollow() async throws {
     let sequence: [FeedSequenceElement] = [
       .repeating([
-        .headline(paired: false),
-      ]),
+        .headline(paired: false)
+      ])
     ]
-    let source = FeedItem.Source(id: "1", isDefault: false, category: "Top News", name: "Source 1", destinationDomains: [], localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")])
-    let source2 = FeedItem.Source(id: "2", isDefault: false, category: "Top News", name: "Source 2", destinationDomains: [], localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")])
+    let source = FeedItem.Source(
+      id: "1",
+      isDefault: false,
+      category: "Top News",
+      name: "Source 1",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]
+    )
+    let source2 = FeedItem.Source(
+      id: "2",
+      isDefault: false,
+      category: "Top News",
+      name: "Source 2",
+      destinationDomains: [],
+      localeDetails: [.init(channels: ["Top Sources"], locale: "en_US")]
+    )
     let items = [
-      FeedItem(score: 10, content: .testArticle(sourceID: source.id, contentID: "a", score: 10), source: source),
-      FeedItem(score: 4, content: .testArticle(sourceID: source.id, contentID: "b", score: 4), source: source),
-      FeedItem(score: 2, content: .testArticle(sourceID: source.id, contentID: "c", score: 2), source: source),
-      FeedItem(score: 44, content: .testArticle(sourceID: source.id, contentID: "d", score: 44), source: source),
-      FeedItem(score: 1, content: .testArticle(sourceID: source2.id, contentID: "e", score: 1), source: source2),
+      FeedItem(
+        score: 10,
+        content: .testArticle(sourceID: source.id, contentID: "a", score: 10),
+        source: source
+      ),
+      FeedItem(
+        score: 4,
+        content: .testArticle(sourceID: source.id, contentID: "b", score: 4),
+        source: source
+      ),
+      FeedItem(
+        score: 2,
+        content: .testArticle(sourceID: source.id, contentID: "c", score: 2),
+        source: source
+      ),
+      FeedItem(
+        score: 44,
+        content: .testArticle(sourceID: source.id, contentID: "d", score: 44),
+        source: source
+      ),
+      FeedItem(
+        score: 1,
+        content: .testArticle(sourceID: source2.id, contentID: "e", score: 1),
+        source: source2
+      ),
     ]
     let expectedItems = items.sorted(by: { $0.score < $1.score })
     let generator = FeedCardGenerator(
       scoredItems: items,
       sequence: sequence,
-      followedSources: ["1"], // Following source 1 directly
+      followedSources: ["1"],  // Following source 1 directly
       hiddenSources: [],
-      followedChannels: ["en_US": ["Top Sources"]], // Following source 2 indirectly
+      followedChannels: ["en_US": ["Top Sources"]],  // Following source 2 indirectly
       ads: nil
     )
     let cards = try await generator.allCards
@@ -269,7 +371,12 @@ final class CardGeneratorTests: XCTestCase {
 }
 
 extension FeedItem.Content {
-  fileprivate static func testArticle(sourceID: String, contentID: String, score: Double, containsImage: Bool = true) -> Self {
+  fileprivate static func testArticle(
+    sourceID: String,
+    contentID: String,
+    score: Double,
+    containsImage: Bool = true
+  ) -> Self {
     .init(
       publishTime: Date(),
       imageURL: containsImage ? URL(string: "image") : nil,

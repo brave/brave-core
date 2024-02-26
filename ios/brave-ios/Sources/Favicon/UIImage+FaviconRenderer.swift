@@ -8,15 +8,17 @@ import UIKit
 
 private struct UIConstants {
   /// Used as backgrounds for favicons
-  static let defaultColorStrings = ["2e761a", "399320", "40a624", "57bd35", "70cf5b",
-                                    "90e07f", "b1eea5", "881606", "aa1b08", "c21f09",
-                                    "d92215", "ee4b36", "f67964", "ffa792", "025295",
-                                    "0568ba", "0675d3", "0996f8", "2ea3ff", "61b4ff",
-                                    "95cdff", "00736f", "01908b", "01a39d", "01bdad",
-                                    "27d9d2", "58e7e6", "89f4f5", "c84510", "e35b0f",
-                                    "f77100", "ff9216", "ffad2e", "ffc446", "ffdf81",
-                                    "911a2e", "b7223b", "cf2743", "ea385e", "fa526e",
-                                    "ff7a8d", "ffa7b3"]
+  static let defaultColorStrings = [
+    "2e761a", "399320", "40a624", "57bd35", "70cf5b",
+    "90e07f", "b1eea5", "881606", "aa1b08", "c21f09",
+    "d92215", "ee4b36", "f67964", "ffa792", "025295",
+    "0568ba", "0675d3", "0996f8", "2ea3ff", "61b4ff",
+    "95cdff", "00736f", "01908b", "01a39d", "01bdad",
+    "27d9d2", "58e7e6", "89f4f5", "c84510", "e35b0f",
+    "f77100", "ff9216", "ffad2e", "ffc446", "ffdf81",
+    "911a2e", "b7223b", "cf2743", "ea385e", "fa526e",
+    "ff7a8d", "ffa7b3",
+  ]
 }
 
 private struct FaviconUtils {
@@ -38,7 +40,8 @@ private struct FaviconUtils {
     guard let finalFallback = url.absoluteString.first else {
       return "W"
     }
-    return (url.baseDomain?.first ?? fallbackCharacter ?? url.host?.first ?? finalFallback).uppercased()
+    return (url.baseDomain?.first ?? fallbackCharacter ?? url.host?.first ?? finalFallback)
+      .uppercased()
   }
 }
 
@@ -55,7 +58,9 @@ extension UIImage {
 
     let iconSize = CGSize(width: cgImage.width, height: cgImage.height)
     let alphaInfo = cgImage.alphaInfo
-    let hasAlphaChannel = alphaInfo == .first || alphaInfo == .last || alphaInfo == .premultipliedFirst || alphaInfo == .premultipliedLast
+    let hasAlphaChannel =
+      alphaInfo == .first || alphaInfo == .last || alphaInfo == .premultipliedFirst
+      || alphaInfo == .premultipliedLast
     if hasAlphaChannel, let dataProvider = cgImage.dataProvider {
       let length = CFDataGetLength(dataProvider.data)
       // Sample the image edges to determine if it has tranparent pixels
@@ -99,50 +104,64 @@ extension UIImage {
 // MARK: - Rendering
 extension UIImage {
   private static let maxScaledFaviconSize = 256.0
-  
+
   /// Renders an image to a canvas with a background colour and passing
   @MainActor
-  static func renderFavicon(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
+  static func renderFavicon(
+    _ image: UIImage,
+    backgroundColor: UIColor?,
+    shouldScale: Bool
+  ) async -> Favicon {
     if let cgImage = image.cgImage {
       let hasTransparentEdges = image.hasTransparentEdges
-      
+
       var idealSize = image.size
       var padding = hasTransparentEdges ? 4.0 : 0.0
-      
+
       if shouldScale && max(idealSize.width, idealSize.height) > maxScaledFaviconSize {
         let ratio = maxScaledFaviconSize / max(idealSize.width, idealSize.height)
         idealSize.width *= ratio
         idealSize.height *= ratio
       }
-      
+
       if shouldScale && hasTransparentEdges {
         padding = max(idealSize.width, idealSize.height) * 0.20
       }
-      
-      if shouldScale && max(idealSize.width, idealSize.height) < 64.0 && min(idealSize.width, idealSize.height) > 0 {
+
+      if shouldScale && max(idealSize.width, idealSize.height) < 64.0
+        && min(idealSize.width, idealSize.height) > 0
+      {
         let ratio = 64.0 / min(idealSize.width, idealSize.height)
         idealSize.width *= ratio
         idealSize.height *= ratio
         padding = hasTransparentEdges ? max(idealSize.width, idealSize.height) * 0.20 : padding
       }
-        
+
       let size = CGSize(
         width: idealSize.width + padding,
-        height: idealSize.height + padding)
+        height: idealSize.height + padding
+      )
 
-      let finalImage = await drawOnImageContext(size: size, { context, rect in
-        context.cgContext.saveGState()
-        context.cgContext.setFillColor(backgroundColor?.cgColor ?? UIColor.clear.cgColor)
-        context.cgContext.fill(rect)
+      let finalImage = await drawOnImageContext(
+        size: size,
+        { context, rect in
+          context.cgContext.saveGState()
+          context.cgContext.setFillColor(backgroundColor?.cgColor ?? UIColor.clear.cgColor)
+          context.cgContext.fill(rect)
 
-        context.cgContext.translateBy(x: 0.0, y: rect.size.height)
-        context.cgContext.scaleBy(x: 1.0, y: -1.0)
+          context.cgContext.translateBy(x: 0.0, y: rect.size.height)
+          context.cgContext.scaleBy(x: 1.0, y: -1.0)
 
-        context.cgContext.draw(cgImage, in: rect.insetBy(dx: padding, dy: padding))
-        context.cgContext.restoreGState()
-      })
+          context.cgContext.draw(cgImage, in: rect.insetBy(dx: padding, dy: padding))
+          context.cgContext.restoreGState()
+        }
+      )
 
-      return Favicon(image: finalImage, isMonogramImage: false, backgroundColor: backgroundColor ?? .clear)
+      return Favicon(
+        image: finalImage,
+        isMonogramImage: false,
+        backgroundColor: backgroundColor ?? .clear
+      )
     }
 
     return Favicon(image: image, isMonogramImage: false, backgroundColor: backgroundColor ?? .clear)
@@ -150,7 +169,12 @@ extension UIImage {
 
   /// Renders a monogram letter of the specified URL onto a canvas with textColor and backgroundColor
   @MainActor
-  static func renderMonogram(_ url: URL, textColor: UIColor?, backgroundColor: UIColor?, monogramString: String?) async -> Favicon {
+  static func renderMonogram(
+    _ url: URL,
+    textColor: UIColor?,
+    backgroundColor: UIColor?,
+    monogramString: String?
+  ) async -> Favicon {
     // Monogram favicon attributes
     let imageSize = CGSize(width: 64.0, height: 64.0)
 
@@ -172,10 +196,12 @@ extension UIImage {
     label.minimumScaleFactor = 0.5
     label.font = .systemFont(ofSize: imageSize.height / 2.0)
 
-    let text = (monogramString ?? FaviconUtils.monogramLetter(
+    let text =
+      (monogramString
+      ?? FaviconUtils.monogramLetter(
         for: url,
         fallbackCharacter: nil
-    )).uppercased() as NSString
+      )).uppercased() as NSString
 
     let padding = 28.0
     let finalImage = await drawOnImageContext(size: imageSize) { context, rect in
@@ -190,7 +216,8 @@ extension UIImage {
 
       let ratio = min(
         (rect.size.width - padding) / newSize.width,
-        (rect.size.height - padding) / newSize.height)
+        (rect.size.height - padding) / newSize.height
+      )
       fontSize *= ratio
 
       if fontSize < label.font.pointSize * 0.5 {
@@ -225,11 +252,16 @@ extension UIImage {
 // MARK: - Drawing
 extension UIImage {
   @MainActor
-  private static func drawOnImageContext(size: CGSize, _ draw: (UIGraphicsImageRendererContext, CGRect) -> Void) async -> UIImage {
+  private static func drawOnImageContext(
+    size: CGSize,
+    _ draw: (UIGraphicsImageRendererContext, CGRect) -> Void
+  ) async -> UIImage {
     await withCheckedContinuation { continuation in
-      continuation.resume(returning: UIGraphicsImageRenderer(size: size).image { context in
-        draw(context, CGRect(size: size))
-      })
+      continuation.resume(
+        returning: UIGraphicsImageRenderer(size: size).image { context in
+          draw(context, CGRect(size: size))
+        }
+      )
     }
   }
 }

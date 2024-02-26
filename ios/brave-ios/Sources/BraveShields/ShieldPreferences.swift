@@ -8,20 +8,22 @@ import Preferences
 
 public class ShieldPreferences {
   private static let defaultBlockAdsAndTrackingLevel: ShieldLevel = .standard
-  
+
   /// Get the level of the adblock and tracking protection as a stored preference
   /// - Warning: You should not access this directly but  through ``blockAdsAndTrackingLevel``
   public static var blockAdsAndTrackingLevelRaw = Preferences.Option<String>(
     key: "shields.block-ads-and-tracking-level",
     default: defaultBlockAdsAndTrackingLevel.rawValue
   )
-  
+
   /// Get the level of the adblock and tracking protection
   public static var blockAdsAndTrackingLevel: ShieldLevel {
-    get { ShieldLevel(rawValue: blockAdsAndTrackingLevelRaw.value) ?? defaultBlockAdsAndTrackingLevel }
+    get {
+      ShieldLevel(rawValue: blockAdsAndTrackingLevelRaw.value) ?? defaultBlockAdsAndTrackingLevel
+    }
     set { blockAdsAndTrackingLevelRaw.value = newValue.rawValue }
   }
-  
+
   /// A boolean value inidicating if GPC is enabled
   public static var enableGPC = Preferences.Option<Bool>(
     key: "shields.enable-gpc",

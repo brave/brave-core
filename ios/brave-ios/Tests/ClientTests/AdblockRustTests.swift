@@ -2,8 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import XCTest
 import BraveCore
+import XCTest
+
 @testable import Brave
 
 class AdblockRustTests: XCTestCase {
@@ -21,25 +22,31 @@ class AdblockRustTests: XCTestCase {
     AdblockEngine.setDomainResolver()
     let engine = try AdblockEngine(rules: rules)
 
-    XCTAssertTrue(engine.shouldBlock(
-      requestURL: URL(string: "http://example.com/-advertisement-icon.")!,
-      sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest,
-      isAggressive: true
-    ))
-    
-    XCTAssertFalse(engine.shouldBlock(
-      requestURL: URL(string: "https://brianbondy.com")!,
-      sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest,
-      isAggressive: true
-    ))
-    
-    XCTAssertFalse(engine.shouldBlock(
-      requestURL: URL(string: "http://example.com/good-advertisement-icon.")!,
-      sourceURL: URL(string: "https://example.com")!,
-      resourceType: .xmlhttprequest,
-      isAggressive: true
-    ))
+    XCTAssertTrue(
+      engine.shouldBlock(
+        requestURL: URL(string: "http://example.com/-advertisement-icon.")!,
+        sourceURL: URL(string: "https://example.com")!,
+        resourceType: .xmlhttprequest,
+        isAggressive: true
+      )
+    )
+
+    XCTAssertFalse(
+      engine.shouldBlock(
+        requestURL: URL(string: "https://brianbondy.com")!,
+        sourceURL: URL(string: "https://example.com")!,
+        resourceType: .xmlhttprequest,
+        isAggressive: true
+      )
+    )
+
+    XCTAssertFalse(
+      engine.shouldBlock(
+        requestURL: URL(string: "http://example.com/good-advertisement-icon.")!,
+        sourceURL: URL(string: "https://example.com")!,
+        resourceType: .xmlhttprequest,
+        isAggressive: true
+      )
+    )
   }
 }

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Preferences
 import Shared
 import os.log
@@ -26,34 +26,37 @@ public struct BraveSyncDevice: Codable {
 extension BraveSyncAPI {
 
   public static let seedByteLength = 32
-  
+
   var isInSyncGroup: Bool {
     return Preferences.Chromium.syncEnabled.value
   }
-  
+
   /// Property that determines if the local sync chain should be resetted
   var shouldLeaveSyncGroup: Bool {
     guard isInSyncGroup else {
       return false
     }
-    
-    return (!isSyncFeatureActive && !isInitialSyncFeatureSetupComplete) || isSyncAccountDeletedNoticePending
+
+    return (!isSyncFeatureActive && !isInitialSyncFeatureSetupComplete)
+      || isSyncAccountDeletedNoticePending
   }
 
   var isSendTabToSelfVisible: Bool {
     guard let json = getDeviceListJSON(), let data = json.data(using: .utf8) else {
       return false
     }
-    
+
     do {
       let devices = try JSONDecoder().decode([BraveSyncDevice].self, from: data)
       return devices.count > 1
     } catch {
-      Logger.module.error("Error occurred while parsing device information: \(error.localizedDescription)")
+      Logger.module.error(
+        "Error occurred while parsing device information: \(error.localizedDescription)"
+      )
       return false
     }
   }
-  
+
   @discardableResult
   func joinSyncGroup(codeWords: String, syncProfileService: BraveSyncProfileServiceIOS) -> Bool {
     if setSyncCode(codeWords) {
@@ -81,22 +84,22 @@ extension BraveSyncAPI {
       // Remove all observers before leaving the sync chain
       removeAllObservers()
     }
-    
+
     resetSyncChain()
     Preferences.Chromium.syncEnabled.value = false
   }
-  
+
   func resetSyncChain() {
     Preferences.Chromium.syncHistoryEnabled.value = false
     Preferences.Chromium.syncPasswordsEnabled.value = false
     Preferences.Chromium.syncOpenTabsEnabled.value = false
-    
+
     resetSync()
   }
 
   func enableSyncTypes(syncProfileService: BraveSyncProfileServiceIOS) {
     syncProfileService.userSelectedTypes = []
-    
+
     if Preferences.Chromium.syncBookmarksEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .BOOKMARKS)
     }
@@ -108,7 +111,7 @@ extension BraveSyncAPI {
     if Preferences.Chromium.syncPasswordsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .PASSWORDS)
     }
-    
+
     if Preferences.Chromium.syncOpenTabsEnabled.value {
       syncProfileService.userSelectedTypes.update(with: .TABS)
     }
@@ -121,11 +124,17 @@ extension BraveSyncAPI {
   ///   - onStateChanged: Callback for sync service state changes
   ///   - onServiceShutdown: Callback for sync service shutdown
   /// - Returns: Listener for service
-  func addServiceStateObserver(_ onStateChanged: @escaping () -> Void, onServiceShutdown: @escaping () -> Void = {}) -> AnyObject {
+  func addServiceStateObserver(
+    _ onStateChanged: @escaping () -> Void,
+    onServiceShutdown: @escaping () -> Void = {}
+  ) -> AnyObject {
     let serviceStateListener = BraveSyncServiceListener(onRemoved: { [weak self] observer in
       self?.serviceObservers.remove(observer)
     })
-    serviceStateListener.observer = createSyncServiceObserver(onStateChanged, onSyncServiceShutdown: onServiceShutdown)
+    serviceStateListener.observer = createSyncServiceObserver(
+      onStateChanged,
+      onSyncServiceShutdown: onServiceShutdown
+    )
 
     serviceObservers.add(serviceStateListener)
     return serviceStateListener
@@ -136,7 +145,8 @@ extension BraveSyncAPI {
       observer,
       onRemoved: { [weak self] observer in
         self?.deviceObservers.remove(observer)
-      })
+      }
+    )
     deviceStateListener.observer = createSyncDeviceObserver(observer)
 
     deviceObservers.add(deviceStateListener)
@@ -162,23 +172,37 @@ extension BraveSyncAPI {
   }
 
   private var serviceObservers: NSHashTable<BraveSyncServiceListener> {
-    if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceObservers) as? NSHashTable<BraveSyncServiceListener> {
+    if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceObservers)
+      as? NSHashTable<BraveSyncServiceListener>
+    {
       return observers
     }
 
     let defaultValue = NSHashTable<BraveSyncServiceListener>.weakObjects()
-    objc_setAssociatedObject(self, &AssociatedObjectKeys.serviceObservers, defaultValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    objc_setAssociatedObject(
+      self,
+      &AssociatedObjectKeys.serviceObservers,
+      defaultValue,
+      .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+    )
 
     return defaultValue
   }
 
   private var deviceObservers: NSHashTable<BraveSyncDeviceListener> {
-    if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.deviceObservers) as? NSHashTable<BraveSyncDeviceListener> {
+    if let observers = objc_getAssociatedObject(self, &AssociatedObjectKeys.deviceObservers)
+      as? NSHashTable<BraveSyncDeviceListener>
+    {
       return observers
     }
 
     let defaultValue = NSHashTable<BraveSyncDeviceListener>.weakObjects()
-    objc_setAssociatedObject(self, &AssociatedObjectKeys.deviceObservers, defaultValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC)
+    objc_setAssociatedObject(
+      self,
+      &AssociatedObjectKeys.deviceObservers,
+      defaultValue,
+      .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+    )
 
     return defaultValue
   }

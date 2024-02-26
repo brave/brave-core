@@ -13,7 +13,7 @@ extension NumberFormatter {
       $0.currencyCode = CurrencyCode.usd.code
     }
   }
-  
+
   func coinMarketPriceString(from value: Double) -> String? {
     assert(numberStyle == .currency)
     var decimals: Int?
@@ -25,7 +25,7 @@ extension NumberFormatter {
     }
     minimumFractionDigits = decimals ?? 0
     maximumFractionDigits = decimals ?? 15
-    
+
     return string(from: NSNumber(value: value))
   }
 }

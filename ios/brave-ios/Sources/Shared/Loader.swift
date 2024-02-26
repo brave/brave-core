@@ -4,18 +4,14 @@
 
 import Foundation
 
-/**
- * Interface for listening to Loader updates.
- */
+/// Interface for listening to Loader updates.
 public protocol LoaderListener: AnyObject {
   associatedtype T
   func loader(dataLoaded data: T)
 }
 
-/**
- * Base implementation for a "push" data model.
- * Interested clients add themselves as listeners for data changes.
- */
+/// Base implementation for a "push" data model.
+/// Interested clients add themselves as listeners for data changes.
 open class Loader<T, ListenerType: LoaderListener> where T == ListenerType.T {
   private let listeners = WeakList<ListenerType>()
 

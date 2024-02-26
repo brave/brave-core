@@ -6,7 +6,9 @@
 import Foundation
 import Intents
 
-public class LockScreenFavoriteIntentHandler: NSObject, LockScreenFavoriteConfigurationIntentHandling {
+public class LockScreenFavoriteIntentHandler: NSObject,
+  LockScreenFavoriteConfigurationIntentHandling
+{
   public func provideFavoriteOptionsCollection(
     for intent: LockScreenFavoriteConfigurationIntent
   ) async throws -> INObjectCollection<FavoriteEntry> {

@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Preferences
 import BraveUI
-import Shared
 import Data
-import UIKit
 import Onboarding
+import Preferences
+import Shared
+import UIKit
 
 // MARK: - ProductNotification
 
@@ -34,20 +34,21 @@ extension BrowserViewController {
 
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
-       let url = selectedTab.url,
-       let internalURL = InternalURL(url) {
+      let url = selectedTab.url,
+      let internalURL = InternalURL(url)
+    {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
     guard let selectedTab = tabManager.selectedTab,
-          !Preferences.General.onboardingAdblockPopoverShown.value,
-          !benchmarkNotificationPresented,
-          !Preferences.AppState.backgroundedCleanly.value,
-          Preferences.Onboarding.isNewRetentionUser.value == true,
-          !topToolbar.inOverlayMode,
-          !isTabTrayActive,
-          selectedTab.webView?.scrollView.isDragging == false,
-          isAboutHomeUrl == false
+      !Preferences.General.onboardingAdblockPopoverShown.value,
+      !benchmarkNotificationPresented,
+      !Preferences.AppState.backgroundedCleanly.value,
+      Preferences.Onboarding.isNewRetentionUser.value == true,
+      !topToolbar.inOverlayMode,
+      !isTabTrayActive,
+      selectedTab.webView?.scrollView.isDragging == false,
+      isAboutHomeUrl == false
     else {
       return
     }
@@ -55,28 +56,32 @@ extension BrowserViewController {
     let blockedRequestURLs = selectedTab.contentBlocker.blockedRequests
 
     if !blockedRequestURLs.isEmpty, let url = selectedTab.url {
-      
+
       let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
-      
+
       guard currentBenchmarkWebsite != domain else {
         return
       }
-      
+
       currentBenchmarkWebsite = domain
-      
-      guard let trackersDetail = BlockedTrackerParser.parse(
-        blockedRequestURLs: blockedRequestURLs,
-        selectedTabURL: url) else {
+
+      guard
+        let trackersDetail = BlockedTrackerParser.parse(
+          blockedRequestURLs: blockedRequestURLs,
+          selectedTabURL: url
+        )
+      else {
         return
       }
-      
+
       notifyTrackersBlocked(
         domain: domain,
         displayTrackers: trackersDetail.displayTrackers,
-        trackerCount: trackersDetail.trackerCount)
+        trackerCount: trackersDetail.trackerCount
+      )
 
       Preferences.General.onboardingAdblockPopoverShown.value = true
-      
+
     }
   }
 
@@ -85,20 +90,21 @@ extension BrowserViewController {
 
     var isAboutHomeUrl = false
     if let selectedTab = tabManager.selectedTab,
-       let url = selectedTab.url,
-       let internalURL = InternalURL(url) {
+      let url = selectedTab.url,
+      let internalURL = InternalURL(url)
+    {
       isAboutHomeUrl = internalURL.isAboutHomeURL
     }
 
     guard let selectedTab = tabManager.selectedTab,
-          presentedViewController == nil,
-          !benchmarkNotificationPresented,
-          !isOnboardingOrFullScreenCalloutPresented,
-          !Preferences.AppState.backgroundedCleanly.value,
-          !topToolbar.inOverlayMode,
-          !isTabTrayActive,
-          selectedTab.webView?.scrollView.isDragging == false,
-          isAboutHomeUrl == false
+      presentedViewController == nil,
+      !benchmarkNotificationPresented,
+      !isOnboardingOrFullScreenCalloutPresented,
+      !Preferences.AppState.backgroundedCleanly.value,
+      !topToolbar.inOverlayMode,
+      !isTabTrayActive,
+      selectedTab.webView?.scrollView.isDragging == false,
+      isAboutHomeUrl == false
     else {
       return
     }
@@ -106,10 +112,13 @@ extension BrowserViewController {
     // Data Saved Pop-Over only exist in JP locale
     if Locale.current.regionCode == "JP" {
       if !benchmarkNotificationPresented,
-         !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value {
+        !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
+      {
         guard let currentURL = selectedTab.url,
-              DataSaved.get(with: currentURL.absoluteString) == nil,
-              let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(currentURL)
+          DataSaved.get(with: currentURL.absoluteString) == nil,
+          let domainFetchedSiteSavings = benchmarkBlockingDataSource?.fetchDomainFetchedSiteSavings(
+            currentURL
+          )
         else {
           return
         }
@@ -118,14 +127,17 @@ extension BrowserViewController {
 
         DataSaved.insert(
           savedUrl: currentURL.absoluteString,
-          amount: domainFetchedSiteSavings)
+          amount: domainFetchedSiteSavings
+        )
         return
       }
     }
   }
 
   private func notifyDomainSpecificDataSaved(_ dataSaved: String) {
-    let shareTrackersViewController = ShareTrackersController(trackingType: .domainSpecificDataSaved(dataSaved: dataSaved))
+    let shareTrackersViewController = ShareTrackersController(
+      trackingType: .domainSpecificDataSaved(dataSaved: dataSaved)
+    )
     dismiss(animated: true)
 
     shareTrackersViewController.actionHandler = { [weak self] action in
@@ -138,7 +150,9 @@ extension BrowserViewController {
     showBenchmarkNotificationPopover(controller: shareTrackersViewController)
   }
 
-  private func showBenchmarkNotificationPopover(controller: (UIViewController & PopoverContentComponent)) {
+  private func showBenchmarkNotificationPopover(
+    controller: (UIViewController & PopoverContentComponent)
+  ) {
     benchmarkNotificationPresented = true
 
     let popover = PopoverController(contentController: controller)

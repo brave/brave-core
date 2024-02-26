@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 /// The background highlight view that animates to help the user focus on the
 /// popovers origin.
@@ -15,31 +15,31 @@ class PopoverOriginFocusView: UIView {
     view.backgroundColor = .white.withAlphaComponent(1.0 - (CGFloat(index) * 0.1))
     return view
   }
-  
+
   override init(frame: CGRect) {
     super.init(frame: frame)
-    
+
     rings.reversed().forEach(addSubview)
     clipsToBounds = false
     isUserInteractionEnabled = false
-    
+
     // For the animation to "pulse" the first ring almost
     rings.first?.alpha = 0.75
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     for ring in rings {
       // bounds + center since we're doing transform animations below
       ring.bounds = bounds
       ring.center = bounds.center
-      ring.layer.cornerRadius = bounds.width/2
+      ring.layer.cornerRadius = bounds.width / 2
     }
   }
-  
+
   private var animator: UIViewPropertyAnimator?
-  
+
   func beginAnimating() {
     if let animator, animator.isRunning { return }
     for ring in rings.dropFirst() {
@@ -64,12 +64,12 @@ class PopoverOriginFocusView: UIView {
     animator.startAnimation()
     self.animator = animator
   }
-  
+
   func stopAnimating() {
     animator?.stopAnimation(false)
     animator = nil
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
@@ -86,7 +86,11 @@ struct PopoverOriginFocusView_PreviewProvider: PreviewProvider {
       uiView.beginAnimating()
     }
     @available(iOS 16.0, *)
-    func sizeThatFits(_ proposal: ProposedViewSize, uiView: PopoverOriginFocusView, context: Context) -> CGSize? {
+    func sizeThatFits(
+      _ proposal: ProposedViewSize,
+      uiView: PopoverOriginFocusView,
+      context: Context
+    ) -> CGSize? {
       return proposal.replacingUnspecifiedDimensions()
     }
   }

@@ -1,13 +1,13 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
+import BraveCore
+import BraveShields
 import CoreData
 import Foundation
-import BraveShields
-import Shared
-import BraveCore
-import os.log
 import Preferences
+import Shared
+import UIKit
+import os.log
 
 public final class Domain: NSManagedObject, CRUD {
 
@@ -35,12 +35,12 @@ public final class Domain: NSManagedObject, CRUD {
   private var urlComponents: URLComponents? {
     return URLComponents(string: url ?? "")
   }
-  
+
   // TODO: @JS Replace this with the 1st party ad-block list
   // https://github.com/brave/brave-ios/issues/7611
   /// A list of etld+1s that are always aggressive
   private let alwaysAggressiveETLDs: Set<String> = ["youtube.com"]
-  
+
   /// Return the shield level for this domain.
   ///
   /// - Warning: This does not consider the "all off" setting
@@ -48,13 +48,13 @@ public final class Domain: NSManagedObject, CRUD {
   @MainActor public var blockAdsAndTrackingLevel: ShieldLevel {
     guard isShieldExpected(.AdblockAndTp, considerAllShieldsOption: false) else { return .disabled }
     let globalLevel = ShieldPreferences.blockAdsAndTrackingLevel
-    
+
     switch globalLevel {
     case .standard:
       guard let urlString = self.url else { return globalLevel }
       guard let url = URL(string: urlString) else { return globalLevel }
       guard let etldP1 = url.baseDomain else { return globalLevel }
-      
+
       if alwaysAggressiveETLDs.contains(etldP1) {
         return .aggressive
       } else {
@@ -64,7 +64,7 @@ public final class Domain: NSManagedObject, CRUD {
       return globalLevel
     }
   }
-  
+
   /// Return the finterprinting protection level for this domain.
   ///
   /// - Warning: This does not consider the "all off" setting
@@ -73,10 +73,14 @@ public final class Domain: NSManagedObject, CRUD {
     // We don't have aggressive finterprint protection in iOS
     return .standard
   }
-  
-  private static let containsEthereumPermissionsPredicate = NSPredicate(format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''")
-  private static let containsSolanaPermissionsPredicate = NSPredicate(format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''")
-  
+
+  private static let containsEthereumPermissionsPredicate = NSPredicate(
+    format: "wallet_permittedAccounts != nil && wallet_permittedAccounts != ''"
+  )
+  private static let containsSolanaPermissionsPredicate = NSPredicate(
+    format: "wallet_solanaPermittedAcccounts != nil && wallet_solanaPermittedAcccounts != ''"
+  )
+
   @MainActor public var areAllShieldsOff: Bool {
     return shield_allOff?.boolValue ?? false
   }
@@ -102,7 +106,7 @@ public final class Domain: NSManagedObject, CRUD {
   }
 
   // MARK: - Public interface
-  
+
   public class func frc() -> NSFetchedResultsController<Domain> {
     let context = DataController.viewContext
     let fetchRequest = NSFetchRequest<Domain>()
@@ -133,23 +137,30 @@ public final class Domain: NSManagedObject, CRUD {
   // MARK: Shields
 
   public class func setBraveShield(
-    forUrl url: URL, shield: BraveShield,
-    isOn: Bool?, isPrivateBrowsing: Bool
+    forUrl url: URL,
+    shield: BraveShield,
+    isOn: Bool?,
+    isPrivateBrowsing: Bool
   ) {
     let _context: WriteContext = isPrivateBrowsing ? .new(inMemory: true) : .new(inMemory: false)
     setBraveShieldInternal(forUrl: url, shield: shield, isOn: isOn, context: _context)
   }
 
   /// Whether or not a given shield should be enabled based on domain exceptions and the users global preference
-  @MainActor public func isShieldExpected(_ shield: BraveShield, considerAllShieldsOption: Bool) -> Bool {
+  @MainActor public func isShieldExpected(
+    _ shield: BraveShield,
+    considerAllShieldsOption: Bool
+  ) -> Bool {
     let isShieldOn = { () -> Bool in
       switch shield {
       case .AllOff:
         return self.shield_allOff?.boolValue ?? false
       case .AdblockAndTp:
-        return self.shield_adblockAndTp?.boolValue ?? ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
+        return self.shield_adblockAndTp?.boolValue
+          ?? ShieldPreferences.blockAdsAndTrackingLevel.isEnabled
       case .FpProtection:
-        return self.shield_fpProtection?.boolValue ?? Preferences.Shields.fingerprintingProtection.value
+        return self.shield_fpProtection?.boolValue
+          ?? Preferences.Shields.fingerprintingProtection.value
       case .NoScript:
         return self.shield_noScript?.boolValue ?? Preferences.Shields.blockScripts.value
       }
@@ -163,41 +174,45 @@ public final class Domain: NSManagedObject, CRUD {
   public static func clearInMemoryDomains() {
     Domain.deleteAll(predicate: nil, context: .new(inMemory: true))
   }
-  
+
   public class func totalDomainsWithAdblockShieldsLoweredFromGlobal() -> Int {
     guard ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
-          let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
-      return 0 // Can't be lower than off
+      let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil"))
+    else {
+      return 0  // Can't be lower than off
     }
     return domains.filter({ $0.shield_adblockAndTp?.boolValue == false }).count
   }
-  
+
   public class func totalDomainsWithAdblockShieldsIncreasedFromGlobal() -> Int {
     guard !ShieldPreferences.blockAdsAndTrackingLevel.isEnabled,
-          let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil")) else {
-      return 0 // Can't be higher than on
+      let domains = Domain.all(where: NSPredicate(format: "shield_adblockAndTp != nil"))
+    else {
+      return 0  // Can't be higher than on
     }
     return domains.filter({ $0.shield_adblockAndTp?.boolValue == true }).count
   }
-  
+
   public class func totalDomainsWithFingerprintingProtectionLoweredFromGlobal() -> Int {
     guard Preferences.Shields.fingerprintingProtection.value,
-          let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil")) else {
-      return 0 // Can't be lower than off
+      let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
+    else {
+      return 0  // Can't be lower than off
     }
     return domains.filter({ $0.shield_fpProtection?.boolValue == false }).count
   }
-  
+
   public class func totalDomainsWithFingerprintingProtectionIncreasedFromGlobal() -> Int {
     guard !Preferences.Shields.fingerprintingProtection.value,
-          let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil")) else {
-      return 0 // Can't be higher than on
+      let domains = Domain.all(where: NSPredicate(format: "shield_fpProtection != nil"))
+    else {
+      return 0  // Can't be higher than on
     }
     return domains.filter({ $0.shield_fpProtection?.boolValue == true }).count
   }
 
   // MARK: Wallet
-  
+
   public class func setWalletPermissions(
     forUrl url: URL,
     coin: BraveWallet.CoinType,
@@ -214,7 +229,7 @@ public final class Domain: NSManagedObject, CRUD {
       context: _context
     )
   }
-  
+
   public class func walletPermissions(forUrl url: URL, coin: BraveWallet.CoinType) -> [String]? {
     let domain = getOrCreateInternal(url, saveStrategy: .persistentStore)
     switch coin {
@@ -230,7 +245,7 @@ public final class Domain: NSManagedObject, CRUD {
       return nil
     }
   }
-  
+
   public func walletPermissions(for coin: BraveWallet.CoinType, account: String) -> Bool {
     switch coin {
     case .eth:
@@ -250,8 +265,11 @@ public final class Domain: NSManagedObject, CRUD {
     }
     return false
   }
-  
-  public class func allDomainsWithWalletPermissions(for coin: BraveWallet.CoinType, context: NSManagedObjectContext? = nil) -> [Domain] {
+
+  public class func allDomainsWithWalletPermissions(
+    for coin: BraveWallet.CoinType,
+    context: NSManagedObjectContext? = nil
+  ) -> [Domain] {
     switch coin {
     case .eth:
       let predicate = Domain.containsEthereumPermissionsPredicate
@@ -268,7 +286,7 @@ public final class Domain: NSManagedObject, CRUD {
     }
     return []
   }
-  
+
   public static func clearAllWalletPermissions(
     for coin: BraveWallet.CoinType,
     _ completionOnMain: (() -> Void)? = nil
@@ -295,7 +313,9 @@ public final class Domain: NSManagedObject, CRUD {
           }
         }
       } catch {
-        Logger.module.error("Clear coin(\(coin.rawValue)) accounts permissions error: \(error.localizedDescription)")
+        Logger.module.error(
+          "Clear coin(\(coin.rawValue)) accounts permissions error: \(error.localizedDescription)"
+        )
       }
 
       DispatchQueue.main.async {
@@ -329,7 +349,10 @@ extension Domain {
     saveStrategy: SaveStrategy
   ) -> Domain {
     let domainString = url.domainURL.absoluteString
-    if let domain = Domain.first(where: NSPredicate(format: "url == %@", domainString), context: context) {
+    if let domain = Domain.first(
+      where: NSPredicate(format: "url == %@", domainString),
+      context: context
+    ) {
       return domain
     }
 
@@ -337,7 +360,8 @@ extension Domain {
 
     // Domains are usually accesed on view context, but when the Domain doesn't exist,
     // we have to switch to a background context to avoid writing on view context(bad practice).
-    let writeContext = context.concurrencyType == .mainQueueConcurrencyType ? saveStrategy.saveContext : context
+    let writeContext =
+      context.concurrencyType == .mainQueueConcurrencyType ? saveStrategy.saveContext : context
 
     writeContext.performAndWait {
       newDomain = Domain(entity: Domain.entity(writeContext), insertInto: writeContext)
@@ -362,7 +386,8 @@ extension Domain {
     return domainOnCorrectContext
   }
 
-  public class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping () -> Void) {
+  public class func deleteNonBookmarkedAndClearSiteVisits(_ completionOnMain: @escaping () -> Void)
+  {
     DataController.perform { context in
       let fetchRequest = NSFetchRequest<Domain>()
       fetchRequest.entity = Domain.entity(context)
@@ -400,18 +425,26 @@ extension Domain {
 
   // MARK: Shields
 
-  class func setBraveShieldInternal(forUrl url: URL, shield: BraveShield, isOn: Bool?, context: WriteContext = .new(inMemory: false)) {
+  class func setBraveShieldInternal(
+    forUrl url: URL,
+    shield: BraveShield,
+    isOn: Bool?,
+    context: WriteContext = .new(inMemory: false)
+  ) {
     DataController.perform(context: context) { context in
       // Not saving here, save happens in `perform` method.
       let domain = Domain.getOrCreateInternal(
-        url, context: context,
-        saveStrategy: .delayedPersistentStore)
+        url,
+        context: context,
+        saveStrategy: .delayedPersistentStore
+      )
       domain.setBraveShield(shield: shield, isOn: isOn, context: context)
     }
   }
 
   private func setBraveShield(
-    shield: BraveShield, isOn: Bool?,
+    shield: BraveShield,
+    isOn: Bool?,
     context: NSManagedObjectContext
   ) {
 
@@ -445,7 +478,7 @@ extension Domain {
   }
 
   // MARK: Wallet
-  
+
   class func setWalletPermissions(
     forUrl url: URL,
     coin: BraveWallet.CoinType,
@@ -457,8 +490,10 @@ extension Domain {
       for account in accounts {
         // Not saving here, save happens in `perform` method.
         let domain = Domain.getOrCreateInternal(
-          url, context: context,
-          saveStrategy: .persistentStore)
+          url,
+          context: context,
+          saveStrategy: .persistentStore
+        )
         domain.setWalletDappPermission(
           for: coin,
           account: account,
@@ -468,7 +503,7 @@ extension Domain {
       }
     }
   }
-  
+
   private func setWalletDappPermission(
     for coin: BraveWallet.CoinType,
     account: String,
@@ -508,13 +543,15 @@ extension Domain {
       switch coin {
       case .eth:
         if var accounts = wallet_permittedAccounts?.components(separatedBy: ","),
-           let index = accounts.firstIndex(of: account) {
+          let index = accounts.firstIndex(of: account)
+        {
           accounts.remove(at: index)
           wallet_permittedAccounts = accounts.joined(separator: ",")
         }
       case .sol:
         if var accounts = wallet_solanaPermittedAcccounts?.components(separatedBy: ","),
-           let index = accounts.firstIndex(of: account) {
+          let index = accounts.firstIndex(of: account)
+        {
           accounts.remove(at: index)
           wallet_solanaPermittedAcccounts = accounts.joined(separator: ",")
         }

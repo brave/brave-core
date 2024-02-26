@@ -2,6 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import Foundation
 // IMPORTANT!: Please take into consideration when adding new imports to
 // this file that it is utilized by external components besides the core
 // application (i.e. App Extensions). Introducing new dependencies here
@@ -9,7 +10,6 @@
 // increased startup times which may lead to termination by the OS.
 import Shared
 import Storage
-import Foundation
 import os.log
 
 public let ProfileRemoteTabsSyncDelay: TimeInterval = 0.1
@@ -25,36 +25,46 @@ class ProfileFileAccessor: FileAccessor {
     // Bug 1147262: First option is for device, second is for simulator.
     var rootPath: String
     let sharedContainerIdentifier = AppInfo.sharedContainerIdentifier
-    if let url = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: sharedContainerIdentifier) {
+    if let url = FileManager.default.containerURL(
+      forSecurityApplicationGroupIdentifier: sharedContainerIdentifier
+    ) {
       var isDirectory: ObjCBool = false
 
       if !FileManager.default.fileExists(atPath: url.path, isDirectory: &isDirectory) {
         do {
           try FileManager.default.createDirectory(at: url, withIntermediateDirectories: true)
         } catch {
-          Logger.module.error("Unable to find the shared container directory and error while trying tpo create a new directory. ")
+          Logger.module.error(
+            "Unable to find the shared container directory and error while trying tpo create a new directory. "
+          )
         }
       }
-      
+
       rootPath = url.path
     } else {
-      Logger.module.error("Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead.")
+      Logger.module.error(
+        "Unable to find the shared container. Defaulting profile location to ~/Library/Application Support/ instead."
+      )
       rootPath =
         (NSSearchPathForDirectoriesInDomains(
           .applicationSupportDirectory,
-          .userDomainMask, true)[0])
+          .userDomainMask,
+          true
+        )[0])
     }
 
     super.init(rootPath: URL(fileURLWithPath: rootPath).appendingPathComponent(profileDirName).path)
 
     // Create the "Downloads" folder in the documents directory if doesn't exist.
-    FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
+    FileManager.default.getOrCreateFolder(
+      name: "Downloads",
+      excludeFromBackups: true,
+      location: .documentDirectory
+    )
   }
 }
 
-/**
- * A Profile manages access to the user's data.
- */
+/// A Profile manages access to the user's data.
 public protocol Profile: AnyObject {
   var prefs: Prefs { get }
   var searchEngines: SearchEngines { get }
@@ -71,7 +81,7 @@ public protocol Profile: AnyObject {
   func localName() -> String
 }
 
-fileprivate let PrefKeyClientID = "PrefKeyClientID"
+private let PrefKeyClientID = "PrefKeyClientID"
 extension Profile {
   var clientID: String {
     let clientID: String
@@ -90,7 +100,7 @@ open class BrowserProfile: Profile {
   fileprivate let name: String
   public var isShutdown = false
 
-  public  let files: FileAccessor
+  public let files: FileAccessor
 
   /**
      * N.B., BrowserProfile is used from our extensions, often via a pattern like

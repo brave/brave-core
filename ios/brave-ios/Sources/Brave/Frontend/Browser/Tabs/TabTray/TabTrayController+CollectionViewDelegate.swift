@@ -20,7 +20,11 @@ extension TabTrayController: UICollectionViewDelegate {
 // MARK: UICollectionViewDragDelegate
 
 extension TabTrayController: UICollectionViewDragDelegate {
-  func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
     guard let tab = dataSource.itemIdentifier(for: indexPath) else { return [] }
 
     UIImpactFeedbackGenerator(style: .medium).bzzt()
@@ -50,7 +54,11 @@ extension TabTrayController: UICollectionViewDropDelegate {
     applySnapshot()
   }
 
-  func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dropSessionDidUpdate session: UIDropSession,
+    withDestinationIndexPath destinationIndexPath: IndexPath?
+  ) -> UICollectionViewDropProposal {
 
     guard let localDragSession = session.localDragSession,
       let item = localDragSession.items.first,

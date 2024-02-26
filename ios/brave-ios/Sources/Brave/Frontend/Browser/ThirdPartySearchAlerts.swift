@@ -23,7 +23,10 @@ class ThirdPartySearchAlerts: UIAlertController {
    - returns: UIAlertController for asking the user to add a search engine
   **/
 
-  static func addThirdPartySearchEngine(_ engine: OpenSearchEngine, completion: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+  static func addThirdPartySearchEngine(
+    _ engine: OpenSearchEngine,
+    completion: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
     let alertMessage = """
       \n\(engine.displayName)
       \n\(Strings.CustomSearchEngine.searchTemplateTitle)
@@ -55,7 +58,7 @@ class ThirdPartySearchAlerts: UIAlertController {
 
     return alert
   }
-  
+
   static func insecureSearchTemplateURL(_ engine: OpenSearchEngine) -> UIAlertController {
     let alertMessage = """
       \n\(Strings.CustomSearchEngine.insecureSearchTemplateURLErrorDescription)"
@@ -65,9 +68,10 @@ class ThirdPartySearchAlerts: UIAlertController {
       """
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.customSearchEngineAddErrorTitle,
-      message: alertMessage)
+      message: alertMessage
+    )
   }
-  
+
   static func engineAlreadyExists(_ engine: OpenSearchEngine) -> UIAlertController {
     let alertMessage = """
       \n\(engine.displayName)
@@ -75,9 +79,10 @@ class ThirdPartySearchAlerts: UIAlertController {
       """
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.customSearchEngineAddErrorTitle,
-      message: alertMessage)
+      message: alertMessage
+    )
   }
-  
+
   static func insecureSuggestionTemplateURL(_ engine: OpenSearchEngine) -> UIAlertController {
     let alertMessage = """
       \n\(Strings.CustomSearchEngine.insecureSuggestionTemplateURLErrorDescription)
@@ -87,7 +92,8 @@ class ThirdPartySearchAlerts: UIAlertController {
       """
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.customSearchEngineAddErrorTitle,
-      message: alertMessage)
+      message: alertMessage
+    )
   }
 
   /**
@@ -98,31 +104,36 @@ class ThirdPartySearchAlerts: UIAlertController {
   static func failedToAddThirdPartySearch() -> UIAlertController {
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
-      message: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorDescription)
+      message: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorDescription
+    )
   }
 
   static func missingInfoToAddThirdPartySearch() -> UIAlertController {
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
-      message: Strings.CustomSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription)
+      message: Strings.CustomSearchEngine.thirdPartySearchEngineMissingInfoErrorDescription
+    )
   }
 
   static func incorrectCustomEngineForm() -> UIAlertController {
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.thirdPartySearchEngineIncorrectFormErrorTitle,
-      message: Strings.CustomSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription)
+      message: Strings.CustomSearchEngine.thirdPartySearchEngineIncorrectFormErrorDescription
+    )
   }
 
   static func duplicateCustomEngine() -> UIAlertController {
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
-      message: Strings.CustomSearchEngine.thirdPartySearchEngineDuplicateErrorDescription)
+      message: Strings.CustomSearchEngine.thirdPartySearchEngineDuplicateErrorDescription
+    )
   }
 
   static func insecureURLEntryThirdPartySearch() -> UIAlertController {
     return searchAlertWithOK(
       title: Strings.CustomSearchEngine.thirdPartySearchEngineAddErrorTitle,
-      message: Strings.CustomSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription)
+      message: Strings.CustomSearchEngine.thirdPartySearchEngineInsecureURLErrorDescription
+    )
   }
 
   private static func searchAlertWithOK(title: String, message: String) -> UIAlertController {

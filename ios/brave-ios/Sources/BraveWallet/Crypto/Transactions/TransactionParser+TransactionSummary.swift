@@ -24,7 +24,7 @@ struct TransactionSummary: Equatable, Identifiable {
   let gasFee: GasFee?
   /// The network symbol for the transaction
   let networkSymbol: String
-  
+
   /// Transaction id
   var id: String { txInfo.id }
   /// The hash of the transaction
@@ -36,7 +36,7 @@ struct TransactionSummary: Equatable, Identifiable {
 }
 
 extension TransactionParser {
-  
+
   static func transactionSummary(
     from transaction: BraveWallet.TransactionInfo,
     network: BraveWallet.NetworkInfo,
@@ -48,18 +48,20 @@ extension TransactionParser {
     solEstimatedTxFee: UInt64?,
     currencyFormatter: NumberFormatter
   ) -> TransactionSummary {
-    guard let parsedTransaction = parseTransaction(
-      transaction: transaction,
-      network: network,
-      accountInfos: accountInfos,
-      userAssets: userAssets,
-      allTokens: allTokens,
-      assetRatios: assetRatios,
-      nftMetadata: nftMetadata,
-      solEstimatedTxFee: solEstimatedTxFee,
-      currencyFormatter: currencyFormatter,
-      decimalFormatStyle: .balance // use 4 digit precision for summary
-    ) else {
+    guard
+      let parsedTransaction = parseTransaction(
+        transaction: transaction,
+        network: network,
+        accountInfos: accountInfos,
+        userAssets: userAssets,
+        allTokens: allTokens,
+        assetRatios: assetRatios,
+        nftMetadata: nftMetadata,
+        solEstimatedTxFee: solEstimatedTxFee,
+        currencyFormatter: currencyFormatter,
+        decimalFormatStyle: .balance  // use 4 digit precision for summary
+      )
+    else {
       let toAddress: String
       switch transaction.coin {
       case .eth:
@@ -71,9 +73,15 @@ extension TransactionParser {
       }
       return .init(
         txInfo: transaction,
-        namedFromAddress: NamedAddresses.name(for: transaction.fromAccountId.address, accounts: accountInfos),
+        namedFromAddress: NamedAddresses.name(
+          for: transaction.fromAccountId.address,
+          accounts: accountInfos
+        ),
         toAddress: toAddress,
-        namedToAddress: NamedAddresses.name(for: transaction.ethTxToAddress, accounts: accountInfos),
+        namedToAddress: NamedAddresses.name(
+          for: transaction.ethTxToAddress,
+          accounts: accountInfos
+        ),
         title: "",
         gasFee: gasFee(
           from: transaction,
@@ -86,7 +94,12 @@ extension TransactionParser {
     }
     switch parsedTransaction.details {
     case let .ethSend(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(
+        Strings.Wallet.transactionSendTitle,
+        details.fromAmount,
+        details.fromToken?.symbol ?? "",
+        details.fromFiat ?? ""
+      )
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -97,7 +110,12 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case let .erc20Transfer(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "")
+      let title = String.localizedStringWithFormat(
+        Strings.Wallet.transactionSendTitle,
+        details.fromAmount,
+        details.fromToken?.symbol ?? "",
+        details.fromFiat ?? ""
+      )
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -112,7 +130,13 @@ extension TransactionParser {
       let fromTokenSymbol = details.fromToken?.symbol ?? ""
       let toAmount = details.minBuyAmount
       let toTokenSymbol = details.toToken?.symbol ?? ""
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSwappedTitle, fromAmount, fromTokenSymbol, toAmount, toTokenSymbol)
+      let title = String.localizedStringWithFormat(
+        Strings.Wallet.transactionSwappedTitle,
+        fromAmount,
+        fromTokenSymbol,
+        toAmount,
+        toTokenSymbol
+      )
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -125,9 +149,17 @@ extension TransactionParser {
     case let .ethErc20Approve(details):
       let title: String
       if details.isUnlimited {
-        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, Strings.Wallet.editPermissionsApproveUnlimited, details.token?.symbol ?? "")
+        title = String.localizedStringWithFormat(
+          Strings.Wallet.transactionApproveSymbolTitle,
+          Strings.Wallet.editPermissionsApproveUnlimited,
+          details.token?.symbol ?? ""
+        )
       } else {
-        title = String.localizedStringWithFormat(Strings.Wallet.transactionApproveSymbolTitle, details.approvalAmount, details.token?.symbol ?? "")
+        title = String.localizedStringWithFormat(
+          Strings.Wallet.transactionApproveSymbolTitle,
+          details.approvalAmount,
+          details.token?.symbol ?? ""
+        )
       }
       return .init(
         txInfo: transaction,
@@ -155,7 +187,12 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case let .solSystemTransfer(details), let .solSplTokenTransfer(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.fromAmount, details.fromToken?.symbol ?? "", details.fromFiat ?? "").replacingOccurrences(of: "()", with: "") // if fiat is empty string, remove `()`
+      let title = String.localizedStringWithFormat(
+        Strings.Wallet.transactionSendTitle,
+        details.fromAmount,
+        details.fromToken?.symbol ?? "",
+        details.fromFiat ?? ""
+      ).replacingOccurrences(of: "()", with: "")  // if fiat is empty string, remove `()`
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -182,7 +219,12 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case let .filSend(details):
-      let title = String.localizedStringWithFormat(Strings.Wallet.transactionSendTitle, details.sendAmount, details.sendToken?.symbol ?? "", details.sendFiat ?? "")
+      let title = String.localizedStringWithFormat(
+        Strings.Wallet.transactionSendTitle,
+        details.sendAmount,
+        details.sendToken?.symbol ?? "",
+        details.sendFiat ?? ""
+      )
       return .init(
         txInfo: transaction,
         namedFromAddress: parsedTransaction.namedFromAddress,
@@ -193,7 +235,15 @@ extension TransactionParser {
         networkSymbol: parsedTransaction.networkSymbol
       )
     case .other:
-      return .init(txInfo: .init(), namedFromAddress: "", toAddress: "", namedToAddress: "", title: "", gasFee: nil, networkSymbol: "")
+      return .init(
+        txInfo: .init(),
+        namedFromAddress: "",
+        toAddress: "",
+        namedToAddress: "",
+        title: "",
+        gasFee: nil,
+        networkSymbol: ""
+      )
     }
   }
 }

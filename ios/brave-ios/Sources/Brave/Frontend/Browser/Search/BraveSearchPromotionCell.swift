@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveUI
 import Preferences
+import Shared
+import UIKit
 
 class BraveSearchPromotionCell: UITableViewCell {
   private struct DesignUX {
@@ -27,7 +27,7 @@ class BraveSearchPromotionCell: UITableViewCell {
     $0.layer.cornerCurve = .continuous
     $0.layer.borderWidth = 1.0
   }
-  
+
   private let titleLabel = UILabel().then {
     $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTitle
     $0.font = .preferredFont(forTextStyle: .headline)
@@ -45,9 +45,10 @@ class BraveSearchPromotionCell: UITableViewCell {
     $0.setContentHuggingPriority(.required, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
-  
+
   private let promotionalImageView = UIImageView(
-    image: UIImage(named: "brave-search-promotion", in: .module, compatibleWith: nil)).then {
+    image: UIImage(named: "brave-search-promotion", in: .module, compatibleWith: nil)
+  ).then {
     $0.contentMode = .scaleAspectFill
     $0.isUserInteractionEnabled = false
     $0.clipsToBounds = false
@@ -55,7 +56,7 @@ class BraveSearchPromotionCell: UITableViewCell {
 
   let tryButton = TrySearchButton()
   let dismissButton = UIButton()
-  
+
   private let vStackView = UIStackView().then {
     $0.axis = .vertical
   }
@@ -69,10 +70,10 @@ class BraveSearchPromotionCell: UITableViewCell {
 
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
     super.init(style: style, reuseIdentifier: reuseIdentifier)
-    
+
     backgroundColor = .clear
     selectionStyle = .none
-    
+
     contentView.addSubview(promotionContentView)
     promotionContentView.snp.makeConstraints {
       $0.leading.equalTo(contentView.safeArea.leading).inset(8)
@@ -80,7 +81,7 @@ class BraveSearchPromotionCell: UITableViewCell {
       $0.top.equalTo(contentView.safeArea.top)
       $0.bottom.equalTo(contentView.safeArea.bottom)
     }
-    
+
     promotionContentView.addSubview(vStackView)
     promotionContentView.addSubview(promotionalImageView)
 
@@ -89,7 +90,7 @@ class BraveSearchPromotionCell: UITableViewCell {
       $0.trailing.equalTo(promotionalImageView.snp.leading)
       $0.top.bottom.equalToSuperview().inset(8.0)
     }
-    
+
     promotionalImageView.snp.makeConstraints {
       $0.width.equalTo(promotionContentView.snp.width).multipliedBy(0.20)
       $0.top.bottom.equalToSuperview()
@@ -136,13 +137,15 @@ class BraveSearchPromotionCell: UITableViewCell {
       top: -DesignUX.paddingY,
       left: -DesignUX.paddingX,
       bottom: -DesignUX.paddingY,
-      right: -DesignUX.paddingX)
+      right: -DesignUX.paddingX
+    )
 
     let contentEdgeInsets = UIEdgeInsets(
       top: DesignUX.paddingY,
       left: DesignUX.paddingX,
       bottom: DesignUX.paddingY,
-      right: DesignUX.paddingX)
+      right: DesignUX.paddingX
+    )
 
     tryButton.do {
       $0.titleLabel.snp.makeConstraints {
@@ -153,10 +156,12 @@ class BraveSearchPromotionCell: UITableViewCell {
 
     dismissButton.do {
       $0.setTitle(
-        Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue ?
-          Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle :
-          Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
-        for: .normal)
+        Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+          != BraveSearchPromotionState.maybeLaterUpcomingSession.rawValue
+          ? Strings.BraveSearchPromotion.braveSearchPromotionBannerMaybeLaterButtonTitle
+          : Strings.BraveSearchPromotion.braveSearchPromotionBannerDismissButtonTitle,
+        for: .normal
+      )
       $0.setTitleColor(.braveBlurpleTint, for: .normal)
       $0.titleLabel?.font = .preferredFont(for: .subheadline, weight: .semibold)
       $0.titleLabel?.minimumScaleFactor = 0.5
@@ -164,10 +169,10 @@ class BraveSearchPromotionCell: UITableViewCell {
       $0.contentEdgeInsets = contentEdgeInsets
       $0.backgroundColor = .clear
     }
-    
+
     promotionContentView.do {
-     $0.layer.borderColor = DesignUX.contentBorderColor.cgColor
-     $0.backgroundColor = DesignUX.contentBackgroundColor
+      $0.layer.borderColor = DesignUX.contentBorderColor.cgColor
+      $0.backgroundColor = DesignUX.contentBackgroundColor
     }
   }
 
@@ -176,7 +181,7 @@ class BraveSearchPromotionCell: UITableViewCell {
 
     themeViews()
   }
-  
+
   @objc func tryAction() {
     trySearchEngineTapped?()
   }
@@ -186,22 +191,24 @@ class BraveSearchPromotionCell: UITableViewCell {
   }
 }
 
-private extension UIColor {
-  static var borderColor: UIColor {
-    return UIColor { $0.userInterfaceStyle == .dark ?
-      UIColor(rgb: 0x1f257a) :
-      UIColor(rgb: 0xe2e3f8) }
+extension UIColor {
+  fileprivate static var borderColor: UIColor {
+    return UIColor {
+      $0.userInterfaceStyle == .dark ? UIColor(rgb: 0x1f257a) : UIColor(rgb: 0xe2e3f8)
+    }
   }
-  
-  static var backgroundColor: UIColor {
-    return UIColor { $0.userInterfaceStyle == .dark ?
-      UIColor(rgb: 0x1f257a).withAlphaComponent(0.4) :
-      UIColor(rgb: 0xefeffb).withAlphaComponent(0.4) }
+
+  fileprivate static var backgroundColor: UIColor {
+    return UIColor {
+      $0.userInterfaceStyle == .dark
+        ? UIColor(rgb: 0x1f257a).withAlphaComponent(0.4)
+        : UIColor(rgb: 0xefeffb).withAlphaComponent(0.4)
+    }
   }
 }
 
 class TrySearchButton: UIControl {
-  
+
   let titleLabel = UILabel().then {
     $0.textColor = .white
     $0.text = Strings.BraveSearchPromotion.braveSearchPromotionBannerTryButtonTitle

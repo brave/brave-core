@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import CoreData
-import Shared
 import BraveCore
+import CoreData
+import Foundation
+import Shared
 import os.log
 
 public final class WalletUserAssetBalance: NSManagedObject, CRUD {
@@ -16,23 +16,28 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   @NSManaged public var tokenId: String
   @NSManaged public var balance: String
   @NSManaged public var accountAddress: String
-  
+
   @available(*, unavailable)
   public init() {
     fatalError("No Such Initializer: init()")
   }
-  
+
   @available(*, unavailable)
   public init(context: NSManagedObjectContext) {
     fatalError("No Such Initializer: init(context:)")
   }
-  
+
   @objc
   private override init(entity: NSEntityDescription, insertInto context: NSManagedObjectContext?) {
     super.init(entity: entity, insertInto: context)
   }
-  
-  public init(context: NSManagedObjectContext, asset: BraveWallet.BlockchainToken, balance: String, account: String) {
+
+  public init(
+    context: NSManagedObjectContext,
+    asset: BraveWallet.BlockchainToken,
+    balance: String,
+    account: String
+  ) {
     let entity = Self.entity(context)
     super.init(entity: entity, insertInto: context)
     self.contractAddress = asset.contractAddress
@@ -42,7 +47,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
     self.balance = balance
     self.accountAddress = account
   }
-  
+
   /// - Parameters:
   ///     - asset: An optional value of `BraveWallet.BlockchainToken`, nil value will remove the restriction of asset matching
   ///     - account: An optional value of `String`. It is the account's address value. nil value will remove the restriction of account address matching
@@ -54,7 +59,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
     account: String? = nil,
     context: NSManagedObjectContext? = nil
   ) -> [WalletUserAssetBalance]? {
-    if asset == nil, account == nil { // all `WalletAssetBalnce` with no restriction on assets or accounts
+    if asset == nil, account == nil {  // all `WalletAssetBalnce` with no restriction on assets or accounts
       return WalletUserAssetBalance.all()
     } else if let asset, account == nil {
       let predicate = NSPredicate(
@@ -75,7 +80,8 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
       )
     } else if let asset, let account {
       let predicate = NSPredicate(
-        format: "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
+        format:
+          "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
         asset.contractAddress,
         asset.chainId,
         asset.symbol,
@@ -89,7 +95,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
     }
     return nil
   }
-  
+
   public static func updateBalance(
     for asset: BraveWallet.BlockchainToken,
     balance: String,
@@ -98,7 +104,8 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
   ) {
     DataController.perform(context: .new(inMemory: false), save: false) { context in
       let predicate = NSPredicate(
-        format: "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
+        format:
+          "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
         asset.contractAddress,
         asset.chainId,
         asset.symbol,
@@ -108,17 +115,22 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
       if let asset = WalletUserAssetBalance.first(where: predicate, context: context) {
         asset.balance = balance
       } else {
-        _ = WalletUserAssetBalance(context: context, asset: asset, balance: balance, account: account)
+        _ = WalletUserAssetBalance(
+          context: context,
+          asset: asset,
+          balance: balance,
+          account: account
+        )
       }
-      
+
       WalletUserAssetBalance.saveContext(context)
-      
+
       DispatchQueue.main.async {
         completion?()
       }
     }
   }
-  
+
   /// - Parameters:
   ///     - asset: An optional value of `BraveWallet.BlockchainToken` to be removed from CD, nil value will remove the restriction of asset matching
   ///     - account: An optional value of `String`. It is the account's address value. nil value will remove the restriction of account address matching
@@ -131,7 +143,8 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
     var predicate: NSPredicate?
     if let asset, let accountAddress = account {
       predicate = NSPredicate(
-        format: "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
+        format:
+          "contractAddress == %@ && chainId == %@ && symbol == %@ && tokenId == %@ && accountAddress == %@",
         asset.contractAddress,
         asset.chainId,
         asset.symbol,
@@ -152,7 +165,7 @@ public final class WalletUserAssetBalance: NSManagedObject, CRUD {
       completion: completion
     )
   }
-  
+
   /// - Parameters:
   ///     - network: `BraveWallet.NetworkInfo`, any user asset balance that matches this network's chainId
   ///     will be removed
@@ -173,12 +186,12 @@ extension WalletUserAssetBalance {
   private static func entity(_ context: NSManagedObjectContext) -> NSEntityDescription {
     NSEntityDescription.entity(forEntityName: "WalletUserAssetBalance", in: context)!
   }
-  
+
   private static func saveContext(_ context: NSManagedObjectContext) {
     if context.concurrencyType == .mainQueueConcurrencyType {
       Logger.module.warning("Writing to view context, this should be avoided.")
     }
-    
+
     if context.hasChanges {
       do {
         try context.save()

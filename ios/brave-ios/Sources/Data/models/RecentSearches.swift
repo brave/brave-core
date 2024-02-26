@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
+import Foundation
 import Shared
 import os.log
 
@@ -31,8 +31,11 @@ final public class RecentSearch: NSManagedObject, CRUD {
     fetchRequest.sortDescriptors = [createdSort]
 
     return NSFetchedResultsController(
-      fetchRequest: fetchRequest, managedObjectContext: context,
-      sectionNameKeyPath: nil, cacheName: nil)
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil
+    )
   }
 
   public func update(dateAdded: Date) {
@@ -80,7 +83,9 @@ final public class RecentSearch: NSManagedObject, CRUD {
     // A search engine search has both set
     // Because it is a query text against a search engine url
     if let text = text, let websiteUrl = websiteUrl {
-      return RecentSearch.first(where: NSPredicate(format: "text == %@ AND websiteUrl == %@", text, websiteUrl))
+      return RecentSearch.first(
+        where: NSPredicate(format: "text == %@ AND websiteUrl == %@", text, websiteUrl)
+      )
     } else if let text = text {
       // Just text
       return RecentSearch.first(where: NSPredicate(format: "text == %@", text))
@@ -96,7 +101,11 @@ final public class RecentSearch: NSManagedObject, CRUD {
   }
 
   public static func removeItem(query: String) {
-    RecentSearch.deleteAll(predicate: NSPredicate(format: "text == %@ OR websiteUrl == %@", query, query), context: .new(inMemory: false), includesPropertyValues: false)
+    RecentSearch.deleteAll(
+      predicate: NSPredicate(format: "text == %@ OR websiteUrl == %@", query, query),
+      context: .new(inMemory: false),
+      includesPropertyValues: false
+    )
   }
 
   public static func removeAll() {

@@ -3,39 +3,39 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
 import BraveUI
-import SwiftUI
-import Swift
+import Foundation
 import Strings
+import Swift
+import SwiftUI
 
 struct TransactionDetailsView: View {
-  
+
   @ObservedObject var transactionDetailsStore: TransactionDetailsStore
   @ObservedObject var networkStore: NetworkStore
 
   @Environment(\.openURL) private var openWalletURL
-  
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 16) {
         Text(Strings.Wallet.transactionDetailsTitle)
           .font(.title2.weight(.medium))
           .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         DetailsView(
           transaction: transactionDetailsStore.transaction,
           parsedTransaction: transactionDetailsStore.parsedTransaction
         )
         .padding(.bottom, 24 - 16)
-        
+
         if let parsedTransaction = transactionDetailsStore.parsedTransaction {
           if !parsedTransaction.transaction.txHash.isEmpty {
             HStack {
               VStack(alignment: .leading) {
                 rowTitle(Strings.Wallet.transactionDetailsTxHashTitle)
-                Text(parsedTransaction.transaction.txHash.zwspOutput) // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.transaction.txHash.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
               }
@@ -44,27 +44,33 @@ struct TransactionDetailsView: View {
                 UIPasteboard.general.string = parsedTransaction.transaction.txHash
               }
               WalletIconButton(systemName: "arrow.up.forward.square") {
-                if let txNetwork = self.networkStore.allChains.first(where: { $0.chainId == transactionDetailsStore.transaction.chainId }),
-                   let url = txNetwork.txBlockExplorerLink(txHash: transactionDetailsStore.transaction.txHash, for: txNetwork.coin) {
+                if let txNetwork = self.networkStore.allChains.first(where: {
+                  $0.chainId == transactionDetailsStore.transaction.chainId
+                }),
+                  let url = txNetwork.txBlockExplorerLink(
+                    txHash: transactionDetailsStore.transaction.txHash,
+                    for: txNetwork.coin
+                  )
+                {
                   openWalletURL(url)
                 }
               }
             }
           }
-          
+
           Divider()
-          
+
           HStack {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoFromTitle)
               AddressView(address: parsedTransaction.fromAddress) {
-                Text(parsedTransaction.fromAddress.zwspOutput) // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.fromAddress.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
                 if isLocalAccount(
                   address: parsedTransaction.fromAddress,
                   namedAddress: parsedTransaction.namedFromAddress
-                ) { // only show named address if its actual name, not truncated address.
+                ) {  // only show named address if its actual name, not truncated address.
                   Text(parsedTransaction.namedFromAddress)
                     .font(.footnote)
                     .foregroundColor(Color(braveSystemName: .textTertiary))
@@ -76,20 +82,20 @@ struct TransactionDetailsView: View {
               UIPasteboard.general.string = parsedTransaction.fromAddress
             }
           }
-          
+
           Divider()
-          
+
           HStack {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.swapCryptoToTitle)
               AddressView(address: parsedTransaction.toAddress) {
-                Text(parsedTransaction.toAddress.zwspOutput) // zwspOutput to avoid hyphen when wrapped
+                Text(parsedTransaction.toAddress.zwspOutput)  // zwspOutput to avoid hyphen when wrapped
                   .font(.callout)
                   .foregroundColor(Color(braveSystemName: .textPrimary))
                 if isLocalAccount(
                   address: parsedTransaction.toAddress,
                   namedAddress: parsedTransaction.namedToAddress
-                ) { // only show named address if its actual name, not truncated address.
+                ) {  // only show named address if its actual name, not truncated address.
                   Text(parsedTransaction.namedToAddress)
                     .font(.footnote)
                     .foregroundColor(Color(braveSystemName: .textTertiary))
@@ -101,14 +107,15 @@ struct TransactionDetailsView: View {
               UIPasteboard.general.string = parsedTransaction.toAddress
             }
           }
-          
+
           Divider()
-          
+
           if let gasFee = parsedTransaction.gasFee {
             VStack(alignment: .leading) {
               rowTitle(Strings.Wallet.transactionFee)
               Text("\(gasFee.fee) \(parsedTransaction.network.nativeToken.symbol) ")
-                .foregroundColor(Color(braveSystemName: .textPrimary)) + Text("(\(gasFee.fiat))")
+                .foregroundColor(Color(braveSystemName: .textPrimary))
+                + Text("(\(gasFee.fiat))")
                 .foregroundColor(Color(braveSystemName: .textTertiary))
                 .font(.callout)
             }
@@ -124,15 +131,16 @@ struct TransactionDetailsView: View {
       transactionDetailsStore.update()
     }
   }
-  
+
   private func isLocalAccount(address: String, namedAddress: String) -> Bool {
-    if namedAddress.caseInsensitiveCompare(address) == .orderedSame 
-        || namedAddress.caseInsensitiveCompare(address.truncatedAddress) == .orderedSame {
+    if namedAddress.caseInsensitiveCompare(address) == .orderedSame
+      || namedAddress.caseInsensitiveCompare(address.truncatedAddress) == .orderedSame
+    {
       return false
     }
     return true
   }
-  
+
   private func rowTitle(_ title: String) -> Text {
     Text(title)
       .font(.callout.weight(.semibold))
@@ -141,10 +149,10 @@ struct TransactionDetailsView: View {
 }
 
 private struct DetailsView: View {
-  
+
   let transaction: BraveWallet.TransactionInfo
   let parsedTransaction: ParsedTransaction?
-  
+
   var body: some View {
     VStack(spacing: 16) {
       if transaction.isSend {
@@ -163,9 +171,11 @@ private struct DetailsView: View {
           parsedTransaction: parsedTransaction
         )
       }
-      
-      TransactionStatusBadgeView(status: parsedTransaction?.transaction.txStatus ?? transaction.txStatus)
-      
+
+      TransactionStatusBadgeView(
+        status: parsedTransaction?.transaction.txStatus ?? transaction.txStatus
+      )
+
       VStack(spacing: 4) {
         Text(transaction.createdTime, style: .date)
           .font(.callout)
@@ -182,7 +192,7 @@ private struct DetailsView: View {
     .cornerRadius(16)
     .clipShape(RoundedRectangle(cornerRadius: 16))
   }
-  
+
   private var background: some View {
     Color(braveSystemName: .containerHighlight)
       .overlay {
@@ -197,10 +207,10 @@ private struct DetailsView: View {
 }
 
 private struct TransactionDetailsSendContent: View {
-  
+
   var transaction: BraveWallet.TransactionInfo
   var parsedTransaction: ParsedTransaction?
-  
+
   /// Send value including symbol when available, or name for NFTs
   private var transactionValue: String {
     guard let parsedTransaction else { return "" }
@@ -236,47 +246,48 @@ private struct TransactionDetailsSendContent: View {
       return ""
     }
   }
-  
+
   /// Fiat value or symbol for NFTs
   private var transactionFiatValue: String? {
     guard let parsedTransaction else { return nil }
     switch parsedTransaction.details {
     case .ethSend(let details),
-        .erc20Transfer(let details),
-        .solSystemTransfer(let details),
-        .solSplTokenTransfer(let details):
+      .erc20Transfer(let details),
+      .solSystemTransfer(let details),
+      .solSplTokenTransfer(let details):
       if let fromToken = details.fromToken,
-         (fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155) {
+        fromToken.isNft || fromToken.isErc721 || fromToken.isErc1155
+      {
         return fromToken.symbol
       }
       return details.fromFiat
     case .filSend(let details):
       return details.sendFiat
     case .solDappTransaction, .erc721Transfer:
-      return nil // unknown fiat
+      return nil  // unknown fiat
     default:
       return nil
     }
   }
-  
+
   private var tokenSent: BraveWallet.BlockchainToken? {
     switch parsedTransaction?.details {
     case .ethSend(let details),
-        .erc20Transfer(let details),
-        .solSystemTransfer(let details),
-        .solSplTokenTransfer(let details):
+      .erc20Transfer(let details),
+      .solSystemTransfer(let details),
+      .solSplTokenTransfer(let details):
       return details.fromToken
     case .filSend(let details):
       return details.sendToken
     case .erc721Transfer(let details):
       return details.fromToken
     case .solDappTransaction:
-      return nil // unknown token
+      return nil  // unknown token
     default:
       return nil
     }
   }
-  
+
   private var nftMetadataUrl: URL? {
     switch parsedTransaction?.details {
     case .solSplTokenTransfer(let details):
@@ -287,10 +298,10 @@ private struct TransactionDetailsSendContent: View {
       return nil
     }
   }
-  
+
   @ScaledMetric private var nftLength: CGFloat = 128
   private let maxNFTLength: CGFloat = 160
-  
+
   var body: some View {
     VStack(spacing: 4) {
       if let token = tokenSent, let network = parsedTransaction?.network {
@@ -328,10 +339,10 @@ private struct TransactionDetailsSendContent: View {
 }
 
 private struct TransactionDetailsApproveContent: View {
-  
+
   var transaction: BraveWallet.TransactionInfo
   var parsedTransaction: ParsedTransaction?
-  
+
   private var approvalValue: String? {
     if case .ethErc20Approve(let details) = parsedTransaction?.details {
       if let token = details.token {
@@ -341,7 +352,7 @@ private struct TransactionDetailsApproveContent: View {
     }
     return nil
   }
-  
+
   var body: some View {
     VStack(spacing: 8) {
       Circle()
@@ -366,52 +377,52 @@ private struct TransactionDetailsApproveContent: View {
 }
 
 private struct TransactionDetailsSwapContent: View {
-  
+
   var transaction: BraveWallet.TransactionInfo
   var parsedTransaction: ParsedTransaction?
-  
+
   @ScaledMetric(relativeTo: .body) private var assetIconLength: CGFloat = 32
   private let maxAssetIconLength: CGFloat = 64
-  
+
   private var fromToken: BraveWallet.BlockchainToken? {
     if case .ethSwap(let details) = parsedTransaction?.details {
       return details.fromToken
     }
     return nil
   }
-  
+
   private var fromAmount: String? {
     if case .ethSwap(let details) = parsedTransaction?.details {
       return details.fromAmount
     }
     return nil
   }
-  
+
   private var toToken: BraveWallet.BlockchainToken? {
     if case .ethSwap(let details) = parsedTransaction?.details {
       return details.toToken
     }
     return nil
   }
-  
+
   private var minBuyAmount: String? {
     if case .ethSwap(let details) = parsedTransaction?.details {
       return details.minBuyAmount
     }
     return nil
   }
-  
+
   private var transactionFiatValue: String? {
     if case .ethSwap(let details) = parsedTransaction?.details {
       return details.fromFiat
     }
     return nil
   }
-  
+
   private var isSolanaSwap: Bool {
     transaction.txType == .solanaSwap
   }
-  
+
   var body: some View {
     VStack(spacing: 4) {
       Text(isSolanaSwap ? Strings.Wallet.transactionSummarySolanaSwap : Strings.Wallet.swap)
@@ -489,9 +500,9 @@ private struct TransactionDetailsSwapContent: View {
 }
 
 private struct TransactionStatusBadgeView: View {
-  
+
   let status: BraveWallet.TransactionStatus
-  
+
   var body: some View {
     HStack {
       if status.shouldShowLoadingStatus {
@@ -517,9 +528,9 @@ private struct TransactionStatusBadgeView: View {
   }
 }
 
-private extension BraveWallet.TransactionStatus {
+extension BraveWallet.TransactionStatus {
   /// If we should show transaction status as loading
-  var shouldShowLoadingStatus: Bool {
+  fileprivate var shouldShowLoadingStatus: Bool {
     switch self {
     case .unapproved, .submitted:
       return true
@@ -527,9 +538,9 @@ private extension BraveWallet.TransactionStatus {
       return false
     }
   }
-  
+
   /// If we should show transaction status successful icon
-  var shouldShowSuccessStatus: Bool {
+  fileprivate var shouldShowSuccessStatus: Bool {
     switch self {
     case .approved, .confirmed, .signed:
       return true
@@ -537,9 +548,9 @@ private extension BraveWallet.TransactionStatus {
       return false
     }
   }
-  
+
   /// If we should show transaction status failure icon
-  var shouldShowErrorStatus: Bool {
+  fileprivate var shouldShowErrorStatus: Bool {
     switch self {
     case .error, .dropped, .rejected:
       return true
@@ -547,9 +558,9 @@ private extension BraveWallet.TransactionStatus {
       return false
     }
   }
-  
+
   /// Color of status text on status badge
-  var badgeTextColor: Color {
+  fileprivate var badgeTextColor: Color {
     switch self {
     case .confirmed, .approved:
       return Color(braveSystemName: .systemfeedbackSuccessText)
@@ -563,9 +574,9 @@ private extension BraveWallet.TransactionStatus {
       return Color.clear
     }
   }
-  
+
   /// Color of status badge
-  var badgeBackgroundColor: Color {
+  fileprivate var badgeBackgroundColor: Color {
     switch self {
     case .confirmed, .approved:
       return Color(braveSystemName: .systemfeedbackSuccessBackground)

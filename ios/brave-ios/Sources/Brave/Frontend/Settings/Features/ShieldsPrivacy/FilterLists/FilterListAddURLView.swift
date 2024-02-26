@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
-import DesignSystem
 import BraveUI
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct FilterListAddURLView: View {
   @ObservedObject private var customFilterListStorage = CustomFilterListStorage.shared
@@ -14,7 +14,7 @@ struct FilterListAddURLView: View {
   @State private var newURLInput: String = ""
   @State private var errorMessage: String?
   @FocusState private var isURLFieldFocused: Bool
-  
+
   private var textField: some View {
     TextField(Strings.filterListsEnterFilterListURL, text: $newURLInput)
       .onChange(of: newURLInput) { newValue in
@@ -29,29 +29,33 @@ struct FilterListAddURLView: View {
         handleOnSubmit()
       }
   }
-  
+
   var body: some View {
     NavigationView {
       List {
-        Section(content: {
-          VStack(alignment: .leading) {
-            textField
-              .submitLabel(SubmitLabel.done)
-          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-        }, header: {
-          Text(Strings.customFilterListURL)
-        }, footer: {
-          VStack(alignment: .leading, spacing: 0) {
-            SectionFooterErrorView(errorMessage: errorMessage)
-            
-            VStack(alignment: .leading, spacing: 8) {
-              Text(Strings.addCustomFilterListDescription)
-                .fixedSize(horizontal: false, vertical: true)
-              Text(LocalizedStringKey(Strings.addCustomFilterListWarning))
-                .fixedSize(horizontal: false, vertical: true)
-            }.padding(.top)
+        Section(
+          content: {
+            VStack(alignment: .leading) {
+              textField
+                .submitLabel(SubmitLabel.done)
+            }.listRowBackground(Color(.secondaryBraveGroupedBackground))
+          },
+          header: {
+            Text(Strings.customFilterListURL)
+          },
+          footer: {
+            VStack(alignment: .leading, spacing: 0) {
+              SectionFooterErrorView(errorMessage: errorMessage)
+
+              VStack(alignment: .leading, spacing: 8) {
+                Text(Strings.addCustomFilterListDescription)
+                  .fixedSize(horizontal: false, vertical: true)
+                Text(LocalizedStringKey(Strings.addCustomFilterListWarning))
+                  .fixedSize(horizontal: false, vertical: true)
+              }.padding(.top)
+            }
           }
-        })
+        )
       }
       .animation(.easeInOut, value: errorMessage)
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
@@ -64,7 +68,7 @@ struct FilterListAddURLView: View {
             handleOnSubmit()
           }.disabled(newURLInput.isEmpty)
         }
-        
+
         ToolbarItemGroup(placement: .cancellationAction) {
           Button(Strings.CancelString) {
             presentationMode.dismiss()
@@ -76,7 +80,7 @@ struct FilterListAddURLView: View {
         isURLFieldFocused = true
       }
   }
-  
+
   private func handleOnSubmit() {
     guard !newURLInput.isEmpty else { return }
     guard let url = URL(string: newURLInput) else {
@@ -87,26 +91,29 @@ struct FilterListAddURLView: View {
       self.errorMessage = Strings.filterListAddOnlyHTTPSAllowedError
       return
     }
-    guard !customFilterListStorage.filterListsURLs.contains(where: { filterListURL in
-      return filterListURL.setting.externalURL == url
-    }) else {
+    guard
+      !customFilterListStorage.filterListsURLs.contains(where: { filterListURL in
+        return filterListURL.setting.externalURL == url
+      })
+    else {
       // Don't allow duplicates
       self.presentationMode.dismiss()
       return
     }
-    
+
     Task {
       let customURL = FilterListCustomURL(
-        externalURL: url, isEnabled: true,
+        externalURL: url,
+        isEnabled: true,
         inMemory: !customFilterListStorage.persistChanges
       )
-      
+
       customFilterListStorage.filterListsURLs.append(customURL)
-      
+
       await FilterListCustomURLDownloader.shared.startFetching(
         filterListCustomURL: customURL
       )
-      
+
       self.presentationMode.dismiss()
     }
   }

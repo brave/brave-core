@@ -2,10 +2,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 extension NTPLearnMoreViewController {
   struct NTPNotificationLearnMoreViewConfig {
@@ -25,7 +25,9 @@ extension NTPLearnMoreViewController {
     private lazy var titleStackView = UIStackView().then {
       $0.spacing = 10
 
-      let imageView = UIImageView(image: UIImage(named: "brave_rewards_button_enabled", in: .module, compatibleWith: nil)!).then { image in
+      let imageView = UIImageView(
+        image: UIImage(named: "brave_rewards_button_enabled", in: .module, compatibleWith: nil)!
+      ).then { image in
         image.snp.makeConstraints { make in
           make.size.equalTo(24)
         }

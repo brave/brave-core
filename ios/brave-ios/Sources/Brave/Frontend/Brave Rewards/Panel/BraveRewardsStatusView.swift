@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveUI
 import Shared
+import UIKit
 
 class BraveRewardsStatusView: UIView {
   enum VisibleStatus {
@@ -66,11 +66,13 @@ class BraveRewardsStatusView: UIView {
             withDuration: 0.1,
             animations: {
               self.visibleView?.isHidden = false
-            })
+            }
+          )
           UIView.animate(withDuration: 0.1, delay: 0.05) {
             self.visibleView?.alpha = 1.0
           }
-        })
+        }
+      )
     } else {
       visibleView?.isHidden = true
       visibleView = view

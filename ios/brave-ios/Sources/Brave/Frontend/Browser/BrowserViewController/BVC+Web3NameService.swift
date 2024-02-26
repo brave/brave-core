@@ -3,19 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveWallet
-import BraveShared
 import BraveCore
+import BraveShared
+import BraveWallet
+import Foundation
 
 extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
   /// Returns a `DecentralizedDNSHelper` for the given mode if supported and not in private mode.
   func decentralizedDNSHelperFor(url: URL?) -> DecentralizedDNSHelper? {
     let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
     guard !isPrivateMode,
-          let url,
-          DecentralizedDNSHelper.isSupported(domain: url.domainURL.schemelessAbsoluteDisplayString),
-          let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode) else { return nil }
+      let url,
+      DecentralizedDNSHelper.isSupported(domain: url.domainURL.schemelessAbsoluteDisplayString),
+      let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode)
+    else { return nil }
     return DecentralizedDNSHelper(
       rpcService: rpcService,
       ipfsApi: braveCore.ipfsAPI,
@@ -26,7 +27,8 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
   func web3NameServiceDecisionHandler(_ proceed: Bool, web3Service: Web3Service, originalURL: URL) {
     let isPrivateMode = privateBrowsingManager.isPrivateBrowsing
     guard let rpcService = BraveWallet.JsonRpcServiceFactory.get(privateMode: isPrivateMode),
-          let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: originalURL) else {
+      let decentralizedDNSHelper = self.decentralizedDNSHelperFor(url: originalURL)
+    else {
       finishEditingAndSubmit(originalURL)
       return
     }
@@ -41,7 +43,9 @@ extension BrowserViewController: Web3NameServiceScriptHandlerDelegate {
       case .unstoppable:
         rpcService.setUnstoppableDomainsResolveMethod(proceed ? .enabled : .disabled)
       }
-      let result = await decentralizedDNSHelper.lookup(domain: originalURL.host ?? originalURL.absoluteString)
+      let result = await decentralizedDNSHelper.lookup(
+        domain: originalURL.host ?? originalURL.absoluteString
+      )
       switch result {
       case let .load(resolvedURL):
         if resolvedURL.isIPFSScheme {

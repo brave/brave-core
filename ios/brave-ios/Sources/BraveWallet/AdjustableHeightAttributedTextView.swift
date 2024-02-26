@@ -9,9 +9,9 @@ import SwiftUI
 struct AdjustableHeightAttributedTextView: View {
   var attributedString: NSAttributedString
   var openLink: ((URL?) -> Void)?
-  
+
   @State private var height: CGFloat = .zero
-  
+
   var body: some View {
     AttributedTextView(
       attributedString: attributedString,
@@ -27,8 +27,8 @@ struct AttributedTextView: UIViewRepresentable {
   private var attributedString: NSAttributedString
   @Binding var dynamicHeight: CGFloat
   private var openLink: ((URL?) -> Void)?
-  
-  init (
+
+  init(
     attributedString: NSAttributedString,
     dynamicHeight: Binding<CGFloat>,
     openLink: ((URL?) -> Void)?
@@ -37,7 +37,7 @@ struct AttributedTextView: UIViewRepresentable {
     self.openLink = openLink
     _dynamicHeight = dynamicHeight
   }
-  
+
   func makeUIView(context: Context) -> UITextView {
     let textView = UITextView().then {
       $0.backgroundColor = .clear
@@ -52,26 +52,34 @@ struct AttributedTextView: UIViewRepresentable {
     }
     return textView
   }
-  
+
   func updateUIView(_ uiView: UITextView, context: Context) {
     uiView.attributedText = attributedString
     DispatchQueue.main.async {
-      dynamicHeight = uiView.sizeThatFits(CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)).height
+      dynamicHeight =
+        uiView.sizeThatFits(
+          CGSize(width: uiView.bounds.width, height: CGFloat.greatestFiniteMagnitude)
+        ).height
     }
   }
-  
+
   func makeCoordinator() -> Coordinator {
     Coordinator(parent: self)
   }
-  
+
   class Coordinator: NSObject, UITextViewDelegate {
     var parent: AttributedTextView
-    
+
     init(parent: AttributedTextView) {
       self.parent = parent
     }
-    
-    func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+
+    func textView(
+      _ textView: UITextView,
+      shouldInteractWith URL: URL,
+      in characterRange: NSRange,
+      interaction: UITextItemInteraction
+    ) -> Bool {
       parent.openLink?(URL)
       return false
     }

@@ -15,8 +15,8 @@ extension BrowserViewController {
     guard let screenTimeViewController = screenTimeViewController else {
       return
     }
-    
-    guard let url = url, (url.scheme == "http" || url.scheme == "https") else {
+
+    guard let url = url, url.scheme == "http" || url.scheme == "https" else {
       // This is signficantly better than removing the view controller from the screen!
       // If we use `nil` instead, STViewController goes into a broken state PERMANENTLY until the app is restarted
       // The URL cannot be nil, and it cannot be anything other than http(s) otherwise it will break
@@ -26,11 +26,12 @@ extension BrowserViewController {
       screenTimeViewController.url = NSURL() as URL
       return
     }
-    
+
     screenTimeViewController.url = url
   }
-  
+
   func recordScreenTimeUsage(for tab: Tab) {
-    screenTimeViewController?.suppressUsageRecording = tab.isPrivate || !Preferences.Privacy.screenTimeEnabled.value
+    screenTimeViewController?.suppressUsageRecording =
+      tab.isPrivate || !Preferences.Privacy.screenTimeEnabled.value
   }
 }

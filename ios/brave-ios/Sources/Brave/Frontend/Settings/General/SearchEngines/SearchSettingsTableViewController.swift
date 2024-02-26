@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 import os.log
 
 // MARK: - SearchEnginePickerDelegate
@@ -11,7 +11,9 @@ import os.log
 protocol SearchEnginePickerDelegate: AnyObject {
   func searchEnginePicker(
     _ searchEnginePicker: SearchEnginePicker?,
-    didSelectSearchEngine engine: OpenSearchEngine?, forType: DefaultEngineType?)
+    didSelectSearchEngine engine: OpenSearchEngine?,
+    forType: DefaultEngineType?
+  )
 }
 
 // MARK: - SearchSettingsTableViewController
@@ -23,7 +25,8 @@ class SearchSettingsTableViewController: UITableViewController {
   struct UX {
     static let iconSize = CGSize(
       width: OpenSearchEngine.preferredIconSize,
-      height: OpenSearchEngine.preferredIconSize)
+      height: OpenSearchEngine.preferredIconSize
+    )
 
     static let headerHeight: CGFloat = 44
   }
@@ -104,23 +107,48 @@ class SearchSettingsTableViewController: UITableViewController {
     tableView.do {
       $0.allowsSelectionDuringEditing = true
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.addCustomEngineRowIdentifier)
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.addCustomEngineRowIdentifier
+      )
       $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.searchEngineRowIdentifier)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showSearchSuggestionsRowIdentifier)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showRecentSearchesRowIdentifier)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.showBrowserSuggestionsRowIdentifier)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.customSearchEngineRowIdentifier)
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.showSearchSuggestionsRowIdentifier
+      )
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.showRecentSearchesRowIdentifier
+      )
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.showBrowserSuggestionsRowIdentifier
+      )
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier
+      )
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.customSearchEngineRowIdentifier
+      )
       $0.sectionHeaderTopPadding = 5
     }
 
     // Insert Done button if being presented outside of the Settings Nav stack
     if navigationController?.viewControllers.first === self {
       navigationItem.leftBarButtonItem =
-        UIBarButtonItem(title: Strings.settingsSearchDoneButton, style: .done, target: self, action: #selector(dismissAnimated))
+        UIBarButtonItem(
+          title: Strings.settingsSearchDoneButton,
+          style: .done,
+          target: self,
+          action: #selector(dismissAnimated)
+        )
     }
 
-    let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))
+    let footer = SettingsTableSectionHeaderFooterView(
+      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
+    )
     tableView.tableFooterView = footer
   }
 
@@ -143,7 +171,10 @@ class SearchSettingsTableViewController: UITableViewController {
     }
   }
 
-  private func configureSearchEngineCell(type: DefaultEngineType, engineName: String?) -> UITableViewCell {
+  private func configureSearchEngineCell(
+    type: DefaultEngineType,
+    engineName: String?
+  ) -> UITableViewCell {
     guard let searchEngineName = engineName else { return UITableViewCell() }
 
     var text: String
@@ -155,21 +186,22 @@ class SearchSettingsTableViewController: UITableViewController {
       text = Strings.privateTabSearch
     }
 
-    let cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.searchEngineRowIdentifier).then {
-      $0.accessoryType = .disclosureIndicator
-      $0.editingAccessoryType = .disclosureIndicator
-      $0.accessibilityLabel = text
-      $0.textLabel?.text = text
-      $0.accessibilityValue = searchEngineName
-      $0.detailTextLabel?.text = searchEngineName
-    }
+    let cell = UITableViewCell(style: .value1, reuseIdentifier: Constants.searchEngineRowIdentifier)
+      .then {
+        $0.accessoryType = .disclosureIndicator
+        $0.editingAccessoryType = .disclosureIndicator
+        $0.accessibilityLabel = text
+        $0.textLabel?.text = text
+        $0.accessibilityValue = searchEngineName
+        $0.detailTextLabel?.text = searchEngineName
+      }
 
     return cell
   }
-  
+
   private func updateTableEditModeVisibility() {
     tableView.endEditing(true)
-    
+
     if customSearchEngines.isEmpty {
       navigationItem.rightBarButtonItem = nil
     } else {
@@ -192,11 +224,17 @@ class SearchSettingsTableViewController: UITableViewController {
     }
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
     return UX.headerHeight
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     var cell: UITableViewCell?
     var engine: OpenSearchEngine?
 
@@ -209,7 +247,10 @@ class SearchSettingsTableViewController: UITableViewController {
         engine = searchEngines.defaultEngine(forType: .privateMode)
         cell = configureSearchEngineCell(type: .privateMode, engineName: engine?.displayName)
       case CurrentEngineType.quick.rawValue:
-        cell = tableView.dequeueReusableCell(withIdentifier: Constants.quickSearchEngineRowIdentifier, for: indexPath).then {
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.quickSearchEngineRowIdentifier,
+          for: indexPath
+        ).then {
           $0.textLabel?.text = Strings.quickSearchEngines
           $0.accessoryType = .disclosureIndicator
           $0.editingAccessoryType = .disclosureIndicator
@@ -220,7 +261,10 @@ class SearchSettingsTableViewController: UITableViewController {
           $0.isOn = searchEngines.shouldShowSearchSuggestions
         }
 
-        cell = tableView.dequeueReusableCell(withIdentifier: Constants.showSearchSuggestionsRowIdentifier, for: indexPath).then {
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.showSearchSuggestionsRowIdentifier,
+          for: indexPath
+        ).then {
           $0.textLabel?.text = Strings.searchSettingSuggestionCellTitle
           $0.accessoryView = toggle
           $0.selectionStyle = .none
@@ -231,7 +275,10 @@ class SearchSettingsTableViewController: UITableViewController {
           $0.isOn = searchEngines.shouldShowRecentSearches
         }
 
-        cell = tableView.dequeueReusableCell(withIdentifier: Constants.showRecentSearchesRowIdentifier, for: indexPath).then {
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.showRecentSearchesRowIdentifier,
+          for: indexPath
+        ).then {
           $0.textLabel?.text = Strings.searchSettingRecentSearchesCellTitle
           $0.accessoryView = toggle
           $0.selectionStyle = .none
@@ -242,7 +289,10 @@ class SearchSettingsTableViewController: UITableViewController {
           $0.isOn = searchEngines.shouldShowBrowserSuggestions
         }
 
-        cell = UITableViewCell(style: .subtitle, reuseIdentifier: Constants.showBrowserSuggestionsRowIdentifier).then {
+        cell = UITableViewCell(
+          style: .subtitle,
+          reuseIdentifier: Constants.showBrowserSuggestionsRowIdentifier
+        ).then {
           $0.textLabel?.text = Strings.searchSettingBrowserSuggestionCellTitle
           $0.detailTextLabel?.numberOfLines = 0
           $0.detailTextLabel?.textColor = .secondaryBraveLabel
@@ -257,7 +307,10 @@ class SearchSettingsTableViewController: UITableViewController {
     } else {
       // Add custom engine
       if indexPath.item == customSearchEngines.count {
-        cell = tableView.dequeueReusableCell(withIdentifier: Constants.addCustomEngineRowIdentifier, for: indexPath).then {
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.addCustomEngineRowIdentifier,
+          for: indexPath
+        ).then {
           $0.textLabel?.text = Strings.searchSettingAddCustomEngineCellTitle
           $0.accessoryType = .disclosureIndicator
           $0.editingAccessoryType = .disclosureIndicator
@@ -265,7 +318,10 @@ class SearchSettingsTableViewController: UITableViewController {
       } else {
         engine = customSearchEngines[indexPath.item]
 
-        cell = tableView.dequeueReusableCell(withIdentifier: Constants.customSearchEngineRowIdentifier, for: indexPath).then {
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.customSearchEngineRowIdentifier,
+          for: indexPath
+        ).then {
           $0.textLabel?.text = engine?.displayName
           $0.textLabel?.adjustsFontSizeToFitWidth = true
           $0.textLabel?.minimumScaleFactor = 0.5
@@ -284,25 +340,51 @@ class SearchSettingsTableViewController: UITableViewController {
     return tableViewCell
   }
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  {
     let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
 
-    let sectionTitle = section == Section.current.rawValue ? Strings.currentlyUsedSearchEngines : Strings.customSearchEngines
+    let sectionTitle =
+      section == Section.current.rawValue
+      ? Strings.currentlyUsedSearchEngines : Strings.customSearchEngines
 
     headerView.titleLabel.text = sectionTitle
     return headerView
   }
 
-  override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-    if indexPath.section == Section.current.rawValue && indexPath.item == CurrentEngineType.standard.rawValue {
-      navigationController?.pushViewController(configureSearchEnginePicker(.standard), animated: true)
-    } else if indexPath.section == Section.current.rawValue && indexPath.item == CurrentEngineType.private.rawValue {
-      navigationController?.pushViewController(configureSearchEnginePicker(.privateMode), animated: true)
-    } else if indexPath.section == Section.current.rawValue && indexPath.item == CurrentEngineType.quick.rawValue {
-      let quickSearchEnginesViewController = SearchQuickEnginesViewController(profile: profile, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing)
+  override func tableView(
+    _ tableView: UITableView,
+    willSelectRowAt indexPath: IndexPath
+  ) -> IndexPath? {
+    if indexPath.section == Section.current.rawValue
+      && indexPath.item == CurrentEngineType.standard.rawValue
+    {
+      navigationController?.pushViewController(
+        configureSearchEnginePicker(.standard),
+        animated: true
+      )
+    } else if indexPath.section == Section.current.rawValue
+      && indexPath.item == CurrentEngineType.private.rawValue
+    {
+      navigationController?.pushViewController(
+        configureSearchEnginePicker(.privateMode),
+        animated: true
+      )
+    } else if indexPath.section == Section.current.rawValue
+      && indexPath.item == CurrentEngineType.quick.rawValue
+    {
+      let quickSearchEnginesViewController = SearchQuickEnginesViewController(
+        profile: profile,
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      )
       navigationController?.pushViewController(quickSearchEnginesViewController, animated: true)
-    } else if indexPath.section == Section.customSearch.rawValue && indexPath.item == customSearchEngines.count {
-      let customEngineViewController = SearchCustomEngineViewController(profile: profile, privateBrowsingManager: privateBrowsingManager)
+    } else if indexPath.section == Section.customSearch.rawValue
+      && indexPath.item == customSearchEngines.count
+    {
+      let customEngineViewController = SearchCustomEngineViewController(
+        profile: profile,
+        privateBrowsingManager: privateBrowsingManager
+      )
       navigationController?.pushViewController(customEngineViewController, animated: true)
     }
 
@@ -310,8 +392,13 @@ class SearchSettingsTableViewController: UITableViewController {
   }
 
   // Determine whether to show delete button in edit mode
-  override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
-    guard indexPath.section == Section.customSearch.rawValue, indexPath.row != customSearchEngines.count else {
+  override func tableView(
+    _ tableView: UITableView,
+    editingStyleForRowAt indexPath: IndexPath
+  ) -> UITableViewCell.EditingStyle {
+    guard indexPath.section == Section.customSearch.rawValue,
+      indexPath.row != customSearchEngines.count
+    else {
       return .none
     }
 
@@ -319,14 +406,22 @@ class SearchSettingsTableViewController: UITableViewController {
   }
 
   // Determine whether to indent while in edit mode for deletion
-  override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
-    return indexPath.section == Section.customSearch.rawValue && indexPath.row != customSearchEngines.count
+  override func tableView(
+    _ tableView: UITableView,
+    shouldIndentWhileEditingRowAt indexPath: IndexPath
+  ) -> Bool {
+    return indexPath.section == Section.customSearch.rawValue
+      && indexPath.row != customSearchEngines.count
   }
 
-  override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+  override func tableView(
+    _ tableView: UITableView,
+    commit editingStyle: UITableViewCell.EditingStyle,
+    forRowAt indexPath: IndexPath
+  ) {
     if editingStyle == .delete {
       guard let engine = customSearchEngines[safe: indexPath.row] else { return }
-      
+
       func deleteCustomEngine() {
         do {
           try searchEngines.deleteCustomEngine(engine)
@@ -340,21 +435,28 @@ class SearchSettingsTableViewController: UITableViewController {
 
       if engine == searchEngines.defaultEngine(forType: .standard) {
         let alert = UIAlertController(
-          title: String(format: Strings.CustomSearchEngine.deleteEngineAlertTitle, engine.displayName),
+          title: String(
+            format: Strings.CustomSearchEngine.deleteEngineAlertTitle,
+            engine.displayName
+          ),
           message: Strings.CustomSearchEngine.deleteEngineAlertDescription,
-          preferredStyle: .alert)
-        
+          preferredStyle: .alert
+        )
+
         alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
-        
-        alert.addAction(UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
-          guard let self = self else { return }
-          
-          self.searchEngines.updateDefaultEngine(
-            self.searchEngines.defaultEngine(forType: .privateMode).shortName,
-            forType: .standard)
-          
-          deleteCustomEngine()
-        })
+
+        alert.addAction(
+          UIAlertAction(title: Strings.delete, style: .destructive) { [weak self] _ in
+            guard let self = self else { return }
+
+            self.searchEngines.updateDefaultEngine(
+              self.searchEngines.defaultEngine(forType: .privateMode).shortName,
+              forType: .standard
+            )
+
+            deleteCustomEngine()
+          }
+        )
 
         UIImpactFeedbackGenerator(style: .medium).bzzt()
         present(alert, animated: true, completion: nil)
@@ -384,7 +486,7 @@ extension SearchSettingsTableViewController {
     searchEngines.shouldShowRecentSearches = toggle.isOn
     searchEngines.shouldShowRecentSearchesOptIn = false
   }
-  
+
   @objc func didToggleBrowserSuggestions(_ toggle: UISwitch) {
     // Setting the value effects all the modes private normal pbo
     searchEngines.shouldShowBrowserSuggestions = toggle.isOn
@@ -401,7 +503,8 @@ extension SearchSettingsTableViewController: SearchEnginePickerDelegate {
 
   func searchEnginePicker(
     _ searchEnginePicker: SearchEnginePicker?,
-    didSelectSearchEngine searchEngine: OpenSearchEngine?, forType: DefaultEngineType?
+    didSelectSearchEngine searchEngine: OpenSearchEngine?,
+    forType: DefaultEngineType?
   ) {
     if let engine = searchEngine, let type = forType {
       searchEngines.updateDefaultEngine(engine.shortName, forType: type)

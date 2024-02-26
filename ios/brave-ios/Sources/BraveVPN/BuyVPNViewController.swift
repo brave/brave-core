@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import Preferences
-import StoreKit
-import os.log
 import DesignSystem
+import Preferences
+import Shared
+import StoreKit
+import UIKit
+import os.log
 
 class BuyVPNViewController: VPNSetupLoadingController {
-    
+
   let iapObserver: IAPObserver
   private var iapRestoreTimer: Timer?
 
@@ -20,17 +20,17 @@ class BuyVPNViewController: VPNSetupLoadingController {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
     }
   }
-  
+
   init(iapObserver: IAPObserver) {
     self.iapObserver = iapObserver
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   @available(*, unavailable)
   required init?(coder: NSCoder) { fatalError() }
-  
+
   private var buyVPNView = BuyVPNView(with: .yearly)
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -41,67 +41,71 @@ class BuyVPNViewController: VPNSetupLoadingController {
     navigationItem.scrollEdgeAppearance = BraveVPNCommonUI.navigationBarAppearance
 
     navigationItem.rightBarButtonItem = .init(
-      title: Strings.VPN.restorePurchases, style: .done,
-      target: self, action: #selector(restorePurchasesAction))
-    
-    let buyTitle = Preferences.VPN.freeTrialUsed.value
+      title: Strings.VPN.restorePurchases,
+      style: .done,
+      target: self,
+      action: #selector(restorePurchasesAction)
+    )
+
+    let buyTitle =
+      Preferences.VPN.freeTrialUsed.value
       ? Strings.VPN.activateSubscriptionAction.capitalized
       : Strings.VPN.freeTrialPeriodAction.capitalized
-    
+
     let buyButton = BraveGradientButton(gradient: .backgroundGradient1).then {
       $0.titleLabel?.font = .systemFont(ofSize: 15, weight: .bold)
       $0.titleLabel?.textAlignment = .center
-       
+
       $0.setTitle(buyTitle, for: .normal)
-      
+
       $0.snp.makeConstraints {
         $0.height.equalTo(50)
       }
-      
+
       $0.layer.do {
         $0.cornerRadius = 24
         $0.cornerCurve = .continuous
         $0.masksToBounds = true
       }
-      
+
       $0.addTarget(self, action: #selector(startSubscriptionAction), for: .touchUpInside)
     }
-    
+
     let redeemButton = UIButton().then {
       $0.setTitle(Strings.VPN.vpnRedeemCodeButtonActionTitle, for: .normal)
       $0.titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
       $0.titleLabel?.textAlignment = .center
-      
+
       $0.addTarget(self, action: #selector(redeemOfferSubscriptionCode), for: .touchUpInside)
     }
-    
+
     let seperator = UIView().then {
       $0.backgroundColor = UIColor.white.withAlphaComponent(0.1)
       $0.snp.makeConstraints { make in
         make.height.equalTo(1)
       }
     }
-        
+
     view.addSubview(buyVPNView)
     view.addSubview(seperator)
     view.addSubview(buyButton)
     view.addSubview(redeemButton)
-    
+
     buyVPNView.snp.makeConstraints {
       $0.leading.trailing.top.equalToSuperview()
     }
-    
-    seperator.snp.makeConstraints() {
+
+    seperator.snp.makeConstraints {
       $0.top.equalTo(buyVPNView.snp.bottom)
       $0.leading.trailing.equalToSuperview()
     }
-    
-    buyButton.snp.makeConstraints() {
+
+    buyButton.snp.makeConstraints {
       $0.top.equalTo(seperator.snp.bottom).inset(-12)
       $0.leading.trailing.equalToSuperview().inset(24)
     }
-    
-    redeemButton.snp.makeConstraints() {
+
+    redeemButton.snp.makeConstraints {
       $0.top.equalTo(buyButton.snp.bottom).inset(-12)
       $0.bottom.equalToSuperview().inset(24)
       $0.centerX.equalToSuperview()
@@ -134,11 +138,11 @@ class BuyVPNViewController: VPNSetupLoadingController {
   }
 
   // MARK: - Button Actions
-  
+
   @objc func yearlySubscriptionAction() {
     activeSubcriptionChoice = .yearly
   }
-  
+
   @objc func monthlySubscriptionAction() {
     activeSubcriptionChoice = .monthly
   }
@@ -150,45 +154,46 @@ class BuyVPNViewController: VPNSetupLoadingController {
   @objc func restorePurchasesAction() {
     isLoading = true
     SKPaymentQueue.default().restoreCompletedTransactions()
-    
+
     if iapRestoreTimer != nil {
       iapRestoreTimer?.invalidate()
       iapRestoreTimer = nil
     }
-    
+
     // Adding 1 minute timer for restore
     iapRestoreTimer = Timer.scheduledTimer(
       timeInterval: 1.minutes,
       target: self,
       selector: #selector(handleRestoreTimeoutFailure),
       userInfo: nil,
-      repeats: false)
+      repeats: false
+    )
   }
-  
+
   @objc func startSubscriptionAction() {
     addPaymentForSubcription(type: activeSubcriptionChoice)
   }
-  
+
   @objc func redeemOfferSubscriptionCode() {
     // Open the redeem code sheet
     SKPaymentQueue.default().presentCodeRedemptionSheet()
   }
-  
+
   private func addPaymentForSubcription(type: SubscriptionType) {
     var subscriptionProduct: SKProduct?
-    
+
     switch type {
     case .yearly:
       subscriptionProduct = VPNProductInfo.yearlySubProduct
     case .monthly:
       subscriptionProduct = VPNProductInfo.monthlySubProduct
     }
-    
+
     guard let subscriptionProduct = subscriptionProduct else {
       Logger.module.error("Failed to retrieve \(type.rawValue) subcription product")
       return
     }
-    
+
     isLoading = true
     let payment = SKPayment(product: subscriptionProduct)
     SKPaymentQueue.default().add(payment)
@@ -202,14 +207,15 @@ extension BuyVPNViewController: IAPObserverDelegate {
     DispatchQueue.main.async {
       self.isLoading = false
     }
-    
+
     // Not using `push` since we don't want the user to go back.
     DispatchQueue.main.async {
       self.navigationController?.setViewControllers(
         [InstallVPNViewController()],
-        animated: true)
+        animated: true
+      )
     }
-    
+
     if validateReceipt {
       BraveVPN.validateReceiptData()
     }
@@ -220,24 +226,24 @@ extension BuyVPNViewController: IAPObserverDelegate {
     guard isLoading else {
       return
     }
-    
+
     handleTransactionError(error: error)
   }
-  
+
   func handlePromotedInAppPurchase() {
     // No-op In app purchase promotion is handled on bvc
   }
-  
+
   @objc func handleRestoreTimeoutFailure() {
     // Handle Restore error from timeout
     guard isLoading else {
       return
     }
-    
+
     let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "time-out"])
     handleTransactionError(error: .transactionError(error: errorRestore))
   }
-  
+
   private func handleTransactionError(error: IAPObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false
@@ -254,7 +260,8 @@ extension BuyVPNViewController: IAPObserverDelegate {
       let alert = UIAlertController(
         title: Strings.VPN.vpnErrorPurchaseFailedTitle,
         message: message,
-        preferredStyle: .alert)
+        preferredStyle: .alert
+      )
       let ok = UIAlertAction(title: Strings.OKString, style: .default, handler: nil)
       alert.addAction(ok)
       self.present(alert, animated: true)
@@ -263,7 +270,7 @@ extension BuyVPNViewController: IAPObserverDelegate {
 }
 
 class VPNSetupLoadingController: UIViewController {
-  
+
   private var overlayView: UIView?
 
   var isLoading: Bool = false {
@@ -301,7 +308,7 @@ class VPNSetupLoadingController: UIViewController {
 }
 
 extension BraveGradient {
-  
+
   public static var backgroundGradient1: BraveGradient {
     .init(
       stops: [

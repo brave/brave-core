@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 struct AssetsListView: View {
-  
+
   let assets: [AssetViewModel]
   let currencyFormatter: NumberFormatter
   let selectedAsset: (BraveWallet.BlockchainToken) -> Void
-  
+
   var body: some View {
     ScrollView {
       LazyVStack {
@@ -43,7 +43,7 @@ struct AssetsListView: View {
     }
     .background(Color(braveSystemName: .containerBackground))
   }
-  
+
   private var emptyAssetsState: some View {
     VStack(spacing: 10) {
       Image("portfolio-empty", bundle: .module)

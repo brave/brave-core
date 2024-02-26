@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveCore
 import BigNumber
-import Strings
+import BraveCore
 import DesignSystem
+import Strings
+import SwiftUI
 
 struct PendingTransactionView: View {
   @ObservedObject var confirmationStore: TransactionConfirmationStore
@@ -15,25 +15,25 @@ struct PendingTransactionView: View {
   let keyringStore: KeyringStore
   @Binding var isShowingGas: Bool
   @Binding var isShowingAdvancedSettings: Bool
-  
+
   var onDismiss: () -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.openURL) private var openWalletURL
-  
+
   /// Blockie size for ERC 20 Approve transactions
   @ScaledMetric private var blockieSize = 24
   /// Favicon size for ERC 20 Approve transactions
   @ScaledMetric private var faviconSize = 48
   private let maxFaviconSize: CGFloat = 96
-  
+
   private enum ViewMode: Int {
     case transaction
     case details
   }
-  
+
   @State private var viewMode: ViewMode = .transaction
-  
+
   private var transactionType: String {
     if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
       return Strings.Wallet.transactionTypeApprove
@@ -44,17 +44,27 @@ struct PendingTransactionView: View {
     case .solanaDappSignTransaction, .solanaDappSignAndSendTransaction:
       return Strings.Wallet.solanaDappTransactionTitle
     default:
-      return confirmationStore.activeParsedTransaction.transaction.isSwap ? Strings.Wallet.swap : Strings.Wallet.send
+      return confirmationStore.activeParsedTransaction.transaction.isSwap
+        ? Strings.Wallet.swap : Strings.Wallet.send
     }
   }
-  
+
   /// The view for changing between available pending transactions. ex. '1 of 4 Next'
   @ViewBuilder private var transactionsButton: some View {
     if confirmationStore.unapprovedTxs.count > 1 {
-      let index = confirmationStore.unapprovedTxs.firstIndex(of: confirmationStore.activeParsedTransaction.transaction) ?? 0
+      let index =
+        confirmationStore.unapprovedTxs.firstIndex(
+          of: confirmationStore.activeParsedTransaction.transaction
+        ) ?? 0
       HStack {
-        Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, index + 1, confirmationStore.unapprovedTxs.count))
-          .fontWeight(.semibold)
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.transactionCount,
+            index + 1,
+            confirmationStore.unapprovedTxs.count
+          )
+        )
+        .fontWeight(.semibold)
         Button(action: confirmationStore.nextTransaction) {
           Text(Strings.Wallet.next)
             .fontWeight(.semibold)
@@ -63,7 +73,7 @@ struct PendingTransactionView: View {
       }
     }
   }
-  
+
   /// View showing the currently selected account with a blockie
   @ViewBuilder private var accountView: some View {
     HStack {
@@ -76,7 +86,7 @@ struct PendingTransactionView: View {
         .frame(width: blockieSize, height: blockieSize)
     }
   }
-  
+
   private var globeFavicon: some View {
     Image(systemName: "globe")
       .resizable()
@@ -84,7 +94,7 @@ struct PendingTransactionView: View {
       .padding(8)
       .background(Color(.braveDisabled))
   }
-  
+
   @ViewBuilder private var faviconAndOrigin: some View {
     VStack(spacing: 8) {
       if let originInfo = confirmationStore.originInfo {
@@ -122,30 +132,43 @@ struct PendingTransactionView: View {
     }
     .accessibilityElement(children: .combine)
   }
-  
+
   /// The header displayed for an `erc20Approve` txType transaction
   @ViewBuilder private var erc20ApproveHeader: some View {
     VStack(spacing: 20) {
       VStack(spacing: 8) {
         faviconAndOrigin
         VStack(spacing: 10) {
-          Text(String.localizedStringWithFormat(Strings.Wallet.confirmationViewAllowSpendTitle, confirmationStore.symbol))
-            .fontWeight(.semibold)
-            .foregroundColor(Color(.bravePrimary))
-          Text(String.localizedStringWithFormat(Strings.Wallet.confirmationViewAllowSpendSubtitle, confirmationStore.symbol))
-            .font(.footnote)
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.confirmationViewAllowSpendTitle,
+              confirmationStore.symbol
+            )
+          )
+          .fontWeight(.semibold)
+          .foregroundColor(Color(.bravePrimary))
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.confirmationViewAllowSpendSubtitle,
+              confirmationStore.symbol
+            )
+          )
+          .font(.footnote)
         }
         .multilineTextAlignment(.center)
       }
       if confirmationStore.isUnlimitedApprovalRequested {
-        Label(Strings.Wallet.confirmationViewUnlimitedWarning, systemImage: "exclamationmark.triangle")
-          .padding(12)
-          .foregroundColor(Color(.braveErrorLabel))
-          .font(.subheadline)
-          .background(
-            Color(.braveErrorBackground)
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-          )
+        Label(
+          Strings.Wallet.confirmationViewUnlimitedWarning,
+          systemImage: "exclamationmark.triangle"
+        )
+        .padding(12)
+        .foregroundColor(Color(.braveErrorLabel))
+        .font(.subheadline)
+        .background(
+          Color(.braveErrorBackground)
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        )
       }
       NavigationLink(
         destination: EditPermissionsView(
@@ -163,7 +186,7 @@ struct PendingTransactionView: View {
     .padding(.horizontal)
     .padding(.bottom)
   }
-  
+
   @ViewBuilder private var editGasFeeButton: some View {
     let titleView = Text(Strings.Wallet.editButtonTitle)
       .fontWeight(.semibold)
@@ -192,7 +215,7 @@ struct PendingTransactionView: View {
     }
     .font(.footnote)
   }
-  
+
   @ViewBuilder private var editNonceRow: some View {
     NavigationLink(
       destination: EditNonceView(
@@ -213,7 +236,7 @@ struct PendingTransactionView: View {
       .font(.footnote.weight(.semibold))
     }
   }
-  
+
   private var currentTransactionView: some View {
     VStack {
       if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
@@ -230,7 +253,7 @@ struct PendingTransactionView: View {
           fiat: confirmationStore.fiat
         )
       }
-      
+
       if confirmationStore.isSolTokenTransferWithAssociatedTokenAccountCreation {
         VStack(alignment: .leading, spacing: 8) {
           Text(Strings.Wallet.confirmationViewSolSplTokenAccountCreationWarning)
@@ -251,7 +274,7 @@ struct PendingTransactionView: View {
             .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
         )
       }
-      
+
       // View Mode
       VStack(spacing: 12) {
         Picker("", selection: $viewMode) {
@@ -306,8 +329,11 @@ struct PendingTransactionView: View {
               }
               HStack {
                 VStack(alignment: .leading) {
-                  Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee)
-                    .foregroundColor(Color(.bravePrimary))
+                  Text(
+                    confirmationStore.activeParsedTransaction.coin == .sol
+                      ? Strings.Wallet.transactionFee : Strings.Wallet.gasFee
+                  )
+                  .foregroundColor(Color(.bravePrimary))
                   if confirmationStore.activeParsedTransaction.coin == .eth {
                     editGasFeeButton
                   }
@@ -356,12 +382,17 @@ struct PendingTransactionView: View {
                     .accessibility(sortPriority: 1)
                   Spacer()
                   VStack(alignment: .trailing) {
-                    Text(confirmationStore.activeParsedTransaction.coin == .sol ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas)
-                      .font(.footnote)
-                      .foregroundColor(Color(.secondaryBraveLabel))
-                    Text("\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)")
-                      .foregroundColor(Color(.bravePrimary))
-                      .multilineTextAlignment(.trailing)
+                    Text(
+                      confirmationStore.activeParsedTransaction.coin == .sol
+                        ? Strings.Wallet.amountAndFee : Strings.Wallet.amountAndGas
+                    )
+                    .font(.footnote)
+                    .foregroundColor(Color(.secondaryBraveLabel))
+                    Text(
+                      "\(confirmationStore.value) \(confirmationStore.symbol) + \(confirmationStore.gasValue) \(confirmationStore.gasSymbol)"
+                    )
+                    .foregroundColor(Color(.bravePrimary))
+                    .multilineTextAlignment(.trailing)
                     HStack(spacing: 4) {
                       if !confirmationStore.isBalanceSufficient {
                         Text(Strings.Wallet.insufficientBalance)
@@ -369,7 +400,8 @@ struct PendingTransactionView: View {
                       }
                       Text(confirmationStore.totalFiat)
                         .foregroundColor(
-                          confirmationStore.isBalanceSufficient ? Color(.braveLabel) : Color(.braveErrorLabel)
+                          confirmationStore.isBalanceSufficient
+                            ? Color(.braveLabel) : Color(.braveErrorLabel)
                         )
                     }
                     .accessibilityElement(children: .contain)
@@ -404,7 +436,7 @@ struct PendingTransactionView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var rejectConfirmContainer: some View {
     if sizeCategory.isAccessibilityCategory {
       VStack {
@@ -416,42 +448,47 @@ struct PendingTransactionView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var rejectConfirmButtons: some View {
     Button(action: {
-      confirmationStore.reject(transaction: confirmationStore.activeParsedTransaction.transaction) { _ in }
+      confirmationStore.reject(transaction: confirmationStore.activeParsedTransaction.transaction) {
+        _ in
+      }
     }) {
       Label(Strings.Wallet.rejectTransactionButtonTitle, systemImage: "xmark")
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     Button(action: {
       confirmationStore.isTxSubmitting = true
-      confirmationStore.confirm(transaction: confirmationStore.activeParsedTransaction.transaction) { _ in }
+      confirmationStore.confirm(transaction: confirmationStore.activeParsedTransaction.transaction)
+      { _ in }
     }) {
       Label(Strings.Wallet.confirm, systemImage: "checkmark.circle.fill")
     }
     .buttonStyle(BraveFilledButtonStyle(size: .large))
-    .disabled(!confirmationStore.isBalanceSufficient || confirmationStore.activeTxStatus == .approved)
+    .disabled(
+      !confirmationStore.isBalanceSufficient || confirmationStore.activeTxStatus == .approved
+    )
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack {
         // Current network, transaction buttons
         HStack(alignment: .top) {
           if confirmationStore.activeParsedTransaction.transaction.txType != .ethSwap {
-            Text(confirmationStore.activeParsedTransaction.network.chainName) // network shown below each token for swap
+            Text(confirmationStore.activeParsedTransaction.network.chainName)  // network shown below each token for swap
           }
           Spacer()
           VStack(alignment: .trailing) {
             transactionsButton
             if confirmationStore.activeParsedTransaction.transaction.txType == .erc20Approve {
-              accountView // for other txTypes, account is shown in `TransactionHeader`
+              accountView  // for other txTypes, account is shown in `TransactionHeader`
             }
           }
         }
         .font(.callout)
-        
+
         // Current Active Transaction info
         if confirmationStore.activeParsedTransaction.transaction.txType == .ethSwap {
           SaferSignTransactionContainerView(
@@ -466,7 +503,7 @@ struct PendingTransactionView: View {
         } else {
           currentTransactionView
         }
-        
+
         // Cancel / Confirm buttons
         if confirmationStore.unapprovedTxs.count > 1 {
           Button(action: {
@@ -476,9 +513,14 @@ struct PendingTransactionView: View {
               }
             }
           }) {
-            Text(String.localizedStringWithFormat(Strings.Wallet.rejectAllTransactions, confirmationStore.unapprovedTxs.count))
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(.braveBlurpleTint))
+            Text(
+              String.localizedStringWithFormat(
+                Strings.Wallet.rejectAllTransactions,
+                confirmationStore.unapprovedTxs.count
+              )
+            )
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(.braveBlurpleTint))
           }
           .padding(.top, 8)
         }
@@ -524,7 +566,7 @@ struct PendingTransactionView_Previews: PreviewProvider {
       keyringStore: .previewStore,
       isShowingGas: .constant(false),
       isShowingAdvancedSettings: .constant(false),
-      onDismiss: { }
+      onDismiss: {}
     )
   }
 }

@@ -44,7 +44,9 @@ class IndentedImageTableViewCell: UITableViewCell {
     let transparentLine = UIView.separatorLine
     transparentLine.backgroundColor = .clear
 
-    [transparentLine, folderName, UIView.separatorLine].forEach(folderNameStackView.addArrangedSubview)
+    [transparentLine, folderName, UIView.separatorLine].forEach(
+      folderNameStackView.addArrangedSubview
+    )
 
     mainStackView.addArrangedSubview(folderNameStackView)
 

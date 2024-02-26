@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import AVFoundation
-import CoreImage
 import Combine
-import SDWebImage
-import Shared
+import CoreImage
 import Data
 import Favicon
+import Foundation
+import SDWebImage
+import Shared
 import os.log
 
 public class PlaylistThumbnailRenderer {
@@ -21,18 +21,22 @@ public class PlaylistThumbnailRenderer {
   private var thumbnailGenerator = Set<AnyCancellable>()
 
   func loadThumbnail(assetUrl: URL?, favIconUrl: URL?, completion: @escaping (UIImage?) -> Void) {
-    if let assetUrl = assetUrl, let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetUrl.absoluteString) {
+    if let assetUrl = assetUrl,
+      let cachedImage = SDImageCache.shared.imageFromCache(forKey: assetUrl.absoluteString)
+    {
       self.destroy()
       completion(cachedImage)
       return
     }
-    
-    if let favIconUrl = favIconUrl, let cachedImage = SDImageCache.shared.imageFromCache(forKey: favIconUrl.absoluteString) {
+
+    if let favIconUrl = favIconUrl,
+      let cachedImage = SDImageCache.shared.imageFromCache(forKey: favIconUrl.absoluteString)
+    {
       self.destroy()
       completion(cachedImage)
       return
     }
-    
+
     var generators = [Future<UIImage, Error>]()
     if let assetUrl = assetUrl {
       generators.append(contentsOf: [
@@ -81,26 +85,33 @@ public class PlaylistThumbnailRenderer {
     assetGenerator = nil
     favIconGenerator = nil
   }
-  
+
   private enum BindError: Error {
     case failedToLoadImage
   }
 
-  private func bind(_ block: @escaping (URL, @escaping (UIImage?) -> Void) -> Void, url: URL) -> Future<UIImage, Error> {
+  private func bind(
+    _ block: @escaping (URL, @escaping (UIImage?) -> Void) -> Void,
+    url: URL
+  ) -> Future<UIImage, Error> {
     Future { promise in
-      block(url, { image in
-        if let image = image {
-          promise(.success(image))
-        } else {
-          promise(.failure(BindError.failedToLoadImage))
+      block(
+        url,
+        { image in
+          if let image = image {
+            promise(.success(image))
+          } else {
+            promise(.failure(BindError.failedToLoadImage))
+          }
         }
-      })
+      )
     }
   }
 
   private func loadHLSThumbnail(url: URL, completion: @escaping (UIImage?) -> Void) {
     hlsGenerator = HLSThumbnailGenerator(
-      url: url, time: timeout,
+      url: url,
+      time: timeout,
       completion: { image, error in
         if let error = error {
           Logger.module.error("\(error.localizedDescription)")
@@ -113,14 +124,20 @@ public class PlaylistThumbnailRenderer {
         DispatchQueue.main.async {
           completion(image)
         }
-      })
+      }
+    )
   }
 
   private func loadAssetThumbnail(url: URL, completion: @escaping (UIImage?) -> Void) {
     let time = CMTimeMakeWithSeconds(timeout, preferredTimescale: 1)
     assetGenerator = AVAssetImageGenerator(asset: AVAsset(url: url))
     assetGenerator?.appliesPreferredTrackTransform = false
-    assetGenerator?.generateCGImagesAsynchronously(forTimes: [NSValue(time: time)]) { _, cgImage, _, result, error in
+    assetGenerator?.generateCGImagesAsynchronously(forTimes: [NSValue(time: time)]) {
+      _,
+      cgImage,
+      _,
+      result,
+      error in
       if let error = error {
         Logger.module.error("\(error.localizedDescription)")
       }
@@ -147,7 +164,7 @@ public class PlaylistThumbnailRenderer {
       completion(favicon.image)
       return
     }
-    
+
     favIconGenerator = Task { @MainActor in
       do {
         let favicon = try await FaviconFetcher.loadIcon(url: url, persistent: true)
@@ -180,7 +197,11 @@ private class HLSThumbnailGenerator {
   private let completion: (UIImage?, HLSThumbnailGeneratorError?) -> Void
   private let queue = DispatchQueue(label: "com.brave.hls-thumbnail-generator")
 
-  init(url: URL, time: TimeInterval, completion: @escaping (UIImage?, HLSThumbnailGeneratorError?) -> Void) {
+  init(
+    url: URL,
+    time: TimeInterval,
+    completion: @escaping (UIImage?, HLSThumbnailGeneratorError?) -> Void
+  ) {
     self.asset = AVAsset(url: url)
     self.sourceURL = url
     self.completion = completion
@@ -241,7 +262,10 @@ private class HLSThumbnailGenerator {
 
         if finished {
           self.queue.async {
-            if let buffer = self.videoOutput?.copyPixelBuffer(forItemTime: time, itemTimeForDisplay: nil) {
+            if let buffer = self.videoOutput?.copyPixelBuffer(
+              forItemTime: time,
+              itemTimeForDisplay: nil
+            ) {
               self.snapshotPixelBuffer(buffer, atTime: time.seconds)
             } else {
               DispatchQueue.main.async {
@@ -261,9 +285,11 @@ private class HLSThumbnailGenerator {
   private func snapshotPixelBuffer(_ buffer: CVPixelBuffer, atTime time: TimeInterval) {
     let ciImage = CIImage(cvPixelBuffer: buffer)
     let quartzFrame = CGRect(
-      x: 0, y: 0,
+      x: 0,
+      y: 0,
       width: CVPixelBufferGetWidth(buffer),
-      height: CVPixelBufferGetHeight(buffer))
+      height: CVPixelBufferGetHeight(buffer)
+    )
 
     if let cgImage = CIContext().createCGImage(ciImage, from: quartzFrame) {
       let result = UIImage(cgImage: cgImage)

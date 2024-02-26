@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import StoreKit
 import Shared
+import StoreKit
 import os.log
 
 public class VPNProductInfo: NSObject {
@@ -57,7 +57,8 @@ public class VPNProductInfo: NSObject {
 }
 
 extension VPNProductInfo: SKProductsRequestDelegate {
-  public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+  public func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse)
+  {
     response.products.forEach {
       switch $0.productIdentifier {
       case ProductIdentifiers.monthlySub:

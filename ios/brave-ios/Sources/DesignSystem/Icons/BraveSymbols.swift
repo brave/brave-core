@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 extension UIImage {
   /// Creates an image object from the Design System bundle using the named image asset that is compatible

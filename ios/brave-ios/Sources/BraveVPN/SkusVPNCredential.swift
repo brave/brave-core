@@ -14,7 +14,7 @@ public struct SkusVPNCredential {
   /// How long is the SKU credential valid for.
   /// Important: This date is different from the Guardian's credential expiration date.
   public let expirationDate: Date
-  
+
   public init(guardianCredential: String, environment: String, expirationDate: Date) {
     self.guardianCredential = guardianCredential
     self.environment = environment

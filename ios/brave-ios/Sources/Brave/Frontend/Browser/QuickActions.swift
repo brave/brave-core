@@ -2,12 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveUI
 import Foundation
+import Preferences
+import Shared
 import Storage
 import UIKit
-import Shared
-import BraveUI
-import Preferences
 
 enum ShortcutType: String {
   case newTab = "NewTab"
@@ -42,33 +42,48 @@ public class QuickActions: NSObject {
   public var launchedShortcutItem: UIApplicationShortcutItem?
 
   // MARK: Handling Quick Actions
-  @discardableResult public func handleShortCutItem(_ shortcutItem: UIApplicationShortcutItem, withBrowserViewController bvc: BrowserViewController) -> Bool {
+  @discardableResult public func handleShortCutItem(
+    _ shortcutItem: UIApplicationShortcutItem,
+    withBrowserViewController bvc: BrowserViewController
+  ) -> Bool {
 
     // Verify that the provided `shortcutItem`'s `type` is one handled by the application.
     guard let shortCutType = ShortcutType(fullType: shortcutItem.type) else { return false }
 
     DispatchQueue.main.async {
       self.dismissAlertPopupView()
-      self.handleShortCutItemOfType(shortCutType, userData: shortcutItem.userInfo, browserViewController: bvc)
+      self.handleShortCutItemOfType(
+        shortCutType,
+        userData: shortcutItem.userInfo,
+        browserViewController: bvc
+      )
     }
 
     return true
   }
 
-  fileprivate func handleShortCutItemOfType(_ type: ShortcutType, userData: [String: NSSecureCoding]?, browserViewController: BrowserViewController) {
+  fileprivate func handleShortCutItemOfType(
+    _ type: ShortcutType,
+    userData: [String: NSSecureCoding]?,
+    browserViewController: BrowserViewController
+  ) {
     switch type {
     case .newTab:
       handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: false)
     case .newPrivateTab:
       browserViewController.stopTabToolbarLoading()
-      
+
       if Preferences.Privacy.lockWithPasscode.value {
         handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
       } else {
         if Preferences.Privacy.privateBrowsingLock.value {
-          browserViewController.askForLocalAuthentication(viewType: .external) { [weak self] success, _ in
+          browserViewController.askForLocalAuthentication(viewType: .external) {
+            [weak self] success, _ in
             if success {
-              self?.handleOpenNewTab(withBrowserViewController: browserViewController, isPrivate: true)
+              self?.handleOpenNewTab(
+                withBrowserViewController: browserViewController,
+                isPrivate: true
+              )
             }
           }
         } else {
@@ -80,16 +95,21 @@ public class QuickActions: NSObject {
     }
   }
 
-  fileprivate func handleOpenNewTab(withBrowserViewController bvc: BrowserViewController, isPrivate: Bool) {
+  fileprivate func handleOpenNewTab(
+    withBrowserViewController bvc: BrowserViewController,
+    isPrivate: Bool
+  ) {
     bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
   }
 
   fileprivate func dismissAlertPopupView() {
-    UIApplication.shared.keyWindow?.subviews.forEach { ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation) }
+    UIApplication.shared.keyWindow?.subviews.forEach {
+      ($0 as? AlertPopupView)?.dismissWithType(dismissType: .noAnimation)
+    }
   }
 
   fileprivate func handleScanQR(withBrowserViewController bvc: BrowserViewController) {
-    // Open a new tab when Scan QR code is executed from quick long press action 
+    // Open a new tab when Scan QR code is executed from quick long press action
     bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false)
     bvc.scanQRCode()
   }

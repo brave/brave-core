@@ -42,11 +42,11 @@ import Foundation
       wrappedValue = try container.decode(T.self)
     } catch {
       wrappedValue = nil
-#if DEBUG
+      #if DEBUG
       // In debug builds we print out failed decodes to console so we can fix the issue or notify the
       // appropriate team about some malformed JSON
       print("FailableDecodable failed to decode to type \(T.self): \(error.localizedDescription)")
-#endif
+      #endif
       decodingError = error
     }
   }

@@ -2,10 +2,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 @objc protocol FavoriteCellDelegate {
   func editFavorite(_ favoriteCell: FavoriteCell)
@@ -13,7 +13,11 @@ import BraveUI
 
 class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   static let imageAspectRatio: Float = 1.0
-  static let placeholderImage = UIImage(named: "defaultTopSiteIcon", in: .module, compatibleWith: nil)!
+  static let placeholderImage = UIImage(
+    named: "defaultTopSiteIcon",
+    in: .module,
+    compatibleWith: nil
+  )!
   static let identifier = "FavoriteCell"
 
   private struct UI {
@@ -29,7 +33,10 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   var cellInsets: UIEdgeInsets = UIEdgeInsets.zero
 
   let textLabel = UILabel().then {
-    $0.setContentHuggingPriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
+    $0.setContentHuggingPriority(
+      UILayoutPriority.defaultHigh,
+      for: NSLayoutConstraint.Axis.vertical
+    )
     $0.font = DynamicFontHelper.defaultHelper.DefaultSmallFont
     $0.textAlignment = UI.labelAlignment
     $0.lineBreakMode = NSLineBreakMode.byWordWrapping
@@ -41,10 +48,13 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
   override var isHighlighted: Bool {
     didSet {
       UIView.animate(
-        withDuration: 0.25, delay: 0, options: [.beginFromCurrentState],
+        withDuration: 0.25,
+        delay: 0,
+        options: [.beginFromCurrentState],
         animations: {
           self.imageView.alpha = self.isHighlighted ? 0.7 : 1.0
-        })
+        }
+      )
     }
   }
 
@@ -93,7 +103,9 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
     backgroundColor = .clear
   }
 
-  override func preferredLayoutAttributesFitting(_ layoutAttributes: UICollectionViewLayoutAttributes) -> UICollectionViewLayoutAttributes {
+  override func preferredLayoutAttributesFitting(
+    _ layoutAttributes: UICollectionViewLayoutAttributes
+  ) -> UICollectionViewLayoutAttributes {
     // Size of cells are determined outside of cell
     return layoutAttributes
   }
@@ -106,7 +118,10 @@ class FavoriteCell: UICollectionViewCell, CollectionViewReusable {
 }
 
 extension FavoriteCell: UIPointerInteractionDelegate {
-  func pointerInteraction(_ interaction: UIPointerInteraction, styleFor region: UIPointerRegion) -> UIPointerStyle? {
+  func pointerInteraction(
+    _ interaction: UIPointerInteraction,
+    styleFor region: UIPointerRegion
+  ) -> UIPointerStyle? {
     let preview = UITargetedPreview(view: imageView)
     return UIPointerStyle(effect: .lift(preview))
   }

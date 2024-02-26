@@ -4,8 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import WebKit
 import Shared
+import WebKit
 import os.log
 
 /// List of Find Options used by WebKit to `Find-In-Page`
@@ -128,7 +128,10 @@ class WKWebViewFindStringFindDelegate: NSObject {
 
   deinit {
     if didConstructorSucceed {
-      webView?.perform(WKWebViewFindStringFindDelegate.setFindDelegateSelector, with: originalDelegate)
+      webView?.perform(
+        WKWebViewFindStringFindDelegate.setFindDelegateSelector,
+        with: originalDelegate
+      )
       originalDelegate = nil
       webView = nil
     }
@@ -157,16 +160,26 @@ class WKWebViewFindStringFindDelegate: NSObject {
       selector,
       string as NSString,
       options.rawValue,
-      UInt.max - 1)
+      UInt.max - 1
+    )
   }
 
   @objc
-  private func _webView(_ webView: WKWebView, didCountMatches matches: UInt, forString string: NSString) {
+  private func _webView(
+    _ webView: WKWebView,
+    didCountMatches matches: UInt,
+    forString string: NSString
+  ) {
     Logger.module.debug("FIND-IN-PAGE COUNT-MATCHES: \(matches)")
   }
 
   @objc
-  private func _webView(_ webView: WKWebView, didFindMatches matches: UInt, forString string: NSString, withMatchIndex matchIndex: NSInteger) {
+  private func _webView(
+    _ webView: WKWebView,
+    didFindMatches matches: UInt,
+    forString string: NSString,
+    withMatchIndex matchIndex: NSInteger
+  ) {
     var matches = matches
 
     // kWKMoreThanMaximumMatchCount = static_cast<unsigned>(-1)
@@ -187,12 +200,12 @@ class WKWebViewFindStringFindDelegate: NSObject {
 
 @available(iOS, obsoleted: 16.0, message: "Replaced by UIFindInteraction")
 extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerDelegate {
-  
+
   enum TextSearchDirection: String {
     case next = "findNext"
     case previous = "findPrevious"
   }
-  
+
   func findInPage(_ findInPage: FindInPageBar, didTextChange text: String) {
     find(text, function: "find")
   }
@@ -211,11 +224,17 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerD
     updateFindInPageVisibility(visible: false)
   }
 
-  func findInPageHelper(_ findInPageHelper: FindInPageScriptHandler, didUpdateCurrentResult currentResult: Int) {
+  func findInPageHelper(
+    _ findInPageHelper: FindInPageScriptHandler,
+    didUpdateCurrentResult currentResult: Int
+  ) {
     findInPageBar?.currentResult = currentResult
   }
 
-  func findInPageHelper(_ findInPageHelper: FindInPageScriptHandler, didUpdateTotalResults totalResults: Int) {
+  func findInPageHelper(
+    _ findInPageHelper: FindInPageScriptHandler,
+    didUpdateTotalResults totalResults: Int
+  ) {
     findInPageBar?.totalResults = totalResults
   }
 
@@ -224,7 +243,7 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerD
 
     find(seachText, function: direction.rawValue)
   }
-  
+
   func find(_ text: String, function: String) {
     guard let webView = tabManager.selectedTab?.webView else { return }
 
@@ -237,17 +256,21 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerD
         self.findInPageBar?.currentResult = index
       }
     } else {
-      webView.evaluateSafeJavaScript(functionName: "__firefox__.\(function)", args: [text], contentWorld: FindInPageScriptHandler.scriptSandbox)
+      webView.evaluateSafeJavaScript(
+        functionName: "__firefox__.\(function)",
+        args: [text],
+        contentWorld: FindInPageScriptHandler.scriptSandbox
+      )
     }
   }
-  
+
   func updateFindInPageVisibility(visible: Bool, tab: Tab? = nil) {
     if visible {
       if findInPageBar == nil {
         let findInPageBar = FindInPageBar()
         self.findInPageBar = findInPageBar
         findInPageBar.delegate = self
-        
+
         displayPageZoom(visible: false)
         alertStackView.addArrangedSubview(findInPageBar)
 
@@ -270,15 +293,18 @@ extension BrowserViewController: FindInPageBarDelegate, FindInPageScriptHandlerD
     } else {
       // Empty string should be executed in order to remove the text highlights before find script done
       find("", function: "find")
-      
+
       if let findInPageBar = self.findInPageBar {
         findInPageBar.endEditing(true)
-        
+
         let tab = tab ?? tabManager.selectedTab
         guard let webView = tab?.webView else { return }
-        
-        webView.evaluateSafeJavaScript(functionName: "__firefox__.findDone", contentWorld: FindInPageScriptHandler.scriptSandbox)
-        
+
+        webView.evaluateSafeJavaScript(
+          functionName: "__firefox__.findDone",
+          contentWorld: FindInPageScriptHandler.scriptSandbox
+        )
+
         findInPageBar.removeFromSuperview()
         self.findInPageBar = nil
         updateViewConstraints()

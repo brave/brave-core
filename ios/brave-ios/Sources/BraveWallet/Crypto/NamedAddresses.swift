@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 
 enum NamedAddresses {
   /// Obtain a name for a given address and the users set of accounts. If no name exists for the
@@ -17,7 +17,8 @@ enum NamedAddresses {
     accounts: [BraveWallet.AccountInfo]
   ) -> String {
     var names = accounts.reduce(
-      into: [String: String](), { $0[$1.address.lowercased()] = $1.name }
+      into: [String: String](),
+      { $0[$1.address.lowercased()] = $1.name }
     )
     names.merge(Self.defaultNamedAddresses, uniquingKeysWith: { key, _ in key })
     return names[address.lowercased()] ?? address.truncatedAddress

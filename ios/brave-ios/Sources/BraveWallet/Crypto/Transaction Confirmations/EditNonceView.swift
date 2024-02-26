@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import DesignSystem
 import BraveCore
-import Strings
 import BraveUI
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct EditNonceView: View {
   var confirmationStore: TransactionConfirmationStore
@@ -73,7 +73,9 @@ struct EditNonceView: View {
   }
 
   private func setup() {
-    nonce = Int(transaction.ethTxNonce.removingHexPrefix, radix: 16).map(String.init) ?? transaction.ethTxNonce
+    nonce =
+      Int(transaction.ethTxNonce.removingHexPrefix, radix: 16).map(String.init)
+      ?? transaction.ethTxNonce
   }
 }
 

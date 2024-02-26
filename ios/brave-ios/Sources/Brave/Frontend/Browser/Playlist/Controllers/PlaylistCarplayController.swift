@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Combine
 import CarPlay
-import MediaPlayer
+import Combine
+import CoreData
 import Data
+import Favicon
+import Foundation
+import MediaPlayer
+import Playlist
 import Preferences
 import Shared
-import CoreData
-import Favicon
 import os.log
-import Playlist
 
 private enum PlaylistCarPlayTemplateID: String {
   case folders
@@ -43,7 +43,11 @@ class PlaylistCarplayController: NSObject {
   // MIGHT just be a simulator bug in the validation check.
   private static var mustUseCPAlertTemplate = true
 
-  init(mediaStreamer: PlaylistMediaStreamer, player: MediaPlayer, interfaceController: CPInterfaceController) {
+  init(
+    mediaStreamer: PlaylistMediaStreamer,
+    player: MediaPlayer,
+    interfaceController: CPInterfaceController
+  ) {
     self.player = player
     self.interfaceController = interfaceController
     self.mediaStreamer = mediaStreamer
@@ -78,7 +82,8 @@ class PlaylistCarplayController: NSObject {
           // Nothing to Pop
           // Push the Folder Template
           let listTemplate = self.generatePlaylistListTemplate()
-          self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
+          self.interfaceController.pushTemplate(listTemplate, animated: true) {
+            [weak self] success, error in
             if !success, let error = error {
               self?.displayErrorAlert(error: error)
             }
@@ -93,7 +98,8 @@ class PlaylistCarplayController: NSObject {
           } else {
             // Push the Folder Template
             let listTemplate = self.generatePlaylistListTemplate()
-            self.interfaceController.pushTemplate(listTemplate, animated: true) { [weak self] success, error in
+            self.interfaceController.pushTemplate(listTemplate, animated: true) {
+              [weak self] success, error in
               if !success, let error = error {
                 self?.displayErrorAlert(error: error)
               }
@@ -114,15 +120,19 @@ class PlaylistCarplayController: NSObject {
       guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
         return
       }
-      
+
       if let playlistTabTemplate = self.getItemListTemplate() {
-        let items = playlistTabTemplate.sections.flatMap({ $0.items }).compactMap({ $0 as? CPListItem })
+        let items = playlistTabTemplate.sections.flatMap({ $0.items }).compactMap({
+          $0 as? CPListItem
+        })
 
         items.forEach({
           if let userInfo = $0.userInfo as? [String: Any],
-            let itemId = userInfo["id"] as? String {
+            let itemId = userInfo["id"] as? String
+          {
 
-            $0.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
+            $0.accessoryType =
+              PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
             if PlaylistCarplayManager.shared.currentPlaylistItem?.tagId == itemId {
               $0.isPlaying = true
@@ -134,11 +144,13 @@ class PlaylistCarplayController: NSObject {
           }
         })
       }
-      
+
       tabTemplate.updateTemplates(tabTemplate.templates)
 
       if self.interfaceController.topTemplate != CPNowPlayingTemplate.shared {
-        self.interfaceController.pushTemplate(CPNowPlayingTemplate.shared, animated: true) { success, error in
+        self.interfaceController.pushTemplate(CPNowPlayingTemplate.shared, animated: true) {
+          success,
+          error in
           if !success, let error = error {
             Logger.module.error("\(error.localizedDescription)")
           }
@@ -165,7 +177,8 @@ class PlaylistCarplayController: NSObject {
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .changePlaybackRate).sink { event in
-      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] = event.mediaPlayer.rate
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyPlaybackRate] =
+        event.mediaPlayer.rate
     }.store(in: &playerStateObservers)
 
     player.publisher(for: .previousTrack).sink { [weak self] _ in
@@ -178,10 +191,10 @@ class PlaylistCarplayController: NSObject {
 
     player.publisher(for: .finishedPlaying).sink { [weak self] event in
       guard let self = self else { return }
-      
+
       event.mediaPlayer.pause()
       event.mediaPlayer.seek(to: .zero)
-      
+
       if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
         self.updateLastPlayedItem(item: item)
       }
@@ -211,7 +224,7 @@ class PlaylistCarplayController: NSObject {
         reloadData()
       }.store(in: &playlistObservers)
   }
-  
+
   private func getFolderTemplateList() -> CPListTemplate? {
     // Retrieve the tab-bar
     guard let tabTemplate = self.interfaceController.rootTemplate as? CPTabBarTemplate else {
@@ -222,16 +235,17 @@ class PlaylistCarplayController: NSObject {
     let folderTemplate = tabTemplate.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
       ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.folders.rawValue
     })
-    
+
     return folderTemplate
   }
-  
+
   private func getItemListTemplate() -> CPListTemplate? {
     // Retrieve the item-list
-    let listTemplate = interfaceController.templates.compactMap({ $0 as? CPListTemplate }).first(where: {
-      ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue
-    })
-    
+    let listTemplate = interfaceController.templates.compactMap({ $0 as? CPListTemplate }).first(
+      where: {
+        ($0.userInfo as? [String: String])?["id"] == PlaylistCarPlayTemplateID.itemsList.rawValue
+      })
+
     return listTemplate
   }
 
@@ -264,21 +278,23 @@ class PlaylistCarplayController: NSObject {
         if !success, let error = error {
           self?.displayErrorAlert(error: error)
         }
-      })
+      }
+    )
   }
 
   private func reloadData() {
     // Update Currently Playing Index before layout (so we can show the playing indicator)
     if let itemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId {
-      PlaylistCarplayManager.shared.currentlyPlayingItemIndex = PlaylistManager.shared.index(of: itemId) ?? -1
+      PlaylistCarplayManager.shared.currentlyPlayingItemIndex =
+        PlaylistManager.shared.index(of: itemId) ?? -1
     }
-    
+
     // FOLDERS TEMPLATE
     guard let foldersTemplate = generatePlaylistFolderListTemplate() as? CPListTemplate else {
       Logger.module.error("Invalid Folders Template - NOT A CPListTemplate!")
       return
     }
-    
+
     let oldFoldersTemplate = getFolderTemplateList()
     oldFoldersTemplate?.updateSections(foldersTemplate.sections)
   }
@@ -292,7 +308,8 @@ class PlaylistCarplayController: NSObject {
     let itemCount = savedFolder?.playlistItems?.count ?? 0
     let savedFolder = CPListItem(
       text: savedFolder?.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
-      detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+      detailText:
+        "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
       image: nil,
       accessoryImage: nil,
       accessoryType: .disclosureIndicator
@@ -310,7 +327,8 @@ class PlaylistCarplayController: NSObject {
       let itemCount = folder.playlistItems?.count ?? 0
       return CPListItem(
         text: folder.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
-        detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+        detailText:
+          "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
         image: nil,
         accessoryImage: nil,
         accessoryType: .disclosureIndicator
@@ -324,12 +342,13 @@ class PlaylistCarplayController: NSObject {
         $0.userInfo = ["uuid": folder.uuid]
       }
     }
-    
+
     let sharedFolderItems = sharedFolders.compactMap { folder -> CPListItem? in
       let itemCount = folder.playlistItems?.count ?? 0
       return CPListItem(
         text: folder.title ?? Strings.PlaylistFolders.playlistUntitledFolderTitle,
-        detailText: "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
+        detailText:
+          "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))",
         image: nil,
         accessoryImage: nil,
         accessoryType: .disclosureIndicator
@@ -350,7 +369,7 @@ class PlaylistCarplayController: NSObject {
       sections: [
         CPListSection(items: [savedFolder]),
         CPListSection(items: folderItems),
-        CPListSection(items: sharedFolderItems)
+        CPListSection(items: sharedFolderItems),
       ]
     ).then {
       $0.tabImage = UIImage(systemName: "list.star")
@@ -378,7 +397,7 @@ class PlaylistCarplayController: NSObject {
       listItem.handler = { [unowned self, weak listItem] selectableItem, completion in
         let listItem = selectableItem as? CPListItem ?? listItem
         listItem?.accessoryType = .none
-        
+
         Task { @MainActor in
           do {
             try await self.initiatePlaybackOfItem(itemId: itemId)
@@ -387,13 +406,14 @@ class PlaylistCarplayController: NSObject {
             completion()
             return
           }
-          
+
           guard let listItem = listItem else {
             completion()
             return
           }
 
-          listItem.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
+          listItem.accessoryType =
+            PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
 
           let userInfo = listItem.userInfo as? [String: Any]
           PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: userInfo?["icon"] as? UIImage)
@@ -402,7 +422,9 @@ class PlaylistCarplayController: NSObject {
           completion()
 
           if self.interfaceController.topTemplate != CPNowPlayingTemplate.shared {
-            self.interfaceController.pushTemplate(CPNowPlayingTemplate.shared, animated: true) { success, error in
+            self.interfaceController.pushTemplate(CPNowPlayingTemplate.shared, animated: true) {
+              success,
+              error in
 
               if !success, let error = error {
                 Logger.module.error("\(error.localizedDescription)")
@@ -413,9 +435,11 @@ class PlaylistCarplayController: NSObject {
       }
 
       // Update the current playing status
-      listItem.isPlaying = player.isPlaying && (PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
+      listItem.isPlaying =
+        player.isPlaying && (PlaylistCarplayManager.shared.currentPlaylistItem?.src == item.src)
 
-      listItem.accessoryType = PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
+      listItem.accessoryType =
+        PlaylistManager.shared.state(for: itemId) != .downloaded ? .cloud : .none
       listItem.setImage(Favicon.defaultImage)
       var userInfo = [String: Any]()
       userInfo.merge(with: [
@@ -470,8 +494,14 @@ class PlaylistCarplayController: NSObject {
     ).then {
       $0.handler = { [unowned self] listItem, completion in
         let enableGridView = Preferences.Playlist.enableCarPlayRestartPlayback.value
-        let title = enableGridView ? Strings.PlayList.playlistCarplayRestartPlaybackButtonStateEnabled : Strings.PlayList.playlistCarplayRestartPlaybackButtonStateDisabled
-        let icon = enableGridView ? UIImage(named: "checkbox_on", in: .module, compatibleWith: nil)! : UIImage(named: "loginUnselected", in: .module, compatibleWith: nil)!
+        let title =
+          enableGridView
+          ? Strings.PlayList.playlistCarplayRestartPlaybackButtonStateEnabled
+          : Strings.PlayList.playlistCarplayRestartPlaybackButtonStateDisabled
+        let icon =
+          enableGridView
+          ? UIImage(named: "checkbox_on", in: .module, compatibleWith: nil)!
+          : UIImage(named: "loginUnselected", in: .module, compatibleWith: nil)!
         let button = CPGridButton(titleVariants: [title], image: icon) { [unowned self] button in
           Preferences.Playlist.enableCarPlayRestartPlayback.value = !enableGridView
           self.interfaceController.popTemplate(
@@ -480,11 +510,15 @@ class PlaylistCarplayController: NSObject {
               if !success, let error = error {
                 Logger.module.error("\(error.localizedDescription)")
               }
-            })
+            }
+          )
         }
 
         self.interfaceController.pushTemplate(
-          CPGridTemplate(title: Strings.PlayList.playlistCarplayOptionsScreenTitle, gridButtons: [button]),
+          CPGridTemplate(
+            title: Strings.PlayList.playlistCarplayOptionsScreenTitle,
+            gridButtons: [button]
+          ),
           animated: true,
           completion: { success, error in
             if !success, let error = error {
@@ -501,7 +535,8 @@ class PlaylistCarplayController: NSObject {
     let playbackSection = CPListSection(
       items: [restartPlaybackOption],
       header: Strings.PlayList.playlistCarplayOptionsScreenTitle,
-      sectionIndexTitle: Strings.PlayList.playlistCarplayOptionsScreenTitle)
+      sectionIndexTitle: Strings.PlayList.playlistCarplayOptionsScreenTitle
+    )
 
     // Template
     let settingsTemplate = CPListTemplate(
@@ -534,7 +569,13 @@ extension PlaylistCarplayController: CPInterfaceControllerDelegate {
 }
 
 extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
-  func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  func controller(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
 
     reloadData()
   }
@@ -546,7 +587,10 @@ extension PlaylistCarplayController: NSFetchedResultsControllerDelegate {
 
 extension PlaylistCarplayController {
 
-  func loadThumbnail(for mediaItem: PlaylistInfo, completion: @escaping (UIImage?) -> Void) -> PlaylistThumbnailRenderer? {
+  func loadThumbnail(
+    for mediaItem: PlaylistInfo,
+    completion: @escaping (UIImage?) -> Void
+  ) -> PlaylistThumbnailRenderer? {
     guard let assetUrl = URL(string: mediaItem.src),
       let favIconUrl = URL(string: mediaItem.pageSrc)
     else {
@@ -560,7 +604,8 @@ extension PlaylistCarplayController {
       favIconUrl: favIconUrl,
       completion: { image in
         completion(image)
-      })
+      }
+    )
     return thumbnailRenderer
   }
 
@@ -588,13 +633,13 @@ extension PlaylistCarplayController {
 
     // Reset Now Playing when playback is starting.
     PlaylistMediaStreamer.clearNowPlayingInfo()
-    
+
     do {
       PlaylistCarplayManager.shared.currentPlaylistItem = item
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-      
+
       try await playItem(item: item)
-      
+
       if let item = PlaylistCarplayManager.shared.currentPlaylistItem {
         updateLastPlayedItem(item: item)
       }
@@ -602,7 +647,7 @@ extension PlaylistCarplayController {
       PlaylistCarplayManager.shared.currentPlaylistItem = nil
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
     }
-    
+
     // Workaround to see carplay NowPlaying on the simulator
     #if targetEnvironment(simulator)
     DispatchQueue.main.async {
@@ -621,9 +666,10 @@ extension PlaylistCarplayController {
 
     let index = PlaylistCarplayManager.shared.currentlyPlayingItemIndex - 1
     if index < PlaylistManager.shared.numberOfAssets,
-      let item = PlaylistManager.shared.itemAtIndex(index) {
+      let item = PlaylistManager.shared.itemAtIndex(index)
+    {
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-      
+
       PlaylistManager.shared.playbackTask = Task { @MainActor in
         do {
           try await playItem(item: item)
@@ -632,7 +678,7 @@ extension PlaylistCarplayController {
           self.updateLastPlayedItem(item: item)
         } catch {
           PlaylistCarplayManager.shared.currentPlaylistItem = nil
-          
+
           Logger.module.debug("Error Playing Item: \(error)")
           self.displayLoadingResourceError()
         }
@@ -665,10 +711,11 @@ extension PlaylistCarplayController {
     }
 
     if index >= 0,
-      let item = PlaylistManager.shared.itemAtIndex(index) {
+      let item = PlaylistManager.shared.itemAtIndex(index)
+    {
       PlaylistCarplayManager.shared.currentPlaylistItem = item
       PlaylistCarplayManager.shared.currentlyPlayingItemIndex = index
-      
+
       PlaylistManager.shared.playbackTask = Task { @MainActor [index] in
         do {
           try await playItem(item: item)
@@ -704,15 +751,15 @@ extension PlaylistCarplayController {
     PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
     PlaylistCarplayManager.shared.currentPlaylistItem = nil
     player.stop()
-    
+
     PlaylistManager.shared.playbackTask?.cancel()
     PlaylistManager.shared.playbackTask = nil
   }
-  
+
   private func clear() {
     PlaylistMediaStreamer.clearNowPlayingInfo()
     player.clear()
-    
+
     PlaylistManager.shared.playbackTask?.cancel()
     PlaylistManager.shared.playbackTask = nil
   }
@@ -731,22 +778,31 @@ extension PlaylistCarplayController {
 
   func seek(relativeOffset: Float) {
     if let currentItem = player.currentItem {
-      let seekTime = CMTimeMakeWithSeconds(Float64(CGFloat(relativeOffset) * CGFloat(currentItem.asset.duration.value) / CGFloat(currentItem.asset.duration.timescale)), preferredTimescale: currentItem.currentTime().timescale)
+      let seekTime = CMTimeMakeWithSeconds(
+        Float64(
+          CGFloat(relativeOffset) * CGFloat(currentItem.asset.duration.value)
+            / CGFloat(currentItem.asset.duration.timescale)
+        ),
+        preferredTimescale: currentItem.currentTime().timescale
+      )
       seek(to: seekTime.seconds)
     }
   }
 
   @MainActor
   func load(url: URL, autoPlayEnabled: Bool) async throws {
-    try await load(asset: AVURLAsset(url: url, options: AVAsset.defaultOptions), autoPlayEnabled: autoPlayEnabled)
+    try await load(
+      asset: AVURLAsset(url: url, options: AVAsset.defaultOptions),
+      autoPlayEnabled: autoPlayEnabled
+    )
   }
 
   @MainActor
   func load(asset: AVURLAsset, autoPlayEnabled: Bool) async throws {
     self.clear()
-    
+
     let isNewItem = try await player.load(asset: asset)
-    
+
     // We are playing the same item again..
     if !isNewItem {
       pause()
@@ -769,25 +825,26 @@ extension PlaylistCarplayController {
     let cacheState = PlaylistManager.shared.state(for: item.tagId)
     if cacheState != .invalid {
       if let index = PlaylistManager.shared.index(of: item.tagId),
-        let asset = PlaylistManager.shared.assetAtIndex(index) {
-        
+        let asset = PlaylistManager.shared.assetAtIndex(index)
+      {
+
         do {
           try await load(asset: asset, autoPlayEnabled: true)
           if !isPlaying {
             PlaylistMediaStreamer.clearNowPlayingInfo()
           }
-          
+
           PlaylistMediaStreamer.setNowPlayingInfo(item, withPlayer: self.player)
         } catch {
           if !isPlaying {
             PlaylistMediaStreamer.clearNowPlayingInfo()
           }
-          
+
           throw error
         }
         return
       }
-      
+
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
 
@@ -799,7 +856,7 @@ extension PlaylistCarplayController {
   func streamItem(item: PlaylistInfo) async throws {
     let isPlaying = player.isPlaying
     var item = item
-    
+
     do {
       item = try await mediaStreamer.loadMediaStreamingAsset(item)
       if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
@@ -807,14 +864,14 @@ extension PlaylistCarplayController {
       if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
       throw error
     }
-    
+
     // Item can be streamed
     guard let url = URL(string: item.src)
     else {
       if !isPlaying { PlaylistMediaStreamer.clearNowPlayingInfo() }
       throw PlaylistMediaStreamer.PlaybackError.expired
     }
-    
+
     // Attempt to play the stream
     do {
       try await load(url: url, autoPlayEnabled: true)
@@ -831,7 +888,7 @@ extension PlaylistCarplayController {
     guard let playTime = player.currentItem?.currentTime() else {
       return
     }
-    
+
     PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
   }
 
@@ -847,7 +904,8 @@ extension PlaylistCarplayController {
         titleVariants: [Strings.PlayList.expiredAlertTitle],
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -855,24 +913,30 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       interfaceController.presentTemplate(
-        alert, animated: true,
+        alert,
+        animated: true,
         completion: { success, error in
           if !success, let error = error {
             Logger.module.error("\(error.localizedDescription)")
           }
-        })
+        }
+      )
     } else {
       let alert = CPActionSheetTemplate(
         title: Strings.PlayList.expiredAlertTitle,
         message: Strings.PlayList.expiredAlertDescription,
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -880,17 +944,22 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       interfaceController.presentTemplate(
-        alert, animated: true,
+        alert,
+        animated: true,
         completion: { success, error in
           if !success, let error = error {
             Logger.module.error("\(error.localizedDescription)")
           }
-        })
+        }
+      )
     }
   }
 
@@ -902,7 +971,8 @@ extension PlaylistCarplayController {
         titleVariants: [Strings.PlayList.loadResourcesErrorAlertDescription],
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -910,17 +980,22 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       interfaceController.presentTemplate(
-        alert, animated: true,
+        alert,
+        animated: true,
         completion: { success, error in
           if !success, let error = error {
             Logger.module.error("\(error.localizedDescription)")
           }
-        })
+        }
+      )
     } else {
       // Can also use CPAlertTemplate, but it doesn't have a "Message" parameter.
       let alert = CPActionSheetTemplate(
@@ -928,7 +1003,8 @@ extension PlaylistCarplayController {
         message: Strings.PlayList.loadResourcesErrorAlertDescription,
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -936,17 +1012,22 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       interfaceController.presentTemplate(
-        alert, animated: true,
+        alert,
+        animated: true,
         completion: { success, error in
           if !success, let error = error {
             Logger.module.error("\(error.localizedDescription)")
           }
-        })
+        }
+      )
     }
   }
 
@@ -958,7 +1039,8 @@ extension PlaylistCarplayController {
         titleVariants: [error.localizedDescription],
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -966,18 +1048,23 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         self.interfaceController.presentTemplate(
-          alert, animated: true,
+          alert,
+          animated: true,
           completion: { success, error in
             if !success, let error = error {
               Logger.module.error("\(error.localizedDescription)")
             }
-          })
+          }
+        )
       }
     } else {
       // Can also use CPAlertTemplate, but it doesn't have a "Message" parameter.
@@ -986,7 +1073,8 @@ extension PlaylistCarplayController {
         message: error.localizedDescription,
         actions: [
           CPAlertAction(
-            title: Strings.PlayList.okayButtonTitle, style: .default,
+            title: Strings.PlayList.okayButtonTitle,
+            style: .default,
             handler: { [weak self] _ in
               self?.interfaceController.dismissTemplate(
                 animated: true,
@@ -994,18 +1082,23 @@ extension PlaylistCarplayController {
                   if !success, let error = error {
                     Logger.module.error("\(error.localizedDescription)")
                   }
-                })
-            })
-        ])
+                }
+              )
+            }
+          )
+        ]
+      )
 
       DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
         self.interfaceController.presentTemplate(
-          alert, animated: true,
+          alert,
+          animated: true,
           completion: { success, error in
             if !success, let error = error {
               Logger.module.error("\(error.localizedDescription)")
             }
-          })
+          }
+        )
       }
     }
   }

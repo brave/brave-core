@@ -2,13 +2,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Static
+import BraveCore
 import BraveShared
+import BraveUI
+import Foundation
 import Preferences
 import Shared
-import BraveCore
-import BraveUI
+import Static
 
 class NTPTableViewController: TableViewController {
   enum BackgroundImageType: RepresentableOptionType {
@@ -58,23 +58,26 @@ class NTPTableViewController: TableViewController {
       rows: [
         .boolRow(
           title: Strings.NTP.settingsBackgroundImages,
-          option: Preferences.NewTabPage.backgroundImages)
+          option: Preferences.NewTabPage.backgroundImages
+        )
       ]
     )
 
     if Preferences.NewTabPage.backgroundImages.value {
       imageSection.rows.append(backgroundImagesSetting(section: imageSection))
     }
-    
+
     let widgetSection = Section(
       header: .title(Strings.Widgets.widgetTitle.uppercased()),
       rows: [
         .boolRow(
           title: Strings.PrivacyHub.privacyReportsTitle,
-          option: Preferences.NewTabPage.showNewTabPrivacyHub),
+          option: Preferences.NewTabPage.showNewTabPrivacyHub
+        ),
         .boolRow(
           title: Strings.Widgets.favoritesWidgetTitle,
-          option: Preferences.NewTabPage.showNewTabFavourites)
+          option: Preferences.NewTabPage.showNewTabFavourites
+        ),
       ]
     )
 
@@ -102,7 +105,8 @@ class NTPTableViewController: TableViewController {
       text: Strings.NTP.settingsBackgroundImageSubMenu,
       detailText: selectedItem().displayString,
       accessory: .disclosureIndicator,
-      cellClass: Value1Cell.self)
+      cellClass: Value1Cell.self
+    )
 
     row.selection = { [unowned self] in
       // Show options for tab bar visibility

@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveUI
 import BraveShared
+import BraveUI
+import Foundation
 import Shared
 import UIKit
 
@@ -60,7 +60,9 @@ public class BraveNewsErrorView: UIView, FeedCardContent {
     }
 
     stackView.addStackViewItems(
-      .view(UIImageView(image: UIImage(named: "brave-today-error", in: .module, compatibleWith: nil)!)),
+      .view(
+        UIImageView(image: UIImage(named: "brave-today-error", in: .module, compatibleWith: nil)!)
+      ),
       .customSpace(12),
       .view(titleLabel),
       .view(errorMessageLabel),

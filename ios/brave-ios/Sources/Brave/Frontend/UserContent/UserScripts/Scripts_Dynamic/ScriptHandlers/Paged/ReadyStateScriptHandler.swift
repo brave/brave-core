@@ -10,20 +10,20 @@ import os.log
 
 struct ReadyState: Codable {
   let state: State
-  
+
   enum State: String, Codable {
     // Page State
     case loading
     case interactive
     case complete
     case loaded
-    
+
     // History State
     case pushstate
     case replacestate
     case popstate
   }
-  
+
   public static func from(message: WKScriptMessage) -> ReadyState? {
     if !JSONSerialization.isValidJSONObject(message.body) {
       return nil
@@ -38,7 +38,7 @@ struct ReadyState: Codable {
 
     return nil
   }
-  
+
   private enum CodingKeys: String, CodingKey {
     case state
   }
@@ -51,7 +51,7 @@ class ReadyStateScriptHandler: TabContentScript {
   required init(tab: Tab) {
     self.tab = tab
   }
-  
+
   static let scriptName = "ReadyStateScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -60,18 +60,26 @@ class ReadyStateScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: true,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
-    
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
+
     defer { replyHandler(nil, nil) }
-    
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       return
@@ -81,7 +89,7 @@ class ReadyStateScriptHandler: TabContentScript {
       Logger.module.error("Invalid Ready State")
       return
     }
-    
+
     tab?.onPageReadyStateChanged?(readyState.state)
   }
 }

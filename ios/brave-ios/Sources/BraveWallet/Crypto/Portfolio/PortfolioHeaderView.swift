@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
-import DesignSystem
 import BraveCore
+import DesignSystem
 import Preferences
+import SwiftUI
 
 struct PortfolioHeaderView: View {
-  
+
   @ObservedObject var keyringStore: KeyringStore
   @Binding var buySendSwapDestination: BuySendSwapDestination?
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
@@ -17,40 +17,40 @@ struct PortfolioHeaderView: View {
   var balanceDifference: BalanceDifference?
   var historicalBalances: [BalanceTimePrice]
   var isLoading: Bool
-  
+
   @State private var isPresentingBackup = false
   @State private var dismissedBackupBannerThisSession = false
   @State private var selectedBalance: BalanceTimePrice?
   @ObservedObject private var isShowingGraph = Preferences.Wallet.isShowingGraph
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
-  
+
   @Environment(\.colorScheme) private var colourScheme
 
   private var isShowingBackupBanner: Bool {
     !keyringStore.isWalletBackedUp && !dismissedBackupBannerThisSession
   }
-  
+
   private var emptyBalanceData: [BalanceTimePrice] {
     // About 300 points added so it doesn't animate funny
     (0..<300).map { _ in .init(date: Date(), price: 0.0, formattedPrice: "") }
   }
-  
+
   var body: some View {
     VStack(spacing: 0) {
       if isShowingBackupBanner {
         backupBanner
-        
+
         Spacer().frame(height: 10)
       }
-      
+
       balanceAndPriceChanges
-      
+
       Spacer().frame(height: 24)
-      
+
       buySendSwapButtons
-      
+
       Spacer().frame(height: 24)
-      
+
       if isShowingGraph.value {
         lineChart
       }
@@ -59,7 +59,7 @@ struct PortfolioHeaderView: View {
     .frame(maxWidth: .infinity)
     .background(Color(braveSystemName: .pageBackground))
   }
-  
+
   private var backupBanner: some View {
     BackupNotifyView(
       action: {
@@ -83,7 +83,7 @@ struct PortfolioHeaderView: View {
       .accentColor(Color(.braveBlurpleTint))
     }
   }
-  
+
   private var balanceAndPriceChanges: some View {
     VStack(spacing: 12) {
       Text(isShowingBalances.value ? balance : "****")
@@ -92,28 +92,38 @@ struct PortfolioHeaderView: View {
         .overlay(
           Group {
             if let dataPoint = selectedBalance {
-              Text(isShowingBalances.value ?  dataPoint.formattedPrice : "****")
+              Text(isShowingBalances.value ? dataPoint.formattedPrice : "****")
             }
           }
         )
         .font(.largeTitle.weight(.medium))
         .multilineTextAlignment(.center)
-      
+
       if let balanceDifference {
         HStack {
           Text(isShowingBalances.value ? balanceDifference.priceDifference : "****")
             .font(.footnote)
-            .foregroundColor(Color(braveSystemName: balanceDifference.isBalanceUp ? .systemfeedbackSuccessText : .systemfeedbackErrorText))
+            .foregroundColor(
+              Color(
+                braveSystemName: balanceDifference.isBalanceUp
+                  ? .systemfeedbackSuccessText : .systemfeedbackErrorText
+              )
+            )
           Text(isShowingBalances.value ? balanceDifference.percentageChange : "****")
             .font(.footnote)
             .padding(4)
-            .foregroundColor(Color(braveSystemName: balanceDifference.isBalanceUp ? .green50 : .red50))
-            .background(Color(braveSystemName: balanceDifference.isBalanceUp ? .green20 : .red20).cornerRadius(4))
+            .foregroundColor(
+              Color(braveSystemName: balanceDifference.isBalanceUp ? .green50 : .red50)
+            )
+            .background(
+              Color(braveSystemName: balanceDifference.isBalanceUp ? .green20 : .red20)
+                .cornerRadius(4)
+            )
         }
       }
     }
   }
-  
+
   private var buySendSwapButtons: some View {
     HStack(spacing: 24) {
       PortfolioHeaderButton(style: .buy) {
@@ -128,14 +138,20 @@ struct PortfolioHeaderView: View {
     }
     .padding(.horizontal, 30)
   }
-  
+
   @ViewBuilder private var lineChart: some View {
     VStack(spacing: 0) {
       TimeframeSelector(selectedDateRange: $selectedDateRange)
       let chartData = historicalBalances.isEmpty ? emptyBalanceData : historicalBalances
-      LineChartView(data: chartData, numberOfColumns: chartData.count, selectedDataPoint: $selectedBalance) {
+      LineChartView(
+        data: chartData,
+        numberOfColumns: chartData.count,
+        selectedDataPoint: $selectedBalance
+      ) {
         LinearGradient(
-          gradient: Gradient(colors: [Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear]),
+          gradient: Gradient(colors: [
+            Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear,
+          ]),
           startPoint: .top,
           endPoint: .bottom
         )
@@ -154,10 +170,10 @@ struct PortfolioHeaderView: View {
 }
 
 struct PortfolioHeaderButton: View {
-  
+
   enum Style: String, Equatable {
     case buy, send, swap, more
-    
+
     var label: String {
       switch self {
       case .buy: return Strings.Wallet.buy
@@ -166,7 +182,7 @@ struct PortfolioHeaderButton: View {
       case .more: return Strings.Wallet.more
       }
     }
-    
+
     var iconName: String {
       switch self {
       case .buy: return "leo.coins.alt1"
@@ -176,10 +192,10 @@ struct PortfolioHeaderButton: View {
       }
     }
   }
-  
+
   let style: Style
   let action: () -> Void
-  
+
   var body: some View {
     Button(action: action) {
       VStack {
@@ -202,36 +218,39 @@ struct PortfolioHeaderButton: View {
 
 struct TimeframeSelector: View {
   @Binding var selectedDateRange: BraveWallet.AssetPriceTimeframe
-  
+
   var body: some View {
-    Menu(content: {
-      ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
-        Button(action: { selectedDateRange = range }) {
-          HStack {
-            Image(braveSystemName: "leo.check.normal")
-              .resizable()
-              .aspectRatio(contentMode: .fit)
-              .hidden(isHidden: selectedDateRange != range)
-            Text(verbatim: range.accessibilityLabel)
+    Menu(
+      content: {
+        ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.self) { range in
+          Button(action: { selectedDateRange = range }) {
+            HStack {
+              Image(braveSystemName: "leo.check.normal")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .hidden(isHidden: selectedDateRange != range)
+              Text(verbatim: range.accessibilityLabel)
+            }
+            .tag(range)
           }
-          .tag(range)
         }
+      },
+      label: {
+        HStack(spacing: 4) {
+          Text(verbatim: selectedDateRange.accessibilityLabel)
+            .font(.footnote.weight(.semibold))
+          Image(braveSystemName: "leo.carat.down")
+        }
+        .foregroundColor(Color(braveSystemName: .textInteractive))
+        .padding(.vertical, 6)
+        .padding(.horizontal, 12)
+        .padding(.trailing, -4)  // whitespace on `leo.carat.down` symbol
+        .background(
+          Capsule()
+            .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+        )
       }
-    }, label: {
-      HStack(spacing: 4) {
-        Text(verbatim: selectedDateRange.accessibilityLabel)
-          .font(.footnote.weight(.semibold))
-        Image(braveSystemName: "leo.carat.down")
-      }
-      .foregroundColor(Color(braveSystemName: .textInteractive))
-      .padding(.vertical, 6)
-      .padding(.horizontal, 12)
-      .padding(.trailing, -4) // whitespace on `leo.carat.down` symbol
-      .background(
-        Capsule()
-          .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
-      )
-    })
+    )
     .transaction { transaction in
       transaction.animation = nil
       transaction.disablesAnimations = true

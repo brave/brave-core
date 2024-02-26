@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import BraveUI
+import UIKit
 
 struct TwoLineCellUX {
   static let imageSize: CGFloat = 29
@@ -35,12 +35,22 @@ class TwoLineTableViewCell: UITableViewCell, TableViewReusable {
     contentView.addSubview(_textLabel)
     contentView.addSubview(_detailTextLabel)
 
-    twoLineHelper.setUpViews(contentView, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
+    twoLineHelper.setUpViews(
+      contentView,
+      textLabel: textLabel!,
+      detailTextLabel: detailTextLabel!,
+      imageView: imageView!
+    )
 
     indentationWidth = 0
     layoutMargins = .zero
 
-    separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin, bottom: 0, right: 0)
+    separatorInset = UIEdgeInsets(
+      top: 0,
+      left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin,
+      bottom: 0,
+      right: 0
+    )
   }
 
   required init?(coder aDecoder: NSCoder) {
@@ -57,7 +67,12 @@ class TwoLineTableViewCell: UITableViewCell, TableViewReusable {
     self.textLabel!.alpha = 1
     self.imageView!.alpha = 1
     self.selectionStyle = .default
-    separatorInset = UIEdgeInsets(top: 0, left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin, bottom: 0, right: 0)
+    separatorInset = UIEdgeInsets(
+      top: 0,
+      left: TwoLineCellUX.imageSize + 2 * TwoLineCellUX.borderViewMargin,
+      bottom: 0,
+      right: 0
+    )
     twoLineHelper.setupDynamicFonts()
   }
 
@@ -84,7 +99,11 @@ class TwoLineTableViewCell: UITableViewCell, TableViewReusable {
     twoLineHelper.hasRightBadge = badge != nil
   }
 
-  func setLines(_ text: String?, detailText: String?, detailAttributedText: NSAttributedString? = nil) {
+  func setLines(
+    _ text: String?,
+    detailText: String?,
+    detailAttributedText: NSAttributedString? = nil
+  ) {
     twoLineHelper.setLines(text, detailText: detailText, detailAttributedText: detailAttributedText)
   }
 
@@ -100,7 +119,12 @@ class SiteTableViewCell: TwoLineTableViewCell {
     super.init(style: .subtitle, reuseIdentifier: reuseIdentifier)
     backgroundColor = .secondaryBraveBackground
 
-    twoLineHelper.setUpViews(contentView, textLabel: textLabel!, detailTextLabel: detailTextLabel!, imageView: imageView!)
+    twoLineHelper.setUpViews(
+      contentView,
+      textLabel: textLabel!,
+      detailTextLabel: detailTextLabel!,
+      imageView: imageView!
+    )
   }
 
   override func layoutSubviews() {
@@ -130,7 +154,8 @@ class BookmarkTableViewCell: TwoLineTableViewCell {
       contentView,
       textLabel: textLabel,
       detailTextLabel: detailTextLabel,
-      imageView: imageView)
+      imageView: imageView
+    )
   }
 
   override func layoutSubviews() {
@@ -167,7 +192,12 @@ class TwoLineHeaderFooterView: UITableViewHeaderFooterView {
 
   override init(reuseIdentifier: String?) {
     super.init(reuseIdentifier: reuseIdentifier)
-    twoLineHelper.setUpViews(contentView, textLabel: _textLabel, detailTextLabel: _detailTextLabel, imageView: imageView)
+    twoLineHelper.setUpViews(
+      contentView,
+      textLabel: _textLabel,
+      detailTextLabel: _detailTextLabel,
+      imageView: imageView
+    )
 
     contentView.addSubview(_textLabel)
     contentView.addSubview(_detailTextLabel)
@@ -203,7 +233,12 @@ private class TwoLineCellHelper {
   var hasRightBadge: Bool = false
 
   // TODO: Not ideal. We should figure out a better way to get this initialized.
-  func setUpViews(_ container: UIView, textLabel: UILabel, detailTextLabel: UILabel, imageView: UIImageView) {
+  func setUpViews(
+    _ container: UIView,
+    textLabel: UILabel,
+    detailTextLabel: UILabel,
+    imageView: UIImageView
+  ) {
     self.container = container
     self.textLabel = textLabel
     self.detailTextLabel = detailTextLabel
@@ -246,21 +281,43 @@ private class TwoLineCellHelper {
     let textRightInset: CGFloat = hasRightBadge ? TwoLineCellUX.badgeSize : 0
 
     textLabel.frame = CGRect(
-      x: textLeft, y: (height - contentHeight) / 2,
-      width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset, height: textLabelHeight)
+      x: textLeft,
+      y: (height - contentHeight) / 2,
+      width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset,
+      height: textLabelHeight
+    )
     detailTextLabel.frame = CGRect(
-      x: textLeft, y: textLabel.frame.maxY + TwoLineCellUX.detailTextTopMargin,
-      width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset, height: detailTextLabelHeight)
+      x: textLeft,
+      y: textLabel.frame.maxY + TwoLineCellUX.detailTextTopMargin,
+      width: container.frame.width - textLeft - TwoLineCellUX.borderViewMargin - textRightInset,
+      height: detailTextLabelHeight
+    )
 
     // Like the comment above, this is not ideal. This code should probably be refactored to use autolayout. That will remove a lot of the pixel math and remove code duplication.
 
     if UIApplication.shared.userInterfaceLayoutDirection == .leftToRight {
-      imageView.frame = CGRect(x: TwoLineCellUX.borderViewMargin, y: (height - TwoLineCellUX.imageSize) / 2, width: TwoLineCellUX.imageSize, height: TwoLineCellUX.imageSize)
+      imageView.frame = CGRect(
+        x: TwoLineCellUX.borderViewMargin,
+        y: (height - TwoLineCellUX.imageSize) / 2,
+        width: TwoLineCellUX.imageSize,
+        height: TwoLineCellUX.imageSize
+      )
     } else {
-      imageView.frame = CGRect(x: container.frame.width - TwoLineCellUX.imageSize - TwoLineCellUX.borderViewMargin, y: (height - TwoLineCellUX.imageSize) / 2, width: TwoLineCellUX.imageSize, height: TwoLineCellUX.imageSize)
+      imageView.frame = CGRect(
+        x: container.frame.width - TwoLineCellUX.imageSize - TwoLineCellUX.borderViewMargin,
+        y: (height - TwoLineCellUX.imageSize) / 2,
+        width: TwoLineCellUX.imageSize,
+        height: TwoLineCellUX.imageSize
+      )
 
-      textLabel.frame = textLabel.frame.offsetBy(dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset), dy: 0)
-      detailTextLabel.frame = detailTextLabel.frame.offsetBy(dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset), dy: 0)
+      textLabel.frame = textLabel.frame.offsetBy(
+        dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset),
+        dy: 0
+      )
+      detailTextLabel.frame = detailTextLabel.frame.offsetBy(
+        dx: -(TwoLineCellUX.imageSize + TwoLineCellUX.borderViewMargin - textRightInset),
+        dy: 0
+      )
 
       // If the cell has an accessory, shift them all to the left even more. Only required on RTL.
       if accessoryWidth != 0 {
@@ -271,7 +328,11 @@ private class TwoLineCellHelper {
     }
   }
 
-  func setLines(_ text: String?, detailText: String?, detailAttributedText: NSAttributedString? = nil) {
+  func setLines(
+    _ text: String?,
+    detailText: String?,
+    detailAttributedText: NSAttributedString? = nil
+  ) {
     if text?.isEmpty ?? true {
       textLabel.text = detailText
       detailTextLabel.text = nil
@@ -303,13 +364,16 @@ private class TwoLineCellHelper {
       }
     }).filter({
       $0 != nil
-    }).reduce(NSMutableAttributedString(string: ""), {
-      if $0.length > 0 {
-        $0.append(NSAttributedString(string: ", "))
+    }).reduce(
+      NSMutableAttributedString(string: ""),
+      {
+        if $0.length > 0 {
+          $0.append(NSAttributedString(string: ", "))
+        }
+        $0.append($1!)
+        return $0
       }
-      $0.append($1!)
-      return $0
-    })
+    )
 
     container?.isAccessibilityElement = true
     container?.setValue(NSAttributedString(attributedString: label), forKey: "accessibilityLabel")

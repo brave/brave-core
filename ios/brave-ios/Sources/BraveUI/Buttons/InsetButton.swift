@@ -4,15 +4,14 @@
 
 import UIKit
 
-/**
- * Button whose insets are included in its intrinsic size.
- */
+/// Button whose insets are included in its intrinsic size.
 public class InsetButton: UIButton {
   public override var intrinsicContentSize: CGSize {
     let size = super.intrinsicContentSize
     return CGSize(
       width: size.width + titleEdgeInsets.left + titleEdgeInsets.right,
-      height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom)
+      height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+    )
   }
 
   public func addTrailingImageIcon(image: UIImage, inset: CGFloat = 15) {

@@ -2,14 +2,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import Preferences
-import WebKit
-import os.log
 import AdServices
 import BraveCore
 import BraveShared
+import Foundation
+import Preferences
+import Shared
+import WebKit
+import os.log
 
 public class UserReferralProgram {
 
@@ -44,7 +44,12 @@ public class UserReferralProgram {
 
     let apiKey = kBraveStatsAPIKey
 
-    let urpService = UrpService(host: host, apiKey: apiKey, adServicesURL: adServicesURLString, adReportsURL: adReportsURLString)
+    let urpService = UrpService(
+      host: host,
+      apiKey: apiKey,
+      adServicesURL: adServicesURLString,
+      adReportsURL: adReportsURLString
+    )
 
     DebugLogger.log(for: .urp, text: "URP init, host: \(host)")
 
@@ -52,14 +57,20 @@ public class UserReferralProgram {
   }
 
   /// Looks for referral and returns its landing page if possible.
-  public func referralLookup(refCode: String? = nil, completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void) {
+  public func referralLookup(
+    refCode: String? = nil,
+    completion: @escaping (_ refCode: String?, _ offerUrl: String?) -> Void
+  ) {
     DebugLogger.log(for: .urp, text: "first run referral lookup")
 
     let referralBlock: (ReferralData?, UrpError?) -> Void = { [weak self] referral, error in
       guard let self = self else { return }
 
       if error == Growth.UrpError.endpointError {
-        DebugLogger.log(for: .urp, text: "URP look up had endpoint error, will retry on next launch.")
+        DebugLogger.log(
+          for: .urp,
+          text: "URP look up had endpoint error, will retry on next launch."
+        )
         self.referralLookupRetry.timer?.invalidate()
         self.referralLookupRetry.timer = nil
 
@@ -91,7 +102,10 @@ public class UserReferralProgram {
 
       if ref.isExtendedUrp() {
         completion(ref.referralCode, ref.offerPage)
-        DebugLogger.log(for: .urp, text: "Extended referral code found, opening landing page: \(ref.offerPage ?? "404")")
+        DebugLogger.log(
+          for: .urp,
+          text: "Extended referral code found, opening landing page: \(ref.offerPage ?? "404")"
+        )
         // We do not want to persist referral data for extended URPs
         return
       }
@@ -102,7 +116,10 @@ public class UserReferralProgram {
       self.referralLookupRetry.timer?.invalidate()
       self.referralLookupRetry.timer = nil
 
-      DebugLogger.log(for: .urp, text: "Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)")
+      DebugLogger.log(
+        for: .urp,
+        text: "Found referral: downloadId: \(ref.downloadId), code: \(ref.referralCode)"
+      )
       // In case of network errors or getting `isFinalized = false`, we retry the api call.
       self.initRetryPingConnection(numberOfTimes: 30)
 
@@ -114,7 +131,10 @@ public class UserReferralProgram {
     service.referralCodeLookup(refCode: refCode, completion: referralBlock)
   }
 
-  @MainActor public func adCampaignLookup(isRetryEnabled: Bool = true, timeout: TimeInterval = 60) async throws -> AdAttributionData {
+  @MainActor public func adCampaignLookup(
+    isRetryEnabled: Bool = true,
+    timeout: TimeInterval = 60
+  ) async throws -> AdAttributionData {
     // Fetching ad attibution token
     do {
       let adAttributionToken = try AAAttribution.attributionToken()
@@ -123,7 +143,8 @@ public class UserReferralProgram {
         return try await service.adCampaignTokenLookupQueue(
           adAttributionToken: adAttributionToken,
           isRetryEnabled: isRetryEnabled,
-          timeout: timeout)
+          timeout: timeout
+        )
       } catch {
         Logger.module.info("Could not retrieve ad campaign attibution from ad services")
         throw SearchAdError.invalidCampaignTokenData
@@ -134,8 +155,10 @@ public class UserReferralProgram {
     }
   }
 
-  @MainActor func adReportsKeywordLookup(attributionData: AdAttributionData) async throws -> String {
-    guard let adGroupId = attributionData.adGroupId, let keywordId = attributionData.keywordId else {
+  @MainActor func adReportsKeywordLookup(attributionData: AdAttributionData) async throws -> String
+  {
+    guard let adGroupId = attributionData.adGroupId, let keywordId = attributionData.keywordId
+    else {
       Logger.module.info("Could not retrieve ad campaign attibution from ad services")
       throw SearchAdError.missingReportsKeywordParameter
     }
@@ -144,7 +167,8 @@ public class UserReferralProgram {
       return try await service.adGroupReportsKeywordLookup(
         adGroupId: adGroupId,
         campaignId: attributionData.campaignId,
-        keywordId: keywordId)
+        keywordId: keywordId
+      )
 
     } catch {
       Logger.module.info("Could not retrieve ad groups reports using ad services")
@@ -223,7 +247,11 @@ public class UserReferralProgram {
         Preferences.URP.nextCheckDate.value = nil
         Preferences.URP.retryCountdown.value = nil
       } else {
-        DebugLogger.log(for: .urp, text: "Network error or isFinalized returned false, decrementing retry counter and trying again next time.")
+        DebugLogger.log(
+          for: .urp,
+          text:
+            "Network error or isFinalized returned false, decrementing retry counter and trying again next time."
+        )
         // Decrement counter, next retry happens on next day
         Preferences.URP.retryCountdown.value = counter - 1
         Preferences.URP.nextCheckDate.value = checkDate + 1.days
@@ -234,7 +262,8 @@ public class UserReferralProgram {
   /// Returns referral code and sets expiration day for its deletion from DAU pings(if needed).
   public class func getReferralCode() -> String? {
     if let referralCodeDeleteDate = Preferences.URP.referralCodeDeleteDate.value,
-      Date().timeIntervalSince1970 >= referralCodeDeleteDate {
+      Date().timeIntervalSince1970 >= referralCodeDeleteDate
+    {
       Preferences.URP.referralCode.value = nil
       Preferences.URP.referralCodeDeleteDate.value = nil
       DebugLogger.log(for: .urp, text: "Enough time has passed, removing referral code data")

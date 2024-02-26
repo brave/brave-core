@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import Data
 import Shared
 import UIKit
-import Data
 
 extension TabTrayController {
 
@@ -31,12 +31,12 @@ extension TabTrayController {
   @objc func didOpenNewTabKeyCommand() {
     newTabAction()
   }
-  
+
   @objc private func reopenRecentlyClosedTabCommand() {
     guard let recentlyClosed = RecentlyClosed.all().first else {
       return
     }
-    
+
     tabManager.addAndSelectRecentlyClosed(recentlyClosed)
     RecentlyClosed.remove(with: recentlyClosed.url)
   }
@@ -66,7 +66,9 @@ extension TabTrayController {
 
     let tabsCount = tabTrayView.collectionView.numberOfItems(inSection: 0)
     let nextItem = max(0, min(currentIndex.row + step, tabsCount - 1))
-    let nextTab = dataSource.itemIdentifier(for: .init(row: nextItem, section: currentIndex.section))
+    let nextTab = dataSource.itemIdentifier(
+      for: .init(row: nextItem, section: currentIndex.section)
+    )
     tabManager.selectTab(nextTab)
     if nextTab != nil {
       // Small hack here to update UI.
@@ -76,18 +78,36 @@ extension TabTrayController {
       forceReload()
     }
   }
-  
+
   // KeyCommands
-  
+
   override var keyCommands: [UIKeyCommand]? {
-    let toggleText = privateMode ? Strings.Hotkey.switchToNonPBMKeyCodeTitle : Strings.Hotkey.switchToPBMKeyCodeTitle
+    let toggleText =
+      privateMode
+      ? Strings.Hotkey.switchToNonPBMKeyCodeTitle : Strings.Hotkey.switchToPBMKeyCodeTitle
 
     let arrowCommands: [UIKeyCommand] =
       [
-        UIKeyCommand(input: UIKeyCommand.inputLeftArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputRightArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputDownArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
-        UIKeyCommand(input: UIKeyCommand.inputUpArrow, modifierFlags: [], action: #selector(didChangeSelectedTabKeyCommand(sender:))),
+        UIKeyCommand(
+          input: UIKeyCommand.inputLeftArrow,
+          modifierFlags: [],
+          action: #selector(didChangeSelectedTabKeyCommand(sender:))
+        ),
+        UIKeyCommand(
+          input: UIKeyCommand.inputRightArrow,
+          modifierFlags: [],
+          action: #selector(didChangeSelectedTabKeyCommand(sender:))
+        ),
+        UIKeyCommand(
+          input: UIKeyCommand.inputDownArrow,
+          modifierFlags: [],
+          action: #selector(didChangeSelectedTabKeyCommand(sender:))
+        ),
+        UIKeyCommand(
+          input: UIKeyCommand.inputUpArrow,
+          modifierFlags: [],
+          action: #selector(didChangeSelectedTabKeyCommand(sender:))
+        ),
       ]
 
     arrowCommands.forEach {
@@ -95,22 +115,60 @@ extension TabTrayController {
     }
 
     var navigationCommands = [
-      UIKeyCommand(title: toggleText, action: #selector(didTogglePrivateModeKeyCommand), input: "`", modifierFlags: .command),
+      UIKeyCommand(
+        title: toggleText,
+        action: #selector(didTogglePrivateModeKeyCommand),
+        input: "`",
+        modifierFlags: .command
+      ),
       UIKeyCommand(input: "w", modifierFlags: .command, action: #selector(didCloseTabKeyCommand)),
-      UIKeyCommand(title: Strings.Hotkey.closeTabFromTabTrayKeyCodeTitle, action: #selector(didCloseTabKeyCommand), input: "\u{8}", modifierFlags: []),
-      UIKeyCommand(title: Strings.Hotkey.closeAllTabsFromTabTrayKeyCodeTitle, action: #selector(didCloseAllTabsKeyCommand), input: "w", modifierFlags: [.command, .shift]),
-      UIKeyCommand(title: Strings.Hotkey.openSelectedTabFromTabTrayKeyCodeTitle, action: #selector(didEnterTabKeyCommand), input: "\r", modifierFlags: []),
-      UIKeyCommand(input: "\\", modifierFlags: [.command, .shift], action: #selector(didEnterTabKeyCommand)),
-      UIKeyCommand(input: "\t", modifierFlags: [.command, .alternate], action: #selector(didEnterTabKeyCommand)),
-      UIKeyCommand(title: Strings.Hotkey.openNewTabFromTabTrayKeyCodeTitle, action: #selector(didOpenNewTabKeyCommand), input: "t", modifierFlags: .command)
+      UIKeyCommand(
+        title: Strings.Hotkey.closeTabFromTabTrayKeyCodeTitle,
+        action: #selector(didCloseTabKeyCommand),
+        input: "\u{8}",
+        modifierFlags: []
+      ),
+      UIKeyCommand(
+        title: Strings.Hotkey.closeAllTabsFromTabTrayKeyCodeTitle,
+        action: #selector(didCloseAllTabsKeyCommand),
+        input: "w",
+        modifierFlags: [.command, .shift]
+      ),
+      UIKeyCommand(
+        title: Strings.Hotkey.openSelectedTabFromTabTrayKeyCodeTitle,
+        action: #selector(didEnterTabKeyCommand),
+        input: "\r",
+        modifierFlags: []
+      ),
+      UIKeyCommand(
+        input: "\\",
+        modifierFlags: [.command, .shift],
+        action: #selector(didEnterTabKeyCommand)
+      ),
+      UIKeyCommand(
+        input: "\t",
+        modifierFlags: [.command, .alternate],
+        action: #selector(didEnterTabKeyCommand)
+      ),
+      UIKeyCommand(
+        title: Strings.Hotkey.openNewTabFromTabTrayKeyCodeTitle,
+        action: #selector(didOpenNewTabKeyCommand),
+        input: "t",
+        modifierFlags: .command
+      ),
     ]
-    
+
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       navigationCommands += [
-        UIKeyCommand(title: Strings.Hotkey.recentlyClosedTabTitle, action: #selector(reopenRecentlyClosedTabCommand), input: "t", modifierFlags: [.command, .shift])
+        UIKeyCommand(
+          title: Strings.Hotkey.recentlyClosedTabTitle,
+          action: #selector(reopenRecentlyClosedTabCommand),
+          input: "t",
+          modifierFlags: [.command, .shift]
+        )
       ]
     }
-    
+
     return navigationCommands + arrowCommands
   }
 }

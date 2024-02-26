@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Storage
-import SnapKit
-import Shared
-import BraveShields
-import Preferences
-import Data
-import BraveUI
-import UIKit
-import Growth
 import BraveCore
+import BraveShields
+import BraveUI
+import Data
+import Growth
+import Preferences
+import Shared
+import SnapKit
+import Storage
+import UIKit
 
 /// Displays shield settings and shield stats for a given URL
 class ShieldsViewController: UIViewController, PopoverContentComponent {
@@ -20,7 +20,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   let tab: Tab
   private lazy var url: URL? = {
     guard let _url = tab.url else { return nil }
-    
+
     if let tabURL = _url.stippedInternalURL {
       return tabURL
     }
@@ -68,7 +68,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
       domain = Domain.getOrCreate(forUrl: url, persistent: !isPrivateBrowsing)
     }
 
-    shieldsUpSwitch.isOn = domain?.isShieldExpected(.AllOff, considerAllShieldsOption: false) == false
+    shieldsUpSwitch.isOn =
+      domain?.isShieldExpected(.AllOff, considerAllShieldsOption: false) == false
 
     shieldControlMapping.forEach { shield, view in
       if let domain = domain {
@@ -92,7 +93,9 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   private func updateShieldBlockStats() {
     shieldsView.simpleShieldView.blockCountView.countLabel.text = String(
-      tab.contentBlocker.stats.adCount + tab.contentBlocker.stats.trackerCount + tab.contentBlocker.stats.httpsCount + tab.contentBlocker.stats.scriptCount + tab.contentBlocker.stats.fingerprintingCount
+      tab.contentBlocker.stats.adCount + tab.contentBlocker.stats.trackerCount
+        + tab.contentBlocker.stats.httpsCount + tab.contentBlocker.stats.scriptCount
+        + tab.contentBlocker.stats.fingerprintingCount
     )
   }
 
@@ -105,12 +108,16 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     // affecting future changes to the global pref)
     let isOn = allOff ? !on : on
     Domain.setBraveShield(
-      forUrl: url, shield: shield, isOn: isOn,
-      isPrivateBrowsing: tab.isPrivate)
+      forUrl: url,
+      shield: shield,
+      isOn: isOn,
+      isPrivateBrowsing: tab.isPrivate
+    )
   }
 
   private func updateGlobalShieldState(_ on: Bool, animated: Bool = false) {
-    shieldsView.simpleShieldView.statusLabel.text = on ? Strings.Shields.statusValueUp.uppercased() : Strings.Shields.statusValueDown.uppercased()
+    shieldsView.simpleShieldView.statusLabel.text =
+      on ? Strings.Shields.statusValueUp.uppercased() : Strings.Shields.statusValueDown.uppercased()
 
     // Whether or not shields are available for this URL.
     let isShieldsAvailable = url?.isLocal == false
@@ -159,10 +166,12 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
             withDuration: 0.15,
             animations: {
               partTwoViews.forEach { $0.alpha = 1.0 }
-            })
+            }
+          )
 
           self.updatePreferredContentSize()
-        })
+        }
+      )
     } else {
       shieldsView.simpleShieldView.blockCountView.isHidden = !shieldsEnabled
       shieldsView.simpleShieldView.footerLabel.isHidden = !shieldsEnabled
@@ -187,7 +196,8 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
           UIView.animate(withDuration: 0.1) {
             view.alpha = 1.0
           }
-        })
+        }
+      )
     } else {
       shieldsView.contentView = view
     }
@@ -231,25 +241,54 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
     super.viewDidLoad()
 
     if let url = url {
-      shieldsView.simpleShieldView.faviconImageView.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
+      shieldsView.simpleShieldView.faviconImageView.loadFavicon(
+        for: url,
+        isPrivateBrowsing: tab.isPrivate
+      )
     } else {
       shieldsView.simpleShieldView.faviconImageView.isHidden = true
     }
-    
+
     // Follows the logic in `updateTextWithURL` for formatting
-    let normalizedDisplayHost = URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: url?.absoluteString ?? "")
-    
+    let normalizedDisplayHost = URLFormatter.formatURLOrigin(
+      forDisplayOmitSchemePathAndTrivialSubdomains: url?.absoluteString ?? ""
+    )
+
     shieldsView.simpleShieldView.hostLabel.text = normalizedDisplayHost
-    shieldsView.simpleShieldView.shieldsSwitch.addTarget(self, action: #selector(shieldsOverrideSwitchValueChanged), for: .valueChanged)
+    shieldsView.simpleShieldView.shieldsSwitch.addTarget(
+      self,
+      action: #selector(shieldsOverrideSwitchValueChanged),
+      for: .valueChanged
+    )
     shieldsView.advancedShieldView.siteTitle.titleLabel.text = normalizedDisplayHost.uppercased()
-    shieldsView.advancedShieldView.globalControlsButton.addTarget(self, action: #selector(tappedGlobalShieldsButton), for: .touchUpInside)
+    shieldsView.advancedShieldView.globalControlsButton.addTarget(
+      self,
+      action: #selector(tappedGlobalShieldsButton),
+      for: .touchUpInside
+    )
 
-    shieldsView.advancedControlsBar.addTarget(self, action: #selector(tappedAdvancedControlsBar), for: .touchUpInside)
+    shieldsView.advancedControlsBar.addTarget(
+      self,
+      action: #selector(tappedAdvancedControlsBar),
+      for: .touchUpInside
+    )
 
-    shieldsView.simpleShieldView.blockCountView.infoButton.addTarget(self, action: #selector(tappedAboutShieldsButton), for: .touchUpInside)
-    shieldsView.simpleShieldView.blockCountView.shareButton.addTarget(self, action: #selector(tappedShareShieldsButton), for: .touchUpInside)
+    shieldsView.simpleShieldView.blockCountView.infoButton.addTarget(
+      self,
+      action: #selector(tappedAboutShieldsButton),
+      for: .touchUpInside
+    )
+    shieldsView.simpleShieldView.blockCountView.shareButton.addTarget(
+      self,
+      action: #selector(tappedShareShieldsButton),
+      for: .touchUpInside
+    )
 
-    shieldsView.simpleShieldView.reportSiteButton.addTarget(self, action: #selector(tappedReportSiteButton), for: .touchUpInside)
+    shieldsView.simpleShieldView.reportSiteButton.addTarget(
+      self,
+      action: #selector(tappedReportSiteButton),
+      for: .touchUpInside
+    )
 
     updateShieldBlockStats()
 
@@ -308,7 +347,9 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedShareShieldsButton() {
     let globalShieldsActivityController =
-    ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(isPrivateBrowsing: tab.isPrivate)
+      ShieldsActivityItemSourceProvider.shared.setupGlobalShieldsActivityController(
+        isPrivateBrowsing: tab.isPrivate
+      )
     globalShieldsActivityController.popoverPresentationController?.sourceView = view
 
     present(globalShieldsActivityController, animated: true, completion: nil)

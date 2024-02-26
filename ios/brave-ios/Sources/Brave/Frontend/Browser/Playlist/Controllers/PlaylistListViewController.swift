@@ -3,24 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import MediaPlayer
 import AVFoundation
 import AVKit
-import CoreData
-import Combine
-import os.log
 import BraveShared
-
+import Combine
+import CoreData
+import Data
+import Foundation
+import Growth
+import MediaPlayer
+import Playlist
+import Preferences
 // Third-Party
 import SDWebImage
-
-import Preferences
 import Shared
-import Data
 import SwiftUI
-import Growth
-import Playlist
+import os.log
 
 // MARK: - PlaylistListViewController
 
@@ -31,7 +29,7 @@ class PlaylistListViewController: UIViewController {
     case loading
     case fullyLoaded
   }
-  
+
   // MARK: Constants
 
   struct Constants {
@@ -51,7 +49,7 @@ class PlaylistListViewController: UIViewController {
   weak var delegate: PlaylistViewControllerDelegate?
   private let playerView: VideoView
   let isPrivateBrowsing: Bool
-  
+
   private var observers = Set<AnyCancellable>()
   private var folderObserver: AnyCancellable?
   private var sharedFolderLoadingTask: Task<Void, Error>?
@@ -110,14 +108,16 @@ class PlaylistListViewController: UIViewController {
           $0.object,
           at: $0.indexPath,
           for: $0.type,
-          newIndexPath: $0.newIndexPath)
+          newIndexPath: $0.newIndexPath
+        )
       }.store(in: &observers)
 
     PlaylistManager.shared.downloadProgressUpdated
       .sink { [weak self] in
         self?.onDownloadProgressUpdate(
           id: $0.id,
-          percentComplete: $0.percentComplete)
+          percentComplete: $0.percentComplete
+        )
       }.store(in: &observers)
 
     PlaylistManager.shared.downloadStateChanged
@@ -126,7 +126,8 @@ class PlaylistListViewController: UIViewController {
           id: $0.id,
           state: $0.state,
           displayName: $0.displayName,
-          error: $0.error)
+          error: $0.error
+        )
       }.store(in: &observers)
 
     PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.eraseToAnyPublisher()
@@ -152,9 +153,18 @@ class PlaylistListViewController: UIViewController {
 
     // Layout
     tableView.do {
-      $0.register(PlaylistRedactedHeader.self, forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderRedactedIdentifier)
-      $0.register(PlaylistMenuHeader.self, forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderIdentifier)
-      $0.register(PlaylistCellRedacted.self, forCellReuseIdentifier: Constants.playlistCellRedactedIdentifier)
+      $0.register(
+        PlaylistRedactedHeader.self,
+        forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderRedactedIdentifier
+      )
+      $0.register(
+        PlaylistMenuHeader.self,
+        forHeaderFooterViewReuseIdentifier: Constants.playListMenuHeaderIdentifier
+      )
+      $0.register(
+        PlaylistCellRedacted.self,
+        forCellReuseIdentifier: Constants.playlistCellRedactedIdentifier
+      )
       $0.register(PlaylistCell.self, forCellReuseIdentifier: Constants.playListCellIdentifier)
       $0.dataSource = self
       $0.delegate = self
@@ -170,7 +180,8 @@ class PlaylistListViewController: UIViewController {
   override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
 
-    title = PlaylistManager.shared.numberOfAssets == 0 ? PlaylistManager.shared.currentFolder?.title : nil
+    title =
+      PlaylistManager.shared.numberOfAssets == 0 ? PlaylistManager.shared.currentFolder?.title : nil
     navigationController?.setToolbarHidden(true, animated: true)
 
     // Update
@@ -183,22 +194,25 @@ class PlaylistListViewController: UIViewController {
     super.viewDidAppear(animated)
 
     highlightActiveItem()
-    
+
     folderObserver = PlaylistManager.shared.onCurrentFolderDidChange
       .receive(on: DispatchQueue.main)
       .sink { [weak self] in
         guard let self = self else { return }
-        self.title = PlaylistManager.shared.numberOfAssets == 0 ? PlaylistManager.shared.currentFolder?.title : nil
+        self.title =
+          PlaylistManager.shared.numberOfAssets == 0
+          ? PlaylistManager.shared.currentFolder?.title : nil
         self.tableView.reloadData()
       }
   }
 
   override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    
+
     // Store the last played item's time-offset
     if let playTime = delegate?.currentPlaylistItem?.currentTime(),
-       let item = PlaylistCarplayManager.shared.currentPlaylistItem {
+      let item = PlaylistCarplayManager.shared.currentPlaylistItem
+    {
       PlaylistManager.shared.updateLastPlayed(item: item, playTime: playTime.seconds)
     }
 
@@ -213,9 +227,9 @@ class PlaylistListViewController: UIViewController {
       if !PlaylistCarplayManager.shared.isCarPlayAvailable {
         delegate?.stopPlaying()
       }
-      
+
       stopLoadingSharedPlaylist()
-      
+
       if !PlaylistCarplayManager.shared.isCarPlayAvailable {
         PlaylistCarplayManager.shared.onCarplayUIChangedToRoot.send()
       }
@@ -227,7 +241,7 @@ class PlaylistListViewController: UIViewController {
 
     updateTableBackgroundView()
   }
-  
+
   deinit {
     folderObserver = nil
     stopLoadingSharedPlaylist()
@@ -240,7 +254,8 @@ class PlaylistListViewController: UIViewController {
     playerView.setControlsEnabled(false)
 
     if let initialItem = initialItem,
-      let item = PlaylistItem.getItem(uuid: initialItem.tagId) {
+      let item = PlaylistItem.getItem(uuid: initialItem.tagId)
+    {
       PlaylistManager.shared.currentFolder = item.playlistFolder
     }
 
@@ -261,10 +276,11 @@ class PlaylistListViewController: UIViewController {
     // Otherwise prepare to play the first item
     updateTableBackgroundView()
     playerView.setControlsEnabled(true)
-    
+
     // Shared folders are loading
     if PlaylistManager.shared.currentFolder?.sharedFolderId != nil,
-       PlaylistManager.shared.currentFolder?.isPersistent == false {
+      PlaylistManager.shared.currentFolder?.isPersistent == false
+    {
       autoPlayEnabled = false
       return
     }
@@ -273,33 +289,41 @@ class PlaylistListViewController: UIViewController {
     // We do nothing when CarPlay is active because the user shouldn't be using the phone anyway
     // But also because if the driver is controlling the audio, there will be a conflict
     // if both the driver is selecting an item, and auto-play happens.
-    if PlaylistCarplayManager.shared.isCarPlayAvailable || (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false) {
+    if PlaylistCarplayManager.shared.isCarPlayAvailable
+      || (delegate?.currentPlaylistAsset != nil || delegate?.isPlaying ?? false)
+    {
       return
     }
 
     // Setup initial playback item and time-offset
     var lastPlayedItemTime: Double = 0.0
-    
+
     let lastPlayedItemUrl = initialItem?.pageSrc ?? Preferences.Playlist.lastPlayedItemUrl.value
-    let lastPlayedItem = PlaylistManager.shared.allItems.first(where: { $0.pageSrc == lastPlayedItemUrl })
-    
+    let lastPlayedItem = PlaylistManager.shared.allItems.first(where: {
+      $0.pageSrc == lastPlayedItemUrl
+    })
+
     // If the user is current viewing the same video as the last played item
     // then we choose whichever time offset is more recent
-    if let pageSrc = initialItem?.pageSrc, let lastPlayedItem = lastPlayedItem, pageSrc == lastPlayedItem.pageSrc {
-      
+    if let pageSrc = initialItem?.pageSrc, let lastPlayedItem = lastPlayedItem,
+      pageSrc == lastPlayedItem.pageSrc
+    {
+
       // User is current on the same page as the last played item]
       lastPlayedItemTime = max(initialItemOffset, lastPlayedItem.lastPlayedOffset)
     } else {
       // Otherwise we choose the last played item offset from the page and fallback to the preference if none exists
-      lastPlayedItemTime = initialItem != nil ? initialItemOffset : lastPlayedItem?.lastPlayedOffset ?? 0.0
+      lastPlayedItemTime =
+        initialItem != nil ? initialItemOffset : lastPlayedItem?.lastPlayedOffset ?? 0.0
     }
-    
+
     // Auto-play is based on loading state and preference only
-    autoPlayEnabled = loadingState != .loading ? Preferences.Playlist.firstLoadAutoPlay.value : false
-    
+    autoPlayEnabled =
+      loadingState != .loading ? Preferences.Playlist.firstLoadAutoPlay.value : false
+
     // Should load determines if the player should load the item, but does not "auto-play" it!
     let shouldLoad = initialItem != nil ? true : autoPlayEnabled
-    
+
     if !shouldLoad {
       delegate?.showStaticImage(image: nil)
       delegate?.stopPlaying()
@@ -317,7 +341,8 @@ class PlaylistListViewController: UIViewController {
 
     // If the current item is already playing, do nothing.
     if let currentItemId = PlaylistCarplayManager.shared.currentPlaylistItem?.tagId,
-      PlaylistManager.shared.index(of: currentItemId) != nil {
+      PlaylistManager.shared.index(of: currentItemId) != nil
+    {
       return
     }
 
@@ -331,7 +356,8 @@ class PlaylistListViewController: UIViewController {
       else {
         self?.commitPlayerItemTransaction(
           at: indexPath,
-          isExpired: false)
+          isExpired: false
+        )
         return
       }
 
@@ -339,18 +365,20 @@ class PlaylistListViewController: UIViewController {
         do {
           PlaylistCarplayManager.shared.currentlyPlayingItemIndex = indexPath.row
           PlaylistCarplayManager.shared.currentPlaylistItem = item
-          
+
           let item = try await delegate.playItem(item: item)
-          
+
           self.commitPlayerItemTransaction(
             at: indexPath,
-            isExpired: false)
+            isExpired: false
+          )
 
           // Update the player position/time-offset of the last played item
           self.seekLastPlayedItem(
             at: indexPath,
             lastPlayedItemId: lastPlayedItemId,
-            lastPlayedTime: lastPlayedItemTime)
+            lastPlayedTime: lastPlayedItemTime
+          )
 
           // Even if the item was NOT previously the last played item,
           // it is now as it has begun to play
@@ -358,11 +386,12 @@ class PlaylistListViewController: UIViewController {
         } catch {
           PlaylistCarplayManager.shared.currentPlaylistItem = nil
           PlaylistCarplayManager.shared.currentlyPlayingItemIndex = -1
-          
+
           self.commitPlayerItemTransaction(
             at: indexPath,
-            isExpired: false)
-          
+            isExpired: false
+          )
+
           delegate.displayLoadingResourceError()
           Logger.module.error("Playlist Playback Error: \(error)")
         }
@@ -370,7 +399,8 @@ class PlaylistListViewController: UIViewController {
     }
   }
 
-  func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double) {
+  func seekLastPlayedItem(at indexPath: IndexPath, lastPlayedItemId: String, lastPlayedTime: Double)
+  {
     // The item can be deleted at any time,
     // so we need to guard against it and make sure the index path matches up correctly
     // If it does, we check the last played time
@@ -378,7 +408,10 @@ class PlaylistListViewController: UIViewController {
     let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
     guard let item = item else { return }
 
-    if item.tagId == lastPlayedItemId && lastPlayedTime > 0.0 && lastPlayedTime < delegate?.currentPlaylistAsset?.duration.seconds ?? 0.0 && Preferences.Playlist.playbackLeftOff.value {
+    if item.tagId == lastPlayedItemId && lastPlayedTime > 0.0
+      && lastPlayedTime < delegate?.currentPlaylistAsset?.duration.seconds ?? 0.0
+      && Preferences.Playlist.playbackLeftOff.value
+    {
       self.playerView.seek(to: lastPlayedTime)
     }
   }
@@ -387,29 +420,54 @@ class PlaylistListViewController: UIViewController {
 
   func updateToolbar(editing: Bool) {
     (tableView.headerView(forSection: 0) as? PlaylistMenuHeader)?.setMenuEnabled(enabled: !editing)
-    
+
     if editing {
       if PlaylistFolder.getOtherFoldersCount() == 0 {
         toolbarItems = [
-          UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(onCancelEditingItems)),
+          UIBarButtonItem(
+            title: Strings.cancelButtonTitle,
+            style: .plain,
+            target: self,
+            action: #selector(onCancelEditingItems)
+          ),
           UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-          UIBarButtonItem(title: Strings.delete, style: .plain, target: self, action: #selector(onDeleteEditingItems)),
+          UIBarButtonItem(
+            title: Strings.delete,
+            style: .plain,
+            target: self,
+            action: #selector(onDeleteEditingItems)
+          ),
         ]
       } else {
         toolbarItems = [
-          UIBarButtonItem(title: Strings.cancelButtonTitle, style: .plain, target: self, action: #selector(onCancelEditingItems)),
+          UIBarButtonItem(
+            title: Strings.cancelButtonTitle,
+            style: .plain,
+            target: self,
+            action: #selector(onCancelEditingItems)
+          ),
           UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-          UIBarButtonItem(title: Strings.PlaylistFolders.playlistFolderMoveFolderButtonTitle, style: .plain, target: self, action: #selector(onMoveEditingItems)).then {
+          UIBarButtonItem(
+            title: Strings.PlaylistFolders.playlistFolderMoveFolderButtonTitle,
+            style: .plain,
+            target: self,
+            action: #selector(onMoveEditingItems)
+          ).then {
             $0.isEnabled = !(tableView.indexPathsForSelectedRows?.isEmpty ?? true)
           },
           UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil),
-          UIBarButtonItem(title: Strings.delete, style: .plain, target: self, action: #selector(onDeleteEditingItems)),
+          UIBarButtonItem(
+            title: Strings.delete,
+            style: .plain,
+            target: self,
+            action: #selector(onDeleteEditingItems)
+          ),
         ]
       }
     } else {
       toolbarItems = nil
     }
-    
+
     navigationController?.setToolbarHidden(!editing, animated: true)
   }
 
@@ -420,7 +478,9 @@ class PlaylistListViewController: UIViewController {
       PlaylistManager.shared.fetchedObjects[safe: $0.row]
     })
 
-    if selectedItems.contains(where: { $0.uuid == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId }) {
+    if selectedItems.contains(where: {
+      $0.uuid == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId
+    }) {
       delegate?.stopPlaying()
     } else {
       delegate?.pausePlaying()
@@ -436,7 +496,9 @@ class PlaylistListViewController: UIViewController {
       self.presentedViewController?.dismiss(animated: true, completion: nil)
 
       // We moved an item that was playing
-      if items.firstIndex(where: { PlaylistInfo(item: $0).tagId == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId }) != nil {
+      if items.firstIndex(where: {
+        PlaylistInfo(item: $0).tagId == PlaylistCarplayManager.shared.currentPlaylistItem?.tagId
+      }) != nil {
         self.delegate?.stopPlaying()
       }
 
@@ -448,7 +510,9 @@ class PlaylistListViewController: UIViewController {
       PlaylistItem.moveItems(items: items.map({ $0.objectID }), to: folder?.uuid)
     }
 
-    let hostingController = UIHostingController(rootView: moveController.environment(\.managedObjectContext, DataController.swiftUIContext)).then {
+    let hostingController = UIHostingController(
+      rootView: moveController.environment(\.managedObjectContext, DataController.swiftUIContext)
+    ).then {
       $0.modalPresentationStyle = .formSheet
     }
 
@@ -513,7 +577,11 @@ class PlaylistListViewController: UIViewController {
     navigationItem.rightBarButtonItem = nil
 
     if mode == .phone {
-      navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(onExit(_:)))
+      navigationItem.rightBarButtonItem = UIBarButtonItem(
+        barButtonSystemItem: .done,
+        target: self,
+        action: #selector(onExit(_:))
+      )
 
       playerView.setSidePanelHidden(true)
 
@@ -523,7 +591,9 @@ class PlaylistListViewController: UIViewController {
       playerView.addSubview(activityIndicator)
 
       if !playerView.isFullscreen {
-        if view.window?.windowScene?.interfaceOrientation.isLandscape ?? UIDevice.current.orientation.isLandscape && UIDevice.isPhone {
+        if view.window?.windowScene?.interfaceOrientation.isLandscape
+          ?? UIDevice.current.orientation.isLandscape && UIDevice.isPhone
+        {
           playerView.setExitButtonHidden(false)
           playerView.setFullscreenButtonHidden(true)
           playerView.snp.remakeConstraints {
@@ -536,7 +606,10 @@ class PlaylistListViewController: UIViewController {
         } else {
           playerView.setFullscreenButtonHidden(false)
           playerView.setExitButtonHidden(true)
-          let videoPlayerHeight = (1.0 / 3.0) * (UIScreen.main.bounds.width > UIScreen.main.bounds.height ? UIScreen.main.bounds.width : UIScreen.main.bounds.height)
+          let videoPlayerHeight =
+            (1.0 / 3.0)
+            * (UIScreen.main.bounds.width > UIScreen.main.bounds.height
+              ? UIScreen.main.bounds.width : UIScreen.main.bounds.height)
 
           playerView.snp.remakeConstraints {
             $0.top.equalTo(view.safeArea.top)
@@ -587,14 +660,20 @@ class PlaylistListViewController: UIViewController {
     }
   }
 
-  override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.viewWillTransition(to: size, with: coordinator)
 
     if UIDevice.isPhone && splitViewController?.isCollapsed == true {
       updateLayoutForMode(.phone)
 
       if !playerView.isFullscreen {
-        navigationController?.setNavigationBarHidden(UIDevice.current.orientation.isLandscape, animated: true)
+        navigationController?.setNavigationBarHidden(
+          UIDevice.current.orientation.isLandscape,
+          animated: true
+        )
       }
     }
   }
@@ -643,7 +722,11 @@ extension PlaylistListViewController {
     activityIndicator.isHidden = false
 
     let selectedCell = tableView.cellForRow(at: indexPath) as? PlaylistCell
-    playerView.setVideoInfo(videoDomain: item.pageSrc, videoTitle: item.pageTitle, isPrivateBrowsing: isPrivateBrowsing)
+    playerView.setVideoInfo(
+      videoDomain: item.pageSrc,
+      videoTitle: item.pageTitle,
+      isPrivateBrowsing: isPrivateBrowsing
+    )
     PlaylistMediaStreamer.setNowPlayingMediaArtwork(image: selectedCell?.iconView.image)
     completion?(item)
   }
@@ -657,19 +740,20 @@ extension PlaylistListViewController {
     playerView.setControlsEnabled(!isExpired)
     activityIndicator.stopAnimating()
   }
-  
+
   func highlightActiveItem() {
     let activeItemIndex = PlaylistCarplayManager.shared.currentlyPlayingItemIndex
-    
+
     tableView.selectRow(
       at: IndexPath(row: activeItemIndex, section: 0),
       animated: false,
-      scrollPosition: .none)
+      scrollPosition: .none
+    )
   }
-  
+
   func loadSharedPlaylist(folderSharingUrl: String) {
     stopLoadingSharedPlaylist()
-    
+
     sharedFolderLoadingTask = Task { @MainActor in
       // Shared Folder already exists
       if let existingFolder = PlaylistFolder.getSharedFolder(sharedFolderUrl: folderSharingUrl) {
@@ -677,7 +761,7 @@ extension PlaylistListViewController {
         self.loadingState = .fullyLoaded
         return
       }
-      
+
       // Shared Folder doesn't exist
       do {
         self.playerView.setStaticImage(image: UIImage())
@@ -685,19 +769,25 @@ extension PlaylistListViewController {
         let folder = await PlaylistSharedFolderNetwork.createInMemoryStorage(for: model)
         PlaylistManager.shared.currentFolder = folder
         self.loadingState = .partial
-        
+
         if let folderImageUrl = model.folderImage {
           let authManager = BasicAuthCredentialsManager()
-          let session = URLSession(configuration: .ephemeral, delegate: authManager, delegateQueue: .main)
-          
+          let session = URLSession(
+            configuration: .ephemeral,
+            delegate: authManager,
+            delegateQueue: .main
+          )
+
           try await withTaskCancellationHandler {
             defer { session.finishTasksAndInvalidate() }
-            
-            let (data, response) = try await NetworkManager(session: session).dataRequest(with: folderImageUrl)
+
+            let (data, response) = try await NetworkManager(session: session).dataRequest(
+              with: folderImageUrl
+            )
             if let response = response as? HTTPURLResponse, response.statusCode != 200 {
               return
             }
-            
+
             if let image = UIImage(data: data, scale: UIScreen.main.scale) {
               self.playerView.setStaticImage(image: image)
             }
@@ -705,13 +795,18 @@ extension PlaylistListViewController {
             session.invalidateAndCancel()
           }
         }
-        
-        let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(item: model, viewForInvisibleWebView: self.playerView.window ?? self.playerView.superview ?? self.playerView, webLoaderFactory: LivePlaylistWebLoaderFactory())
+
+        let items = try await PlaylistSharedFolderNetwork.fetchMediaItemInfo(
+          item: model,
+          viewForInvisibleWebView: self.playerView.window ?? self.playerView.superview
+            ?? self.playerView,
+          webLoaderFactory: LivePlaylistWebLoaderFactory()
+        )
         try Task.checkCancellation()
-        
+
         try folder.playlistItems?.forEach({ playlistItem in
           try Task.checkCancellation()
-          
+
           if let item = items.first(where: { $0.tagId == playlistItem.uuid }) {
             playlistItem.name = item.name
             playlistItem.pageTitle = item.pageTitle
@@ -723,20 +818,22 @@ extension PlaylistListViewController {
             playlistItem.order = item.order
           }
         })
-        
+
         self.loadingState = .fullyLoaded
       } catch {
         if let error = error as? PlaylistSharedFolderNetwork.Status {
           Logger.module.error("\(error.localizedDescription)")
         } else {
-          Logger.module.error("Failed Fetching Playlist Shared Folder: \(error.localizedDescription)")
+          Logger.module.error(
+            "Failed Fetching Playlist Shared Folder: \(error.localizedDescription)"
+          )
         }
-        
+
         displayLoadingResourceError()
       }
     }
   }
-  
+
   func stopLoadingSharedPlaylist() {
     sharedFolderLoadingTask?.cancel()
     sharedFolderLoadingTask = nil
@@ -750,10 +847,13 @@ extension PlaylistListViewController {
     if let item = item {
       let alert = UIAlertController(
         title: Strings.PlayList.expiredAlertTitle,
-        message: Strings.PlayList.expiredAlertDescription, preferredStyle: .alert)
+        message: Strings.PlayList.expiredAlertDescription,
+        preferredStyle: .alert
+      )
       alert.addAction(
         UIAlertAction(
-          title: Strings.PlayList.reopenButtonTitle, style: .default,
+          title: Strings.PlayList.reopenButtonTitle,
+          style: .default,
           handler: { _ in
 
             if let url = URL(string: item.pageSrc) {
@@ -762,15 +862,20 @@ extension PlaylistListViewController {
               self.delegate?.openURLInNewTab(
                 url,
                 isPrivate: isPrivateBrowsing,
-                isPrivileged: false)
+                isPrivileged: false
+              )
             }
-          }))
+          }
+        )
+      )
       alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
       self.present(alert, animated: true, completion: nil)
     } else {
       let alert = UIAlertController(
         title: Strings.PlayList.expiredAlertTitle,
-        message: Strings.PlayList.expiredAlertDescription, preferredStyle: .alert)
+        message: Strings.PlayList.expiredAlertDescription,
+        preferredStyle: .alert
+      )
       alert.addAction(UIAlertAction(title: Strings.OKString, style: .default, handler: nil))
       self.present(alert, animated: true, completion: nil)
     }
@@ -778,15 +883,23 @@ extension PlaylistListViewController {
 
   func displayLoadingResourceError() {
     let alert = UIAlertController(
-      title: Strings.PlayList.sorryAlertTitle, message: Strings.PlayList.loadResourcesErrorAlertDescription, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: nil))
+      title: Strings.PlayList.sorryAlertTitle,
+      message: Strings.PlayList.loadResourcesErrorAlertDescription,
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(title: Strings.PlayList.okayButtonTitle, style: .default, handler: nil)
+    )
 
     self.present(alert, animated: true, completion: nil)
   }
 }
 
 extension PlaylistListViewController: UIGestureRecognizerDelegate {
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldReceive touch: UITouch
+  ) -> Bool {
     return !tableView.isEditing
   }
 }
@@ -798,7 +911,7 @@ extension PlaylistListViewController {
   func onFullscreen() {
     navigationController?.setNavigationBarHidden(true, animated: true)
     navigationController?.setToolbarHidden(true, animated: true)
-    
+
     tableView.isHidden = true
     playerView.snp.remakeConstraints {
       $0.edges.equalToSuperview()
@@ -828,13 +941,15 @@ extension PlaylistListViewController {
   func onFavIconSelected(_ videoView: VideoView) {
     if let browser = PlaylistCarplayManager.shared.browserController,
       let currentItem = PlaylistCarplayManager.shared.currentPlaylistItem,
-      let pageURL = URL(string: currentItem.pageSrc) {
+      let pageURL = URL(string: currentItem.pageSrc)
+    {
 
       self.dismiss(animated: true) {
         let isPrivateBrowsing = self.isPrivateBrowsing
         browser.tabManager.addTabAndSelect(
           URLRequest(url: pageURL),
-          isPrivate: isPrivateBrowsing)
+          isPrivate: isPrivateBrowsing
+        )
       }
     }
   }
@@ -843,7 +958,12 @@ extension PlaylistListViewController {
 // MARK: - PlaylistManagerDelegate
 
 extension PlaylistListViewController {
-  func updateCellDownloadStatus(indexPath: IndexPath, cell: PlaylistCell?, state: PlaylistDownloadManager.DownloadState, percentComplete: Double?) {
+  func updateCellDownloadStatus(
+    indexPath: IndexPath,
+    cell: PlaylistCell?,
+    state: PlaylistDownloadManager.DownloadState,
+    percentComplete: Double?
+  ) {
 
     guard let cell = cell ?? tableView.cellForRow(at: indexPath) as? PlaylistCell else {
       return
@@ -852,7 +972,7 @@ extension PlaylistListViewController {
     guard let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
       return
     }
-    
+
     cell.itemId = item.id
 
     switch state {
@@ -860,7 +980,8 @@ extension PlaylistListViewController {
       if let percentComplete = percentComplete {
         getAssetDurationFormatted(item: item) { [weak cell] in
           guard cell?.itemId == item.id else { return }
-          cell?.detailLabel.text = "\($0) - \(Int(percentComplete))% \(Strings.PlayList.savedForOfflineLabelTitle)"
+          cell?.detailLabel.text =
+            "\($0) - \(Int(percentComplete))% \(Strings.PlayList.savedForOfflineLabelTitle)"
         }
       } else {
         getAssetDurationFormatted(item: item) { [weak cell] in
@@ -904,10 +1025,16 @@ extension PlaylistListViewController {
       indexPath: indexPath,
       cell: nil,
       state: .inProgress,
-      percentComplete: percentComplete)
+      percentComplete: percentComplete
+    )
   }
 
-  func onDownloadStateChanged(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?) {
+  func onDownloadStateChanged(
+    id: String,
+    state: PlaylistDownloadManager.DownloadState,
+    displayName: String?,
+    error: Error?
+  ) {
     guard let index = PlaylistManager.shared.index(of: id) else {
       return
     }
@@ -923,13 +1050,14 @@ extension PlaylistListViewController {
         indexPath: indexPath,
         cell: nil,
         state: state,
-        percentComplete: nil)
+        percentComplete: nil
+      )
       return
     }
 
     // Some sort of error happened while downloading the playlist item
     Logger.module.error("Error downloading playlist item: \(error.localizedDescription)")
-    
+
     guard let cell = tableView.cellForRow(at: indexPath) as? PlaylistCell else {
       return
     }
@@ -939,7 +1067,8 @@ extension PlaylistListViewController {
       indexPath: indexPath,
       cell: cell,
       state: .invalid,
-      percentComplete: nil)
+      percentComplete: nil
+    )
 
     let alert = UIAlertController(
       title: Strings.PlayList.playlistSaveForOfflineErrorTitle,
@@ -951,12 +1080,19 @@ extension PlaylistListViewController {
         UIAlertAction(
           title: Strings.PlayList.okayButtonTitle,
           style: .default,
-          handler: nil))
+          handler: nil
+        )
+      )
     }
     self.present(alert, animated: true, completion: nil)
   }
 
-  func controllerDidChange(_ anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  func controllerDidChange(
+    _ anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
     if tableView.hasActiveDrag || tableView.hasActiveDrop { return }
     tableView.reloadData()
   }

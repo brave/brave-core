@@ -4,9 +4,7 @@
 
 import Foundation
 
-/**
- *  System helper methods written in Swift.
- */
+/// System helper methods written in Swift.
 public struct SystemUtils {
 
   /**
@@ -45,11 +43,20 @@ extension SystemUtils {
       return
     }
     let contents = "Device is unlocked".data(using: .utf8)
-    fm.createFile(atPath: lockFile, contents: contents, attributes: [FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType.complete])
+    fm.createFile(
+      atPath: lockFile,
+      contents: contents,
+      attributes: [
+        FileAttributeKey(rawValue: FileAttributeKey.protectionKey.rawValue): FileProtectionType
+          .complete
+      ]
+    )
   }
 
   private static var lockedDeviceURL: URL? {
-    let directoryURL = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier)
+    let directoryURL = FileManager.default.containerURL(
+      forSecurityApplicationGroupIdentifier: AppInfo.sharedContainerIdentifier
+    )
     return directoryURL?.appendingPathComponent("security.dummy")
   }
 }

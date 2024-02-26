@@ -21,7 +21,8 @@ private let DefaultParameters =
     totalScale: 0.9,
     totalAlpha: 0,
     minExitVelocity: 800,
-    recenterAnimationDuration: 0.15)
+    recenterAnimationDuration: 0.15
+  )
 
 protocol SwipeAnimatorDelegate: AnyObject {
   func swipeAnimator(_ animator: SwipeAnimator, viewWillExitContainerBounds: UIView)
@@ -68,7 +69,8 @@ extension SwipeAnimator {
       animations: {
         self.animatingView?.transform = .identity
         self.animatingView?.alpha = 1
-      })
+      }
+    )
   }
 
   fileprivate func animateAwayWithVelocity(_ velocity: CGPoint, speed: CGFloat) {
@@ -90,7 +92,8 @@ extension SwipeAnimator {
         if finished {
           animatingView.alpha = 0
         }
-      })
+      }
+    )
   }
 
   fileprivate func transformForTranslation(_ translation: CGFloat) -> CGAffineTransform {
@@ -143,7 +146,10 @@ extension SwipeAnimator {
 
   func close(right: Bool) {
     let direction = CGFloat(right ? -1 : 1)
-    animateAwayWithVelocity(CGPoint(x: -direction * params.minExitVelocity, y: 0), speed: direction * params.minExitVelocity)
+    animateAwayWithVelocity(
+      CGPoint(x: -direction * params.minExitVelocity, y: 0),
+      speed: direction * params.minExitVelocity
+    )
   }
 
   @discardableResult @objc func closeWithoutGesture() -> Bool {

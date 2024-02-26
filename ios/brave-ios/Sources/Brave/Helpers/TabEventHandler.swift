@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import Favicon
 import Foundation
 import Storage
-import Favicon
 
 /*
  * A handler can be a plain old swift object. It does not need to extend any

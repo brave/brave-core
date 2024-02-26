@@ -8,7 +8,7 @@ import SwiftUI
 struct ShieldLabelView: View {
   let title: String
   var subtitle: String?
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 4) {
       Text(title)

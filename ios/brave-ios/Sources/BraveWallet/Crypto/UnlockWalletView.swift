@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import DesignSystem
-import Strings
 import LocalAuthentication
+import Strings
+import SwiftUI
 
 struct UnlockWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -28,18 +28,18 @@ struct UnlockWalletView: View {
       }
     }
   }
-  
+
   private var isPasswordValid: Bool {
     !password.isEmpty
   }
-  
+
   private func fillPasswordFromKeychain() {
     if let password = keyringStore.retrievePasswordFromKeychain() {
       self.password = password
       unlock()
     }
   }
-  
+
   private func unlock() {
     // Conflict with the keyboard submit/dismissal that causes a bug
     // with SwiftUI animating the screen away...
@@ -52,7 +52,7 @@ struct UnlockWalletView: View {
       }
     }
   }
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 40) {
@@ -66,13 +66,15 @@ struct UnlockWalletView: View {
             .foregroundColor(Color(braveSystemName: .textSecondary))
         }
         .padding(.top, 44)
-        
+
         VStack(spacing: 32) {
           SecureField(Strings.Wallet.passwordPlaceholder, text: $password, onCommit: unlock)
             .textContentType(.password)
-            .modifier(WalletUnlockStyleModifier(isFocused: isPasswordFieldFocused, error: unlockError))
+            .modifier(
+              WalletUnlockStyleModifier(isFocused: isPasswordFieldFocused, error: unlockError)
+            )
             .focused($isPasswordFieldFocused)
-          
+
           VStack(spacing: 16) {
             Button(action: unlock) {
               Text(Strings.Wallet.unlockWalletButtonTitle)
@@ -80,7 +82,7 @@ struct UnlockWalletView: View {
             }
             .buttonStyle(BraveFilledButtonStyle(size: .large))
             .disabled(!isPasswordValid)
-            
+
             NavigationLink(
               destination: RestoreWalletView(
                 keyringStore: keyringStore,
@@ -96,7 +98,7 @@ struct UnlockWalletView: View {
             }
           }
         }
-        
+
         if keyringStore.isKeychainPasswordStored, let icon = biometricsIcon {
           Button(action: fillPasswordFromKeychain) {
             icon
@@ -104,8 +106,10 @@ struct UnlockWalletView: View {
               .font(.headline)
               .foregroundColor(Color(braveSystemName: .iconInteractive))
               .padding()
-              .background(Circle()
-                .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1))
+              .background(
+                Circle()
+                  .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1)
+              )
           }
         }
       }
@@ -125,7 +129,9 @@ struct UnlockWalletView: View {
       self.isPasswordFieldFocused = true
 
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) { [self] in
-        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.isWalletLocked && UIApplication.shared.isProtectedDataAvailable {
+        if !keyringStore.lockedManually && !attemptedBiometricsUnlock && keyringStore.isWalletLocked
+          && UIApplication.shared.isProtectedDataAvailable
+        {
           attemptedBiometricsUnlock = true
           fillPasswordFromKeychain()
         }
@@ -136,7 +142,7 @@ struct UnlockWalletView: View {
     .transparentUnlessScrolledNavigationAppearance()
     .ignoresSafeArea(.keyboard, edges: .bottom)
   }
-  
+
   private var biometricsIcon: Image? {
     let context = LAContext()
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
@@ -145,10 +151,10 @@ struct UnlockWalletView: View {
         return Image(systemName: "faceid")
       case .touchID:
         return Image(systemName: "touchid")
-#if swift(>=5.9)
+      #if swift(>=5.9)
       case .opticID:
         return Image(systemName: "opticid")
-#endif
+      #endif
       case .none:
         return nil
       @unknown default:
@@ -174,10 +180,10 @@ struct UnlockWalletView_Previews: PreviewProvider {
 #endif
 
 private struct WalletUnlockStyleModifier<Failure: LocalizedError & Equatable>: ViewModifier {
-  
+
   var isFocused: Bool
   var error: Failure?
-  
+
   private var borderColor: Color {
     if error != nil {
       return Color.red
@@ -202,7 +208,7 @@ private struct WalletUnlockStyleModifier<Failure: LocalizedError & Equatable>: V
         )
       HStack(alignment: .firstTextBaseline, spacing: 4) {
         Image(braveSystemName: "leo.warning.triangle-outline")
-        Text(error?.localizedDescription ?? " ") // maintain space when not showing an error, `hidden()` below
+        Text(error?.localizedDescription ?? " ")  // maintain space when not showing an error, `hidden()` below
           .fixedSize(horizontal: false, vertical: true)
           .animation(nil, value: error?.localizedDescription)  // Dont animate the text change, just alpha
       }

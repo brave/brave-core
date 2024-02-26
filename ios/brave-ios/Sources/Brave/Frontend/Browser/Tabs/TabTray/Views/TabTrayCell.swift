@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import DesignSystem
+import Favicon
 import Foundation
 import Shared
 import UIKit
-import DesignSystem
-import Favicon
 
 class TabCell: UICollectionViewCell {
 
@@ -24,7 +24,10 @@ class TabCell: UICollectionViewCell {
   let backgroundHolder = UIView()
   let screenshotView = UIImageView()
   let titleBackgroundView = GradientView(
-    colors: [UIColor(white: 1.0, alpha: 0.98), UIColor(white: 1.0, alpha: 0.9), UIColor(white: 1.0, alpha: 0.0)],
+    colors: [
+      UIColor(white: 1.0, alpha: 0.98), UIColor(white: 1.0, alpha: 0.9),
+      UIColor(white: 1.0, alpha: 0.0),
+    ],
     positions: [0, 0.5, 1],
     startPoint: .zero,
     endPoint: CGPoint(x: 0, y: 1)
@@ -47,11 +50,11 @@ class TabCell: UICollectionViewCell {
     self.tab = tab
     tab.onScreenshotUpdated = { [weak self, weak tab] in
       guard let self = self, let tab = tab else { return }
-      
+
       if !tab.displayTitle.isEmpty {
         self.accessibilityLabel = tab.displayTitle
       }
-      
+
       self.titleLabel.text = tab.displayTitle
       self.favicon.image = tab.displayFavicon?.image ?? Favicon.defaultImage
       self.screenshotView.image = tab.screenshot
@@ -111,7 +114,10 @@ class TabCell: UICollectionViewCell {
     self.titleLabel.backgroundColor = .clear
 
     self.closeButton = UIButton()
-    self.closeButton.setImage(UIImage(named: "tab_close", in: .module, compatibleWith: nil)!, for: [])
+    self.closeButton.setImage(
+      UIImage(named: "tab_close", in: .module, compatibleWith: nil)!,
+      for: []
+    )
     self.closeButton.imageView?.contentMode = .scaleAspectFit
     self.closeButton.contentMode = .center
     self.closeButton.imageEdgeInsets = UIEdgeInsets(equalInset: 7)
@@ -136,7 +142,11 @@ class TabCell: UICollectionViewCell {
     titleBackgroundView.addSubview(self.favicon)
 
     self.accessibilityCustomActions = [
-      UIAccessibilityCustomAction(name: Strings.tabAccessibilityCloseActionLabel, target: self.animator, selector: #selector(SwipeAnimator.closeWithoutGesture))
+      UIAccessibilityCustomAction(
+        name: Strings.tabAccessibilityCloseActionLabel,
+        target: self.animator,
+        selector: #selector(SwipeAnimator.closeWithoutGesture)
+      )
     ]
   }
 
@@ -147,8 +157,13 @@ class TabCell: UICollectionViewCell {
     layer.masksToBounds = false
     // create a frame that is "BorderWidth" size bigger than the cell
     layer.shadowOffset = CGSize(width: -TabCell.borderWidth, height: -TabCell.borderWidth)
-    let shadowPath = CGRect(width: layer.frame.width + (TabCell.borderWidth * 2), height: layer.frame.height + (TabCell.borderWidth * 2))
-    layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: UX.cornerRadius + TabCell.borderWidth).cgPath
+    let shadowPath = CGRect(
+      width: layer.frame.width + (TabCell.borderWidth * 2),
+      height: layer.frame.height + (TabCell.borderWidth * 2)
+    )
+    layer.shadowPath =
+      UIBezierPath(roundedRect: shadowPath, cornerRadius: UX.cornerRadius + TabCell.borderWidth)
+      .cgPath
     layer.borderWidth = 0.0
   }
 
@@ -185,8 +200,13 @@ class TabCell: UICollectionViewCell {
       make.centerY.equalTo(favicon)
     }
 
-    let shadowPath = CGRect(width: layer.frame.width + (TabCell.borderWidth * 2), height: layer.frame.height + (TabCell.borderWidth * 2))
-    layer.shadowPath = UIBezierPath(roundedRect: shadowPath, cornerRadius: UX.cornerRadius + TabCell.borderWidth).cgPath
+    let shadowPath = CGRect(
+      width: layer.frame.width + (TabCell.borderWidth * 2),
+      height: layer.frame.height + (TabCell.borderWidth * 2)
+    )
+    layer.shadowPath =
+      UIBezierPath(roundedRect: shadowPath, cornerRadius: UX.cornerRadius + TabCell.borderWidth)
+      .cgPath
   }
 
   override func prepareForReuse() {

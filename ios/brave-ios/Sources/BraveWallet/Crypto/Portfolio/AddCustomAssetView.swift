@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
-import Strings
 import BraveUI
+import Strings
+import SwiftUI
 
 struct AddCustomAssetView: View {
   @ObservedObject var networkStore: NetworkStore
@@ -15,15 +15,15 @@ struct AddCustomAssetView: View {
   @ObservedObject var userAssetStore: UserAssetsStore
   var tokenNeedsTokenId: BraveWallet.BlockchainToken?
   var supportedTokenTypes: [TokenType] = [.token, .nft]
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   enum TokenType: Int, Identifiable {
     case token
     case nft
-    
+
     var id: Self { self }
-    
+
     var title: String {
       switch self {
       case .token:
@@ -33,7 +33,7 @@ struct AddCustomAssetView: View {
       }
     }
   }
-  
+
   @State private var selectedTokenType: TokenType = .token
   @State private var nameInput = ""
   @State private var addressInput = ""
@@ -45,18 +45,27 @@ struct AddCustomAssetView: View {
   @State private var showError = false
   @State private var showAdvanced = false
   @State private var isPresentingNetworkSelection = false
-  
+
   private var addButtonDisabled: Bool {
     switch selectedTokenType {
     case .token:
-      return nameInput.isEmpty || symbolInput.isEmpty || decimalsInput.isEmpty || addressInput.isEmpty || networkSelectionStore.networkSelectionInForm == nil || (networkSelectionStore.networkSelectionInForm?.coin != .sol && !addressInput.isETHAddress)
+      return nameInput.isEmpty || symbolInput.isEmpty || decimalsInput.isEmpty
+        || addressInput.isEmpty || networkSelectionStore.networkSelectionInForm == nil
+        || (networkSelectionStore.networkSelectionInForm?.coin != .sol
+          && !addressInput.isETHAddress)
     case .nft:
-      return nameInput.isEmpty || symbolInput.isEmpty || (networkSelectionStore.networkSelectionInForm?.coin != .sol && tokenId.isEmpty) || addressInput.isEmpty || networkSelectionStore.networkSelectionInForm == nil || (networkSelectionStore.networkSelectionInForm?.coin != .sol && !addressInput.isETHAddress)
+      return nameInput.isEmpty || symbolInput.isEmpty
+        || (networkSelectionStore.networkSelectionInForm?.coin != .sol && tokenId.isEmpty)
+        || addressInput.isEmpty || networkSelectionStore.networkSelectionInForm == nil
+        || (networkSelectionStore.networkSelectionInForm?.coin != .sol
+          && !addressInput.isETHAddress)
     }
   }
-  
+
   private var showTokenID: Bool {
-    if let customAssetNetwork = networkSelectionStore.networkSelectionInForm, customAssetNetwork.coin == .sol {
+    if let customAssetNetwork = networkSelectionStore.networkSelectionInForm,
+      customAssetNetwork.coin == .sol
+    {
       return false
     }
     return true
@@ -77,12 +86,16 @@ struct AddCustomAssetView: View {
           }
         }
         Section(
-          header: WalletListHeaderView(title: networkSelectionStore.networkSelectionInForm?.coin == .sol ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress))
+          header: WalletListHeaderView(
+            title: networkSelectionStore.networkSelectionInForm?.coin == .sol
+              ? Text(Strings.Wallet.tokenMintAddress) : Text(Strings.Wallet.tokenAddress)
+          )
         ) {
           TextField(Strings.Wallet.enterAddress, text: $addressInput)
             .onChange(of: addressInput) { newValue in
               guard !newValue.isEmpty,
-                      let network = networkSelectionStore.networkSelectionInForm else { return }
+                let network = networkSelectionStore.networkSelectionInForm
+              else { return }
               userAssetStore.tokenInfo(address: newValue, chainId: network.chainId) { token in
                 guard let token else { return }
                 if nameInput.isEmpty {
@@ -108,8 +121,14 @@ struct AddCustomAssetView: View {
             Button(action: {
               isPresentingNetworkSelection = true
             }) {
-              Text(networkSelectionStore.networkSelectionInForm?.chainName ?? Strings.Wallet.customTokenNetworkButtonTitle)
-                .foregroundColor(networkSelectionStore.networkSelectionInForm == nil ? .gray.opacity(0.6) : Color(.braveLabel))
+              Text(
+                networkSelectionStore.networkSelectionInForm?.chainName
+                  ?? Strings.Wallet.customTokenNetworkButtonTitle
+              )
+              .foregroundColor(
+                networkSelectionStore.networkSelectionInForm == nil
+                  ? .gray.opacity(0.6) : Color(.braveLabel)
+              )
             }
             Spacer()
             Image(systemName: "chevron.down.circle")
@@ -151,9 +170,12 @@ struct AddCustomAssetView: View {
             header: WalletListHeaderView(title: Text(Strings.Wallet.decimalsPrecision))
           ) {
             HStack {
-              TextField(NumberFormatter().string(from: NSNumber(value: 0)) ?? "0", text: $decimalsInput)
-                .keyboardType(.numberPad)
-                .disabled(userAssetStore.isSearchingToken)
+              TextField(
+                NumberFormatter().string(from: NSNumber(value: 0)) ?? "0",
+                text: $decimalsInput
+              )
+              .keyboardType(.numberPad)
+              .disabled(userAssetStore.isSearchingToken)
               if userAssetStore.isSearchingToken && decimalsInput.isEmpty {
                 ProgressView()
               }
@@ -228,11 +250,14 @@ struct AddCustomAssetView: View {
         }
       }
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-      .onChange(of: selectedTokenType, perform: { _ in
-        guard tokenNeedsTokenId == nil else { return }
-        resignFirstResponder()
-        clearInput()
-      })
+      .onChange(
+        of: selectedTokenType,
+        perform: { _ in
+          guard tokenNeedsTokenId == nil else { return }
+          resignFirstResponder()
+          clearInput()
+        }
+      )
       .navigationTitle(Strings.Wallet.customTokenTitle)
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
@@ -283,14 +308,19 @@ struct AddCustomAssetView: View {
           }
       )
       .onAppear {
-        if supportedTokenTypes.count == 1, let tokenType = supportedTokenTypes.first, selectedTokenType != tokenType {
+        if supportedTokenTypes.count == 1, let tokenType = supportedTokenTypes.first,
+          selectedTokenType != tokenType
+        {
           Task { @MainActor in
             selectedTokenType = tokenType
           }
         }
         if case .nft = selectedTokenType, let token = tokenNeedsTokenId {
           Task { @MainActor in
-            networkSelectionStore.networkSelectionInForm = await userAssetStore.networkInfo(by: token.chainId, coin: token.coin)
+            networkSelectionStore.networkSelectionInForm = await userAssetStore.networkInfo(
+              by: token.chainId,
+              coin: token.coin
+            )
             nameInput = token.name
             symbolInput = token.symbol
             addressInput = token.contractAddress
@@ -301,9 +331,14 @@ struct AddCustomAssetView: View {
   }
 
   private func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
-  
+
   private func clearInput() {
     nameInput = ""
     addressInput = ""
@@ -330,7 +365,8 @@ struct AddCustomAssetView: View {
         isNft: false,
         isSpam: false,
         symbol: symbolInput,
-        decimals: Int32(decimalsInput) ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
+        decimals: Int32(decimalsInput)
+          ?? Int32((networkSelectionStore.networkSelectionInForm?.decimals ?? 18)),
         visible: true,
         tokenId: "",
         coingeckoId: coingeckoId,

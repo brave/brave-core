@@ -10,7 +10,7 @@ struct BraveNotificationPriority: Comparable {
   var value: Int
   static let low: Self = .init(value: 0)
   static let high: Self = .init(value: 1)
-  
+
   public static func < (lhs: BraveNotificationPriority, rhs: BraveNotificationPriority) -> Bool {
     lhs.value < rhs.value
   }
@@ -33,7 +33,7 @@ protocol BraveNotification: AnyObject {
   var dismissPolicy: DismissPolicy { get }
   var id: String { get }
   var presentationOrigin: PresentationOrigin { get }
-  
+
   func willDismiss(timedOut: Bool)
 }
 

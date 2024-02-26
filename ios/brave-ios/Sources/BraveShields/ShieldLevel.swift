@@ -13,7 +13,7 @@ public enum ShieldLevel: String, CaseIterable, Hashable {
   case standard
   /// Mode indicating this setting is disabled
   case disabled
-  
+
   /// Wether this setting indicates that the shields are enabled or not
   public var isEnabled: Bool {
     switch self {
@@ -21,7 +21,7 @@ public enum ShieldLevel: String, CaseIterable, Hashable {
     case .disabled: return false
     }
   }
-  
+
   /// Wether this setting indicates that the shields are aggressive or not
   public var isAggressive: Bool {
     switch self {

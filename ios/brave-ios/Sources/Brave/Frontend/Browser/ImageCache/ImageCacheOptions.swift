@@ -6,7 +6,7 @@ import Foundation
 
 public struct ImageCacheOptions: OptionSet {
   public let rawValue: Int
-  
+
   public init(rawValue: Int) {
     self.rawValue = rawValue
   }

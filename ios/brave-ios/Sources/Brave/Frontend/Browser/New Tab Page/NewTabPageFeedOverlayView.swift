@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveUI
-import BraveShared
-import SnapKit
-import Shared
-import UIKit
 import BraveNews
+import BraveShared
+import BraveUI
+import Foundation
+import Shared
+import SnapKit
+import UIKit
 
 /// A set of feed related components that overlay the New Tab Page when Brave News is enabled
 class NewTabPageFeedOverlayView: UIView {
@@ -34,17 +34,26 @@ class NewTabPageFeedOverlayView: UIView {
     button.transform = CGAffineTransform(translationX: 0, y: -100)
     button.alpha = 0.0
     UIView.animate(
-      withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState],
+      withDuration: 0.3,
+      delay: 0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0,
+      options: [.beginFromCurrentState],
       animations: {
         button.alpha = 1.0
         button.transform = .identity
-      })
+      }
+    )
   }
 
   func hideNewContentAvailableButton() {
     let button = newContentAvailableButton
     UIView.animate(
-      withDuration: 0.3, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState],
+      withDuration: 0.3,
+      delay: 0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 0,
+      options: [.beginFromCurrentState],
       animations: {
         button.alpha = 0.0
         button.transform = CGAffineTransform(translationX: 0, y: -100)
@@ -52,7 +61,8 @@ class NewTabPageFeedOverlayView: UIView {
       completion: { _ in
         button.transform = .identity
         button.isLoading = false  // Reset state
-      })
+      }
+    )
   }
 
   override init(frame: CGRect) {
@@ -119,7 +129,8 @@ class NewContentAvailableButton: SpringButton {
           if !self.isLoading {
             self.loaderView.stop()
           }
-        })
+        }
+      )
       if isLoading {
         loaderView.start()
       }
@@ -128,10 +139,15 @@ class NewContentAvailableButton: SpringButton {
       loaderConstraint?.isActive = isLoading
 
       UIView.animate(
-        withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.8, initialSpringVelocity: 0, options: [.beginFromCurrentState],
+        withDuration: 0.4,
+        delay: 0,
+        usingSpringWithDamping: 0.8,
+        initialSpringVelocity: 0,
+        options: [.beginFromCurrentState],
         animations: {
           self.layoutIfNeeded()
-        })
+        }
+      )
     }
   }
 
@@ -153,7 +169,9 @@ class NewContentAvailableButton: SpringButton {
     addSubview(loaderView)
 
     textLabel.snp.makeConstraints {
-      self.textLabelConstraint = $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 18, bottom: 10, right: 18)).constraint
+      self.textLabelConstraint =
+        $0.edges.equalToSuperview().inset(UIEdgeInsets(top: 10, left: 18, bottom: 10, right: 18))
+        .constraint
     }
 
     loaderView.snp.makeConstraints {

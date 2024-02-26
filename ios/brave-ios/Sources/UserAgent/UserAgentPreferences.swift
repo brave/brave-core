@@ -11,6 +11,9 @@ extension Preferences {
   public enum UserAgent {
     /// Sets Desktop UA for iPad by default (iOS 13+ & iPad only).
     /// Do not read it directly, prefer to use `UserAgent.shouldUseDesktopMode` instead.
-    public static let alwaysRequestDesktopSite = Option<Bool>(key: "general.always-request-desktop-site", default: UIDevice.current.userInterfaceIdiom == .pad)
+    public static let alwaysRequestDesktopSite = Option<Bool>(
+      key: "general.always-request-desktop-site",
+      default: UIDevice.current.userInterfaceIdiom == .pad
+    )
   }
 }

@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveShared
 import Favicon
+import Foundation
+import UIKit
 
 extension UIImageView {
 
@@ -22,24 +22,39 @@ extension UIImageView {
   /// extension
   private var faviconTask: Task<Void, Error>? {
     get { objc_getAssociatedObject(self, &AssociatedObjectKeys.faviconTask) as? Task<Void, Error> }
-    set { objc_setAssociatedObject(self, &AssociatedObjectKeys.faviconTask, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    set {
+      objc_setAssociatedObject(
+        self,
+        &AssociatedObjectKeys.faviconTask,
+        newValue,
+        .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
+    }
   }
 
   /// Load the favicon from a site URL directly into a `UIImageView`. If no
   /// favicon is found, a monogram will be used where the letter is determined
   /// based on the site URL.
-  func loadFavicon(for siteURL: URL, isPrivateBrowsing: Bool, monogramFallbackCharacter: Character? = nil, completion: ((Favicon?) -> Void)? = nil) {
+  func loadFavicon(
+    for siteURL: URL,
+    isPrivateBrowsing: Bool,
+    monogramFallbackCharacter: Character? = nil,
+    completion: ((Favicon?) -> Void)? = nil
+  ) {
     cancelFaviconLoad()
-    
+
     if let icon = FaviconFetcher.getIconFromCache(for: siteURL) {
       self.image = icon.image ?? Favicon.defaultImage
       return
     }
-    
+
     self.image = Favicon.defaultImage
     faviconTask = Task { @MainActor in
       do {
-        let favicon = try await FaviconFetcher.loadIcon(url: siteURL, persistent: !isPrivateBrowsing)
+        let favicon = try await FaviconFetcher.loadIcon(
+          url: siteURL,
+          persistent: !isPrivateBrowsing
+        )
         self.image = favicon.image ?? Favicon.defaultImage
         completion?(favicon)
       } catch {
@@ -54,8 +69,8 @@ extension UIImageView {
     faviconTask?.cancel()
     faviconTask = nil
   }
-  
+
   func clearMonogramFavicon() {
-    
+
   }
 }

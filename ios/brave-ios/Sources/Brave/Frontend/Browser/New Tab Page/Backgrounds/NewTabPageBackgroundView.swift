@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SnapKit
 import DesignSystem
+import SnapKit
+import UIKit
 
 /// Non-interactive contents that appear behind the New Tab Page contents
 class NewTabPageBackgroundView: UIView {
@@ -14,7 +14,7 @@ class NewTabPageBackgroundView: UIView {
     $0.contentMode = .scaleAspectFill
     $0.clipsToBounds = false
   }
-  
+
   func updateImageXOffset(by x: CGFloat) {
     bounds = .init(x: -x, y: 0, width: bounds.width, height: bounds.height)
   }

@@ -15,7 +15,8 @@ private struct AlertOnScreenshotViewModifier: ViewModifier {
       .alert(isPresented: $isPresentingAlert, content: alert)
       .onReceive(
         NotificationCenter.default.publisher(
-          for: UIApplication.userDidTakeScreenshotNotification, object: nil
+          for: UIApplication.userDidTakeScreenshotNotification,
+          object: nil
         )
       ) { _ in
         isPresentingAlert = true

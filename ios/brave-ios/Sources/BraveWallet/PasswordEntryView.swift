@@ -3,22 +3,22 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import DesignSystem
-import BraveStrings
-import SwiftUI
 import BraveCore
+import BraveStrings
+import DesignSystem
 import LocalAuthentication
+import SwiftUI
 
 struct PasswordEntryError: LocalizedError, Equatable {
   let message: String
   var errorDescription: String? { message }
-  
+
   static let incorrectPassword = Self(message: Strings.Wallet.incorrectPasswordErrorMessage)
 }
 
 /// Field for entering wallet password, with optional biometrics support
 struct PasswordEntryField: View {
-  
+
   /// The password being entered
   @Binding var password: String
   /// The error displayed under the password field
@@ -29,9 +29,9 @@ struct PasswordEntryField: View {
   let shouldShowBiometrics: Bool
   let keyringStore: KeyringStore
   let onCommit: () -> Void
-  
+
   @State private var attemptedBiometricsUnlock: Bool = false
-  
+
   init(
     password: Binding<String>,
     error: Binding<PasswordEntryError?>,
@@ -47,7 +47,7 @@ struct PasswordEntryField: View {
     self.onCommit = onCommit
     self.keyringStore = keyringStore
   }
-  
+
   private var biometricsIcon: Image? {
     let context = LAContext()
     if context.canEvaluatePolicy(.deviceOwnerAuthenticationWithBiometrics, error: nil) {
@@ -64,14 +64,14 @@ struct PasswordEntryField: View {
     }
     return nil
   }
-  
+
   private func fillPasswordFromKeychain() {
     if let password = keyringStore.retrievePasswordFromKeychain() {
       self.password = password
       onCommit()
     }
   }
-  
+
   var body: some View {
     HStack {
       SecureField(placeholder, text: $password, onCommit: onCommit)
@@ -105,26 +105,28 @@ struct PasswordEntryField_Previews: PreviewProvider {
       error: Binding(get: { nil }, set: { _ in }),
       shouldShowBiometrics: false,
       keyringStore: .previewStore,
-      onCommit: {})
+      onCommit: {}
+    )
   }
 }
 #endif
 
 /// View for entering a password with an title and message displayed, and optional biometrics
 struct PasswordEntryView: View {
-  
+
   let keyringStore: KeyringStore
   let title: String
   let message: String
   let shouldShowBiometrics: Bool
   let action: (_ password: String, _ completion: @escaping (PasswordEntryError?) -> Void) -> Void
-  
+
   init(
     keyringStore: KeyringStore,
     title: String = Strings.Wallet.confirmPasswordTitle,
     message: String,
     shouldShowBiometrics: Bool = true,
-    action: @escaping (_ password: String, _ completion: @escaping (PasswordEntryError?) -> Void) -> Void
+    action: @escaping (_ password: String, _ completion: @escaping (PasswordEntryError?) -> Void) ->
+      Void
   ) {
     self.keyringStore = keyringStore
     self.title = title
@@ -132,15 +134,15 @@ struct PasswordEntryView: View {
     self.shouldShowBiometrics = shouldShowBiometrics
     self.action = action
   }
-  
+
   @State private var password = ""
   @State private var error: PasswordEntryError?
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   private var isPasswordValid: Bool {
     !password.isEmpty
   }
-  
+
   private func validate() {
     action(password) { entryError in
       DispatchQueue.main.async {
@@ -153,7 +155,7 @@ struct PasswordEntryView: View {
       }
     }
   }
-  
+
   var body: some View {
     NavigationView {
       ScrollView(.vertical) {
@@ -208,7 +210,8 @@ struct PasswordEntryView_Previews: PreviewProvider {
         Strings.Wallet.removeAccountConfirmationMessage,
         "Account 1"
       ),
-      action: { _, _ in })
+      action: { _, _ in }
+    )
   }
 }
 #endif

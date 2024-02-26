@@ -51,27 +51,27 @@ class FarblingProtectionHelper {
   private static let pluginNameFirstParts: [String?] = [
     "Chrome", "Chromium", "Brave", "Web", "Browser",
     "OpenSource", "Online", "JavaScript", "WebKit",
-    "Web-Kit", "WK", nil
+    "Web-Kit", "WK", nil,
   ]
 
   /// Variables representing the middle of a randomly generated strings used as the plugin name
   private static let pluginNameSecondParts: [String?] = [
     "PDF", "Portable Document Format",
     "portable-document-format", "document", "doc",
-    "PDF and PS", "com.adobe.pdf", nil
+    "PDF and PS", "com.adobe.pdf", nil,
   ]
 
   /// Variables representing the suffix of a randomly generated strings used as the plugin name
   private static let pluginNameThirdParts: [String?] = [
     "Viewer", "Renderer", "Display", "Plugin",
-    "plug-in", "plug in", "extension", nil
+    "plug-in", "plug in", "extension", nil,
   ]
 
   /// A list of fake voice names to be used to generate a fake `SpeechSynthesizer` voice
   private static let fakeVoiceNames: [String] = [
     "Hubert", "Vernon", "Rudolph", "Clayton", "Irving",
     "Wilson", "Alva", "Harley", "Beauregard", "Cleveland",
-    "Cecil", "Reuben", "Sylvester", "Jasper"
+    "Cecil", "Reuben", "Sylvester", "Jasper",
   ]
 
   static func makeFarblingParams(
@@ -124,16 +124,16 @@ class FarblingProtectionHelper {
     return [
       pluginNameFirstParts.seededRandom(),
       pluginNameSecondParts.seededRandom(),
-      pluginNameThirdParts.seededRandom()
+      pluginNameThirdParts.seededRandom(),
     ].compactMap({ $0 ?? nil }).joined(separator: " ")
   }
 }
 
-private extension FixedWidthInteger {
+extension FixedWidthInteger {
   /// Return a random value in the given range.
   ///
   /// Uses `drand48`, hence you need to seed it before using this function using `srand48`
-  static func seededRandom(in range: ClosedRange<Self>) -> Self {
+  fileprivate static func seededRandom(in range: ClosedRange<Self>) -> Self {
     let size = Double(range.upperBound - range.lowerBound)
     let offset = drand48() * size
     let value = Self(Double(range.lowerBound) + offset)
@@ -141,11 +141,11 @@ private extension FixedWidthInteger {
   }
 }
 
-private extension Float {
+extension Float {
   /// Return a random float in the given range.
   ///
   /// Uses `drand48`, hence you need to seed it before using this function using `srand48`
-  static func seededRandom(in range: ClosedRange<Self>) -> Self {
+  fileprivate static func seededRandom(in range: ClosedRange<Self>) -> Self {
     let size = Double(range.upperBound - range.lowerBound)
     let offset = drand48() * size
     let value = Self(Double(range.lowerBound) + offset)
@@ -153,13 +153,13 @@ private extension Float {
   }
 }
 
-private extension Array {
+extension Array {
   /// Return a random value in the given range.
   ///
   /// Uses `drand48`, hence you need to seed it before using this function using `srand48`
   /// - Note: Will return a `nil` value only if the array is empty. You can safely force unswrap the result
   /// in cases where the array is not empty
-  func seededRandom() -> Element? {
+  fileprivate func seededRandom() -> Element? {
     guard !isEmpty else { return nil }
     let randomIndex = Int(UInt.seededRandom(in: 0...UInt(count - 1)))
     return self[randomIndex]

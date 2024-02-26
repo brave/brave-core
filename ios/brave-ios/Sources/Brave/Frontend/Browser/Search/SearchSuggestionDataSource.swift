@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
-import Shared
+import Foundation
 import Preferences
+import Shared
 import os.log
 
 // MARK: - SearchSuggestionDataSourceDelegate
@@ -16,9 +16,9 @@ protocol SearchSuggestionDataSourceDelegate: AnyObject {
 }
 
 class SearchSuggestionDataSource {
-  
+
   // MARK: SearchListSection
-  
+
   enum SearchListSection: Int, CaseIterable {
     case quickBar
     case searchSuggestionsOptIn
@@ -41,19 +41,21 @@ class SearchSuggestionDataSource {
       delegate?.searchSuggestionDataSourceReloaded()
     }
   }
-  
+
   let searchEngines: SearchEngines?
-  
+
   var quickSearchEngines: [OpenSearchEngine] {
     guard let searchEngines = searchEngines?.quickSearchEngines else { return [] }
     return searchEngines
   }
-  
+
   // If the user only has a single quick search engine, it is also their default one.
   // In that case, we count it as if there are no quick suggestions to show
   // Unless Default Search Engine is different than Quick Search Engine
   var hasQuickSearchEngines: Bool {
-    let isDefaultEngineQuickEngine = searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).engineID == quickSearchEngines.first?.engineID
+    let isDefaultEngineQuickEngine =
+      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).engineID
+      == quickSearchEngines.first?.engineID
 
     if quickSearchEngines.count == 1 {
       return !isDefaultEngineQuickEngine
@@ -61,70 +63,77 @@ class SearchSuggestionDataSource {
 
     return quickSearchEngines.count > 1
   }
-  
+
   var availableSections: [SearchListSection] {
     var sections = [SearchListSection]()
     sections.append(.quickBar)
 
-    if !tabType.isPrivate &&
-        searchEngines?.shouldShowSearchSuggestionsOptIn == true {
+    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)
     }
 
-    if !tabType.isPrivate &&
-        searchEngines?.shouldShowSearchSuggestions == true {
+    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestions == true {
       sections.append(.searchSuggestions)
     }
     sections.append(.findInPage)
-    
+
     if searchEngines?.shouldShowBrowserSuggestions == true {
       sections.append(.openTabsAndHistoryAndBookmarks)
     }
-    
+
     return sections
   }
-  
+
   var braveSearchPromotionAvailable: Bool {
     guard Preferences.Review.launchCount.value > 1,
-          searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard).shortName != OpenSearchEngine.EngineNames.brave,
-          let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate.value,
-          Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.dismissed.rawValue,
-          Preferences.BraveSearch.braveSearchPromotionCompletionState.value != BraveSearchPromotionState.maybeLaterSameSession.rawValue else {
+      searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard)
+        .shortName != OpenSearchEngine.EngineNames.brave,
+      let braveSearchPromotionLaunchDate = Preferences.BraveSearch.braveSearchPromotionLaunchDate
+        .value,
+      Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+        != BraveSearchPromotionState.dismissed.rawValue,
+      Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+        != BraveSearchPromotionState.maybeLaterSameSession.rawValue
+    else {
       return false
     }
-    
+
     let rightNow = Date()
     let nextShowDate = braveSearchPromotionLaunchDate.addingTimeInterval(
-      AppConstants.buildChannel.isPublic ? maxPeriodBraveSearchPromotion.days : maxPeriodBraveSearchPromotion.minutes)
-    
+      AppConstants.buildChannel.isPublic
+        ? maxPeriodBraveSearchPromotion.days : maxPeriodBraveSearchPromotion.minutes
+    )
+
     if rightNow > nextShowDate {
       return false
     }
-      
+
     return true
   }
-  
+
   // MARK: - Initialization
 
   init(forTabType tabType: TabType, searchEngines: SearchEngines?) {
     self.tabType = tabType
     self.searchEngines = searchEngines
   }
-  
+
   func querySuggestClient() {
     // Do not query suggestions if user is not opt_ed in
     if !Preferences.Search.showSuggestions.value {
       Logger.module.info("Suggestions are not enabled")
       return
     }
-    
+
     cancelPendingSuggestionsRequests()
 
     let localSearchQuery = searchQuery.lowercased()
-    if localSearchQuery.isEmpty || searchEngines?.shouldShowSearchSuggestionsOptIn == true || localSearchQuery.looksLikeAURL() {
+    if localSearchQuery.isEmpty || searchEngines?.shouldShowSearchSuggestionsOptIn == true
+      || localSearchQuery.looksLikeAURL()
+    {
       suggestions = []
       delegate?.searchSuggestionDataSourceReloaded()
-      
+
       return
     }
 
@@ -160,18 +169,22 @@ class SearchSuggestionDataSource {
 
         // Reload the tableView to show the new list of search suggestions.
         self.delegate?.searchSuggestionDataSourceReloaded()
-      })
+      }
+    )
   }
-  
+
   func cancelPendingSuggestionsRequests() {
     suggestClient?.cancelPendingRequest()
   }
-  
+
   func setupSearchClient() {
     // Show the default search engine first.
     if !tabType.isPrivate,
-       let userAgent = SearchViewController.userAgent,
-       let engines = searchEngines?.defaultEngine(forType: tabType == .private ? .privateMode : .standard) {
+      let userAgent = SearchViewController.userAgent,
+      let engines = searchEngines?.defaultEngine(
+        forType: tabType == .private ? .privateMode : .standard
+      )
+    {
       suggestClient = SearchSuggestClient(searchEngine: engines, userAgent: userAgent)
     }
   }

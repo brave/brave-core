@@ -110,7 +110,11 @@ class CategoryFillStrategy<Category>: FillStrategy where Category: Hashable {
   /// The upcoming category that will be used
   private var nextCategory: Category?
 
-  init(categories: Set<Category>, category: KeyPath<FeedItem, Category>, initialCategory: Category? = nil) {
+  init(
+    categories: Set<Category>,
+    category: KeyPath<FeedItem, Category>,
+    initialCategory: Category? = nil
+  ) {
     self.categories = categories
     self.category = category
     self.remainingCategories = categories

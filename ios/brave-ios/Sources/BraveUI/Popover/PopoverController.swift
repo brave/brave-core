@@ -3,9 +3,9 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import Foundation
-import UIKit
 import SnapKit
 import SwiftUI
+import UIKit
 
 extension UILayoutPriority {
   /// The priority used for the container view's width & height when using ContentSizeBehavior.preferredContentSize
@@ -45,7 +45,7 @@ public class PopoverController: UIViewController {
     /// The popover content view will be fixed to a given size
     case fixedSize(CGSize)
   }
-  
+
   /// Defines configuration details of `ContentSizeBehavior.autoLayout`
   /// The popover will resize itself according to size configuration type chosen
   public struct ContentSizeConfiguration {
@@ -95,7 +95,7 @@ public class PopoverController: UIViewController {
 
   /// Whether or not to automatically dismiss the popup when the device orientation changes
   var dismissesOnOrientationChanged = true
-  
+
   /// The origin preview to use.
   public struct OriginPreview {
     /// The view to place on top of the origin. A snapshot will be taken of this view and placed where the
@@ -107,14 +107,18 @@ public class PopoverController: UIViewController {
     /// the popover. If you handle this manually it is up to you to call `dismissPopover` on the popover
     /// controller.
     public var action: ((PopoverController) -> Void)?
-    
-    public init(view: UIView, displaysFocusRings: Bool = true, action: ((PopoverController) -> Void)? = nil) {
+
+    public init(
+      view: UIView,
+      displaysFocusRings: Bool = true,
+      action: ((PopoverController) -> Void)? = nil
+    ) {
       self.view = view
       self.displaysFocusRings = displaysFocusRings
       self.action = action
     }
   }
-  
+
   /// Whether or not to display a preview where the popover originated from
   public var previewForOrigin: OriginPreview? {
     didSet {
@@ -154,7 +158,10 @@ public class PopoverController: UIViewController {
   private var containerViewWidthConstraint: NSLayoutConstraint?
 
   /// Create a popover displaying a content controller
-  public init(contentController: UIViewController & PopoverContentComponent, contentSizeBehavior: ContentSizeBehavior = .autoLayout()) {
+  public init(
+    contentController: UIViewController & PopoverContentComponent,
+    contentSizeBehavior: ContentSizeBehavior = .autoLayout()
+  ) {
     self.contentController = contentController
     self.contentSizeBehavior = contentSizeBehavior
 
@@ -162,7 +169,9 @@ public class PopoverController: UIViewController {
 
     if let navigationController = contentController as? UINavigationController {
       if case .autoLayout = contentSizeBehavior {
-        assertionFailure("`autoLayout` content size behavior is not supported with UINavigationController, please use `preferredContentSize` or `fixedSize`")
+        assertionFailure(
+          "`autoLayout` content size behavior is not supported with UINavigationController, please use `preferredContentSize` or `fixedSize`"
+        )
       }
       navigationController.delegate = self
       navigationController.interactivePopGestureRecognizer?.delegate = self
@@ -184,7 +193,7 @@ public class PopoverController: UIViewController {
   private var autoLayoutTopConstraint: NSLayoutConstraint?
   private var autoLayoutBottomConstraint: NSLayoutConstraint?
   private var panGesture: UIPanGestureRecognizer?
-  
+
   private var originFocusView: PopoverOriginFocusView?
   private var originSnapshotView: UIView?
 
@@ -192,7 +201,10 @@ public class PopoverController: UIViewController {
     super.viewDidLoad()
 
     backgroundOverlayView.backgroundColor = UIColor(white: 0.0, alpha: 0.2)
-    let backgroundTap = UITapGestureRecognizer(target: self, action: #selector(tappedBackgroundOverlay(_:)))
+    let backgroundTap = UITapGestureRecognizer(
+      target: self,
+      action: #selector(tappedBackgroundOverlay(_:))
+    )
     backgroundOverlayView.isAccessibilityElement = true
     backgroundOverlayView.accessibilityLabel = contentController.closeActionAccessibilityLabel
     backgroundOverlayView.accessibilityTraits = [.button]
@@ -215,7 +227,7 @@ public class PopoverController: UIViewController {
     addChild(contentController)
     containerView.contentView.addSubview(contentController.view)
     contentController.didMove(toParent: self)
-    
+
     containerView.contentView.backgroundColor = contentController.popoverBackgroundColor
 
     switch contentSizeBehavior {
@@ -229,38 +241,50 @@ public class PopoverController: UIViewController {
           .constraint.layoutConstraints.first
         make.leading.trailing.equalTo(self.containerView.contentView)
       }
-      
+
       if let preferredWidth = configuration?.preferredWidth {
-        containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: preferredWidth)
+        containerViewWidthConstraint = containerView.widthAnchor.constraint(
+          equalToConstant: preferredWidth
+        )
         containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
         containerViewWidthConstraint?.isActive = true
       }
-      
+
       if let preferredHeight = configuration?.preferredHeight {
-        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: preferredHeight + PopoverUX.arrowSize.height)
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(
+          equalToConstant: preferredHeight + PopoverUX.arrowSize.height
+        )
         containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
         containerViewHeightConstraint?.isActive = true
       }
     case .preferredContentSize:
-      containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height)
+      containerViewHeightConstraint = containerView.heightAnchor.constraint(
+        equalToConstant: contentController.preferredContentSize.height + PopoverUX.arrowSize.height
+      )
       containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
       containerViewHeightConstraint?.isActive = true
 
-      containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: contentController.preferredContentSize.width)
+      containerViewWidthConstraint = containerView.widthAnchor.constraint(
+        equalToConstant: contentController.preferredContentSize.width
+      )
       containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
       containerViewWidthConstraint?.isActive = true
 
     case .fixedSize(let size):
-      containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: size.height + PopoverUX.arrowSize.height)
+      containerViewHeightConstraint = containerView.heightAnchor.constraint(
+        equalToConstant: size.height + PopoverUX.arrowSize.height
+      )
       containerViewHeightConstraint?.priority = .popoverPreferredOrFixedSize
       containerViewHeightConstraint?.isActive = true
 
-      containerViewWidthConstraint = containerView.widthAnchor.constraint(equalToConstant: size.width)
+      containerViewWidthConstraint = containerView.widthAnchor.constraint(
+        equalToConstant: size.width
+      )
       containerViewWidthConstraint?.priority = .popoverPreferredOrFixedSize
       containerViewWidthConstraint?.isActive = true
     }
   }
-  
+
   override public var preferredStatusBarStyle: UIStatusBarStyle {
     return .default
   }
@@ -296,9 +320,12 @@ public class PopoverController: UIViewController {
         }
       }
     }
-    
+
     if let presentationContext, panGesture?.state == .possible {
-      let translationDelta = anchorPointDelta(from: presentationContext, popoverRect: containerView.frame)
+      let translationDelta = anchorPointDelta(
+        from: presentationContext,
+        popoverRect: containerView.frame
+      )
       containerView.arrowOrigin = CGPoint(x: containerView.bounds.midX + translationDelta.x, y: 0.0)
     }
   }
@@ -311,7 +338,9 @@ public class PopoverController: UIViewController {
 
   public let backgroundOverlayView = UIView()
 
-  override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+  override public func preferredContentSizeDidChange(
+    forChildContentContainer container: UIContentContainer
+  ) {
     if case .preferredContentSize = contentSizeBehavior {
       var size = contentController.preferredContentSize
       if size == .zero {
@@ -319,8 +348,15 @@ public class PopoverController: UIViewController {
         return
       }
 
-      size.width = min(size.width, UIScreen.main.bounds.width - outerMargins.left - outerMargins.right)
-      size.height = min(size.height, UIScreen.main.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom - outerMargins.top - outerMargins.bottom - arrowDistance)
+      size.width = min(
+        size.width,
+        UIScreen.main.bounds.width - outerMargins.left - outerMargins.right
+      )
+      size.height = min(
+        size.height,
+        UIScreen.main.bounds.height - view.safeAreaInsets.top - view.safeAreaInsets.bottom
+          - outerMargins.top - outerMargins.bottom - arrowDistance
+      )
       if contentController.view.bounds.size == size { return }
 
       contentController.view.setNeedsLayout()
@@ -356,7 +392,10 @@ public class PopoverController: UIViewController {
   private var presentationContext: PresentationContext?
 
   /// Generate the anchor point delta based on the center of the origin view and the size of the container
-  private func anchorPointDelta(from context: PresentationContext, popoverRect rect: CGRect) -> CGPoint {
+  private func anchorPointDelta(
+    from context: PresentationContext,
+    popoverRect rect: CGRect
+  ) -> CGPoint {
     var deltaY = rect.height / 2.0
     if containerView.arrowDirection == .up {
       deltaY *= -1
@@ -372,7 +411,11 @@ public class PopoverController: UIViewController {
   ///
   /// - parameter view: The view to have the popover present from (scaling from the location of this view)
   /// - parameter viewController: The view controller to present this popover on
-  public func present(from view: UIView, on viewController: UIViewController, completion: (() -> Void)? = nil) {
+  public func present(
+    from view: UIView,
+    on viewController: UIViewController,
+    completion: (() -> Void)? = nil
+  ) {
     let convertedOriginViewCenter = viewController.view.convert(view.center, from: view.superview)
 
     switch arrowDirectionBehavior {
@@ -389,14 +432,26 @@ public class PopoverController: UIViewController {
     if contentController.extendEdgeIntoArrow {
       switch containerView.arrowDirection {
       case .up:
-        contentController.additionalSafeAreaInsets = UIEdgeInsets(top: PopoverUX.arrowSize.height, left: 0, bottom: 0, right: 0)
+        contentController.additionalSafeAreaInsets = UIEdgeInsets(
+          top: PopoverUX.arrowSize.height,
+          left: 0,
+          bottom: 0,
+          right: 0
+        )
       case .down:
-        contentController.additionalSafeAreaInsets = UIEdgeInsets(top: 0, left: 0, bottom: PopoverUX.arrowSize.height, right: 0)
+        contentController.additionalSafeAreaInsets = UIEdgeInsets(
+          top: 0,
+          left: 0,
+          bottom: PopoverUX.arrowSize.height,
+          right: 0
+        )
       }
     }
 
     let isPortrait = UIDevice.current.orientation.isPortrait
-    if addsConvenientDismissalMargins && isPortrait && containerView.arrowDirection == .up && outerMargins.bottom < convenientDismissalMargin {
+    if addsConvenientDismissalMargins && isPortrait && containerView.arrowDirection == .up
+      && outerMargins.bottom < convenientDismissalMargin
+    {
       outerMargins.bottom = convenientDismissalMargin
     }
 
@@ -407,7 +462,12 @@ public class PopoverController: UIViewController {
       let constrainedWidth = viewController.view.bounds.width
       let constrainedHeight = viewController.view.bounds.height
 
-      contentSize = contentController.view.systemLayoutSizeFitting(CGSize(width: constrainedWidth - outerMargins.left - outerMargins.right, height: constrainedHeight - outerMargins.top - outerMargins.bottom))
+      contentSize = contentController.view.systemLayoutSizeFitting(
+        CGSize(
+          width: constrainedWidth - outerMargins.left - outerMargins.right,
+          height: constrainedHeight - outerMargins.top - outerMargins.bottom
+        )
+      )
     case .preferredContentSize:
       contentSize = contentController.preferredContentSize
     case .fixedSize(let size):
@@ -422,24 +482,27 @@ public class PopoverController: UIViewController {
 
     viewController.present(self, animated: true, completion: completion)
   }
-  
+
   public func dismissPopover(_ completion: (() -> Void)? = nil) {
     dismiss(animated: true) { [weak self] in
       guard let self = self else { return }
-      
+
       self.popoverDidDismiss?(self)
       completion?()
     }
   }
 
-  override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override public func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.viewWillTransition(to: size, with: coordinator)
 
     if dismissesOnOrientationChanged {
       dismissPopover()
     }
   }
-  
+
   @objc private func tappedOriginView() {
     if let action = previewForOrigin?.action {
       action(self)
@@ -463,7 +526,11 @@ extension PopoverController {
   }
 
   @objc private func pannedPopover(_ pan: UIPanGestureRecognizer) {
-    func _computedOffsetBasedOnRubberBandingResistance(distance x: CGFloat, constant c: CGFloat = 0.55, dimension d: CGFloat) -> CGFloat {
+    func _computedOffsetBasedOnRubberBandingResistance(
+      distance x: CGFloat,
+      constant c: CGFloat = 0.55,
+      dimension d: CGFloat
+    ) -> CGFloat {
       /*
              f(x, d, c) = (x * d * c) / (d + c * x)
 
@@ -500,9 +567,12 @@ extension PopoverController {
     containerView.transform = .identity  // Reset to get unaltered frame
     let translationDelta = anchorPointDelta(from: context, popoverRect: containerView.frame)
 
-    containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
-      .scaledBy(x: scale, y: scale)
-      .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
+    containerView.transform = CGAffineTransform(
+      translationX: translationDelta.x,
+      y: translationDelta.y
+    )
+    .scaledBy(x: scale, y: scale)
+    .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
 
     if pan.state == .ended {
       let passedVelocityThreshold: Bool
@@ -519,19 +589,29 @@ extension PopoverController {
         dismissPopover()
       } else {
         UIView.animate(
-          withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction],
+          withDuration: 0.5,
+          delay: 0,
+          usingSpringWithDamping: 0.7,
+          initialSpringVelocity: 0,
+          options: [.beginFromCurrentState, .allowUserInteraction],
           animations: {
             self.containerView.transform = .identity
-          })
+          }
+        )
       }
     }
 
     if pan.state == .cancelled {
       UIView.animate(
-        withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction],
+        withDuration: 0.5,
+        delay: 0,
+        usingSpringWithDamping: 0.7,
+        initialSpringVelocity: 0,
+        options: [.beginFromCurrentState, .allowUserInteraction],
         animations: {
           self.containerView.transform = .identity
-        })
+        }
+      )
     }
   }
 }
@@ -547,7 +627,10 @@ extension PopoverController: BasicAnimationControllerDelegate {
 
     context.containerView.addSubview(view)
 
-    let originViewFrame = view.convert(popoverContext.originView.frame, from: popoverContext.originView.superview)
+    let originViewFrame = view.convert(
+      popoverContext.originView.frame,
+      from: popoverContext.originView.superview
+    )
     let originLayoutGuide = UILayoutGuide()
     context.containerView.addLayoutGuide(originLayoutGuide)
 
@@ -566,8 +649,10 @@ extension PopoverController: BasicAnimationControllerDelegate {
       size.height += PopoverUX.arrowSize.height
     }
     contentController.view.frame = CGRect(origin: origin, size: size)
-    
-    if let previewForOrigin, let snapshotView = previewForOrigin.view.snapshotView(afterScreenUpdates: false) {
+
+    if let previewForOrigin,
+      let snapshotView = previewForOrigin.view.snapshotView(afterScreenUpdates: false)
+    {
       view.insertSubview(snapshotView, aboveSubview: backgroundOverlayView)
       let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedOriginView))
       snapshotView.addGestureRecognizer(tapGesture)
@@ -578,13 +663,14 @@ extension PopoverController: BasicAnimationControllerDelegate {
       snapshotView.accessibilityTraits = [.button]
       snapshotView.accessibilityLabel = previewForOrigin.view.accessibilityLabel
       self.originSnapshotView = snapshotView
-      
+
       if previewForOrigin.displaysFocusRings {
         let originFocusView: PopoverOriginFocusView = .init()
         view.insertSubview(originFocusView, belowSubview: snapshotView)
         originFocusView.snp.makeConstraints {
           $0.center.equalTo(originLayoutGuide)
-          let length = max(previewForOrigin.view.bounds.width, previewForOrigin.view.bounds.height) + 8
+          let length =
+            max(previewForOrigin.view.bounds.width, previewForOrigin.view.bounds.height) + 8
           $0.size.equalTo(length)
         }
         originFocusView.layoutIfNeeded()
@@ -600,9 +686,13 @@ extension PopoverController: BasicAnimationControllerDelegate {
         $0.top.equalTo(originLayoutGuide.snp.bottom).offset(arrowDistance)
       }
       $0.top.greaterThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.top).offset(outerMargins.top)
-      $0.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(-outerMargins.bottom)
+      $0.bottom.lessThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.bottom).offset(
+        -outerMargins.bottom
+      )
       $0.left.greaterThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.left).offset(outerMargins.left)
-      $0.right.lessThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.right).offset(-outerMargins.right)
+      $0.right.lessThanOrEqualTo(self.view.safeAreaLayoutGuide.snp.right).offset(
+        -outerMargins.right
+      )
       $0.centerX.equalTo(originLayoutGuide).priority(.high)
     }
 
@@ -613,24 +703,31 @@ extension PopoverController: BasicAnimationControllerDelegate {
       originFocusView?.alpha = 1.0
     }
     .startAnimation()
-    
+
     containerView.alpha = 0.0
     UIViewPropertyAnimator(duration: 0.2, dampingRatio: 1.0) { [self] in
       containerView.alpha = 1.0
     }
     .startAnimation()
-    
+
     view.layoutIfNeeded()
     let translationDelta = anchorPointDelta(from: popoverContext, popoverRect: containerView.frame)
 
     containerView.arrowOrigin = CGPoint(x: containerView.bounds.midX + translationDelta.x, y: 0.0)
 
-    containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
-      .scaledBy(x: 0.001, y: 0.001)
-      .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
+    containerView.transform = CGAffineTransform(
+      translationX: translationDelta.x,
+      y: translationDelta.y
+    )
+    .scaledBy(x: 0.001, y: 0.001)
+    .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
 
     UIView.animate(
-      withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 0, options: [.beginFromCurrentState, .allowUserInteraction],
+      withDuration: 0.5,
+      delay: 0,
+      usingSpringWithDamping: 0.7,
+      initialSpringVelocity: 0,
+      options: [.beginFromCurrentState, .allowUserInteraction],
       animations: {
         self.containerView.transform = .identity
       },
@@ -639,7 +736,8 @@ extension PopoverController: BasicAnimationControllerDelegate {
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
           UIAccessibility.post(notification: .screenChanged, argument: self.contentController.view)
         }
-      })
+      }
+    )
     context.completeTransition(true)
   }
 
@@ -648,7 +746,7 @@ extension PopoverController: BasicAnimationControllerDelegate {
       context.completeTransition(false)
       return
     }
-    
+
     self.originFocusView?.stopAnimating()
 
     UIViewPropertyAnimator(duration: 0.15, curve: .linear) {
@@ -660,7 +758,7 @@ extension PopoverController: BasicAnimationControllerDelegate {
       self.containerView.alpha = 0.0
     }
     .startAnimation()
-    
+
     let oldTransform = containerView.transform
 
     containerView.transform = .identity  // Reset to get unaltered frame
@@ -668,11 +766,16 @@ extension PopoverController: BasicAnimationControllerDelegate {
     containerView.transform = oldTransform  // Make sure to animate transform from a possibly altered transform
 
     UIView.animate(
-      withDuration: 0.15, delay: 0, options: [.beginFromCurrentState, .allowUserInteraction],
+      withDuration: 0.15,
+      delay: 0,
+      options: [.beginFromCurrentState, .allowUserInteraction],
       animations: {
-        self.containerView.transform = CGAffineTransform(translationX: translationDelta.x, y: translationDelta.y)
-          .scaledBy(x: 0.001, y: 0.001)
-          .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
+        self.containerView.transform = CGAffineTransform(
+          translationX: translationDelta.x,
+          y: translationDelta.y
+        )
+        .scaledBy(x: 0.001, y: 0.001)
+        .translatedBy(x: -translationDelta.x, y: -translationDelta.y)
       }
     ) { finished in
       context.completeTransition(finished)
@@ -683,11 +786,17 @@ extension PopoverController: BasicAnimationControllerDelegate {
 // MARK: - UIViewControllerTransitioningDelegate
 extension PopoverController: UIViewControllerTransitioningDelegate {
 
-  public func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forPresented presented: UIViewController,
+    presenting: UIViewController,
+    source: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return BasicAnimationController(delegate: self, direction: .presenting)
   }
 
-  public func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+  public func animationController(
+    forDismissed dismissed: UIViewController
+  ) -> UIViewControllerAnimatedTransitioning? {
     return BasicAnimationController(delegate: self, direction: .dismissing)
   }
 }
@@ -700,44 +809,57 @@ extension PopoverController: UIGestureRecognizerDelegate {
 }
 
 extension PopoverController: UINavigationControllerDelegate {
-  public func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+  public func navigationController(
+    _ navigationController: UINavigationController,
+    willShow viewController: UIViewController,
+    animated: Bool
+  ) {
 
     if case .preferredContentSize = contentSizeBehavior {
       var size = viewController.preferredContentSize
-      size.width = min(size.width, UIScreen.main.bounds.width - outerMargins.left - outerMargins.right)
-      size.height = min(size.height, UIScreen.main.bounds.height - containerView.frame.origin.y - view.safeAreaInsets.bottom - arrowDistance)
+      size.width = min(
+        size.width,
+        UIScreen.main.bounds.width - outerMargins.left - outerMargins.right
+      )
+      size.height = min(
+        size.height,
+        UIScreen.main.bounds.height - containerView.frame.origin.y - view.safeAreaInsets.bottom
+          - arrowDistance
+      )
       navigationController.preferredContentSize = size
     }
   }
 }
 
 extension PopoverController {
-  private class PopoverHostingController<Content>: UIHostingController<Content>, PopoverContentComponent where Content: View & PopoverContentComponent {
+  private class PopoverHostingController<Content>: UIHostingController<Content>,
+    PopoverContentComponent
+  where Content: View & PopoverContentComponent {
     weak var popoverController: PopoverController?
-    
+
     override init(rootView: Content) {
       super.init(rootView: rootView)
-#if compiler(>=5.8)
+      #if compiler(>=5.8)
       if #available(iOS 16.4, *) {
         safeAreaRegions = []
       } else {
         disableSafeArea()
       }
-#else
+      #else
       disableSafeArea()
-#endif
+      #endif
     }
-    
+
     @available(*, unavailable)
     required init(coder: NSCoder) {
       fatalError()
     }
-    
+
     override func viewDidLoad() {
       super.viewDidLoad()
       view.backgroundColor = .clear
     }
-    
+
     override func viewDidLayoutSubviews() {
       super.viewDidLayoutSubviews()
       // For some reason these 2 calls are required in order for the `UIHostingController` to layout
@@ -747,66 +869,89 @@ extension PopoverController {
       // This is also required even on iOS 16 when the SwiftUI view changes its size presentation
       view.setNeedsUpdateConstraints()
       view.updateConstraintsIfNeeded()
-      
+
       // Animates changes.
       UIViewPropertyAnimator(duration: 0.4, dampingRatio: 0.9) { [self] in
         popoverController?.view.layoutIfNeeded()
       }
       .startAnimation()
     }
-    
-    @available(iOS, introduced: 15.0, obsoleted: 16.4, message: "This hack is replaced by UIHostingController.safeAreaRegions")
+
+    @available(
+      iOS,
+      introduced: 15.0,
+      obsoleted: 16.4,
+      message: "This hack is replaced by UIHostingController.safeAreaRegions"
+    )
     func disableSafeArea() {
       // https://gist.github.com/steipete/da72299613dcc91e8d729e48b4bb582c
       guard let viewClass = object_getClass(view) else { return }
-      
+
       let viewSubclassName = String(cString: class_getName(viewClass)).appending("_IgnoreSafeArea")
       if let viewSubclass = NSClassFromString(viewSubclassName) {
         object_setClass(view, viewSubclass)
       } else {
         guard let viewClassNameUtf8 = (viewSubclassName as NSString).utf8String else { return }
-        guard let viewSubclass = objc_allocateClassPair(viewClass, viewClassNameUtf8, 0) else { return }
-        
-        if let method = class_getInstanceMethod(UIView.self, #selector(getter: UIView.safeAreaInsets)) {
+        guard let viewSubclass = objc_allocateClassPair(viewClass, viewClassNameUtf8, 0) else {
+          return
+        }
+
+        if let method = class_getInstanceMethod(
+          UIView.self,
+          #selector(getter: UIView.safeAreaInsets)
+        ) {
           let safeAreaInsets: @convention(block) (AnyObject) -> UIEdgeInsets = { _ in
             return .zero
           }
-          class_addMethod(viewSubclass, #selector(getter: UIView.safeAreaInsets), imp_implementationWithBlock(safeAreaInsets), method_getTypeEncoding(method))
+          class_addMethod(
+            viewSubclass,
+            #selector(getter: UIView.safeAreaInsets),
+            imp_implementationWithBlock(safeAreaInsets),
+            method_getTypeEncoding(method)
+          )
         }
-        
-        if let method2 = class_getInstanceMethod(viewClass, NSSelectorFromString("keyboardWillShowWithNotification:")) {
+
+        if let method2 = class_getInstanceMethod(
+          viewClass,
+          NSSelectorFromString("keyboardWillShowWithNotification:")
+        ) {
           let keyboardWillShow: @convention(block) (AnyObject, AnyObject) -> Void = { _, _ in }
-          class_addMethod(viewSubclass, NSSelectorFromString("keyboardWillShowWithNotification:"), imp_implementationWithBlock(keyboardWillShow), method_getTypeEncoding(method2))
+          class_addMethod(
+            viewSubclass,
+            NSSelectorFromString("keyboardWillShowWithNotification:"),
+            imp_implementationWithBlock(keyboardWillShow),
+            method_getTypeEncoding(method2)
+          )
         }
-        
+
         objc_registerClassPair(viewSubclass)
         object_setClass(view, viewSubclass)
       }
     }
-    
+
     // Unfortunately due to UIHostingController bugs not syncing safe areas properly when SwiftUI changes
     // the size of the popover (except in iOS 15?), this is not supported in SwiftUI
     var extendEdgeIntoArrow: Bool {
       false
     }
-    
+
     var isPanToDismissEnabled: Bool {
       rootView.isPanToDismissEnabled
     }
-    
+
     func popoverShouldDismiss(_ popoverController: PopoverController) -> Bool {
       rootView.popoverShouldDismiss(popoverController)
     }
-    
+
     var closeActionAccessibilityLabel: String {
       rootView.closeActionAccessibilityLabel
     }
-    
+
     var popoverBackgroundColor: UIColor {
       rootView.popoverBackgroundColor
     }
   }
-  
+
   /// Create a popover displaying a SwiftUI view hierarchy as its content
   public convenience init<Content: View & PopoverContentComponent>(
     content: Content,

@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import DesignSystem
 import Strings
 import SwiftUI
-import BraveCore
 
 struct RemoveAccountConfirmationView: View {
 
@@ -16,7 +16,10 @@ struct RemoveAccountConfirmationView: View {
   var body: some View {
     PasswordEntryView(
       keyringStore: keyringStore,
-      message: String.localizedStringWithFormat(Strings.Wallet.removeAccountConfirmationMessage, account.name),
+      message: String.localizedStringWithFormat(
+        Strings.Wallet.removeAccountConfirmationMessage,
+        account.name
+      ),
       action: { password, completion in
         keyringStore.removeSecondaryAccount(
           for: account,
@@ -25,7 +28,8 @@ struct RemoveAccountConfirmationView: View {
             completion(success ? nil : .incorrectPassword)
           }
         )
-      })
+      }
+    )
   }
 }
 

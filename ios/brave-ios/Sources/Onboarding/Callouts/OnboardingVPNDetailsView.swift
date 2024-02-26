@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
-import BraveUI
 import BraveShared
+import BraveUI
+import Shared
+import SwiftUI
 
 public struct OnboardingVPNDetailsView: View {
   public var learnMore: (() -> Void)?
-  
-  private let descriptionItems = [Strings.VPN.popupCheckboxBlockAds,
-                          Strings.VPN.popupCheckmarkSecureConnections,
-                          Strings.VPN.popupCheckboxFast,
-                          Strings.VPN.popupCheckmark247Support]
+
+  private let descriptionItems = [
+    Strings.VPN.popupCheckboxBlockAds,
+    Strings.VPN.popupCheckmarkSecureConnections,
+    Strings.VPN.popupCheckboxFast,
+    Strings.VPN.popupCheckmark247Support,
+  ]
 
   public init() {}
 

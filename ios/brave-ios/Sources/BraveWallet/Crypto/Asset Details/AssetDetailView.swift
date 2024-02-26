@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import UIKit
-import SwiftUI
 import BraveCore
-import DesignSystem
-import Strings
-import Preferences
 import BraveUI
+import DesignSystem
+import Foundation
 import Introspect
+import Preferences
 import Shared
+import Strings
+import SwiftUI
+import UIKit
 
 struct AssetDetailView: View {
   @ObservedObject var assetDetailStore: AssetDetailStore
@@ -26,7 +26,7 @@ struct AssetDetailView: View {
   @State private var isPresentingAddAccountConfirmation: Bool = false
   @State private var savedBSSDestination: BuySendSwapDestination?
   @State private var isShowingMoreActionSheet: Bool = false
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   /// Reference to the collection view used to back the `List` on iOS 16+
   @State private var collectionViewRef: WeakRef<UICollectionView>?
@@ -36,12 +36,12 @@ struct AssetDetailView: View {
 
   @Environment(\.openURL) private var openWalletURL
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
-  
+
   @State private var selectedContent: AssetDetailSegmentedControl.Item = .accounts
   /// Query displayed in the search bar above the transactions.
   @State private var query: String = ""
   @State private var isDoNotShowCheckboxChecked: Bool = false
-  
+
   private var accountsBalanceHeader: some View {
     VStack(spacing: 8) {
       HStack {
@@ -49,9 +49,9 @@ struct AssetDetailView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.title3.weight(.semibold))
           .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         Spacer()
-        
+
         if assetDetailStore.isLoadingAccountBalances {
           Text(Strings.Wallet.totalBalance)
             .redacted(reason: assetDetailStore.isLoadingAccountBalances ? .placeholder : [])
@@ -61,26 +61,31 @@ struct AssetDetailView: View {
             .foregroundColor(Color(.braveLabel))
         }
       }
-      
+
       DividerLine()
     }
   }
-    
+
   private func accontBalanceRow(_ viewModel: AccountAssetViewModel) -> some View {
     HStack {
       AddressView(address: viewModel.account.address) {
         AccountView(address: viewModel.account.address, name: viewModel.account.name)
       }
       let showFiatPlaceholder = viewModel.fiatBalance.isEmpty && assetDetailStore.isLoadingPrice
-      let showBalancePlaceholder = viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
+      let showBalancePlaceholder =
+        viewModel.balance.isEmpty && assetDetailStore.isLoadingAccountBalances
       Group {
         if isShowingBalances.value {
           VStack(alignment: .trailing) {
-            Text(showBalancePlaceholder ? "0.0000 \(assetDetailStore.assetDetailToken.symbol)" : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)")
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(.bravePrimary))
-              .redacted(reason: showBalancePlaceholder ? .placeholder : [])
-              .shimmer(assetDetailStore.isLoadingAccountBalances)
+            Text(
+              showBalancePlaceholder
+                ? "0.0000 \(assetDetailStore.assetDetailToken.symbol)"
+                : "\(viewModel.balance) \(assetDetailStore.assetDetailToken.symbol)"
+            )
+            .font(.subheadline.weight(.semibold))
+            .foregroundColor(Color(.bravePrimary))
+            .redacted(reason: showBalancePlaceholder ? .placeholder : [])
+            .shimmer(assetDetailStore.isLoadingAccountBalances)
             Text(showFiatPlaceholder ? "$0.00" : viewModel.fiatBalance)
               .font(.footnote)
               .foregroundColor(Color(.braveLabel))
@@ -102,20 +107,20 @@ struct AssetDetailView: View {
         emptyAccountState
       } else {
         accountsBalanceHeader
-        
+
         ForEach(assetDetailStore.nonZeroBalanceAccounts) { viewModel in
           accontBalanceRow(viewModel)
         }
       }
     }
   }
-  
+
   struct CoinMarketInfo: Identifiable {
     let title: String
     let value: String
     var id: String { title }
   }
-  
+
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
       VStack(spacing: 12) {
@@ -123,14 +128,28 @@ struct AssetDetailView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .font(.title3.weight(.semibold))
           .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         DividerLine()
       }
       let grids = [GridItem(.adaptive(minimum: 160), spacing: 8, alignment: .top)]
       let info: [CoinMarketInfo] = {
-        let computedMarketCap = assetDetailStore.currencyFormatter.string(from: NSNumber(value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap))) ?? ""
-        let computedTotalVolume = assetDetailStore.currencyFormatter.string(from: NSNumber(value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume))) ?? ""
-        return [.init(title: Strings.Wallet.coinMarketRank, value: "#\(coinMarket.marketCapRank)"), .init(title: Strings.Wallet.coinMarketMarketCap, value: "\(computedMarketCap)B"), .init(title: Strings.Wallet.coinMarket24HVolume, value: "\(computedTotalVolume)B")]
+        let computedMarketCap =
+          assetDetailStore.currencyFormatter.string(
+            from: NSNumber(
+              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.marketCap)
+            )
+          ) ?? ""
+        let computedTotalVolume =
+          assetDetailStore.currencyFormatter.string(
+            from: NSNumber(
+              value: BraveWallet.CoinMarket.abbreviateToBillion(input: coinMarket.totalVolume)
+            )
+          ) ?? ""
+        return [
+          .init(title: Strings.Wallet.coinMarketRank, value: "#\(coinMarket.marketCapRank)"),
+          .init(title: Strings.Wallet.coinMarketMarketCap, value: "\(computedMarketCap)B"),
+          .init(title: Strings.Wallet.coinMarket24HVolume, value: "\(computedTotalVolume)B"),
+        ]
       }()
       LazyVGrid(columns: grids) {
         ForEach(info) { item in
@@ -153,7 +172,7 @@ struct AssetDetailView: View {
     }
     .padding(.horizontal)
   }
-  
+
   private var emptyTransactionState: some View {
     VStack(spacing: 10) {
       Image("transaction-empty", bundle: .module)
@@ -168,7 +187,7 @@ struct AssetDetailView: View {
     .multilineTextAlignment(.center)
     .padding(.vertical)
   }
-  
+
   private var emptyAccountState: some View {
     VStack(spacing: 10) {
       Image("account-empty", bundle: .module)
@@ -183,7 +202,7 @@ struct AssetDetailView: View {
     .multilineTextAlignment(.center)
     .padding(.vertical)
   }
-  
+
   @ViewBuilder var actionButtonsContainer: some View {
     HStack(alignment: .top, spacing: 40) {
       if assetDetailStore.isBuySupported {
@@ -225,7 +244,9 @@ struct AssetDetailView: View {
           }
         }
       }
-      if case let .blockchainToken(token) = assetDetailStore.assetDetailType, token.isAuroraSupportedToken {
+      if case let .blockchainToken(token) = assetDetailStore.assetDetailType,
+        token.isAuroraSupportedToken
+      {
         PortfolioHeaderButton(style: .more) {
           isShowingMoreActionSheet = true
         }
@@ -237,12 +258,12 @@ struct AssetDetailView: View {
       transaction.disablesAnimations = true
     }
   }
-  
+
   @ViewBuilder private var tokenContentContainer: some View {
     VStack(spacing: 0) {
       actionButtonsContainer
         .padding(.bottom, 40)
-      
+
       AssetDetailSegmentedControl(selected: $selectedContent)
         .padding(.horizontal)
       if selectedContent == .accounts {
@@ -266,15 +287,17 @@ struct AssetDetailView: View {
       }
     }
   }
-  
+
   private var assetDetailContentView: some View {
     LazyVStack {
       switch assetDetailStore.assetDetailType {
       case .blockchainToken(_):
         tokenContentContainer
           .padding(.bottom, 12)
-        
-        if (selectedContent == .accounts && !assetDetailStore.nonZeroBalanceAccounts.isEmpty) || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty) {
+
+        if (selectedContent == .accounts && !assetDetailStore.nonZeroBalanceAccounts.isEmpty)
+          || (selectedContent == .transactions && !assetDetailStore.transactionSections.isEmpty)
+        {
           Text(Strings.Wallet.coinGeckoDisclaimer)
             .multilineTextAlignment(.center)
             .font(.footnote)
@@ -296,7 +319,7 @@ struct AssetDetailView: View {
     .padding(.vertical)
     .background(Color(braveSystemName: .containerBackground))
   }
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 0) {
@@ -305,7 +328,7 @@ struct AssetDetailView: View {
           keyringStore: keyringStore,
           networkStore: networkStore
         )
-        
+
         assetDetailContentView
       }
     }
@@ -331,7 +354,9 @@ struct AssetDetailView: View {
     }
     .actionSheet(isPresented: $isShowingMoreActionSheet) {
       ActionSheet(
-        title: Text("\(assetDetailStore.assetDetailToken.name) (\(assetDetailStore.assetDetailToken.symbol))"),
+        title: Text(
+          "\(assetDetailStore.assetDetailToken.name) (\(assetDetailStore.assetDetailToken.symbol))"
+        ),
         buttons: [
           .cancel(),
           .default(
@@ -345,7 +370,7 @@ struct AssetDetailView: View {
                 }
               }
             }
-          )
+          ),
         ]
       )
     }
@@ -354,7 +379,7 @@ struct AssetDetailView: View {
         .sheet(
           isPresented: Binding(
             get: { self.transactionDetails != nil },
-            set: { 
+            set: {
               if !$0 {
                 self.transactionDetails = nil
                 self.assetDetailStore.closeTransactionDetailsStore()
@@ -466,7 +491,7 @@ struct AssetDetailView: View {
       }
     )
   }
-  
+
   private func onAccountCreationNeeded(_ destination: BuySendSwapDestination) {
     isPresentingAddAccountConfirmation = true
     savedBSSDestination = destination
@@ -490,23 +515,23 @@ struct CurrencyDetailView_Previews: PreviewProvider {
 #endif
 
 struct AssetDetailSegmentedControl: View {
-  
+
   enum Item: Int, Equatable, CaseIterable, Identifiable, WalletSegmentedControlItem {
     case accounts
     case transactions
-    
+
     var title: String {
       switch self {
       case .accounts: return Strings.Wallet.accountsPageTitle
       case .transactions: return Strings.Wallet.transactionsTitle
       }
     }
-    
-    var id: Int { rawValue  }
+
+    var id: Int { rawValue }
   }
-  
+
   @Binding var selected: Item
-  
+
   var body: some View {
     WalletSegmentedControl(
       items: Item.allCases,

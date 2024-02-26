@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveShared
 import BraveUI
 import Shared
-import BraveShared
+import UIKit
 
 class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentComponent {
 
@@ -26,8 +26,10 @@ class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentCompo
     updatePreferredContentSize()
 
     braveTalkView.enableRewardsButton.addTarget(
-      self, action: #selector(enableRewardsAction),
-      for: .touchUpInside)
+      self,
+      action: #selector(enableRewardsAction),
+      for: .touchUpInside
+    )
     braveTalkView.disclaimer.onLinkedTapped = { [unowned self] link in
       var request: URLRequest?
 
@@ -59,7 +61,8 @@ class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentCompo
     super.traitCollectionDidChange(previousTraitCollection)
 
     if previousTraitCollection?.preferredContentSizeCategory
-      != traitCollection.preferredContentSizeCategory {
+      != traitCollection.preferredContentSizeCategory
+    {
 
       updatePreferredContentSize()
     }
@@ -70,7 +73,9 @@ class BraveTalkRewardsOptInViewController: UIViewController, PopoverContentCompo
     let scale = UIFontMetrics.default
 
     // For phones in portrait we leave extra space to dismiss the popup by tapping outside of it.
-    if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
+    if traitCollection.horizontalSizeClass == .compact
+      && traitCollection.verticalSizeClass == .regular
+    {
       let scaledHeight = scale.scaledValue(for: baseHeight)
       let height = min(scaledHeight, UIScreen.main.bounds.height - 150)
 

@@ -46,12 +46,20 @@ class MemoryReaderModeCache: ReaderModeCache {
   }
 
   func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws {
-    cache.setObject(ReadabilityResultWrapper(readabilityResult: readabilityResult), forKey: url as AnyObject)
+    cache.setObject(
+      ReadabilityResultWrapper(readabilityResult: readabilityResult),
+      forKey: url as AnyObject
+    )
   }
 
   func get(_ url: URL) throws -> ReadabilityResult {
-    guard let resultWrapper = cache.object(forKey: url as AnyObject) as? ReadabilityResultWrapper else {
-      throw NSError(domain: ReaderModeCacheErrorDomain, code: ReaderModeCacheErrorCode.noPathsFound.rawValue, userInfo: nil)
+    guard let resultWrapper = cache.object(forKey: url as AnyObject) as? ReadabilityResultWrapper
+    else {
+      throw NSError(
+        domain: ReaderModeCacheErrorDomain,
+        code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
+        userInfo: nil
+      )
     }
     return resultWrapper.result
   }
@@ -78,24 +86,38 @@ class DiskReaderModeCache: ReaderModeCache {
 
   func put(_ url: URL, _ readabilityResult: ReadabilityResult) throws {
     guard let (cacheDirectoryPath, contentFilePath) = cachePathsForURL(url) else {
-      throw NSError(domain: ReaderModeCacheErrorDomain, code: ReaderModeCacheErrorCode.noPathsFound.rawValue, userInfo: nil)
+      throw NSError(
+        domain: ReaderModeCacheErrorDomain,
+        code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
+        userInfo: nil
+      )
     }
 
-    try FileManager.default.createDirectory(atPath: cacheDirectoryPath, withIntermediateDirectories: true, attributes: nil)
+    try FileManager.default.createDirectory(
+      atPath: cacheDirectoryPath,
+      withIntermediateDirectories: true,
+      attributes: nil
+    )
     let string: String = readabilityResult.encode()
     try string.write(toFile: contentFilePath, atomically: true, encoding: .utf8)
     return
   }
 
   func get(_ url: URL) throws -> ReadabilityResult {
-    if let (_, contentFilePath) = cachePathsForURL(url), FileManager.default.fileExists(atPath: contentFilePath) {
+    if let (_, contentFilePath) = cachePathsForURL(url),
+      FileManager.default.fileExists(atPath: contentFilePath)
+    {
       let string = try String(contentsOfFile: contentFilePath, encoding: .utf8)
       if let value = ReadabilityResult(string: string) {
         return value
       }
     }
 
-    throw NSError(domain: ReaderModeCacheErrorDomain, code: ReaderModeCacheErrorCode.noPathsFound.rawValue, userInfo: nil)
+    throw NSError(
+      domain: ReaderModeCacheErrorDomain,
+      code: ReaderModeCacheErrorCode.noPathsFound.rawValue,
+      userInfo: nil
+    )
   }
 
   func delete(_ url: URL, error: NSErrorPointer) {
@@ -111,17 +133,23 @@ class DiskReaderModeCache: ReaderModeCache {
   }
 
   func contains(_ url: URL) -> Bool {
-    if let (_, contentFilePath) = cachePathsForURL(url), FileManager.default.fileExists(atPath: contentFilePath) {
+    if let (_, contentFilePath) = cachePathsForURL(url),
+      FileManager.default.fileExists(atPath: contentFilePath)
+    {
       return true
     }
 
     return false
   }
 
-  fileprivate func cachePathsForURL(_ url: URL) -> (cacheDirectoryPath: String, contentFilePath: String)? {
+  fileprivate func cachePathsForURL(
+    _ url: URL
+  ) -> (cacheDirectoryPath: String, contentFilePath: String)? {
     let paths = NSSearchPathForDirectoriesInDomains(.cachesDirectory, .userDomainMask, true)
     if !paths.isEmpty, let hashedPath = hashedPathForURL(url) {
-      let cacheDirectoryURL = URL(fileURLWithPath: NSString.path(withComponents: [paths[0], "ReaderView", hashedPath]))
+      let cacheDirectoryURL = URL(
+        fileURLWithPath: NSString.path(withComponents: [paths[0], "ReaderView", hashedPath])
+      )
       return (cacheDirectoryURL.path, cacheDirectoryURL.appendingPathComponent("content.json").path)
     }
 
@@ -131,7 +159,10 @@ class DiskReaderModeCache: ReaderModeCache {
   fileprivate func hashedPathForURL(_ url: URL) -> String? {
     guard let hash = hashForURL(url) else { return nil }
 
-    return NSString.path(withComponents: [hash.substring(with: NSRange(location: 0, length: 2)), hash.substring(with: NSRange(location: 2, length: 2)), hash.substring(from: 4)]) as String
+    return NSString.path(withComponents: [
+      hash.substring(with: NSRange(location: 0, length: 2)),
+      hash.substring(with: NSRange(location: 2, length: 2)), hash.substring(from: 4),
+    ]) as String
   }
 
   fileprivate func hashForURL(_ url: URL) -> NSString? {

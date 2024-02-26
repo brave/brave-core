@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import BraveUI
 import DesignSystem
+import SwiftUI
 
 /// Displays an asset's icon from the token registry or logo.
 struct AssetIcon: View {
   let token: BraveWallet.BlockchainToken
   let network: BraveWallet.NetworkInfo?
-  
+
   var body: some View {
     Group {
       if let uiImage = token.localImage(network: network) {
@@ -34,7 +34,7 @@ struct AssetIcon: View {
       }
     }
   }
-  
+
   @State private var monogramSize: CGSize = .zero
   private var fallbackMonogram: some View {
     BlockieMaterial(address: token.contractAddress)
@@ -45,7 +45,13 @@ struct AssetIcon: View {
       })
       .overlay(
         Text(token.symbol.first?.uppercased() ?? "")
-          .font(.system(size: max(monogramSize.width, monogramSize.height) / 2, weight: .bold, design: .rounded))
+          .font(
+            .system(
+              size: max(monogramSize.width, monogramSize.height) / 2,
+              weight: .bold,
+              design: .rounded
+            )
+          )
           .foregroundColor(.white)
           .shadow(color: .black.opacity(0.3), radius: 2, x: 0, y: 1)
       )
@@ -72,12 +78,13 @@ struct AssetIconView: View {
       .overlay(tokenNetworkLogo, alignment: .bottomTrailing)
       .accessibilityHidden(true)
   }
-  
+
   @ViewBuilder private var tokenNetworkLogo: some View {
     if let network,
-       shouldShowNetworkIcon, // explicitly show/not show network logo
-       (!network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName), // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
-       let image = network.networkLogoImage {
+      shouldShowNetworkIcon,  // explicitly show/not show network logo
+      !network.isNativeAsset(token) || network.nativeTokenLogoName != network.networkLogoName,  // non-native asset OR if the network is not the official Ethereum network, but uses ETH as gas
+      let image = network.networkLogoImage
+    {
       Image(uiImage: image)
         .resizable()
         .overlay(
@@ -85,7 +92,10 @@ struct AssetIconView: View {
             .stroke(lineWidth: 2)
             .foregroundColor(Color(braveSystemName: .containerBackground))
         )
-        .frame(width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength), height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength))
+        .frame(
+          width: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength),
+          height: min(networkSymbolLength, maxNetworkSymbolLength ?? networkSymbolLength)
+        )
     }
   }
 }
@@ -125,7 +135,7 @@ struct AssetIconView_Previews: PreviewProvider {
 #endif
 
 struct NFTIconView: View {
-  
+
   /// NFT token
   var token: BraveWallet.BlockchainToken
   /// Network for token
@@ -136,12 +146,12 @@ struct NFTIconView: View {
   var shouldShowNetworkIcon: Bool = false
   /// View is loading NFT metadata
   var isLoadingMetadata: Bool = false
-  
+
   @ScaledMetric var length: CGFloat = 40
   var maxLength: CGFloat?
   @ScaledMetric var tokenLogoLength: CGFloat = 15
   var maxTokenLogoLength: CGFloat?
-  
+
   @ViewBuilder private var tokenLogo: some View {
     if shouldShowNetworkIcon, let image = network.nativeTokenLogoImage {
       Image(uiImage: image)
@@ -157,9 +167,9 @@ struct NFTIconView: View {
         )
     }
   }
-  
+
   var body: some View {
-    NFTImageView( // logo populated for auto-discovered NFTs
+    NFTImageView(  // logo populated for auto-discovered NFTs
       urlString: url?.absoluteString ?? token.logo,
       isLoading: isLoadingMetadata
     ) {
@@ -180,7 +190,7 @@ struct NFTIconView: View {
 /// `bottomToken` is displayed in the top-right, `topToken` is displayed in the bottom-left,
 /// and the network logo is displayed in the bottom-right.
 struct StackedAssetIconsView: View {
-  
+
   var bottomToken: BraveWallet.BlockchainToken?
   var topToken: BraveWallet.BlockchainToken?
   var network: BraveWallet.NetworkInfo
@@ -191,23 +201,23 @@ struct StackedAssetIconsView: View {
   var maxLength: CGFloat?
   @ScaledMetric var networkSymbolLength: CGFloat = 15
   var maxNetworkSymbolLength: CGFloat?
-  
+
   /// Size of padding applied to bottom/top icon so they can overlap
   private var iconPadding: CGFloat {
     length / 5
   }
-  
+
   /// Size of asset icon
   private var assetIconLength: CGFloat {
     length - iconPadding
   }
-  
+
   /// Max size of asset icon
   private var maxAssetIconLength: CGFloat? {
     guard let maxLength else { return nil }
     return maxLength - iconPadding
   }
-  
+
   var body: some View {
     ZStack {
       Group {
@@ -219,7 +229,7 @@ struct StackedAssetIconsView: View {
             length: assetIconLength,
             maxLength: maxAssetIconLength
           )
-        } else { // nil token possible for Solana Swaps
+        } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
             backgroundColor: Color(braveSystemName: .gray40),
             iconColor: Color.white,
@@ -231,7 +241,7 @@ struct StackedAssetIconsView: View {
       .padding(.leading, iconPadding)
       .padding(.bottom, iconPadding)
       .zIndex(0)
-      
+
       Group {
         if let topToken {
           AssetIconView(
@@ -241,7 +251,7 @@ struct StackedAssetIconsView: View {
             length: assetIconLength,
             maxLength: maxAssetIconLength
           )
-        } else { // nil token possible for Solana Swaps
+        } else {  // nil token possible for Solana Swaps
           GenericAssetIconView(
             backgroundColor: Color(braveSystemName: .gray20),
             iconColor: Color.black,
@@ -253,7 +263,7 @@ struct StackedAssetIconsView: View {
       .padding(.top, iconPadding)
       .padding(.trailing, iconPadding)
       .zIndex(1)
-      
+
       if let networkLogoImage = network.networkLogoImage {
         Group {
           Image(uiImage: networkLogoImage)
@@ -293,12 +303,12 @@ struct StackedAssetIconsView_Previews: PreviewProvider {
 #endif
 
 struct GenericAssetIconView: View {
-  
+
   let backgroundColor: Color
   let iconColor: Color
   @ScaledMetric var length: CGFloat
   let maxLength: CGFloat?
-  
+
   init(
     backgroundColor: Color = Color(braveSystemName: .gray20),
     iconColor: Color = Color.black,
@@ -310,7 +320,7 @@ struct GenericAssetIconView: View {
     self._length = .init(wrappedValue: length)
     self.maxLength = maxLength
   }
-  
+
   var body: some View {
     Circle()
       .fill(backgroundColor)

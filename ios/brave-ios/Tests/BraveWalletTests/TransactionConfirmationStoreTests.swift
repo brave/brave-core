@@ -3,33 +3,34 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Combine
-import XCTest
 import BraveCore
+import Combine
 import Preferences
+import XCTest
+
 @testable import BraveWallet
 
 @MainActor class TransactionConfirmationStoreTests: XCTestCase {
-  
+
   override func setUp() {
     Preferences.Wallet.showTestNetworks.value = true
   }
   override func tearDown() {
     Preferences.Wallet.showTestNetworks.reset()
   }
-  
+
   private var cancellables: Set<AnyCancellable> = .init()
-  
+
   private func setupStore(
     selectedNetworkForCoinType: [BraveWallet.CoinType: BraveWallet.NetworkInfo] = [
-      .eth : BraveWallet.NetworkInfo.mockMainnet,
-      .sol : BraveWallet.NetworkInfo.mockSolana,
-      .fil : BraveWallet.NetworkInfo.mockFilecoinMainnet
+      .eth: BraveWallet.NetworkInfo.mockMainnet,
+      .sol: BraveWallet.NetworkInfo.mockSolana,
+      .fil: BraveWallet.NetworkInfo.mockFilecoinMainnet,
     ],
     allNetworksForCoinType: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [
       .eth: [.mockMainnet, .mockGoerli],
       .sol: [.mockSolana, .mockSolanaTestnet],
-      .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet]
+      .fil: [.mockFilecoinMainnet, .mockFilecoinTestnet],
     ],
     accountInfos: [BraveWallet.AccountInfo] = [.mockEthAccount, .mockSolAccount, .mockFilAccount],
     allTokens: [BraveWallet.BlockchainToken] = [],
@@ -38,9 +39,24 @@ import Preferences
     makeErc20ApproveDataSuccess: Bool = true,
     setDataForUnapprovedTransactionSuccess: Bool = true
   ) -> TransactionConfirmationStore {
-    let mockEthAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "eth", toAsset: "usd", price: "3059.99", assetTimeframeChange: "-57.23")
-    let mockSolAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "sol", toAsset: "usd", price: "39.57", assetTimeframeChange: "-57.23")
-    let mockFilAssetPrice: BraveWallet.AssetPrice = .init(fromAsset: "fil", toAsset: "usd", price: "4.0", assetTimeframeChange: "-57.23")
+    let mockEthAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "eth",
+      toAsset: "usd",
+      price: "3059.99",
+      assetTimeframeChange: "-57.23"
+    )
+    let mockSolAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "sol",
+      toAsset: "usd",
+      price: "39.57",
+      assetTimeframeChange: "-57.23"
+    )
+    let mockFilAssetPrice: BraveWallet.AssetPrice = .init(
+      fromAsset: "fil",
+      toAsset: "usd",
+      price: "4.0",
+      assetTimeframeChange: "-57.23"
+    )
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
     let mockBalanceWei = formatter.weiString(from: 0.0896, radix: .hex, decimals: 18) ?? ""
     let mockFILBalanceWei = formatter.weiString(from: 1, decimals: 18) ?? ""
@@ -62,12 +78,12 @@ import Preferences
     rpcService._balance = { _, coin, _, completion in
       if coin == .eth {
         completion(mockBalanceWei, .success, "")
-      } else { // .fil
+      } else {  // .fil
         completion(mockFILBalanceWei, .success, "")
       }
     }
     rpcService._erc20TokenAllowance = { _, _, _, _, completion in
-      completion("16345785d8a0000", .success, "") // 0.1000
+      completion("16345785d8a0000", .success, "")  // 0.1000
     }
     rpcService._solanaBalance = { accountAddress, chainId, completion in
       completion(0, .success, "")
@@ -110,17 +126,19 @@ import Preferences
     }
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._allAccounts = {
-      $0(.init(
-        accounts: accountInfos,
-        selectedAccount: accountInfos.first,
-        ethDappSelectedAccount: accountInfos.first(where: { $0.coin == .eth }),
-        solDappSelectedAccount: accountInfos.first(where: { $0.coin == .sol })
-      ))
+      $0(
+        .init(
+          accounts: accountInfos,
+          selectedAccount: accountInfos.first,
+          ethDappSelectedAccount: accountInfos.first(where: { $0.coin == .eth }),
+          solDappSelectedAccount: accountInfos.first(where: { $0.coin == .sol })
+        )
+      )
     }
-    
+
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = { $2(0, .success, "") }
-    
+
     return TransactionConfirmationStore(
       assetRatioService: assetRatioService,
       rpcService: rpcService,
@@ -134,7 +152,7 @@ import Preferences
       userAssetManager: mockAssetManager
     )
   }
-  
+
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
   func testPrepareSolSystemTransfer() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
@@ -158,14 +176,14 @@ import Preferences
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    
+
     store.$gasValue
       .dropFirst()
       .sink { value in
         XCTAssertEqual(value, "0")
       }
       .store(in: &cancellables)
-    
+
     store.$gasSymbol
       .dropFirst()
       .sink { value in
@@ -187,13 +205,13 @@ import Preferences
     store.$isUnlimitedApprovalRequested
       .dropFirst()
       .sink { value in
-        XCTAssertFalse(value) // .mockSpdToken has 6 decimals
+        XCTAssertFalse(value)  // .mockSpdToken has 6 decimals
       }
       .store(in: &cancellables)
 
     await fulfillment(of: [prepareExpectation], timeout: 1)
   }
-  
+
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
   func testPrepareSolTokenTransfer() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockSolToken, .mockSpdToken]
@@ -217,14 +235,14 @@ import Preferences
         XCTAssertEqual(id, mockTransaction.id)
       }
       .store(in: &cancellables)
-    
+
     store.$gasValue
       .dropFirst()
       .sink { value in
         XCTAssertEqual(value, "0")
       }
       .store(in: &cancellables)
-    
+
     store.$gasSymbol
       .dropFirst()
       .sink { value in
@@ -240,19 +258,19 @@ import Preferences
     store.$value
       .dropFirst()
       .sink { value in
-        XCTAssertEqual(value, "100") // .mockSpdToken has 6 decimals
+        XCTAssertEqual(value, "100")  // .mockSpdToken has 6 decimals
       }
       .store(in: &cancellables)
     store.$isUnlimitedApprovalRequested
       .dropFirst()
       .sink { value in
-        XCTAssertFalse(value) // .mockSpdToken has 6 decimals
+        XCTAssertFalse(value)  // .mockSpdToken has 6 decimals
       }
       .store(in: &cancellables)
-    
+
     await fulfillment(of: [prepareExpectation], timeout: 1)
   }
-  
+
   /// Test `prepare()`  update `state` data for symbol, value, isUnlimitedApprovalRequested.
   func testPrepareERC20Approve() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
@@ -310,27 +328,34 @@ import Preferences
         XCTAssertEqual(values.last!, "0.1000")
       }
       .store(in: &cancellables)
-    
+
     await fulfillment(of: [prepareExpectation], timeout: 1)
   }
-  
+
   /// Test that `nextTransaction` will update `activeTransactionId` property in order of transaction created time.
   func testNextTransaction() async {
-    let firstTransactionDate = Date(timeIntervalSince1970: 1636399671) // Monday, November 8, 2021 7:27:51 PM
-    let sendCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
+    let firstTransactionDate = Date(timeIntervalSince1970: 1_636_399_671)  // Monday, November 8, 2021 7:27:51 PM
+    let sendCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo
     sendCopy.chainId = BraveWallet.GoerliChainId
     sendCopy.txStatus = .unapproved
-    let swapCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
+    let swapCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     swapCopy.chainId = BraveWallet.MainnetChainId
     swapCopy.txStatus = .unapproved
-    let solanaSendCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo
+    let solanaSendCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy()
+      as! BraveWallet.TransactionInfo
     solanaSendCopy.chainId = BraveWallet.SolanaMainnet
-    let solanaSPLSendCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo
+    let solanaSPLSendCopy =
+      BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy()
+      as! BraveWallet.TransactionInfo
     solanaSPLSendCopy.chainId = BraveWallet.SolanaTestnet
-    let filecoinSendCopy = BraveWallet.TransactionInfo.mockFilUnapprovedSend.copy() as! BraveWallet.TransactionInfo
+    let filecoinSendCopy =
+      BraveWallet.TransactionInfo.mockFilUnapprovedSend.copy() as! BraveWallet.TransactionInfo
     filecoinSendCopy.chainId = BraveWallet.FilecoinMainnet
     let pendingTransactions: [BraveWallet.TransactionInfo] = [
-      sendCopy, swapCopy, solanaSendCopy, solanaSPLSendCopy, filecoinSendCopy
+      sendCopy, swapCopy, solanaSendCopy, solanaSPLSendCopy, filecoinSendCopy,
     ].enumerated().map { (index, tx) in
       tx.txStatus = .unapproved
       // transactions sorted by created time, make sure they are in-order
@@ -345,7 +370,7 @@ import Preferences
     let activeTransactionIdExpectation = expectation(description: "activeTransactionId-expectation")
     store.$activeTransactionId
       .dropFirst()
-      .collect(5) // collect all transactions
+      .collect(5)  // collect all transactions
       .sink { activeTransactionIds in
         defer { activeTransactionIdExpectation.fulfill() }
         XCTAssertEqual(activeTransactionIds.count, 5)
@@ -356,15 +381,15 @@ import Preferences
         XCTAssertEqual(activeTransactionIds[safe: 4], pendingTransactions[safe: 0]?.id)
       }
       .store(in: &cancellables)
-    
-    await store.prepare() // `sendCopy` on Goerli Testnet
-    store.nextTransaction() // `swapCopy` on Ethereum Mainnet
-    store.nextTransaction() // `solanaSendCopy` on Solana Mainnet
-    store.nextTransaction() // `solanaSPLSendCopy` on Solana Testnet
-    store.nextTransaction() // `filecoinSendCopy` on filecoin mainnet
+
+    await store.prepare()  // `sendCopy` on Goerli Testnet
+    store.nextTransaction()  // `swapCopy` on Ethereum Mainnet
+    store.nextTransaction()  // `solanaSendCopy` on Solana Mainnet
+    store.nextTransaction()  // `solanaSPLSendCopy` on Solana Testnet
+    store.nextTransaction()  // `filecoinSendCopy` on filecoin mainnet
     await fulfillment(of: [activeTransactionIdExpectation], timeout: 1)
   }
-  
+
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to make ERC20 approve data with `BraveWalletEthTxManagerProxy`
   func testEditAllowanceFailMakeERC20ApproveData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
@@ -381,7 +406,7 @@ import Preferences
       gasEstimation: mockGasEstimation,
       makeErc20ApproveDataSuccess: false
     )
-    
+
     let prepareExpectation = expectation(description: "prepare")
     await store.prepare()
     store.$activeTransactionId
@@ -391,7 +416,7 @@ import Preferences
       }
       .store(in: &cancellables)
     await fulfillment(of: [prepareExpectation], timeout: 1)
-    
+
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
       transaction: mockTransaction,
@@ -405,7 +430,7 @@ import Preferences
     )
     await fulfillment(of: [editExpectation], timeout: 1)
   }
-  
+
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return false if we fail to set new ERC20 Approve data with `BraveWalletEthTxManagerProxy`
   func testEditAllowanceFailSetData() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
@@ -423,7 +448,7 @@ import Preferences
       makeErc20ApproveDataSuccess: true,
       setDataForUnapprovedTransactionSuccess: false
     )
-    
+
     let prepareExpectation = expectation(description: "prepare")
     await store.prepare()
     store.$activeTransactionId
@@ -433,7 +458,7 @@ import Preferences
       }
       .store(in: &cancellables)
     await fulfillment(of: [prepareExpectation], timeout: 1)
-    
+
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
       transaction: mockTransaction,
@@ -447,7 +472,7 @@ import Preferences
     )
     await fulfillment(of: [editExpectation], timeout: 1)
   }
-  
+
   /// Test `editAllowance(txMetaId:spenderAddress:amount:completion)` will return true if we suceed in creating and setting ERC20 Approve data with `BraveWalletEthTxManagerProxy`
   func testEditAllowanceSuccess() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.previewToken, .daiToken]
@@ -465,7 +490,7 @@ import Preferences
       makeErc20ApproveDataSuccess: true,
       setDataForUnapprovedTransactionSuccess: true
     )
-    
+
     let prepareExpectation = expectation(description: "prepare")
     await store.prepare()
     store.$activeTransactionId
@@ -475,7 +500,7 @@ import Preferences
       }
       .store(in: &cancellables)
     await fulfillment(of: [prepareExpectation], timeout: 1)
-    
+
     let editExpectation = expectation(description: "edit allowance")
     store.editAllowance(
       transaction: mockTransaction,
@@ -489,7 +514,7 @@ import Preferences
     )
     await fulfillment(of: [editExpectation], timeout: 1)
   }
-  
+
   func testPrepareFilSend() async {
     let mockAllTokens: [BraveWallet.BlockchainToken] = [.mockFilToken]
     let mockTransaction: BraveWallet.TransactionInfo = .mockFilUnapprovedSend
@@ -534,16 +559,16 @@ import Preferences
         XCTAssertEqual(value, "1")
       }
       .store(in: &cancellables)
-    
+
     await fulfillment(of: [prepareExpectation], timeout: 1)
-    
+
   }
 }
 
-private extension BraveWallet.BlockchainToken {
-  
+extension BraveWallet.BlockchainToken {
+
   /// DAI token with contract address matching `BraveWallet.TransactionInfo.previewConfirmedERC20Approve`
-  static let daiToken: BraveWallet.BlockchainToken = .init(
+  fileprivate static let daiToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
     name: "DAI",
     logo: "",

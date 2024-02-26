@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
 import BraveCore
 import DesignSystem
-import Strings
+import Foundation
 import Preferences
+import Strings
+import SwiftUI
 
 extension BraveWallet.AssetTimePrice: DataPoint {
   var value: CGFloat {
@@ -32,9 +32,11 @@ struct AssetDetailHeaderView: View {
       Image(systemName: assetDetailStore.priceIsDown ? "arrow.down" : "arrow.up")
       Text(assetDetailStore.priceDelta)
     }
-    .foregroundColor(Color(
-      assetDetailStore.priceIsDown ? .walletRed : .walletGreen
-    ))
+    .foregroundColor(
+      Color(
+        assetDetailStore.priceIsDown ? .walletRed : .walletGreen
+      )
+    )
     .font(.footnote)
   }
 
@@ -42,10 +44,13 @@ struct AssetDetailHeaderView: View {
     // About 300 points added so it doesn't animate funny
     (0..<300).map { _ in .init(date: Date(), price: "0.0") }
   }
-  
+
   @ViewBuilder private var tokenInfoView: some View {
     HStack {
-      AssetIconView(token: assetDetailStore.assetDetailToken, network: assetDetailStore.network ?? networkStore.defaultSelectedChain)
+      AssetIconView(
+        token: assetDetailStore.assetDetailToken,
+        network: assetDetailStore.network ?? networkStore.defaultSelectedChain
+      )
       if sizeCategory.isAccessibilityCategory {
         VStack(alignment: .leading, spacing: 8) {
           Group {
@@ -61,7 +66,10 @@ struct AssetDetailHeaderView: View {
             }
             Group {
               if let selectedCandle = selectedCandle,
-                 let formattedString = assetDetailStore.currencyFormatter.string(from: NSNumber(value: selectedCandle.value)) {
+                let formattedString = assetDetailStore.currencyFormatter.string(
+                  from: NSNumber(value: selectedCandle.value)
+                )
+              {
                 Text(formattedString)
               } else {
                 Text(assetDetailStore.price)
@@ -75,8 +83,8 @@ struct AssetDetailHeaderView: View {
             transaction.disablesAnimations = true
           }
           deltaText
-          .redacted(reason: assetDetailStore.isInitialState ? .placeholder : [])
-          .shimmer(assetDetailStore.isLoadingPrice)
+            .redacted(reason: assetDetailStore.isInitialState ? .placeholder : [])
+            .shimmer(assetDetailStore.isLoadingPrice)
         }
       } else {
         HStack {
@@ -97,7 +105,10 @@ struct AssetDetailHeaderView: View {
         VStack(alignment: .trailing, spacing: 8) {
           Group {
             if let selectedCandle = selectedCandle,
-               let formattedString = assetDetailStore.currencyFormatter.string(from: NSNumber(value: selectedCandle.value)) {
+              let formattedString = assetDetailStore.currencyFormatter.string(
+                from: NSNumber(value: selectedCandle.value)
+              )
+            {
               Text(formattedString)
             } else {
               Text(assetDetailStore.price)
@@ -116,7 +127,7 @@ struct AssetDetailHeaderView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var lineChart: some View {
     VStack(spacing: 0) {
       TimeframeSelector(selectedDateRange: $assetDetailStore.timeframe)
@@ -124,7 +135,9 @@ struct AssetDetailHeaderView: View {
       let data = assetDetailStore.priceHistory.isEmpty ? emptyData : assetDetailStore.priceHistory
       LineChartView(data: data, numberOfColumns: data.count, selectedDataPoint: $selectedCandle) {
         LinearGradient(
-          gradient: Gradient(colors: [Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear]),
+          gradient: Gradient(colors: [
+            Color(.braveBlurpleTint).opacity(colourScheme == .dark ? 0.5 : 0.2), .clear,
+          ]),
           startPoint: .top,
           endPoint: .bottom
         )
@@ -134,7 +147,8 @@ struct AssetDetailHeaderView: View {
         title: String.localizedStringWithFormat(
           Strings.Wallet.assetDetailSubtitle,
           assetDetailStore.assetDetailToken.name,
-          assetDetailStore.assetDetailToken.symbol),
+          assetDetailStore.assetDetailToken.symbol
+        ),
         dataPoints: data
       )
       .disabled(data.isEmpty)
@@ -148,7 +162,7 @@ struct AssetDetailHeaderView: View {
     VStack(spacing: 0) {
       tokenInfoView
         .padding(.bottom, 8)
-      
+
       lineChart
     }
     .padding()

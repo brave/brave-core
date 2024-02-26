@@ -4,17 +4,17 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import BraveCore
+import BraveUI
 import DesignSystem
 import SwiftUI
-import BraveUI
 
 struct NetworkSelectionView: View {
-  
+
   var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var store: NetworkSelectionStore
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
@@ -24,7 +24,7 @@ struct NetworkSelectionView: View {
     self.networkStore = networkStore
     self.store = networkSelectionStore
   }
-  
+
   private var selectedNetwork: BraveWallet.NetworkInfo {
     switch store.mode {
     case let .select(isForOrigin):
@@ -36,14 +36,14 @@ struct NetworkSelectionView: View {
       return store.networkSelectionInForm ?? .init()
     }
   }
-  
+
   private var navigationTitle: String {
     switch store.mode {
     case .select: return Strings.Wallet.networkSelectionTitle
     case .formSelection: return Strings.Wallet.networkSelectionTitle
     }
   }
-  
+
   var body: some View {
     NetworkSelectionRootView(
       navigationTitle: navigationTitle,
@@ -74,7 +74,7 @@ struct NetworkSelectionView: View {
       }
     )
   }
-  
+
   private func selectNetwork(_ network: BraveWallet.NetworkInfo) {
     Task { @MainActor in
       if await store.selectNetwork(network) {

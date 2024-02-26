@@ -3,19 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
 import BraveShared
-import DesignSystem
 import BraveUI
+import DesignSystem
+import Shared
+import SwiftUI
 
 public struct VPNLinkReceiptView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   public var linkReceiptAction: (() -> Void)?
-  
+
   public init() {}
-  
+
   public var body: some View {
     ScrollView {
       VStack(spacing: 24) {
@@ -26,7 +26,7 @@ public struct VPNLinkReceiptView: View {
         Text(Strings.Onboarding.linkReceiptDescription)
           .font(.subheadline)
           .multilineTextAlignment(.center)
-        
+
         Button(action: {
           linkReceiptAction?()
           presentationMode.dismiss()
@@ -34,7 +34,7 @@ public struct VPNLinkReceiptView: View {
           Text(Strings.Onboarding.linkReceiptButton)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .large))
-           
+
         HStack(spacing: 8) {
           Text(Strings.VPN.poweredBy)
             .font(.footnote)

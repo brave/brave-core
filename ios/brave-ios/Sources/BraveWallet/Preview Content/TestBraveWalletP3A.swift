@@ -9,8 +9,18 @@ import BraveCore
 
 class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
 
-  var _reportProvider: ((_ providerType: BraveWallet.JSProviderType, _ coinType: BraveWallet.CoinType, _ allowProviderOverwrite: Bool) -> Void)?
-  func report(_ providerType: BraveWallet.JSProviderType, coinType: BraveWallet.CoinType, allowProviderOverwrite: Bool) {
+  var _reportProvider:
+    (
+      (
+        _ providerType: BraveWallet.JSProviderType, _ coinType: BraveWallet.CoinType,
+        _ allowProviderOverwrite: Bool
+      ) -> Void
+    )?
+  func report(
+    _ providerType: BraveWallet.JSProviderType,
+    coinType: BraveWallet.CoinType,
+    allowProviderOverwrite: Bool
+  ) {
     _reportProvider?(providerType, coinType, allowProviderOverwrite)
   }
 

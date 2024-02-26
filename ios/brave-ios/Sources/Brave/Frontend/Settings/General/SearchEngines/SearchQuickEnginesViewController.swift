@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import Shared
+import UIKit
 
 // MARK: - SearchQuickEnginesViewController
 
@@ -15,7 +15,8 @@ class SearchQuickEnginesViewController: UITableViewController {
   struct UX {
     static let iconSize = CGSize(
       width: OpenSearchEngine.preferredIconSize,
-      height: OpenSearchEngine.preferredIconSize)
+      height: OpenSearchEngine.preferredIconSize
+    )
 
     static let headerHeight: CGFloat = 44
   }
@@ -50,13 +51,18 @@ class SearchQuickEnginesViewController: UITableViewController {
 
     tableView.do {
       $0.registerHeaderFooter(SettingsTableSectionHeaderFooterView.self)
-      $0.register(UITableViewCell.self, forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier)
+      $0.register(
+        UITableViewCell.self,
+        forCellReuseIdentifier: Constants.quickSearchEngineRowIdentifier
+      )
       $0.sectionHeaderTopPadding = 5
     }
 
     navigationItem.rightBarButtonItem = editButtonItem
 
-    let footer = SettingsTableSectionHeaderFooterView(frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight))
+    let footer = SettingsTableSectionHeaderFooterView(
+      frame: CGRect(width: tableView.bounds.width, height: UX.headerHeight)
+    )
     tableView.tableFooterView = footer
   }
 
@@ -72,14 +78,18 @@ class SearchQuickEnginesViewController: UITableViewController {
     return searchEngines.orderedEngines.count - 1
   }
 
-  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+  override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView?
+  {
     let headerView = tableView.dequeueReusableHeaderFooter() as SettingsTableSectionHeaderFooterView
     headerView.titleLabel.text = Strings.quickSearchEngines
 
     return headerView
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     var engine: OpenSearchEngine?
 
     // The default engine is not a quick search engine.
@@ -94,7 +104,10 @@ class SearchQuickEnginesViewController: UITableViewController {
       }
     }
 
-    let searchEngineCell = tableView.dequeueReusableCell(withIdentifier: Constants.quickSearchEngineRowIdentifier, for: indexPath).then {
+    let searchEngineCell = tableView.dequeueReusableCell(
+      withIdentifier: Constants.quickSearchEngineRowIdentifier,
+      for: indexPath
+    ).then {
       $0.showsReorderControl = true
       $0.accessoryView = toggle
       $0.selectionStyle = .none
@@ -111,11 +124,18 @@ class SearchQuickEnginesViewController: UITableViewController {
     return searchEngineCell
   }
 
-  override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
     return UX.headerHeight
   }
 
-  override func tableView(_ tableView: UITableView, moveRowAt indexPath: IndexPath, to newIndexPath: IndexPath) {
+  override func tableView(
+    _ tableView: UITableView,
+    moveRowAt indexPath: IndexPath,
+    to newIndexPath: IndexPath
+  ) {
     // The first engine (default engine) is not shown in the list, so the indices are off-by-1.
     let index = indexPath.item + 1
     let newIndex = newIndexPath.item + 1
@@ -125,11 +145,17 @@ class SearchQuickEnginesViewController: UITableViewController {
     tableView.reloadData()
   }
 
-  override func tableView(_ tableView: UITableView, editingStyleForRowAt indexPath: IndexPath) -> UITableViewCell.EditingStyle {
+  override func tableView(
+    _ tableView: UITableView,
+    editingStyleForRowAt indexPath: IndexPath
+  ) -> UITableViewCell.EditingStyle {
     return .none
   }
 
-  override func tableView(_ tableView: UITableView, shouldIndentWhileEditingRowAt indexPath: IndexPath) -> Bool {
+  override func tableView(
+    _ tableView: UITableView,
+    shouldIndentWhileEditingRowAt indexPath: IndexPath
+  ) -> Bool {
     return false
   }
 }

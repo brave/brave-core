@@ -15,7 +15,7 @@ extension BraveCore.WebImageDownloader: WebImageDownloaderType {
       }
     }
   }
-  
+
   @MainActor public func imageFromData(data: Data) async -> UIImage? {
     WebImageDownloader.image(from: data)
   }

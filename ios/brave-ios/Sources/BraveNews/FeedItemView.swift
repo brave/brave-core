@@ -2,9 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Foundation
 import Shared
-import BraveUI
 import UIKit
 
 /// Defines the view for displaying a specific feed item given a specific layout
@@ -72,7 +72,10 @@ public class FeedItemView: UIView {
       thumbnailImageView.snp.remakeConstraints { maker in
         switch imageLayout {
         case .aspectRatio(let ratio):
-          precondition(!ratio.isZero, "Invalid aspect ratio of 0 for component: \(component) in feed item layout: \(layout)")
+          precondition(
+            !ratio.isZero,
+            "Invalid aspect ratio of 0 for component: \(component) in feed item layout: \(layout)"
+          )
           maker.height.equalTo(thumbnailImageView.snp.width).multipliedBy(1.0 / ratio)
         case .fixedSize(let size):
           maker.size.equalTo(size)
@@ -147,7 +150,11 @@ public class FeedItemView: UIView {
       }
       return labels.joined(separator: ". ")
     }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 }
 
@@ -177,7 +184,9 @@ extension FeedItemView {
 
   public class PromotedButton: UIControl {
 
-    private let image = UIImageView(image: UIImage(named: "graph-up", in: .module, compatibleWith: nil)!.template).then {
+    private let image = UIImageView(
+      image: UIImage(named: "graph-up", in: .module, compatibleWith: nil)!.template
+    ).then {
       $0.setContentHuggingPriority(.required, for: .horizontal)
       $0.setContentCompressionResistancePriority(.required, for: .horizontal)
       $0.tintColor = UIColor(white: 1.0, alpha: 0.8)
@@ -217,7 +226,11 @@ extension FeedItemView {
 
     public override var accessibilityLabel: String? {
       get { label.text }
-      set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+      set {
+        assertionFailure(
+          "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+        )
+      }
     }
 
     @available(*, unavailable)
@@ -228,7 +241,8 @@ extension FeedItemView {
     public override var isHighlighted: Bool {
       didSet {
         UIViewPropertyAnimator(duration: 0.3, dampingRatio: 1.0) {
-          self.backgroundColor = self.isHighlighted ? UIColor(white: 0.0, alpha: 0.6) : UIColor(white: 0.0, alpha: 0.2)
+          self.backgroundColor =
+            self.isHighlighted ? UIColor(white: 0.0, alpha: 0.6) : UIColor(white: 0.0, alpha: 0.2)
         }
         .startAnimation()
       }
@@ -271,10 +285,22 @@ extension FeedItemView {
         return copy
       }
 
-      static let title = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 14.0, weight: .semibold))
-      static let description = LabelConfiguration(numberOfLines: 3, font: .systemFont(ofSize: 13.0, weight: .semibold))
-      static let date = LabelConfiguration(numberOfLines: 1, font: .systemFont(ofSize: 11.0, weight: .semibold))
-      static let brand = LabelConfiguration(numberOfLines: 0, font: .systemFont(ofSize: 13.0, weight: .semibold))
+      static let title = LabelConfiguration(
+        numberOfLines: 0,
+        font: .systemFont(ofSize: 14.0, weight: .semibold)
+      )
+      static let description = LabelConfiguration(
+        numberOfLines: 3,
+        font: .systemFont(ofSize: 13.0, weight: .semibold)
+      )
+      static let date = LabelConfiguration(
+        numberOfLines: 1,
+        font: .systemFont(ofSize: 11.0, weight: .semibold)
+      )
+      static let brand = LabelConfiguration(
+        numberOfLines: 0,
+        font: .systemFont(ofSize: 13.0, weight: .semibold)
+      )
     }
     /// The components that represent the appropriate UI in a feed item view
     /// or container to hold said UI
@@ -286,7 +312,10 @@ extension FeedItemView {
       case title(_ labelConfiguration: LabelConfiguration)
       case date(_ labelConfiguration: LabelConfiguration = .date)
       case description(_ labelConfiguration: LabelConfiguration = .description)
-      case brand(viewingMode: BrandContainerView.ViewingMode = .automatic, labelConfiguration: LabelConfiguration = .brand)
+      case brand(
+        viewingMode: BrandContainerView.ViewingMode = .automatic,
+        labelConfiguration: LabelConfiguration = .brand
+      )
       case promotedButton
       case callToActionButton
     }
@@ -298,7 +327,8 @@ extension FeedItemView {
       func _height(for component: Component) -> CGFloat {
         switch component {
         case .stack(let stack):
-          return stack.children.reduce(0.0, { return $0 + _height(for: $1) }) + stack.padding.top + stack.padding.bottom
+          return stack.children.reduce(0.0, { return $0 + _height(for: $1) }) + stack.padding.top
+            + stack.padding.bottom
         case .customSpace(let space):
           return space
         case .flexibleSpace(let minHeight):
@@ -311,13 +341,15 @@ extension FeedItemView {
             return width / ratio
           }
         case .title(let configuration), .date(let configuration), .description(let configuration):
-          return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 3 : CGFloat(configuration.numberOfLines))
+          return configuration.font.pointSize
+            * (configuration.numberOfLines == 0 ? 3 : CGFloat(configuration.numberOfLines))
         case .brand(let viewingMode, let configuration):
           switch viewingMode {
           case .automatic, .alwaysLogo:
             return 20.0
           case .alwaysText:
-            return configuration.font.pointSize * (configuration.numberOfLines == 0 ? 1 : CGFloat(configuration.numberOfLines))
+            return configuration.font.pointSize
+              * (configuration.numberOfLines == 0 ? 1 : CGFloat(configuration.numberOfLines))
           }
         case .promotedButton:
           return 22.0
@@ -365,7 +397,7 @@ extension FeedItemView {
         ]
       )
     )
-    
+
     /// Defines a feed item layout where the logo resides on the top wth leading alignment
     /// and  underneath is a padded label stack with the title,
     /// description, space and finally the button
@@ -397,9 +429,11 @@ extension FeedItemView {
               padding: UIEdgeInsets(top: 12, left: 0, bottom: 12, right: 12),
               children: [
                 .title(.init(numberOfLines: 2, font: .systemFont(ofSize: 18.0, weight: .semibold))),
-                .description(.init(numberOfLines: 3, font: .systemFont(ofSize: 16.0, weight: .medium))),
+                .description(
+                  .init(numberOfLines: 3, font: .systemFont(ofSize: 16.0, weight: .medium))
+                ),
                 .flexibleSpace(minHeight: 36),
-                .callToActionButton
+                .callToActionButton,
               ]
             )
           ),

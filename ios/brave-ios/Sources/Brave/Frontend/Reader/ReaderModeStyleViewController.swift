@@ -2,17 +2,20 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 
 protocol ReaderModeStyleViewControllerDelegate {
-  func readerModeStyleViewController(_ readerModeStyleViewController: ReaderModeStyleViewController, didConfigureStyle style: ReaderModeStyle)
+  func readerModeStyleViewController(
+    _ readerModeStyleViewController: ReaderModeStyleViewController,
+    didConfigureStyle style: ReaderModeStyle
+  )
 }
 
 class ReaderModeStyleViewController: UIViewController {
-  
+
   // MARK: Design
-  
+
   private struct UX {
     static let width = 270
     static let height = 4 * rowHeight
@@ -24,7 +27,7 @@ class ReaderModeStyleViewController: UIViewController {
     static let brightnessSliderWidth = 140
     static let brightnessIconOffset = 10
   }
-  
+
   var delegate: ReaderModeStyleViewControllerDelegate?
   var readerModeStyle: ReaderModeStyle
 
@@ -159,7 +162,9 @@ class ReaderModeStyleViewController: UIViewController {
       make.width.equalTo(UX.brightnessSliderWidth)
     }
 
-    let brightnessMinImageView = UIImageView(image: UIImage(named: "brightnessMin", in: .module, compatibleWith: nil)!.template)
+    let brightnessMinImageView = UIImageView(
+      image: UIImage(named: "brightnessMin", in: .module, compatibleWith: nil)!.template
+    )
     brightnessMinImageView.tintColor = .braveLabel
     brightnessRow.addSubview(brightnessMinImageView)
 
@@ -168,7 +173,9 @@ class ReaderModeStyleViewController: UIViewController {
       make.right.equalTo(slider.snp.left).offset(-UX.brightnessIconOffset)
     }
 
-    let brightnessMaxImageView = UIImageView(image: UIImage(named: "brightnessMax", in: .module, compatibleWith: nil)!.template)
+    let brightnessMaxImageView = UIImageView(
+      image: UIImage(named: "brightnessMax", in: .module, compatibleWith: nil)!.template
+    )
     brightnessMaxImageView.tintColor = .braveLabel
     brightnessRow.addSubview(brightnessMaxImageView)
 
@@ -182,7 +189,7 @@ class ReaderModeStyleViewController: UIViewController {
     selectTheme(readerModeStyle.theme)
     slider.value = Float(UIScreen.main.brightness)
   }
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
 
@@ -277,19 +284,25 @@ class FontTypeButton: UIButton {
   convenience init(fontType: ReaderModeFontType) {
     self.init(frame: .zero)
     self.fontType = fontType
-    
+
     setTitleColor(.braveLabel, for: .selected)
     setTitleColor(.secondaryBraveLabel, for: [])
     backgroundColor = .braveBackground
     accessibilityHint = Strings.readerModeFontTypeButtonAccessibilityHint
-    
+
     switch fontType {
     case .sansSerif:
       setTitle(Strings.readerModeFontButtonSansSerifTitle, for: [])
-      titleLabel?.font = UIFont(name: "FiraSans-Book", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
+      titleLabel?.font = UIFont(
+        name: "FiraSans-Book",
+        size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize
+      )
     case .serif:
       setTitle(Strings.readerModeFontButtonSerifTitle, for: [])
-      titleLabel?.font = UIFont(name: "NewYorkMedium-Regular", size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize)
+      titleLabel?.font = UIFont(
+        name: "NewYorkMedium-Regular",
+        size: DynamicFontHelper.defaultHelper.ReaderStandardFontSize
+      )
     }
   }
 }
@@ -324,7 +337,10 @@ class FontSizeButton: UIButton {
     }
 
     // TODO Does this need to change with the selected font type? Not sure if makes sense for just +/-
-    titleLabel?.font = UIFont(name: "FiraSans-Light", size: DynamicFontHelper.defaultHelper.ReaderBigFontSize)
+    titleLabel?.font = UIFont(
+      name: "FiraSans-Light",
+      size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+    )
   }
 }
 
@@ -346,9 +362,15 @@ class FontSizeLabel: UILabel {
     didSet {
       switch fontType {
       case .sansSerif:
-        font = UIFont(name: "FiraSans-Book", size: DynamicFontHelper.defaultHelper.ReaderBigFontSize)
+        font = UIFont(
+          name: "FiraSans-Book",
+          size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+        )
       case .serif:
-        font = UIFont(name: "NewYorkMedium-Regular", size: DynamicFontHelper.defaultHelper.ReaderBigFontSize)
+        font = UIFont(
+          name: "NewYorkMedium-Regular",
+          size: DynamicFontHelper.defaultHelper.ReaderBigFontSize
+        )
       }
     }
   }
@@ -371,7 +393,8 @@ class ThemeButton: UIButton {
 
   private func themeBorders() {
     layer.borderWidth = isSelected ? 2 : 1
-    layer.borderColor = isSelected ? UIColor.braveBlurpleTint.cgColor : UIColor.braveSeparator.cgColor
+    layer.borderColor =
+      isSelected ? UIColor.braveBlurpleTint.cgColor : UIColor.braveSeparator.cgColor
   }
 
   override var isSelected: Bool {

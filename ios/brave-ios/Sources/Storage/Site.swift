@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 
 public protocol Identifiable: Equatable {
   var id: Int? { get set }
@@ -18,7 +18,7 @@ public func == <T>(lhs: T, rhs: T) -> Bool where T: Identifiable {
 open class Site: Identifiable, Hashable {
   public enum SiteType {
     case unknown, bookmark, history, tab
-    
+
     public var icon: UIImage? {
       switch self {
       case .history:
@@ -32,7 +32,7 @@ open class Site: Identifiable, Hashable {
       }
     }
   }
-  
+
   open var id: Int?
   var guid: String?
   // The id of associated Tab - Used for Tab Suggestions
@@ -51,7 +51,13 @@ open class Site: Identifiable, Hashable {
     self.init(url: url, title: title, siteType: .unknown, guid: nil, tabID: nil)
   }
 
-  public init(url: String, title: String, siteType: SiteType, guid: String? = nil, tabID: String? = nil) {
+  public init(
+    url: String,
+    title: String,
+    siteType: SiteType,
+    guid: String? = nil,
+    tabID: String? = nil
+  ) {
     self.url = url
     self.title = title
     self.siteType = siteType

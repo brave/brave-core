@@ -43,7 +43,10 @@ class BottomSheetViewController: UIViewController {
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(
+      UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template,
+      for: .normal
+    )
     $0.tintColor = .lightGray
   }
 
@@ -60,7 +63,12 @@ class BottomSheetViewController: UIViewController {
         backgroundOverlayView.alpha = (maxY - yPosition) / maxY
 
         let newFrame = contentView.frame
-        contentView.frame = CGRect(x: newFrame.minX, y: yPosition, width: newFrame.width, height: newFrame.height)
+        contentView.frame = CGRect(
+          x: newFrame.minX,
+          y: yPosition,
+          width: newFrame.width,
+          height: newFrame.height
+        )
         view.layoutIfNeeded()
       }
 
@@ -99,7 +107,8 @@ class BottomSheetViewController: UIViewController {
   }
 
   private var isLandscapePhone: Bool {
-    traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isLandscape
+    traitCollection.userInterfaceIdiom == .phone
+      && UIApplication.shared.statusBarOrientation.isLandscape
   }
 
   // MARK: - Lifecycle
@@ -119,7 +128,10 @@ class BottomSheetViewController: UIViewController {
 
     contentView.backgroundColor = .white
 
-    let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+    let panGestureRecognizer = UIPanGestureRecognizer(
+      target: self,
+      action: #selector(handlePanGesture)
+    )
     contentView.addGestureRecognizer(panGestureRecognizer)
 
     contentView.addSubview(handleView)
@@ -217,7 +229,8 @@ class BottomSheetViewController: UIViewController {
 
     let projectedVelocity = project(
       initialVelocity: pan.velocity(in: contentView).y,
-      decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+      decelerationRate: UIScrollView.DecelerationRate.normal.rawValue
+    )
 
     let nextYPosition: CGFloat
 

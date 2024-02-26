@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import BraveCore
-import DesignSystem
-import Strings
 import Data
+import DesignSystem
+import Foundation
 import Preferences
+import Strings
+import SwiftUI
 
 public protocol WalletSiteConnectionDelegate {
   /// A list of accounts connected to this webpage (addresses)
@@ -28,7 +28,7 @@ public struct WalletPanelContainerView: View {
   var openWalletURLAction: ((URL) -> Void)?
   /// An invisible `UIView` background lives in SwiftUI for UIKit API to reference later
   var buySendSwapBackground: InvisibleUIView = .init()
-  
+
   private enum VisibleScreen: Equatable {
     case loading
     case panel
@@ -50,12 +50,12 @@ public struct WalletPanelContainerView: View {
       return .loading
     }
     // keyring fetched & wallet setup, wallet is locked
-    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible { // wallet is locked
+    if keyringStore.isWalletLocked || keyringStore.isRestoreFromUnlockBiometricsPromptVisible {  // wallet is locked
       return .unlock
     }
     return .panel
   }
-  
+
   private var lockedView: some View {
     VStack(spacing: 36) {
       Image("graphic-lock", bundle: .module)
@@ -77,7 +77,7 @@ public struct WalletPanelContainerView: View {
     .frame(maxWidth: .infinity)
     .background(Color(.braveBackground).ignoresSafeArea())
   }
-  
+
   private var setupView: some View {
     ScrollView(.vertical) {
       VStack(spacing: 36) {
@@ -103,13 +103,13 @@ public struct WalletPanelContainerView: View {
     .frame(maxWidth: .infinity)
     .background(Color(.braveBackground).ignoresSafeArea())
   }
-  
+
   public var body: some View {
     ZStack {
       switch visibleScreen {
       case .loading:
         lockedView
-          .hidden() // used for sizing to prevent #5378
+          .hidden()  // used for sizing to prevent #5378
           .accessibilityHidden(true)
         Color.white
           .overlay(ProgressView())
@@ -152,7 +152,7 @@ public struct WalletPanelContainerView: View {
       presentWalletWithContext?(.panelUnlockOrSetup)
     }
     .onChange(of: keyringStore.isLoaded) { newValue in
-      guard newValue else { return } // KeyringStore loaded
+      guard newValue else { return }  // KeyringStore loaded
       handleKeyringStoreLoaded()
     }
     .onAppear {
@@ -164,12 +164,13 @@ public struct WalletPanelContainerView: View {
     }
     .environment(
       \.openURL,
-       .init(handler: { [openWalletURLAction] url in
-         openWalletURLAction?(url)
-         return .handled
-       }))
+      .init(handler: { [openWalletURLAction] url in
+        openWalletURLAction?(url)
+        return .handled
+      })
+    )
   }
-  
+
   /// Flag to help prevent race condition between panel appearing on screen and KeyringStore `isLoaded`.
   @State private var didHandleKeyringLoaded: Bool = false
   /// Present unlock if displayed locked state (unless manually locked), or onboarding if displaying
@@ -193,20 +194,21 @@ struct WalletPanelView: View {
   @ObservedObject var cryptoStore: CryptoStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var accountActivityStore: AccountActivityStore
-  @ObservedObject var allowSolProviderAccess: Preferences.Option<Bool> = Preferences.Wallet.allowSolProviderAccess
+  @ObservedObject var allowSolProviderAccess: Preferences.Option<Bool> = Preferences.Wallet
+    .allowSolProviderAccess
   @ObservedObject var tabDappStore: TabDappStore
   var origin: URLOrigin
   var presentWalletWithContext: (PresentingContext) -> Void
   var presentBuySendSwap: () -> Void
   var buySendSwapBackground: InvisibleUIView
-  
+
   @Environment(\.openURL) private var openWalletURL
   @Environment(\.pixelLength) private var pixelLength
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
-  
+
   private let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
-  
+
   init(
     keyringStore: KeyringStore,
     cryptoStore: CryptoStore,
@@ -227,18 +229,18 @@ struct WalletPanelView: View {
     self.presentWalletWithContext = presentWalletWithContext
     self.presentBuySendSwap = presentBuySendSwap
     self.buySendSwapBackground = buySendSwapBackground
-    
+
     currencyFormatter.currencyCode = accountActivityStore.currencyCode
   }
-  
+
   @State private var ethPermittedAccounts: [String] = []
   @State private var isConnectHidden: Bool = false
-  
+
   enum ConnectionStatus {
     case connected
     case disconnected
     case blocked
-    
+
     func title(_ coin: BraveWallet.CoinType) -> String {
       switch self {
       case .connected:
@@ -254,7 +256,7 @@ struct WalletPanelView: View {
       }
     }
   }
-  
+
   private var accountStatus: ConnectionStatus {
     let selectedAccount = keyringStore.selectedAccount
     switch selectedAccount.coin {
@@ -264,7 +266,8 @@ struct WalletPanelView: View {
       if !allowSolProviderAccess.value {
         return .blocked
       } else {
-        return tabDappStore.solConnectedAddresses.contains(selectedAccount.address) ? .connected : .disconnected
+        return tabDappStore.solConnectedAddresses.contains(selectedAccount.address)
+          ? .connected : .disconnected
       }
     case .fil, .btc:
       return .blocked
@@ -272,18 +275,23 @@ struct WalletPanelView: View {
       return .blocked
     }
   }
-  
+
   @ViewBuilder private var connectButton: some View {
     Button {
       if accountStatus == .blocked {
         presentWalletWithContext(.settings)
       } else {
-        presentWalletWithContext(.editSiteConnection(origin, handler: { accounts in
-          if keyringStore.selectedAccount.coin == .eth {
-            ethPermittedAccounts = accounts
-          }
-          isConnectHidden = isConnectButtonHidden()
-        }))
+        presentWalletWithContext(
+          .editSiteConnection(
+            origin,
+            handler: { accounts in
+              if keyringStore.selectedAccount.coin == .eth {
+                ethPermittedAccounts = accounts
+              }
+              isConnectHidden = isConnectButtonHidden()
+            }
+          )
+        )
       }
     } label: {
       HStack {
@@ -318,7 +326,7 @@ struct WalletPanelView: View {
       .contentShape(Capsule())
     }
   }
-  
+
   private var networkPickerButton: some View {
     NetworkPicker(
       style: .init(textColor: .braveLabel, borderColor: .secondaryButtonTint),
@@ -327,7 +335,7 @@ struct WalletPanelView: View {
       networkStore: networkStore
     )
   }
-  
+
   private var pendingRequestsButton: some View {
     Button(action: { presentWalletWithContext(.pendingRequests) }) {
       Image(braveSystemName: "leo.notification.dot")
@@ -336,7 +344,7 @@ struct WalletPanelView: View {
         .contentShape(Rectangle())
     }
   }
-  
+
   private var fullscreenButton: some View {
     Button {
       presentWalletWithContext(.default)
@@ -349,7 +357,7 @@ struct WalletPanelView: View {
     }
     .accessibilityLabel(Strings.Wallet.walletFullScreenAccessibilityTitle)
   }
-  
+
   private var menuButton: some View {
     Menu {
       Button(action: { keyringStore.lock() }) {
@@ -370,7 +378,7 @@ struct WalletPanelView: View {
     }
     .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
   }
-  
+
   /// A boolean value indicates to hide or unhide `Connect` button
   private func isConnectButtonHidden() -> Bool {
     let account = keyringStore.selectedAccount
@@ -387,7 +395,7 @@ struct WalletPanelView: View {
       return false
     }
   }
-  
+
   var body: some View {
     ScrollView(.vertical, showsIndicators: false) {
       VStack(spacing: 0) {
@@ -412,7 +420,7 @@ struct WalletPanelView: View {
           .padding(.horizontal, 16)
           .padding(.vertical, 4)
           .overlay(
-            Color(.braveLabel).opacity(0.3) // Divider
+            Color(.braveLabel).opacity(0.3)  // Divider
               .frame(height: pixelLength),
             alignment: .bottom
           )
@@ -422,7 +430,7 @@ struct WalletPanelView: View {
             if cryptoStore.pendingRequest != nil {
               // fake bell icon for layout
               pendingRequestsButton
-              .hidden()
+                .hidden()
             }
             Spacer()
             Text(Strings.Wallet.braveWallet)
@@ -440,7 +448,7 @@ struct WalletPanelView: View {
           .padding(.horizontal, 16)
           .padding(.vertical, 4)
           .overlay(
-            Color(.braveLabel).opacity(0.3) // Divider
+            Color(.braveLabel).opacity(0.3)  // Divider
               .frame(height: pixelLength),
             alignment: .bottom
           )
@@ -464,7 +472,7 @@ struct WalletPanelView: View {
                 .frame(width: blockieSize, height: blockieSize)
                 .overlay(
                   RoundedRectangle(cornerRadius: 4)
-                  .strokeBorder(Color(.braveLabel).opacity(0.6), style: .init(lineWidth: 1))
+                    .strokeBorder(Color(.braveLabel).opacity(0.6), style: .init(lineWidth: 1))
                 )
                 .overlay(
                   Image(systemName: "chevron.down.circle.fill")
@@ -489,12 +497,25 @@ struct WalletPanelView: View {
           VStack(spacing: 4) {
             let nativeAsset = accountActivityStore.userAssets.first(where: {
               $0.token.symbol == networkStore.selectedChainForOrigin.symbol
-              && $0.token.chainId == networkStore.selectedChainIdForOrigin
+                && $0.token.chainId == networkStore.selectedChainIdForOrigin
             })
-            Text(String(format: "%.04f %@", nativeAsset?.totalBalance ?? 0.0, networkStore.selectedChainForOrigin.symbol))
-              .font(.title2.weight(.bold))
-            Text(currencyFormatter.string(from: NSNumber(value: (Double(nativeAsset?.price ?? "") ?? 0) * (nativeAsset?.totalBalance ?? 0.0))) ?? "")
-              .font(.callout)
+            Text(
+              String(
+                format: "%.04f %@",
+                nativeAsset?.totalBalance ?? 0.0,
+                networkStore.selectedChainForOrigin.symbol
+              )
+            )
+            .font(.title2.weight(.bold))
+            Text(
+              currencyFormatter.string(
+                from: NSNumber(
+                  value: (Double(nativeAsset?.price ?? "") ?? 0)
+                    * (nativeAsset?.totalBalance ?? 0.0)
+                )
+              ) ?? ""
+            )
+            .font(.callout)
           }
           .foregroundColor(Color(.braveLabel))
           .padding(.vertical)
@@ -521,7 +542,12 @@ struct WalletPanelView: View {
                 .padding(.vertical, 8)
             }
           }
-          .overlay(RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(Color(.braveLabel).opacity(0.6), style: .init(lineWidth: pixelLength)))
+          .overlay(
+            RoundedRectangle(cornerRadius: 8, style: .continuous).strokeBorder(
+              Color(.braveLabel).opacity(0.6),
+              style: .init(lineWidth: pixelLength)
+            )
+          )
         }
         .padding(EdgeInsets(top: 12, leading: 12, bottom: 24, trailing: 12))
       }
@@ -529,7 +555,7 @@ struct WalletPanelView: View {
     .foregroundColor(.white)
     .background(
       Color(.braveGroupedBackground)
-      .ignoresSafeArea()
+        .ignoresSafeArea()
     )
     .onChange(of: cryptoStore.pendingRequest) { newValue in
       if newValue != nil {
@@ -540,28 +566,48 @@ struct WalletPanelView: View {
       isConnectHidden = isConnectButtonHidden()
     }
     .onChange(of: tabDappStore.latestPendingPermissionRequest) { newValue in
-      if let request = newValue, request.requestingOrigin == origin, request.coinType == keyringStore.selectedAccount.coin {
-        presentWalletWithContext(.requestPermissions(request, onPermittedAccountsUpdated: { accounts in
-          if request.coinType == .eth {
-            ethPermittedAccounts = accounts
-          } else if request.coinType == .sol {
-            isConnectHidden = false
-          }
-          tabDappStore.latestPendingPermissionRequest = nil
-        }))
+      if let request = newValue, request.requestingOrigin == origin,
+        request.coinType == keyringStore.selectedAccount.coin
+      {
+        presentWalletWithContext(
+          .requestPermissions(
+            request,
+            onPermittedAccountsUpdated: { accounts in
+              if request.coinType == .eth {
+                ethPermittedAccounts = accounts
+              } else if request.coinType == .sol {
+                isConnectHidden = false
+              }
+              tabDappStore.latestPendingPermissionRequest = nil
+            }
+          )
+        )
       }
     }
     .onAppear {
-      if let accountCreationRequest = WalletProviderAccountCreationRequestManager.shared.firstPendingRequest(for: origin, coinTypes: WalletConstants.supportedCoinTypes(.dapps).elements) {
+      if let accountCreationRequest = WalletProviderAccountCreationRequestManager.shared
+        .firstPendingRequest(
+          for: origin,
+          coinTypes: WalletConstants.supportedCoinTypes(.dapps).elements
+        )
+      {
         presentWalletWithContext(.createAccount(accountCreationRequest))
-      } else if let request = WalletProviderPermissionRequestsManager.shared.firstPendingRequest(for: origin, coinTypes: [.eth, .sol]) {
-        presentWalletWithContext(.requestPermissions(request, onPermittedAccountsUpdated: { accounts in
-          if request.coinType == .eth {
-            ethPermittedAccounts = accounts
-          } else if request.coinType == .sol {
-            isConnectHidden = false
-          }
-        }))
+      } else if let request = WalletProviderPermissionRequestsManager.shared.firstPendingRequest(
+        for: origin,
+        coinTypes: [.eth, .sol]
+      ) {
+        presentWalletWithContext(
+          .requestPermissions(
+            request,
+            onPermittedAccountsUpdated: { accounts in
+              if request.coinType == .eth {
+                ethPermittedAccounts = accounts
+              } else if request.coinType == .sol {
+                isConnectHidden = false
+              }
+            }
+          )
+        )
       } else if cryptoStore.pendingRequest != nil {
         // race condition for when `pendingRequest` is assigned in CryptoStore before this view visible
         presentWalletWithContext(.pendingRequests)
@@ -571,9 +617,9 @@ struct WalletPanelView: View {
       if let url = origin.url, let accounts = Domain.walletPermissions(forUrl: url, coin: .eth) {
         ethPermittedAccounts = accounts
       }
-            
+
       isConnectHidden = isConnectButtonHidden()
-      
+
       accountActivityStore.update()
     }
   }

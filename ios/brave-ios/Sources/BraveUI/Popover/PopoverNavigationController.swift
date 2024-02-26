@@ -64,7 +64,9 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
     let senderSelector = Selector(senderKeyPath)
     let handlerSelector = Selector(String(format: "handleNav%@nsition:", "igationTra"))
     if responds(to: senderSelector) {
-      if let controller = value(forKeyPath: senderKeyPath) as? NSObject, controller.responds(to: handlerSelector) {
+      if let controller = value(forKeyPath: senderKeyPath) as? NSObject,
+        controller.responds(to: handlerSelector)
+      {
         let pan = UIPanGestureRecognizer(target: controller, action: handlerSelector)
         pan.delegate = self
         view.addGestureRecognizer(pan)
@@ -90,7 +92,9 @@ open class PopoverNavigationController: UINavigationController, PopoverContentCo
     return self.visibleViewController === self.viewControllers.first
   }
 
-  override public func preferredContentSizeDidChange(forChildContentContainer container: UIContentContainer) {
+  override public func preferredContentSizeDidChange(
+    forChildContentContainer container: UIContentContainer
+  ) {
     self.preferredContentSize = container.preferredContentSize
   }
 

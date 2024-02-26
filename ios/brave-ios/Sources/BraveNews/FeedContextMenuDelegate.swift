@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import Shared
+import UIKit
 
 /// Handles context menu related interactions on an item in the feed
 class FeedContextMenuDelegate: NSObject, UIContextMenuInteractionDelegate {
@@ -25,14 +25,21 @@ class FeedContextMenuDelegate: NSObject, UIContextMenuInteractionDelegate {
   /// its own padding. A dark background is included in the padded preview
   let padPreview: Bool
 
-  init(performedPreviewAction: @escaping () -> Void, menu: @escaping () -> UIMenu?, padPreview: Bool = false) {
+  init(
+    performedPreviewAction: @escaping () -> Void,
+    menu: @escaping () -> UIMenu?,
+    padPreview: Bool = false
+  ) {
     self.performedPreviewAction = performedPreviewAction
     self.menu = menu
     self.padPreview = padPreview
     super.init()
   }
 
-  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, configurationForMenuAtLocation location: CGPoint) -> UIContextMenuConfiguration? {
+  func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    configurationForMenuAtLocation location: CGPoint
+  ) -> UIContextMenuConfiguration? {
     guard let menu = self.menu() else { return nil }
     return UIContextMenuConfiguration(
       identifier: Self.identifier as NSString,
@@ -43,7 +50,11 @@ class FeedContextMenuDelegate: NSObject, UIContextMenuInteractionDelegate {
     )
   }
 
-  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+  func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration,
+    animator: UIContextMenuInteractionCommitAnimating
+  ) {
     animator.addCompletion(performedPreviewAction)
   }
 
@@ -52,18 +63,27 @@ class FeedContextMenuDelegate: NSObject, UIContextMenuInteractionDelegate {
     let preview = UITargetedPreview(view: view)
     if padPreview {
       preview.parameters.backgroundColor = UIColor(white: 0.3, alpha: 1.0)
-      preview.parameters.visiblePath = UIBezierPath(roundedRect: view.bounds.insetBy(dx: -10, dy: -10), cornerRadius: 10)
+      preview.parameters.visiblePath = UIBezierPath(
+        roundedRect: view.bounds.insetBy(dx: -10, dy: -10),
+        cornerRadius: 10
+      )
     } else {
       preview.parameters.backgroundColor = .clear
     }
     return preview
   }
 
-  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    previewForHighlightingMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     targetedPreview(for: interaction)
   }
 
-  func contextMenuInteraction(_ interaction: UIContextMenuInteraction, previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    previewForDismissingMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     targetedPreview(for: interaction)
   }
 }

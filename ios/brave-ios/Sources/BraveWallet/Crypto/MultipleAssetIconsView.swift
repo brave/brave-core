@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 struct MultipleAssetIconsView: View {
-  
+
   let tokens: [BraveWallet.BlockchainToken]
   let maxBlockies = 3
   @ScaledMetric var iconSize = 24
   var maxIconSize: CGFloat = 32
   @ScaledMetric var blockieDotSize = 2.0
-  
+
   var body: some View {
     MultipleCircleIconView(
       models: tokens,
@@ -24,7 +24,7 @@ struct MultipleAssetIconsView: View {
     ) { token in
       AssetIcon(
         token: token,
-        network: nil // not shown
+        network: nil  // not shown
       )
     }
   }

@@ -3,22 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveShared
+import Data
 import Foundation
 import Shared
-import BraveShared
-import BraveCore
-import Data
 import os.log
 
 class BraveCoreImportExportUtility {
 
   // Import an array of bookmarks into BraveCore
-  func importBookmarks(from array: [BraveImportedBookmark], _ completion: @escaping (_ success: Bool) -> Void) {
-    precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
+  func importBookmarks(
+    from array: [BraveImportedBookmark],
+    _ completion: @escaping (_ success: Bool) -> Void
+  ) {
+    precondition(
+      state == .none,
+      "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
+    )
 
     state = .importing
     self.queue.async {
-      self.importer.import(from: array, topLevelFolderName: Strings.Sync.importFolderName) { state in
+      self.importer.import(from: array, topLevelFolderName: Strings.Sync.importFolderName) {
+        state in
         guard state != .started else { return }
 
         self.state = .none
@@ -31,7 +38,10 @@ class BraveCoreImportExportUtility {
 
   // Import bookmarks from a file into BraveCore
   func importBookmarks(from path: URL, _ completion: @escaping (_ success: Bool) -> Void) {
-    precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
+    precondition(
+      state == .none,
+      "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
+    )
 
     guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
@@ -52,16 +62,20 @@ class BraveCoreImportExportUtility {
         }
         return
       }
-      
-      self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: true) { [weak self] state, bookmarks in
+
+      self.importer.import(
+        fromFile: nativePath,
+        topLevelFolderName: Strings.Sync.importFolderName,
+        automaticImport: true
+      ) { [weak self] state, bookmarks in
         guard let self else {
           // Each call to startAccessingSecurityScopedResource must be balanced with a call to stopAccessingSecurityScopedResource
           // (Note: this is not reference counted)
           path.stopAccessingSecurityScopedResource()
           return
         }
-        
-        guard state != .started else { return }    
+
+        guard state != .started else { return }
         path.stopAccessingSecurityScopedResource()
 
         do {
@@ -83,8 +97,14 @@ class BraveCoreImportExportUtility {
   }
 
   // Import bookmarks from a file into an array
-  func importBookmarks(from path: URL, _ completion: @escaping (_ success: Bool, _ bookmarks: [BraveImportedBookmark]) -> Void) {
-    precondition(state == .none, "Bookmarks Import - Error Importing while an Import/Export operation is in progress")
+  func importBookmarks(
+    from path: URL,
+    _ completion: @escaping (_ success: Bool, _ bookmarks: [BraveImportedBookmark]) -> Void
+  ) {
+    precondition(
+      state == .none,
+      "Bookmarks Import - Error Importing while an Import/Export operation is in progress"
+    )
 
     guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Import - Invalid FileSystem Path")
@@ -104,16 +124,20 @@ class BraveCoreImportExportUtility {
         }
         return
       }
-      
-      self.importer.import(fromFile: nativePath, topLevelFolderName: Strings.Sync.importFolderName, automaticImport: false) { [weak self] state, bookmarks in
+
+      self.importer.import(
+        fromFile: nativePath,
+        topLevelFolderName: Strings.Sync.importFolderName,
+        automaticImport: false
+      ) { [weak self] state, bookmarks in
         guard let self else {
           path.stopAccessingSecurityScopedResource()
           return
         }
-        
+
         guard state != .started else { return }
         path.stopAccessingSecurityScopedResource()
-        
+
         do {
           try self.rethrow(state)
           self.state = .none
@@ -134,7 +158,10 @@ class BraveCoreImportExportUtility {
 
   // Export bookmarks from BraveCore to a file
   func exportBookmarks(to path: URL, _ completion: @escaping (_ success: Bool) -> Void) {
-    precondition(state == .none, "Bookmarks Import - Error Exporting while an Import/Export operation is in progress")
+    precondition(
+      state == .none,
+      "Bookmarks Import - Error Exporting while an Import/Export operation is in progress"
+    )
 
     guard let nativePath = nativeURLPathFromURL(path) else {
       Logger.module.error("Bookmarks Export - Invalid FileSystem Path")

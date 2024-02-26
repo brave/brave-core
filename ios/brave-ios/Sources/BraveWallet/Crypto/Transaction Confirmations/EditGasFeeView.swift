@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveCore
-import DesignSystem
-import SwiftUI
-import Strings
 import BigNumber
+import BraveCore
 import BraveUI
+import DesignSystem
+import Foundation
+import Strings
+import SwiftUI
 
 /// Allows the user to edit the gas fee structure of an regular transaction before confirming it
 ///
@@ -27,7 +27,8 @@ struct EditGasFeeView: View {
   @State private var isShowingAlert: Bool = false
 
   private func setup() {
-    perGasPrice = WeiFormatter.weiToDecimalGwei(transaction.ethTxGasPrice.removingHexPrefix, radix: .hex) ?? "0"
+    perGasPrice =
+      WeiFormatter.weiToDecimalGwei(transaction.ethTxGasPrice.removingHexPrefix, radix: .hex) ?? "0"
     // Gas limit is already in Gwei…
     gasLimit = {
       guard let value = BDouble(transaction.ethTxGasLimit.removingHexPrefix, radix: 16) else {

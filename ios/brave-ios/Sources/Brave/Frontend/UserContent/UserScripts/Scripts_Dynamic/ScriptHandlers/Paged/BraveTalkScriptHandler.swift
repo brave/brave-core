@@ -41,12 +41,16 @@ class BraveTalkScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
   private struct Payload: Decodable {
@@ -56,13 +60,13 @@ class BraveTalkScriptHandler: TabContentScript {
     }
     var kind: Kind
     var securityToken: String
-    
+
     enum CodingKeys: String, CodingKey {
       case kind
       case url
       case securityToken = "securityToken"
     }
-    
+
     init(from decoder: Decoder) throws {
       enum RawKindKey: String, Decodable {
         case braveRequestAdsEnabled
@@ -80,7 +84,7 @@ class BraveTalkScriptHandler: TabContentScript {
       }
     }
   }
-  
+
   func userContentController(
     _ userContentController: WKUserContentController,
     didReceiveScriptMessage message: WKScriptMessage,
@@ -90,7 +94,7 @@ class BraveTalkScriptHandler: TabContentScript {
       assertionFailure("Missing required security token.")
       return
     }
-    
+
     let allowedHosts = DomainUserScript.braveTalkHelper.associatedDomains
 
     guard let requestHost = message.frameInfo.request.url?.host,
@@ -101,9 +105,10 @@ class BraveTalkScriptHandler: TabContentScript {
       replyHandler(nil, nil)
       return
     }
-    
+
     guard let json = try? JSONSerialization.data(withJSONObject: message.body, options: []),
-          let payload = try? JSONDecoder().decode(Payload.self, from: json) else {
+      let payload = try? JSONDecoder().decode(Payload.self, from: json)
+    else {
       return
     }
 
@@ -112,8 +117,8 @@ class BraveTalkScriptHandler: TabContentScript {
       handleBraveRequestAdsEnabled(replyHandler)
     case .launchNativeBraveTalk(let url):
       guard let components = URLComponents(string: url),
-            case let room = String(components.path.dropFirst(1)),
-            let jwt = components.queryItems?.first(where: { $0.name == "jwt" })?.value
+        case let room = String(components.path.dropFirst(1)),
+        let jwt = components.queryItems?.first(where: { $0.name == "jwt" })?.value
       else {
         return
       }

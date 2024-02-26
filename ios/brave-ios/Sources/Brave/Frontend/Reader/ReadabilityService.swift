@@ -45,7 +45,11 @@ class ReadabilityOperation: Operation {
 
       let readerMode = ReaderModeScriptHandler(tab: self.tab)
       readerMode.delegate = self
-      self.tab.addContentScript(readerMode, name: ReaderModeScriptHandler.scriptName, contentWorld: ReaderModeScriptHandler.scriptSandbox)
+      self.tab.addContentScript(
+        readerMode,
+        name: ReaderModeScriptHandler.scriptName,
+        contentWorld: ReaderModeScriptHandler.scriptSandbox
+      )
 
       // Load the page in the webview. This either fails with a navigation error, or we
       // get a readability callback. Or it takes too long, in which case the semaphore
@@ -56,7 +60,7 @@ class ReadabilityOperation: Operation {
     if semaphore.wait(timeout: timeout) == .timedOut {
       result = ReadabilityOperationResult.timeout
     }
-    
+
     DispatchQueue.main.async {
       self.tab = nil
     }
@@ -89,24 +93,40 @@ extension ReadabilityOperation: WKNavigationDelegate {
     semaphore.signal()
   }
 
-  func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
+  func webView(
+    _ webView: WKWebView,
+    didFailProvisionalNavigation navigation: WKNavigation!,
+    withError error: Error
+  ) {
     result = ReadabilityOperationResult.error(error as NSError)
     semaphore.signal()
   }
 
   func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
-    webView.evaluateSafeJavaScript(functionName: "\(ReaderModeNamespace).checkReadability", contentWorld: ReaderModeScriptHandler.scriptSandbox)
+    webView.evaluateSafeJavaScript(
+      functionName: "\(ReaderModeNamespace).checkReadability",
+      contentWorld: ReaderModeScriptHandler.scriptSandbox
+    )
   }
 }
 
 extension ReadabilityOperation: ReaderModeScriptHandlerDelegate {
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didChangeReaderModeState state: ReaderModeState, forTab tab: Tab) {
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didChangeReaderModeState state: ReaderModeState,
+    forTab tab: Tab
+  ) {
   }
 
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab) {
+  func readerMode(_ readerMode: ReaderModeScriptHandler, didDisplayReaderizedContentForTab tab: Tab)
+  {
   }
 
-  func readerMode(_ readerMode: ReaderModeScriptHandler, didParseReadabilityResult readabilityResult: ReadabilityResult, forTab tab: Tab) {
+  func readerMode(
+    _ readerMode: ReaderModeScriptHandler,
+    didParseReadabilityResult readabilityResult: ReadabilityResult,
+    forTab tab: Tab
+  ) {
     guard tab == self.tab else {
       return
     }

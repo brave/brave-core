@@ -3,13 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import UIKit
-import SwiftUI
 import BraveCore
-import Introspect
 import BraveUI
+import Foundation
+import Introspect
 import Preferences
+import SwiftUI
+import UIKit
 
 public struct CryptoView: View {
   var walletStore: WalletStore
@@ -19,9 +19,9 @@ public struct CryptoView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   var openWalletURLAction: ((URL) -> Void)?
-  
+
   var appRatingRequestAction: (() -> Void)?
-  
+
   @ObservedObject var isOnboardingCompleted = Preferences.Wallet.isOnboardingCompleted
 
   public init(
@@ -56,7 +56,8 @@ public struct CryptoView: View {
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
       Button(action: {
-        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext {
+        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext
+        {
           request.decisionHandler(.rejected)
           onPermittedAccountsUpdated([])
         }
@@ -269,15 +270,19 @@ public struct CryptoView: View {
     }
     .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .environment(\.openURL, .init(handler: { [openWalletURLAction] url in
-      openWalletURLAction?(url)
-      return .handled
-    }))
+    .environment(
+      \.openURL,
+      .init(handler: { [openWalletURLAction] url in
+        openWalletURLAction?(url)
+        return .handled
+      })
+    )
     .environment(
       \.appRatingRequestAction,
       .init(action: { [appRatingRequestAction] in
         appRatingRequestAction?()
-      }))
+      })
+    )
     .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
@@ -285,7 +290,7 @@ public struct CryptoView: View {
       }
     }
   }
-  
+
   private func dismissAction() {
     presentationMode.dismiss()
   }
@@ -363,7 +368,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     )
     .environment(
       \.buySendSwapDestination,
-       Binding(
+      Binding(
         get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
         set: { [weak cryptoStore] destination in
           if cryptoStore?.isPresentingAssetSearch == true {
@@ -374,7 +379,8 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           } else {
             cryptoStore?.buySendSwapDestination = destination
           }
-        })
+        }
+      )
     )
   }
 }

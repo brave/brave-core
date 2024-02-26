@@ -8,7 +8,7 @@ import Foundation
 struct Web3ProviderEvent {
   var name: String
   var arguments: Any?
-  
+
   init(_ name: String, arguments: Any? = nil) {
     self.name = name
     self.arguments = arguments
@@ -17,10 +17,10 @@ struct Web3ProviderEvent {
 
 extension Web3ProviderEvent {
   // MARK: - Common
-  
+
   static let connect: Self = .init("connect")
   static let disconnect: Self = .init("disconnect")
-  
+
   // MARK: - Ethereum
 
   static func ethereumChainChanged(chainId: String) -> Self {

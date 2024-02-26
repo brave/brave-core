@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Data
 import BraveCore
 import BraveShared
 import CoreData
-import Shared
+import Data
+import Foundation
 import ScreenTime
+import Shared
 
 extension BraveHistoryAPI {
 
@@ -26,10 +26,12 @@ extension BraveHistoryAPI {
 
   func suffix(_ maxLength: Int, _ completion: @escaping ([HistoryNode]) -> Void) {
     search(
-      withQuery: nil, maxCount: UInt(max(20, maxLength)),
+      withQuery: nil,
+      maxCount: UInt(max(20, maxLength)),
       completion: { historyResults in
         completion(historyResults.map { $0 })
-      })
+      }
+    )
   }
 
   func byFrequency(query: String, completion: @escaping ([HistoryNode]) -> Void) {
@@ -38,10 +40,12 @@ extension BraveHistoryAPI {
     }
 
     search(
-      withQuery: query, maxCount: 200,
+      withQuery: query,
+      maxCount: 200,
       completion: { historyResults in
         completion(historyResults.map { $0 })
-      })
+      }
+    )
   }
 
   func update(_ historyNode: HistoryNode, customTitle: String?, dateAdded: Date?) {
@@ -53,7 +57,7 @@ extension BraveHistoryAPI {
       historyNode.dateAdded = date
     }
   }
-  
+
   func deleteAll(completion: @escaping () -> Void) {
     var screenTimeHistory: STWebHistory?
     do {
@@ -61,10 +65,10 @@ extension BraveHistoryAPI {
     } catch {
       assertionFailure("STWebHistory could not be initialized: \(error)")
     }
-    
+
     DispatchQueue.main.async {
       self.removeAll {
-        Domain.deleteNonBookmarkedAndClearSiteVisits() {
+        Domain.deleteNonBookmarkedAndClearSiteVisits {
           screenTimeHistory?.deleteAllHistory()
           completion()
         }
@@ -79,8 +83,18 @@ extension BraveHistoryAPI {
   }
 
   private var observer: HistoryServiceListener? {
-    get { objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener) as? HistoryServiceListener }
-    set { objc_setAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener, newValue, .OBJC_ASSOCIATION_RETAIN_NONATOMIC) }
+    get {
+      objc_getAssociatedObject(self, &AssociatedObjectKeys.serviceStateListener)
+        as? HistoryServiceListener
+    }
+    set {
+      objc_setAssociatedObject(
+        self,
+        &AssociatedObjectKeys.serviceStateListener,
+        newValue,
+        .OBJC_ASSOCIATION_RETAIN_NONATOMIC
+      )
+    }
   }
 }
 
@@ -104,7 +118,8 @@ extension BraveHistoryAPI {
               completion()
             }
           }
-        }))
+        })
+      )
     }
   }
 }

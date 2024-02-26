@@ -13,9 +13,7 @@ private class DiskImageStoreErrorType: Error {
   }
 }
 
-/**
- * Disk-backed key-value image store.
- */
+/// Disk-backed key-value image store.
 open class DiskImageStore {
   fileprivate let files: FileAccessor
   fileprivate let filesDir: String
@@ -48,16 +46,17 @@ open class DiskImageStore {
         }
         let imagePath = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
         if let data = try? Data(contentsOf: imagePath),
-           let image = UIImage.imageFromDataThreadSafe(data) {
+          let image = UIImage.imageFromDataThreadSafe(data)
+        {
           continuation.resume(returning: image)
           return
         }
-        
+
         continuation.resume(throwing: DiskImageStoreErrorType(description: "Invalid image data"))
       }
     }
   }
-  
+
   /// Gets an image for the given key if it is in the store.
   open func getSynchronously(_ key: String) throws -> UIImage {
     try queue.sync {
@@ -66,10 +65,11 @@ open class DiskImageStore {
       }
       let imagePath = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
       if let data = try? Data(contentsOf: imagePath),
-         let image = UIImage.imageFromDataThreadSafe(data) {
+        let image = UIImage.imageFromDataThreadSafe(data)
+      {
         return image
       }
-      
+
       throw DiskImageStoreErrorType(description: "Invalid image data")
     }
   }
@@ -81,10 +81,12 @@ open class DiskImageStore {
     return try await withCheckedThrowingContinuation { continuation in
       queue.async {
         if self.keys.contains(key) {
-          continuation.resume(throwing: DiskImageStoreErrorType(description: "Key already in store"))
+          continuation.resume(
+            throwing: DiskImageStoreErrorType(description: "Key already in store")
+          )
           return
         }
-        
+
         let imageURL = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
         if let data = image.jpegData(compressionQuality: self.quality) {
           do {
@@ -96,8 +98,10 @@ open class DiskImageStore {
             Logger.module.error("Unable to write image to disk: \(error.localizedDescription)")
           }
         }
-        
-        continuation.resume(throwing: DiskImageStoreErrorType(description: "Could not write image to file"))
+
+        continuation.resume(
+          throwing: DiskImageStoreErrorType(description: "Could not write image to file")
+        )
       }
     }
   }
@@ -107,16 +111,18 @@ open class DiskImageStore {
     return await withCheckedContinuation { continuation in
       queue.async {
         let keysToDelete = self.keys.subtracting(keys)
-        
+
         for key in keysToDelete {
           let url = URL(fileURLWithPath: self.filesDir).appendingPathComponent(key)
           do {
             try FileManager.default.removeItem(at: url)
           } catch {
-            Logger.module.warning("Failed to remove DiskImageStore item at \(url.absoluteString): \(error.localizedDescription)")
+            Logger.module.warning(
+              "Failed to remove DiskImageStore item at \(url.absoluteString): \(error.localizedDescription)"
+            )
           }
         }
-        
+
         self.keys = self.keys.intersection(keys)
         continuation.resume()
       }

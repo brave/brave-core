@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveUI
 import Shared
+import UIKit
 
 /// The header which is shown when the user scrolls down into the Brave News feed
 public class FeedSectionHeaderView: UIView {
@@ -39,7 +39,9 @@ public class FeedSectionHeaderView: UIView {
     }
     addSubview(stackView)
     stackView.snp.makeConstraints {
-      $0.edges.equalTo(safeAreaLayoutGuide).inset(UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16))
+      $0.edges.equalTo(safeAreaLayoutGuide).inset(
+        UIEdgeInsets(top: 8, left: 16, bottom: 8, right: 16)
+      )
     }
 
     backgroundView.snp.makeConstraints {

@@ -3,19 +3,19 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
+import BraveStrings
 import BraveUI
 import DesignSystem
-import BraveStrings
+import Foundation
 import Lottie
+import SwiftUI
 
 struct OptInView: View {
   var tappedTurnOn: @Sendable () async throws -> Void
   var tappedLearnMore: () -> Void
-  
+
   @State private var isLoading: Bool = false
-  
+
   var body: some View {
     VStack(spacing: 36) {
       Image("opt-in-news-graphic", bundle: .module)
@@ -69,7 +69,7 @@ struct OptInView_PreviewProvider: PreviewProvider {
       tappedTurnOn: {
         try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
       },
-      tappedLearnMore: { }
+      tappedLearnMore: {}
     )
   }
 }

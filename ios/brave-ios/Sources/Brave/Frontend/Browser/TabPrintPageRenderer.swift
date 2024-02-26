@@ -34,13 +34,23 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
 
     if let tab = self.tab {
       let formatter = tab.webView!.viewPrintFormatter()
-      formatter.perPageContentInsets = UIEdgeInsets(top: PrintedPageUX.pageInsets, left: PrintedPageUX.pageInsets, bottom: PrintedPageUX.pageInsets, right: PrintedPageUX.pageInsets)
+      formatter.perPageContentInsets = UIEdgeInsets(
+        top: PrintedPageUX.pageInsets,
+        left: PrintedPageUX.pageInsets,
+        bottom: PrintedPageUX.pageInsets,
+        right: PrintedPageUX.pageInsets
+      )
       addPrintFormatter(formatter, startingAtPageAt: 0)
     }
   }
 
   override func drawFooterForPage(at pageIndex: Int, in headerRect: CGRect) {
-    let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.pageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.pageInsets)
+    let headerInsets = UIEdgeInsets(
+      top: headerRect.minY,
+      left: PrintedPageUX.pageInsets,
+      bottom: paperRect.maxY - headerRect.maxY,
+      right: PrintedPageUX.pageInsets
+    )
     let headerRect = paperRect.inset(by: headerInsets)
 
     // url on left
@@ -52,7 +62,12 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
   }
 
   override func drawHeaderForPage(at pageIndex: Int, in headerRect: CGRect) {
-    let headerInsets = UIEdgeInsets(top: headerRect.minY, left: PrintedPageUX.pageInsets, bottom: paperRect.maxY - headerRect.maxY, right: PrintedPageUX.pageInsets)
+    let headerInsets = UIEdgeInsets(
+      top: headerRect.minY,
+      left: PrintedPageUX.pageInsets,
+      bottom: paperRect.maxY - headerRect.maxY,
+      right: PrintedPageUX.pageInsets
+    )
     let headerRect = paperRect.inset(by: headerInsets)
 
     // page title on left
@@ -64,7 +79,8 @@ class TabPrintPageRenderer: UIPrintPageRenderer {
 
   func drawTextAtPoint(_ text: String, rect: CGRect, onLeft: Bool) {
     let size = text.size(withAttributes: textAttributes)
-    let x, y: CGFloat
+    let x: CGFloat
+    let y: CGFloat
     if onLeft {
       x = rect.minX
       y = rect.midY - size.height / 2

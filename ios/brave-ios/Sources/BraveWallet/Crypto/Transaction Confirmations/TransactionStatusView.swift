@@ -3,35 +3,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveCore
 import BigNumber
-import Strings
+import BraveCore
 import DesignSystem
+import Strings
+import SwiftUI
 
 struct TransactionStatusView: View {
   @ObservedObject var confirmationStore: TransactionConfirmationStore
   let networkStore: NetworkStore
   @Binding var transactionDetails: TransactionDetailsStore?
- 
+
   let onDismiss: () -> Void
-  
+
   @Environment(\.openURL) private var openWalletURL
-  
+
   @ViewBuilder private var signedOrSubmittedTxView: some View {
     GeometryReader { geometry in
       ScrollView(.vertical) {
         VStack(spacing: 10) {
           Image("tx-submitted", bundle: .module)
-          Text(confirmationStore.activeTxStatus == .signed ? Strings.Wallet.signedTransactionTitle : Strings.Wallet.submittedTransactionTitle)
-            .font(.title3.bold())
-            .foregroundColor(Color(.braveLabel))
-            .multilineTextAlignment(.center)
-            .padding(.top, 10)
-          Text(confirmationStore.activeTxStatus == .signed ? Strings.Wallet.signedTransactionDescription : Strings.Wallet.submittedTransactionDescription)
-            .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .multilineTextAlignment(.center)
+          Text(
+            confirmationStore.activeTxStatus == .signed
+              ? Strings.Wallet.signedTransactionTitle : Strings.Wallet.submittedTransactionTitle
+          )
+          .font(.title3.bold())
+          .foregroundColor(Color(.braveLabel))
+          .multilineTextAlignment(.center)
+          .padding(.top, 10)
+          Text(
+            confirmationStore.activeTxStatus == .signed
+              ? Strings.Wallet.signedTransactionDescription
+              : Strings.Wallet.submittedTransactionDescription
+          )
+          .font(.subheadline)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .multilineTextAlignment(.center)
           Button(action: onDismiss) {
             Text(Strings.OKString)
               .padding(.horizontal, 8)
@@ -39,9 +46,12 @@ struct TransactionStatusView: View {
           .padding(.top, 40)
           .buttonStyle(BraveFilledButtonStyle(size: .large))
           Button {
-            if let tx = confirmationStore.allTxs.first(where: { $0.id == confirmationStore.activeTransactionId }),
-               let txNetwork = networkStore.allChains.first(where: { $0.chainId == tx.chainId }),
-               let url = txNetwork.txBlockExplorerLink(txHash: tx.txHash, for: txNetwork.coin) {
+            if let tx = confirmationStore.allTxs.first(where: {
+              $0.id == confirmationStore.activeTransactionId
+            }),
+              let txNetwork = networkStore.allChains.first(where: { $0.chainId == tx.chainId }),
+              let url = txNetwork.txBlockExplorerLink(txHash: tx.txHash, for: txNetwork.coin)
+            {
               openWalletURL(url)
             }
           } label: {
@@ -63,22 +73,39 @@ struct TransactionStatusView: View {
       )
     }
   }
-  
+
   @ViewBuilder private var confirmedOrFailedTxView: some View {
     GeometryReader { geometry in
       ScrollView(.vertical) {
         VStack(spacing: 10) {
-          Image(confirmationStore.activeTxStatus == .confirmed ? "tx-confirmed" : "tx-failed", bundle: .module)
-          Text(confirmationStore.activeTxStatus == .confirmed ? Strings.Wallet.confirmedTransactionTitle : Strings.Wallet.failedTransactionTitle)
-            .font(.title3.bold())
-            .foregroundColor(confirmationStore.activeTxStatus == .confirmed ? Color(.braveLabel) : Color(.braveErrorLabel))
-            .multilineTextAlignment(.center)
-            .padding(.top, 10)
-          Text(confirmationStore.activeTxStatus == .confirmed ? Strings.Wallet.confirmedTransactionDescription : Strings.Wallet.failedTransactionDescription)
-            .font(.subheadline)
-            .foregroundColor(Color(.secondaryBraveLabel))
-            .multilineTextAlignment(.center)
-          if confirmationStore.activeTxStatus == .error, let txProviderError = confirmationStore.transactionProviderErrorRegistry[confirmationStore.activeTransactionId] {
+          Image(
+            confirmationStore.activeTxStatus == .confirmed ? "tx-confirmed" : "tx-failed",
+            bundle: .module
+          )
+          Text(
+            confirmationStore.activeTxStatus == .confirmed
+              ? Strings.Wallet.confirmedTransactionTitle : Strings.Wallet.failedTransactionTitle
+          )
+          .font(.title3.bold())
+          .foregroundColor(
+            confirmationStore.activeTxStatus == .confirmed
+              ? Color(.braveLabel) : Color(.braveErrorLabel)
+          )
+          .multilineTextAlignment(.center)
+          .padding(.top, 10)
+          Text(
+            confirmationStore.activeTxStatus == .confirmed
+              ? Strings.Wallet.confirmedTransactionDescription
+              : Strings.Wallet.failedTransactionDescription
+          )
+          .font(.subheadline)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .multilineTextAlignment(.center)
+          if confirmationStore.activeTxStatus == .error,
+            let txProviderError = confirmationStore.transactionProviderErrorRegistry[
+              confirmationStore.activeTransactionId
+            ]
+          {
             StaticTextView(text: "\(txProviderError.code): \(txProviderError.message)")
               .frame(maxWidth: .infinity)
               .frame(height: 100)
@@ -116,7 +143,7 @@ struct TransactionStatusView: View {
       )
     }
   }
-  
+
   var body: some View {
     switch confirmationStore.activeTxStatus {
     case .signed, .submitted:
@@ -140,7 +167,7 @@ struct TransactionStatusView_Previews: PreviewProvider {
       confirmationStore: .previewStore,
       networkStore: .previewStore,
       transactionDetails: .constant(nil),
-      onDismiss: { }
+      onDismiss: {}
     )
   }
 }

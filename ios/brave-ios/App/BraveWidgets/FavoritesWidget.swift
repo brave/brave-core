@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WidgetKit
-import SwiftUI
-import Strings
 import BraveWidgetsModels
 import FaviconModels
+import Strings
+import SwiftUI
+import WidgetKit
 
 struct FavoritesWidget: Widget {
   var body: some WidgetConfiguration {
@@ -17,9 +17,9 @@ struct FavoritesWidget: Widget {
     .configurationDisplayName(Strings.Widgets.favoritesWidgetTitle)
     .description(Strings.Widgets.favoritesWidgetDescription)
     .supportedFamilies([.systemMedium, .systemLarge])
-#if swift(>=5.9)
+    #if swift(>=5.9)
     .contentMarginsDisabled()
-#endif
+    #endif
   }
 }
 
@@ -126,7 +126,7 @@ private struct FavoritesGridView: View {
   private var placeholderOrPrivacyRedaction: Bool {
     redactionReasons.contains(.placeholder) || redactionReasons.contains(.privacy)
   }
-  
+
   func image(for favicon: Favicon) -> UIImage? {
     guard let image = favicon.image else { return nil }
     return image.preparingThumbnail(of: CGSize(width: 128, height: 128))
@@ -160,7 +160,8 @@ private struct FavoritesGridView: View {
                   .strokeBorder(Color(UIColor.braveLabel).opacity(0.2), lineWidth: pixelLength)
               )
               .padding(widgetFamily == .systemMedium ? 4 : 0)
-            })
+            }
+          )
         } else {
           emptyField
             .padding(widgetFamily == .systemMedium ? 4 : 0)
@@ -183,7 +184,8 @@ struct FavoritesView_Previews: PreviewProvider {
         date: Date(),
         favorites: [
           // TODO: Fill with favorites.
-        ])
+        ]
+      )
     )
     .previewContext(WidgetPreviewContext(family: .systemMedium))
     FavoritesView(entry: .init(date: Date(), favorites: []))

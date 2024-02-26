@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import BraveUI
 import Shared
 import Strings
-import BraveUI
+import SwiftUI
 
 struct NetworkInputItem: Identifiable {
   var input: String
@@ -52,11 +52,11 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     case add
     case edit
     case view
-    
+
     var isEditMode: Bool { self == .edit }
     var isViewMode: Bool { self == .view }
   }
-  
+
   var mode: Mode = .add
   var id: String {
     "\(mode.isEditMode)"
@@ -192,7 +192,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
       }
     }
   }
-  
+
   /// Creates model for adding a new custom network
   init() {
     self.mode = .add
@@ -203,7 +203,7 @@ class CustomNetworkModel: ObservableObject, Identifiable {
     self.mode = mode
 
     let chainIdInDecimal: String
-    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) { // BraveWallet.NetworkInfo.chainId should always in hex
+    if let intValue = Int(network.chainId.removingHexPrefix, radix: 16) {  // BraveWallet.NetworkInfo.chainId should always in hex
       chainIdInDecimal = "\(intValue)"
     } else {
       chainIdInDecimal = network.chainId
@@ -282,7 +282,7 @@ struct CustomNetworkDetailsView: View {
     self.networkStore = networkStore
     self.model = model
   }
-  
+
   private var navigationTitle: String {
     switch model.mode {
     case .add: return Strings.Wallet.customNetworkDetailsTitle
@@ -370,7 +370,9 @@ struct CustomNetworkDetailsView: View {
       }
       if !model.blockUrls.isEmpty {
         Section(
-          header: WalletListHeaderView(title: Text(Strings.Wallet.customNetworkBlockExplorerUrlsTitle))
+          header: WalletListHeaderView(
+            title: Text(Strings.Wallet.customNetworkBlockExplorerUrlsTitle)
+          )
         ) {
           ForEach($model.blockUrls) { $url in
             networkTextField(
@@ -387,7 +389,7 @@ struct CustomNetworkDetailsView: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
-        if !model.mode.isViewMode { // don't show confirmation action in view mode
+        if !model.mode.isViewMode {  // don't show confirmation action in view mode
           if networkStore.isAddingNewNetwork {
             ProgressView()
           } else {
@@ -419,21 +421,30 @@ struct CustomNetworkDetailsView: View {
               message: Text(error.errorDescription),
               dismissButton: .default(Text(Strings.OKString))
             )
-          })
+          }
+        )
     )
   }
-  
-  @ViewBuilder private func networkTextField(placeholder: String, item: Binding<NetworkInputItem>, showRadioButton: Bool = false) -> some View {
+
+  @ViewBuilder private func networkTextField(
+    placeholder: String,
+    item: Binding<NetworkInputItem>,
+    showRadioButton: Bool = false
+  ) -> some View {
     HStack {
       if showRadioButton {
         NetworkRadioButton(
           checked: item.isSelected,
-          isDisabled: Binding(get: { item.input.wrappedValue.isEmpty || model.mode.isViewMode }, set: { _, _ in }),
+          isDisabled: Binding(
+            get: { item.input.wrappedValue.isEmpty || model.mode.isViewMode },
+            set: { _, _ in }
+          ),
           onTapped: {
             for index in model.rpcUrls.indices where model.rpcUrls[index].id != item.id {
               model.rpcUrls[index].isSelected = !item.isSelected.wrappedValue
             }
-          })
+          }
+        )
       }
       if model.mode.isViewMode {
         Text(item.wrappedValue.input)
@@ -455,9 +466,12 @@ struct CustomNetworkDetailsView: View {
     if model.networkId.input.isEmpty {
       model.networkId.error = Strings.Wallet.customNetworkEmptyErrMsg
     }
-    model.networkName.error = model.networkName.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
-    model.networkSymbolName.error = model.networkSymbolName.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
-    model.networkSymbol.error = model.networkSymbol.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
+    model.networkName.error =
+      model.networkName.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
+    model.networkSymbolName.error =
+      model.networkSymbolName.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
+    model.networkSymbol.error =
+      model.networkSymbol.input.isEmpty ? Strings.Wallet.customNetworkEmptyErrMsg : nil
     if model.networkDecimals.input.isEmpty {
       model.networkDecimals.error = Strings.Wallet.customNetworkEmptyErrMsg
     }
@@ -472,7 +486,8 @@ struct CustomNetworkDetailsView: View {
       || model.networkSymbolName.error != nil
       || model.networkSymbol.error != nil
       || model.networkDecimals.error != nil
-      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty {
+      || model.rpcUrls.filter({ !$0.input.isEmpty && $0.error == nil }).isEmpty
+    {
       return false
     }
 
@@ -488,7 +503,8 @@ struct CustomNetworkDetailsView: View {
     }
     // Check if input chain id already existed for non-edit mode
     if !model.mode.isEditMode,
-      networkStore.allChains.contains(where: { $0.id == chainIdInHex }) {
+      networkStore.allChains.contains(where: { $0.id == chainIdInHex })
+    {
       customNetworkError = .duplicateId
       return
     }
@@ -544,7 +560,7 @@ struct NetworkRadioButton: View {
   @Binding var checked: Bool
   @Binding var isDisabled: Bool
   var onTapped: () -> Void
-  
+
   var body: some View {
     Image(braveSystemName: checked ? "leo.check.circle-outline" : "leo.radio.unchecked")
       .renderingMode(.template)

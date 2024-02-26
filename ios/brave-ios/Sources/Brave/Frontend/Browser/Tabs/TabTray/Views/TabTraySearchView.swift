@@ -22,18 +22,21 @@ class TabTraySearchBar: UIView {
 
   override func layoutSubviews() {
     super.layoutSubviews()
-    
+
     var adjustedFrame = bounds
-    
+
     // Adjusting search bar bounds here for landscape iPhones, needs padding from top and bottom
-    if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .compact {
+    if traitCollection.horizontalSizeClass == .compact
+      && traitCollection.verticalSizeClass == .compact
+    {
       adjustedFrame = CGRect(
         x: adjustedFrame.origin.x,
         y: adjustedFrame.origin.y + 2,
         width: adjustedFrame.size.width,
-        height: adjustedFrame.size.height - 4)
+        height: adjustedFrame.size.height - 4
+      )
     }
-    
+
     searchBar.frame = adjustedFrame
   }
 
@@ -41,4 +44,3 @@ class TabTraySearchBar: UIView {
     return UIView.layoutFittingExpandedSize
   }
 }
-

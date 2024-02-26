@@ -3,28 +3,28 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
-import Strings
 import Preferences
+import Strings
+import SwiftUI
 
 struct MainMenuView: View {
-  
+
   let selectedTab: CryptoTab
   @Binding var isShowingSettings: Bool
   @Binding var isShowingBackup: Bool
   @Binding var isShowingAddAccount: Bool
   let keyringStore: KeyringStore
-  
+
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
   @ObservedObject private var isShowingGraph = Preferences.Wallet.isShowingGraph
   @ObservedObject private var isShowingNFTs = Preferences.Wallet.isShowingNFTsTab
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
   @Environment(\.openURL) private var openWalletURL
-  
+
   @ScaledMetric var rowHeight: CGFloat = 52
   @State private var viewHeight: CGFloat = 0
-  
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
@@ -38,7 +38,7 @@ struct MainMenuView: View {
           )
         }
         .frame(height: rowHeight)
-        
+
         Button(action: {
           isShowingBackup = true
         }) {
@@ -48,7 +48,7 @@ struct MainMenuView: View {
           )
         }
         .frame(height: rowHeight)
-        
+
         Button(action: {
           isShowingSettings = true
           presentationMode.dismiss()
@@ -59,7 +59,7 @@ struct MainMenuView: View {
           )
         }
         .frame(height: rowHeight)
-        
+
         if selectedTab == .portfolio {
           Divider()
           portfolioSettings
@@ -67,7 +67,7 @@ struct MainMenuView: View {
           Divider()
           accountsMenuItems
         }
-        
+
         Divider()
         Button(action: {
           openWalletURL(WalletConstants.braveWalletSupportURL)
@@ -101,7 +101,7 @@ struct MainMenuView: View {
       }
     })
   }
-  
+
   @ViewBuilder private var portfolioSettings: some View {
     MenuRowView(
       iconBraveSystemName: "leo.eye.on",
@@ -114,7 +114,7 @@ struct MainMenuView: View {
       }
     )
     .frame(height: rowHeight)
-    
+
     MenuRowView(
       iconBraveSystemName: "leo.graph",
       title: Strings.Wallet.graph,
@@ -126,7 +126,7 @@ struct MainMenuView: View {
       }
     )
     .frame(height: rowHeight)
-    
+
     MenuRowView(
       iconBraveSystemName: "leo.nft",
       title: Strings.Wallet.nftsTab,
@@ -139,7 +139,7 @@ struct MainMenuView: View {
     )
     .frame(height: rowHeight)
   }
-  
+
   @ViewBuilder private var accountsMenuItems: some View {
     Button(action: {
       self.isShowingAddAccount = true
@@ -157,25 +157,28 @@ struct MainMenuView: View {
 struct MainMenuView_Previews: PreviewProvider {
   static var previews: some View {
     Color.white
-      .sheet(isPresented: .constant(true), content: {
-        MainMenuView(
-          selectedTab: .portfolio,
-          isShowingSettings: .constant(false),
-          isShowingBackup: .constant(false),
-          isShowingAddAccount: .constant(false),
-          keyringStore: .previewStoreWithWalletCreated
-        )
-      })
+      .sheet(
+        isPresented: .constant(true),
+        content: {
+          MainMenuView(
+            selectedTab: .portfolio,
+            isShowingSettings: .constant(false),
+            isShowingBackup: .constant(false),
+            isShowingAddAccount: .constant(false),
+            keyringStore: .previewStoreWithWalletCreated
+          )
+        }
+      )
   }
 }
 #endif
 
 private struct MenuRowView<AccessoryContent: View>: View {
-  
+
   let iconBraveSystemName: String
   let title: String
   let accessoryContent: () -> AccessoryContent
-  
+
   init(
     iconBraveSystemName: String,
     title: String,
@@ -185,7 +188,7 @@ private struct MenuRowView<AccessoryContent: View>: View {
     self.title = title
     self.accessoryContent = accessoryContent
   }
-  
+
   var body: some View {
     HStack(spacing: 12) {
       Image(braveSystemName: iconBraveSystemName)

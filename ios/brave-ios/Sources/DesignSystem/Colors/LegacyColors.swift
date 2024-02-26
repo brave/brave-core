@@ -8,11 +8,11 @@ enum LegacyDesignSystemColor: String {
   case background01
   case background02
   case background03
-  
+
   case text01
   case text02
   case text03
-  
+
   case interactive01
   case interactive02
   case interactive03
@@ -21,10 +21,10 @@ enum LegacyDesignSystemColor: String {
   case interactive06
   case interactive07
   case interactive08
-  
+
   case focusBorder = "focus-border"
   case disabled
-  
+
   case divider01
 
   case errorBackground = "error-background"
@@ -59,7 +59,7 @@ enum LegacyDesignSystemColor: String {
 
   case gradient05_step0 = "gradient05-step0"
   case gradient05_step1 = "gradient05-step1"
-  
+
   var color: UIColor {
     return UIColor(named: rawValue, in: .module, compatibleWith: nil)!
   }

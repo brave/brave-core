@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
-import DesignSystem
 import BraveCore
+import DesignSystem
 import Preferences
+import SwiftUI
 
 struct PortfolioAssetsView: View {
 
@@ -24,7 +24,7 @@ struct PortfolioAssetsView: View {
   var body: some View {
     VStack(spacing: 16) {
       assetSectionsHeader
-      
+
       if portfolioStore.isShowingAssetsLoadingState {
         SkeletonLoadingAssetView()
       } else if portfolioStore.isShowingAssetsEmptyState {
@@ -59,7 +59,8 @@ struct PortfolioAssetsView: View {
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
   }
 
@@ -74,13 +75,19 @@ struct PortfolioAssetsView: View {
           .padding(.leading, 5)
       }
       Spacer()
-      WalletIconButton(braveSystemName: "leo.list.settings", action: {
-        isPresentingEditUserAssets = true
-      })
+      WalletIconButton(
+        braveSystemName: "leo.list.settings",
+        action: {
+          isPresentingEditUserAssets = true
+        }
+      )
       .padding(.trailing, 10)
-      WalletIconButton(braveSystemName: "leo.filter.settings", action: {
-        isPresentingFilters = true
-      })
+      WalletIconButton(
+        braveSystemName: "leo.filter.settings",
+        action: {
+          isPresentingFilters = true
+        }
+      )
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .padding(.horizontal)
@@ -100,7 +107,7 @@ struct PortfolioAssetsView: View {
     .multilineTextAlignment(.center)
     .padding(.vertical)
   }
-  
+
   /// Builds the list of assets without any grouping or expandable / collapse behaviour.
   @ViewBuilder private func ungroupedAssets(_ group: AssetGroupViewModel) -> some View {
     ForEach(group.assets) { asset in
@@ -124,7 +131,7 @@ struct PortfolioAssetsView: View {
     }
     .padding(.horizontal)
   }
-  
+
   /// Builds the expandable/collapseable (expanded by default) section content for a given group.
   @ViewBuilder private func groupedAssetsSection(for group: AssetGroupViewModel) -> some View {
     WalletDisclosureGroup(

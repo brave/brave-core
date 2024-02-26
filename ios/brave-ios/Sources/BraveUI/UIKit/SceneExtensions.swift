@@ -14,11 +14,11 @@ extension UIView {
     if let scene = window?.windowScene {
       return scene
     }
-    
+
     if let scene = superview?.currentScene {
       return scene
     }
-    
+
     return nil
   }
 }
@@ -31,15 +31,15 @@ extension UIViewController {
     if let scene = view.window?.windowScene {
       return scene
     }
-    
+
     if let scene = parent?.currentScene {
       return scene
     }
-    
+
     if let scene = presentingViewController?.currentScene {
       return scene
     }
-    
+
     return nil
   }
 }

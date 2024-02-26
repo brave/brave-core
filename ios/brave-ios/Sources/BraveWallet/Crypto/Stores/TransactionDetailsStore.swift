@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 class TransactionDetailsStore: ObservableObject, WalletObserverStore {
-  
+
   let transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
-  
+
   @Published private(set) var currencyCode: String = CurrencyCode.usd.code {
     didSet {
       currencyFormatter.currencyCode = currencyCode
@@ -24,7 +24,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       $0.minimumFractionDigits = 2
       $0.maximumFractionDigits = 6
     }
-  
+
   private let keyringService: BraveWalletKeyringService
   private let walletService: BraveWalletBraveWalletService
   private let rpcService: BraveWalletJsonRpcService
@@ -38,13 +38,13 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var nftMetadataCache: [String: NFTMetadata] = [:]
-  
+
   var isObserving: Bool {
     txServiceObserver != nil
   }
 
   private var txServiceObserver: TxServiceObserver?
-  
+
   init(
     transaction: BraveWallet.TransactionInfo,
     parsedTransaction: ParsedTransaction?,
@@ -69,14 +69,14 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     self.solanaTxManagerProxy = solanaTxManagerProxy
     self.ipfsApi = ipfsApi
     self.assetManager = userAssetManager
-    
+
     setupObservers()
-    
+
     walletService.defaultBaseCurrency { [self] currencyCode in
       self.currencyCode = currencyCode
     }
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
     self.txServiceObserver = TxServiceObserver(
@@ -95,11 +95,11 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
     )
   }
-  
+
   func tearDown() {
     txServiceObserver = nil
   }
-  
+
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
@@ -107,23 +107,33 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
-        assertionFailure("The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable")
+        assertionFailure(
+          "The NetworkInfo for the transaction's chainId (\(transaction.chainId)) is unavailable"
+        )
         return
       }
       self.network = network
-      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap(\.tokens)
+      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
+        network.chainId,
+        coin: network.coin
+      )
+      let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(
+        networks: [network],
+        includingUserDeleted: true
+      ).flatMap(\.tokens)
       if coin == .eth {
         // Gather known information about the transaction(s) tokens
         let unknownTokenInfo = [transaction].unknownTokenContractAddressChainIdPairs(
           knownTokens: userAssets + allTokens + tokenInfoCache
         )
         if !unknownTokenInfo.isEmpty {
-          let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(for: unknownTokenInfo)
+          let unknownTokens: [BraveWallet.BlockchainToken] = await rpcService.fetchEthTokens(
+            for: unknownTokenInfo
+          )
           tokenInfoCache.append(contentsOf: unknownTokens)
         }
       }
-      
+
       let priceResult = await assetRatioService.priceWithIndividualRetry(
         userAssets.map { $0.assetRatioId.lowercased() },
         toAssets: [currencyFormatter.currencyCode],
@@ -134,19 +144,24 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       var solEstimatedTxFee: UInt64?
       if transaction.coin == .sol {
-        (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(network.chainId, txMetaId: transaction.id)
+        (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
+          network.chainId,
+          txMetaId: transaction.id
+        )
       }
       let allAccounts = await keyringService.allAccounts().accounts
-      guard let parsedTransaction = transaction.parsedTransaction(
-        network: network,
-        accountInfos: allAccounts,
-        userAssets: userAssets,
-        allTokens: allTokens + tokenInfoCache,
-        assetRatios: assetRatios,
-        nftMetadata: nftMetadataCache,
-        solEstimatedTxFee: solEstimatedTxFee,
-        currencyFormatter: currencyFormatter
-      ) else {
+      guard
+        let parsedTransaction = transaction.parsedTransaction(
+          network: network,
+          accountInfos: allAccounts,
+          userAssets: userAssets,
+          allTokens: allTokens + tokenInfoCache,
+          assetRatios: assetRatios,
+          nftMetadata: nftMetadataCache,
+          solEstimatedTxFee: solEstimatedTxFee,
+          currencyFormatter: currencyFormatter
+        )
+      else {
         return
       }
       self.parsedTransaction = parsedTransaction
@@ -162,8 +177,9 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         }
       case .solSplTokenTransfer(let details):
         if let fromToken = details.fromToken,
-           fromToken.isNft,
-           details.fromTokenMetadata == nil {
+          fromToken.isNft,
+          details.fromTokenMetadata == nil
+        {
           nftToken = fromToken
         } else {
           nftToken = nil
@@ -172,17 +188,22 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         nftToken = nil
       }
       guard let nftToken else { return }
-      self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(for: nftToken, ipfsApi: ipfsApi)
-      guard let parsedTransaction = transaction.parsedTransaction(
-        network: network,
-        accountInfos: allAccounts,
-        userAssets: userAssets,
-        allTokens: allTokens,
-        assetRatios: assetRatios,
-        nftMetadata: nftMetadataCache,
-        solEstimatedTxFee: solEstimatedTxFee,
-        currencyFormatter: currencyFormatter
-      ) else {
+      self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(
+        for: nftToken,
+        ipfsApi: ipfsApi
+      )
+      guard
+        let parsedTransaction = transaction.parsedTransaction(
+          network: network,
+          accountInfos: allAccounts,
+          userAssets: userAssets,
+          allTokens: allTokens,
+          assetRatios: assetRatios,
+          nftMetadata: nftMetadataCache,
+          solEstimatedTxFee: solEstimatedTxFee,
+          currencyFormatter: currencyFormatter
+        )
+      else {
         return
       }
       self.parsedTransaction = parsedTransaction

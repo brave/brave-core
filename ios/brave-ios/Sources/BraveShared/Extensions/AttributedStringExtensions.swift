@@ -18,7 +18,8 @@ extension NSAttributedString {
     attributedString.addAttribute(
       .paragraphStyle,
       value: paragraphStyle,
-      range: NSRange(location: 0, length: string.count))
+      range: NSRange(location: 0, length: string.count)
+    )
 
     return attributedString
   }

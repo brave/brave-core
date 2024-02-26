@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BraveShared
+import BraveStrings
 import BraveUI
 import DesignSystem
 import Shared
-import BraveShared
-import BraveStrings
+import SwiftUI
 
 struct PlaylistPopoverView: View {
   enum Action {
@@ -16,12 +16,12 @@ struct PlaylistPopoverView: View {
     case changeFolders
     case timedOut
   }
-  
+
   @Environment(\.dynamicTypeSize) private var dynamicTypeSize
-  
+
   var folderName: String
   var action: ((Action) -> Void)?
-  
+
   private func containerView<Content: View>(
     @ViewBuilder _ content: () -> Content
   ) -> some View {
@@ -37,7 +37,7 @@ struct PlaylistPopoverView: View {
     }
     .padding(dynamicTypeSize.isAccessibilitySize ? .all : .horizontal)
   }
-  
+
   var body: some View {
     containerView {
       Text(String.localizedStringWithFormat(Strings.PlayList.addedToPlaylistMessage, folderName))
@@ -75,7 +75,7 @@ struct PlaylistPopoverView: View {
         let isVoiceOverRunning = UIAccessibility.isVoiceOverRunning
         try await Task.sleep(nanoseconds: NSEC_PER_SEC * (isVoiceOverRunning ? 15 : 4))
         action?(.timedOut)
-      } catch { }
+      } catch {}
     }
   }
 }
@@ -87,9 +87,12 @@ struct PlaylistPopoverView_Previews: PreviewProvider {
   static var previews: some View {
     Group {
       BraveUI.PopupView {
-        PlaylistPopoverView(folderName: "Play Later", action: {
-          print($0)
-        })
+        PlaylistPopoverView(
+          folderName: "Play Later",
+          action: {
+            print($0)
+          }
+        )
       }
     }
   }

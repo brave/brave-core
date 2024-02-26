@@ -3,6 +3,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
+
 @testable import BraveShared
 
 class DateTimeExtensionTests: XCTestCase {
@@ -15,7 +16,7 @@ class DateTimeExtensionTests: XCTestCase {
     XCTAssertEqual(12.hours, 43200)
 
     XCTAssertEqual(1.days, 86400)
-    XCTAssertEqual(12.days, 1036800)
+    XCTAssertEqual(12.days, 1_036_800)
   }
 
   func testTimeStampToDate() {
@@ -26,8 +27,8 @@ class DateTimeExtensionTests: XCTestCase {
     let date1 = dateFormatter.date(from: "2022-03-03 20:47:07 +0000")!
     let date2 = dateFormatter.date(from: "2009-06-30 08:28:47 +0000")!
 
-    let timeStamp1: UInt64 = 1646340427908992
-    let timeStamp2: UInt64 = 1246350527908882
+    let timeStamp1: UInt64 = 1_646_340_427_908_992
+    let timeStamp2: UInt64 = 1_246_350_527_908_882
 
     XCTAssertTrue(timeStamp1.toDate() == date1)
     XCTAssertTrue(timeStamp2.toDate() == date2)

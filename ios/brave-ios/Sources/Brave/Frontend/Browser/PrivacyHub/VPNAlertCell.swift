@@ -2,23 +2,23 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
+import BraveShared
 import Data
 import Shared
-import BraveShared
+import SwiftUI
 
 extension PrivacyReportsView {
   struct VPNAlertCell: View {
     @Environment(\.sizeCategory) private var sizeCategory
     @Environment(\.horizontalSizeClass) private var horizontalSizeClass
-    
+
     var date: String {
       let formatter = DateFormatter()
       formatter.dateStyle = .medium
       formatter.timeStyle = .short
       return formatter.string(from: Date(timeIntervalSince1970: TimeInterval(vpnAlert.timestamp)))
     }
-    
+
     private func assetName(for type: BraveVPNAlert.TrackerType) -> String {
       switch type {
       case .app: return "vpn_data_tracker"
@@ -26,7 +26,7 @@ extension PrivacyReportsView {
       case .mail: return "vpn_mail_tracker"
       }
     }
-    
+
     private func headerText(for type: BraveVPNAlert.TrackerType) -> String {
       switch type {
       case .app: return Strings.PrivacyHub.vpnAlertRegularTrackerTypeSingular
@@ -34,13 +34,13 @@ extension PrivacyReportsView {
       case .mail: return Strings.PrivacyHub.vpnAlertEmailTrackerTypeSingular
       }
     }
-    
+
     private let vpnAlert: BraveVPNAlert
-    
+
     init(vpnAlert: BraveVPNAlert) {
       self.vpnAlert = vpnAlert
     }
-    
+
     private var headerText: some View {
       Group {
         if let category = vpnAlert.categoryEnum {
@@ -52,13 +52,13 @@ extension PrivacyReportsView {
         }
       }
     }
-    
+
     var body: some View {
       HStack(alignment: .top) {
         if let category = vpnAlert.categoryEnum {
           Image(assetName(for: category), bundle: .module)
         }
-        
+
         VStack(alignment: .leading) {
           Group {
             if sizeCategory.isAccessibilityCategory && horizontalSizeClass == .compact {
@@ -74,11 +74,11 @@ extension PrivacyReportsView {
             }
           }
           .font(.caption.weight(.semibold))
-          
+
           VStack(alignment: .leading, spacing: 4) {
             Text(vpnAlert.message ?? "-")
               .font(.callout)
-            
+
             Text(date)
               .font(.caption)
               .foregroundColor(Color(.secondaryBraveLabel))
@@ -95,4 +95,3 @@ extension PrivacyReportsView {
     }
   }
 }
-

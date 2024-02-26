@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AVKit
 import Foundation
 import UIKit
-import AVKit
 
 private class VideoSliderBar: UIControl {
   public var trackerInsets = UIEdgeInsets(top: 0.0, left: 5.0, bottom: 0.0, right: 5.0)
@@ -16,15 +16,23 @@ private class VideoSliderBar: UIControl {
 
       // Clamps the value between 0.0 and 1.0
       // Calculates the insets and then the offsets based on the ratio (value) of its bounds relative to its start position
-      filledConstraint?.constant = value >= 1.0 ? bounds.size.width : ((bounds.size.width - (trackerInsets.left + trackerInsets.right)) * value) + trackerInsets.left
+      filledConstraint?.constant =
+        value >= 1.0
+        ? bounds.size.width
+        : ((bounds.size.width - (trackerInsets.left + trackerInsets.right)) * value)
+          + trackerInsets.left
     }
   }
 
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    tracker.addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(onPanned(_:))))
-    background.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(onPanned(_:))))
+    tracker.addGestureRecognizer(
+      UIPanGestureRecognizer(target: self, action: #selector(onPanned(_:)))
+    )
+    background.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(onPanned(_:)))
+    )
 
     addSubview(background)
     addSubview(boundaryView)
@@ -78,7 +86,8 @@ private class VideoSliderBar: UIControl {
 
   override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
     if tracker.bounds.size.width < 44.0 || tracker.bounds.size.height < 44.0 {
-      let adjustedBounds = CGRect(x: tracker.center.x, y: tracker.center.y, width: 0.0, height: 0.0).inset(by: touchInsets)
+      let adjustedBounds = CGRect(x: tracker.center.x, y: tracker.center.y, width: 0.0, height: 0.0)
+        .inset(by: touchInsets)
 
       if adjustedBounds.contains(point) {
         return tracker
@@ -95,7 +104,8 @@ private class VideoSliderBar: UIControl {
 
   override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
     if tracker.bounds.size.width < 44.0 || tracker.bounds.size.height < 44.0 {
-      let adjustedBounds = CGRect(x: tracker.center.x, y: tracker.center.y, width: 0.0, height: 0.0).inset(by: touchInsets)
+      let adjustedBounds = CGRect(x: tracker.center.x, y: tracker.center.y, width: 0.0, height: 0.0)
+        .inset(by: touchInsets)
 
       if adjustedBounds.contains(point) {
         return true
@@ -112,7 +122,10 @@ private class VideoSliderBar: UIControl {
 
   @objc
   private func onPanned(_ recognizer: UIGestureRecognizer) {
-    let offset = min(boundaryView.bounds.size.width, max(0.0, recognizer.location(in: boundaryView).x))
+    let offset = min(
+      boundaryView.bounds.size.width,
+      max(0.0, recognizer.location(in: boundaryView).x)
+    )
 
     value = offset / boundaryView.bounds.size.width
 
@@ -174,14 +187,24 @@ class VideoTrackerBar: UIView {
   private let currentTimeLabel = UILabel().then {
     $0.text = "00:00"
     $0.textColor = .white
-    $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+    $0.textColor = #colorLiteral(
+      red: 0.5254901961,
+      green: 0.5568627451,
+      blue: 0.5882352941,
+      alpha: 1
+    )
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
   }
 
   private let endTimeLabel = UILabel().then {
     $0.text = "00:00"
     $0.textColor = .white
-    $0.textColor = #colorLiteral(red: 0.5254901961, green: 0.5568627451, blue: 0.5882352941, alpha: 1)
+    $0.textColor = #colorLiteral(
+      red: 0.5254901961,
+      green: 0.5568627451,
+      blue: 0.5882352941,
+      alpha: 1
+    )
     $0.font = .systemFont(ofSize: 14.0, weight: .medium)
   }
 
@@ -189,7 +212,8 @@ class VideoTrackerBar: UIView {
     if CMTimeCompare(endTime, .zero) != 0,
       endTime.value > 0,
       currentTime.isValid && !currentTime.isIndefinite,
-      endTime.isValid && !endTime.isIndefinite {
+      endTime.isValid && !endTime.isIndefinite
+    {
 
       slider.value = CGFloat(currentTime.value) / CGFloat(endTime.value)
       currentTimeLabel.text = VideoTrackerBar.timeToString(currentTime)
@@ -247,7 +271,8 @@ class VideoTrackerBar: UIView {
   public static func timeToString(_ time: CMTime) -> String {
     let totalSeconds = abs(CMTimeGetSeconds(time))
     if Int(totalSeconds) >= 3600,
-      let result = formatter.string(from: totalSeconds) {
+      let result = formatter.string(from: totalSeconds)
+    {
       // It is necessary to use the correct formatter because the formatter
       // can drop leading zeroes which will cause `0s` to show instead of `00:00`
       // Also if all zeroes are dropped and padded, it formats as `00`.

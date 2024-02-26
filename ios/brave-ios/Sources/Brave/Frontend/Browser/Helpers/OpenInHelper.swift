@@ -5,9 +5,9 @@
 import Foundation
 import MobileCoreServices
 import PassKit
-import WebKit
 import Shared
 import UniformTypeIdentifiers
+import WebKit
 
 struct MIMEType {
   static let bitmap = "image/bmp"
@@ -24,7 +24,10 @@ struct MIMEType {
   static let webP = "image/webp"
   static let xHTML = "application/xhtml+xml"
 
-  private static let webViewViewableTypes: [String] = [MIMEType.bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.plainText, MIMEType.PNG, MIMEType.webP, MIMEType.xHTML]
+  private static let webViewViewableTypes: [String] = [
+    MIMEType.bitmap, MIMEType.GIF, MIMEType.JPEG, MIMEType.HTML, MIMEType.PDF, MIMEType.plainText,
+    MIMEType.PNG, MIMEType.webP, MIMEType.xHTML,
+  ]
 
   static func canShowInWebView(_ mimeType: String) -> Bool {
     return webViewViewableTypes.contains(mimeType.lowercased())
@@ -47,16 +50,25 @@ extension String {
 class DownloadHelper: NSObject {
   fileprivate let request: URLRequest
   fileprivate let preflightResponse: URLResponse
-  fileprivate let cookieStore: WKHTTPCookieStore  
+  fileprivate let cookieStore: WKHTTPCookieStore
 
-  required init?(request: URLRequest?, response: URLResponse, cookieStore: WKHTTPCookieStore, canShowInWebView: Bool, forceDownload: Bool) {
+  required init?(
+    request: URLRequest?,
+    response: URLResponse,
+    cookieStore: WKHTTPCookieStore,
+    canShowInWebView: Bool,
+    forceDownload: Bool
+  ) {
     guard let request = request else {
       return nil
     }
 
-    let contentDisposition = (response as? HTTPURLResponse)?.value(forHTTPHeaderField: "Content-Disposition")
+    let contentDisposition = (response as? HTTPURLResponse)?.value(
+      forHTTPHeaderField: "Content-Disposition"
+    )
     let mimeType = response.mimeType ?? MIMEType.octetStream
-    let isAttachment = contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
+    let isAttachment =
+      contentDisposition?.starts(with: "attachment") ?? (mimeType == MIMEType.octetStream)
 
     guard isAttachment || !canShowInWebView || forceDownload else {
       return nil
@@ -64,17 +76,27 @@ class DownloadHelper: NSObject {
 
     self.cookieStore = cookieStore
     self.request = request
-    self.preflightResponse = response    
+    self.preflightResponse = response
   }
 
-  func downloadAlert(from view: UIView, okAction: @escaping (HTTPDownload) -> Void) -> UIAlertController? {
+  func downloadAlert(
+    from view: UIView,
+    okAction: @escaping (HTTPDownload) -> Void
+  ) -> UIAlertController? {
     guard let host = request.url?.host, let filename = request.url?.lastPathComponent else {
       return nil
     }
 
-    let download = HTTPDownload(cookieStore: cookieStore, preflightResponse: preflightResponse, request: request)
+    let download = HTTPDownload(
+      cookieStore: cookieStore,
+      preflightResponse: preflightResponse,
+      request: request
+    )
 
-    let expectedSize = download.totalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file) : nil
+    let expectedSize =
+      download.totalBytesExpected != nil
+      ? ByteCountFormatter.string(fromByteCount: download.totalBytesExpected!, countStyle: .file)
+      : nil
 
     let title = "\(filename) - \(host)"
 
@@ -95,7 +117,7 @@ class DownloadHelper: NSObject {
     downloadAlert.addAction(okAction)
     downloadAlert.addAction(cancelAction)
 
-    downloadAlert.popoverPresentationController?.do {      
+    downloadAlert.popoverPresentationController?.do {
       $0.sourceView = view
       $0.sourceRect = CGRect(x: view.bounds.midX, y: view.bounds.maxY - 16, width: 0, height: 0)
       $0.permittedArrowDirections = []
@@ -110,8 +132,15 @@ class OpenPassBookHelper: NSObject {
 
   fileprivate let browserViewController: BrowserViewController
 
-  required init?(request: URLRequest?, response: URLResponse, canShowInWebView: Bool, forceDownload: Bool, browserViewController: BrowserViewController) {
-    guard let mimeType = response.mimeType, mimeType == MIMEType.passbook, PKAddPassesViewController.canAddPasses(),
+  required init?(
+    request: URLRequest?,
+    response: URLResponse,
+    canShowInWebView: Bool,
+    forceDownload: Bool,
+    browserViewController: BrowserViewController
+  ) {
+    guard let mimeType = response.mimeType, mimeType == MIMEType.passbook,
+      PKAddPassesViewController.canAddPasses(),
       let responseURL = response.url, !forceDownload
     else { return nil }
     self.url = responseURL
@@ -136,11 +165,13 @@ class OpenPassBookHelper: NSObject {
       let alertController = UIAlertController(
         title: Strings.unableToAddPassErrorTitle,
         message: Strings.unableToAddPassErrorMessage,
-        preferredStyle: .alert)
+        preferredStyle: .alert
+      )
       alertController.addAction(
         UIAlertAction(title: Strings.unableToAddPassErrorDismiss, style: .cancel) { (action) in
           // Do nothing.
-        })
+        }
+      )
       browserViewController.present(alertController, animated: true, completion: nil)
       return
     }

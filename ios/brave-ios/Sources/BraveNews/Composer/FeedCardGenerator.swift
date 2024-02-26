@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
+import BraveCore
 import Collections
+import Foundation
 import OSLog
 import UIKit
-import BraveCore
 
 /// Generates the cards that appear on the Brave News feed
 ///
@@ -22,14 +22,14 @@ import BraveCore
 /// ```
 struct FeedCardGenerator: AsyncSequence {
   typealias Element = [FeedCard]
-  
+
   private var items: [FeedItem]
   private var sequence: [FeedSequenceElement]
   private var followedSources: Set<String>
   private var hiddenSources: Set<String>
   private var followedChannels: [String: Set<String>]
   private var ads: BraveAds?
-  
+
   init(
     scoredItems: [FeedItem],
     sequence: [FeedSequenceElement],
@@ -45,31 +45,37 @@ struct FeedCardGenerator: AsyncSequence {
     self.followedChannels = followedChannels
     self.ads = ads
   }
-  
+
   func makeAsyncIterator() -> AsyncIterator {
-    var feedsFromEnabledSources = OrderedSet(items.filter { item in
-      if item.source.isUserSource {
-        return true
+    var feedsFromEnabledSources = OrderedSet(
+      items.filter { item in
+        if item.source.isUserSource {
+          return true
+        }
+        return followedSources.contains(item.source.id)
       }
-      return followedSources.contains(item.source.id)
-    })
+    )
     for (key, value) in followedChannels {
       let channelForLocale = Set(value)
-      feedsFromEnabledSources.formUnion(OrderedSet(items.filter({ item in
-        if hiddenSources.contains(item.source.id) {
-          return false
-        }
-        return item.source.localeDetails?.contains(where: {
-          $0.locale == key && !$0.channels.intersection(channelForLocale).isEmpty
-        }) ?? false
-      })))
+      feedsFromEnabledSources.formUnion(
+        OrderedSet(
+          items.filter({ item in
+            if hiddenSources.contains(item.source.id) {
+              return false
+            }
+            return item.source.localeDetails?.contains(where: {
+              $0.locale == key && !$0.channels.intersection(channelForLocale).isEmpty
+            }) ?? false
+          })
+        )
+      )
     }
     let feedItems = feedsFromEnabledSources.sorted(by: <)
     let sponsors = feedItems.filter { $0.content.contentType == .sponsor }
     let partners = feedItems.filter { $0.content.contentType == .partner }
     let deals = feedItems.filter { $0.content.contentType == .deals }
     let articles = feedItems.filter { $0.content.contentType == .article }
-    
+
     return AsyncIterator(
       sponsors: sponsors,
       deals: deals,
@@ -95,7 +101,7 @@ extension FeedCardGenerator {
     private var inlineContentAdsPurged: Bool = false
     private var repeatingSequence: [FeedSequenceElement]?
     private var repeatedSequenceCardCount: Int = 0
-    
+
     init(
       sponsors: [FeedItem],
       deals: [FeedItem],
@@ -122,7 +128,7 @@ extension FeedCardGenerator {
         category: \.content.offersCategory
       )
     }
-    
+
     mutating func next() async throws -> Element? {
       guard var rule = sequence.first else {
         return nil
@@ -135,8 +141,9 @@ extension FeedCardGenerator {
       // If we needed to support multiple infinite repeating we'll need to implement some sort of push/pop
       // version of this.
       if case .repeating(let repeatingSequence, let count) = rule,
-         count == .max,
-         let firstRepeatedRule = repeatingSequence.first {
+        count == .max,
+        let firstRepeatedRule = repeatingSequence.first
+      {
         sequence = repeatingSequence
         self.repeatingSequence = repeatingSequence
         rule = firstRepeatedRule
@@ -155,7 +162,7 @@ extension FeedCardGenerator {
       }
       return cards
     }
-    
+
     private mutating func makeCards(
       for element: FeedSequenceElement,
       fillStrategy: FillStrategy
@@ -192,7 +199,9 @@ extension FeedCardGenerator {
         }.value
         guard let ad = contentAd else {
           contentAdsQueryFailed = true
-          Logger.module.debug("Inline content ads could not be filled; Skipping for the rest of this feed generation")
+          Logger.module.debug(
+            "Inline content ads could not be filled; Skipping for the rest of this feed generation"
+          )
           return []
         }
         return [.ad(ad)]
@@ -248,7 +257,9 @@ extension FeedCardGenerator {
           if let elementCards = await makeCards(for: element, fillStrategy: strategy) {
             cards.append(contentsOf: elementCards)
           } else {
-            if let fallbackStrategy, let elementCards = await makeCards(for: element, fillStrategy: fallbackStrategy) {
+            if let fallbackStrategy,
+              let elementCards = await makeCards(for: element, fillStrategy: fallbackStrategy)
+            {
               cards.append(contentsOf: elementCards)
             }
           }

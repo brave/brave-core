@@ -2,10 +2,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Data
-import Shared
 import BraveCore
+import Data
+import Foundation
+import Shared
 
 /// Bookmark editing has four states.
 /// each state has small differences in presentation as well as business logic.

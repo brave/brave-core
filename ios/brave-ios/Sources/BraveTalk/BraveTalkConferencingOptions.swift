@@ -32,13 +32,19 @@ extension JitsiMeetConferenceOptions {
       builder.setConfigOverride("disableInviteFunctions", withBoolean: false)
       builder.setConfigOverride("disableTileEnlargement", withBoolean: true)
       builder.setConfigOverride("dropbox", with: ["appKey": NSNull()])
-      builder.setConfigOverride("e2eeLabels", with: [
-        "e2ee": "Video Bridge Encryption",
-        "labelToolTip": "Audio and Video Communication on this call is encrypted on the video bridge",
-        "description": "Video Bridge Encryption is currently EXPERIMENTAL. Please keep in mind that turning it on will effectively disable server-side provided services such as: phone participation. Also keep in mind that the meeting will only work for people joining from browsers with support for insertable streams.  Note that chats will not use this encryption.",
-        "label": "Enable Video Bridge Encryption",
-        "warning": "WARNING: Not all participants in this meeting seem to have support for Video Bridge Encryption. If you enable it they won't be able to see nor hear you."
-      ])
+      builder.setConfigOverride(
+        "e2eeLabels",
+        with: [
+          "e2ee": "Video Bridge Encryption",
+          "labelToolTip":
+            "Audio and Video Communication on this call is encrypted on the video bridge",
+          "description":
+            "Video Bridge Encryption is currently EXPERIMENTAL. Please keep in mind that turning it on will effectively disable server-side provided services such as: phone participation. Also keep in mind that the meeting will only work for people joining from browsers with support for insertable streams.  Note that chats will not use this encryption.",
+          "label": "Enable Video Bridge Encryption",
+          "warning":
+            "WARNING: Not all participants in this meeting seem to have support for Video Bridge Encryption. If you enable it they won't be able to see nor hear you.",
+        ]
+      )
       builder.setConfigOverride("enableTalkWhileMuted", withBoolean: false)
       builder.setConfigOverride("hideEmailInSettings", withBoolean: true)
       builder.setConfigOverride("inviteAppName", withValue: "Brave Talk")

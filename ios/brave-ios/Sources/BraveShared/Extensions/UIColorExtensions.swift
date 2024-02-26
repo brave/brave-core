@@ -31,8 +31,10 @@ extension UIColor {
   }
 
   public func desaturated(_ desaturation: CGFloat) -> UIColor {
-    var h: CGFloat = 0, s: CGFloat = 0
-    var b: CGFloat = 0, a: CGFloat = 0
+    var h: CGFloat = 0
+    var s: CGFloat = 0
+    var b: CGFloat = 0
+    var a: CGFloat = 0
 
     guard self.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {
       return self
@@ -42,6 +44,7 @@ extension UIColor {
       hue: h,
       saturation: max(s - desaturation, 0.0),
       brightness: b,
-      alpha: a)
+      alpha: a
+    )
   }
 }

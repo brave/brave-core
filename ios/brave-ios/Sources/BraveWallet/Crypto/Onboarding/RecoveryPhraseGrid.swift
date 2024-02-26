@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import Algorithms
+import SwiftUI
 
 /// Displays a grid of recovery words
 struct RecoveryPhraseGrid<Word: Hashable, ID: Hashable, Content: View>: View {

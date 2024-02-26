@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import XCTest
-import WebKit
-import SnapKit
 import CryptoKit
+import SnapKit
+import WebKit
+import XCTest
 
 @testable import Brave
 
@@ -16,62 +16,65 @@ final class ScriptExecutionTests: XCTestCase {
     let pluginNames: [String]
     let hardwareConcurrency: Int
   }
-  
+
   struct RequestBlockingTestDTO: Decodable {
     let blockedFetch: Bool
     let blockedXHR: Bool
   }
-  
+
   struct CosmeticFilteringTestDTO: Decodable {
     let hiddenIds: [String]
     let unhiddenIds: [String]
   }
-  
+
   @MainActor func testSiteStateListenerScript() async throws {
     // Given
     let viewController = MockScriptsViewController()
-    
+
     // When
     let stream = viewController.attachScriptHandler(
       contentWorld: SiteStateListenerScriptHandler.scriptSandbox,
       name: SiteStateListenerScriptHandler.messageHandlerName
     )
-    
+
     // Load the view and add the siteStateListener script
     viewController.loadViewIfNeeded()
     viewController.add(scripts: [.siteStateListener])
-    
+
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try! String(contentsOf: htmlURL, encoding: .utf8)
     try await viewController.loadHTMLStringAndWait(htmlString)
-    
+
     // Then
     // Await the script handler and checks it's contents
     var foundMessage: SiteStateListenerScriptHandler.MessageDTO?
     for try await message in stream {
       do {
         let data = try JSONSerialization.data(withJSONObject: message.body)
-        foundMessage = try JSONDecoder().decode(SiteStateListenerScriptHandler.MessageDTO.self, from: data)
+        foundMessage = try JSONDecoder().decode(
+          SiteStateListenerScriptHandler.MessageDTO.self,
+          from: data
+        )
       } catch {
         XCTFail(String(describing: error))
       }
-      
+
       // We only care about the first script handler result
       break
     }
-    
+
     // Ensure we got a result
     XCTAssertNotNil(foundMessage)
     XCTAssertEqual(foundMessage?.data.windowURL, "https://example.com/")
   }
-  
+
   @MainActor func testFarblingProtectionScript() async throws {
     // Given
     let controlViewController = MockScriptsViewController()
     let farbledViewController = MockScriptsViewController()
     let etldP1 = "example.com"
-    
+
     // When
     // Attach a farbling script test handler to both the view controller and control view controller
     let controlStream = controlViewController.attachScriptHandler(
@@ -86,26 +89,31 @@ final class ScriptExecutionTests: XCTestCase {
     // Load the view
     controlViewController.loadViewIfNeeded()
     farbledViewController.loadViewIfNeeded()
-    
+
     // Add the farblingProtection script
     // (ONLY to the farbled controller)
     let farblingScriptType = UserScriptType.farblingProtection(etld: etldP1)
     farbledViewController.add(scripts: [farblingScriptType])
-    
+
     // Add the tests script to both view controllers
     let testURL = Bundle.module.url(forResource: "farbling-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
-    let testScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: .page)
+    let testScript = WKUserScript(
+      source: source,
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: true,
+      in: .page
+    )
     farbledViewController.add(userScript: testScript)
     controlViewController.add(userScript: testScript)
-    
+
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try! String(contentsOf: htmlURL, encoding: .utf8)
     async let load1: Void = controlViewController.loadHTMLStringAndWait(htmlString)
     async let load2: Void = farbledViewController.loadHTMLStringAndWait(htmlString)
     _ = try await (load1, load2)
-    
+
     // Then
     // Await the results
     var farblingResult: FarblingTestDTO?
@@ -116,7 +124,7 @@ final class ScriptExecutionTests: XCTestCase {
       } catch {
         XCTFail(String(describing: error))
       }
-      
+
       // We only care about the first script handler result
       break
     }
@@ -128,11 +136,11 @@ final class ScriptExecutionTests: XCTestCase {
       } catch {
         XCTFail(String(describing: error))
       }
-      
+
       // We only care about the first script handler result
       break
     }
-    
+
     // Ensure we have some results
     XCTAssertNotNil(farblingResult)
     XCTAssertNotNil(controlResult)
@@ -142,22 +150,22 @@ final class ScriptExecutionTests: XCTestCase {
     XCTAssertNotNil(controlResult?.pluginNames)
     XCTAssertNotNil(farblingResult?.hardwareConcurrency)
     XCTAssertNotNil(controlResult?.hardwareConcurrency)
-    
+
     // Ensure farbled and unfarbled results are not the same
     XCTAssertNotEqual(farblingResult?.voiceNames, controlResult?.voiceNames)
     XCTAssertNotEqual(farblingResult?.pluginNames, controlResult?.pluginNames)
   }
-  
+
   @MainActor func testRequestBlockingScript() async throws {
     // Given
     let viewController = MockScriptsViewController()
-    
+
     // When
     let blockingResultStream = viewController.attachScriptHandler(
       contentWorld: RequestBlockingContentScriptHandler.scriptSandbox,
       name: "SendTestRequestResult"
     )
-    
+
     viewController.attachScriptHandler(
       contentWorld: RequestBlockingContentScriptHandler.scriptSandbox,
       name: RequestBlockingContentScriptHandler.messageHandlerName,
@@ -166,21 +174,26 @@ final class ScriptExecutionTests: XCTestCase {
         return true
       })
     )
-    
+
     // Load the view and add scripts
     viewController.loadViewIfNeeded()
     viewController.add(userScript: RequestBlockingContentScriptHandler.userScript!)
-    
+
     let testURL = Bundle.module.url(forResource: "request-blocking-tests", withExtension: "js")!
     let source = try String(contentsOf: testURL)
-    let testScript = WKUserScript(source: source, injectionTime: .atDocumentEnd, forMainFrameOnly: true, in: RequestBlockingContentScriptHandler.scriptSandbox)
+    let testScript = WKUserScript(
+      source: source,
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: true,
+      in: RequestBlockingContentScriptHandler.scriptSandbox
+    )
     viewController.add(userScript: testScript)
-    
+
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
     try await viewController.loadHTMLStringAndWait(htmlString)
-    
+
     // Then
     // Await the script handler and checks it's contents
     var foundMessage: RequestBlockingTestDTO?
@@ -191,17 +204,17 @@ final class ScriptExecutionTests: XCTestCase {
       } catch {
         XCTFail(String(describing: error))
       }
-      
+
       // We only care about the first script handler result
       break
     }
-    
+
     // Ensure we got a result
     XCTAssertNotNil(foundMessage)
     XCTAssertEqual(foundMessage?.blockedFetch, true)
     XCTAssertEqual(foundMessage?.blockedXHR, true)
   }
-  
+
   @MainActor func testCosmeticFilteringScript() async throws {
     // Given
     let viewController = MockScriptsViewController()
@@ -214,7 +227,7 @@ final class ScriptExecutionTests: XCTestCase {
     let polledStandardIds = ["test-ad-1st-party", "test-ad-3rd-party", "test-ad-simple"]
     let nestedIds = [
       "test-ad-primary-standard-1st-party", "test-ad-primary-standard-3rd-party",
-      "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party"
+      "test-ad-primary-aggressive-1st-party", "test-ad-primary-aggressive-3rd-party",
     ]
     let setup = UserScriptType.SelectorsPollerSetup(
       hideFirstPartyContent: false,
@@ -226,7 +239,7 @@ final class ScriptExecutionTests: XCTestCase {
       standardSelectors: initialStandardSelectors.union(invalidSelectors),
       styleSelectors: []
     )
-    
+
     // Attach fake message handlers for our CF script
     let selectorsMessageHandler = viewController.attachScriptHandler(
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
@@ -234,9 +247,15 @@ final class ScriptExecutionTests: XCTestCase {
       messageHandler: MockMessageHandler(callback: { message in
         do {
           let data = try JSONSerialization.data(withJSONObject: message.body)
-          let dto = try JSONDecoder().decode(CosmeticFiltersScriptHandler.CosmeticFiltersDTO.self, from: data)
-          
-          XCTAssertEqual(dto.data.ids.count, polledAggressiveIds.count + polledStandardIds.count + nestedIds.count)
+          let dto = try JSONDecoder().decode(
+            CosmeticFiltersScriptHandler.CosmeticFiltersDTO.self,
+            from: data
+          )
+
+          XCTAssertEqual(
+            dto.data.ids.count,
+            polledAggressiveIds.count + polledStandardIds.count + nestedIds.count
+          )
           for id in polledAggressiveIds {
             XCTAssertTrue(dto.data.ids.contains(id))
           }
@@ -246,11 +265,11 @@ final class ScriptExecutionTests: XCTestCase {
           for id in nestedIds {
             XCTAssertTrue(dto.data.ids.contains(id))
           }
-          
+
           // Return selectors to hide
           return [
             "aggressiveSelectors": polledAggressiveIds.map({ "#\($0)" }),
-            "standardSelectors": polledStandardIds.map({ "#\($0)" })
+            "standardSelectors": polledStandardIds.map({ "#\($0)" }),
           ]
         } catch {
           XCTFail(String(describing: error))
@@ -258,23 +277,26 @@ final class ScriptExecutionTests: XCTestCase {
         }
       })
     )
-    
+
     viewController.attachScriptHandler(
       contentWorld: URLPartinessScriptHandler.scriptSandbox,
       name: URLPartinessScriptHandler.messageHandlerName,
       messageHandler: MockMessageHandler(callback: { message in
         do {
           let data = try JSONSerialization.data(withJSONObject: message.body)
-          let dto = try JSONDecoder().decode(URLPartinessScriptHandler.PartinessDTO.self, from: data)
-          
+          let dto = try JSONDecoder().decode(
+            URLPartinessScriptHandler.PartinessDTO.self,
+            from: data
+          )
+
           XCTAssertEqual(dto.data.urls.count, 2)
           XCTAssertTrue(dto.data.urls.contains("http://1st_party.localhost"))
           XCTAssertTrue(dto.data.urls.contains("http://3rd_party.localhost"))
-          
+
           // Return fake partiness information
           return [
             "http://1st_party.localhost": true,
-            "http://3rd_party.localhost": false
+            "http://3rd_party.localhost": false,
           ]
         } catch {
           XCTFail(String(describing: error))
@@ -282,7 +304,7 @@ final class ScriptExecutionTests: XCTestCase {
         }
       })
     )
-    
+
     // When
     // Attach a result message handler
     let testResultMessageHandler = viewController.attachScriptHandler(
@@ -292,15 +314,15 @@ final class ScriptExecutionTests: XCTestCase {
         return nil
       })
     )
-    
+
     // Load the view and add scripts
     viewController.loadViewIfNeeded()
-    
+
     // Load the sample htmls page and await the first page load result
     let htmlURL = Bundle.module.url(forResource: "index", withExtension: "html")!
     let htmlString = try String(contentsOf: htmlURL, encoding: .utf8)
     try await viewController.loadHTMLStringAndWait(htmlString)
-    
+
     // Execute the selectors poller script
     let script = try ScriptFactory.shared.makeScript(for: .selectorsPoller(setup))
     try await viewController.webView.evaluateSafeJavaScriptThrowing(
@@ -308,18 +330,18 @@ final class ScriptExecutionTests: XCTestCase {
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
       asFunction: false
     )
-    
+
     // Await the execution of the selectors message handler
     // (so we know we already hid our elements)
     for try await _ in selectorsMessageHandler {
       // We only care about the first script handler result
       break
     }
-    
+
     // Now wait for the pump which takes a few seconds.
     // The pump unhides 1st party elements.
     try await Task.sleep(seconds: 5)
-    
+
     // Then
     // Execute a script that will test the cosmetic filters page
     let testURL = Bundle.module.url(forResource: "cosmetic-filter-tests", withExtension: "js")!
@@ -329,7 +351,7 @@ final class ScriptExecutionTests: XCTestCase {
       contentWorld: CosmeticFiltersScriptHandler.scriptSandbox,
       asFunction: false
     )
-    
+
     // Await the results of the test script
     var resultsAfterPump: CosmeticFilteringTestDTO?
     for try await message in testResultMessageHandler {
@@ -339,20 +361,32 @@ final class ScriptExecutionTests: XCTestCase {
       } catch {
         XCTFail(String(describing: error))
       }
-      
+
       // We don't listen for ever. Just the first test result
       break
     }
-    
+
     XCTAssertNotNil(resultsAfterPump)
     XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-1st-party"), true)
-    XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-primary-standard-1st-party"), true)
-    XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-primary-standard-3rd-party"), true)
+    XCTAssertEqual(
+      resultsAfterPump?.unhiddenIds.contains("test-ad-primary-standard-1st-party"),
+      true
+    )
+    XCTAssertEqual(
+      resultsAfterPump?.unhiddenIds.contains("test-ad-primary-standard-3rd-party"),
+      true
+    )
     XCTAssertEqual(resultsAfterPump?.unhiddenIds.contains("test-ad-1st-party"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-aggressive"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-3rd-party"), true)
     XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-simple"), true)
-    XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-1st-party"), true)
-    XCTAssertEqual(resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-3rd-party"), true)
+    XCTAssertEqual(
+      resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-1st-party"),
+      true
+    )
+    XCTAssertEqual(
+      resultsAfterPump?.hiddenIds.contains("test-ad-primary-aggressive-3rd-party"),
+      true
+    )
   }
 }

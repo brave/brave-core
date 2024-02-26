@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import SwiftUI
+import UIKit
 
 private class LoaderLayer: CALayer {
   weak var parent: LoaderView?
@@ -25,7 +25,7 @@ public class LoaderView: UIView {
     case small
     case normal
     case large
-    
+
     public var width: CGFloat { return size.width }
     public var height: CGFloat { return size.height }
 
@@ -124,7 +124,9 @@ public class LoaderView: UIView {
     layer.strokeColor = tintColor.resolvedColor(with: traitCollection).cgColor
     layer.lineWidth = size.lineWidth
     layer.fillColor = nil
-    layer.path = UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0)).cgPath
+    layer.path =
+      UIBezierPath(ovalIn: bounds.insetBy(dx: size.lineWidth / 2.0, dy: size.lineWidth / 2.0))
+      .cgPath
     return layer
   }()
 }
@@ -133,7 +135,7 @@ public struct BraveCircularProgressViewStyle: ProgressViewStyle {
   public var size: LoaderView.Size = .normal
   public var tintColor: UIColor = .white
   @State private var isActive: Bool = false
-  
+
   public func makeBody(configuration: Configuration) -> some View {
     Representable(size: size, tintColor: tintColor, isActive: $isActive)
       .onAppear {
@@ -147,7 +149,7 @@ public struct BraveCircularProgressViewStyle: ProgressViewStyle {
     var size: LoaderView.Size
     var tintColor: UIColor
     @Binding var isActive: Bool
-    
+
     func makeUIView(context: Context) -> LoaderView {
       LoaderView(size: size)
     }

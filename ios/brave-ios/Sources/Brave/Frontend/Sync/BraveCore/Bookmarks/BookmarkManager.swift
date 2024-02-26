@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Data
 import BraveCore
-import Preferences
 import CoreData
-import Shared
+import Data
+import Foundation
 import Growth
+import Preferences
+import Shared
 import os.log
 
 class BookmarkManager {
@@ -57,7 +57,8 @@ class BookmarkManager {
 
     // Display last visited folder..
     if let folderNode = bookmarksAPI.getNodeById(nodeId),
-      folderNode.isVisible {
+      folderNode.isVisible
+    {
       return Bookmarkv2(folderNode)
     }
 
@@ -76,7 +77,8 @@ class BookmarkManager {
     if Preferences.General.showLastVisitedBookmarksFolder.value,
       let nodeId = Preferences.Chromium.lastBookmarksFolderNodeId.value,
       var folderNode = bookmarksAPI.getNodeById(nodeId),
-      folderNode.isVisible {
+      folderNode.isVisible
+    {
 
       // We don't ever display the root node
       // It is the mother of all nodes
@@ -155,7 +157,7 @@ class BookmarkManager {
     } else {
       bookmarksAPI.createBookmark(withTitle: title ?? "", url: url)
     }
-    
+
     AppReviewManager.shared.processSubCriteria(for: .numberOfBookmarks)
   }
 
@@ -180,7 +182,10 @@ class BookmarkManager {
     return includeFolders ? result : result.filter({ $0.isFolder == false })
   }
 
-  public func byFrequency(query: String? = nil, completion: @escaping ([WebsitePresentable]) -> Void) {
+  public func byFrequency(
+    query: String? = nil,
+    completion: @escaping ([WebsitePresentable]) -> Void
+  ) {
     // Invalid query.. BraveCore doesn't store bookmarks based on last visited.
     // Any last visited bookmarks would show up in `History` anyway.
     // BraveCore automatically sorts them by date as well.
@@ -190,10 +195,12 @@ class BookmarkManager {
     }
 
     return bookmarksAPI.search(
-      withQuery: query, maxCount: 200,
+      withQuery: query,
+      maxCount: 200,
       completion: { nodes in
         completion(nodes.compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil }))
-      })
+      }
+    )
   }
 
   public func fetchBookmarks(with query: String = "", _ completion: @escaping () -> Void) {
@@ -204,26 +211,35 @@ class BookmarkManager {
     }
 
     bookmarksAPI.search(
-      withQuery: query, maxCount: 200,
+      withQuery: query,
+      maxCount: 200,
       completion: { [weak self] nodes in
         guard let self = self else { return }
 
         self.searchBookmarkList = nodes.compactMap({ return !$0.isFolder ? Bookmarkv2($0) : nil })
 
         completion()
-      })
+      }
+    )
   }
 
-  public func reorderBookmarks(frc: BookmarksV2FetchResultsController?, sourceIndexPath: IndexPath, destinationIndexPath: IndexPath) {
+  public func reorderBookmarks(
+    frc: BookmarksV2FetchResultsController?,
+    sourceIndexPath: IndexPath,
+    destinationIndexPath: IndexPath
+  ) {
     guard let frc = frc, let bookmarksAPI = bookmarksAPI else {
       return
     }
 
     if let node = frc.object(at: sourceIndexPath)?.bookmarkNode,
-      let parent = node.parent ?? bookmarksAPI.mobileNode {
+      let parent = node.parent ?? bookmarksAPI.mobileNode
+    {
 
       // Moving down in the list the node destination index should be increased by 1
-      let destinationIndex = sourceIndexPath.row > destinationIndexPath.row ? destinationIndexPath.row : destinationIndexPath.row + 1
+      let destinationIndex =
+        sourceIndexPath.row > destinationIndexPath.row
+        ? destinationIndexPath.row : destinationIndexPath.row + 1
       node.move(toParent: parent, index: UInt(destinationIndex))
 
       // Notify the delegate that items did move..
@@ -244,7 +260,12 @@ class BookmarkManager {
     }
   }
 
-  public func updateWithNewLocation(_ bookmarkItem: Bookmarkv2, customTitle: String?, url: URL?, location: Bookmarkv2?) {
+  public func updateWithNewLocation(
+    _ bookmarkItem: Bookmarkv2,
+    customTitle: String?,
+    url: URL?,
+    location: Bookmarkv2?
+  ) {
     guard let bookmarksAPI = bookmarksAPI else {
       return
     }
@@ -261,7 +282,9 @@ class BookmarkManager {
       if let url = url, !bookmarkItem.bookmarkNode.isFolder {
         bookmarkItem.bookmarkNode.url = url
       } else if url != nil {
-        Logger.module.error("Error: Moving bookmark - Cannot convert a folder into a bookmark with url.")
+        Logger.module.error(
+          "Error: Moving bookmark - Cannot convert a folder into a bookmark with url."
+        )
       }
     } else {
       Logger.module.error("Error: Moving bookmark - Cannot move a bookmark to Root.")
@@ -276,7 +299,8 @@ class BookmarkManager {
     let observer = BookmarkModelStateObserver { [weak self] state in
       if case .favIconChanged(let node) = state {
         if node.isValid && bookmarkItem.bookmarkNode.isValid
-          && node.guid == bookmarkItem.bookmarkNode.guid {
+          && node.guid == bookmarkItem.bookmarkNode.guid
+        {
 
           if bookmarkItem.bookmarkNode.isFavIconLoaded {
             self?.removeFavIconObserver(bookmarkItem)
@@ -304,17 +328,19 @@ class BookmarkManager {
   private func removeFavIconObserver(_ bookmarkItem: Bookmarkv2) {
     bookmarkItem.bookmarkFavIconObserver = nil
   }
-  
+
   // MARK: - P3A
-  
+
   private func recordTotalBookmarkCountP3A() {
     // Q5 How many bookmarks do you have?
     guard let folders = bookmarksAPI?.mobileNode?.nestedChildFolders else { return }
     let count = folders.reduce(0, { $0 + $1.bookmarkNode.children.filter({ !$0.isFolder }).count })
     UmaHistogramRecordValueToBucket(
       "Brave.Core.BookmarksCountOnProfileLoad.2",
-      buckets: [.r(0...5), .r(6...20), .r(21...100), .r(101...500),
-                .r(501...1000), .r(1001...5000), .r(5001...10000), .r(10001...)],
+      buckets: [
+        .r(0...5), .r(6...20), .r(21...100), .r(101...500),
+        .r(501...1000), .r(1001...5000), .r(5001...10000), .r(10001...),
+      ],
       value: Int(count)
     )
   }
@@ -344,7 +370,8 @@ extension BookmarkManager {
               completion()
             }
           }
-        }))
+        })
+      )
     }
   }
 }

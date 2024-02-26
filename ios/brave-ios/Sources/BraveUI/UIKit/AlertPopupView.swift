@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Lottie
+import UIKit
 
 public class AlertPopupView: UIKitPopupView {
   fileprivate var dialogImage: UIView?
@@ -20,8 +20,15 @@ public class AlertPopupView: UIKitPopupView {
   fileprivate let kPadding: CGFloat = 20.0
 
   public init(
-    imageView: UIView? = nil, title: String, message: String, inputType: UIKeyboardType? = nil,
-    secureInput: Bool = false, inputPlaceholder: String? = nil, titleWeight: UIFont.Weight = UIFont.Weight.bold, titleSize: CGFloat = 24, dismissHandler: (() -> Bool)? = nil
+    imageView: UIView? = nil,
+    title: String,
+    message: String,
+    inputType: UIKeyboardType? = nil,
+    secureInput: Bool = false,
+    inputPlaceholder: String? = nil,
+    titleWeight: UIFont.Weight = UIFont.Weight.bold,
+    titleSize: CGFloat = 24,
+    dismissHandler: (() -> Bool)? = nil
   ) {
     super.init(frame: CGRect.zero)
 
@@ -62,7 +69,10 @@ public class AlertPopupView: UIKitPopupView {
       textField = UITextField(frame: CGRect.zero).then {
         $0.keyboardType = inputType
         $0.textColor = .braveLabel
-        $0.attributedPlaceholder = NSAttributedString(string: inputPlaceholder ?? "", attributes: [.foregroundColor: UIColor.secondaryBraveLabel])
+        $0.attributedPlaceholder = NSAttributedString(
+          string: inputPlaceholder ?? "",
+          attributes: [.foregroundColor: UIColor.secondaryBraveLabel]
+        )
         $0.autocorrectionType = .no
         $0.autocapitalizationType = .none
         $0.layer.cornerRadius = 4
@@ -98,7 +108,8 @@ public class AlertPopupView: UIKitPopupView {
     updateSubviews(resizePercentage: 1.0)
 
     let paddingHeight = padding * 3.0
-    let externalContentHeight = dialogButtons.isEmpty ? paddingHeight : kPopupDialogButtonHeight + paddingHeight
+    let externalContentHeight =
+      dialogButtons.isEmpty ? paddingHeight : kPopupDialogButtonHeight + paddingHeight
     let desiredHeight = UIScreen.main.bounds.height - externalContentHeight
 
     if containerView.frame.height > desiredHeight {
@@ -120,13 +131,18 @@ public class AlertPopupView: UIKitPopupView {
     var imageFrame: CGRect = dialogImage?.frame ?? CGRect.zero
     if let dialogImage = dialogImage {
       let dialogImageSize = dialogImage.frame.size
-      imageFrame.size = CGSize(width: dialogImageSize.width * resizePercentage, height: dialogImageSize.height * resizePercentage)
+      imageFrame.size = CGSize(
+        width: dialogImageSize.width * resizePercentage,
+        height: dialogImageSize.height * resizePercentage
+      )
       imageFrame.origin.x = (width - imageFrame.width) / 2.0
       imageFrame.origin.y = kPadding * 2.0 * resizePercentage
       dialogImage.frame = imageFrame
     }
 
-    var titleLabelSize: CGSize = titleLabel.sizeThatFits(CGSize(width: width - kPadding * 3.0, height: CGFloat.greatestFiniteMagnitude))
+    var titleLabelSize: CGSize = titleLabel.sizeThatFits(
+      CGSize(width: width - kPadding * 3.0, height: CGFloat.greatestFiniteMagnitude)
+    )
     titleLabelSize.height = titleLabelSize.height * resizePercentage
     var titleLabelFrame: CGRect = titleLabel.frame
     titleLabelFrame.size = titleLabelSize
@@ -134,12 +150,16 @@ public class AlertPopupView: UIKitPopupView {
     titleLabelFrame.origin.y = imageFrame.maxY + kPadding * resizePercentage
     titleLabel.frame = titleLabelFrame
 
-    var messageLabelSize: CGSize = messageLabel.sizeThatFits(CGSize(width: width - kPadding * 4.0, height: CGFloat.greatestFiniteMagnitude))
+    var messageLabelSize: CGSize = messageLabel.sizeThatFits(
+      CGSize(width: width - kPadding * 4.0, height: CGFloat.greatestFiniteMagnitude)
+    )
     messageLabelSize.height = messageLabelSize.height * resizePercentage
     var messageLabelFrame: CGRect = messageLabel.frame
     messageLabelFrame.size = messageLabelSize
     messageLabelFrame.origin.x = rint((width - messageLabelSize.width) / 2.0)
-    messageLabelFrame.origin.y = rint(titleLabelFrame.maxY + kPadding * 1.5 / 2.0 * resizePercentage)
+    messageLabelFrame.origin.y = rint(
+      titleLabelFrame.maxY + kPadding * 1.5 / 2.0 * resizePercentage
+    )
     messageLabel.frame = messageLabelFrame
 
     var textFieldFrame = textField?.frame ?? CGRect.zero
@@ -159,7 +179,7 @@ public class AlertPopupView: UIKitPopupView {
     containerView.frame = containerViewFrame
   }
 
-    public override func layoutSubviews() {
+  public override func layoutSubviews() {
     super.layoutSubviews()
 
     updateSubviews()
@@ -169,7 +189,10 @@ public class AlertPopupView: UIKitPopupView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  public override func showWithType(showType: PopupViewShowType, autoDismissTime: TimeInterval? = nil) {
+  public override func showWithType(
+    showType: PopupViewShowType,
+    autoDismissTime: TimeInterval? = nil
+  ) {
     super.showWithType(showType: showType, autoDismissTime: autoDismissTime)
 
     textField?.becomeFirstResponder()

@@ -5,14 +5,16 @@
 
 import Foundation
 
-public extension Sequence {
-  func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
+extension Sequence {
+  public func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
     for element in self {
       try await operation(element)
     }
   }
 
-  func asyncConcurrentForEach(_ operation: @escaping (Element) async throws -> Void) async rethrows {
+  public func asyncConcurrentForEach(
+    _ operation: @escaping (Element) async throws -> Void
+  ) async rethrows {
     await withThrowingTaskGroup(of: Void.self) { group in
       for element in self {
         group.addTask { try await operation(element) }
@@ -20,7 +22,7 @@ public extension Sequence {
     }
   }
 
-  func asyncMap<T>(_ transform: (Element) async throws -> T) async rethrows -> [T] {
+  public func asyncMap<T>(_ transform: (Element) async throws -> T) async rethrows -> [T] {
     var results = [T]()
     for element in self {
       try await results.append(transform(element))
@@ -28,7 +30,9 @@ public extension Sequence {
     return results
   }
 
-  func asyncConcurrentMap<T>(_ transform: @escaping (Element) async throws -> T) async rethrows -> [T] {
+  public func asyncConcurrentMap<T>(
+    _ transform: @escaping (Element) async throws -> T
+  ) async rethrows -> [T] {
     try await withThrowingTaskGroup(of: T.self) { group in
       for element in self {
         group.addTask { try await transform(element) }
@@ -42,7 +46,7 @@ public extension Sequence {
     }
   }
 
-  func asyncCompactMap<T>(_ transform: (Element) async throws -> T?) async rethrows -> [T] {
+  public func asyncCompactMap<T>(_ transform: (Element) async throws -> T?) async rethrows -> [T] {
     var results = [T]()
     for element in self {
       if let result = try await transform(element) {
@@ -52,7 +56,9 @@ public extension Sequence {
     return results
   }
 
-  func asyncConcurrentCompactMap<T>(_ transform: @escaping (Element) async throws -> T?) async rethrows -> [T] {
+  public func asyncConcurrentCompactMap<T>(
+    _ transform: @escaping (Element) async throws -> T?
+  ) async rethrows -> [T] {
     try await withThrowingTaskGroup(of: T?.self) { group in
       for element in self {
         group.addTask {
@@ -69,8 +75,9 @@ public extension Sequence {
       return results
     }
   }
-  
-  func asyncFilter(_ isIncluded: (Element) async throws -> Bool) async rethrows -> [Element] {
+
+  public func asyncFilter(_ isIncluded: (Element) async throws -> Bool) async rethrows -> [Element]
+  {
     var results = [Element]()
     for element in self {
       if try await isIncluded(element) {
@@ -79,8 +86,10 @@ public extension Sequence {
     }
     return results
   }
-  
-  func asyncConcurrentFilter(_ isIncluded: @escaping (Element) async throws -> Bool) async rethrows -> [Element] {
+
+  public func asyncConcurrentFilter(
+    _ isIncluded: @escaping (Element) async throws -> Bool
+  ) async rethrows -> [Element] {
     try await withThrowingTaskGroup(of: Element?.self) { group in
       for element in self {
         group.addTask {
@@ -103,9 +112,9 @@ public extension Sequence {
   }
 }
 
-public extension Task where Failure == Error {
+extension Task where Failure == Error {
   @discardableResult
-  static func retry(
+  public static func retry(
     priority: TaskPriority? = nil,
     retryCount: Int = 3,
     retryDelay: TimeInterval = 1,
@@ -129,7 +138,7 @@ public extension Task where Failure == Error {
   }
 }
 
-public extension Task where Success == Never, Failure == Never {
+extension Task where Success == Never, Failure == Never {
   /// Suspends the current task for at least the given duration
   /// in seconds.
   ///
@@ -137,14 +146,14 @@ public extension Task where Success == Never, Failure == Never {
   /// this function throws `CancellationError`.
   ///
   /// This function doesn't block the underlying thread.
-  static func sleep(seconds: TimeInterval) async throws {
+  public static func sleep(seconds: TimeInterval) async throws {
     try await sleep(nanoseconds: NSEC_PER_MSEC * UInt64(seconds * 1000))
   }
 }
 
-public extension Task where Failure == Error {
+extension Task where Failure == Error {
   @discardableResult
-  static func delayed(
+  public static func delayed(
     bySeconds seconds: TimeInterval,
     priority: TaskPriority? = nil,
     operation: @escaping @Sendable () async throws -> Success

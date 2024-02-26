@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import CoreData
 import Foundation
 import Shared
 import Storage
+import UIKit
 import os.log
 
 public protocol WebsitePresentable {
@@ -87,8 +87,11 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
     fetchRequest.predicate = isFavoritePredicate
 
     return NSFetchedResultsController(
-      fetchRequest: fetchRequest, managedObjectContext: context,
-      sectionNameKeyPath: nil, cacheName: nil)
+      fetchRequest: fetchRequest,
+      managedObjectContext: context,
+      sectionNameKeyPath: nil,
+      cacheName: nil
+    )
   }
 
   public class func contains(url: URL) -> Bool {
@@ -129,8 +132,11 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
 
       favorites.forEach {
         addInternal(
-          url: $0.url, title: $0.title, isFavorite: true,
-          context: .existing(context))
+          url: $0.url,
+          title: $0.title,
+          isFavorite: true,
+          context: .existing(context)
+        )
       }
     }
   }
@@ -153,7 +159,8 @@ public final class Favorite: NSManagedObject, WebsitePresentable, CRUD {
     //
     // Doing it on a background thread will cause the favorites overlay
     // to temporarely show the old items and require a full-table refresh
-    let context: WriteContext = isInteractiveDragReorder ? .existing(DataController.viewContext) : .new(inMemory: false)
+    let context: WriteContext =
+      isInteractiveDragReorder ? .existing(DataController.viewContext) : .new(inMemory: false)
 
     DataController.perform(context: context) { context in
       let destinationIndex = destinationIndexPath.row
@@ -211,7 +218,8 @@ extension Favorite {
   ) {
 
     DataController.perform(
-      context: context, save: save,
+      context: context,
+      save: save,
       task: { context in
         let bk = Favorite(entity: entity(context: context), insertInto: context)
 
@@ -226,8 +234,10 @@ extension Favorite {
 
         if let location = location, let url = URL(string: location) {
           bk.domain = Domain.getOrCreateInternal(
-            url, context: context,
-            saveStrategy: .delayedPersistentStore)
+            url,
+            context: context,
+            saveStrategy: .delayedPersistentStore
+          )
         }
 
         let favorites = getAllFavorites(context: context)
@@ -236,13 +246,16 @@ extension Favorite {
         if favorites.count > 1, let lastOrder = favorites.map(\.order).max() {
           bk.order = lastOrder + 1
         }
-      })
+      }
+    )
   }
 
   // MARK: Update
 
   private func updateInternal(
-    customTitle: String?, url: String?, save: Bool = true,
+    customTitle: String?,
+    url: String?,
+    save: Bool = true,
     context: WriteContext = .new(inMemory: false)
   ) {
 
@@ -262,8 +275,10 @@ extension Favorite {
         if let theURL = URL(string: u) {
           bookmarkToUpdate.domain =
             Domain.getOrCreateInternal(
-              theURL, context: context,
-              saveStrategy: .delayedPersistentStore)
+              theURL,
+              context: context,
+              saveStrategy: .delayedPersistentStore
+            )
         } else {
           bookmarkToUpdate.domain = nil
         }

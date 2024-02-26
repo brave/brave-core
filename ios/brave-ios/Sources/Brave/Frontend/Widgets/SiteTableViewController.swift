@@ -2,9 +2,9 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
 import Storage
+import UIKit
 
 struct SiteTableViewControllerUX {
   static let headerHeight = CGFloat(32)
@@ -31,8 +31,12 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
     // A table view will initialize the header with CGSizeZero before applying the actual size. Hence, the label's constraints
     // must not impose a minimum width on the content view.
     titleLabel.snp.makeConstraints { make in
-      make.left.equalTo(contentView).offset(SiteTableViewControllerUX.headerTextMargin).priority(999)
-      make.right.equalTo(contentView).offset(-SiteTableViewControllerUX.headerTextMargin).priority(999)
+      make.left.equalTo(contentView).offset(SiteTableViewControllerUX.headerTextMargin).priority(
+        999
+      )
+      make.right.equalTo(contentView).offset(-SiteTableViewControllerUX.headerTextMargin).priority(
+        999
+      )
       make.left.greaterThanOrEqualTo(contentView)  // Fallback for when the left space constraint breaks
       make.right.lessThanOrEqualTo(contentView)  // Fallback for when the right space constraint breaks
       make.centerY.equalTo(contentView)
@@ -44,11 +48,11 @@ class SiteTableViewHeader: UITableViewHeaderFooterView {
   }
 }
 
-/**
- * Provides base shared functionality for site rows and headers.
- */
+/// Provides base shared functionality for site rows and headers.
 @objcMembers
-public class SiteTableViewController: LoadingViewController, UITableViewDelegate, UITableViewDataSource {
+public class SiteTableViewController: LoadingViewController, UITableViewDelegate,
+  UITableViewDataSource
+{
   fileprivate let CellIdentifier = "CellIdentifier"
   fileprivate let HeaderIdentifier = "HeaderIdentifier"
   var profile: Profile! {
@@ -102,7 +106,10 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     return data.count
   }
 
-  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  public func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(withIdentifier: CellIdentifier, for: indexPath)
     if self.tableView(tableView, hasFullWidthSeparatorForRowAtIndexPath: indexPath) {
       cell.separatorInset = .zero
@@ -114,7 +121,8 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     return tableView.dequeueReusableHeaderFooterView(withIdentifier: HeaderIdentifier)
   }
 
-  public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat
+  {
     return SiteTableViewControllerUX.headerHeight
   }
 
@@ -122,7 +130,10 @@ public class SiteTableViewController: LoadingViewController, UITableViewDelegate
     return SiteTableViewControllerUX.rowHeight
   }
 
-  public func tableView(_ tableView: UITableView, hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath) -> Bool {
+  public func tableView(
+    _ tableView: UITableView,
+    hasFullWidthSeparatorForRowAtIndexPath indexPath: IndexPath
+  ) -> Bool {
     return false
   }
 

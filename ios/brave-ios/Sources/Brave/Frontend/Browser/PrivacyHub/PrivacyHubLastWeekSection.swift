@@ -3,29 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Shared
 import BraveShared
 import BraveUI
 import Data
 import Preferences
+import Shared
+import SwiftUI
 
 extension PrivacyReportsView {
   struct PrivacyHubLastWeekSection: View {
     @State private var mostFrequentTracker: CountableEntity?
     @State private var riskiestWebsite: CountableEntity?
-    
+
     @State private var mostFrequentTrackerLoading = true
     @State private var riskiestWebsiteLoading = true
-    
+
     private var noData: Bool {
       return mostFrequentTracker == nil && riskiestWebsite == nil
     }
-    
+
     private var trackingDisabled: Bool {
       !Preferences.PrivacyReports.captureShieldsData.value
     }
-    
+
     private func emptyCalloutView(text: String) -> some View {
       HStack {
         Image(systemName: "info.circle.fill")
@@ -37,23 +37,27 @@ extension PrivacyReportsView {
       .background(Color(.braveInfoLabel))
       .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
     }
-    
+
     var body: some View {
       VStack(alignment: .leading, spacing: 8) {
         if noData {
           if trackingDisabled {
-            emptyCalloutView(text:
-                              String.localizedStringWithFormat(Strings.PrivacyHub.trackingDisabledCalloutBody,
-                                                               Strings.PrivacyHub.settingsEnableShieldsTitle))
+            emptyCalloutView(
+              text:
+                String.localizedStringWithFormat(
+                  Strings.PrivacyHub.trackingDisabledCalloutBody,
+                  Strings.PrivacyHub.settingsEnableShieldsTitle
+                )
+            )
           } else {
             emptyCalloutView(text: Strings.PrivacyHub.noDataCalloutBody)
-          } 
+          }
         }
-        
+
         Text(Strings.PrivacyHub.lastWeekHeader.uppercased())
           .font(.footnote.weight(.medium))
           .fixedSize(horizontal: false, vertical: true)
-        
+
         HStack {
           Image("frequent_tracker", bundle: .module)
             .unredacted()
@@ -64,8 +68,13 @@ extension PrivacyReportsView {
               .unredacted()
             if let mostFrequentTracker = mostFrequentTracker {
               Text(
-                LocalizedStringKey(String.localizedStringWithFormat(Strings.PrivacyHub.mostFrequentTrackerAndAdBody,
-                                                                    mostFrequentTracker.name, mostFrequentTracker.count))
+                LocalizedStringKey(
+                  String.localizedStringWithFormat(
+                    Strings.PrivacyHub.mostFrequentTrackerAndAdBody,
+                    mostFrequentTracker.name,
+                    mostFrequentTracker.count
+                  )
+                )
               )
               .font(.callout)
             } else {
@@ -79,8 +88,8 @@ extension PrivacyReportsView {
         .padding()
         .background(Color(.braveBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .redacted(reason: mostFrequentTrackerLoading ? .placeholder: [])
-        
+        .redacted(reason: mostFrequentTrackerLoading ? .placeholder : [])
+
         HStack {
           Image("creepy_website", bundle: .module)
             .unredacted()
@@ -89,11 +98,16 @@ extension PrivacyReportsView {
               .font(.caption)
               .foregroundColor(Color(.secondaryBraveLabel))
               .unredacted()
-            
+
             if let riskiestWebsite = riskiestWebsite {
               Text(
-                LocalizedStringKey(String.localizedStringWithFormat(Strings.PrivacyHub.riskiestWebsiteBody,
-                                                                    riskiestWebsite.name, riskiestWebsite.count))
+                LocalizedStringKey(
+                  String.localizedStringWithFormat(
+                    Strings.PrivacyHub.riskiestWebsiteBody,
+                    riskiestWebsite.name,
+                    riskiestWebsite.count
+                  )
+                )
               )
               .font(.callout)
             } else {
@@ -101,14 +115,14 @@ extension PrivacyReportsView {
                 .foregroundColor(Color(.secondaryBraveLabel))
             }
           }
-          
+
           Spacer()
         }
         .frame(maxWidth: .infinity)
         .padding()
         .background(Color(.braveBackground))
         .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
-        .redacted(reason: riskiestWebsiteLoading ? .placeholder: [])
+        .redacted(reason: riskiestWebsiteLoading ? .placeholder : [])
       }
       .fixedSize(horizontal: false, vertical: true)
       .onAppear {
@@ -116,7 +130,7 @@ extension PrivacyReportsView {
           mostFrequentTracker = result
           mostFrequentTrackerLoading = false
         }
-        
+
         BlockedResource.riskiestWebsite(inLastDays: 7) { result in
           riskiestWebsite = result
           riskiestWebsiteLoading = false

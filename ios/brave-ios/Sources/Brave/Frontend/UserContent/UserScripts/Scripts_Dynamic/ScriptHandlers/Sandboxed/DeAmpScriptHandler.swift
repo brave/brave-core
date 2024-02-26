@@ -12,13 +12,13 @@ public class DeAmpScriptHandler: TabContentScript {
     let securityToken: String
     let destURL: URL
   }
-  
+
   private weak var tab: Tab?
-  
+
   init(tab: Tab) {
     self.tab = tab
   }
-  
+
   static let scriptName = "DeAmpScript"
   static let scriptId = UUID().uuidString
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
@@ -27,30 +27,39 @@ public class DeAmpScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: true,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true,
+      in: scriptSandbox
+    )
   }()
-  
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
+
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  ) {
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       replyHandler(false, nil)
       return
     }
-    
+
     do {
       let data = try JSONSerialization.data(withJSONObject: message.body)
       let dto = try JSONDecoder().decode(DeAmpDTO.self, from: data)
-      
+
       // Check that the destination is not the same as the previousURL
       // or that previousURL is nil which indicates circular loop cause by a client side redirect
       // Also check that our window url does not match the previously committed url
       // or that previousURL is nil which indicates as circular loop caused by a server side redirect
-      let shouldRedirect = dto.destURL != tab?.previousComittedURL && tab?.committedURL != tab?.previousComittedURL
+      let shouldRedirect =
+        dto.destURL != tab?.previousComittedURL && tab?.committedURL != tab?.previousComittedURL
       replyHandler(shouldRedirect, nil)
     } catch {
       assertionFailure("Invalid type of message. Fix the `RequestBlocking.js` script")

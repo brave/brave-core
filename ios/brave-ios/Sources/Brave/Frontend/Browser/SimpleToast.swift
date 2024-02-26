@@ -70,7 +70,8 @@ struct SimpleToast {
           deadline: dispatchTime,
           execute: {
             self.dismiss(toast)
-          })
+          }
+        )
       }
     )
   }

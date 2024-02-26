@@ -2,8 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
+import Foundation
 import Shared
 import os.log
 
@@ -12,14 +12,33 @@ typealias CRUD = Readable & Deletable
 
 protocol Deletable where Self: NSManagedObject {
   func delete(context: WriteContext)
-  static func deleteAll(predicate: NSPredicate?, context: WriteContext, includesPropertyValues: Bool)
-  static func deleteAll(predicate: NSPredicate?, context: WriteContext, includesPropertyValues: Bool, completion: (() -> Void)?)
+  static func deleteAll(
+    predicate: NSPredicate?,
+    context: WriteContext,
+    includesPropertyValues: Bool
+  )
+  static func deleteAll(
+    predicate: NSPredicate?,
+    context: WriteContext,
+    includesPropertyValues: Bool,
+    completion: (() -> Void)?
+  )
 }
 
 protocol Readable where Self: NSManagedObject {
   static func count(predicate: NSPredicate?, context: NSManagedObjectContext) -> Int?
-  static func first(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, context: NSManagedObjectContext) -> Self?
-  static func all(where predicate: NSPredicate?, sortDescriptors: [NSSortDescriptor]?, fetchLimit: Int, fetchBatchSize: Int, context: NSManagedObjectContext) -> [Self]?
+  static func first(
+    where predicate: NSPredicate?,
+    sortDescriptors: [NSSortDescriptor]?,
+    context: NSManagedObjectContext
+  ) -> Self?
+  static func all(
+    where predicate: NSPredicate?,
+    sortDescriptors: [NSSortDescriptor]?,
+    fetchLimit: Int,
+    fetchBatchSize: Int,
+    context: NSManagedObjectContext
+  ) -> [Self]?
 }
 
 // MARK: - Implementations
@@ -31,13 +50,18 @@ extension Deletable {
       context.delete(objectOnContext)
     }
   }
-  
+
   static func deleteAll(
     predicate: NSPredicate? = nil,
     context: WriteContext = .new(inMemory: false),
     includesPropertyValues: Bool = true
   ) {
-    deleteAll(predicate: predicate, context: context, includesPropertyValues: includesPropertyValues, completion: nil)
+    deleteAll(
+      predicate: predicate,
+      context: context,
+      includesPropertyValues: includesPropertyValues,
+      completion: nil
+    )
   }
 
   static func deleteAll(
@@ -58,7 +82,8 @@ extension Deletable {
         // Have to delete objects one by one.
         var isInMemoryContext: Bool = false
         if let currentCoordinator = context.persistentStoreCoordinator,
-          let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator {
+          let inMemoryCoordinator = DataController.viewContextInMemory.persistentStoreCoordinator
+        {
           isInMemoryContext = currentCoordinator == inMemoryCoordinator
         }
         if AppConstants.isRunningTest || isInMemoryContext {
@@ -74,7 +99,12 @@ extension Deletable {
           // Batch delete writes directly to the persistent store.
           // Therefore contexts and in-memory objects must be updated manually.
 
-          guard let batchDeleteResult = try context.persistentStoreCoordinator?.execute(deleteRequest, with: context) as? NSBatchDeleteResult else { return }
+          guard
+            let batchDeleteResult = try context.persistentStoreCoordinator?.execute(
+              deleteRequest,
+              with: context
+            ) as? NSBatchDeleteResult
+          else { return }
 
           guard batchDeleteResult.resultType == .resultTypeObjectIDs,
             let objectIDArray = batchDeleteResult.result as? [NSManagedObjectID]
@@ -86,7 +116,10 @@ extension Deletable {
           // listen for changes in this context.
           // Worker context is also updated in case of performing further operations with it.
           let contextsToUpdate = [DataController.viewContext, context]
-          NSManagedObjectContext.mergeChanges(fromRemoteContextSave: changes, into: contextsToUpdate)
+          NSManagedObjectContext.mergeChanges(
+            fromRemoteContextSave: changes,
+            into: contextsToUpdate
+          )
         }
       } catch {
         Logger.module.error("Delete all error: \(error.localizedDescription, privacy: .public)")
@@ -114,10 +147,12 @@ extension Readable {
   }
 
   static func first(
-    where predicate: NSPredicate? = nil, sortDescriptors: [NSSortDescriptor]? = nil,
+    where predicate: NSPredicate? = nil,
+    sortDescriptors: [NSSortDescriptor]? = nil,
     context: NSManagedObjectContext = DataController.viewContext
   ) -> Self? {
-    return all(where: predicate, sortDescriptors: sortDescriptors, fetchLimit: 1, context: context)?.first
+    return all(where: predicate, sortDescriptors: sortDescriptors, fetchLimit: 1, context: context)?
+      .first
   }
 
   static func all(

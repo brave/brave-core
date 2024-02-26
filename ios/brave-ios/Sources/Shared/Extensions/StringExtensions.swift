@@ -46,7 +46,13 @@ extension String {
     return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
   }
 
-  public static func contentsOfFileWithResourceName(_ name: String, ofType type: String, fromBundle bundle: Bundle, encoding: String.Encoding, error: NSErrorPointer) -> String? {
+  public static func contentsOfFileWithResourceName(
+    _ name: String,
+    ofType type: String,
+    fromBundle bundle: Bundle,
+    encoding: String.Encoding,
+    error: NSErrorPointer
+  ) -> String? {
     return bundle.path(forResource: name, ofType: type).flatMap {
       try? String(contentsOfFile: $0, encoding: encoding)
     }
@@ -116,7 +122,9 @@ extension String {
       let encodedString = String(decoding: data, as: UTF8.self)
       return String(encodedString.dropLast().dropFirst())
     } catch {
-      Logger.module.error("Failed to escape a string containing javascript: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to escape a string containing javascript: \(error.localizedDescription)"
+      )
       return nil
     }
   }

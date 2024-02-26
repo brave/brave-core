@@ -3,20 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveCore
+import BraveNews
+import BraveShared
 import BraveUI
+import Combine
 import CoreData
 import Data
-import Shared
-import BraveShared
-import Preferences
-import BraveCore
-import SnapKit
-import SwiftUI
-import BraveNews
-import Combine
 import DesignSystem
 import Growth
+import Preferences
+import Shared
+import SnapKit
+import SwiftUI
+import UIKit
 
 /// The behavior for sizing sections when the user is in landscape orientation
 enum NTPLandscapeSizingBehavior {
@@ -32,7 +32,9 @@ enum NTPLandscapeSizingBehavior {
 
 /// A section that will be shown in the NTP. Sections are responsible for the
 /// layout and interaction of their own items
-protocol NTPSectionProvider: NSObject, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+protocol NTPSectionProvider: NSObject, UICollectionViewDelegateFlowLayout,
+  UICollectionViewDataSource
+{
   /// Register cells and supplimentary views for your section to
   /// `collectionView`
   func registerCells(to collectionView: UICollectionView)
@@ -52,7 +54,12 @@ extension NTPSectionProvider {
     let sectionInset: UIEdgeInsets
     if let flowLayout = collectionView.collectionViewLayout as? UICollectionViewFlowLayout {
       if let flowLayoutDelegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
-        sectionInset = flowLayoutDelegate.collectionView?(collectionView, layout: collectionView.collectionViewLayout, insetForSectionAt: section) ?? flowLayout.sectionInset
+        sectionInset =
+          flowLayoutDelegate.collectionView?(
+            collectionView,
+            layout: collectionView.collectionViewLayout,
+            insetForSectionAt: section
+          ) ?? flowLayout.sectionInset
       } else {
         sectionInset = flowLayout.sectionInset
       }
@@ -60,7 +67,8 @@ extension NTPSectionProvider {
       sectionInset = .zero
     }
     return CGSize(
-      width: collectionView.bounds.width - collectionView.safeAreaInsets.left - collectionView.safeAreaInsets.right - sectionInset.left - sectionInset.right,
+      width: collectionView.bounds.width - collectionView.safeAreaInsets.left
+        - collectionView.safeAreaInsets.right - sectionInset.left - sectionInset.right,
       height: 1000
     )
   }
@@ -91,7 +99,9 @@ class NewTabPageViewController: UIViewController {
       return nil
     }
 
-    if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? NewTabCenteredCollectionViewCell<BraveShieldStatsView> {
+    if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section))
+      as? NewTabCenteredCollectionViewCell<BraveShieldStatsView>
+    {
       return cell.contentView.convert(cell.contentView.frame, to: view)
     }
     return nil
@@ -130,7 +140,7 @@ class NewTabPageViewController: UIViewController {
   private let notifications: NewTabPageNotifications
   private var cancellables: Set<AnyCancellable> = []
   private let privateBrowsingManager: PrivateBrowsingManager
-  
+
   private let p3aHelper: NewTabPageP3AHelper
 
   init(
@@ -146,53 +156,67 @@ class NewTabPageViewController: UIViewController {
     self.rewards = rewards
     self.feedDataSource = feedDataSource
     self.privateBrowsingManager = privateBrowsingManager
-    self.backgroundButtonsView = NewTabPageBackgroundButtonsView(privateBrowsingManager: privateBrowsingManager)
+    self.backgroundButtonsView = NewTabPageBackgroundButtonsView(
+      privateBrowsingManager: privateBrowsingManager
+    )
     self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
-    
+
     self.p3aHelper.dataSource = self
 
     Preferences.NewTabPage.showNewTabPrivacyHub.observe(from: self)
     Preferences.NewTabPage.showNewTabFavourites.observe(from: self)
-    
+
     sections = [
-      StatsSectionProvider(isPrivateBrowsing: tab.isPrivate, openPrivacyHubPressed: { [weak self] in
-        if self?.privateBrowsingManager.isPrivateBrowsing == true {
-          return
-        }
-        
-        let host = UIHostingController(rootView: PrivacyReportsManager.prepareView(isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing))
-        host.rootView.onDismiss = { [weak self] in
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-            guard let self = self else { return }
-            
-            // Handle App Rating
-            // User finished viewing the privacy report (tapped close)
-            AppReviewManager.shared.handleAppReview(for: .revised, using: self)
+      StatsSectionProvider(
+        isPrivateBrowsing: tab.isPrivate,
+        openPrivacyHubPressed: { [weak self] in
+          if self?.privateBrowsingManager.isPrivateBrowsing == true {
+            return
           }
-        }
-        
-        host.rootView.openPrivacyReportsUrl = { [weak self] in
-          self?.delegate?.navigateToInput(
-            URL.brave.privacyFeatures.absoluteString,
-            inNewTab: false,
-            // Privacy Reports view is unavailable in private mode.
-            switchingToPrivateMode: false
+
+          let host = UIHostingController(
+            rootView: PrivacyReportsManager.prepareView(
+              isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+            )
           )
+          host.rootView.onDismiss = { [weak self] in
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+              guard let self = self else { return }
+
+              // Handle App Rating
+              // User finished viewing the privacy report (tapped close)
+              AppReviewManager.shared.handleAppReview(for: .revised, using: self)
+            }
+          }
+
+          host.rootView.openPrivacyReportsUrl = { [weak self] in
+            self?.delegate?.navigateToInput(
+              URL.brave.privacyFeatures.absoluteString,
+              inNewTab: false,
+              // Privacy Reports view is unavailable in private mode.
+              switchingToPrivateMode: false
+            )
+          }
+
+          self?.present(host, animated: true)
+        },
+        hidePrivacyHubPressed: { [weak self] in
+          self?.hidePrivacyHub()
         }
-        
-        self?.present(host, animated: true)
-      }, hidePrivacyHubPressed: { [weak self] in
-        self?.hidePrivacyHub()
-      }),
-      FavoritesSectionProvider(action: { [weak self] bookmark, action in
-        self?.handleFavoriteAction(favorite: bookmark, action: action)
-      }, legacyLongPressAction: { [weak self] alertController in
-        self?.present(alertController, animated: true)
-      }, isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing),
+      ),
+      FavoritesSectionProvider(
+        action: { [weak self] bookmark, action in
+          self?.handleFavoriteAction(favorite: bookmark, action: action)
+        },
+        legacyLongPressAction: { [weak self] alertController in
+          self?.present(alertController, animated: true)
+        },
+        isPrivateBrowsing: privateBrowsingManager.isPrivateBrowsing
+      ),
       FavoritesOverflowSectionProvider(action: { [weak self] in
         self?.delegate?.focusURLBar()
       }),
@@ -202,8 +226,10 @@ class NewTabPageViewController: UIViewController {
     if let ntpBackground = background.currentBackground, case .sponsoredImage = ntpBackground {
       isBackgroundNTPSI = true
     }
-    let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(isBackgroundNTPSI: isBackgroundNTPSI)
-    
+    let ntpDefaultBrowserCalloutProvider = NTPDefaultBrowserCalloutProvider(
+      isBackgroundNTPSI: isBackgroundNTPSI
+    )
+
     // This is a one-off view, adding it to the NTP only if necessary.
     if ntpDefaultBrowserCalloutProvider.shouldShowCallout() {
       sections.insert(ntpDefaultBrowserCalloutProvider, at: 0)
@@ -241,14 +267,19 @@ class NewTabPageViewController: UIViewController {
         self?.handleFeedStateChange(oldState, newState)
       }
       .store(in: &cancellables)
-    NotificationCenter.default.addObserver(self, selector: #selector(checkForUpdatedFeed), name: UIApplication.didBecomeActiveNotification, object: nil)
-    
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(checkForUpdatedFeed),
+      name: UIApplication.didBecomeActiveNotification,
+      object: nil
+    )
+
     let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
     if isBraveNewsVisible && Preferences.BraveNews.isEnabled.value {
       braveNewsFeatureUsage.recordHistogram()
       recordBraveNewsDaysUsedP3A()
     }
-    
+
     recordNewTabCreatedP3A()
     recordBraveNewsWeeklyUsageCountP3A()
   }
@@ -272,11 +303,24 @@ class NewTabPageViewController: UIViewController {
 
     collectionView.backgroundView = backgroundButtonsView
 
-    feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveNewsSettings), for: .touchUpInside)
+    feedOverlayView.headerView.settingsButton.addTarget(
+      self,
+      action: #selector(tappedBraveNewsSettings),
+      for: .touchUpInside
+    )
     if !AppConstants.buildChannel.isPublic {
-      feedOverlayView.headerView.settingsButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedBraveNewsSettingsButton)))
+      feedOverlayView.headerView.settingsButton.addGestureRecognizer(
+        UILongPressGestureRecognizer(
+          target: self,
+          action: #selector(longPressedBraveNewsSettingsButton)
+        )
+      )
     }
-    feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
+    feedOverlayView.newContentAvailableButton.addTarget(
+      self,
+      action: #selector(tappedNewContentAvailable),
+      for: .touchUpInside
+    )
 
     backgroundButtonsView.tappedActiveButton = { [weak self] sender in
       self?.tappedActiveBackgroundButton(sender)
@@ -292,7 +336,7 @@ class NewTabPageViewController: UIViewController {
     feedOverlayView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     gradientView.snp.makeConstraints {
       $0.edges.equalTo(backgroundView)
     }
@@ -330,7 +374,7 @@ class NewTabPageViewController: UIViewController {
     // Make sure that imageView has a frame calculated before we attempt
     // to use it.
     backgroundView.layoutIfNeeded()
-    
+
     calculateBackgroundCenterPoints()
   }
 
@@ -366,10 +410,11 @@ class NewTabPageViewController: UIViewController {
 
     backgroundView.imageView.image = parent == nil ? nil : background.backgroundImage
   }
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     if previousTraitCollection?.verticalSizeClass
-      != traitCollection.verticalSizeClass {
+      != traitCollection.verticalSizeClass
+    {
       calculateBackgroundCenterPoints()
     }
   }
@@ -423,42 +468,46 @@ class NewTabPageViewController: UIViewController {
   }
 
   private func calculateBackgroundCenterPoints() {
-    
+
     // Only iPhone portrait looking devices have their center of the image offset adjusted.
     // In other cases the image is always centered.
     guard let image = backgroundView.imageView.image,
-            traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular else {
+      traitCollection.horizontalSizeClass == .compact
+        && traitCollection.verticalSizeClass == .regular
+    else {
       // Reset the previously calculated offset.
       backgroundView.updateImageXOffset(by: 0)
       return
     }
-    
+
     // If no focal point provided we do nothing. The image is centered by default.
     guard let focalPoint = background.currentBackground?.focalPoint else {
       return
     }
-    
+
     let focalX = focalPoint.x
-    
+
     // Calculate the sizing difference between `image` and `imageView` to determine the pixel difference ratio.
     // Most image calculations have to use this property to get coordinates right.
     let sizeRatio = backgroundView.imageView.frame.size.height / image.size.height
-    
+
     // How much the image should be offset according to the set focal point coordinate.
     // We calculate it by looking how much to move the image away from the center of the image.
     let focalXOffset = ((image.size.width / 2) - focalX) * sizeRatio
-    
+
     // Amount of image space which is cropped on one side, not visible on the screen.
     // We use this info to prevent going of out image bounds when updating the `x` offset.
-    let extraHorizontalSpaceOnOneSide = ((image.size.width * sizeRatio) - backgroundView.frame.width) / 2
-        
+    let extraHorizontalSpaceOnOneSide =
+      ((image.size.width * sizeRatio) - backgroundView.frame.width) / 2
+
     // The offset proposed by the focal point might be too far away from image's center
     // resulting in not having anough image space to cover entire width of the view and leaving blank space.
     // If the focal offset goes out of bounds we center it to the maximum amount we can where the entire
     // image is able to cover the view.
-    let realisticXOffset = abs(focalXOffset) > extraHorizontalSpaceOnOneSide ?
-      extraHorizontalSpaceOnOneSide : focalXOffset
-    
+    let realisticXOffset =
+      abs(focalXOffset) > extraHorizontalSpaceOnOneSide
+      ? extraHorizontalSpaceOnOneSide : focalXOffset
+
     backgroundView.updateImageXOffset(by: realisticXOffset)
   }
 
@@ -478,7 +527,8 @@ class NewTabPageViewController: UIViewController {
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         eventType: event,
-        completion: { _ in })
+        completion: { _ in }
+      )
     }
   }
 
@@ -515,7 +565,8 @@ class NewTabPageViewController: UIViewController {
     case .brandedImages(let state):
       if Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value { return }
 
-      guard let notificationVC = NTPNotificationViewController(state: state, rewards: rewards) else { return }
+      guard let notificationVC = NTPNotificationViewController(state: state, rewards: rewards)
+      else { return }
 
       notificationVC.closeHandler = { [weak self] in
         self?.notificationController = nil
@@ -553,14 +604,16 @@ class NewTabPageViewController: UIViewController {
   }
 
   // MARK: - Brave News
-  
+
   private var newsArticlesOpened: Set<FeedItem.ID> = []
 
   private func handleBraveNewsAction(_ action: BraveNewsSectionProvider.Action) {
     switch action {
     case .optInCardAction(.closedButtonTapped):
       Preferences.BraveNews.isShowingOptIn.value = false
-      if let section = layout.braveNewsSection, collectionView.numberOfItems(inSection: section) != 0 {
+      if let section = layout.braveNewsSection,
+        collectionView.numberOfItems(inSection: section) != 0
+      {
         collectionView.deleteItems(at: [IndexPath(item: 0, section: section)])
       }
 
@@ -568,10 +621,14 @@ class NewTabPageViewController: UIViewController {
       // This should never happen since first item is our shields stats view.
       // However we saw it crashing in XCode logs, see #4202.
       let firstItemIndexPath = IndexPath(item: 0, section: 0)
-      if let itemCount = collectionView.dataSource?.collectionView(collectionView, numberOfItemsInSection: 0),
+      if let itemCount = collectionView.dataSource?.collectionView(
+        collectionView,
+        numberOfItemsInSection: 0
+      ),
         itemCount > 0,  // Only scroll if the section has items, otherwise it will crash.
         collectionView.dataSource?
-          .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil {
+          .collectionView(collectionView, cellForItemAt: firstItemIndexPath) != nil
+      {
         collectionView.scrollToItem(at: firstItemIndexPath, at: .top, animated: true)
       } else {
         // Cannot scorll to deleted item index.
@@ -586,13 +643,17 @@ class NewTabPageViewController: UIViewController {
         self.backgroundButtonsView.alpha = 1.0
       }
     case .optInCardAction(.learnMoreButtonTapped):
-      delegate?.navigateToInput(URL.brave.braveNewsPrivacy.absoluteString, inNewTab: false, switchingToPrivateMode: false)
+      delegate?.navigateToInput(
+        URL.brave.braveNewsPrivacy.absoluteString,
+        inNewTab: false,
+        switchingToPrivateMode: false
+      )
     case .optInCardAction(.turnOnBraveNewsButtonTapped):
       preventReloadOnBraveNewsEnabledChange = true
       Preferences.BraveNews.userOptedIn.value = true
       Preferences.BraveNews.isShowingOptIn.value = false
       Preferences.BraveNews.isEnabled.value = true
-      rewards.ads.initialize() { [weak self] _ in
+      rewards.ads.initialize { [weak self] _ in
         // Initialize ads if it hasn't already been done
         self?.loadFeedContents()
       }
@@ -616,11 +677,14 @@ class NewTabPageViewController: UIViewController {
       guard let url = context.item.content.url else { return }
       let item = context.item
       if !switchingToPrivateMode, item.content.contentType == .partner,
-        let creativeInstanceID = item.content.creativeInstanceID {
+        let creativeInstanceID = item.content.creativeInstanceID
+      {
         rewards.ads.triggerPromotedContentAdEvent(
           item.content.urlHash,
           creativeInstanceId: creativeInstanceID,
-          eventType: .clicked, completion: { _ in })
+          eventType: .clicked,
+          completion: { _ in }
+        )
       }
       if switchingToPrivateMode, Preferences.Privacy.privateBrowsingLock.value {
         self.askForLocalAuthentication { [weak self] success, error in
@@ -640,7 +704,9 @@ class NewTabPageViewController: UIViewController {
         )
       }
       // Donate Open Brave News Activity for Custom Suggestions
-      let openBraveNewsActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .openBraveNews)
+      let openBraveNewsActivity = ActivityShortcutManager.shared.createShortcutActivity(
+        type: .openBraveNews
+      )
       self.userActivity = openBraveNewsActivity
       openBraveNewsActivity.becomeCurrent()
       // Record P3A
@@ -660,7 +726,8 @@ class NewTabPageViewController: UIViewController {
           ad.placementID,
           creativeInstanceId: ad.creativeInstanceID,
           eventType: .clicked,
-          completion: { _ in })
+          completion: { _ in }
+        )
       }
       delegate?.navigateToInput(
         url.absoluteString,
@@ -672,8 +739,11 @@ class NewTabPageViewController: UIViewController {
       break
     case .rateCardAction(.rateBrave):
       Preferences.Review.newsCardShownDate.value = Date()
-      guard let writeReviewURL = URL(
-        string: "https://itunes.apple.com/app/id1052879175?action=write-review") else {
+      guard
+        let writeReviewURL = URL(
+          string: "https://itunes.apple.com/app/id1052879175?action=write-review"
+        )
+      else {
         return
       }
       UIApplication.shared.open(writeReviewURL)
@@ -708,7 +778,8 @@ class NewTabPageViewController: UIViewController {
           self.feedOverlayView.loaderView.stop()
           self.feedOverlayView.loaderView.alpha = 1.0
           self.feedOverlayView.loaderView.isHidden = true
-        })
+        }
+      )
       if collectionView.contentOffset.y == collectionView.contentInset.top {
         collectionView.reloadData()
         collectionView.layoutIfNeeded()
@@ -718,10 +789,16 @@ class NewTabPageViewController: UIViewController {
         cells.forEach { cell in
           cell.transform = .init(translationX: 0, y: 200)
           UIView.animate(
-            withDuration: 0.5, delay: 0, usingSpringWithDamping: 1.0, initialSpringVelocity: 0, options: [.beginFromCurrentState],
+            withDuration: 0.5,
+            delay: 0,
+            usingSpringWithDamping: 1.0,
+            initialSpringVelocity: 0,
+            options: [.beginFromCurrentState],
             animations: {
               cell.transform = .identity
-            }, completion: nil)
+            },
+            completion: nil
+          )
         }
       } else {
         collectionView.reloadSections(IndexSet(integer: section))
@@ -742,13 +819,17 @@ class NewTabPageViewController: UIViewController {
       .loading(.failure(let error1 as NSError)),
       .failure(let error2 as NSError)
     ) where error1 == error2:
-      if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section)) as? FeedCardCell<BraveNewsErrorView> {
+      if let cell = collectionView.cellForItem(at: IndexPath(item: 0, section: section))
+        as? FeedCardCell<BraveNewsErrorView>
+      {
         cell.content.refreshButton.isLoading = false
       } else {
         _completeLoading()
       }
     case (_, .loading):
-      if collectionView.contentOffset.y == collectionView.contentInset.top || collectionView.numberOfItems(inSection: section) == 0 {
+      if collectionView.contentOffset.y == collectionView.contentInset.top
+        || collectionView.numberOfItems(inSection: section) == 0
+      {
         feedOverlayView.loaderView.isHidden = false
         feedOverlayView.loaderView.start()
 
@@ -787,7 +868,7 @@ class NewTabPageViewController: UIViewController {
     }
     feedDataSource.load(completion)
   }
-  
+
   private func hidePrivacyHub() {
     if Preferences.NewTabPage.hidePrivacyHubAlertShown.value {
       Preferences.NewTabPage.showNewTabPrivacyHub.value = false
@@ -796,15 +877,21 @@ class NewTabPageViewController: UIViewController {
       let alert = UIAlertController(
         title: Strings.PrivacyHub.hidePrivacyHubWidgetActionTitle,
         message: Strings.PrivacyHub.hidePrivacyHubWidgetAlertDescription,
-        preferredStyle: .alert)
-      
+        preferredStyle: .alert
+      )
+
       alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel))
-      alert.addAction(UIAlertAction(title: Strings.PrivacyHub.hidePrivacyHubWidgetActionButtonTitle, style: .default) { [weak self] _ in
-        Preferences.NewTabPage.showNewTabPrivacyHub.value = false
-        Preferences.NewTabPage.hidePrivacyHubAlertShown.value = true
-        self?.collectionView.reloadData()
-      })
-      
+      alert.addAction(
+        UIAlertAction(
+          title: Strings.PrivacyHub.hidePrivacyHubWidgetActionButtonTitle,
+          style: .default
+        ) { [weak self] _ in
+          Preferences.NewTabPage.showNewTabPrivacyHub.value = false
+          Preferences.NewTabPage.hidePrivacyHubAlertShown.value = true
+          self?.collectionView.reloadData()
+        }
+      )
+
       UIImpactFeedbackGenerator(style: .medium).bzzt()
       present(alert, animated: true, completion: nil)
     }
@@ -816,7 +903,8 @@ class NewTabPageViewController: UIViewController {
     if case .loading = feedDataSource.state {
       return
     }
-    let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+    let todayStart =
+      collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
     newContentAvailableDismissTimer = nil
     feedOverlayView.newContentAvailableButton.isLoading = true
     loadFeedContents { [weak self] in
@@ -829,11 +917,18 @@ class NewTabPageViewController: UIViewController {
   }
 
   @objc private func tappedBraveNewsSettings() {
-    let controller = NewsSettingsViewController(dataSource: feedDataSource, openURL: { [weak self] url in
-      guard let self else { return }
-      self.dismiss(animated: true)
-      self.delegate?.navigateToInput(url.absoluteString, inNewTab: false, switchingToPrivateMode: false)
-    })
+    let controller = NewsSettingsViewController(
+      dataSource: feedDataSource,
+      openURL: { [weak self] url in
+        guard let self else { return }
+        self.dismiss(animated: true)
+        self.delegate?.navigateToInput(
+          url.absoluteString,
+          inNewTab: false,
+          switchingToPrivateMode: false
+        )
+      }
+    )
     controller.viewDidDisappear = { [weak self] in
       if Preferences.Review.braveNewsCriteriaPassed.value {
         AppReviewManager.shared.isRevisedReviewRequired = true
@@ -883,14 +978,23 @@ class NewTabPageViewController: UIViewController {
   private func presentImageCredit(_ button: UIControl) {
     guard case .image(let background) = background.currentBackground else { return }
 
-    let alert = UIAlertController(title: background.author, message: nil, preferredStyle: .actionSheet)
+    let alert = UIAlertController(
+      title: background.author,
+      message: nil,
+      preferredStyle: .actionSheet
+    )
 
     if let creditURL = background.link {
       let websiteTitle = String(format: Strings.viewOn, creditURL.hostSLD.capitalizeFirstLetter)
       alert.addAction(
         UIAlertAction(title: websiteTitle, style: .default) { [weak self] _ in
-          self?.delegate?.navigateToInput(creditURL.absoluteString, inNewTab: false, switchingToPrivateMode: false)
-        })
+          self?.delegate?.navigateToInput(
+            creditURL.absoluteString,
+            inNewTab: false,
+            switchingToPrivateMode: false
+          )
+        }
+      )
     }
 
     alert.popoverPresentationController?.sourceView = button
@@ -904,7 +1008,8 @@ class NewTabPageViewController: UIViewController {
   @objc private func longPressedBraveNewsSettingsButton() {
     assert(
       !AppConstants.buildChannel.isPublic,
-      "Debug settings are not accessible on public builds")
+      "Debug settings are not accessible on public builds"
+    )
     let settings = BraveNewsDebugSettingsView(dataSource: feedDataSource) { [weak self] in
       self?.dismiss(animated: true)
     }
@@ -917,11 +1022,13 @@ class NewTabPageViewController: UIViewController {
 
 extension NewTabPageViewController: PreferencesObserver {
   func preferencesDidChange(for key: String) {
-    if key == Preferences.NewTabPage.showNewTabPrivacyHub.key || key == Preferences.NewTabPage.showNewTabFavourites.key {
+    if key == Preferences.NewTabPage.showNewTabPrivacyHub.key
+      || key == Preferences.NewTabPage.showNewTabFavourites.key
+    {
       collectionView.reloadData()
       return
     }
-    
+
     if !preventReloadOnBraveNewsEnabledChange {
       collectionView.reloadData()
     }
@@ -937,9 +1044,10 @@ extension NewTabPageViewController: PreferencesObserver {
 // MARK: - UIScrollViewDelegate
 extension NewTabPageViewController {
   var isBraveNewsVisible: Bool {
-    return !privateBrowsingManager.isPrivateBrowsing && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
+    return !privateBrowsingManager.isPrivateBrowsing
+      && (Preferences.BraveNews.isEnabled.value || Preferences.BraveNews.isShowingOptIn.value)
   }
-  
+
   func scrollViewDidScroll(_ scrollView: UIScrollView) {
     for section in sections {
       section.scrollViewDidScroll?(scrollView)
@@ -947,17 +1055,21 @@ extension NewTabPageViewController {
     guard isBraveNewsVisible, let newsSection = layout.braveNewsSection else { return }
     if collectionView.numberOfItems(inSection: newsSection) > 0 {
       // Hide the buttons as Brave News feeds appear
-      backgroundButtonsView.alpha = 1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
+      backgroundButtonsView.alpha =
+        1.0 - max(0.0, min(1.0, (scrollView.contentOffset.y - scrollView.contentInset.top) / 16))
       // Show the header as Brave News feeds appear
       // Offset of where Brave News starts
-      let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+      let todayStart =
+        collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
       // Offset of where the header should begin becoming visible
       let alphaInStart = collectionView.frame.height / 2.0
       let value = scrollView.contentOffset.y
       let alpha = max(0.0, min(1.0, (value - alphaInStart) / (todayStart - alphaInStart)))
       feedOverlayView.headerView.alpha = alpha
 
-      if feedOverlayView.newContentAvailableButton.alpha != 0 && !feedOverlayView.newContentAvailableButton.isLoading {
+      if feedOverlayView.newContentAvailableButton.alpha != 0
+        && !feedOverlayView.newContentAvailableButton.isLoading
+      {
         let velocity = scrollView.panGestureRecognizer.velocity(in: scrollView).y
         if velocity > 0 && collectionView.contentOffset.y < todayStart {
           // Scrolling up
@@ -980,7 +1092,7 @@ extension NewTabPageViewController {
           }
         }
       }
-      
+
       if scrollView.contentOffset.y >= todayStart {
         recordBraveNewsUsageP3A()
       }
@@ -990,34 +1102,36 @@ extension NewTabPageViewController {
   /// Moves New Tab Page Scroll to start of Brave News - Used for shortcut
   func scrollToBraveNews() {
     // Offset of where Brave News starts
-    let todayStart = collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
+    let todayStart =
+      collectionView.frame.height - feedOverlayView.headerView.bounds.height - 32 - 16
     collectionView.contentOffset.y = todayStart
   }
-  
+
   // MARK: - P3A
-  
+
   private func recordBraveNewsUsageP3A() {
     let braveNewsFeatureUsage = P3AFeatureUsage.braveNewsFeatureUsage
-    if !isBraveNewsVisible || !Preferences.BraveNews.isEnabled.value ||
-        Calendar.current.startOfDay(for: Date()) == braveNewsFeatureUsage.lastUsageOption.value {
+    if !isBraveNewsVisible || !Preferences.BraveNews.isEnabled.value
+      || Calendar.current.startOfDay(for: Date()) == braveNewsFeatureUsage.lastUsageOption.value
+    {
       // Don't have Brave News enabled, or already recorded todays usage, no need to do it again
       return
     }
-    
+
     // Usage
     braveNewsFeatureUsage.recordUsage()
     var braveNewsWeeklyCount = P3ATimedStorage<Int>.braveNewsWeeklyCount
     braveNewsWeeklyCount.add(value: 1, to: Date())
-    
+
     // Usage over the past month
     var braveNewsDaysUsedStorage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
     braveNewsDaysUsedStorage.replaceTodaysRecordsIfLargest(value: 1)
     recordBraveNewsDaysUsedP3A()
-    
+
     // Weekly usage
     recordBraveNewsWeeklyUsageCountP3A()
   }
-  
+
   private func recordBraveNewsWeeklyUsageCountP3A() {
     let storage = P3ATimedStorage<Int>.braveNewsWeeklyCount
     UmaHistogramRecordValueToBucket(
@@ -1035,7 +1149,7 @@ extension NewTabPageViewController {
       value: storage.combinedValue
     )
   }
-  
+
   private func recordBraveNewsDaysUsedP3A() {
     let storage = P3ATimedStorage<Int>.braveNewsDaysUsedStorage
     UmaHistogramRecordValueToBucket(
@@ -1053,7 +1167,7 @@ extension NewTabPageViewController {
       value: storage.combinedValue
     )
   }
-  
+
   private func recordBraveNewsArticlesVisitedP3A() {
     // Count is per NTP session, sends max value of the week
     var storage = P3ATimedStorage<Int>.braveNewsVisitedArticlesCount
@@ -1061,7 +1175,7 @@ extension NewTabPageViewController {
     UmaHistogramRecordValueToBucket(
       "Brave.Today.WeeklyMaxCardVisitsCount",
       buckets: [
-        0, // won't ever be sent
+        0,  // won't ever be sent
         1,
         .r(2...3),
         .r(4...6),
@@ -1072,18 +1186,18 @@ extension NewTabPageViewController {
       value: storage.maximumDaysCombinedValue
     )
   }
-  
+
   private func recordNewTabCreatedP3A() {
     var newTabsStorage = P3ATimedStorage<Int>.newTabsCreatedStorage
     var sponsoredStorage = P3ATimedStorage<Int>.sponsoredNewTabsCreatedStorage
-    
+
     newTabsStorage.add(value: 1, to: Date())
     let newTabsCreatedAnswer = newTabsStorage.maximumDaysCombinedValue
-    
+
     if case .sponsoredImage = background.currentBackground {
       sponsoredStorage.add(value: 1, to: Date())
     }
-    
+
     UmaHistogramRecordValueToBucket(
       "Brave.NTP.NewTabsCreated",
       buckets: [
@@ -1097,9 +1211,11 @@ extension NewTabPageViewController {
       ],
       value: newTabsCreatedAnswer
     )
-    
+
     if newTabsCreatedAnswer > 0 {
-      let sponsoredPercent = Int((Double(sponsoredStorage.maximumDaysCombinedValue) / Double(newTabsCreatedAnswer)) * 100.0)
+      let sponsoredPercent = Int(
+        (Double(sponsoredStorage.maximumDaysCombinedValue) / Double(newTabsCreatedAnswer)) * 100.0
+      )
       UmaHistogramRecordValueToBucket(
         "Brave.NTP.SponsoredNewTabsCreated",
         buckets: [
@@ -1109,7 +1225,7 @@ extension NewTabPageViewController {
           .r(20..<30),
           .r(30..<40),
           .r(40..<50),
-          .r(50...)
+          .r(50...),
         ],
         value: sponsoredPercent
       )
@@ -1132,17 +1248,36 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
   func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     sections[indexPath.section].collectionView?(collectionView, didSelectItemAt: indexPath)
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-    sections[indexPath.section].collectionView?(collectionView, layout: collectionViewLayout, sizeForItemAt: indexPath) ?? .zero
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      layout: collectionViewLayout,
+      sizeForItemAt: indexPath
+    ) ?? .zero
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    insetForSectionAt section: Int
+  ) -> UIEdgeInsets {
     let sectionProvider = sections[section]
-    var inset = sectionProvider.collectionView?(collectionView, layout: collectionViewLayout, insetForSectionAt: section) ?? .zero
+    var inset =
+      sectionProvider.collectionView?(
+        collectionView,
+        layout: collectionViewLayout,
+        insetForSectionAt: section
+      ) ?? .zero
     if sectionProvider.landscapeBehavior == .halfWidth {
       let isIphone = UIDevice.isPhone
       let isLandscape = view.frame.width > view.frame.height
       if isLandscape {
-        let availableWidth = collectionView.bounds.width - collectionView.safeAreaInsets.left - collectionView.safeAreaInsets.right
+        let availableWidth =
+          collectionView.bounds.width - collectionView.safeAreaInsets.left
+          - collectionView.safeAreaInsets.right
         if isIphone {
           inset.left = availableWidth / 2.0
         } else {
@@ -1152,24 +1287,64 @@ extension NewTabPageViewController: UICollectionViewDelegateFlowLayout {
     }
     return inset
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-    sections[section].collectionView?(collectionView, layout: collectionViewLayout, minimumLineSpacingForSectionAt: section) ?? 0
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumLineSpacingForSectionAt section: Int
+  ) -> CGFloat {
+    sections[section].collectionView?(
+      collectionView,
+      layout: collectionViewLayout,
+      minimumLineSpacingForSectionAt: section
+    ) ?? 0
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-    sections[section].collectionView?(collectionView, layout: collectionViewLayout, minimumInteritemSpacingForSectionAt: section) ?? 0
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    minimumInteritemSpacingForSectionAt section: Int
+  ) -> CGFloat {
+    sections[section].collectionView?(
+      collectionView,
+      layout: collectionViewLayout,
+      minimumInteritemSpacingForSectionAt: section
+    ) ?? 0
   }
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
-    sections[section].collectionView?(collectionView, layout: collectionViewLayout, referenceSizeForHeaderInSection: section) ?? .zero
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    referenceSizeForHeaderInSection section: Int
+  ) -> CGSize {
+    sections[section].collectionView?(
+      collectionView,
+      layout: collectionViewLayout,
+      referenceSizeForHeaderInSection: section
+    ) ?? .zero
   }
 }
 
 // MARK: - UICollectionViewDelegate
 extension NewTabPageViewController: UICollectionViewDelegate {
-  func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    sections[indexPath.section].collectionView?(collectionView, willDisplay: cell, forItemAt: indexPath)
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willDisplay cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      willDisplay: cell,
+      forItemAt: indexPath
+    )
   }
-  func collectionView(_ collectionView: UICollectionView, didEndDisplaying cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-    sections[indexPath.section].collectionView?(collectionView, didEndDisplaying: cell, forItemAt: indexPath)
+  func collectionView(
+    _ collectionView: UICollectionView,
+    didEndDisplaying cell: UICollectionViewCell,
+    forItemAt indexPath: IndexPath
+  ) {
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      didEndDisplaying: cell,
+      forItemAt: indexPath
+    )
   }
 }
 
@@ -1178,35 +1353,77 @@ extension NewTabPageViewController: UICollectionViewDataSource {
   func numberOfSections(in collectionView: UICollectionView) -> Int {
     sections.count
   }
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     sections[section].collectionView(collectionView, numberOfItemsInSection: section)
   }
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
     sections[indexPath.section].collectionView(collectionView, cellForItemAt: indexPath)
   }
-  func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-    sections[indexPath.section].collectionView?(collectionView, viewForSupplementaryElementOfKind: kind, at: indexPath) ?? UICollectionReusableView()
+  func collectionView(
+    _ collectionView: UICollectionView,
+    viewForSupplementaryElementOfKind kind: String,
+    at indexPath: IndexPath
+  ) -> UICollectionReusableView {
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      viewForSupplementaryElementOfKind: kind,
+      at: indexPath
+    ) ?? UICollectionReusableView()
   }
-  func collectionView(_ collectionView: UICollectionView, contextMenuConfigurationForItemAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
-    sections[indexPath.section].collectionView?(collectionView, contextMenuConfigurationForItemAt: indexPath, point: point)
+  func collectionView(
+    _ collectionView: UICollectionView,
+    contextMenuConfigurationForItemAt indexPath: IndexPath,
+    point: CGPoint
+  ) -> UIContextMenuConfiguration? {
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      contextMenuConfigurationForItemAt: indexPath,
+      point: point
+    )
   }
-  func collectionView(_ collectionView: UICollectionView, previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    previewForHighlightingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath else {
       return nil
     }
-    return sections[indexPath.section].collectionView?(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    return sections[indexPath.section].collectionView?(
+      collectionView,
+      previewForHighlightingContextMenuWithConfiguration: configuration
+    )
   }
-  func collectionView(_ collectionView: UICollectionView, previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration) -> UITargetedPreview? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    previewForDismissingContextMenuWithConfiguration configuration: UIContextMenuConfiguration
+  ) -> UITargetedPreview? {
     guard let indexPath = configuration.identifier as? IndexPath else {
       return nil
     }
-    return sections[indexPath.section].collectionView?(collectionView, previewForHighlightingContextMenuWithConfiguration: configuration)
+    return sections[indexPath.section].collectionView?(
+      collectionView,
+      previewForHighlightingContextMenuWithConfiguration: configuration
+    )
   }
-  func collectionView(_ collectionView: UICollectionView, willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionCommitAnimating) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    willPerformPreviewActionForMenuWith configuration: UIContextMenuConfiguration,
+    animator: UIContextMenuInteractionCommitAnimating
+  ) {
     guard let indexPath = configuration.identifier as? IndexPath else {
       return
     }
-    sections[indexPath.section].collectionView?(collectionView, willPerformPreviewActionForMenuWith: configuration, animator: animator)
+    sections[indexPath.section].collectionView?(
+      collectionView,
+      willPerformPreviewActionForMenuWith: configuration,
+      animator: animator
+    )
   }
 }
 
@@ -1214,7 +1431,11 @@ extension NewTabPageViewController: UICollectionViewDataSource {
 
 extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionViewDropDelegate {
 
-  func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
     // Check If the item that is dragged is a favourite item
     guard sections[indexPath.section] is FavoritesSectionProvider else {
       return []
@@ -1233,7 +1454,10 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     return [dragItem]
   }
 
-  func collectionView(_ collectionView: UICollectionView, performDropWith coordinator: UICollectionViewDropCoordinator) {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    performDropWith coordinator: UICollectionViewDropCoordinator
+  ) {
     guard let sourceIndexPath = coordinator.items.first?.sourceIndexPath else { return }
     let destinationIndexPath: IndexPath
 
@@ -1251,16 +1475,17 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
       guard let item = coordinator.items.first else { return }
       _ = coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
 
-      guard let favouritesSection = sections.firstIndex(where: { $0 is FavoritesSectionProvider }) else {
+      guard let favouritesSection = sections.firstIndex(where: { $0 is FavoritesSectionProvider })
+      else {
         return
       }
-      
+
       Favorite.reorder(
         sourceIndexPath: sourceIndexPath,
         destinationIndexPath: destinationIndexPath,
         isInteractiveDragReorder: true
       )
-      
+
       UIView.performWithoutAnimation {
         self.collectionView.reloadSections(IndexSet(integer: favouritesSection))
       }
@@ -1268,7 +1493,11 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     }
   }
 
-  func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dropSessionDidUpdate session: UIDropSession,
+    withDestinationIndexPath destinationIndexPath: IndexPath?
+  ) -> UICollectionViewDropProposal {
     guard let destinationIndexSection = destinationIndexPath?.section,
       let favouriteSection = sections[destinationIndexSection] as? FavoritesSectionProvider,
       favouriteSection.hasMoreThanOneFavouriteItems
@@ -1279,19 +1508,29 @@ extension NewTabPageViewController: UICollectionViewDragDelegate, UICollectionVi
     return .init(operation: .move, intent: .insertAtDestinationIndexPath)
   }
 
-  func collectionView(_ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dragPreviewParametersForItemAt indexPath: IndexPath
+  ) -> UIDragPreviewParameters? {
     fetchInteractionPreviewParameters(at: indexPath)
   }
 
-  func collectionView(_ collectionView: UICollectionView, dropPreviewParametersForItemAt indexPath: IndexPath) -> UIDragPreviewParameters? {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dropPreviewParametersForItemAt indexPath: IndexPath
+  ) -> UIDragPreviewParameters? {
     fetchInteractionPreviewParameters(at: indexPath)
   }
 
-  func collectionView(_ collectionView: UICollectionView, dragSessionIsRestrictedToDraggingApplication session: UIDragSession) -> Bool {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dragSessionIsRestrictedToDraggingApplication session: UIDragSession
+  ) -> Bool {
     return true
   }
 
-  private func fetchInteractionPreviewParameters(at indexPath: IndexPath) -> UIDragPreviewParameters {
+  private func fetchInteractionPreviewParameters(at indexPath: IndexPath) -> UIDragPreviewParameters
+  {
     let previewParameters = UIDragPreviewParameters().then {
       $0.backgroundColor = .clear
 
@@ -1341,9 +1580,19 @@ extension P3AFeatureUsage {
 }
 
 extension P3ATimedStorage where Value == Int {
-  fileprivate static var braveNewsDaysUsedStorage: Self { .init(name: "brave-news-days-used", lifetimeInDays: 30) }
-  fileprivate static var braveNewsWeeklyCount: Self { .init(name: "brave-news-weekly-usage", lifetimeInDays: 7) }
-  fileprivate static var braveNewsVisitedArticlesCount: Self { .init(name: "brave-news-weekly-clicked", lifetimeInDays: 7) }
-  fileprivate static var newTabsCreatedStorage: Self { .init(name: "new-tabs-created", lifetimeInDays: 7) }
-  fileprivate static var sponsoredNewTabsCreatedStorage: Self { .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7) }
+  fileprivate static var braveNewsDaysUsedStorage: Self {
+    .init(name: "brave-news-days-used", lifetimeInDays: 30)
+  }
+  fileprivate static var braveNewsWeeklyCount: Self {
+    .init(name: "brave-news-weekly-usage", lifetimeInDays: 7)
+  }
+  fileprivate static var braveNewsVisitedArticlesCount: Self {
+    .init(name: "brave-news-weekly-clicked", lifetimeInDays: 7)
+  }
+  fileprivate static var newTabsCreatedStorage: Self {
+    .init(name: "new-tabs-created", lifetimeInDays: 7)
+  }
+  fileprivate static var sponsoredNewTabsCreatedStorage: Self {
+    .init(name: "sponsored-new-tabs-created", lifetimeInDays: 7)
+  }
 }

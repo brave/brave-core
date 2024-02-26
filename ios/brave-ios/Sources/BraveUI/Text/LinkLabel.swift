@@ -2,8 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import DesignSystem
+import UIKit
 
 /// A Label that allows clickable links (or data-detectors)
 final public class LinkLabel: UITextView {
@@ -17,7 +17,9 @@ final public class LinkLabel: UITextView {
 
   override public var textAlignment: NSTextAlignment {
     didSet {
-      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
+      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else {
+        return
+      }
       let range = NSRange(location: 0, length: text.length)
       let paragraphStyle = NSMutableParagraphStyle()
       paragraphStyle.alignment = textAlignment
@@ -34,7 +36,9 @@ final public class LinkLabel: UITextView {
         .underlineStyle: 0,
       ]
 
-      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
+      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else {
+        return
+      }
       let range = NSRange(location: 0, length: text.length)
       text.addAttribute(.font, value: self.font ?? UIFont.systemFont(ofSize: 12.0), range: range)
       self.attributedText = text
@@ -45,7 +49,9 @@ final public class LinkLabel: UITextView {
 
   override public var textColor: UIColor? {
     didSet {
-      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else { return }
+      guard let text = self.attributedText.mutableCopy() as? NSMutableAttributedString else {
+        return
+      }
       let range = NSRange(location: 0, length: text.length)
       text.addAttribute(.foregroundColor, value: self.textColor ?? UX.textColor, range: range)
       self.attributedText = text
@@ -80,7 +86,8 @@ final public class LinkLabel: UITextView {
           .font: self.font ?? UIFont.systemFont(ofSize: 12.0),
           .foregroundColor: self.textColor ?? UX.textColor,
           .paragraphStyle: paragraphStyle,
-        ])
+        ]
+      )
 
       for info in urlInfo {
         let range = (self.text as NSString).range(of: info.key)
@@ -93,12 +100,15 @@ final public class LinkLabel: UITextView {
 
       text.beginEditing()
       text.enumerateAttribute(
-        .underlineStyle, in: range, options: .init(rawValue: 0),
+        .underlineStyle,
+        in: range,
+        options: .init(rawValue: 0),
         using: { value, range, stop in
           if value != nil {
             text.addAttribute(.underlineStyle, value: 0, range: range)
           }
-        })
+        }
+      )
       text.endEditing()
       return text
     }
@@ -128,12 +138,19 @@ final public class LinkLabel: UITextView {
 
     text.beginEditing()
     text.enumerateAttribute(
-      .link, in: range, options: .init(rawValue: 0),
+      .link,
+      in: range,
+      options: .init(rawValue: 0),
       using: { value, range, stop in
         if value != nil {
-          text.addAttribute(.font, value: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0), range: range)
+          text.addAttribute(
+            .font,
+            value: self.linkFont ?? self.font ?? UIFont.systemFont(ofSize: 12.0),
+            range: range
+          )
         }
-      })
+      }
+    )
     text.endEditing()
     self.attributedText = text
   }
@@ -175,7 +192,12 @@ final public class LinkLabel: UITextView {
 
 extension LinkLabel: UITextViewDelegate {
 
-  public func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
+  public func textView(
+    _ textView: UITextView,
+    shouldInteractWith URL: URL,
+    in characterRange: NSRange,
+    interaction: UITextItemInteraction
+  ) -> Bool {
     onLinkedTapped?(URL)
     return false
   }
@@ -184,7 +206,13 @@ extension LinkLabel: UITextViewDelegate {
     // Detect if we're tapping on a link.. otherwise make everything else NOT selectable.
     // This also fixes a bug where you tap on the "side" of a link and it still triggers.
     guard let pos = closestPosition(to: point) else { return false }
-    guard let range = tokenizer.rangeEnclosingPosition(pos, with: .character, inDirection: .layout(.left)) else { return false }
+    guard
+      let range = tokenizer.rangeEnclosingPosition(
+        pos,
+        with: .character,
+        inDirection: .layout(.left)
+      )
+    else { return false }
     let startIndex = offset(from: beginningOfDocument, to: range.start)
     return attributedText.attribute(.link, at: startIndex, effectiveRange: nil) != nil
   }

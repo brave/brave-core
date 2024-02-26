@@ -11,15 +11,15 @@ public enum Web3Service: String, CaseIterable {
   case ethereum
   case ethereumOffchain
   case unstoppable
-  
+
   public var id: String { rawValue }
 }
 
 @MainActor public class DecentralizedDNSHelper {
-  
+
   private let rpcService: BraveWalletJsonRpcService
   private let ipfsApi: IpfsAPI?
-  
+
   public init?(
     rpcService: BraveWalletJsonRpcService,
     ipfsApi: IpfsAPI?,
@@ -29,13 +29,13 @@ public enum Web3Service: String, CaseIterable {
     self.rpcService = rpcService
     self.ipfsApi = ipfsApi
   }
-  
+
   public enum DNSLookupResult: Equatable {
     case none
     case loadInterstitial(Web3Service)
     case load(URL)
   }
-  
+
   public func lookup(domain: String) async -> DNSLookupResult {
     guard let fixupURL = URIFixup.getURL(domain) else {
       return .none
@@ -49,7 +49,7 @@ public enum Web3Service: String, CaseIterable {
     }
     return .none
   }
-  
+
   /// Decentralized DNS lookup for an Unstoppable Domains domain
   private func lookupUD(domain: String) async -> DNSLookupResult {
     let udResolveMethod = await rpcService.unstoppableDomainsResolveMethod()
@@ -76,14 +76,17 @@ public enum Web3Service: String, CaseIterable {
     case .ask:
       return .loadInterstitial(.ethereum)
     case .enabled:
-      let (contentHash, isOffchainConsentRequired, status, _) = await rpcService.ensGetContentHash(domain)
+      let (contentHash, isOffchainConsentRequired, status, _) = await rpcService.ensGetContentHash(
+        domain
+      )
       if isOffchainConsentRequired {
         return .loadInterstitial(.ethereumOffchain)
       }
       guard status == .success,
-            !contentHash.isEmpty,
-            let ipfsUrl = ipfsApi?.contentHashToCIDv1URL(for: contentHash),
-            !ipfsUrl.isBookmarklet else {
+        !contentHash.isEmpty,
+        let ipfsUrl = ipfsApi?.contentHashToCIDv1URL(for: contentHash),
+        !ipfsUrl.isBookmarklet
+      else {
         return .none
       }
       return .load(ipfsUrl)
@@ -93,7 +96,7 @@ public enum Web3Service: String, CaseIterable {
       return .none
     }
   }
-  
+
   /// Decentralized DNS lookup for an SNS domain
   private func lookupSNS(domain: String) async -> DNSLookupResult {
     let snsResolveMethod = await rpcService.snsResolveMethod()
@@ -103,8 +106,9 @@ public enum Web3Service: String, CaseIterable {
     case .enabled:
       let (url, status, _) = await rpcService.snsResolveHost(domain)
       guard status == .success,
-            let url,
-            !url.isBookmarklet else {
+        let url,
+        !url.isBookmarklet
+      else {
         return .none
       }
       return .load(url)
@@ -114,10 +118,9 @@ public enum Web3Service: String, CaseIterable {
       return .none
     }
   }
-  
+
   public static func isSupported(domain: String) -> Bool {
-    domain.endsWithSupportedUDExtension ||
-    domain.endsWithSupportedENSExtension ||
-    domain.endsWithSupportedSNSExtension
+    domain.endsWithSupportedUDExtension || domain.endsWithSupportedENSExtension
+      || domain.endsWithSupportedSNSExtension
   }
 }

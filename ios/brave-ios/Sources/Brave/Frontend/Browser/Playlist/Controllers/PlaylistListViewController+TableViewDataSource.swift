@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SwiftUI
-import AVKit
 import AVFoundation
-import Data
-import Shared
+import AVKit
 import BraveUI
-import Preferences
+import Data
 import Favicon
-import os.log
+import Foundation
 import Playlist
+import Preferences
+import Shared
+import SwiftUI
+import UIKit
+import os.log
 
 // MARK: UITableViewDataSource
 
@@ -27,7 +27,8 @@ extension PlaylistListViewController: UITableViewDataSource {
 
   func getAssetDurationFormatted(item: PlaylistInfo, _ completion: @escaping (String) -> Void) {
     PlaylistManager.shared.getAssetDuration(item: item) { duration in
-      let domain = URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)"
+      let domain =
+        URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)"
       if let duration = duration {
         if duration.isInfinite {
           // Live video/audio
@@ -54,35 +55,46 @@ extension PlaylistListViewController: UITableViewDataSource {
   }
 
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-    loadingState == .loading ? Constants.tableRedactedCellCount : PlaylistManager.shared.numberOfAssets
+    loadingState == .loading
+      ? Constants.tableRedactedCellCount : PlaylistManager.shared.numberOfAssets
   }
 
   func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
     UITableView.automaticDimension
   }
-  
-  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat {
+
+  func tableView(_ tableView: UITableView, estimatedHeightForRowAt indexPath: IndexPath) -> CGFloat
+  {
     Constants.tableRowHeight
   }
 
   func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
     UITableView.automaticDimension
   }
-  
-  func tableView(_ tableView: UITableView, estimatedHeightForHeaderInSection section: Int) -> CGFloat {
+
+  func tableView(
+    _ tableView: UITableView,
+    estimatedHeightForHeaderInSection section: Int
+  ) -> CGFloat {
     Constants.tableHeaderHeight
   }
 
   func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
     // Display Redacted Cells
     if loadingState != .fullyLoaded {
-      guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.playlistCellRedactedIdentifier, for: indexPath) as? PlaylistCellRedacted else {
+      guard
+        let cell = tableView.dequeueReusableCell(
+          withIdentifier: Constants.playlistCellRedactedIdentifier,
+          for: indexPath
+        ) as? PlaylistCellRedacted
+      else {
         return UITableViewCell()
       }
-      
+
       guard indexPath.row >= 0,
-            PlaylistManager.shared.currentFolder != nil,
-            let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
+        PlaylistManager.shared.currentFolder != nil,
+        let item = PlaylistManager.shared.itemAtIndex(indexPath.row)
+      else {
         cell.do {
           $0.showsReorderControl = false
           $0.setTitle(title: nil)
@@ -91,13 +103,16 @@ extension PlaylistListViewController: UITableViewDataSource {
         }
         return cell
       }
-      
+
       cell.do {
         $0.showsReorderControl = false
         $0.setTitle(title: item.name)
-        $0.setDetails(details: URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)")
+        $0.setDetails(
+          details: URL(string: item.pageSrc)?.baseDomain
+            ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)"
+        )
         $0.setContentSize(parentController: self)
-        
+
         if let url = URL(string: item.pageSrc) {
           $0.loadThumbnail(for: url)
         }
@@ -105,12 +120,17 @@ extension PlaylistListViewController: UITableViewDataSource {
 
       return cell
     }
-    
+
     // Display Item Cells
-    guard let cell = tableView.dequeueReusableCell(withIdentifier: Constants.playListCellIdentifier, for: indexPath) as? PlaylistCell else {
+    guard
+      let cell = tableView.dequeueReusableCell(
+        withIdentifier: Constants.playListCellIdentifier,
+        for: indexPath
+      ) as? PlaylistCell
+    else {
       return UITableViewCell()
     }
-    
+
     guard let item = PlaylistManager.shared.itemAtIndex(indexPath.row) else {
       return cell
     }
@@ -120,7 +140,8 @@ extension PlaylistListViewController: UITableViewDataSource {
     cell.do {
       $0.showsReorderControl = false
       $0.titleLabel.text = item.name
-      $0.detailLabel.text = URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)"
+      $0.detailLabel.text =
+        URL(string: item.pageSrc)?.baseDomain ?? "0\(Strings.Shields.shieldsTimeStatsSeconds)"
       $0.contentView.backgroundColor = .clear
       $0.backgroundColor = .clear
       $0.iconView.image = nil
@@ -135,12 +156,14 @@ extension PlaylistListViewController: UITableViewDataSource {
       indexPath: indexPath,
       cell: cell,
       state: cacheState,
-      percentComplete: nil)
+      percentComplete: nil
+    )
 
     // Load the HLS/Media thumbnail. If it fails, fall-back to favIcon
     if let assetUrl = URL(string: item.src), let favIconUrl = URL(string: item.pageSrc) {
       cell.loadingView.startAnimating()
-      cell.thumbnailGenerator.loadThumbnail(assetUrl: assetUrl, favIconUrl: favIconUrl) { [weak cell] image in
+      cell.thumbnailGenerator.loadThumbnail(assetUrl: assetUrl, favIconUrl: favIconUrl) {
+        [weak cell] image in
         guard let cell = cell else { return }
 
         cell.iconView.image = image ?? Favicon.defaultImage
@@ -155,73 +178,97 @@ extension PlaylistListViewController: UITableViewDataSource {
 
   func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
     let folder = PlaylistManager.shared.currentFolder
-    
+
     if loadingState != .fullyLoaded {
-      let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.playListMenuHeaderRedactedIdentifier) as? PlaylistRedactedHeader
+      let header =
+        tableView.dequeueReusableHeaderFooterView(
+          withIdentifier: Constants.playListMenuHeaderRedactedIdentifier
+        ) as? PlaylistRedactedHeader
       header?.setTitle(title: folder?.title)
       header?.setCreatorName(creatorName: folder?.creatorName)
       return header
     }
-    
+
     guard let folder = folder, folder.playlistItems?.isEmpty == false else {
       return nil
     }
-    
+
     let isPersistent = folder.isPersistent
-    let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: Constants.playListMenuHeaderIdentifier) as? PlaylistMenuHeader
+    let header =
+      tableView.dequeueReusableHeaderFooterView(
+        withIdentifier: Constants.playListMenuHeaderIdentifier
+      ) as? PlaylistMenuHeader
     return header?.then { header in
       header.titleLabel.text = folder.title
       header.subtitleLabel.text = folder.creatorName
       header.subtitleLabel.isHidden = folder.creatorName == nil
       header.setState(isPersistent ? .menu : .add)
-      
+
       header.onAddPlaylist = { [unowned self] in
         guard let sharedFolderUrl = folder.sharedFolderUrl else { return }
-        
+
         if PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value) != .off {
-          let controller = PopupViewController(rootView: PlaylistFolderSharingManagementView(onAddToPlaylistPressed: { [unowned self] in
-            self.dismiss(animated: true)
-            
-            Task { @MainActor in
-              let persistentFolderId = await PlaylistSharedFolderNetwork.saveToDiskStorage(memoryFolder: folder)
-              PlaylistManager.shared.currentFolder = PlaylistFolder.getFolder(uuid: persistentFolderId)
-              
-              PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl)?.playlistItems?.forEach({
-                PlaylistManager.shared.autoDownload(item: PlaylistInfo(item: $0))
-              })
-            }
-          }, onSettingsPressed: { [unowned self] in
-            let delegate = self.delegate
-            self.dismiss(animated: false) {
-              delegate?.openPlaylistSettings()
-            }
-          }, onCancelPressed: { [unowned self] in
-            self.dismiss(animated: true)
-          })).then {
+          let controller = PopupViewController(
+            rootView: PlaylistFolderSharingManagementView(
+              onAddToPlaylistPressed: { [unowned self] in
+                self.dismiss(animated: true)
+
+                Task { @MainActor in
+                  let persistentFolderId = await PlaylistSharedFolderNetwork.saveToDiskStorage(
+                    memoryFolder: folder
+                  )
+                  PlaylistManager.shared.currentFolder = PlaylistFolder.getFolder(
+                    uuid: persistentFolderId
+                  )
+
+                  PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl)?.playlistItems?
+                    .forEach({
+                      PlaylistManager.shared.autoDownload(item: PlaylistInfo(item: $0))
+                    })
+                }
+              },
+              onSettingsPressed: { [unowned self] in
+                let delegate = self.delegate
+                self.dismiss(animated: false) {
+                  delegate?.openPlaylistSettings()
+                }
+              },
+              onCancelPressed: { [unowned self] in
+                self.dismiss(animated: true)
+              }
+            )
+          ).then {
             $0.overrideUserInterfaceStyle = .dark
           }
-          
+
           self.present(controller, animated: true, completion: nil)
         } else {
           Task { @MainActor in
-            let persistentFolderId = await PlaylistSharedFolderNetwork.saveToDiskStorage(memoryFolder: folder)
-            PlaylistManager.shared.currentFolder = PlaylistFolder.getFolder(uuid: persistentFolderId)
+            let persistentFolderId = await PlaylistSharedFolderNetwork.saveToDiskStorage(
+              memoryFolder: folder
+            )
+            PlaylistManager.shared.currentFolder = PlaylistFolder.getFolder(
+              uuid: persistentFolderId
+            )
           }
         }
       }
-      
+
       header.menu = { [weak header, weak folder] in
         guard isPersistent,
-              let folder = folder,
-              let folderId = folder.uuid
+          let folder = folder,
+          let folderId = folder.uuid
         else { return nil }
-        
-        let syncAction = UIAction(title: Strings.PlaylistFolderSharing.syncNowMenuTitle, image: UIImage(braveSystemNamed: "leo.refresh")?.template) { _ in
+
+        let syncAction = UIAction(
+          title: Strings.PlaylistFolderSharing.syncNowMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.refresh")?.template
+        ) { _ in
           guard let sharedFolderUrl = folder.sharedFolderUrl else {
             Logger.module.error("Invalid Playlist Shared Folder URL")
             return
           }
-          
+
           Task { @MainActor in
             do {
               try await PlaylistManager.syncSharedFolder(sharedFolderUrl: sharedFolderUrl)
@@ -235,14 +282,23 @@ extension PlaylistListViewController: UITableViewDataSource {
             }
           }
         }
-        
-        let editAction = UIAction(title: Strings.PlaylistFolderSharing.editMenuTitle, image: UIImage(braveSystemNamed: "leo.edit.pencil")?.template) { [unowned self] _ in
+
+        let editAction = UIAction(
+          title: Strings.PlaylistFolderSharing.editMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.edit.pencil")?.template
+        ) { [unowned self] _ in
           self.onEditItems()
         }
-        
-        let renameAction = UIAction(title: Strings.PlaylistFolderSharing.renameMenuTitle, image: UIImage(braveSystemNamed: "leo.folder.text")?.template) { [unowned self] _ in
+
+        let renameAction = UIAction(
+          title: Strings.PlaylistFolderSharing.renameMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.folder.text")?.template
+        ) { [unowned self] _ in
           let folderID = folder.objectID
-          var editView = PlaylistEditFolderView(currentFolder: folderID, currentFolderTitle: folder.title ?? "")
+          var editView = PlaylistEditFolderView(
+            currentFolder: folderID,
+            currentFolderTitle: folder.title ?? ""
+          )
 
           editView.onCancelButtonPressed = { [unowned self] in
             self.presentedViewController?.dismiss(animated: true, completion: nil)
@@ -251,26 +307,33 @@ extension PlaylistListViewController: UITableViewDataSource {
           editView.onEditFolder = { [unowned self] folderTitle in
             PlaylistFolder.updateFolder(folderID: folderID) { [weak self] result in
               guard let self = self else { return }
-              
+
               switch result {
               case .failure(let error):
                 Logger.module.error("Error Saving Folder Title: \(error.localizedDescription)")
 
                 DispatchQueue.main.async {
-                  let alert = UIAlertController(title: Strings.genericErrorTitle, message: Strings.PlaylistFolders.playlistFolderErrorSavingMessage, preferredStyle: .alert)
+                  let alert = UIAlertController(
+                    title: Strings.genericErrorTitle,
+                    message: Strings.PlaylistFolders.playlistFolderErrorSavingMessage,
+                    preferredStyle: .alert
+                  )
 
                   alert.addAction(
                     UIAlertAction(
-                      title: Strings.OBErrorOkay, style: .default,
+                      title: Strings.OBErrorOkay,
+                      style: .default,
                       handler: { _ in
                         self.presentedViewController?.dismiss(animated: true, completion: nil)
-                      }))
+                      }
+                    )
+                  )
                   self.present(alert, animated: true, completion: nil)
                 }
 
               case .success(let folder):
                 folder.title = folderTitle
-                
+
                 DispatchQueue.main.async {
                   header?.titleLabel.text = folderTitle
                   self.title = folderTitle
@@ -280,54 +343,77 @@ extension PlaylistListViewController: UITableViewDataSource {
             }
           }
 
-          let hostingController = UIHostingController(rootView: editView.environment(\.managedObjectContext, folder.managedObjectContext ?? DataController.swiftUIContext)).then {
+          let hostingController = UIHostingController(
+            rootView: editView.environment(
+              \.managedObjectContext,
+              folder.managedObjectContext ?? DataController.swiftUIContext
+            )
+          ).then {
             $0.modalPresentationStyle = .formSheet
           }
 
           self.present(hostingController, animated: true, completion: nil)
         }
-        
+
         var canSaveOffline = true
         for item in folder.playlistItems ?? [] {
           if let cachedData = item.cachedData, !cachedData.isEmpty {
             canSaveOffline = false
           }
         }
-        
-        let saveOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.saveOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "leo.cloud.download")?.template) { [unowned self] _ in
+
+        let saveOfflineAction = UIAction(
+          title: Strings.PlaylistFolderSharing.saveOfflineDataMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.cloud.download")?.template
+        ) { [unowned self] _ in
           folder.playlistItems?.forEach {
             PlaylistManager.shared.download(item: PlaylistInfo(item: $0))
           }
-          
+
           self.tableView.reloadData()
         }
-        
-        let deleteOfflineAction = UIAction(title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle, image: UIImage(braveSystemNamed: "leo.cloud.off")?.template) { [unowned self] _ in
+
+        let deleteOfflineAction = UIAction(
+          title: Strings.PlaylistFolderSharing.deleteOfflineDataMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.cloud.off")?.template
+        ) { [unowned self] _ in
           folder.playlistItems?.forEach {
             PlaylistManager.shared.deleteCache(item: PlaylistInfo(item: $0))
           }
-          
+
           self.tableView.reloadData()
         }
-        
-        let deleteAction = UIAction(title: Strings.PlaylistFolderSharing.deletePlaylistMenuTitle, image: UIImage(braveSystemNamed: "leo.trash")?.template, attributes: .destructive) { [unowned self] _ in
-          
+
+        let deleteAction = UIAction(
+          title: Strings.PlaylistFolderSharing.deletePlaylistMenuTitle,
+          image: UIImage(braveSystemNamed: "leo.trash")?.template,
+          attributes: .destructive
+        ) { [unowned self] _ in
+
           PlaylistManager.shared.delete(folder: folder) { success in
             if success {
               self.navigationController?.popToRootViewController(animated: true)
             }
           }
         }
-        
+
         if folder.sharedFolderId != nil {
-          return UIMenu(children: [syncAction, renameAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction, deleteAction])
+          return UIMenu(children: [
+            syncAction, renameAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction,
+            deleteAction,
+          ])
         }
-        
+
         if folder.uuid == PlaylistFolder.savedFolderUUID {
-          return UIMenu(children: [editAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction])
+          return UIMenu(children: [
+            editAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction,
+          ])
         }
-        
-        return UIMenu(children: [editAction, renameAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction, deleteAction])
+
+        return UIMenu(children: [
+          editAction, renameAction, canSaveOffline ? saveOfflineAction : deleteOfflineAction,
+          deleteAction,
+        ])
       }()
     }
   }

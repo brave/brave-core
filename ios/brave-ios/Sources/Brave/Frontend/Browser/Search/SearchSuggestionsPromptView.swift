@@ -2,10 +2,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
 import BraveUI
+import Shared
+import UIKit
 
 class SearchSuggestionPromptCell: UITableViewCell {
 
@@ -43,12 +43,14 @@ class SearchSuggestionPromptCell: UITableViewCell {
       top: -DesignUX.paddingY,
       left: -DesignUX.paddingX,
       bottom: -DesignUX.paddingY,
-      right: -DesignUX.paddingX)
+      right: -DesignUX.paddingX
+    )
     $0.contentEdgeInsets = UIEdgeInsets(
       top: DesignUX.paddingY,
       left: DesignUX.paddingX,
       bottom: DesignUX.paddingY,
-      right: DesignUX.paddingX)
+      right: DesignUX.paddingX
+    )
     $0.backgroundColor = .braveBlurpleTint
   }
 
@@ -64,12 +66,14 @@ class SearchSuggestionPromptCell: UITableViewCell {
       top: -DesignUX.paddingY,
       left: -DesignUX.paddingX,
       bottom: -DesignUX.paddingY,
-      right: -DesignUX.paddingX)
+      right: -DesignUX.paddingX
+    )
     $0.contentEdgeInsets = UIEdgeInsets(
       top: DesignUX.paddingY,
       left: DesignUX.paddingX,
       bottom: DesignUX.paddingY,
-      right: DesignUX.paddingX)
+      right: DesignUX.paddingX
+    )
     $0.backgroundColor = .clear
   }
 
@@ -107,8 +111,16 @@ class SearchSuggestionPromptCell: UITableViewCell {
       $0.height.equalTo(DesignUX.buttonHeight)
     }
 
-    enableButton.addTarget(self, action: #selector(didClickOptInSuggestionsYes), for: .touchUpInside)
-    disableButton.addTarget(self, action: #selector(didClickOptInSuggestionsNo), for: .touchUpInside)
+    enableButton.addTarget(
+      self,
+      action: #selector(didClickOptInSuggestionsYes),
+      for: .touchUpInside
+    )
+    disableButton.addTarget(
+      self,
+      action: #selector(didClickOptInSuggestionsNo),
+      for: .touchUpInside
+    )
   }
 
   @available(*, unavailable)

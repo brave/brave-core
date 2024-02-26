@@ -3,17 +3,17 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveCore
 import Preferences
+import SwiftUI
 
 struct NFTsGridView: View {
-  
+
   let assets: [NFTAssetViewModel]
   let selectedAsset: (BraveWallet.BlockchainToken) -> Void
-  
+
   private let nftGrids = [GridItem(.adaptive(minimum: 120), spacing: 16, alignment: .top)]
-  
+
   var body: some View {
     ScrollView {
       if assets.isEmpty {
@@ -24,7 +24,7 @@ struct NFTsGridView: View {
     }
     .background(Color(braveSystemName: .containerBackground))
   }
-  
+
   private var emptyView: some View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.nftPageEmptyTitle)
@@ -36,7 +36,7 @@ struct NFTsGridView: View {
     .padding(.vertical, 60)
     .padding(.horizontal, 32)
   }
-    
+
   private var nftGrid: some View {
     LazyVGrid(columns: nftGrids) {
       ForEach(assets) { nft in
@@ -86,7 +86,7 @@ struct NFTsGridView: View {
     }
     .padding()
   }
-  
+
   @ViewBuilder private func nftImage(_ nftViewModel: NFTAssetViewModel) -> some View {
     Group {
       if let urlString = nftViewModel.nftMetadata?.imageURLString {
@@ -99,10 +99,11 @@ struct NFTsGridView: View {
     }
     .cornerRadius(4)
   }
-  
+
   @ViewBuilder private func nftLogo(_ nftViewModel: NFTAssetViewModel) -> some View {
     if let image = nftViewModel.network.nativeTokenLogoImage,
-       Preferences.Wallet.isShowingNFTNetworkLogoFilter.value {
+      Preferences.Wallet.isShowingNFTNetworkLogoFilter.value
+    {
       Image(uiImage: image)
         .resizable()
         .overlay {
@@ -114,4 +115,3 @@ struct NFTsGridView: View {
     }
   }
 }
-

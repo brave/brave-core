@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import AVFoundation
+import BraveCore
 import SnapKit
 import Strings
-import BraveCore
+import SwiftUI
 
 struct AddressQRCodeScannerView: View {
   var coin: BraveWallet.CoinType
@@ -71,7 +71,8 @@ struct AddressQRCodeScannerView: View {
                 Text(Strings.scanQRCodeErrorOKButton),
                 action: {
                   presentationMode.dismiss()
-                })
+                }
+              )
             )
           }
       )
@@ -85,7 +86,8 @@ struct AddressQRCodeScannerView: View {
                 Text(Strings.openPhoneSettingsActionTitle),
                 action: {
                   UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!)
-                })
+                }
+              )
             )
           }
       )
@@ -229,7 +231,7 @@ private class AddressQRCodeScannerViewController: UIViewController {
     previewLayer = videoPreviewLayer
     captureSession.startRunning()
   }
-  
+
   private func foundAddress(_ address: String) {
     self.address = address
     dismiss()
@@ -237,8 +239,14 @@ private class AddressQRCodeScannerViewController: UIViewController {
 }
 
 extension AddressQRCodeScannerViewController: AVCaptureMetadataOutputObjectsDelegate {
-  func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-    guard let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue else {
+  func metadataOutput(
+    _ output: AVCaptureMetadataOutput,
+    didOutput metadataObjects: [AVMetadataObject],
+    from connection: AVCaptureConnection
+  ) {
+    guard
+      let stringValue = (metadataObjects.first as? AVMetadataMachineReadableCodeObject)?.stringValue
+    else {
       return
     }
     switch coin {

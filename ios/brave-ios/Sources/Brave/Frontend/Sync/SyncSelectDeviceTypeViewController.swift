@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
+import BraveShared
+import Data
 import Shared
 import SnapKit
-import Data
-import BraveShared
+import UIKit
 
 class SyncDeviceTypeButton: UIControl {
 
@@ -113,8 +113,16 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
     $0.spacing = 16
   }
 
-  let mobileButton = SyncDeviceTypeButton(image: "sync-mobile", title: Strings.syncTabletOrMobileDevice, type: .mobile)
-  let computerButton = SyncDeviceTypeButton(image: "sync-computer", title: Strings.syncComputerDevice, type: .computer)
+  let mobileButton = SyncDeviceTypeButton(
+    image: "sync-mobile",
+    title: Strings.syncTabletOrMobileDevice,
+    type: .mobile
+  )
+  let computerButton = SyncDeviceTypeButton(
+    image: "sync-computer",
+    title: Strings.syncComputerDevice,
+    type: .computer
+  )
 
   override func viewDidLoad() {
     super.viewDidLoad()
@@ -127,7 +135,10 @@ class SyncSelectDeviceTypeViewController: SyncViewController {
       UIView.spacer(.horizontal, amount: 24),
     ])
 
-    chooseDeviceStackView.setContentCompressionResistancePriority(UILayoutPriority.defaultHigh, for: NSLayoutConstraint.Axis.vertical)
+    chooseDeviceStackView.setContentCompressionResistancePriority(
+      UILayoutPriority.defaultHigh,
+      for: NSLayoutConstraint.Axis.vertical
+    )
 
     let devicesStackView = UIStackView()
     devicesStackView.axis = .vertical

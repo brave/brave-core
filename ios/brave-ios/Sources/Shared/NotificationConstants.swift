@@ -19,7 +19,9 @@ extension Notification.Name {
 
   public static let reachabilityStatusChanged = Notification.Name("ReachabilityStatusChanged")
 
-  public static let contentBlockerTabSetupRequired = Notification.Name("ContentBlockerTabSetupRequired")
+  public static let contentBlockerTabSetupRequired = Notification.Name(
+    "ContentBlockerTabSetupRequired"
+  )
 
   public static let fileDidDownload = Notification.Name("FileDidDownload")
 
@@ -27,5 +29,7 @@ extension Notification.Name {
   public static let thumbnailEditOff = Notification.Name("ThumbnailEditOff")
 
   // MARK: - Rewards
-  public static let adsOrRewardsToggledInSettings = Notification.Name("adsOrRewardsToggledInSettings")
+  public static let adsOrRewardsToggledInSettings = Notification.Name(
+    "adsOrRewardsToggledInSettings"
+  )
 }

@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 
 public enum PopupViewDismissType: Int {
   case dont
@@ -95,13 +95,11 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
   var dismissHandler: (() -> Void)?
 
   var dialogWidth: CGFloat {
-    get {
-      if let superview = self.superview {
-        return min(superview.bounds.width - padding * 2.0, kPopupDialogMaxWidth)
-      }
-
-      return 0.0
+    if let superview = self.superview {
+      return min(superview.bounds.width - padding * 2.0, kPopupDialogMaxWidth)
     }
+
+    return 0.0
   }
 
   var dialogView: UIView!
@@ -122,7 +120,7 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     }
   }
 
-  var dialogButtons: Array<ButtonData> = []
+  var dialogButtons: [ButtonData] = []
   var dialogButtonsContainer: UIView!
 
   var delegate: PopupViewDelegate?
@@ -133,7 +131,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     backgroundColor = .clear
     autoresizingMask = [.flexibleWidth, .flexibleHeight]
 
-    let touchRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(backgroundTapped(recognizer:)))
+    let touchRecognizer: UILongPressGestureRecognizer = UILongPressGestureRecognizer(
+      target: self,
+      action: #selector(backgroundTapped(recognizer:))
+    )
     touchRecognizer.minimumPressDuration = kPopupBackgroundDismissTouchDuration
     touchRecognizer.delegate = self
 
@@ -176,20 +177,35 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     let keyboardHeight = keyboardState?.intersectionHeightForView(applicationWindow ?? self) ?? 0
 
     dialogView.frame = _dialogFrameWithKeyboardHeight(height: keyboardHeight)
-    contentView.frame = CGRect(x: 0.0, y: 0.0, width: dialogView.bounds.size.width, height: contentSize.height)
+    contentView.frame = CGRect(
+      x: 0.0,
+      y: 0.0,
+      width: dialogView.bounds.size.width,
+      height: contentSize.height
+    )
 
     // Add and create buttons as necessary.
     if !dialogButtons.isEmpty {
       var buttonWidth: CGFloat = 0.0
 
-      dialogButtonsContainer.frame = CGRect(x: 0.0, y: contentSize.height, width: dialogView.frame.size.width, height: kPopupDialogButtonHeight)
+      dialogButtonsContainer.frame = CGRect(
+        x: 0.0,
+        y: contentSize.height,
+        width: dialogView.frame.size.width,
+        height: kPopupDialogButtonHeight
+      )
 
       buttonWidth = dialogView.frame.width - (kPopupDialogButtonPadding * 2.0)
       buttonWidth -= CGFloat((dialogButtons.count - 1)) * kPopupDialogButtonSpacing
       buttonWidth = buttonWidth / CGFloat(dialogButtons.count)
       buttonWidth = rint(buttonWidth)
 
-      var buttonFrame: CGRect = CGRect(x: kPopupDialogButtonPadding, y: 0, width: buttonWidth, height: kPopupDialogButtonHeight)
+      var buttonFrame: CGRect = CGRect(
+        x: kPopupDialogButtonPadding,
+        y: 0,
+        width: buttonWidth,
+        height: kPopupDialogButtonHeight
+      )
 
       for buttonData in dialogButtons {
         var button = buttonData.button
@@ -202,7 +218,11 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
           button!.backgroundColor = buttonData.type.backgroundColor
           button!.setTitle(buttonData.title, for: .normal)
           button!.setTitleColor(buttonData.type.titleColor, for: .normal)
-          button!.addTarget(self, action: #selector(dialogButtonTapped(button:)), for: .touchUpInside)
+          button!.addTarget(
+            self,
+            action: #selector(dialogButtonTapped(button:)),
+            for: .touchUpInside
+          )
           buttonData.button = button
           dialogButtonsContainer.addSubview(button!)
         }
@@ -227,14 +247,24 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     }
 
     if automaticallyMovesWithKeyboard && height > 0 {
-      visibleFrame = CGRect(x: 0.0, y: 0.0, width: bounds.size.width, height: UIScreen.main.bounds.height - height)
+      visibleFrame = CGRect(
+        x: 0.0,
+        y: 0.0,
+        width: bounds.size.width,
+        height: UIScreen.main.bounds.height - height
+      )
     }
 
     if !dialogView.transform.isIdentity {
       dialogSize = dialogSize.applying(dialogView.transform)
     }
 
-    dialogFrame = CGRect(x: rint(visibleFrame.midX - (dialogSize.width / 2.0)), y: rint(visibleFrame.midY - (dialogSize.height / 2.0)), width: dialogSize.width, height: dialogSize.height)
+    dialogFrame = CGRect(
+      x: rint(visibleFrame.midX - (dialogSize.width / 2.0)),
+      y: rint(visibleFrame.midY - (dialogSize.height / 2.0)),
+      width: dialogSize.width,
+      height: dialogSize.height
+    )
     dialogFrame.origin.y = max(dialogFrame.origin.y, padding)
 
     if verticalAlignment == .top {
@@ -262,10 +292,12 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       autoDismissTimer = nil
       autoDismissTimer =
         Timer.scheduledTimer(
-          withTimeInterval: autoDismissTime, repeats: false,
+          withTimeInterval: autoDismissTime,
+          repeats: false,
           block: { [weak self] _ in
             self?.dismiss()
-          })
+          }
+        )
     }
 
     dialogView.removeFromSuperview()
@@ -275,7 +307,8 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     } else {
       let currentViewController: AnyObject = (applicationWindow?.rootViewController)!
       if currentViewController is UINavigationController {
-        let navigationController: UINavigationController? = currentViewController as? UINavigationController
+        let navigationController: UINavigationController? =
+          currentViewController as? UINavigationController
         navigationController?.visibleViewController?.view.addSubview(self)
       } else if currentViewController is UIViewController {
         let viewController: UIViewController? = currentViewController as? UIViewController
@@ -299,10 +332,16 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       willShowWithType(showType: showType)
 
       UIView.animate(
-        withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: [],
+        withDuration: 0.4,
+        delay: 0,
+        usingSpringWithDamping: 0.85,
+        initialSpringVelocity: 0,
+        options: [],
         animations: {
           self.dialogView.frame = finalFrame
-        }, completion: nil)
+        },
+        completion: nil
+      )
     } else if showType == .flyDown {
       let finalFrame: CGRect = dialogView.frame
       var startFrame: CGRect = dialogView.frame
@@ -312,19 +351,29 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       willShowWithType(showType: showType)
 
       UIView.animate(
-        withDuration: 0.4, delay: 0, usingSpringWithDamping: 0.85, initialSpringVelocity: 0, options: [],
+        withDuration: 0.4,
+        delay: 0,
+        usingSpringWithDamping: 0.85,
+        initialSpringVelocity: 0,
+        options: [],
         animations: {
           self.dialogView.frame = finalFrame
-        }, completion: nil)
+        },
+        completion: nil
+      )
     }
 
     overlayView.alpha = 0.0
 
     UIView.animate(
-      withDuration: 0.2, delay: 0.0, options: [.curveEaseOut],
+      withDuration: 0.2,
+      delay: 0.0,
+      options: [.curveEaseOut],
       animations: {
         self.overlayView.alpha = self.kPopupBackgroundAlpha
-      }, completion: nil)
+      },
+      completion: nil
+    )
 
     didShowWithType(showType: showType)
 
@@ -361,7 +410,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       animation.autoreverses = true
       animation.isRemovedOnCompletion = true
       animation.timingFunction = CAMediaTimingFunction(name: .easeInEaseOut)
-      animation.values = [NSValue(caTransform3D: CATransform3DMakeRotation(kPopupDialogShakeAngle, 0.0, 0.0, 1.0)), NSValue(caTransform3D: CATransform3DMakeRotation(-kPopupDialogShakeAngle, 0.0, 0.0, 1.0))]
+      animation.values = [
+        NSValue(caTransform3D: CATransform3DMakeRotation(kPopupDialogShakeAngle, 0.0, 0.0, 1.0)),
+        NSValue(caTransform3D: CATransform3DMakeRotation(-kPopupDialogShakeAngle, 0.0, 0.0, 1.0)),
+      ]
       dialogView.layer.add(animation, forKey: "dialog.shake")
     case .noAnimation:
       willDismissWithType(dismissType: dismissType)
@@ -373,7 +425,9 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       willDismissWithType(dismissType: dismissType)
 
       UIView.animate(
-        withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseIn],
+        withDuration: 0.2,
+        delay: 0.0,
+        options: [.beginFromCurrentState, .curveEaseIn],
         animations: {
           self.alpha = 0.0
         },
@@ -383,12 +437,15 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
           self.didDismissWithType(dismissType: dismissType)
           self.delegate?.popupViewDidDismiss(self)
           self.dismissHandler?()
-        })
+        }
+      )
     case .scaleDown:
       willDismissWithType(dismissType: dismissType)
 
       UIView.animate(
-        withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseIn],
+        withDuration: 0.2,
+        delay: 0.0,
+        options: [.beginFromCurrentState, .curveEaseIn],
         animations: {
           self.alpha = 0.0
           self.dialogView.transform = self.dialogView.transform.scaledBy(x: 0.9, y: 0.9)
@@ -400,13 +457,16 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
           self.didDismissWithType(dismissType: dismissType)
           self.delegate?.popupViewDidDismiss(self)
           self.dismissHandler?()
-        })
+        }
+      )
     case .flyUp:
       willDismissWithType(dismissType: dismissType)
 
       overlayView.alpha = kPopupBackgroundAlpha
       UIView.animate(
-        withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseIn],
+        withDuration: 0.2,
+        delay: 0.0,
+        options: [.beginFromCurrentState, .curveEaseIn],
         animations: {
           var flyawayFrame: CGRect = self.dialogView.frame
           flyawayFrame.origin.y = -flyawayFrame.height
@@ -420,13 +480,16 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
           self.didDismissWithType(dismissType: dismissType)
           self.delegate?.popupViewDidDismiss(self)
           self.dismissHandler?()
-        })
+        }
+      )
     case .flyDown:
       willDismissWithType(dismissType: dismissType)
 
       overlayView.alpha = kPopupBackgroundAlpha
       UIView.animate(
-        withDuration: 0.2, delay: 0.0, options: [.beginFromCurrentState, .curveEaseIn],
+        withDuration: 0.2,
+        delay: 0.0,
+        options: [.beginFromCurrentState, .curveEaseIn],
         animations: {
           var flyawayFrame: CGRect = self.dialogView.frame
           flyawayFrame.origin.y = self.overlayView.bounds.height
@@ -440,7 +503,8 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
           self.didDismissWithType(dismissType: dismissType)
           self.delegate?.popupViewDidDismiss(self)
           self.dismissHandler?()
-        })
+        }
+      )
     }
   }
 
@@ -482,10 +546,14 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
       overlayView.backgroundColor = color
     } else {
       UIView.animate(
-        withDuration: 0.35, delay: 0.0, options: [.beginFromCurrentState],
+        withDuration: 0.35,
+        delay: 0.0,
+        options: [.beginFromCurrentState],
         animations: {
           self.overlayView.backgroundColor = color
-        }, completion: nil)
+        },
+        completion: nil
+      )
     }
   }
 
@@ -497,7 +565,12 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
     setNeedsLayout()
   }
 
-  public func addButton(title: String, type: ButtonType = .secondary, fontSize: CGFloat? = 15, tapped: (() -> PopupViewDismissType)?) {
+  public func addButton(
+    title: String,
+    type: ButtonType = .secondary,
+    fontSize: CGFloat? = 15,
+    tapped: (() -> PopupViewDismissType)?
+  ) {
     let buttonData: ButtonData = ButtonData()
     buttonData.title = title
     buttonData.handler = tapped
@@ -568,7 +641,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
 
   // MARK: Background
 
-  public func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  public func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldReceive touch: UITouch
+  ) -> Bool {
     let point: CGPoint = touch.location(in: dialogView)
     return dialogView.point(inside: point, with: nil) == false
   }
@@ -596,7 +672,10 @@ open class UIKitPopupView: UIView, UIGestureRecognizerDelegate {
 }
 
 extension UIKitPopupView: KeyboardHelperDelegate {
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillShowWithState state: KeyboardState
+  ) {
     keyboardState = state
     if !automaticallyMovesWithKeyboard {
       return
@@ -605,7 +684,10 @@ extension UIKitPopupView: KeyboardHelperDelegate {
     _dialogFrameWithKeyboardHeight(height: keyboardHeight)
   }
 
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillHideWithState state: KeyboardState
+  ) {
     keyboardState = nil
     if !automaticallyMovesWithKeyboard {
       return

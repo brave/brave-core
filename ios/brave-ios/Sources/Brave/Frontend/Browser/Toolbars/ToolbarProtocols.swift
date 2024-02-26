@@ -55,5 +55,8 @@ protocol ToolbarDelegate: AnyObject {
   func tabToolbarDidPressShare()
   func tabToolbarDidPressAddTab(_ tabToolbar: ToolbarProtocol, button: UIButton)
   func tabToolbarDidPressSearch(_ tabToolbar: ToolbarProtocol, button: UIButton)
-  func tabToolbarDidSwipeToChangeTabs(_ tabToolbar: ToolbarProtocol, direction: UISwipeGestureRecognizer.Direction)
+  func tabToolbarDidSwipeToChangeTabs(
+    _ tabToolbar: ToolbarProtocol,
+    direction: UISwipeGestureRecognizer.Direction
+  )
 }

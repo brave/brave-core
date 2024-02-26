@@ -4,16 +4,16 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import OSLog
 import SwiftUI
 import os.log
-import OSLog
 
 struct BraveTalkLogsView: View {
   @State private var logs: String = ""
   @State private var isLoading: Bool = true
   @State private var showShareSheet: Bool = false
   @State private var fileURL: URL?
-  
+
   var body: some View {
     VStack {
       if isLoading {
@@ -32,7 +32,7 @@ struct BraveTalkLogsView: View {
       isLoading = false
     }
   }
-  
+
   @ViewBuilder private func ShareButton() -> some View {
     if #available(iOS 16, *) {
       ShareLink(item: fileURL ?? URL(string: "disabled")!)
@@ -41,20 +41,21 @@ struct BraveTalkLogsView: View {
       EmptyView()
     }
   }
-  
+
   private func createTemporaryLogFile() -> URL {
     let temporaryDirectoryURL = FileManager.default.temporaryDirectory
     let logFileURL = temporaryDirectoryURL.appendingPathComponent("Logs.txt")
-    
+
     try? logs.write(to: logFileURL, atomically: true, encoding: .utf8)
     return logFileURL
   }
-  
+
   private func getLogs() async -> String {
     do {
       let store = try OSLogStore(scope: .currentProcessIdentifier)
-      
-      return try store
+
+      return
+        try store
         .getEntries()
         .compactMap { $0 as? OSLogEntryLog }
         .filter { $0.category == "BraveTalk" && $0.subsystem == Bundle.main.bundleIdentifier }
@@ -63,7 +64,7 @@ struct BraveTalkLogsView: View {
     } catch {
       Logger.module.error("\(error.localizedDescription, privacy: .public)")
     }
-    
+
     return ""
   }
 }

@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Intents
-import BrowserIntentsModels
 import BraveWidgetsModels
+import BrowserIntentsModels
+import Intents
 
 class IntentHandler: INExtension {
 
@@ -25,7 +25,7 @@ class IntentHandler: INExtension {
     if intent is LockScreenFavoriteConfigurationIntent {
       return LockScreenFavoriteIntentHandler()
     }
-    
+
     return self
   }
 }

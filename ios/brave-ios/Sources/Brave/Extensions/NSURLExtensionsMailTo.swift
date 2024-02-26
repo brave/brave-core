@@ -4,22 +4,20 @@
 
 import Foundation
 
-/**
- *  Data structure containing metadata associated with a mailto: link. For additional details,
- *  see RFC 2368 https://tools.ietf.org/html/rfc2368
- */
+/// Data structure containing metadata associated with a mailto: link. For additional details,
+/// see RFC 2368 https://tools.ietf.org/html/rfc2368
 public struct MailToMetadata {
   public let to: String
   public let headers: [String: String]
 }
 
-public extension URL {
+extension URL {
 
   /**
      Extracts the metadata associated with a mailto: URL according to RFC 2368
      https://tools.ietf.org/html/rfc2368
      */
-  func mailToMetadata() -> MailToMetadata? {
+  public func mailToMetadata() -> MailToMetadata? {
     guard scheme == "mailto" else {
       return nil
     }

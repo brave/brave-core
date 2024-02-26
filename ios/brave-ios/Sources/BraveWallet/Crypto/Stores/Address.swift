@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
 import BraveCore
+import Foundation
 
 extension String {
   /// Truncates an address to only show the first 4 digits and last 4 digits
@@ -37,37 +37,38 @@ extension String {
   var isETHAddress: Bool {
     // An address has to start with `0x`
     guard starts(with: "0x") else { return false }
-    
+
     // removing `0x`
     let hex = removingHexPrefix
     // Check the length and the rest of the char is a hex digit
     return hex.count == 40 && hex.allSatisfy(\.isHexDigit)
   }
-  
+
   /// Check if the string is a valid FIL address
   var isFILAddress: Bool {
-    if starts(with: BraveWallet.FilecoinMainnet) || starts(with: BraveWallet.FilecoinTestnet) {// FIL address has to start with `f` or `t`
-      if count == 41 || count == 86 || count == 44 { // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
+    if starts(with: BraveWallet.FilecoinMainnet) || starts(with: BraveWallet.FilecoinTestnet) {  // FIL address has to start with `f` or `t`
+      if count == 41 || count == 86 || count == 44 {  // secp256k have 41 address length and BLS keys have 86 and FEVM f410 keys have 44
         return true
       }
     }
     return false
   }
-  
+
   /// Strip prefix if it exists, ex. 'ethereum:'
   var strippedETHAddress: String {
     guard !isETHAddress else { return self }
     if !starts(with: "0x"),
-       contains("0x"),
-       let range = range(of: "0x"),
-       case let updatedAddressSubstring = self[range.lowerBound...],
-       case let updatedAddress = String(updatedAddressSubstring),
-       updatedAddress.isETHAddress {
+      contains("0x"),
+      let range = range(of: "0x"),
+      case let updatedAddressSubstring = self[range.lowerBound...],
+      case let updatedAddress = String(updatedAddressSubstring),
+      updatedAddress.isETHAddress
+    {
       return updatedAddress
     }
     return self
   }
-  
+
   /// Strip prefix if it exists, ex. 'solana:'
   var strippedSOLAddress: String {
     let prefixesToRemove = ["solana:", "Solana:"]

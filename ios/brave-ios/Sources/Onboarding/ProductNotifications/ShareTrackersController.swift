@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import BraveShared  // Strings (should be moved to this module)
 import BraveUI
-import BraveShared // Strings (should be moved to this module)
+import Foundation
 import Shared
 
 // MARK: TrackingType
@@ -115,7 +115,12 @@ private class ShareTrackersView: UIView {
 
   struct UX {
     static let contentMargins: UIEdgeInsets = UIEdgeInsets(equalInset: 32)
-    static let actionButtonInsets: UIEdgeInsets = UIEdgeInsets(top: 10, left: 0, bottom: 10, right: 0)
+    static let actionButtonInsets: UIEdgeInsets = UIEdgeInsets(
+      top: 10,
+      left: 0,
+      bottom: 10,
+      right: 0
+    )
   }
 
   // MARK: Action
@@ -205,9 +210,11 @@ private class ShareTrackersView: UIView {
                   .view(subtitleLabel)
                 )
                 $0.setContentHuggingPriority(.required, for: .vertical)
-              })
+              }
+            )
           )
-        })
+        }
+      )
     )
 
     switch trackingType {
@@ -235,11 +242,13 @@ private class ShareTrackersView: UIView {
         NSMutableAttributedString(
           string: trackingType.title,
           attributes: [.font: UIFont.systemFont(ofSize: 20.0)]
-        ))
+        )
+      )
       return string.withLineSpacing(2)
     }()
 
-    subtitleLabel.attributedText = NSAttributedString(string: trackingType.subTitle).withLineSpacing(2)
+    subtitleLabel.attributedText = NSAttributedString(string: trackingType.subTitle)
+      .withLineSpacing(2)
 
     switch trackingType {
     case .trackerCountShare:

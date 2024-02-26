@@ -3,8 +3,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
 import Preferences
+import Shared
 
 enum BrandedImageCalloutState {
   /// User is supporting content creators
@@ -13,7 +13,8 @@ enum BrandedImageCalloutState {
   case dontShow
 
   static func getState(
-    adsEnabled: Bool, adsAvailableInRegion: Bool,
+    adsEnabled: Bool,
+    adsAvailableInRegion: Bool,
     isSponsoredImage: Bool
   ) -> BrandedImageCalloutState {
     if adsEnabled && isSponsoredImage {

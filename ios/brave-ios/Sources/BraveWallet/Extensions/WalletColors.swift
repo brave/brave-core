@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Foundation
 import UIKit
-import BraveUI
 
 extension UIColor {
 
@@ -102,7 +102,7 @@ enum WalletV2Design {
 
   // Light Theme/Text/text01 rgba(33, 37, 41, 1)
   static let text01: UIColor = .bravePrimary
-  
+
   // Extended/Gray/20 rgba(225, 226, 232, 1) / rgba(38, 42, 51, 1)
   static let extendedGray20 = UIColor(dynamicProvider: { traits in
     if traits.userInterfaceStyle == .light {
@@ -121,7 +121,7 @@ enum WalletV2Design {
       )
     }
   })
-  
+
   // Extended/Gray/50 rgba(84, 90, 113, 1) / rgba(168, 173, 191, 1)
   static let extendedGray50 = UIColor(dynamicProvider: { traits in
     if traits.userInterfaceStyle == .light {
@@ -244,13 +244,13 @@ enum WalletV2Design {
       )
     }
   })
-  
+
   static let passwordWeakRed = UIColor(rgb: 0xd40033)
-  
+
   static let passwordMediumYellow = UIColor(rgb: 0xbd9600)
-  
+
   static let passwordStrongGreen = UIColor(rgb: 0x31803e)
-  
+
   static let spamNFTLabelBackground = UIColor(
     red: 1,
     green: 209 / 255,

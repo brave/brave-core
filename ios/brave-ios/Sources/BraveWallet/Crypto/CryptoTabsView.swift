@@ -3,18 +3,18 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import UIKit
-import SwiftUI
 import BraveUI
+import Foundation
 import Strings
+import SwiftUI
+import UIKit
 
 enum CryptoTab: Equatable, Hashable, CaseIterable {
   case portfolio
   case activity
   case accounts
   case market
-  
+
   @ViewBuilder var tabLabel: some View {
     switch self {
     case .portfolio:
@@ -35,13 +35,15 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   var toolbarDismissContent: DismissContent
 
   @State private var isShowingMainMenu: Bool = false
-  @State private var isTabShowingSettings: [CryptoTab: Bool] = CryptoTab.allCases.reduce(into: [CryptoTab: Bool]()) { $0[$1] = false }
+  @State private var isTabShowingSettings: [CryptoTab: Bool] = CryptoTab.allCases.reduce(
+    into: [CryptoTab: Bool]()
+  ) { $0[$1] = false }
   @State private var isShowingSearch: Bool = false
   @State private var isShowingBackup: Bool = false
   @State private var isShowingAddAccount: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
   @State private var selectedTab: CryptoTab = .portfolio
-  
+
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
       return !txs.isEmpty
@@ -69,7 +71,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         CryptoTab.portfolio.tabLabel
       }
       .tag(CryptoTab.portfolio)
-      
+
       NavigationView {
         TransactionsActivityView(
           store: cryptoStore.transactionsActivityStore,
@@ -86,7 +88,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         CryptoTab.activity.tabLabel
       }
       .tag(CryptoTab.activity)
-      
+
       NavigationView {
         AccountsView(
           store: cryptoStore.accountsStore,
@@ -104,7 +106,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         CryptoTab.accounts.tabLabel
       }
       .tag(CryptoTab.accounts)
-      
+
       NavigationView {
         MarketView(
           cryptoStore: cryptoStore,
@@ -129,25 +131,28 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       tabBarController.tabBar.standardAppearance = appearance
       tabBarController.tabBar.scrollEdgeAppearance = appearance
     })
-    .overlay(alignment: .bottomTrailing, content: {
-      if isConfirmationButtonVisible {
-        Button(action: {
-          cryptoStore.isPresentingPendingRequest = true
-        }) {
-          Image(braveSystemName: "leo.notification.dot")
-            .font(.system(size: 18))
-            .foregroundColor(.white)
-            .frame(width: 36, height: 36)
-            .background(
-              Color(uiColor: .braveBlurpleTint)
-                .clipShape(Circle())
-            )
+    .overlay(
+      alignment: .bottomTrailing,
+      content: {
+        if isConfirmationButtonVisible {
+          Button(action: {
+            cryptoStore.isPresentingPendingRequest = true
+          }) {
+            Image(braveSystemName: "leo.notification.dot")
+              .font(.system(size: 18))
+              .foregroundColor(.white)
+              .frame(width: 36, height: 36)
+              .background(
+                Color(uiColor: .braveBlurpleTint)
+                  .clipShape(Circle())
+              )
+          }
+          .accessibilityLabel(Text(Strings.Wallet.confirmTransactionsTitle))
+          .padding(.trailing, 16)
+          .padding(.bottom, 100)
         }
-        .accessibilityLabel(Text(Strings.Wallet.confirmTransactionsTitle))
-        .padding(.trailing, 16)
-        .padding(.bottom, 100)
       }
-    })
+    )
     .onAppear {
       // If a user chooses not to confirm/reject their requests we shouldn't
       // do it again until they close and re-open wallet
@@ -173,26 +178,34 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
     .sheet(isPresented: $isShowingMainMenu) {
       MainMenuView(
         selectedTab: selectedTab,
-        isShowingSettings: Binding(get: {
-          self.isTabShowingSettings[selectedTab, default: false]
-        }, set: { isActive, _ in
-          self.isTabShowingSettings[selectedTab] = isActive
-        }),
+        isShowingSettings: Binding(
+          get: {
+            self.isTabShowingSettings[selectedTab, default: false]
+          },
+          set: { isActive, _ in
+            self.isTabShowingSettings[selectedTab] = isActive
+          }
+        ),
         isShowingBackup: $isShowingBackup,
         isShowingAddAccount: $isShowingAddAccount,
         keyringStore: keyringStore
       )
       .background(
         Color.clear
-          .sheet(isPresented: Binding(get: {
-            isShowingBackup
-          }, set: { newValue in
-            if !newValue {
-              // dismiss menu if we're dismissing backup from menu
-              isShowingMainMenu = false
-            }
-            isShowingBackup = newValue
-          })) {
+          .sheet(
+            isPresented: Binding(
+              get: {
+                isShowingBackup
+              },
+              set: { newValue in
+                if !newValue {
+                  // dismiss menu if we're dismissing backup from menu
+                  isShowingMainMenu = false
+                }
+                isShowingBackup = newValue
+              }
+            )
+          ) {
             NavigationView {
               BackupWalletView(
                 password: nil,
@@ -206,15 +219,20 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       )
       .background(
         Color.clear
-          .sheet(isPresented: Binding(get: {
-            isShowingAddAccount
-          }, set: { newValue in
-            if !newValue {
-              // dismiss menu if we're dismissing add account from menu
-              isShowingMainMenu = false
-            }
-            isShowingAddAccount = newValue
-          })) {
+          .sheet(
+            isPresented: Binding(
+              get: {
+                isShowingAddAccount
+              },
+              set: { newValue in
+                if !newValue {
+                  // dismiss menu if we're dismissing add account from menu
+                  isShowingMainMenu = false
+                }
+                isShowingAddAccount = newValue
+              }
+            )
+          ) {
             NavigationView {
               AddAccountView(
                 keyringStore: keyringStore,
@@ -226,7 +244,7 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
       )
     }
   }
-  
+
   @ToolbarContentBuilder private var sharedToolbarItems: some ToolbarContent {
     ToolbarItemGroup(placement: .navigationBarTrailing) {
       if selectedTab == .portfolio {
@@ -239,15 +257,18 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         }
       }
       Button(action: { self.isShowingMainMenu = true }) {
-        Label(Strings.Wallet.otherWalletActionsAccessibilityTitle, braveSystemImage: "leo.more.horizontal")
-          .labelStyle(.iconOnly)
-          .foregroundColor(Color(.braveBlurpleTint))
+        Label(
+          Strings.Wallet.otherWalletActionsAccessibilityTitle,
+          braveSystemImage: "leo.more.horizontal"
+        )
+        .labelStyle(.iconOnly)
+        .foregroundColor(Color(.braveBlurpleTint))
       }
       .accessibilityLabel(Strings.Wallet.otherWalletActionsAccessibilityTitle)
     }
     toolbarDismissContent
   }
-  
+
   private func settingsNavigationLink(for tab: CryptoTab) -> some View {
     NavigationLink(
       destination: Web3SettingsView(
@@ -255,11 +276,14 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         networkStore: cryptoStore.networkStore,
         keyringStore: keyringStore
       ),
-      isActive: Binding(get: {
-        self.isTabShowingSettings[tab, default: false]
-      }, set: { isActive, _ in
-        self.isTabShowingSettings[tab] = isActive
-      })
+      isActive: Binding(
+        get: {
+          self.isTabShowingSettings[tab, default: false]
+        },
+        set: { isActive, _ in
+          self.isTabShowingSettings[tab] = isActive
+        }
+      )
     ) {
       Text(Strings.Wallet.settings)
     }

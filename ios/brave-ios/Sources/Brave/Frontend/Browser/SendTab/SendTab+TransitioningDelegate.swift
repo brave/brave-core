@@ -3,19 +3,22 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveUI
 import Foundation
 import UIKit
-import BraveUI
 
 // MARK: - BasicAnimationControllerDelegate
 
 extension SendTabTransitioningController: BasicAnimationControllerDelegate {
   public func animatePresentation(context: UIViewControllerContextTransitioning) {
     context.containerView.addSubview(view)
-    
+
     backgroundView.alpha = 0.0
-    contentView.transform = CGAffineTransform(translationX: 0, y: context.containerView.bounds.height)
-    
+    contentView.transform = CGAffineTransform(
+      translationX: 0,
+      y: context.containerView.bounds.height
+    )
+
     UIViewPropertyAnimator(duration: 0.35, dampingRatio: 1.0) { [self] in
       backgroundView.alpha = 1.0
       contentView.transform = .identity

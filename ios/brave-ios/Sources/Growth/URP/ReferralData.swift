@@ -1,10 +1,10 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
+import BraveShared
 import Foundation
 import Shared
 import SwiftyJSON
 import os.log
-import BraveShared
 
 struct ReferralData {
 
@@ -24,7 +24,8 @@ struct ReferralData {
   }
 
   init?(json: JSON) {
-    guard let downloadId = json["download_id"].string, let code = json["referral_code"].string else {
+    guard let downloadId = json["download_id"].string, let code = json["referral_code"].string
+    else {
       Logger.module.error("Failed to unwrap json to Referral struct.")
       DebugLogger.log(for: .urp, text: "Failed to unwrap json to Referral struct. \(json)")
       return nil

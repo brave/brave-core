@@ -3,21 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
+import BraveCore
 import BraveShared
 import BraveStrings
+import BraveUI
+import Combine
+import Foundation
 import Preferences
 import SwiftUI
-import Combine
-import BraveUI
-import BraveCore
 
 public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
   private let dataSource: FeedDataSource
   private let searchDelegate = SearchDelegate()
   private var cancellables: Set<AnyCancellable> = []
   public var viewDidDisappear: (() -> Void)?
-  
+
   public init(
     dataSource: FeedDataSource,
     openURL: @escaping (URL) -> Void
@@ -28,12 +28,12 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       openURL(.brave.braveNewsPrivacy)
     }
   }
-  
+
   private var isControllerSetUp: Bool = false
   private func setUpController() {
     if isControllerSetUp { return }
     defer { isControllerSetUp = true }
-    
+
     if navigationController?.viewControllers.first === self {
       navigationItem.rightBarButtonItem = .init(
         barButtonSystemItem: .done,
@@ -50,7 +50,7 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     if #available(iOS 16.0, *) {
       navigationItem.preferredSearchBarPlacement = .stacked
     }
-    
+
     // Hide the search bar when Brave News is off
     Preferences.BraveNews.isEnabled.$value
       .sink { [weak self] isEnabled in
@@ -64,13 +64,13 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
         self.navigationController?.setToolbarHidden(!isEnabled, animated: true)
       }
       .store(in: &cancellables)
-    
+
     Preferences.BraveNews.userOptedIn.$value
       .sink { [weak self] isOptedIn in
         self?.navigationController?.setToolbarHidden(!isOptedIn, animated: true)
       }
       .store(in: &cancellables)
-    
+
     // Hide the toolbar when search overlay is visible
     searchDelegate.$query
       .sink { [weak self] query in
@@ -79,12 +79,12 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
       }
       .store(in: &cancellables)
   }
-  
+
   public override func viewDidLoad() {
     super.viewDidLoad()
     setUpController()
   }
-  
+
   private lazy var searchController = UISearchController(searchResultsController: nil).then {
     $0.automaticallyShowsCancelButton = true
     $0.hidesNavigationBarDuringPresentation = true
@@ -93,28 +93,31 @@ public class NewsSettingsViewController: UIHostingController<NewsSettingsView> {
     $0.searchBar.delegate = searchDelegate
     $0.searchBar.placeholder = Strings.BraveNews.searchPlaceholder
   }
-  
+
   @objc private func tappedDone() {
     dismiss(animated: true)
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
   }
-  
+
   public override func viewWillAppear(_ animated: Bool) {
     super.viewWillAppear(animated)
-    navigationController?.setToolbarHidden(!Preferences.BraveNews.isEnabled.value, animated: animated)
+    navigationController?.setToolbarHidden(
+      !Preferences.BraveNews.isEnabled.value,
+      animated: animated
+    )
   }
-  
+
   public override func viewWillDisappear(_ animated: Bool) {
     super.viewWillDisappear(animated)
-    if navigationController?.isBeingDismissed == false { // Gesture dismiss
+    if navigationController?.isBeingDismissed == false {  // Gesture dismiss
       navigationController?.setToolbarHidden(true, animated: animated)
     }
   }
-  
+
   public override func viewDidDisappear(_ animated: Bool) {
     super.viewDidDisappear(animated)
     if navigationController?.isBeingDismissed == true {
@@ -128,12 +131,12 @@ public struct NewsSettingsView: View {
   @ObservedObject fileprivate var searchDelegate: SearchDelegate
   @ObservedObject private var isNewsEnabled = Preferences.BraveNews.isEnabled
   @ObservedObject private var userOptedIn = Preferences.BraveNews.userOptedIn
-  
+
   fileprivate var tappedOptInLearnMore: (() -> Void)?
-  
+
   @State private var searchResults: SearchResults?
   @State private var isShowingImportOPML: Bool = false
-  
+
   private var showBraveNewsToggle: some View {
     Toggle(isOn: $isNewsEnabled.value.animation(.default)) {
       Text(Strings.BraveNews.isEnabledToggleLabel)
@@ -143,11 +146,12 @@ public struct NewsSettingsView: View {
     }
     .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
   }
-  
+
   // Xcode typechecker struggled when these were inside of `body`
   @ViewBuilder private var destinations: some View {
     let followedSourcesCount = dataSource.followedSources.count
-    let totalFollowCount = followedSourcesCount + dataSource.followedChannels.count + dataSource.rssFeedLocations.count
+    let totalFollowCount =
+      followedSourcesCount + dataSource.followedChannels.count + dataSource.rssFeedLocations.count
     NavigationLink {
       SourceListContainerView(dataSource: dataSource)
     } label: {
@@ -202,7 +206,7 @@ public struct NewsSettingsView: View {
       }
     }
   }
-  
+
   public var body: some View {
     List {
       Section {
@@ -229,15 +233,17 @@ public struct NewsSettingsView: View {
         searchResults = dataSource.search(query: searchDelegate.query)
       }
     }
-    .overlay(Group {
-      if !searchDelegate.query.isEmpty {
-        SearchResultsView(
-          dataSource: dataSource,
-          query: searchDelegate.query,
-          results: searchResults ?? .empty
-        )
+    .overlay(
+      Group {
+        if !searchDelegate.query.isEmpty {
+          SearchResultsView(
+            dataSource: dataSource,
+            query: searchDelegate.query,
+            results: searchResults ?? .empty
+          )
+        }
       }
-    })
+    )
     .background(
       Group {
         if searchDelegate.query.isEmpty {
@@ -254,7 +260,7 @@ public struct NewsSettingsView: View {
                     }
                   } label: {
                     Image(braveSystemName: "leo.more.horizontal")
-                      .frame(height: 44) // Menu label's don't have proper tap areas in toolbar
+                      .frame(height: 44)  // Menu label's don't have proper tap areas in toolbar
                   }
                 }
               }
@@ -265,7 +271,7 @@ public struct NewsSettingsView: View {
     .opmlImporter(isPresented: $isShowingImportOPML, dataSource: dataSource)
     .overlay(optInView)
   }
-  
+
   @ViewBuilder private var optInView: some View {
     if !userOptedIn.value || !isNewsEnabled.value {
       OptInView { @MainActor in
@@ -297,9 +303,9 @@ private struct DestinationLabel<Title: View>: View {
   var image: Image
   var title: Title
   var subtitle: String?
-  
+
   @ScaledMetric private var imageSize: CGFloat = 38.0
-  
+
   init(
     image: Image,
     @ViewBuilder title: () -> Title,
@@ -309,7 +315,7 @@ private struct DestinationLabel<Title: View>: View {
     self.title = title()
     self.subtitle = subtitle
   }
-  
+
   var body: some View {
     HStack(spacing: 12) {
       image
@@ -344,7 +350,7 @@ extension DestinationLabel where Title == Text {
 private class SearchDelegate: NSObject, UISearchBarDelegate, ObservableObject {
   @Published var query: String = ""
   @Published var isEditing: Bool = false
-  
+
   func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
     isEditing = true
   }

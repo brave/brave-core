@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import SnapKit
+import UIKit
 
 /// A generic Button with a few extras:
 ///   - Showing a loader inside it
@@ -34,7 +34,9 @@ open class BraveButton: UIButton {
       }
 
       if loaderPlacement == .replacesContent && buttonType == .system {
-        assertionFailure("System buttons cannot replace their content because the titleLabel/imageView's are managed")
+        assertionFailure(
+          "System buttons cannot replace their content because the titleLabel/imageView's are managed"
+        )
         return
       }
 
@@ -62,28 +64,37 @@ open class BraveButton: UIButton {
       loaderView.alpha = 0.0
       switch loaderPlacement {
       case .replacesContent:
-        let animatingOutViews = isLoading ? [self.titleLabel, self.imageView].compactMap { $0 } : [loaderView]
-        let animatingInViews = isLoading ? [loaderView] : [self.titleLabel, self.imageView].compactMap { $0 }
+        let animatingOutViews =
+          isLoading ? [self.titleLabel, self.imageView].compactMap { $0 } : [loaderView]
+        let animatingInViews =
+          isLoading ? [loaderView] : [self.titleLabel, self.imageView].compactMap { $0 }
         UIView.animateKeyframes(
-          withDuration: 0.45, delay: 0, options: [],
+          withDuration: 0.45,
+          delay: 0,
+          options: [],
           animations: {
             UIView.addKeyframe(
-              withRelativeStartTime: 0, relativeDuration: 0.2,
+              withRelativeStartTime: 0,
+              relativeDuration: 0.2,
               animations: {
                 animatingOutViews.forEach { $0.alpha = 0.0 }
-              })
+              }
+            )
             UIView.addKeyframe(
-              withRelativeStartTime: 0.25, relativeDuration: 0.2,
+              withRelativeStartTime: 0.25,
+              relativeDuration: 0.2,
               animations: {
                 animatingInViews.forEach { $0.alpha = 1.0 }
-              })
+              }
+            )
           },
           completion: { _ in
             if !self.isLoading {
               loaderView.stop()
               loaderView.removeFromSuperview()
             }
-          })
+          }
+        )
       case .right:
         UIView.animate(
           withDuration: 0.25,
@@ -117,7 +128,9 @@ open class BraveButton: UIButton {
   override open func imageRect(forContentRect contentRect: CGRect) -> CGRect {
     var frame = super.imageRect(forContentRect: contentRect)
     if flipImageOrigin {
-      frame.origin.x = super.titleRect(forContentRect: contentRect).maxX - frame.width - imageEdgeInsets.right + imageEdgeInsets.left + titleEdgeInsets.right - titleEdgeInsets.left
+      frame.origin.x =
+        super.titleRect(forContentRect: contentRect).maxX - frame.width - imageEdgeInsets.right
+        + imageEdgeInsets.left + titleEdgeInsets.right - titleEdgeInsets.left
     }
     return frame
   }
@@ -132,10 +145,13 @@ open class BraveButton: UIButton {
 
   override open var intrinsicContentSize: CGSize {
     var size = super.intrinsicContentSize
-    size.width += abs(imageEdgeInsets.left) + abs(imageEdgeInsets.right) + abs(titleEdgeInsets.left) + abs(titleEdgeInsets.right)
+    size.width +=
+      abs(imageEdgeInsets.left) + abs(imageEdgeInsets.right) + abs(titleEdgeInsets.left)
+      + abs(titleEdgeInsets.right)
     size.height += max(
       abs(titleEdgeInsets.top) + abs(titleEdgeInsets.bottom),
-      abs(imageEdgeInsets.top) + abs(imageEdgeInsets.bottom))
+      abs(imageEdgeInsets.top) + abs(imageEdgeInsets.bottom)
+    )
     return size
   }
 

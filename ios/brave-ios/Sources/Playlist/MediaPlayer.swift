@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import AVFoundation
 import AVKit
 import Combine
+import Foundation
 import MediaPlayer
 import Shared
-import os.log
 import Then
 import UserAgent
+import os.log
 
 public enum MediaPlaybackError: Error {
   case cancelled
@@ -112,7 +112,12 @@ public class MediaPlayer: NSObject {
 
     // Disable our audio session
     do {
-      try AVAudioSession.sharedInstance().setCategory(.playback, mode: .default, policy: .default, options: [])
+      try AVAudioSession.sharedInstance().setCategory(
+        .playback,
+        mode: .default,
+        policy: .default,
+        options: []
+      )
       try AVAudioSession.sharedInstance().setActive(false)
     } catch {
       Logger.module.error("\(error.localizedDescription)")
@@ -121,7 +126,7 @@ public class MediaPlayer: NSObject {
     // Stop receiving remote commands
     UIApplication.shared.endReceivingRemoteControlEvents()
   }
-  
+
   public func clear() {
     player.replaceCurrentItem(with: nil)
     pendingMediaItem = nil
@@ -139,8 +144,12 @@ public class MediaPlayer: NSObject {
   public func load(asset: AVURLAsset) async throws -> Bool {
     // If the same asset is being loaded again.
     // Just play it.
-    if let currentItem = player.currentItem, currentItem.asset.isKind(of: AVURLAsset.self) && player.status == .readyToPlay {
-      if let currentAsset = currentItem.asset as? AVURLAsset, currentAsset.url.absoluteString == asset.url.absoluteString {
+    if let currentItem = player.currentItem,
+      currentItem.asset.isKind(of: AVURLAsset.self) && player.status == .readyToPlay
+    {
+      if let currentAsset = currentItem.asset as? AVURLAsset,
+        currentAsset.url.absoluteString == asset.url.absoluteString
+      {
         pendingMediaItem = nil
         return false
       }
@@ -148,7 +157,7 @@ public class MediaPlayer: NSObject {
 
     let item = AVPlayerItem(asset: asset)
     pendingMediaItem = item
-    
+
     _ = try await asset.load(.isPlayable, .tracks, .duration)
 
     player.replaceCurrentItem(with: item)
@@ -159,7 +168,7 @@ public class MediaPlayer: NSObject {
   public func play() {
     if !isPlaying {
       player.play()
-      
+
       if #unavailable(iOS 16) {
         player.rate = previousRate > 0.0 ? previousRate : 1.0
       }
@@ -205,11 +214,18 @@ public class MediaPlayer: NSObject {
         seekTime = 0
       }
 
-      let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
+      let absoluteTime = CMTimeMakeWithSeconds(
+        seekTime,
+        preferredTimescale: currentItem.currentTime().timescale
+      )
 
       // Seeking to .zero, .zero can cause a performance hit
       // So give a nice tolerance to seeking
-      player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
+      player.seek(
+        to: absoluteTime,
+        toleranceBefore: .positiveInfinity,
+        toleranceAfter: .positiveInfinity
+      )
 
       seekBackwardSubscriber.send(EventNotification(mediaPlayer: self, event: .seekBackward))
     }
@@ -221,11 +237,18 @@ public class MediaPlayer: NSObject {
       let seekTime = currentTime + seekInterval
 
       if seekTime < (currentItem.duration.seconds - seekInterval) {
-        let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
+        let absoluteTime = CMTimeMakeWithSeconds(
+          seekTime,
+          preferredTimescale: currentItem.currentTime().timescale
+        )
 
         // Seeking to .zero, .zero can cause a performance hit
         // So give a nice tolerance to seeking
-        player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
+        player.seek(
+          to: absoluteTime,
+          toleranceBefore: .positiveInfinity,
+          toleranceAfter: .positiveInfinity
+        )
 
         seekForwardSubscriber.send(EventNotification(mediaPlayer: self, event: .seekForward))
       }
@@ -243,16 +266,25 @@ public class MediaPlayer: NSObject {
         seekTime = currentItem.duration.seconds
       }
 
-      let absoluteTime = CMTimeMakeWithSeconds(seekTime, preferredTimescale: currentItem.currentTime().timescale)
+      let absoluteTime = CMTimeMakeWithSeconds(
+        seekTime,
+        preferredTimescale: currentItem.currentTime().timescale
+      )
 
       // Seeking to .zero, .zero can cause a performance hit
       // So give a nice tolerance to seeking
-      player.seek(to: absoluteTime, toleranceBefore: .positiveInfinity, toleranceAfter: .positiveInfinity)
+      player.seek(
+        to: absoluteTime,
+        toleranceBefore: .positiveInfinity,
+        toleranceAfter: .positiveInfinity
+      )
 
       self.changePlaybackPositionSubscriber.send(
         EventNotification(
           mediaPlayer: self,
-          event: .changePlaybackPosition))
+          event: .changePlaybackPosition
+        )
+      )
     }
   }
 
@@ -273,7 +305,9 @@ public class MediaPlayer: NSObject {
     changeRepeatModeSubscriber.send(
       EventNotification(
         mediaPlayer: self,
-        event: .changeRepeatMode))
+        event: .changeRepeatMode
+      )
+    )
   }
 
   public func toggleShuffleMode() {
@@ -290,7 +324,9 @@ public class MediaPlayer: NSObject {
     changeShuffleModeSubscriber.send(
       EventNotification(
         mediaPlayer: self,
-        event: .changeShuffleMode))
+        event: .changeShuffleMode
+      )
+    )
   }
 
   public func toggleGravity() {
@@ -308,7 +344,9 @@ public class MediaPlayer: NSObject {
     playerGravitySubscriber.send(
       EventNotification(
         mediaPlayer: self,
-        event: .playerGravityChanged))
+        event: .playerGravityChanged
+      )
+    )
   }
 
   public func setPlaybackRate(rate: Float) {
@@ -319,11 +357,13 @@ public class MediaPlayer: NSObject {
       previousRate = player.rate
       player.rate = rate
     }
-    
+
     changePlaybackRateSubscriber.send(
       EventNotification(
         mediaPlayer: self,
-        event: .changePlaybackRate))
+        event: .changePlaybackRate
+      )
+    )
   }
 
   @discardableResult
@@ -331,14 +371,16 @@ public class MediaPlayer: NSObject {
     playerLayer.player = player
     return playerLayer
   }
-  
+
   public func addTimeObserver(interval: Int, onTick: @escaping (CMTime) -> Void) -> Any {
     let interval = CMTimeMake(value: Int64(interval), timescale: 1000)
     return player.addPeriodicTimeObserver(
-      forInterval: interval, queue: .main,
+      forInterval: interval,
+      queue: .main,
       using: { time in
         onTick(time)
-      })
+      }
+    )
   }
 
   // MARK: - Private Variables
@@ -446,64 +488,69 @@ extension MediaPlayer {
   private func registerNotifications() {
     NotificationCenter.default.publisher(for: UIApplication.didEnterBackgroundNotification)
       .sink { [weak self] _ in
-      guard let self = self else { return }
+        guard let self = self else { return }
 
-      if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive {
-        return
-      }
-
-      self.playerLayer.player = nil
-    }.store(in: &notificationObservers)
-
-    NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
-      .sink { [weak self] _ in
-      guard let self = self else { return }
-
-      if let pictureInPictureController = self.pictureInPictureController,
-        pictureInPictureController.isPictureInPictureActive {
-        return
-      }
-
-      self.playerLayer.player = self.player
-    }.store(in: &notificationObservers)
-    
-    NotificationCenter.default.publisher(for: AVAudioSession.interruptionNotification, object: AVAudioSession.sharedInstance())
-      .sink { [weak self] notification in
-
-        guard let self = self,
-          let userInfo = notification.userInfo,
-          let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
-          let type = AVAudioSession.InterruptionType(rawValue: typeValue)
-        else {
-
+        if let pictureInPictureController = self.pictureInPictureController,
+          pictureInPictureController.isPictureInPictureActive
+        {
           return
         }
 
-        switch type {
-        case .began:
-          // An interruption began. Update the UI as necessary.
-          self.pause()
-
-        case .ended:
-          // An interruption ended. Resume playback, if appropriate.
-          guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
-            return
-          }
-
-          let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
-          if options.contains(.shouldResume) {
-            // An interruption ended. Resume playback.
-            self.play()
-          } else {
-            // An interruption ended. Don't resume playback.
-            Logger.module.debug("Interuption ended, but suggests not to resume playback.")
-          }
-
-        default:
-          break
-        }
+        self.playerLayer.player = nil
       }.store(in: &notificationObservers)
+
+    NotificationCenter.default.publisher(for: UIApplication.willEnterForegroundNotification)
+      .sink { [weak self] _ in
+        guard let self = self else { return }
+
+        if let pictureInPictureController = self.pictureInPictureController,
+          pictureInPictureController.isPictureInPictureActive
+        {
+          return
+        }
+
+        self.playerLayer.player = self.player
+      }.store(in: &notificationObservers)
+
+    NotificationCenter.default.publisher(
+      for: AVAudioSession.interruptionNotification,
+      object: AVAudioSession.sharedInstance()
+    )
+    .sink { [weak self] notification in
+
+      guard let self = self,
+        let userInfo = notification.userInfo,
+        let typeValue = userInfo[AVAudioSessionInterruptionTypeKey] as? UInt,
+        let type = AVAudioSession.InterruptionType(rawValue: typeValue)
+      else {
+
+        return
+      }
+
+      switch type {
+      case .began:
+        // An interruption began. Update the UI as necessary.
+        self.pause()
+
+      case .ended:
+        // An interruption ended. Resume playback, if appropriate.
+        guard let optionsValue = userInfo[AVAudioSessionInterruptionOptionKey] as? UInt else {
+          return
+        }
+
+        let options = AVAudioSession.InterruptionOptions(rawValue: optionsValue)
+        if options.contains(.shouldResume) {
+          // An interruption ended. Resume playback.
+          self.play()
+        } else {
+          // An interruption ended. Don't resume playback.
+          Logger.module.debug("Interuption ended, but suggests not to resume playback.")
+        }
+
+      default:
+        break
+      }
+    }.store(in: &notificationObservers)
 
     NotificationCenter.default.publisher(for: .AVPlayerItemDidPlayToEndTime)
       .sink { [weak self] _ in
@@ -512,17 +559,24 @@ extension MediaPlayer {
         self.finishedPlayingSubscriber.send(
           EventNotification(
             mediaPlayer: self,
-            event: .finishedPlaying))
+            event: .finishedPlaying
+          )
+        )
       }.store(in: &notificationObservers)
 
-    periodicTimeObserver = addTimeObserver(interval: 25, onTick: { [weak self] _ in
-      guard let self = self else { return }
+    periodicTimeObserver = addTimeObserver(
+      interval: 25,
+      onTick: { [weak self] _ in
+        guard let self = self else { return }
 
-      self.periodicTimeSubscriber.send(
-        EventNotification(
-          mediaPlayer: self,
-          event: .periodicPlayTimeChanged))
-    })
+        self.periodicTimeSubscriber.send(
+          EventNotification(
+            mediaPlayer: self,
+            event: .periodicPlayTimeChanged
+          )
+        )
+      }
+    )
   }
 
   /// Registers playback controls notifications
@@ -571,7 +625,9 @@ extension MediaPlayer {
 
       let currentTime = self.player.currentTime()
       self.seekBackwards()
-      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds - event.interval)
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[
+        MPNowPlayingInfoPropertyElapsedPlaybackTime
+      ] = Double(currentTime.seconds - event.interval)
     }.store(in: &notificationObservers)
 
     center.skipForwardCommand.preferredIntervals = [NSNumber(value: seekInterval)]
@@ -582,9 +638,11 @@ extension MediaPlayer {
 
       let currentTime = self.player.currentTime()
       self.seekForwards()
-      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds + event.interval)
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[
+        MPNowPlayingInfoPropertyElapsedPlaybackTime
+      ] = Double(currentTime.seconds + event.interval)
     }.store(in: &notificationObservers)
-    
+
     center.publisher(for: .seekBackwardCommand).sink { [weak self] event in
       guard let self = self,
         let event = event as? MPSkipIntervalCommandEvent
@@ -592,7 +650,9 @@ extension MediaPlayer {
 
       let currentTime = self.player.currentTime()
       self.seekBackwards()
-      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds - event.interval)
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[
+        MPNowPlayingInfoPropertyElapsedPlaybackTime
+      ] = Double(currentTime.seconds - event.interval)
     }.store(in: &notificationObservers)
 
     center.publisher(for: .seekForwardCommand).sink { [weak self] event in
@@ -602,7 +662,9 @@ extension MediaPlayer {
 
       let currentTime = self.player.currentTime()
       self.seekForwards()
-      MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = Double(currentTime.seconds + event.interval)
+      MPNowPlayingInfoCenter.default().nowPlayingInfo?[
+        MPNowPlayingInfoPropertyElapsedPlaybackTime
+      ] = Double(currentTime.seconds + event.interval)
     }.store(in: &notificationObservers)
 
     center.publisher(for: .changePlaybackPositionCommand).sink { [weak self] event in
@@ -612,7 +674,7 @@ extension MediaPlayer {
 
       self.seek(to: event.positionTime)
     }.store(in: &notificationObservers)
-    
+
     // The following code is simulating on iOS <= 15: https://developer.apple.com/documentation/avfoundation/avplayer/3929373-defaultrate
     // When entering `PictureInPicture`, we have no way of knowing if the user has PAUSED or PLAYED the video/audio while in PIP
     // The only way to know, is to observe the `rate`.
@@ -623,7 +685,7 @@ extension MediaPlayer {
       var isRecursivelySettingRate = false
       rateObserver = player.observe(\.rate, options: [.new, .prior]) { [weak self] player, rate in
         guard let self = self else { return }
-        
+
         if !isRecursivelySettingRate {
           if rate.isPrior {
             if player.rate != 0 {
@@ -631,7 +693,7 @@ extension MediaPlayer {
             }
             return
           }
-          
+
           if self.pictureInPictureController?.isPictureInPictureActive == true {
             if rate.newValue == 1 && self.previousRate != rate.newValue {
               DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -642,11 +704,13 @@ extension MediaPlayer {
             }
           }
         }
-        
+
         changePlaybackRateSubscriber.send(
           EventNotification(
             mediaPlayer: self,
-            event: .changePlaybackRate))
+            event: .changePlaybackRate
+          )
+        )
       }
     }
   }
@@ -657,18 +721,24 @@ extension MediaPlayer {
       pictureInPictureController = AVPictureInPictureController(playerLayer: self.playerLayer)
       guard let pictureInPictureController = pictureInPictureController else { return }
 
-      pictureInPictureController.publisher(for: \AVPictureInPictureController.isPictureInPicturePossible).sink { [weak self] status in
+      pictureInPictureController.publisher(
+        for: \AVPictureInPictureController.isPictureInPicturePossible
+      ).sink { [weak self] status in
         guard let self = self else { return }
         self.pictureInPictureStatusSubscriber.send(
           EventNotification(
             mediaPlayer: self,
-            event: .pictureInPictureStatusChanged))
+            event: .pictureInPictureStatusChanged
+          )
+        )
       }.store(in: &notificationObservers)
     } else {
       pictureInPictureStatusSubscriber.send(
         EventNotification(
           mediaPlayer: self,
-          event: .pictureInPictureStatusChanged))
+          event: .pictureInPictureStatusChanged
+        )
+      )
     }
   }
 }
@@ -681,7 +751,7 @@ extension AVPlayerItem {
     }
     return false
   }
-  
+
   /// Returns whether or not the assetTrack has audio tracks OR the asset has audio tracks
   public func isAudioTracksAvailable() -> Bool {
     tracks.filter({ $0.assetTrack?.mediaType == .audio }).isEmpty == false
@@ -696,32 +766,34 @@ extension AVPlayerItem {
     if !isReadyToPlay {
       return true
     }
-    
+
     if tracks.isEmpty && asset.tracks.isEmpty {
       return true  // Assume video
     }
-    
+
     // All tracks are null (not loaded yet)
     if tracks.allSatisfy({ $0.assetTrack == nil }) {
       return true  // Assume video
     }
-    
+
     // If the only current track types are audio
     if !tracks.allSatisfy({ $0.assetTrack?.mediaType == .audio }) {
       return true  // Assume video
     }
-    
-    let hasVideoTracks = !tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty || asset.isVideoTracksAvailable()
-    
+
+    let hasVideoTracks =
+      !tracks.filter({ $0.assetTrack?.mediaType == .video }).isEmpty
+      || asset.isVideoTracksAvailable()
+
     // Ultra hack
     // Some items `fade` in/out or have an audio track that fades out but no video track
     // In this case, assume video as it is potentially still a video, just with blank frames
-    if !hasVideoTracks &&
-        currentTime().seconds <= 1.0 ||
-        fabs(duration.seconds - currentTime().seconds) <= 3.0 {
+    if !hasVideoTracks && currentTime().seconds <= 1.0
+      || fabs(duration.seconds - currentTime().seconds) <= 3.0
+    {
       return true
     }
-    
+
     return hasVideoTracks
   }
 }
@@ -740,14 +812,14 @@ extension AVAsset {
   public func isVideoTracksAvailable() -> Bool {
     !tracks.filter({ $0.mediaType == .video }).isEmpty
   }
-  
+
   public static var defaultOptions: [String: Any] {
     let userAgent = UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile
     var options: [String: Any] = [:]
     if #available(iOS 16, *) {
-        options[AVURLAssetHTTPUserAgentKey] = userAgent
+      options[AVURLAssetHTTPUserAgentKey] = userAgent
     } else {
-        options["AVURLAssetHTTPHeaderFieldsKey"] = ["User-Agent": userAgent]
+      options["AVURLAssetHTTPHeaderFieldsKey"] = ["User-Agent": userAgent]
     }
     return options
   }

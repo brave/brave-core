@@ -9,14 +9,14 @@ import UIKit
 enum OnboardingColor: String {
   case background_gradient_step0 = "background-gradient-step0"
   case background_gradient_step1 = "background-gradient-step1"
-  
+
   var color: UIColor {
     return UIColor(named: rawValue, in: .module, compatibleWith: nil)!
   }
 }
 
 extension BraveGradient {
-  
+
   static var backgroundGradient: BraveGradient {
     .init(
       stops: [

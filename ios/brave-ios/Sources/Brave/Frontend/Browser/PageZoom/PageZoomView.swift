@@ -3,25 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
-import WebKit
 import Data
-import Shared
 import Preferences
+import Shared
+import SwiftUI
+import WebKit
 
 private struct ZoomView: View {
   @ScaledMetric private var buttonWidth = 44.0
-  
+
   var isPrivateBrowsing: Bool
   var minValue: Double
   var maxValue: Double
   @Binding var value: Double
-  
+
   var onDecrement: () -> Void
   var onReset: () -> Void
   var onIncrement: () -> Void
-  
+
   var body: some View {
     HStack(spacing: 0.0) {
       Button(action: onDecrement) {
@@ -31,9 +31,9 @@ private struct ZoomView: View {
           .frame(width: buttonWidth)
       }
       .disabled(value == minValue)
-      
+
       Divider()
-      
+
       // 999 is the largest width of number as a percentage that a 3 digit number can be.
       // IE: Zoom level of 300% would be smaller physically than 999% in character widths
       Text(NSNumber(value: 0.999), formatter: PageZoomView.percentFormatter)
@@ -42,9 +42,9 @@ private struct ZoomView: View {
         .hidden()
         .overlay(resetZoomButton)
         .padding(.horizontal)
-      
+
       Divider()
-      
+
       Button(action: onIncrement) {
         Image(systemName: "plus")
           .font(.system(.footnote).weight(.medium))
@@ -58,12 +58,15 @@ private struct ZoomView: View {
     .background(Color(UIColor.secondaryBraveBackground))
     .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
   }
-  
+
   private var resetZoomButton: some View {
     Button(action: onReset) {
       Text(NSNumber(value: value), formatter: PageZoomView.percentFormatter)
         .font(.system(.footnote).weight(.medium))
-        .foregroundColor((value == (isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value)) ? .accentColor : Color(UIColor.braveLabel))
+        .foregroundColor(
+          (value == (isPrivateBrowsing ? 1.0 : Preferences.General.defaultPageZoomLevel.value))
+            ? .accentColor : Color(UIColor.braveLabel)
+        )
         .padding()
         .contentShape(Rectangle())
     }
@@ -74,12 +77,12 @@ private struct ZoomView: View {
 
 struct PageZoomView: View {
   @Environment(\.managedObjectContext) private var context
-  
+
   @ObservedObject private var zoomHandler: PageZoomHandler
   private let isPrivateBrowsing: Bool
   @State private var minValue = 0.5
   @State private var maxValue = 3.0
-  
+
   public static let percentFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
     $0.minimumIntegerDigits = 1
@@ -87,17 +90,17 @@ struct PageZoomView: View {
     $0.maximumFractionDigits = 0
     $0.minimumFractionDigits = 0
   }
-  
+
   public static let notificationName = Notification.Name(rawValue: "com.brave.pagezoom-change")
-  
+
   var dismiss: (() -> Void)?
-  
+
   init(zoomHandler: PageZoomHandler) {
     self.zoomHandler = zoomHandler
     self.isPrivateBrowsing = zoomHandler.isPrivateBrowsing
-    
+
   }
-  
+
   var body: some View {
     VStack(spacing: 0.0) {
       Divider()
@@ -113,7 +116,8 @@ struct PageZoomView: View {
           value: $zoomHandler.currentValue,
           onDecrement: decrement,
           onReset: reset,
-          onIncrement: increment)
+          onIncrement: increment
+        )
         .frame(maxWidth: .infinity)
         Button {
           dismiss?()
@@ -130,7 +134,7 @@ struct PageZoomView: View {
     .background(Color(UIColor.braveBackground))
     .ignoresSafeArea()
   }
-  
+
   private func increment() {
     zoomHandler.changeZoomLevel(.increment)
   }

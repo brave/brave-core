@@ -2,8 +2,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
 import Shared
+import UIKit
 
 typealias UIAlertActionCallback = (UIAlertAction) -> Void
 
@@ -65,7 +65,10 @@ extension UIAlertController {
 
      - returns: UIAlertController for asking the user to restore tabs after a crash
      */
-  class func restoreTabsAlert(okayCallback: @escaping UIAlertActionCallback, noCallback: @escaping UIAlertActionCallback) -> UIAlertController {
+  class func restoreTabsAlert(
+    okayCallback: @escaping UIAlertActionCallback,
+    noCallback: @escaping UIAlertActionCallback
+  ) -> UIAlertController {
     let alert = UIAlertController(
       title: Strings.restoreTabOnCrashAlertTitle,
       message: Strings.restoreTabOnCrashAlertMessage,
@@ -97,7 +100,9 @@ extension UIAlertController {
      - returns: UIAlertController for asking the user to restore tabs after a crash
      */
 
-  class func clearSyncedHistoryAlert(okayCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+  class func clearSyncedHistoryAlert(
+    okayCallback: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
     let alert = UIAlertController(
       title: "",
       message: Strings.clearSyncedHistoryAlertMessage,
@@ -137,13 +142,29 @@ extension UIAlertController {
 
     let deleteAlert: UIAlertController
     if hasSyncedLogins {
-      deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertSyncedDevicesMessage, preferredStyle: .alert)
+      deleteAlert = UIAlertController(
+        title: Strings.deleteLoginAlertTitle,
+        message: Strings.deleteLoginAlertSyncedDevicesMessage,
+        preferredStyle: .alert
+      )
     } else {
-      deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertLocalMessage, preferredStyle: .alert)
+      deleteAlert = UIAlertController(
+        title: Strings.deleteLoginAlertTitle,
+        message: Strings.deleteLoginAlertLocalMessage,
+        preferredStyle: .alert
+      )
     }
 
-    let cancelAction = UIAlertAction(title: Strings.deleteLoginAlertCancelActionTitle, style: .cancel, handler: nil)
-    let deleteAction = UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: deleteCallback)
+    let cancelAction = UIAlertAction(
+      title: Strings.deleteLoginAlertCancelActionTitle,
+      style: .cancel,
+      handler: nil
+    )
+    let deleteAction = UIAlertAction(
+      title: Strings.deleteLoginButtonTitle,
+      style: .destructive,
+      handler: deleteCallback
+    )
 
     deleteAlert.addAction(cancelAction)
     deleteAlert.addAction(deleteAction)
@@ -182,7 +203,8 @@ extension UIAlertController {
   ) -> UIAlertController {
     // Returning alert, so no external, strong reference to initial instance
     return UserTextInputAlert(
-      title: title, message: message,
+      title: title,
+      message: message,
       startingText: startingText,
       placeholder: placeholder,
       keyboardType: keyboardType,
@@ -202,7 +224,8 @@ class UserTextInputAlert {
   private(set) var alert: UIAlertController!
 
   required init(
-    title: String, message: String,
+    title: String,
+    message: String,
     startingText: String?,
     placeholder: String?,
     keyboardType: UIKeyboardType? = nil,
@@ -229,7 +252,8 @@ class UserTextInputAlert {
     }
     okAction = okAlertAction
 
-    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { (alertA: UIAlertAction!) in
+    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) {
+      (alertA: UIAlertAction!) in
       actionSelected(input: nil, input2: nil)
     }
 
@@ -240,23 +264,38 @@ class UserTextInputAlert {
 
     alert.addTextField(
       configurationHandler: textFieldConfig(
-        text: startingText, placeholder: placeholder,
-        keyboardType: keyboardType, forcedInput: forcedInput))
+        text: startingText,
+        placeholder: placeholder,
+        keyboardType: keyboardType,
+        forcedInput: forcedInput
+      )
+    )
 
     if startingText2 != nil {
       alert.addTextField(
         configurationHandler: textFieldConfig(
-          text: startingText2, placeholder: placeholder2,
-          keyboardType: keyboardType2, forcedInput: forcedInput))
+          text: startingText2,
+          placeholder: placeholder2,
+          keyboardType: keyboardType2,
+          forcedInput: forcedInput
+        )
+      )
     }
   }
 
-  private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
-    -> (UITextField) -> Void {
+  private func textFieldConfig(
+    text: String?,
+    placeholder: String?,
+    keyboardType: UIKeyboardType?,
+    forcedInput: Bool
+  )
+    -> (UITextField) -> Void
+  {
     return { textField in
       textField.attributedPlaceholder = NSAttributedString(
         string: placeholder ?? "",
-        attributes: [.foregroundColor: UIColor.placeholderText])
+        attributes: [.foregroundColor: UIColor.placeholderText]
+      )
 
       textField.keyboardAppearance = .default
 

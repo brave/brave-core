@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Combine
-import Data
-import CoreData
-import Shared
 import BraveShared
 import BraveUI
+import Combine
+import CoreData
+import Data
 import Favicon
+import Shared
+import SwiftUI
 
 class PlaylistFolderImageLoader: ObservableObject {
   @Published var image: UIImage?
@@ -53,7 +53,8 @@ class PlaylistFolderImageLoader: ObservableObject {
       favIconUrl: isFavIcon ? url : nil,
       completion: { [weak self] image in
         self?.image = image
-      })
+      }
+    )
   }
 }
 
@@ -81,7 +82,8 @@ private struct PlaylistFolderImage: View {
         LinearGradient(
           colors: [.clear, .black],
           startPoint: .top,
-          endPoint: .bottom)
+          endPoint: .bottom
+        )
       )
       .overlay(
         VStack(alignment: .leading) {
@@ -100,9 +102,12 @@ private struct PlaylistFolderImage: View {
             .font(.footnote.weight(.semibold))
             .lineLimit(2)
             .foregroundColor(.white)
-        }.padding(8.0), alignment: .topLeading
+        }.padding(8.0),
+        alignment: .topLeading
       )
-      .clipShape(RoundedRectangle(cornerRadius: PlaylistFolderImage.cornerRadius, style: .continuous))
+      .clipShape(
+        RoundedRectangle(cornerRadius: PlaylistFolderImage.cornerRadius, style: .continuous)
+      )
       .onAppear {
         thumbnailLoader.load(thumbnail: item)
         favIconLoader.load(favIcon: item)
@@ -127,8 +132,10 @@ struct PlaylistNewFolderView: View {
     GridItem(
       .adaptive(
         minimum: PlaylistNewFolderView.designGridItemWidth,
-        maximum: .infinity),
-      spacing: PlaylistNewFolderView.designGridSpacing)
+        maximum: .infinity
+      ),
+      spacing: PlaylistNewFolderView.designGridSpacing
+    )
   ]
 
   @State private var folderName: String = ""
@@ -217,8 +224,10 @@ struct PlaylistNewFolderView: View {
         }
 
         ToolbarItem(placement: .confirmationAction) {
-          Button(Strings.PlaylistFolders.playlistCreateNewFolderButtonTitle) { onCreateFolder?(folderName, selected) }
-            .foregroundColor(.white)
+          Button(Strings.PlaylistFolders.playlistCreateNewFolderButtonTitle) {
+            onCreateFolder?(folderName, selected)
+          }
+          .foregroundColor(.white)
         }
       }
     }

@@ -3,43 +3,47 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
-import Strings
 import BraveShared
 import BraveUI
 import Data
+import Strings
+import SwiftUI
 
 struct EditSiteConnectionView: View {
   @ObservedObject var keyringStore: KeyringStore
   var origin: URLOrigin
   var coin: BraveWallet.CoinType
   var onDismiss: (_ permittedAccounts: [String]) -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
-  
+
   @ScaledMetric private var faviconSize = 48
   private let maxFaviconSize: CGFloat = 96
-  
+
   @State private var permittedAccounts: [String] = []
-  
+
   enum EditAction {
     case connect(_ coin: BraveWallet.CoinType)
     case disconnect(_ coin: BraveWallet.CoinType)
     case `switch`
-    
+
     var title: String {
       switch self {
       case .connect(let coin):
-        return coin == .eth ? Strings.Wallet.editSiteConnectionAccountActionConnect : Strings.Wallet.editSiteConnectionAccountActionTrust
+        return coin == .eth
+          ? Strings.Wallet.editSiteConnectionAccountActionConnect
+          : Strings.Wallet.editSiteConnectionAccountActionTrust
       case .disconnect(let coin):
-        return coin == .eth ? Strings.Wallet.editSiteConnectionAccountActionDisconnect : Strings.Wallet.editSiteConnectionAccountActionRevoke
+        return coin == .eth
+          ? Strings.Wallet.editSiteConnectionAccountActionDisconnect
+          : Strings.Wallet.editSiteConnectionAccountActionRevoke
       case .switch:
         return Strings.Wallet.editSiteConnectionAccountActionSwitch
       }
     }
   }
-  
+
   private func editAction(for account: BraveWallet.AccountInfo) -> EditAction {
     if permittedAccounts.contains(account.address) {
       if keyringStore.selectedAccount.id == account.id {
@@ -57,7 +61,7 @@ struct EditSiteConnectionView: View {
       return .connect(coin)
     }
   }
-  
+
   private var connectedAddresses: String {
     let account = Strings.Wallet.editSiteConnectionAccountSingular
     let accounts = Strings.Wallet.editSiteConnectionAccountPlural
@@ -67,33 +71,48 @@ struct EditSiteConnectionView: View {
       permittedAccounts.count == 1 ? account : accounts
     )
   }
-  
-  @ViewBuilder private func editButton(action: EditAction, account: BraveWallet.AccountInfo) -> some View {
+
+  @ViewBuilder private func editButton(
+    action: EditAction,
+    account: BraveWallet.AccountInfo
+  ) -> some View {
     Button {
       switch action {
       case .connect:
         if let url = origin.url {
-          Domain.setWalletPermissions(forUrl: url, coin: coin, accounts: [account.address], grant: true)
+          Domain.setWalletPermissions(
+            forUrl: url,
+            coin: coin,
+            accounts: [account.address],
+            grant: true
+          )
         }
         permittedAccounts.append(account.address)
-        
-        if coin == .eth { // only for eth dapp connection can be triggered on the wallet side
+
+        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
           keyringStore.selectedAccount = account
         }
       case .disconnect:
         if let url = origin.url {
-          Domain.setWalletPermissions(forUrl: url, coin: coin, accounts: [account.address], grant: false)
+          Domain.setWalletPermissions(
+            forUrl: url,
+            coin: coin,
+            accounts: [account.address],
+            grant: false
+          )
         }
         permittedAccounts.removeAll(where: { $0 == account.address })
-        
-        if coin == .eth { // only for eth dapp connection can be triggered on the wallet side
-          if let firstAllowedAdd = permittedAccounts.first, let firstAllowedAccount = accountInfos.first(where: { $0.id == firstAllowedAdd }) {
+
+        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
+          if let firstAllowedAdd = permittedAccounts.first,
+            let firstAllowedAccount = accountInfos.first(where: { $0.id == firstAllowedAdd })
+          {
             keyringStore.selectedAccount = firstAllowedAccount
           }
         }
       case .switch:
         // So far switch should only be an action for eth accounts
-        if coin == .eth { // only for eth dapp connection can be triggered on the wallet side
+        if coin == .eth {  // only for eth dapp connection can be triggered on the wallet side
           keyringStore.selectedAccount = account
         }
       }
@@ -103,7 +122,7 @@ struct EditSiteConnectionView: View {
         .font(.footnote.weight(.semibold))
     }
   }
-  
+
   @ViewBuilder private func connectionInfo(urlOrigin: URLOrigin) -> some View {
     urlOrigin.url.map { url in
       FaviconReader(url: url) { image in
@@ -129,11 +148,11 @@ struct EditSiteConnectionView: View {
         .foregroundColor(Color(.braveLabel))
     }
   }
-  
+
   private var accountInfos: [BraveWallet.AccountInfo] {
     keyringStore.allAccounts.filter { $0.coin == coin }
   }
-  
+
   var body: some View {
     NavigationView {
       Form {
@@ -205,8 +224,18 @@ struct EditSiteConnectionView_Previews: PreviewProvider {
     EditSiteConnectionView(
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
-        store.addPrimaryAccount("Account 3", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
+        store.addPrimaryAccount(
+          "Account 2",
+          coin: .eth,
+          chainId: BraveWallet.MainnetChainId,
+          completion: nil
+        )
+        store.addPrimaryAccount(
+          "Account 3",
+          coin: .eth,
+          chainId: BraveWallet.MainnetChainId,
+          completion: nil
+        )
         return store
       }(),
       origin: .init(url: URL(string: "https://app.uniswap.org")!),

@@ -7,13 +7,13 @@ import SwiftUI
 
 /// Header view for Wallet v2 with an optional `Select All` / `Deselect All` button.
 struct SelectAllHeaderView<T: Identifiable>: View {
-  
+
   let title: String
   let showsSelectAllButton: Bool
   let allModels: [T]
   let selectedModels: [T]
   let select: (T) -> Void
-  
+
   var body: some View {
     HStack {
       Text(title)
@@ -31,24 +31,24 @@ struct SelectAllHeaderView<T: Identifiable>: View {
     .padding(.horizontal)
     .padding(.vertical, 12)
   }
-  
+
   private var allSelected: Bool {
     allModels.allSatisfy({ model in
       selectedModels.contains(where: { $0.id == model.id })
     })
   }
-  
+
   private func selectAllButtonTitle(_ allSelected: Bool) -> String {
     if allSelected {
       return Strings.Wallet.deselectAllButtonTitle
     }
     return Strings.Wallet.selectAllButtonTitle
   }
-  
+
   private func selectAll() {
-    if allSelected { // deselect all
+    if allSelected {  // deselect all
       allModels.forEach(select)
-    } else { // select all
+    } else {  // select all
       for model in allModels where !selectedModels.contains(where: { $0.id == model.id }) {
         select(model)
       }

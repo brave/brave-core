@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
+import BraveUI
 import Combine
 import SnapKit
 import SwiftUI
-import BraveUI
+import UIKit
 
 struct WalletListHeaderView<Title: View, Subtitle: View>: View {
   var title: Title

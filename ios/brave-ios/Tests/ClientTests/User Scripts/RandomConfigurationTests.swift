@@ -3,8 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import XCTest
 import CryptoKit
+import XCTest
+
 @testable import Brave
 
 class RandomConfigurationTests: XCTestCase {
@@ -63,8 +64,14 @@ class RandomConfigurationTests: XCTestCase {
   func testDifferentResultsForSameETLDAndDifferentSessionKey() throws {
     // Given
     // Different session keys but same eTLD+1
-    let firstRandomConfiguration = RandomConfiguration(etld: "example.com", sessionKey: SymmetricKey(size: .bits256))
-    let secondRandomConfiguration = RandomConfiguration(etld: "example.com", sessionKey: SymmetricKey(size: .bits256))
+    let firstRandomConfiguration = RandomConfiguration(
+      etld: "example.com",
+      sessionKey: SymmetricKey(size: .bits256)
+    )
+    let secondRandomConfiguration = RandomConfiguration(
+      etld: "example.com",
+      sessionKey: SymmetricKey(size: .bits256)
+    )
 
     // Then
     // Nothing should equal
@@ -87,7 +94,10 @@ class RandomConfigurationTests: XCTestCase {
   func testByteSizeOfDomainKeyDataIs256Bytes() throws {
     // Given
     // A random configuration
-    let randomConfiguration = RandomConfiguration(etld: "example.com", sessionKey: SymmetricKey(size: .bits256))
+    let randomConfiguration = RandomConfiguration(
+      etld: "example.com",
+      sessionKey: SymmetricKey(size: .bits256)
+    )
 
     // Then
     // Nothing should equal

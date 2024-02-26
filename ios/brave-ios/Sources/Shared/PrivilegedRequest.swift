@@ -7,24 +7,23 @@ import Foundation
 
 private let REQUEST_KEY_PRIVILEGED = "privileged"
 
-/**
- Request that is allowed to load local resources.
-
- Pages running on the local server have same origin access all resources
- on the server, so we need to prevent arbitrary web pages from accessing
- these resources. We do so by explicitly requiring "privileged" requests
- in our navigation policy when loading local resources.
-
- Be careful: creating a privileged request for an arbitrary URL provided
- by the page will break this model. Only use a privileged request when
- needed, and when you are sure the URL is from a trustworthy source!
-
- TODO: Setting REQUEST_KEY_PRIVILEGED is not reliable, as the code has various session restoration
- scenarios where internal URLs are loaded directly from the webview (only native code can set a request to be a PrivilegedRequest).
- This method should be deprecated in favor of the uuid key url param which is added to valid internal
- urls. The code currently has non-internal URLs which are loaded as PrivilegedRequest(), but the value of
- doing this is not clear as these requests should work fine as regular URLRequest().
- **/
+/// Request that is allowed to load local resources.
+///
+/// Pages running on the local server have same origin access all resources
+/// on the server, so we need to prevent arbitrary web pages from accessing
+/// these resources. We do so by explicitly requiring "privileged" requests
+/// in our navigation policy when loading local resources.
+///
+/// Be careful: creating a privileged request for an arbitrary URL provided
+/// by the page will break this model. Only use a privileged request when
+/// needed, and when you are sure the URL is from a trustworthy source!
+///
+/// TODO: Setting REQUEST_KEY_PRIVILEGED is not reliable, as the code has various session restoration
+/// scenarios where internal URLs are loaded directly from the webview (only native code can set a request to be a PrivilegedRequest).
+/// This method should be deprecated in favor of the uuid key url param which is added to valid internal
+/// urls. The code currently has non-internal URLs which are loaded as PrivilegedRequest(), but the value of
+/// doing this is not clear as these requests should work fine as regular URLRequest().
+/// *
 public class PrivilegedRequest: NSMutableURLRequest {
   override init(url: URL, cachePolicy: NSURLRequest.CachePolicy, timeoutInterval: TimeInterval) {
     func getUrl() -> URL {

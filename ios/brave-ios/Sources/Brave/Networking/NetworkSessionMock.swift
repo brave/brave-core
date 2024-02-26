@@ -2,20 +2,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import Combine
+import Foundation
 
 /// An implemntation of `NetworkSession` which is able to return dynamic mock results as defined by a completion callback
 class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
   /// A completion block that returns dynamic responses based on the given URL
   var completion: @Sendable (URL) async throws -> NetworkSessionDataResponse
-  
+
   /// Initialize this session with a completion block
   init(completion: @Sendable @escaping (URL) async throws -> NetworkSessionDataResponse) {
     self.completion = completion
   }
-  
-  func dataRequest(with url: URL, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+
+  func dataRequest(
+    with url: URL,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  ) {
     Task {
       do {
         let result = try await self.completion(url)
@@ -25,16 +28,19 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
       }
     }
   }
-  
-  func dataRequest(with urlRequest: URLRequest, _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void) {
+
+  func dataRequest(
+    with urlRequest: URLRequest,
+    _ completion: @escaping (Result<NetworkSessionDataResponse, Error>) -> Void
+  ) {
     guard let url = urlRequest.url else {
       completion(.failure(URLError(.badURL)))
       return
     }
-    
+
     self.dataRequest(with: url, completion)
   }
-  
+
   func dataRequest(with url: URL) -> AnyPublisher<NetworkSessionDataResponse, Error> {
     Combine.Deferred {
       Future { completion in
@@ -42,7 +48,7 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
       }
     }.eraseToAnyPublisher()
   }
-  
+
   func dataRequest(with urlRequest: URLRequest) -> AnyPublisher<NetworkSessionDataResponse, Error> {
     Combine.Deferred {
       Future { completion in
@@ -62,7 +68,7 @@ class BaseMockNetworkSession: NetworkSession, @unchecked Sendable {
       guard let url = urlRequest.url else {
         throw URLError(.badURL)
       }
-      
+
       return try await self.dataRequest(with: url)
     }.value
   }
@@ -73,12 +79,12 @@ class NetworkSessionMock: BaseMockNetworkSession {
   var data: Data?
   var response: URLResponse?
   var error: Error?
-  
+
   init() {
     super.init(completion: { _ in
       preconditionFailure("Not yet initialized")
     })
-    
+
     super.completion = { [weak self] _ in
       guard let self = self else {
         return (.init(), .init())

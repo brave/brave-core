@@ -10,7 +10,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
   @Binding var isExpanded: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var label: () -> Label
-  
+
   private var header: some View {
     HStack {
       label()
@@ -38,7 +38,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
       isExpanded.toggle()
     }
   }
-  
+
   var body: some View {
     VStack(spacing: 4) {
       header

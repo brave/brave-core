@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
 import BraveCore
+import Foundation
 import Strings
+import SwiftUI
 
 struct DateRangeView: View {
   @Binding var selectedRange: BraveWallet.AssetPriceTimeframe
@@ -48,7 +48,9 @@ struct DateRangeView: View {
         HStack(spacing: horizontalSizeClass == .regular ? 6 : 0) {
           ForEach(BraveWallet.AssetPriceTimeframe.allCases, id: \.rawValue) { range in
             button(for: range)
-            if range != BraveWallet.AssetPriceTimeframe.allCases.last && horizontalSizeClass == .compact {
+            if range != BraveWallet.AssetPriceTimeframe.allCases.last
+              && horizontalSizeClass == .compact
+            {
               Spacer()
             }
           }

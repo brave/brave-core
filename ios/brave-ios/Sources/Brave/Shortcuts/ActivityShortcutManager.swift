@@ -3,20 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Shared
-import Data
-import Preferences
-import Intents
-import CoreSpotlight
-import MobileCoreServices
-import UIKit
-import BrowserIntentsModels
-import BraveVPN
 import BraveNews
+import BraveVPN
+import BrowserIntentsModels
+import CoreSpotlight
+import Data
 import Growth
-import os.log
+import Intents
+import MobileCoreServices
+import Preferences
+import Shared
 import SwiftUI
+import UIKit
 import UniformTypeIdentifiers
+import os.log
 
 /// Shortcut Activity Types and detailed information to create and perform actions
 public enum ActivityType: String {
@@ -150,7 +150,11 @@ public class ActivityShortcutManager: NSObject {
   private func handleActivityDetails(type: ActivityType, using bvc: BrowserViewController) {
     switch type {
     case .newTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing, isExternal: true)
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: false,
+        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+        isExternal: true
+      )
       bvc.popToBVC()
     case .newPrivateTab:
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true, isExternal: true)
@@ -164,7 +168,11 @@ public class ActivityShortcutManager: NSObject {
     case .clearBrowsingHistory:
       bvc.clearHistoryAndOpenNewTab()
     case .enableBraveVPN:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing, isExternal: true)
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: false,
+        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
+        isExternal: true
+      )
       bvc.popToBVC()
 
       switch BraveVPN.vpnState {
@@ -187,13 +195,18 @@ public class ActivityShortcutManager: NSObject {
         bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
         bvc.popToBVC()
 
-        guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
+        guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
+          return
+        }
         newTabPageController.scrollToBraveNews()
       } else {
-        let controller = NewsSettingsViewController(dataSource: bvc.feedDataSource, openURL: { url in
-          bvc.dismiss(animated: true)
-          bvc.select(url: url, isUserDefinedURLNavigation: false)
-        })
+        let controller = NewsSettingsViewController(
+          dataSource: bvc.feedDataSource,
+          openURL: { url in
+            bvc.dismiss(animated: true)
+            bvc.select(url: url, isUserDefinedURLNavigation: false)
+          }
+        )
         controller.viewDidDisappear = {
           if Preferences.Review.braveNewsCriteriaPassed.value {
             AppReviewManager.shared.isRevisedReviewRequired = true
@@ -205,7 +218,7 @@ public class ActivityShortcutManager: NSObject {
       }
     case .openPlayList:
       bvc.popToBVC()
-      
+
       let tab = bvc.tabManager.selectedTab
       PlaylistCarplayManager.shared.getPlaylistController(tab: tab) { playlistController in
         playlistController.modalPresentationStyle = .fullScreen
@@ -247,7 +260,8 @@ public class ActivityShortcutManager: NSObject {
 
   public func donateCustomIntent(for type: IntentType, with urlString: String) {
     guard !urlString.isEmpty,
-          URL(string: urlString) != nil else {
+      URL(string: urlString) != nil
+    else {
       return
     }
 
@@ -259,7 +273,9 @@ public class ActivityShortcutManager: NSObject {
         return
       }
 
-      Logger.module.error("Failed to donate shortcut open website, error: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to donate shortcut open website, error: \(error.localizedDescription)"
+      )
     }
   }
 }

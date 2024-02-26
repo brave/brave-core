@@ -23,7 +23,8 @@ struct BraveSearchDebugMenuFixture {
         "safesearch":"moderate"}
         """,
       fallbackTime: "0.67",
-      fallbackData: sampleHTML.data(using: .utf8))
+      fallbackData: sampleHTML.data(using: .utf8)
+    )
 
   private static let cookies: [HTTPCookie] =
     [

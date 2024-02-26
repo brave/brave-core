@@ -3,15 +3,15 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
 import BraveUI
 import SDWebImageSwiftUI
+import SwiftUI
 
 struct NFTImageView<Placeholder: View>: View {
   private let urlString: String
   private var placeholder: () -> Placeholder
   var isLoading: Bool
-  
+
   init(
     urlString: String,
     isLoading: Bool = false,
@@ -21,7 +21,7 @@ struct NFTImageView<Placeholder: View>: View {
     self.isLoading = isLoading
     self.placeholder = placeholder
   }
-  
+
   var body: some View {
     if isLoading {
       LoadingNFTView()
@@ -67,12 +67,12 @@ struct NFTImageView<Placeholder: View>: View {
 struct LoadingNFTView: View {
   var shimmer: Bool = true
   @State var viewSize: CGSize = .zero
-  
+
   private var fontSizeForNFTImage: CGFloat {
     guard viewSize.width > 0 else { return 12 }
     return floor(viewSize.width / 3)
   }
-  
+
   var body: some View {
     Color(braveSystemName: .containerHighlight)
       .cornerRadius(4)

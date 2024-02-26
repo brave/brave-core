@@ -18,7 +18,9 @@ extension UICollectionView {
     register(cellClass, forCellWithReuseIdentifier: cellClass.identifier)
   }
   // swiftlint:disable force_cast
-  public func dequeueReusableCell<T: UICollectionViewCell & CollectionViewReusable>(for indexPath: IndexPath) -> T {
+  public func dequeueReusableCell<T: UICollectionViewCell & CollectionViewReusable>(
+    for indexPath: IndexPath
+  ) -> T {
     return dequeueReusableCell(withReuseIdentifier: T.identifier, for: indexPath) as! T
   }
   // swiftlint:enable force_cast

@@ -4,11 +4,14 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import Shared
+import UIKit
 
 extension BrowserViewController: KeyboardHelperDelegate {
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillShowWithState state: KeyboardState
+  ) {
     keyboardState = state
     if isUsingBottomBar && !topToolbar.inOverlayMode && presentedViewController == nil {
       UIView.animate(withDuration: 0.1) { [self] in
@@ -25,7 +28,7 @@ extension BrowserViewController: KeyboardHelperDelegate {
       toolbarVisibilityViewModel.isEnabled = false
     }
     updateViewConstraints()
-    
+
     UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
       self.alertStackView.layoutIfNeeded()
       if self.isUsingBottomBar {
@@ -33,17 +36,23 @@ extension BrowserViewController: KeyboardHelperDelegate {
       }
     }
     .startAnimation()
-    
+
     guard let webView = tabManager.selectedTab?.webView else { return }
-    
+
     self.evaluateWebsiteSupportOpenSearchEngine(webView)
   }
-  
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillHideWithState state: KeyboardState
+  ) {
     keyboardState = nil
-    if isUsingBottomBar && !topToolbar.inOverlayMode &&
-        (presentedViewController == nil || collapsedURLBarView.isKeyboardVisible) /* Always reset things if collapsed url bar is visible */ ||
-        !toolbarVisibilityViewModel.isEnabled /* Always reset things after orientation change that may change bottom bar */ {
+    if isUsingBottomBar && !topToolbar.inOverlayMode
+      && (presentedViewController == nil
+        || collapsedURLBarView.isKeyboardVisible) /* Always reset things if collapsed url bar is visible */
+      || !toolbarVisibilityViewModel
+        .isEnabled /* Always reset things after orientation change that may change bottom bar */
+    {
       UIView.animate(withDuration: 0.1) { [self] in
         // We can't actually set the toolbar state to expanded since bar collapsing/expanding is based on
         // many web view traits such as content size and such so we will just use the collapsed bar view
@@ -58,14 +67,14 @@ extension BrowserViewController: KeyboardHelperDelegate {
       collapsedURLBarView.isKeyboardVisible = false
     }
     updateViewConstraints()
-    
+
     customSearchBarButtonItemGroup?.barButtonItems.removeAll()
     customSearchBarButtonItemGroup = nil
-    
+
     if customSearchEngineButton.superview != nil {
       customSearchEngineButton.removeFromSuperview()
     }
-    
+
     UIViewPropertyAnimator(duration: state.animationDuration, curve: state.animationCurve) {
       self.alertStackView.layoutIfNeeded()
       if self.isUsingBottomBar {

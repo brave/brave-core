@@ -31,7 +31,7 @@ extension UIImage {
     guard size.width > 0, size.height > 0 else {
       return nil
     }
-    
+
     UIGraphicsBeginImageContextWithOptions(size, false, 0)
     draw(in: CGRect(size: size))
     let scaledImage = UIGraphicsGetImageFromCurrentImageContext()
@@ -62,11 +62,16 @@ extension UIImage {
     return scaledImage
   }
 
-  public func textToImage(drawText text: String, textFont: UIFont? = nil, textColor: UIColor? = nil, atPoint point: CGPoint) -> UIImage? {
+  public func textToImage(
+    drawText text: String,
+    textFont: UIFont? = nil,
+    textColor: UIColor? = nil,
+    atPoint point: CGPoint
+  ) -> UIImage? {
     guard size.width > 0, size.height > 0 else {
       return nil
     }
-    
+
     let paragraphStyle = NSMutableParagraphStyle()
     paragraphStyle.alignment = .center
 
@@ -86,15 +91,20 @@ extension UIImage {
     UIGraphicsEndImageContext()
     return newImage
   }
-  
+
   public func imageWithInsets(insets: UIEdgeInsets) -> UIImage? {
     guard size.width > 0, size.height > 0 else {
       return nil
     }
-    
+
     UIGraphicsBeginImageContextWithOptions(
-      CGSize(width: self.size.width + insets.left + insets.right,
-             height: self.size.height + insets.top + insets.bottom), false, self.scale)
+      CGSize(
+        width: self.size.width + insets.left + insets.right,
+        height: self.size.height + insets.top + insets.bottom
+      ),
+      false,
+      self.scale
+    )
     let _ = UIGraphicsGetCurrentContext()
     let origin = CGPoint(x: insets.left, y: insets.top)
     self.draw(at: origin)

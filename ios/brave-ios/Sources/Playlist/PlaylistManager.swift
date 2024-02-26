@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import AVFoundation
 import Combine
 import CoreData
-import UIKit
-import Shared
 import Data
+import Foundation
 import Preferences
+import Shared
+import UIKit
 import os.log
 
 public class PlaylistManager: NSObject {
@@ -20,14 +20,14 @@ public class PlaylistManager: NSObject {
   private let downloadManager = PlaylistDownloadManager()
   private var frc = PlaylistItem.frc()
   private var didRestoreSession = false
-  
+
   private var _playbackTask: Task<Void, Error>?
-  
+
   public var playbackTask: Task<Void, Error>? {
     get {
       _playbackTask
     }
-    
+
     set(newValue) {
       _playbackTask?.cancel()
       _playbackTask = newValue
@@ -104,7 +104,14 @@ public class PlaylistManager: NSObject {
     onContentDidChange.eraseToAnyPublisher()
   }
 
-  public var objectDidChange: AnyPublisher<(object: Any, indexPath: IndexPath?, type: NSFetchedResultsChangeType, newIndexPath: IndexPath?), Never> {
+  public var objectDidChange:
+    AnyPublisher<
+      (
+        object: Any, indexPath: IndexPath?, type: NSFetchedResultsChangeType,
+        newIndexPath: IndexPath?
+      ), Never
+    >
+  {
     onObjectChange.eraseToAnyPublisher()
   }
 
@@ -112,7 +119,14 @@ public class PlaylistManager: NSObject {
     onDownloadProgressUpdate.eraseToAnyPublisher()
   }
 
-  public var downloadStateChanged: AnyPublisher<(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?), Never> {
+  public var downloadStateChanged:
+    AnyPublisher<
+      (
+        id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?,
+        error: Error?
+      ), Never
+    >
+  {
     onDownloadStateChanged.eraseToAnyPublisher()
   }
 
@@ -131,11 +145,15 @@ public class PlaylistManager: NSObject {
   public var fetchedObjects: [PlaylistItem] {
     frc.fetchedObjects ?? []
   }
-  
+
   public func updateLastPlayed(item: PlaylistInfo, playTime: Double) {
     let lastPlayedTime = Preferences.Playlist.playbackLeftOff.value ? playTime : 0.0
     Preferences.Playlist.lastPlayedItemUrl.value = item.pageSrc
-    PlaylistItem.updateLastPlayed(itemId: item.tagId, pageSrc: item.pageSrc, lastPlayedOffset: lastPlayedTime)
+    PlaylistItem.updateLastPlayed(
+      itemId: item.tagId,
+      pageSrc: item.pageSrc,
+      lastPlayedOffset: lastPlayedTime
+    )
   }
 
   public func itemAtIndex(_ index: Int) -> PlaylistInfo? {
@@ -156,7 +174,11 @@ public class PlaylistManager: NSObject {
     frc.fetchedObjects?.firstIndex(where: { $0.uuid == itemId })
   }
 
-  public func reorderItems(from sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath, completion: (() -> Void)?) {
+  public func reorderItems(
+    from sourceIndexPath: IndexPath,
+    to destinationIndexPath: IndexPath,
+    completion: (() -> Void)?
+  ) {
     guard var objects = frc.fetchedObjects else {
       DispatchQueue.main.async {
         completion?()
@@ -206,7 +228,8 @@ public class PlaylistManager: NSObject {
   public func sizeOfDownloadedItem(for itemId: String) -> String? {
     var isDirectory: ObjCBool = false
     if let asset = downloadManager.localAsset(for: itemId),
-      FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory) {
+      FileManager.default.fileExists(atPath: asset.url.path, isDirectory: &isDirectory)
+    {
 
       let formatter = ByteCountFormatter().then {
         $0.zeroPadsFractionDigits = true
@@ -220,7 +243,8 @@ public class PlaylistManager: NSObject {
             at: asset.url,
             includingPropertiesForKeys: properties,
             options: .skipsHiddenFiles,
-            errorHandler: nil)
+            errorHandler: nil
+          )
         else {
           return nil
         }
@@ -236,7 +260,8 @@ public class PlaylistManager: NSObject {
         return formatter.string(fromByteCount: Int64(sizes.reduce(0, +)))
       }
 
-      if let size = try? FileManager.default.attributesOfItem(atPath: asset.url.path)[.size] as? Int {
+      if let size = try? FileManager.default.attributesOfItem(atPath: asset.url.path)[.size] as? Int
+      {
         return formatter.string(fromByteCount: Int64(size))
       }
     }
@@ -253,12 +278,12 @@ public class PlaylistManager: NSObject {
 
   public func restoreSession() {
     if !didRestoreSession {
-      downloadManager.restoreSession() { [weak self] in
+      downloadManager.restoreSession { [weak self] in
         self?.reloadData()
       }
     }
   }
-  
+
   public func setupPlaylistFolder() {
     if let savedFolder = PlaylistFolder.getFolder(uuid: PlaylistFolder.savedFolderUUID) {
       if savedFolder.title != Strings.Playlist.defaultPlaylistTitle {
@@ -266,14 +291,18 @@ public class PlaylistManager: NSObject {
         savedFolder.title = Strings.Playlist.defaultPlaylistTitle
       }
     } else {
-      PlaylistFolder.addFolder(title: Strings.Playlist.defaultPlaylistTitle, uuid: PlaylistFolder.savedFolderUUID) { uuid in
+      PlaylistFolder.addFolder(
+        title: Strings.Playlist.defaultPlaylistTitle,
+        uuid: PlaylistFolder.savedFolderUUID
+      ) { uuid in
         Logger.module.debug("Created Playlist Folder: \(uuid)")
       }
     }
   }
 
   public func download(item: PlaylistInfo) {
-    guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src) else { return }
+    guard downloadManager.downloadTask(for: item.tagId) == nil, let assetUrl = URL(string: item.src)
+    else { return }
     Task {
       if assetUrl.scheme == "data" {
         DispatchQueue.main.async {
@@ -281,11 +310,13 @@ public class PlaylistManager: NSObject {
         }
         return
       }
-      
+
       let mimeType = await PlaylistMediaStreamer.getMimeType(assetUrl)
       guard let mimeType = mimeType?.lowercased() else { return }
 
-      if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl") || mimeType.contains("mpegurl") {
+      if mimeType.contains("x-mpegurl") || mimeType.contains("application/vnd.apple.mpegurl")
+        || mimeType.contains("mpegurl")
+      {
         DispatchQueue.main.async {
           self.downloadManager.downloadHLSAsset(assetUrl, for: item)
         }
@@ -327,7 +358,7 @@ public class PlaylistManager: NSObject {
     if success, currentFolder?.objectID == folder.objectID {
       currentFolder = nil
     }
-    
+
     // Delete items from the folder
     PlaylistItem.removeItems(itemsToDelete) {
       // Attempt to delete the folder if we can
@@ -337,14 +368,14 @@ public class PlaylistManager: NSObject {
             completion?(success)
             return
           }
-          
+
           if self.currentFolder?.isDeleted == true {
             self.currentFolder = nil
           }
 
           self.onFolderDeleted.send()
           self.reloadData()
-          
+
           completion?(success)
         }
       } else {
@@ -369,7 +400,8 @@ public class PlaylistManager: NSObject {
     }
 
     if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
-      cacheItem.cachedData != nil {
+      cacheItem.cachedData != nil
+    {
       // Do NOT delete the item if we can't delete it's local cache.
       // That will cause zombie items.
       if deleteCache(item: item) {
@@ -391,7 +423,8 @@ public class PlaylistManager: NSObject {
 
     if let cacheItem = PlaylistItem.getItem(uuid: item.tagId),
       let cachedData = cacheItem.cachedData,
-      !cachedData.isEmpty {
+      !cachedData.isEmpty
+    {
       var isStale = false
 
       do {
@@ -403,7 +436,9 @@ public class PlaylistManager: NSObject {
         }
         return true
       } catch {
-        Logger.module.error("An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)")
+        Logger.module.error(
+          "An error occured deleting Playlist Cached Item \(cacheItem.name ?? item.tagId): \(error.localizedDescription)"
+        )
         return false
       }
     }
@@ -448,18 +483,21 @@ public class PlaylistManager: NSObject {
 
   private func deleteUserManagedAssets() {
     // Cleanup System Cache Folder com.apple.UserManagedAssets*
-    if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first {
+    if let libraryPath = FileManager.default.urls(for: .libraryDirectory, in: .userDomainMask).first
+    {
       do {
         let urls = try FileManager.default.contentsOfDirectory(
           at: libraryPath,
           includingPropertiesForKeys: nil,
-          options: [.skipsHiddenFiles])
+          options: [.skipsHiddenFiles]
+        )
         for url in urls where url.absoluteString.contains("com.apple.UserManagedAssets") {
           do {
             let assets = try FileManager.default.contentsOfDirectory(
               at: url,
               includingPropertiesForKeys: nil,
-              options: [.skipsHiddenFiles])
+              options: [.skipsHiddenFiles]
+            )
             assets.forEach({
               if let item = PlaylistItem.cachedItem(cacheURL: $0), let itemId = item.uuid {
                 self.cancelDownload(itemId: itemId)
@@ -467,23 +505,33 @@ public class PlaylistManager: NSObject {
               }
             })
           } catch {
-            Logger.module.error("Failed to update Playlist item cached state: \(error.localizedDescription)")
+            Logger.module.error(
+              "Failed to update Playlist item cached state: \(error.localizedDescription)"
+            )
           }
 
           do {
             try FileManager.default.removeItem(at: url)
           } catch {
-            Logger.module.error("Deleting Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)")
+            Logger.module.error(
+              "Deleting Playlist Item for \(url.absoluteString) failed: \(error.localizedDescription)"
+            )
           }
         }
       } catch {
-        Logger.module.error("Deleting Playlist Incomplete Items failed: \(error.localizedDescription)")
+        Logger.module.error(
+          "Deleting Playlist Incomplete Items failed: \(error.localizedDescription)"
+        )
       }
     }
   }
 
   public func autoDownload(item: PlaylistInfo) {
-    guard let downloadType = PlayListDownloadType(rawValue: Preferences.Playlist.autoDownloadVideo.value) else {
+    guard
+      let downloadType = PlayListDownloadType(
+        rawValue: Preferences.Playlist.autoDownloadVideo.value
+      )
+    else {
       return
     }
 
@@ -510,7 +558,9 @@ public class PlaylistManager: NSObject {
 
   private func availableDiskSpace() -> Int64? {
     do {
-      return try URL(fileURLWithPath: NSHomeDirectory() as String).resourceValues(forKeys: [.volumeAvailableCapacityForImportantUsageKey]).volumeAvailableCapacityForImportantUsage
+      return try URL(fileURLWithPath: NSHomeDirectory() as String).resourceValues(forKeys: [
+        .volumeAvailableCapacityForImportantUsageKey
+      ]).volumeAvailableCapacityForImportantUsage
     } catch {
       Logger.module.error("Error Retrieving Disk Space: \(error.localizedDescription)")
     }
@@ -519,7 +569,9 @@ public class PlaylistManager: NSObject {
 
   private func totalDiskSpace() -> Int64? {
     do {
-      if let result = try URL(fileURLWithPath: NSHomeDirectory() as String).resourceValues(forKeys: [.volumeTotalCapacityKey]).volumeTotalCapacity {
+      if let result = try URL(fileURLWithPath: NSHomeDirectory() as String).resourceValues(
+        forKeys: [.volumeTotalCapacityKey]).volumeTotalCapacity
+      {
         return Int64(result)
       }
     } catch {
@@ -548,28 +600,46 @@ extension PlaylistManager: PlaylistDownloadManagerDelegate {
     onDownloadProgressUpdate.send((id: id, percentComplete: percentComplete))
   }
 
-  func onDownloadStateChanged(id: String, state: PlaylistDownloadManager.DownloadState, displayName: String?, error: Error?) {
+  func onDownloadStateChanged(
+    id: String,
+    state: PlaylistDownloadManager.DownloadState,
+    displayName: String?,
+    error: Error?
+  ) {
     onDownloadStateChanged.send((id: id, state: state, displayName: displayName, error: error))
   }
 }
 
 extension PlaylistManager: NSFetchedResultsControllerDelegate {
-  public func controller(_ controller: NSFetchedResultsController<NSFetchRequestResult>, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  public func controller(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
 
-    onObjectChange.send((object: anObject, indexPath: indexPath, type: type, newIndexPath: newIndexPath))
+    onObjectChange.send(
+      (object: anObject, indexPath: indexPath, type: type, newIndexPath: newIndexPath)
+    )
   }
 
-  public func controllerDidChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerDidChangeContent(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>
+  ) {
     onContentDidChange.send(())
   }
 
-  public func controllerWillChangeContent(_ controller: NSFetchedResultsController<NSFetchRequestResult>) {
+  public func controllerWillChangeContent(
+    _ controller: NSFetchedResultsController<NSFetchRequestResult>
+  ) {
     onContentWillChange.send(())
   }
 }
 
 extension PlaylistManager {
-  public func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
+  public func getAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void)
+  {
     if assetInformation.contains(where: { $0.itemId == item.tagId }) {
       completion(nil)
       return
@@ -590,12 +660,17 @@ extension PlaylistManager {
     }
   }
 
-  private func fetchAssetDuration(item: PlaylistInfo, _ completion: @escaping (TimeInterval?) -> Void) {
+  private func fetchAssetDuration(
+    item: PlaylistInfo,
+    _ completion: @escaping (TimeInterval?) -> Void
+  ) {
     let tolerance: Double = 0.00001
     let distance = abs(item.duration.distance(to: 0.0))
 
     // If the database duration is live/indefinite
-    if item.duration.isInfinite || abs(item.duration.distance(to: TimeInterval.greatestFiniteMagnitude)) < tolerance {
+    if item.duration.isInfinite
+      || abs(item.duration.distance(to: TimeInterval.greatestFiniteMagnitude)) < tolerance
+    {
       completion(TimeInterval.infinity)
       return
     }
@@ -628,7 +703,9 @@ extension PlaylistManager {
 
     if trackStatus == .loaded {
       if !asset.tracks.isEmpty,
-        let track = asset.tracks(withMediaType: .video).first ?? asset.tracks(withMediaType: .audio).first {
+        let track = asset.tracks(withMediaType: .video).first
+          ?? asset.tracks(withMediaType: .audio).first
+      {
         if track.timeRange.duration.isIndefinite {
           completion(TimeInterval.infinity)
         } else {
@@ -696,7 +773,9 @@ extension PlaylistManager {
               completion(nil)
             }
           } else {
-            Logger.module.error("An unknown error occurred while attempting to fetch track and duration information: \(error.localizedDescription)")
+            Logger.module.error(
+              "An unknown error occurred while attempting to fetch track and duration information: \(error.localizedDescription)"
+            )
 
             DispatchQueue.main.async {
               completion(nil)
@@ -708,7 +787,9 @@ extension PlaylistManager {
 
         var duration: CMTime = .zero
         if trackStatus == .loaded {
-          if let track = asset.tracks(withMediaType: .video).first ?? asset.tracks(withMediaType: .audio).first {
+          if let track = asset.tracks(withMediaType: .video).first
+            ?? asset.tracks(withMediaType: .audio).first
+          {
             duration = track.timeRange.duration
           } else {
             duration = asset.duration
@@ -733,9 +814,12 @@ extension PlaylistManager {
               dateAdded: item.dateAdded,
               tagId: item.tagId,
               order: item.order,
-              isInvisible: item.isInvisible)
+              isInvisible: item.isInvisible
+            )
 
-            if PlaylistItem.itemExists(uuid: item.tagId) || PlaylistItem.itemExists(pageSrc: item.pageSrc) {
+            if PlaylistItem.itemExists(uuid: item.tagId)
+              || PlaylistItem.itemExists(pageSrc: item.pageSrc)
+            {
               PlaylistItem.updateItem(newItem) {
                 completion(duration.seconds)
               }
@@ -757,18 +841,19 @@ extension PlaylistManager {
   @MainActor
   public static func syncSharedFolder(sharedFolderUrl: String) async throws {
     guard let folder = PlaylistFolder.getSharedFolder(sharedFolderUrl: sharedFolderUrl),
-          let folderId = folder.uuid else {
+      let folderId = folder.uuid
+    else {
       return
     }
-    
+
     let model = try await PlaylistSharedFolderNetwork.fetchPlaylist(folderUrl: sharedFolderUrl)
     var oldItems = Set(folder.playlistItems?.map({ PlaylistInfo(item: $0) }) ?? [])
     let deletedItems = oldItems.subtracting(model.mediaItems)
     let newItems = Set(model.mediaItems).subtracting(oldItems)
     oldItems = []
-    
+
     deletedItems.forEach({ PlaylistManager.shared.delete(item: $0) })
-    
+
     if !newItems.isEmpty {
       await withCheckedContinuation { continuation in
         PlaylistItem.updateItems(Array(newItems), folderUUID: folderId, newETag: model.eTag) {
@@ -777,7 +862,7 @@ extension PlaylistManager {
       }
     }
   }
-  
+
   @MainActor
   public static func syncSharedFolders() async throws {
     let folderURLs = PlaylistFolder.getSharedFolders().compactMap({ $0.sharedFolderUrl })
@@ -795,7 +880,8 @@ extension AVAsset {
   func displayNames(for mediaSelection: AVMediaSelection) -> String? {
     var names = ""
     for mediaCharacteristic in availableMediaCharacteristicsWithMediaSelectionOptions {
-      guard let mediaSelectionGroup = mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic),
+      guard
+        let mediaSelectionGroup = mediaSelectionGroup(forMediaCharacteristic: mediaCharacteristic),
         let option = mediaSelection.selectedMediaOption(in: mediaSelectionGroup)
       else { continue }
 

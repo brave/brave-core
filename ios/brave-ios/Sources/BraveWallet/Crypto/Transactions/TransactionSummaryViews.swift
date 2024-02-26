@@ -7,9 +7,9 @@ import BraveCore
 import SwiftUI
 
 struct TransactionSummaryViewContainer: View {
-  
+
   let parsedTransaction: ParsedTransaction
-  
+
   var body: some View {
     switch parsedTransaction.details {
     case .ethSend(let details),
@@ -100,7 +100,7 @@ struct TransactionSummaryViewContainer: View {
 }
 
 struct SendTransactionSummaryView: View {
-  
+
   let sentFromAccountName: String
   let token: BraveWallet.BlockchainToken?
   let nftMetadata: NFTMetadata?
@@ -109,7 +109,7 @@ struct SendTransactionSummaryView: View {
   let fiatValueSent: String?
   let status: BraveWallet.TransactionStatus
   let time: Date
-  
+
   init(
     sentFromAccountName: String,
     token: BraveWallet.BlockchainToken?,
@@ -129,27 +129,27 @@ struct SendTransactionSummaryView: View {
     self.status = status
     self.time = time
   }
-  
+
   private let primaryFont: Font = .callout.weight(.semibold)
   private let primaryTextColor = Color(braveSystemName: .textPrimary)
   private let secondaryFont: Font = .footnote
   private let secondaryTextColor = Color(braveSystemName: .textTertiary)
-  
+
   @ScaledMetric private var length: CGFloat = 32
   private let maxLength: CGFloat = 48
   @ScaledMetric private var networkSymbolLength: CGFloat = 15
   private let maxNetworkSymbolLength: CGFloat = 30
-  
+
   private var sendTitle: String {
     String.localizedStringWithFormat(
       Strings.Wallet.transactionSummaryIntentLabel,
       Strings.Wallet.sent
     )
   }
-  
+
   var body: some View {
     VStack {
-      HStack { // header
+      HStack {  // header
         Text(time, style: .time)
         Image(braveSystemName: "leo.send")
           .imageScale(.small)
@@ -159,7 +159,7 @@ struct SendTransactionSummaryView: View {
       .font(secondaryFont)
       .foregroundColor(secondaryTextColor)
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       HStack {
         Group {
           if let token {
@@ -205,9 +205,9 @@ struct SendTransactionSummaryView: View {
             .font(secondaryFont)
             .foregroundColor(secondaryTextColor)
         }
-        
+
         Spacer()
-        
+
         if let valueSent {
           VStack(alignment: .trailing) {
             Group {
@@ -236,7 +236,7 @@ struct SendTransactionSummaryView: View {
 }
 
 struct SwapTransactionSummaryView: View {
-  
+
   let swappedOnAccountName: String
   let fromToken: BraveWallet.BlockchainToken?
   let toToken: BraveWallet.BlockchainToken?
@@ -245,7 +245,7 @@ struct SwapTransactionSummaryView: View {
   let toValue: String
   let status: BraveWallet.TransactionStatus
   let time: Date
-  
+
   init(
     swappedOnAccountName: String,
     fromToken: BraveWallet.BlockchainToken?,
@@ -265,20 +265,20 @@ struct SwapTransactionSummaryView: View {
     self.status = status
     self.time = time
   }
-  
+
   private let primaryFont: Font = .callout.weight(.semibold)
   private let primaryTextColor = Color(braveSystemName: .textPrimary)
   private let secondaryFont: Font = .footnote
   private let secondaryTextColor = Color(braveSystemName: .textTertiary)
-  
+
   @ScaledMetric private var length: CGFloat = 32
   private let maxLength: CGFloat = 48
   @ScaledMetric private var networkSymbolLength: CGFloat = 15
   private let maxNetworkSymbolLength: CGFloat = 30
-  
+
   var body: some View {
     VStack {
-      HStack { // header
+      HStack {  // header
         Text(time, style: .time)
         Image(braveSystemName: "leo.currency.exchange")
           .imageScale(.small)
@@ -288,7 +288,7 @@ struct SwapTransactionSummaryView: View {
       .font(secondaryFont)
       .foregroundColor(secondaryTextColor)
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       HStack {
         StackedAssetIconsView(
           bottomToken: fromToken,
@@ -318,9 +318,9 @@ struct SwapTransactionSummaryView: View {
             .font(primaryFont)
         }
         .foregroundColor(primaryTextColor)
-        
+
         Spacer()
-        
+
         VStack(alignment: .trailing) {
           Text("-\(fromValue) \(fromToken?.symbol ?? "")")
             .font(secondaryFont)
@@ -339,12 +339,12 @@ struct SwapTransactionSummaryView: View {
 }
 
 struct SolanaSwapTransactionSummaryView: View {
-  
+
   let swappedOnAccountName: String
   let network: BraveWallet.NetworkInfo
   let status: BraveWallet.TransactionStatus
   let time: Date
-  
+
   init(
     swappedOnAccountName: String,
     network: BraveWallet.NetworkInfo,
@@ -356,20 +356,20 @@ struct SolanaSwapTransactionSummaryView: View {
     self.status = status
     self.time = time
   }
-  
+
   private let primaryFont: Font = .callout.weight(.semibold)
   private let primaryTextColor = Color(braveSystemName: .textPrimary)
   private let secondaryFont: Font = .footnote
   private let secondaryTextColor = Color(braveSystemName: .textTertiary)
-  
+
   @ScaledMetric private var length: CGFloat = 32
   private let maxLength: CGFloat = 48
   @ScaledMetric private var networkSymbolLength: CGFloat = 15
   private let maxNetworkSymbolLength: CGFloat = 30
-  
+
   var body: some View {
     VStack {
-      HStack { // header
+      HStack {  // header
         Text(time, style: .time)
         Image(braveSystemName: "leo.currency.exchange")
           .imageScale(.small)
@@ -379,7 +379,7 @@ struct SolanaSwapTransactionSummaryView: View {
       .font(secondaryFont)
       .foregroundColor(secondaryTextColor)
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       HStack {
         StackedAssetIconsView(
           bottomToken: nil,
@@ -400,7 +400,7 @@ struct SolanaSwapTransactionSummaryView: View {
             .font(primaryFont)
         }
         .foregroundColor(primaryTextColor)
-        
+
         Spacer()
       }
     }
@@ -412,7 +412,7 @@ struct SolanaSwapTransactionSummaryView: View {
 }
 
 struct ApprovalTransactionSummaryView: View {
-  
+
   let fromAccountName: String
   let token: BraveWallet.BlockchainToken?
   let network: BraveWallet.NetworkInfo
@@ -420,7 +420,7 @@ struct ApprovalTransactionSummaryView: View {
   let fiatValueApproved: String
   let status: BraveWallet.TransactionStatus
   let time: Date
-  
+
   init(
     fromAccountName: String,
     token: BraveWallet.BlockchainToken?,
@@ -438,27 +438,27 @@ struct ApprovalTransactionSummaryView: View {
     self.status = status
     self.time = time
   }
-  
+
   private let primaryFont: Font = .callout.weight(.semibold)
   private let primaryTextColor = Color(braveSystemName: .textPrimary)
   private let secondaryFont: Font = .footnote
   private let secondaryTextColor = Color(braveSystemName: .textTertiary)
-  
+
   @ScaledMetric private var length: CGFloat = 32
   private let maxLength: CGFloat = 48
   @ScaledMetric private var networkSymbolLength: CGFloat = 15
   private let maxNetworkSymbolLength: CGFloat = 30
-  
+
   private var approvedTitle: String {
     String.localizedStringWithFormat(
       Strings.Wallet.transactionSummaryIntentLabel,
       Strings.Wallet.transactionTypeApprove
     )
   }
-  
+
   var body: some View {
     VStack {
-      HStack { // header
+      HStack {  // header
         Text(time, style: .time)
         Image(braveSystemName: "leo.check.normal")
           .imageScale(.small)
@@ -468,7 +468,7 @@ struct ApprovalTransactionSummaryView: View {
       .font(secondaryFont)
       .foregroundColor(secondaryTextColor)
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       HStack {
         Group {
           if let token {
@@ -501,9 +501,9 @@ struct ApprovalTransactionSummaryView: View {
             .font(secondaryFont)
             .foregroundColor(secondaryTextColor)
         }
-        
+
         Spacer()
-        
+
         VStack(alignment: .trailing) {
           Text(valueApproved)
             .font(primaryFont)
@@ -595,9 +595,9 @@ struct TransactionSummaryRow_Previews: PreviewProvider {
 #endif
 
 private struct TransactionStatusBubble: View {
-  
+
   let status: BraveWallet.TransactionStatus
-  
+
   var body: some View {
     Circle()
       .fill(status.bubbleBackgroundColor)
@@ -610,7 +610,7 @@ private struct TransactionStatusBubble: View {
       .overlay {
         if status.shouldShowLoadingAnimation {
           ProgressView()
-          .progressViewStyle(.braveCircular(size: .mini))
+            .progressViewStyle(.braveCircular(size: .mini))
         } else {
           Image(braveSystemName: "leo.loading.spinner")
             .resizable()
@@ -622,9 +622,9 @@ private struct TransactionStatusBubble: View {
   }
 }
 
-private extension BraveWallet.TransactionStatus {
+extension BraveWallet.TransactionStatus {
   /// If we should show transaction status bubble
-  var shouldShowTransactionStatus: Bool {
+  fileprivate var shouldShowTransactionStatus: Bool {
     switch self {
     case .approved, .confirmed, .signed:
       return false
@@ -632,9 +632,9 @@ private extension BraveWallet.TransactionStatus {
       return true
     }
   }
-  
+
   /// If we should show transaction status as loading
-  var shouldShowLoadingAnimation: Bool {
+  fileprivate var shouldShowLoadingAnimation: Bool {
     switch self {
     case .unapproved, .submitted:
       return true
@@ -642,9 +642,9 @@ private extension BraveWallet.TransactionStatus {
       return false
     }
   }
-  
+
   /// Color of status bubble
-  var bubbleBackgroundColor: Color {
+  fileprivate var bubbleBackgroundColor: Color {
     switch self {
     case .confirmed, .approved:
       return Color(braveSystemName: .systemfeedbackSuccessBackground)

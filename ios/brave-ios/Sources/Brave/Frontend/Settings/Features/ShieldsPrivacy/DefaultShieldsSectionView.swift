@@ -3,25 +3,25 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
+import BraveShields
+import BraveUI
 import Data
 import DesignSystem
-import BraveUI
 import Preferences
-import BraveShields
+import Strings
+import SwiftUI
 
 struct DefaultShieldsViewView: View {
   enum CookieAlertType: String, Identifiable {
     case confirm
     case failed
-    
+
     var id: String { rawValue }
   }
-  
+
   @ObservedObject var settings: AdvancedShieldsSettings
   @State private var cookieAlertType: CookieAlertType?
-  
+
   var body: some View {
     Section {
       Picker(selection: $settings.adBlockAndTrackingPreventionLevel) {
@@ -37,7 +37,7 @@ struct DefaultShieldsViewView: View {
         )
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      
+
       OptionToggleView(
         title: Strings.HTTPSEverywhere,
         subtitle: Strings.HTTPSEverywhereDescription,
@@ -58,7 +58,7 @@ struct DefaultShieldsViewView: View {
         subtitle: Strings.blockScriptsDescription,
         option: Preferences.Shields.blockScripts
       )
-      
+
       OptionToggleView(
         title: Strings.blockAllCookies,
         subtitle: Strings.blockCookiesDescription,
@@ -77,12 +77,18 @@ struct DefaultShieldsViewView: View {
           return Alert(
             title: Text(Strings.blockAllCookiesAction),
             message: Text(Strings.blockAllCookiesAlertInfo),
-            primaryButton: .default(Text(Strings.blockAllCookiesAction), action: {
-              toggleCookieSetting(with: true)
-            }),
-            secondaryButton: .cancel(Text(Strings.cancelButtonTitle), action: {
-              Preferences.Privacy.blockAllCookies.value = false
-            })
+            primaryButton: .default(
+              Text(Strings.blockAllCookiesAction),
+              action: {
+                toggleCookieSetting(with: true)
+              }
+            ),
+            secondaryButton: .cancel(
+              Text(Strings.cancelButtonTitle),
+              action: {
+                Preferences.Privacy.blockAllCookies.value = false
+              }
+            )
           )
         case .failed:
           return Alert(
@@ -90,25 +96,25 @@ struct DefaultShieldsViewView: View {
           )
         }
       }
-      
+
       OptionToggleView(
         title: Strings.fingerprintingProtection,
         subtitle: Strings.fingerprintingProtectionDescription,
         option: Preferences.Shields.fingerprintingProtection
       )
-      
+
       OptionToggleView(
         title: Strings.Shields.enableGPCLabel,
         subtitle: Strings.Shields.enableGPCDescription,
         option: ShieldPreferences.enableGPC
       )
-      
+
       ShieldToggleView(
         title: Strings.blockCookieConsentNotices,
         subtitle: nil,
         toggle: $settings.cookieConsentBlocking
       )
-      
+
       NavigationLink {
         FilterListsView()
       } label: {
@@ -123,13 +129,13 @@ struct DefaultShieldsViewView: View {
       Text(Strings.shieldsDefaultsFooter)
     }
   }
-  
+
   private func toggleCookieSetting(with status: Bool) {
     let success = FileManager.default.setFolderAccess([
       (.cookie, status),
       (.webSiteData, status),
     ])
-    
+
     if success {
       if Preferences.Privacy.blockAllCookies.value != status {
         Preferences.Privacy.blockAllCookies.value = status
@@ -140,11 +146,11 @@ struct DefaultShieldsViewView: View {
         (.cookie, false),
         (.webSiteData, false),
       ])
-      
+
       if Preferences.Privacy.blockAllCookies.value != false {
         Preferences.Privacy.blockAllCookies.value = false
       }
-      
+
       cookieAlertType = .failed
     }
   }
@@ -154,7 +160,7 @@ extension ShieldLevel: Identifiable {
   public var id: String {
     return rawValue
   }
-  
+
   public var localizedTitle: String {
     switch self {
     case .aggressive: return Strings.Shields.trackersAndAdsBlockingAggressive

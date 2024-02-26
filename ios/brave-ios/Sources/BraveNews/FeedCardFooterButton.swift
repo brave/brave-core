@@ -12,7 +12,9 @@ class FeedCardFooterButton: UIControl {
     $0.font = .systemFont(ofSize: 14, weight: .semibold)
     $0.isAccessibilityElement = false
   }
-  private let disclosureIcon = UIImageView(image: UIImage(named: "disclosure-arrow", in: .module, compatibleWith: nil)!.template).then {
+  private let disclosureIcon = UIImageView(
+    image: UIImage(named: "disclosure-arrow", in: .module, compatibleWith: nil)!.template
+  ).then {
     $0.tintColor = .white
     $0.setContentHuggingPriority(.required, for: .horizontal)
   }
@@ -36,7 +38,11 @@ class FeedCardFooterButton: UIControl {
 
   override var accessibilityLabel: String? {
     get { label.text }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 
   @available(*, unavailable)

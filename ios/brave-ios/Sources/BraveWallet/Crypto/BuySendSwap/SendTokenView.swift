@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
-import DesignSystem
 import BigNumber
-import BraveUI
 import BraveCore
+import BraveUI
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct SendTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -21,22 +21,23 @@ struct SendTokenView: View {
   @State private var isShowingSelectAccountTokenView: Bool = false
 
   @ScaledMetric private var length: CGFloat = 16.0
-  
+
   @Environment(\.appRatingRequestAction) private var appRatingRequest
   @Environment(\.openURL) private var openURL
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
 
   private var isSendDisabled: Bool {
     guard let balance = sendTokenStore.selectedSendTokenBalance,
-          let token = sendTokenStore.selectedSendToken,
-          !sendTokenStore.isMakingTx,
-          !sendTokenStore.sendAddress.isEmpty,
-          !sendTokenStore.isResolvingAddress,
-          sendTokenStore.addressError?.shouldBlockSend != true,
-          sendTokenStore.sendError == nil else {
+      let token = sendTokenStore.selectedSendToken,
+      !sendTokenStore.isMakingTx,
+      !sendTokenStore.sendAddress.isEmpty,
+      !sendTokenStore.isResolvingAddress,
+      sendTokenStore.addressError?.shouldBlockSend != true,
+      sendTokenStore.sendError == nil
+    else {
       return true
     }
     if sendTokenStore.isOffchainResolveRequired {
@@ -51,12 +52,16 @@ struct SendTokenView: View {
       return true
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(token.decimals)))
-    if weiFormatter.weiString(from: sendTokenStore.sendAmount.normalizedDecimals, radix: .decimal, decimals: Int(token.decimals)) == nil {
+    if weiFormatter.weiString(
+      from: sendTokenStore.sendAmount.normalizedDecimals,
+      radix: .decimal,
+      decimals: Int(token.decimals)
+    ) == nil {
       return true
     }
     return sendAmount == 0 || sendAmount > balance || sendTokenStore.sendAmount.isEmpty
   }
-  
+
   private var sendButtonTitle: String {
     if let error = sendTokenStore.sendError {
       return error.localizedDescription
@@ -73,7 +78,9 @@ struct SendTokenView: View {
         Section(
           header: WalletListHeaderView {
             HStack {
-              Text("\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.name) (\(keyringStore.selectedAccount.address.truncatedAddress))")
+              Text(
+                "\(Strings.Wallet.sendCryptoFromTitle): \(keyringStore.selectedAccount.name) (\(keyringStore.selectedAccount.address.truncatedAddress))"
+              )
               Spacer()
               Menu(
                 content: {
@@ -81,7 +88,10 @@ struct SendTokenView: View {
                   Button(action: {
                     UIPasteboard.general.string = keyringStore.selectedAccount.address
                   }) {
-                    Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
+                    Label(
+                      Strings.Wallet.copyAddressButtonTitle,
+                      braveSystemImage: "leo.copy.plain-text"
+                    )
                   }
                 },
                 label: {
@@ -120,22 +130,27 @@ struct SendTokenView: View {
                   .foregroundColor(Color(.secondaryBraveLabel))
               }
               Spacer()
-              Text("\(sendTokenStore.selectedSendTokenBalance?.decimalDescription.trimmingTrailingZeros ?? "0") \(sendTokenStore.selectedSendToken?.symbol ?? "")")
-                .font(.title3.weight(.semibold))
-                .foregroundColor(Color(.braveLabel))
+              Text(
+                "\(sendTokenStore.selectedSendTokenBalance?.decimalDescription.trimmingTrailingZeros ?? "0") \(sendTokenStore.selectedSendToken?.symbol ?? "")"
+              )
+              .font(.title3.weight(.semibold))
+              .foregroundColor(Color(.braveLabel))
             }
             .padding(.vertical, 8)
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
-        if sendTokenStore.selectedSendToken?.isErc721 == false && sendTokenStore.selectedSendToken?.isNft == false {
+        if sendTokenStore.selectedSendToken?.isErc721 == false
+          && sendTokenStore.selectedSendToken?.isNft == false
+        {
           Section(
             header:
               WalletListHeaderView(
                 title: Text(
                   String.localizedStringWithFormat(
                     Strings.Wallet.sendCryptoAmountTitle,
-                    sendTokenStore.selectedSendToken?.symbol ?? "")
+                    sendTokenStore.selectedSendToken?.symbol ?? ""
+                  )
                 )
               ),
             footer: ShortcutAmountGrid(action: { amount in
@@ -147,7 +162,8 @@ struct SendTokenView: View {
             TextField(
               String.localizedStringWithFormat(
                 Strings.Wallet.amountInCurrency,
-                sendTokenStore.selectedSendToken?.symbol ?? ""),
+                sendTokenStore.selectedSendToken?.symbol ?? ""
+              ),
               text: $sendTokenStore.sendAmount
             )
             .keyboardType(.decimalPad)
@@ -163,9 +179,12 @@ struct SendTokenView: View {
         ) {
           VStack {
             HStack(spacing: 14.0) {
-              TextField(Strings.Wallet.sendToCryptoAddressPlaceholder, text: $sendTokenStore.sendAddress)
-                .autocorrectionDisabled()
-                .textInputAutocapitalization(.never)
+              TextField(
+                Strings.Wallet.sendToCryptoAddressPlaceholder,
+                text: $sendTokenStore.sendAddress
+              )
+              .autocorrectionDisabled()
+              .textInputAutocapitalization(.never)
               Button(action: {
                 if let string = UIPasteboard.general.string {
                   sendTokenStore.sendAddress = string
@@ -211,7 +230,7 @@ struct SendTokenView: View {
                   }
                 }
                 .font(.subheadline)
-                .padding(.top, 8) // padding between sendAddress & divider
+                .padding(.top, 8)  // padding between sendAddress & divider
                 .frame(maxWidth: .infinity)
               }
               if let resolvedAddress = sendTokenStore.resolvedAddress {

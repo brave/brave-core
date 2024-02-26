@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SnapKit
 import BraveUI
+import Foundation
+import SnapKit
+import UIKit
 
 class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
   static let identifier = "RecentSearchCell"
@@ -24,7 +24,10 @@ class RecentSearchCell: UICollectionViewCell, CollectionViewReusable {
   }
 
   private let openButton = BraveButton(type: .system).then {
-    $0.setImage(UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil)!, for: .normal)
+    $0.setImage(
+      UIImage(named: "recent-search-arrow", in: .module, compatibleWith: nil)!,
+      for: .normal
+    )
     $0.imageView?.contentMode = .scaleAspectFit
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)

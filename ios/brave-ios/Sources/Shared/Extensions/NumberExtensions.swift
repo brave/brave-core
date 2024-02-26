@@ -6,35 +6,41 @@ import Foundation
 
 // MARK: - INT
 
-public extension Int {
+extension Int {
   /// Returns larger numbers in K(thousands) and M(millions) friendly format.
   /// Example : 123 456 -> 123K, 3000 -> 3k, 3400 -> 3.4K
-  var kFormattedNumber: String {
+  public var kFormattedNumber: String {
     if self >= 1000 && self < 10000 {
-      return String(format: "%.1fK", Double(self / 100) / 10).replacingOccurrences(of: ".0", with: "")
+      return String(format: "%.1fK", Double(self / 100) / 10).replacingOccurrences(
+        of: ".0",
+        with: ""
+      )
     }
 
-    if self >= 10000 && self < 1000000 {
+    if self >= 10000 && self < 1_000_000 {
       return "\(self/1000)K"
     }
 
-    if self >= 1000000 && self < 10000000 {
-      return String(format: "%.1fM", Double(self / 100000) / 10).replacingOccurrences(of: ".0", with: "")
+    if self >= 1_000_000 && self < 10_000_000 {
+      return String(format: "%.1fM", Double(self / 100000) / 10).replacingOccurrences(
+        of: ".0",
+        with: ""
+      )
     }
 
-    if self >= 10000000 {
-      return "\(self/1000000)M"
+    if self >= 10_000_000 {
+      return "\(self/1_000_000)M"
     }
 
     return String(self)
   }
 }
 
-public extension NSDecimalNumber {
+extension NSDecimalNumber {
 
   /// Returns a currency formatted string where the currency's symbol is in front.
   /// For example $19.99.
-  func frontSymbolCurrencyFormatted(with locale: Locale) -> String? {
+  public func frontSymbolCurrencyFormatted(with locale: Locale) -> String? {
     let formatter = NumberFormatter()
     formatter.numberStyle = .currency
     formatter.locale = locale

@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveCore
-import Shared
 import BraveShared
 import FaviconModels
+import Foundation
+import Shared
+import UIKit
 import os.log
 
 /// A class for rendering a Bundled FavIcon onto a `UIImage`
@@ -27,17 +27,22 @@ public class BundledFaviconRenderer {
     }
 
     // Render the Favicon on a UIImage
-    return await UIImage.renderFavicon(icon.image, backgroundColor: icon.backgroundColor, shouldScale: false)
+    return await UIImage.renderFavicon(
+      icon.image,
+      backgroundColor: icon.backgroundColor,
+      shouldScale: false
+    )
   }
 
   // MARK: - Custom Icons
-  
+
   /// Icon attributes for any custom icon overrides
   ///
   /// If the app does not contain a custom icon for the site provided `nil`
   /// will be returned
   private static func customIcon(for url: URL) -> (image: UIImage, backgroundColor: UIColor)? {
-    guard let folder = FileManager.default.getOrCreateFolder(name: Self.faviconOverridesDirectory) else {
+    guard let folder = FileManager.default.getOrCreateFolder(name: Self.faviconOverridesDirectory)
+    else {
       return nil
     }
 
@@ -78,8 +83,9 @@ public class BundledFaviconRenderer {
       bundleIcon = icon
     }
     guard let icon = bundleIcon,
-          let image = UIImage(contentsOfFile: icon.url),
-          let scaledImage = image.createScaled(CGSize(width: 40.0, height: 40.0)) else {
+      let image = UIImage(contentsOfFile: icon.url),
+      let scaledImage = image.createScaled(CGSize(width: 40.0, height: 40.0))
+    else {
       return nil
     }
 
@@ -87,7 +93,7 @@ public class BundledFaviconRenderer {
   }
 
   private static let multiRegionDomains = ["craigslist", "google", "amazon"]
-  
+
   private static let bundledIcons: [String: (color: UIColor, url: String)] = {
     guard let filePath = Bundle.module.path(forResource: "top_sites", ofType: "json") else {
       Logger.module.error("Failed to get bundle path for \"top_sites.json\"")
@@ -99,8 +105,8 @@ public class BundledFaviconRenderer {
       var icons: [String: (color: UIColor, url: String)] = [:]
       json.forEach({
         guard let url = $0.domain,
-              let color = $0.backgroundColor?.lowercased(),
-              let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
+          let color = $0.backgroundColor?.lowercased(),
+          let path = $0.imageURL?.replacingOccurrences(of: ".png", with: "")
         else {
           return
         }
@@ -109,13 +115,17 @@ public class BundledFaviconRenderer {
           if color == "#fff" {
             icons[url] = (.white, filePath)
           } else {
-            icons[url] = (UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath)
+            icons[url] = (
+              UIColor(colorString: color.replacingOccurrences(of: "#", with: "")), filePath
+            )
           }
         }
       })
       return icons
     } catch {
-      Logger.module.error("Failed to get default icons at \(filePath): \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to get default icons at \(filePath): \(error.localizedDescription)"
+      )
       return [:]
     }
   }()
@@ -135,7 +145,11 @@ public class BundledFaviconRenderer {
 
 extension Favicon {
   @MainActor
-  public static func renderImage(_ image: UIImage, backgroundColor: UIColor?, shouldScale: Bool) async -> Favicon {
+  public static func renderImage(
+    _ image: UIImage,
+    backgroundColor: UIColor?,
+    shouldScale: Bool
+  ) async -> Favicon {
     await UIImage.renderFavicon(image, backgroundColor: backgroundColor, shouldScale: shouldScale)
   }
 }

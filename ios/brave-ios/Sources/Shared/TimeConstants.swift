@@ -13,6 +13,6 @@ extension Date {
   }
 
   public static func nowMicroseconds() -> MicrosecondTimestamp {
-    return UInt64(1000000 * Date().timeIntervalSince1970)
+    return UInt64(1_000_000 * Date().timeIntervalSince1970)
   }
 }

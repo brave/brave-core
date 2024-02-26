@@ -3,19 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
-import struct Shared.Strings
 import BraveUI
+import SwiftUI
+
+import struct Shared.Strings
 
 struct AccountSelectionRootView: View {
-  
+
   let navigationTitle: String
   let allAccounts: [BraveWallet.AccountInfo]
   let selectedAccounts: [BraveWallet.AccountInfo]
   var showsSelectAllButton: Bool
   var selectAccount: (BraveWallet.AccountInfo) -> Void
-  
+
   init(
     navigationTitle: String,
     allAccounts: [BraveWallet.AccountInfo],
@@ -29,7 +30,7 @@ struct AccountSelectionRootView: View {
     self.showsSelectAllButton = showsSelectAllButton
     self.selectAccount = selectAccount
   }
-  
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
@@ -59,11 +60,11 @@ struct AccountSelectionRootView: View {
 }
 
 private struct AccountListRowView: View {
-  
+
   var account: BraveWallet.AccountInfo
   var isSelected: Bool
   let didSelect: () -> Void
-  
+
   init(
     account: BraveWallet.AccountInfo,
     isSelected: Bool,
@@ -73,7 +74,7 @@ private struct AccountListRowView: View {
     self.isSelected = isSelected
     self.didSelect = didSelect
   }
-  
+
   private var checkmark: some View {
     Image(braveSystemName: "leo.check.normal")
       .resizable()
@@ -84,7 +85,7 @@ private struct AccountListRowView: View {
       .transition(.identity)
       .animation(nil, value: isSelected)
   }
-  
+
   var body: some View {
     AddressView(address: account.address) {
       Button(action: didSelect) {

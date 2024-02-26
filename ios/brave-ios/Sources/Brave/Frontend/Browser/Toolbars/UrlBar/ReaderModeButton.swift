@@ -2,8 +2,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import DesignSystem
+import UIKit
 
 class ReaderModeButton: UIButton {
   var selectedTintColor: UIColor? {
@@ -52,12 +52,12 @@ class ReaderModeButton: UIButton {
   }
 
   private var _readerModeState: ReaderModeState = .unavailable
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
     updateIconSize()
   }
-  
+
   private func updateIconSize() {
     let sizeCategory = traitCollection.toolbarButtonContentSizeCategory
     let pointSize = UIFont.preferredFont(
@@ -69,14 +69,19 @@ class ReaderModeButton: UIButton {
       forImageIn: .normal
     )
   }
-  
+
   override var intrinsicContentSize: CGSize {
     var size = super.intrinsicContentSize
-    let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
-    size.width = UIFontMetrics(forTextStyle: .body).scaledValue(for: 44, compatibleWith: toolbarTraitCollection)
+    let toolbarTraitCollection = UITraitCollection(
+      preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
+    )
+    size.width = UIFontMetrics(forTextStyle: .body).scaledValue(
+      for: 44,
+      compatibleWith: toolbarTraitCollection
+    )
     return size
   }
-  
+
   var readerModeState: ReaderModeState {
     get {
       return _readerModeState

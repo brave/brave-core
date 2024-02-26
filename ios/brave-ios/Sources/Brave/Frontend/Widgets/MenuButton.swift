@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import DesignSystem
 import Foundation
 import UIKit
-import DesignSystem
 
 /// The button which displays a more icon (`•••`) and a set of badges
 class MenuButton: ToolbarButton {
@@ -24,7 +24,9 @@ class MenuButton: ToolbarButton {
 
     static let playlist: Self = .init(
       gradientView: { .gradient02 },
-      icon: UIImage(named: "playlist-menu-badge", in: .module, compatibleWith: nil)?.withTintColor(.white)
+      icon: UIImage(named: "playlist-menu-badge", in: .module, compatibleWith: nil)?.withTintColor(
+        .white
+      )
     )
   }
 

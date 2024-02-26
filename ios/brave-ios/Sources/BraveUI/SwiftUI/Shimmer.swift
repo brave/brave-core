@@ -15,8 +15,10 @@ private struct ShimmerViewModifier: ViewModifier {
       .mask(
         Group {
           if isShimmering {
-            _GradientView(animation: .easeInOut(duration: duration).repeatForever(autoreverses: false))
-              .transition(.opacity.animation(.default))
+            _GradientView(
+              animation: .easeInOut(duration: duration).repeatForever(autoreverses: false)
+            )
+            .transition(.opacity.animation(.default))
           } else {
             Color.black
               .transition(.opacity.animation(.default))
@@ -68,9 +70,11 @@ struct ShimmerViewModifier_PreviewProvider: PreviewProvider {
     @State private var isShimmering: Bool = false
     var body: some View {
       VStack {
-        Text("Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam.")
-          .shimmer(isShimmering)
-          .redacted(reason: .placeholder)
+        Text(
+          "Donec ullamcorper nulla non metus auctor fringilla. Donec id elit non mi porta gravida at eget metus. Cras justo odio, dapibus ac facilisis in, egestas eget quam."
+        )
+        .shimmer(isShimmering)
+        .redacted(reason: .placeholder)
         Toggle(isOn: $isShimmering) {
           Text("Shimmering")
         }

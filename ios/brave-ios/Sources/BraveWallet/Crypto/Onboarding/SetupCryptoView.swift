@@ -3,11 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Foundation
-import SwiftUI
-import Introspect
 import DesignSystem
+import Foundation
+import Introspect
 import Strings
+import SwiftUI
 
 enum OnboardingSetupOption {
   case new
@@ -18,9 +18,9 @@ struct SetupCryptoView: View {
   @ObservedObject var keyringStore: KeyringStore
   // Used to dismiss all of Wallet
   let dismissAction: () -> Void
-  
+
   @State private var setupOption: OnboardingSetupOption?
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 32) {
@@ -137,7 +137,10 @@ struct SetupCryptoView: View {
       )
     )
     .accessibilityEmbedInScrollView()
-    .transparentNavigationBar(backButtonTitle: Strings.Wallet.setupCryptoButtonBackButtonTitle, backButtonDisplayMode: .generic)
+    .transparentNavigationBar(
+      backButtonTitle: Strings.Wallet.setupCryptoButtonBackButtonTitle,
+      backButtonDisplayMode: .generic
+    )
     .onAppear {
       keyringStore.reportP3AOnboarding(action: .shown)
     }

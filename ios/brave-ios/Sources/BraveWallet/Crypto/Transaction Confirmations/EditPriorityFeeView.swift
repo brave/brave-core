@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BigNumber
 import BraveCore
+import BraveUI
 import DesignSystem
 import Strings
-import BigNumber
-import BraveUI
+import SwiftUI
 
 /// Allows the user to edit the gas fee structure of an EIP-1559 transaction before confirming it
 ///
@@ -52,16 +52,26 @@ struct EditPriorityFeeView: View {
       }
       return value.decimalExpansion(precisionAfterDecimalPoint: 2)
     }()
-    maximumTipPrice = WeiFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
-    maximumGasPrice = WeiFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
-    baseInGwei = WeiFormatter.weiToDecimalGwei(gasEstimation.baseFeePerGas.removingHexPrefix, radix: .hex) ?? "0"
+    maximumTipPrice =
+      WeiFormatter.weiToDecimalGwei(selectedMaxTip.removingHexPrefix, radix: .hex) ?? "0"
+    maximumGasPrice =
+      WeiFormatter.weiToDecimalGwei(selectedMaxPrice.removingHexPrefix, radix: .hex) ?? "0"
+    baseInGwei =
+      WeiFormatter.weiToDecimalGwei(gasEstimation.baseFeePerGas.removingHexPrefix, radix: .hex)
+      ?? "0"
 
     // Comparing from high to low as sometimes avg/slow fees are the same
-    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas && selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas {
+    if selectedMaxPrice == gasEstimation.fastMaxFeePerGas
+      && selectedMaxTip == gasEstimation.fastMaxPriorityFeePerGas
+    {
       gasFeeKind = .high
-    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas && selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas {
+    } else if selectedMaxPrice == gasEstimation.avgMaxFeePerGas
+      && selectedMaxTip == gasEstimation.avgMaxPriorityFeePerGas
+    {
       gasFeeKind = .optimal
-    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas && selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas {
+    } else if selectedMaxPrice == gasEstimation.slowMaxFeePerGas
+      && selectedMaxTip == gasEstimation.slowMaxPriorityFeePerGas
+    {
       gasFeeKind = .low
     } else {
       gasFeeKind = .custom
@@ -122,9 +132,11 @@ struct EditPriorityFeeView: View {
     case .high:
       gasFeeInWei = gasEstimation.fastMaxFeePerGas
     case .custom:
-      gasFeeInWei = WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex) ?? ""
+      gasFeeInWei =
+        WeiFormatter.gweiToWei(maximumGasPrice, radix: .decimal, outputRadix: .hex) ?? ""
     }
-    let proposedGasValue = formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
+    let proposedGasValue =
+      formatter.decimalString(for: gasFeeInWei.removingHexPrefix, radix: .hex, decimals: 18) ?? ""
     let proposedGasFiat =
       confirmationStore.currencyFormatter.string(
         from: NSNumber(value: confirmationStore.gasAssetRatio * (Double(proposedGasValue) ?? 0.0))
@@ -156,7 +168,8 @@ struct EditPriorityFeeView: View {
     } set: { value in
       maximumTipPrice = value
       if let base = BDouble(baseInGwei),
-        let tip = BDouble(value) {
+        let tip = BDouble(value)
+      {
         maximumGasPrice = (floor(base) + tip).decimalExpansion(precisionAfterDecimalPoint: 2)
       }
     }
@@ -274,7 +287,11 @@ struct EditPriorityFeeView: View {
 struct EditPriorityFeeView_Previews: PreviewProvider {
   static var previews: some View {
     NavigationView {
-      EditPriorityFeeView(transaction: .previewConfirmedSend, gasEstimation: .init(), confirmationStore: .previewStore)
+      EditPriorityFeeView(
+        transaction: .previewConfirmedSend,
+        gasEstimation: .init(),
+        confirmationStore: .previewStore
+      )
     }
     .previewColorSchemes()
   }

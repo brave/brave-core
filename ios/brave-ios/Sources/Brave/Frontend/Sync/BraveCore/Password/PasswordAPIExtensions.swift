@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Data
 import BraveCore
 import BraveShared
 import CoreData
+import Data
+import Foundation
 import Shared
 
 typealias Credential = (username: String, password: String)
@@ -55,7 +55,8 @@ extension BravePasswordAPI {
       passwordElement: passwordElement,
       passwordValue: password,
       isBlockedByUser: false,
-      scheme: .typeHtml)
+      scheme: .typeHtml
+    )
 
     return loginForm
   }

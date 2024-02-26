@@ -6,9 +6,7 @@ import Foundation
 import Shared
 import XCTest
 
-/**
- * Test for our own utils.
- */
+/// Test for our own utils.
 class UtilsTests: XCTestCase {
 
   func testChunk() {

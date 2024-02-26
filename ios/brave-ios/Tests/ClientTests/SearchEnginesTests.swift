@@ -2,11 +2,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-@testable import Brave
 import Foundation
-import XCTest
-import Shared
 import Preferences
+import Shared
+import XCTest
+
+@testable import Brave
 
 class SearchEnginesTests: XCTestCase {
 
@@ -53,7 +54,14 @@ class SearchEnginesTests: XCTestCase {
   }
 
   func testAddingAndDeletingCustomEngines() {
-    let testEngine = OpenSearchEngine(engineID: "ATester", shortName: "ATester", image: UIImage(), searchTemplate: "http://firefox.com/find?q={searchTerm}", suggestTemplate: nil, isCustomEngine: true)
+    let testEngine = OpenSearchEngine(
+      engineID: "ATester",
+      shortName: "ATester",
+      image: UIImage(),
+      searchTemplate: "http://firefox.com/find?q={searchTerm}",
+      suggestTemplate: nil,
+      isCustomEngine: true
+    )
     let profile = MockProfile()
     let engines = SearchEngines(files: profile.files)
     try! engines.addSearchEngine(testEngine)
@@ -106,7 +114,9 @@ class SearchEnginesTests: XCTestCase {
     let profile = MockProfile()
     let engines = SearchEngines(files: profile.files)
 
-    engines.orderedEngines = [ExpectedEngineNames[4], ExpectedEngineNames[2], ExpectedEngineNames[0]].map { name in
+    engines.orderedEngines = [
+      ExpectedEngineNames[4], ExpectedEngineNames[2], ExpectedEngineNames[0],
+    ].map { name in
       for engine in engines.orderedEngines {
         if engine.shortName == name {
           return engine
@@ -137,16 +147,28 @@ class SearchEnginesTests: XCTestCase {
     XCTAssertTrue(engines.isEngineEnabled((engineSet?[1])!))
 
     // The default engine is included in the quick search engines.
-    XCTAssertEqual(1, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
+    XCTAssertEqual(
+      1,
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+        .count
+    )
 
     // Enable and disable work.
     engines.enableEngine((engineSet?[0])!)
     XCTAssertTrue(engines.isEngineEnabled((engineSet?[0])!))
-    XCTAssertEqual(1, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
+    XCTAssertEqual(
+      1,
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+        .count
+    )
 
     engines.disableEngine((engineSet?[0])!, type: .standard)
     XCTAssertFalse(engines.isEngineEnabled((engineSet?[0])!))
-    XCTAssertEqual(0, engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }.count)
+    XCTAssertEqual(
+      0,
+      engines.quickSearchEngines.filter { engine in engine.shortName == engineSet?[0].shortName }
+        .count
+    )
 
     // Setting the default engine enables it.
     engines.updateDefaultEngine((engineSet?[0])!.shortName, forType: .standard)
@@ -189,7 +211,11 @@ class SearchEnginesTests: XCTestCase {
     let engines = SearchEngines(files: profile.files, locale: Locale(identifier: "pl_PL"))
     XCTAssert(engines.orderedEngines.count > 1, "There should be more than one search engine")
     // default engine should be on second place if a priority engine is present.
-    XCTAssertEqual(engines.orderedEngines[0].shortName, "Google", "Google should be the first search engine")
+    XCTAssertEqual(
+      engines.orderedEngines[0].shortName,
+      "Google",
+      "Google should be the first search engine"
+    )
   }
 
   func testSearchEngineParamsNewUser() {
@@ -198,12 +224,22 @@ class SearchEnginesTests: XCTestCase {
     let profile = MockProfile()
 
     expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
-    expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)
+    expectddgClientName(
+      locales: ["en-IE", "en-AU", "en-NZ"],
+      expectedClientName: "braveed",
+      profile: profile
+    )
     expectddgClientName(
       locales: ["en-US, pl-PL"],
-      expectedClientName: OpenSearchEngine.defaultSearchClientName, profile: profile)
+      expectedClientName: OpenSearchEngine.defaultSearchClientName,
+      profile: profile
+    )
 
-    XCTAssert(getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains("client=brz-brave"))
+    XCTAssert(
+      getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains(
+        "client=brz-brave"
+      )
+    )
   }
 
   func testSearchEngineParamsExistingUser() {
@@ -211,15 +247,26 @@ class SearchEnginesTests: XCTestCase {
 
     let profile = MockProfile()
     expectddgClientName(locales: ["de-DE"], expectedClientName: "bravened", profile: profile)
-    expectddgClientName(locales: ["en-IE", "en-AU", "en-NZ"], expectedClientName: "braveed", profile: profile)
+    expectddgClientName(
+      locales: ["en-IE", "en-AU", "en-NZ"],
+      expectedClientName: "braveed",
+      profile: profile
+    )
     expectddgClientName(
       locales: ["en-US, pl-PL"],
-      expectedClientName: OpenSearchEngine.defaultSearchClientName, profile: profile)
+      expectedClientName: OpenSearchEngine.defaultSearchClientName,
+      profile: profile
+    )
 
-    XCTAssert(getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains("client=brz-brave"))
+    XCTAssert(
+      getQwant(profile: profile).searchURLForQuery("test")!.absoluteString.contains(
+        "client=brz-brave"
+      )
+    )
   }
 
-  private func expectddgClientName(locales: [String], expectedClientName: String, profile: Profile) {
+  private func expectddgClientName(locales: [String], expectedClientName: String, profile: Profile)
+  {
     locales.forEach {
       let ddg = getDdg(profile: profile)
       let locale = Locale(identifier: $0)

@@ -3,9 +3,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import Strings
+import SwiftUI
 
 struct SwapTokenSearchView: View {
   @ObservedObject var swapTokenStore: SwapTokenStore
@@ -21,9 +21,13 @@ struct SwapTokenSearchView: View {
   var network: BraveWallet.NetworkInfo
 
   var body: some View {
-    let excludedToken = searchType == .fromToken ? swapTokenStore.selectedToToken : swapTokenStore.selectedFromToken
-    TokenList(tokens: swapTokenStore.allTokens
-      .filter { ($0.symbol != excludedToken?.symbol) && (!$0.isNft || $0.symbol == network.symbol) }
+    let excludedToken =
+      searchType == .fromToken ? swapTokenStore.selectedToToken : swapTokenStore.selectedFromToken
+    TokenList(
+      tokens: swapTokenStore.allTokens
+        .filter {
+          ($0.symbol != excludedToken?.symbol) && (!$0.isNft || $0.symbol == network.symbol)
+        }
     ) { token in
       Button(action: {
         if searchType == .fromToken {

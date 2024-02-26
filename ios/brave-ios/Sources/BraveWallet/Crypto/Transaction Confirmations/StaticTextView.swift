@@ -11,7 +11,7 @@ struct StaticTextView: UIViewRepresentable {
   var text: String
   var attributedText: NSAttributedString?
   var isMonospaced: Bool = true
-  
+
   func makeUIView(context: Context) -> UITextView {
     let textView = UITextView()
     if let attributedText {
@@ -24,9 +24,10 @@ struct StaticTextView: UIViewRepresentable {
     textView.font = {
       let metrics = UIFontMetrics(forTextStyle: .body)
       let desc = UIFontDescriptor.preferredFontDescriptor(withTextStyle: .body)
-      let font = isMonospaced ?
-      UIFont.monospacedSystemFont(ofSize: desc.pointSize, weight: .regular) :
-      UIFont.systemFont(ofSize: desc.pointSize, weight: .regular)
+      let font =
+        isMonospaced
+        ? UIFont.monospacedSystemFont(ofSize: desc.pointSize, weight: .regular)
+        : UIFont.systemFont(ofSize: desc.pointSize, weight: .regular)
       return metrics.scaledFont(for: font)
     }()
     textView.adjustsFontForContentSizeCategory = true

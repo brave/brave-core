@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
-import Shared
 import BraveShared
+import Foundation
+import Shared
+import WebKit
 
 enum InternalPageSchemeHandlerError: Error {
   case badURL
@@ -22,7 +22,12 @@ public protocol InternalSchemeResponse {
 public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
 
   public static func response(forUrl url: URL) -> URLResponse {
-    return URLResponse(url: url, mimeType: "text/html", expectedContentLength: -1, textEncodingName: "utf-8")
+    return URLResponse(
+      url: url,
+      mimeType: "text/html",
+      expectedContentLength: -1,
+      textEncodingName: "utf-8"
+    )
   }
 
   // Responders are looked up based on the path component, for instance responder["about/license"] is used for 'internal://local/about/license'
@@ -55,14 +60,20 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       // readermode
       "/\(InternalURL.Path.readermode.rawValue)/styles/Reader.css": "text/css",
       "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Bold.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-BoldItalic.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-BoldItalic.ttf":
+        "application/x-font-ttf",
       "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Book.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Italic.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Italic.ttf":
+        "application/x-font-ttf",
       "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Light.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Medium.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Regular.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-SemiBold.ttf": "application/x-font-ttf",
-      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-UltraLight.ttf": "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Medium.ttf":
+        "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-Regular.ttf":
+        "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-SemiBold.ttf":
+        "application/x-font-ttf",
+      "/\(InternalURL.Path.readermode.rawValue)/fonts/FiraSans-UltraLight.ttf":
+        "application/x-font-ttf",
     ]
 
     // Handle resources from internal pages. For example 'internal://local/errorpage-resource/CertError.css'.
@@ -71,8 +82,16 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       let mimeType = allowedInternalResources[url.path]
 
       if let res = Bundle.module.url(forResource: path, withExtension: nil),
-        let data = try? Data(contentsOf: res) {
-        urlSchemeTask.didReceive(URLResponse(url: url, mimeType: mimeType, expectedContentLength: -1, textEncodingName: nil))
+        let data = try? Data(contentsOf: res)
+      {
+        urlSchemeTask.didReceive(
+          URLResponse(
+            url: url,
+            mimeType: mimeType,
+            expectedContentLength: -1,
+            textEncodingName: nil
+          )
+        )
         urlSchemeTask.didReceive(data)
         urlSchemeTask.didFinish()
         return true
@@ -87,17 +106,22 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.badURL)
       return
     }
-      
+
     let path = url.path.starts(with: "/") ? String(url.path.dropFirst()) : url.path
 
     // For non-main doc URL, try load it as a resource
-    if !urlSchemeTask.request.isPrivileged, urlSchemeTask.request.mainDocumentURL != urlSchemeTask.request.url, downloadResource(urlSchemeTask: urlSchemeTask) {
+    if !urlSchemeTask.request.isPrivileged,
+      urlSchemeTask.request.mainDocumentURL != urlSchemeTask.request.url,
+      downloadResource(urlSchemeTask: urlSchemeTask)
+    {
       return
     }
 
     // Need a better way to detect when WebKit is making a request from interactionState vs. a regular request by the user
     // instead of having to check the cache policy
-    if !urlSchemeTask.request.isPrivileged && urlSchemeTask.request.cachePolicy == .useProtocolCachePolicy {
+    if !urlSchemeTask.request.isPrivileged
+      && urlSchemeTask.request.cachePolicy == .useProtocolCachePolicy
+    {
       urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.notAuthorized)
       return
     }

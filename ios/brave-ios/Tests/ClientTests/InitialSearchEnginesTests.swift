@@ -4,6 +4,7 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import XCTest
+
 @testable import Brave
 
 private typealias SE = InitialSearchEngines
@@ -23,7 +24,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     XCTAssertEqual(unknownLocaleSE.defaultSearchEngine, .google)
     XCTAssertNil(unknownLocaleSE.priorityEngine)
@@ -59,7 +61,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -71,7 +74,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     XCTAssertEqual(localeSE.defaultSearchEngine, .braveSearch)
     XCTAssertNil(localeSE.priorityEngine)
@@ -90,7 +94,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -101,7 +106,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     XCTAssertEqual(localeSE.defaultSearchEngine, .google)
     XCTAssertNil(localeSE.priorityEngine)
@@ -120,7 +126,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -132,7 +139,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     XCTAssertEqual(localeSE.defaultSearchEngine, .braveSearch)
     XCTAssertNil(localeSE.priorityEngine)
@@ -152,7 +160,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -164,7 +173,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     XCTAssertEqual(localeSE.defaultSearchEngine, .braveSearch)
     XCTAssertNil(localeSE.priorityEngine)
@@ -184,7 +194,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     let onboardingEngines = localeSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -196,7 +207,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .qwant,
         .startpage,
         .ecosia,
-      ])
+      ]
+    )
 
     XCTAssertEqual(localeSE.defaultSearchEngine, .braveSearch)
     XCTAssertNil(localeSE.priorityEngine)
@@ -215,7 +227,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     let onboardingEngines = unknownLocaleSE.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -226,7 +239,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     XCTAssertEqual(unknownLocaleSE.defaultSearchEngine, .google)
     XCTAssertNil(unknownLocaleSE.priorityEngine)
@@ -246,7 +260,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     let onboardingEngines = russianLocale.onboardingEngines.map { $0.id }
     XCTAssertEqual(
@@ -258,7 +273,8 @@ class InitialSearchEnginesTests: XCTestCase {
         .duckduckgo,
         .qwant,
         .startpage,
-      ])
+      ]
+    )
 
     XCTAssertEqual(russianLocale.defaultSearchEngine, .yandex)
     XCTAssertNil(russianLocale.priorityEngine)

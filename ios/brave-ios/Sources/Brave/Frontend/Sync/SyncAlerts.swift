@@ -10,7 +10,9 @@ struct SyncAlerts {
   static var noConnection: UIAlertController {
     let alert = UIAlertController(
       title: Strings.syncNoConnectionTitle,
-      message: Strings.syncNoConnectionBody, preferredStyle: .alert)
+      message: Strings.syncNoConnectionBody,
+      preferredStyle: .alert
+    )
 
     let okAction = UIAlertAction(title: Strings.OKString, style: .default)
     alert.addAction(okAction)

@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveCore
 import BigNumber
-import Strings
+import BraveCore
 import Combine
+import Foundation
+import Strings
 
 /// A store contains data for swap tokens
 public class SwapTokenStore: ObservableObject, WalletObserverStore {
@@ -71,10 +71,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       if oldValue != sellAmount && !isUpdatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-          withTimeInterval: 0.25, repeats: false,
+          withTimeInterval: 0.25,
+          repeats: false,
           block: { [weak self] _ in
             self?.fetchPriceQuote(base: .perSellAsset)
-          })
+          }
+        )
       }
     }
   }
@@ -88,10 +90,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       if oldValue != buyAmount && !isUpdatingPriceQuote && !isMakingTx {
         timer?.invalidate()
         timer = Timer.scheduledTimer(
-          withTimeInterval: 0.25, repeats: false,
+          withTimeInterval: 0.25,
+          repeats: false,
           block: { [weak self] _ in
             self?.fetchPriceQuote(base: .perBuyAsset)
-          })
+          }
+        )
       }
     }
   }
@@ -120,13 +124,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   /// The ZeroExQuote / price quote currently being displayed for Ethereum swap.
   /// The quote needs preserved to know when to show `protocolFeesForDisplay` fees.
   @Published var zeroExQuote: BraveWallet.ZeroExQuote?
-  
+
   /// If the Brave Fee is voided for this swap.
   var isBraveFeeVoided: Bool {
     guard let braveFee else { return false }
     return braveFee.discountCode != .none && !braveFee.hasBraveFee
   }
-  
+
   /// The brave fee percentage for this swap.
   /// When `isBraveFeeVoided`, will return the fee being voided (so Free can be displayed beside % value voided)
   var braveFeeForDisplay: String? {
@@ -144,12 +148,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
     return String(format: "%@%%", fee.trimmingTrailingZeros)
   }
-  
+
   /// The protocol fee percentage for this swap
   var protocolFeeForDisplay: String? {
     guard let braveFee,
-          let protocolFeePct = Double(braveFee.protocolFeePct),
-          !protocolFeePct.isZero else { return nil }
+      let protocolFeePct = Double(braveFee.protocolFeePct),
+      !protocolFeePct.isZero
+    else { return nil }
     if let zeroExQuote, zeroExQuote.fees.zeroExFee == nil {
       // `protocolFeePct` should only be surfaced to users if `zeroExFee` is non-null.
       return nil
@@ -171,10 +176,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     didSet {
       timer?.invalidate()
       timer = Timer.scheduledTimer(
-        withTimeInterval: 0.25, repeats: false,
+        withTimeInterval: 0.25,
+        repeats: false,
         block: { [weak self] _ in
           self?.fetchPriceQuote(base: .perSellAsset)
-        })
+        }
+      )
     }
   }
   private var timer: Timer?
@@ -186,7 +193,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   private var jupiterQuote: BraveWallet.JupiterQuote?
   private var keyringServiceObserver: KeyringServiceObserver?
   private var rpcServiceObserver: JsonRpcServiceObserver?
-  
+
   var isObserving: Bool {
     keyringServiceObserver != nil && rpcServiceObserver != nil
   }
@@ -236,12 +243,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
     self.setupObservers()
   }
-  
+
   func tearDown() {
     keyringServiceObserver = nil
     rpcServiceObserver = nil
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
     self.keyringServiceObserver = KeyringServiceObserver(
@@ -249,13 +256,13 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       _selectedWalletAccountChanged: { [weak self] account in
         Task { @MainActor [self] in
           guard let network = await self?.rpcService.network(account.coin, origin: nil),
-                let isSwapSupported = await self?.swapService.isSwapSupported(network.chainId),
-                isSwapSupported
+            let isSwapSupported = await self?.swapService.isSwapSupported(network.chainId),
+            isSwapSupported
           else {
             self?.accountInfo = account
             return
           }
-          
+
           self?.selectedFromToken = nil
           self?.selectedToToken = nil
           self?.prepare(with: account) {
@@ -269,14 +276,19 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       _chainChangedEvent: { [weak self] chainId, coin, origin in
         Task { @MainActor [self] in
           guard let isSwapSupported = await self?.swapService.isSwapSupported(chainId),
-                isSwapSupported
+            isSwapSupported
           else { return }
-          guard let _ = await self?.walletService.ensureSelectedAccount(forChain: coin, chainId: chainId),
-                let selectedAccount = await self?.keyringService.allAccounts().selectedAccount else {
+          guard
+            let _ = await self?.walletService.ensureSelectedAccount(
+              forChain: coin,
+              chainId: chainId
+            ),
+            let selectedAccount = await self?.keyringService.allAccounts().selectedAccount
+          else {
             assertionFailure("selectedAccount should never be nil.")
             return
           }
-          
+
           self?.selectedFromToken = nil
           self?.selectedToToken = nil
           self?.prepare(with: selectedAccount) {
@@ -295,7 +307,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       completion(nil)
       return
     }
-    
+
     rpcService.network(token.coin, origin: nil) { [weak self] network in
       self?.rpcService.balance(
         for: token,
@@ -330,7 +342,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       if let sellAmountValue = BDouble(sellAmount.normalizedDecimals), sellAmountValue == 0 {
         return nil
       }
-      sellAmountInWei = weiFormatter.weiString(from: sellAmount.normalizedDecimals, radix: .decimal, decimals: Int(sellToken.decimals)) ?? "0"
+      sellAmountInWei =
+        weiFormatter.weiString(
+          from: sellAmount.normalizedDecimals,
+          radix: .decimal,
+          decimals: Int(sellToken.decimals)
+        ) ?? "0"
       buyAmountInWei = ""
     case .perBuyAsset:
       // same as sell amount. make sure base value should not be zero
@@ -338,7 +355,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         return nil
       }
       sellAmountInWei = ""
-      buyAmountInWei = weiFormatter.weiString(from: buyAmount.normalizedDecimals, radix: .decimal, decimals: Int(buyToken.decimals)) ?? "0"
+      buyAmountInWei =
+        weiFormatter.weiString(
+          from: buyAmount.normalizedDecimals,
+          radix: .decimal,
+          decimals: Int(buyToken.decimals)
+        ) ?? "0"
     }
     // We store 0.5% as 0.005, so multiply by 100 to get 0.5
     let slippagePercentage = slippage * 100
@@ -357,7 +379,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
     return swapQuoteParams
   }
-  
+
   @MainActor private func createEthSwapTransaction() async -> Bool {
     guard let accountInfo = self.accountInfo else {
       self.state = .error(Strings.Wallet.unknownError)
@@ -373,16 +395,21 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return false
     }
-    let (swapTransactionUnion, _, _) = await swapService.transaction(.init(zeroExTransactionParams: swapQuoteParams))
+    let (swapTransactionUnion, _, _) = await swapService.transaction(
+      .init(zeroExTransactionParams: swapQuoteParams)
+    )
     guard let swapResponse = swapTransactionUnion?.zeroExTransaction else {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
     }
     let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    let gasPrice = "0x\(weiFormatter.weiString(from: swapResponse.gasPrice, radix: .hex, decimals: 0) ?? "0")"  // already in wei
-    let gasLimit = "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"  // already in wei
-    let value = "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+    let gasPrice =
+      "0x\(weiFormatter.weiString(from: swapResponse.gasPrice, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+    let gasLimit =
+      "0x\(weiFormatter.weiString(from: swapResponse.estimatedGas, radix: .hex, decimals: 0) ?? "0")"  // already in wei
+    let value =
+      "0x\(weiFormatter.weiString(from: swapResponse.value, radix: .hex, decimals: 0) ?? "0")"  // already in wei
     let data: [NSNumber] = .init(hexString: swapResponse.data) ?? .init()
 
     if network.isEip1559 {
@@ -396,7 +423,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         signOnly: false,
         signedTransaction: nil
       )
-      let success = await self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: accountInfo)
+      let success = await self.makeEIP1559Tx(
+        chainId: network.chainId,
+        baseData: baseData,
+        from: accountInfo
+      )
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -414,7 +445,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         signedTransaction: nil
       )
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, chainId: network.chainId, from: accountInfo.accountId)
+      let (success, _, _) = await txService.addUnapprovedTransaction(
+        txDataUnion,
+        chainId: network.chainId,
+        from: accountInfo.accountId
+      )
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -442,7 +477,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       if let buyToken = selectedToToken {
         decimal = Int(buyToken.decimals)
       }
-      let decimalString = weiFormatter.decimalString(for: response.buyAmount, decimals: decimal) ?? ""
+      let decimalString =
+        weiFormatter.decimalString(for: response.buyAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         buyAmount = bv.decimalDescription
       }
@@ -451,7 +487,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       if let sellToken = selectedFromToken {
         decimal = Int(sellToken.decimals)
       }
-      let decimalString = weiFormatter.decimalString(for: response.sellAmount, decimals: decimal) ?? ""
+      let decimalString =
+        weiFormatter.decimalString(for: response.sellAmount, decimals: decimal) ?? ""
       if let bv = BDouble(decimalString) {
         sellAmount = bv.decimalDescription
       }
@@ -468,7 +505,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         }
       }
     }
-    
+
     self.zeroExQuote = response
     let network = await rpcService.network(selectedFromToken?.coin ?? .eth, origin: nil)
     let (braveSwapFeeResponse, _) = await swapService.braveFee(
@@ -491,7 +528,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   }
 
   @MainActor private func createERC20ApprovalTransaction(
-      _ spenderAddress: String
+    _ spenderAddress: String
   ) async -> Bool {
     guard
       let fromToken = selectedFromToken,
@@ -515,7 +552,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     self.isMakingTx = true
     defer { self.isMakingTx = false }
     let network = await rpcService.network(accountInfo.coin, origin: nil)
-    let (success, data) = await ethTxManagerProxy.makeErc20ApproveData(spenderAddress, amount: allowance)
+    let (success, data) = await ethTxManagerProxy.makeErc20ApproveData(
+      spenderAddress,
+      amount: allowance
+    )
     guard success else {
       return false
     }
@@ -530,7 +570,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       signedTransaction: nil
     )
     if network.isEip1559 {
-      let success = await self.makeEIP1559Tx(chainId: network.chainId, baseData: baseData, from: accountInfo)
+      let success = await self.makeEIP1559Tx(
+        chainId: network.chainId,
+        baseData: baseData,
+        from: accountInfo
+      )
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -538,7 +582,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return success
     } else {
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
-      let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, chainId: network.chainId, from: accountInfo.accountId)
+      let (success, _, _) = await txService.addUnapprovedTransaction(
+        txDataUnion,
+        chainId: network.chainId,
+        from: accountInfo.accountId
+      )
       if !success {
         self.state = .error(Strings.Wallet.unknownError)
         self.clearAllAmount()
@@ -546,7 +594,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return success
     }
   }
-  
+
   @MainActor private func makeEIP1559Tx(
     chainId: String,
     baseData: BraveWallet.TxData,
@@ -558,7 +606,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     if let gasEstimation = gasEstimation {
       // Bump fast priority fee and max fee by 1 GWei if same as average fees.
       if gasEstimation.fastMaxPriorityFeePerGas == gasEstimation.avgMaxPriorityFeePerGas {
-        maxPriorityFeePerGas = "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxPriorityFeePerGas) ?? "0")"
+        maxPriorityFeePerGas =
+          "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxPriorityFeePerGas) ?? "0")"
         maxFeePerGas = "0x\(self.bumpFeeByOneGWei(with: gasEstimation.fastMaxFeePerGas) ?? "0")"
       } else {
         // Always suggest fast gas fees as default
@@ -566,9 +615,19 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         maxFeePerGas = gasEstimation.fastMaxFeePerGas
       }
     }
-    let eip1559Data = BraveWallet.TxData1559(baseData: baseData, chainId: chainId, maxPriorityFeePerGas: maxPriorityFeePerGas, maxFeePerGas: maxFeePerGas, gasEstimation: gasEstimation)
+    let eip1559Data = BraveWallet.TxData1559(
+      baseData: baseData,
+      chainId: chainId,
+      maxPriorityFeePerGas: maxPriorityFeePerGas,
+      maxFeePerGas: maxFeePerGas,
+      gasEstimation: gasEstimation
+    )
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    let (success, _, _) = await txService.addUnapprovedTransaction(txDataUnion, chainId: chainId, from: account.accountId)
+    let (success, _, _) = await txService.addUnapprovedTransaction(
+      txDataUnion,
+      chainId: chainId,
+      from: account.accountId
+    )
     if !success {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
@@ -600,11 +659,19 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
 
     // Get ETH balance for this account because gas can only be paid in ETH
     let network = await rpcService.network(accountInfo.coin, origin: nil)
-    let (balance, status, _) = await rpcService.balance(accountInfo.address, coin: network.coin, chainId: network.chainId)
+    let (balance, status, _) = await rpcService.balance(
+      accountInfo.address,
+      coin: network.coin,
+      chainId: network.chainId
+    )
     if status == BraveWallet.ProviderError.success {
       let fee = gasLimit * gasPrice
       let balanceFormatter = WeiFormatter(decimalFormatStyle: .balance)
-      let currentBalance = BDouble(balanceFormatter.decimalString(for: balance.removingHexPrefix, radix: .hex, decimals: 18) ?? "") ?? 0
+      let currentBalance =
+        BDouble(
+          balanceFormatter.decimalString(for: balance.removingHexPrefix, radix: .hex, decimals: 18)
+            ?? ""
+        ) ?? 0
       if fromToken.symbol == network.symbol {
         if currentBalance < fee + sellAmountValue {
           self.state = .error(Strings.Wallet.insufficientFundsForGas)
@@ -646,12 +713,21 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       spenderAddress: spenderAddress,
       chainId: network.chainId
     )
-    let weiFormatter = WeiFormatter(decimalFormatStyle: .decimals(precision: Int(fromToken.decimals)))
-    let allowanceValue = BDouble(weiFormatter.decimalString(for: allowance.removingHexPrefix, radix: .hex, decimals: Int(fromToken.decimals)) ?? "") ?? 0
+    let weiFormatter = WeiFormatter(
+      decimalFormatStyle: .decimals(precision: Int(fromToken.decimals))
+    )
+    let allowanceValue =
+      BDouble(
+        weiFormatter.decimalString(
+          for: allowance.removingHexPrefix,
+          radix: .hex,
+          decimals: Int(fromToken.decimals)
+        ) ?? ""
+      ) ?? 0
     guard status == .success, amountToSend > allowanceValue else { return }  // no problem with its allowance
     self.state = .lowAllowance(spenderAddress)
   }
-  
+
   @MainActor private func fetchSolPriceQuote(
     swapQuoteParams: BraveWallet.SwapQuoteParams,
     network: BraveWallet.NetworkInfo
@@ -665,8 +741,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     } else if let swapErrorResponse = swapQuoteErrorUnion?.jupiterError {
       // check balance first because error can be caused by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
-         let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
-         sellTokenBalance < sellAmountValue {
+        let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+        sellTokenBalance < sellAmountValue
+      {
         self.state = .error(Strings.Wallet.insufficientBalance)
         return
       }
@@ -677,42 +754,57 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
-    } else { // unknown error, ex failed parsing jupiter quote.
+    } else {  // unknown error, ex failed parsing jupiter quote.
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
   }
-  
+
   @MainActor private func handleSolPriceQuoteResponse(
     _ response: BraveWallet.JupiterQuote,
     swapQuoteParams: BraveWallet.SwapQuoteParams
   ) async {
     self.jupiterQuote = response
-    
+
     let formatter = WeiFormatter(decimalFormatStyle: .balance)
     if let selectedToToken {
-      buyAmount = formatter.decimalString(for: response.outAmount, radix: .decimal, decimals: Int(selectedToToken.decimals)) ?? ""
+      buyAmount =
+        formatter.decimalString(
+          for: response.outAmount,
+          radix: .decimal,
+          decimals: Int(selectedToToken.decimals)
+        ) ?? ""
     }
-    
+
     // No exchange rate is returned by Jupiter API, so we estimate it from the quote.
     if let selectedFromToken,
-       let newFromAmount = formatter.decimalString(for: response.inAmount, radix: .decimal, decimals: Int(selectedFromToken.decimals)),
-       let newFromAmountWrapped = BDouble(newFromAmount),
-       let selectedToToken,
-       let newToAmount = formatter.decimalString(for: response.outAmount, radix: .decimal, decimals: Int(selectedToToken.decimals)),
-       let newToAmountWrapped = BDouble(newToAmount),
-       newFromAmountWrapped != 0 {
+      let newFromAmount = formatter.decimalString(
+        for: response.inAmount,
+        radix: .decimal,
+        decimals: Int(selectedFromToken.decimals)
+      ),
+      let newFromAmountWrapped = BDouble(newFromAmount),
+      let selectedToToken,
+      let newToAmount = formatter.decimalString(
+        for: response.outAmount,
+        radix: .decimal,
+        decimals: Int(selectedToToken.decimals)
+      ),
+      let newToAmountWrapped = BDouble(newToAmount),
+      newFromAmountWrapped != 0
+    {
       let rate = newToAmountWrapped / newFromAmountWrapped
       selectedFromTokenPrice = rate.decimalDescription
     }
-    
+
     let network = await rpcService.network(selectedFromToken?.coin ?? .sol, origin: nil)
     let (braveSwapFeeResponse, _) = await swapService.braveFee(
       .init(
         chainId: network.chainId,
         inputToken: swapQuoteParams.fromToken,
         outputToken: swapQuoteParams.toToken,
-        taker: swapQuoteParams.fromAccountId.address)
+        taker: swapQuoteParams.fromAccountId.address
+      )
     )
     if let braveSwapFeeResponse {
       self.braveFee = braveSwapFeeResponse
@@ -721,13 +813,14 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.clearAllAmount()
       return
     }
-    
+
     await checkBalanceShowError(jupiterQuote: response)
   }
-  
+
   @MainActor private func checkBalanceShowError(jupiterQuote: BraveWallet.JupiterQuote) async {
     guard let sellAmountValue = BDouble(sellAmount.normalizedDecimals),
-          let selectedFromTokenBalance else {
+      let selectedFromTokenBalance
+    else {
       return
     }
     // Check if balance is insufficient
@@ -738,32 +831,38 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     // Cannot currently estimate SOL gas balance to verify
     self.state = .swap
   }
-  
+
   @MainActor private func createSolSwapTransaction() async -> Bool {
     guard let jupiterQuote,
-          let accountInfo = self.accountInfo else {
+      let accountInfo = self.accountInfo
+    else {
       return false
     }
     self.isMakingTx = true
     defer { self.isMakingTx = false }
     let network = await rpcService.network(.sol, origin: nil)
-    
+
     let jupiterTransactionParams: BraveWallet.JupiterTransactionParams = .init(
       quote: jupiterQuote,
       chainId: network.chainId,
       userPublicKey: accountInfo.address
     )
-    let (swapTransactionUnion, errorResponseUnion, _) = await swapService.transaction(.init(jupiterTransactionParams: jupiterTransactionParams))
+    let (swapTransactionUnion, errorResponseUnion, _) = await swapService.transaction(
+      .init(jupiterTransactionParams: jupiterTransactionParams)
+    )
     guard let jupiterTransaction = swapTransactionUnion?.jupiterTransaction else {
       // check balance first because error can cause by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
-         let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
-         sellTokenBalance < sellAmountValue {
+        let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+        sellTokenBalance < sellAmountValue
+      {
         self.state = .error(Strings.Wallet.insufficientBalance)
         return false
       }
       // check if jupiterQuote fails due to insufficient liquidity
-      if let errorResponse = errorResponseUnion?.jupiterError, errorResponse.isInsufficientLiquidity == true {
+      if let errorResponse = errorResponseUnion?.jupiterError,
+        errorResponse.isInsufficientLiquidity == true
+      {
         self.state = .error(Strings.Wallet.insufficientLiquidity)
         return false
       }
@@ -790,7 +889,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     )
     return success
   }
-  
+
   // MARK: Public
 
   func swapSelectedTokens() {
@@ -845,10 +944,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       // Entering a buy amount is disabled for Solana swaps, always use
       // `SwapParamsBase.perSellAsset` to fetch quote based on the sell amount.
       // `SwapParamsBase.perBuyAsset` is sent when `selectedToToken` is changed.
-      guard let swapQuoteParams = self.swapQuoteParameters(
-        for: accountInfo.coin == .sol ? .perSellAsset : base,
-        in: network
-      ) else {
+      guard
+        let swapQuoteParams = self.swapQuoteParameters(
+          for: accountInfo.coin == .sol ? .perSellAsset : base,
+          in: network
+        )
+      else {
         self.state = .idle
         return
       }
@@ -862,7 +963,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
     }
   }
-  
+
   @MainActor private func fetchEthPriceQuote(
     base: SwapParamsBase,
     swapQuoteParams: BraveWallet.SwapQuoteParams,
@@ -872,12 +973,17 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     defer { self.isUpdatingPriceQuote = false }
     let (swapQuoteUnion, swapQuoteErrorUnion, _) = await swapService.quote(swapQuoteParams)
     if let swapResponse = swapQuoteUnion?.zeroExQuote {
-      await self.handleEthPriceQuoteResponse(swapResponse, base: base, swapQuoteParams: swapQuoteParams)
+      await self.handleEthPriceQuoteResponse(
+        swapResponse,
+        base: base,
+        swapQuoteParams: swapQuoteParams
+      )
     } else if let swapErrorResponse = swapQuoteErrorUnion?.zeroExError {
       // check balance first because error can cause by insufficient balance
       if let sellTokenBalance = self.selectedFromTokenBalance,
-         let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
-         sellTokenBalance < sellAmountValue {
+        let sellAmountValue = BDouble(self.sellAmount.normalizedDecimals),
+        sellTokenBalance < sellAmountValue
+      {
         self.state = .error(Strings.Wallet.insufficientBalance)
         return
       }
@@ -888,7 +994,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       }
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
-    } else { // unknown error, ex failed parsing zerox quote.
+    } else {  // unknown error, ex failed parsing zerox quote.
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
     }
@@ -912,24 +1018,42 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         }
       } else {
         if network.chainId == BraveWallet.MainnetChainId {
-          if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == batSymbol.uppercased() {
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != batSymbol.uppercased() })
-          } else if let batToken = allTokens.first(where: { $0.symbol.uppercased() == batSymbol.uppercased() }) {
+          if let fromToken = selectedFromToken,
+            fromToken.symbol.uppercased() == batSymbol.uppercased()
+          {
+            selectedToToken = allTokens.first(where: {
+              $0.symbol.uppercased() != batSymbol.uppercased()
+            })
+          } else if let batToken = allTokens.first(where: {
+            $0.symbol.uppercased() == batSymbol.uppercased()
+          }) {
             selectedToToken = batToken
-          } else { // if BAT is unavailable
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased() })
+          } else {  // if BAT is unavailable
+            selectedToToken = allTokens.first(where: {
+              $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased()
+            })
           }
         } else if network.chainId == BraveWallet.SolanaMainnet {
-          if let fromToken = selectedFromToken, fromToken.symbol.uppercased() == USDCSymbol.uppercased() {
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != USDCSymbol.uppercased() })
-          } else if let usdcToken = allTokens.first(where: { $0.symbol.uppercased() == USDCSymbol.uppercased() }) {
+          if let fromToken = selectedFromToken,
+            fromToken.symbol.uppercased() == USDCSymbol.uppercased()
+          {
+            selectedToToken = allTokens.first(where: {
+              $0.symbol.uppercased() != USDCSymbol.uppercased()
+            })
+          } else if let usdcToken = allTokens.first(where: {
+            $0.symbol.uppercased() == USDCSymbol.uppercased()
+          }) {
             selectedToToken = usdcToken
-          } else { // if USDC is unavailable
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased() })
+          } else {  // if USDC is unavailable
+            selectedToToken = allTokens.first(where: {
+              $0.symbol.uppercased() != selectedFromToken?.symbol.uppercased()
+            })
           }
         } else {
           if let fromToken = selectedFromToken {
-            selectedToToken = allTokens.first(where: { $0.symbol.uppercased() != fromToken.symbol.uppercased() })
+            selectedToToken = allTokens.first(where: {
+              $0.symbol.uppercased() != fromToken.symbol.uppercased()
+            })
           } else {
             selectedToToken = allTokens.first
           }
@@ -947,27 +1071,38 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           // Native token on the current selected network
           let nativeAsset = network.nativeToken
           // visible custom tokens added by users
-          let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(networks: [network], visible: true).flatMap { $0.tokens }
+          let userVisibleAssets = self.assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
+            networks: [network],
+            visible: true
+          ).flatMap { $0.tokens }
           let customTokens = userVisibleAssets.filter { asset in
-            !tokens.contains(where: { $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress) == .orderedSame })
+            !tokens.contains(where: {
+              $0.contractAddress(in: network).caseInsensitiveCompare(asset.contractAddress)
+                == .orderedSame
+            })
           }
           let sortedCustomTokens = customTokens.sorted {
-            if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress) == .orderedSame {
+            if $0.contractAddress(in: network).caseInsensitiveCompare(nativeAsset.contractAddress)
+              == .orderedSame
+            {
               return true
             } else {
               return $0.symbol < $1.symbol
             }
           }
-          self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol })).filter { !$0.isNft }
+          self.allTokens = (sortedCustomTokens + tokens.sorted(by: { $0.symbol < $1.symbol }))
+            .filter { !$0.isNft }
           // Seems like user assets always include the selected network's native asset
           // But let's make sure all token list includes the native asset
-          if !self.allTokens.contains(where: { $0.symbol.lowercased() == nativeAsset.symbol.lowercased() }) {
+          if !self.allTokens.contains(where: {
+            $0.symbol.lowercased() == nativeAsset.symbol.lowercased()
+          }) {
             self.allTokens.insert(nativeAsset, at: 0)
           }
           updateSelectedTokens(in: network)
         }
       }
-      
+
       // validate the `prefilledToken`
       if let prefilledToken = self.prefilledToken {
         if prefilledToken.coin == network.coin && prefilledToken.chainId == network.chainId {
@@ -975,15 +1110,23 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           continueClosure(network)
         } else {
           self.rpcService.allNetworks(prefilledToken.coin) { allNetworksForTokenCoin in
-            guard let networkForToken = allNetworksForTokenCoin.first(where: { $0.chainId == prefilledToken.chainId }) else {
+            guard
+              let networkForToken = allNetworksForTokenCoin.first(where: {
+                $0.chainId == prefilledToken.chainId
+              })
+            else {
               // don't set prefilled token if it belongs to a network we don't know
               continueClosure(network)
               return
             }
-            self.rpcService.setNetwork(networkForToken.chainId, coin: networkForToken.coin, origin: nil) { success in
+            self.rpcService.setNetwork(
+              networkForToken.chainId,
+              coin: networkForToken.coin,
+              origin: nil
+            ) { success in
               if success {
                 self.selectedFromToken = prefilledToken
-                continueClosure(networkForToken) // network changed
+                continueClosure(networkForToken)  // network changed
               } else {
                 continueClosure(network)
               }
@@ -991,12 +1134,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           }
         }
         self.prefilledToken = nil
-      } else { // `prefilledToken` is nil
+      } else {  // `prefilledToken` is nil
         continueClosure(network)
       }
     }
   }
-  
+
   func suggestedAmountTapped(_ amount: ShortcutAmountGrid.Amount) {
     var decimalPoint = 6
     var rounded = true
@@ -1004,8 +1147,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       decimalPoint = Int(selectedFromToken?.decimals ?? 18)
       rounded = false
     }
-    sellAmount = ((selectedFromTokenBalance ?? 0) * amount.rawValue)
-      .decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded).trimmingTrailingZeros
+    sellAmount =
+      ((selectedFromTokenBalance ?? 0) * amount.rawValue)
+      .decimalExpansion(precisionAfterDecimalPoint: decimalPoint, rounded: rounded)
+      .trimmingTrailingZeros
   }
 
   #if DEBUG
@@ -1031,7 +1176,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
     selectedFromTokenBalance = 0.02
   }
-  
+
   func setUpTestForRounding() {
     accountInfo = .init()
     selectedFromToken = .previewToken

@@ -9,7 +9,9 @@ class BraveServiceStateObserver: NSObject {
 
   // MARK: Static
 
-  static let coreServiceLoadedNotification: Notification.Name = .init(rawValue: "BraveServiceStateDidLoaded")
+  static let coreServiceLoadedNotification: Notification.Name = .init(
+    rawValue: "BraveServiceStateDidLoaded"
+  )
 
   static var isServiceLoadStatePosted = false
 
@@ -22,7 +24,8 @@ class BraveServiceStateObserver: NSObject {
 
     NotificationCenter.default.post(
       name: BraveServiceStateObserver.coreServiceLoadedNotification,
-      object: nil)
+      object: nil
+    )
 
     BraveServiceStateObserver.isServiceLoadStatePosted = true
   }

@@ -62,7 +62,8 @@ public class PrivateCDNImageCoder: NSObject, SDImageCoder {
     guard let data = data else { return false }
     return PrivateCDN.payloadLength(for: data) != nil
   }
-  public func decodedImage(with data: Data?, options: [SDImageCoderOption: Any]? = nil) -> UIImage? {
+  public func decodedImage(with data: Data?, options: [SDImageCoderOption: Any]? = nil) -> UIImage?
+  {
     guard let paddedData = data, let unpaddedData = PrivateCDN.unpadded(data: paddedData) else {
       return nil
     }
@@ -71,7 +72,11 @@ public class PrivateCDNImageCoder: NSObject, SDImageCoder {
   public func canEncode(to format: SDImageFormat) -> Bool {
     return false
   }
-  public func encodedData(with image: UIImage?, format: SDImageFormat, options: [SDImageCoderOption: Any]? = nil) -> Data? {
+  public func encodedData(
+    with image: UIImage?,
+    format: SDImageFormat,
+    options: [SDImageCoderOption: Any]? = nil
+  ) -> Data? {
     SDImageCodersManager.shared.encodedData(with: image, format: format)
   }
 }

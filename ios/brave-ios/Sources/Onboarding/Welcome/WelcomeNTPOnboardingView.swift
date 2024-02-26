@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SnapKit
 import BraveUI
 import DesignSystem
+import Foundation
+import SnapKit
+import UIKit
 
 public class WelcomeNTPOnboardingController: UIViewController, PopoverContentComponent {
   private let textStackView = UIStackView().then {
     $0.spacing = 8.0
     $0.alignment = .top
   }
-  
+
   private let contentStackView = UIStackView().then {
     $0.axis = .vertical
     $0.spacing = 16.0
@@ -40,7 +40,7 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
     $0.setContentHuggingPriority(.defaultLow, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
-  
+
   private let button = RoundInterfaceButton(type: .custom).then {
     $0.setTitleColor(.white, for: .normal)
     $0.backgroundColor = .braveBlurpleTint
@@ -49,9 +49,9 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
     $0.contentEdgeInsets = .init(top: 0, left: 16, bottom: 0, right: 16)
   }
-  
+
   public var buttonText: String?
-  
+
   public var buttonTapped: (() -> Void)?
 
   public override func viewDidLoad() {
@@ -60,7 +60,7 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
     view.addSubview(contentStackView)
     textStackView.addArrangedSubview(iconView)
     textStackView.addArrangedSubview(textLabel)
-    
+
     contentStackView.addArrangedSubview(textStackView)
     if let buttonText = buttonText {
       button.setTitle(buttonText, for: .normal)
@@ -70,12 +70,12 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
       button.addTarget(self, action: #selector(buttonAction), for: .touchUpInside)
       contentStackView.addArrangedSubview(button)
     }
-    
+
     contentStackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
   }
-  
+
   @objc func buttonAction() {
     buttonTapped?()
     dismiss(animated: true)
@@ -89,7 +89,9 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
           string: "\(title)\n",
           attributes: [
             .font: UIFont.preferredFont(forTextStyle: .headline)
-          ]))
+          ]
+        )
+      )
     }
 
     attributedString.append(
@@ -97,7 +99,9 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
         string: details,
         attributes: [
           .font: UIFont.preferredFont(forTextStyle: .body)
-        ]))
+        ]
+      )
+    )
 
     textLabel.attributedText = attributedString
   }
@@ -127,7 +131,7 @@ public class WelcomeNTPOnboardingController: UIViewController, PopoverContentCom
 }
 
 public class WelcomeOmniBoxOnboardingController: UIViewController, PopoverContentComponent {
-  
+
   private let stackView = UIStackView().then {
     $0.spacing = 20.0
     $0.axis = .vertical
@@ -135,7 +139,7 @@ public class WelcomeOmniBoxOnboardingController: UIViewController, PopoverConten
     $0.layoutMargins = UIEdgeInsets(top: 20, left: 20, bottom: 32, right: 20)
     $0.isLayoutMarginsRelativeArrangement = true
   }
-  
+
   private let titleLabel = UILabel().then {
     $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
     $0.numberOfLines = 0
@@ -155,22 +159,22 @@ public class WelcomeOmniBoxOnboardingController: UIViewController, PopoverConten
     $0.setContentHuggingPriority(.defaultLow, for: .vertical)
     $0.setContentCompressionResistancePriority(.required, for: .vertical)
   }
-  
+
   private let gradientView = BraveGradientView.gradient01
 
   public override func viewDidLoad() {
     super.viewDidLoad()
-    
+
     view.addSubview(gradientView)
 
     gradientView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     gradientView.addSubview(stackView)
     stackView.addArrangedSubview(titleLabel)
     stackView.addArrangedSubview(textLabel)
-    
+
     stackView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }

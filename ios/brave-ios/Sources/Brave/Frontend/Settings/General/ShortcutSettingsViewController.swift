@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Static
-import Shared
 import BraveShared
-import IntentsUI
 import BraveUI
+import IntentsUI
+import Shared
+import Static
+import UIKit
 
 // MARK: - ShortcutSettingsViewController
 
@@ -37,9 +37,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenNewTabTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .newTab)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenNewTabDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenNewTabDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -49,11 +53,15 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .newPrivateTab)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenNewPrivateTabDescription)
+      )
     )
-    
+
     dataSource.sections.append(
       Section(
         rows: [
@@ -61,11 +69,15 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenBookmarksTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .openBookmarks)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBookmarksDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBookmarksDescription)
+      )
     )
-    
+
     dataSource.sections.append(
       Section(
         rows: [
@@ -73,9 +85,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenHistoryListTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .openHistoryList)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenHistoryListDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenHistoryListDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -85,9 +101,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsClearBrowserHistoryTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .clearBrowsingHistory)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsClearBrowserHistoryDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsClearBrowserHistoryDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -97,9 +117,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsEnableVPNTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .enableBraveVPN)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsEnableVPNDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsEnableVPNDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -109,9 +133,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenBraveNewsTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .openBraveNews)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBraveNewsDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenBraveNewsDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -121,9 +149,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenPlaylistTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .openPlayList)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenPlaylistDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenPlaylistDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -133,9 +165,13 @@ class ShortcutSettingsViewController: TableViewController {
             text: Strings.Shortcuts.shortcutSettingsOpenSyncedTabsTitle,
             selection: { [unowned self] in
               manageShortcutActivity(for: .openSyncedTabs)
-            }, accessory: .disclosureIndicator, cellClass: MultilineValue1Cell.self)
+            },
+            accessory: .disclosureIndicator,
+            cellClass: MultilineValue1Cell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutSettingsOpenSyncedTabsDescription))
+        footer: .title(Strings.Shortcuts.shortcutSettingsOpenSyncedTabsDescription)
+      )
     )
 
     dataSource.sections.append(
@@ -144,32 +180,46 @@ class ShortcutSettingsViewController: TableViewController {
           Row(
             text: Strings.Shortcuts.shortcutOpenApplicationSettingsTitle,
             selection: { [unowned self] in
-              let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+              let style: UIAlertController.Style =
+                UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
               let alert = UIAlertController(
                 title: Strings.Shortcuts.shortcutOpenApplicationSettingsTitle,
                 message: Strings.Shortcuts.shortcutOpenApplicationSettingsDescription,
-                preferredStyle: style)
+                preferredStyle: style
+              )
 
               alert.addAction(
                 UIAlertAction(
-                  title: Strings.Shortcuts.shortcutOpenApplicationSettingsTitle, style: .default,
+                  title: Strings.Shortcuts.shortcutOpenApplicationSettingsTitle,
+                  style: .default,
                   handler: { _ in
                     if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                       UIApplication.shared.open(settingsURL)
                     }
-                  }))
-              alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
+                  }
+                )
+              )
+              alert.addAction(
+                UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
+              )
               present(alert, animated: true, completion: nil)
-            }, cellClass: ButtonCell.self)
+            },
+            cellClass: ButtonCell.self
+          )
         ],
-        footer: .title(Strings.Shortcuts.shortcutOpenApplicationSettingsDescription))
+        footer: .title(Strings.Shortcuts.shortcutOpenApplicationSettingsDescription)
+      )
     )
   }
 
   private func manageShortcutActivity(for type: ActivityType) {
     INVoiceShortcutCenter.shared.getAllVoiceShortcuts { [self] (shortcuts, error) in
       DispatchQueue.main.async { [self] in
-        guard let shortcut = shortcuts?.first(where: { $0.shortcut.userActivity?.activityType == type.identifier }) else {
+        guard
+          let shortcut = shortcuts?.first(where: {
+            $0.shortcut.userActivity?.activityType == type.identifier
+          })
+        else {
           presentAddShortcutActivity(for: type)
           return
         }
@@ -182,14 +232,18 @@ class ShortcutSettingsViewController: TableViewController {
   private func presentAddShortcutActivity(for type: ActivityType) {
     let userActivity = ActivityShortcutManager.shared.createShortcutActivity(type: type)
 
-    let addShortcutViewController = INUIAddVoiceShortcutViewController(shortcut: INShortcut(userActivity: userActivity))
+    let addShortcutViewController = INUIAddVoiceShortcutViewController(
+      shortcut: INShortcut(userActivity: userActivity)
+    )
     addShortcutViewController.delegate = self
 
     present(addShortcutViewController, animated: true, completion: nil)
   }
 
   private func presentEditShortcutActivity(for voiceShortcut: INVoiceShortcut) {
-    let addShortcutViewController = INUIEditVoiceShortcutViewController(voiceShortcut: voiceShortcut)
+    let addShortcutViewController = INUIEditVoiceShortcutViewController(
+      voiceShortcut: voiceShortcut
+    )
     addShortcutViewController.delegate = self
 
     present(addShortcutViewController, animated: true, completion: nil)
@@ -199,7 +253,8 @@ class ShortcutSettingsViewController: TableViewController {
 extension ShortcutSettingsViewController: INUIAddVoiceShortcutViewControllerDelegate {
   func addVoiceShortcutViewController(
     _ controller: INUIAddVoiceShortcutViewController,
-    didFinishWith voiceShortcut: INVoiceShortcut?, error: Error?
+    didFinishWith voiceShortcut: INVoiceShortcut?,
+    error: Error?
   ) {
     controller.dismiss(animated: true, completion: nil)
   }
@@ -212,7 +267,8 @@ extension ShortcutSettingsViewController: INUIAddVoiceShortcutViewControllerDele
 extension ShortcutSettingsViewController: INUIEditVoiceShortcutViewControllerDelegate {
   func editVoiceShortcutViewController(
     _ controller: INUIEditVoiceShortcutViewController,
-    didUpdate voiceShortcut: INVoiceShortcut?, error: Error?
+    didUpdate voiceShortcut: INVoiceShortcut?,
+    error: Error?
   ) {
     controller.dismiss(animated: true, completion: nil)
   }

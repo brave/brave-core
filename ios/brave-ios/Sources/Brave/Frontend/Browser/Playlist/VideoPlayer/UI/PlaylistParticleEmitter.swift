@@ -36,9 +36,16 @@ class PlaylistParticleEmitter: UIView {
     }
   }
 
-  private func generateEmitterCells() -> (base: CAEmitterCell, trailing: CAEmitterCell, particle: CAEmitterCell) {
+  private func generateEmitterCells() -> (
+    base: CAEmitterCell, trailing: CAEmitterCell, particle: CAEmitterCell
+  ) {
     let baseEmitter = CAEmitterCell().then {
-      $0.color = #colorLiteral(red: 0.4980392157, green: 0.4980392157, blue: 0.4980392157, alpha: 0.5)
+      $0.color = #colorLiteral(
+        red: 0.4980392157,
+        green: 0.4980392157,
+        blue: 0.4980392157,
+        alpha: 0.5
+      )
       $0.redRange = 0.9
       $0.greenRange = 0.9
       $0.blueRange = 0.9

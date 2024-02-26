@@ -6,9 +6,10 @@
 import BraveCore
 
 extension BraveWalletSolanaTxManagerProxy {
-  
+
   /// Fetches the estimatedTxFee for an array of transactions
-  @MainActor func estimatedTxFees(for transactions: [BraveWallet.TransactionInfo]
+  @MainActor func estimatedTxFees(
+    for transactions: [BraveWallet.TransactionInfo]
   ) async -> [String: UInt64] {
     return await withTaskGroup(
       of: [String: UInt64].self,

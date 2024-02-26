@@ -2,29 +2,29 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import XCTest
-
+import BraveShared
 import Shared
 import Storage
+import UIKit
 import WebKit
-import BraveShared
+import XCTest
+
 @testable import Brave
 
 class ClientTests: XCTestCase {
   override func setUpWithError() throws {
     super.setUp()
-    
+
     // TODO: Move this code into some module that is shared so it doesn't require AppDelegate/host application
-    
+
     let responders: [(String, InternalSchemeResponse)] = [
       (AboutHomeHandler.path, AboutHomeHandler()),
       (AboutLicenseHandler.path, AboutLicenseHandler()),
       (SessionRestoreHandler.path, SessionRestoreHandler()),
       (ErrorPageHandler.path, ErrorPageHandler()),
-      (ReaderModeHandler.path, ReaderModeHandler(profile: BrowserProfile(localName: "profile")))
+      (ReaderModeHandler.path, ReaderModeHandler(profile: BrowserProfile(localName: "profile"))),
     ]
-    
+
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
     }

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 
 extension Array where Element == NSNumber {
   init?(hexString: String) {
@@ -27,8 +27,8 @@ extension Array where Element == BraveWallet.BlockchainToken {
   func includes(_ token: BraveWallet.BlockchainToken) -> Bool {
     contains(where: {
       $0.symbol.caseInsensitiveCompare(token.symbol) == .orderedSame
-      && $0.contractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
-      && $0.chainId.caseInsensitiveCompare(token.chainId) == .orderedSame
+        && $0.contractAddress.caseInsensitiveCompare(token.contractAddress) == .orderedSame
+        && $0.chainId.caseInsensitiveCompare(token.chainId) == .orderedSame
     })
   }
 }

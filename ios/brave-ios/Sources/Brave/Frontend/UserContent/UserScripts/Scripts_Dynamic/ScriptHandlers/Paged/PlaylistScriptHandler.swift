@@ -3,14 +3,14 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
 import AVKit
 import Data
+import Foundation
+import Playlist
 import Preferences
 import Shared
+import WebKit
 import os.log
-import Playlist
 
 enum PlaylistItemAddedState {
   case none
@@ -40,7 +40,8 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     super.init()
 
     urlObserver = tab.webView?.observe(
-      \.url, options: [.new],
+      \.url,
+      options: [.new],
       changeHandler: { [weak self] _, change in
         guard let self = self, let url = change.newValue else { return }
         if self.url != url {
@@ -50,19 +51,21 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
 
           self.delegate?.updatePlaylistURLBar(tab: self.tab, state: .none, item: nil)
         }
-      })
+      }
+    )
 
     tab.webView?.addGestureRecognizer(
       UILongPressGestureRecognizer(target: self, action: #selector(onLongPressedWebView(_:))).then {
         $0.delegate = self
-      })
+      }
+    )
   }
 
   deinit {
     asset?.cancelLoading()
     delegate?.updatePlaylistURLBar(tab: tab, state: .none, item: nil)
   }
-  
+
   static let playlistLongPressed = "playlistLongPressed_\(uniqueID)"
   static let playlistProcessDocumentLoad = "playlistProcessDocumentLoad_\(uniqueID)"
   static let mediaCurrentTimeFromTag = "mediaCurrentTimeFromTag_\(uniqueID)"
@@ -76,40 +79,51 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    
-    return WKUserScript(source: secureScript(handlerNamesMap: ["$<message_handler>": messageHandlerName,
-                                                               "$<tagUUID>": "tagId_\(uniqueID)",
-                                                               "$<playlistLongPressed>": playlistLongPressed,
-                                                               "$<playlistProcessDocumentLoad>": playlistProcessDocumentLoad,
-                                                               "$<mediaCurrentTimeFromTag>": mediaCurrentTimeFromTag,
-                                                               "$<stopMediaPlayback>": stopMediaPlayback],
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+
+    return WKUserScript(
+      source: secureScript(
+        handlerNamesMap: [
+          "$<message_handler>": messageHandlerName,
+          "$<tagUUID>": "tagId_\(uniqueID)",
+          "$<playlistLongPressed>": playlistLongPressed,
+          "$<playlistProcessDocumentLoad>": playlistProcessDocumentLoad,
+          "$<mediaCurrentTimeFromTag>": mediaCurrentTimeFromTag,
+          "$<stopMediaPlayback>": stopMediaPlayback,
+        ],
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
-    
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       return
     }
-    
+
     // If this URL is blocked from Playlist support, do nothing
     if url?.isPlaylistBlockedSiteURL == true {
       return
     }
-    
+
     if ReadyState.from(message: message) != nil {
       return
     }
-    
+
     Self.processPlaylistInfo(
       handler: self,
-      item: PlaylistInfo.from(message: message))
+      item: PlaylistInfo.from(message: message)
+    )
   }
 
   private class func processPlaylistInfo(handler: PlaylistScriptHandler, item: PlaylistInfo?) {
@@ -119,28 +133,30 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       }
       return
     }
-    
+
     if handler.url?.baseDomain != "soundcloud.com", item.isInvisible {
       DispatchQueue.main.async {
         handler.delegate?.updatePlaylistURLBar(tab: handler.tab, state: .none, item: nil)
       }
       return
     }
-    
+
     // Copy the item but use the web-view's title and location instead, if available
     // This is due to a iFrames security
-    item = PlaylistInfo(name: item.name,
-                        src: item.src,
-                        pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
-                        pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
-                        mimeType: item.mimeType,
-                        duration: item.duration,
-                        lastPlayedOffset: 0.0,
-                        detected: item.detected,
-                        dateAdded: item.dateAdded,
-                        tagId: item.tagId,
-                        order: item.order,
-                        isInvisible: item.isInvisible)
+    item = PlaylistInfo(
+      name: item.name,
+      src: item.src,
+      pageSrc: handler.tab?.webView?.url?.absoluteString ?? item.pageSrc,
+      pageTitle: handler.tab?.webView?.title ?? item.pageTitle,
+      mimeType: item.mimeType,
+      duration: item.duration,
+      lastPlayedOffset: 0.0,
+      detected: item.detected,
+      dateAdded: item.dateAdded,
+      tagId: item.tagId,
+      order: item.order,
+      isInvisible: item.isInvisible
+    )
 
     Self.queue.async { [weak handler] in
       guard let handler = handler else { return }
@@ -182,7 +198,7 @@ class PlaylistScriptHandler: NSObject, TabContentScript {
       // Therefore we shouldn't prompt the user to add to playlist.
       asset = AVURLAsset(url: url, options: AVAsset.defaultOptions)
     }
-    
+
     guard let asset = asset else {
       return false
     }
@@ -216,19 +232,22 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
   func onLongPressedWebView(_ gestureRecognizer: UILongPressGestureRecognizer) {
     if gestureRecognizer.state == .began,
       let webView = tab?.webView,
-      Preferences.Playlist.enableLongPressAddToPlaylist.value {
-      
+      Preferences.Playlist.enableLongPressAddToPlaylist.value
+    {
+
       // If this URL is blocked from Playlist support, do nothing
       if url?.isPlaylistBlockedSiteURL == true {
         return
       }
-      
+
       let touchPoint = gestureRecognizer.location(in: webView)
 
-      webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
-                                     args: [touchPoint.x, touchPoint.y, Self.scriptId],
-                                     contentWorld: Self.scriptSandbox,
-                                     asFunction: true) { _, error in
+      webView.evaluateSafeJavaScript(
+        functionName: "window.__firefox__.\(PlaylistScriptHandler.playlistLongPressed)",
+        args: [touchPoint.x, touchPoint.y, Self.scriptId],
+        contentWorld: Self.scriptSandbox,
+        asFunction: true
+      ) { _, error in
 
         if let error = error {
           Logger.module.error("Error executing onLongPressActivated: \(error.localizedDescription)")
@@ -237,32 +256,46 @@ extension PlaylistScriptHandler: UIGestureRecognizerDelegate {
     }
   }
 
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer
+  ) -> Bool {
     if otherGestureRecognizer.isKind(of: UILongPressGestureRecognizer.self) {
       return true
     }
     return false
   }
 
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldBeRequiredToFailBy otherGestureRecognizer: UIGestureRecognizer
+  ) -> Bool {
     return false
   }
 }
 
 extension PlaylistScriptHandler {
-  static func getCurrentTime(webView: WKWebView, nodeTag: String, completion: @escaping (Double) -> Void) {
+  static func getCurrentTime(
+    webView: WKWebView,
+    nodeTag: String,
+    completion: @escaping (Double) -> Void
+  ) {
     guard UUID(uuidString: nodeTag) != nil else {
       Logger.module.error("Unsanitized NodeTag.")
       return
     }
-    
-    webView.evaluateSafeJavaScript(functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
-                                   args: [nodeTag, Self.scriptId],
-                                   contentWorld: Self.scriptSandbox,
-                                   asFunction: true) { value, error in
+
+    webView.evaluateSafeJavaScript(
+      functionName: "window.__firefox__.\(mediaCurrentTimeFromTag)",
+      args: [nodeTag, Self.scriptId],
+      contentWorld: Self.scriptSandbox,
+      asFunction: true
+    ) { value, error in
 
       if let error = error {
-        Logger.module.error("Error Retrieving Playlist Page Media Current Time: \(error.localizedDescription)")
+        Logger.module.error(
+          "Error Retrieving Playlist Page Media Current Time: \(error.localizedDescription)"
+        )
       }
 
       DispatchQueue.main.async {
@@ -278,12 +311,16 @@ extension PlaylistScriptHandler {
   static func stopPlayback(tab: Tab?) {
     guard let tab = tab else { return }
 
-    tab.webView?.evaluateSafeJavaScript(functionName: "window.__firefox__.\(stopMediaPlayback)",
-                                        args: [Self.scriptId],
-                                        contentWorld: Self.scriptSandbox,
-                                        asFunction: true) { value, error in
+    tab.webView?.evaluateSafeJavaScript(
+      functionName: "window.__firefox__.\(stopMediaPlayback)",
+      args: [Self.scriptId],
+      contentWorld: Self.scriptSandbox,
+      asFunction: true
+    ) { value, error in
       if let error = error {
-        Logger.module.error("Error Retrieving Stopping Media Playback: \(error.localizedDescription)")
+        Logger.module.error(
+          "Error Retrieving Stopping Media Playback: \(error.localizedDescription)"
+        )
       }
     }
   }
@@ -300,16 +337,21 @@ extension PlaylistScriptHandler {
 extension PlaylistScriptHandler {
   struct ReadyState: Codable {
     let state: String
-    
+
     static func from(message: WKScriptMessage) -> ReadyState? {
       if !JSONSerialization.isValidJSONObject(message.body) {
         return nil
       }
 
-      guard let data = try? JSONSerialization.data(withJSONObject: message.body, options: [.fragmentsAllowed]) else {
+      guard
+        let data = try? JSONSerialization.data(
+          withJSONObject: message.body,
+          options: [.fragmentsAllowed]
+        )
+      else {
         return nil
       }
-      
+
       return try? JSONDecoder().decode(ReadyState.self, from: data)
     }
   }

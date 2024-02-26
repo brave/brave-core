@@ -3,10 +3,10 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import SwiftUI
-import Strings
-import DesignSystem
 import BraveCore
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -39,7 +39,8 @@ struct AccountsHeaderView: View {
           destination: Web3SettingsView(
             settingsStore: settingsStore,
             networkStore: networkStore,
-            keyringStore: keyringStore)
+            keyringStore: keyringStore
+          )
         ) {
           Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
             .labelStyle(.iconOnly)

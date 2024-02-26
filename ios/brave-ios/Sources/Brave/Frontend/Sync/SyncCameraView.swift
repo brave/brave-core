@@ -1,11 +1,11 @@
 /* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import AVFoundation
-import Shared
 import BraveShared
-import Data
-import UIKit
 import BraveUI
+import Data
+import Shared
+import UIKit
 
 class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   var captureSession: AVCaptureSession?
@@ -31,7 +31,9 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
   override init(frame: CGRect) {
     super.init(frame: frame)
 
-    cameraOverlayView = UIImageView(image: UIImage(named: "camera-overlay", in: .module, compatibleWith: nil))
+    cameraOverlayView = UIImageView(
+      image: UIImage(named: "camera-overlay", in: .module, compatibleWith: nil)
+    )
     cameraOverlayView.contentMode = .center
     addSubview(cameraOverlayView)
     addSubview(cameraAccessButton)
@@ -139,13 +141,14 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
             self.bringSubviewToFront(self.openSettingsButton)
           }
         }
-      })
+      }
+    )
   }
 
   func startRunning() {
     DispatchQueue.global(qos: .default).async { [weak self] in
       guard let self else { return }
-      
+
       if self.captureSession?.isRunning == false {
         self.captureSession?.startRunning()
       }
@@ -158,7 +161,11 @@ class SyncCameraView: UIView, AVCaptureMetadataOutputObjectsDelegate {
     }
   }
 
-  func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+  func metadataOutput(
+    _ output: AVCaptureMetadataOutput,
+    didOutput metadataObjects: [AVMetadataObject],
+    from connection: AVCaptureConnection
+  ) {
 
     if metadataObjects.isEmpty { return }
 

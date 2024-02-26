@@ -14,7 +14,8 @@ class MetadataParserHelper: TabEventHandler {
   init() {
     self.tabObservers = registerFor(
       .didChangeURL,
-      queue: .main)
+      queue: .main
+    )
   }
 
   deinit {
@@ -32,7 +33,11 @@ class MetadataParserHelper: TabEventHandler {
       return
     }
 
-    webView.evaluateSafeJavaScript(functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()", contentWorld: .defaultClient, asFunction: false) { (result, error) in
+    webView.evaluateSafeJavaScript(
+      functionName: "__firefox__.metadata && __firefox__.metadata.getMetadata()",
+      contentWorld: .defaultClient,
+      asFunction: false
+    ) { (result, error) in
       guard error == nil else {
         // TabEvent.post(.pageMetadataNotAvailable, for: tab)
         tab.pageMetadata = nil
@@ -53,7 +58,9 @@ class MetadataParserHelper: TabEventHandler {
         tab.pageMetadata = pageMetadata
         TabEvent.post(.didLoadPageMetadata(pageMetadata), for: tab)
       } catch {
-        Logger.module.error("Failed to parse metadata: \(error.localizedDescription, privacy: .public)")
+        Logger.module.error(
+          "Failed to parse metadata: \(error.localizedDescription, privacy: .public)"
+        )
         // To avoid issues where `pageMetadata` points to the last website to successfully
         // parse metadata, set to nil
         tab.pageMetadata = nil
@@ -70,7 +77,8 @@ class MediaImageLoader: TabEventHandler {
     self.prefs = prefs
     self.tabObservers = registerFor(
       .didLoadPageMetadata,
-      queue: .main)
+      queue: .main
+    )
   }
 
   deinit {

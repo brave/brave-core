@@ -3,20 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Preferences
-import struct Shared.Strings
 import BraveCore
+import Preferences
+
+import struct Shared.Strings
 
 extension Preferences {
   public final class Wallet {
     public enum WalletType: Int, Identifiable, CaseIterable {
       case none
       case brave
-      
+
       public var id: Int {
         rawValue
       }
-      
+
       public var name: String {
         switch self {
         case .none:
@@ -27,9 +28,15 @@ extension Preferences {
       }
     }
     /// The default wallet to use for Ethereum to be communicate with web3
-    public static let defaultEthWallet = Option<Int>(key: "wallet.default-wallet", default: WalletType.brave.rawValue)
+    public static let defaultEthWallet = Option<Int>(
+      key: "wallet.default-wallet",
+      default: WalletType.brave.rawValue
+    )
     /// The default wallet to use for Solana to be communicate with web3
-    public static let defaultSolWallet = Option<Int>(key: "wallet.default-sol-wallet", default: WalletType.brave.rawValue)
+    public static let defaultSolWallet = Option<Int>(
+      key: "wallet.default-sol-wallet",
+      default: WalletType.brave.rawValue
+    )
     /// Whether or not webpages can use the Ethereum Provider API to communicate with users Ethereum wallet
     public static let allowEthProviderAccess: Option<Bool> = .init(
       key: "wallet.allow-eth-provider-access",
@@ -41,29 +48,56 @@ extension Preferences {
       default: true
     )
     /// The option to display web3 notification
-    public static let displayWeb3Notifications = Option<Bool>(key: "wallet.display-web3-notifications", default: true)
+    public static let displayWeb3Notifications = Option<Bool>(
+      key: "wallet.display-web3-notifications",
+      default: true
+    )
     /// The option to determine if we show or hide test networks in network lists
-    public static let showTestNetworks = Option<Bool>(key: "wallet.show-test-networks", default: false)
+    public static let showTestNetworks = Option<Bool>(
+      key: "wallet.show-test-networks",
+      default: false
+    )
     /// The option for users to turn off aurora popup
     public static let showAuroraPopup = Option<Bool>(key: "wallet.show-aurora-popup", default: true)
-    
+
     // MARK: Portfolio settings
     public static let isShowingGraph = Option<Bool>(key: "wallet.isShowingGraph", default: true)
-    public static let isShowingBalances = Option<Bool>(key: "wallet.isShowingBalances", default: true)
+    public static let isShowingBalances = Option<Bool>(
+      key: "wallet.isShowingBalances",
+      default: true
+    )
     public static let isShowingNFTsTab = Option<Bool>(key: "wallet.isShowingNFTsTab", default: true)
-    
+
     // MARK: Portfolio & NFT filters
-    public static let groupByFilter = Option<Int>(key: "wallet.groupByFilter", default: GroupBy.none.rawValue)
-    public static let sortOrderFilter = Option<Int>(key: "wallet.sortOrderFilter", default: SortOrder.valueDesc.rawValue)
-    public static let isHidingSmallBalancesFilter = Option<Bool>(key: "wallet.isHidingSmallBalancesFilter", default: false)
-    public static let isHidingUnownedNFTsFilter = Option<Bool>(key: "wallet.isHidingUnownedNFTsFilter", default: false)
-    public static let isShowingNFTNetworkLogoFilter = Option<Bool>(key: "wallet.isShowingNFTNetworkLogoFilter", default: false)
-    public static let nonSelectedAccountsFilter = Option<[String]>(key: "wallet.nonSelectedAccountsFilter", default: [])
+    public static let groupByFilter = Option<Int>(
+      key: "wallet.groupByFilter",
+      default: GroupBy.none.rawValue
+    )
+    public static let sortOrderFilter = Option<Int>(
+      key: "wallet.sortOrderFilter",
+      default: SortOrder.valueDesc.rawValue
+    )
+    public static let isHidingSmallBalancesFilter = Option<Bool>(
+      key: "wallet.isHidingSmallBalancesFilter",
+      default: false
+    )
+    public static let isHidingUnownedNFTsFilter = Option<Bool>(
+      key: "wallet.isHidingUnownedNFTsFilter",
+      default: false
+    )
+    public static let isShowingNFTNetworkLogoFilter = Option<Bool>(
+      key: "wallet.isShowingNFTNetworkLogoFilter",
+      default: false
+    )
+    public static let nonSelectedAccountsFilter = Option<[String]>(
+      key: "wallet.nonSelectedAccountsFilter",
+      default: []
+    )
     public static let nonSelectedNetworksFilter = Option<[String]>(
       key: "wallet.nonSelectedNetworksFilter",
       default: WalletConstants.supportedTestNetworkChainIds
     )
-    
+
     /// Reset Wallet Preferences based on coin type
     public static func reset(for coin: BraveWallet.CoinType) {
       switch coin {
@@ -80,16 +114,16 @@ extension Preferences {
         return
       }
     }
-    
+
     public enum Web3IPFSOption: Int, Identifiable, CaseIterable {
       case ask
       case enabled
       case disabled
-      
+
       public var id: Int {
         rawValue
       }
-      
+
       public var name: String {
         switch self {
         case .ask:
@@ -101,25 +135,37 @@ extension Preferences {
         }
       }
     }
-    
-    public static let resolveIPFSResources = Option<Int>(key: "web3.resolve-ipfs-resources", default: Web3IPFSOption.ask.rawValue)
-    
+
+    public static let resolveIPFSResources = Option<Int>(
+      key: "web3.resolve-ipfs-resources",
+      default: Web3IPFSOption.ask.rawValue
+    )
+
     /// Used to track whether to prompt user to enable NFT discovery
-    public static let shouldShowNFTDiscoveryPermissionCallout = Option<Bool>(key: "wallet.show-nft-discovery-permission-callout", default: true)
-   
+    public static let shouldShowNFTDiscoveryPermissionCallout = Option<Bool>(
+      key: "wallet.show-nft-discovery-permission-callout",
+      default: true
+    )
+
     /// Used to track whether to migrate user assets stored in BraveCore to CoreData
-    static let migrateCoreToWalletUserAssetCompleted = Option<Bool>(key: "wallet.core-to-wallet-user-asset", default: false)
-    
+    static let migrateCoreToWalletUserAssetCompleted = Option<Bool>(
+      key: "wallet.core-to-wallet-user-asset",
+      default: false
+    )
+
     /// Used to track whether to show user wallet onboarding completed screen after user has created or restore a wallet
-    public static let isOnboardingCompleted = Option<Bool>(key: "wallet.show-wallet-is-onboarding-completed", default: false)
+    public static let isOnboardingCompleted = Option<Bool>(
+      key: "wallet.show-wallet-is-onboarding-completed",
+      default: false
+    )
   }
 }
 
 extension BraveWallet.ResolveMethod: Identifiable, CaseIterable {
   public static var allCases: [BraveWallet.ResolveMethod] = [.ask, .enabled, .disabled]
-  
+
   public var id: Int { rawValue }
-  
+
   public var name: String {
     switch self {
     case .ask:

@@ -16,7 +16,8 @@ public struct VisualEffectView: UIViewRepresentable {
     UIVisualEffectView()
   }
 
-  public func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) {
+  public func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>)
+  {
     uiView.effect = effect
   }
 }

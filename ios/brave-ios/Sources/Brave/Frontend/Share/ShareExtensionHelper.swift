@@ -40,7 +40,10 @@ class ShareExtensionHelper {
       activityItems.append(TitleActivityItemProvider(title: title))
     }
 
-    let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+    let activityViewController = UIActivityViewController(
+      activityItems: activityItems,
+      applicationActivities: applicationActivities
+    )
 
     // Hide 'Add to Reading List' which currently uses Safari.
     // We would also hide View Later, if possible, but the exclusion list doesn't currently support

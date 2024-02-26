@@ -2,11 +2,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import UIKit
-import SnapKit
-import Shared
-import Preferences
 import Combine
+import Preferences
+import Shared
+import SnapKit
+import UIKit
 
 class BottomToolbarView: UIView, ToolbarProtocol {
   weak var tabToolbarDelegate: ToolbarDelegate?
@@ -43,8 +43,10 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     contentView.axis = .horizontal
     contentView.distribution = .fillEqually
 
-    addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:))))
-    
+    addGestureRecognizer(
+      UIPanGestureRecognizer(target: self, action: #selector(didSwipeToolbar(_:)))
+    )
+
     line.snp.makeConstraints {
       $0.bottom.equalTo(self.snp.top)
       $0.leading.trailing.equalToSuperview()
@@ -57,11 +59,17 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       .sink(receiveValue: { [weak self] isPrivateBrowsing in
         guard let self = self else { return }
         self.updateColors()
-        self.helper?.updateForTraitCollection(self.traitCollection, browserColors: privateBrowsingManager.browserColors)
+        self.helper?.updateForTraitCollection(
+          self.traitCollection,
+          browserColors: privateBrowsingManager.browserColors
+        )
       })
-    
-    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors)
-    
+
+    helper?.updateForTraitCollection(
+      traitCollection,
+      browserColors: privateBrowsingManager.browserColors
+    )
+
     updateColors()
   }
 
@@ -93,10 +101,13 @@ class BottomToolbarView: UIView, ToolbarProtocol {
     }
     super.updateConstraints()
   }
-  
+
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors)
+    helper?.updateForTraitCollection(
+      traitCollection,
+      browserColors: privateBrowsingManager.browserColors
+    )
   }
 
   private func setupAccessibility() {
@@ -142,12 +153,14 @@ class BottomToolbarView: UIView, ToolbarProtocol {
       break
     }
   }
-  
+
   func updateForwardStatus(_ canGoForward: Bool) {
     if canGoForward, let shareIndex = contentView.arrangedSubviews.firstIndex(of: shareButton) {
       shareButton.removeFromSuperview()
       contentView.insertArrangedSubview(forwardButton, at: shareIndex)
-    } else if !canGoForward, let forwardIndex = contentView.arrangedSubviews.firstIndex(of: forwardButton) {
+    } else if !canGoForward,
+      let forwardIndex = contentView.arrangedSubviews.firstIndex(of: forwardButton)
+    {
       forwardButton.removeFromSuperview()
       contentView.insertArrangedSubview(shareButton, at: forwardIndex)
     }

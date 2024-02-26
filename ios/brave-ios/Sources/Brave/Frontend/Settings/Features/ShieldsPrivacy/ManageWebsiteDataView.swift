@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import Foundation
+import Strings
 import SwiftUI
 import WebKit
-import BraveUI
-import Strings
 
 struct ManageWebsiteDataView: View {
   @State private var isLoading: Bool = false
@@ -66,7 +66,10 @@ struct ManageWebsiteDataView: View {
       if visibleSelectedRecordsIds.count == 1 {
         return Strings.removeDataRecord
       }
-      return String.localizedStringWithFormat(Strings.removeSelectedDataRecord, visibleSelectedRecordsIds.count)
+      return String.localizedStringWithFormat(
+        Strings.removeSelectedDataRecord,
+        visibleSelectedRecordsIds.count
+      )
     }
     return Strings.removeAllDataRecords
   }
@@ -84,7 +87,8 @@ struct ManageWebsiteDataView: View {
               .sorted(by: { $0.displayName < $1.displayName })
             self.isLoading = false
           }
-        })
+        }
+      )
   }
 
   var body: some View {
@@ -113,9 +117,12 @@ struct ManageWebsiteDataView: View {
               }
               .frame(maxWidth: .infinity, alignment: .leading)
               .swipeActions(edge: .trailing) {
-                Button(role: .destructive, action: {
-                  removeRecords([record])
-                }) {
+                Button(
+                  role: .destructive,
+                  action: {
+                    removeRecords([record])
+                  }
+                ) {
                   Label(Strings.removeDataRecord, systemImage: "trash")
                 }
               }
@@ -159,7 +166,9 @@ struct ManageWebsiteDataView: View {
             }
           }) {
             Text(editMode.isEditing ? Strings.done : Strings.edit)
-              .foregroundColor(visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint))
+              .foregroundColor(
+                visibleRecords.isEmpty ? Color(.braveDisabled) : Color(.braveBlurpleTint)
+              )
           }
           .disabled(visibleRecords.isEmpty)
           Spacer()

@@ -39,7 +39,7 @@ class ToolbarButton: UIButton {
     adjustsImageWhenHighlighted = false
     imageView?.contentMode = .scaleAspectFit
   }
-  
+
   @available(*, unavailable)
   required init(coder: NSCoder) {
     fatalError()
@@ -62,7 +62,7 @@ class ToolbarButton: UIButton {
       self.imageView?.tintColor = self.tintColor
     }
   }
-  
+
   private func updateTintColor() {
     let tintColor: UIColor? = {
       if !isEnabled {
@@ -80,7 +80,11 @@ class ToolbarButton: UIButton {
     self.tintColor = tintColor
   }
 
-  override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+  override func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    willDisplayMenuFor configuration: UIContextMenuConfiguration,
+    animator: UIContextMenuInteractionAnimating?
+  ) {
     UIImpactFeedbackGenerator(style: .medium).bzzt()
   }
 }

@@ -2,9 +2,9 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveUI
 import Shared
+import UIKit
 
 /// Displays a group of feed items under a title, and optionally a brand under
 /// the feeds.
@@ -93,7 +93,8 @@ public class FeedGroupView: UIView {
           let transform: ([UIView]) -> [UIView] = transformItems ?? { views in views }
           let groupViews = transform(buttons)
           groupViews.forEach($0.addArrangedSubview)
-        })
+        }
+      )
     )
 
     addSubview(backgroundView)
@@ -146,12 +147,14 @@ public class DealsFeedGroupView: FeedGroupView, FeedCardContent {
           }
           $0.isUserInteractionEnabled = false
           $0.isAccessibilityElement = false
-        }),
+        }
+      ),
       .view(
         FeedCardFooterButton().then {
           $0.label.text = Strings.BraveNews.moreBraveOffers
           $0.addTarget(self, action: #selector(tappedMoreOffers), for: .touchUpInside)
-        })
+        }
+      )
     )
   }
 
@@ -171,7 +174,8 @@ public class VerticalFeedGroupView: FeedGroupView, FeedCardContent {
 public class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
   public required init() {
     super.init(
-      axis: .vertical, feedLayout: .basic,
+      axis: .vertical,
+      feedLayout: .basic,
       transformItems: { views in
         // Turn the usual feed group item into a numbered item
         views.enumerated().map { view in
@@ -186,12 +190,14 @@ public class NumberedFeedGroupView: FeedGroupView, FeedCardContent {
                   $0.textColor = UIColor(white: 1.0, alpha: 0.4)
                   $0.setContentHuggingPriority(.required, for: .horizontal)
                   $0.isAccessibilityElement = false
-                }),
+                }
+              ),
               .view(view.element)
             )
           }
         }
-      })
+      }
+    )
   }
 }
 
@@ -211,6 +217,10 @@ private class FeedSpringButton: SpringButton {
 
   override var accessibilityLabel: String? {
     get { feedItemView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(newValue ?? "nil") ignored"
+      )
+    }
   }
 }

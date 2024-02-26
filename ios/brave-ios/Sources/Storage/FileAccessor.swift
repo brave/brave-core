@@ -4,12 +4,10 @@
 
 import Foundation
 
-/**
- * A convenience class for file operations under a given root directory.
- * Note that while this class is intended to be used to operate only on files
- * under the root, this is not strictly enforced: clients can go outside
- * the path using ".." or symlinks.
- */
+/// A convenience class for file operations under a given root directory.
+/// Note that while this class is intended to be used to operate only on files
+/// under the root, this is not strictly enforced: clients can go outside
+/// the path using ".." or symlinks.
 open class FileAccessor {
   public let rootPath: String
 
@@ -60,7 +58,9 @@ open class FileAccessor {
   }
 
   open func attributesForFileAt(relativePath: String) throws -> [FileAttributeKey: Any] {
-    return try FileManager.default.attributesOfItem(atPath: URL(fileURLWithPath: rootPath).appendingPathComponent(relativePath).path)
+    return try FileManager.default.attributesOfItem(
+      atPath: URL(fileURLWithPath: rootPath).appendingPathComponent(relativePath).path
+    )
   }
 
   /**
@@ -78,7 +78,11 @@ open class FileAccessor {
     try FileManager.default.moveItem(atPath: fromPath, toPath: toPath.path)
   }
 
-  open func copyMatching(fromRelativeDirectory relativePath: String, toAbsoluteDirectory absolutePath: String, matching: (String) -> Bool) throws {
+  open func copyMatching(
+    fromRelativeDirectory relativePath: String,
+    toAbsoluteDirectory absolutePath: String,
+    matching: (String) -> Bool
+  ) throws {
     let fileManager = FileManager.default
     let pathURL = URL(fileURLWithPath: rootPath).appendingPathComponent(relativePath)
     let path = pathURL.path
@@ -112,6 +116,10 @@ open class FileAccessor {
      * Does nothing if the directory already exists.
      */
   fileprivate func createDir(_ absolutePath: String) throws {
-    try FileManager.default.createDirectory(atPath: absolutePath, withIntermediateDirectories: true, attributes: nil)
+    try FileManager.default.createDirectory(
+      atPath: absolutePath,
+      withIntermediateDirectories: true,
+      attributes: nil
+    )
   }
 }

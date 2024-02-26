@@ -4,27 +4,27 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import BraveCore
-import SwiftUI
 import BraveShared
 import Preferences
+import SwiftUI
 
 struct Selectable<T: Identifiable & Equatable>: Equatable, Identifiable {
   let isSelected: Bool
   let model: T
-  
+
   var id: T.ID { model.id }
 }
 
 struct NetworkFilterView: View {
-  
+
   @State var networks: [Selectable<BraveWallet.NetworkInfo>]
   @ObservedObject var networkStore: NetworkStore
   let showsCancelButton: Bool
   let requiresSave: Bool
   let saveAction: ([Selectable<BraveWallet.NetworkInfo>]) -> Void
-  
+
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   init(
     networks: [Selectable<BraveWallet.NetworkInfo>],
     networkStore: NetworkStore,
@@ -38,7 +38,7 @@ struct NetworkFilterView: View {
     self.requiresSave = requiresSave
     self.saveAction = saveAction
   }
-  
+
   private var allSelected: Bool {
     networks
       .filter {
@@ -49,7 +49,7 @@ struct NetworkFilterView: View {
       }
       .allSatisfy(\.isSelected)
   }
-  
+
   var body: some View {
     NetworkSelectionRootView(
       navigationTitle: Strings.Wallet.networkFilterTitle,
@@ -79,17 +79,20 @@ struct NetworkFilterView: View {
       }
     }
   }
-  
+
   private func selectNetwork(_ network: BraveWallet.NetworkInfo) {
     DispatchQueue.main.async {
       if let index = networks.firstIndex(
         where: { $0.model.chainId == network.chainId && $0.model.coin == network.coin }
       ) {
-        networks[index] = .init(isSelected: !networks[index].isSelected, model: networks[index].model)
+        networks[index] = .init(
+          isSelected: !networks[index].isSelected,
+          model: networks[index].model
+        )
       }
     }
   }
-  
+
   private func selectAll() {
     DispatchQueue.main.async {
       networks = networks.map {
@@ -115,12 +118,12 @@ struct NetworkFilterView_Previews: PreviewProvider {
           .init(isSelected: true, model: .mockSolana),
           .init(isSelected: true, model: .mockPolygon),
           .init(isSelected: true, model: .mockGoerli),
-          .init(isSelected: true, model: .mockSolanaTestnet)
+          .init(isSelected: true, model: .mockSolanaTestnet),
         ],
         networkStore: .previewStore,
         requiresSave: false,
         saveAction: { _ in
-          
+
         }
       )
     }

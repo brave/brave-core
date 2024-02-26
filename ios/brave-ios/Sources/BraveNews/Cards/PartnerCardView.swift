@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
+import Foundation
 import UIKit
 
 public class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
@@ -27,7 +27,11 @@ public class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
     }
 
     addTarget(self, action: #selector(tappedSelf), for: .touchUpInside)
-    feedView.promotedButton.addTarget(self, action: #selector(tappedPromotedButton), for: .touchUpInside)
+    feedView.promotedButton.addTarget(
+      self,
+      action: #selector(tappedPromotedButton),
+      for: .touchUpInside
+    )
 
     let contextMenuDelegate = FeedContextMenuDelegate(
       performedPreviewAction: { [weak self] in
@@ -48,7 +52,11 @@ public class PartnerCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 
   @objc private func tappedSelf() {
