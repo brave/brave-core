@@ -73,6 +73,8 @@ export interface Props {
 export const CryptoView = ({ sessionRoute }: Props) => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
+  const { pageHandler } = getWalletPageApiProxy()
+
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
@@ -132,7 +134,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isPanel])
+  }, [isPanel, isAndroid])
 
   const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
     if (showModal) {
@@ -158,8 +160,6 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       history.push(WalletRoutes.PortfolioNFTs)
     }
   }, [location.key])
-
-  const { pageHandler } = getWalletPageApiProxy()
 
   // computed
   const isCheckingWallets =
