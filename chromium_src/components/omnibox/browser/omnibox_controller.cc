@@ -5,16 +5,13 @@
 
 #include "components/omnibox/browser/omnibox_controller.h"
 
-#include "brave/components/omnibox/browser/brave_omnibox_client.h"
-
 #define StartAutocomplete StartAutocomplete_ChromiumImpl
 #include "src/components/omnibox/browser/omnibox_controller.cc"
 #undef StartAutocomplete
 
 void OmniboxController::StartAutocomplete(
     const AutocompleteInput& input) const {
-  auto* client = static_cast<BraveOmniboxClient*>(client_.get());
-  if (!client->IsAutocompleteEnabled()) {
+  if (!client_->IsAutocompleteEnabled()) {
     ClearPopupKeywordMode();
     return;
   }

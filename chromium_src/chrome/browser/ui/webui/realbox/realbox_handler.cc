@@ -5,7 +5,6 @@
 
 #include "chrome/browser/ui/webui/realbox/realbox_handler.h"
 
-#include "brave/components/omnibox/browser/brave_omnibox_client.h"
 #include "brave/components/vector_icons/vector_icons.h"
 #include "components/omnibox/browser/vector_icons.h"
 
