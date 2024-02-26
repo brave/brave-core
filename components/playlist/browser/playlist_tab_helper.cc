@@ -12,6 +12,7 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper_observer.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -44,6 +45,9 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
 
   content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
       contents, service);
+  PlaylistMediaHandler::CreateForWebContents(
+      contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
+                                    service->GetWeakPtr()));
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
@@ -361,10 +365,6 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
   }
 
   DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
-
-  if (IsExtractingMediaFromBackgroundWebContents()) {
-    found_items_.clear();
-  }
 
   for (auto& new_item : items) {
     const auto it = base::ranges::find_if(

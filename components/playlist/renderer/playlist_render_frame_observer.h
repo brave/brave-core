@@ -57,7 +57,7 @@ class PlaylistRenderFrameObserver final
   void Inject(const std::string& script_text,
               v8::Local<v8::Context> context,
               std::vector<v8::Local<v8::Value>> args = {}) const;
-  void OnMediaDetected(base::Value media);
+  void OnMediaDetected(base::Value::List media);
 
   int32_t isolated_world_id_;
   mojo::AssociatedReceiver<mojom::PlaylistRenderFrameObserverConfigurator>

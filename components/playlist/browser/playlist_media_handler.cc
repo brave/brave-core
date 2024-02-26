@@ -5,8 +5,14 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 
+#include <string>
+
+#include "base/check.h"
+#include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -14,11 +20,10 @@ PlaylistMediaHandler::~PlaylistMediaHandler() = default;
 
 void PlaylistMediaHandler::BindMediaResponderReceiver(
     content::RenderFrameHost* render_frame_host,
-    mojo::PendingAssociatedReceiver<playlist::mojom::PlaylistMediaResponder>
-        receiver) {
+    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver) {
   // TODO(sszaloki): do we have to do a service check here?
   // auto* playlist_service =
-  //     playlist::PlaylistServiceFactory::GetForBrowserContext(
+  //     PlaylistServiceFactory::GetForBrowserContext(
   //         rfh->GetBrowserContext());
   // if (!playlist_service) {
   //   // We don't support playlist on OTR profile.
@@ -31,8 +36,8 @@ void PlaylistMediaHandler::BindMediaResponderReceiver(
     return;
   }
 
-  auto* media_handler = PlaylistMediaHandler::FromWebContents(web_contents);
-  if (media_handler) {
+  if (auto* media_handler =
+          PlaylistMediaHandler::FromWebContents(web_contents)) {
     media_handler->media_responder_receivers_.Bind(render_frame_host,
                                                    std::move(receiver));
   }
@@ -40,14 +45,23 @@ void PlaylistMediaHandler::BindMediaResponderReceiver(
 
 PlaylistMediaHandler::PlaylistMediaHandler(
     content::WebContents* web_contents,
-    OnMediaDetectedCallback on_media_detected)
+    OnMediaDetectedCallback on_media_detected_callback)
     : content::WebContentsUserData<PlaylistMediaHandler>(*web_contents),
       media_responder_receivers_(web_contents, this),
-      on_media_detected_(std::move(on_media_detected)) {
-  std::visit([](auto& callback) { CHECK(callback); }, on_media_detected_);
+      on_media_detected_callback_(std::move(on_media_detected_callback)) {
+  std::visit(
+      [](auto& on_media_detected_callback) {
+        CHECK(on_media_detected_callback);
+      },
+      on_media_detected_callback_);
 }
 
-void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
+void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
+  CHECK(!media.empty())
+      << "This invariant should be maintained by the renderer!";
+
+  // TODO(sszaloki):
+  // Should we use RenderFrameHost::GetGlobalFrameToken() instead?
   const auto render_frame_host_id =
       media_responder_receivers_.GetCurrentTargetFrame()->GetGlobalId();
 
@@ -66,24 +80,24 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
   static const std::string kFunction = __FUNCTION__;
   std::visit(
       base::Overloaded{
-          [&](base::OnceCallback<Signature>& on_media_detected) {
-            if (on_media_detected) {
+          [&](base::OnceCallback<Signature>& on_media_detected_callback) {
+            if (on_media_detected_callback) {
               DVLOG(2) << render_frame_host_id << " - " << kFunction
                        << " (background):\n"
                        << media;
 
-              std::move(on_media_detected)
+              std::move(on_media_detected_callback)
                   .Run(std::move(media), web_contents->GetLastCommittedURL());
             }
           },
-          [&](base::RepeatingCallback<Signature>& on_media_detected) {
+          [&](base::RepeatingCallback<Signature>& on_media_detected_callback) {
             DVLOG(2) << render_frame_host_id << " - " << kFunction << ":\n"
                      << media;
 
-            on_media_detected.Run(std::move(media),
-                                  web_contents->GetLastCommittedURL());
+            on_media_detected_callback.Run(std::move(media),
+                                           web_contents->GetLastCommittedURL());
           }},
-      on_media_detected_);
+      on_media_detected_callback_);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistMediaHandler);

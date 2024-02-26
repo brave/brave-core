@@ -91,7 +91,6 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
-  download_request_manager_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   task_runner_.reset();
@@ -102,7 +101,7 @@ void PlaylistService::Shutdown() {
 }
 
 std::vector<mojom::PlaylistItemPtr> PlaylistService::GetPlaylistItems(
-    base::Value value,
+    base::Value::List list,
     GURL page_url) {
   /* Expected output:
     [
@@ -121,14 +120,7 @@ std::vector<mojom::PlaylistItemPtr> PlaylistService::GetPlaylistItems(
   */
 
   std::vector<mojom::PlaylistItemPtr> items;
-  if (value.is_dict() && value.GetDict().empty()) {
-    DVLOG(2) << "No media was detected";
-    return items;
-  }
-
-  CHECK(value.is_list()) << " Got invalid value after running media detector "
-                            "script: Should be list";
-  for (const auto& media : value.GetList()) {
+  for (const auto& media : list) {
     if (!media.is_dict()) {
       LOG(ERROR) << __func__ << " Got invalid item";
       continue;
@@ -455,7 +447,7 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
 void PlaylistService::Callback(const std::string& playlist_id,
                                bool cache,
                                AddMediaFilesCallback callback,
-                               base::Value media,
+                               base::Value::List media,
                                const GURL& url) {
   AddMediaFilesFromItems(playlist_id, cache, std::move(callback),
                          GetPlaylistItems(std::move(media), url));
@@ -1353,16 +1345,7 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::AddObserverForStreaming(
-    mojo::PendingRemote<mojom::PlaylistStreamingObserver> observer) {
-  streaming_observers_.Add(std::move(observer));
-}
-
-void PlaylistService::ClearObserverForStreaming() {
-  streaming_observers_.Clear();
-}
-
-void PlaylistService::OnMediaDetected(base::Value media, const GURL& url) {
+void PlaylistService::OnMediaDetected(base::Value::List media, const GURL& url) {
   if (!*enabled_pref_) {
     return;
   }

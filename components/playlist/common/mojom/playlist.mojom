@@ -201,5 +201,5 @@ interface PlaylistRenderFrameObserverConfigurator {
 };
 
 interface PlaylistMediaResponder {
-  OnMediaDetected(mojo_base.mojom.Value media);
+  OnMediaDetected(mojo_base.mojom.ListValue media);
 };
