@@ -45,7 +45,6 @@ const defaultState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: true,
   userVisibleTokensInfo: [],
-  fullTokenList: [],
   addUserAssetError: false,
   activeOrigin: {
     eTldPlusOne: '',
@@ -130,7 +129,6 @@ export const WalletAsyncActions = {
   locked: createAction('locked'),
   unlocked: createAction('unlocked'),
   backedUp: createAction('backedUp'),
-  getAllTokensList: createAction('getAllTokensList'),
   defaultBaseCurrencyChanged: createAction<DefaultBaseCurrencyChanged>(
     'defaultBaseCurrencyChanged'
   ), // refreshWalletInfo
@@ -186,13 +184,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
           payload.walletInfo.isNftPinningFeatureEnabled
         state.isAnkrBalancesFeatureEnabled =
           payload.walletInfo.isAnkrBalancesFeatureEnabled
-      },
-
-      setAllTokensList: (
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
-      ) => {
-        state.fullTokenList = payload
       },
 
       setAssetAutoDiscoveryCompleted(

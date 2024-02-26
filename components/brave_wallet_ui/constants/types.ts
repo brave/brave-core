@@ -199,7 +199,6 @@ export interface WalletState {
   isWalletCreated: boolean
   isWalletLocked: boolean
   userVisibleTokensInfo: BraveWallet.BlockchainToken[]
-  fullTokenList: BraveWallet.BlockchainToken[]
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
   selectedNetworkFilter: NetworkFilterType
