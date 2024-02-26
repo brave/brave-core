@@ -317,6 +317,10 @@ extension Tab: BraveWalletProviderDelegate {
   func walletInteractionDetected() {
     // No usage for iOS
   }
+
+  func showWalletBackup(){
+    // No usage for iOS
+  }
   
   func showWalletOnboarding() {
     showPanel()
