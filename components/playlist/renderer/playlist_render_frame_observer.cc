@@ -23,10 +23,10 @@
 namespace gin {
 
 template <>
-struct Converter<base::Value> {
+struct Converter<base::Value::List> {
   static bool FromV8(v8::Isolate* isolate,
                      v8::Local<v8::Value> v8_value,
-                     base::Value* out) {
+                     base::Value::List* out) {
     if (v8_value.IsEmpty()) {
       return false;
     }
@@ -38,7 +38,11 @@ struct Converter<base::Value> {
       return false;
     }
 
-    *out = std::move(*base_value);
+    if (!base_value->is_list()) {
+      return false;
+    }
+
+    *out = std::move(*base_value).TakeList();
     return true;
   }
 };
@@ -156,8 +160,12 @@ void PlaylistRenderFrameObserver::Inject(
                                args.empty() ? nullptr : args.data());
 }
 
-void PlaylistRenderFrameObserver::OnMediaDetected(base::Value media) {
+void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
   DVLOG(2) << __FUNCTION__;
+
+  if (media.empty()) {
+    return;
+  }
 
   GetMediaResponder()->OnMediaDetected(std::move(media));
 }
