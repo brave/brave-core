@@ -43,7 +43,6 @@ export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const fullTokenList = ({ wallet }: State) => wallet.fullTokenList
 export const selectedAssetFilter = ({ wallet }: State) =>
   wallet.selectedAssetFilter
 export const selectedGroupAssetsByItem = ({ wallet }: State) =>

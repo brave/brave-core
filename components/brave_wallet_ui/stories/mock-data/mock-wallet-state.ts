@@ -14,7 +14,7 @@ import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options
 import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
-import { mockMoonCatNFT, mockErc20TokensList } from './mock-asset-options'
+import { mockMoonCatNFT } from './mock-asset-options'
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
 
 export const mockWalletState: WalletState = {
@@ -23,7 +23,6 @@ export const mockWalletState: WalletState = {
     eTldPlusOne: 'uniswap.org'
   },
   addUserAssetError: false,
-  fullTokenList: mockErc20TokensList,
   hasInitialized: true,
   isBitcoinEnabled: false,
   isZCashEnabled: false,

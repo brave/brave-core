@@ -18,7 +18,6 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(
           walletApi.endpoints.invalidateUserTokensRegistry.initiate()
         )
-        store.dispatch(WalletActions.getAllTokensList())
         store.dispatch(
           WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: false })
         )
@@ -31,7 +30,6 @@ export function makeBraveWalletServiceTokenObserver(store: Store) {
         store.dispatch(
           walletApi.endpoints.invalidateUserTokensRegistry.initiate()
         )
-        store.dispatch(WalletActions.getAllTokensList())
         store.dispatch(
           WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
         )
