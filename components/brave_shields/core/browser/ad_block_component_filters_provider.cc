@@ -95,7 +95,7 @@ void AdBlockComponentFiltersProvider::OnComponentReady(
   NotifyObservers(engine_is_default_);
 }
 
-bool AdBlockComponentFiltersProvider::IsInitialized() {
+bool AdBlockComponentFiltersProvider::IsInitialized() const {
   return !component_path_.empty();
 }
 

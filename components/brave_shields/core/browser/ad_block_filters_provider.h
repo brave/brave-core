@@ -48,7 +48,7 @@ class AdBlockFiltersProvider {
 
   // Intended to be overridden if the provider implementation is not immediately
   // ready at creation time.
-  virtual bool IsInitialized();
+  virtual bool IsInitialized() const;
 
  protected:
   bool engine_is_default_;
