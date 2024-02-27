@@ -419,7 +419,7 @@ ConverterForGetAccountInfo() {
 }
 
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
-ConverterForGetProrgamAccounts() {
+ConverterForGetProgramAccounts() {
   return base::BindOnce(
       &ConvertMultiUint64ToString,
       std::vector<std::string>(

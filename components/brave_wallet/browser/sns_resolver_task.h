@@ -15,20 +15,32 @@
 #include "base/memory/weak_ptr.h"
 #include "base/notreached.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_wallet/browser/solana_keyring.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/solana_address.h"
 
 namespace brave_wallet {
 
 using SnsNamehash = std::array<uint8_t, 32>;
+inline constexpr char kSnsSolRecord[] = "SOL";
+inline constexpr char kSnsUrlRecord[] = "url";
+inline constexpr char kSnsIpfsRecord[] = "IPFS";
 
-SnsNamehash GetHashedName(const std::string& name);
+enum class SnsRecordsVersion { kRecordsV1, kRecordsV2 };
+enum class SnsRecordV2ValidationType : uint16_t {
+  kNone = 0,
+  kSolana = 1,
+  kEthereum = 2,
+  kSolanaUnverified = 3
+};
+
+SnsNamehash GetHashedName(const std::string& prefix, const std::string& name);
 
 std::optional<SolanaAddress> GetMintAddress(
     const SolanaAddress& domain_address);
-std::optional<SolanaAddress> GetDomainKey(const std::string& domain,
-                                          bool record);
+std::optional<SolanaAddress> GetDomainKey(const std::string& domain);
+std::optional<SolanaAddress> GetRecordKey(const std::string& domain,
+                                          const std::string& record,
+                                          SnsRecordsVersion version);
 
 struct NameRegistryState {
   NameRegistryState();
@@ -89,11 +101,13 @@ class SnsResolverTask {
       base::OnceCallback<std::optional<std::string>(
           const std::string& raw_response)>;
 
+  enum class TaskType { kResolveWalletAddress, kResolveUrl };
+
   SnsResolverTask(DoneCallback done_callback,
                   APIRequestHelper* api_request_helper,
                   const std::string& domain,
                   const GURL& network_url,
-                  bool resolve_address);
+                  TaskType type);
   SnsResolverTask(const SnsResolverTask&) = delete;
   SnsResolverTask& operator=(const SnsResolverTask&) = delete;
   ~SnsResolverTask();
@@ -112,18 +126,12 @@ class SnsResolverTask {
 
   void FetchDomainRegistryState();
   void OnFetchDomainRegistryState(APIRequestResult api_request_result);
-  void FetchSolRecordRegistryState();
-  void OnFetchSolRecordRegistryState(APIRequestResult api_request_result);
-
-  void FetchUrlRecordRegistryState();
-  void OnFetchUrlRecordRegistryState(APIRequestResult api_request_result);
-  void FetchIpfsRecordRegistryState();
-  void OnFetchIpfsRecordRegistryState(APIRequestResult api_request_result);
 
  private:
   template <typename T>
   friend class SnsResolverTaskContainer;
   void ScheduleWorkOnTask();
+  bool FillWorkData();
   void WorkOnTask();
   void WorkOnWalletAddressTask();
   void WorkOnDomainResolveTask();
@@ -133,27 +141,30 @@ class SnsResolverTask {
   void SetError(SnsResolverTaskError error);
   void NftOwnerDone(std::optional<SolanaAddress> nft_owner);
 
-  void RequestInternal(
-      const std::string& json_payload,
-      RequestIntermediateCallback callback,
-      ResponseConversionCallback conversion_callback = base::NullCallback());
+  void FetchNextRecord();
+  void OnFetchNextRecord(APIRequestResult api_request_result);
+
+  void RequestInternal(const std::string& json_payload,
+                       RequestIntermediateCallback callback,
+                       ResponseConversionCallback conversion_callback);
 
   DoneCallback done_callback_;
   raw_ptr<APIRequestHelper> api_request_helper_;
   std::string domain_;
   GURL network_url_;
-  bool resolve_address_ = false;
+  TaskType task_type_ = TaskType::kResolveWalletAddress;
 
-  std::optional<SolanaAddress> domain_address_;
+  bool work_data_ready_ = false;
+  SolanaAddress domain_address_;
+  SolanaAddress nft_mint_address_;
+  std::vector<struct SnsFetchRecordQueueItem> records_queue_;
+  size_t cur_queue_item_pos_ = 0;
 
   bool nft_owner_check_done_ = false;
-  std::optional<SolanaAddress> nft_mint_address_;
+  std::optional<SolanaAddress> nft_owner_;
   bool nft_mint_supply_check_done_ = false;
 
   std::optional<NameRegistryState> domain_name_registry_state_;
-  SolanaAddress sol_record_address_;
-
-  bool url_record_check_done_ = false;
 
   std::optional<SnsResolverTaskResult> task_result_;
   std::optional<SnsResolverTaskError> task_error_;

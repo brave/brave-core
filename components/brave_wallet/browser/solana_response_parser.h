@@ -54,7 +54,7 @@ std::optional<std::vector<mojom::SPLTokenAmountPtr>> ParseGetSPLTokenBalances(
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
 ConverterForGetAccountInfo();
 base::OnceCallback<std::optional<std::string>(const std::string& raw_response)>
-ConverterForGetProrgamAccounts();
+ConverterForGetProgramAccounts();
 
 }  // namespace solana
 
