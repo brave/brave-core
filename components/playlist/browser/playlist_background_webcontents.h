@@ -6,11 +6,10 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 
-#include <map>
-
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
+#include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class GURL;
 
@@ -45,8 +44,9 @@ class PlaylistBackgroundWebContents final {
 
   raw_ptr<content::BrowserContext> context_;
   raw_ptr<PlaylistService> service_;
-  std::map<content::WebContents*, std::unique_ptr<content::WebContents>>
-      background_web_contents_;
+  absl::flat_hash_set<std::unique_ptr<content::WebContents>>
+      background_web_contents_;  // absl::flat_hash_set<> supports
+                                 // heterogeneous lookups
 
   base::WeakPtrFactory<PlaylistBackgroundWebContents> weak_factory_{this};
 };
