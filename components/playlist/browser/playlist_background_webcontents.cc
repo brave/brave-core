@@ -29,16 +29,15 @@ void PlaylistBackgroundWebContents::Add(
   create_params.is_never_visible = true;
 
   auto web_contents = content::WebContents::Create(create_params);
-  auto* web_contents_raw = web_contents.get();
   web_contents->SetAudioMuted(true);
 
   PlaylistMediaHandler::CreateForWebContents(
-      web_contents_raw,
+      web_contents.get(),
       base::BindOnce(&PlaylistBackgroundWebContents::Remove,
-                     weak_factory_.GetWeakPtr(), web_contents_raw,
+                     weak_factory_.GetWeakPtr(), web_contents.get(),
                      std::move(on_detected_media_callback)));
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents_raw, service_->GetMediaSourceAPISuppressorScript(),
+      web_contents.get(), service_->GetMediaSourceAPISuppressorScript(),
       service_->GetMediaDetectorScript(url));
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);
@@ -66,7 +65,7 @@ void PlaylistBackgroundWebContents::Add(
 
   controller.LoadURLWithParams(load_url_params);
 
-  background_web_contents_.emplace(web_contents_raw, std::move(web_contents));
+  background_web_contents_.emplace(std::move(web_contents));
 }
 
 void PlaylistBackgroundWebContents::Remove(
