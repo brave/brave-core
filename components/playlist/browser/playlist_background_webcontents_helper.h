@@ -32,8 +32,6 @@ class PlaylistBackgroundWebContentsHelper final
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  base::OnceCallback<void(bool)> GetSuccessCallback() &&;
-
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;

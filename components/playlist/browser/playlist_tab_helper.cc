@@ -10,7 +10,6 @@
 #include "base/functional/bind.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/utf_string_conversions.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/browser/playlist_service.h"
@@ -21,7 +20,6 @@
 #include "components/grit/brave_components_strings.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/navigation_handle.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
@@ -166,14 +164,6 @@ std::u16string PlaylistTabHelper::GetSavedFolderName() {
   return base::UTF8ToUTF16(service_->GetPlaylist(parent_id)->name);
 }
 
-bool PlaylistTabHelper::ShouldExtractMediaFromBackgroundWebContents() const {
-  return service_->ShouldExtractMediaFromBackgroundWebContents(found_items());
-}
-
-void PlaylistTabHelper::MaybeExtractMediaFromBackgroundWebContents(
-    base::OnceCallback<void(bool)> callback) {
-}
-
 void PlaylistTabHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {
   DVLOG(2) << __FUNCTION__;
@@ -296,7 +286,6 @@ void PlaylistTabHelper::OnMediaFilesUpdated(
 }
 
 void PlaylistTabHelper::ResetData() {
-  background_web_contents_.reset();
   saved_items_.clear();
   found_items_.clear();
 
@@ -350,22 +339,6 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
     return;
   }
 
-  DVLOG(2) << __FUNCTION__ << " items.size(): " << items.size();
-  DVLOG(2) << __FUNCTION__ << " found_items_.size() from: " << found_items_.size();
-
-  // There's no good heuristics on how to match an
-  // `is_blob_from_media_source == false` item (in `items`) against an
-  // `is_blob_from_media_source == true` item (in `found_items_`).
-  // Curently, we empty `found_items_` if it contains
-  // an `is_blob_from_media_source == true` item.
-  if (base::ranges::find(found_items_, true,
-                         &mojom::PlaylistItem::is_blob_from_media_source) !=
-      found_items_.cend()) {
-    decltype(found_items_)().swap(found_items_);
-  }
-
-  DVLOG(2) << __FUNCTION__ << " item count : " << items.size();
-
   for (auto& new_item : items) {
     const auto it = base::ranges::find_if(
         found_items_,
@@ -381,26 +354,6 @@ void PlaylistTabHelper::OnFoundMediaFromContents(
       found_items_.push_back(std::move(new_item));
     }
   }
-
-  DVLOG(2) << __FUNCTION__ << " found_items_.size() to: " << found_items_.size();
-  for (auto& observer : observers_) {
-    observer.OnFoundItemsChanged(found_items_);
-  }
-}
-
-void PlaylistTabHelper::OnMediaExtractionFromBackgroundWebContentsTimeout() {
-  if (!background_web_contents_) {
-    return;
-  }
-
-  auto* background_webcontents_helper =
-      PlaylistBackgroundWebContentsHelper::FromWebContents(
-          background_web_contents_.get());
-  CHECK(background_webcontents_helper);
-  std::move(*background_webcontents_helper).GetSuccessCallback().Run(false);
-  background_web_contents_.reset();
-
-  found_items_.clear();
 
   for (auto& observer : observers_) {
     observer.OnFoundItemsChanged(found_items_);

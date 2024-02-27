@@ -42,11 +42,6 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
   frame_observer_config->AddMediaDetector(media_detector_);
 }
 
-base::OnceCallback<void(bool)>
-PlaylistBackgroundWebContentsHelper::GetSuccessCallback() && {
-  return base::DoNothing();
-}
-
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
     const std::string& media_source_api_suppressor,

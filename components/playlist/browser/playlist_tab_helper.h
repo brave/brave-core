@@ -62,11 +62,6 @@ class PlaylistTabHelper
 
   std::u16string GetSavedFolderName();
 
-  // |found_items| contains items with blob: url pointing at MediaSource Object.
-  bool ShouldExtractMediaFromBackgroundWebContents() const;
-  void MaybeExtractMediaFromBackgroundWebContents(
-      base::OnceCallback<void(bool)> callback);
-
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
@@ -110,7 +105,6 @@ class PlaylistTabHelper
   void UpdateSavedItemFromCurrentContents();
   void OnFoundMediaFromContents(const GURL& url,
                                 std::vector<mojom::PlaylistItemPtr> items);
-  void OnMediaExtractionFromBackgroundWebContentsTimeout();
   void OnAddedItems(std::vector<mojom::PlaylistItemPtr> items);
 
   void OnPlaylistEnabledPrefChanged();
@@ -132,8 +126,6 @@ class PlaylistTabHelper
       this};
 
   BooleanPrefMember playlist_enabled_pref_;
-
-  std::unique_ptr<content::WebContents> background_web_contents_;
 
   base::WeakPtrFactory<PlaylistTabHelper> weak_ptr_factory_{this};
 };
