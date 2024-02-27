@@ -129,6 +129,18 @@ void UnitTestBase::FastForwardClockBy(const base::TimeDelta time_delta) {
   task_environment_.FastForwardBy(time_delta);
 }
 
+void UnitTestBase::SuspendedFastForwardClockBy(
+    const base::TimeDelta time_delta) {
+  CHECK(!time_delta.is_zero())
+      << "If time stood still, each moment would be stopped; frozen";
+
+  CHECK(time_delta.is_positive())
+      << "You Can't Travel Back in Time, Scientists Say! Unless, of course, "
+         "you are travelling at 88 mph";
+
+  task_environment_.SuspendedFastForwardBy(time_delta);
+}
+
 void UnitTestBase::FastForwardClockTo(const base::Time time) {
   FastForwardClockBy(time - Now());
 }
