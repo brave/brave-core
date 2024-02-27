@@ -803,10 +803,14 @@ public abstract class BraveActivity extends ChromeActivity
         setComesFromNewTab(false);
         setNewsItemsFeedCards(null);
         Intent intent = getIntent();
-        if (intent != null && intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY, false)) {
-            openBraveWallet(false,
-                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, false),
-                    intent.getBooleanExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, false));
+        if (intent != null
+                && intent.getBooleanExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY, false)) {
+            openBraveWallet(
+                    false,
+                    intent.getBooleanExtra(
+                            BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, false),
+                    intent.getBooleanExtra(
+                            BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, false));
         }
     }
 
@@ -1403,9 +1407,18 @@ public abstract class BraveActivity extends ChromeActivity
 
     public void openBraveWallet(boolean fromDapp, boolean setupAction, boolean restoreAction) {
         Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
-        braveWalletIntent.putExtra(Utils.IS_FROM_DAPPS, fromDapp);
-        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
-        braveWalletIntent.putExtra(Utils.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+        braveWalletIntent.putExtra(BraveWalletActivity.IS_FROM_DAPPS, fromDapp);
+        braveWalletIntent.putExtra(BraveWalletActivity.RESTART_WALLET_ACTIVITY_SETUP, setupAction);
+        braveWalletIntent.putExtra(
+                BraveWalletActivity.RESTART_WALLET_ACTIVITY_RESTORE, restoreAction);
+        braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+        braveWalletIntent.setAction(Intent.ACTION_VIEW);
+        startActivity(braveWalletIntent);
+    }
+
+    public void openBraveWalletBackup() {
+        Intent braveWalletIntent = new Intent(this, BraveWalletActivity.class);
+        braveWalletIntent.putExtra(BraveWalletActivity.SHOW_WALLET_ACTIVITY_BACKUP, true);
         braveWalletIntent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
         braveWalletIntent.setAction(Intent.ACTION_VIEW);
         startActivity(braveWalletIntent);
