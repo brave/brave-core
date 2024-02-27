@@ -186,7 +186,7 @@ class PageWallet extends React.Component<Props, State> {
       return
     }
 
-    window.open(externalWallet.accountUrl, '_self', 'noreferrer')
+    window.open(externalWallet.accountUrl, '_blank', 'noreferrer')
   }
 
   getAccountActivityLink = () => {
