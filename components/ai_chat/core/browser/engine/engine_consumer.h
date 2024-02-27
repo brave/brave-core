@@ -23,8 +23,10 @@ namespace ai_chat {
 // subclass) or remote (invoked via network requests).
 class EngineConsumer {
  public:
-  using SuggestedQuestionsCallback = base::OnceCallback<void(
-      base::expected<std::vector<std::string>, mojom::APIError>)>;
+  using SuggestedQuestionResult =
+      base::expected<std::vector<std::string>, mojom::APIError>;
+  using SuggestedQuestionsCallback =
+      base::OnceCallback<void(SuggestedQuestionResult)>;
 
   using GenerationResult = base::expected<std::string, mojom::APIError>;
 

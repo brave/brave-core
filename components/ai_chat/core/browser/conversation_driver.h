@@ -177,7 +177,7 @@ class ConversationDriver {
                                   EngineConsumer::GenerationResult result);
   void OnSuggestedQuestionsResponse(
       int64_t navigation_id,
-      base::expected<std::vector<std::string>, mojom::APIError> result);
+      EngineConsumer::SuggestedQuestionResult result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(

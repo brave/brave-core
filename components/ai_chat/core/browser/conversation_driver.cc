@@ -626,7 +626,7 @@ void ConversationDriver::GenerateQuestions() {
 
 void ConversationDriver::OnSuggestedQuestionsResponse(
     int64_t navigation_id,
-    base::expected<std::vector<std::string>, mojom::APIError> result) {
+    EngineConsumer::SuggestedQuestionResult result) {
   // We might have navigated away whilst this async operation is in
   // progress, so check if we're the same navigation.
   if (navigation_id != current_navigation_id_) {
