@@ -77,7 +77,7 @@ class MenuItemFactory {
       case .wallet(let subtitle):
         return subtitle
       case .leo:
-        return "Leo is an AI-powered smart assistant, built right into the browser"
+        return Strings.OptionsMenu.braveLeoItemDescription
       default:
         return nil
       }

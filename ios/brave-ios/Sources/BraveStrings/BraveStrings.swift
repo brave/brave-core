@@ -1778,8 +1778,13 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Private video calls, right in your browser",
-      comment: "The subtitle description of menu item Brave Talk"
-    )
+      comment: "The subtitle description of menu item Brave Talk")
+    public static let braveLeoItemDescription = NSLocalizedString(
+      "optionsMenu.braveLeoItemDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Leo is an AI-powered smart assistant, built right into the browser",
+      comment: "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated.")
     public static let braveNewsItemTitle = NSLocalizedString(
       "optionsMenu.braveNewsItemTitle",
       tableName: "BraveShared",
@@ -3746,7 +3751,7 @@ extension Strings {
   public static let bookmarksMenuItem = NSLocalizedString("BookmarksMenuItem", tableName: "BraveShared", bundle: .module, value: "Bookmarks", comment: "Title for bookmarks menu item")
   public static let historyMenuItem = NSLocalizedString("HistortMenuItem", tableName: "BraveShared", bundle: .module, value: "History", comment: "Title for history menu item")
   public static let settingsMenuItem = NSLocalizedString("SettingsMenuItem", tableName: "BraveShared", bundle: .module, value: "Settings", comment: "Title for settings menu item")
-  public static let leoMenuItem = NSLocalizedString("LeoMenuItem", tableName: "BraveShared", bundle: .module, value: "Leo", comment: "Title for Brave Leo menu item")
+  public static let leoMenuItem = NSLocalizedString("LeoMenuItem", tableName: "BraveShared", bundle: .module, value: "Leo", comment: "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated")
   public static let passwordsMenuItem = NSLocalizedString("PasswordsMenuItem", tableName: "BraveShared", bundle: .module, value: "Passwords", comment: "Title for passwords menu item")
   public static let addToMenuItem = NSLocalizedString("AddToMenuItem", tableName: "BraveShared", bundle: .module, value: "Add Bookmark", comment: "Title for the button to add a new website bookmark.")
   public static let openTabsMenuItem = NSLocalizedString("OpenTabsMenuItem", tableName: "BraveShared", bundle: .module, value: "Open Tabs", comment: "Title for open tabs menu item")

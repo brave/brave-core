@@ -9,13 +9,22 @@ import SpeechRecognition
 import AVFoundation
 
 struct AIChatPromptInputView: View {
-  @ObservedObject
-  var model: AIChatSpeechRecognitionModel
+  private var speechRecognizer = SpeechRecognizer()
+  
+  @State
+  private var isVoiceEntryPresented = false
+  
+  @State
+  private var isNoMicrophonePermissionPresented = false
+  
+  @State
+  private var prompt: String = ""
   
   var onSubmit: (String) -> Void
-
-  @State 
-  private var prompt: String = ""
+  
+  init(onSubmit: @escaping (String) -> Void) {
+    self.onSubmit = onSubmit
+  }
 
   var body: some View {
     HStack(spacing: 0.0) {
@@ -40,14 +49,20 @@ struct AIChatPromptInputView: View {
       if prompt.isEmpty {
         Button {
           Task { @MainActor in
-            await model.activateVoiceRecognition()
+            await activateSpeechRecognition()
           }
         } label: {
-          Image(braveSystemName: "leo.microphone")
-            .foregroundStyle(Color(braveSystemName: .iconDefault))
-            .padding()
+          Label {
+            Text(Strings.AIChat.voiceInputButtonTitle)
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+          } icon: {
+            Image(braveSystemName: "leo.microphone")
+              .foregroundStyle(Color(braveSystemName: .iconDefault))
+              .padding()
+          }
+          .labelStyle(.iconOnly)
         }
-        .opacity(model.speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
+        .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
       } else {
         Button {
           onSubmit(prompt)
@@ -69,20 +84,23 @@ struct AIChatPromptInputView: View {
         .strokeBorder(Color(braveSystemName: .dividerStrong), lineWidth: 1.0)
     )
     .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-    .onReceive(model.speechRecognizer.$finalizedRecognition) { recognition in
-      if recognition.status && model.activeInputView == .promptView {
-        // Feedback indicating recognition is finalized
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
-        
-        // Update Prompt
-        prompt = recognition.searchQuery
-        
-        // Clear the SpeechRecognizer
-        model.speechRecognizer.clearSearch()
-        model.isVoiceEntryPresented = false
-        model.activeInputView = .none
-      }
+    .background {
+      AIChatSpeechRecognitionView(
+        speechRecognizer: speechRecognizer,
+        isVoiceEntryPresented: $isVoiceEntryPresented,
+        isNoMicrophonePermissionPresented: $isNoMicrophonePermissionPresented,
+        recognizedText: $prompt
+      )
+    }
+  }
+  
+  @MainActor
+  private func activateSpeechRecognition() async {
+    let permissionStatus = await speechRecognizer.askForUserPermission()
+    if permissionStatus {
+      isVoiceEntryPresented = true
+    } else {
+      isNoMicrophonePermissionPresented = true
     }
   }
 }
@@ -90,17 +108,9 @@ struct AIChatPromptInputView: View {
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatPromptInputView(
-      model: AIChatSpeechRecognitionModel(
-        speechRecognizer: SpeechRecognizer(),
-        activeInputView: .constant(.none),
-        isVoiceEntryPresented: .constant(false),
-        isNoMicrophonePermissionPresented: .constant(false)
-      ),
-      onSubmit: {
-        print("Prompt Submitted: \($0)")
-      }
-    )
+    AIChatPromptInputView() {
+      print("Prompt Submitted: \($0)")
+    }
     .previewLayout(.sizeThatFits)
   }
 }

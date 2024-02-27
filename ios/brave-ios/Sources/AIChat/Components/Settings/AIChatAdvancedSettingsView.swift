@@ -12,11 +12,17 @@ import Preferences
 import StoreKit
 
 public struct AIChatAdvancedSettingsView: View {
+  @Environment(\.openURL) 
+  private var openURL
+  
   @Environment(\.dismiss)
   private var dismiss
   
   @ObservedObject
-  private var viewModel: AIChatSubscriptionDetailModelView
+  private var model: AIChatViewModel
+  
+  @State
+  private var viewModel = AIChatSubscriptionDetailModelView()
   
   @State 
   private var appStoreConnectionErrorPresented = false
@@ -29,12 +35,9 @@ public struct AIChatAdvancedSettingsView: View {
 
   var isModallyPresented: Bool
   
-  var openURL: ((URL) -> Void)
-  
-  public init(viewModel: AIChatSubscriptionDetailModelView, isModallyPresented: Bool, openURL: @escaping (URL) -> Void) {
-    self.viewModel = viewModel
+  public init(model: AIChatViewModel, isModallyPresented: Bool) {
+    self.model = model
     self.isModallyPresented = isModallyPresented
-    self.openURL = openURL
   }
 
   public var body: some View {
@@ -52,10 +55,22 @@ public struct AIChatAdvancedSettingsView: View {
         }
       }
       .navigationViewStyle(.stack)
+      .onAppear {
+        Task { @MainActor in
+          await model.refreshPremiumStatusOrderCredentials()
+          await viewModel.fetchOrder()
+        }
+      }
     } else {
       settingsView
         .navigationTitle(Strings.AIChat.leoNavigationTitle)
         .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+          Task { @MainActor in
+            await model.refreshPremiumStatusOrderCredentials()
+            await viewModel.fetchOrder()
+          }
+        }
     }
   }
   
@@ -113,8 +128,8 @@ public struct AIChatAdvancedSettingsView: View {
   }
   
   private var expirationDateTitle: String {
-    let dateFormatter = DateFormatter().then {
-      $0.locale = Locale.current
+    let dateFormatter = ISO8601DateFormatter().then {
+      $0.formatOptions = [.withYear, .withMonth, .withDay, .withDashSeparatorInDate]
     }
     
     let periodToDate = { (subscription: StoreKit.Product.SubscriptionPeriod) -> Date? in
@@ -151,7 +166,7 @@ public struct AIChatAdvancedSettingsView: View {
   }
   
   private var settingsView: some View {
-    List {
+    Form {
       Section {
         OptionToggleView(
           title: Strings.AIChat.advancedSettingsAutocompleteTitle,
@@ -159,11 +174,11 @@ public struct AIChatAdvancedSettingsView: View {
         )
         
         NavigationLink {
-          AIChatDefaultModelView(aiModel: viewModel.model)
+          AIChatDefaultModelView(aiModel: model)
         } label: {
           LabelView(
             title: Strings.AIChat.advancedSettingsDefaultModelTitle,
-            subtitle: viewModel.model.currentModel.displayName
+            subtitle: model.currentModel.displayName
           )
         }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
@@ -174,17 +189,17 @@ public struct AIChatAdvancedSettingsView: View {
       Section {
         if viewModel.canDisplaySubscriptionStatus {
           if viewModel.isSubscriptionStatusLoading {
-            LabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
                             detail: subscriptionStatusTitle)
             
-            LabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
                             detail: expirationDateTitle)
           } else {
             // Subscription information is loading
-            LabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
                             detail: nil)
             
-            LabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
                             detail: nil)
           }
           
@@ -263,13 +278,14 @@ public struct AIChatAdvancedSettingsView: View {
         }
         .frame(maxWidth: .infinity)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .buttonStyle(.plain)
       }
       .alert(isPresented: $resetAndClearAlertErrorPresented) {
         Alert(
           title: Text(Strings.AIChat.resetLeoDataErrorTitle),
           message: Text(Strings.AIChat.resetLeoDataErrorDescription),
           primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-            viewModel.model.clearAndResetData()
+            model.clearAndResetData()
           },
           secondaryButton: .cancel())
       }

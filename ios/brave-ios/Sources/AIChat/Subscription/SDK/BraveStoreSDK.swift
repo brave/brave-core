@@ -326,9 +326,8 @@ public class BraveStoreSDK: AppStoreSDK {
   private func refreshOrder(for productGroup: BraveStoreProductGroup) async throws {
     // This SDK currently only supports Leo
     // until we update the VPN code to use it
-    switch productGroup {
-    case .vpn: return
-    case .leo: break
+    if productGroup == .vpn {
+      return
     }
     
     // Attempt to update the Application Bundle's receipt, if necessary
@@ -356,9 +355,8 @@ public class BraveStoreSDK: AppStoreSDK {
   private func updateSkusPurchaseState(for product: BraveStoreProduct) async throws {
     // This SDK currently only supports Leo
     // until we update the VPN code to use it
-    switch product.group {
-    case .vpn: return
-    case .leo: break
+    if product.group == .vpn {
+      return
     }
     
     // Attempt to update the Application Bundle's receipt, if necessary

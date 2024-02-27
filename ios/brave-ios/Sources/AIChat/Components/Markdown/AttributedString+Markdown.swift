@@ -149,24 +149,27 @@ extension AttributedString {
     self = result
   }
   
-  func trimmingCharacters(in characterSet: CharacterSet) -> AttributedString {
+  mutating func trimmingCharacters(in characterSet: CharacterSet) -> AttributedString {
     let invertedSet = characterSet.inverted
     
-    let startRange = self.characters.firstIndex(where: {
+    let startIndex = self.characters.firstIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
     
-    let endRange = self.characters.lastIndex(where: {
+    let endIndex = self.characters.lastIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
 
-    guard let startLocation = startRange, 
-          let endLocation = endRange,
-          startLocation < endLocation  else {
+    guard let startIndex = startIndex,
+          let endIndex = endIndex,
+          startIndex < endIndex  else {
       return self
     }
+    
+    self.removeSubrange(self.startIndex..<startIndex)
+    self.removeSubrange(endIndex...)
 
-    return AttributedString(self[startLocation...endLocation])
+    return self
   }
   
   private typealias LinkAttribute = AttributeScopes.FoundationAttributes.LinkAttribute
@@ -177,5 +180,27 @@ extension AttributedString {
     case none
     case unordered
     case ordered
+  }
+}
+
+extension AttributedSubstring {
+  func trimmingCharacters(in characterSet: CharacterSet) -> AttributedSubstring {
+    let invertedSet = characterSet.inverted
+    
+    let startIndex = self.characters.firstIndex(where: {
+      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
+    })
+    
+    let endIndex = self.characters.lastIndex(where: {
+      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
+    })
+
+    guard let startIndex = startIndex,
+          let endIndex = endIndex,
+          startIndex < endIndex  else {
+      return self
+    }
+
+    return self[startIndex...endIndex]
   }
 }

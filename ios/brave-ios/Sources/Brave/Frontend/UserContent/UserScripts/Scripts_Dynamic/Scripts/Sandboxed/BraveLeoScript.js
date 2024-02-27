@@ -102,32 +102,4 @@ window.__firefox__.includeOnce('BraveLeoScript', function($) {
         return mainArticleText.length != 0 ? mainArticleText : document.body.innerText;
       }
   });
-  
-  Object.defineProperty(window.__firefox__, '$<getPDFDocument>', {
-      enumerable: false,
-      configurable: false,
-      writable: false,
-      value:
-      // This function is async and can be called in WebKit via `callAsyncJavaScript`
-      // or via another function
-      async function(token, url) {
-        if (token != SECURITY_TOKEN) {
-          return null;
-        }
-        
-        var buffer = await window.fetch(window.location.href, {
-          method: 'GET',
-          priority: 'high'
-        });
-
-        var array = new Uint8Array(await buffer.arrayBuffer());
-        var binaryString = new Array(array.length);
-
-        for(var i = 0; i < array.length; i++) {
-          binaryString[i] = String.fromCharCode(array[i]);
-        }
-
-        return window.btoa(binaryString.join(''));
-      }
-  });
 });

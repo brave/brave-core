@@ -680,6 +680,13 @@ extension Strings {
       value: "Please allow microphone access in iOS system settings for Brave to use anonymous voice entry.",
       comment: "The description for alert needed to have microphone permission"
     )
+    public static let voiceInputButtonTitle = NSLocalizedString(
+      "aichat.voiceInputButtonTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Voice Input",
+      comment: "The accessibility description when pressing the microphone button to access voice entry."
+    )
     public static let responseContextMenuRegenerateTitle = NSLocalizedString(
       "aichat.responseContextMenuRegenerateTitle",
       tableName: "BraveLeo",
@@ -719,7 +726,7 @@ extension Strings {
       "aichat.suggestionsGenerationButtonTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Suggestion questions...",
+      value: "Suggest questions...",
       comment: "The title for the button to generate suggestions"
     )
     public static let chatMenuSectionTitle = NSLocalizedString(

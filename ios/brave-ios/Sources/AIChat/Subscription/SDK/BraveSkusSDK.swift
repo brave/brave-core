@@ -12,66 +12,43 @@ import BraveCore
 /// A structure representing the customer's credentials
 /// Returned by credentialsSummary
 public struct SkusCredentialSummary: Codable {
-  let order: SkusOrder
-  let remainingCredentialCount: UInt   // 512
-  let expiresAt: Date?                 // 2024-02-06T16:18:43
-  let active: Bool                     // true
-  let nextActiveAt: Date?              // 2024-02-06T16:18:43
-  
-  enum CodingKeys: String, CodingKey {
-    case order
-    case remainingCredentialCount = "remaining_credential_count"
-    case expiresAt
-    case active
-    case nextActiveAt
-  }
+  public let order: SkusOrder
+  public let remainingCredentialCount: UInt
+  public let expiresAt: Date?
+  public let active: Bool
+  public let nextActiveAt: Date?
 }
 
 /// A structure representing the customer's order information
 /// Returned by refreshOrder
 public struct SkusOrder: Codable {
-  let id: String              // UUID
-  let createdAt: Date         // 2024-02-05T23:14:19.260973
-  let currency: String        // USD
-  let updatedAt: Date         // 2024-02-05T23:14:19.260973
-  let totalPrice: Double      // 15.0
-  let location: String        // leo.bravesoftware.com
-  let merchantId: String      // brave.com
-  let status: String          // paid
-  let expiresAt: Date?        // 2024-02-05T23:14:19.260973
-  let lastPaidAt: Date?       // 2024-02-05T23:14:19.260973
-  let items: [SkusOrderItem]
-  
-  enum CodingKeys: String, CodingKey {
-    case id
-    case createdAt
-    case currency
-    case updatedAt
-    case totalPrice
-    case location
-    case merchantId
-    case status
-    case items
-    // case metadata
-    case expiresAt
-    case lastPaidAt
-  }
+  public let id: String
+  public let createdAt: Date
+  public let currency: String
+  public let updatedAt: Date
+  public let totalPrice: Double
+  public let location: String
+  public let merchantId: String
+  public let status: String
+  public let expiresAt: Date?
+  public let lastPaidAt: Date?
+  public let items: [SkusOrderItem]
   
   /// A structure representing a Line-Item within the customer's order
   /// An order can contain multiple items
   public struct SkusOrderItem: Codable {
-    let id: String                         // UUID
-    let orderId: String                    // UUID
-    let sku: String                        // brave-leo-premium
-    let createdAt: Date                    // 2024-02-05T21:33:58.598300
-    let updatedAt: Date                    // 2024-02-05T21:33:58.598300
-    let currency: String                   // USD
-    let quantity: Int                      // 1
-    let price: Double                      // 15.0
-    let subTotal: Double                   // 15.0
-    let location: String                   // leo.bravesoftware.com
-    let productDescription: String         // Premium access to Leo
-    let credentialType: SkusCredentialType     // time-limited-v2
+    public let id: String
+    public let orderId: String
+    public let sku: String                        // brave-leo-premium
+    public let createdAt: Date
+    public let updatedAt: Date
+    public let currency: String
+    public let quantity: Int
+    public let price: Double
+    public let subTotal: Double
+    public let location: String                   // leo.bravesoftware.com
+    public let productDescription: String
+    public let credentialType: SkusCredentialType
     
     enum CodingKeys: String, CodingKey {
       case id
@@ -89,7 +66,7 @@ public struct SkusOrder: Codable {
     }
     
     /// A structure representing the customer's credential type
-    enum SkusCredentialType: String, Codable {
+    public enum SkusCredentialType: String, Codable {
       case singleUse = "single-use"
       case timeLimited = "time-limited"
       case timeLimitedv2 = "time-limited-v2"
@@ -223,7 +200,7 @@ public class BraveSkusSDK {
     }
     
     let receipt = try BraveSkusSDK.receipt(for: product)
-    return try await withCheckedThrowingContinuation { @MainActor continuation in
+    return try await withCheckedThrowingContinuation { continuation in
       skusService.createOrder(fromReceipt: product.group.skusDomain, receipt: receipt) { orderId in
         if orderId.isEmpty {
           continuation.resume(throwing: SkusError.cannotCreateOrder)
@@ -246,7 +223,7 @@ public class BraveSkusSDK {
     }
     
     let receipt = try BraveSkusSDK.receipt(for: product)
-    return try await withCheckedThrowingContinuation { @MainActor continuation in
+    return try await withCheckedThrowingContinuation { continuation in
       skusService.submitReceipt(product.group.skusDomain, orderId: orderId, receipt: receipt) { response in
         continuation.resume(returning: response)
       }
@@ -261,19 +238,19 @@ public class BraveSkusSDK {
   @MainActor
   @discardableResult
   public func refreshOrder(orderId: String, for group: BraveStoreProductGroup) async throws -> SkusOrder {
-    guard let skusService = skusService else {
-      throw SkusError.skusServiceUnavailable
-    }
-    
-    func decode<T: Decodable>(_ response: String) throws -> T {
+    func decode(_ response: String) throws -> SkusOrder {
       guard let data = response.data(using: .utf8) else {
         throw SkusError.decodingError
       }
        
-      return try self.jsonDecoder.decode(T.self, from: data)
+      return try self.jsonDecoder.decode(SkusOrder.self, from: data)
     }
     
-    return try await decode(skusService.refreshOrder(group.skusDomain, orderId: orderId)) as SkusOrder
+    guard let skusService = skusService else {
+      throw SkusError.skusServiceUnavailable
+    }
+    
+    return try await decode(skusService.refreshOrder(group.skusDomain, orderId: orderId))
   }
   
   /// Retrieves the Customer's Credentials Summary
@@ -282,19 +259,19 @@ public class BraveSkusSDK {
   /// - Throws: An exception if the credentials could not be retrieved or decoded
   @MainActor
   public func credentialsSummary(for group: BraveStoreProductGroup) async throws -> SkusCredentialSummary {
-    func decode<T: Decodable>(_ response: String) throws -> T {
+    func decode(_ response: String) throws -> SkusCredentialSummary {
       guard let data = response.data(using: .utf8) else {
         throw SkusError.decodingError
       }
-      
-      return try self.jsonDecoder.decode(T.self, from: data)
+       
+      return try self.jsonDecoder.decode(SkusCredentialSummary.self, from: data)
     }
     
     guard let skusService = skusService else {
       throw SkusError.skusServiceUnavailable
     }
     
-    return try await decode(skusService.credentialSummary(group.skusDomain)) as SkusCredentialSummary
+    return try await decode(skusService.credentialSummary(group.skusDomain))
   }
   
   /// Retrieves the Customer's Credentials for a specified Order

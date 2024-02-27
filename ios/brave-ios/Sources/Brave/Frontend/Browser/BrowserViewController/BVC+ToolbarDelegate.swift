@@ -574,12 +574,12 @@ extension BrowserViewController: TopToolbarDelegate {
       onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink {
         [weak self] finalizedRecognition in
         guard let self else { return }
-
-        if finalizedRecognition.status {
+        
+        if let finalizedRecognition {
           // Feedback indicating recognition is finalized
           AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
           UIImpactFeedbackGenerator(style: .medium).bzzt()
-          stopVoiceSearch(searchQuery: finalizedRecognition.searchQuery)
+          stopVoiceSearch(searchQuery: finalizedRecognition)
         }
       }
 

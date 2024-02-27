@@ -6,6 +6,8 @@
 import Foundation
 import SwiftUI
 import StoreKit
+import Preferences
+import os.log
 
 public class AIChatSubscriptionDetailModelView: ObservableObject {
   enum SkuOrderStatus {
@@ -24,13 +26,10 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   @ObservedObject
   private var storeSDK = BraveStoreSDK.shared
   
-  @ObservedObject
-  private(set) var model: AIChatViewModel
-  
   @Published
   private(set) var credentialSummary: SkusCredentialSummary?
   
-  private var isLoading = true
+  private var isLoading = false
   
   var skuOrderStatus: SkuOrderStatus {
     if isLoading {
@@ -48,20 +47,27 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     return .inactive
   }
   
-  public init(model: AIChatViewModel) {
-    self.model = model
+  public init() {
     
-    if storeSDK.leoSubscriptionStatus == nil {
-      self.fetchOrder()
-    }
   }
   
-  private func fetchOrder() {
-    Task { @MainActor in
-      let credentialSummary = try? await BraveSkusSDK().credentialsSummary(for: .leo)
+  @MainActor
+  func fetchOrder() async {
+    self.isLoading = true
+    
+    if storeSDK.leoSubscriptionStatus != nil {
       self.isLoading = false
-      self.credentialSummary = credentialSummary
+      return
     }
+
+    do {
+      let credentialSummary = try await BraveSkusSDK().credentialsSummary(for: .leo)
+      self.credentialSummary = credentialSummary
+    } catch {
+      Logger.module.error("Error Fetching Skus Credential Summary: \(error)")
+    }
+    
+    self.isLoading = false
   }
   
   var skuOrderExpirationDate: Date? {

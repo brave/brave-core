@@ -4,10 +4,12 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import SwiftUI
+import BraveUI
 
-public struct LabelDetailView: View {
+@available(iOS, introduced: 15.0, obsoleted: 16.0)
+public struct AIChatAdvancedSettingsLabelDetailView: View {
   let title: String
-  var detail: String?
+  var detail: String?  // When detail is nil, a Progress View is shown
 
   public init(title: String, detail: String?) {
     self.title = title
@@ -22,7 +24,6 @@ public struct LabelDetailView: View {
       if let detail = detail {
         Text(detail)
           .foregroundColor(Color(.braveLabel))
-          .font(.body)
       } else {
         ProgressView()
       }

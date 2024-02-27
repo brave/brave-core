@@ -346,17 +346,10 @@ class SettingsViewController: TableViewController {
     )
 
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
-      aiChatRow = aiChatSettingsRow()
-      
-      if let aiChatRow = aiChatRow {
-        section.rows.append(aiChatRow)
-      }
+      section.rows.append(leoSettingsRow)
     }
     
-    vpnRow = vpnSettingsRow()
-    if let vpnRow = vpnRow {
-      section.rows.append(vpnRow)
-    }
+    section.rows.append(vpnSettingsRow)
 
     section.rows.append(
       Row(
@@ -689,9 +682,7 @@ class SettingsViewController: TableViewController {
     return display
   }()
 
-  private var vpnRow: Row?
-
-  private func vpnSettingsRow() -> Row {
+  private var vpnSettingsRow: Row {
     let (text, color) = { () -> (String, UIColor) in
       if Preferences.VPN.vpnReceiptStatus.value
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
@@ -761,9 +752,7 @@ class SettingsViewController: TableViewController {
     )
   }
   
-  private var aiChatRow: Row?
-  
-  private func aiChatSettingsRow() -> Row {
+  private var leoSettingsRow: Row {
     return Row(
       text: Strings.leoMenuItem,
       selection: { [unowned self] in
@@ -775,13 +764,15 @@ class SettingsViewController: TableViewController {
         
         let controller = UIHostingController(rootView:
           AIChatAdvancedSettingsView(
-            viewModel: AIChatSubscriptionDetailModelView(model: model),
-            isModallyPresented: false,
-            openURL: { [unowned self] url in
+            model: model,
+            isModallyPresented: false
+          )
+            .environment(\.openURL, OpenURLAction { [weak self] url in
+              guard let self = self else { return .handled }
               self.settingsDelegate?.settingsOpenURLInNewTab(url)
               self.dismiss(animated: true)
-            }
-          )
+              return .handled
+            })
         )
         
         self.navigationController?.pushViewController(controller, animated: true)

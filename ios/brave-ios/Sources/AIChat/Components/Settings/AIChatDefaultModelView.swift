@@ -86,7 +86,7 @@ struct AIChatDefaultModelView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await aiModel.getPremiumStatus()
+            await aiModel.refreshPremiumStatus()
           }
         })
     }

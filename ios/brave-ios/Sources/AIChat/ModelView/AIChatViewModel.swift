@@ -8,10 +8,11 @@ import SwiftUI
 import WebKit
 import BraveCore
 import Shared
+import Preferences
 
 public class AIChatViewModel: NSObject, ObservableObject {
   private var api: AIChat!
-  private let webView: WKWebView?
+  private weak var webView: WKWebView?
   private let script: any AIChatJavascript.Type
   var querySubmited: String?
   
@@ -106,10 +107,6 @@ public class AIChatViewModel: NSObject, ObservableObject {
     apiError = api.currentAPIError
     requestInProgress = api.isRequestInProgress
     
-    Task { @MainActor in
-      await getPremiumStatus()
-    }
-    
     if isAgreementAccepted {
       api.setConversationActive(true)
     }
@@ -161,29 +158,36 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
   
   @MainActor
-  @discardableResult
-  func getPremiumStatus() async -> AiChat.PremiumStatus {
-    return await withCheckedContinuation { continuation in
-      api.getPremiumStatus { status in
-        self.premiumStatus = status
-        continuation.resume(returning: status)
-      }
+  func refreshPremiumStatus() async {
+    self.premiumStatus = await api.premiumStatus()
+  }
+  
+  // This function should not exist
+  // We should not be refreshing credentials in this model at all!
+  // This should be done in Brave-Skus-Manager once VPN moves to Skus v2
+  @MainActor
+  func refreshPremiumStatusOrderCredentials() async {
+    await refreshPremiumStatus()
+    
+    // Refresh the credentials if expired
+    if premiumStatus == .activeDisconnected,
+       let orderId = Preferences.AIChat.subscriptionOrderId.value {
+      try? await BraveSkusSDK().fetchCredentials(orderId: orderId, for: .leo)
+      
+      // Premium status changed after refresh
+      await refreshPremiumStatus()
     }
   }
   
   @MainActor
   func rateConversation(isLiked: Bool, turnId: UInt) async -> String? {
-    return await withCheckedContinuation { continuation in
-      api.rateMessage(isLiked, turnId: turnId, completion: { identifier in
-        continuation.resume(returning: identifier)
-      })
-    }
+    return await api.rateMessage(isLiked, turnId: turnId)
   }
   
   @MainActor
   func submitFeedback(category: String, feedback: String, ratingId: String) async -> Bool {
     // TODO: Add UI for `sendPageURL`
-    await api.sendFeedback(category, feedback: feedback, ratingId: ratingId, sendPageUrl: false)
+    return await api.sendFeedback(category, feedback: feedback, ratingId: ratingId, sendPageUrl: false)
   }
 }
 
@@ -218,57 +222,34 @@ extension AIChatViewModel: AIChatDelegate {
     return nil
   }
   
-  public func getPageContent(completion: @escaping (String?, Bool) -> Void) {
+  @MainActor
+  public func pageContent() async -> (String?, Bool) {
     guard let webView = webView else {
-      completion(nil, false)
-      return
+      return (nil, false)
     }
     
     requestInProgress = true
-    
-    Task { @MainActor in
-      defer { requestInProgress = false }
+    defer { requestInProgress = api.isRequestInProgress }
       
-      if await script.getPageContentType(webView: webView) == "application/pdf" {
-        if let base64EncodedPDF = await script.getPDFDocument(webView: webView) {
-          completion(await AIChatPDFRecognition.parse(pdfData: base64EncodedPDF), false)
-          return
-        }
-        
-        // Could not fetch PDF for parsing
-        completion(nil, false)
-        return
+    if await script.getPageContentType(webView: webView) == "application/pdf" {
+      if let base64EncodedPDF = await script.getPDFDocument(webView: webView) {
+        return (await AIChatPDFRecognition.parse(pdfData: base64EncodedPDF), false)
       }
       
-      // Fetch regular page content
-      let text = await script.getMainArticle(webView: webView)
-      if let text = text, !text.isEmpty {
-        completion(text, false)
-        return
-      }
-      
-      // No article text. Attempt to parse the page as a PDF/Image
-      let render = UIPrintPageRenderer()
-      render.addPrintFormatter(webView.viewPrintFormatter(), startingAtPageAt: 0)
-      
-      let page = CGRect(x: 0, y: 0, width: 595.2, height: 841.8) // A4, 72 dpi
-      let printable = page.insetBy(dx: 0, dy: 0)
-      
-      render.setValue(NSValue(cgRect: page), forKey: "paperRect")
-      render.setValue(NSValue(cgRect: printable), forKey: "printableRect")
-      
-      // 4. Create PDF context and draw
-      let pdfData = NSMutableData()
-      UIGraphicsBeginPDFContextToData(pdfData, CGRect.zero, nil)
-      for i in 0..<render.numberOfPages {
-        UIGraphicsBeginPDFPage()
-        let bounds = UIGraphicsGetPDFContextBounds()
-        render.drawPage(at: i, in: bounds)
-      }
-      
-      UIGraphicsEndPDFContext()
-      completion(await AIChatPDFRecognition.parseToImage(pdfData: pdfData.base64EncodedString()), false)
+      // Attempt to parse the page as a PDF/Image
+      let pdfData = await script.getPrintViewPDF(webView: webView)
+      return (await AIChatPDFRecognition.parseToImage(pdfData: pdfData), false)
     }
+    
+    // Fetch regular page content
+    let text = await script.getMainArticle(webView: webView)
+    if let text = text, !text.isEmpty {
+      return (text, false)
+    }
+    
+    // No article text. Attempt to parse the page as a PDF/Image
+    let pdfData = await script.getPrintViewPDF(webView: webView)
+    return (await AIChatPDFRecognition.parseToImage(pdfData: pdfData), false)
   }
   
   public func isDocumentOnLoadCompletedInPrimaryFrame() -> Bool {

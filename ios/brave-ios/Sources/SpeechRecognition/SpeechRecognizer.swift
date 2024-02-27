@@ -39,7 +39,7 @@ public class SpeechRecognizer: ObservableObject {
   /// Formatted transcript from speech recognizer
   @Published var transcript: String = " "
   @Published var transcriptedIcon: String = "leo.microphone"
-  @Published public var finalizedRecognition: (status: Bool, searchQuery: String) = (false, "")
+  @Published public var finalizedRecognition: String?
   @Published private(set) var animationType: AnimationType = .pulse(scale: 1)
   
   public init() {
@@ -211,8 +211,8 @@ public class SpeechRecognizer: ObservableObject {
 
   nonisolated private func finalize(searchQuery: String) {
     Task { @MainActor in
-      if !finalizedRecognition.status {
-        finalizedRecognition = (true, searchQuery)
+      if finalizedRecognition == nil {
+        finalizedRecognition = searchQuery
       }
     }
   }
@@ -221,7 +221,7 @@ public class SpeechRecognizer: ObservableObject {
     Task { @MainActor in
       transcript = " "
       transcriptedIcon = "leo.microphone"
-      finalizedRecognition = (false, "")
+      finalizedRecognition = nil
       animationType = .pulse(scale: 1)
       isSilent = true
     }

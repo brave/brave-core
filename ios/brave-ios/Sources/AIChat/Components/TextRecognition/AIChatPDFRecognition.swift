@@ -31,12 +31,8 @@ class AIChatPDFRecognition {
   }
   
   @MainActor
-  static func parseToImage(pdfData: String) async -> String? {
-    guard let data = Data(base64Encoded: pdfData) else {
-      return nil
-    }
-    
-    guard let pdf = PDFDocument(data: data) else {
+  static func parseToImage(pdfData: Data) async -> String? {
+    guard let pdf = PDFDocument(data: pdfData) else {
       return nil
     }
     

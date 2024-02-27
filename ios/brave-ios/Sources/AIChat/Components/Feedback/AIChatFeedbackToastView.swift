@@ -17,20 +17,16 @@ private struct AIChatFeedbackToastModifier: ViewModifier {
   
   func body(content: Content) -> some View {
     content
-      .frame(maxWidth: .infinity, maxHeight: .infinity)
-      .overlay(
+      .overlay(alignment: .bottom) {
         VStack(spacing: 0.0) {
           if toastType != .none {
-            VStack {
-              Spacer()
-              AIChatFeedbackToastView(toastType: $toastType)
-            }
-            .transition(.move(edge: .bottom))
-            .offset(y: -10.0)
+            AIChatFeedbackToastView(toastType: $toastType)
+              .transition(.move(edge: .bottom).combined(with: .opacity))
+              .offset(y: -8.0)
           }
         }
-          .animation(.spring(), value: toastType)
-      )
+        .animation(.spring(), value: toastType)
+      }
       .onChange(of: toastType) { toastType in
         if toastType != .none {
           show()
@@ -50,6 +46,7 @@ private struct AIChatFeedbackToastModifier: ViewModifier {
   
   private func dismiss() {
     task?.cancel()
+    task = nil
     toastType = .none
   }
 }
@@ -140,6 +137,7 @@ struct AIChatFeedbackToastView: View {
           onAddFeedback?()
         } label: {
           Text(Strings.AIChat.addFeedbackActionTitle)
+            .font(.subheadline)
             .foregroundStyle(.white)
         }
       }

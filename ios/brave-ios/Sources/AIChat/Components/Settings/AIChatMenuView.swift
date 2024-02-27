@@ -11,18 +11,17 @@ private struct AIChatMenuHeaderView: View {
   var title: String
   
   var body: some View {
-    HStack {
+    HStack(spacing: 8.0) {
       Image(braveSystemName: icon)
         .foregroundStyle(Color(braveSystemName: .iconDefault))
-        .padding(.leading, 16.0)
-        .padding(.trailing, 8.0)
-        .padding(.vertical, 8.0)
       
       Text(title)
         .font(.caption2.weight(.semibold))
         .foregroundStyle(Color(braveSystemName: .textTertiary))
         .frame(maxWidth: .infinity, alignment: .leading)
     }
+    .padding(.leading, 16.0)
+    .padding(.vertical, 8.0)
   }
 }
 
@@ -47,7 +46,7 @@ private struct AIChatMenuItemView<RightAccessoryView: View>: View {
         .padding(.trailing, 8.0)
         .opacity(isSelected ? 1.0 : 0.0)
       
-      VStack {
+      VStack(alignment: .leading) {
         Text(title)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
         

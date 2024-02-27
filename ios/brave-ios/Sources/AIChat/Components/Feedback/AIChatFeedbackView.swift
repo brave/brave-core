@@ -90,7 +90,7 @@ private struct AIChatDropdownButton: View {
   }
 }
 
-private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item.RawValue: StringProtocol, Item: Identifiable {
+private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item.RawValue: StringProtocol, Item: Identifiable, Item: Hashable {
   @Binding
   var selectedItem: Item
   var items: [Item]
@@ -131,6 +131,16 @@ private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item
         .shadow(color: .black.opacity(0.25), radius: 10.0, x: 0.0, y: 2.0)
     )
     .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+    .accessibilityRepresentation {
+      Picker(selection: $selectedItem) {
+        ForEach(items) { item in
+          Text(item.rawValue).tag(item.id)
+        }
+      } label: {
+        Text(Strings.AIChat.feedbackOptionsViewTitle)
+      }
+      .pickerStyle(.segmented)
+    }
   }
 }
 
@@ -170,11 +180,20 @@ private struct AIChatDropdownView: View {
 }
 
 private struct AIChatFeedbackInputView: View {
-  @ObservedObject
-  var model: AIChatSpeechRecognitionModel
+  private var speechRecognizer = SpeechRecognizer()
+  
+  @State
+  private var isVoiceEntryPresented = false
+  
+  @State
+  private var isNoMicrophonePermissionPresented = false
   
   @Binding
   var text: String
+  
+  init(text: Binding<String>) {
+    _text = text
+  }
   
   var body: some View {
     HStack {
@@ -211,21 +230,20 @@ private struct AIChatFeedbackInputView: View {
       .fixedSize(horizontal: false, vertical: true)
       .padding(.trailing)
       
-      if model.speechRecognizer.isVoiceSearchAvailable {
+      if speechRecognizer.isVoiceSearchAvailable {
         Button {
           Task { @MainActor in
-            let permissionStatus = await model.speechRecognizer.askForUserPermission()
-            if permissionStatus {
-              model.isVoiceEntryPresented = true
-              model.activeInputView = .feedbackView
-            } else {
-              model.isNoMicrophonePermissionPresented = true
-              model.activeInputView = .none
-            }
+            await activateSpeechRecognition()
           }
         } label: {
-          Image(braveSystemName: "leo.microphone")
-            .foregroundStyle(Color(braveSystemName: .iconDefault))
+          Label {
+            Text(Strings.AIChat.voiceInputButtonTitle)
+              .foregroundStyle(Color(braveSystemName: .textPrimary))
+          } icon: {
+            Image(braveSystemName: "leo.microphone")
+              .foregroundStyle(Color(braveSystemName: .iconDefault))
+          }
+          .labelStyle(.iconOnly)
         }
       }
     }
@@ -238,27 +256,28 @@ private struct AIChatFeedbackInputView: View {
       Color(braveSystemName: .containerBackground),
       in: RoundedRectangle(cornerRadius: 8.0, style: .continuous)
     )
-    .onReceive(model.speechRecognizer.$finalizedRecognition) { recognition in
-      if recognition.status && model.activeInputView == .feedbackView {
-        // Feedback indicating recognition is finalized
-        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-        UIImpactFeedbackGenerator(style: .medium).bzzt()
-        
-        // Update Prompt
-        text = recognition.searchQuery
-        
-        // Clear the SpeechRecognizer
-        model.speechRecognizer.clearSearch()
-        model.isVoiceEntryPresented = false
-        model.activeInputView = .none
-      }
+    .background {
+      AIChatSpeechRecognitionView(
+        speechRecognizer: speechRecognizer,
+        isVoiceEntryPresented: $isVoiceEntryPresented,
+        isNoMicrophonePermissionPresented: $isNoMicrophonePermissionPresented,
+        recognizedText: $text
+      )
+    }
+  }
+  
+  @MainActor
+  private func activateSpeechRecognition() async {
+    let permissionStatus = await speechRecognizer.askForUserPermission()
+    if permissionStatus {
+      isVoiceEntryPresented = true
+    } else {
+      isNoMicrophonePermissionPresented = true
     }
   }
 }
 
 private struct AIChatFeedbackLeoPremiumAdView: View {
-  let openURL: (URL) -> Void
-
   var body: some View {
     Text(LocalizedStringKey(Strings.AIChat.feedbackPremiumAdTitle))
       .tint(Color(braveSystemName: .textInteractive))
@@ -276,10 +295,6 @@ private struct AIChatFeedbackLeoPremiumAdView: View {
                        endPoint: .zero),
         in: RoundedRectangle(cornerRadius: 8.0, style: .continuous)
       )
-      .environment(\.openURL, OpenURLAction { url in
-        openURL(url)
-        return .handled
-      })
   }
 }
 
@@ -295,9 +310,9 @@ enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
     case .notHelpful:
       return Strings.AIChat.feedbackOptionTitleNotHelpful
     case .notWorking:
-      return Strings.AIChat.feedbackOptionTitleNotHelpful
+      return Strings.AIChat.feedbackOptionTitleNotWorking
     case .other:
-      return Strings.AIChat.feedbackOptionTitleNotHelpful
+      return Strings.AIChat.feedbackOptionTitleOther
     }
   }
 }
@@ -309,12 +324,8 @@ struct AIChatFeedbackView: View {
   @State
   private var feedbackText: String = ""
   
-  @ObservedObject
-  var model: AIChatSpeechRecognitionModel
-  
   let onSubmit: (String, String) -> Void
   let onCancel: () -> Void
-  let openURL: (URL) -> Void
   
   var body: some View {
     VStack {
@@ -332,13 +343,10 @@ struct AIChatFeedbackView: View {
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.horizontal, .top])
       
-      AIChatFeedbackInputView(
-        model: model,
-        text: $feedbackText
-      )
-      .padding([.horizontal, .bottom])
+      AIChatFeedbackInputView(text: $feedbackText)
+        .padding([.horizontal, .bottom])
       
-      AIChatFeedbackLeoPremiumAdView(openURL: openURL)
+      AIChatFeedbackLeoPremiumAdView()
         .padding(.horizontal)
       
       HStack {
@@ -370,18 +378,10 @@ struct AIChatFeedbackView: View {
 struct AIChatFeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     AIChatFeedbackView(
-      model: AIChatSpeechRecognitionModel(
-        speechRecognizer: SpeechRecognizer(),
-        activeInputView: .constant(.none),
-        isVoiceEntryPresented: .constant(false),
-        isNoMicrophonePermissionPresented: .constant(false)
-      ),
       onSubmit: {
         print("Submitted Feedback: \($0) -- \($1)")
       }, onCancel: {
         print("Cancelled Feedback")
-      }, openURL: {
-        print("Open Feedback URL: \($0)")
       }
     )
     .previewLayout(.sizeThatFits)

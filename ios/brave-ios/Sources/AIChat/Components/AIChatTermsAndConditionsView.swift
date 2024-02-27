@@ -7,16 +7,11 @@ import SwiftUI
 import DesignSystem
 
 public struct AIChatTermsAndConditionsView: View {
-  var onTermsAccepted: () -> Void
-  var onOpenURL: (URL) -> Void
-  
   @Environment(\.dismiss)
   private var dismiss
   
-  public init(onTermsAccepted: @escaping () -> Void, onOpenURL: @escaping (URL) -> Void) {
-    self.onTermsAccepted = onTermsAccepted
-    self.onOpenURL = onOpenURL
-  }
+  @Binding
+  var termsAndConditionsAccepted: Bool
   
   public var body: some View {
     VStack(spacing: 16.0) {
@@ -36,14 +31,9 @@ public struct AIChatTermsAndConditionsView: View {
         .fixedSize(horizontal: false, vertical: true)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
         .tint(Color(braveSystemName: .primary50))
-        .environment(\.openURL, OpenURLAction { url in
-          dismiss()
-          onOpenURL(url)
-          return .handled
-        })
       
       Button(action: {
-        onTermsAccepted()
+        termsAndConditionsAccepted = true
       }) {
         Text(Strings.AIChat.termsConditionsApprovalActionTitle)
           .font(.subheadline.weight(.semibold))
@@ -65,7 +55,7 @@ public struct AIChatTermsAndConditionsView: View {
 #if DEBUG
 struct AIChatTermsAndConditionsView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatTermsAndConditionsView() {} onOpenURL: { _ in }
+    AIChatTermsAndConditionsView(termsAndConditionsAccepted: .constant(false))
       .previewLayout(.sizeThatFits)
   }
 }

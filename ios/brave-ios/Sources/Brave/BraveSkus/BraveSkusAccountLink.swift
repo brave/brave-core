@@ -35,7 +35,7 @@ class BraveSkusAccountLink {
     /// The host/domain for the environment
     var host: String {
       switch self {
-      case .development: return "account.brave.softwware"
+      case .development: return "account.brave.software"
       case .staging: return "account.bravesoftware.com"
       case .production: return "account.brave.com"
       }

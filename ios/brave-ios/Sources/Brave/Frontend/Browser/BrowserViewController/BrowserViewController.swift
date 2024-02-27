@@ -3859,11 +3859,8 @@ extension BrowserViewController {
       script: BraveLeoScriptHandler.self,
       querySubmited: query)
     
-    let chatController = UIHostingController(rootView: AIChatView(
-      model: model,
-      speechRecognizer: speechRecognizer,
-      openURL: openAIChatURL))
-    
+    let chatController = UIHostingController(rootView: AIChatView(model: model,
+                                                                  openURL: openAIChatURL))
     present(chatController, animated: true)
   }
 }

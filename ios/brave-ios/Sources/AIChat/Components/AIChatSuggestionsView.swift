@@ -134,22 +134,31 @@ struct WrappingHStackOld<Model, V>: View where Model: Hashable, V: View {
 
 struct AIChatSuggestionsButton: View {
   var title: String
+  var isLoading: Bool
   var onSuggestionPressed: (() -> Void)?
   
   var body: some View {
     Button {
       onSuggestionPressed?()
     } label: {
-      Text(title)
-        .font(.callout)
-        .foregroundColor(Color(braveSystemName: .textInteractive))
-        .multilineTextAlignment(.leading)
-        .padding(12.0)
-        .overlay(
-          ContainerRelativeShape()
-            .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1.0)
-        )
-        .containerShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
+      HStack {
+        Text(title)
+          .font(.callout)
+          .foregroundColor(Color(braveSystemName: .textInteractive))
+          .multilineTextAlignment(.leading)
+          .padding(12.0)
+        
+        if isLoading {
+          ProgressView()
+            .tint(Color(braveSystemName: .textInteractive))
+            .padding(.trailing, 12.0)
+        }
+      }
+      .overlay(
+        ContainerRelativeShape()
+          .strokeBorder(Color(braveSystemName: .dividerInteractive), lineWidth: 1.0)
+      )
+      .containerShape(RoundedRectangle(cornerRadius: 12.0, style: .continuous))
     }
     .buttonStyle(.plain)
   }
@@ -180,14 +189,14 @@ struct AIChatSuggestionsView: View {
       if #available(iOS 16, *) {
         WrappingHStack(hSpacing: 8.0, vSpacing: 8.0) {
           ForEach(suggestions, id: \.self) { title in
-            AIChatSuggestionsButton(title: title) {
+            AIChatSuggestionsButton(title: title, isLoading: false) {
               onSuggestionPressed?(title)
             }
           }
         }
       } else {
         WrappingHStackOld(geometry: proxy, models: suggestions, hSpacing: 8.0, vSpacing: 8.0) { title in
-          AIChatSuggestionsButton(title: title) {
+          AIChatSuggestionsButton(title: title, isLoading: false) {
             onSuggestionPressed?(title)
           }
         }

@@ -46,13 +46,13 @@ class MarkdownParser {
       if startIndex < range.lowerBound {
         result.append(
           StringBlock(
-            string: AttributedString(string[startIndex..<range.lowerBound])
-              .trimmingCharacters(in: .whitespacesAndNewlines),
+            string: AttributedString(string[startIndex..<range.lowerBound]
+              .trimmingCharacters(in: .whitespacesAndNewlines)),
             codeBlock: nil)
         )
       }
       
-      let string = AttributedString(string[range])
+      let string = string[range]
         .trimmingCharacters(in: .whitespacesAndNewlines)
       
       // Use Highlight-JS
@@ -74,7 +74,7 @@ class MarkdownParser {
       
       result.append(
         StringBlock(
-          string: string,
+          string: AttributedString(string),
           codeBlock: CodeBlock(languageHint: languageHint,
                                backgroundColor: Color(UIColor(rgb: isDarkTheme ? 0x282C34 : 0xFAFAFA))))
       )
@@ -86,7 +86,7 @@ class MarkdownParser {
     if startIndex < string.endIndex {
       result.append(
         StringBlock(
-          string: AttributedString(string[startIndex..<string.endIndex]).trimmingCharacters(in: .whitespacesAndNewlines),
+          string: AttributedString(string[startIndex..<string.endIndex].trimmingCharacters(in: .whitespacesAndNewlines)),
           codeBlock: nil)
       )
     }

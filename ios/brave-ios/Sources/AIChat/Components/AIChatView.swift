@@ -16,9 +16,6 @@ public struct AIChatView: View {
   @ObservedObject
   var model: AIChatViewModel
   
-  @ObservedObject 
-  var speechRecognizer: SpeechRecognizer
-  
   @Environment(\.dismiss)
   private var dismiss
   
@@ -35,15 +32,6 @@ public struct AIChatView: View {
   private var isAdvancedSettingsPresented = false
   
   @State
-  private var isVoiceEntryPresented = false
-  
-  @State
-  private var voiceSearchActiveInputView: AIChatSpeechRecognitionActiveView = .none
-  
-  @State
-  private var isNoMicrophonePermissionPresented = false
-  
-  @State
   private var feedbackToast: AIChatFeedbackToastType = .none
   
   @ObservedObject
@@ -51,14 +39,12 @@ public struct AIChatView: View {
   
   var openURL: ((URL) -> Void)
   
-  public init(model: AIChatViewModel, speechRecognizer: SpeechRecognizer, openURL: @escaping (URL) -> Void) {
+  public init(model: AIChatViewModel, openURL: @escaping (URL) -> Void) {
     self.model = model
-    self.speechRecognizer = speechRecognizer
     self.openURL = openURL
   }
 
   public var body: some View {
-    // TODO: Apparently there is a view to show when premiumStatus == .activeDisconnected
     VStack(spacing: 0.0) {
       AIChatNavigationView(
         isMenusAvailable: hasSeenIntro.value && model.isAgreementAccepted,
@@ -121,7 +107,7 @@ public struct AIChatView: View {
                         }
                          
                         // Show loader view before first part of conversation reply
-                        if model.apiError == .none, index == model.conversationHistory.count - 1 {
+                        if model.apiError == .none, model.requestInProgress, index == model.conversationHistory.count - 1 {
                           VStack(alignment: .leading){
                             AIChatLoaderView()
                           }
@@ -153,17 +139,15 @@ public struct AIChatView: View {
                       .padding()
                       
                       if model.shouldShowGenerateSuggestionsButton {
-                        // TODO: Show Loader based on model.suggestionsStatus == .isGenerating
-                        
-                        HStack(spacing: 0.0) {
-                          AIChatSuggestionsButton(title: Strings.AIChat.suggestionsGenerationButtonTitle) {
+                        AIChatSuggestionsButton(
+                          title: Strings.AIChat.suggestionsGenerationButtonTitle,
+                          isLoading: model.suggestionsStatus == .isGenerating) {
                             hideKeyboard()
                             model.generateSuggestions()
                           }
                           .padding(.horizontal)
-                          
-                          Spacer()
-                        }
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .disabled(model.suggestionsStatus == .isGenerating || model.requestInProgress)
                       }
                     }
                     
@@ -183,9 +167,9 @@ public struct AIChatView: View {
                   }
                 }
               } else {
-                AIChatTermsAndConditionsView(onTermsAccepted: {
-                  model.isAgreementAccepted = true
-                }, onOpenURL: openURL)
+                AIChatTermsAndConditionsView(
+                  termsAndConditionsAccepted: $model.isAgreementAccepted
+                )
                 .padding()
                 .frame(minHeight: geometry.size.height)
               }
@@ -203,28 +187,23 @@ public struct AIChatView: View {
       if model.apiError == .none && model.isAgreementAccepted ||
           (!hasSeenIntro.value && !model.isAgreementAccepted) {
         // TODO: When the user taps on the (info) icon, we should show a tool-tip
-        AIChatPageContextView(
-          isToggleOn: model.shouldShowPremiumPrompt || !(model.isContentAssociationPossible && model.shouldSendPageContents) ? .constant(false) : $model.shouldSendPageContents)
-        .padding(.horizontal, 8.0)
-        .padding(.bottom, 12.0)
-        .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
+        
+        if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
+          AIChatPageContextView(
+            isToggleOn: $model.shouldSendPageContents)
+          .padding(.horizontal, 8.0)
+          .padding(.bottom, 12.0)
+          .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
+        }
       }
       
       if model.isAgreementAccepted ||
           (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView(
-          model: AIChatSpeechRecognitionModel(
-            speechRecognizer: speechRecognizer,
-            activeInputView: $voiceSearchActiveInputView,
-            isVoiceEntryPresented: $isVoiceEntryPresented,
-            isNoMicrophonePermissionPresented: $isNoMicrophonePermissionPresented
-          ),
-          onSubmit: { prompt in
-            hasSeenIntro.value = true
-            model.submitQuery(prompt)
-            hideKeyboard()
-          }
-        )
+        AIChatPromptInputView() { prompt in
+          hasSeenIntro.value = true
+          model.submitQuery(prompt)
+          hideKeyboard()
+        }
         .disabled(model.requestInProgress ||
                   model.suggestionsStatus == .isGenerating ||
                   model.apiError == .contextLimitReached)
@@ -236,32 +215,21 @@ public struct AIChatView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await model.getPremiumStatus()
+            await model.refreshPremiumStatus()
           }
         })
     }
     .sheet(isPresented: $isAdvancedSettingsPresented) {
       AIChatAdvancedSettingsView(
-        viewModel: AIChatSubscriptionDetailModelView(model: model),
-        isModallyPresented: true,
-        openURL: { url in
-          openURL(url)
-          dismiss()
-      })
-    }
-    .background {
-      SpeechToTextInputContentView(
-        isPresented: $isVoiceEntryPresented,
-        dismissAction: {
-          isVoiceEntryPresented = false
-        },
-        speechModel: speechRecognizer,
-        disclaimer: Strings.AIChat.speechRecognizerDisclaimer)
-    }
-    .alert(isPresented: $isNoMicrophonePermissionPresented) {
-      microphoneAccessAlert
+        model: model,
+        isModallyPresented: true
+      )
     }
     .onAppear {
+      Task { @MainActor in
+        await model.refreshPremiumStatusOrderCredentials()
+      }
+      
       if let query = model.querySubmited {
         model.querySubmited = nil
         hasSeenIntro.value = true
@@ -269,6 +237,11 @@ public struct AIChatView: View {
       }
     }
     .toastView($feedbackToast)
+    .environment(\.openURL, OpenURLAction { url in
+      openURL(url)
+      dismiss()
+      return .handled
+    })
   }
   
   private var menuView: some View {
@@ -411,12 +384,6 @@ public struct AIChatView: View {
   
   private var feedbackView: some View {
     AIChatFeedbackView(
-      model: AIChatSpeechRecognitionModel(
-        speechRecognizer: speechRecognizer,
-        activeInputView: $voiceSearchActiveInputView,
-        isVoiceEntryPresented: $isVoiceEntryPresented,
-        isNoMicrophonePermissionPresented: $isNoMicrophonePermissionPresented
-      ),
       onSubmit: { category, feedback in
         guard let feedbackIndex = customFeedbackIndex else {
           feedbackToast = .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
@@ -437,31 +404,18 @@ public struct AIChatView: View {
       onCancel: {
         customFeedbackIndex = nil
         feedbackToast = .none
-      },
-      openURL: { url in
-        if url.host == "dismiss" {
-          //TODO: Dismiss feedback learn-more prompt
-        } else {
-          openURL(url)
-        }
       }
     )
     .padding()
-  }
-  
-  private var microphoneAccessAlert: Alert {
-    Alert(
-      title: Text(Strings.AIChat.microphonePermissionAlertTitle),
-      message: Text(Strings.AIChat.microphonePermissionAlertDescription),
-      primaryButton: Alert.Button.default(
-        Text(Strings.settings),
-        action: {
-          let url = URL(string: UIApplication.openSettingsURLString)!
-          UIApplication.shared.open(url, options: [:], completionHandler: nil)
-        }
-      ),
-      secondaryButton: Alert.Button.cancel(Text(Strings.CancelString))
-    )
+    .environment(\.openURL, OpenURLAction { url in
+      if url.host == "dismiss" {
+        //TODO: Dismiss feedback learn-more prompt
+      } else {
+        openURL(url)
+        dismiss()
+      }
+      return .handled
+    })
   }
   
   private func hideKeyboard() {
@@ -511,18 +465,11 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .containerBackground))
             
             AIChatFeedbackView(
-              model: AIChatSpeechRecognitionModel(
-                speechRecognizer: SpeechRecognizer(),
-                activeInputView: .constant(.none),
-                isVoiceEntryPresented: .constant(false),
-                isNoMicrophonePermissionPresented: .constant(false)
-              ),
               onSubmit: {
                 print("Submitted Feedback: \($0) -- \($1)")
-              }, onCancel: {
+              }, 
+              onCancel: {
                 print("Cancelled Feedback")
-              }, openURL: {
-                print("Open Feedback URL: \($0)")
               }
             )
             .padding()
@@ -544,17 +491,9 @@ struct AIChatView_Preview: PreviewProvider {
       AIChatPageContextView(isToggleOn: .constant(true))
         .padding()
       
-      AIChatPromptInputView(
-        model: AIChatSpeechRecognitionModel(
-          speechRecognizer: SpeechRecognizer(),
-          activeInputView: .constant(.none),
-          isVoiceEntryPresented: .constant(false),
-          isNoMicrophonePermissionPresented: .constant(false)
-        ),
-        onSubmit: {
-          print("Prompt Submitted: \($0)")
-        }
-      )
+      AIChatPromptInputView() {
+        print("Prompt Submitted: \($0)")
+      }
     }
     .background(Color(braveSystemName: .containerBackground))
     .previewLayout(.sizeThatFits)

@@ -9,14 +9,20 @@ import Shared
 import BraveShared
 import BraveCore
 import BraveVPN
+import AIChat
 import os.log
 
 class BraveSkusScriptHandler: TabContentScript {
   private weak var tab: Tab?
-  private let braveSkusManager = BraveSkusManager(isPrivateMode: false)!
+  private let skusManager: BraveSkusManager
   
   required init?(tab: Tab) {
     self.tab = tab
+    guard let skusManager = BraveSkusManager(isPrivateMode: tab.isPrivate) else {
+      return nil
+    }
+    
+    self.skusManager = skusManager
   }
     
   static let scriptName = "BraveSkusScript"
@@ -46,10 +52,7 @@ class BraveSkusScriptHandler: TabContentScript {
     }
     
     // Validate that we can handle this message
-    guard let requestHost = message.frameInfo.request.url?.host,
-          message.frameInfo.isMainFrame,
-          DomainUserScript.braveSkus.associatedDomains.contains(requestHost) else {
-      Logger.module.error("Brave skus request called from disallowed host")
+    guard let requestHost = try? RequestHost.from(message: message) else {
       return
     }
     
@@ -64,35 +67,36 @@ class BraveSkusScriptHandler: TabContentScript {
       return
     }
     
-    do {
-      switch method {
-      case .refreshOrder:
-        let order = try OrderMessage.from(message: message)
-        braveSkusManager.refreshOrder(for: order.orderId, domain: requestHost) { result in
-          replyHandler(result, nil)
-        }
-        
-      case .fetchOrderCredentials:
-        let order = try OrderMessage.from(message: message)
-        braveSkusManager.fetchOrderCredentials(for: order.orderId, domain: requestHost) { result in
-          replyHandler(result, nil)
-        }
-        
-      case .prepareCredentialsPresentation:
-        Logger.module.error("Error - Website calling prepareCredentialsPresentation when it shouldn't")
+    Task { @MainActor in
+      do {
+        let result = try await processRequest(message: message, method: method, for: requestHost)
+        replyHandler(result, nil)
+      } catch {
+        Logger.module.error("Brave skus error processing request: \(error)")
         replyHandler(nil, nil)
-        return
-        
-      case .credentialsSummary:
-        let summary = try CredentialSummaryMessage.from(message: message)
-        braveSkusManager.credentialSummary(for: summary.domain) { result in
-          replyHandler(result, nil)
-        }
       }
-    } catch {
-      Logger.module.error("Error Deserializing Skus Message: \(error)")
-      replyHandler(nil, nil)
-      return
+    }
+  }
+  
+  @MainActor
+  private func processRequest(message: WKScriptMessage, method: Method, for skusDomain: String) async throws -> Any? {
+    switch method {
+    case .refreshOrder:
+      let order = try OrderMessage.from(message: message)
+      // Serialize to jsonObject???
+      return await skusManager.refreshOrder(for: order.orderId, domain: skusDomain)
+      
+    case .fetchOrderCredentials:
+      let order = try OrderMessage.from(message: message)
+      return await skusManager.fetchOrderCredentials(for: order.orderId, domain: skusDomain)
+      
+    case .prepareCredentialsPresentation:
+      Logger.module.error("Error - Website calling prepareCredentialsPresentation when it shouldn't")
+      return nil
+      
+    case .credentialsSummary:
+      let summary = try CredentialSummaryMessage.from(message: message)
+      return await skusManager.credentialSummary(for: summary.domain)
     }
   }
 }
@@ -129,6 +133,8 @@ extension BraveSkusScriptHandler {
 
 private enum SkusWebMessageError: Error {
   case invalidFormat
+  case invalidRequestHost
+  case invalidRequestFrame
 }
 
 private protocol SkusWebMessage: Codable {
@@ -147,5 +153,26 @@ extension SkusWebMessage {
     
     let data = try JSONSerialization.data(withJSONObject: messageData)
     return try JSONDecoder().decode(Self.self, from: data)
+  }
+}
+
+struct RequestHost {
+  static func from(message: WKScriptMessage) throws -> String {
+    guard message.frameInfo.isMainFrame else {
+      Logger.module.error("Brave skus request with error: \(SkusWebMessageError.invalidRequestFrame)")
+      throw SkusWebMessageError.invalidRequestFrame
+    }
+    
+    guard let requestHost = message.frameInfo.request.url?.host else {
+      Logger.module.error("Brave skus request with error: \(SkusWebMessageError.invalidRequestHost)")
+      throw SkusWebMessageError.invalidRequestHost
+    }
+    
+    guard DomainUserScript.braveSkus.associatedDomains.contains(requestHost) else {
+      Logger.module.error("Brave skus request with error: \(SkusWebMessageError.invalidRequestHost)")
+      throw SkusWebMessageError.invalidRequestHost
+    }
+    
+    return requestHost
   }
 }
