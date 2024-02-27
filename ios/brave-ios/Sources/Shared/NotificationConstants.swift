@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -19,7 +19,9 @@ extension Notification.Name {
 
   public static let reachabilityStatusChanged = Notification.Name("ReachabilityStatusChanged")
 
-  public static let contentBlockerTabSetupRequired = Notification.Name("ContentBlockerTabSetupRequired")
+  public static let contentBlockerTabSetupRequired = Notification.Name(
+    "ContentBlockerTabSetupRequired"
+  )
 
   public static let fileDidDownload = Notification.Name("FileDidDownload")
 
@@ -27,5 +29,7 @@ extension Notification.Name {
   public static let thumbnailEditOff = Notification.Name("ThumbnailEditOff")
 
   // MARK: - Rewards
-  public static let adsOrRewardsToggledInSettings = Notification.Name("adsOrRewardsToggledInSettings")
+  public static let adsOrRewardsToggledInSettings = Notification.Name(
+    "adsOrRewardsToggledInSettings"
+  )
 }

@@ -17,14 +17,29 @@ import AIChatDataContext, {
   AIChatContext,
   defaultContext
 } from '../state/context'
+import { useArgs } from '@storybook/addons'
 
-const HISTORY = [
+const HISTORY: mojom.ConversationTurn[] = [
+  {
+    text: 'hello',
+    characterType: mojom.CharacterType.HUMAN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    selectedText: undefined
+  },
+  {
+    text: 'Hi, How are you?',
+    characterType: mojom.CharacterType.ASSISTANT,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    selectedText: undefined
+  },
   {
     text: 'What is pointer compression?',
     characterType: mojom.CharacterType.HUMAN,
     actionType: mojom.ActionType.QUERY,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    selectedText: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory.'
+    selectedText: undefined
   },
   {
     text: 'Pointer compression is a memory optimization technique where pointers (memory addresses) are stored in a compressed format to save memory. The basic idea is that since most pointers will be clustered together and point to objects allocated around the same time, you can store a compressed representation of the pointer and decompress it when needed. Some common ways this is done: Store an offset from a base pointer instead of the full pointer value Store increments/decrements from the previous pointer instead of the full value Use pointer tagging to store extra information in the low bits of the pointer Encode groups of pointers together The tradeoff is some extra CPU cost to decompress the pointers, versus saving memory. This technique is most useful in memory constrained environments.',
@@ -75,6 +90,20 @@ const HISTORY = [
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     selectedText: undefined
   },
+  {
+    text: 'Shorten this selected text',
+    characterType: mojom.CharacterType.HUMAN,
+    actionType: mojom.ActionType.SHORTEN,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: 'Pointer compression is a memory optimization technique where pointers are stored in a compressed format to save memory.'
+  },
+  {
+    text: 'Pointer compression is a memory optimization technique.',
+    characterType: mojom.CharacterType.ASSISTANT,
+    actionType: mojom.ActionType.UNSPECIFIED,
+    visibility: mojom.ConversationTurnVisibility.VISIBLE,
+    selectedText: undefined
+  }
 ]
 
 const MODELS: mojom.Model[] = [
@@ -120,11 +149,11 @@ const SAMPLE_QUESTIONS = [
   'Why did google executives disregard this character in the company?'
 ]
 
-const SITE_INFO = {
+const SITE_INFO: mojom.SiteInfo = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
   isContentTruncated: false,
   isContentAssociationPossible: true,
-  hasContentAssociated: true
+  hostname: 'www.example.com'
 }
 
 export default {
@@ -163,6 +192,7 @@ export default {
   },
   decorators: [
     (Story: any, options: any) => {
+      const [, setArgs] = useArgs()
       const [isGenerating] = React.useState(false)
       const [favIconUrl] = React.useState<string>()
       const hasAcceptedAgreement = options.args.hasAcceptedAgreement
@@ -177,12 +207,18 @@ export default {
       const currentError = mojom.APIError[options.args.currentErrorState]
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
+      const currentModel = MODELS.find(m => m.name === options.args.model)
+
+      const switchToBasicModel = () => {
+        const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
+        setArgs({ model: nonPremiumModel })
+      }
 
       const store: AIChatContext = {
         // Don't error when new properties are added
         ...defaultContext,
         allModels: MODELS,
-        currentModel: MODELS.find(m => m.name === options.args.model),
+        currentModel,
         conversationHistory: options.args.hasConversation ? HISTORY : [],
         isGenerating,
         isPremiumStatusFetching: false,
@@ -199,6 +235,7 @@ export default {
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
+        switchToBasicModel
       }
 
       return (

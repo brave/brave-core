@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -11,7 +11,7 @@ extension FileManager {
   public enum Folder: String {
     case cookie
     case webSiteData
-    
+
     public var rawValue: String {
       switch self {
       case .cookie: return "/Cookies"
@@ -30,11 +30,17 @@ extension FileManager {
   /// URL where files downloaded by user are stored.
   /// If the download folder doesn't exists it creates a new one
   public func downloadsPath() throws -> URL {
-    FileManager.default.getOrCreateFolder(name: "Downloads", excludeFromBackups: true, location: .documentDirectory)
+    FileManager.default.getOrCreateFolder(
+      name: "Downloads",
+      excludeFromBackups: true,
+      location: .documentDirectory
+    )
 
     return try FileManager.default.url(
-      for: .documentDirectory, in: .userDomainMask,
-      appropriateFor: nil, create: false
+      for: .documentDirectory,
+      in: .userDomainMask,
+      appropriateFor: nil,
+      create: false
     ).appendingPathComponent("Downloads")
   }
 
@@ -43,9 +49,14 @@ extension FileManager {
     guard let baseDir = baseDirectory() else { return false }
     for lockObj in lockObjects {
       do {
-        try self.setAttributes([.posixPermissions: (lockObj.lock ? 0 : 0o755)], ofItemAtPath: baseDir + lockObj.folder.rawValue)
+        try self.setAttributes(
+          [.posixPermissions: (lockObj.lock ? 0 : 0o755)],
+          ofItemAtPath: baseDir + lockObj.folder.rawValue
+        )
       } catch {
-        Logger.module.error("Failed to \(lockObj.lock ? "Lock" : "Unlock") item at path \(lockObj.folder.rawValue) with error: \n\(error.localizedDescription)")
+        Logger.module.error(
+          "Failed to \(lockObj.lock ? "Lock" : "Unlock") item at path \(lockObj.folder.rawValue) with error: \n\(error.localizedDescription)"
+        )
         return false
       }
     }
@@ -56,21 +67,29 @@ extension FileManager {
   public func checkLockedStatus(folder: Folder) -> Bool {
     guard let baseDir = baseDirectory() else { return false }
     do {
-      if let lockValue = try self.attributesOfItem(atPath: baseDir + folder.rawValue)[.posixPermissions] as? NSNumber {
+      if let lockValue = try self.attributesOfItem(atPath: baseDir + folder.rawValue)[
+        .posixPermissions
+      ] as? NSNumber {
         return lockValue == 0o755
       }
     } catch {
-      Logger.module.error("Failed to check lock status on item at path \(folder.rawValue) with error: \n\(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to check lock status on item at path \(folder.rawValue) with error: \n\(error.localizedDescription)"
+      )
     }
     return false
   }
 
   public func writeToDiskInFolder(
-    _ data: Data, fileName: String, folderName: String,
+    _ data: Data,
+    fileName: String,
+    folderName: String,
     location: SearchPathDirectory = .applicationSupportDirectory
   ) -> Bool {
 
-    guard let folderUrl = getOrCreateFolder(name: folderName, location: location) else { return false }
+    guard let folderUrl = getOrCreateFolder(name: folderName, location: location) else {
+      return false
+    }
 
     do {
       let fileUrl = folderUrl.appendingPathComponent(fileName)
@@ -87,7 +106,8 @@ extension FileManager {
   /// If folder already exists, returns its URL as well.
   @discardableResult
   public func getOrCreateFolder(
-    name: String, excludeFromBackups: Bool = true,
+    name: String,
+    excludeFromBackups: Bool = true,
     location: SearchPathDirectory = .applicationSupportDirectory
   ) -> URL? {
     guard let documentsDir = location.url else { return nil }
@@ -129,8 +149,10 @@ extension FileManager {
   }
 
   public func moveFile(
-    sourceName: String, sourceLocation: SearchPathDirectory,
-    destinationName: String, destinationLocation: SearchPathDirectory
+    sourceName: String,
+    sourceLocation: SearchPathDirectory,
+    destinationName: String,
+    destinationLocation: SearchPathDirectory
   ) {
     guard let sourceLocation = sourceLocation.url,
       let destinationLocation = destinationLocation.url
@@ -156,45 +178,49 @@ extension FileManager {
   private func baseDirectory() -> String? {
     return NSSearchPathForDirectoriesInDomains(.libraryDirectory, .userDomainMask, true).first
   }
-  
+
   /// Returns size of contents of the directory in bytes.
   /// Returns nil if any error happened during the size calculation.
   public func directorySize(at directoryURL: URL) throws -> UInt64? {
     let allocatedSizeResourceKeys: Set<URLResourceKey> = [
-        .isRegularFileKey,
-        .fileAllocatedSizeKey,
-        .totalFileAllocatedSizeKey,
+      .isRegularFileKey,
+      .fileAllocatedSizeKey,
+      .totalFileAllocatedSizeKey,
     ]
-    
+
     func fileSize(_ file: URL) throws -> UInt64 {
-        let resourceValues = try file.resourceValues(forKeys: allocatedSizeResourceKeys)
+      let resourceValues = try file.resourceValues(forKeys: allocatedSizeResourceKeys)
 
-        // We only look at regular files.
-        guard resourceValues.isRegularFile ?? false else {
-            return 0
-        }
+      // We only look at regular files.
+      guard resourceValues.isRegularFile ?? false else {
+        return 0
+      }
 
-        // To get the file's size we first try the most comprehensive value in terms of what
-        // the file may use on disk. This includes metadata, compression (on file system
-        // level) and block size.
-        // In case totalFileAllocatedSize is unavailable we use the fallback value (excluding
-        // meta data and compression) This value should always be available.
-        return UInt64(resourceValues.totalFileAllocatedSize ?? resourceValues.fileAllocatedSize ?? 0)
+      // To get the file's size we first try the most comprehensive value in terms of what
+      // the file may use on disk. This includes metadata, compression (on file system
+      // level) and block size.
+      // In case totalFileAllocatedSize is unavailable we use the fallback value (excluding
+      // meta data and compression) This value should always be available.
+      return UInt64(resourceValues.totalFileAllocatedSize ?? resourceValues.fileAllocatedSize ?? 0)
     }
-    
+
     // We have to enumerate all directory contents, including subdirectories.
-    guard let enumerator = self.enumerator(at: directoryURL,
-                                     includingPropertiesForKeys: Array(allocatedSizeResourceKeys)) else { return nil }
-    
+    guard
+      let enumerator = self.enumerator(
+        at: directoryURL,
+        includingPropertiesForKeys: Array(allocatedSizeResourceKeys)
+      )
+    else { return nil }
+
     var totalSize: UInt64 = 0
-    
+
     // Perform the traversal.
     for item in enumerator {
       // Add up individual file sizes.
       guard let contentItemURL = item as? URL else { continue }
       totalSize += try fileSize(contentItemURL)
     }
-    
+
     return totalSize
   }
 }
@@ -215,7 +241,8 @@ extension FileManager {
       guard
         var downloadsPathComponents = URLComponents(
           url: try FileManager.default.downloadsPath(),
-          resolvingAgainstBaseURL: false)
+          resolvingAgainstBaseURL: false
+        )
       else {
         completion(false)
         return

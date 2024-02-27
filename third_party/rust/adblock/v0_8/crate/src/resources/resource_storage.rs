@@ -350,7 +350,13 @@ fn index_next_unescaped_separator(s: &str, separator: char) -> (Option<usize>, b
             return (None, needs_transform)
         }
     }
-    (Some(new_arg_end), needs_transform)
+    // don't index beyond the end of the string
+    let new_arg_end = if new_arg_end >= s.len() {
+        None
+    } else {
+        Some(new_arg_end)
+    };
+    (new_arg_end, needs_transform)
 }
 
 /// Replaces escaped instances of `separator` in `arg` with unescaped characters.
@@ -467,6 +473,8 @@ mod arg_parsing_util_tests {
         assert_eq!(index_next_unescaped_separator(r#"\`\\\``"#, '`'), (Some(6), true));
         assert_eq!(index_next_unescaped_separator(r#"\\\`\``"#, '`'), (Some(6), true));
         assert_eq!(index_next_unescaped_separator(r#"\\\`\\``"#, '`'), (Some(6), true));
+
+        assert_eq!(index_next_unescaped_separator(r#"\,test\,"#, ','), (None, true))
     }
 
     #[test]
@@ -613,6 +621,12 @@ mod scriptlet_storage_tests {
         assert_eq!(args, None);
         let args = parse_scriptlet_args(r#"debug-scriptlet, 'test'"test""#);
         assert_eq!(args, None);
+    }
+
+    #[test]
+    fn parse_argslist_trailing_escaped_comma() {
+        let args = parse_scriptlet_args(r#"remove-node-text, script, \,mr=function(r\,"#).unwrap();
+        assert_eq!(args, vec!["remove-node-text", "script", ",mr=function(r,"]);
     }
 
     #[test]

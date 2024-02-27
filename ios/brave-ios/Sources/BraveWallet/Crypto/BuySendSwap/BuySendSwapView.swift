@@ -1,11 +1,11 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import Strings
+import SwiftUI
 
 struct BuySendSwapView: View {
   var networkStore: NetworkStore
@@ -26,7 +26,9 @@ struct BuySendSwapView: View {
   var body: some View {
     VStack(alignment: .leading, spacing: 16) {
       ForEach(destinations, id: \.self) { destination in
-        Button(action: { self.action(destination) }) {
+        Button {
+          self.action(destination)
+        } label: {
           VStack(alignment: .leading, spacing: 3) {
             Text(destination.kind.localizedTitle)
               .foregroundColor(Color(.bravePrimary))

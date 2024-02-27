@@ -46,18 +46,6 @@
     </style>
 
     <!-- Brave Wallet -->
-    <style name="BottomNavigationView" parent="@style/TextAppearance.AppCompat.Caption">
-        <item name="android:textSize">12sp</item>
-        <item name="android:lineSpacingExtra">2sp</item>
-        <item name="android:letterSpacing">0.02</item>
-    </style>
-
-    <style name="BraveTabTextAppearance" parent="TextAppearance.Design.Tab">
-        <item name="textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
     <style name="BraveWalletTextView" parent="Widget.AppCompat.TextView">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -325,5 +313,13 @@
 
     <style name="TimerBottomSheetDialogStyle" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@drawable/timer_rounded_bottomsheet</item>
+    </style>
+
+    <style name="BraveRewardsSecondaryTextColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_secondary_text_color</item>
+    </style>
+
+    <style name="BraveRewardsActionColor" parent="Widget.AppCompat.TextView">
+        <item name="android:textColor">@color/rewards_panel_action_color</item>
     </style>
 </resources>

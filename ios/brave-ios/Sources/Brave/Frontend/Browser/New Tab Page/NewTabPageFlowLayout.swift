@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -39,7 +39,10 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     if let braveNewsSection = braveNewsSection,
       let collectionView = collectionView,
       collectionView.numberOfItems(inSection: braveNewsSection) != 0,
-      let attribute = super.layoutAttributesForItem(at: IndexPath(item: 0, section: braveNewsSection)) {
+      let attribute = super.layoutAttributesForItem(
+        at: IndexPath(item: 0, section: braveNewsSection)
+      )
+    {
       let diff = collectionView.frame.height - attribute.frame.minY
       gapLength = diff - gapPadding
 
@@ -47,9 +50,15 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
       // to the content size. The extra height will ensure that there is always enough space to scroll
       // the header into full-visibility
       let numberOfItems = collectionView.numberOfItems(inSection: braveNewsSection)
-      if let lastItemAttribute = super.layoutAttributesForItem(at: IndexPath(item: numberOfItems - 1, section: braveNewsSection)) {
-        if lastItemAttribute.frame.maxY - attribute.frame.minY < collectionView.bounds.height - gapPadding {
-          extraHeight = (collectionView.bounds.height - gapPadding) - (lastItemAttribute.frame.maxY - attribute.frame.minY)
+      if let lastItemAttribute = super.layoutAttributesForItem(
+        at: IndexPath(item: numberOfItems - 1, section: braveNewsSection)
+      ) {
+        if lastItemAttribute.frame.maxY - attribute.frame.minY < collectionView.bounds.height
+          - gapPadding
+        {
+          extraHeight =
+            (collectionView.bounds.height - gapPadding)
+            - (lastItemAttribute.frame.maxY - attribute.frame.minY)
         }
       }
 
@@ -58,8 +67,12 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     }
   }
 
-  override func layoutAttributesForItem(at indexPath: IndexPath) -> UICollectionViewLayoutAttributes? {
-    guard let attribute = super.layoutAttributesForItem(at: indexPath)?.copy() as? UICollectionViewLayoutAttributes,
+  override func layoutAttributesForItem(
+    at indexPath: IndexPath
+  ) -> UICollectionViewLayoutAttributes? {
+    guard
+      let attribute = super.layoutAttributesForItem(at: indexPath)?.copy()
+        as? UICollectionViewLayoutAttributes,
       let collectionView = collectionView
     else {
       return nil
@@ -80,8 +93,18 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
         if let flowLayoutDelegate = collectionView.delegate as? UICollectionViewDelegateFlowLayout {
           // If the layout has a delegate to obtain section specific
           // info, grab that
-          sectionInset = flowLayoutDelegate.collectionView?(collectionView, layout: self, insetForSectionAt: indexPath.section) ?? self.sectionInset
-          minimumInteritemSpacing = flowLayoutDelegate.collectionView?(collectionView, layout: self, minimumInteritemSpacingForSectionAt: indexPath.section) ?? self.minimumInteritemSpacing
+          sectionInset =
+            flowLayoutDelegate.collectionView?(
+              collectionView,
+              layout: self,
+              insetForSectionAt: indexPath.section
+            ) ?? self.sectionInset
+          minimumInteritemSpacing =
+            flowLayoutDelegate.collectionView?(
+              collectionView,
+              layout: self,
+              minimumInteritemSpacingForSectionAt: indexPath.section
+            ) ?? self.minimumInteritemSpacing
         } else {
           // Otherwise default to the global values defined on the
           // layout itself
@@ -93,7 +116,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
           attribute.frame.origin.x = sectionInset.left
         } else {
           // Otherwise layout based on previous item's origin
-          if let previousItemAttribute = layoutAttributesForItem(at: IndexPath(item: indexPath.item - 1, section: indexPath.section)) {
+          if let previousItemAttribute = layoutAttributesForItem(
+            at: IndexPath(item: indexPath.item - 1, section: indexPath.section)
+          ) {
             attribute.frame.origin.x = previousItemAttribute.frame.maxX + minimumInteritemSpacing
           }
         }
@@ -107,7 +132,8 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     return attribute
   }
 
-  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
+  override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]?
+  {
     var adjustedRect = rect
     adjustedRect.origin.y -= gapLength
     adjustedRect.size.height += gapLength * 2
@@ -130,7 +156,10 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     return size
   }
 
-  override func targetContentOffset(forProposedContentOffset proposedContentOffset: CGPoint, withScrollingVelocity velocity: CGPoint) -> CGPoint {
+  override func targetContentOffset(
+    forProposedContentOffset proposedContentOffset: CGPoint,
+    withScrollingVelocity velocity: CGPoint
+  ) -> CGPoint {
     guard let section = braveNewsSection,
       collectionView?.numberOfItems(inSection: section) != 0,
       let item = layoutAttributesForItem(at: IndexPath(item: 0, section: section))
@@ -139,7 +168,9 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
     }
     var offset = proposedContentOffset
     let flicked = abs(velocity.y) > 0.3
-    if (offset.y > item.frame.minY / 2 && offset.y < item.frame.minY) || (flicked && velocity.y > 0 && offset.y < item.frame.minY) {
+    if (offset.y > item.frame.minY / 2 && offset.y < item.frame.minY)
+      || (flicked && velocity.y > 0 && offset.y < item.frame.minY)
+    {
       offset.y = item.frame.minY - 56  // FIXME: Use size of header + padding
     } else if offset.y < item.frame.minY {
       offset.y = 0
@@ -153,7 +184,8 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
   ) -> Bool {
     if let section = braveNewsSection,
       preferredAttributes.representedElementCategory == .cell,
-      preferredAttributes.indexPath.section == section {
+      preferredAttributes.indexPath.section == section
+    {
       return preferredAttributes.size.height.rounded() != originalAttributes.size.height.rounded()
     }
     return super.shouldInvalidateLayout(
@@ -195,10 +227,12 @@ class NewTabPageFlowLayout: UICollectionViewFlowLayout {
       if isSameRowAsLastSizedElement {
         let lastSizedElementPreferredHeight = self.lastSizedElementPreferredHeight ?? 0
         if preferredAttributes.size.height > lastSizedElementPreferredHeight {
-          context.contentOffsetAdjustment.y = preferredAttributes.size.height - lastSizedElementPreferredHeight
+          context.contentOffsetAdjustment.y =
+            preferredAttributes.size.height - lastSizedElementPreferredHeight
         }
       } else {
-        context.contentOffsetAdjustment.y = preferredAttributes.size.height - originalAttributes.size.height
+        context.contentOffsetAdjustment.y =
+          preferredAttributes.size.height - originalAttributes.size.height
       }
     }
 

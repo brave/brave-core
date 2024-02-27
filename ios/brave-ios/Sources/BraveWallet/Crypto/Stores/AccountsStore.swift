@@ -1,11 +1,11 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import SwiftUI
 import Preferences
+import SwiftUI
 
 struct AccountDetails: Equatable, Identifiable {
   var id: String { account.id }
@@ -15,7 +15,7 @@ struct AccountDetails: Equatable, Identifiable {
 }
 
 class AccountsStore: ObservableObject, WalletObserverStore {
-  
+
   /// Users primary accounts
   @Published var primaryAccounts: [AccountDetails] = []
   /// Users imported accounts
@@ -30,27 +30,27 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       update()
     }
   }
-  
+
   let currencyFormatter: NumberFormatter = .usdCurrencyFormatter
 
   /// Cache of token balances for each account. [account.address: [token.id: balance]]
   private var tokenBalancesCache: [String: [String: Double]] = [:]
   /// Cache of prices for each token. The key is the token's `assetRatioId`.
   private var pricesCache: [String: String] = [:]
-  
+
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
   private let assetRatioService: BraveWalletAssetRatioService
   private let userAssetManager: WalletUserAssetManagerType
-  
+
   private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
 
   var isObserving: Bool {
     keyringServiceObserver != nil && walletServiceObserver != nil
   }
-  
+
   init(
     keyringService: BraveWalletKeyringService,
     rpcService: BraveWalletJsonRpcService,
@@ -65,7 +65,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     self.userAssetManager = userAssetManager
     self.setupObservers()
   }
-  
+
   func setupObservers() {
     guard !isObserving else { return }
     self.keyringServiceObserver = KeyringServiceObserver(
@@ -82,12 +82,12 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     )
     Preferences.Wallet.showTestNetworks.observe(from: self)
   }
-  
+
   func tearDown() {
     keyringServiceObserver = nil
     walletServiceObserver = nil
   }
-  
+
   private var updateTask: Task<(), Never>?
   func update() {
     updateTask?.cancel()
@@ -99,7 +99,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       let allTokensPerNetwork = userAssetManager.getAllUserAssetsInNetworkAssets(
         networks: allNetworks,
         includingUserDeleted: false
-      ).map { networkAssets in // filter out NFTs
+      ).map { networkAssets in  // filter out NFTs
         NetworkAssets(
           network: networkAssets.network,
           tokens: networkAssets.tokens.filter { !($0.isNft || $0.isErc721) },
@@ -107,29 +107,33 @@ class AccountsStore: ObservableObject, WalletObserverStore {
         )
       }
       let tokens = allTokensPerNetwork.flatMap(\.tokens)
-      
+
       var allAccounts = await keyringService.allAccounts().accounts
       var accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
-      self.primaryAccounts = accountDetails
+      self.primaryAccounts =
+        accountDetails
         .filter(\.account.isPrimary)
-      self.importedAccounts = accountDetails
+      self.importedAccounts =
+        accountDetails
         .filter(\.account.isImported)
-      
+
       await updateBalancesAndPrices(
         for: allAccounts,
         networkAssets: allTokensPerNetwork
       )
-      
+
       // if new accounts added while balances were being fetched.
       allAccounts = await keyringService.allAccounts().accounts
       accountDetails = buildAccountDetails(accounts: allAccounts, tokens: tokens)
-      self.primaryAccounts = accountDetails
+      self.primaryAccounts =
+        accountDetails
         .filter(\.account.isPrimary)
-      self.importedAccounts = accountDetails
+      self.importedAccounts =
+        accountDetails
         .filter(\.account.isImported)
     }
   }
-  
+
   @MainActor private func updateBalancesAndPrices(
     for accounts: [BraveWallet.AccountInfo],
     networkAssets allNetworkAssets: [NetworkAssets]
@@ -140,15 +144,18 @@ class AccountsStore: ObservableObject, WalletObserverStore {
         for account in accounts {
           group.addTask {
             let balancesForTokens: [String: Double] = await self.rpcService.fetchBalancesForTokens(
-              account: account, 
+              account: account,
               networkAssets: allNetworkAssets
             )
             return [account.address: balancesForTokens]
           }
         }
-        return await group.reduce(into: [String: [String: Double]](), { partialResult, new in
-          partialResult.merge(with: new)
-        })
+        return await group.reduce(
+          into: [String: [String: Double]](),
+          { partialResult, new in
+            partialResult.merge(with: new)
+          }
+        )
       }
     )
     for account in accounts {
@@ -169,7 +176,8 @@ class AccountsStore: ObservableObject, WalletObserverStore {
       tokenIdsWithAccountBalance.forEach { tokensIdsWithBalance.insert($0) }
     }
     let allTokens = allNetworkAssets.flatMap(\.tokens)
-    let assetRatioIdsForTokensWithBalance = tokensIdsWithBalance
+    let assetRatioIdsForTokensWithBalance =
+      tokensIdsWithBalance
       .compactMap { tokenId in
         allTokens.first(where: { $0.id == tokenId })?.assetRatioId
       }
@@ -180,9 +188,9 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     )
     self.pricesCache.merge(with: prices)
   }
-  
+
   // MARK: Helpers
-  
+
   private func buildAccountDetails(
     accounts: [BraveWallet.AccountInfo],
     tokens: [BraveWallet.BlockchainToken]
@@ -193,10 +201,15 @@ class AccountsStore: ObservableObject, WalletObserverStore {
           for: account,
           tokens: tokens
         )
-        let totalBalanceFiat = currencyFormatter.string(from: NSNumber(value: totalBalanceFiat(
-          for: account,
-          tokens: tokens
-        ))) ?? ""
+        let totalBalanceFiat =
+          currencyFormatter.string(
+            from: NSNumber(
+              value: totalBalanceFiat(
+                for: account,
+                tokens: tokens
+              )
+            )
+          ) ?? ""
         return AccountDetails(
           account: account,
           tokensWithBalance: tokensWithBalance,
@@ -204,7 +217,7 @@ class AccountsStore: ObservableObject, WalletObserverStore {
         )
       }
   }
-  
+
   /// Returns the tokens with a balance for the given account.
   private func tokensSortedByFiat(
     for account: BraveWallet.AccountInfo,
@@ -217,16 +230,18 @@ class AccountsStore: ObservableObject, WalletObserverStore {
     for (tokenId, balance) in tokenBalancesForAccount where balance > 0 {
       guard let token = tokens.first(where: { $0.id == tokenId }) else { continue }
       if let priceString = pricesCache[token.assetRatioId.lowercased()],
-         let price = Double(priceString) {
+        let price = Double(priceString)
+      {
         let fiat = balance * price
         tokensFiatForAccount.append((token, fiat))
-      } // else price unknown, can't determine fiat.
+      }  // else price unknown, can't determine fiat.
     }
-    return tokensFiatForAccount
+    return
+      tokensFiatForAccount
       .sorted(by: { $0.fiat > $1.fiat })
       .map(\.token)
   }
-  
+
   /// Returns the fiat for tokens with a balance for the given account.
   private func totalBalanceFiat(
     for account: BraveWallet.AccountInfo,
@@ -234,21 +249,23 @@ class AccountsStore: ObservableObject, WalletObserverStore {
   ) -> Double {
     guard let accountBalanceCache = tokenBalancesCache[account.address] else { return 0 }
     return accountBalanceCache.keys.reduce(0.0) { partialResult, tokenId in
-      guard let tokenBalanceForAccount = tokenBalanceForAccount(tokenId: tokenId, account: account) else {
+      guard let tokenBalanceForAccount = tokenBalanceForAccount(tokenId: tokenId, account: account)
+      else {
         // no balances cached for this token
         // or no balance cached for this account
         return partialResult
       }
       guard let token = tokens.first(where: { $0.id == tokenId }),
-            let priceString = pricesCache[token.assetRatioId.lowercased()],
-            let price = Double(priceString) else {
+        let priceString = pricesCache[token.assetRatioId.lowercased()],
+        let price = Double(priceString)
+      else {
         // price for token unavailable
         return partialResult
       }
       return partialResult + (tokenBalanceForAccount * price)
     }
   }
-  
+
   // Helper to get token balance for a given token id and account from cache.
   private func tokenBalanceForAccount(
     tokenId: String,

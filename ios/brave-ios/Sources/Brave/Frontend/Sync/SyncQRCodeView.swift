@@ -1,4 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 
@@ -12,12 +14,17 @@ class SyncQRCodeView: UIImageView {
     contentMode = .scaleAspectFill
 
     let json = syncApi.qrCodeJson(fromHexSeed: syncApi.hexSeed(fromSyncCode: syncApi.getSyncCode()))
-    let result = QRCodeGenerator().generateQRCode(QRCodeGenerator.Options(data: json,
-                                                                          shouldRender: true,
-                                                                          renderLogoInCenter: false,
-                                                                          renderModuleStyle: .circles,
-                                                                          renderLocatorStyle: .rounded))
-    image = result.image ?? getQRCodeImage(json, size: CGSize(width: barcodeSize, height: barcodeSize))
+    let result = QRCodeGenerator().generateQRCode(
+      QRCodeGenerator.Options(
+        data: json,
+        shouldRender: true,
+        renderLogoInCenter: false,
+        renderModuleStyle: .circles,
+        renderLocatorStyle: .rounded
+      )
+    )
+    image =
+      result.image ?? getQRCodeImage(json, size: CGSize(width: barcodeSize, height: barcodeSize))
   }
 
   override init(frame: CGRect) {
@@ -27,7 +34,7 @@ class SyncQRCodeView: UIImageView {
   required init?(coder aDecoder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   private func getQRCodeImage(_ json: String, size: CGSize) -> UIImage? {
     // Typically QR Codes use isoLatin1, but it doesn't matter here
     // as we're not encoding any special characters
@@ -48,7 +55,8 @@ class SyncQRCodeView: UIImageView {
 
     if let image = filter.outputImage,
       image.extent.size.width > 0.0,
-      image.extent.size.height > 0.0 {
+      image.extent.size.height > 0.0
+    {
       let scaleX = size.width / image.extent.size.width
       let scaleY = size.height / image.extent.size.height
       let transform = CGAffineTransform(scaleX: scaleX, y: scaleY)
@@ -56,7 +64,8 @@ class SyncQRCodeView: UIImageView {
       return UIImage(
         ciImage: image.transformed(by: transform),
         scale: UIScreen.main.scale,
-        orientation: .up)
+        orientation: .up
+      )
     }
 
     return nil

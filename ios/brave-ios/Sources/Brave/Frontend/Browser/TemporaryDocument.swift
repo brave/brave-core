@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -26,7 +26,11 @@ class TemporaryDocument: NSObject {
 
     super.init()
 
-    self.session = URLSession(configuration: .default, delegate: self, delegateQueue: temporaryDocumentOperationQueue)
+    self.session = URLSession(
+      configuration: .default,
+      delegate: self,
+      delegateQueue: temporaryDocumentOperationQueue
+    )
   }
 
   deinit {
@@ -45,18 +49,18 @@ class TemporaryDocument: NSObject {
     if let url = localFileURL {
       return url
     }
-    
+
     if let task = pendingTask {
       return await task.value
     }
-    
+
     let task = Task<URL, Never> { @MainActor in
       return await withCheckedContinuation { continuation in
         pendingContinuation = continuation
-        
+
         downloadTask = session?.downloadTask(with: request)
         downloadTask?.resume()
-        
+
         if let tab = self.tab, let url = request.url {
           // Calls `onDocumentDownloaded` on completion
           ResourceDownloadScriptHandler.downloadResource(for: tab, url: url)
@@ -73,11 +77,17 @@ class TemporaryDocument: NSObject {
   func onDocumentDownloaded(document: DownloadedResourceResponse?, error: Error?) {
     // Store the blob/data in a local temporary file.
     if let document = document, let data = document.data, !data.isEmpty {
-      let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("TempDocs")
+      let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(
+        "TempDocs"
+      )
       let url = tempDirectory.appendingPathComponent(filename)
 
       do {
-        try FileManager.default.createDirectory(at: tempDirectory, withIntermediateDirectories: true, attributes: nil)
+        try FileManager.default.createDirectory(
+          at: tempDirectory,
+          withIntermediateDirectories: true,
+          attributes: nil
+        )
 
         // Delete the file if there is already one. We will replace it with a new file
         if FileManager.default.fileExists(atPath: url.absoluteString) {
@@ -119,11 +129,21 @@ extension TemporaryDocument: URLSessionTaskDelegate, URLSessionDownloadDelegate 
     }
   }
 
-  func urlSession(_ session: URLSession, downloadTask: URLSessionDownloadTask, didFinishDownloadingTo location: URL) {
-    let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent("TempDocs")
+  func urlSession(
+    _ session: URLSession,
+    downloadTask: URLSessionDownloadTask,
+    didFinishDownloadingTo location: URL
+  ) {
+    let tempDirectory = URL(fileURLWithPath: NSTemporaryDirectory()).appendingPathComponent(
+      "TempDocs"
+    )
     let url = tempDirectory.appendingPathComponent(filename)
 
-    try? FileManager.default.createDirectory(at: tempDirectory, withIntermediateDirectories: true, attributes: nil)
+    try? FileManager.default.createDirectory(
+      at: tempDirectory,
+      withIntermediateDirectories: true,
+      attributes: nil
+    )
     try? FileManager.default.removeItem(at: url)
 
     do {

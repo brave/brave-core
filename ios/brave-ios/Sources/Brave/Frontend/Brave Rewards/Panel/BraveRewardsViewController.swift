@@ -1,14 +1,14 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
-import BraveUI
 import BraveShared
-import Shared
+import BraveUI
 import Combine
+import Foundation
+import Shared
 import UIKit
 
 class BraveRewardsViewController: UIViewController, PopoverContentComponent {
@@ -25,16 +25,26 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     didSet {
       let isVerified = publisher?.status != .notVerified
       rewardsView.publisherView.learnMoreButton.isHidden = isVerified
-      rewardsView.publisherView.hostLabel.attributedText = publisher?.attributedDisplayName(fontSize: BraveRewardsPublisherView.UX.hostLabelFontSize)
-      rewardsView.publisherView.bodyLabel.text = isVerified ? Strings.Rewards.supportingPublisher : Strings.Rewards.unverifiedPublisher
+      rewardsView.publisherView.hostLabel.attributedText = publisher?.attributedDisplayName(
+        fontSize: BraveRewardsPublisherView.UX.hostLabelFontSize
+      )
+      rewardsView.publisherView.bodyLabel.text =
+        isVerified ? Strings.Rewards.supportingPublisher : Strings.Rewards.unverifiedPublisher
       if !isVerified {
         rewardsView.publisherView.faviconImageView.clearMonogramFavicon()
-        rewardsView.publisherView.faviconImageView.image = UIImage(named: "rewards-panel-unverified-pub", in: .module, compatibleWith: nil)!.withRenderingMode(.alwaysOriginal)
+        rewardsView.publisherView.faviconImageView.image = UIImage(
+          named: "rewards-panel-unverified-pub",
+          in: .module,
+          compatibleWith: nil
+        )!.withRenderingMode(.alwaysOriginal)
         rewardsView.publisherView.faviconImageView.contentMode = .center
       } else {
         if let url = tab.url {
           rewardsView.publisherView.faviconImageView.contentMode = .scaleAspectFit
-          rewardsView.publisherView.faviconImageView.loadFavicon(for: url, isPrivateBrowsing: tab.isPrivate)
+          rewardsView.publisherView.faviconImageView.loadFavicon(
+            for: url,
+            isPrivateBrowsing: tab.isPrivate
+          )
         } else {
           rewardsView.publisherView.faviconImageView.isHidden = true
         }
@@ -57,7 +67,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
   }
 
   private var rewardsView: BraveRewardsView {
-    view as! BraveRewardsView  // swiftlint:disable:this force_cast
+    view as! BraveRewardsView
   }
 
   override func loadView() {
@@ -76,7 +86,12 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       if let url = self.tab.url, !url.isLocal, !InternalURL.isValid(url: url) {
         self.rewardsView.publisherView.isHidden = false
         self.rewardsView.publisherView.hostLabel.text = url.baseDomain
-        rewardsAPI.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: nil, tabId: UInt64(self.tab.rewardsId))
+        rewardsAPI.fetchPublisherActivity(
+          from: url,
+          faviconURL: nil,
+          publisherBlob: nil,
+          tabId: UInt64(self.tab.rewardsId)
+        )
       } else {
         self.rewardsView.publisherView.isHidden = true
       }
@@ -84,18 +99,23 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       rewardsAPI.listAutoContributePublishers { [weak self] list in
         guard let self = self else { return }
         self.supportedListCount = list.count
-        self.rewardsView.statusView.setVisibleStatus(status: list.isEmpty ? .rewardsOnNoCount : .rewardsOn, animated: false)
+        self.rewardsView.statusView.setVisibleStatus(
+          status: list.isEmpty ? .rewardsOnNoCount : .rewardsOn,
+          animated: false
+        )
         self.rewardsView.statusView.countView.countLabel.text = "\(list.count)"
       }
     }
 
-    if let displayName = publisher?.attributedDisplayName(fontSize: BraveRewardsPublisherView.UX.hostLabelFontSize) {
+    if let displayName = publisher?.attributedDisplayName(
+      fontSize: BraveRewardsPublisherView.UX.hostLabelFontSize
+    ) {
       rewardsView.publisherView.hostLabel.attributedText = displayName
     } else {
       rewardsView.publisherView.hostLabel.text = tab.url?.baseDomain
     }
   }
-  
+
   private let rewardsServiceStartGroup = DispatchGroup()
 
   override func viewDidLoad() {
@@ -129,9 +149,18 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       $0.height.equalTo(rewardsView)
     }
 
-    rewardsView.publisherView.learnMoreButton.addTarget(self, action: #selector(tappedUnverifiedPubLearnMore), for: .touchUpInside)
-    rewardsView.subtitleLabel.text = rewards.isEnabled ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
-    rewardsView.rewardsToggle.addTarget(self, action: #selector(rewardsToggleValueChanged), for: .valueChanged)
+    rewardsView.publisherView.learnMoreButton.addTarget(
+      self,
+      action: #selector(tappedUnverifiedPubLearnMore),
+      for: .touchUpInside
+    )
+    rewardsView.subtitleLabel.text =
+      rewards.isEnabled ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
+    rewardsView.rewardsToggle.addTarget(
+      self,
+      action: #selector(rewardsToggleValueChanged),
+      for: .valueChanged
+    )
     if !AppConstants.buildChannel.isPublic {
       let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedHostLabel(_:)))
       rewardsView.publisherView.hostLabel.isUserInteractionEnabled = true
@@ -150,9 +179,12 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       }
       let isOn = rewardsView.rewardsToggle.isOn
       rewards.isEnabled = isOn
-      rewardsView.subtitleLabel.text = isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
+      rewardsView.subtitleLabel.text =
+        isOn ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
       if rewardsView.rewardsToggle.isOn {
-        rewardsView.statusView.setVisibleStatus(status: supportedListCount > 0 ? .rewardsOn : .rewardsOnNoCount)
+        rewardsView.statusView.setVisibleStatus(
+          status: supportedListCount > 0 ? .rewardsOn : .rewardsOnNoCount
+        )
       } else {
         rewardsView.statusView.setVisibleStatus(status: .rewardsOff)
       }
@@ -176,7 +208,7 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
     guard let publisher = publisher else { return }
     rewards.rewardsAPI?.refreshPublisher(withId: publisher.id) { [weak self] status in
       guard let self = self else { return }
-      let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo  // swiftlint:disable:this force_cast
+      let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo
       copy.status = status
       self.publisher = copy
 

@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import DesignSystem
 import BraveCore
-import Strings
 import BraveUI
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct BuyTokenView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -15,7 +15,7 @@ struct BuyTokenView: View {
   @ObservedObject var buyTokenStore: BuyTokenStore
 
   @State private var isShowingProviderSelection = false
-  
+
   var onDismiss: (() -> Void)
 
   var body: some View {
@@ -33,11 +33,19 @@ struct BuyTokenView: View {
           Section(
             header: WalletListHeaderView(title: Text(Strings.Wallet.buy))
           ) {
-            NavigationLink(destination: BuyTokenSearchView(buyTokenStore: buyTokenStore, network: networkStore.defaultSelectedChain)
+            NavigationLink(
+              destination: BuyTokenSearchView(
+                buyTokenStore: buyTokenStore,
+                network: networkStore.defaultSelectedChain
+              )
             ) {
               HStack {
                 if let token = buyTokenStore.selectedBuyToken {
-                  AssetIconView(token: token, network: networkStore.defaultSelectedChain, length: 26)
+                  AssetIconView(
+                    token: token,
+                    network: networkStore.defaultSelectedChain,
+                    length: 26
+                  )
                 }
                 Text(buyTokenStore.selectedBuyToken?.symbol ?? "BAT")
                   .font(.title3.weight(.semibold))
@@ -61,7 +69,7 @@ struct BuyTokenView: View {
                         .tag(currency)
                     }
                   },
-                  label: { EmptyView() } // `Menu` label is used instead
+                  label: { EmptyView() }  // `Menu` label is used instead
                 )
               } label: {
                 HStack(spacing: 4) {
@@ -81,16 +89,16 @@ struct BuyTokenView: View {
           }
           Section(
             header: HStack {
-              Button(action: {
+              Button {
                 isShowingProviderSelection = true
-              }) {
+              } label: {
                 Text(Strings.Wallet.purchaseMethodButtonTitle)
               }
               .buttonStyle(BraveFilledButtonStyle(size: .normal))
               .frame(maxWidth: .infinity)
             }
-              .resetListHeaderStyle()
-              .listRowBackground(Color(.clear))
+            .resetListHeaderStyle()
+            .listRowBackground(Color(.clear))
           ) {
           }
         }
@@ -102,7 +110,9 @@ struct BuyTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: { onDismiss() }) {
+          Button {
+            onDismiss()
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -131,7 +141,8 @@ struct BuyTokenView: View {
           },
           label: {
             EmptyView()
-          })
+          }
+        )
       )
     }
     .navigationViewStyle(.stack)

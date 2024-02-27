@@ -194,7 +194,7 @@ std::string GetMacAddress(
 
   MacAddressProcessor processor(std::move(is_valid_mac_address_callback));
   while (true) {
-    // NOTE: |service| should not be released.
+    // NOTE: `service` should not be released.
     const io_object_t service = IOIteratorNext(scoped_iterator.get());
     if (!service) {
       break;

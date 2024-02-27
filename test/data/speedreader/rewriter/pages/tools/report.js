@@ -22,14 +22,23 @@ async function loadDocument(dir, doc, type) {
    return response
 }
 
+function getShadowRoot(e) {
+  if (e.shadowRoot) {
+    return e.shadowRoot
+  }
+  return e.attachShadow({mode: 'open'})
+}
+
 async function showReport(val) {
   const original = await loadDocument(val, 'original.html', 'document')
+  original.body.hidden = false
   const originalNode = document.getElementById('original')
-  originalNode.replaceChildren(original.firstChild)
+  getShadowRoot(originalNode).replaceChildren(original.firstChild)
 
   const changed = await loadDocument(val, 'changed.html', 'document')
+  changed.body.hidden = false
   const changedNode = document.getElementById('changed')
-  changedNode.replaceChildren(changed.firstChild)
+  getShadowRoot(changedNode).replaceChildren(changed.firstChild)
 
   const pageUrl = await loadDocument(val, 'page.url', 'text')
   const pageUrlNode = document.getElementById('page_url')
@@ -37,7 +46,9 @@ async function showReport(val) {
   pageUrlNode.text = pageUrl
 
   const diffNode = document.getElementById('diff')
-  diffNode.replaceChildren(visualDomDiff(originalNode.firstChild, changedNode.firstChild))
+  getShadowRoot(diffNode).replaceChildren(
+    visualDomDiff(getShadowRoot(originalNode).firstChild,
+                  getShadowRoot(changedNode).firstChild))
 }
 
 window.addEventListener('load', function () {

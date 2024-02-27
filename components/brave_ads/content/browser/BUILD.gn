@@ -30,3 +30,26 @@ static_library("browser") {
     "//third_party/blink/public/mojom:mojom_platform_headers",
   ]
 }
+
+source_set("unit_tests") {
+  testonly = true
+
+  sources = [
+    "ad_units/search_result_ad/search_result_ad_converting_util_unittest.cc",
+    "ad_units/search_result_ad/search_result_ad_handler_unittest.cc",
+    "ad_units/search_result_ad/search_result_ad_util_unittest.cc",
+    "ad_units/search_result_ad/test_web_page_util.cc",
+    "ad_units/search_result_ad/test_web_page_util.h",
+  ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+    "//brave/components/brave_ads/browser:test_support",
+    "//brave/components/brave_ads/content/browser",
+    "//brave/components/brave_ads/core",
+    "//content/test:test_support",
+    "//testing/gmock",
+    "//testing/gtest",
+  ]
+}

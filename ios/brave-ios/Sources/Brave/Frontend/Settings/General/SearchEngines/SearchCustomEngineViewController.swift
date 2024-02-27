@@ -1,18 +1,18 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
-import Static
-import Shared
-import WebKit
-import SnapKit
-import Fuzi
-import Storage
 import Data
 import Favicon
+import Foundation
+import Fuzi
+import Shared
+import SnapKit
+import Static
+import Storage
+import WebKit
 import os.log
 
 class SearchCustomEngineViewController: UIViewController {
@@ -131,11 +131,19 @@ class SearchCustomEngineViewController: UIViewController {
       switch type {
       case .enabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          title: Strings.CustomSearchEngine.customEngineAddButtonTitle, style: .done, target: self, action: #selector(self.checkAddEngineType))
+          title: Strings.CustomSearchEngine.customEngineAddButtonTitle,
+          style: .done,
+          target: self,
+          action: #selector(self.checkAddEngineType)
+        )
         self.spinnerView.stopAnimating()
       case .disabled:
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(
-          title: Strings.CustomSearchEngine.customEngineAddButtonTitle, style: .done, target: self, action: #selector(self.checkAddEngineType))
+          title: Strings.CustomSearchEngine.customEngineAddButtonTitle,
+          style: .done,
+          target: self,
+          action: #selector(self.checkAddEngineType)
+        )
         self.navigationItem.rightBarButtonItem?.isEnabled = false
         self.spinnerView.stopAnimating()
         self.isAutoAddEnabled = false
@@ -188,7 +196,11 @@ class SearchCustomEngineViewController: UIViewController {
       !title.isEmpty,
       !urlQuery.isEmpty
     else {
-      present(ThirdPartySearchAlerts.missingInfoToAddThirdPartySearch(), animated: true, completion: nil)
+      present(
+        ThirdPartySearchAlerts.missingInfoToAddThirdPartySearch(),
+        animated: true,
+        completion: nil
+      )
       return
     }
 
@@ -274,11 +286,18 @@ extension SearchCustomEngineViewController {
 
     let constructedReferenceURLString = "\(hostURLString)/\(referenceURLString)"
 
-    if referenceURL.host == nil, let constructedReferenceURL = URL(string: constructedReferenceURLString) {
+    if referenceURL.host == nil,
+      let constructedReferenceURL = URL(string: constructedReferenceURLString)
+    {
       referenceURL = constructedReferenceURL
     }
 
-    downloadOpenSearchXML(referenceURL, referenceURL: referenceURLString, title: title, iconImage: faviconImage)
+    downloadOpenSearchXML(
+      referenceURL,
+      referenceURL: referenceURLString,
+      title: title,
+      iconImage: faviconImage
+    )
   }
 
   func downloadOpenSearchXML(_ url: URL, referenceURL: String, title: String, iconImage: UIImage) {
@@ -287,10 +306,15 @@ extension SearchCustomEngineViewController {
 
     NetworkManager().downloadResource(with: url) { [weak self] response in
       guard let self = self else { return }
-      
+
       switch response {
       case .success(let response):
-        if let openSearchEngine = OpenSearchParser(pluginMode: true).parse(response.data, referenceURL: referenceURL, image: iconImage, isCustomEngine: true) {
+        if let openSearchEngine = OpenSearchParser(pluginMode: true).parse(
+          response.data,
+          referenceURL: referenceURL,
+          image: iconImage,
+          isCustomEngine: true
+        ) {
           self.addSearchEngine(openSearchEngine)
         } else {
           let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
@@ -301,7 +325,7 @@ extension SearchCustomEngineViewController {
         }
       case .failure(let error):
         Logger.module.error("\(error.localizedDescription)")
-        
+
         let alert = ThirdPartySearchAlerts.failedToAddThirdPartySearch()
         self.present(alert, animated: true) {
           self.changeAddButton(for: .disabled)
@@ -311,7 +335,8 @@ extension SearchCustomEngineViewController {
   }
 
   func addSearchEngine(_ engine: OpenSearchEngine) {
-    let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine(engine) { [weak self] alertAction in
+    let alert = ThirdPartySearchAlerts.addThirdPartySearchEngine(engine) {
+      [weak self] alertAction in
       guard let self = self else { return }
 
       if alertAction.style == .cancel {
@@ -394,12 +419,15 @@ extension SearchCustomEngineViewController {
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
       do {
-        let icon = try await FaviconFetcher.loadIcon(url: url, persistent: !privateBrowsingManager.isPrivateBrowsing)
+        let icon = try await FaviconFetcher.loadIcon(
+          url: url,
+          persistent: !privateBrowsingManager.isPrivateBrowsing
+        )
         self.faviconImage = icon.image ?? Favicon.defaultImage
       } catch {
         self.faviconImage = Favicon.defaultImage
       }
-      
+
       self.openSearchEngine = searchEngineDetails
     }
   }
@@ -448,7 +476,11 @@ extension SearchCustomEngineViewController {
     }
   }
 
-  private func createSearchEngine(using query: String, name: String, completion: @escaping ((OpenSearchEngine?, SearchEngineError?) -> Void)) {
+  private func createSearchEngine(
+    using query: String,
+    name: String,
+    completion: @escaping ((OpenSearchEngine?, SearchEngineError?) -> Void)
+  ) {
     // Check Search Query is not valid
     guard let template = getSearchTemplate(with: query),
       let urlText = template.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
@@ -460,7 +492,11 @@ extension SearchCustomEngineViewController {
     }
 
     // Check Engine Exists
-    guard profile.searchEngines.orderedEngines.filter({ $0.shortName == name || $0.searchTemplate.contains(template) }).isEmpty else {
+    guard
+      profile.searchEngines.orderedEngines.filter({
+        $0.shortName == name || $0.searchTemplate.contains(template)
+      }).isEmpty
+    else {
       completion(nil, SearchEngineError.duplicate)
       return
     }
@@ -468,7 +504,12 @@ extension SearchCustomEngineViewController {
     var engineImage = Favicon.defaultImage
 
     guard let hostUrl = host else {
-      let engine = OpenSearchEngine(shortName: name, image: engineImage, searchTemplate: template, isCustomEngine: true)
+      let engine = OpenSearchEngine(
+        shortName: name,
+        image: engineImage,
+        searchTemplate: template,
+        isCustomEngine: true
+      )
 
       completion(engine, nil)
       return
@@ -476,12 +517,20 @@ extension SearchCustomEngineViewController {
 
     faviconTask?.cancel()
     faviconTask = Task { @MainActor in
-      let favicon = try? await FaviconFetcher.loadIcon(url: hostUrl, persistent: !privateBrowsingManager.isPrivateBrowsing)
+      let favicon = try? await FaviconFetcher.loadIcon(
+        url: hostUrl,
+        persistent: !privateBrowsingManager.isPrivateBrowsing
+      )
       if let image = favicon?.image {
         engineImage = image
       }
-      
-      let engine = OpenSearchEngine(shortName: name, image: engineImage, searchTemplate: template, isCustomEngine: true)
+
+      let engine = OpenSearchEngine(
+        shortName: name,
+        image: engineImage,
+        searchTemplate: template,
+        isCustomEngine: true
+      )
       completion(engine, nil)
     }
   }
@@ -514,7 +563,11 @@ extension SearchCustomEngineViewController {
 
 extension SearchCustomEngineViewController: UITextViewDelegate {
 
-  func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+  func textView(
+    _ textView: UITextView,
+    shouldChangeTextIn range: NSRange,
+    replacementText text: String
+  ) -> Bool {
     guard text.rangeOfCharacter(from: .newlines) == nil else {
       textView.resignFirstResponder()
       return false
@@ -545,7 +598,13 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
 
     // Reschedule the search engine fetch: in 0.25 second, call the setupHost method on the new textview content
     searchEngineTimer =
-      Timer.scheduledTimer(timeInterval: 0.25, target: self, selector: #selector(setupHost), userInfo: nil, repeats: false)
+      Timer.scheduledTimer(
+        timeInterval: 0.25,
+        target: self,
+        selector: #selector(setupHost),
+        userInfo: nil,
+        repeats: false
+      )
   }
 
   func textViewDidEndEditing(_ textView: UITextView) {
@@ -558,7 +617,8 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
       let encodedText = text.addingPercentEncoding(withAllowedCharacters: .urlFragmentAllowed),
       let url = URL(string: encodedText),
       url.host != nil,
-      url.isWebPage() {
+      url.isWebPage()
+    {
       if let scheme = url.scheme, let host = url.host {
         self.host = URL(string: "\(scheme)://\(host)")
       }
@@ -570,8 +630,14 @@ extension SearchCustomEngineViewController: UITextViewDelegate {
 
 extension SearchCustomEngineViewController: UITextFieldDelegate {
 
-  func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-    guard let text = textField.text, text.rangeOfCharacter(from: .newlines) == nil else { return false }
+  func textField(
+    _ textField: UITextField,
+    shouldChangeCharactersIn range: NSRange,
+    replacementString string: String
+  ) -> Bool {
+    guard let text = textField.text, text.rangeOfCharacter(from: .newlines) == nil else {
+      return false
+    }
 
     let currentString = text as NSString
     let newString: NSString = currentString.replacingCharacters(in: range, with: string) as NSString
@@ -599,7 +665,7 @@ extension SearchCustomEngineViewController: UITextFieldDelegate {
 
 // MARK: - SearchEngineTableViewHeader
 
-fileprivate class SearchEngineTableViewHeader: UITableViewHeaderFooterView, TableViewReusable {
+private class SearchEngineTableViewHeader: UITableViewHeaderFooterView, TableViewReusable {
 
   // MARK: UX
 
@@ -663,7 +729,7 @@ fileprivate class SearchEngineTableViewHeader: UITableViewHeaderFooterView, Tabl
 
 // MARK: URLInputTableViewCell
 
-fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable {
+private class URLInputTableViewCell: UITableViewCell, TableViewReusable {
 
   // MARK: UX
 
@@ -696,7 +762,9 @@ fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable {
   // MARK: Internal
 
   private func setup() {
-    textview = UITextView(frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)).then {
+    textview = UITextView(
+      frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
+    ).then {
       $0.text = "https://"
       $0.backgroundColor = .clear
       $0.font = UIFont.preferredFont(forTextStyle: .body)
@@ -719,7 +787,7 @@ fileprivate class URLInputTableViewCell: UITableViewCell, TableViewReusable {
 
 // MARK: TitleInputTableViewCell
 
-fileprivate class TitleInputTableViewCell: UITableViewCell, TableViewReusable {
+private class TitleInputTableViewCell: UITableViewCell, TableViewReusable {
 
   // MARK: UX
 
@@ -752,7 +820,9 @@ fileprivate class TitleInputTableViewCell: UITableViewCell, TableViewReusable {
   // MARK: Internal
 
   private func setup() {
-    textfield = UITextField(frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height))
+    textfield = UITextField(
+      frame: CGRect(x: 0, y: 0, width: contentView.frame.width, height: contentView.frame.height)
+    )
 
     contentView.addSubview(textfield)
 

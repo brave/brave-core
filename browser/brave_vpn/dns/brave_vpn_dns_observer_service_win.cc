@@ -13,6 +13,7 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/net/secure_dns_config.h"
 #include "chrome/browser/net/stub_resolver_config_reader.h"
 #include "chrome/browser/net/system_network_context_manager.h"
@@ -195,6 +196,12 @@ void BraveVpnDnsObserverService::LockDNS() {
 
 void BraveVpnDnsObserverService::OnConnectionStateChanged(
     brave_vpn::mojom::ConnectionState state) {
+  // Check because WG settings could be changed in runtime.
+  if (brave_vpn::IsBraveVPNWireguardEnabled(g_browser_process->local_state())) {
+    return;
+  }
+
+  VLOG(2) << __func__ << state;
   connection_state_ = state;
   if (state == brave_vpn::mojom::ConnectionState::CONNECTED) {
     if (IsDNSHelperLive()) {

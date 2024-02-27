@@ -19,6 +19,7 @@
 		27466BB1288EDB9C00584C90 /* RuntimeWarnings in Frameworks */ = {isa = PBXBuildFile; productRef = 27466BB0288EDB9C00584C90 /* RuntimeWarnings */; };
 		2759468D29CCB62F0094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468C29CCB62F0094BDDE /* GRDWireGuardKit */; };
 		2759468F29CCB6350094BDDE /* GRDWireGuardKit in Frameworks */ = {isa = PBXBuildFile; productRef = 2759468E29CCB6350094BDDE /* GRDWireGuardKit */; };
+		2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 2787B0692B7ED260004796F8 /* BraveCore */; };
 		278852E42ACDC26B005395CF /* Playlist in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E32ACDC26B005395CF /* Playlist */; };
 		278852E62ACDE795005395CF /* UserAgent in Frameworks */ = {isa = PBXBuildFile; productRef = 278852E52ACDE795005395CF /* UserAgent */; };
 		278BB9FF297B0A1E00690BE3 /* TopNewsListWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 278BB9FE297B0A1E00690BE3 /* TopNewsListWidget.swift */; };
@@ -294,6 +295,12 @@
 		445ABC2327319C270089710D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		445ABC2527319C290089710D /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
 		4484BAF02654227A0099A205 /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		44AF53012B866CC6008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = Shortcuts/ca.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
+		44AF53022B866CC7008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/BraveWidgets.strings; sourceTree = "<group>"; };
+		44AF53032B866D6F008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = "Supporting Files/ca.lproj/InfoPlist.strings"; sourceTree = "<group>"; };
+		44AF53042B866D93008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		44AF53052B866DA0008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		44AF53062B866DFF008DF5C5 /* ca */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ca; path = ca.lproj/Localizable.strings; sourceTree = "<group>"; };
 		5929A9F121B6AEF7005ECF8D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		59B6912221B695A400E9388E /* ms */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ms; path = ms.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		59B6914221B695C200E9388E /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -418,6 +425,7 @@
 				279C432E2853E51E00A9F708 /* DesignSystem in Frameworks */,
 				CA0391B6271E1023000EB13C /* SwiftUI.framework in Frameworks */,
 				CA986FB2298C1249000C6DD8 /* BraveWidgetsModels in Frameworks */,
+				2787B06A2B7ED260004796F8 /* BraveCore in Frameworks */,
 				27D5907129B7BA1B00AE9989 /* Preferences in Frameworks */,
 				CA0391B4271E1023000EB13C /* WidgetKit.framework in Frameworks */,
 			);
@@ -764,6 +772,7 @@
 				27D5907029B7BA1B00AE9989 /* Preferences */,
 				27D7FF5429BA69E50096DD93 /* BraveShields */,
 				27462BE929DF39EE00715268 /* OrderedCollections */,
+				2787B0692B7ED260004796F8 /* BraveCore */,
 			);
 			productName = BraveWidgetsExtension;
 			productReference = CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */;
@@ -778,7 +787,6 @@
 				F84B21BC1A090F8100AAB793 /* Resources */,
 				28CE83DE1A1D1E7C00576538 /* Frameworks */,
 				F84B22531A0920C600AAB793 /* Embed App Extensions */,
-				272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */,
 				2F93A98729C8EB3300C7C158 /* Embed Frameworks */,
 			);
 			buildRules = (
@@ -889,6 +897,7 @@
 				zh,
 				nb,
 				tr,
+				ca,
 			);
 			mainGroup = F84B21B51A090F8100AAB793;
 			packageReferences = (
@@ -962,28 +971,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		272FC6BF25DC19A0000F2EFC /* Fix Embedded Frameworks Signing */ = {
-			isa = PBXShellScriptBuildPhase;
-			alwaysOutOfDate = 1;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Fix Embedded Frameworks Signing";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Thanks to folks at PSPDFKit for this workaround:\n# https://pspdfkit.com/guides/ios/current/knowledge-base/library-not-found-swiftpm/\n#\n# Required because of some XCFrameorks not codesigning properly when building for Device\nfind \"${CODESIGNING_FOLDER_PATH}\" -name '*.framework' -print0 | while read -d $'\\0' framework \ndo \n    codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --preserve-metadata=identifier,entitlements --timestamp=none \"${framework}\" \ndone\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		27F443912135E11200296C58 /* Sources */ = {
@@ -1107,6 +1094,7 @@
 				279AC848284FDB8600238C32 /* uk */,
 				27C601AC284FDB91002BAF19 /* zh */,
 				27FDB77C284FDB9D00ACEB16 /* zh-TW */,
+				44AF53012B866CC6008DF5C5 /* ca */,
 			);
 			name = BrowserIntents.intentdefinition;
 			sourceTree = "<group>";
@@ -1131,6 +1119,7 @@
 				27D7FF6F29BA78810096DD93 /* sv */,
 				27D7FF7029BA78810096DD93 /* tr */,
 				27D7FF7129BA78820096DD93 /* uk */,
+				44AF53062B866DFF008DF5C5 /* ca */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1156,6 +1145,7 @@
 				27FA21A12838018F00FA2C45 /* ja */,
 				27FA21A22838018F00FA2C45 /* zh-TW */,
 				27FA21A32838019000FA2C45 /* zh */,
+				44AF53032B866D6F008DF5C5 /* ca */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1181,6 +1171,7 @@
 				2FE7D55A2B50A2CD0039FBA4 /* fr */,
 				2FE7D55B2B50A2DF0039FBA4 /* en */,
 				2FE7D55C2B50A2EA0039FBA4 /* tr */,
+				44AF53042B866D93008DF5C5 /* ca */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1206,6 +1197,7 @@
 				59B691E921B6966C00E9388E /* fr */,
 				5929A9F121B6AEF7005ECF8D /* en */,
 				4484BAF02654227A0099A205 /* tr */,
+				44AF53052B866DA0008DF5C5 /* ca */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -1231,6 +1223,7 @@
 				445ABC2127319C260089710D /* sv */,
 				445ABC2327319C270089710D /* tr */,
 				445ABC2527319C290089710D /* uk */,
+				44AF53022B866CC7008DF5C5 /* ca */,
 			);
 			name = BraveWidgets.intentdefinition;
 			sourceTree = "<group>";
@@ -1529,6 +1522,7 @@
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
 				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -2639,6 +2633,7 @@
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
 				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -2807,6 +2802,7 @@
 				LIBRARY_SEARCH_PATHS = "$(BUILD_DIR)/Release$(EFFECTIVE_PLATFORM_NAME)";
 				LOCALIZED_STRING_SWIFTUI_SUPPORT = NO;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"-ObjC",
 					"-lxml2",
@@ -3068,6 +3064,10 @@
 		2759468E29CCB6350094BDDE /* GRDWireGuardKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GRDWireGuardKit;
+		};
+		2787B0692B7ED260004796F8 /* BraveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveCore;
 		};
 		278852E32ACDC26B005395CF /* Playlist */ = {
 			isa = XCSwiftPackageProductDependency;

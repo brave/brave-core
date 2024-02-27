@@ -46,9 +46,6 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
   const bool was_restored =
       navigation_entry ? navigation_entry->IsRestored() : false;
 
-  const bool is_visible =
-      web_contents->GetVisibility() == content::Visibility::VISIBLE;
-
   Profile* profile = Profile::FromWebUI(web_ui);
   web_ui->OverrideTitle(
       brave_l10n::GetLocalizedResourceUTF16String(IDS_NEW_TAB_TITLE));
@@ -81,8 +78,8 @@ BraveNewTabUI::BraveNewTabUI(content::WebUI* web_ui, const std::string& name)
       "featureFlagBraveNewsFeedV2Enabled",
       base::FeatureList::IsEnabled(brave_news::features::kBraveNewsFeedUpdate));
 
-  web_ui->AddMessageHandler(base::WrapUnique(BraveNewTabMessageHandler::Create(
-      source, profile, was_restored && !is_visible)));
+  web_ui->AddMessageHandler(base::WrapUnique(
+      BraveNewTabMessageHandler::Create(source, profile, was_restored)));
   web_ui->AddMessageHandler(
       base::WrapUnique(new TopSitesMessageHandler(profile)));
 

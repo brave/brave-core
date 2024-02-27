@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Lottie
@@ -25,20 +25,20 @@ public struct LottieAnimationView: View {
   public var name: String
   public var bundle: Bundle
   public var isPlaying: Bool
-  
+
   public init(name: String, bundle: Bundle, isPlaying: Bool = true) {
     self.name = name
     self.bundle = bundle
     self.isPlaying = isPlaying
   }
-  
+
   private struct Configuration {
     var loopMode: LottieLoopMode = .playOnce
     var resizable: Bool = false
   }
-  
+
   private var configuration: Configuration = .init()
-  
+
   public var body: some View {
     Representable(
       name: name,
@@ -47,17 +47,17 @@ public struct LottieAnimationView: View {
       configuration: configuration
     )
   }
-  
+
   private struct Representable: UIViewRepresentable {
     var name: String
     var bundle: Bundle
     var isPlaying: Bool
     var configuration: Configuration
-    
+
     func makeUIView(context: Context) -> AnimationView {
       AnimationView(name: name, bundle: bundle)
     }
-    
+
     func updateUIView(_ uiView: AnimationView, context: Context) {
       if configuration.resizable, #unavailable(iOS 16.0) {
         uiView.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -72,9 +72,13 @@ public struct LottieAnimationView: View {
         uiView.stop()
       }
     }
-    
+
     @available(iOS 16.0, *)
-    func sizeThatFits(_ proposal: ProposedViewSize, uiView: AnimationView, context: Context) -> CGSize? {
+    func sizeThatFits(
+      _ proposal: ProposedViewSize,
+      uiView: AnimationView,
+      context: Context
+    ) -> CGSize? {
       if configuration.resizable {
         return proposal.replacingUnspecifiedDimensions()
       }
@@ -91,7 +95,7 @@ extension LottieAnimationView {
     view.configuration.resizable = true
     return view
   }
-  
+
   /// Sets the loop mode of the Lottie animation
   public func loopMode(_ loopMode: LottieLoopMode) -> LottieAnimationView {
     var view = self

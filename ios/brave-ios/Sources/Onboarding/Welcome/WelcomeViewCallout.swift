@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SnapKit
 import BraveUI
+import Foundation
 import Shared
+import SnapKit
+import UIKit
 
 public enum WelcomeViewCalloutState {
   public struct WelcomeViewDefaultBrowserDetails {
@@ -36,19 +36,20 @@ public enum WelcomeViewCalloutState {
       toggleAction: ((Bool) -> Void)? = nil,
       linkAction: ((URL) -> Void)? = nil,
       primaryButtonAction: @escaping () -> Void,
-      secondaryButtonAction: (() -> Void)? = nil) {
-        self.title = title
-        self.toggleTitle = toggleTitle
-        self.toggleStatus = toggleStatus
-        self.details = details
-        self.secondaryDetails = secondaryDetails
-        self.linkDescription = linkDescription
-        self.primaryButtonTitle = primaryButtonTitle
-        self.secondaryButtonTitle = secondaryButtonTitle
-        self.toggleAction = toggleAction
-        self.linkAction = linkAction
-        self.primaryButtonAction = primaryButtonAction
-        self.secondaryButtonAction = secondaryButtonAction
+      secondaryButtonAction: (() -> Void)? = nil
+    ) {
+      self.title = title
+      self.toggleTitle = toggleTitle
+      self.toggleStatus = toggleStatus
+      self.details = details
+      self.secondaryDetails = secondaryDetails
+      self.linkDescription = linkDescription
+      self.primaryButtonTitle = primaryButtonTitle
+      self.secondaryButtonTitle = secondaryButtonTitle
+      self.toggleAction = toggleAction
+      self.linkAction = linkAction
+      self.primaryButtonAction = primaryButtonAction
+      self.secondaryButtonAction = secondaryButtonAction
     }
   }
 
@@ -82,7 +83,7 @@ class WelcomeViewCallout: UIView {
   }
 
   // MARK: - Content
-  
+
   private let titleLabel = UILabel().then {
     $0.textColor = .bravePrimary
     $0.textAlignment = .center
@@ -92,7 +93,7 @@ class WelcomeViewCallout: UIView {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
-  
+
   private let actionToggle = WelcomeShareActionToggle()
 
   private let detailsLabel = UILabel().then {
@@ -103,7 +104,7 @@ class WelcomeViewCallout: UIView {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
-  
+
   private let secondaryDetailsLabel = UILabel().then {
     $0.textColor = .bravePrimary
     $0.textAlignment = .left
@@ -112,7 +113,7 @@ class WelcomeViewCallout: UIView {
     $0.setContentHuggingPriority(.required, for: .horizontal)
     $0.setContentCompressionResistancePriority(.required, for: .horizontal)
   }
-  
+
   private let actionDescriptionLabel = LinkLabel().then {
     $0.textColor = .bravePrimary
     $0.textAlignment = .left
@@ -165,18 +166,18 @@ class WelcomeViewCallout: UIView {
     $0.titleLabel?.minimumScaleFactor = 0.7
     $0.titleLabel?.adjustsFontSizeToFitWidth = true
   }
-  
+
   private var verticalLayoutMargin = UX.verticalLayoutMargin
   private var horizontalLayoutMargin = UX.horizontalLayoutMargin
 
   private(set) var state: WelcomeViewCalloutState?
-  
+
   var isBottomArrowHidden: Bool = false {
     didSet {
       arrowView.isHidden = isBottomArrowHidden
     }
   }
-  
+
   var isLoading = false {
     didSet {
       primaryButton.setNeedsUpdateConfiguration()
@@ -187,7 +188,10 @@ class WelcomeViewCallout: UIView {
     super.init(frame: .zero)
     doLayout()
 
-    [titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel, primaryButton, secondaryButtonContentView].forEach {
+    [
+      titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel,
+      primaryButton, secondaryButtonContentView,
+    ].forEach {
       contentStackView.addArrangedSubview($0)
 
       $0.alpha = 0.0
@@ -205,11 +209,14 @@ class WelcomeViewCallout: UIView {
       secondaryButtonContentView.addArrangedSubview($0)
     }
 
-    [titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel].forEach {
+    [titleLabel, actionToggle, detailsLabel, secondaryDetailsLabel, actionDescriptionLabel].forEach
+    {
       $0.contentMode = .top
     }
-    
-    if traitCollection.horizontalSizeClass == .regular && traitCollection.verticalSizeClass == .regular {
+
+    if traitCollection.horizontalSizeClass == .regular
+      && traitCollection.verticalSizeClass == .regular
+    {
       verticalLayoutMargin = 3 * UX.verticalLayoutMargin / 2
       horizontalLayoutMargin = 3 * UX.horizontalLayoutMargin / 2
     }
@@ -222,30 +229,32 @@ class WelcomeViewCallout: UIView {
   private func doLayout() {
     arrowView.removeFromSuperview()
     contentStackView.removeFromSuperview()
-   
+
     addSubview(backgroundView)
     addSubview(contentStackView)
     addSubview(arrowView)
     arrowView.transform = CGAffineTransform(rotationAngle: .pi)
 
     contentStackView.snp.makeConstraints {
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-          $0.leading.trailing.equalToSuperview().inset(UX.padding)
-        } else {
-          $0.centerX.equalToSuperview()
-          $0.leading.trailing.equalToSuperview().priority(.high)
-          $0.width.equalToSuperview().multipliedBy(0.5)
-        }
-        $0.top.equalToSuperview()
-        $0.bottom.equalTo(arrowView.snp.top)
-      }
-
-      arrowView.snp.makeConstraints {
+      if traitCollection.horizontalSizeClass == .compact
+        && traitCollection.verticalSizeClass == .regular
+      {
+        $0.leading.trailing.equalToSuperview().inset(UX.padding)
+      } else {
         $0.centerX.equalToSuperview()
-        $0.bottom.equalToSuperview().inset(8)
-        $0.width.equalTo(20.0)
-        $0.height.equalTo(13.0)
+        $0.leading.trailing.equalToSuperview().priority(.high)
+        $0.width.equalToSuperview().multipliedBy(0.5)
       }
+      $0.top.equalToSuperview()
+      $0.bottom.equalTo(arrowView.snp.top)
+    }
+
+    arrowView.snp.makeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.bottom.equalToSuperview().inset(8)
+      $0.width.equalTo(20.0)
+      $0.height.equalTo(13.0)
+    }
 
     backgroundView.snp.makeConstraints {
       $0.edges.equalTo(contentStackView.snp.edges)
@@ -255,14 +264,20 @@ class WelcomeViewCallout: UIView {
   func setState(state: WelcomeViewCalloutState) {
     self.state = state
 
-    primaryButton.removeAction(identifiedBy: .init(rawValue: "primary.action"), for: .primaryActionTriggered)
-    secondaryButton.removeAction(identifiedBy: .init(rawValue: "secondary.action"), for: .primaryActionTriggered)
+    primaryButton.removeAction(
+      identifiedBy: .init(rawValue: "primary.action"),
+      for: .primaryActionTriggered
+    )
+    secondaryButton.removeAction(
+      identifiedBy: .init(rawValue: "secondary.action"),
+      for: .primaryActionTriggered
+    )
 
     switch state {
     case .loading:
       backgroundView.isHidden = true
       arrowView.isHidden = true
-      
+
       titleLabel.do {
         $0.isHidden = true
       }
@@ -297,7 +312,7 @@ class WelcomeViewCallout: UIView {
       }
       backgroundView.isHidden = true
       arrowView.isHidden = true
-        
+
       titleLabel.do {
         $0.text = title
         $0.textAlignment = .center
@@ -311,7 +326,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 0.0
         $0.isHidden = true
       }
-      
+
       secondaryDetailsLabel.do {
         $0.alpha = 0.0
         $0.isHidden = true
@@ -338,7 +353,12 @@ class WelcomeViewCallout: UIView {
       }
     case .defaultBrowser(let info):
       contentStackView.do {
-        $0.layoutMargins = UIEdgeInsets(top: 2 * verticalLayoutMargin, left: 30, bottom: verticalLayoutMargin, right: 30)
+        $0.layoutMargins = UIEdgeInsets(
+          top: 2 * verticalLayoutMargin,
+          left: 30,
+          bottom: verticalLayoutMargin,
+          right: 30
+        )
       }
       titleLabel.do {
         $0.text = info.title
@@ -355,7 +375,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
-      
+
       secondaryDetailsLabel.do {
         $0.text = info.secondaryDetails
         $0.font = .preferredFont(for: .body, weight: .bold)
@@ -371,7 +391,10 @@ class WelcomeViewCallout: UIView {
             identifier: .init(rawValue: "primary.action"),
             handler: { _ in
               info.primaryButtonAction()
-            }), for: .touchUpInside)
+            }
+          ),
+          for: .touchUpInside
+        )
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -389,7 +412,10 @@ class WelcomeViewCallout: UIView {
             identifier: .init(rawValue: "secondary.action"),
             handler: { _ in
               info.secondaryButtonAction?()
-            }), for: .touchUpInside)
+            }
+          ),
+          for: .touchUpInside
+        )
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -407,10 +433,10 @@ class WelcomeViewCallout: UIView {
       contentStackView.do {
         $0.layoutMargins = UIEdgeInsets(top: 120, left: -30, bottom: -20, right: -30)
       }
-      
+
       backgroundView.isHidden = true
       arrowView.isHidden = true
-        
+
       titleLabel.do {
         $0.text = title
         $0.textColor = .bravePrimary.resolvedColor(with: .init(userInterfaceStyle: .dark))
@@ -428,7 +454,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 0.0
         $0.isHidden = false
       }
-      
+
       secondaryDetailsLabel.do {
         $0.alpha = 0.0
         $0.isHidden = true
@@ -453,11 +479,16 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 0.0
         $0.isHidden = true
       }
-      
+
       contentStackView.setCustomSpacing(20.0, after: titleLabel)
     case .p3a(let info):
       contentStackView.do {
-        $0.layoutMargins = UIEdgeInsets(top: 2 * verticalLayoutMargin, left: 30, bottom: verticalLayoutMargin, right: 30)
+        $0.layoutMargins = UIEdgeInsets(
+          top: 2 * verticalLayoutMargin,
+          left: 30,
+          bottom: verticalLayoutMargin,
+          right: 30
+        )
       }
       titleLabel.do {
         $0.text = info.title
@@ -467,7 +498,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
-      
+
       actionToggle.do {
         $0.text = info.toggleTitle
         $0.font = .preferredFont(for: .body, weight: .regular)
@@ -483,12 +514,12 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
-      
+
       secondaryDetailsLabel.do {
         $0.alpha = 0.0
         $0.isHidden = true
       }
-      
+
       actionDescriptionLabel.do {
         $0.font = .preferredFont(for: .footnote, weight: .regular)
         $0.onLinkedTapped = info.linkAction
@@ -499,7 +530,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
-      
+
       primaryButton.do {
         $0.configuration?.title = info.primaryButtonTitle
         $0.titleLabel?.font = .preferredFont(for: .body, weight: .regular)
@@ -508,7 +539,10 @@ class WelcomeViewCallout: UIView {
             identifier: .init(rawValue: "primary.action"),
             handler: { _ in
               info.primaryButtonAction()
-            }), for: .touchUpInside)
+            }
+          ),
+          for: .touchUpInside
+        )
         $0.alpha = 1.0
         $0.isHidden = false
         $0.configurationUpdateHandler = { button in
@@ -539,7 +573,12 @@ class WelcomeViewCallout: UIView {
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     case .defaultBrowserCallout(let info):
       contentStackView.do {
-        $0.layoutMargins = UIEdgeInsets(top: 2 * UX.verticalLayoutMargin, left: 20, bottom: UX.verticalLayoutMargin, right: 20)
+        $0.layoutMargins = UIEdgeInsets(
+          top: 2 * UX.verticalLayoutMargin,
+          left: 20,
+          bottom: UX.verticalLayoutMargin,
+          right: 20
+        )
       }
 
       titleLabel.do {
@@ -556,7 +595,7 @@ class WelcomeViewCallout: UIView {
         $0.alpha = 1.0
         $0.isHidden = false
       }
-      
+
       secondaryDetailsLabel.do {
         $0.text = info.details
         $0.font = .preferredFont(for: .body, weight: .bold)
@@ -572,7 +611,10 @@ class WelcomeViewCallout: UIView {
             identifier: .init(rawValue: "primary.action"),
             handler: { _ in
               info.primaryButtonAction()
-            }), for: .touchUpInside)
+            }
+          ),
+          for: .touchUpInside
+        )
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -596,7 +638,10 @@ class WelcomeViewCallout: UIView {
             identifier: .init(rawValue: "secondary.action"),
             handler: { _ in
               info.secondaryButtonAction?()
-            }), for: .touchUpInside)
+            }
+          ),
+          for: .touchUpInside
+        )
         $0.alpha = 1.0
         $0.isHidden = false
       }
@@ -612,7 +657,7 @@ class WelcomeViewCallout: UIView {
       contentStackView.setCustomSpacing(horizontalLayoutMargin, after: primaryButton)
     }
   }
-  
+
   func animateTitleViewVisibility(alpha: CGFloat, duration: TimeInterval) {
     UIView.animate(withDuration: duration) {
       self.detailsLabel.alpha = alpha

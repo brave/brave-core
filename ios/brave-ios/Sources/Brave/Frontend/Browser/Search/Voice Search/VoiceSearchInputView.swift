@@ -1,13 +1,13 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
-import Shared
-import Preferences
 import Data
+import Preferences
+import Shared
+import SwiftUI
 
 struct VoiceSearchInputView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
@@ -18,11 +18,11 @@ struct VoiceSearchInputView: View {
   private func dismissView() {
     presentationMode.dismiss()
   }
-  
+
   var body: some View {
     inputView
   }
-  
+
   private var inputView: some View {
     VStack {
       HStack {
@@ -52,7 +52,7 @@ struct VoiceSearchInputView: View {
     .padding()
     .background(Color(.secondaryBraveBackground).ignoresSafeArea())
   }
-    
+
   private var transcriptView: some View {
     VStack {
       microphoneView
@@ -62,7 +62,7 @@ struct VoiceSearchInputView: View {
     }
     .padding(.bottom, 25)
   }
-  
+
   private var microphoneView: some View {
     ZStack {
       Circle()
@@ -93,7 +93,7 @@ struct VoiceSearchInputView: View {
 }
 
 extension VoiceSearchInputView {
-    
+
   private var outerCircleScale: CGFloat {
     switch speechModel.animationType {
     case .pulse(let scale):
@@ -104,7 +104,7 @@ extension VoiceSearchInputView {
       return 0
     }
   }
-  
+
   private var outerCircleAnimation: Animation {
     switch speechModel.animationType {
     case .pulse:
@@ -117,8 +117,8 @@ extension VoiceSearchInputView {
   }
 }
 
-private extension UIColor {
-  static var microphoneBackground: UIColor {
+extension UIColor {
+  fileprivate static var microphoneBackground: UIColor {
     UIColor(rgb: 0x423eee)
   }
 }

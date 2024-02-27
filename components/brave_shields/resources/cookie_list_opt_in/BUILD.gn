@@ -12,7 +12,7 @@ transpile_web_ui("cookie_list_opt_in_ui") {
         rebase_path("cookie_list_opt_in.tsx"),
       ] ]
   resource_name = "cookie_list_opt_in"
-  deps = [ "//brave/components/brave_shields/common:mojom_js" ]
+  deps = [ "//brave/components/brave_shields/core/common:mojom_js" ]
 }
 
 pack_web_resources("cookie_list_opt_in_generated") {

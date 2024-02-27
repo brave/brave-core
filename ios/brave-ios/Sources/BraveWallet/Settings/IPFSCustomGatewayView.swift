@@ -1,35 +1,35 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import DesignSystem
+import SwiftUI
 
 struct IPFSCustomGatewayView: View {
-  
+
   private static let ipfsTestPath = "ipfs"
   private static let ipfsTestCID = "bafkqae2xmvwgg33nmuqhi3zajfiemuzahiwss"
   private static let ipfsTestContent = "Welcome to IPFS :-)"
-  
+
   private enum SetButtonStatus {
     case enabled
     case disabled
     case loading
   }
-  
+
   private let ipfsAPI: IpfsAPI
   private let isForNFT: Bool
   @State private var url: String = "https://"
   @State private var setButtonStatus: SetButtonStatus = .disabled
   @State private var isPresentingWrongGatewayAlert: Bool = false
-  
+
   init(ipfsAPI: IpfsAPI, isForNFT: Bool = false) {
     self.ipfsAPI = ipfsAPI
     self.isForNFT = isForNFT
   }
-  
+
   var body: some View {
     List {
       Section(footer: Text(Strings.Wallet.nftGatewayLongDescription)) {
@@ -50,7 +50,7 @@ struct IPFSCustomGatewayView: View {
               // this logic block repeating https:// and http:// schemes
               let textEntered = newValue.withSecureUrlScheme
               self.url = textEntered
-              
+
               let oldValue = isForNFT ? ipfsAPI.nftIpfsGateway : ipfsAPI.ipfsGateway
               if let enteredURL = URL(string: textEntered), enteredURL != oldValue {
                 setButtonStatus = .enabled
@@ -65,20 +65,24 @@ struct IPFSCustomGatewayView: View {
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .navigationBarTitleDisplayMode(.inline)
-    .navigationTitle(isForNFT ? Strings.Wallet.customizeIPFSNFTPublicGatewayNavTitle : Strings.Wallet.customizeIPFSPublicGatewayNavTitle)
+    .navigationTitle(
+      isForNFT
+        ? Strings.Wallet.customizeIPFSNFTPublicGatewayNavTitle
+        : Strings.Wallet.customizeIPFSPublicGatewayNavTitle
+    )
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
-      trailing: Button(action: {
+      trailing: Button {
         validateURLAndSet()
-      }) {
+      } label: {
         if setButtonStatus == .loading {
           ProgressView()
         } else {
           Text(Strings.Wallet.setGatewayButtonTitle)
         }
       }
-        .buttonStyle(BraveFilledButtonStyle(size: .small))
-        .disabled(setButtonStatus != .enabled)
+      .buttonStyle(BraveFilledButtonStyle(size: .small))
+      .disabled(setButtonStatus != .enabled)
     )
     .alert(isPresented: $isPresentingWrongGatewayAlert) {
       Alert(
@@ -91,13 +95,15 @@ struct IPFSCustomGatewayView: View {
       // SwiftUI bug, has to wait a bit (#7044: bug only exists
       // in iOS 15. Will revisit once iOS 15 support is removed)
       DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-        if let url = isForNFT ? ipfsAPI.nftIpfsGateway?.absoluteString : ipfsAPI.ipfsGateway?.absoluteString {
+        if let url = isForNFT
+          ? ipfsAPI.nftIpfsGateway?.absoluteString : ipfsAPI.ipfsGateway?.absoluteString
+        {
           self.url = url
         }
       }
     }
   }
-  
+
   private func validateURLAndSet() {
     Task { @MainActor in
       guard let enteredURL = URL(string: url), enteredURL.isSecureWebPage() else {
@@ -105,7 +111,10 @@ struct IPFSCustomGatewayView: View {
         return
       }
       var testURL = enteredURL
-      testURL.append(pathComponents: IPFSCustomGatewayView.ipfsTestPath, IPFSCustomGatewayView.ipfsTestCID)
+      testURL.append(
+        pathComponents: IPFSCustomGatewayView.ipfsTestPath,
+        IPFSCustomGatewayView.ipfsTestCID
+      )
 
       setButtonStatus = .loading
       resignFirstResponder()
@@ -129,8 +138,13 @@ struct IPFSCustomGatewayView: View {
       }
     }
   }
-  
+
   private func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
 }

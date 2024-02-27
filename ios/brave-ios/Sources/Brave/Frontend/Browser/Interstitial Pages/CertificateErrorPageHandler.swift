@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
-import BraveShared
 
 extension CFNetworkErrors {
   static let braveCertificatePinningFailed = CFNetworkErrors(rawValue: Int32.min)!
@@ -17,7 +17,9 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   }
 
   func response(for model: ErrorPageModel) -> (URLResponse, Data)? {
-    let hasCertificate = model.components.valueForQuery("certerror") != nil && model.components.valueForQuery("peeruntrusted") == nil
+    let hasCertificate =
+      model.components.valueForQuery("certerror") != nil
+      && model.components.valueForQuery("peeruntrusted") == nil
 
     guard let asset = Bundle.module.path(forResource: "CertificateError", ofType: "html") else {
       assert(false)
@@ -33,7 +35,8 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
 
     // Update the error code domain
     if domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(model.errorCode)) {
+      let code = CFNetworkErrors(rawValue: Int32(model.errorCode))
+    {
       domain = GenericErrorPageHandler.CFErrorToName(code)
     } else if domain == NSURLErrorDomain {
       domain = GenericErrorPageHandler.NSURLErrorToName(model.errorCode)
@@ -50,17 +53,21 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
         "error_code": "\(model.errorCode)",
         "error_title": Strings.errorPagesCertWarningTitle,
         "error_description": String(format: Strings.errorPagesAdvancedWarningTitle, host),
-        "error_more_details_description": isBadRoot ? String(format: Strings.errorPagesAdvancedErrorPinningDetails, host, host, host, host) : String(format: Strings.errorPagesAdvancedWarningDetails, host),
+        "error_more_details_description": isBadRoot
+          ? String(format: Strings.errorPagesAdvancedErrorPinningDetails, host, host, host, host)
+          : String(format: Strings.errorPagesAdvancedWarningDetails, host),
         "error_domain": domain,
         "learn_more": Strings.errorPagesLearnMoreButton,
         "more_details": Strings.errorPagesMoreDetailsButton,
         "hide_details": Strings.errorPagesHideDetailsButton,
-        "back_to_safety_or_reload": isBadRoot ? Strings.errorPageReloadButtonTitle : Strings.errorPagesBackToSafetyButton,
+        "back_to_safety_or_reload": isBadRoot
+          ? Strings.errorPageReloadButtonTitle : Strings.errorPagesBackToSafetyButton,
         "visit_unsafe": String(format: Strings.errorPagesProceedAnywayButton, host),
         "has_certificate": "\(hasCertificate)",
         "message_handler": ErrorPageHelper.messageHandlerName,
         "security_token": ErrorPageHelper.scriptId,
-        "actions": "<button onclick='history.back()'>\(Strings.errorPagesBackToSafetyButton)</button>",
+        "actions":
+          "<button onclick='history.back()'>\(Strings.errorPagesBackToSafetyButton)</button>",
       ]
     } else {
       variables = [
@@ -98,13 +105,15 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   static func certsFromErrorURL(_ url: URL) -> [SecCertificate]? {
     func getCerts(_ url: URL) -> [SecCertificate]? {
       let components = URLComponents(url: url, resolvingAgainstBaseURL: false)
-      if let encodedCerts = components?.queryItems?.filter({ $0.name == "badcerts" }).first?.value?.split(separator: ",") {
-        
+      if let encodedCerts = components?.queryItems?.filter({ $0.name == "badcerts" }).first?.value?
+        .split(separator: ",")
+      {
+
         return encodedCerts.compactMap({
           guard let certData = Data(base64Encoded: String($0), options: []) else {
             return nil
           }
-          
+
           return SecCertificateCreateWithData(nil, certData as CFData)
         })
       }
@@ -128,7 +137,8 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   static func isValidCertificateError(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(error.code)) {
+      let code = CFNetworkErrors(rawValue: Int32(error.code))
+    {
       return CertificateErrorPageHandler.CFNetworkErrorsCertErrors.contains(code)
     }
 
@@ -142,6 +152,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   // Regardless of cause, cfurlErrorServerCertificateUntrusted is currently returned in all cases.
   // Check the other cases in case this gets fixed in the future.
   // NOTE: In rare cases like Bad Cipher algorithm, it can show cfurlErrorSecureConnectionFailed
+  // swift-format-ignore
   static let CFNetworkErrorsCertErrors: [CFNetworkErrors] = [
     .cfurlErrorSecureConnectionFailed,
     .cfurlErrorServerCertificateHasBadDate,
@@ -156,6 +167,7 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
   // Regardless of cause, NSURLErrorServerCertificateUntrusted is currently returned in all cases.
   // Check the other cases in case this gets fixed in the future.
   // NOTE: In rare cases like Bad Cipher algorithm, it can show NSURLErrorSecureConnectionFailed
+  // swift-format-ignore
   static let NSURLCertErrors = [
     NSURLErrorSecureConnectionFailed,
     NSURLErrorServerCertificateHasBadDate,
@@ -164,13 +176,14 @@ class CertificateErrorPageHandler: InterstitialPageHandler {
     NSURLErrorServerCertificateNotYetValid,
     NSURLErrorClientCertificateRejected,
     NSURLErrorClientCertificateRequired,
-    Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue)
+    Int(CFNetworkErrors.braveCertificatePinningFailed.rawValue),
 
     // Apple lists `NSURLErrorCannotLoadFromNetwork` as an `SSL Error`, but I believe the documentation is incorrect as it is for any cache miss.
   ]
 
   // From: Security.SecBase / <Security/SecureTransport.h>
   // kCFStreamErrorDomainSSL
+  // swift-format-ignore
   static let CertErrorCodes = [
     errSSLProtocol: "SSL_PROTOCOL_ERROR",
     errSSLNegotiation: "SSL_NEGOTIATION_ERROR",

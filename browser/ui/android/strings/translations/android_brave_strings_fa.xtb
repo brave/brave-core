@@ -429,18 +429,10 @@
 <translation id="2394961582378297792">خارج شد</translation>
 <translation id="5308380583665731573">اتصال</translation>
 <translation id="3368922792935385530">متصل</translation>
-<translation id="8673913984316081937">تأیید کیف پول شما اختیاری است</translation>
-<translation id="8558636200953226885">اما درصورت تأیید، می‌توانید...</translation>
-<translation id="8697510149346635496">BAT را برداشت کنید که از مشاهده تبلیغاتی به دست آمده‌اند که به حریم خصوصی احترام می‌گذارند</translation>
-<translation id="1481480653609649134">با کارت اعتباری و سایر منابع، BAT اضافی خریداری کنید</translation>
-<translation id="9096003370755878766">BAT را که قبلاً به کیف پاداش‌های Brave خود اضافه کرده‌اید، برداشت کنید</translation>
-<translation id="1554282356558968486">سرویس کیف پول ما ارائه‌شده است توسط</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">ممکن است Uphold شما را ملزم به تأیید هویتتان بر اساس خدمات درخواستی کند.</translation>
-<translation id="3200197118442451932">Brave Software Inc.‎ هیچ یک از اطلاعات شخصی را که هنگام ساخت حساب در اختیار<ph name="WALLET_PROVIDER"/> قرار داده‌اید، پردازش یا ذخیره نمی‌کند یا به آنها دسترسی ندارد.</translation>
 <translation id="1665118090708049096">به حساب <ph name="WALLET_PROVIDER"/> من بروید</translation>
 <translation id="4858636682078269312">ورود به سیستم حساب <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">متصل نیست</translation>
@@ -527,7 +519,7 @@
 <translation id="2225863440766607138">ردیاب‌ها</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">شما <ph name="COUNT"/> ردیاب‌ها و آگهی‌ها را در مرورگر Brave در طی 3 ساعت گذشته مسدود کرده‌اید.</translation>
-<translation id="3621193901658023971">با مسدود کردن ردیاب‌ها و آگهی‌ها، 6 برابر سریع‌تر در سایت‌های خبری مهم در Brave مرور کنید.</translation>
+<translation id="5005713153542196658">با مسدود کردن ردیاب‌ها و آگهی‌ها، سایت‌های خبری اصلی در Brave را تا 6 برابر سریع‌تر مرور کنید.</translation>
 <translation id="7427567994475794038">برای مشاهده تعداد ردیاب‌ها و آگهی‌هایی که در طی 3 ساعت اخیر مسدود شده‌اند، گزارش‌های حریم‌خصوصی را روشن کنید.</translation>
 <translation id="2053891538879944400">در مصرف داده <ph name="DATA"/> <ph name="DATA_TEXT"/> در مرورگر Brave صرفه‌جویی کردید.</translation>
 <translation id="8640064498452534195">برای مشاهده میزان داده‌ای که صرفه‌جویی کرده‌اید، گزارش‌های حریم خصوصی را روشن کنید.</translation>
@@ -592,6 +584,10 @@
 <translation id="8622329973403382303">گشت سریعی بزنید تا نحوه عملکرد برای پیوستن به تاریخ به‌عنوان ستاره راک Rewards را مرور کنید!</translation>
 <translation id="3479552764303398839">اکنون نه</translation>
 <translation id="7138272885617540195">به پیوندهای برنامه اجازه دهید در برنامه‌های خارج از Brave باز شوند</translation>
+<translation id="4954512758656527938">کیف پول پیش‌فرض اتریوم</translation>
+<translation id="7701023802820268122">کیف پول پیش‌فرض سولانا</translation>
+<translation id="7701040980221191251">هیچکدام</translation>
+<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="8792121506918889955">خط‌مشی مدیریت WebRTC IP</translation>
 <translation id="8798099450830957504">پیش‌فرض</translation>
 <translation id="1822560017823072927">رابط‌های عمومی و خصوصی پیش‌فرض</translation>
@@ -687,7 +683,6 @@
 <translation id="8475984867371585028">NFT‌های قابل‌مشاهده را ویرایش کنید</translation>
 <translation id="5050890334032852465">ذخیره فهرست دیده‌بان حساب</translation>
 <translation id="7755766175599167100">جستجوی توکن‌ها</translation>
-<translation id="8488282162676695335">کیف پول Brave</translation>
 <translation id="3784455785234192852">قفل کردن</translation>
 <translation id="4412698727486357573">مرکز راهنمایی</translation>
 <translation id="8796429300536029044">جزئیات NFT</translation>
@@ -719,12 +714,12 @@
 <translation id="8272917646984397798">امنیت همه اتصال‌ها را تأمین می‌کند</translation>
 <translation id="1751947227857853925">سریع و نامحدود تا 100 مگابیت در ثانیه</translation>
 <translation id="1400240082805528049">پشتیبانی شبانه‌روزی</translation>
-<translation id="5051030058817632680">اتصال‌های ناخواسته شبکه را مسدود می‌کند</translation>
+<translation id="5892534145504632332">از هر برنامه &amp; کل دستگاه خود محافظت کنید</translation>
+<translation id="7195416926059527505">برای Wi-Fi خانگی یا عمومی، ایمن‌تر است</translation>
+<translation id="1354700000739359839">ارسال و دریافت سریع، تا 100 مگابیت در ثانیه</translation>
 <translation id="3510283489391432976">مکان جغرافیایی/کشور خود را انتخاب کنید</translation>
-<translation id="4390800080658195654">شما را در بستر آنلاین ناشناس نگه می‌دارد</translation>
-<translation id="639981156979733813">تا سرعت 100 مگابیت در ثانیه پشتیبانی می‌کند</translation>
-<translation id="765343799669302337">از تونل VPN رمزگذاری‌شده امن Wireguard استفاده می‌کند</translation>
-<translation id="1571230671455380494">ما هرگز اطلاعاتتان را به اشتراک نمی‌گذاریم یا نمی‌فروشیم</translation>
+<translation id="7695158478627528928">Brave هرگز فعالیت شما را ثبت نمی‌کند</translation>
+<translation id="4575683170451975058">از 5 دستگاه در 1 اشتراک محافظت کنید</translation>
 <translation id="276866628038850725">همه طرح‌ها دارای یک دوره آزمایشی 7 روزه رایگان هستند!</translation>
 <translation id="1532536259167115948">اشتراک ماهانه <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">اشتراک سالانه <ph name="TRIAL_TEXT"/></translation>
@@ -735,6 +730,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / سال.</translation>
 <translation id="2655185358771731232">7 روز رایگان استفاده کنید. بعد از 7 روز، قیمت طرح از شما دریافت خواهد شد. همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند اما ممکن است قبل از تمدید لغو شوند.</translation>
 <translation id="6053992191006521518">به‌صورت رایگان امتحان کنید</translation>
+<translation id="3990956504562716932">به مدت 7 روز به‌صورت رایگان امتحان کنید</translation>
 <translation id="721747358270435486">نصب VPN</translation>
 <translation id="836074276610740314">نصب نمایه VPN</translation>
 <translation id="8021842065465097929">Brave اکنون نمایه VPN را نصب خواهد کرد.</translation>
@@ -1119,71 +1115,6 @@
 <translation id="591648995518106347">به طور خودکار مقالات واجد‌شرایط را در حالت خواننده بارگیری می‌کند</translation>
 <translation id="1295796122927221823">مشاهده در حالت خواننده</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> در<ph name="NETWORK"/></translation>
-<translation id="295620834661738195">لیست پخش Brave</translation>
-<translation id="4850886885716139402">مشاهده کنید</translation>
-<translation id="7392941176393379100">اضافه شد به '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">در حال مدیریت داده‌های لیست پخش شما</translation>
-<translation id="7650602357673790368">به طور پیش‌فرض، Playlist محتوا را برای پخش مجدد آفلاین (در هر دو لیست پخش مشترک خصوصی و amp;amp) در دستگاه شما به طور خودکار ذخیره می‌کند. اگر از WiFi استفاده نمی‌کنید، ذخیره خودکار از داده‌های تلفن همراه شما استفاده می‌کند.\n\nبرای تغییر این پیش‌فرض، از تنظیمات استفاده کنید.</translation>
-<translation id="5900576657906675258">مورد را به لیست پخش اضافه کنید</translation>
-<translation id="349846214503465941">لیست پخش را فعال کنید</translation>
-<translation id="1309636029062006520">لیست پخش صداها و ویدیوهای مورد‌علاقه خود را تهیه کنید و در هر زمان و هر مکان پخش کنید.</translation>
-<translation id="3561815498111282415">ذخیره خودکار برای حالت آفلاین</translation>
-<translation id="1832424694374124654">به طور خودکار موارد جدید لیست پخش را در دستگاه شما ذخیره می‌کند تا بتوانید بدون اتصال به اینترنت پخش کنید.</translation>
-<translation id="8103022210423023846">ذخیره خودکار روشن است</translation>
-<translation id="3926329432879804185">ذخیره خودکار خاموش است</translation>
-<translation id="7768812595186089508">ذخیره خودکار فقط در صورتی که به Wi-Fi متصل است کار می‌کند</translation>
-<translation id="5939518447894949180">مجدداً تنظیم کنید</translation>
-<translation id="8199028711686989861">همه ویدیوها را از لیست پخش حذف کنید، از جمله ذخیره‌سازی حالت آفلاین.</translation>
-<translation id="5916664084637901428">روشن</translation>
-<translation id="5860033963881614850">خاموش</translation>
-<translation id="2920568868625746681">فقط Wifi</translation>
-<translation id="4590997608186539865">لیست پخش</translation>
-<translation id="7525067979554623046">ایجاد کنید</translation>
-<translation id="5491049004699827548">اولین لیست پخش خود را ایجاد کنید</translation>
-<translation id="5319108110887582146">یک لیست پخش از صداها و ویدیوهای موردعلاقه خود را تهیه کنید و در هر زمان و هر مکان پخش‌کنید. حتی به‌صورت آفلاین.</translation>
-<translation id="6802849415466883498">یک لیست پخش را ایجاد کنید</translation>
-<translation id="8525248723479742219">بعداً پخش کنید</translation>
-<translation id="7453007860684252933">کاوش کنید و اضافه کنید</translation>
-<translation id="9014883386413828317">محتوای موردعلاقه خود را اضافه کنید. به دنبال دکمه (+) در قسمت پایین سمت راست صفحه‌نمایش خود بگردید.</translation>
-<translation id="5928669500312007783">برای رسانه کاوش کنید</translation>
-<translation id="8152485753254079984">لیست پخش جدید</translation>
-<translation id="9130105487623071247">نام لیست پخش</translation>
-<translation id="726581235416249619">لیست پخش بدون‌عنوان</translation>
-<translation id="1456254983411148628">داده‌ها را حذف کنید</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> انتخاب شد</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> موارد</translation>
-<translation id="2317629745818459803">همه را پخش کنید</translation>
-<translation id="7544853251252956727">به‌صورت تصادفی</translation>
-<translation id="2881339830231736485">اخیراً پخش شده است</translation>
-<translation id="7636458383879257005">ضربه بزنید، به‌ صورت طولانی فشار دهید، یا بکشید</translation>
-<translation id="8120600068258956006">به لیست پخش اضافه کنید</translation>
-<translation id="39991094779686024">لیست‌های پخش</translation>
-<translation id="1710072605877822603">رسانه را اضافه کنید</translation>
-<translation id="3874252678044305931">ویدیوها را به فهرست پخش Brave اضافه کنید. پخش در هر زمان. حتی آفلاین.</translation>
-<translation id="8973629800378391099">از محتوای مورد علاقه خود فهرست پخش تهیه کنید. داده‌های تلفن همراه را ذخیره کنید. و از پخش بدون آگهی لذت ببرید.</translation>
-<translation id="4936812987266342401">کافی است روی دکمه ضربه بزنید تا ویدیوها را به فهرست پخش اضافه کنید</translation>
-<translation id="6263657785571415306">در جریان بمانید: هنگام مرور ویدیوها را اضافه کنید، بعداً تماشا کنید.</translation>
-<translation id="2839555636100404687">پخش در فهرست پخش بهتر است</translation>
-<translation id="9079526681359439081">در پس‌زمینه بازی کنید. کنترل از صفحه قفل و بیشتر…</translation>
-<translation id="3620862810055853183">لیست پخش را باز کنید</translation>
-<translation id="3861012838874771868">تنظیمات لیست پخش را باز کنید</translation>
-<translation id="5220099266891491416">دکمه لیست پخش را پنهان کنید</translation>
-<translation id="7416347631175891923">آن را امتحان کنید!</translation>
-<translation id="1173894706177603556">نام را تغییر دهید</translation>
-<translation id="1620612903815671893">داده‌های آفلاین لیست پخش را حذف کنید</translation>
-<translation id="3261711068865275261">تمام داده‌های آفلاین را حذف کنید</translation>
-<translation id="6653691766801349738">لیست پخش را برای استفاده آفلاین نگه دارید</translation>
-<translation id="8708086574143054053">همه لیست‌های پخش را برای استفاده آفلاین نگه دارید</translation>
-<translation id="3596306474342941843">لیست پخش را پاک کنید</translation>
-<translation id="7765158879357617694">انتقال دهید</translation>
-<translation id="3803384303807438047">داده‌های آفلاین مورد را پاک کنید</translation>
-<translation id="4195643157523330669">در تب جدید باز کنید</translation>
-<translation id="4243710787042215766">در تب خصوصی باز کنید</translation>
-<translation id="8261506727792406068">پاک کنید</translation>
-<translation id="377872456482681602">لطفاً ابتدا موارد را انتخاب کنید</translation>
-<translation id="6172429305139364624">مورد لیست پخش در حافظه پنهان ذخیره نمی‌شود.\nلطفاً مورد را برای حالت آفلاین در حافظه پنهان ذخیره کنید.</translation>
-<translation id="3631131732607750008">محتوا منقضی شده است. چند ثانیه دیگر دوباره امتحان کنید.</translation>
-<translation id="286472539388773794">لطفاً نام فهرست پخش معتبری را وارد کنید</translation>
 <translation id="9085765419770918643">هنوز هیچ NFTای در اینجا نیست.</translation>
 <translation id="8445532667841598737">برای اضافه کردن تعدادی NFT آماده هستید؟ برای وارد کردن کافی است روی دکمه زیر کلیک کنید.</translation>
 <translation id="5925465310724910998">می‌خواهید NFTهای شما به‌طور خودکار نمایش داده شود؟</translation>
@@ -1192,12 +1123,6 @@
 <translation id="622372328961630111">با استفاده از APIهای شخص ثالث، NFTهای متعلق به شما به‌طور خودکار به کیف پول اضافه می‌شود.<ph name="BEGIN_LINK_1"/>بیشتر بدانید.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">حساب جدول جستجوی نشانی:</translation>
 <translation id="7659483790930268440">شاخص جدول جستجوی نشانی:</translation>
-<translation id="7322560193401221004">موقعیت پخش فایل به خاطر سپرده شود</translation>
-<translation id="7505951907514709271">برای فایل‌های جداگانه، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
-<translation id="6835165453349969605">موقعیت پخش فهرست به خاطر سپرده شود</translation>
-<translation id="6344103698928069918">برای فهرست پخش، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
-<translation id="8141583471142904652">گوش دادن مداوم</translation>
-<translation id="851432578283946230">به‌صورت خودکار آیتم‌های بعدی را در فهرست پخش شما پخش می‌کند</translation>
 <translation id="7853202427316060426">فعالیت</translation>
 <translation id="4932733599132424254">تاریخ</translation>
 <translation id="346505172740911461">قیمت بازار</translation>
@@ -1214,6 +1139,80 @@
 <translation id="2471230424465522689">پیش از</translation>
 <translation id="4841860051609590575">شناسه درخواست</translation>
 <translation id="1179407411385015942">Leo یک دستیار هوشمند مجهز به هوش مصنوعی است که مستقیماً در مرورگر تعبیه شده است</translation>
+<translation id="4109670531935487117">نشان دادن پیشنهادهای تکمیل خودکار در نوار نشانی</translation>
 <translation id="1250335737108905610">بازنشانی و پاک کردن اطلاعات Leo</translation>
 <translation id="6165101586663336913">بازنشانی دستیار Leo از شما می‌خواهد که در آینده استفاده از Leo را انتخاب کنید و همچنین سابقه گپ شما را پاک می‌کند. پاک کردن سابقه گپ شما، تمام مکالمات قبلی شما با Leo را حذف می‌کند. این عمل قابل لغو نیست.</translation>
+<translation id="3692772534525889713">برای استفاده از Brave Leo در دستگاه‌های دیگر، خرید Play Store خود را به حساب Brave پیوند دهید.</translation>
+<translation id="73236265316873967">نسخه پرمیوم Leo</translation>
+<translation id="1166682575529520472">ماهانه</translation>
+<translation id="451189393813405346">از Leo بپرسید</translation>
+<translation id="7322560193401221004">موقعیت پخش فایل به خاطر سپرده شود</translation>
+<translation id="7505951907514709271">برای فایل‌های جداگانه، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
+<translation id="6835165453349969605">موقعیت پخش فهرست به خاطر سپرده شود</translation>
+<translation id="6344103698928069918">برای فهرست پخش، از نقطه آخرین مکث، پخش را از سر بگیرید</translation>
+<translation id="8141583471142904652">گوش دادن مداوم</translation>
+<translation id="851432578283946230">به‌صورت خودکار آیتم‌های بعدی را در فهرست پخش شما پخش می‌کند</translation>
+<translation id="295620834661738195">لیست پخش Brave</translation>
+<translation id="4850886885716139402">مشاهده کنید</translation>
+<translation id="7392941176393379100">اضافه شد به '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">لیست پخش را فعال کنید</translation>
+<translation id="1309636029062006520">لیست پخش صداها و ویدیوهای مورد‌علاقه خود را تهیه کنید و در هر زمان و هر مکان پخش کنید.</translation>
+<translation id="7899390017499980820">به دکمه لیست پخش اضافه کنید</translation>
+<translation id="6901152954398668317">دکمه "Add to Playlist" را برای دسترسی سریع به افزودن یا حذف رسانه، نمایش دهید یا پنهان کنید.</translation>
+<translation id="5939518447894949180">مجدداً تنظیم کنید</translation>
+<translation id="8199028711686989861">همه ویدیوها را از لیست پخش حذف کنید، از جمله ذخیره‌سازی حالت آفلاین.</translation>
+<translation id="4590997608186539865">لیست پخش</translation>
+<translation id="7525067979554623046">ایجاد کنید</translation>
+<translation id="8525248723479742219">بعداً پخش کنید</translation>
+<translation id="7453007860684252933">کاوش کنید و اضافه کنید</translation>
+<translation id="9014883386413828317">محتوای موردعلاقه خود را اضافه کنید. به دنبال دکمه (+) در قسمت پایین سمت راست صفحه‌نمایش خود بگردید.</translation>
+<translation id="5928669500312007783">برای رسانه کاوش کنید</translation>
+<translation id="8152485753254079984">لیست پخش جدید</translation>
+<translation id="9130105487623071247">نام لیست پخش</translation>
+<translation id="726581235416249619">لیست پخش بدون‌عنوان</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> انتخاب شد</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> موارد</translation>
+<translation id="2317629745818459803">همه را پخش کنید</translation>
+<translation id="7544853251252956727">به‌صورت تصادفی</translation>
+<translation id="2881339830231736485">اخیراً پخش شده است</translation>
+<translation id="8120600068258956006">به لیست پخش اضافه کنید</translation>
+<translation id="39991094779686024">لیست‌های پخش</translation>
+<translation id="1710072605877822603">رسانه را اضافه کنید</translation>
+<translation id="3874252678044305931">ویدیوها را به فهرست پخش Brave اضافه کنید. پخش در هر زمان. حتی آفلاین.</translation>
+<translation id="8973629800378391099">از محتوای مورد علاقه خود فهرست پخش تهیه کنید. داده‌های تلفن همراه را ذخیره کنید. و از پخش بدون آگهی لذت ببرید.</translation>
+<translation id="4936812987266342401">کافی است روی دکمه ضربه بزنید تا ویدیوها را به فهرست پخش اضافه کنید</translation>
+<translation id="6263657785571415306">در جریان بمانید: هنگام مرور ویدیوها را اضافه کنید، بعداً تماشا کنید.</translation>
+<translation id="2839555636100404687">پخش در فهرست پخش بهتر است</translation>
+<translation id="9079526681359439081">در پس‌زمینه بازی کنید. کنترل از صفحه قفل و بیشتر…</translation>
+<translation id="3620862810055853183">لیست پخش را باز کنید</translation>
+<translation id="3861012838874771868">تنظیمات لیست پخش را باز کنید</translation>
+<translation id="5220099266891491416">دکمه لیست پخش را پنهان کنید</translation>
+<translation id="7416347631175891923">آن را امتحان کنید!</translation>
+<translation id="1173894706177603556">نام را تغییر دهید</translation>
+<translation id="3596306474342941843">لیست پخش را پاک کنید</translation>
+<translation id="7765158879357617694">انتقال دهید</translation>
+<translation id="3803384303807438047">داده‌های آفلاین مورد را پاک کنید</translation>
+<translation id="4195643157523330669">در تب جدید باز کنید</translation>
+<translation id="4243710787042215766">در تب خصوصی باز کنید</translation>
+<translation id="8261506727792406068">پاک کنید</translation>
+<translation id="377872456482681602">لطفاً ابتدا موارد را انتخاب کنید</translation>
+<translation id="286472539388773794">لطفاً نام فهرست پخش معتبری را وارد کنید</translation>
+<translation id="2824489375399072491">اشتراک‌گذاری با:</translation>
+<translation id="5319532905552885478">محتوای رسانه‌ای قبلاً به فهرست پخش پیش‌فرض اضافه شده است</translation>
+<translation id="4802584673094436231">در حال آماده‌سازی…</translation>
+<translation id="481455355267255546">بعدی</translation>
+<translation id="5474757891469990756">بازگشایی قفل توانایی‌های کامل Leo با نسخه پرمیوم:</translation>
+<translation id="4173478269537830374">مدل‌های مختلف هوش مصنوعی را کاوش کنید</translation>
+<translation id="3453542753968940696">اولویت دسترسی به مدل‌های قدرتمند با مهارت‌های مختلف.</translation>
+<translation id="3245401959451976966">قفل خلاقیت خود را باز کنید</translation>
+<translation id="5031778211368112461">مدل‌های دسترسی که برای کارهای خلاقانه و تولید محتوا مناسب‌تر هستند.</translation>
+<translation id="4165928407303989823">در همین موضوع بمان</translation>
+<translation id="298783097210745222">برای مکالماتی که تفاوت‌های جزئی دارند پاسخ‌های دقیق‌تری دریافت کنید.</translation>
+<translation id="2389665228467129817">برای مدت طولانی‌تری چت کنید</translation>
+<translation id="4314705522985583059">برای مکالمات طولانی‌تر، محدودیت کمتری داشته باشید.</translation>
+<translation id="6365289557497555234">همه اشتراک‌ها به‌طور خودکار تمدید می‌شوند، اما در هر زمان قبل از تمدید، می‌توان آنها را لغو کرد.</translation>
+<translation id="6637015365469044269">هم‌اکنون ارتقا دهید</translation>
+<translation id="614530507403667291">مدل پیش‌فرض برای مکالمات جدید</translation>
+<translation id="4071849832011229600">مدل پیش‌فرض</translation>
+<translation id="7557539689487606886">تبدیل عضویت به Premium</translation>
 </translationbundle>

@@ -254,6 +254,8 @@
 <translation id="480565261566115689">最小化分頁</translation>
 <translation id="7194343495483122559">展開分頁</translation>
 <translation id="1199054713803577378">最小化分頁</translation>
+<translation id="1337946268962884806">自訂順序</translation>
+<translation id="8373664339577369248">自訂順序</translation>
 <translation id="8120600068258956006">新增至播放清單</translation>
 <translation id="650694591627983430">在此頁面上找到的媒體</translation>
 <translation id="8525248723479742219">稍後播放</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">重複關閉</translation>
 <translation id="1748244367114657861">重複一項</translation>
 <translation id="6421906998825794164">重複全部</translation>
+<translation id="6453210454707928697">項目播放失敗</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] 可能已過期，是否要復原此項目？</translation>
+<translation id="6155018868740116868">復原</translation>
 <translation id="1727684853006449697">Brave 播放器</translation>
 <translation id="9156965752763025780">你的變更將於下次重新啟動 Brave 時生效。</translation>
 <translation id="7179921470347911571">立刻重新啟動</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">顯示標題列</translation>
 <translation id="5371926069408837914">收合時將滑鼠游標停留於上方，垂直分頁面板就會展開。</translation>
 <translation id="3367129510799209147">索引標籤懸停模式</translation>
+<translation id="515949045075831661">顯示於右側</translation>
+<translation id="3725395376319291415">顯示於左側</translation>
 <translation id="2113977810652731515">信用卡</translation>
 <translation id="4096343215397759358">顯示預覽的圖卡</translation>
 <translation id="5297085818601043899">工具提示</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Brave 已位於 Dock 中</translation>
 <translation id="3195845168740336657">Shields 設定</translation>
 <translation id="754769152790647708">Shields 狀態</translation>
-<translation id="3615717588724840230">網站會使用 Shields 封鎖跟蹤器、廣告和指紋識別</translation>
+<translation id="4868109105992358853">Shields 可封鎖追蹤器、廣告和指紋識別程式</translation>
 <translation id="5690973901138662477">Shields 向上</translation>
 <translation id="4697275813919189958">Shields 向下</translation>
 <translation id="6303294677342628402">防護</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Brave 獎勵已停用</translation>
 <translation id="413570371620795359">開啟 Rewards 面板即可啟用並開始使用</translation>
 <translation id="1051600834033686945">開啟完整 Brave 獎勵設定</translation>
-<translation id="6333347122924254968">在網址列顯示 Brave 獎勵圖示</translation>
+<translation id="8826461509529116322">顯示 Brave Rewards 按鈕</translation>
 <translation id="9185018653595759199">阻擋社群媒體</translation>
 <translation id="863171915776379000">允許 Facebook 登入與嵌入貼文</translation>
 <translation id="5165042248369837294">允許 Twitter 嵌入推文</translation>
@@ -727,6 +734,7 @@
 並且還會清除您的聊天記錄。
 清除聊天記錄將會刪除您之前的所有 Brave Leo 工作階段。
 此操作無法撤銷。</translation>
+<translation id="5574059574002819179">調整自動完成建議</translation>
 <translation id="8157373421434119674">資料和聊天歷史記錄</translation>
 <translation id="614530507403667291">新對話的預設模式</translation>
 <translation id="349846214503465941">啟用播放清單</translation>

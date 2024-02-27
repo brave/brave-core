@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
+import SwiftUI
 
 /// A small file browser that lets you inspect the contents of the apps sandbox.
 ///
@@ -52,21 +52,23 @@ struct SandboxInspectorView: View {
               fm.enumerator(
                 at: url,
                 includingPropertiesForKeys: nil
-              )?.allObjects as? [URL], !subitems.isEmpty {
-              size = try subitems.reduce(0, {
-                $0
-                + (try
-                   $1.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
-                  .totalFileAllocatedSize ?? 0)
-              })
+              )?.allObjects as? [URL], !subitems.isEmpty
+            {
+              size = try subitems.reduce(
+                0,
+                {
+                  $0
+                    + (try $1.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
+                      .totalFileAllocatedSize ?? 0)
+                }
+              )
               children = nodes(from: url)
             } else {
               size = 0
             }
           } else {
             size =
-              try
-              url.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
+              try url.resourceValues(forKeys: [.totalFileAllocatedSizeKey])
               .totalFileAllocatedSize ?? 0
           }
           return Node(

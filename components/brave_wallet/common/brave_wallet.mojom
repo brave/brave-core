@@ -425,6 +425,9 @@ interface PanelHandler {
 interface PageHandler {
   // Used by the brave://wallet page to open up the approval panel
   ShowApprovePanelUI();
+
+  // Android only - Used by the brave://wallet page to open up the backup UI.
+  ShowWalletBackupUI();
 };
 
 enum AssetPriceTimeframe {
@@ -1447,10 +1450,23 @@ struct ZCashAccountInfo {
   ZCashAddress next_transparent_change_address;
 };
 
+enum ZCashAddressValidationResult {
+  Unknown = 0,
+  Success = 1,
+  InvalidTransparent = 2,
+  InvalidUnified = 3,
+  NetworkMismatch = 4
+};
+
 interface ZCashWalletService {
-  GetBalance(string network_id, AccountId account_id) => (ZCashBalance? balance, string? error_message);
-  GetReceiverAddress(AccountId account_id) => (ZCashAddress? address, string? error_message);
-  GetZCashAccountInfo(AccountId account_id) => (ZCashAccountInfo? account_info);
+  GetBalance(string network_id, AccountId account_id) =>
+      (ZCashBalance? balance, string? error_message);
+  GetReceiverAddress(AccountId account_id) =>
+      (ZCashAddress? address, string? error_message);
+  GetZCashAccountInfo(AccountId account_id) =>
+      (ZCashAccountInfo? account_info);
+  ValidateZCashAddress(string addr, bool testnet) =>
+      (ZCashAddressValidationResult result);
 };
 
 enum TransactionStatus {

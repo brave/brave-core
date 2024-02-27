@@ -1,15 +1,16 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
-import Shared
 import Preferences
+import Shared
+import XCTest
+
 @testable import Growth
 
 class AppReviewManagerLegacyTests: XCTestCase {
-  
+
   private var lastReviewDate: Date? { return Preferences.Review.lastReviewDate.value }
   private var launchCount: Int { return Preferences.Review.launchCount.value }
   private var threshold: Int { return Preferences.Review.threshold.value }
@@ -34,7 +35,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     XCTAssertNil(lastReviewDate)
     XCTAssertEqual(threshold, AppReviewManager.Constants.firstThreshold)
 
-    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: date)) //legacyShouldRequestReview(date: date))
+    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: date))
 
     XCTAssertEqual(launchCount, 1, "Launch count shouldn't change after review request.")
     XCTAssertNil(lastReviewDate)
@@ -46,7 +47,7 @@ class AppReviewManagerLegacyTests: XCTestCase {
     // First threshold
     for i in 2...AppReviewManager.Constants.firstThreshold {
       simulateLaunch()
-      XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy ))
+      XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy))
 
       XCTAssertNil(lastReviewDate)
       XCTAssertEqual(threshold, AppReviewManager.Constants.firstThreshold)
@@ -74,7 +75,9 @@ class AppReviewManagerLegacyTests: XCTestCase {
     // Enough launches passed but not enough time between app reviews.
     let secondDate = dateFrom(string: "2019-01-14")
     simulateLaunch()
-    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: secondDate))
+    XCTAssertFalse(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: secondDate)
+    )
 
     XCTAssertEqual(lastReviewDate, firstDate)
     XCTAssertEqual(threshold, AppReviewManager.Constants.secondThreshold)
@@ -89,21 +92,43 @@ class AppReviewManagerLegacyTests: XCTestCase {
 
     // Second threshold, no date change
     Preferences.Review.launchCount.value = AppReviewManager.Constants.secondThreshold + 3
-    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: firstDate))
+    XCTAssertFalse(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: firstDate)
+    )
 
     // Second threshold, date change
-    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-04-01")))
+    XCTAssert(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(
+        for: .legacy,
+        date: dateFrom(string: "2019-04-01")
+      )
+    )
 
     // Second threshold, not enough date interval
-    XCTAssertFalse(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-05-01")))
+    XCTAssertFalse(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(
+        for: .legacy,
+        date: dateFrom(string: "2019-05-01")
+      )
+    )
 
     // Third threshold, good launch count and date
     Preferences.Review.launchCount.value = AppReviewManager.Constants.lastThreshold + 3
-    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2019-11-20")))
+    XCTAssert(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(
+        for: .legacy,
+        date: dateFrom(string: "2019-11-20")
+      )
+    )
 
     // Date and launch count far away in the future
     Preferences.Review.launchCount.value = AppReviewManager.Constants.lastThreshold + 1000
-    XCTAssert(AppReviewManager.shared.checkLogicCriteriaSatisfied(for: .legacy, date: dateFrom(string: "2022-01-01")))
+    XCTAssert(
+      AppReviewManager.shared.checkLogicCriteriaSatisfied(
+        for: .legacy,
+        date: dateFrom(string: "2022-01-01")
+      )
+    )
 
   }
 

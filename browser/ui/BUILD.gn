@@ -32,7 +32,8 @@ source_set("ui") {
     "//chrome/browser/ui/webui:configs",
   ]
 
-  deps = []
+  deps = [ "//brave/components/brave_shields/core/browser" ]
+
   public_deps = []
   sources = [
     "webui/brave_adblock_internals_ui.cc",
@@ -341,6 +342,8 @@ source_set("ui") {
       "views/frame/brave_non_client_hit_test_helper.h",
       "views/frame/brave_opaque_browser_frame_view.cc",
       "views/frame/brave_opaque_browser_frame_view.h",
+      "views/frame/brave_tab_strip_region_view.cc",
+      "views/frame/brave_tab_strip_region_view.h",
       "views/frame/brave_window_frame_graphic.cc",
       "views/frame/brave_window_frame_graphic.h",
       "views/omnibox/brave_omnibox_popup_view_views.cc",
@@ -547,9 +550,9 @@ source_set("ui") {
     "//brave/components/brave_rewards/resources:page_generated_resources",
     "//brave/components/brave_search/common",
     "//brave/components/brave_search_conversion",
-    "//brave/components/brave_shields/browser",
-    "//brave/components/brave_shields/common",
-    "//brave/components/brave_shields/common:mojom",
+    "//brave/components/brave_shields/content/browser",
+    "//brave/components/brave_shields/core/common",
+    "//brave/components/brave_shields/core/common:mojom",
     "//brave/components/brave_sync:crypto",
     "//brave/components/brave_sync:prefs",
     "//brave/components/brave_sync:time_limited_codes",

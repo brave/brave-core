@@ -3,17 +3,21 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import BraveShared
+import BraveWidgetsModels
 import Foundation
+import Strings
 import SwiftUI
 import WidgetKit
-import BraveWidgetsModels
-import BraveShared
-import Strings
 
 struct LockScreenShortcutWidget: Widget {
   var body: some WidgetConfiguration {
     if #available(iOSApplicationExtension 16.0, *) {
-      return IntentConfiguration(kind: "LockScreenShortcutWidget", intent: LockScreenShortcutConfigurationIntent.self, provider: LockScreenShortcutProvider()) { entry in
+      return IntentConfiguration(
+        kind: "LockScreenShortcutWidget",
+        intent: LockScreenShortcutConfigurationIntent.self,
+        provider: LockScreenShortcutProvider()
+      ) { entry in
         LockScreenShortcutView(entry: entry)
       }
       .configurationDisplayName(Strings.Widgets.shortcutsWidgetTitle)
@@ -33,18 +37,26 @@ struct LockScreenShortcutEntry: TimelineEntry {
 struct LockScreenShortcutProvider: IntentTimelineProvider {
   typealias Intent = LockScreenShortcutConfigurationIntent
   typealias Entry = LockScreenShortcutEntry
-  
+
   func placeholder(in context: Context) -> Entry {
     .init(date: Date(), widgetShortcut: .bookmarks)
   }
-  func getSnapshot(for configuration: Intent, in context: Context, completion: @escaping (Entry) -> Void) {
+  func getSnapshot(
+    for configuration: Intent,
+    in context: Context,
+    completion: @escaping (Entry) -> Void
+  ) {
     let entry = LockScreenShortcutEntry(
       date: Date(),
       widgetShortcut: configuration.shortcut
     )
     completion(entry)
   }
-  func getTimeline(for configuration: Intent, in context: Context, completion: @escaping (Timeline<Entry>) -> Void) {
+  func getTimeline(
+    for configuration: Intent,
+    in context: Context,
+    completion: @escaping (Timeline<Entry>) -> Void
+  ) {
     let entry = LockScreenShortcutEntry(
       date: Date(),
       widgetShortcut: configuration.shortcut
@@ -56,7 +68,7 @@ struct LockScreenShortcutProvider: IntentTimelineProvider {
 @available(iOS 16.0, *)
 struct LockScreenShortcutView: View {
   var entry: LockScreenShortcutEntry
-  
+
   var body: some View {
     ZStack {
       AccessoryWidgetBackground()
@@ -68,8 +80,11 @@ struct LockScreenShortcutView: View {
         .widgetLabel(entry.widgetShortcut.displayString)
         .accessibilityLabel(Text(entry.widgetShortcut.displayString))
         .unredacted()
-        .widgetURL(URL(string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"))
+        .widgetURL(
+          URL(
+            string: "\(AppURLScheme.appURLScheme)://shortcut?path=\(entry.widgetShortcut.rawValue)"
+          )
+        )
     }
   }
 }
-

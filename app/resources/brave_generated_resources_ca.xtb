@@ -106,15 +106,15 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="7658239707568436148">Cancel·la</translation>
 <translation id="4870911314065352661">Vols tancar totes les pestanyes?</translation>
 <translation id="7551864359422178684">Tens <ph name="NUMBER_OF_TABS"/> pestanyes obertes a la finestra del navegador.</translation>
-<translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> petanyes</translation>
+<translation id="2571596981920752023"><ph name="NUMBER_OF_TABS"/> pestanyes</translation>
 <translation id="1307431692088049276">No m'ho tornis a demanar</translation>
-<translation id="2272117088509540883">- Cerca de Brave</translation>
+<translation id="2272117088509540883">- Cercador de Brave</translation>
 <translation id="2701279958223202597">Accepta la cerca independent amb millor privadesa. La Cerca de Brave no fa un seguiment vostre ni de les vostres consultes o els vostres clics.</translation>
 <translation id="6438467592401259882">Accepta la cerca independent amb millor privadesa.</translation>
 <translation id="5167182095453855816">És hora d'abandonar les grans tecnològiques.</translation>
-<translation id="45040495135337202">Brave no fa un seguiment de la vostra activitat, consultes o clics. I és totalment independent de les grans empreses tecnològiques.</translation>
-<translation id="6919364924256365253">No ho busqueu a Google. No ho trobareu al Bing. Només a Brave.</translation>
-<translation id="3313148036097793884">Brave no fa un seguiment de la vostra activitat, consultes o clics. I és totalment independent.</translation>
+<translation id="45040495135337202">Brave no fa un seguiment de la teva activitat, consultes o clics. I és 100% independent de les grans empreses tecnològiques.</translation>
+<translation id="6919364924256365253">No ho busquis a Google. No ho trobaràs a Bing. Només a Brave.</translation>
+<translation id="3313148036097793884">Brave no fa un seguiment de la teva activitat, consultes o clics. I és 100% independent.</translation>
 <translation id="7295094278358921487">Fas una cerca i trobes resultats, tot d'incògnit.</translation>
 <translation id="42032117189492785">Feu cerques amb IA integrada i amb un índex únic.</translation>
 <translation id="8606416238399082160">Totalment d'incògnit, 100% independent i amb fantàstiques característiques d'IA.</translation>
@@ -254,6 +254,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Minimitza les pestanyes</translation>
 <translation id="7194343495483122559">Eixamplar les pestanyes</translation>
 <translation id="1199054713803577378">Minimitza les pestanyes</translation>
+<translation id="1337946268962884806">Ordre personalitzat</translation>
+<translation id="8373664339577369248">ordre personalitzat</translation>
 <translation id="8120600068258956006">Afegeix a la llista de reproducció</translation>
 <translation id="650694591627983430">S'ha trobat contingut multimèdia en aquesta pàgina</translation>
 <translation id="8525248723479742219">Reprodueix més tard</translation>
@@ -303,6 +305,9 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Repetir apagat</translation>
 <translation id="1748244367114657861">Repetir un</translation>
 <translation id="6421906998825794164">Repetir tot</translation>
+<translation id="6453210454707928697">No s'ha pogut reproduir l'element.</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] pot estar caducat. El vols recuperar?</translation>
+<translation id="6155018868740116868">Recuperar</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Els canvis s'aplicaran la propera vegada que reinicieu Brave.</translation>
 <translation id="7179921470347911571">Rellançar Ara</translation>
@@ -325,6 +330,8 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Mostra la barra de títol</translation>
 <translation id="5371926069408837914">Desplegueu el panell de pestanyes verticals passant el ratolí per damunt quan estigui tancat</translation>
 <translation id="3367129510799209147">Mode de desplaçament de la pestanya</translation>
+<translation id="515949045075831661">Mostra'l a la dreta</translation>
+<translation id="3725395376319291415">Mostra'l a l'esquerra</translation>
 <translation id="2113977810652731515">Targeta</translation>
 <translation id="4096343215397759358">Targeta amb vista prèvia</translation>
 <translation id="5297085818601043899">Informació sobre eines</translation>
@@ -361,7 +368,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">El Brave ja és al panell d'accés ràpid</translation>
 <translation id="3195845168740336657">Configuració d'Escut</translation>
 <translation id="754769152790647708">Estat de l'escut</translation>
-<translation id="3615717588724840230">Els llocs web poden blocar rastrejadors, anuncis i empremtes dactilars mitjançant Escuts</translation>
+<translation id="4868109105992358853">Els escuts poden bloquejar rastrejadors, anuncis i empremtes dactilars</translation>
 <translation id="5690973901138662477">Escuts activats</translation>
 <translation id="4697275813919189958">Escuts desactivats</translation>
 <translation id="6303294677342628402">Escuts</translation>
@@ -416,7 +423,7 @@ O canvia més tard a <ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Brave Rewards està inhabilitat</translation>
 <translation id="413570371620795359">Obre el panell de recompenses per activar i començar</translation>
 <translation id="1051600834033686945">Obre la configuració completa de Brave Rewards</translation>
-<translation id="6333347122924254968">Mostra la icona de Recompenses de Brave a la barra d'adreces</translation>
+<translation id="8826461509529116322">Mostra el botó de recompenses de Brave</translation>
 <translation id="9185018653595759199">Bloqueig de mitjans socials</translation>
 <translation id="863171915776379000">Permet l'inici de sessió i publicacions incrustades de Facebook</translation>
 <translation id="5165042248369837294">Permet tuits incrustats de Twitter</translation>
@@ -726,6 +733,7 @@ Segur que vols continuar?</translation>
 Leo i també esborrar l'historial de xat. Quan esborreu l'historial de xat
 se suprimiran també totes les converses anteriors amb Brave
 Leo. Aquesta acció no es pot desfer.</translation>
+<translation id="5574059574002819179">Configurar els suggeriments d'autocompletar</translation>
 <translation id="8157373421434119674">Dades i historial de xat</translation>
 <translation id="614530507403667291">Model predeterminal per a les converses noves</translation>
 <translation id="349846214503465941">Activa la llista de reproducció</translation>

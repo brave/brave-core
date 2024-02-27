@@ -87,4 +87,7 @@ provideStrings({
   contextToggleLabel: 'Use page context for response',
   contextToggleTooltipInfo: 'Toggle on to ask about this page. It\'s content will be sent to Brave Leo along with your messages.',
   subscriptionPolicyInfo: 'All subscriptions are auto-renewed but can be cancelled at any time before renewal.',
+  summarizeLabel: 'Summarize',
+  changeLengthLabel: 'Change length',
+  shortenLabel: 'Shorten',
 })

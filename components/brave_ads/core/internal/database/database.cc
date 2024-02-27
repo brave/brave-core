@@ -25,7 +25,13 @@ namespace brave_ads {
 namespace {
 
 constexpr char kGetTablesCountSql[] =
-    "SELECT COUNT(*) FROM sqlite_schema WHERE type='table'";
+    R"(
+        SELECT
+          COUNT(*)
+        FROM
+          sqlite_schema
+        WHERE
+          type = 'table';)";
 
 }  // namespace
 
@@ -38,8 +44,21 @@ Database::Database(base::FilePath path) : db_path_(std::move(path)) {
 
 Database::~Database() = default;
 
-void Database::RunTransaction(mojom::DBTransactionInfoPtr transaction,
-                              mojom::DBCommandResponseInfo* command_response) {
+mojom::DBCommandResponseInfoPtr Database::RunTransaction(
+    mojom::DBTransactionInfoPtr transaction) {
+  DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
+
+  mojom::DBCommandResponseInfoPtr command_response =
+      mojom::DBCommandResponseInfo::New();
+
+  RunTransactionImpl(std::move(transaction), command_response.get());
+
+  return command_response;
+}
+
+void Database::RunTransactionImpl(
+    mojom::DBTransactionInfoPtr transaction,
+    mojom::DBCommandResponseInfo* command_response) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
 
   CHECK(transaction);

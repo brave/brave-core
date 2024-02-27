@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SnapKit
@@ -27,13 +27,29 @@ class ButtonToast: Toast {
     }
   }
 
-  init(labelText: String, descriptionText: String? = nil, image: UIImage? = nil, buttonText: String? = nil, backgroundColor: UIColor = SimpleToastUX.toastDefaultColor, textAlignment: NSTextAlignment = .left, completion: ((_ buttonPressed: Bool) -> Void)? = nil) {
+  init(
+    labelText: String,
+    descriptionText: String? = nil,
+    image: UIImage? = nil,
+    buttonText: String? = nil,
+    backgroundColor: UIColor = SimpleToastUX.toastDefaultColor,
+    textAlignment: NSTextAlignment = .left,
+    completion: ((_ buttonPressed: Bool) -> Void)? = nil
+  ) {
     super.init(frame: .zero)
 
     self.completionHandler = completion
 
     self.clipsToBounds = true
-    self.addSubview(createView(labelText, descriptionText: descriptionText, image: image, buttonText: buttonText, textAlignment: textAlignment))
+    self.addSubview(
+      createView(
+        labelText,
+        descriptionText: descriptionText,
+        image: image,
+        buttonText: buttonText,
+        textAlignment: textAlignment
+      )
+    )
 
     self.toastView.backgroundColor = backgroundColor
 
@@ -51,7 +67,13 @@ class ButtonToast: Toast {
     fatalError("init(coder:) has not been implemented")
   }
 
-  fileprivate func createView(_ labelText: String, descriptionText: String?, image: UIImage?, buttonText: String?, textAlignment: NSTextAlignment) -> UIView {
+  fileprivate func createView(
+    _ labelText: String,
+    descriptionText: String?,
+    image: UIImage?,
+    buttonText: String?,
+    textAlignment: NSTextAlignment
+  ) -> UIView {
     let horizontalStackView = UIStackView()
     horizontalStackView.axis = .horizontal
     horizontalStackView.alignment = .center
@@ -106,10 +128,14 @@ class ButtonToast: Toast {
       button.titleLabel?.lineBreakMode = .byClipping
       button.titleLabel?.adjustsFontSizeToFitWidth = true
       button.titleLabel?.minimumScaleFactor = 0.1
-      button.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+      button.addGestureRecognizer(
+        UITapGestureRecognizer(target: self, action: #selector(buttonPressed))
+      )
 
       button.snp.makeConstraints { (make) in
-        make.width.equalTo(button.titleLabel!.intrinsicContentSize.width + 2 * ButtonToastUX.toastButtonPadding)
+        make.width.equalTo(
+          button.titleLabel!.intrinsicContentSize.width + 2 * ButtonToastUX.toastButtonPadding
+        )
       }
 
       horizontalStackView.addArrangedSubview(button)
@@ -141,7 +167,17 @@ class ButtonToast: Toast {
     dismiss(true)
   }
 
-  override func showToast(viewController: UIViewController? = nil, delay: DispatchTimeInterval = SimpleToastUX.toastDelayBefore, duration: DispatchTimeInterval? = SimpleToastUX.toastDismissAfter, makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void) {
-    super.showToast(viewController: viewController, delay: delay, duration: duration, makeConstraints: makeConstraints)
+  override func showToast(
+    viewController: UIViewController? = nil,
+    delay: DispatchTimeInterval = SimpleToastUX.toastDelayBefore,
+    duration: DispatchTimeInterval? = SimpleToastUX.toastDismissAfter,
+    makeConstraints: @escaping (SnapKit.ConstraintMaker) -> Swift.Void
+  ) {
+    super.showToast(
+      viewController: viewController,
+      delay: delay,
+      duration: duration,
+      makeConstraints: makeConstraints
+    )
   }
 }

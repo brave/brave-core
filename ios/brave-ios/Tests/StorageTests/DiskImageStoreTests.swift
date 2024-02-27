@@ -1,12 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Shared
-@testable import Storage
+import TestHelpers
 import UIKit
 import XCTest
-import TestHelpers
+
+@testable import Storage
 
 extension Sequence {
   fileprivate func asyncForEach(_ operation: (Element) async throws -> Void) async rethrows {
@@ -34,12 +35,19 @@ class DiskImageStoreTests: XCTestCase {
     let redImage = makeImageWithColor(UIColor.red, size: CGSize(width: 100, height: 100))
     let blueImage = makeImageWithColor(UIColor.blue, size: CGSize(width: 17, height: 17))
 
-    try await [(key: "blue", image: blueImage), (key: "red", image: redImage)].asyncForEach { (key, image) in
+    try await [(key: "blue", image: blueImage), (key: "red", image: redImage)].asyncForEach {
+      (key, image) in
       await XCTAssertAsyncThrowsError(try await store.get(key), "\(key) key is nil")
-      await XCTAssertAsyncNoThrow(try await store.put(key, image: image), "\(key) image added to store")
+      await XCTAssertAsyncNoThrow(
+        try await store.put(key, image: image),
+        "\(key) image added to store"
+      )
       let storedImage = try! await store.get(key)
       XCTAssertEqual(storedImage.size.width, image.size.width, "Images are equal")
-      await XCTAssertAsyncThrowsError(try await store.put(key, image: image), "\(key) image not added again")
+      await XCTAssertAsyncThrowsError(
+        try await store.put(key, image: image),
+        "\(key) image not added again"
+      )
     }
 
     await store.clearExcluding(Set(["red"]))

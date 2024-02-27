@@ -12,9 +12,16 @@ export const supportedUDExtensions = [
   '.nft',
   '.dao',
   '.wallet',
-  '.888',
   '.blockchain',
-  '.bitcoin'
+  '.bitcoin',
+  '.zil',
+  '.altimist',
+  '.anime',
+  '.klever',
+  '.manga',
+  '.polygon',
+  '.unstoppable',
+  '.pudgy',
 ]
 export const allSupportedExtensions = [
   ...supportedENSExtensions,

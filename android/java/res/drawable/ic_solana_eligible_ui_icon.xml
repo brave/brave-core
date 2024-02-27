@@ -1,0 +1,74 @@
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:width="144dp"
+    android:height="75dp"
+    android:viewportWidth="144"
+    android:viewportHeight="75">
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M27.29,6.91L29.5,4.97L31.17,7.18L33.1,5.24L34.77,7.46L37.26,5.24"
+        android:strokeWidth="1.10836"
+        android:strokeColor="#FC5BF0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#F58475"
+        android:pathData="M19.97,57.22H17.58C17.38,57.22 17.2,57.32 17.1,57.49L15.78,59.69C15.67,59.87 15.68,60.1 15.8,60.28L17.1,62.23C17.2,62.39 17.38,62.48 17.56,62.48H19.99C20.19,62.48 20.37,62.37 20.47,62.2L21.56,60.24C21.65,60.08 21.65,59.89 21.57,59.73L20.47,57.52C20.37,57.34 20.18,57.22 19.97,57.22Z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M8.28,23.91L7.45,26.96L4.68,26.41L4.12,28.9L1.63,28.35L0.8,30.84"
+        android:strokeWidth="1.10836"
+        android:strokeColor="#31F3D8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#02CCB7"
+        android:pathData="M142.78,28.49L138.39,30.9C138.23,30.99 138.12,31.16 138.11,31.35L137.65,37.28C137.62,37.71 138.07,38.01 138.45,37.81L142.84,35.62C143.01,35.53 143.13,35.36 143.14,35.17L143.6,29.02C143.63,28.58 143.16,28.28 142.78,28.49Z" />
+    <path
+        android:fillColor="#00000000"
+        android:pathData="M122.17,63.97L125.09,63.61L125.22,66.38L127.92,65.87L128.04,68.63L131.35,68.2"
+        android:strokeWidth="1.10836"
+        android:strokeColor="#FC5BF0"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round" />
+    <path
+        android:fillColor="#FFB23A"
+        android:pathData="M118.5,14.32C119.78,16.41 122.5,17.07 124.59,15.8L119.98,8.23C117.89,9.5 117.23,12.23 118.5,14.32Z" />
+    <group>
+        <clip-path android:pathData="M54.11,15.67h44.78v44.78h-44.78z" />
+        <path
+            android:fillColor="#F2F4F7"
+            android:pathData="M76.5,60.45C88.86,60.45 98.89,50.42 98.89,38.06C98.89,25.7 88.86,15.67 76.5,15.67C64.14,15.67 54.11,25.7 54.11,38.06C54.11,50.42 64.14,60.45 76.5,60.45Z" />
+        <path
+            android:fillColor="#FF4724"
+            android:fillType="evenOdd"
+            android:pathData="M63.48,47.81L71.19,43.28L76.5,33.97V25C76.36,25 76.22,25.09 76.11,25.28L69.82,36.31L63.53,47.33C63.42,47.52 63.42,47.69 63.48,47.81Z" />
+        <path
+            android:fillColor="#9E1F63"
+            android:fillType="evenOdd"
+            android:pathData="M76.5,25V33.97L81.81,43.28L89.52,47.81C89.58,47.69 89.57,47.52 89.47,47.33L83.18,36.31L76.89,25.28C76.78,25.09 76.64,25 76.5,25Z" />
+        <path
+            android:fillColor="#662D91"
+            android:fillType="evenOdd"
+            android:pathData="M89.52,47.81L81.81,43.28H71.19L63.48,47.81C63.55,47.93 63.7,48.01 63.92,48.01H89.08C89.3,48.01 89.45,47.93 89.52,47.81Z" />
+        <path
+            android:fillColor="#ffffff"
+            android:fillType="evenOdd"
+            android:pathData="M71.19,43.28H81.81L76.5,33.97L71.19,43.28Z" />
+    </group>
+    <group>
+        <clip-path android:pathData="M83.22,42.54h17.91v17.91h-17.91z" />
+        <path
+            android:fillColor="#000000"
+            android:pathData="M92.17,60.45C97.12,60.45 101.13,56.44 101.13,51.49C101.13,46.55 97.12,42.54 92.17,42.54C87.23,42.54 83.22,46.55 83.22,51.49C83.22,56.44 87.23,60.45 92.17,60.45Z" />
+        <path
+            android:fillColor="#66FFF6"
+            android:pathData="M96.23,53.56L94.88,54.97C94.85,55 94.81,55.03 94.77,55.04C94.73,55.06 94.69,55.07 94.65,55.07H88.22C88.19,55.07 88.16,55.06 88.14,55.04C88.11,55.03 88.09,55 88.08,54.98C88.07,54.95 88.06,54.92 88.07,54.89C88.07,54.86 88.09,54.83 88.11,54.81L89.47,53.4C89.49,53.37 89.53,53.34 89.57,53.32C89.61,53.31 89.65,53.3 89.69,53.3H96.12C96.15,53.3 96.18,53.31 96.2,53.32C96.23,53.34 96.25,53.36 96.26,53.39C96.28,53.42 96.28,53.45 96.27,53.48C96.27,53.51 96.25,53.53 96.23,53.56ZM94.88,50.71C94.85,50.67 94.81,50.65 94.77,50.63C94.73,50.62 94.69,50.61 94.65,50.61H88.22C88.19,50.61 88.16,50.62 88.14,50.63C88.11,50.65 88.09,50.67 88.08,50.7C88.07,50.73 88.06,50.76 88.07,50.79C88.07,50.82 88.09,50.84 88.11,50.87L89.47,52.28C89.49,52.31 89.53,52.34 89.57,52.35C89.61,52.37 89.65,52.38 89.69,52.38H96.12C96.15,52.38 96.18,52.37 96.2,52.35C96.23,52.34 96.25,52.31 96.26,52.29C96.28,52.26 96.28,52.23 96.27,52.2C96.27,52.17 96.25,52.14 96.23,52.12L94.88,50.71ZM88.22,49.69H94.65C94.69,49.69 94.73,49.68 94.77,49.66C94.81,49.65 94.85,49.62 94.88,49.59L96.23,48.17C96.25,48.15 96.27,48.13 96.27,48.1C96.28,48.07 96.28,48.04 96.26,48.01C96.25,47.98 96.23,47.96 96.2,47.94C96.18,47.93 96.15,47.92 96.12,47.92H89.69C89.65,47.92 89.61,47.93 89.57,47.94C89.53,47.96 89.49,47.98 89.47,48.01L88.11,49.43C88.09,49.45 88.07,49.48 88.07,49.51C88.06,49.54 88.07,49.57 88.08,49.6C88.09,49.62 88.11,49.65 88.14,49.66C88.16,49.68 88.19,49.69 88.22,49.69Z"
+            tools:ignore="VectorPath" />
+    </group>
+</vector>

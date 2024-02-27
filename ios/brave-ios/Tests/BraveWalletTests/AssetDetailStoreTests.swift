@@ -3,38 +3,50 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Combine
 import XCTest
-import BraveCore
+
 @testable import BraveWallet
 
 class AssetDetailStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
-  
+
   func testUpdateWithBlockchainToken() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    
+
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
-      completion(true, [.init(fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId, toAsset: "usd", price: "1", assetTimeframeChange: "1")])
+      completion(
+        true,
+        [
+          .init(
+            fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId,
+            toAsset: "usd",
+            price: "1",
+            assetTimeframeChange: "1"
+          )
+        ]
+      )
     }
     assetRatioService._priceHistory = { _, _, _, completion in
       completion(true, [.init(date: Date(), price: "0.99")])
     }
-    
+
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._allAccounts = { completion in
       completion(.mock)
     }
     keyringService._addObserver = { _ in }
-    
+
     let mockEthBalance: Double = 1
-    let ethBalanceWei = formatter.weiString(
-      from: mockEthBalance,
-      radix: .hex,
-      decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
-    ) ?? ""
+    let ethBalanceWei =
+      formatter.weiString(
+        from: mockEthBalance,
+        radix: .hex,
+        decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
+      ) ?? ""
     let formattedEthBalance = currencyFormatter.string(from: NSNumber(value: mockEthBalance)) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = {
@@ -46,24 +58,24 @@ class AssetDetailStoreTests: XCTestCase {
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }
-    
+
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = {
       $0("usd")
     }
     walletService._addObserver = { _ in }
-    
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
     }
-    
+
     let txService = BraveWallet.TestTxService()
     txService._allTransactionInfo = {
       $3([.previewConfirmedSend])
     }
     txService._addObserver = { _ in }
-    
+
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
       $2([.previewToken])
@@ -71,17 +83,17 @@ class AssetDetailStoreTests: XCTestCase {
     blockchainRegistry._allTokens = {
       $2([.previewToken])
     }
-    
+
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     solTxManagerProxy._estimatedTxFee = {
       $2(UInt64(0.1), .success, "")
     }
-    
+
     let swapService = BraveWallet.TestSwapService()
     swapService._isSwapSupported = {
       $1(true)
     }
-    
+
     // setup store
     let store = AssetDetailStore(
       assetRatioService: assetRatioService,
@@ -96,7 +108,7 @@ class AssetDetailStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       assetDetailType: .blockchainToken(.previewToken)
     )
-    
+
     let assetDetailException = expectation(description: "update-blockchainToken")
     assetDetailException.expectedFulfillmentCount = 13
     store.$network
@@ -156,7 +168,7 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertEqual($0, "1%")
       }
       .store(in: &cancellables)
-    store.$accounts
+    store.$nonZeroBalanceAccounts
       .dropFirst()
       .sink { accounts in
         defer { assetDetailException.fulfill() }
@@ -177,7 +189,10 @@ class AssetDetailStoreTests: XCTestCase {
         }
         XCTAssertEqual(txSections.count, 1)
         XCTAssertEqual(txSections.first!.transactions.count, 1)
-        XCTAssertEqual(txSections.first!.transactions.first!.transaction.id, BraveWallet.TransactionInfo.previewConfirmedSend.id)
+        XCTAssertEqual(
+          txSections.first!.transactions.first!.transaction.id,
+          BraveWallet.TransactionInfo.previewConfirmedSend.id
+        )
       }
       .store(in: &cancellables)
     store.$isLoadingPrice
@@ -213,35 +228,46 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertFalse(value)
       }
       .store(in: &cancellables)
-    
+
     store.update()
     wait(for: [assetDetailException], timeout: 1)
   }
-  
+
   func testUpdateWithCoinMarket() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))
-    
+
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
-      completion(true, [.init(fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId, toAsset: "btc", price: "0.1", assetTimeframeChange: "1")])
+      completion(
+        true,
+        [
+          .init(
+            fromAsset: BraveWallet.BlockchainToken.previewToken.tokenId,
+            toAsset: "btc",
+            price: "0.1",
+            assetTimeframeChange: "1"
+          )
+        ]
+      )
     }
     assetRatioService._priceHistory = { _, _, _, completion in
       completion(true, [.init(date: Date(), price: "0.99")])
     }
-    
+
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._allAccounts = { completion in
       completion(.mock)
     }
     keyringService._addObserver = { _ in }
-    
+
     let mockEthBalance: Double = 1
-    let ethBalanceWei = formatter.weiString(
-      from: mockEthBalance,
-      radix: .hex,
-      decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
-    ) ?? ""
+    let ethBalanceWei =
+      formatter.weiString(
+        from: mockEthBalance,
+        radix: .hex,
+        decimals: Int(BraveWallet.BlockchainToken.previewToken.decimals)
+      ) ?? ""
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._network = {
       $2(.mockMainnet)
@@ -249,21 +275,21 @@ class AssetDetailStoreTests: XCTestCase {
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }
-    
+
     let walletService = BraveWallet.TestBraveWalletService()
     walletService._defaultBaseCurrency = {
       $0("usd")
     }
     walletService._addObserver = { _ in }
-    
+
     let mockAssetManager = TestableWalletUserAssetManager()
     mockAssetManager._getAllUserAssetsInNetworkAssets = { _, _ in
       [NetworkAssets(network: .mockMainnet, tokens: [.previewToken], sortOrder: 0)]
     }
-    
+
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
-    
+
     let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
     blockchainRegistry._buyTokens = {
       $2([.previewToken])
@@ -271,10 +297,10 @@ class AssetDetailStoreTests: XCTestCase {
     blockchainRegistry._allTokens = {
       $2([.previewToken])
     }
-    
+
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
     let swapService = BraveWallet.TestSwapService()
-    
+
     // setup store
     var store = AssetDetailStore(
       assetRatioService: assetRatioService,
@@ -289,7 +315,7 @@ class AssetDetailStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       assetDetailType: .coinMarket(.mockCoinMarketBitcoin)
     )
-    
+
     let assetDetailBitcoinException = expectation(description: "update-coinMarket-bitcoin")
     assetDetailBitcoinException.expectedFulfillmentCount = 10
     store.$isBuySupported
@@ -368,7 +394,7 @@ class AssetDetailStoreTests: XCTestCase {
       .sink { values in
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.nonZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
 
           assetDetailBitcoinException.fulfill()
@@ -381,11 +407,11 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertFalse(value)
       }
       .store(in: &cancellables)
-    
+
     store.update()
     wait(for: [assetDetailBitcoinException], timeout: 1)
     cancellables.removeAll()
-    
+
     // setup store
     store = AssetDetailStore(
       assetRatioService: assetRatioService,
@@ -450,9 +476,9 @@ class AssetDetailStoreTests: XCTestCase {
       .sink {
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.nonZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
-          
+
           assetDetailNonBitcoinException.fulfill()
         }
         XCTAssertEqual($0, "-0.23%")
@@ -484,9 +510,9 @@ class AssetDetailStoreTests: XCTestCase {
       .sink { values in
         defer {
           XCTAssertNil(store.network)
-          XCTAssertTrue(store.accounts.isEmpty)
+          XCTAssertTrue(store.nonZeroBalanceAccounts.isEmpty)
           XCTAssertTrue(store.transactionSections.isEmpty)
-          
+
           assetDetailNonBitcoinException.fulfill()
         }
         guard let value = values.last
@@ -497,7 +523,7 @@ class AssetDetailStoreTests: XCTestCase {
         XCTAssertFalse(value)
       }
       .store(in: &cancellables)
-    
+
     store.update()
     wait(for: [assetDetailNonBitcoinException], timeout: 1)
   }

@@ -57,39 +57,70 @@ std::string MaybeAddUsernameAndPassword(const HostPortPair* host_port_pair,
 }  // namespace
 }  // namespace net
 
-#define BRAVE_HOST_PORT_PAIR_TO_STRING_ \
-  ret = MaybeAddUsernameAndPassword(this, ret);
-
-#define BRAVE_HOST_PORT_PAIR_FROM_STRING_ \
-  if (HasAuthentication(str)) \
-    return FromStringWithAuthentication(str);
-
-#define BRAVE_HOST_PORT_PAIR_FROM_URL_ \
-  if (HasAuthentication(url)) \
-    return HostPortPair(url.username(), \
-                        url.password(), \
-                        url.HostNoBrackets(), \
-                        static_cast<uint16_t>(url.EffectiveIntPort()));
+#define HostPortPair HostPortPair_ChromiumImpl
 
 #include "src/net/base/host_port_pair.cc"
 
-#undef BRAVE_HOST_PORT_PAIR_TO_STRING_
-#undef BRAVE_HOST_PORT_PAIR_FROM_STRING_
-#undef BRAVE_HOST_PORT_PAIR_FROM_URL_
+#undef HostPortPair
 
 namespace net {
 
+HostPortPair::HostPortPair() = default;
 HostPortPair::~HostPortPair() = default;
 HostPortPair::HostPortPair(const HostPortPair& host_port) = default;
+
+// private
+HostPortPair::HostPortPair(const HostPortPair_ChromiumImpl& other)
+    : HostPortPair_ChromiumImpl(other.host(), other.port()) {}
+
+HostPortPair::HostPortPair(std::string_view in_host, uint16_t in_port)
+    : HostPortPair_ChromiumImpl(in_host, in_port) {}
 
 HostPortPair::HostPortPair(std::string_view username,
                            std::string_view password,
                            std::string_view in_host,
                            uint16_t in_port)
-    : username_(username),
-      password_(password),
-      host_(in_host),
-      port_(in_port) {}
+    : HostPortPair_ChromiumImpl(in_host, in_port) {
+  set_username(std::string(username));
+  set_password(std::string(password));
+}
+
+// static
+HostPortPair HostPortPair::FromURL(const GURL& url) {
+  if (HasAuthentication(url)) {
+    return HostPortPair(url.username(), url.password(), url.HostNoBrackets(),
+                        static_cast<uint16_t>(url.EffectiveIntPort()));
+  }
+  return HostPortPair_ChromiumImpl::FromURL(url);
+}
+
+// static
+HostPortPair HostPortPair::FromSchemeHostPort(
+    const url::SchemeHostPort& scheme_host_port) {
+  return HostPortPair_ChromiumImpl::FromSchemeHostPort(scheme_host_port);
+}
+
+// static
+HostPortPair HostPortPair::FromIPEndPoint(const IPEndPoint& ipe) {
+  return HostPortPair_ChromiumImpl::FromIPEndPoint(ipe);
+}
+
+// static
+HostPortPair HostPortPair::FromString(std::string_view str) {
+  if (HasAuthentication(str)) {
+    return FromStringWithAuthentication(str);
+  }
+  return HostPortPair_ChromiumImpl::FromString(str);
+}
+
+// static
+std::optional<HostPortPair> HostPortPair::FromValue(const base::Value& value) {
+  auto r = HostPortPair_ChromiumImpl::FromValue(value);
+  if (r) {
+    return HostPortPair(r.value());
+  }
+  return std::nullopt;
+}
 
 const std::string& HostPortPair::username() const {
   return username_;
@@ -100,7 +131,7 @@ const std::string& HostPortPair::password() const {
 }
 
 void HostPortPair::set_username(const std::string& in_username) {
-    username_ = in_username;
+  username_ = in_username;
 }
 
 void HostPortPair::set_password(const std::string& in_password) {
@@ -108,13 +139,25 @@ void HostPortPair::set_password(const std::string& in_password) {
 }
 
 bool HostPortPair::operator<(const HostPortPair& other) const {
-  return std::tie(port_, host_, username_, password_) <
-      std::tie(other.port_, other.host_, other.username_, other.password_);
+  if (HostPortPair_ChromiumImpl::operator<(other)) {
+    return true;
+  }
+  return std::tie(username_, password_) <
+         std::tie(other.username_, other.password_);
+}
+
+bool HostPortPair::operator==(const HostPortPair& other) const {
+  return Equals(other);
 }
 
 bool HostPortPair::Equals(const HostPortPair& other) const {
-  return username_ == other.username_ && password_ == other.password_ &&
-      host_ == other.host_ && port_ == other.port_;
+  return HostPortPair_ChromiumImpl::Equals(other) &&
+         username_ == other.username_ && password_ == other.password_;
+}
+
+std::string HostPortPair::ToString() const {
+  const std::string& ret = HostPortPair_ChromiumImpl::ToString();
+  return MaybeAddUsernameAndPassword(this, ret);
 }
 
 }  // namespace net

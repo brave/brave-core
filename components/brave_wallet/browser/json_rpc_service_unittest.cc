@@ -1962,7 +1962,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
 
-  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+  EXPECT_THAT(GetAllUserAssets(prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));
 
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
@@ -1985,7 +1985,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
           }));
   base::RunLoop().RunUntilIdle();
 
-  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+  EXPECT_THAT(GetAllUserAssets(prefs()),
               Contains(Eq(std::ref(expected_token))));
 
   bool failed_callback_is_called = false;
@@ -2031,7 +2031,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   expected_token->logo = "https://url1.com";
   expected_token->visible = true;
 
-  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+  EXPECT_THAT(GetAllUserAssets(prefs()),
               Not(Contains(Eq(std::ref(expected_token)))));
 
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x111");
@@ -2056,7 +2056,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApprovedForOrigin) {
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
   loop.Run();
 
-  EXPECT_THAT(BraveWalletService::GetUserAssets(prefs()),
+  EXPECT_THAT(GetAllUserAssets(prefs()),
               Contains(Eq(std::ref(expected_token))));
 
   ASSERT_TRUE(
@@ -3724,6 +3724,13 @@ TEST_F(JsonRpcServiceUnitTest, IsValidUnstoppableDomain) {
       "test.blockchain",
       "test.bitcoin",
       "brave.zil",
+      "brave.altimist",
+      "brave.anime",
+      "brave.klever",
+      "brave.manga",
+      "brave.polygon",
+      "brave.unstoppable",
+      "brave.pudgy",
       "a.crypto",
       "1.crypto",
       "-.crypto",

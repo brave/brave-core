@@ -507,7 +507,9 @@ function PurchaseOptionSelection({ isAndroid }: Props) {
   >(accountsForSelectedAssetNetwork[0])
 
   // state-dependant queries
-  const generatedAddress = useReceiveAddressQuery(selectedAccount?.accountId)
+  const { receiveAddress: generatedAddress } = useReceiveAddressQuery(
+    selectedAccount?.accountId
+  )
 
   const { data: buyWithStripeUrl } = useGetBuyUrlQuery(
     selectedAsset && assetNetwork && generatedAddress

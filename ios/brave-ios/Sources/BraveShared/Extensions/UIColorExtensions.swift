@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -31,8 +31,10 @@ extension UIColor {
   }
 
   public func desaturated(_ desaturation: CGFloat) -> UIColor {
-    var h: CGFloat = 0, s: CGFloat = 0
-    var b: CGFloat = 0, a: CGFloat = 0
+    var h: CGFloat = 0
+    var s: CGFloat = 0
+    var b: CGFloat = 0
+    var a: CGFloat = 0
 
     guard self.getHue(&h, saturation: &s, brightness: &b, alpha: &a) else {
       return self
@@ -42,6 +44,7 @@ extension UIColor {
       hue: h,
       saturation: max(s - desaturation, 0.0),
       brightness: b,
-      alpha: a)
+      alpha: a
+    )
   }
 }

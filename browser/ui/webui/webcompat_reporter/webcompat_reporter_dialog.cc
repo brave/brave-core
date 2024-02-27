@@ -13,7 +13,7 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/browser/ui/brave_shields_data_controller.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom-shared.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom-shared.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
 #include "chrome/browser/ui/webui/constrained_web_dialog_ui.h"
@@ -111,7 +111,7 @@ bool WebcompatReporterDialogDelegate::ShouldShowDialogTitle() const {
   return false;
 }
 
-void OpenReporterDialog(content::WebContents* initiator) {
+void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   bool shields_enabled = false;
   brave_shields::mojom::FingerprintMode fp_block_mode =
       brave_shields::mojom::FingerprintMode::STANDARD;
@@ -138,6 +138,7 @@ void OpenReporterDialog(content::WebContents* initiator) {
   params_dict.Set(kAdBlockSettingField, GetAdBlockModeString(ad_block_mode));
   params_dict.Set(kFPBlockSettingField,
                   GetFingerprintModeString(fp_block_mode));
+  params_dict.Set(kUISourceField, static_cast<int>(source));
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);

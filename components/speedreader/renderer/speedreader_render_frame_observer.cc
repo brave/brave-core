@@ -18,12 +18,15 @@ SpeedreaderRenderFrameObserver::SpeedreaderRenderFrameObserver(
 
 SpeedreaderRenderFrameObserver::~SpeedreaderRenderFrameObserver() = default;
 
-void SpeedreaderRenderFrameObserver::DidClearWindowObject() {
-  if (!render_frame()->IsMainFrame()) {
+void SpeedreaderRenderFrameObserver::DidCreateScriptContext(
+    v8::Local<v8::Context> context,
+    int32_t world_id) {
+  if (!render_frame() || !render_frame()->IsMainFrame() ||
+      isolated_world_id_ != world_id) {
     return;
   }
-  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr(),
-                                isolated_world_id_);
+
+  SpeedreaderJSHandler::Install(weak_ptr_factory_.GetWeakPtr(), context);
 }
 
 void SpeedreaderRenderFrameObserver::OnDestruct() {

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -28,15 +28,23 @@ class PrintScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
 
     if !verifyMessage(message: message, securityToken: UserScriptManager.securityToken) {
@@ -66,7 +74,8 @@ class PrintScriptHandler: TabContentScript {
           animated: true,
           completionHandler: { _, _, _ in
             self?.isPresentingController = false
-          })
+          }
+        )
       }
 
       printCounter += 1
@@ -74,29 +83,44 @@ class PrintScriptHandler: TabContentScript {
       if printCounter > 1 {
         // Show confirm alert here.
         let suppressAlertStyle: UIAlertController.Style = UIDevice.isIpad ? .alert : .actionSheet
-        
+
         let suppressSheet = UIAlertController(
-          title: nil, message:
+          title: nil,
+          message:
             Strings.suppressAlertsActionMessage,
-          preferredStyle: suppressAlertStyle)
-        
-        suppressSheet.addAction(
-          UIAlertAction(
-            title: Strings.suppressAlertsActionTitle, style: .destructive,
-            handler: { [weak self] _ in
-              self?.isBlocking = true
-            }))
+          preferredStyle: suppressAlertStyle
+        )
 
         suppressSheet.addAction(
           UIAlertAction(
-            title: Strings.cancelButtonTitle, style: .cancel,
+            title: Strings.suppressAlertsActionTitle,
+            style: .destructive,
+            handler: { [weak self] _ in
+              self?.isBlocking = true
+            }
+          )
+        )
+
+        suppressSheet.addAction(
+          UIAlertAction(
+            title: Strings.cancelButtonTitle,
+            style: .cancel,
             handler: { _ in
               showPrintSheet()
-            }))
-        
-        if UIDevice.current.userInterfaceIdiom == .pad, let popoverController = suppressSheet.popoverPresentationController {
+            }
+          )
+        )
+
+        if UIDevice.current.userInterfaceIdiom == .pad,
+          let popoverController = suppressSheet.popoverPresentationController
+        {
           popoverController.sourceView = webView
-          popoverController.sourceRect = CGRect(x: webView.bounds.midX, y: webView.bounds.midY, width: 0, height: 0)
+          popoverController.sourceRect = CGRect(
+            x: webView.bounds.midX,
+            y: webView.bounds.midY,
+            width: 0,
+            height: 0
+          )
           popoverController.permittedArrowDirections = []
         }
 

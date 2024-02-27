@@ -1,21 +1,21 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
+import BraveStrings
 import BraveUI
 import DesignSystem
-import BraveStrings
+import Foundation
 import Lottie
+import SwiftUI
 
 struct OptInView: View {
   var tappedTurnOn: @Sendable () async throws -> Void
   var tappedLearnMore: () -> Void
-  
+
   @State private var isLoading: Bool = false
-  
+
   var body: some View {
     VStack(spacing: 36) {
       Image("opt-in-news-graphic", bundle: .module)
@@ -33,13 +33,13 @@ struct OptInView: View {
           .foregroundColor(Color(.braveLabel))
       }
       VStack(spacing: 16) {
-        Button(action: {
+        Button {
           isLoading = true
           Task {
             try await tappedTurnOn()
             isLoading = false
           }
-        }) {
+        } label: {
           Text(Strings.BraveNews.turnOnBraveNews)
             .opacity(isLoading ? 0 : 1)
             .overlay(
@@ -69,7 +69,7 @@ struct OptInView_PreviewProvider: PreviewProvider {
       tappedTurnOn: {
         try await Task.sleep(nanoseconds: NSEC_PER_SEC * 2)
       },
-      tappedLearnMore: { }
+      tappedLearnMore: {}
     )
   }
 }

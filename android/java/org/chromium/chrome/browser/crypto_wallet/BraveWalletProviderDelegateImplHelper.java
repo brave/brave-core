@@ -32,6 +32,16 @@ public class BraveWalletProviderDelegateImplHelper {
     }
 
     @CalledByNative
+    public static void showWalletBackup() {
+        try {
+            BraveActivity activity = BraveActivity.getBraveActivity();
+            activity.openBraveWalletBackup();
+        } catch (BraveActivity.BraveActivityNotFoundException e) {
+            Log.e(TAG, "showWalletBackup", e);
+        }
+    }
+
+    @CalledByNative
     public static void showWalletOnboarding() {
         try {
             BraveActivity activity = BraveActivity.getBraveActivity();

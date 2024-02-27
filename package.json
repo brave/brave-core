@@ -1,6 +1,6 @@
 {
   "name": "brave-core",
-  "version": "1.64.68",
+  "version": "1.65.40",
   "description": "Brave Core is a set of changes, APIs and scripts used for customizing Chromium to make Brave.",
   "main": "index.js",
   "scripts": {
@@ -48,7 +48,6 @@
     "gen_env": "node ./build/commands/scripts/genEnv.js",
     "gen_gradle": "node ./build/commands/scripts/commands.js gen_gradle",
     "ios_pack_js": "webpack --config ios/brave-ios/webpack.config.js",
-    "ios_create_xcframeworks": "node ./build/commands/scripts/iosCommands.js ios_create_xcframeworks",
     "ios_bootstrap": "node ./build/commands/scripts/iosCommands.js ios_bootstrap"
   },
   "repository": {
@@ -67,7 +66,7 @@
     "projects": {
       "chrome": {
         "dir": "src",
-        "tag": "122.0.6261.29",
+        "tag": "122.0.6261.94",
         "repository": {
           "url": "https://github.com/brave/chromium"
         }
@@ -165,7 +164,7 @@
   },
   "dependencies": {
     "@brave/brave-ui": "0.40.4",
-    "@brave/leo": "github:brave/leo#033a457665879461b5492edc66e11ceaf80e949d",
+    "@brave/leo": "github:brave/leo#3cd383209064c3971316d046427b1ce708fe8579",
     "@brave/leo-sf-symbols": "github:brave/leo-sf-symbols#775bb8fca9df76679b9b272545e162418127c5de",
     "@brave/react-virtualized-auto-sizer": "^1.0.4",
     "@brave/wallet-standard-brave": "0.0.12",

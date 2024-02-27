@@ -427,18 +427,10 @@ Confermi di voler procedere?</translation>
 <translation id="2394961582378297792">Disconnessione effettuata</translation>
 <translation id="5308380583665731573">Connettiti</translation>
 <translation id="3368922792935385530">Connessa</translation>
-<translation id="8673913984316081937">La verifica del portafoglio è facoltativa</translation>
-<translation id="8558636200953226885">Ma se completi la verifica, puoi...</translation>
-<translation id="8697510149346635496">Preleva i BAT che guadagni visualizzando annunci che rispettano la privacy</translation>
-<translation id="1481480653609649134">Acquista BAT aggiuntivi con carta di credito e altre fonti</translation>
-<translation id="9096003370755878766">Preleva BAT che potresti aver aggiunto in precedenza al tuo portafoglio Ricompense di Brave</translation>
-<translation id="1554282356558968486">Il nostro servizio di portafoglio è fornito da</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold potrebbe richiedere di verificare la tua identità in base ai servizi richiesti.</translation>
-<translation id="3200197118442451932">Brave Software Inc. non esegue il trattamento dei dati personali da te forniti a <ph name="WALLET_PROVIDER"/> durante la creazione dell’account, non memorizza questi dati e non accede a nessuno di essi.</translation>
 <translation id="1665118090708049096">Vai al mio account <ph name="WALLET_PROVIDER"/></translation>
 <translation id="4858636682078269312">Accedi al tuo account <ph name="WALLET_PROVIDER"/></translation>
 <translation id="8874184842967597500">Non connessa</translation>
@@ -525,7 +517,7 @@ Confermi di voler procedere?</translation>
 <translation id="2225863440766607138">Tracker</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">Hai bloccato <ph name="COUNT"/> tracker &amp; ad con Brave browser nelle ultime 3 ore.</translation>
-<translation id="3621193901658023971">Con Brave, naviga fino a 6 volte più velocemente sui principali siti di news bloccando tracker &amp; pubblicitari.</translation>
+<translation id="5005713153542196658">Con Brave, naviga fino a 6 volte più velocemente sui principali siti di news bloccando tracker e  pubblicità.</translation>
 <translation id="7427567994475794038">Attiva il Report Privacy per vedere quanti tracker &amp;ad sono state bloccate nelle ultime 3 ore.</translation>
 <translation id="2053891538879944400">Hai risparmiato <ph name="DATA"/> <ph name="DATA_TEXT"/> dati con Brave browser.</translation>
 <translation id="8640064498452534195">Attiva il Report Privacy per vedere quanti dati hai risparmiato.</translation>
@@ -590,6 +582,10 @@ Confermi di voler procedere?</translation>
 <translation id="8622329973403382303">Fai un breve tour per rinfrescare la memoria su come funziona per passare alla storia come una rockstar di Rewards!</translation>
 <translation id="3479552764303398839">Non adesso</translation>
 <translation id="7138272885617540195">Consenti ai link alle app di aprirsi nelle app al di fuori di Brave</translation>
+<translation id="4954512758656527938">Wallet Ethereum predefinito</translation>
+<translation id="7701023802820268122">Wallet Solana predefinito</translation>
+<translation id="7701040980221191251">Nessuno</translation>
+<translation id="8488282162676695335">Portafoglio Brave</translation>
 <translation id="8792121506918889955">Gestione politica IP WebRTC</translation>
 <translation id="8798099450830957504">Default</translation>
 <translation id="1822560017823072927">Interfacce pubbliche e private predefinite</translation>
@@ -685,7 +681,6 @@ Confermi di voler procedere?</translation>
 <translation id="8475984867371585028">Modifica gli NFT visibili</translation>
 <translation id="5050890334032852465">Salva watchlist dell’account</translation>
 <translation id="7755766175599167100">Ricerca token</translation>
-<translation id="8488282162676695335">Portafoglio Brave</translation>
 <translation id="3784455785234192852">Blocca</translation>
 <translation id="4412698727486357573">Centro assistenza</translation>
 <translation id="8796429300536029044">NFT in dettaglio</translation>
@@ -717,12 +712,12 @@ Confermi di voler procedere?</translation>
 <translation id="8272917646984397798">Protegge tutte le connessioni</translation>
 <translation id="1751947227857853925">Rapida e illimitata fino a 100 Mbps</translation>
 <translation id="1400240082805528049">Assistenza 24 ore su 24, 7 giorni su 7</translation>
-<translation id="5051030058817632680">Blocca le connessioni di rete indesiderate</translation>
+<translation id="5892534145504632332">Proteggi ogni app e tutto il dispositivo</translation>
+<translation id="7195416926059527505">Più sicuro per la navigazione a casa o su Wi-Fi pubblico</translation>
+<translation id="1354700000739359839">Più veloce della luce: fino a 100 Mbps</translation>
 <translation id="3510283489391432976">Scegli la tua posizione geografica/Paese</translation>
-<translation id="4390800080658195654">Mantiene l'anominato online</translation>
-<translation id="639981156979733813">Supporta velocità fino a 100 Mbps</translation>
-<translation id="765343799669302337">Usa il tunnel VPN crittografato e sicuro WireGuard</translation>
-<translation id="1571230671455380494">Non condividiamo né vendiamo mai le tue informazioni</translation>
+<translation id="7695158478627528928">Brave non conserva mai i registri della tua attività</translation>
+<translation id="4575683170451975058">Proteggi 5 dispositivi con 1 abbonamento</translation>
 <translation id="276866628038850725">Tutti i piani includono una prova gratuita di 7 giorni!</translation>
 <translation id="1532536259167115948">Abbonamento mensile <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Abbonamento annuale <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Confermi di voler procedere?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / anno</translation>
 <translation id="2655185358771731232">Prova gratuitamente per 7 giorni. Dopo questo periodo ti verrà addebitato il prezzo del piano. Tutti gli abbonamenti si rinnovano automaticamente, ma possono essere annullati prima del rinnovo.</translation>
 <translation id="6053992191006521518">Prova GRATIS</translation>
+<translation id="3990956504562716932">Prova gratis per 7 giorni</translation>
 <translation id="721747358270435486">Installa la VPN</translation>
 <translation id="836074276610740314">Installa il profilo VPN</translation>
 <translation id="8021842065465097929">Ora Brave installerà un profilo VPN.</translation>
@@ -1117,71 +1113,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="591648995518106347">Carica automaticamente gli articoli idonei in modalità di lettura</translation>
 <translation id="1295796122927221823">Visualizza in modalità lettura</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> su <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Playlist Brave</translation>
-<translation id="4850886885716139402">Visualizza</translation>
-<translation id="7392941176393379100">Aggiunto a ‘<ph name="PLAYLIST_NAME"/>’</translation>
-<translation id="8289472222022674331">Gestione dei dati della playlist</translation>
-<translation id="7650602357673790368">Per impostazione predefinita, Brave Playlist salverà automaticamente il contenuto sul dispositivo per la riproduzione offline (sia su playlist private che condivise). Se non hai una connessione Wi-Fi, la funzione di salvataggio automatico userà i dati mobili.\n\nPer cambiare questa impostazione predefinita, vai alle impostazioni.</translation>
-<translation id="5900576657906675258">Aggiungi elemento alla playlist</translation>
-<translation id="349846214503465941">Abilita la playlist</translation>
-<translation id="1309636029062006520">Crea playlist dei tuoi audio e video preferiti e riproducili quando e dove vuoi.</translation>
-<translation id="3561815498111282415">Salvataggio automatico offline</translation>
-<translation id="1832424694374124654">Salva automaticamente i nuovi elementi della playlist sul dispositivo così puoi riprodurli anche senza connessione internet.</translation>
-<translation id="8103022210423023846">Salvataggio automatico ON</translation>
-<translation id="3926329432879804185">Salvataggio automatico OFF</translation>
-<translation id="7768812595186089508">Salvataggio automatico solo quando il dispositivo è connesso al Wi-Fi</translation>
-<translation id="5939518447894949180">Ripristina</translation>
-<translation id="8199028711686989861">Rimuovi tutti i video dalla playlist, inclusi quelli salvati in modalità offline.</translation>
-<translation id="5916664084637901428">On</translation>
-<translation id="5860033963881614850">Off</translation>
-<translation id="2920568868625746681">Solo Wi-Fi</translation>
-<translation id="4590997608186539865">Playlist</translation>
-<translation id="7525067979554623046">Crea</translation>
-<translation id="5491049004699827548">Crea la tua prima playlist</translation>
-<translation id="5319108110887582146">Crea una playlist dei tuoi audio e video preferiti e riproducila quando e dove vuoi. Anche offline.</translation>
-<translation id="6802849415466883498">Crea una playlist</translation>
-<translation id="8525248723479742219">Riproduci più tardi</translation>
-<translation id="7453007860684252933">Sfoglia e aggiungi</translation>
-<translation id="9014883386413828317">Aggiungi i tuoi contenuti preferiti. Cerca il pulsante ( + ) nella parte inferiore destra della schermata.</translation>
-<translation id="5928669500312007783">Cerca file multimediali</translation>
-<translation id="8152485753254079984">Nuova playlist</translation>
-<translation id="9130105487623071247">Nome della playlist</translation>
-<translation id="726581235416249619">Playlist senza nome</translation>
-<translation id="1456254983411148628">Rimuovi i dati</translation>
-<translation id="2365883822666964139">Selezione: <ph name="NUMBER"/></translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> elementi</translation>
-<translation id="2317629745818459803">Riproduci tutto</translation>
-<translation id="7544853251252956727">Riproduzione casuale</translation>
-<translation id="2881339830231736485">Riproduzioni recenti</translation>
-<translation id="7636458383879257005">Tocca, tieni premuto o trascina</translation>
-<translation id="8120600068258956006">Aggiungi alla playlist</translation>
-<translation id="39991094779686024">Playlist</translation>
-<translation id="1710072605877822603">Aggiungi file multimediali</translation>
-<translation id="3874252678044305931">Aggiungi video a Brave Playlist. Riproducili in qualsiasi momento. Anche offline.</translation>
-<translation id="8973629800378391099">Crea playlist dei tuoi contenuti preferiti. Risparmia dati mobili. E riproduci senza pubblicità.</translation>
-<translation id="4936812987266342401">Basta toccare il pulsante per aggiungere video a una playlist</translation>
-<translation id="6263657785571415306">Rimani aggiornato: aggiungi video mentre navighi, guarda più tardi.</translation>
-<translation id="2839555636100404687">La riproduzione è migliore in Playlist</translation>
-<translation id="9079526681359439081">Riproduci in sottofondo. Controllo dalla schermata di blocco. E altro ancora...</translation>
-<translation id="3620862810055853183">Apri playlist</translation>
-<translation id="3861012838874771868">Apri le impostazioni della playlist</translation>
-<translation id="5220099266891491416">Nascondi il pulsante Playlist</translation>
-<translation id="7416347631175891923">Provalo!</translation>
-<translation id="1173894706177603556">Rinomina</translation>
-<translation id="1620612903815671893">Rimuovi i dati offline della playlist</translation>
-<translation id="3261711068865275261">Rimuovi tutti i dati offline</translation>
-<translation id="6653691766801349738">Mantieni la playlist per l’uso offline</translation>
-<translation id="8708086574143054053">Mantieni tutte le playlist per l’uso offline</translation>
-<translation id="3596306474342941843">Elimina la playlist</translation>
-<translation id="7765158879357617694">Sposta</translation>
-<translation id="3803384303807438047">Elimina i dati offline dell’elemento</translation>
-<translation id="4195643157523330669">Apri in un'altra scheda</translation>
-<translation id="4243710787042215766">Apri in una scheda privata</translation>
-<translation id="8261506727792406068">Elimina</translation>
-<translation id="377872456482681602">Prima seleziona gli elementi</translation>
-<translation id="6172429305139364624">L’elemento della playlist non è salvato nella cache.\nSalvalo nella cache per la modalità offline.</translation>
-<translation id="3631131732607750008">Contenuto scaduto. Riprova tra qualche secondo.</translation>
-<translation id="286472539388773794">Inserisci un nome di playlist valido</translation>
 <translation id="9085765419770918643">Non ci sono ancora NFT.</translation>
 <translation id="8445532667841598737">Vuoi aggiungerne? Clicca il pulsante qui sotto per importarli.</translation>
 <translation id="5925465310724910998">Vuoi che i tuoi NFT compaiano automaticamente?</translation>
@@ -1190,12 +1121,6 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="622372328961630111">Aggiungi automaticamente al portafoglio gli NFT in tuo possesso usando le API di terze parti. <ph name="BEGIN_LINK_1"/>Scopri di più.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account della tabella di ricerca degli indirizzi:</translation>
 <translation id="7659483790930268440">Indice della tabella di ricerca degli indirizzi:</translation>
-<translation id="7322560193401221004">Ricorda la posizione di riproduzione del file</translation>
-<translation id="7505951907514709271">Per singoli file, riprendi la riproduzione dal punto dell'ultima pausa</translation>
-<translation id="6835165453349969605">Ricorda la posizione di riproduzione nell'elenco</translation>
-<translation id="6344103698928069918">Per una playlist, riprendi la riproduzione dal punto dell'ultima pausa</translation>
-<translation id="8141583471142904652">Ascolto continuo</translation>
-<translation id="851432578283946230">Riproduce automaticamente gli elementi successivi nella tua playlist</translation>
 <translation id="7853202427316060426">Attività</translation>
 <translation id="4932733599132424254">Data</translation>
 <translation id="346505172740911461">Prezzo di mercato</translation>
@@ -1212,6 +1137,80 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="2471230424465522689">Non prima</translation>
 <translation id="4841860051609590575">ID richiesta</translation>
 <translation id="1179407411385015942">Leo è un assistente smart costruito con l’intelligenza artificiale e integrato direttamente nel browser</translation>
+<translation id="4109670531935487117">Mostra i suggerimenti del completamento automatico nella barra degli indirizzi</translation>
 <translation id="1250335737108905610">Reimposta e cancella i dati di Leo</translation>
 <translation id="6165101586663336913">Per ripristinare l’assistente Leo, dovrai autorizzare il futuro utilizzo di Leo. La cronologia delle chat inoltre sarà cancellata. Cancellando la cronologia delle chat, eliminerai tutte le tue precedenti conversazioni con Leo. Questa azione non può essere annullata.</translation>
+<translation id="3692772534525889713">Per usare Brave Leo su altri dispositivi collega a Brave l’acquisto effettuato sul Play Store.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Mensile</translation>
+<translation id="451189393813405346">Chiedi a Leo</translation>
+<translation id="7322560193401221004">Ricorda la posizione di riproduzione del file</translation>
+<translation id="7505951907514709271">Per singoli file, riprendi la riproduzione dal punto dell'ultima pausa</translation>
+<translation id="6835165453349969605">Ricorda la posizione di riproduzione nell'elenco</translation>
+<translation id="6344103698928069918">Per una playlist, riprendi la riproduzione dal punto dell'ultima pausa</translation>
+<translation id="8141583471142904652">Ascolto continuo</translation>
+<translation id="851432578283946230">Riproduce automaticamente gli elementi successivi nella tua playlist</translation>
+<translation id="295620834661738195">Playlist Brave</translation>
+<translation id="4850886885716139402">Visualizza</translation>
+<translation id="7392941176393379100">Aggiunto a ‘<ph name="PLAYLIST_NAME"/>’</translation>
+<translation id="349846214503465941">Abilita la playlist</translation>
+<translation id="1309636029062006520">Crea playlist dei tuoi audio e video preferiti e riproducili quando e dove vuoi.</translation>
+<translation id="7899390017499980820">Pulsante Aggiungi alla playlist</translation>
+<translation id="6901152954398668317">Mostra o nascondi il pulsante “Aggiungi alla playlist” per aggiungere o rimuovere file multimediali velocemente.</translation>
+<translation id="5939518447894949180">Ripristina</translation>
+<translation id="8199028711686989861">Rimuovi tutti i video dalla playlist, inclusi quelli salvati in modalità offline.</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Crea</translation>
+<translation id="8525248723479742219">Riproduci più tardi</translation>
+<translation id="7453007860684252933">Sfoglia e aggiungi</translation>
+<translation id="9014883386413828317">Aggiungi i tuoi contenuti preferiti. Cerca il pulsante ( + ) nella parte inferiore destra della schermata.</translation>
+<translation id="5928669500312007783">Cerca file multimediali</translation>
+<translation id="8152485753254079984">Nuova playlist</translation>
+<translation id="9130105487623071247">Nome della playlist</translation>
+<translation id="726581235416249619">Playlist senza nome</translation>
+<translation id="2365883822666964139">Selezione: <ph name="NUMBER"/></translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> elementi</translation>
+<translation id="2317629745818459803">Riproduci tutto</translation>
+<translation id="7544853251252956727">Riproduzione casuale</translation>
+<translation id="2881339830231736485">Riproduzioni recenti</translation>
+<translation id="8120600068258956006">Aggiungi alla playlist</translation>
+<translation id="39991094779686024">Playlist</translation>
+<translation id="1710072605877822603">Aggiungi file multimediali</translation>
+<translation id="3874252678044305931">Aggiungi video a Brave Playlist. Riproducili in qualsiasi momento. Anche offline.</translation>
+<translation id="8973629800378391099">Crea playlist dei tuoi contenuti preferiti. Risparmia dati mobili. E riproduci senza pubblicità.</translation>
+<translation id="4936812987266342401">Basta toccare il pulsante per aggiungere video a una playlist</translation>
+<translation id="6263657785571415306">Rimani aggiornato: aggiungi video mentre navighi, guarda più tardi.</translation>
+<translation id="2839555636100404687">La riproduzione è migliore in Playlist</translation>
+<translation id="9079526681359439081">Riproduci in sottofondo. Controllo dalla schermata di blocco. E altro ancora...</translation>
+<translation id="3620862810055853183">Apri playlist</translation>
+<translation id="3861012838874771868">Apri le impostazioni della playlist</translation>
+<translation id="5220099266891491416">Nascondi il pulsante Playlist</translation>
+<translation id="7416347631175891923">Provalo!</translation>
+<translation id="1173894706177603556">Rinomina</translation>
+<translation id="3596306474342941843">Elimina la playlist</translation>
+<translation id="7765158879357617694">Sposta</translation>
+<translation id="3803384303807438047">Elimina i dati offline dell’elemento</translation>
+<translation id="4195643157523330669">Apri in un'altra scheda</translation>
+<translation id="4243710787042215766">Apri in una scheda privata</translation>
+<translation id="8261506727792406068">Elimina</translation>
+<translation id="377872456482681602">Prima seleziona gli elementi</translation>
+<translation id="286472539388773794">Inserisci un nome di playlist valido</translation>
+<translation id="2824489375399072491">Condividi con:</translation>
+<translation id="5319532905552885478">Il contenuto multimediale è già stato aggiunto alla playlist predefinita</translation>
+<translation id="4802584673094436231">Preparazione in corso...</translation>
+<translation id="481455355267255546">Successivo</translation>
+<translation id="5474757891469990756">Scopri tutte le potenzialità di Leo con Premium:</translation>
+<translation id="4173478269537830374">Esplora diversi modelli di IA</translation>
+<translation id="3453542753968940696">Accesso prioritario a modelli efficaci con diverse abilità.</translation>
+<translation id="3245401959451976966">Sblocca la tua creatività</translation>
+<translation id="5031778211368112461">Accedi a modelli più adatti alle attività creative e alla generazione di contenuti.</translation>
+<translation id="4165928407303989823">Resta in tema</translation>
+<translation id="298783097210745222">Ricevi risposte più accurate per conversazioni più brillanti.</translation>
+<translation id="2389665228467129817">Chatta più a lungo</translation>
+<translation id="4314705522985583059">Approfitta di limiti di utilizzo più ampi per conversazioni più lunghe.</translation>
+<translation id="6365289557497555234">Tutti gli abbonamenti si rinnovano automaticamente ma possono essere annullati in qualsiasi momento prima del rinnovo.</translation>
+<translation id="6637015365469044269">Fai l’upgrade</translation>
+<translation id="614530507403667291">Modello predefinito per le nuove conversazioni</translation>
+<translation id="4071849832011229600">Modello predefinito</translation>
+<translation id="7557539689487606886">Passa alla versione Premium</translation>
 </translationbundle>

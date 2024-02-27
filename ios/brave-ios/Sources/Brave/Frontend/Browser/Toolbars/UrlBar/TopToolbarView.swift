@@ -1,22 +1,25 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveUI
+import Combine
+import Data
+import DesignSystem
+import Preferences
 import Shared
 import SnapKit
-import Preferences
-import Data
-import Combine
 import UIKit
-import DesignSystem
-import BraveUI
-import BraveCore
 
 protocol TopToolbarDelegate: AnyObject {
   func topToolbarDidPressTabs(_ topToolbar: TopToolbarView)
   func topToolbarDidPressReaderMode(_ topToolbar: TopToolbarView)
   func topToolbarDidPressPlaylistButton(_ urlBar: TopToolbarView)
-  func topToolbarDidPressPlaylistMenuAction(_ urlBar: TopToolbarView, action: PlaylistURLBarButton.MenuAction)
+  func topToolbarDidPressPlaylistMenuAction(
+    _ urlBar: TopToolbarView,
+    action: PlaylistURLBarButton.MenuAction
+  )
   func topToolbarDidEnterOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidLeaveOverlayMode(_ topToolbar: TopToolbarView)
   func topToolbarDidPressScrollToTop(_ topToolbar: TopToolbarView)
@@ -38,33 +41,33 @@ protocol TopToolbarDelegate: AnyObject {
 }
 
 class TopToolbarView: UIView, ToolbarProtocol {
-  
+
   // MARK: UX
-  
+
   struct UX {
     static let locationPadding: CGFloat = 8
     static let locationHeight: CGFloat = 44
     static let textFieldCornerRadius: CGFloat = 10
   }
-  
+
   // MARK: URLBarButton
-  
+
   enum URLBarButton {
     case wallet
     case playlist
   }
-  
+
   // MARK: Internal
-  
+
   var helper: ToolbarHelper?
 
   weak var delegate: TopToolbarDelegate?
   weak var tabToolbarDelegate: ToolbarDelegate?
-  
+
   private var cancellables: Set<AnyCancellable> = []
   private var privateModeCancellable: AnyCancellable?
   private let privateBrowsingManager: PrivateBrowsingManager
-  
+
   private(set) var displayTabTraySwipeGestureRecognizer: UISwipeGestureRecognizer?
 
   // MARK: State
@@ -100,20 +103,23 @@ class TopToolbarView: UIView, ToolbarProtocol {
     get { return locationView.secureContentState }
     set { locationView.secureContentState = newValue }
   }
-  
+
   var isURLBarEnabled = true {
     didSet {
       if oldValue == isURLBarEnabled { return }
-      
+
       locationTextField?.isUserInteractionEnabled = isURLBarEnabled
     }
   }
 
   // MARK: Views
-  
+
   private var locationTextField: AutocompleteTextField?
 
-  lazy var locationView = TabLocationView(voiceSearchSupported: isVoiceSearchAvailable, privateBrowsingManager: privateBrowsingManager).then {
+  lazy var locationView = TabLocationView(
+    voiceSearchSupported: isVoiceSearchAvailable,
+    privateBrowsingManager: privateBrowsingManager
+  ).then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.readerModeState = ReaderModeState.unavailable
     $0.delegate = self
@@ -161,11 +167,11 @@ class TopToolbarView: UIView, ToolbarProtocol {
     backButton.accessibilityIdentifier = "TopToolbarView.backButton"
     return backButton
   }()
-  
+
   lazy var actionButtons: [UIButton] = [
     shareButton, tabsButton, bookmarkButton,
     forwardButton, backButton, menuButton,
-    shieldsButton, rewardsButton
+    shieldsButton, rewardsButton,
   ].compactMap { $0 }
 
   private let mainStackView = UIStackView().then {
@@ -180,12 +186,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.spacing = 8
   }
-  
+
   private let trailingItemsStackView = UIStackView().then {
     $0.distribution = .fillEqually
     $0.spacing = 8
   }
-  
+
   private let shieldsRewardsStack = UIStackView().then {
     $0.distribution = .fillEqually
     $0.spacing = 8
@@ -199,9 +205,9 @@ class TopToolbarView: UIView, ToolbarProtocol {
       locationView.playlistButton.isHidden = currentURLBarButton != .playlist
     }
   }
-  
+
   private var locationTextContentView: UIStackView?
-  
+
   private lazy var qrCodeButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.qrCodeButton"
     $0.isAccessibilityElement = true
@@ -214,7 +220,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
-  
+
   private lazy var voiceSearchButton = ToolbarButton().then {
     $0.accessibilityIdentifier = "TabToolbar.voiceSearchButton"
     $0.isAccessibilityElement = true
@@ -228,7 +234,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.setContentHuggingPriority(.defaultHigh, for: .horizontal)
     $0.setContentHuggingPriority(.defaultHigh, for: .vertical)
   }
-  
+
   private(set) lazy var shieldsButton: ToolbarButton = {
     let button = ToolbarButton()
     button.setImage(UIImage(sharedNamed: "brave.logo"), for: .normal)
@@ -240,7 +246,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     button.contentEdgeInsets = .init(top: 4, left: 5, bottom: 4, right: 5)
     return button
   }()
-  
+
   private(set) lazy var rewardsButton: RewardsButton = {
     let button = RewardsButton()
     button.addTarget(self, action: #selector(didTapBraveRewardsButton), for: .touchUpInside)
@@ -248,7 +254,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     button.contentEdgeInsets = .init(top: 4, left: 4, bottom: 6, right: 4)
     return button
   }()
-  
+
   private lazy var locationBarOptionsStackView = UIStackView().then {
     $0.alignment = .center
     $0.isHidden = true
@@ -256,7 +262,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.isLayoutMarginsRelativeArrangement = true
     $0.insetsLayoutMarginsFromSafeArea = false
   }
-  
+
   lazy var locationContainer = UIView().then {
     $0.translatesAutoresizingMaskIntoConstraints = false
     $0.backgroundColor = .clear
@@ -267,7 +273,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.layer.shadowColor = UIColor.black.cgColor
     $0.layer.shadowOpacity = 0.1
   }
-  
+
   // The location container has a second shadow but we can't apply 2 shadows in UIKit, so adding a second view
   private let secondLocationShadowView = UIView().then {
     $0.backgroundColor = .clear
@@ -276,15 +282,15 @@ class TopToolbarView: UIView, ToolbarProtocol {
     $0.layer.shadowOpacity = 0.08
     $0.layer.shadowColor = UIColor.black.cgColor
   }
-  
+
   private var isVoiceSearchAvailable: Bool
 
   // MARK: Lifecycle
-  
+
   init(voiceSearchSupported: Bool, privateBrowsingManager: PrivateBrowsingManager) {
     isVoiceSearchAvailable = voiceSearchSupported
     self.privateBrowsingManager = privateBrowsingManager
-    
+
     super.init(frame: .zero)
 
     addSubview(secondLocationShadowView)
@@ -312,19 +318,26 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     [backButton, forwardButton].forEach {
       $0.contentEdgeInsets = UIEdgeInsets(
-        top: 0, left: UX.locationPadding, bottom: 0, right: UX.locationPadding)
+        top: 0,
+        left: UX.locationPadding,
+        bottom: 0,
+        right: UX.locationPadding
+      )
     }
-    
+
     if UIDevice.current.userInterfaceIdiom == .phone {
       trailingItemsStackView.addArrangedSubview(addTabButton)
     }
     trailingItemsStackView.addArrangedSubview(tabsButton)
     trailingItemsStackView.addArrangedSubview(menuButton)
-    
+
     shieldsRewardsStack.addArrangedSubview(shieldsButton)
     shieldsRewardsStack.addArrangedSubview(rewardsButton)
 
-    [leadingItemsStackView, locationContainer, shieldsRewardsStack, trailingItemsStackView, cancelButton].forEach {
+    [
+      leadingItemsStackView, locationContainer, shieldsRewardsStack, trailingItemsStackView,
+      cancelButton,
+    ].forEach {
       mainStackView.addArrangedSubview($0)
     }
 
@@ -334,7 +347,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     // Make sure we hide any views that shouldn't be showing in non-overlay mode.
     updateViewsForOverlayModeAndToolbarChanges()
-    
+
     privateModeCancellable = privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
@@ -342,27 +355,45 @@ class TopToolbarView: UIView, ToolbarProtocol {
       .sink(receiveValue: { [weak self] _ in
         guard let self = self else { return }
         self.updateColors()
-        self.helper?.updateForTraitCollection(self.traitCollection, browserColors: privateBrowsingManager.browserColors)
+        self.helper?.updateForTraitCollection(
+          self.traitCollection,
+          browserColors: privateBrowsingManager.browserColors
+        )
       })
-    
+
     updateURLBarButtonsVisibility()
-    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors, additionalButtons: [bookmarkButton])
+    helper?.updateForTraitCollection(
+      traitCollection,
+      browserColors: privateBrowsingManager.browserColors,
+      additionalButtons: [bookmarkButton]
+    )
     updateForTraitCollection()
-    
-    let swipeGestureRecognizer = UISwipeGestureRecognizer(target: self, action: #selector(swipedLocationView))
+
+    let swipeGestureRecognizer = UISwipeGestureRecognizer(
+      target: self,
+      action: #selector(swipedLocationView)
+    )
     swipeGestureRecognizer.direction = .up
     swipeGestureRecognizer.isEnabled = false
     locationView.addGestureRecognizer(swipeGestureRecognizer)
-    
+
     let dragInteraction = UIDragInteraction(delegate: self)
     dragInteraction.allowsSimultaneousRecognitionDuringLift = true
     locationView.addInteraction(dragInteraction)
-    
+
     self.displayTabTraySwipeGestureRecognizer = swipeGestureRecognizer
-    
-    qrCodeButton.addTarget(self, action: #selector(topToolbarDidPressQrCodeButton), for: .touchUpInside)
-    voiceSearchButton.addTarget(self, action: #selector(topToolbarDidPressVoiceSearchButton), for: .touchUpInside)
-    
+
+    qrCodeButton.addTarget(
+      self,
+      action: #selector(topToolbarDidPressQrCodeButton),
+      for: .touchUpInside
+    )
+    voiceSearchButton.addTarget(
+      self,
+      action: #selector(topToolbarDidPressVoiceSearchButton),
+      for: .touchUpInside
+    )
+
     updateColors()
   }
 
@@ -373,13 +404,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
   override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
     super.traitCollectionDidChange(previousTraitCollection)
-    helper?.updateForTraitCollection(traitCollection, browserColors: privateBrowsingManager.browserColors, additionalButtons: [bookmarkButton])
+    helper?.updateForTraitCollection(
+      traitCollection,
+      browserColors: privateBrowsingManager.browserColors,
+      additionalButtons: [bookmarkButton]
+    )
     updateForTraitCollection()
   }
-  
+
   private func updateForTraitCollection() {
     let toolbarSizeCategory = traitCollection.toolbarButtonContentSizeCategory
-    let pointSize = UIFontMetrics(forTextStyle: .body).scaledValue(for: 28, compatibleWith: .init(preferredContentSizeCategory: toolbarSizeCategory))
+    let pointSize = UIFontMetrics(forTextStyle: .body).scaledValue(
+      for: 28,
+      compatibleWith: .init(preferredContentSizeCategory: toolbarSizeCategory)
+    )
     shieldsButton.snp.remakeConstraints {
       $0.size.equalTo(pointSize)
     }
@@ -387,9 +425,12 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.size.equalTo(pointSize)
     }
     let clampedTraitCollection = traitCollection.clampingSizeCategory(maximum: .accessibilityLarge)
-    locationTextField?.font = .preferredFont(forTextStyle: .body, compatibleWith: clampedTraitCollection)
+    locationTextField?.font = .preferredFont(
+      forTextStyle: .body,
+      compatibleWith: clampedTraitCollection
+    )
   }
-  
+
   private func setupConstraints() {
     locationContainer.snp.remakeConstraints {
       $0.top.bottom.equalToSuperview().inset(UX.locationPadding)
@@ -411,34 +452,44 @@ class TopToolbarView: UIView, ToolbarProtocol {
       make.height.greaterThanOrEqualTo(UX.locationHeight)
     }
   }
-  
+
   override func layoutSubviews() {
     super.layoutSubviews()
     // Increase the inset of the main stack view if there's no additional space from safe areas
     let horizontalInset: CGFloat = safeAreaInsets.left > 0 ? 0 : 12
-    mainStackView.layoutMargins = .init(top: 0, left: horizontalInset, bottom: 0, right: horizontalInset)
-    
+    mainStackView.layoutMargins = .init(
+      top: 0,
+      left: horizontalInset,
+      bottom: 0,
+      right: horizontalInset
+    )
+
     locationContainer.layoutIfNeeded()
-    locationContainer.layer.shadowPath = UIBezierPath(
-      roundedRect: locationContainer.bounds.insetBy(dx: 1, dy: 1), // -1 spread in Figma
-      cornerRadius: locationContainer.layer.cornerRadius
-    ).cgPath
-    
+    locationContainer.layer.shadowPath =
+      UIBezierPath(
+        roundedRect: locationContainer.bounds.insetBy(dx: 1, dy: 1),  // -1 spread in Figma
+        cornerRadius: locationContainer.layer.cornerRadius
+      ).cgPath
+
     secondLocationShadowView.frame = locationContainer.frame
-    secondLocationShadowView.layer.shadowPath = UIBezierPath(
-      roundedRect: secondLocationShadowView.bounds.insetBy(dx: 2, dy: 2), // -2 spread in Figma
-      cornerRadius: locationContainer.layer.cornerRadius
-    ).cgPath
+    secondLocationShadowView.layer.shadowPath =
+      UIBezierPath(
+        roundedRect: secondLocationShadowView.bounds.insetBy(dx: 2, dy: 2),  // -2 spread in Figma
+        cornerRadius: locationContainer.layer.cornerRadius
+      ).cgPath
   }
-  
+
   override func becomeFirstResponder() -> Bool {
     return self.locationTextField?.becomeFirstResponder() ?? false
   }
-  
+
   private func makePlaceholder(colors: some BrowserColors) -> NSAttributedString {
-    NSAttributedString(string: Strings.tabToolbarSearchAddressPlaceholderText, attributes: [.foregroundColor: colors.textTertiary])
+    NSAttributedString(
+      string: Strings.tabToolbarSearchAddressPlaceholderText,
+      attributes: [.foregroundColor: colors.textTertiary]
+    )
   }
-  
+
   private func updateColors() {
     let browserColors = privateBrowsingManager.browserColors
     backgroundColor = browserColors.chromeBackground
@@ -451,7 +502,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       button.selectedTintColor = browserColors.iconActive
     }
   }
-    
+
   /// Created whenever the location bar on top is selected
   /// it is "converted" from static to actual TextField
   private func createLocationTextFieldContainer() {
@@ -483,14 +534,14 @@ class TopToolbarView: UIView, ToolbarProtocol {
         $0.removeInteraction(dropInteraction)
       }
     }
-    
+
     if RecentSearchQRCodeScannerController.hasCameraSupport {
       locationBarOptionsStackView.addArrangedSubview(qrCodeButton)
     }
     if isVoiceSearchAvailable {
       locationBarOptionsStackView.addArrangedSubview(voiceSearchButton)
     }
-   
+
     let subviews = [locationTextField, locationBarOptionsStackView]
     locationTextContentView = UIStackView(arrangedSubviews: subviews).then {
       $0.layoutMargins = UIEdgeInsets(top: 2, left: 8, bottom: 2, right: 0)
@@ -499,23 +550,26 @@ class TopToolbarView: UIView, ToolbarProtocol {
       $0.spacing = 8
       $0.setCustomSpacing(4, after: locationTextField)
     }
-    
+
     guard let locationTextContentView = locationTextContentView else { return }
 
     locationContainer.addSubview(locationTextContentView)
 
     locationTextContentView.snp.remakeConstraints {
       let insets = UIEdgeInsets(
-        top: 0, left: UX.locationPadding,
-        bottom: 0, right: UX.locationPadding)
+        top: 0,
+        left: UX.locationPadding,
+        bottom: 0,
+        right: UX.locationPadding
+      )
       $0.edges.equalTo(locationContainer).inset(insets)
     }
   }
-  
+
   private func removeLocationTextField() {
     locationTextContentView?.removeFromSuperview()
     locationTextContentView = nil
-    
+
     locationTextField?.removeFromSuperview()
     locationTextField = nil
   }
@@ -553,17 +607,17 @@ class TopToolbarView: UIView, ToolbarProtocol {
     locationView.readerModeState = state
     updateURLBarButtonsVisibility()
   }
-  
+
   func updatePlaylistButtonState(_ state: PlaylistURLBarButton.State) {
     locationView.playlistButton.buttonState = state
     updateURLBarButtonsVisibility()
   }
-  
+
   func updateWalletButtonState(_ state: WalletURLBarButton.ButtonState) {
     locationView.walletButton.buttonState = state
     updateURLBarButtonsVisibility()
   }
-  
+
   /// Updates the `currentURLBarButton` based on priority: 1) Wallet 2) Playlist 3) ReaderMode.
   private func updateURLBarButtonsVisibility() {
     if locationView.walletButton.buttonState != .inactive {
@@ -574,7 +628,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
       currentURLBarButton = nil
     }
   }
-  
+
   func setAutocompleteSuggestion(_ suggestion: String?) {
     locationTextField?.setAutocompleteSuggestion(suggestion)
   }
@@ -624,27 +678,29 @@ class TopToolbarView: UIView, ToolbarProtocol {
     guard let urlTextField = locationTextField else {
       return
     }
-    
+
     if pasted {
       // Clear any existing text, focus the field, then set the actual pasted text.
       // This avoids highlighting all of the text.
       urlTextField.text = ""
     }
-    
+
     DispatchQueue.main.async {
       urlTextField.becomeFirstResponder()
       self.setLocation(locationText, search: search)
     }
-    
+
     if !pasted {
       DispatchQueue.main.async {
         // When Not-pasted selecting text shiuld be from beggining to end
         let textRange = urlTextField.textRange(
-          from: urlTextField.beginningOfDocument, to: urlTextField.endOfDocument)
+          from: urlTextField.beginningOfDocument,
+          to: urlTextField.endOfDocument
+        )
         urlTextField.selectedTextRange = textRange
       }
     }
-    
+
     setNeedsUpdateConstraints()
   }
 
@@ -683,7 +739,10 @@ class TopToolbarView: UIView, ToolbarProtocol {
     }
 
     if inOverlayMode {
-      [leadingItemsStackView, bookmarkButton, shieldsRewardsStack, trailingItemsStackView, locationView.contentView].forEach {
+      [
+        leadingItemsStackView, bookmarkButton, shieldsRewardsStack, trailingItemsStackView,
+        locationView.contentView,
+      ].forEach {
         $0?.isHidden = true
       }
 
@@ -703,7 +762,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
     } else {
       qrCodeButton.isHidden = true
     }
-    
+
     if isVoiceSearchAvailable {
       voiceSearchButton.isHidden = !showToolbarActions
     } else {
@@ -731,7 +790,7 @@ class TopToolbarView: UIView, ToolbarProtocol {
 
     shieldsButton.setImage(UIImage(sharedNamed: shieldIcon), for: .normal)
   }
-  
+
   // MARK: Actions
 
   @objc func didClickCancel() {
@@ -754,20 +813,20 @@ class TopToolbarView: UIView, ToolbarProtocol {
     delegate?.topToolbarDidPressQrCodeButton(self)
     leaveOverlayMode(didCancel: true)
   }
-  
+
   @objc func topToolbarDidPressVoiceSearchButton() {
     leaveOverlayMode(didCancel: true)
     delegate?.topToolbarDidPressVoiceSearchButton(self)
   }
-  
+
   @objc private func swipedLocationView() {
     delegate?.topToolbarDidPressTabs(self)
   }
-  
+
   @objc private func didTapBraveShieldsButton() {
     delegate?.topToolbarDidTapBraveShieldsButton(self)
   }
-  
+
   @objc private func didTapBraveRewardsButton() {
     delegate?.topToolbarDidTapBraveRewardsButton(self)
   }
@@ -785,8 +844,12 @@ extension TopToolbarView: PreferencesObserver {
 
 extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidTapLocation(_ tabLocationView: TabLocationView) {
-    guard let (locationText, isSearchQuery) = delegate?.topToolbarDisplayTextForURL(locationView.url as URL?) else { return }
-    
+    guard
+      let (locationText, isSearchQuery) = delegate?.topToolbarDisplayTextForURL(
+        locationView.url as URL?
+      )
+    else { return }
+
     var overlayText = locationText
     // Make sure to use the result from topToolbarDisplayTextForURL as it is responsible for extracting out search terms when on a search page
     if let text = locationText, let url = NSURL(idnString: text) as? URL {
@@ -803,7 +866,7 @@ extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidTapStop(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressStop(self)
   }
-  
+
   func tabLocationViewDidTapVoiceSearch(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressVoiceSearchButton(self)
   }
@@ -815,19 +878,22 @@ extension TopToolbarView: TabLocationViewDelegate {
   func tabLocationViewDidTapPlaylist(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidPressPlaylistButton(self)
   }
-  
-  func tabLocationViewDidTapPlaylistMenuAction(_ tabLocationView: TabLocationView, action: PlaylistURLBarButton.MenuAction) {
+
+  func tabLocationViewDidTapPlaylistMenuAction(
+    _ tabLocationView: TabLocationView,
+    action: PlaylistURLBarButton.MenuAction
+  ) {
     delegate?.topToolbarDidPressPlaylistMenuAction(self, action: action)
   }
 
   func tabLocationViewDidBeginDragInteraction(_ tabLocationView: TabLocationView) {
     delegate?.topToolbarDidBeginDragInteraction(self)
   }
-  
+
   func tabLocationViewDidTapWalletButton(_ urlBar: TabLocationView) {
     delegate?.topToolbarDidTapWalletButton(self)
   }
-  
+
   func tabLocationViewDidTapSecureContentState(_ urlBar: TabLocationView) {
     delegate?.topToolbarDidTapSecureContentState(self)
   }
@@ -846,18 +912,26 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
     }
   }
 
-  func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didEnterText text: String) {
+  func autocompleteTextField(
+    _ autocompleteTextField: AutocompleteTextField,
+    didEnterText text: String
+  ) {
     delegate?.topToolbar(self, didEnterText: text)
     updateLocationBarRightView(showToolbarActions: text.isEmpty)
   }
 
-  func autocompleteTextField(_ autocompleteTextField: AutocompleteTextField, didDeleteAutoSelectedText text: String) {
+  func autocompleteTextField(
+    _ autocompleteTextField: AutocompleteTextField,
+    didDeleteAutoSelectedText text: String
+  ) {
     updateLocationBarRightView(showToolbarActions: text.isEmpty)
   }
 
   func autocompleteTextFieldDidBeginEditing(_ autocompleteTextField: AutocompleteTextField) {
     autocompleteTextField.highlightAll()
-    updateLocationBarRightView(showToolbarActions: locationView.urlDisplayLabel.text?.isEmpty == true)
+    updateLocationBarRightView(
+      showToolbarActions: locationView.urlDisplayLabel.text?.isEmpty == true
+    )
   }
 
   func autocompleteTextFieldShouldClear(_ autocompleteTextField: AutocompleteTextField) -> Bool {
@@ -873,10 +947,14 @@ extension TopToolbarView: AutocompleteTextFieldDelegate {
 }
 
 extension TopToolbarView: UIDragInteractionDelegate {
-  func dragInteraction(_ interaction: UIDragInteraction, itemsForBeginning session: UIDragSession) -> [UIDragItem] {
+  func dragInteraction(
+    _ interaction: UIDragInteraction,
+    itemsForBeginning session: UIDragSession
+  ) -> [UIDragItem] {
     // Ensure we actually have a URL in the location bar and that the URL is not local.
-    guard let url = self.locationView.url, !InternalURL.isValid(url: url), let itemProvider = NSItemProvider(contentsOf: url),
-          !locationView.reloadButton.isHighlighted, !inOverlayMode
+    guard let url = self.locationView.url, !InternalURL.isValid(url: url),
+      let itemProvider = NSItemProvider(contentsOf: url),
+      !locationView.reloadButton.isHighlighted, !inOverlayMode
     else {
       return []
     }
@@ -885,7 +963,7 @@ extension TopToolbarView: UIDragInteractionDelegate {
     dragItem.localObject = locationTextField
     return [dragItem]
   }
-  
+
   func dragInteraction(_ interaction: UIDragInteraction, sessionWillBegin session: UIDragSession) {
     delegate?.topToolbarDidBeginDragInteraction(self)
   }

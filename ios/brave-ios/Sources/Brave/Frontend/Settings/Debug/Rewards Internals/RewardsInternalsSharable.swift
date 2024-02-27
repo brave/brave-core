@@ -1,10 +1,10 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Shared
 
 /// A set of helpers for `RewardsInternalsFileGenerator` to use to generate data to share with support
@@ -110,7 +110,11 @@ enum RewardsInternalsSharableError: Error {
 
 /// A file generator that copies the Rewards ledger database into the sharable path
 private struct RewardsInternalsDatabaseGenerator: RewardsInternalsFileGenerator {
-  func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
+  func generateFiles(
+    at path: String,
+    using builder: RewardsInternalsSharableBuilder,
+    completion: @escaping (Error?) -> Void
+  ) {
     // Move Rewards database to path
     do {
       let dbPath = URL(fileURLWithPath: builder.rewardsAPI.rewardsDatabasePath)

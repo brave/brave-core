@@ -1,13 +1,13 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BraveCore
 import BraveUI
 import DesignSystem
 import Strings
-import BraveCore
+import SwiftUI
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -27,12 +27,12 @@ struct AddAccountView: View {
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
   private var allFilNetworks: [BraveWallet.NetworkInfo]
-  
+
   var preSelectedCoin: BraveWallet.CoinType?
   var preSelectedFilecoinNetwork: BraveWallet.NetworkInfo?
   var onCreate: (() -> Void)?
   var onDismiss: (() -> Void)?
-  
+
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
@@ -46,7 +46,8 @@ struct AddAccountView: View {
     self.preSelectedCoin = preSelectedCoin
     self.onCreate = onCreate
     self.onDismiss = onDismiss
-    if let preSelectedFilecoinNetwork, preSelectedFilecoinNetwork.coin == .fil { // make sure the prefilled
+    // make sure the prefilled
+    if let preSelectedFilecoinNetwork, preSelectedFilecoinNetwork.coin == .fil {
       // network is a Filecoin network
       self.preSelectedFilecoinNetwork = preSelectedFilecoinNetwork
       _filNetwork = .init(initialValue: preSelectedFilecoinNetwork)
@@ -56,12 +57,16 @@ struct AddAccountView: View {
   }
 
   private func addAccount(for coin: BraveWallet.CoinType) {
-    let accountName = name.isEmpty ? defaultAccountName(for: coin, chainId: filNetwork.chainId, isPrimary: privateKey.isEmpty) : name
+    let accountName =
+      name.isEmpty
+      ? defaultAccountName(for: coin, chainId: filNetwork.chainId, isPrimary: privateKey.isEmpty)
+      : name
     guard accountName.isValidAccountName else { return }
-    
+
     if privateKey.isEmpty {
       // Add normal account
-      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: filNetwork.chainId) { success in
+      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: filNetwork.chainId) {
+        success in
         if success {
           onCreate?()
           appRatingRequest?()
@@ -79,9 +84,20 @@ struct AddAccountView: View {
         }
       }
       if isJSONImported {
-        keyringStore.addSecondaryAccount(accountName, json: privateKey, password: originPassword, completion: handler)
+        keyringStore.addSecondaryAccount(
+          accountName,
+          json: privateKey,
+          password: originPassword,
+          completion: handler
+        )
       } else {
-        keyringStore.addSecondaryAccount(accountName, coin: coin, chainId: filNetwork.chainId, privateKey: privateKey, completion: handler)
+        keyringStore.addSecondaryAccount(
+          accountName,
+          coin: coin,
+          chainId: filNetwork.chainId,
+          privateKey: privateKey,
+          completion: handler
+        )
       }
     }
   }
@@ -97,43 +113,50 @@ struct AddAccountView: View {
       return false
     }
   }
-  
+
   private var showCoinSelection: Bool {
     preSelectedCoin == nil && WalletConstants.supportedCoinTypes().count > 1
   }
-  
+
   private var navigationTitle: String {
     if preSelectedCoin == nil, selectedCoin == nil {
       return Strings.Wallet.addAccountTitle
     }
-    return String.localizedStringWithFormat(Strings.Wallet.addAccountWithCoinTypeTitle, preSelectedCoin?.localizedTitle ?? (selectedCoin?.localizedTitle ?? BraveWallet.CoinType.eth.localizedTitle))
+    return String.localizedStringWithFormat(
+      Strings.Wallet.addAccountWithCoinTypeTitle,
+      preSelectedCoin?.localizedTitle
+        ?? (selectedCoin?.localizedTitle ?? BraveWallet.CoinType.eth.localizedTitle)
+    )
   }
-  
+
   @ViewBuilder private var addAccountView: some View {
     List {
       if (selectedCoin == .fil || preSelectedCoin == .fil) && !allFilNetworks.isEmpty {
-        Menu(content: {
-          Picker(selection: $filNetwork) {
-            ForEach(allFilNetworks) { network in
-              Text(network.chainName)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .tag(network)
+        Menu(
+          content: {
+            Picker(selection: $filNetwork) {
+              ForEach(allFilNetworks) { network in
+                Text(network.chainName)
+                  .foregroundColor(Color(.secondaryBraveLabel))
+                  .tag(network)
+              }
+            } label: {
+              EmptyView()
             }
-          } label: {
-            EmptyView()
-          }
-        }, label: {
-          HStack {
-            Text(Strings.Wallet.transactionDetailsNetworkTitle)
-              .foregroundColor(Color(.braveLabel))
-            Spacer()
-            Group {
-              Text(filNetwork.chainName)
-              Image(systemName: "chevron.up.chevron.down")
+          },
+          label: {
+            HStack {
+              Text(Strings.Wallet.transactionDetailsNetworkTitle)
+                .foregroundColor(Color(.braveLabel))
+              Spacer()
+              Group {
+                Text(filNetwork.chainName)
+                Image(systemName: "chevron.up.chevron.down")
+              }
+              .foregroundColor(Color(.secondaryBraveLabel))
             }
-            .foregroundColor(Color(.secondaryBraveLabel))
           }
-        })
+        )
         .disabled(preSelectedFilecoinNetwork != nil)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
@@ -149,13 +172,13 @@ struct AddAccountView: View {
     .navigationTitle(navigationTitle)
     .navigationBarItems(
       // Have to use this instead of toolbar placement to have a custom button style
-      trailing: Button(action: {
+      trailing: Button {
         addAccount(for: preSelectedCoin ?? (selectedCoin ?? .eth))
-      }) {
+      } label: {
         Text(Strings.Wallet.add)
       }
-        .buttonStyle(BraveFilledButtonStyle(size: .small))
-        .disabled(!name.isValidAccountName)
+      .buttonStyle(BraveFilledButtonStyle(size: .small))
+      .disabled(!name.isValidAccountName)
     )
     .alert(isPresented: $failedToImport) {
       Alert(
@@ -165,7 +188,7 @@ struct AddAccountView: View {
       )
     }
   }
-  
+
   @ViewBuilder private var coinSelectionView: some View {
     List {
       Section(
@@ -176,34 +199,35 @@ struct AddAccountView: View {
         ForEach(WalletConstants.supportedCoinTypes().elements) { coin in
           NavigationLink(
             tag: coin,
-            selection: $selectedCoin) {
-              addAccountView
-                .onDisappear {
-                  name = ""
-                  originPassword = ""
-                  privateKey = ""
-                }
-            } label: {
-              HStack(spacing: 10) {
-                Image(coin.iconName, bundle: .module)
-                  .resizable()
-                  .aspectRatio(contentMode: .fit)
-                  .clipShape(Circle())
-                  .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
-                VStack(alignment: .leading, spacing: 3) {
-                  Text(coin.localizedTitle)
-                    .foregroundColor(Color(.bravePrimary))
-                    .font(.headline)
-                    .multilineTextAlignment(.leading)
-                  Text(coin.localizedDescription)
-                    .foregroundColor(Color(.braveLabel))
-                    .font(.footnote)
-                    .multilineTextAlignment(.leading)
-                }
+            selection: $selectedCoin
+          ) {
+            addAccountView
+              .onDisappear {
+                name = ""
+                originPassword = ""
+                privateKey = ""
               }
-              .padding(.vertical, 10)
+          } label: {
+            HStack(spacing: 10) {
+              Image(coin.iconName, bundle: .module)
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .clipShape(Circle())
+                .frame(width: min(iconSize, maxIconSize), height: min(iconSize, maxIconSize))
+              VStack(alignment: .leading, spacing: 3) {
+                Text(coin.localizedTitle)
+                  .foregroundColor(Color(.bravePrimary))
+                  .font(.headline)
+                  .multilineTextAlignment(.leading)
+                Text(coin.localizedDescription)
+                  .foregroundColor(Color(.braveLabel))
+                  .font(.footnote)
+                  .multilineTextAlignment(.leading)
+              }
             }
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+            .padding(.vertical, 10)
+          }
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
     }
@@ -223,10 +247,10 @@ struct AddAccountView: View {
     }
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: {
+        Button {
           onDismiss?()
           presentationMode.dismiss()
-        }) {
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -265,7 +289,7 @@ struct AddAccountView: View {
             TextField(Strings.Wallet.accountDetailsNamePlaceholder, text: $name)
           }
         }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        .listRowBackground(Color(.secondaryBraveGroupedBackground))
       },
       header: {
         WalletListHeaderView(
@@ -294,7 +318,7 @@ struct AddAccountView: View {
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
+
   private var isJsonImportSupported: Bool {
     // nil is possible if Solana is disabled
     selectedCoin == nil || selectedCoin == .eth
@@ -314,21 +338,29 @@ struct AddAccountView: View {
           .font(.system(.body, design: .monospaced))
           .frame(height: privateKeyFieldHeight)
           .background(
-            Text(isJsonImportSupported ? Strings.Wallet.importAccountPlaceholder : Strings.Wallet.importNonEthAccountPlaceholder)
-              .padding(.vertical, 8)
-              .padding(.horizontal, 4)  // To match the TextEditor's editing insets
-              .frame(maxWidth: .infinity, alignment: .leading)
-              .foregroundColor(Color(.placeholderText))
-              .opacity(privateKey.isEmpty ? 1 : 0)
-              .accessibilityHidden(true),
+            Text(
+              isJsonImportSupported
+                ? Strings.Wallet.importAccountPlaceholder
+                : Strings.Wallet.importNonEthAccountPlaceholder
+            )
+            .padding(.vertical, 8)
+            .padding(.horizontal, 4)  // To match the TextEditor's editing insets
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .foregroundColor(Color(.placeholderText))
+            .opacity(privateKey.isEmpty ? 1 : 0)
+            .accessibilityHidden(true),
             alignment: .top
           )
           .introspectTextView { textView in
             textView.smartQuotesType = .no
           }
-          .accessibilityValue(privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey)
+          .accessibilityValue(
+            privateKey.isEmpty ? Strings.Wallet.importAccountPlaceholder : privateKey
+          )
         if isJsonImportSupported {
-          Button(action: { isPresentingImport = true }) {
+          Button {
+            isPresentingImport = true
+          } label: {
             HStack {
               Text(Strings.Wallet.importButtonTitle)
                 .foregroundColor(.accentColor)
@@ -346,15 +378,25 @@ struct AddAccountView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
   }
-  
-  private func defaultAccountName(for coin: BraveWallet.CoinType, chainId: String, isPrimary: Bool) -> String {
+
+  private func defaultAccountName(
+    for coin: BraveWallet.CoinType,
+    chainId: String,
+    isPrimary: Bool
+  ) -> String {
     let accountsForCoin = keyringStore.allAccounts.filter { $0.coin == coin }
     if isPrimary {
       let numberOfPrimaryAccountsForCoin = accountsForCoin.filter(\.isPrimary).count
-      return String.localizedStringWithFormat(coin.defaultAccountName, numberOfPrimaryAccountsForCoin + 1)
+      return String.localizedStringWithFormat(
+        coin.defaultAccountName,
+        numberOfPrimaryAccountsForCoin + 1
+      )
     } else {
       let numberOfImportedAccounts = accountsForCoin.filter(\.isImported).count
-      return String.localizedStringWithFormat(coin.defaultSecondaryAccountName, numberOfImportedAccounts + 1)
+      return String.localizedStringWithFormat(
+        coin.defaultSecondaryAccountName,
+        numberOfImportedAccounts + 1
+      )
     }
   }
 }

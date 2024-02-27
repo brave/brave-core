@@ -20,18 +20,24 @@ function ErrorRateLimit() {
     // Freemium model with non-premium user has stricter rate limits. Secondary
     // action is to switch to completely free model.
     if (context.currentModel?.access === mojom.ModelAccess.BASIC_AND_PREMIUM) {
+      const handleSwitchToBasicModel = () => {
+        context.switchToBasicModel()
+        getPageHandlerInstance().pageHandler.retryAPIRequest()
+      }
+
       return (
         <PremiumSuggestion
           title={getLocale('rateLimitReachedTitle')}
           description={getLocale('rateLimitReachedDesc')}
           secondaryActionButton={
-            <Button kind='plain-faint' onClick={context.switchToBasicModel}>
+            <Button kind='plain-faint' onClick={handleSwitchToBasicModel}>
               {getLocale('switchToBasicModelButtonLabel')}
             </Button>
           }
         />
       )
     }
+
     return (
       <PremiumSuggestion
         title={getLocale('rateLimitReachedTitle')}

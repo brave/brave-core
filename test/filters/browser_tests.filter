@@ -160,7 +160,12 @@
 # No binder found for interface brave_news.mojom.BraveNewsController for the
 # frame/document scope
 -SearchEngineChoiceBrowserTest.DialogNotShownOverSpecificBrowserTypes
--SearchEngineChoiceDialogBrowserTest.DialogIsDisplayedOnEveryGuestSession
+
+# These tests fail because we stub search_engines::IsChoiceScreenFlagEnabled to
+# always return false
+-SearchEngineChoiceDialogBrowserTest.*
+-SearchEngineChoiceUIPixelTest.*
+-SearchEngineRepromptBrowserTest.Reprompt/*
 
 # These fail because we disable HATS (Happiness Survey) service from showing any
 # surveys.
@@ -1020,11 +1025,12 @@
 -All/PDFExtensionScrollTest.WithSpace/0
 -ExtensionWindowCreateTest.AcceptState
 -FirstRunFlowControllerDiceBrowserTest.ButtonsAreDisabledOnClickAndEnabledOnNavigateBack
+-MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCbcsVideo_Success
+-MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
 -PasswordGenerationPopupViewWithMinimizedStrengthIndicatorTest.*
 -PasswordGenerationPopupViewWithStrengthIndicatorTest.*
 -ProfileNetworkContextServiceCache*.TestCacheResetParameter
--MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCbcsVideo_Success
--MediaFoundationEncryptedMediaTest.Playback_ClearLeadEncryptedCencVideo_Success
+-ThirdPartyReduceAcceptLanguageBrowserTest.ThirdPartyIframeWithSubresourceRequests
 -VideoLCPTypeTest.DataURIType_Video
 
 # This test fails because we override the support article URL to point to our
@@ -1232,10 +1238,6 @@
 # https://github.com/brave/brave-browser/issues/35263
 -PictureInPicturePixelComparisonBrowserTest.VideoPlay
 
-# These tests fail because we disable autofill feedback
--AutofillAcrossIframesTest/*.*/*
--AutofillAcrossIframesTest_*.*
-
 # These tests fail because we disable lens::features::kLensStandalone
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewDisabled
 -All/ContextMenuBrowserTest.ContextMenuForVideoWithoutReadableFrame/LinkPreviewEnabled
@@ -1255,6 +1257,9 @@
 # These tests fail because we stub out the ThirdPartyCookieDeprecation component
 # (the component loads but does nothing)
 -ThirdPartyCookieDeprecationObserverCookieReadBrowserTest.*
+
+# This test fails because we disable some child views in the page info bubble.
+-All/PageInfoBubbleViewBrowserTestCookiesSubpage.ClickingCookieDialogButton/0
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*

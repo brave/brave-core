@@ -61,9 +61,9 @@ inline constexpr auto kCollectedTypicalHistograms =
 
     "Brave.Importer.ImporterSource.2",
     "Brave.NTP.CustomizeUsageStatus.2",
-    "Brave.NTP.NewTabsCreated.2",
+    "Brave.NTP.NewTabsCreated.3",
     "Brave.NTP.SponsoredImagesEnabled",
-    "Brave.NTP.SponsoredNewTabsCreated",
+    "Brave.NTP.SponsoredNewTabsCreated.2",
     "Brave.Omnibox.SearchCount.3",
 
     // P2A
@@ -173,12 +173,14 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.SpeedReader.ToggleCount",
     "Brave.Sync.ProgressTokenEverReset",
     "Brave.Sync.Status.2",
-    "Brave.Today.DirectFeedsTotal",
+    "Brave.Today.ClickCardDepth",
     "Brave.Today.LastUsageTime",
     "Brave.Today.NewUserReturning",
+    "Brave.Today.SidebarFilterUsages",
     "Brave.Today.WeeklyAddedDirectFeedsCount",
     "Brave.Today.WeeklyDisplayAdsViewedCount",
     "Brave.Today.WeeklySessionCount",
+    "Brave.Today.WeeklyTotalCardClicks",
     "Brave.Today.WeeklyTotalCardViews",
     "Brave.Toolbar.FrequentMenuGroup",
     "Brave.Toolbar.MenuDismissRate",
@@ -189,9 +191,11 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.VerticalTabs.GroupTabs",
     "Brave.VerticalTabs.OpenTabs",
     "Brave.VerticalTabs.PinnedTabs",
+    "Brave.Wallet.ActiveBtcAccounts",
     "Brave.Wallet.ActiveEthAccounts",
     "Brave.Wallet.ActiveFilAccounts",
     "Brave.Wallet.ActiveSolAccounts",
+    "Brave.Wallet.ActiveZecAccounts",
     "Brave.Wallet.EthProvider.4",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
@@ -207,6 +211,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Wallet.SolTransactionSent",
     "Brave.Wallet.UsageWeekly",
     "Brave.WebTorrent.UsageWeekly",
+    "Brave.Webcompat.UISource",
     "Brave.Welcome.InteractionStatus.2",
 });
 
@@ -233,6 +238,9 @@ inline constexpr auto kCollectedSlowHistograms =
     "Brave.Rewards.TipsSent.2",
     "Brave.Sync.EnabledTypes",
     "Brave.Sync.SyncedObjectsCount.2",
+    "Brave.Today.ChannelCount",
+    "Brave.Today.DirectFeedsTotal.2",
+    "Brave.Today.PublisherCount",
     "Brave.Today.UsageMonthly",
     "Brave.Toolbar.ForwardNavigationAction",
     "Brave.Wallet.UsageMonthly",
@@ -274,12 +282,18 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Rewards.MobileConversion",
     "Brave.Rewards.MobilePanelCount",
     "Brave.Rewards.PageViewCount",
-    "Brave.Rewards.TipsSent",
+    "Brave.Rewards.TipsSent.2",
     "Brave.Rewards.ToolbarButtonTrigger",
     "Brave.Search.QueriesBeforeChurn",
+    "Brave.Today.ChannelCount",
+    "Brave.Today.ClickCardDepth",
+    "Brave.Today.DirectFeedsTotal.2",
     "Brave.Today.IsEnabled",
+    "Brave.Today.PublisherCount",
+    "Brave.Today.SidebarFilterUsages",
     "Brave.Today.UsageDaily",
     "Brave.Today.UsageMonthly",
+    "Brave.Today.WeeklyTotalCardClicks",
     "Brave.VerticalTabs.GroupTabs",
     "Brave.VerticalTabs.OpenTabs",
     "Brave.VerticalTabs.PinnedTabs",
@@ -290,7 +304,8 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.Wallet.UsageDaily",
     "Brave.Wallet.UsageMonthly",
     "Brave.Wallet.UsageWeekly",
-    "Brave.WebTorrent.UsageWeekly"
+    "Brave.WebTorrent.UsageWeekly",
+    "Brave.Webcompat.UISource",
 });
 
 // List of metrics that should only be via STAR/Constellation.
@@ -298,6 +313,15 @@ inline constexpr auto kEphemeralHistograms =
 inline constexpr auto kConstellationOnlyHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.Core.PrimaryLang",
+});
+
+// List of metrics which will include the stored refcode when transmitted
+// via the STAR/Constellation protocol.
+inline constexpr auto kHistogramsWithRefcodeIncluded =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    // TODO(djandries): Replace this metric with the first metric
+    // to include a refcode.
+    "Brave.ExampleMetric"
 });
 
 // clang-format on

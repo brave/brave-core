@@ -97,6 +97,26 @@ std::string EthAddress::ToHex() const {
   return ::brave_wallet::ToHex(input);
 }
 
+// static
+std::optional<std::string> EthAddress::ToEip1191ChecksumAddress(
+    const std::string& address,
+    const std::string& chain_id) {
+  if (address.empty()) {
+    return "";
+  }
+
+  const auto eth_addr = EthAddress::FromHex(address);
+  if (eth_addr.IsEmpty()) {
+    return std::nullopt;
+  }
+  uint256_t chain;
+  if (!HexValueToUint256(chain_id, &chain)) {
+    return std::nullopt;
+  }
+
+  return eth_addr.ToChecksumAddress(chain);
+}
+
 std::string EthAddress::ToChecksumAddress(uint256_t eip1191_chaincode) const {
   std::string result = "0x";
   std::string input;

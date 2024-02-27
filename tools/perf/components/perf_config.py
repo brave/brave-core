@@ -6,6 +6,7 @@
 # pylint: disable=too-few-public-methods
 
 import logging
+import os
 import re
 
 from typing import List, Optional, Dict, Tuple
@@ -79,6 +80,9 @@ def ParseTarget(target: str) -> Tuple[Optional[BraveVersion], str]:
   location = m.group(2)
   logging.debug('Parsed version: %s, location : %s', version.to_string(),
                 location)
+  if location is not None:
+    if not location.startswith('https://') and not os.path.exists(location):
+      raise RuntimeError(f'Bad location {location} in target {target}')
   return version, location
 
 

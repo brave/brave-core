@@ -29,5 +29,7 @@ export const AllNetworksOptionDefault: NetworkFilterType = {
 export const SupportedTopLevelChainIds = [
   BraveWallet.MAINNET_CHAIN_ID,
   BraveWallet.SOLANA_MAINNET,
-  BraveWallet.FILECOIN_MAINNET
+  BraveWallet.FILECOIN_MAINNET,
+  BraveWallet.BITCOIN_MAINNET,
+  BraveWallet.Z_CASH_MAINNET
 ]

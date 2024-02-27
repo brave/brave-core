@@ -1,17 +1,17 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
 public struct SectionFooterErrorView: View {
   private let errorMessage: String?
-  
+
   public init(errorMessage: String?) {
     self.errorMessage = errorMessage
   }
-  
+
   public var body: some View {
     if let errorMessage {
       HStack(alignment: .firstTextBaseline, spacing: 4) {

@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -36,7 +36,7 @@ public enum AppBuildChannel: String {
       return "invalid"
     }
   }
-  
+
   public var dauServerChannelParam: String {
     switch self {
     case .release:
@@ -51,14 +51,14 @@ public enum AppBuildChannel: String {
 
 public struct KVOConstants: Equatable {
   public var keyPath: String
-  
+
   public init(keyPath: String) {
     self.keyPath = keyPath
   }
-  
+
   public static let loading: Self = .init(keyPath: "loading")
   public static let estimatedProgress: Self = .init(keyPath: "estimatedProgress")
-  public static let URL: Self = .init(keyPath: "URL")
+  public static let url: Self = .init(keyPath: "URL")
   public static let title: Self = .init(keyPath: "title")
   public static let canGoBack: Self = .init(keyPath: "canGoBack")
   public static let canGoForward: Self = .init(keyPath: "canGoForward")

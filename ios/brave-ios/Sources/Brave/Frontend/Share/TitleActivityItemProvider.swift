@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -13,7 +13,10 @@ import UIKit
 /// Note that not all applications use the Subject. For example OmniFocus ignores it, so we need to do both.
 
 class TitleActivityItemProvider: UIActivityItemProvider {
-  static let activityTypesToIgnore = [UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.message, UIActivity.ActivityType.mail]
+  static let activityTypesToIgnore = [
+    UIActivity.ActivityType.copyToPasteboard, UIActivity.ActivityType.message,
+    UIActivity.ActivityType.mail,
+  ]
 
   init(title: String) {
     super.init(placeholderItem: title)
@@ -28,7 +31,10 @@ class TitleActivityItemProvider: UIActivityItemProvider {
     return placeholderItem! as AnyObject
   }
 
-  override func activityViewController(_ activityViewController: UIActivityViewController, subjectForActivityType activityType: UIActivity.ActivityType?) -> String {
-    return placeholderItem as! String  // swiftlint:disable:this force_cast
+  override func activityViewController(
+    _ activityViewController: UIActivityViewController,
+    subjectForActivityType activityType: UIActivity.ActivityType?
+  ) -> String {
+    return placeholderItem as! String
   }
 }

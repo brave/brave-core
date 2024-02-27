@@ -20,6 +20,7 @@
 #include "brave/browser/misc_metrics/page_metrics_tab_helper.h"
 #include "brave/browser/misc_metrics/process_misc_metrics.h"
 #include "brave/browser/ntp_background/ntp_tab_helper.h"
+#include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/browser/ui/bookmark/brave_bookmark_tab_helper.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
@@ -95,7 +96,8 @@
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-#include "brave/browser/playlist/playlist_tab_helper.h"
+#include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_tab_helper.h"
 #endif
 
 #if defined(TOOLKIT_VIEWS)
@@ -133,7 +135,8 @@ void AttachTabHelpers(content::WebContents* web_contents) {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
     content::BrowserContext* context = web_contents->GetBrowserContext();
-    if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context))) {
+    if (ai_chat::IsAIChatEnabled(user_prefs::UserPrefs::Get(context)) &&
+        IsRegularProfile(context)) {
       auto skus_service_getter = base::BindRepeating(
           [](content::BrowserContext* context) {
             return skus::SkusServiceFactory::GetForContext(context);
@@ -205,8 +208,10 @@ void AttachTabHelpers(content::WebContents* web_contents) {
   }
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
-  playlist::PlaylistTabHelper::MaybeCreateForWebContents(web_contents);
-#endif
+  playlist::PlaylistTabHelper::MaybeCreateForWebContents(
+      web_contents, playlist::PlaylistServiceFactory::GetForBrowserContext(
+                        web_contents->GetBrowserContext()));
+#endif  // BUILDFLAG(ENABLE_PLAYLIST)
 }
 
 }  // namespace brave

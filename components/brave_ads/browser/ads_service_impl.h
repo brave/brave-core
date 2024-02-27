@@ -18,6 +18,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "base/threading/sequence_bound.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/browser/brave_ads/application_state/background_helper/background_helper.h"
@@ -411,7 +412,7 @@ class AdsServiceImpl : public AdsService,
 
   mojom::SysInfo sys_info_;
 
-  std::unique_ptr<Database> database_;
+  base::SequenceBound<Database> database_;
 
   base::RepeatingTimer idle_state_timer_;
   ui::IdleState last_idle_state_ = ui::IdleState::IDLE_STATE_ACTIVE;

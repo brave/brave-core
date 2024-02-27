@@ -176,8 +176,9 @@ public class BraveRewardsHelper implements LargeIconBridge.LargeIconCallback {
         if (!hasRewardsOnboardingModalShown()
                 && (getNextRewardsOnboardingModalDate() > 0
                         && System.currentTimeMillis() > getNextRewardsOnboardingModalDate())
-                && shouldShowBraveRewardsOnboardingModal() && braveRewardsNativeWorker != null
-                && braveRewardsNativeWorker.IsSupported()) {
+                && shouldShowBraveRewardsOnboardingModal()
+                && braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.isSupported()) {
             if (isRewardsEnabled()) {
                 setRewardsOnboardingModalShown(true);
                 return false;

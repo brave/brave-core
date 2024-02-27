@@ -18,6 +18,7 @@ source_set("unit_tests") {
   deps = [
     ":wireguard_utils",
     "//base",
+    "//brave/components/brave_vpn/common",
     "//chrome/test:test_support",
     "//components/version_info:channel",
     "//testing/gtest",
@@ -28,10 +29,10 @@ source_set("win") {
   sources = [
     "brave_vpn_service_delegate_win.cc",
     "brave_vpn_service_delegate_win.h",
-    "brave_vpn_wireguard_connection_api_win.cc",
-    "brave_vpn_wireguard_connection_api_win.h",
     "vpn_utils_win.cc",
     "vpn_utils_win.h",
+    "wireguard_connection_api_impl_win.cc",
+    "wireguard_connection_api_impl_win.h",
   ]
 
   deps = [
@@ -44,6 +45,7 @@ source_set("win") {
     "//chrome/elevation_service:public_headers",
     "//chrome/install_static:install_static_util",
     "//components/keyed_service/core",
+    "//services/network/public/cpp",
   ]
 }
 

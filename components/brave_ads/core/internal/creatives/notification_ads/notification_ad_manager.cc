@@ -16,7 +16,7 @@
 #include "build/build_config.h"
 
 #if BUILDFLAG(IS_ANDROID)
-#include "brave/components/brave_ads/core/internal/browser/browser_util.h"
+#include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
 namespace brave_ads {

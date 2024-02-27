@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -23,7 +23,7 @@ struct CosmeticFilterModel: Codable {
   /// A boolean indicating if generic hide is enabled on the web frame
   /// and given to the `SelectorsPollerScript.js` script during its initialization.
   let genericHide: Bool
-  
+
   enum CodingKeys: String, CodingKey {
     case hideSelectors = "hide_selectors"
     case styleSelectors = "style_selectors"

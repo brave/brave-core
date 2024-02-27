@@ -155,7 +155,8 @@ void ShieldsPanelDataHandler::OpenWebCompatWindow() {
     return;
 
   webcompat_reporter::OpenReporterDialog(
-      active_shields_data_controller_->web_contents());
+      active_shields_data_controller_->web_contents(),
+      webcompat_reporter::UISource::kShieldsPanel);
 }
 
 void ShieldsPanelDataHandler::UpdateFavicon() {

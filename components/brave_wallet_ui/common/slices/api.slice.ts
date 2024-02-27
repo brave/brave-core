@@ -194,6 +194,7 @@ export const {
   useGetERC20AllowanceQuery,
   useGetERC721MetadataQuery,
   useGetEthAddressChecksumQuery,
+  useValidateUnifiedAddressQuery,
   useGetEVMTransactionSimulationQuery,
   useGetFVMAddressQuery,
   useGetGasEstimation1559Query,

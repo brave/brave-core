@@ -1,11 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import Then
 import DesignSystem
+import Foundation
+import Then
+import UIKit
 
 extension PopoverController {
 
@@ -106,11 +106,18 @@ extension PopoverController {
       // 2 is added or removed to the max values to assure the arrow will not peak off the corner radius
       // due to the arrow itself being offseted by 1 vertically below to ensure you don't see it separate
       // during rotation
-      let clampedArrowXOrigin = min(max(arrowOrigin.x, PopoverUX.cornerRadius + 2), bounds.width - PopoverUX.cornerRadius - 2) - PopoverUX.arrowSize.width / 2.0
+      let clampedArrowXOrigin =
+        min(
+          max(arrowOrigin.x, PopoverUX.cornerRadius + 2),
+          bounds.width - PopoverUX.cornerRadius - 2
+        ) - PopoverUX.arrowSize.width / 2.0
 
       CATransaction.setDisableActions(true)
       popoverMaskView.updateTrianglePath(arrowDirection)
-      popoverMaskView.triangleLayer.position = CGPoint(x: clampedArrowXOrigin, y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0)
+      popoverMaskView.triangleLayer.position = CGPoint(
+        x: clampedArrowXOrigin,
+        y: arrowDirection == .down ? bounds.size.height - PopoverUX.arrowSize.height - 1.0 : 1.0
+      )
       CATransaction.setDisableActions(false)
 
       popoverMaskView.frame = bounds
@@ -163,13 +170,24 @@ extension PopoverController {
         path.addLine(to: CGPoint(x: arrowSize.width, y: arrowSize.height))
         path.addLine(to: CGPoint(x: 0, y: arrowSize.height))
 
-        shadowMask.frame = CGRect(x: -PopoverUX.shadowRadius, y: -PopoverUX.shadowRadius + PopoverUX.shadowOffset.height, width: PopoverUX.arrowSize.width + (PopoverUX.shadowRadius * 2.0), height: PopoverUX.arrowSize.height + 1.0)
+        shadowMask.frame = CGRect(
+          x: -PopoverUX.shadowRadius,
+          y: -PopoverUX.shadowRadius + PopoverUX.shadowOffset.height,
+          width: PopoverUX.arrowSize.width + (PopoverUX.shadowRadius * 2.0),
+          height: PopoverUX.arrowSize.height + 1.0
+        )
       case .down:
         path.move(to: CGPoint(x: arrowSize.width / 2.0, y: arrowSize.height))
         path.addLine(to: CGPoint(x: arrowSize.width, y: 0.0))
         path.addLine(to: CGPoint(x: 0, y: 0.0))
 
-        shadowMask.frame = CGRect(x: -PopoverUX.shadowRadius, y: 0, width: PopoverUX.arrowSize.width + (PopoverUX.shadowRadius * 2.0), height: PopoverUX.arrowSize.height + PopoverUX.shadowRadius + PopoverUX.shadowOffset.height)
+        shadowMask.frame = CGRect(
+          x: -PopoverUX.shadowRadius,
+          y: 0,
+          width: PopoverUX.arrowSize.width + (PopoverUX.shadowRadius * 2.0),
+          height: PopoverUX.arrowSize.height + PopoverUX.shadowRadius
+            + PopoverUX.shadowOffset.height
+        )
       }
       path.close()
 

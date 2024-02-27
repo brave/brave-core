@@ -24,8 +24,8 @@ class SubscriptionRenderFrameObserverBrowserTest :
   SubscriptionRenderFrameObserverBrowserTest() {
     scoped_feature_list_.InitWithFeatures(
         {skus::features::kSkusFeature, brave_vpn::features::kBraveVPN,
-            ai_chat::features::kAIChatHistory
-        }, {});
+         ai_chat::features::kAIChat},
+        {});
   }
   ~SubscriptionRenderFrameObserverBrowserTest() override = default;
 
@@ -46,7 +46,7 @@ TEST_F(SubscriptionRenderFrameObserverBrowserTest, IsAllowed) {
   // Leo
   LoadHTMLWithUrlOverride(
       R"(<html><body></body></html>)",
-      "https://account.brave.com/?intent=connect-receipt&product=leo");
+      "https://account.brave.com/?intent=link-order&product=leo");
 
   EXPECT_TRUE(observer.IsAllowed());
   // http

@@ -1,11 +1,11 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Shared
-import BraveCore
 
 public struct BraveCertificateUtils {
   /// Formats a hex string
@@ -37,7 +37,7 @@ public struct BraveCertificateUtils {
   }
 }
 
-public extension BraveCertificateUtils {
+extension BraveCertificateUtils {
   private enum OIDConversionError: String, Error {
     case tooLarge
     case invalidRootArc
@@ -47,7 +47,7 @@ public extension BraveCertificateUtils {
   }
 
   /// Converts an ASN1 dot notation OID String to its Binary equivalent
-  static func absolute_oid_to_oid(oid: String) throws -> [UInt8] {
+  public static func absoluteOIDToOID(oid: String) throws -> [UInt8] {
     var list = [UInt64]()
     for value in oid.split(separator: ".") {
       if let result = UInt64(value, radix: 10) {
@@ -58,7 +58,7 @@ public extension BraveCertificateUtils {
       }
     }
 
-    let encode_octet_as_septet = { (octet: UInt64) -> [UInt8] in
+    let encodeOctetAsSeptet = { (octet: UInt64) -> [UInt8] in
       var octet = octet
       var encoded = [UInt8]()
       var value = UInt64(0x00)
@@ -82,9 +82,9 @@ public extension BraveCertificateUtils {
       throw OIDConversionError.invalidRootArc
     }
 
-    var result = encode_octet_as_septet(list[0] * 40 + list[1])
+    var result = encodeOctetAsSeptet(list[0] * 40 + list[1])
     for i in 2..<list.count {
-      result.append(contentsOf: encode_octet_as_septet(list[i]))
+      result.append(contentsOf: encodeOctetAsSeptet(list[i]))
     }
 
     result.insert(UInt8(result.count), at: 0)
@@ -93,7 +93,7 @@ public extension BraveCertificateUtils {
   }
 
   /// Converts a Binary OID to its ASN1 dot notation equivalent
-  static func oid_to_absolute_oid(oid: [UInt8]) throws -> String {
+  public static func oidToAbsoluteOID(oid: [UInt8]) throws -> String {
     // Invalid BER encoding
     if oid.count < 2 {
       throw OIDConversionError.invalidBEREncoding
@@ -120,22 +120,22 @@ public extension BraveCertificateUtils {
     #endif
 
     // Drop first 2 octets as it isn't needed for the calculation
-    var X = UInt32(oid[2]) / 40
-    let Y = UInt32(oid[2]) % 40
+    var x = UInt32(oid[2]) / 40
+    let y = UInt32(oid[2]) % 40
     var sub = UInt64(0)
 
-    var dot_notation = String()
-    if X > 2 {
-      X = 2
+    var dotNotation = String()
+    if x > 2 {
+      x = 2
 
-      dot_notation = "\(X)"
+      dotNotation = "\(x)"
       if (UInt32(oid[2]) & 0x80) != 0x00 {
         sub = 80
       } else {
-        dot_notation = ".\(Y + ((X - 2) * 40))"
+        dotNotation = ".\(y + ((x - 2) * 40))"
       }
     } else {
-      dot_notation = "\(X).\(Y)"
+      dotNotation = "\(x).\(y)"
     }
 
     // Drop first 2 octets as it isn't needed for the calculation
@@ -144,28 +144,28 @@ public extension BraveCertificateUtils {
     for i in (sub != 0 ? 2 : 3)..<oid.count {
       value = (value << 7) | (UInt64(oid[i]) & 0x7F)
       if (UInt64(oid[i]) & 0x80) != 0x80 {
-        dot_notation += ".\(value - sub)"
+        dotNotation += ".\(value - sub)"
         sub = 0
         value = 0
       }
     }
-    return dot_notation
+    return dotNotation
   }
 
   /// Convenience function to convert an ASN1 dot notation OID string to Data (binary)
-  static func absolute_oid_to_oid(oid: String) -> Data {
+  public static func absoluteOIDToOID(oid: String) -> Data {
     do {
-      let absolute_oid: [UInt8] = try absolute_oid_to_oid(oid: oid)
-      return Data(bytes: absolute_oid, count: absolute_oid.count)
+      let absoluteOID: [UInt8] = try absoluteOIDToOID(oid: oid)
+      return Data(bytes: absoluteOID, count: absoluteOID.count)
     } catch {
       return Data()
     }
   }
 
   /// Convenience function to convert a Binary OID (Data) to its ASN1 dot notation equivalent
-  static func oid_to_absolute_oid(oid: Data) -> String {
+  public static func oidToAbsoluteOID(oid: Data) -> String {
     do {
-      return try oid_to_absolute_oid(oid: oid.getBytes())
+      return try oidToAbsoluteOID(oid: oid.getBytes())
     } catch {
       return String()
     }
@@ -176,7 +176,7 @@ public enum BraveCertificateUtilError: LocalizedError {
   case noCertificatesProvided
   case cannotCreateServerTrust
   case trustEvaluationFailed
-  
+
   public var errorDescription: String? {
     switch self {
     case .noCertificatesProvided:
@@ -189,33 +189,44 @@ public enum BraveCertificateUtilError: LocalizedError {
   }
 }
 
-public extension BraveCertificateUtils {
-  private static let evaluationQueue = DispatchQueue(label: "com.brave.cert-utils-evaluation-queue", qos: .userInitiated)
-  
-  static func createServerTrust(_ certificates: [SecCertificate], for host: String?) throws -> SecTrust {
+extension BraveCertificateUtils {
+  private static let evaluationQueue = DispatchQueue(
+    label: "com.brave.cert-utils-evaluation-queue",
+    qos: .userInitiated
+  )
+
+  public static func createServerTrust(
+    _ certificates: [SecCertificate],
+    for host: String?
+  ) throws -> SecTrust {
     if certificates.isEmpty {
       throw BraveCertificateUtilError.noCertificatesProvided
     }
-    
+
     var serverTrust: SecTrust?
     let policies = [
       SecPolicyCreateBasicX509(),
       SecPolicyCreateSSL(true, host as CFString?),
     ]
-    
-    let status = SecTrustCreateWithCertificates(certificates as AnyObject,
-                                                policies as AnyObject,
-                                                &serverTrust)
+
+    let status = SecTrustCreateWithCertificates(
+      certificates as AnyObject,
+      policies as AnyObject,
+      &serverTrust
+    )
     guard status == errSecSuccess else {
       throw BraveCertificateUtilError.cannotCreateServerTrust
     }
     return serverTrust!
   }
-  
-  static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
+
+  public static func evaluateTrust(_ trust: SecTrust, for host: String?) async throws {
     try await withCheckedThrowingContinuation { (continuation: CheckedContinuation<Void, Error>) in
       BraveCertificateUtils.evaluationQueue.async {
-        SecTrustEvaluateAsyncWithError(trust, BraveCertificateUtils.evaluationQueue) { _, isTrusted, error in
+        SecTrustEvaluateAsyncWithError(trust, BraveCertificateUtils.evaluationQueue) {
+          _,
+          isTrusted,
+          error in
           if !isTrusted {
             if let error = error {
               continuation.resume(throwing: error as Error)
@@ -229,8 +240,8 @@ public extension BraveCertificateUtils {
       }
     }
   }
-  
-  static func verifyTrust(_ trust: SecTrust, host: String, port: Int) async -> Int {
+
+  public static func verifyTrust(_ trust: SecTrust, host: String, port: Int) async -> Int {
     return Int(BraveCertificateUtility.verifyTrust(trust, host: host, port: port))
   }
 }

@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import AVKit
 import Data
 import Favicon
+import Foundation
+import UIKit
 
 class VideoPlayerInfoBar: UIView {
   private let controlStackView = UIStackView().then {
@@ -20,11 +20,19 @@ class VideoPlayerInfoBar: UIView {
   }
 
   private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterialDark)).then {
-    $0.contentView.backgroundColor = #colorLiteral(red: 0.231372549, green: 0.2431372549, blue: 0.3098039216, alpha: 0.8)
+    $0.contentView.backgroundColor = #colorLiteral(
+      red: 0.231372549,
+      green: 0.2431372549,
+      blue: 0.3098039216,
+      alpha: 0.8
+    )
   }
 
   let sidePanelButton = UIButton().then {
-    $0.setImage(UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!, for: .normal)
+    $0.setImage(
+      UIImage(named: "playlist_split_navigation", in: .module, compatibleWith: nil)!,
+      for: .normal
+    )
     $0.contentEdgeInsets = .init(top: 8, left: 16, bottom: 8, right: 16)
   }
 
@@ -52,7 +60,10 @@ class VideoPlayerInfoBar: UIView {
 
   let fullscreenButton = UIButton().then {
     $0.imageView?.contentMode = .scaleAspectFit
-    $0.setImage(UIImage(named: "playlist_fullscreen", in: .module, compatibleWith: nil)!, for: .normal)
+    $0.setImage(
+      UIImage(named: "playlist_fullscreen", in: .module, compatibleWith: nil)!,
+      for: .normal
+    )
     $0.contentEdgeInsets = .init(equalInset: 8)
   }
 

@@ -704,7 +704,7 @@ const util = {
     if (options.all)
       args.push('--all')
     if (options.files)
-      args.push('--files', options.files)
+      args.push('--files', `"${options.files}"`)
     if (options.verbose) {
       args.push(...Array(options.verbose).fill('--verbose'))
     }
@@ -735,8 +735,6 @@ const util = {
       args.push('--no-rust-fmt')
     if (options.swift)
       args.push('--swift-format')
-    else
-      args.push('--no-swift-format')
     util.run(cmd, args, cmd_options)
   },
 

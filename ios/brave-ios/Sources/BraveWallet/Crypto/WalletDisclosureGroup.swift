@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -10,7 +10,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
   @Binding var isExpanded: Bool
   @ViewBuilder var content: () -> Content
   @ViewBuilder var label: () -> Label
-  
+
   private var header: some View {
     HStack {
       label()
@@ -38,7 +38,7 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
       isExpanded.toggle()
     }
   }
-  
+
   var body: some View {
     VStack(spacing: 4) {
       header

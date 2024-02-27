@@ -81,8 +81,9 @@ pub struct Meta {
     pub title: String,
     pub author: Option<String>,
     pub description: Option<String>,
-    pub charset: Option<String>,
+    pub charset: Option<Handle>,
     pub last_modified: Option<OffsetDateTime>,
+    pub preserved_meta: Vec<Handle>,
 }
 
 impl Meta {
@@ -102,6 +103,7 @@ impl Meta {
         };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
+        self.preserved_meta.extend(other.preserved_meta);
         self
     }
 }
@@ -186,18 +188,10 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     _ => (),
                 }
             }
-        } else if let Some(charset) = attribute.get(local_name!("charset")) {
-            meta_tags.charset = Some(charset.to_string());
-        } else if attribute
-            .get(local_name!("http-equiv"))
-            .map(|e| e.to_ascii_lowercase() == "content-type")
-            .unwrap_or(false)
-        {
-            if let Some(content) = attribute.get(local_name!("content")) {
-                if let Some(charset) = content.split("charset=").nth(1) {
-                    meta_tags.charset = Some(charset.trim().to_string());
-                }
-            }
+        } else if attribute.get(local_name!("charset")).is_some() {
+            meta_tags.charset = Some(node.clone());
+        } else if attribute.get(local_name!("http-equiv")).is_some() {
+            meta_tags.preserved_meta.push(node.clone());
         }
     }
 
@@ -285,17 +279,36 @@ pub fn extract_dom(
 
             // Our CSS formats based on id="article".
             dom::set_attr("id", "article", body.clone(), true);
+            dom::set_attr("hidden", "true", body.clone(), true);
             body.to_string()
         }
         _ => top_candidate.to_string(),
     };
 
+    if !meta.preserved_meta.is_empty() {
+        let mut meta_equiv = String::default();
+
+        for node in meta.preserved_meta.iter() {
+            meta_equiv += &node.to_string();
+        }
+        content = meta_equiv + &content;
+    }
+
+    if let Some(head) = dom::document_head(&dom) {
+        let mut base_content = String::default();
+
+        let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
+        for base in base_nodes {
+            base_content += &base.to_string();
+        }
+        content = base_content + &content;
+    }
+
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
         // was provided. Otherwise the browser will use the default encoding,
         // and surprisingly it's not utf-8 ;)
-        let charset_blob = format!("<meta charset=\"{}\"/>", charset);
-        content = charset_blob + &content;
+        content = charset.to_string() + &content;
     }
     if !meta.title.is_empty() {
         let title_blob = format!("<title>{}</title>", &meta.title);
@@ -305,18 +318,18 @@ pub fn extract_dom(
     if theme.is_some() || font_family.is_some() || font_size.is_some() || column_width.is_some() {
         let mut header: String = String::from("<html");
         if let Some(theme) = theme {
-            header = [header, format!(" data-theme=\"{}\"", theme)].concat();
+            header += &format!(" data-theme=\"{}\"", theme);
         }
         if let Some(font_family) = font_family {
-            header = [header, format!(" data-font-family=\"{}\"", font_family)].concat();
+            header += &format!(" data-font-family=\"{}\"", font_family);
         }
         if let Some(font_size) = font_size {
-            header = [header, format!(" data-font-size=\"{}\"", font_size)].concat();
+            header += &format!(" data-font-size=\"{}\"", font_size);
         }
         if let Some(column_width) = column_width {
-            header = [header, format!(" data-column-width=\"{}\"", column_width)].concat();
+            header += &format!(" data-column-width=\"{}\"", column_width);
         }
-        content = [header, ">".to_string(), content, "</html>".to_string()].concat();
+        content = header + ">" + &content + "</html>";
     }
 
     Ok(Product { meta, content })

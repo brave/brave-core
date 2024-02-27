@@ -1,10 +1,10 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Shared
 
 public protocol ProviderDisplayString {
@@ -45,7 +45,10 @@ extension BraveCore.BraveRewards.PublisherInfo {
   /// is bolded. (i.e. "**X** on GitHub")
   func attributedDisplayName(fontSize: CGFloat) -> NSAttributedString {
     if provider.isEmpty || name.isEmpty {
-      return NSAttributedString(string: id, attributes: [.font: UIFont.systemFont(ofSize: fontSize)])
+      return NSAttributedString(
+        string: id,
+        attributes: [.font: UIFont.systemFont(ofSize: fontSize)]
+      )
     }
     let string = NSMutableAttributedString(
       string: "\(name) \(String(format: Strings.Rewards.onProviderText, providerDisplayString))",
@@ -53,7 +56,11 @@ extension BraveCore.BraveRewards.PublisherInfo {
     )
     let range = NSRange(name.startIndex..<name.endIndex, in: name)
     if range.length > 0 {
-      string.addAttribute(.font, value: UIFont.systemFont(ofSize: fontSize, weight: .semibold), range: range)
+      string.addAttribute(
+        .font,
+        value: UIFont.systemFont(ofSize: fontSize, weight: .semibold),
+        range: range
+      )
     }
     return string
   }

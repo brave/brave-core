@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -45,7 +45,12 @@ public protocol ImageCacheProtocol {
   /// - parameter progress: An ImageCacheProgress block called while the image is downloading.
   /// - parameter completion: An ImageCacheCompletion block called when the operation has completed.
   /// - returns: ReturnAssociatedType customized using typealias.
-  @discardableResult func load(from url: URL, options: ImageCacheOptions, progress: ImageCacheProgress, completion: ImageCacheCompletion) -> ReturnAssociatedType?
+  @discardableResult func load(
+    from url: URL,
+    options: ImageCacheOptions,
+    progress: ImageCacheProgress,
+    completion: ImageCacheCompletion
+  ) -> ReturnAssociatedType?
 
   /// Returns whether the image at the given URL is cached in memory or not.
   ///

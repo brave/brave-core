@@ -33,8 +33,8 @@ deps = {
       'condition': 'checkout_android',
       'dep_type': 'cipd',
   },
-  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@c043566e2ff6133d110cf516ed472451039139e2",
-  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@a1da4641734adc8312215b38a8221962d2c8e045",
+  "third_party/playlist_component/src": "https://github.com/brave/playlist-component.git@565d3ef2b31d8c7eb0d19b5d046f56b1d9e1fe01",
+  "third_party/rust/challenge_bypass_ristretto/v1/crate": "https://github.com/brave-intl/challenge-bypass-ristretto.git@48910ab1e0c6a52cd757abdc234aa4d6db214c09",
   "third_party/rust/futures_retry/v0_5/crate": "https://github.com/brave-intl/futures-retry.git@2aaaafbc3d394661534d4dbd14159d164243c20e",
   "third_party/macholib": {
     "url": "https://github.com/ronaldoussoren/macholib.git@36a6777ccd0891c5d1b44ba885573d7c90740015",
@@ -56,7 +56,7 @@ hooks = [
     'name': 'bootstrap_ios',
     'pattern': '.',
     'condition': 'checkout_ios and host_os == "mac"',
-    'action': ['vpython3', 'script/ios_bootstrap.py']
+    'action': ['python3', 'script/ios_bootstrap.py']
   },
   {
     # Download hermetic xcode for goma
@@ -131,6 +131,13 @@ hooks = [
                '--output', '../build/util/LASTCHANGE',
                '--source-dir', '.',
                '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
+  },
+  {
+    # Downloads & overwrites Chromium's swift-format dep on macOS only
+    'name': 'download_swift_format',
+    'pattern': '.',
+    'condition': 'host_os == "mac"',
+    'action': ['python3', 'build/apple/download_swift_format.py', '509.0.0', '78daf8c0fb407f0de79a6ee042f9d92e634f876dbb6da366735752d1c1e696f7']
   },
 ]
 

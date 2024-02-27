@@ -41,22 +41,6 @@ size_t BindParameters(mojom::DBCommandInfo* command,
   return count;
 }
 
-void MigrateToV29(mojom::DBTransactionInfo* transaction) {
-  CHECK(transaction);
-
-  DropTable(transaction, "dayparts");
-
-  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
-  command->type = mojom::DBCommandInfo::Type::EXECUTE;
-  command->sql =
-      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, days_of_week TEXT NOT "
-      "NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, PRIMARY KEY "
-      "(campaign_id, days_of_week, start_minute, end_minute), "
-      "UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT "
-      "REPLACE);";
-  transaction->commands.push_back(std::move(command));
-}
-
 }  // namespace
 
 void Dayparts::InsertOrUpdate(mojom::DBTransactionInfo* transaction,
@@ -91,11 +75,19 @@ void Dayparts::Create(mojom::DBTransactionInfo* transaction) {
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
   command->type = mojom::DBCommandInfo::Type::EXECUTE;
   command->sql =
-      "CREATE TABLE dayparts (campaign_id TEXT NOT NULL, days_of_week TEXT NOT "
-      "NULL, start_minute INT NOT NULL, end_minute INT NOT NULL, PRIMARY KEY "
-      "(campaign_id, days_of_week, start_minute, end_minute), "
-      "UNIQUE(campaign_id, days_of_week, start_minute, end_minute) ON CONFLICT "
-      "REPLACE);";
+      R"(
+          CREATE TABLE dayparts (
+            campaign_id TEXT NOT NULL,
+            days_of_week TEXT NOT NULL,
+            start_minute INT NOT NULL,
+            end_minute INT NOT NULL,
+            PRIMARY KEY (
+              campaign_id,
+              days_of_week,
+              start_minute,
+              end_minute
+            ) ON CONFLICT REPLACE
+          );)";
   transaction->commands.push_back(std::move(command));
 }
 
@@ -104,14 +96,23 @@ void Dayparts::Migrate(mojom::DBTransactionInfo* transaction,
   CHECK(transaction);
 
   switch (to_version) {
-    case 29: {
-      MigrateToV29(transaction);
+    case 35: {
+      MigrateToV35(transaction);
       break;
     }
   }
 }
 
 ///////////////////////////////////////////////////////////////////////////////
+
+void Dayparts::MigrateToV35(mojom::DBTransactionInfo* transaction) {
+  CHECK(transaction);
+
+  // We can safely recreate the table because it will be repopulated after
+  // downloading the catalog.
+  DropTable(transaction, GetTableName());
+  Create(transaction);
+}
 
 std::string Dayparts::BuildInsertOrUpdateSql(
     mojom::DBCommandInfo* command,
@@ -121,8 +122,13 @@ std::string Dayparts::BuildInsertOrUpdateSql(
   const size_t binded_parameters_count = BindParameters(command, creative_ads);
 
   return base::ReplaceStringPlaceholders(
-      "INSERT OR REPLACE INTO $1 (campaign_id, days_of_week, start_minute, "
-      "end_minute) VALUES $2;",
+      R"(
+          INSERT INTO $1 (
+            campaign_id,
+            days_of_week,
+            start_minute,
+            end_minute
+          ) VALUES $2;)",
       {GetTableName(), BuildBindingParameterPlaceholders(
                            /*parameters_count=*/4, binded_parameters_count)},
       nullptr);

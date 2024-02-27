@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import Shared
 
 extension URL {
@@ -23,14 +23,15 @@ extension URL {
   public var origin: URLOrigin {
     .init(url: self)
   }
-  
+
   /// Obtains a clean stripped url from the current Internal URL
   ///
   /// Returns the original url without  internal parameters
   public var stippedInternalURL: URL? {
     if InternalURL.isValid(url: self),
-       let internalURL = InternalURL(self) {
-      
+      let internalURL = InternalURL(self)
+    {
+
       switch internalURL.urlType {
       case .errorPage:
         return internalURL.originalURLFromErrorPage
@@ -40,13 +41,13 @@ extension URL {
         return nil
       }
     }
-    
+
     return nil
   }
 }
 
 extension InternalURL {
-  
+
   enum URLType {
     case blockedPage
     case sessionRestorePage
@@ -56,32 +57,32 @@ extension InternalURL {
     case web3Page
     case other
   }
-  
+
   var urlType: URLType {
     if isBlockedPage {
       return .blockedPage
     }
-    
+
     if isErrorPage {
       return .errorPage
     }
-    
+
     if isWeb3URL {
       return .web3Page
     }
-    
+
     if isReaderModePage {
       return .readerModePage
     }
-    
+
     if isSessionRestore {
       return .sessionRestorePage
     }
-    
+
     if isAboutHomeURL {
       return .aboutHomePage
     }
-    
+
     return .other
   }
 }

@@ -1,10 +1,10 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 struct ContainerShape: InsettableShape {
   enum Shape {
@@ -12,11 +12,11 @@ struct ContainerShape: InsettableShape {
   }
   let shape: Shape
   var inset: CGFloat = 0
-  
+
   func inset(by amount: CGFloat) -> some InsettableShape {
     ContainerShape(shape: shape, inset: amount)
   }
-  
+
   func path(in rect: CGRect) -> Path {
     let rect = rect.insetBy(dx: inset, dy: inset)
     switch shape {
@@ -35,9 +35,9 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
   @ScaledMetric var iconSize = 16.0
   var maxIconSize: CGFloat = 32
   @ScaledMetric var iconDotSize = 2.0
-  
+
   @ViewBuilder var iconView: (Model) -> IconView
-  
+
   var body: some View {
     HStack(spacing: -(min(iconSize, maxIconSize) / 2)) {
       let numberOfIcons = min(maxIcons, models.count)
@@ -69,14 +69,14 @@ struct MultipleCircleIconView<IconView: View, Model>: View {
               ContainerRelativeShape()
                 .frame(width: iconDotSize, height: iconDotSize)
             }
-              .foregroundColor(.white)
-              .containerShape(ContainerShape(shape: shape))
+            .foregroundColor(.white)
+            .containerShape(ContainerShape(shape: shape))
           )
         }
       }
     }
   }
-  
+
   /// Creates the ContainerRelativeShape with `content` overlayed, inset to show a border.
   private func buildShapeBorder(content: () -> some View) -> some View {
     Color(.secondaryBraveGroupedBackground)

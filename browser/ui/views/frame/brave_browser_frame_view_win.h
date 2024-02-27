@@ -28,6 +28,7 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
+  int FrameTopBorderThickness(bool restored) const override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 

@@ -36,9 +36,6 @@
   <message name="IDS_CHAT_UI_SUMMARIZE_PAGE" desc="Button to summarize the article on the current page">
     Summarize this page
   </message>
-  <message name="IDS_CHAT_UI_SUMMARIZE_SELECTED_TEXT" desc="Text for summarizing selected text">
-    Summarize this excerpt
-  </message>
   <message name="IDS_CHAT_UI_PAGE_CONTENT_WARNING" desc="Description about page content being sent to a remote LLM">
      Disconnect to stop sending this page content to Leo, and start a new conversation
   </message>
@@ -263,5 +260,74 @@
   </message>
   <message name="IDS_CHAT_UI_SUBSCRIPTION_POLICY_INFO" desc="An info text that is shown below various subcription prices">
     All subscriptions are auto-renewed but can be cancelled at any time before renewal.
+  </message>
+  <message name="IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL" desc="A checkbox label to opt-in or out for sending current tab's url">
+    Share the hostname of the page you are on (<ph name="HOST_NAME">$1<ex>www.example.com</ex></ph>) to help us make Leo better.
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
+    Leo tools
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS" desc="The title of the context menu section for AI quick actions">
+    Quick actions
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE" desc="The title of the context menu section for AI creation tools">
+    Create
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_REWRITE" desc="The title of the context menu section for AI rewrite tools">
+    Rewrite
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
+    Summarize
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" desc="The text label of context menu item to create a short social media post using selected text">
+    Short
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG" desc="The text label of context menu item to create a long social media post using selected text">
+    Long
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE_BLOG_POST" desc="The text label of context menu item to create a blog post using selected text">
+    Blog post
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE_TAGLINE" desc="The text label of context menu item to create a tagline using selected text">
+    Tagline
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_PARAPHRASE" desc="The text label of context menu item to paraphrase selected text">
+    Paraphrase
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_EXPLAIN" desc="The text label of context menu item to explain selected text">
+    Explain
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_IMPROVE" desc="The text label of context menu item to improve selected text">
+    Improve
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_SIMPLIFY" desc="The text label of context menu item to simplify selected text">
+    Simplify
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CHANGE_TONE" desc="The text label of submenu for changing the tone of selected text">
+    Change tone
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE" desc="The text label of context menu item to professionalize selected text">
+    Professional
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_ACADEMICIZE" desc="The text label of context menu item to academicize selected text">
+    Academic
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CASUALIZE" desc="The text label of context menu item to casualize selected text">
+    Casual
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_FUNNY_TONE" desc="The text label of context menu item to rewrite the selected text in a funny tone">
+    Funny
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_SHORTEN" desc="The text label of context menu item to shorten selected text">
+    Shorten
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_EXPAND" desc="The text label of context menu item to expand selected text">
+    Expand
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH" desc="The text label of submenu for changing the length of selected text">
+    Change length
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
+    Social media post
   </message>
 </grit-part>

@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SnapKit
-import Shared
-import Preferences
 import Combine
+import Preferences
+import Shared
+import SnapKit
+import UIKit
 
 protocol ReaderModeBarViewDelegate: AnyObject {
   func readerModeSettingsTapped(_ view: UIView)
@@ -25,7 +25,7 @@ class ReaderModeBarView: UIView {
     $0.setImage(UIImage(braveSystemNamed: "leo.tune"), for: .normal)
     $0.accessibilityIdentifier = "ReaderModeBarView.settingsButton"
   }
-  
+
   private var privateBrowsingManager: PrivateBrowsingManager
 
   private var cancellables: Set<AnyCancellable> = []
@@ -35,12 +35,12 @@ class ReaderModeBarView: UIView {
     settingsButton.tintColor = browserColors.iconDefault
     readerModeButton.setTitleColor(browserColors.textPrimary, for: .normal)
   }
-  
+
   init(privateBrowsingManager: PrivateBrowsingManager) {
     self.privateBrowsingManager = privateBrowsingManager
-    
+
     super.init(frame: .zero)
-    
+
     addSubview(readerModeButton)
     readerModeButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
     readerModeButton.snp.makeConstraints {
@@ -60,7 +60,7 @@ class ReaderModeBarView: UIView {
       $0.trailing.equalToSuperview().inset(16)
       $0.centerY.equalToSuperview()
     }
-    
+
     privateBrowsingManager
       .$isPrivateBrowsing
       .removeDuplicates()
@@ -69,7 +69,7 @@ class ReaderModeBarView: UIView {
         self?.updateColors()
       })
       .store(in: &cancellables)
-    
+
     updateColors()
   }
 

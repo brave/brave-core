@@ -1,13 +1,13 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Preferences
 import BraveCore
-import Strings
 import BraveUI
+import Preferences
+import Strings
+import SwiftUI
 
 struct CustomNetworkListView: View {
   @ObservedObject var networkStore: NetworkStore
@@ -27,16 +27,16 @@ struct CustomNetworkListView: View {
   private func removeNetwork(_ network: BraveWallet.NetworkInfo) {
     networkStore.removeCustomNetwork(network) { _ in }
   }
-  
+
   private var customNetworks: [BraveWallet.NetworkInfo] {
     networkStore.customChains
   }
-  
+
   @ViewBuilder private var customNetworksList: some View {
     ForEach(customNetworks) { network in
-      Button(action: {
+      Button {
         isPresentingNetworkDetails = .init(from: network)
-      }) {
+      } label: {
         HStack {
           VStack(alignment: .leading, spacing: 2) {
             Text(network.chainName)
@@ -46,14 +46,18 @@ struct CustomNetworkListView: View {
               if sizeCategory.isAccessibilityCategory {
                 VStack(alignment: .leading) {
                   Text(network.id)
-                  if let rpcEndpoint = network.rpcEndpoints[safe: Int(network.activeRpcEndpointIndex)]?.absoluteString {
+                  if let rpcEndpoint = network.rpcEndpoints[
+                    safe: Int(network.activeRpcEndpointIndex)
+                  ]?.absoluteString {
                     Text(rpcEndpoint)
                   }
                 }
               } else {
                 HStack {
                   Text(network.id)
-                  if let rpcEndpoint = network.rpcEndpoints[safe: Int(network.activeRpcEndpointIndex)]?.absoluteString {
+                  if let rpcEndpoint = network.rpcEndpoints[
+                    safe: Int(network.activeRpcEndpointIndex)
+                  ]?.absoluteString {
                     Text(rpcEndpoint)
                   }
                 }
@@ -71,9 +75,9 @@ struct CustomNetworkListView: View {
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       .swipeActions(edge: .trailing) {
-        Button(role: .destructive, action: {
+        Button(role: .destructive) {
           removeNetwork(network)
-        }) {
+        } label: {
           Label(Strings.Wallet.delete, systemImage: "trash")
         }
       }
@@ -95,11 +99,11 @@ struct CustomNetworkListView: View {
           customNetworksList
         }
       }
-      
+
       Section {
         Toggle(Strings.Wallet.showTestNetworksTitle, isOn: $showTestNetworks.value)
           .foregroundColor(Color(.braveLabel))
-          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint))) 
+          .toggleStyle(SwitchToggleStyle(tint: Color(.braveBlurpleTint)))
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
     }
@@ -121,9 +125,9 @@ struct CustomNetworkListView: View {
     .navigationBarTitleDisplayMode(.inline)
     .toolbar {
       ToolbarItemGroup(placement: .confirmationAction) {
-        Button(action: {
+        Button {
           isPresentingNetworkDetails = .init()
-        }) {
+        } label: {
           Label(Strings.Wallet.addCustomNetworkBarItemTitle, systemImage: "plus")
             .foregroundColor(Color(.braveBlurpleTint))
         }

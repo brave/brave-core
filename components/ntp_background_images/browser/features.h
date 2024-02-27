@@ -19,15 +19,18 @@ BASE_DECLARE_FEATURE(kBraveNTPSuperReferralWallpaper);
 
 BASE_DECLARE_FEATURE(kBraveNTPBrandedWallpaper);
 
-// Show initial branded wallpaper after nth new tab page for fresh opens.
+// The branded wallpaper will initially be displayed on the nth new tab. The
+// minimum value is 1.
 inline constexpr base::FeatureParam<int> kInitialCountToBrandedWallpaper{
     &kBraveNTPBrandedWallpaper, "initial_count_to_branded_wallpaper", 2};
 
-// Show branded wallpaper every nth new tab page.
+// After the initial display, the branded wallpaper will be shown on every nth
+// new tab. The minimum value is 1.
 inline constexpr base::FeatureParam<int> kCountToBrandedWallpaper{
     &kBraveNTPBrandedWallpaper, "count_to_branded_wallpaper", 3};
 
-// Reset counter when a specific amount of time has elapsed in SI mode.
+// The counter that tracks the display of the branded wallpaper on nth tabs will
+// be reset after the specified duration has elapsed in SI mode.
 inline constexpr base::FeatureParam<base::TimeDelta> kResetCounterAfter{
     &kBraveNTPBrandedWallpaper, "reset_counter_after", base::Days(1)};
 

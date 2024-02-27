@@ -17,6 +17,7 @@ import {
 // utils
 import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
+import { createEmptyTokenBalancesRegistry } from './balance-utils'
 
 export const parseJSONFromLocalStorage = <T = any>(
   storageString: keyof typeof LOCAL_STORAGE_KEYS,
@@ -129,7 +130,7 @@ export const getPersistedPortfolioTokenBalances = (): TokenBalancesRegistry => {
     )
   } catch (error) {
     console.error(error)
-    return {}
+    return createEmptyTokenBalancesRegistry()
   }
 }
 

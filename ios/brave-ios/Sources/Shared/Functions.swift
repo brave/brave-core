@@ -1,8 +1,8 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-import SwiftyJSON
 import Foundation
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+import SwiftyJSON
 
 /**
  * Given an array, return an array of slices of size `by` (possibly excepting the last slice).
@@ -43,10 +43,9 @@ private class Callback {
   }
 }
 
-/**
- * Taken from http://stackoverflow.com/questions/27116684/how-can-i-debounce-a-method-call
- * Allows creating a block that will fire after a delay. Resets the timer if called again before the delay expires.
- **/
+/// Taken from http://stackoverflow.com/questions/27116684/how-can-i-debounce-a-method-call
+/// Allows creating a block that will fire after a delay. Resets the timer if called again before the delay expires.
+///  *
 public func debounce(_ delay: TimeInterval, action: @escaping () -> Void) -> () -> Void {
   let callback = Callback(handler: action)
   var timer: Timer?
@@ -56,7 +55,13 @@ public func debounce(_ delay: TimeInterval, action: @escaping () -> Void) -> () 
     if let timer = timer {
       timer.invalidate()
     }
-    timer = Timer(timeInterval: delay, target: callback, selector: #selector(Callback.go), userInfo: nil, repeats: false)
+    timer = Timer(
+      timeInterval: delay,
+      target: callback,
+      selector: #selector(Callback.go),
+      userInfo: nil,
+      repeats: false
+    )
     RunLoop.current.add(timer!, forMode: RunLoop.Mode.default)
   }
 }

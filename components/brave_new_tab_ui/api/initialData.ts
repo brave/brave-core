@@ -25,7 +25,6 @@ export type InitialData = {
 export type PreInitialRewardsData = {
   rewardsEnabled: boolean
   userType: string
-  isUnsupportedRegion: boolean
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   selfCustodyInviteDismissed: boolean
@@ -107,7 +106,6 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   const [
     rewardsEnabled,
     userType,
-    isUnsupportedRegion,
     declaredCountry,
     selfCustodyInviteDismissed,
     adsData
@@ -116,8 +114,6 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
       (resolve) => chrome.braveRewards.getRewardsEnabled(resolve)),
     new Promise<string>(
       (resolve) => chrome.braveRewards.getUserType(resolve)),
-    new Promise<boolean>(
-      (resolve) => chrome.braveRewards.isUnsupportedRegion(resolve)),
     new Promise<string>(
       (resolve) => chrome.braveRewards.getDeclaredCountry(resolve)),
     new Promise<boolean>(
@@ -130,7 +126,6 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
   return {
     rewardsEnabled,
     userType,
-    isUnsupportedRegion,
     declaredCountry,
     needsBrowserUpgradeToServeAds,
     selfCustodyInviteDismissed

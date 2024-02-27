@@ -1,19 +1,19 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
-public extension Array {
+extension Array {
 
   // Performs a union operator using the result of f(Element) as the value to base uniqueness on.
-  func union<T: Hashable>(_ arr: [Element], f: ((Element) -> T)) -> [Element] {
+  public func union<T: Hashable>(_ arr: [Element], f: ((Element) -> T)) -> [Element] {
     let result = self + arr
     return result.unique(f)
   }
 
   // Returns unique values in an array using the result of f()
-  func unique<T: Hashable>(_ f: ((Element) -> T)) -> [Element] {
+  public func unique<T: Hashable>(_ f: ((Element) -> T)) -> [Element] {
     var map: [T: Element] = [T: Element]()
     return self.compactMap { a in
       let t = f(a)
@@ -29,7 +29,7 @@ public extension Array {
   /// Splits an array into smaller arrays.
   /// For example `[1, 2, 3 ,4 ,5 ,6].splitEvery(3)`
   /// results in `[[1, 2, 3], [4, 5, 6]]`
-  func splitEvery(_ n: Int) -> [[Element]] {
+  public func splitEvery(_ n: Int) -> [[Element]] {
     if n <= 0 || isEmpty { return [] }
     if n >= count { return [self] }
 
@@ -37,17 +37,17 @@ public extension Array {
       Array(self[$0..<Swift.min($0 + n, self.count)])
     }
   }
-  
+
   /// Returns all elements up until a condition is no longer satisfied.
-  func contiguousUntil(condition: (Element) -> Bool) -> ArraySlice<Element> {
+  public func contiguousUntil(condition: (Element) -> Bool) -> ArraySlice<Element> {
     let index = firstIndex(where: { !condition($0) }) ?? self.count
     return self[0..<index]
   }
 }
 
-public extension Collection {
+extension Collection {
   /// Returns the element at the specified index iff it is within bounds, otherwise nil.
-  subscript(safe index: Index) -> Element? {
+  public subscript(safe index: Index) -> Element? {
     return indices.contains(index) ? self[index] : nil
   }
 }

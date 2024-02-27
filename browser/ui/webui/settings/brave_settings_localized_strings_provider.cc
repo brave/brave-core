@@ -11,7 +11,7 @@
 #include "brave/browser/ui/webui/brave_settings_ui.h"
 #include "brave/browser/ui/webui/settings/brave_privacy_handler.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/constants/url_constants.h"
@@ -210,8 +210,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
       {"vpnPageTitle", IDS_SETTINGS_VPN_PAGE_TITLE},
       {"useWireguardLabel", IDS_SETTINGS_VPN_PAGE_USE_WIREGUARD_TITLE},
       {"sublabelVpnConnected", IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_CONNECTED},
-      {"sublabelVpnDisconnected",
-       IDS_SETTINGS_VPN_PAGE_SUBLABEL_VPN_DISCONNECTED},
 #endif
 #if BUILDFLAG(IS_MAC)
       {"showToolbarInFullScreen", IDS_SHOW_TOOLBAR_IN_FULL_SCREEN},

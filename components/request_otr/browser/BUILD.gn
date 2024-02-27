@@ -34,7 +34,7 @@ source_set("browser") {
   deps += [
     "//base",
     "//brave/components/brave_component_updater/browser",
-    "//brave/components/brave_shields/browser:browser",
+    "//brave/components/brave_shields/content/browser",
     "//brave/components/l10n/common:common",
     "//brave/components/p3a_utils",
     "//brave/components/request_otr/common:common",

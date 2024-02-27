@@ -1,26 +1,25 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-
-@testable import Brave
-import UIKit
-import Shared
 import BraveCore
-
+import Shared
+import UIKit
 import XCTest
 
+@testable import Brave
+
 @MainActor class URLFormatTests: XCTestCase {
-  
+
   // Only init once
   private static let icuInitialized = BraveCoreMain.initializeICUForTesting()
-  
+
   override func setUp() {
     super.setUp()
     assert(Self.icuInitialized, "ICU should load for test")
   }
-  
+
   func testURIFixup() {
     // Check valid URLs. We can load these after some fixup.
     checkValidURL("about:", afterFixup: "about:")
@@ -31,28 +30,43 @@ import XCTest
     checkValidURL("ftp://ftp.mozilla.org", afterFixup: "ftp://ftp.mozilla.org/")
     checkValidURL("foo.bar", afterFixup: "http://foo.bar/")
     checkValidURL(" foo.bar ", afterFixup: "http://foo.bar/")
-    checkValidURL("itms-apps://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itms-apps://apps.apple.com/app/pulse-secure/id945832041")
-      checkValidURL("itms-appss://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itms-appss://apps.apple.com/app/pulse-secure/id945832041")
-      checkValidURL("itmss://apps.apple.com/app/pulse-secure/id945832041", afterFixup: "itmss://apps.apple.com/app/pulse-secure/id945832041")
+    checkValidURL(
+      "itms-apps://apps.apple.com/app/pulse-secure/id945832041",
+      afterFixup: "itms-apps://apps.apple.com/app/pulse-secure/id945832041"
+    )
+    checkValidURL(
+      "itms-appss://apps.apple.com/app/pulse-secure/id945832041",
+      afterFixup: "itms-appss://apps.apple.com/app/pulse-secure/id945832041"
+    )
+    checkValidURL(
+      "itmss://apps.apple.com/app/pulse-secure/id945832041",
+      afterFixup: "itmss://apps.apple.com/app/pulse-secure/id945832041"
+    )
 
     checkValidURL("[::1]:80", afterFixup: "http://[::1]/")
     checkValidURL("[2a04:4e42:400::288]", afterFixup: "http://[2a04:4e42:400::288]/")
     checkValidURL("[2a04:4e42:600::288]:80", afterFixup: "http://[2a04:4e42:600::288]/")
-    checkValidURL("[2605:2700:0:3::4713:93e3]:443", afterFixup: "http://[2605:2700:0:3::4713:93e3]:443/")
+    checkValidURL(
+      "[2605:2700:0:3::4713:93e3]:443",
+      afterFixup: "http://[2605:2700:0:3::4713:93e3]:443/"
+    )
     checkValidURL("[::192.9.5.5]", afterFixup: "http://[::c009:505]/")
     checkValidURL("[::192.9.5.5]:80", afterFixup: "http://[::c009:505]/")
     checkValidURL("[::192.9.5.5]/png", afterFixup: "http://[::c009:505]/png")
     checkValidURL("[::192.9.5.5]:80/png", afterFixup: "http://[::c009:505]/png")
     checkValidURL("192.168.2.1", afterFixup: "http://192.168.2.1/")
-    
+
     checkValidURL("http://www.brave.com", afterFixup: "http://www.brave.com/")
     checkValidURL("https://www.wikipedia.org", afterFixup: "https://www.wikipedia.org/")
     checkValidURL("brave.io", afterFixup: "http://brave.io/")
     checkValidURL("brave.new.world", afterFixup: "http://brave.new.world/")
     checkValidURL("brave.new.world.test", afterFixup: "http://brave.new.world.test/")
     checkValidURL("brave.new.world.test.io", afterFixup: "http://brave.new.world.test.io/")
-    checkValidURL("brave.new.world.test.whatever.io", afterFixup: "http://brave.new.world.test.whatever.io/")
-    
+    checkValidURL(
+      "brave.new.world.test.whatever.io",
+      afterFixup: "http://brave.new.world.test.whatever.io/"
+    )
+
     checkValidURL("http://2130706433:8000/", afterFixup: "http://127.0.0.1:8000/")
     checkValidURL("http://127.0.0.1:8080", afterFixup: "http://127.0.0.1:8080/")
     checkValidURL("http://127.0.1", afterFixup: "http://127.0.0.1/")
@@ -61,12 +75,12 @@ import XCTest
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
     checkValidURL("http://1.1:80", afterFixup: "http://1.0.0.1/")
-    
+
     // Check invalid URLs. These are passed along to the default search engine.
     checkInvalidURL("user@domain.com")
     checkInvalidURL("user@domain.com/whatever")
     checkInvalidURL("user@domain.com?something=whatever")
-    
+
     checkInvalidURL("foobar")
     checkInvalidURL("foo bar")
     checkInvalidURL("brave. org")
@@ -81,7 +95,7 @@ import XCTest
     checkInvalidURL("1.1")
     checkInvalidURL("127.1")
     checkInvalidURL("127.1.1")
-    
+
     // Check invalid quoted URLs, emails, and quoted domains.
     // These are passed along to the default search engine.
     checkInvalidURL(#""123"#)
@@ -99,7 +113,7 @@ import XCTest
     checkInvalidURL("http://::192.9.5.5")
     checkInvalidURL("http://::192.9.5.5:8080")
   }
-  
+
   func testURIFixupPunyCode() {
     checkValidURL("https://日本語.jp", afterFixup: "https://xn--wgv71a119e.jp/")
     checkValidURL("http://anlaşırız.net", afterFixup: "http://xn--anlarz-s9ab52b.net/")
@@ -115,28 +129,59 @@ import XCTest
     checkValidURL("http://аpple.com", afterFixup: "http://xn--pple-43d.com/")
     checkValidURL("http://ebаy.com/", afterFixup: "http://xn--eby-7cd.com/")
     checkValidURL("https://biṇaṇce.com", afterFixup: "https://xn--biace-4l1bb.com/")
-    
-    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://biṇaṇce.com", schemeDisplay: .show), "https://xn--biace-4l1bb.com")
-    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дом.рф", schemeDisplay: .show), "https://дом.рф")
-    XCTAssertEqual(URLFormatter.formatURL("https://дом.рф", formatTypes: .omitDefaults, unescapeOptions: []), "https://дом.рф")
-    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дoм.рф", schemeDisplay: .show), "https://xn--o-gtbz.рф")
-    XCTAssertEqual(URLFormatter.formatURL("https://дoм.рф", formatTypes: .omitDefaults, unescapeOptions: []), "https://xn--o-gtbz.рф")
+
+    XCTAssertEqual(
+      URLFormatter.formatURLOrigin(forSecurityDisplay: "https://biṇaṇce.com", schemeDisplay: .show),
+      "https://xn--biace-4l1bb.com"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дом.рф", schemeDisplay: .show),
+      "https://дом.рф"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURL("https://дом.рф", formatTypes: .omitDefaults, unescapeOptions: []),
+      "https://дом.рф"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURLOrigin(forSecurityDisplay: "https://дoм.рф", schemeDisplay: .show),
+      "https://xn--o-gtbz.рф"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURL("https://дoм.рф", formatTypes: .omitDefaults, unescapeOptions: []),
+      "https://xn--o-gtbz.рф"
+    )
   }
-  
+
   func testURLStringDisplayCases() {
     let testURL = URL(string: "https://www.brave.com/solana-dapps-mobile/")
     let testURLString = testURL?.absoluteString ?? ""
 
-    XCTAssertEqual(URLFormatter.formatURL(testURLString, formatTypes: [], unescapeOptions: []), "https://www.brave.com/solana-dapps-mobile/")
-    XCTAssertEqual(URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: testURLString), "brave.com")
-    XCTAssertEqual(URLFormatter.formatURL(testURLString, formatTypes: [.omitDefaults], unescapeOptions: []).removeSchemeFromURLString(testURL?.scheme), "www.brave.com/solana-dapps-mobile/")
-    XCTAssertEqual(URLFormatter.formatURLOrigin(forSecurityDisplay: testURLString, schemeDisplay: .omitHttpAndHttps), "www.brave.com")
+    XCTAssertEqual(
+      URLFormatter.formatURL(testURLString, formatTypes: [], unescapeOptions: []),
+      "https://www.brave.com/solana-dapps-mobile/"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURLOrigin(forDisplayOmitSchemePathAndTrivialSubdomains: testURLString),
+      "brave.com"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURL(testURLString, formatTypes: [.omitDefaults], unescapeOptions: [])
+        .removeSchemeFromURLString(testURL?.scheme),
+      "www.brave.com/solana-dapps-mobile/"
+    )
+    XCTAssertEqual(
+      URLFormatter.formatURLOrigin(
+        forSecurityDisplay: testURLString,
+        schemeDisplay: .omitHttpAndHttps
+      ),
+      "www.brave.com"
+    )
   }
-  
+
   fileprivate func checkValidURL(_ beforeFixup: String, afterFixup: String) {
     XCTAssertEqual(URIFixup.getURL(beforeFixup)!.absoluteString, afterFixup)
   }
-  
+
   fileprivate func checkInvalidURL(_ beforeFixup: String) {
     XCTAssertNil(URIFixup.getURL(beforeFixup))
   }

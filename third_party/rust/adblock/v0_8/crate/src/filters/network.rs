@@ -380,7 +380,7 @@ fn parse_filter_options(raw_options: &str) -> Result<Vec<NetworkFilterOption>, N
         );
 
         result.push(match (option, negation) {
-            ("domain", _) => {
+            ("domain", _) | ("from", _) => {
                 let domains: Vec<(bool, String)> = value.split('|').map(|domain| {
                     if let Some(negated_domain) = domain.strip_prefix('~') {
                         (false, negated_domain.to_string())
@@ -2279,6 +2279,12 @@ mod parse_tests {
         {
             let filter = NetworkFilter::parse("||foo.com", true, Default::default()).unwrap();
             assert_eq!(filter.opt_domains, None);
+            assert_eq!(filter.opt_not_domains, None);
+        }
+        // `from` is an alias for `domain`
+        {
+            let filter = NetworkFilter::parse("||foo.com$from=bar.com", true, Default::default()).unwrap();
+            assert_eq!(filter.opt_domains, Some(vec![utils::fast_hash("bar.com")]));
             assert_eq!(filter.opt_not_domains, None);
         }
     }

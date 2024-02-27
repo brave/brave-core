@@ -100,8 +100,6 @@ class ConversationDriverUnitTest : public testing::Test {
             &url_loader_factory_);
     auto skus_service_getter = base::BindRepeating(
         []() { return mojo::PendingRemote<skus::mojom::SkusService>(); });
-    // set prefs::kDefaultModelKey to llama or claude first, then change model
-    // later
     conversation_driver_ = std::make_unique<MockConversationDriver>(
         &prefs_, &local_state_, nullptr, skus_service_getter,
         shared_url_loader_factory_, "");
@@ -119,7 +117,7 @@ class ConversationDriverUnitTest : public testing::Test {
   std::unique_ptr<MockConversationDriver> conversation_driver_;
 };
 
-TEST_F(ConversationDriverUnitTest, SummarizeSelectedText) {
+TEST_F(ConversationDriverUnitTest, SubmitSelectedText) {
   bool is_page_content_linked = false;
   url_loader_factory_.SetInterceptor(
       base::BindLambdaForTesting([&](const network::ResourceRequest& request) {
@@ -158,8 +156,9 @@ TEST_F(ConversationDriverUnitTest, SummarizeSelectedText) {
   // Fired from OnEngineCompletionComplete.
   EXPECT_CALL(observer, OnAPIRequestInProgress(false)).Times(1);
 
-  conversation_driver_->SummarizeSelectedText(
-      "<question><excerpt>I have spoken.</excerpt></question>");
+  conversation_driver_->SubmitSelectedText(
+      "<question><excerpt>I have spoken.</excerpt></question>",
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&observer);
@@ -172,10 +171,13 @@ TEST_F(ConversationDriverUnitTest, SummarizeSelectedText) {
   EXPECT_EQ(
       history,
       std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(mojom::CharacterType::HUMAN,
-                                   mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "Summarize this excerpt", "I have spoken."),
+          {mojom::ConversationTurn(
+               mojom::CharacterType::HUMAN,
+               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+               mojom::ConversationTurnVisibility::VISIBLE,
+               l10n_util::GetStringUTF8(
+                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+               "I have spoken."),
            mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
                                    mojom::ActionType::RESPONSE,
                                    mojom::ConversationTurnVisibility::VISIBLE,
@@ -198,8 +200,9 @@ TEST_F(ConversationDriverUnitTest, SummarizeSelectedText) {
   // Fired from OnEngineCompletionComplete.
   EXPECT_CALL(observer, OnAPIRequestInProgress(false)).Times(1);
 
-  conversation_driver_->SummarizeSelectedText(
-      "<question><excerpt>I have spoken again.</excerpt></question>");
+  conversation_driver_->SubmitSelectedText(
+      "<question><excerpt>I have spoken again.</excerpt></question>",
+      mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
 
   task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&observer);
@@ -211,19 +214,24 @@ TEST_F(ConversationDriverUnitTest, SummarizeSelectedText) {
   EXPECT_EQ(
       history2,
       std::vector<mojom::ConversationTurn>(
-          {mojom::ConversationTurn(mojom::CharacterType::HUMAN,
-                                   mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "Summarize this excerpt", "I have spoken."),
+          {mojom::ConversationTurn(
+               mojom::CharacterType::HUMAN,
+               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+               mojom::ConversationTurnVisibility::VISIBLE,
+               l10n_util::GetStringUTF8(
+                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+               "I have spoken."),
            mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
                                    mojom::ActionType::RESPONSE,
                                    mojom::ConversationTurnVisibility::VISIBLE,
                                    "This is the way.", std::nullopt),
-           mojom::ConversationTurn(mojom::CharacterType::HUMAN,
-                                   mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-                                   mojom::ConversationTurnVisibility::VISIBLE,
-                                   "Summarize this excerpt",
-                                   "I have spoken again."),
+           mojom::ConversationTurn(
+               mojom::CharacterType::HUMAN,
+               mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+               mojom::ConversationTurnVisibility::VISIBLE,
+               l10n_util::GetStringUTF8(
+                   IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT),
+               "I have spoken again."),
            mojom::ConversationTurn(mojom::CharacterType::ASSISTANT,
                                    mojom::ActionType::RESPONSE,
                                    mojom::ConversationTurnVisibility::VISIBLE,

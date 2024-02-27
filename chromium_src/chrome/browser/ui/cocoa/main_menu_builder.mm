@@ -10,6 +10,7 @@
 namespace {
 constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
 constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
+constexpr int kCloseOtherTabsResourceId = IDS_TAB_CXMENU_CLOSEOTHERTABS;
 }  // namespace
 
 #define BRAVE_BUILD_FILE_MENU                       \
@@ -31,10 +32,17 @@ constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
 IDS_MUTE_TAB_MAC).command_id(IDC_TOGGLE_TAB_MUTE), \
               Item(kMuteSiteResourceId
 
+#undef IDS_TAB_CXMENU_CLOSEOTHERTABS
+#define IDS_TAB_CXMENU_CLOSEOTHERTABS                                      \
+IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS).command_id(IDC_CLOSE_DUPLICATE_TABS), \
+              Item(kCloseOtherTabsResourceId
+
 #include "src/chrome/browser/ui/cocoa/main_menu_builder.mm"
 #undef IDS_MUTE_SITE_MAC
 #define IDS_MUTE_SITE_MAC kMuteSiteResourceId
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC kPasteMacResourceId
+#undef IDS_TAB_CXMENU_CLOSEOTHERTABS
+#define IDS_TAB_CXMENU_CLOSEOTHERTABS kCloseOtherTabsResourceId
 #undef BRAVE_BUILD_HELP_MENU
 #undef BRAVE_BUILD_FILE_MENU

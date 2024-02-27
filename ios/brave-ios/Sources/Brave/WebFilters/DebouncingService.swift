@@ -1,7 +1,7 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -38,7 +38,7 @@ public class DebouncingService {
       /// The regex is available in the `param` field.
       case regexPath = "regex-path"
     }
-    
+
     enum Preference: String {
       case deAmpEnabled = "brave.de_amp.enabled"
     }
@@ -55,7 +55,7 @@ public class DebouncingService {
     let actions: Set<Action>
     /// A list of preferences to be checked before debouncing
     let preferences: Set<Preference>
-    
+
     /// The param that we can match this rule by in case we have a match-all pattern
     var matchAllParam: String? {
       // We shouldn't use the param for matching if we have a regexPath action
@@ -63,51 +63,55 @@ public class DebouncingService {
       guard !actions.contains(.regexPath) else { return nil }
       return param
     }
-    
+
     public init(from decoder: Decoder) throws {
       let container = try decoder.container(keyedBy: CodingKeys.self)
       self.include = try container.decode(Set<String>.self, forKey: .include)
       self.exclude = try container.decodeIfPresent(Set<String>.self, forKey: .exclude)
       self.param = try container.decode(String.self, forKey: .param)
       self.prependScheme = try container.decodeIfPresent(String.self, forKey: .prependScheme)
-      
+
       let pref = try container.decodeIfPresent(String.self, forKey: .pref)
       let action = try container.decode(String.self, forKey: .action)
       self.actions = try Self.makeActions(fromString: action)
       self.preferences = try Self.makePreferences(fromString: pref)
     }
-    
+
     /// Actions in a strictly typed format and split up into an array
     /// - Note: Unrecognized actions will throw an error
     private static func makeActions(fromString string: String) throws -> Set<Action> {
       let actionStrings = string.split(separator: ",")
-      
-      return Set(try actionStrings.map({
-        if let action = Action(rawValue: String($0)) {
-          return action
-        } else {
-          throw RuleError.unsupportedAction(String($0))
-        }
-      }))
+
+      return Set(
+        try actionStrings.map({
+          if let action = Action(rawValue: String($0)) {
+            return action
+          } else {
+            throw RuleError.unsupportedAction(String($0))
+          }
+        })
+      )
     }
-    
+
     /// Preferences in a strictly typed format and split up into an array
     /// - Note: Unrecognized preferences will throw an error
     private static func makePreferences(fromString string: String?) throws -> Set<Preference> {
       guard let prefStrings = string?.split(separator: ",") else {
         return []
       }
-      
-      return Set(try prefStrings.map({
-        if let action = Preference(rawValue: String($0)) {
-          return action
-        } else {
-          throw RuleError.unsupportedPreference(String($0))
-        }
-      }))
+
+      return Set(
+        try prefStrings.map({
+          if let action = Preference(rawValue: String($0)) {
+            return action
+          } else {
+            throw RuleError.unsupportedPreference(String($0))
+          }
+        })
+      )
     }
   }
-  
+
   /// Defines redirect actions that should be performed on the matching url.
   /// These rules contain additional information needed to successfully extract the redirect URL.
   ///
@@ -125,28 +129,28 @@ public class DebouncingService {
     let shouldBase64Decode: Bool
     let preferences: Set<MatcherRule.Preference>
     let prependScheme: String?
-    
+
     /// Extracts a redirect url from the given url. This function appled all necessary actions (MatcherRule.Action)
     /// and returns a value that is ready to go and can be applied.
     ///
     /// - Note: You still need to check the preferences however.
     public func extractRedirectURL(from url: URL) throws -> URL? {
       guard let value = try extractDecodedValue(from: url) else { return nil }
-      
+
       if let prependScheme = prependScheme {
         return makeRedirectURL(string: value, prependScheme: prependScheme)
       } else {
         return makeRedirectURL(string: value)
       }
     }
-    
+
     /// Extracts and decodes a matching value from the given url.
     ///
     /// - Note: This value is not yet ready to be transformed into a URL as further actions,
     /// such as prepending a scheme, must be performed.
     private func extractDecodedValue(from url: URL) throws -> String? {
       guard let value = try extractRawValue(from: url) else { return nil }
-      
+
       if shouldBase64Decode {
         // We need to base64 decode the url
         guard let data = Data(base64Encoded: value) else {
@@ -158,28 +162,30 @@ public class DebouncingService {
         return value
       }
     }
-    
+
     /// Attempt to extract a raw value without any decoding.
     /// - Note: This value is not yet ready to be transformed into a URL as the value may still need to be decoded.
     private func extractRawValue(from url: URL) throws -> String? {
-      guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
-      
+      guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+        return nil
+      }
+
       switch action {
       case .regexParam(let pattern):
         // This is a requirement that the pattern is less than 200 characters long
         guard pattern.count < 200 else { return nil }
-        
+
         let path = components.path
         let regex = try NSRegularExpression(pattern: pattern)
-        
+
         // This is a requirement that there is only 1 capture group
         guard regex.numberOfCaptureGroups == 1 else { return nil }
-        
+
         let range = NSRange(location: 0, length: path.count)
         let matches = regex.matches(in: path, range: range)
         guard matches.count == 1, let match = matches.first else { return nil }
         let matchRange = match.range(at: 1)
-        
+
         if let swiftRange = Range(matchRange, in: path) {
           let result = String(path[swiftRange])
           return result
@@ -191,7 +197,7 @@ public class DebouncingService {
         return queryItems.first(where: { $0.name == param })?.value
       }
     }
-    
+
     /// Checks if the given string represents a valid URL we can redirect to.
     ///
     /// For a URL to be valid it must:
@@ -204,12 +210,14 @@ public class DebouncingService {
     /// - `https://xyz` returns `false` because it has no eTLD+1
     /// - `xyz` returns  `false` because scheme is missing, has no eTLD+1
     private func isValidRedirectURL(string: String) -> Bool {
-      guard let url = URL(string: string), url.schemeIsValid, let host = url.host else { return false }
-      
+      guard let url = URL(string: string), url.schemeIsValid, let host = url.host else {
+        return false
+      }
+
       // Check that we have an IP address or 2 host components seperated by a `.` (eTLD+1)
       return NSURL.isHostIPAddress(host: host) || !NSURL.domainAndRegistry(host: host).isEmpty
     }
-    
+
     /// Tries to construct a valid URL string by checking `isValidRedirectURL`
     /// and ensuring that there is a valid URL scheme.
     func makeRedirectURL(string: String) -> URL? {
@@ -225,7 +233,7 @@ public class DebouncingService {
         // When we need to apply the scheme, we should not have a valid url before applying the scheme.
         return nil
       }
-      
+
       if let url = makeRedirectURL(string: [prependScheme, string].joined(separator: "://")) {
         return url
       } else {
@@ -233,7 +241,7 @@ public class DebouncingService {
       }
     }
   }
-  
+
   public static let shared = DebouncingService()
   private(set) var matcher: URLMatcher<MatcherRule>?
 
@@ -250,7 +258,7 @@ public class DebouncingService {
     let rules = try jsonDecoder.decode([Result<MatcherRule, Error>].self, from: ruleData)
     matcher = URLMatcher(rules: rules)
   }
-  
+
   /// Get redirect url recursively by continually applying the matcher rules to each url returned until we have no more redirects.
   ///
   /// The following conditions must be met to redirect:
@@ -287,27 +295,28 @@ public class DebouncingService {
     guard let rule = matchingRedirectRule(for: url) else {
       return nil
     }
-    
+
     guard let extractedURL = try rule.extractRedirectURL(from: url),
-          url.origin != extractedURL.origin,
-          url.baseDomain != extractedURL.baseDomain,
-          extractedURL.scheme == "http" || extractedURL.scheme == "https" else {
+      url.origin != extractedURL.origin,
+      url.baseDomain != extractedURL.baseDomain,
+      extractedURL.scheme == "http" || extractedURL.scheme == "https"
+    else {
       return nil
     }
-    
+
     return (extractedURL, rule)
   }
-  
+
   /// Attempts to find a valid  query param  and a set of actions for the given URL
   /// - Throws: May throw `DebouncingResourceDownloader.RuleError`
   private func matchingRedirectRule(for url: URL) -> RedirectRule? {
     guard let rule = matcher?.matchingRule(for: url) else {
       return nil
     }
-    
+
     let preferences = rule.preferences
     let actions = rule.actions
-    
+
     if actions.contains(.regexPath) {
       return RedirectRule(
         action: RedirectAction.regexParam(regex: rule.param),

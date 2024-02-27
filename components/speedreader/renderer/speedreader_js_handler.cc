@@ -37,14 +37,11 @@ SpeedreaderJSHandler::~SpeedreaderJSHandler() = default;
 // static
 void SpeedreaderJSHandler::Install(
     base::WeakPtr<SpeedreaderRenderFrameObserver> owner,
-    int32_t isolated_world_id) {
+    v8::Local<v8::Context> context) {
   DCHECK(owner);
   v8::Isolate* isolate = blink::MainThreadIsolate();
   v8::HandleScope handle_scope(isolate);
 
-  v8::Local<v8::Context> context =
-      owner->render_frame()->GetWebFrame()->GetScriptContextFromWorldId(
-          isolate, isolated_world_id);
   if (context.IsEmpty()) {
     return;
   }

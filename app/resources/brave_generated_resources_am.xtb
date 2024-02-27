@@ -257,6 +257,8 @@
 <translation id="480565261566115689">ትሮችን አሳንስ</translation>
 <translation id="7194343495483122559">ትሮችን ዘርጋ</translation>
 <translation id="1199054713803577378">ትሮችን አሳንስ</translation>
+<translation id="1337946268962884806">የተለየ ትዕዛዝ</translation>
+<translation id="8373664339577369248">የተለየ ትዕዛዝ</translation>
 <translation id="8120600068258956006">ወደ አጫዋች ዝርዝር አክል</translation>
 <translation id="650694591627983430">በዚህ ገጽ ላይ የሚገኝ ሚዲያ</translation>
 <translation id="8525248723479742219">በኋላ ያጫውቱ</translation>
@@ -306,6 +308,9 @@
 <translation id="2800828306627475693">ድገም ጠፍቷል</translation>
 <translation id="1748244367114657861">አንድ ድገም</translation>
 <translation id="6421906998825794164">ሁሉንም ድገም</translation>
+<translation id="6453210454707928697">ለመክፈት አልተሳካም</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] ጊዜው ያለፈበት ሊሆን ይችላል። መልሰው ማግኘት ይፈልጋሉ?</translation>
+<translation id="6155018868740116868">መልሰህ አግኝ</translation>
 <translation id="1727684853006449697">Brave አጫዋች</translation>
 <translation id="9156965752763025780">ለውጦችዎ Brave በሚያስጀምሩበት ቀጣዩ ጊዜ ላይ ይተገበራሉ።</translation>
 <translation id="7179921470347911571">አሁን እንደገና ያስጀምሩ</translation>
@@ -328,6 +333,8 @@
 <translation id="5860254591544742609">የርዕስ አሞሌ አሳይ</translation>
 <translation id="5371926069408837914">ሲሰበሰብ የቋሚ ትሮችን መቃን በመዳፊቱ ላይ ያስፉት</translation>
 <translation id="3367129510799209147">የትር ማንዣበብ ሁናቴ</translation>
+<translation id="515949045075831661">በቀኝ በኩል አሳይ</translation>
+<translation id="3725395376319291415">በግራ በኩል አሳይ</translation>
 <translation id="2113977810652731515">ካርድ</translation>
 <translation id="4096343215397759358">ካርድ ከቅድመ እይታ ጋር</translation>
 <translation id="5297085818601043899">አጭር መረጃ</translation>
@@ -364,7 +371,7 @@
 <translation id="4057614912106618659">Brave አስቀድሞ የአርማዎች አሞሌ ውስጥ አለ</translation>
 <translation id="3195845168740336657">የመከላከያዎች ቅንብሮች</translation>
 <translation id="754769152790647708">የመከላከያዎች ሁኔታ</translation>
-<translation id="3615717588724840230">ጣቢያዎች መከላከያዎችን በመጠቀም መከታተያዎችን፣ ማስታወቂያዎችን እና የጣት አሻራዎችን ማገድ ይችላሉ</translation>
+<translation id="4868109105992358853">መከላከያዎች መከታተያዎችን፣ ማስታወቂያዎችን እና የጣት አሻራዎችን ማገድ ይችላሉ።</translation>
 <translation id="5690973901138662477">መከላከያዎች በርቷል</translation>
 <translation id="4697275813919189958">መከላከያዎች ጠፍቷል</translation>
 <translation id="6303294677342628402">መከላከያዎች</translation>
@@ -419,7 +426,7 @@
 <translation id="5567412479632285879">የ Brave Rewards ታግዷል</translation>
 <translation id="413570371620795359">ለማስቻል እና ለማስጀመር የሽልማት ፓነልን ይክፈቱ</translation>
 <translation id="1051600834033686945">ሙሉ የ Brave Rewards ቅንብሮችን ይክፈቱ</translation>
-<translation id="6333347122924254968">የ Brave ሽልማት አዶን በአድራሻ መጻፍያ ውስጥ አሳይ</translation>
+<translation id="8826461509529116322">የBrave ሽልማቶችን ቁልፍ አሳይ</translation>
 <translation id="9185018653595759199">የማህበራዊ ሚዲያ እገዳ</translation>
 <translation id="863171915776379000">የ Facebook መግቢያዎች እና አካቶዎችን ፍቀድ</translation>
 <translation id="5165042248369837294">በTwitter የተከተተ ትዊት ይፍቀዱ</translation>
@@ -726,6 +733,7 @@
 Leoን በመጠቀም ወደፊት ለመግባት እና የእርስዎን የጭውውት ታሪክ ለማጽዳት ይጠይቅዎታል። የእርስዎን
 የጭውውት ታሪክ ማጽዳት ከBrave ጋር የእርስዎን የቀድሞ ውይይቶች በሙሉ ያጠፋል
 ። ይህ ተግባር ሊቀለበስ አይችልም።</translation>
+<translation id="5574059574002819179">በራስ-መጠናቀቅ የሚየስችሉ የአስተያየት ጥቆማዎችን ያስተካክሉ</translation>
 <translation id="8157373421434119674">ውሂብ እና የጭውውት ታሪክ</translation>
 <translation id="614530507403667291">ነባሪ ሞዴል ለአዳዲስ ውይይቶች</translation>
 <translation id="349846214503465941">የአጫዋች ዝርዝር አንቃ</translation>

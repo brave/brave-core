@@ -1,13 +1,13 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import DesignSystem
-import Strings
+import Foundation
 import Preferences
+import Strings
+import SwiftUI
 
 struct VerifyRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -19,11 +19,11 @@ struct VerifyRecoveryPhraseView: View {
 
   @Environment(\.modalPresentationMode) @Binding private var modalPresentationMode
   @FocusState private var isFieldFocused: Bool
-  
+
   private var recoveryWords: [RecoveryWord]
   private let targetedRecoveryWordIndexes: [Int]
   private let password: String
-  
+
   init(
     keyringStore: KeyringStore,
     recoveryWords: [RecoveryWord],
@@ -35,7 +35,7 @@ struct VerifyRecoveryPhraseView: View {
     self.targetedRecoveryWordIndexes = targetedRecoveryWordIndexes
     self.password = password
   }
-  
+
   var body: some View {
     ScrollView {
       VStack {
@@ -46,9 +46,16 @@ struct VerifyRecoveryPhraseView: View {
             .fixedSize(horizontal: false, vertical: true)
           RecoveryPhrasePager(activeIndex: $activeCheckIndex)
         }
-        Text(LocalizedStringKey(String.localizedStringWithFormat(Strings.Wallet.verifyRecoveryPhraseSubTitle, targetedRecoveryWordIndexes[activeCheckIndex] + 1)))
-          .font(.subheadline)
-          .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
+        Text(
+          LocalizedStringKey(
+            String.localizedStringWithFormat(
+              Strings.Wallet.verifyRecoveryPhraseSubTitle,
+              targetedRecoveryWordIndexes[activeCheckIndex] + 1
+            )
+          )
+        )
+        .font(.subheadline)
+        .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
         .fixedSize(horizontal: false, vertical: true)
         .padding(.bottom, 40)
         VStack(alignment: .leading) {
@@ -78,12 +85,12 @@ struct VerifyRecoveryPhraseView: View {
           let targetIndex = targetedRecoveryWordIndexes[activeCheckIndex]
           if input.trimmingCharacters(in: .whitespaces) == recoveryWords[safe: targetIndex]?.value {
             isShowingError = false
-            if activeCheckIndex == targetedRecoveryWordIndexes.count - 1 { // finished all checks
+            if activeCheckIndex == targetedRecoveryWordIndexes.count - 1 {  // finished all checks
               if keyringStore.isOnboardingVisible {
                 // check if biometric is available
                 keyringStore.notifyWalletBackupComplete()
                 Preferences.Wallet.isOnboardingCompleted.value = true
-              } else { // coming from BackUpWalletView
+              } else {  // coming from BackUpWalletView
                 keyringStore.notifyWalletBackupComplete()
                 modalPresentationMode = false
               }
@@ -103,9 +110,9 @@ struct VerifyRecoveryPhraseView: View {
         .disabled(input.isEmpty)
         .padding(.top, 86)
         if keyringStore.isOnboardingVisible {
-          Button(action: {
+          Button {
             isShowingSkipWarning = true
-          }) {
+          } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
@@ -120,13 +127,19 @@ struct VerifyRecoveryPhraseView: View {
     .background(
       WalletPromptView(
         isPresented: $isShowingSkipWarning,
-        primaryButton: WalletPromptButton(title: Strings.Wallet.editTransactionErrorCTA, action: { _ in
-          isShowingSkipWarning = false
-        }),
-        secondaryButton: WalletPromptButton(title: Strings.Wallet.backupSkipButtonTitle, action: { _ in
-          isShowingSkipWarning = false
-          Preferences.Wallet.isOnboardingCompleted.value = true
-        }),
+        primaryButton: WalletPromptButton(
+          title: Strings.Wallet.editTransactionErrorCTA,
+          action: { _ in
+            isShowingSkipWarning = false
+          }
+        ),
+        secondaryButton: WalletPromptButton(
+          title: Strings.Wallet.backupSkipButtonTitle,
+          action: { _ in
+            isShowingSkipWarning = false
+            Preferences.Wallet.isOnboardingCompleted.value = true
+          }
+        ),
         showCloseButton: false,
         content: {
           VStack(alignment: .leading, spacing: 20) {
@@ -139,14 +152,18 @@ struct VerifyRecoveryPhraseView: View {
           }
           .multilineTextAlignment(.leading)
           .padding(.vertical, 20)
-        })
+        }
+      )
     )
     .transparentNavigationBar(backButtonDisplayMode: .generic)
-    .onChange(of: input, perform: { newValue in
-      if newValue.isEmpty {
-        isShowingError = false
+    .onChange(
+      of: input,
+      perform: { newValue in
+        if newValue.isEmpty {
+          isShowingError = false
+        }
       }
-    })
+    )
     .onAppear {
       isFieldFocused = true
     }
@@ -162,7 +179,7 @@ struct VerifyRecoveryPhraseView_Previews: PreviewProvider {
         recoveryWords: [
           .init(value: "First", index: 0),
           .init(value: "Second", index: 1),
-          .init(value: "Third", index: 2)
+          .init(value: "Third", index: 2),
         ],
         targetedRecoveryWordIndexes: [0, 1, 2],
         password: ""

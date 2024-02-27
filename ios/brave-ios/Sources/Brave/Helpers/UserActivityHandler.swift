@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import CoreSpotlight
 import Foundation
+import MobileCoreServices
 import Shared
 import Storage
-import CoreSpotlight
-import MobileCoreServices
 import WebKit
 
 private let browsingActivityType: String = "com.brave.ios.browsing"
@@ -24,7 +24,8 @@ class UserActivityHandler {
       .didLoadPageMetadata,
       // .didLoadFavicon, // TODO: Bug 1390294
       .didClose,
-      queue: .main)
+      queue: .main
+    )
   }
 
   deinit {
@@ -36,7 +37,8 @@ class UserActivityHandler {
   }
 
   fileprivate func setUserActivityForTab(_ tab: Tab, url: URL) {
-    guard !tab.isPrivate, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) else {
+    guard !tab.isPrivate, url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    else {
       tab.userActivity?.resignCurrent()
       tab.userActivity = nil
       return

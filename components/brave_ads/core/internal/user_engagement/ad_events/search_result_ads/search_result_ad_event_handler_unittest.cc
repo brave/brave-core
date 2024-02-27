@@ -49,7 +49,7 @@ void ExpectCreativeSetConversionCountEquals(const size_t expected_count) {
       Run(/*success=*/true,
           /*creative_set_conversions=*/::testing::SizeIs(expected_count)));
   const database::table::CreativeSetConversions database_table;
-  database_table.GetAll(callback.Get());
+  database_table.GetUnexpired(callback.Get());
 }
 
 }  // namespace

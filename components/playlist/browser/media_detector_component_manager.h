@@ -49,7 +49,7 @@ class MediaDetectorComponentManager {
   // from component yet, will return a local script.
   std::string GetMediaDetectorScript(const GURL& url);
 
-  void SetUseLocalScriptForTesting();
+  void SetUseLocalScript();
 
   bool ShouldHideMediaSrcAPI(const GURL& url) const;
   void SetUseLocalListToHideMediaSrcAPI();
@@ -57,14 +57,14 @@ class MediaDetectorComponentManager {
   bool ShouldUseFakeUA(const GURL& url) const;
   void SetUseLocalListToUseFakeUA();
 
-  const std::vector<net::SchemefulSite>& sites_to_hide_media_src_api() const {
-    return sites_to_hide_media_src_api_;
-  }
-
  private:
+  FRIEND_TEST_ALL_PREFIXES(MediaDetectorComponentManagerTest,
+                           SitesThatNeedsURLRuleForMediaPage);
+
   using ScriptMap = base::flat_map</* script_name */ base::FilePath::StringType,
                                    /* contents */ std::string>;
 
+  void MaybeInitScripts();
   void RegisterIfNeeded();
   void OnComponentReady(const base::FilePath& install_path);
   void OnGetScripts(const ScriptMap& script_map);

@@ -81,16 +81,12 @@ import {
 } from '../../../../common/hooks/use-scoped-balance-updater'
 
 // Styled Components
-import { Row, Column } from '../../../shared/style'
+import { Row, Column, LeoSquaredButton } from '../../../shared/style'
 import { Skeleton } from '../../../shared/loading-skeleton/styles'
 import {
   WalletPageWrapper //
 } from '../../wallet-page-wrapper/wallet-page-wrapper'
-import {
-  BuySellBridgeButton,
-  ButtonRow,
-  StyledWrapper
-} from '../portfolio/style'
+import { ButtonRow, StyledWrapper } from '../portfolio/style'
 
 const emptyPriceList: TokenPriceHistory[] = []
 
@@ -420,20 +416,18 @@ export const MarketAsset = () => {
         <Row padding='0px 20px'>
           <ButtonRow>
             {isAssetBuySupported && (
-              <BuySellBridgeButton
-                onClick={onSelectBuy}
-                noBottomMargin={true}
-              >
-                {getLocale('braveWalletBuy')}
-              </BuySellBridgeButton>
+              <div>
+                <LeoSquaredButton onClick={onSelectBuy}>
+                  {getLocale('braveWalletBuy')}
+                </LeoSquaredButton>
+              </div>
             )}
             {isSelectedAssetDepositSupported && (
-              <BuySellBridgeButton
-                onClick={onSelectDeposit}
-                noBottomMargin={true}
-              >
-                {getLocale('braveWalletAccountsDeposit')}
-              </BuySellBridgeButton>
+              <div>
+                <LeoSquaredButton onClick={onSelectDeposit}>
+                  {getLocale('braveWalletAccountsDeposit')}
+                </LeoSquaredButton>
+              </div>
             )}
           </ButtonRow>
         </Row>

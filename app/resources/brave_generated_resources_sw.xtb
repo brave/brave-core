@@ -254,6 +254,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="480565261566115689">Punguza Vichupo</translation>
 <translation id="7194343495483122559">Panua vichupo</translation>
 <translation id="1199054713803577378">Punguza vichupo</translation>
+<translation id="1337946268962884806">Oda maalum</translation>
+<translation id="8373664339577369248">oda maalum</translation>
 <translation id="8120600068258956006">Ongeza kwenye Orodha ya Kucheza</translation>
 <translation id="650694591627983430">Maudhui yanayopatikana katika ukurasa huu</translation>
 <translation id="8525248723479742219">Cheza Baadaye</translation>
@@ -303,6 +305,9 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="2800828306627475693">Zima Urudiaji</translation>
 <translation id="1748244367114657861">Rudia moja</translation>
 <translation id="6421906998825794164">Rudia zote</translation>
+<translation id="6453210454707928697">Imeshindwa kucheza kipengee</translation>
+<translation id="8741852840789907931">Huenda muda wa matumizi ya [<ph name="ITEM_NAME"/>] umeisha. Je, ungependa kuirejesha?</translation>
+<translation id="6155018868740116868">Rejesha</translation>
 <translation id="1727684853006449697">Kichezaji cha Brave</translation>
 <translation id="9156965752763025780">Mabadiliko yako yataanza kufanya kazi wakati ujao utakapozindua upya Brave.</translation>
 <translation id="7179921470347911571">Zindua Sasa</translation>
@@ -325,6 +330,8 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5860254591544742609">Onyesha upau wa majina</translation>
 <translation id="5371926069408837914">Panua kidirisha cha vichupo wima kwa kusogezasogeza kipanya kwenye kidirisha kilichokunjwa</translation>
 <translation id="3367129510799209147">Hali ya kuelea kichupo</translation>
+<translation id="515949045075831661">Onyesha upande wa kulia</translation>
+<translation id="3725395376319291415">Onyesha upande wa kushoto</translation>
 <translation id="2113977810652731515">Kadi</translation>
 <translation id="4096343215397759358">Kadi iliyo na onyesho la kukagua</translation>
 <translation id="5297085818601043899">Kidokezo cha zana</translation>
@@ -361,7 +368,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="4057614912106618659">Brave iko katika Dock tayari</translation>
 <translation id="3195845168740336657">Mipangilio ya ulinzi</translation>
 <translation id="754769152790647708">Hali ya ulinzi</translation>
-<translation id="3615717588724840230">Tovuti zinaweza kuzuia vifuatiliaji, matangazo na kunakili data ya matumizi kwa kutumia Ulinzi</translation>
+<translation id="4868109105992358853">Shields inaweza kuzuia vifuatiliaji, matangazo na uchukuaji wa alama za vidole</translation>
 <translation id="5690973901138662477">Ulinzi Umewashwa</translation>
 <translation id="4697275813919189958">Ulinzi Umezimwa</translation>
 <translation id="6303294677342628402">Ngao</translation>
@@ -416,7 +423,7 @@ Au badilisha baadaye kwenye<ph name="SETTINGS_EXTENIONS_LINK"/>.</translation>
 <translation id="5567412479632285879">Kipengele cha Zawadi za Brave kimelemazwa</translation>
 <translation id="413570371620795359">Fungua paneli ya Zawadi ili kuwezesha na kuanza</translation>
 <translation id="1051600834033686945">Fungua mipangilio kamili ya Zawadi za Brave</translation>
-<translation id="6333347122924254968">Onyesha ikoni ya Brave Rewards kwenye upau wa anwani</translation>
+<translation id="8826461509529116322">Onyesha kitufe cha Brave Rewards</translation>
 <translation id="9185018653595759199">Kuzuia mitandao ya kijamii</translation>
 <translation id="863171915776379000">Ruhusu kuingia kwenye akaunti kupitia Facebook na makala zilizoshikizwa</translation>
 <translation id="5165042248369837294">Ruhusa makala za Twitter zilizoshikizwa</translation>
@@ -728,6 +735,7 @@ kuhusu nodi ya IPFS ya Jasiri ya eneo lako na masuala ya faragha ya lango.</tran
 Leo katika siku zijazo na pia kutafuta historia yako ya gumzo. Kufuta
 historia yako ya gumzo kutafuta mazungumzo yako yote ya awali na Brave
 Leo. Kitendo hiki hakiwezi kutenduliwa.</translation>
+<translation id="5574059574002819179">Rekebisha mapendekezo ya kujaza kiotomatiki</translation>
 <translation id="8157373421434119674">Historia ya data na gumzo</translation>
 <translation id="614530507403667291">Muundo chaguomsingi wa mazungumzo mapya</translation>
 <translation id="349846214503465941">Wezesha Orodha ya kucheza</translation>

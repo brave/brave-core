@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveUI
-import Preferences
-import Data
 import CoreData
+import Data
+import Foundation
+import Preferences
 import Shared
 import UIKit
 
@@ -49,7 +49,9 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
   let action: () -> Void
   var sectionDidChange: (() -> Void)?
 
-  private typealias FavoritesOverflowCell = NewTabCenteredCollectionViewCell<FavoritesOverflowButton>
+  private typealias FavoritesOverflowCell = NewTabCenteredCollectionViewCell<
+    FavoritesOverflowButton
+  >
 
   private var frc: NSFetchedResultsController<Favorite>
 
@@ -66,12 +68,16 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     action()
   }
 
-  func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    numberOfItemsInSection section: Int
+  ) -> Int {
     let width = fittingSizeForCollectionView(collectionView, section: section).width
     let count = frc.fetchedObjects?.count ?? 0
-    
-    let isShowShowMoreButtonVisible = count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width) &&
-      Preferences.NewTabPage.showNewTabFavourites.value
+
+    let isShowShowMoreButtonVisible =
+      count > FavoritesSectionProvider.numberOfItems(in: collectionView, availableWidth: width)
+      && Preferences.NewTabPage.showNewTabFavourites.value
     return isShowShowMoreButtonVisible ? 1 : 0
   }
 
@@ -79,13 +85,20 @@ class FavoritesOverflowSectionProvider: NSObject, NTPObservableSectionProvider {
     collectionView.register(FavoritesOverflowCell.self)
   }
 
-  func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    cellForItemAt indexPath: IndexPath
+  ) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCell(for: indexPath) as FavoritesOverflowCell
     cell.view.addTarget(self, action: #selector(tappedButton), for: .touchUpInside)
     return cell
   }
 
-  func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    layout collectionViewLayout: UICollectionViewLayout,
+    sizeForItemAt indexPath: IndexPath
+  ) -> CGSize {
     var size = fittingSizeForCollectionView(collectionView, section: indexPath.section)
     size.height = 24
     return size

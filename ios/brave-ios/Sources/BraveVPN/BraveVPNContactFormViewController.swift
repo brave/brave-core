@@ -1,19 +1,19 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import Static
-import MessageUI
+import BraveStrings
+import BraveUI
 // To get cellular carrier name
 import CoreTelephony
-import UIKit
-import BraveUI
-import os.log
-import BraveStrings
+import Foundation
 import GuardianConnect
+import MessageUI
+import Shared
+import Static
+import UIKit
+import os.log
 
 class BraveVPNContactFormViewController: TableViewController {
 
@@ -75,14 +75,20 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.hostname = nil
               }
-            })))
+            }
+          )
+        )
+    )
 
     // MARK: TunnelProtocol
     let userPreferredTunnelProtocol = GRDTransportProtocol.getUserPreferredTransportProtocol()
-    let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(for: userPreferredTunnelProtocol)
+    let transportProtocol = GRDTransportProtocol.prettyTransportProtocolString(
+      for: userPreferredTunnelProtocol
+    )
     let tunnelProtocolRow =
       Row(
-        text: Strings.VPN.protocolPickerTitle, detailText: transportProtocol,
+        text: Strings.VPN.protocolPickerTitle,
+        detailText: transportProtocol,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -92,13 +98,18 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.tunnelProtocol = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
-    
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
+
     // MARK: SubscriptionType
     let subscriptionType = BraveVPN.subscriptionName
     let subscriptionTypeRow =
       Row(
-        text: Strings.VPN.contactFormSubscriptionType, detailText: subscriptionType,
+        text: Strings.VPN.contactFormSubscriptionType,
+        detailText: subscriptionType,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -108,7 +119,11 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.subscriptionType = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     // MARK: AppStore receipt
     let receipt = getReceipt
@@ -124,13 +139,17 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.receipt = nil
               }
-            })))
+            }
+          )
+        )
+    )
 
     // MARK: App Version
     let appVersion = AppInfo.appVersion
     let appVersionRow =
       Row(
-        text: Strings.VPN.contactFormAppVersion, detailText: appVersion,
+        text: Strings.VPN.contactFormAppVersion,
+        detailText: appVersion,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -140,13 +159,18 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.appVersion = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     // MARK: Timezone
     let timezone = TimeZone.current.description
     let timezoneRow =
       Row(
-        text: Strings.VPN.contactFormTimezone, detailText: timezone,
+        text: Strings.VPN.contactFormTimezone,
+        detailText: timezone,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -156,13 +180,18 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.timezone = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     // MARK: Network Type
     let networkType = getNetworkType
     let networkTypeRow =
       Row(
-        text: Strings.VPN.contactFormNetworkType, detailText: networkType,
+        text: Strings.VPN.contactFormNetworkType,
+        detailText: networkType,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -172,7 +201,11 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.networkType = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     // MARK: Cellular Carrier
     let carrierName =
@@ -180,7 +213,8 @@ class BraveVPNContactFormViewController: TableViewController {
       .first?.value.carrierName ?? "-"
     let carrierRow =
       Row(
-        text: Strings.VPN.contactFormCarrier, detailText: carrierName,
+        text: Strings.VPN.contactFormCarrier,
+        detailText: carrierName,
         accessory: .view(
           SwitchAccessoryView(
             initialValue: false,
@@ -190,7 +224,11 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.cellularCarrier = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     // MARK: Error logs
     let errorLogs =
@@ -205,32 +243,40 @@ class BraveVPNContactFormViewController: TableViewController {
               } else {
                 self?.contactForm.logs = nil
               }
-            })), cellClass: MultilineSubtitleCell.self)
+            }
+          )
+        ),
+        cellClass: MultilineSubtitleCell.self
+      )
 
     let section = Section(rows: [
       hostnameRow, tunnelProtocolRow, subscriptionTypeRow, receiptRow,
-      appVersionRow, timezoneRow, networkTypeRow, carrierRow, errorLogs
+      appVersionRow, timezoneRow, networkTypeRow, carrierRow, errorLogs,
     ])
 
     let sendButton = Row(
       text: Strings.VPN.contactFormSendButton,
       selection: { [weak self] in
         guard let self = self else { return }
-          let optionChanged = { [weak self] (vc: OptionSelectionViewController<IssueType>, option: IssueType) -> Void in
-            self?.contactForm.issue = option.displayString
-            self?.createEmailOutline()
-          }
-        
-          let optionsVC =
-            OptionSelectionViewController<IssueType>(
-              headerText: Strings.VPN.contactFormIssue,
-              footerText: Strings.VPN.contactFormIssueDescription,
-              options: IssueType.allCases,
-              optionChanged: optionChanged)
+        let optionChanged = {
+          [weak self] (vc: OptionSelectionViewController<IssueType>, option: IssueType) -> Void in
+          self?.contactForm.issue = option.displayString
+          self?.createEmailOutline()
+        }
 
-          self.navigationController?.pushViewController(optionsVC, animated: true)
-  
-      }, cellClass: CenteredButtonCell.self)
+        let optionsVC =
+          OptionSelectionViewController<IssueType>(
+            headerText: Strings.VPN.contactFormIssue,
+            footerText: Strings.VPN.contactFormIssueDescription,
+            options: IssueType.allCases,
+            optionChanged: optionChanged
+          )
+
+        self.navigationController?.pushViewController(optionsVC, animated: true)
+
+      },
+      cellClass: CenteredButtonCell.self
+    )
 
     let footerText =
       "\(Strings.VPN.contactFormFooterSharedWithGuardian)\n\n\(Strings.VPN.contactFormFooter)"
@@ -238,14 +284,15 @@ class BraveVPNContactFormViewController: TableViewController {
 
     dataSource.sections = [section, buttonSection]
   }
-  
+
   private func createEmailOutline() {
     if !MFMailComposeViewController.canSendMail() {
       Logger.module.error("Can't send email on this device")
       let alert = UIAlertController(
         title: Strings.genericErrorTitle,
         message: Strings.VPN.contactFormEmailNotConfiguredBody,
-        preferredStyle: .alert)
+        preferredStyle: .alert
+      )
       let okAction = UIAlertAction(title: Strings.OKString, style: .default)
       alert.addAction(okAction)
       present(alert, animated: true)
@@ -261,7 +308,7 @@ class BraveVPNContactFormViewController: TableViewController {
     if let issue = contactForm.issue {
       formTitle += " + \(issue)"
     }
-    
+
     mail.setSubject(formTitle)
     mail.setMessageBody(self.composeEmailBody(with: self.contactForm), isHTML: false)
     present(mail, animated: true)
@@ -300,12 +347,12 @@ class BraveVPNContactFormViewController: TableViewController {
       body.append(Strings.VPN.contactFormIssue)
       body.append("\n\(issue)\n\n")
     }
-    
+
     if let hostname = contactForm.hostname {
       body.append(Strings.VPN.contactFormHostname)
       body.append("\n\(hostname)\n\n")
     }
-    
+
     if let tunnelProtocol = contactForm.tunnelProtocol {
       body.append(Strings.VPN.protocolPickerTitle)
       body.append("\n\(tunnelProtocol)\n\n")
@@ -320,7 +367,7 @@ class BraveVPNContactFormViewController: TableViewController {
       body.append(Strings.VPN.contactFormAppVersion)
       body.append("\n\(appVersion)\n\n")
     }
-    
+
     if let timezone = contactForm.timezone {
       body.append(Strings.VPN.contactFormTimezone)
       body.append("\n\(timezone)\n\n")
@@ -360,7 +407,11 @@ class BraveVPNContactFormViewController: TableViewController {
 
 // MARK: - MFMailComposeViewControllerDelegate
 extension BraveVPNContactFormViewController: MFMailComposeViewControllerDelegate {
-  func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+  func mailComposeController(
+    _ controller: MFMailComposeViewController,
+    didFinishWith result: MFMailComposeResult,
+    error: Error?
+  ) {
     controller.dismiss(animated: true)
   }
 }

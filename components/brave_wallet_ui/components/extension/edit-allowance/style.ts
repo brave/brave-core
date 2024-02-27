@@ -67,6 +67,7 @@ export const ButtonRow = styled.div`
   justify-content: center;
   flex-direction: row;
   width: 100%;
+  gap: 16px;
 `
 
 export const Description = styled.span`

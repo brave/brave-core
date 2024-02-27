@@ -46,7 +46,6 @@ import {
 import { mockAccounts } from './mock-data/mock-wallet-accounts'
 import { mockDecryptRequest } from './mock-data/mock-encryption-key-payload'
 import { mockOriginInfo } from './mock-data/mock-origin-info'
-import { mockNewAssetOptions } from './mock-data/mock-asset-options'
 import { createMockStore } from '../utils/test-utils'
 import { deserializeTransaction } from '../utils/model-serialization-utils'
 import { WalletApiDataOverrides } from '../constants/testing_types'
@@ -367,7 +366,6 @@ const transactionList = [
 ]
 
 const mockCustomStoreState: Partial<WalletState> = {
-  fullTokenList: mockNewAssetOptions,
   activeOrigin: originInfo
 }
 
@@ -419,9 +417,6 @@ export const _ConfirmErcApproveTransaction = () => {
       <Provider
         store={createMockStore(
           {
-            walletStateOverride: {
-              fullTokenList: mockNewAssetOptions
-            },
             uiStateOverride: {
               selectedPendingTransactionId: mockedErc20ApprovalTransaction.id
             }

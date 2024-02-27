@@ -41,6 +41,10 @@ inline constexpr char kSolActiveAccountHistogramName[] =
     "Brave.Wallet.ActiveSolAccounts";
 inline constexpr char kFilActiveAccountHistogramName[] =
     "Brave.Wallet.ActiveFilAccounts";
+inline constexpr char kBtcActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveBtcAccounts";
+inline constexpr char kZecActiveAccountHistogramName[] =
+    "Brave.Wallet.ActiveZecAccounts";
 inline constexpr char kBraveWalletDailyHistogramName[] =
     "Brave.Wallet.UsageDaily";
 inline constexpr char kBraveWalletWeeklyHistogramName[] =

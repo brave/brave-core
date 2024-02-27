@@ -1,18 +1,17 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
-/**
- * Button whose insets are included in its intrinsic size.
- */
+/// Button whose insets are included in its intrinsic size.
 public class InsetButton: UIButton {
   public override var intrinsicContentSize: CGSize {
     let size = super.intrinsicContentSize
     return CGSize(
       width: size.width + titleEdgeInsets.left + titleEdgeInsets.right,
-      height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom)
+      height: size.height + titleEdgeInsets.top + titleEdgeInsets.bottom
+    )
   }
 
   public func addTrailingImageIcon(image: UIImage, inset: CGFloat = 15) {

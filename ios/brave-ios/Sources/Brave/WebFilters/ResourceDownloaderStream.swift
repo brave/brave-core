@@ -1,24 +1,30 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
 /// An endless sequence iterator for the given resource
-struct ResourceDownloaderStream<Resource: DownloadResourceInterface>: Sendable, AsyncSequence, AsyncIteratorProtocol {
+struct ResourceDownloaderStream<Resource: DownloadResourceInterface>: Sendable, AsyncSequence,
+  AsyncIteratorProtocol
+{
   typealias Element = Result<ResourceDownloader<Resource>.DownloadResult, Error>
   private let resource: Resource
   private let resourceDownloader: ResourceDownloader<Resource>
   private let fetchInterval: TimeInterval
   private var firstLoad = true
-  
-  init(resource: Resource, resourceDownloader: ResourceDownloader<Resource>, fetchInterval: TimeInterval) {
+
+  init(
+    resource: Resource,
+    resourceDownloader: ResourceDownloader<Resource>,
+    fetchInterval: TimeInterval
+  ) {
     self.resource = resource
     self.resourceDownloader = resourceDownloader
     self.fetchInterval = fetchInterval
   }
-  
+
   /// Returns the next downloaded value if it has changed since last time it was downloaded. Will return a cached result as an initial value.
   ///
   /// - Note: Only throws `CancellationError` error. Downloading errors are returned as a `Result` object
@@ -37,11 +43,11 @@ struct ResourceDownloaderStream<Resource: DownloadResourceInterface>: Sendable, 
         throw error
       }
     }
-    
+
     // Keep fetching new data until we get a new result
     while true {
       try await Task.sleep(seconds: fetchInterval)
-      
+
       do {
         let result = try await resourceDownloader.download(resource: resource)
         guard result.isModified else { continue }
@@ -54,7 +60,7 @@ struct ResourceDownloaderStream<Resource: DownloadResourceInterface>: Sendable, 
       }
     }
   }
-  
+
   func makeAsyncIterator() -> ResourceDownloaderStream {
     return self
   }

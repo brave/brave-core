@@ -1,10 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
 import BraveCore
-import os.log
+import BraveShared
+import Foundation
 import Preferences
+import Shared
+import os.log
 
 public class DAU {
 
@@ -14,13 +17,12 @@ public class DAU {
   private static let apiVersion = 1
 
   private static var baseUrl: String {
-    get {
-      let domain = AppConstants.buildChannel.isPublic
-        ? "https://laptop-updates.brave.com/"
-        : "https://laptop-updates.bravesoftware.com/"
-      
-      return "\(domain)\(apiVersion)/usage/ios?platform=ios"
-    }
+    let domain =
+      AppConstants.buildChannel.isPublic
+      ? "https://laptop-updates.brave.com/"
+      : "https://laptop-updates.bravesoftware.com/"
+
+    return "\(domain)\(apiVersion)/usage/ios?platform=ios"
   }
   /// Number of seconds that determins when a user is "active"
   private let pingRefreshDuration = 5.minutes
@@ -32,12 +34,12 @@ public class DAU {
     if let timezone = TimeZone(abbreviation: "GMT") {
       cal.timeZone = timezone
     }
-    
+
     return cal
   }
 
   private var launchTimer: Timer?
-  
+
   /// Whether a current ping attempt is being made
   private var processingPing = false
   private func todayComponents(from date: Date) -> DateComponents {
@@ -53,7 +55,6 @@ public class DAU {
     return formatter
   }()
 
-  private static let apiKeyPlistKey = "STATS_KEY"
   private let apiKey: String?
   private let braveCoreStats: BraveStats?
 
@@ -61,9 +62,9 @@ public class DAU {
     braveCoreStats: BraveStats?
   ) {
     self.braveCoreStats = braveCoreStats
-    apiKey = (Bundle.main.infoDictionary?[Self.apiKeyPlistKey] as? String)?.trimmingCharacters(in: .whitespacesAndNewlines)
+    apiKey = kBraveStatsAPIKey
   }
-  
+
   /// Sends ping to server and returns a boolean whether a timer for the server call was scheduled.
   /// A user needs to be active for a certain amount of time before we ping the server.
   @discardableResult public func sendPingToServer() -> Bool {
@@ -84,7 +85,8 @@ public class DAU {
         target: self,
         selector: #selector(sendPingToServerInternal),
         userInfo: nil,
-        repeats: true)
+        repeats: true
+      )
 
     return true
   }
@@ -92,7 +94,7 @@ public class DAU {
   @objc private func sendPingToServerInternal() {
     guard let paramsAndPrefs = paramsAndPrefsSetup(for: Date()) else {
       Logger.module.debug("dau, no changes detected, no server ping")
-      UrpLog.log("dau, no changes detected, no server ping")
+      DebugLogger.log(for: .urp, text: "dau, no changes detected, no server ping")
       return
     }
 
@@ -107,12 +109,14 @@ public class DAU {
     pingRequest?.queryItems = paramsAndPrefs.queryParams
 
     guard let pingRequestUrl = pingRequest?.url else {
-      Logger.module.error("Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")")
+      Logger.module.error(
+        "Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")"
+      )
       return
     }
 
     Logger.module.debug("send ping to server, url: \(pingRequestUrl)")
-    UrpLog.log("send ping to server, url: \(pingRequestUrl)")
+    DebugLogger.log(for: .urp, text: "send ping to server, url: \(pingRequestUrl)")
 
     var request = URLRequest(url: pingRequestUrl)
     for (key, value) in paramsAndPrefs.headers {
@@ -126,7 +130,7 @@ public class DAU {
 
       if let e = error {
         Logger.module.error("status update error: \(e.localizedDescription)")
-        UrpLog.log("status update error: \(e)")
+        DebugLogger.log(for: .urp, text: "status update error: \(e)")
         return
       }
 
@@ -136,7 +140,7 @@ public class DAU {
 
       // This preference is used to calculate whether user used the app in this month and/or day.
       Preferences.DAU.lastLaunchInfo.value = paramsAndPrefs.lastLaunchInfoPreference
-      
+
       DispatchQueue.main.async { [self] in
         braveCoreStats?.notifyPingSent()
       }
@@ -151,7 +155,7 @@ public class DAU {
     let headers: [String: String]
     let lastLaunchInfoPreference: [Int]
   }
-  
+
   func migrateInvalidWeekOfInstallPref() {
     guard let woi = Preferences.DAU.weekOfInstallation.value else { return }
     // Check if the value for the day/month do not include 0
@@ -195,7 +199,7 @@ public class DAU {
       // Must be after setting up the preferences
       weekOfInstallationParam(),
     ]
-    
+
     if let braveCoreStats = braveCoreStats {
       params += braveCoreParams(for: braveCoreStats)
     }
@@ -203,7 +207,8 @@ public class DAU {
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
     if let installationDate = Preferences.DAU.installationDate.value,
-      retentionMeasureDatePassed(todayDate: date, installDate: installationDate) {
+      retentionMeasureDatePassed(todayDate: date, installDate: installationDate)
+    {
       Preferences.DAU.installationDate.value = nil
     }
 
@@ -212,7 +217,7 @@ public class DAU {
 
     if let referralCode = UserReferralProgram.getReferralCode() {
       params.append(URLQueryItem(name: "ref", value: referralCode))
-      UrpLog.log("DAU ping with added ref, params: \(params)")
+      DebugLogger.log(for: .urp, text: "DAU ping with added ref, params: \(params)")
     }
 
     let lastPingTimestamp = [Int((date).timeIntervalSince1970)]
@@ -223,9 +228,13 @@ public class DAU {
       headers["x-brave-api-key"] = key
     }
 
-    return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
+    return ParamsAndPrefs(
+      queryParams: params,
+      headers: headers,
+      lastLaunchInfoPreference: lastPingTimestamp
+    )
   }
-  
+
   private func retentionMeasureDatePassed(todayDate: Date, installDate: Date) -> Bool {
     guard let referenceDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: installDate),
       let currentDateOrdinal = DAU.calendar.ordinality(of: .day, in: .era, for: todayDate)
@@ -249,7 +258,7 @@ public class DAU {
     // For now we only have wallet params from brave-core
     braveStats.walletParams.map({ URLQueryItem(name: $0.key, value: $0.value) })
   }
-  
+
   func versionParam(for version: String = AppInfo.appVersion) -> URLQueryItem {
     var version = version
     if DAU.shouldAppend0(toVersion: version) {
@@ -263,7 +272,11 @@ public class DAU {
     let correctAppVersionPattern = "^\\d+.\\d+$"
     do {
       let regex = try NSRegularExpression(pattern: correctAppVersionPattern, options: [])
-      let match = regex.firstMatch(in: version, options: [], range: NSRange(location: 0, length: version.count))
+      let match = regex.firstMatch(
+        in: version,
+        options: [],
+        range: NSRange(location: 0, length: version.count)
+      )
 
       return match != nil
     } catch {
@@ -278,7 +291,9 @@ public class DAU {
 
   /// All first app installs are normalized to first day of the week.
   /// e.g. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday)
-  func weekOfInstallationParam(for woi: String? = Preferences.DAU.weekOfInstallation.value) -> URLQueryItem {
+  func weekOfInstallationParam(
+    for woi: String? = Preferences.DAU.weekOfInstallation.value
+  ) -> URLQueryItem {
     var woi = woi
     // This _should_ be set all the time
     if woi == nil {
@@ -315,7 +330,9 @@ public class DAU {
       return calendar.nextDate(after: lastPingDate, matching: components, matchingPolicy: .nextTime)
     }
 
-    if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate), nowDay > lastPingDay {
+    if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate),
+      nowDay > lastPingDay
+    {
       pings.insert(.daily)
     } else {
       // Not a new day, no need to check for weekly or monthly stats.
@@ -323,7 +340,9 @@ public class DAU {
     }
 
     let mondayWeekday = 2
-    if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)), date >= nextMonday {
+    if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)),
+      date >= nextMonday
+    {
       pings.insert(.weekly)
       // Adding daily stat here for safety, see #2572.
       pings.insert(.daily)
@@ -391,12 +410,18 @@ extension Date {
     // We look for a previous monday because Sunday is considered a beggining of a new week using default gregorian calendar.
     // For example if today is Sunday, the next Monday using Calendar would be the day after Sunday which is wrong.
     // That's why backward search may sound counter intuitive.
-    guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else { return nil }
+    guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else {
+      return nil
+    }
 
     return DAU.dateFormatter.string(from: monday)
   }
 
-  private func next(_ weekday: Weekday, direction: Calendar.SearchDirection = .forward, considerSelf: Bool = false) -> Date? {
+  private func next(
+    _ weekday: Weekday,
+    direction: Calendar.SearchDirection = .forward,
+    considerSelf: Bool = false
+  ) -> Date? {
     let calendar = DAU.calendar
     let components = DateComponents(weekday: weekday.rawValue)
 
@@ -408,10 +433,12 @@ extension Date {
       after: self,
       matching: components,
       matchingPolicy: .nextTime,
-      direction: direction)
+      direction: direction
+    )
   }
 
   enum Weekday: Int {
-    case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
+    case sunday = 1
+    case monday, tuesday, wednesday, thursday, friday, saturday
   }
 }

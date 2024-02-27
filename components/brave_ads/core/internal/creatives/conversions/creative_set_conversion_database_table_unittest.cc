@@ -29,7 +29,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, EmptySave) {
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true,
                             /*creative_set_conversions=*/::testing::IsEmpty()));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -57,7 +57,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -80,7 +80,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   // Assert
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, creative_set_conversions));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -113,7 +113,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
                                                   creative_set_conversion_1}));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
@@ -148,7 +148,7 @@ TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest,
   base::MockCallback<database::table::GetConversionsCallback> callback;
   EXPECT_CALL(callback, Run(/*success=*/true, CreativeSetConversionList{
                                                   creative_set_conversion_2}));
-  database_table_.GetAll(callback.Get());
+  database_table_.GetUnexpired(callback.Get());
 }
 
 TEST_F(BraveAdsCreativeSetConversionDatabaseTableTest, GetTableName) {

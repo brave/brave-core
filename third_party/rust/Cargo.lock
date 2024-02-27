@@ -4,7 +4,7 @@ version = 3
 
 [[package]]
 name = "adblock"
-version = "0.8.4"
+version = "0.8.8"
 dependencies = [
  "base64",
  "bitflags",
@@ -258,7 +258,7 @@ version = "1.0.0"
 
 [[package]]
 name = "challenge-bypass-ristretto"
-version = "1.0.1"
+version = "1.0.2"
 dependencies = [
  "base64",
  "crypto-mac 0.10.1",
@@ -2057,14 +2057,6 @@ dependencies = [
  "phf_shared 0.10.0",
  "proc-macro2",
  "quote",
-]
-
-[[package]]
-name = "strobe-rng"
-version = "0.2.0"
-dependencies = [
- "rand_core 0.6.4",
- "strobe-rs",
 ]
 
 [[package]]

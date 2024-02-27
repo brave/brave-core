@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import DesignSystem
@@ -15,7 +15,7 @@ class SignTransactionRequestUnion {
   let fromAddress: String
   let txDatas: [BraveWallet.TxDataUnion]
   let rawMessage: [BraveWallet.ByteArrayStringUnion]
-  
+
   init(
     id: Int32,
     chainId: String,
@@ -38,16 +38,16 @@ class SignTransactionRequestUnion {
 struct SignTransactionView: View {
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   enum Request {
     case signTransaction([BraveWallet.SignTransactionRequest])
     case signAllTransactions([BraveWallet.SignAllTransactionsRequest])
   }
-  
+
   var request: Request
   var cryptoStore: CryptoStore
   var onDismiss: () -> Void
-  
+
   @State private var txIndex: Int = 0
   @State private var showWarning: Bool = true
   @Environment(\.sizeCategory) private var sizeCategory
@@ -56,7 +56,7 @@ struct SignTransactionView: View {
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
   private let normalizedRequests: [SignTransactionRequestUnion]
-  
+
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
@@ -96,7 +96,7 @@ struct SignTransactionView: View {
       }
     }
   }
-  
+
   var navigationTitle: String {
     switch request {
     case .signTransaction:
@@ -105,11 +105,11 @@ struct SignTransactionView: View {
       return Strings.Wallet.signAllTransactionsTitle
     }
   }
-  
+
   private var currentRequest: SignTransactionRequestUnion {
     normalizedRequests[txIndex]
   }
-  
+
   private var network: BraveWallet.NetworkInfo? {
     networkStore.allChains.first(where: { $0.chainId == currentRequest.chainId })
   }
@@ -120,15 +120,16 @@ struct SignTransactionView: View {
       .map { instructionsForOneTx in
         instructionsForOneTx
           .map { TransactionParser.parseSolanaInstruction($0).toString }
-          .joined(separator: "\n\n====\n\n") // separator between each instruction
+          .joined(separator: "\n\n====\n\n")  // separator between each instruction
       }
-      .joined(separator: "\n\n\n\n") // separator between each transaction
+      .joined(separator: "\n\n\n\n")  // separator between each transaction
   }
 
   private var account: BraveWallet.AccountInfo {
-    keyringStore.allAccounts.first(where: { $0.address == currentRequest.fromAddress }) ?? keyringStore.selectedAccount
+    keyringStore.allAccounts.first(where: { $0.address == currentRequest.fromAddress })
+      ?? keyringStore.selectedAccount
   }
-  
+
   var body: some View {
     ScrollView(.vertical) {
       VStack {
@@ -143,8 +144,14 @@ struct SignTransactionView: View {
             if normalizedRequests.count > 1 {
               HStack {
                 Spacer()
-                Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, txIndex + 1, normalizedRequests.count))
-                  .fontWeight(.semibold)
+                Text(
+                  String.localizedStringWithFormat(
+                    Strings.Wallet.transactionCount,
+                    txIndex + 1,
+                    normalizedRequests.count
+                  )
+                )
+                .fontWeight(.semibold)
                 Button(action: next) {
                   Text(Strings.Wallet.next)
                     .fontWeight(.semibold)
@@ -155,7 +162,10 @@ struct SignTransactionView: View {
           }
           VStack(spacing: 12) {
             Blockie(address: account.address)
-              .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
+              .frame(
+                width: min(blockieSize, maxBlockieSize),
+                height: min(blockieSize, maxBlockieSize)
+              )
             AddressView(address: account.address) {
               Text(account.name)
             }
@@ -203,7 +213,7 @@ struct SignTransactionView: View {
     .navigationTitle(Text(navigationTitle))
     .background(Color(.braveGroupedBackground).edgesIgnoringSafeArea(.all))
   }
-  
+
   @ViewBuilder private var buttonsContainer: some View {
     if sizeCategory.isAccessibilityCategory {
       VStack {
@@ -215,13 +225,13 @@ struct SignTransactionView: View {
       }
     }
   }
-  
+
   @ViewBuilder private var buttons: some View {
     if showWarning {
       cancelButton
-      Button(action: { // Continue
+      Button {  // Continue
         showWarning = false
-      }) {
+      } label: {
         Text(Strings.Wallet.continueButtonTitle)
           .imageScale(.large)
       }
@@ -229,18 +239,22 @@ struct SignTransactionView: View {
       .disabled(txIndex != 0)
     } else {
       cancelButton
-      Button(action: { // approve
+      Button {  // approve
         switch request {
         case .signTransaction(_):
-          cryptoStore.handleWebpageRequestResponse(.signTransaction(approved: true, id: currentRequest.id))
-          
+          cryptoStore.handleWebpageRequestResponse(
+            .signTransaction(approved: true, id: currentRequest.id)
+          )
+
         case .signAllTransactions(_):
-          cryptoStore.handleWebpageRequestResponse(.signAllTransactions(approved: true, id: currentRequest.id))
+          cryptoStore.handleWebpageRequestResponse(
+            .signAllTransactions(approved: true, id: currentRequest.id)
+          )
         }
         if normalizedRequests.count == 1 {
           onDismiss()
         }
-      }) {
+      } label: {
         Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
           .fixedSize(horizontal: true, vertical: false)
           .imageScale(.large)
@@ -249,26 +263,30 @@ struct SignTransactionView: View {
       .disabled(txIndex != 0)
     }
   }
-  
+
   @ViewBuilder private var cancelButton: some View {
-    Button(action: { // cancel
+    Button {  // cancel
       switch request {
       case .signTransaction(_):
-        cryptoStore.handleWebpageRequestResponse(.signTransaction(approved: false, id: currentRequest.id))
+        cryptoStore.handleWebpageRequestResponse(
+          .signTransaction(approved: false, id: currentRequest.id)
+        )
       case .signAllTransactions(_):
-        cryptoStore.handleWebpageRequestResponse(.signAllTransactions(approved: false, id: currentRequest.id))
+        cryptoStore.handleWebpageRequestResponse(
+          .signAllTransactions(approved: false, id: currentRequest.id)
+        )
       }
       if normalizedRequests.count == 1 {
         onDismiss()
       }
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .fixedSize(horizontal: true, vertical: false)
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
   }
-  
+
   @ViewBuilder private var divider: some View {
     VStack {
       Text(Strings.Wallet.solanaSignTransactionDetails)
@@ -280,7 +298,7 @@ struct SignTransactionView: View {
       .frame(height: 4)
     }
   }
-  
+
   @ViewBuilder private var warningView: some View {
     VStack(alignment: .leading, spacing: 8) {
       Group {
@@ -291,9 +309,9 @@ struct SignTransactionView: View {
         Text(Strings.Wallet.solanaSignTransactionWarning)
           .font(.subheadline)
           .foregroundColor(Color(.braveErrorLabel))
-        Button(action: {
+        Button {
           openWalletURL(WalletConstants.signTransactionRiskLink)
-        }) {
+        } label: {
           Text(Strings.Wallet.learnMoreButton)
             .font(.subheadline)
             .foregroundColor(Color(.braveBlurpleTint))
@@ -307,7 +325,7 @@ struct SignTransactionView: View {
         .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
     )
   }
-  
+
   private func next() {
     if txIndex + 1 < normalizedRequests.count {
       txIndex += 1
@@ -323,16 +341,18 @@ struct SignTransaction_Previews: PreviewProvider {
     SignTransactionView(
       keyringStore: .previewStore,
       networkStore: .previewStore,
-      request: .signTransaction([BraveWallet.SignTransactionRequest(
-        originInfo: .init(),
-        id: 0,
-        from: BraveWallet.AccountInfo.previewAccount.accountId,
-        fromAddress: BraveWallet.AccountInfo.previewAccount.address,
-        txData: .init(),
-        rawMessage: .init(),
-        coin: .sol,
-        chainId: BraveWallet.SolanaMainnet
-      )]),
+      request: .signTransaction([
+        BraveWallet.SignTransactionRequest(
+          originInfo: .init(),
+          id: 0,
+          from: BraveWallet.AccountInfo.previewAccount.accountId,
+          fromAddress: BraveWallet.AccountInfo.previewAccount.address,
+          txData: .init(),
+          rawMessage: .init(),
+          coin: .sol,
+          chainId: BraveWallet.SolanaMainnet
+        )
+      ]),
       cryptoStore: .previewStore,
       onDismiss: {}
     )

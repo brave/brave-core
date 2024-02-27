@@ -1,9 +1,9 @@
+import SwiftUI
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 import UIKit
-import SwiftUI
 
 extension Gradient {
   init(braveGradient gradient: BraveGradient) {
@@ -18,7 +18,10 @@ extension Gradient {
 extension LinearGradient {
   /// Create a SwiftUI LinearGradient from a Brave defined Gradient
   public init(braveGradient gradient: BraveGradient) {
-    assert(gradient.type == .axial, "Attempting to create a LinearGradient with a non-linear Brave defined gradient")
+    assert(
+      gradient.type == .axial,
+      "Attempting to create a LinearGradient with a non-linear Brave defined gradient"
+    )
     self.init(
       gradient: Gradient(braveGradient: gradient),
       startPoint: .init(x: gradient.startPoint.x, y: gradient.startPoint.y),
@@ -31,7 +34,7 @@ public struct BraveGradient {
   public struct Stop {
     public var color: UIColor
     public var position: Double
-    
+
     public init(color: UIColor, position: Double) {
       self.color = color
       self.position = position
@@ -41,7 +44,7 @@ public struct BraveGradient {
   public var stops: [Stop]
   public var startPoint: CGPoint
   public var endPoint: CGPoint
-  
+
   public init(stops: [Stop], angle: Angle) {
     let alpha = angle.radians
     let startPoint = CGPoint(
@@ -54,7 +57,7 @@ public struct BraveGradient {
     )
     self.init(stops: stops, startPoint: startPoint, endPoint: endPoint)
   }
-  
+
   public init(stops: [Stop], startPoint: CGPoint, endPoint: CGPoint) {
     self.stops = stops
     self.startPoint = startPoint
@@ -62,11 +65,11 @@ public struct BraveGradient {
   }
 }
 
-public extension Angle {
+extension Angle {
   /// Create an Angle using degrees reported by Figma
   ///
   /// CSS gradients are flipped, therefore need to adjusted to look correct while in iOS
-  static func figmaDegrees(_ degrees: Double) -> Self {
+  public static func figmaDegrees(_ degrees: Double) -> Self {
     self.init(degrees: degrees + 180.0)
   }
 }

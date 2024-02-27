@@ -1,12 +1,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import BraveCore
-import SnapKit
 import BraveShared
+import Foundation
+import SnapKit
+import UIKit
 
 class AdsNotificationHandler: BraveAdsNotificationHandler {
   /// An ad was tapped and a URL should be opened
@@ -35,24 +35,40 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     self.presentingController = presentingController
     self.ads.notificationsHandler = self
   }
-    
+
   func showNotificationAd(_ notification: NotificationAd) {
     guard let presentingController = presentingController else { return }
-  
+
     let rewardsNotification = RewardsNotification(ad: notification) { [weak self] action in
       guard let self = self else { return }
       switch action {
       case .opened:
-        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .clicked, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(
+          notification.placementID,
+          eventType: .clicked,
+          completion: { _ in }
+        )
       case .dismissed:
-        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .dismissed, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(
+          notification.placementID,
+          eventType: .dismissed,
+          completion: { _ in }
+        )
       case .timedOut:
-        self.ads.triggerNotificationAdEvent(notification.placementID, eventType: .timedOut, completion: { _ in })
+        self.ads.triggerNotificationAdEvent(
+          notification.placementID,
+          eventType: .timedOut,
+          completion: { _ in }
+        )
       }
       self.actionOccured?(notification, action)
     }
-    
-    ads.triggerNotificationAdEvent(notification.placementID, eventType: .viewed, completion: { _ in })
+
+    ads.triggerNotificationAdEvent(
+      notification.placementID,
+      eventType: .viewed,
+      completion: { _ in }
+    )
     notificationsPresenter?.display(notification: rewardsNotification, from: presentingController)
   }
 
@@ -67,11 +83,13 @@ class AdsNotificationHandler: BraveAdsNotificationHandler {
     func topViewController(startingFrom viewController: UIViewController) -> UIViewController {
       var top = viewController
       if let navigationController = top as? UINavigationController,
-        let vc = navigationController.visibleViewController {
+        let vc = navigationController.visibleViewController
+      {
         return topViewController(startingFrom: vc)
       }
       if let tabController = top as? UITabBarController,
-        let vc = tabController.selectedViewController {
+        let vc = tabController.selectedViewController
+      {
         return topViewController(startingFrom: vc)
       }
       while let next = top.presentedViewController {

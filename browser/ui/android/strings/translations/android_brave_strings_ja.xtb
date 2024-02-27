@@ -427,18 +427,10 @@
 <translation id="2394961582378297792">ログアウト済み</translation>
 <translation id="5308380583665731573">接続</translation>
 <translation id="3368922792935385530">接続済み</translation>
-<translation id="8673913984316081937">ウォレットの認証は任意です。</translation>
-<translation id="8558636200953226885">認証を行うと、次のことが可能となります。</translation>
-<translation id="8697510149346635496">プライバシーを重視した広告を閲覧して獲得したBATを引き出す</translation>
-<translation id="1481480653609649134">クレジットカードやその他の資金源で追加のBATを購入する</translation>
-<translation id="9096003370755878766">過去にBrave Rewardsウォレットに追加した可能性のあるBATを引き出す</translation>
-<translation id="1554282356558968486">Braveのウォレットサービスは以下の企業のご協力を得てご提供しています</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Upholdはリクエストされたサービスに基づき、あなたの身元の確認を必要とする場合があります。</translation>
-<translation id="3200197118442451932">Brave Software Inc.では、アカウントを開設する際に<ph name="WALLET_PROVIDER"/>に提供される個人情報について処理、保存、アクセスすることは一切ありません。</translation>
 <translation id="1665118090708049096"><ph name="WALLET_PROVIDER"/>アカウントへ移動</translation>
 <translation id="4858636682078269312"><ph name="WALLET_PROVIDER"/>アカウントにログイン</translation>
 <translation id="8874184842967597500">未接続</translation>
@@ -525,7 +517,7 @@
 <translation id="2225863440766607138">トラッカー</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">この3時間で、 Braveブラウザで<ph name="COUNT"/>件のトラッカーと &amp; 広告をブロックしました。</translation>
-<translation id="3621193901658023971">トラック広告をブロックすることで、Braveで主要なニュースサイトを最大6倍の速さで閲覧しましょう。</translation>
+<translation id="5005713153542196658">Braveでは、トラッカーや広告をブロックすることで、主要なニュースサイトを最大6倍速く閲覧できます。</translation>
 <translation id="7427567994475794038">プライバシーレポートをONにして、過去3時間にブロックされたトラッカー広告の数を確認しましょう。</translation>
 <translation id="2053891538879944400">Braveブラウザで <ph name="DATA"/> <ph name="DATA_TEXT"/> の通信量を節約しました。</translation>
 <translation id="8640064498452534195">プライバシーレポートをONにして、保存したデータ量を確認します。</translation>
@@ -590,6 +582,10 @@
 <translation id="8622329973403382303">クイックツアーをご覧になり、Rewardsの達人として歴史に名を残すための仕組みをマスターしてください！</translation>
 <translation id="3479552764303398839">後で</translation>
 <translation id="7138272885617540195">Brave外のアプリでアプリのリンクを開くことを許可</translation>
+<translation id="4954512758656527938">デフォルトのイーサリアムウォレット</translation>
+<translation id="7701023802820268122">デフォルトの Solana ウォレット</translation>
+<translation id="7701040980221191251">なし</translation>
+<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="8792121506918889955">WebRTC IP処理ポリシー</translation>
 <translation id="8798099450830957504">既定</translation>
 <translation id="1822560017823072927">デフォルトのパブリックインターフェイスとプライベートインターフェイス</translation>
@@ -685,7 +681,6 @@
 <translation id="8475984867371585028">表示されているNFTを編集する</translation>
 <translation id="5050890334032852465">アカウントのウォッチリストを保存</translation>
 <translation id="7755766175599167100">トークンの検索</translation>
-<translation id="8488282162676695335">Braveウォレット</translation>
 <translation id="3784455785234192852">ロック</translation>
 <translation id="4412698727486357573">ヘルプセンター</translation>
 <translation id="8796429300536029044">NFTの詳細</translation>
@@ -717,12 +712,12 @@
 <translation id="8272917646984397798">すべての接続を保護します</translation>
 <translation id="1751947227857853925">最大 100 Mbps の速度が無制限</translation>
 <translation id="1400240082805528049">24 時間年中無休のサポート</translation>
-<translation id="5051030058817632680">不要なネットワーク接続をブロックします</translation>
+<translation id="5892534145504632332">すべてのアプリとデバイス全体を保護</translation>
+<translation id="7195416926059527505">ご自宅や公共Wi-Fiでの安全確保に</translation>
+<translation id="1354700000739359839">最高100 Mbps、超高速のパフォーマンス</translation>
 <translation id="3510283489391432976">地域/国の場所を選択してください</translation>
-<translation id="4390800080658195654">オンラインでの匿名状態を維持</translation>
-<translation id="639981156979733813">最大 100 Mbps の速度をサポート</translation>
-<translation id="765343799669302337">WireGuardの安全な暗号化されたVPNトンネルを使用します</translation>
-<translation id="1571230671455380494">私たちはお客様の情報を共有したり販売したりすることは決してありません</translation>
+<translation id="7695158478627528928">Braveはブラウザ上のアクティビティを記録しません</translation>
+<translation id="4575683170451975058">1つのサブスクリプションで5台のデバイスを保護</translation>
 <translation id="276866628038850725">すべてのプランには 7 日間の無料トライアルが含まれています！</translation>
 <translation id="1532536259167115948">月間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">年間サブスクリプション <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / 年</translation>
 <translation id="2655185358771731232">7 日間無料でお試しいただけます。7 日後、プラン料金が請求されます。すべてのサブスクリプションは自動更新されますが、更新前にキャンセルできます。</translation>
 <translation id="6053992191006521518">無料で試す</translation>
+<translation id="3990956504562716932">7日間無料でお試しください</translation>
 <translation id="721747358270435486">VPN をインストール</translation>
 <translation id="836074276610740314">VPN プロファイルをインストール</translation>
 <translation id="8021842065465097929">Brave は VPN プロファイルをインストールします。</translation>
@@ -1117,71 +1113,6 @@
 <translation id="591648995518106347">リーダーモードで対象の記事を自動で読み込む</translation>
 <translation id="1295796122927221823">リーダーモードで表示</translation>
 <translation id="5062934803872044756"><ph name="NETWORK"/>上の<ph name="SYMBOL"/></translation>
-<translation id="295620834661738195">Brave Playlist</translation>
-<translation id="4850886885716139402">表示</translation>
-<translation id="7392941176393379100">「<ph name="PLAYLIST_NAME"/>」に追加</translation>
-<translation id="8289472222022674331">プレイリストのデータを管理する</translation>
-<translation id="7650602357673790368">プレイリストは、オフラインで再生するために、デフォルトでコンテンツを端末に自動保存します（プライベートと共有プレイリストの両方において）。WiFi環境でない場合、自動保存は携帯電話のデータを使用します。このデフォルトを変更するには、設定を使用します。</translation>
-<translation id="5900576657906675258">プレイリストにアイテムを追加する</translation>
-<translation id="349846214503465941">プレイリストを有効にする</translation>
-<translation id="1309636029062006520">お気に入りのオーディオやビデオのプレイリストを作り、いつでもどこでも再生できます。</translation>
-<translation id="3561815498111282415">自動でオフライン再生可能にする</translation>
-<translation id="1832424694374124654">新しいプレイリストアイテムを自動的にデバイスに保存するので、インターネットに接続していなくても再生が可能です。</translation>
-<translation id="8103022210423023846">自動保存ON</translation>
-<translation id="3926329432879804185">自動保存OFF</translation>
-<translation id="7768812595186089508">Wi-Fi接続時のみ自動保存</translation>
-<translation id="5939518447894949180">リセット</translation>
-<translation id="8199028711686989861">オフラインモードのストレージを含む、プレイリストからすべてのビデオを削除します。</translation>
-<translation id="5916664084637901428">オン</translation>
-<translation id="5860033963881614850">オフ</translation>
-<translation id="2920568868625746681">Wifiのみ</translation>
-<translation id="4590997608186539865">Playlist</translation>
-<translation id="7525067979554623046">Create</translation>
-<translation id="5491049004699827548">最初のプレイリストを作成する</translation>
-<translation id="5319108110887582146">お気に入りのオーディオやビデオのプレイリストを作り、いつでもどこでも再生可能。オフラインでも。</translation>
-<translation id="6802849415466883498">プレイリストを作成する</translation>
-<translation id="8525248723479742219">後で再生する</translation>
-<translation id="7453007860684252933">ブラウズして追加</translation>
-<translation id="9014883386413828317">お気に入りのコンテンツを追加します。画面の右下にある（＋）ボタンを探してください。</translation>
-<translation id="5928669500312007783">メディアをブラウズ</translation>
-<translation id="8152485753254079984">新しいプレイリスト</translation>
-<translation id="9130105487623071247">プレイリスト名</translation>
-<translation id="726581235416249619">無題のプレイリスト</translation>
-<translation id="1456254983411148628">データを削除する</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/>選択済み</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/>件</translation>
-<translation id="2317629745818459803">すべて再生</translation>
-<translation id="7544853251252956727">シャッフル</translation>
-<translation id="2881339830231736485">最近再生したもの</translation>
-<translation id="7636458383879257005">タップ、長押し、またはドラッグ</translation>
-<translation id="8120600068258956006">プレイリストに追加</translation>
-<translation id="39991094779686024">Playlist</translation>
-<translation id="1710072605877822603">メディアを追加する</translation>
-<translation id="3874252678044305931">Braveプレイリストに動画を追加しましょう。好きなときに、オフラインでも視聴できます。</translation>
-<translation id="8973629800378391099">お気に入りのコンテンツのプレイリストを作成しましょう。モバイルデータを節約しながら、広告なしで再生を楽しめます。</translation>
-<translation id="4936812987266342401">ボタンをタップするだけでプレイリストに動画を追加できます</translation>
-<translation id="6263657785571415306">気になったらいつでも追加: 視聴中に別の動画を追加して、後で視聴できます。</translation>
-<translation id="2839555636100404687">プレイリストで動画再生をもっと快適に</translation>
-<translation id="9079526681359439081">バックグラウンド再生、ロック画面からのコントロールなど、さまざまな機能を利用できます。</translation>
-<translation id="3620862810055853183">Playlistを開く</translation>
-<translation id="3861012838874771868">プレイリスト設定を開く</translation>
-<translation id="5220099266891491416">プレイリスト非表示ボタン</translation>
-<translation id="7416347631175891923">試してみてください！</translation>
-<translation id="1173894706177603556">名前を変更</translation>
-<translation id="1620612903815671893">プレイリストのオフラインデータを削除する</translation>
-<translation id="3261711068865275261">オフラインのデータをすべて削除する</translation>
-<translation id="6653691766801349738">プレイリストを保存してオフラインで使用する</translation>
-<translation id="8708086574143054053">すべてのプレイリストをオフラインで使用できるように保存する</translation>
-<translation id="3596306474342941843">プレイリストを削除する</translation>
-<translation id="7765158879357617694">移動</translation>
-<translation id="3803384303807438047">アイテムのオフラインデータを削除する</translation>
-<translation id="4195643157523330669">新しいタブで開く</translation>
-<translation id="4243710787042215766">プライベートタブで開きます</translation>
-<translation id="8261506727792406068">削除</translation>
-<translation id="377872456482681602">まずアイテムを選択してください</translation>
-<translation id="6172429305139364624">プレイリストアイテムがキャッシュされていません。\nオフラインモードのためにアイテムをキャッシュしてください。</translation>
-<translation id="3631131732607750008">コンテンツの有効期限が切れています。数秒後に再試行してください。</translation>
-<translation id="286472539388773794">有効なプレイリスト名を入力してください</translation>
 <translation id="9085765419770918643">ここにはまだNFTはありません。</translation>
 <translation id="8445532667841598737">追加する準備はできていますか？下のボタンをクリックしてインポートしてください。</translation>
 <translation id="5925465310724910998">NFTを自動で表示しますか？</translation>
@@ -1190,12 +1121,6 @@
 <translation id="622372328961630111">サードパーティのAPIを使用して、所有するNFTを自動的にウォレットに追加します。<ph name="BEGIN_LINK_1"/>詳細はこちらをご覧ください。<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">アドレス検索テーブルのアカウント:</translation>
 <translation id="7659483790930268440">アドレス検索テーブルのインデックス:</translation>
-<translation id="7322560193401221004">ファイルの再生位置を記憶</translation>
-<translation id="7505951907514709271">個別ファイルの場合、最後に一時停止したところから再生を開始します</translation>
-<translation id="6835165453349969605">リストの再生位置を記憶</translation>
-<translation id="6344103698928069918">プレイリストで最後に一時停止したところから再生を開始します</translation>
-<translation id="8141583471142904652">連続再生</translation>
-<translation id="851432578283946230">プレイリスト内の次のアイテムを自動再生します</translation>
 <translation id="7853202427316060426">アクティビティ</translation>
 <translation id="4932733599132424254">日付</translation>
 <translation id="346505172740911461">市場価格</translation>
@@ -1212,6 +1137,80 @@
 <translation id="2471230424465522689">利用開始日時</translation>
 <translation id="4841860051609590575">リクエストID</translation>
 <translation id="1179407411385015942">Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです</translation>
+<translation id="4109670531935487117">アドレスバー入力中に自動でサイト候補を表示</translation>
 <translation id="1250335737108905610">Leoデータのリセットとクリア</translation>
 <translation id="6165101586663336913">Leoアシスタントのリセットは、将来的にLeoを使用するためのオプトインが必要になり、チャット履歴も消去されます。チャット履歴の消去は以前のLeoとの会話をすべて削除します。この操作は取り消せません。</translation>
+<translation id="3692772534525889713">Playストアでの購入をBraveアカウントにリンクすると、他のデバイスでBrave Leoを使用できます。</translation>
+<translation id="73236265316873967">Leoプレミアム</translation>
+<translation id="1166682575529520472">毎月</translation>
+<translation id="451189393813405346">Leoに聞く</translation>
+<translation id="7322560193401221004">ファイルの再生位置を記憶</translation>
+<translation id="7505951907514709271">個別ファイルの場合、最後に一時停止したところから再生を開始します</translation>
+<translation id="6835165453349969605">リストの再生位置を記憶</translation>
+<translation id="6344103698928069918">プレイリストで最後に一時停止したところから再生を開始します</translation>
+<translation id="8141583471142904652">連続再生</translation>
+<translation id="851432578283946230">プレイリスト内の次のアイテムを自動再生します</translation>
+<translation id="295620834661738195">Brave Playlist</translation>
+<translation id="4850886885716139402">表示</translation>
+<translation id="7392941176393379100">「<ph name="PLAYLIST_NAME"/>」に追加</translation>
+<translation id="349846214503465941">プレイリストを有効にする</translation>
+<translation id="1309636029062006520">お気に入りのオーディオやビデオのプレイリストを作り、いつでもどこでも再生できます。</translation>
+<translation id="7899390017499980820">プレイリストに追加ボタン</translation>
+<translation id="6901152954398668317">「プレイリストに追加」ボタンの表示/非表示で、メディアの追加/削除を素早く行えます。</translation>
+<translation id="5939518447894949180">リセット</translation>
+<translation id="8199028711686989861">オフラインモードのストレージを含む、プレイリストからすべてのビデオを削除します。</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Create</translation>
+<translation id="8525248723479742219">後で再生する</translation>
+<translation id="7453007860684252933">ブラウズして追加</translation>
+<translation id="9014883386413828317">お気に入りのコンテンツを追加します。画面の右下にある（＋）ボタンを探してください。</translation>
+<translation id="5928669500312007783">メディアをブラウズ</translation>
+<translation id="8152485753254079984">新しいプレイリスト</translation>
+<translation id="9130105487623071247">プレイリスト名</translation>
+<translation id="726581235416249619">無題のプレイリスト</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/>選択済み</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/>件</translation>
+<translation id="2317629745818459803">すべて再生</translation>
+<translation id="7544853251252956727">シャッフル</translation>
+<translation id="2881339830231736485">最近再生したもの</translation>
+<translation id="8120600068258956006">プレイリストに追加</translation>
+<translation id="39991094779686024">Playlist</translation>
+<translation id="1710072605877822603">メディアを追加する</translation>
+<translation id="3874252678044305931">Braveプレイリストに動画を追加しましょう。好きなときに、オフラインでも視聴できます。</translation>
+<translation id="8973629800378391099">お気に入りのコンテンツのプレイリストを作成しましょう。モバイルデータを節約しながら、広告なしで再生を楽しめます。</translation>
+<translation id="4936812987266342401">ボタンをタップするだけでプレイリストに動画を追加できます</translation>
+<translation id="6263657785571415306">気になったらいつでも追加: 視聴中に別の動画を追加して、後で視聴できます。</translation>
+<translation id="2839555636100404687">プレイリストで動画再生をもっと快適に</translation>
+<translation id="9079526681359439081">バックグラウンド再生、ロック画面からのコントロールなど、さまざまな機能を利用できます。</translation>
+<translation id="3620862810055853183">Playlistを開く</translation>
+<translation id="3861012838874771868">プレイリスト設定を開く</translation>
+<translation id="5220099266891491416">プレイリスト非表示ボタン</translation>
+<translation id="7416347631175891923">試してみてください！</translation>
+<translation id="1173894706177603556">名前を変更</translation>
+<translation id="3596306474342941843">プレイリストを削除する</translation>
+<translation id="7765158879357617694">移動</translation>
+<translation id="3803384303807438047">アイテムのオフラインデータを削除する</translation>
+<translation id="4195643157523330669">新しいタブで開く</translation>
+<translation id="4243710787042215766">プライベートタブで開きます</translation>
+<translation id="8261506727792406068">削除</translation>
+<translation id="377872456482681602">まずアイテムを選択してください</translation>
+<translation id="286472539388773794">有効なプレイリスト名を入力してください</translation>
+<translation id="2824489375399072491">共有先:</translation>
+<translation id="5319532905552885478">メディアコンテンツはすでにデフォルトのプレイリストに追加されています</translation>
+<translation id="4802584673094436231">準備中...</translation>
+<translation id="481455355267255546">次へ</translation>
+<translation id="5474757891469990756">プレミアムでLeoの全能力を引き出してください。</translation>
+<translation id="4173478269537830374">さまざまなAIモデルを探索</translation>
+<translation id="3453542753968940696">さまざまなスキルを持つパワフルなモデルへの優先アクセス。</translation>
+<translation id="3245401959451976966">クリエイティビティを発揮</translation>
+<translation id="5031778211368112461">クリエイティブなタスクやコンテンツ生成により適したモデルにアクセスできます。</translation>
+<translation id="4165928407303989823">トピックに集中</translation>
+<translation id="298783097210745222">より細やかなニュアンスの会話に対して、より正確な回答を提供します。</translation>
+<translation id="2389665228467129817">より長時間のチャット</translation>
+<translation id="4314705522985583059">より高いレート制限により、より長い会話が可能になります。</translation>
+<translation id="6365289557497555234">すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。</translation>
+<translation id="6637015365469044269">今すぐアップグレード</translation>
+<translation id="614530507403667291">新しい会話向けデフォルトモデル</translation>
+<translation id="4071849832011229600">デフォルトモデル</translation>
+<translation id="7557539689487606886">プレミアムプラン</translation>
 </translationbundle>

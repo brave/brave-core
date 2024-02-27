@@ -1,12 +1,12 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Fuzi
-import Shared
 import OSLog
+import Shared
 
 /// A set of subscription RSS feed URLs defined through Outline Processor Markup Language
 public struct OPML: Equatable {
@@ -38,7 +38,9 @@ public class OPMLParser {
       return nil
     }
     let title = document.firstChild(xpath: "//head/title")?.stringValue
-    let outlines = document.xpath("//outline[contains(@type, \"rss\") and not(contains(@isComment, \"true\"))]").map { element in
+    let outlines = document.xpath(
+      "//outline[contains(@type, \"rss\") and not(contains(@isComment, \"true\"))]"
+    ).map { element in
       OPML.Outline(
         text: element["text"],
         xmlUrl: element["xmlUrl"]

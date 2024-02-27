@@ -1,12 +1,12 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
 import BraveShared
 import BraveUI
+import Foundation
 
 #if DEBUG
 
@@ -22,7 +22,8 @@ extension WalletStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
 }
@@ -39,7 +40,8 @@ extension CryptoStore {
       txService: MockTxService(),
       ethTxManagerProxy: MockEthTxManagerProxy(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
-      ipfsApi: TestIpfsAPI()
+      ipfsApi: TestIpfsAPI(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
 }
@@ -54,7 +56,7 @@ extension NetworkStore {
       userAssetManager: TestableWalletUserAssetManager()
     )
   }
-  
+
   static var previewStoreWithCustomNetworkAdded: NetworkStore {
     let keyringService = MockKeyringService()
     let rpcService = MockJsonRpcService()
@@ -77,7 +79,7 @@ extension NetworkStore {
         isEip1559: false
       )
     ) { _, _, _ in }
-      
+
     let store = NetworkStore(
       keyringService: keyringService,
       rpcService: rpcService,
@@ -91,13 +93,15 @@ extension NetworkStore {
 
 extension KeyringStore {
   static var previewStore: KeyringStore {
-    .init(keyringService: MockKeyringService(),
-          walletService: MockBraveWalletService(),
-          rpcService: MockJsonRpcService()
+    .init(
+      keyringService: MockKeyringService(),
+      walletService: MockBraveWalletService(),
+      rpcService: MockJsonRpcService(),
+      walletP3A: TestBraveWalletP3A()
     )
   }
   static var previewStoreWithWalletCreated: KeyringStore {
-    let store = KeyringStore(keyringService: MockKeyringService(), walletService: MockBraveWalletService(), rpcService: MockJsonRpcService())
+    let store = KeyringStore.previewStore
     store.createWallet(password: "password")
     return store
   }
@@ -212,7 +216,7 @@ extension TransactionConfirmationStore {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       keyringService: {
         let service = MockKeyringService()
-        service.createWallet("password") { _  in }
+        service.createWallet("password") { _ in }
         return service
       }(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,
@@ -273,13 +277,13 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     solTxManagerProxy._makeSystemProgramTransferTxData = { _, _, _, completion in
       completion(.init(), .success, "")
     }
-    solTxManagerProxy._makeTokenProgramTransferTxData = {_, _, _, _, _, completion in
+    solTxManagerProxy._makeTokenProgramTransferTxData = { _, _, _, _, _, completion in
       completion(.init(), .success, "")
     }
     solTxManagerProxy._estimatedTxFee = { _, _, completion in
       completion(UInt64(0), .success, "")
     }
-    
+
     return solTxManagerProxy
   }
 }
@@ -297,7 +301,7 @@ extension BraveWallet.TestAssetRatioService {
     assetRatioService._buyUrlV1 = { _, _, _, _, _, _, completion in
       completion("", nil)
     }
-    
+
     return assetRatioService
   }
 }

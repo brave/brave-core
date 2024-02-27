@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Закрыть старые вкладки?</translation>
 <translation id="1215127405478249895">Посмотреть вкладки</translation>
 <translation id="125153950246128346">Нажмите, чтобы перейти на другую вкладку</translation>
+<translation id="1326271443836399892">Проверить настройки упорядочивания.</translation>
 <translation id="1657719826150349398">Переместить вкладку вниз</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> вкладка}one{<ph name="TABS_COUNT_MANY"/> вкладка}few{<ph name="TABS_COUNT_MANY"/> вкладки}many{<ph name="TABS_COUNT_MANY"/> вкладок}other{<ph name="TABS_COUNT_MANY"/> вкладки}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Добавить в закладки <ph name="TABS_COUNT_ONE"/> выбранную вкладку}one{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранную вкладку}few{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранные вкладки}many{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранных вкладок}other{Добавить в закладки <ph name="TABS_COUNT_MANY"/> выбранной вкладки}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Удалить из группы</translation>
 <translation id="3008554597174452548">Не отслеживать товар</translation>
 <translation id="3052964831964880138"><ph name="PRODUCT_NAME"/>: скидка <ph name="PRICE_DROP"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{В архиве <ph name="TABS_COUNT_ONE"/> вкладка}one{В архиве <ph name="TABS_COUNT_MANY"/> вкладка}few{В архиве <ph name="TABS_COUNT_MANY"/> вкладки}many{В архиве <ph name="TABS_COUNT_MANY"/> вкладок}other{В архиве <ph name="TABS_COUNT_MANY"/> вкладки}}</translation>
 <translation id="3194464645767632461">оценка</translation>
 <translation id="3291470810748040983">Если цена на открытой вкладке снизится, вы получите оповещение.</translation>
 <translation id="3328308545011660196">Подсказка: обнаружены похожие вкладки (<ph name="NUMBER_OF_TABS"/>). Сгруппировать их?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Получать уведомления</translation>
 <translation id="4133493477912226187">Обнаружены похожие вкладки (<ph name="NUMBER_OF_TABS"/>). Сгруппировать их?</translation>
 <translation id="4212246570487010370">Продолжить просмотр</translation>
+<translation id="427987768447457592">Новая группа вкладок</translation>
 <translation id="4648718555153979859">Вкладки сгруппированы здесь</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> отзыв).}one{(<ph name="REVIEWS_COUNT_MANY"/> отзыв).}few{(<ph name="REVIEWS_COUNT_MANY"/> отзыва).}many{(<ph name="REVIEWS_COUNT_MANY"/> отзывов).}other{(<ph name="REVIEWS_COUNT_MANY"/> отзыва).}}</translation>
 <translation id="4850886885716139402">Посмотреть</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Скрыть полноэкранную сетку с вкладками</translation>
 <translation id="5076161749301278626">Показать отзывы о магазине?</translation>
 <translation id="5082793167783849073">Сравнивайте страницы быстрее, объединяя их в группы. Чтобы начать, нажмите на ссылку и удерживайте ее.</translation>
+<translation id="5161254044473106830">Введите название</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Вы давно не открывали <ph name="TABS_COUNT_ONE"/> вкладку.}one{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладку.}few{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладки.}many{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладок.}other{Вы давно не открывали <ph name="TABS_COUNT_MANY"/> вкладки.}}</translation>
 <translation id="5339733443032484186">Ваша последняя вкладка</translation>
 <translation id="5490235265819901748">Группа вкладок развернута</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Переместить вкладку вправо</translation>
 <translation id="7966321538264951561">Скрыть подсказки.</translation>
 <translation id="8029301326595421733">Информация об этом магазине открыта на весь экран</translation>
-<translation id="814503310257431685">Показать все</translation>
 <translation id="8205266828577616993">Переместить вкладку вверх</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Закрыть <ph name="TABS_COUNT_ONE"/> выбранную вкладку}one{Закрыть <ph name="TABS_COUNT_MANY"/> выбранную вкладку}few{Закрыть <ph name="TABS_COUNT_MANY"/> выбранные вкладки}many{Закрыть <ph name="TABS_COUNT_MANY"/> выбранных вкладок}other{Закрыть <ph name="TABS_COUNT_MANY"/> выбранной вкладки}}</translation>
 <translation id="8398929769197326728">Новая папка – <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">Информация об этом магазине закрыта</translation>
 <translation id="9150694013019234766">В нижней части экрана можно переключаться между вкладками, объединенными в группы</translation>
 <translation id="9169594135889675189">Добавить новую вкладку в группу</translation>
+<translation id="955558140275419384">Откройте этот редактор, чтобы упорядочить все вкладки, отправленные в архив.</translation>
 <translation id="959682366969460160">Организация работы</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {Последние посещенные сайты можно найти в разделе «Недавние вкладки» главного меню Brave. Информация о вкладке инкогнито недоступна.}

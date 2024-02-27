@@ -1,23 +1,23 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
-import BraveUI
 import BraveStrings
+import BraveUI
+import Foundation
 import Introspect
+import SwiftUI
 
 struct FollowingListContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
-  
+
   var body: some View {
     FollowingListView(
       fetchSources: { Array(dataSource.followedSources) },
       isFollowingSource: { dataSource.isFollowingSourceBinding(source: $0) },
       fetchChannels: { Array(dataSource.followedChannels) },
-      isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0)},
+      isFollowingChannel: { dataSource.isFollowingChannelBinding(channel: $0) },
       fetchRSSFeeds: { dataSource.rssFeedLocations },
       isFollowingRSSFeed: { dataSource.isFollowingRSSFeedBinding(feed: $0) }
     )
@@ -31,18 +31,19 @@ struct FollowingListView: View {
   var isFollowingChannel: (FeedChannel) -> Binding<Bool>
   var fetchRSSFeeds: () -> [RSSFeedLocation]
   var isFollowingRSSFeed: (RSSFeedLocation) -> Binding<Bool>
-  
+
   @State private var followedSources: [FeedItem.Source] = []
   @State private var followedChannels: [FeedChannel] = []
   @State private var followedRSSFeeds: [RSSFeedLocation] = []
-  
+
   var body: some View {
     List {
       if !followedChannels.isEmpty {
         ForEach(followedChannels) { channel in
-          let shouldShowRegionSubtitle = followedChannels.filter {
-            $0.name == channel.name
-          }.count > 1
+          let shouldShowRegionSubtitle =
+            followedChannels.filter {
+              $0.name == channel.name
+            }.count > 1
           ChannelLabel(
             title: channel.name,
             subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,

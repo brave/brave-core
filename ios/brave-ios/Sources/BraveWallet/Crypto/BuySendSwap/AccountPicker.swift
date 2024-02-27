@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import Strings
+import SwiftUI
 
 struct AccountPicker: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -80,7 +80,9 @@ struct AccountPicker: View {
       isPresentingPicker = true
     }
     .accessibilityLabel(Strings.Wallet.selectedAccountAccessibilityLabel)
-    .accessibilityValue("\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)")
+    .accessibilityValue(
+      "\(keyringStore.selectedAccount.name), \(keyringStore.selectedAccount.address.truncatedAddress)"
+    )
   }
 
   private var networkPickerView: some View {

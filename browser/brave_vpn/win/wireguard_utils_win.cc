@@ -16,16 +16,17 @@
 #include "base/command_line.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/path_service.h"
 #include "base/process/launch.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
 #include "base/win/com_init_util.h"
 #include "base/win/scoped_bstr.h"
-#include "brave/components/brave_vpn/common/win/utils.h"
-#include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 #include "brave/browser/brave_vpn/win/service_constants.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
+#include "brave/components/brave_vpn/common/wireguard/win/brave_wireguard_manager_idl.h"
 
 namespace brave_vpn {
 
@@ -193,7 +194,8 @@ void WireguardGenerateKeypair(
 }
 
 void ShowBraveVpnStatusTrayIcon() {
-  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath();
+  auto executable_path = brave_vpn::GetBraveVPNWireguardServiceExecutablePath(
+      base::PathService::CheckedGet(base::DIR_ASSETS));
   base::CommandLine interactive_cmd(executable_path);
   interactive_cmd.AppendSwitch(
       brave_vpn::kBraveVpnWireguardServiceInteractiveSwitchName);

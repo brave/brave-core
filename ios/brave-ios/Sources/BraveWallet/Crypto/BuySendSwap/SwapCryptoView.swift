@@ -1,13 +1,13 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BigNumber
 import BraveCore
 import DesignSystem
 import Strings
-import BigNumber
+import SwiftUI
 
 struct ShortcutAmountGrid: View {
   enum Amount: Double, CaseIterable {
@@ -30,7 +30,9 @@ struct ShortcutAmountGrid: View {
   var body: some View {
     HStack(spacing: 8) {
       ForEach(Amount.allCases, id: \.rawValue) { amount in
-        Button(action: { action(amount) }) {
+        Button {
+          action(amount)
+        } label: {
           Text(amount.label)
             .lineLimit(1)
             .minimumScaleFactor(0.75)
@@ -79,18 +81,26 @@ struct SlippageGrid: View {
     HStack(spacing: 8) {
       ForEach(Option.predefinedOptions, id: \.id) { option in
         let isSelected = isPredefinedOptionSelected(option.id)
-        Button(action: {
+        Button {
           customSlippage = nil
           selectedSlippage = option
           resignFirstResponder()
-        }) {
+        } label: {
           Text(option.localizedString)
             .lineLimit(1)
             .minimumScaleFactor(0.75)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
+            .foregroundColor(
+              Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel)
+            )
+            .background(
+              BuySendSwapGridBackgroundView(
+                backgroundColor: Color(
+                  isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+                )
+              )
+            )
             .padding(.top, 8)
         }
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -117,14 +127,25 @@ struct SlippageGrid: View {
         .frame(maxWidth: .infinity)
         .accentColor(customSlippage != nil ? .white : nil)
         .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
-        .background(BuySendSwapGridBackgroundView(backgroundColor: Color(customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
+        .background(
+          BuySendSwapGridBackgroundView(
+            backgroundColor: Color(
+              customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+            )
+          )
+        )
         .padding(.top, 8)
         .accessibilityAddTraits(customSlippage != nil ? .isSelected : [])
     }
   }
 
   func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
 
   private func isPredefinedOptionSelected(_ id: Double) -> Bool {
@@ -140,17 +161,22 @@ struct MarketPriceView: View {
   var body: some View {
     HStack {
       VStack(alignment: .leading) {
-        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoMarketPriceTitle, swapTokenStore.selectedFromToken?.symbol ?? ""))
-          .foregroundColor(Color(.secondaryBraveLabel))
-          .font(.subheadline)
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.swapCryptoMarketPriceTitle,
+            swapTokenStore.selectedFromToken?.symbol ?? ""
+          )
+        )
+        .foregroundColor(Color(.secondaryBraveLabel))
+        .font(.subheadline)
         Text(swapTokenStore.selectedFromTokenPrice)
           .font(.title3.weight(.semibold))
       }
       .accessibilityElement(children: .combine)
       Spacer()
-      Button(action: {
+      Button {
         swapTokenStore.fetchPriceQuote(base: .perSellAsset)
-      }) {
+      } label: {
         Label(Strings.Wallet.refreshMarketPriceLabel, braveSystemImage: "leo.refresh")
           .labelStyle(.iconOnly)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -175,29 +201,29 @@ struct SwapCryptoView: View {
 
   var completion: ((_ success: Bool) -> Void)?
   var onDismiss: () -> Void
-  
+
   enum DEXAggregator {
     case zeroX
     case jupiter
-    
+
     var displayName: String {
       switch self {
       case .zeroX: return "0x"
       case .jupiter: return "Jupiter"
       }
     }
-    
+
     var url: URL {
       switch self {
       case .zeroX: return WalletConstants.zeroXPrivacyPolicy
       case .jupiter: return WalletConstants.jupiterPrivacyPolicy
       }
     }
-    
+
     var swapDexAggrigatorNote: String {
       String.localizedStringWithFormat(Strings.Wallet.swapDexAggrigatorNote, displayName)
     }
-    
+
     var swapDexAggrigatorDisclaimer: String {
       let network: String
       switch self {
@@ -205,10 +231,14 @@ struct SwapCryptoView: View {
       case .jupiter: network = Strings.Wallet.coinTypeSolana
       }
       return String.localizedStringWithFormat(
-        Strings.Wallet.swapDexAggrigatorDisclaimer, displayName, network, displayName)
+        Strings.Wallet.swapDexAggrigatorDisclaimer,
+        displayName,
+        network,
+        displayName
+      )
     }
   }
-  
+
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
     networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
@@ -219,9 +249,14 @@ struct SwapCryptoView: View {
       VStack(alignment: .leading, spacing: 4.0) {
         Text(Strings.Wallet.swapCryptoUnsupportNetworkTitle)
           .font(.headline)
-        Text(String.localizedStringWithFormat(Strings.Wallet.swapCryptoUnsupportNetworkDescription, networkStore.defaultSelectedChain.chainName))
-          .font(.subheadline)
-          .foregroundColor(Color(.secondaryBraveLabel))
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.swapCryptoUnsupportNetworkDescription,
+            networkStore.defaultSelectedChain.chainName
+          )
+        )
+        .font(.subheadline)
+        .foregroundColor(Color(.secondaryBraveLabel))
       }
       .padding(.vertical, 6.0)
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
@@ -256,16 +291,24 @@ struct SwapCryptoView: View {
     case .error(let error):
       return error
     case .lowAllowance:
-      return String.localizedStringWithFormat(Strings.Wallet.activateToken, swapTokensStore.selectedFromToken?.symbol ?? "")
+      return String.localizedStringWithFormat(
+        Strings.Wallet.activateToken,
+        swapTokensStore.selectedFromToken?.symbol ?? ""
+      )
     case .swap, .idle:
       return Strings.Wallet.swapCryptoSwapButtonTitle
     }
   }
 
   @ViewBuilder var swapFormSections: some View {
-    Section(
-    ) {
-      NavigationLink(destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .fromToken, network: networkStore.defaultSelectedChain)) {
+    Section {
+      NavigationLink(
+        destination: SwapTokenSearchView(
+          swapTokenStore: swapTokensStore,
+          searchType: .fromToken,
+          network: networkStore.defaultSelectedChain
+        )
+      ) {
         HStack {
           if let token = swapTokensStore.selectedFromToken {
             AssetIconView(
@@ -291,15 +334,17 @@ struct SwapCryptoView: View {
         title: Text(
           String.localizedStringWithFormat(
             Strings.Wallet.swapCryptoAmountTitle,
-            swapTokensStore.selectedFromToken?.symbol ?? ""))
+            swapTokensStore.selectedFromToken?.symbol ?? ""
+          )
+        )
       ),
       footer: VStack(spacing: 20) {
         ShortcutAmountGrid(action: { amount in
           swapTokensStore.suggestedAmountTapped(amount)
         })
-        Button(action: {
+        Button {
           swapTokensStore.swapSelectedTokens()
-        }) {
+        } label: {
           Label(Strings.Wallet.swapSelectedTokens, systemImage: "chevron.up.chevron.down")
             .labelStyle(.iconOnly)
             .font(.body)
@@ -318,7 +363,8 @@ struct SwapCryptoView: View {
       TextField(
         String.localizedStringWithFormat(
           Strings.Wallet.amountInCurrency,
-          swapTokensStore.selectedFromToken?.symbol ?? ""),
+          swapTokensStore.selectedFromToken?.symbol ?? ""
+        ),
         text: $swapTokensStore.sellAmount
       )
       .keyboardType(.decimalPad)
@@ -328,7 +374,11 @@ struct SwapCryptoView: View {
       header: WalletListHeaderView(title: Text(Strings.Wallet.swapCryptoToTitle))
     ) {
       NavigationLink(
-        destination: SwapTokenSearchView(swapTokenStore: swapTokensStore, searchType: .toToken, network: networkStore.defaultSelectedChain)
+        destination: SwapTokenSearchView(
+          swapTokenStore: swapTokensStore,
+          searchType: .toToken,
+          network: networkStore.defaultSelectedChain
+        )
       ) {
         HStack {
           if let token = swapTokensStore.selectedToToken {
@@ -355,13 +405,16 @@ struct SwapCryptoView: View {
         title: Text(
           String.localizedStringWithFormat(
             Strings.Wallet.swapCryptoAmountReceivingTitle,
-            swapTokensStore.selectedToToken?.symbol ?? ""))
+            swapTokensStore.selectedToToken?.symbol ?? ""
+          )
+        )
       )
     ) {
       TextField(
         String.localizedStringWithFormat(
           Strings.Wallet.amountInCurrency,
-          swapTokensStore.selectedToToken?.symbol ?? ""),
+          swapTokensStore.selectedToToken?.symbol ?? ""
+        ),
         text: $swapTokensStore.buyAmount
       )
       .keyboardType(.decimalPad)
@@ -369,17 +422,16 @@ struct SwapCryptoView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     Section(
-      /*
-       MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
-       */
-      /*header: Picker(Strings.Wallet.swapOrderTypeLabel, selection: $orderType) {
-        Text(Strings.Wallet.swapMarketOrderType).tag(OrderType.market)
-        Text(Strings.Wallet.swapLimitOrderType).tag(OrderType.limit)
-      }
-        .pickerStyle(SegmentedPickerStyle())
-        .resetListHeaderStyle()
-        .padding(.bottom, 15)
-        .listRowBackground(Color(.clear))*/
+      //      MVP only supports market price swap. Ref: https://github.com/brave/brave-browser/issues/18307
+      //
+      //      header: Picker(Strings.Wallet.swapOrderTypeLabel, selection: $orderType) {
+      //        Text(Strings.Wallet.swapMarketOrderType).tag(OrderType.market)
+      //        Text(Strings.Wallet.swapLimitOrderType).tag(OrderType.limit)
+      //      }
+      //        .pickerStyle(SegmentedPickerStyle())
+      //        .resetListHeaderStyle()
+      //        .padding(.bottom, 15)
+      //        .listRowBackground(Color(.clear))
       header: MarketPriceView(swapTokenStore: swapTokensStore)
         .listRowBackground(Color(UIColor.braveGroupedBackground))
         .resetListHeaderStyle()
@@ -396,11 +448,11 @@ struct SwapCryptoView: View {
         }
       }
     ) {
-      Button(action: {
+      Button {
         withAnimation(.easeInOut(duration: 0.25)) {
           hideSlippage.toggle()
         }
-      }) {
+      } label: {
         HStack {
           Text(Strings.Wallet.swapCryptoSlippageTitle)
             .font(.subheadline)
@@ -428,7 +480,7 @@ struct SwapCryptoView: View {
       header:
         VStack(spacing: 16) {
           feesFooter
-          
+
           WalletLoadingButton(
             isLoading: swapTokensStore.isMakingTx || swapTokensStore.isUpdatingPriceQuote,
             action: {
@@ -451,9 +503,9 @@ struct SwapCryptoView: View {
         .padding(.top, 16)
         .resetListHeaderStyle()
     ) {
-      Button(action: {
+      Button {
         isSwapDisclaimerVisible = true
-      }) {
+      } label: {
         HStack {
           Text(dexAggregator.swapDexAggrigatorNote)
             .multilineTextAlignment(.center)
@@ -473,7 +525,8 @@ struct SwapCryptoView: View {
             Text(Strings.learnMore),
             action: {
               openWalletURL(dexAggregator.url)
-            }),
+            }
+          ),
           secondaryButton: Alert.Button.cancel(Text(Strings.OKString))
         )
       }
@@ -482,13 +535,18 @@ struct SwapCryptoView: View {
       .listRowBackground(Color(.braveGroupedBackground))
     }
   }
-  
+
   @ViewBuilder private var feesFooter: some View {
     if swapTokensStore.braveFeeForDisplay != nil || swapTokensStore.protocolFeeForDisplay != nil {
       VStack(spacing: 4) {
         if let braveFeeForDisplay = swapTokensStore.braveFeeForDisplay {
           if swapTokensStore.isBraveFeeVoided {
-            Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, Strings.Wallet.braveSwapFree) + " ") + Text(braveFeeForDisplay).strikethrough()
+            Text(
+              String.localizedStringWithFormat(
+                Strings.Wallet.braveFeeLabel,
+                Strings.Wallet.braveSwapFree
+              ) + " "
+            ) + Text(braveFeeForDisplay).strikethrough()
           } else {
             Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, braveFeeForDisplay))
           }
@@ -531,9 +589,9 @@ struct SwapCryptoView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             onDismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }

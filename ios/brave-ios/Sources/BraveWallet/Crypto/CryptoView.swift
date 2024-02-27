@@ -1,15 +1,15 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SwiftUI
 import BraveCore
-import Introspect
 import BraveUI
+import Foundation
+import Introspect
 import Preferences
+import SwiftUI
+import UIKit
 
 public struct CryptoView: View {
   var walletStore: WalletStore
@@ -19,9 +19,9 @@ public struct CryptoView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
 
   var openWalletURLAction: ((URL) -> Void)?
-  
+
   var appRatingRequestAction: (() -> Void)?
-  
+
   @ObservedObject var isOnboardingCompleted = Preferences.Wallet.isOnboardingCompleted
 
   public init(
@@ -55,13 +55,14 @@ public struct CryptoView: View {
   @ToolbarContentBuilder
   private var dismissButtonToolbarContents: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
-        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext {
+      Button {
+        if case .requestPermissions(let request, let onPermittedAccountsUpdated) = presentingContext
+        {
           request.decisionHandler(.rejected)
           onPermittedAccountsUpdated([])
         }
         dismissAction()
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -254,9 +255,9 @@ public struct CryptoView: View {
             SetupCryptoView(keyringStore: keyringStore, dismissAction: dismissAction)
               .toolbar {
                 ToolbarItemGroup(placement: .destructiveAction) {
-                  Button(action: {
+                  Button {
                     dismissAction()
-                  }) {
+                  } label: {
                     Text(Strings.CancelString)
                   }
                 }
@@ -267,17 +268,22 @@ public struct CryptoView: View {
         }
       }
     }
-    .animation(.default, value: visibleScreen)  // Animate unlock dismiss (required for some reason)
+    // Animate unlock dismiss (required for some reason)
+    .animation(.default, value: visibleScreen)
     .frame(maxWidth: .infinity, maxHeight: .infinity)
-    .environment(\.openURL, .init(handler: { [openWalletURLAction] url in
-      openWalletURLAction?(url)
-      return .handled
-    }))
+    .environment(
+      \.openURL,
+      .init(handler: { [openWalletURLAction] url in
+        openWalletURLAction?(url)
+        return .handled
+      })
+    )
     .environment(
       \.appRatingRequestAction,
       .init(action: { [appRatingRequestAction] in
         appRatingRequestAction?()
-      }))
+      })
+    )
     .environment(\.webImageDownloader, webImageDownloader)
     .onChange(of: visibleScreen) { newValue in
       if case .panelUnlockOrSetup = presentingContext, newValue == .crypto {
@@ -285,7 +291,7 @@ public struct CryptoView: View {
       }
     }
   }
-  
+
   private func dismissAction() {
     presentationMode.dismiss()
   }
@@ -299,9 +305,9 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
   // This toolbar content is for `PendingRequestView` which is presented on top of full screen wallet
   private var pendingRequestToolbarDismissContent: some ToolbarContent {
     ToolbarItemGroup(placement: .cancellationAction) {
-      Button(action: {
+      Button {
         cryptoStore.isPresentingPendingRequest = false
-      }) {
+      } label: {
         Image("wallet-dismiss", bundle: .module)
           .renderingMode(.template)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -363,7 +369,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
     )
     .environment(
       \.buySendSwapDestination,
-       Binding(
+      Binding(
         get: { [weak cryptoStore] in cryptoStore?.buySendSwapDestination },
         set: { [weak cryptoStore] destination in
           if cryptoStore?.isPresentingAssetSearch == true {
@@ -374,7 +380,8 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
           } else {
             cryptoStore?.buySendSwapDestination = destination
           }
-        })
+        }
+      )
     )
   }
 }

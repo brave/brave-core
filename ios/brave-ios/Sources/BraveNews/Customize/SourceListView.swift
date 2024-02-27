@@ -1,16 +1,16 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import BraveStrings
 import BraveUI
+import Foundation
+import SwiftUI
 
 struct SourceListContainerView: View {
   @ObservedObject var dataSource: FeedDataSource
-  
+
   var localizedSourcesByRank: [FeedItem.Source] {
     let locale = dataSource.selectedLocale
     let sources = dataSource.sources.filter {
@@ -20,7 +20,7 @@ struct SourceListContainerView: View {
       $0.rank(of: locale) < $1.rank(of: locale)
     })
   }
-  
+
   var body: some View {
     return SourceListView(
       sources: localizedSourcesByRank,
@@ -32,7 +32,7 @@ struct SourceListContainerView: View {
 private struct SourceListView: View {
   var sources: [FeedItem.Source]
   var isFollowing: (FeedItem.Source) -> Binding<Bool>
-  
+
   var body: some View {
     List {
       Section {

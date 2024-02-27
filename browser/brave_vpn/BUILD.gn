@@ -18,8 +18,20 @@ source_set("brave_vpn") {
     "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/buildflags",
+    "//chrome/common:channel_info",
     "//components/prefs",
     "//components/user_prefs",
     "//services/network/public/cpp",
   ]
+
+  if (is_win) {
+    deps += [
+      "//brave/browser/brave_vpn/win",
+      "//brave/components/brave_vpn/browser/connection/ikev2/win",
+    ]
+  }
+
+  if (is_mac) {
+    deps += [ "//brave/browser/brave_vpn/mac" ]
+  }
 }

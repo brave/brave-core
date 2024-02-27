@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Vols tancar les pestanyes antigues?</translation>
 <translation id="1215127405478249895">Revisa les pestanyes</translation>
 <translation id="125153950246128346">Toca per veure una altra pestanya</translation>
+<translation id="1326271443836399892">Revisa la configuració actual d'ordenació.</translation>
 <translation id="1657719826150349398">Mou la pestanya cap avall</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> pestanya}other{<ph name="TABS_COUNT_MANY"/> pestanyes}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{Afegeix <ph name="TABS_COUNT_ONE"/> pestanya seleccionada a les adreces d'interès}other{Afegeix <ph name="TABS_COUNT_MANY"/> pestanyes seleccionades a les adreces d'interès}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Suprimeix del grup</translation>
 <translation id="3008554597174452548">Atura el seguiment del producte</translation>
 <translation id="3052964831964880138">Baixada de preu de <ph name="PRICE_DROP"/> per a <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Tens <ph name="TABS_COUNT_ONE"/> pestanya arxivada}other{Tens <ph name="TABS_COUNT_MANY"/> pestanyes arxivades}}</translation>
 <translation id="3194464645767632461">puntuació</translation>
 <translation id="3291470810748040983">Rebràs una alerta quan hi hagi un preu més baix en una pestanya oberta</translation>
 <translation id="3328308545011660196">Suggeriment: sembla que hi ha <ph name="NUMBER_OF_TABS"/> pestanyes relacionades. Vols agrupar-les?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Rep una notificació</translation>
 <translation id="4133493477912226187">Sembla que hi ha <ph name="NUMBER_OF_TABS"/> pestanyes relacionades. Vols agrupar-les?</translation>
 <translation id="4212246570487010370">Continua navegant</translation>
+<translation id="427987768447457592">Grup de pestanyes nou</translation>
 <translation id="4648718555153979859">Les teves pestanyes s'agrupen aquí</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> ressenya)}other{(<ph name="REVIEWS_COUNT_MANY"/> ressenyes)}}</translation>
 <translation id="4850886885716139402">Mostra</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Amaga la quadrícula en pantalla completa</translation>
 <translation id="5076161749301278626">Vols veure les ressenyes de la botiga?</translation>
 <translation id="5082793167783849073">Crea un grup per comparar pàgines ràpidament. Per començar, mantén premut un enllaç.</translation>
+<translation id="5161254044473106830">Cal indicar un títol</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Tens <ph name="TABS_COUNT_ONE"/> pestanya que no has utilitzat recentment}other{Tens <ph name="TABS_COUNT_MANY"/> pestanyes que no has utilitzat recentment}}</translation>
 <translation id="5339733443032484186">La teva darrera pestanya</translation>
 <translation id="5490235265819901748">El grup de pestanyes s'ha desplegat</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Mou la pestanya cap a la dreta</translation>
 <translation id="7966321538264951561">Ignora els suggeriments.</translation>
 <translation id="8029301326595421733">S'ha obert a alçada completa la informació sobre aquesta botiga</translation>
-<translation id="814503310257431685">Mostra-ho tot</translation>
 <translation id="8205266828577616993">Mou la pestanya cap amunt</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{Tanca <ph name="TABS_COUNT_ONE"/> pestanya seleccionada}other{Tanca les <ph name="TABS_COUNT_MANY"/> pestanyes seleccionades}}</translation>
 <translation id="8398929769197326728">Carpeta nova : <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">S'ha tancat la informació sobre aquesta botiga</translation>
 <translation id="9150694013019234766">Canvia de pestanya al grup de pestanyes de la part inferior de la pantalla</translation>
 <translation id="9169594135889675189">Afegeix una pestanya nova al grup</translation>
+<translation id="955558140275419384">Accedeix a aquest editor per revisar i ordenar les pestanyes arxivades.</translation>
 <translation id="959682366969460160">Organitza el contingut</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {Trobareu les pestanyes tancades a les pestanyes Recents del menú principal de Brave. La pestanya Incògnit no estarà disponible.}

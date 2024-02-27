@@ -1,34 +1,36 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import WebKit
 import Shared
+import WebKit
 import os.log
 
-public extension HTTPCookie {
+extension HTTPCookie {
 
-  static var locallySavedFile: String {
+  public static var locallySavedFile: String {
     return "CookiesData.json"
   }
 
   private static let directory = FileManager.SearchPathDirectory.applicationSupportDirectory.url
 
-  typealias Success = Bool
-  class func saveToDisk(_ filename: String = HTTPCookie.locallySavedFile, completion: ((Success) -> Void)? = nil) {
+  public typealias Success = Bool
+  public class func saveToDisk(
+    _ filename: String = HTTPCookie.locallySavedFile,
+    completion: ((Success) -> Void)? = nil
+  ) {
     let cookieStore = WKWebsiteDataStore.default().httpCookieStore
 
-    /* For reason unkown the callback to getAllCookies is not called, when the save is done from Settings.
-         A possibility is https://bugs.webkit.org/show_bug.cgi?id=188242
-         Even with the issue being fixed it still sometimes doesn't work.
-         The network process is in suspened maybe?
-
-         And for some reason fetch cookie records preemptively guarantees this works.
-         Best guess is that fetching records brings network process to active.
-
-         Same applies to setting cookies back below.
-         */
+    // For reason unkown the callback to getAllCookies is not called, when the save is done from
+    // Settings. A possibility is https://bugs.webkit.org/show_bug.cgi?id=188242
+    // Even with the issue being fixed it still sometimes doesn't work.
+    // The network process is in suspened maybe?
+    //
+    // And for some reason fetch cookie records preemptively guarantees this works.
+    // Best guess is that fetching records brings network process to active.
+    //
+    // Same applies to setting cookies back below.
     WKWebsiteDataStore.default().fetchDataRecords(ofTypes: [WKWebsiteDataTypeCookies]) { _ in }
     cookieStore.getAllCookies { cookies in
       guard let baseDir = directory else {
@@ -36,26 +38,40 @@ public extension HTTPCookie {
         return
       }
       do {
-        let data = try NSKeyedArchiver.archivedData(withRootObject: cookies, requiringSecureCoding: false)
+        let data = try NSKeyedArchiver.archivedData(
+          withRootObject: cookies,
+          requiringSecureCoding: false
+        )
         try data.write(to: baseDir.appendingPathComponent(filename))
         completion?(true)
       } catch {
-        Logger.module.error("Failed to write cookies to disk with error: \(error.localizedDescription)")
+        Logger.module.error(
+          "Failed to write cookies to disk with error: \(error.localizedDescription)"
+        )
         completion?(false)
       }
     }
   }
 
-  class func loadFromDisk(_ filename: String = HTTPCookie.locallySavedFile, completion: ((Success) -> Void)? = nil) {
+  public class func loadFromDisk(
+    _ filename: String = HTTPCookie.locallySavedFile,
+    completion: ((Success) -> Void)? = nil
+  ) {
     guard let baseDir = directory else {
       completion?(false)
       return
     }
     do {
-      let data = try Data(contentsOf: baseDir.appendingPathComponent(filename), options: Data.ReadingOptions.alwaysMapped)
+      let data = try Data(
+        contentsOf: baseDir.appendingPathComponent(filename),
+        options: Data.ReadingOptions.alwaysMapped
+      )
       let unarchiver = try NSKeyedUnarchiver(forReadingFrom: data)
       unarchiver.requiresSecureCoding = false
-      if let cookies = unarchiver.decodeObject(of: NSArray.self, forKey: NSKeyedArchiveRootObjectKey) as? [HTTPCookie] {
+      if let cookies = unarchiver.decodeObject(
+        of: NSArray.self,
+        forKey: NSKeyedArchiveRootObjectKey
+      ) as? [HTTPCookie] {
         HTTPCookie.setCookies(cookies) { success in
           completion?(success)
         }
@@ -64,7 +80,9 @@ public extension HTTPCookie {
         Logger.module.error("Failed to load cookies from disk with error: Invalid data type")
       }
     } catch {
-      Logger.module.error("Failed to load cookies from disk with error: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to load cookies from disk with error: \(error.localizedDescription)"
+      )
     }
     completion?(false)
   }
@@ -83,7 +101,7 @@ public extension HTTPCookie {
     }
   }
 
-  class func deleteLocalCookieFile(_ filename: String = HTTPCookie.locallySavedFile) {
+  public class func deleteLocalCookieFile(_ filename: String = HTTPCookie.locallySavedFile) {
     guard let baseDir = directory else {
       return
     }
@@ -91,7 +109,9 @@ public extension HTTPCookie {
     do {
       try FileManager.default.removeItem(at: url)
     } catch {
-      Logger.module.error("Failed to delete local cookie file with error: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to delete local cookie file with error: \(error.localizedDescription)"
+      )
     }
   }
 }

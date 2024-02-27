@@ -1,16 +1,16 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Combine
-import Data
-import CoreData
-import Shared
 import BraveShared
 import BraveUI
+import Combine
+import CoreData
+import Data
 import Playlist
+import Shared
+import SwiftUI
 
 private struct PlaylistFolderImage: View {
   let item: PlaylistItem
@@ -30,7 +30,9 @@ private struct PlaylistFolderImage: View {
       .aspectRatio(contentMode: .fit)
       .frame(width: 100.0, height: 60.0)
       .background(Color.black)
-      .clipShape(RoundedRectangle(cornerRadius: PlaylistFolderImage.cornerRadius, style: .continuous))
+      .clipShape(
+        RoundedRectangle(cornerRadius: PlaylistFolderImage.cornerRadius, style: .continuous)
+      )
       .overlay(
         Image(uiImage: favIconLoader.image ?? .init())
           .resizable()
@@ -40,7 +42,8 @@ private struct PlaylistFolderImage: View {
             height: PlaylistFolderImage.favIconSize
           )
           .clipShape(RoundedRectangle(cornerRadius: 3.0, style: .continuous))
-          .padding(8.0), alignment: .topLeading
+          .padding(8.0),
+        alignment: .topLeading
       )
       .onAppear {
         thumbnailLoader.load(thumbnail: item)
@@ -59,7 +62,11 @@ private struct PlaylistFolderView: View {
     HStack {
       HStack(spacing: 10.0) {
         Image(braveSystemName: "leo.folder")
-          .foregroundColor(isSourceFolder ? Color(.braveDisabled.resolvedColor(with: .init(userInterfaceStyle: .light))) : Color(.braveBlurpleTint))
+          .foregroundColor(
+            isSourceFolder
+              ? Color(.braveDisabled.resolvedColor(with: .init(userInterfaceStyle: .light)))
+              : Color(.braveBlurpleTint)
+          )
           .frame(width: imageSize)
 
         VStack(alignment: .leading) {
@@ -69,9 +76,11 @@ private struct PlaylistFolderView: View {
             Text(folder.title ?? "")
               .font(.body)
               .foregroundColor(.white)
-            Text("\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))")
-              .font(.footnote)
-              .foregroundColor(Color(.secondaryBraveLabel))
+            Text(
+              "\(itemCount == 1 ? Strings.PlaylistFolders.playlistFolderSubtitleItemSingleCount : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSubtitleItemCount, itemCount))"
+            )
+            .font(.footnote)
+            .foregroundColor(Color(.secondaryBraveLabel))
           }
         }
       }
@@ -117,10 +126,17 @@ struct PlaylistMoveFolderView: View {
 
     let title = selectedItems[0].name
     if selectedItems.count == 2 {
-      return String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderMoveItemDescription, title)
+      return String.localizedStringWithFormat(
+        Strings.PlaylistFolders.playlistFolderMoveItemDescription,
+        title
+      )
     }
 
-    return String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderMoveMultipleItemDescription, title, selectedItems.count - 1)
+    return String.localizedStringWithFormat(
+      Strings.PlaylistFolders.playlistFolderMoveMultipleItemDescription,
+      title,
+      selectedItems.count - 1
+    )
   }
 
   var selectedItems: [PlaylistItem]
@@ -135,7 +151,8 @@ struct PlaylistMoveFolderView: View {
             HStack(spacing: 12.0) {
               if selectedItems.count > 1,
                 let firstItem = selectedItems[safe: 0],
-                let secondItem = selectedItems[safe: 1] {
+                let secondItem = selectedItems[safe: 1]
+              {
                 ZStack {
                   PlaylistFolderImage(item: firstItem)
                     .rotationEffect(.degrees(5.0))
@@ -171,18 +188,25 @@ struct PlaylistMoveFolderView: View {
             .multilineTextAlignment(.leading)
         ) {
 
-          Button(action: {
+          Button {
             selectedFolder = PlaylistManager.shared.currentFolder
-          }) {
+          } label: {
             PlaylistFolderView(
               isSourceFolder: true,
               folder: PlaylistManager.shared.currentFolder,
-              selectedFolder: $selectedFolder)
+              selectedFolder: $selectedFolder
+            )
           }
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
-        let sectionTitle = selectedItems.count == 1 ? Strings.PlaylistFolders.playlistFolderSelectASingleFolderTitle : String.localizedStringWithFormat(Strings.PlaylistFolders.playlistFolderSelectAFolderTitle, selectedItems.count)
+        let sectionTitle =
+          selectedItems.count == 1
+          ? Strings.PlaylistFolders.playlistFolderSelectASingleFolderTitle
+          : String.localizedStringWithFormat(
+            Strings.PlaylistFolders.playlistFolderSelectAFolderTitle,
+            selectedItems.count
+          )
         Section(
           header: Text(sectionTitle)
             .font(.footnote)
@@ -193,13 +217,14 @@ struct PlaylistMoveFolderView: View {
 
           // Show the "Saved" folder
           if PlaylistManager.shared.currentFolder?.uuid != savedFolder.first?.uuid {
-            Button(action: {
+            Button {
               selectedFolder = savedFolder.first
-            }) {
+            } label: {
               PlaylistFolderView(
                 isSourceFolder: false,
                 folder: savedFolder.first,
-                selectedFolder: $selectedFolder)
+                selectedFolder: $selectedFolder
+              )
             }
           }
 
@@ -207,13 +232,14 @@ struct PlaylistMoveFolderView: View {
           ForEach(
             folders.filter { $0.uuid != PlaylistManager.shared.currentFolder?.uuid }
           ) { folder in
-            Button(action: {
+            Button {
               selectedFolder = folder
-            }) {
+            } label: {
               PlaylistFolderView(
                 isSourceFolder: false,
                 folder: folder,
-                selectedFolder: $selectedFolder)
+                selectedFolder: $selectedFolder
+              )
             }
           }
         }

@@ -1,25 +1,21 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import Shared
+import UIKit
 
 typealias UIAlertActionCallback = (UIAlertAction) -> Void
 
 // MARK: - Extension methods for building specific UIAlertController instances used across the app
 extension UIAlertController {
 
-  /**
-     Builds the Alert view that asks the user if they wish to opt into crash reporting.
-
-     - parameter sendReportCallback: Send report option handler
-     - parameter alwaysSendCallback: Always send option handler
-     - parameter dontSendCallback:   Dont send option handler
-     - parameter neverSendCallback:  Never send option handler
-
-     - returns: UIAlertController for opting into crash reporting after a crash occurred
-     */
+  /// Builds the Alert view that asks the user if they wish to opt into crash reporting.
+  /// - parameter sendReportCallback: Send report option handler
+  /// - parameter alwaysSendCallback: Always send option handler
+  /// - parameter dontSendCallback:   Dont send option handler
+  /// - parameter neverSendCallback:  Never send option handler
+  /// - returns: UIAlertController for opting into crash reporting after a crash occurred
   class func crashOptInAlert(
     _ sendReportCallback: @escaping UIAlertActionCallback,
     alwaysSendCallback: @escaping UIAlertActionCallback,
@@ -57,15 +53,14 @@ extension UIAlertController {
     return alert
   }
 
-  /**
-     Builds the Alert view that asks the user if they wish to restore their tabs after a crash.
-
-     - parameter okayCallback: Okay option handler
-     - parameter noCallback:   No option handler
-
-     - returns: UIAlertController for asking the user to restore tabs after a crash
-     */
-  class func restoreTabsAlert(okayCallback: @escaping UIAlertActionCallback, noCallback: @escaping UIAlertActionCallback) -> UIAlertController {
+  /// Builds the Alert view that asks the user if they wish to restore their tabs after a crash.
+  /// - parameter okayCallback: Okay option handler
+  /// - parameter noCallback:   No option handler
+  /// - returns: UIAlertController for asking the user to restore tabs after a crash
+  class func restoreTabsAlert(
+    okayCallback: @escaping UIAlertActionCallback,
+    noCallback: @escaping UIAlertActionCallback
+  ) -> UIAlertController {
     let alert = UIAlertController(
       title: Strings.restoreTabOnCrashAlertTitle,
       message: Strings.restoreTabOnCrashAlertMessage,
@@ -97,7 +92,9 @@ extension UIAlertController {
      - returns: UIAlertController for asking the user to restore tabs after a crash
      */
 
-  class func clearSyncedHistoryAlert(okayCallback: @escaping (UIAlertAction) -> Void) -> UIAlertController {
+  class func clearSyncedHistoryAlert(
+    okayCallback: @escaping (UIAlertAction) -> Void
+  ) -> UIAlertController {
     let alert = UIAlertController(
       title: "",
       message: Strings.clearSyncedHistoryAlertMessage,
@@ -121,15 +118,11 @@ extension UIAlertController {
     return alert
   }
 
-  /**
-     Creates an alert view to warn the user that their logins will either be completely deleted in the
-     case of local-only logins or deleted across synced devices in synced account logins.
-
-     - parameter deleteCallback: Block to run when delete is tapped.
-     - parameter hasSyncedLogins: Boolean indicating the user has logins that have been synced.
-
-     - returns: UIAlertController instance
-     */
+  /// Creates an alert view to warn the user that their logins will either be completely deleted in the
+  /// case of local-only logins or deleted across synced devices in synced account logins.
+  /// - parameter deleteCallback: Block to run when delete is tapped.
+  /// - parameter hasSyncedLogins: Boolean indicating the user has logins that have been synced.
+  /// - returns: UIAlertController instance
   class func deleteLoginAlertWithDeleteCallback(
     _ deleteCallback: @escaping UIAlertActionCallback,
     hasSyncedLogins: Bool
@@ -137,13 +130,29 @@ extension UIAlertController {
 
     let deleteAlert: UIAlertController
     if hasSyncedLogins {
-      deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertSyncedDevicesMessage, preferredStyle: .alert)
+      deleteAlert = UIAlertController(
+        title: Strings.deleteLoginAlertTitle,
+        message: Strings.deleteLoginAlertSyncedDevicesMessage,
+        preferredStyle: .alert
+      )
     } else {
-      deleteAlert = UIAlertController(title: Strings.deleteLoginAlertTitle, message: Strings.deleteLoginAlertLocalMessage, preferredStyle: .alert)
+      deleteAlert = UIAlertController(
+        title: Strings.deleteLoginAlertTitle,
+        message: Strings.deleteLoginAlertLocalMessage,
+        preferredStyle: .alert
+      )
     }
 
-    let cancelAction = UIAlertAction(title: Strings.deleteLoginAlertCancelActionTitle, style: .cancel, handler: nil)
-    let deleteAction = UIAlertAction(title: Strings.deleteLoginButtonTitle, style: .destructive, handler: deleteCallback)
+    let cancelAction = UIAlertAction(
+      title: Strings.deleteLoginAlertCancelActionTitle,
+      style: .cancel,
+      handler: nil
+    )
+    let deleteAction = UIAlertAction(
+      title: Strings.deleteLoginButtonTitle,
+      style: .destructive,
+      handler: deleteCallback
+    )
 
     deleteAlert.addAction(cancelAction)
     deleteAlert.addAction(deleteAction)
@@ -151,23 +160,21 @@ extension UIAlertController {
     return deleteAlert
   }
 
-  // Enabled this facade for much easier discoverability, instead of using class directly
-  /**
-     Creates an alert view to collect a string from the user
-
-     - parameter title: String to display as the alert title.
-     - parameter message: String to display as the alert message.
-     - parameter startingText: String to prefill the textfield with.
-     - parameter placeholder: String to use for the placeholder text on the text field.
-     - parameter keyboardType: Keyboard type of the text field.
-     - parameter startingText2: String to prefill the second optional textfield with.
-     - parameter placeholder2: String to use for the placeholder text on the second optional text field.
-     - parameter keyboardType2: Keyboard type of the text second optional field.
-     - parameter forcedInput: Bool whether the user needs to enter _something_ in order to enable OK button.
-     - parameter callbackOnMain: Block to run on main thread when the user performs an action.
-
-     - returns: UIAlertController instance
-     */
+  /// Creates an alert view to collect a string from the user
+  ///
+  /// Enabled this facade for much easier discoverability, instead of using class directly
+  ///
+  /// - parameter title: String to display as the alert title.
+  /// - parameter message: String to display as the alert message.
+  /// - parameter startingText: String to prefill the textfield with.
+  /// - parameter placeholder: String to use for the placeholder text on the text field.
+  /// - parameter keyboardType: Keyboard type of the text field.
+  /// - parameter startingText2: String to prefill the second optional textfield with.
+  /// - parameter placeholder2: String to use for the placeholder text on the second optional text field.
+  /// - parameter keyboardType2: Keyboard type of the text second optional field.
+  /// - parameter forcedInput: Bool whether the user needs to enter _something_ in order to enable OK button.
+  /// - parameter callbackOnMain: Block to run on main thread when the user performs an action.
+  /// - returns: UIAlertController instance
   class func userTextInputAlert(
     title: String,
     message: String,
@@ -182,7 +189,8 @@ extension UIAlertController {
   ) -> UIAlertController {
     // Returning alert, so no external, strong reference to initial instance
     return UserTextInputAlert(
-      title: title, message: message,
+      title: title,
+      message: message,
       startingText: startingText,
       placeholder: placeholder,
       keyboardType: keyboardType,
@@ -202,7 +210,8 @@ class UserTextInputAlert {
   private(set) var alert: UIAlertController!
 
   required init(
-    title: String, message: String,
+    title: String,
+    message: String,
     startingText: String?,
     placeholder: String?,
     keyboardType: UIKeyboardType? = nil,
@@ -229,7 +238,8 @@ class UserTextInputAlert {
     }
     okAction = okAlertAction
 
-    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) { (alertA: UIAlertAction!) in
+    let cancelAction = UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel) {
+      (alertA: UIAlertAction!) in
       actionSelected(input: nil, input2: nil)
     }
 
@@ -240,23 +250,38 @@ class UserTextInputAlert {
 
     alert.addTextField(
       configurationHandler: textFieldConfig(
-        text: startingText, placeholder: placeholder,
-        keyboardType: keyboardType, forcedInput: forcedInput))
+        text: startingText,
+        placeholder: placeholder,
+        keyboardType: keyboardType,
+        forcedInput: forcedInput
+      )
+    )
 
     if startingText2 != nil {
       alert.addTextField(
         configurationHandler: textFieldConfig(
-          text: startingText2, placeholder: placeholder2,
-          keyboardType: keyboardType2, forcedInput: forcedInput))
+          text: startingText2,
+          placeholder: placeholder2,
+          keyboardType: keyboardType2,
+          forcedInput: forcedInput
+        )
+      )
     }
   }
 
-  private func textFieldConfig(text: String?, placeholder: String?, keyboardType: UIKeyboardType?, forcedInput: Bool)
-    -> (UITextField) -> Void {
+  private func textFieldConfig(
+    text: String?,
+    placeholder: String?,
+    keyboardType: UIKeyboardType?,
+    forcedInput: Bool
+  )
+    -> (UITextField) -> Void
+  {
     return { textField in
       textField.attributedPlaceholder = NSAttributedString(
         string: placeholder ?? "",
-        attributes: [.foregroundColor: UIColor.placeholderText])
+        attributes: [.foregroundColor: UIColor.placeholderText]
+      )
 
       textField.keyboardAppearance = .default
 

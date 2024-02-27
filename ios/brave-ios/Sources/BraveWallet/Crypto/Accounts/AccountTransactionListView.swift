@@ -1,20 +1,21 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
-import struct Shared.Strings
 import BraveUI
+import SwiftUI
+
+import struct Shared.Strings
 
 struct AccountTransactionListView: View {
   @ObservedObject var activityStore: AccountActivityStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var transactionDetails: TransactionDetailsStore?
   @State private var query: String = ""
-  
+
   private func emptyTextView(_ message: String) -> some View {
     Text(message)
       .font(.footnote.weight(.medium))
@@ -22,13 +23,13 @@ struct AccountTransactionListView: View {
       .multilineTextAlignment(.center)
       .foregroundColor(Color(.secondaryBraveLabel))
   }
-  
+
   var body: some View {
     TransactionsListView(
       transactionSections: activityStore.transactionSections,
       query: $query,
       showFilter: false,
-      filtersButtonTapped: { },
+      filtersButtonTapped: {},
       transactionTapped: { transaction in
         self.transactionDetails = activityStore.transactionDetailsStore(for: transaction)
       }

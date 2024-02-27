@@ -26,6 +26,11 @@ void WalletButtonNotificationSource::Init() {
 }
 
 void WalletButtonNotificationSource::EnsureTxServiceConnected() {
+  // Already connected.
+  if (tx_observer_.is_bound()) {
+    return;
+  }
+
   tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(profile_);
   if (!tx_service_) {
     return;
@@ -35,6 +40,11 @@ void WalletButtonNotificationSource::EnsureTxServiceConnected() {
 }
 
 void WalletButtonNotificationSource::EnsureKeyringServiceConnected() {
+  // Already connected.
+  if (keyring_service_observer_.is_bound()) {
+    return;
+  }
+
   keyring_service_ =
       brave_wallet::KeyringServiceFactory::GetServiceForContext(profile_);
   if (!keyring_service_) {

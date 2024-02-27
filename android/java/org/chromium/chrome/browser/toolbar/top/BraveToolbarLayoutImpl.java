@@ -223,8 +223,8 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
         super.destroy();
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
-            mBraveRewardsNativeWorker.RemovePublisherObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
+            mBraveRewardsNativeWorker.removePublisherObserver(this);
         }
     }
 
@@ -388,12 +388,13 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mPlaylistServiceObserver = new PlaylistServiceObserverImpl(this);
             mPlaylistService.addObserver(mPlaylistServiceObserver);
         }
+
         mBraveShieldsContentSettings = BraveShieldsContentSettings.getInstance();
         mBraveShieldsContentSettings.addObserver(mBraveShieldsContentSettingsObserver);
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null
-                && mBraveRewardsNativeWorker.IsSupported()
+                && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)
@@ -406,10 +407,10 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mShieldsLayout.setVisibility(View.VISIBLE);
         }
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
-            mBraveRewardsNativeWorker.AddPublisherObserver(this);
-            mBraveRewardsNativeWorker.TriggerOnNotifyFrontTabUrlChanged();
-            mBraveRewardsNativeWorker.GetAllNotifications();
+            mBraveRewardsNativeWorker.addObserver(this);
+            mBraveRewardsNativeWorker.addPublisherObserver(this);
+            mBraveRewardsNativeWorker.triggerOnNotifyFrontTabUrlChanged();
+            mBraveRewardsNativeWorker.getAllNotifications();
         }
     }
 
@@ -514,7 +515,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                         if (getToolbarDataProvider().getTab() == tab
                                 && mBraveRewardsNativeWorker != null
                                 && !tab.isIncognito()) {
-                            mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
+                            mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
                                     tab.getId(), tab.getUrl().getSpec());
                         }
                         if (PackageUtils.isFirstInstall(getContext())
@@ -525,7 +526,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 && BraveRewardsHelper.shouldShowBraveRewardsOnboardingModal()
                                 && mBraveRewardsNativeWorker != null
                                 && !mBraveRewardsNativeWorker.isRewardsEnabled()
-                                && mBraveRewardsNativeWorker.IsSupported()) {
+                                && mBraveRewardsNativeWorker.isSupported()) {
                             showOnBoarding();
                         }
                         findMediaFiles(tab);
@@ -547,23 +548,25 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     }
                 };
 
-        mTabModelSelectorTabModelObserver = new TabModelSelectorTabModelObserver(selector) {
-            @Override
-            public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
-                if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
-                    mBraveRewardsNativeWorker.OnNotifyFrontTabUrlChanged(
-                            tab.getId(), tab.getUrl().getSpec());
-                    Tab providerTab = getToolbarDataProvider().getTab();
-                    if (providerTab != null && providerTab.getId() == tab.getId()) {
-                        showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
-                    } else if (mWalletLayout != null) {
-                        mWalletLayout.setVisibility(mTabsWithWalletIcon.contains(tab.getId())
-                                        ? View.VISIBLE
-                                        : View.GONE);
+        mTabModelSelectorTabModelObserver =
+                new TabModelSelectorTabModelObserver(selector) {
+                    @Override
+                    public void didSelectTab(Tab tab, @TabSelectionType int type, int lastId) {
+                        if (mBraveRewardsNativeWorker != null && !tab.isIncognito()) {
+                            mBraveRewardsNativeWorker.onNotifyFrontTabUrlChanged(
+                                    tab.getId(), tab.getUrl().getSpec());
+                            Tab providerTab = getToolbarDataProvider().getTab();
+                            if (providerTab != null && providerTab.getId() == tab.getId()) {
+                                showWalletIcon(mTabsWithWalletIcon.contains(tab.getId()));
+                            } else if (mWalletLayout != null) {
+                                mWalletLayout.setVisibility(
+                                        mTabsWithWalletIcon.contains(tab.getId())
+                                                ? View.VISIBLE
+                                                : View.GONE);
+                            }
+                        }
                     }
-                }
-            }
-        };
+                };
     }
 
     private void showOnBoarding() {
@@ -692,7 +695,11 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                 playlistItems.toArray(new PlaylistItem[0]),
                                 ConstantUtils.DEFAULT_PLAYLIST,
                                 true,
-                                addedItems -> {});
+                                addedItems -> {
+                                    if (addedItems.length > 0) {
+                                        showAddedToPlaylistSnackBar();
+                                    }
+                                });
                     } else {
                         showAlreadyAddedToPlaylistSnackBar();
                     }
@@ -704,23 +711,29 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mPlaylistService == null || currentTab == null) {
             return;
         }
-        org.chromium.url.mojom.Url contentUrl = new org.chromium.url.mojom.Url();
-        contentUrl.url = currentTab.getUrl().getSpec();
-        mPlaylistService.addMediaFilesFromPageToPlaylist(
-                ConstantUtils.DEFAULT_PLAYLIST, contentUrl, true);
+        mPlaylistService.addMediaFilesFromActiveTabToPlaylist(
+                ConstantUtils.DEFAULT_PLAYLIST,
+                true,
+                addedItems -> {
+                    if (addedItems.length > 0) {
+                        showAddedToPlaylistSnackBar();
+                    }
+                });
     }
 
     private void showAddedToPlaylistSnackBar() {
         SnackBarActionModel snackBarActionModel =
-                new SnackBarActionModel(getContext().getResources().getString(R.string.view_action),
+                new SnackBarActionModel(
+                        getContext().getResources().getString(R.string.view_action),
                         new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
                                 try {
-                                    BraveActivity.getBraveActivity().openPlaylistActivity(
-                                            getContext(), ConstantUtils.DEFAULT_PLAYLIST);
+                                    BraveActivity.getBraveActivity()
+                                            .openPlaylistActivity(
+                                                    getContext(), ConstantUtils.DEFAULT_PLAYLIST);
                                 } catch (BraveActivity.BraveActivityNotFoundException e) {
-                                    Log.e(TAG, "showAddedToPlaylistSnackBar onClick " + e);
+                                    Log.e(TAG, "showAddedToPlaylistSnackBar onClick ", e);
                                 }
                             }
                         });
@@ -728,12 +741,16 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ViewGroup viewGroup =
                     BraveActivity.getBraveActivity().getWindow().getDecorView().findViewById(
                             android.R.id.content);
-            PlaylistViewUtils.showSnackBarWithActions(viewGroup,
-                    String.format(getContext().getResources().getString(R.string.added_to_playlist),
-                            getContext().getResources().getString(R.string.playlist_play_later)),
+            String playlistName =
+                    getContext().getResources().getString(R.string.playlist_play_later);
+            PlaylistViewUtils.showSnackBarWithActions(
+                    viewGroup,
+                    String.format(
+                            getContext().getResources().getString(R.string.added_to_playlist),
+                            playlistName),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
+            Log.e(TAG, "showAddedToPlaylistSnackBar ", e);
         }
     }
 
@@ -758,7 +775,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                     getContext().getResources().getString(R.string.already_added_in_playlist),
                     snackBarActionModel);
         } catch (BraveActivity.BraveActivityNotFoundException e) {
-            Log.e(TAG, "showAddedToPlaylistSnackBar " + e);
+            Log.e(TAG, "showAlreadyAddedToPlaylistSnackBar " + e);
         }
     }
 
@@ -1159,7 +1176,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         return PackageUtils.isFirstInstall(getContext())
                 && mBraveRewardsNativeWorker != null
                 && !mBraveRewardsNativeWorker.isRewardsEnabled()
-                && mBraveRewardsNativeWorker.IsSupported()
+                && mBraveRewardsNativeWorker.isSupported()
                 && !OnboardingPrefManager.getInstance().isOnboardingShown()
                 && (BraveRewardsHelper.getRewardsOnboardingIconInvisibleTiming() == 0
                         || (BraveRewardsHelper.getRewardsOnboardingIconInvisibleTiming() > 0
@@ -1327,7 +1344,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             updateShieldsLayoutBackground(true);
         } else if (isNativeLibraryReady()
                 && mBraveRewardsNativeWorker != null
-                && mBraveRewardsNativeWorker.IsSupported()
+                && mBraveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()
                 && ChromeSharedPreferences.getInstance()
                         .readBoolean(AppearancePreferences.PREF_SHOW_BRAVE_REWARDS_ICON, true)) {
@@ -1409,7 +1426,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
         }
-        mBraveRewardsNativeWorker.GetAllNotifications();
+        mBraveRewardsNativeWorker.getAllNotifications();
     }
 
     private boolean mayShowBraveAdsOnboardingDialog() {
@@ -1617,11 +1634,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
             mRewardsLayout.draw(canvas);
             canvas.restore();
         }
-    }
-
-    @Override
-    public void onItemAddedToList(String playlistId, String itemId) {
-        showAddedToPlaylistSnackBar();
     }
 
     @Override

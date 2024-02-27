@@ -5,6 +5,7 @@
 <translation id="1155815720264022949">Wil je oude tabbladen sluiten?</translation>
 <translation id="1215127405478249895">Tabbladen checken</translation>
 <translation id="125153950246128346">Tik om nog een tabblad te bekijken</translation>
+<translation id="1326271443836399892">Check de huidige instellingen voor opruimen.</translation>
 <translation id="1657719826150349398">Tabblad naar beneden verplaatsen</translation>
 <translation id="1869137256605757565">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> tabblad}other{<ph name="TABS_COUNT_MANY"/> tabbladen}}</translation>
 <translation id="2050597508048557928">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> geselecteerd tabblad bookmarken}other{<ph name="TABS_COUNT_MANY"/> geselecteerde tabbladen bookmarken}}</translation>
@@ -24,6 +25,7 @@
 <translation id="2977480621796371840">Uit groep verwijderen</translation>
 <translation id="3008554597174452548">Product niet meer volgen</translation>
 <translation id="3052964831964880138">Prijsdaling van <ph name="PRICE_DROP"/> voor <ph name="PRODUCT_NAME"/></translation>
+<translation id="313819129451406482">{TABS_COUNT,plural, =1{Je hebt <ph name="TABS_COUNT_ONE"/> gearchiveerd tabblad}other{Je hebt <ph name="TABS_COUNT_MANY"/> gearchiveerde tabbladen}}</translation>
 <translation id="3194464645767632461">beoordeling</translation>
 <translation id="3291470810748040983">Je krijgt een melding als er een lagere prijs is op een geopend tabblad</translation>
 <translation id="3328308545011660196">Suggestie: <ph name="NUMBER_OF_TABS"/> tabbladen lijken gerelateerd. Wil je deze groeperen?</translation>
@@ -36,6 +38,7 @@
 <translation id="3996880007329611795">Meldingen krijgen</translation>
 <translation id="4133493477912226187"><ph name="NUMBER_OF_TABS"/> tabbladen lijken gerelateerd. Wil je deze groeperen?</translation>
 <translation id="4212246570487010370">Verder browsen</translation>
+<translation id="427987768447457592">Nieuwe tabbladgroep</translation>
 <translation id="4648718555153979859">Je tabbladen zijn hier gegroepeerd</translation>
 <translation id="4788280460033928884">{REVIEWS,plural, =1{(<ph name="REVIEWS_COUNT_ONE"/> review)}other{(<ph name="REVIEWS_COUNT_MANY"/> reviews)}}</translation>
 <translation id="4850886885716139402">Weergave</translation>
@@ -46,6 +49,7 @@
 <translation id="5073204694187207510">Raster op volledig scherm verbergen</translation>
 <translation id="5076161749301278626">Winkelreviews bekijken?</translation>
 <translation id="5082793167783849073">Vergelijk pagina's snel door een groep te maken. Tik op een link en houd deze vast om te beginnen.</translation>
+<translation id="5161254044473106830">Titel is vereist</translation>
 <translation id="5303274951032363933">{TABS_COUNT,plural, =1{Je hebt <ph name="TABS_COUNT_ONE"/> tabblad dat je niet recent hebt gebruikt}other{Je hebt <ph name="TABS_COUNT_MANY"/> tabbladen die je niet recent hebt gebruikt}}</translation>
 <translation id="5339733443032484186">Je laatste tabblad</translation>
 <translation id="5490235265819901748">Tabbladgroep uitgevouwen</translation>
@@ -86,7 +90,6 @@
 <translation id="7885132941432959125">Tabblad naar rechts verplaatsen</translation>
 <translation id="7966321538264951561">Sluit de suggesties.</translation>
 <translation id="8029301326595421733">Informatie over deze winkel is op volledige hoogte geopend</translation>
-<translation id="814503310257431685">Alles bekijken</translation>
 <translation id="8205266828577616993">Tabblad omhoog verplaatsen</translation>
 <translation id="83556505225171773">{TABS_COUNT,plural, =1{<ph name="TABS_COUNT_ONE"/> geselecteerd tabblad sluiten}other{<ph name="TABS_COUNT_MANY"/> geselecteerde tabbladen sluiten}}</translation>
 <translation id="8398929769197326728">Nieuwe map - <ph name="CURRENT_TIMESTAMP_MS"/></translation>
@@ -96,6 +99,7 @@
 <translation id="9090098097337832354">Informatie over deze winkel gesloten</translation>
 <translation id="9150694013019234766">Je kunt onderaan het scherm schakelen tussen tabbladen in je tabbladgroep</translation>
 <translation id="9169594135889675189">Nieuw tabblad aan groep toevoegen</translation>
+<translation id="955558140275419384">Check alle gearchiveerde tabbladen die je kunt opruimen door deze editor te openen.</translation>
 <translation id="959682366969460160">Georganiseerd werken</translation>
 <translation id="6057673771413791768">{INCOGNITO_TABS_COUNT, plural,
         =1 {U kunt uw gesloten tabbladen vinden onder Recente tabbladen in het hoofdmenu van Brave. Uw Private-tabblad is niet beschikbaar.}

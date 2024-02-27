@@ -1,14 +1,14 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
 import BraveShared
-import SwiftUI
 import BraveUI
 import BraveVPN
+import Foundation
+import Shared
+import SwiftUI
 
 /// A menu button that provides a shortcut to toggling Brave VPN
 struct VPNMenuButton: View {
@@ -32,7 +32,7 @@ struct VPNMenuButton: View {
   @State private var isVPNStatusChanging: Bool = BraveVPN.reconnectPending
   @State private var isVPNEnabled = BraveVPN.isConnected
   @State private var isErrorShowing: Bool = false
-  
+
   @ScaledMetric private var iconSize: CGFloat = 32.0
 
   private var isVPNEnabledBinding: Binding<Bool> {
@@ -47,11 +47,11 @@ struct VPNMenuButton: View {
       let alert = BraveSkusManager.sessionExpiredStateAlert(loginCallback: { _ in
         openURL(.brave.account)
       })
-      
+
       displayAlert(alert)
       return
     }
-    
+
     let vpnState = BraveVPN.vpnState
 
     if !VPNProductInfo.isComplete {
@@ -82,7 +82,9 @@ struct VPNMenuButton: View {
 
   private var vpnToggle: some View {
     Toggle("Brave VPN", isOn: isVPNEnabledBinding)
-      .toggleStyle(SwitchToggleStyle(tint: retryStateActive ? Color(.braveErrorBorder) : .accentColor))
+      .toggleStyle(
+        SwitchToggleStyle(tint: retryStateActive ? Color(.braveErrorBorder) : .accentColor)
+      )
   }
 
   var body: some View {
@@ -98,7 +100,9 @@ struct VPNMenuButton: View {
     .padding(.horizontal, 14)
     .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
     .background(
-      Button(action: { toggleVPN(!BraveVPN.isConnected) }) {
+      Button {
+        toggleVPN(!BraveVPN.isConnected)
+      } label: {
         Color.clear
       }
       .buttonStyle(TableCellButtonStyle())
@@ -115,7 +119,7 @@ struct VPNMenuButton: View {
     }
     .onReceive(NotificationCenter.default.publisher(for: .NEVPNStatusDidChange)) { _ in
       isVPNEnabled = BraveVPN.isConnected
-      
+
       if BraveVPN.isConnected {
         isVPNStatusChanging = false
       } else {
@@ -123,7 +127,7 @@ struct VPNMenuButton: View {
       }
     }
   }
-  
+
   private var headerView: some View {
     HStack(spacing: 14) {
       Image(braveSystemName: retryStateActive ? "leo.warning.triangle-filled" : "leo.product.vpn")
@@ -141,7 +145,9 @@ struct VPNMenuButton: View {
         if let subTitle = description {
           Text(retryStateActive ? Strings.VPN.vpnUpdatePaymentMethodDescriptionText : subTitle)
             .font(.subheadline)
-            .foregroundColor(retryStateActive ? Color(.braveErrorLabel) : Color(.secondaryBraveLabel))
+            .foregroundColor(
+              retryStateActive ? Color(.braveErrorLabel) : Color(.secondaryBraveLabel)
+            )
         }
       }
       .padding(.vertical, description != nil ? 5 : 0)

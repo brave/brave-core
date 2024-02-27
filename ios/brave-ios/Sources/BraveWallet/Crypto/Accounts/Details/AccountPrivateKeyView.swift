@@ -1,24 +1,24 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import DesignSystem
 import Strings
+import SwiftUI
 
 struct AccountPrivateKeyView: View {
   @ObservedObject var keyringStore: KeyringStore
   var account: BraveWallet.AccountInfo
-  
+
   @State private var password = ""
   @State private var error: PasswordEntryError?
   @State private var key: String?
   private var isKeyVisible: Bool { key != nil }
 
   @Environment(\.pixelLength) private var pixelLength
-  
+
   private var isShowHideButtonDisabled: Bool {
     if key != nil {
       return false
@@ -26,7 +26,7 @@ struct AccountPrivateKeyView: View {
       return password.isEmpty
     }
   }
-  
+
   private func validateAndShowPrivateKey() {
     keyringStore.privateKey(for: account, password: password) { key in
       if let key = key {
@@ -44,26 +44,34 @@ struct AccountPrivateKeyView: View {
   var body: some View {
     ScrollView(.vertical) {
       VStack {
-        Text("\(Image(systemName: "exclamationmark.triangle.fill"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)")
-          .font(.subheadline.weight(.medium))
-          .foregroundColor(Color(.braveLabel))
-          .padding(12)
-          .background(
-            Color(.braveWarningBackground)
-              .overlay(
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                  .strokeBorder(Color(.braveWarningBorder), style: StrokeStyle(lineWidth: pixelLength))
-              )
-              .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
-          )
+        Text(
+          "\(Image(systemName: "exclamationmark.triangle.fill"))  \(Strings.Wallet.accountPrivateKeyDisplayWarning)"
+        )
+        .font(.subheadline.weight(.medium))
+        .foregroundColor(Color(.braveLabel))
+        .padding(12)
+        .background(
+          Color(.braveWarningBackground)
+            .overlay(
+              RoundedRectangle(cornerRadius: 10, style: .continuous)
+                .strokeBorder(
+                  Color(.braveWarningBorder),
+                  style: StrokeStyle(lineWidth: pixelLength)
+                )
+            )
+            .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
+        )
         if let key = key {
-          SensitiveTextView(text: key, isShowingText: Binding<Bool>(
-            get: { self.key != nil },
-            set: { if !$0 { self.key = nil } }
-          ))
-            .multilineTextAlignment(.center)
-            .font(.system(.body, design: .monospaced))
-            .padding(40)
+          SensitiveTextView(
+            text: key,
+            isShowingText: Binding<Bool>(
+              get: { self.key != nil },
+              set: { if !$0 { self.key = nil } }
+            )
+          )
+          .multilineTextAlignment(.center)
+          .font(.system(.body, design: .monospaced))
+          .padding(40)
         } else {
           PasswordEntryField(
             password: $password,
@@ -72,9 +80,9 @@ struct AccountPrivateKeyView: View {
             keyringStore: keyringStore,
             onCommit: validateAndShowPrivateKey
           )
-            .padding(40)
+          .padding(40)
         }
-        Button(action: {
+        Button {
           withAnimation(nil) {
             if isKeyVisible {
               self.key = nil
@@ -82,8 +90,11 @@ struct AccountPrivateKeyView: View {
               validateAndShowPrivateKey()
             }
           }
-        }) {
-          Text(isKeyVisible ? Strings.Wallet.hidePrivateKeyButtonTitle : Strings.Wallet.showPrivateKeyButtonTitle)
+        } label: {
+          Text(
+            isKeyVisible
+              ? Strings.Wallet.hidePrivateKeyButtonTitle : Strings.Wallet.showPrivateKeyButtonTitle
+          )
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .disabled(isShowHideButtonDisabled)
@@ -93,7 +104,9 @@ struct AccountPrivateKeyView: View {
     .background(Color(.braveBackground))
     .navigationTitle(Strings.Wallet.accountPrivateKey)
     .navigationBarTitleDisplayMode(.inline)
-    .onReceive(NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)) { _ in
+    .onReceive(
+      NotificationCenter.default.publisher(for: UIApplication.willResignActiveNotification)
+    ) { _ in
       self.key = nil
     }
     .alertOnScreenshot {

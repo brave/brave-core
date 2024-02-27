@@ -1,13 +1,14 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
-import os.log
+import Foundation
 import Preferences
+import os.log
 
+// swift-format-ignore
 /// For adding a sample to an enumerated histogram
 public func UmaHistogramEnumeration<E: RawRepresentable & CaseIterable>(
   _ name: String,
@@ -35,6 +36,7 @@ extension Bucket: ExpressibleByIntegerLiteral {
   }
 }
 
+// swift-format-ignore
 /// Adds a sample to a specific bucket. The answer will be the index of the bucket the value falls into.
 ///
 /// Examples:
@@ -54,6 +56,7 @@ public func UmaHistogramRecordValueToBucket(
   UmaHistogramExactLinear(name, answer, buckets.count + 1)
 }
 
+// swift-format-ignore
 /// Adds a sample to record info around the last time a feature was used.
 ///
 /// By default this uses the 7 standard buckets used in many P3A questions but alternative ones can be passed
@@ -65,21 +68,22 @@ public func UmaHistogramRecordLastFeatureUsage(
 ) {
   let calendar = Calendar(identifier: .gregorian)
   guard let lastUsageDate = option.value,
-        let numberOfDays = calendar.dateComponents(
-          [.day],
-          from: lastUsageDate,
-          to: Date()
-        ).day
+    let numberOfDays = calendar.dateComponents(
+      [.day],
+      from: lastUsageDate,
+      to: Date()
+    ).day
   else {
     return
   }
-  let buckets: [Bucket] = alternativeBuckets ?? [
-    .r(0...6),
-    .r(7...13),
-    .r(14...20),
-    .r(21...27),
-    .r(28...59),
-    .r(60...)
-  ]
+  let buckets: [Bucket] =
+    alternativeBuckets ?? [
+      .r(0...6),
+      .r(7...13),
+      .r(14...20),
+      .r(21...27),
+      .r(28...59),
+      .r(60...),
+    ]
   UmaHistogramRecordValueToBucket(name, buckets: buckets, value: numberOfDays)
 }

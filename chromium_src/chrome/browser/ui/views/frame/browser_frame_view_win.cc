@@ -4,21 +4,22 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ui/tabs/features.h"
+#include "ui/base/ui_base_features.h"
 
-// The tab region view maintains its own padding; the frame view does not need
-// to reserve an extra top margin for it.
-#define BRAVE_BROWSER_FRAME_VIEW_WIN_TOP_AREA_HEIGHT   \
-  if (tabs::features::HorizontalTabsUpdateEnabled()) { \
-    return top;                                        \
-  }
+namespace features {
 
-// The top frame border thickness is smaller when using updated horizontal tabs.
-#define BRAVE_BROWSER_FRAME_VIEW_WIN_FRAME_TOP_BORDER_THICKNESS \
-  if (tabs::features::HorizontalTabsUpdateEnabled()) {          \
-    return 2;                                                   \
-  }
+bool BraveHorizontalTabsUpdateEnabled() {
+  return tabs::features::HorizontalTabsUpdateEnabled();
+}
+
+}  // namespace features
+
+// When updated horizontal tabs are enabled, we want to use the same layout
+// logic as upstream's "Refresh2023" for tab strip positioning and for the
+// window caption button height. When upstream's feature flag is removed, this
+// define can also be removed.
+#define IsChromeRefresh2023 BraveHorizontalTabsUpdateEnabled
 
 #include "src/chrome/browser/ui/views/frame/browser_frame_view_win.cc"  // IWYU pragma: export
 
-#undef BRAVE_BROWSER_FRAME_VIEW_WIN_FRAME_TOP_BORDER_THICKNESS
-#undef BRAVE_BROWSER_FRAME_VIEW_WIN_TOP_AREA_HEIGHT
+#undef IsChromeRefresh2023

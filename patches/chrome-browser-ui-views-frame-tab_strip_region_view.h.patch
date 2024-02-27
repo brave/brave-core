@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/views/frame/tab_strip_region_view.h b/chrome/browser/ui/views/frame/tab_strip_region_view.h
+index 007f4d07451a2a9fc3820376fa3fe3986f0f5a12..0f95d4db9463f97a8c85661452574b2ec1cb37d4 100644
+--- a/chrome/browser/ui/views/frame/tab_strip_region_view.h
++++ b/chrome/browser/ui/views/frame/tab_strip_region_view.h
+@@ -24,7 +24,7 @@ class TabStripScrollContainer;
+ 
+ // Container for the tabstrip and the other views sharing space with it -
+ // with the exception of the caption buttons.
+-class TabStripRegionView final : public views::AccessiblePaneView {
++class TabStripRegionView : public views::AccessiblePaneView {
+   METADATA_HEADER(TabStripRegionView, views::AccessiblePaneView)
+ 
+  public:

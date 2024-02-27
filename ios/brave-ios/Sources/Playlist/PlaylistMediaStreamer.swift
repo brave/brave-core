@@ -1,18 +1,18 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import AVFoundation
 import Combine
 import Data
-import WebKit
+import Foundation
 import MediaPlayer
 import Shared
 import Storage
-import os.log
 import UserAgent
+import WebKit
+import os.log
 
 public class PlaylistMediaStreamer {
   private weak var playerView: UIView?
@@ -51,23 +51,23 @@ public class PlaylistMediaStreamer {
 
     // Try to stream the asset from its url..
     let isStreamable = await canStreamURL(url)
-    
+
     // Stream failed so fallback to the webview
     // It's possible the URL expired..
     if !isStreamable {
       return try await streamingFallback(item)
     }
-    
+
     return item
   }
-  
+
   public static func loadAssetPlayability(asset: AVURLAsset) async -> Bool {
     let isAssetPlayable = { () -> Bool in
       let status = asset.status(of: .isPlayable)
       if case .loaded(let value) = status {
         return value
       }
-      
+
       return false
     }
 
@@ -80,12 +80,12 @@ public class PlaylistMediaStreamer {
     switch Reach().connectionStatus() {
     case .offline, .unknown:
       Logger.module.error("Couldn't load asset's playability -- Offline")
-      
+
       // We have no other way of knowing the playable status
       // It is best to assume the item can be played
       // In the worst case, if it can't be played, it will show an error
       return isAssetPlayable()
-      
+
     case .online:
       // Fetch the playable status asynchronously
       return (try? await asset.load(.isPlayable)) == true
@@ -104,38 +104,40 @@ public class PlaylistMediaStreamer {
       // The WebView is visible!
       self.playerView?.insertSubview(webLoader, at: 0)
       self.webLoader = webLoader
-      
+
       guard let url = URL(string: item.pageSrc) else {
         throw PlaybackError.cannotLoadMedia
       }
-      
+
       let newItem = await webLoader.load(url: url)
       webLoader.removeFromSuperview()
       self.webLoader = nil
-      
+
       guard let newItem = newItem, URL(string: newItem.src) != nil else {
         throw PlaybackError.cannotLoadMedia
       }
-      
-      let updatedItem = PlaylistInfo(name: newItem.name,
-                                     src: newItem.src,
-                                     pageSrc: item.pageSrc,  // Keep the same pageSrc
-                                     pageTitle: newItem.pageTitle,
-                                     mimeType: newItem.mimeType,
-                                     duration: newItem.duration,
-                                     lastPlayedOffset: 0.0,
-                                     detected: newItem.detected,
-                                     dateAdded: item.dateAdded, // Keep the same dateAdded
-                                     tagId: item.tagId,  // Keep the same tagId
-                                     order: item.order,
-                                     isInvisible: item.isInvisible) // Keep the same order
-      
+
+      let updatedItem = PlaylistInfo(
+        name: newItem.name,
+        src: newItem.src,
+        pageSrc: item.pageSrc,  // Keep the same pageSrc
+        pageTitle: newItem.pageTitle,
+        mimeType: newItem.mimeType,
+        duration: newItem.duration,
+        lastPlayedOffset: 0.0,
+        detected: newItem.detected,
+        dateAdded: item.dateAdded,  // Keep the same dateAdded
+        tagId: item.tagId,  // Keep the same tagId
+        order: item.order,
+        isInvisible: item.isInvisible
+      )  // Keep the same order
+
       let item = try await withCheckedThrowingContinuation { continuation in
         PlaylistItem.updateItem(updatedItem) {
           continuation.resume(returning: updatedItem)
         }
       }
-        
+
       Task {
         try await Task.sleep(nanoseconds: NSEC_PER_SEC)
         PlaylistManager.shared.autoDownload(item: updatedItem)
@@ -156,7 +158,7 @@ public class PlaylistMediaStreamer {
     guard let mimeType = await PlaylistMediaStreamer.getMimeType(url), !mimeType.isEmpty else {
       return false
     }
-    
+
     return true
   }
 
@@ -182,7 +184,8 @@ public class PlaylistMediaStreamer {
   }
 
   public static func updateNowPlayingInfo(_ player: MediaPlayer) {
-    let mediaType: MPNowPlayingInfoMediaType = player.currentItem?.isVideoTracksAvailable() == true ? .video : .audio
+    let mediaType: MPNowPlayingInfoMediaType =
+      player.currentItem?.isVideoTracksAvailable() == true ? .video : .audio
     let duration = player.currentItem?.asset.duration.seconds ?? 0.0
 
     var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo ?? [:]
@@ -208,7 +211,8 @@ public class PlaylistMediaStreamer {
           // Do not resize image here.
           // According to Apple it isn't necessary to use expensive resize operations
           return image
-        })
+        }
+      )
       setNowPlayingMediaArtwork(artwork: artwork)
     } else {
       setNowPlayingMediaArtwork(artwork: nil)
@@ -225,22 +229,31 @@ public class PlaylistMediaStreamer {
 
   public static func getMimeType(_ url: URL) async -> String? {
     let request: URLRequest = {
-      var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData, timeoutInterval: 10.0)
+      var request = URLRequest(
+        url: url,
+        cachePolicy: .reloadIgnoringLocalCacheData,
+        timeoutInterval: 10.0
+      )
 
       // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Range
       request.addValue("bytes=0-1", forHTTPHeaderField: "Range")
       request.addValue(UUID().uuidString, forHTTPHeaderField: "X-Playback-Session-Id")
-      request.addValue(UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile, forHTTPHeaderField: "User-Agent")
+      request.addValue(
+        UserAgent.shouldUseDesktopMode ? UserAgent.desktop : UserAgent.mobile,
+        forHTTPHeaderField: "User-Agent"
+      )
       return request
     }()
 
     let session = URLSession(configuration: .ephemeral)
-    
+
     do {
       let (_, response) = try await session.data(for: request)
       session.finishTasksAndInvalidate()
-      
-      if let response = response as? HTTPURLResponse, response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299 {
+
+      if let response = response as? HTTPURLResponse,
+        response.statusCode == 302 || response.statusCode >= 200 && response.statusCode <= 299
+      {
         if let contentType = response.allHeaderFields["Content-Type"] as? String {
           return contentType
         }

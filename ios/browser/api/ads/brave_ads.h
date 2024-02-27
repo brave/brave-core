@@ -17,11 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @protocol BraveAdsNotificationHandler
 @required
-/// Returns |true| if notification ads can be shown.
+/// Returns `true` if notification ads can be shown.
 - (BOOL)canShowNotificationAds;
-/// Show notification |ad|.
+/// Show notification `ad`.
 - (void)showNotificationAd:(NotificationAdIOS*)ad;
-/// Close the notification ad for the specified |placement_id|.
+/// Close the notification ad for the specified `placement_id`.
 - (void)closeNotificationAd:(NSString*)placementId;
 @end
 
@@ -49,16 +49,19 @@ OBJC_EXPORT
 
 #pragma mark -
 
-/// Returns |true| if ads are supported for the user's current country otherwise
-/// returns |false|.
+/// Returns `true` if ads are supported for the user's current country otherwise
+/// returns `false`.
 + (BOOL)isSupportedRegion;
 
-/// Returns |true| if the ads service is running otherwise returns |false|.
+/// Returns `true` if the ads service is running otherwise returns `false`.
 - (BOOL)isServiceRunning;
 
-/// Returns |true| if always run the ads service, even if Brave Private Ads are
+/// Returns `true` if always run the ads service, even if Brave Private Ads are
 /// disabled.
 + (BOOL)shouldAlwaysRunService;
+
+/// Returns `true` if search result ads are supported.
++ (BOOL)shouldSupportSearchResultAds;
 
 /// Whether or not Brave Ads is enabled and the user should receive
 /// notification-style ads and be rewarded for it
@@ -85,7 +88,7 @@ OBJC_EXPORT
 
 #pragma mark - Ads
 
-// See |components/brave_ads/core/internal/ads_impl.h|.
+// See `components/brave_ads/core/internal/ads_impl.h`.
 
 - (void)getStatementOfAccounts:
     (void (^)(NSInteger adsReceived,
@@ -119,6 +122,10 @@ OBJC_EXPORT
                                 (BraveAdsPromotedContentAdEventType)eventType
                            completion:(void (^)(BOOL success))completion;
 
+- (void)triggerSearchResultAdEvent:(BraveAdsSearchResultAdInfo*)searchResultAd
+                         eventType:(BraveAdsSearchResultAdEventType)eventType
+                        completion:(void (^)(BOOL success))completion;
+
 - (void)purgeOrphanedAdEventsForType:(BraveAdsAdType)adType
                           completion:(void (^)(BOOL success))completion;
 
@@ -132,7 +139,7 @@ OBJC_EXPORT
 
 #pragma mark - Ads client notifier
 
-// See |components/brave_ads/core/public/client/ads_client_notifier.h|.
+// See `components/brave_ads/core/public/client/ads_client_notifier.h`.
 
 - (void)notifyRewardsWalletDidUpdate:(NSString*)paymentId
                           base64Seed:(NSString*)base64Seed;

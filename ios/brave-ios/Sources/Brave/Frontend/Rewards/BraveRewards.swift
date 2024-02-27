@@ -1,15 +1,15 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
-import Preferences
 import Combine
 import DeviceCheck
-import Shared
+import Foundation
 import Growth
+import Preferences
+import Shared
 
 public class BraveRewards: NSObject {
 
@@ -42,7 +42,7 @@ public class BraveRewards: NSObject {
           self?.proposeAdsShutdown()
         }
       }
-    
+
     if Preferences.Rewards.adsEnabledTimestamp.value == nil, ads.isEnabled {
       Preferences.Rewards.adsEnabledTimestamp.value = Date()
     }
@@ -80,7 +80,10 @@ public class BraveRewards: NSObject {
       // If ads is already initialized just toggle rewards ads and update the wallet info
       if self.ads.isServiceRunning() {
         if let walletInfo {
-          self.ads.notifyRewardsWalletDidUpdate(walletInfo.paymentId, base64Seed: walletInfo.recoverySeed)
+          self.ads.notifyRewardsWalletDidUpdate(
+            walletInfo.paymentId,
+            base64Seed: walletInfo.recoverySeed
+          )
         }
         if let toggleAds {
           self.ads.isEnabled = toggleAds
@@ -101,6 +104,7 @@ public class BraveRewards: NSObject {
 
   private var shouldShutdownAds: Bool {
     ads.isServiceRunning() && !ads.isEnabled && !Preferences.BraveNews.isEnabled.value
+      && !BraveAds.shouldAlwaysRunService()
   }
 
   /// Propose that the ads service should be shutdown based on whether or not that all features
@@ -108,7 +112,9 @@ public class BraveRewards: NSObject {
   private func proposeAdsShutdown() {
     if !shouldShutdownAds { return }
     ads.shutdownService {
-      self.ads = BraveAds(stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path)
+      self.ads = BraveAds(
+        stateStoragePath: self.configuration.storageURL.appendingPathComponent("ads").path
+      )
     }
   }
 
@@ -142,7 +148,7 @@ public class BraveRewards: NSObject {
   }
 
   private(set) var isTurningOnRewards: Bool = false
-  
+
   private func createWalletIfNeeded(_ completion: (() -> Void)? = nil) {
     if isTurningOnRewards {
       // completion block will be hit by previous call
@@ -167,7 +173,7 @@ public class BraveRewards: NSObject {
           at: configuration.storageURL.appendingPathComponent("ads")
         )
         if ads.isEnabled {
-          ads.initialize() { _ in }
+          ads.initialize { _ in }
         }
       }
     }
@@ -188,7 +194,12 @@ public class BraveRewards: NSObject {
       tabRetrieved(tabId, url: url, html: nil)
     }
     if ads.isServiceRunning() && !isPrivate {
-      ads.notifyTabDidChange(tabId, url: url, redirectChain: tab.redirectURLs, isSelected: isSelected)
+      ads.notifyTabDidChange(
+        tabId,
+        url: url,
+        redirectChain: tab.redirectURLs,
+        isSelected: isSelected
+      )
     }
   }
 
@@ -205,8 +216,18 @@ public class BraveRewards: NSObject {
   ) {
     tabRetrieved(tabId, url: url, html: html)
     if let innerText = adsInnerText, ads.isServiceRunning() {
-      ads.notifyTabHtmlContentDidChange(tabId, url: url, redirectChain: redirectionURLs ?? [], html: html)
-      ads.notifyTabTextContentDidChange(tabId, url: url, redirectChain: redirectionURLs ?? [], text: innerText)
+      ads.notifyTabHtmlContentDidChange(
+        tabId,
+        url: url,
+        redirectChain: redirectionURLs ?? [],
+        html: html
+      )
+      ads.notifyTabTextContentDidChange(
+        tabId,
+        url: url,
+        redirectChain: redirectionURLs ?? [],
+        text: innerText
+      )
     }
     rewardsAPI?.reportLoadedPage(url: url, tabId: UInt32(tabId))
   }
@@ -247,7 +268,12 @@ public class BraveRewards: NSObject {
   }
 
   private func tabRetrieved(_ tabId: Int, url: URL, html: String?) {
-    rewardsAPI?.fetchPublisherActivity(from: url, faviconURL: nil, publisherBlob: html, tabId: UInt64(tabId))
+    rewardsAPI?.fetchPublisherActivity(
+      from: url,
+      faviconURL: nil,
+      publisherBlob: html,
+      tabId: UInt64(tabId)
+    )
   }
 }
 
@@ -275,7 +301,9 @@ extension BraveRewards {
     ) -> Self {
       var configuration: BraveRewards.Configuration
       if !buildChannel.isPublic {
-        if let override = Preferences.Rewards.EnvironmentOverride(rawValue: Preferences.Rewards.environmentOverride.value), override != .none {
+        if let override = Preferences.Rewards.EnvironmentOverride(
+          rawValue: Preferences.Rewards.environmentOverride.value
+        ), override != .none {
           switch override {
           case .dev:
             configuration = .default
@@ -297,10 +325,11 @@ extension BraveRewards {
       }
       return configuration
     }
-    
+
     static var `default`: Configuration {
       .init(
-        storageURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!,
+        storageURL: FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask)
+          .first!,
         environment: .development
       )
     }
@@ -322,7 +351,7 @@ extension BraveRewards {
         retryInterval: 30
       )
     }
-    
+
     public var flags: String {
       var flags: [String: String] = [:]
       switch environment {

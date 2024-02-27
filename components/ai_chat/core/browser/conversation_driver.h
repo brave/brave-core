@@ -106,8 +106,8 @@ class ConversationDriver {
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
 
-  // Used to summarize the selected text in the page.
-  void SummarizeSelectedText(const std::string& selected_text);
+  void SubmitSelectedText(const std::string& selected_text,
+                          mojom::ActionType action_type);
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -116,6 +116,7 @@ class ConversationDriver {
   void SendFeedback(const std::string& category,
                     const std::string& feedback,
                     const std::string& rating_id,
+                    bool send_hostname,
                     mojom::PageHandler::SendFeedbackCallback callback);
 
   // Used to determine whether the page content should be unlinked when

@@ -130,7 +130,7 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = [
     'sync', '--nohooks', '--revision', 'src@' + requiredChromiumRef, '--reset',
-    '--with_tags', '--with_branch_heads', '--upstream'
+    '--upstream'
   ];
 
   if (syncWithForce) {
@@ -189,9 +189,25 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   return true
 }
 
+async function checkInternalDepsEndpoint() {
+  if (!config.useBraveHermeticToolchain) {
+    return true
+  }
+
+  try {
+    const response = await fetch(
+      `${config.internalDepsUrl}/windows-hermetic-toolchain/test.txt`,
+      { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' }
+    )
+    return response.status == 302
+  } catch (error) {
+    return false
+  }
+}
 
 module.exports = {
   maybeInstallDepotTools,
   buildDefaultGClientConfig,
-  syncChromium
+  syncChromium,
+  checkInternalDepsEndpoint
 }

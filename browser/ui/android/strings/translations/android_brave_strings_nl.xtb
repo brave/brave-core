@@ -427,18 +427,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2394961582378297792">Uitgelogd</translation>
 <translation id="5308380583665731573">Connect</translation>
 <translation id="3368922792935385530">Verbonden</translation>
-<translation id="8673913984316081937">Het verifiëren van je portemonnee is optioneel</translation>
-<translation id="8558636200953226885">Maar als u verifieert, kunt u...</translation>
-<translation id="8697510149346635496">Neem BAT op die je verdient door het bekijken van advertenties die privacy respecteren</translation>
-<translation id="1481480653609649134">Koop extra BAT met creditcards en andere bronnen</translation>
-<translation id="9096003370755878766">Neem BAT op die je mogelijk eerder aan je Brave Rewards-portemonnee hebt toegevoegd</translation>
-<translation id="1554282356558968486">Onze wallet-dienst wordt geleverd door</translation>
 <translation id="6569877533335686968">Uphold</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
 <translation id="6011108706830742093">ZebPay</translation>
-<translation id="8465442795593991224">Uphold kan je vragen je identiteit te verifiëren op basis van de gevraagde diensten.</translation>
-<translation id="3200197118442451932">Brave Software Inc. verwerkt noch bewaart persoonlijke informatie die u verstrekt aan <ph name="WALLET_PROVIDER"/> en heeft hier ook geen toegang tot wanneer u een account bij hen aanmaakt.</translation>
 <translation id="1665118090708049096">Ga naar mijn <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="4858636682078269312">Log in op uw <ph name="WALLET_PROVIDER"/>-account</translation>
 <translation id="8874184842967597500">Niet verbonden</translation>
@@ -525,7 +517,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="2225863440766607138">Trackers</translation>
 <translation id="2993367530362078067"><ph name="COUNT"/><ph name="COUNT_TEXT"/></translation>
 <translation id="6737820963776538947">U hebt in de afgelopen 3 uur You blocked <ph name="COUNT"/> trackers en advertenties geblokkeerd met Brave browser.</translation>
-<translation id="3621193901658023971">Blader tot wel 6x sneller op grote nieuwssites in Brave door trackes en advertenties te blokkeren.</translation>
+<translation id="5005713153542196658">Blader tot wel 6 keer sneller op grote nieuwssites in Brave door trackers en advertenties te blokkeren.</translation>
 <translation id="7427567994475794038">Schakel Privacyrapporten in om te zien hoeveel trackers &amp; advertenties er in de afgelopen 3 uur zijn geblokkeerd.</translation>
 <translation id="2053891538879944400">U hebt <ph name="DATA"/> <ph name="DATA_TEXT"/> data bespaard met Brave browser.</translation>
 <translation id="8640064498452534195">Schakel Privacyrapporten in om te zien hoeveel data u hebt bespaard.</translation>
@@ -590,6 +582,10 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8622329973403382303">Neem een snelle tour om erachter te komen hoe het werkt om de geschiedenis in te gaan als een Rewards rockster!</translation>
 <translation id="3479552764303398839">Niet nu</translation>
 <translation id="7138272885617540195">Sta app-links toe om apps buiten Brave te openen</translation>
+<translation id="4954512758656527938">Standaard Ethereum-wallet</translation>
+<translation id="7701023802820268122">Standaard Solana-wallet</translation>
+<translation id="7701040980221191251">Geen</translation>
+<translation id="8488282162676695335">Brave-wallet</translation>
 <translation id="8792121506918889955">WebRTC IP-verwerkingsbeleid</translation>
 <translation id="8798099450830957504">Standaard</translation>
 <translation id="1822560017823072927">Standaard openbare- en privé-interface</translation>
@@ -685,7 +681,6 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8475984867371585028">Zichtbare NFT's bewerken</translation>
 <translation id="5050890334032852465">Sla je account-opvolglijst op.</translation>
 <translation id="7755766175599167100">Tokens zoeken</translation>
-<translation id="8488282162676695335">Brave Wallet</translation>
 <translation id="3784455785234192852">Vergrendelen</translation>
 <translation id="4412698727486357573">Helpcentrum</translation>
 <translation id="8796429300536029044">NFT-details</translation>
@@ -717,12 +712,12 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="8272917646984397798">Beveiligt alle verbindingen</translation>
 <translation id="1751947227857853925">Snel en ongelimiteerd tot 100 Mbps</translation>
 <translation id="1400240082805528049">24/7 ondersteuning</translation>
-<translation id="5051030058817632680">Blokkeert ongewilde netwerkverbindingen</translation>
+<translation id="5892534145504632332">Bescherm elke app en uw hele apparaat</translation>
+<translation id="7195416926059527505">Veiliger voor thuis of openbare wifi</translation>
+<translation id="1354700000739359839">Razendsnel, tot 100 Mbps</translation>
 <translation id="3510283489391432976">Kies je geo-locatie of land</translation>
-<translation id="4390800080658195654">Houdt je online anoniem</translation>
-<translation id="639981156979733813">Ondersteunt snelheden tot 100 Mbps</translation>
-<translation id="765343799669302337">Maakt gebruik van een beveiligde, versleutelde VPN-tunnel van WireGuard</translation>
-<translation id="1571230671455380494">We delen of verkopen je info nooit</translation>
+<translation id="7695158478627528928">Brave legt uw activiteit nooit vast</translation>
+<translation id="4575683170451975058">Bescherm 5 apparaten met 1 abonnement</translation>
 <translation id="276866628038850725">Alle abonnementen bieden een 7-daagse proefperiode!</translation>
 <translation id="1532536259167115948">Maandabonnement <ph name="TRIAL_TEXT"/></translation>
 <translation id="6344668702581136255">Jaarabonnement <ph name="TRIAL_TEXT"/></translation>
@@ -733,6 +728,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5452539666808679230"><ph name="YEARLY_AMOUNT"/> / yr.</translation>
 <translation id="2655185358771731232">Probeer 7 dagen gratis uit. Na 7 dagen wordt de abonnementsprijs in rekening gebracht. Alle abonnementen worden automatisch verlengd, maar kunnen voor verlenging worden geannuleerd.</translation>
 <translation id="6053992191006521518">Probeer GRATIS uit</translation>
+<translation id="3990956504562716932">Probeer 7 dagen gratis</translation>
 <translation id="721747358270435486">VPN installeren</translation>
 <translation id="836074276610740314">VPN-profiel installeren</translation>
 <translation id="8021842065465097929">Brave installeert nu een VPN-profiel.</translation>
@@ -1117,71 +1113,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="591648995518106347">Laadt automatisch artikelen in de lezermodus</translation>
 <translation id="1295796122927221823">In leesmodus weergeven</translation>
 <translation id="5062934803872044756"><ph name="SYMBOL"/> op <ph name="NETWORK"/></translation>
-<translation id="295620834661738195">Brave-playlist</translation>
-<translation id="4850886885716139402">Weergave</translation>
-<translation id="7392941176393379100">Toegevoegd aan '<ph name="PLAYLIST_NAME"/>'</translation>
-<translation id="8289472222022674331">Uw playlistgegevens beheren</translation>
-<translation id="7650602357673790368">Playlist slaat automatisch content op op uw apparaat voor offline afspelen (op zowel privé- als op gedeelde playlists). Als u niet verbonden bent met wifi, dan maakt automatisch opslaan gebruik van mobiele gegevens.\n\nOm deze standaardinstelling te wijzigen, gaat u naar Instellingen.</translation>
-<translation id="5900576657906675258">Item toevoegen aan playlist</translation>
-<translation id="349846214503465941">Playlist inschakelen</translation>
-<translation id="1309636029062006520">Maak playlists van uw favoriete audio en video's en speel ze altijd, overal af.</translation>
-<translation id="3561815498111282415">Automatisch opslaan voor offline gebruik</translation>
-<translation id="1832424694374124654">Slaat nieuwe playlist-items automatisch op op uw apparaat, zodat u ze kunt afspelen zonder internetverbinding.</translation>
-<translation id="8103022210423023846">Automatisch opslaan AAN</translation>
-<translation id="3926329432879804185">Automatisch opslaan UIT</translation>
-<translation id="7768812595186089508">Alleen automatisch opslaan bij verbinding met wifi</translation>
-<translation id="5939518447894949180">Resetten</translation>
-<translation id="8199028711686989861">Verwijder alle video's uit Playlist, inclusief opslag van de offline modus.</translation>
-<translation id="5916664084637901428">On</translation>
-<translation id="5860033963881614850">Off</translation>
-<translation id="2920568868625746681">Alleen via wifi</translation>
-<translation id="4590997608186539865">Playlist</translation>
-<translation id="7525067979554623046">Maken</translation>
-<translation id="5491049004699827548">Maak uw eerste playlist</translation>
-<translation id="5319108110887582146">Maak een playlist met uw favoriete audio en video's en speel deze altijd en overal af. Zelfs offline.</translation>
-<translation id="6802849415466883498">Een playlist maken</translation>
-<translation id="8525248723479742219">Later afspelen</translation>
-<translation id="7453007860684252933">Browsen en toevoegen</translation>
-<translation id="9014883386413828317">Voeg uw favoriete content toe. Zoek naar de ( + )-knop onderaan in uw scherm.</translation>
-<translation id="5928669500312007783">Browsen door media</translation>
-<translation id="8152485753254079984">Nieuwe playlist</translation>
-<translation id="9130105487623071247">Naam van playlist</translation>
-<translation id="726581235416249619">Naamloze playlist</translation>
-<translation id="1456254983411148628">Gegevens verwijderen</translation>
-<translation id="2365883822666964139"><ph name="NUMBER"/> geselecteerd</translation>
-<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
-<translation id="2317629745818459803">Alles afspelen</translation>
-<translation id="7544853251252956727">Shuffle</translation>
-<translation id="2881339830231736485">Recentelijk afgespeeld</translation>
-<translation id="7636458383879257005">Tik, houd ingedrukt, of sleep</translation>
-<translation id="8120600068258956006">Toevoegen aan playlist</translation>
-<translation id="39991094779686024">Playlists</translation>
-<translation id="1710072605877822603">Media toevoegen</translation>
-<translation id="3874252678044305931">Voeg video's toe aan Brave Playlist. Speel ze af wanneer je maar wilt, zelfs als je offline bent.</translation>
-<translation id="8973629800378391099">Maak playlists van je favoriete content. Bespaar mobiele data. Speel  je playlists af zonder reclame tussendoor.</translation>
-<translation id="4936812987266342401">Tik op de knop en voeg in een handomdraai video's toe aan een playlist</translation>
-<translation id="6263657785571415306">Blijf in je flow: voeg tijdens het browsen video's toe en bekijk ze later.</translation>
-<translation id="2839555636100404687">Video's en audio spelen beter af in Playlist</translation>
-<translation id="9079526681359439081">Afspelen op de achtergrond. Bediening vanaf het vergrendelingsscherm. En meer...</translation>
-<translation id="3620862810055853183">Playlist openen</translation>
-<translation id="3861012838874771868">Playlist-instellingen openen</translation>
-<translation id="5220099266891491416">Playlist-knop verbergen</translation>
-<translation id="7416347631175891923">Probeer het!</translation>
-<translation id="1173894706177603556">Naam wijzigen</translation>
-<translation id="1620612903815671893">Offline gegevens van playlists verwijderen</translation>
-<translation id="3261711068865275261">Alle offline gegevens verwijderen</translation>
-<translation id="6653691766801349738">Playlist bewaren voor offline gebruik</translation>
-<translation id="8708086574143054053">Alles playlists bewaren voor offline gebruik</translation>
-<translation id="3596306474342941843">Playlist verwijderen</translation>
-<translation id="7765158879357617694">Verplaatsen</translation>
-<translation id="3803384303807438047">Offline gegevens van item verwijderen</translation>
-<translation id="4195643157523330669">Openen op nieuw tabblad</translation>
-<translation id="4243710787042215766">Openen in privétabblad</translation>
-<translation id="8261506727792406068">Verwijder</translation>
-<translation id="377872456482681602">Selecteer eerst items</translation>
-<translation id="6172429305139364624">Het playlist-item bevindt zich niet in de cache.\nPlaats het item in de cache voor de offline modus.</translation>
-<translation id="3631131732607750008">Content is verlopen. Probeer het over een paar seconden opnieuw.</translation>
-<translation id="286472539388773794">Vul een geldige playlistnaam in</translation>
 <translation id="9085765419770918643">Hier zijn nog geen NFT's.</translation>
 <translation id="8445532667841598737">Bent u er klaar voor om NFT's te gaan toevoegen? Klik dan op de onderstaande knop om ze te importeren.</translation>
 <translation id="5925465310724910998">Wilt u dat uw NFT's automatisch worden weergegeven?</translation>
@@ -1190,12 +1121,6 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="622372328961630111">Voeg automatisch NFT's die u bezit toe aan de wallet met behulp van API's van derden. <ph name="BEGIN_LINK_1"/>Meer informatie.<ph name="END_LINK_1"/></translation>
 <translation id="7618347247876614969">Account van adresopzoektabel:</translation>
 <translation id="7659483790930268440">Index van adresopzoektabel:</translation>
-<translation id="7322560193401221004">Afspeelpositie van bestand onthouden</translation>
-<translation id="7505951907514709271">Bij individuele bestanden het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
-<translation id="6835165453349969605">Afspeelpositie van de playlist onthouden</translation>
-<translation id="6344103698928069918">Bij playlists het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
-<translation id="8141583471142904652">Zonder onderbreking afspelen</translation>
-<translation id="851432578283946230">Speelt automatisch de volgende items op uw playlist af</translation>
 <translation id="7853202427316060426">Activiteit</translation>
 <translation id="4932733599132424254">Datum</translation>
 <translation id="346505172740911461">Marktprijs</translation>
@@ -1212,6 +1137,80 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="2471230424465522689">Niet voor</translation>
 <translation id="4841860051609590575">Aanvraag-ID</translation>
 <translation id="1179407411385015942">Leo is een slimme assistent op basis van AI, die in de browser is ingebouwd</translation>
+<translation id="4109670531935487117">Suggesties voor automatisch aanvullen in de adresbalk weergeven</translation>
 <translation id="1250335737108905610">Opnieuw instellen en gegevens wissen van Leo</translation>
 <translation id="6165101586663336913">Als u Leo (assistent) opnieuw instelt, moet u zich in de toekomst aanmelden om Leo te kunnen gebruiken. Ook wordt uw chatgeschiedenis gewist. Als u uw chatgeschiedenis wist, worden al uw eerdere gesprekken met Leo verwijderd. Deze actie kan niet ongedaan worden gemaakt.</translation>
+<translation id="3692772534525889713">Koppel uw Play Store-aankoop aan uw Brave-account om Brave Leo op andere apparaten te gebruiken.</translation>
+<translation id="73236265316873967">Leo Premium</translation>
+<translation id="1166682575529520472">Maandelijks</translation>
+<translation id="451189393813405346">Vraag het Leo</translation>
+<translation id="7322560193401221004">Afspeelpositie van bestand onthouden</translation>
+<translation id="7505951907514709271">Bij individuele bestanden het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
+<translation id="6835165453349969605">Afspeelpositie van de playlist onthouden</translation>
+<translation id="6344103698928069918">Bij playlists het afspelen hervatten vanaf het punt waar u het laatst gestopt bent</translation>
+<translation id="8141583471142904652">Zonder onderbreking afspelen</translation>
+<translation id="851432578283946230">Speelt automatisch de volgende items op uw playlist af</translation>
+<translation id="295620834661738195">Brave-playlist</translation>
+<translation id="4850886885716139402">Weergave</translation>
+<translation id="7392941176393379100">Toegevoegd aan '<ph name="PLAYLIST_NAME"/>'</translation>
+<translation id="349846214503465941">Playlist inschakelen</translation>
+<translation id="1309636029062006520">Maak playlists van uw favoriete audio en video's en speel ze altijd, overal af.</translation>
+<translation id="7899390017499980820">Toevoegen aan Playlist-knop</translation>
+<translation id="6901152954398668317">De knop 'Toevoegen aan Playlist' tonen of verbergen voor het snel toevoegen en verwijderen van media.</translation>
+<translation id="5939518447894949180">Resetten</translation>
+<translation id="8199028711686989861">Verwijder alle video's uit Playlist, inclusief opslag van de offline modus.</translation>
+<translation id="4590997608186539865">Playlist</translation>
+<translation id="7525067979554623046">Maken</translation>
+<translation id="8525248723479742219">Later afspelen</translation>
+<translation id="7453007860684252933">Browsen en toevoegen</translation>
+<translation id="9014883386413828317">Voeg uw favoriete content toe. Zoek naar de ( + )-knop onderaan in uw scherm.</translation>
+<translation id="5928669500312007783">Browsen door media</translation>
+<translation id="8152485753254079984">Nieuwe playlist</translation>
+<translation id="9130105487623071247">Naam van playlist</translation>
+<translation id="726581235416249619">Naamloze playlist</translation>
+<translation id="2365883822666964139"><ph name="NUMBER"/> geselecteerd</translation>
+<translation id="8617390509150638117"><ph name="NUMBER"/> items</translation>
+<translation id="2317629745818459803">Alles afspelen</translation>
+<translation id="7544853251252956727">Shuffle</translation>
+<translation id="2881339830231736485">Recentelijk afgespeeld</translation>
+<translation id="8120600068258956006">Toevoegen aan playlist</translation>
+<translation id="39991094779686024">Playlists</translation>
+<translation id="1710072605877822603">Media toevoegen</translation>
+<translation id="3874252678044305931">Voeg video's toe aan Brave Playlist. Speel ze af wanneer je maar wilt, zelfs als je offline bent.</translation>
+<translation id="8973629800378391099">Maak playlists van je favoriete content. Bespaar mobiele data. Speel  je playlists af zonder reclame tussendoor.</translation>
+<translation id="4936812987266342401">Tik op de knop en voeg in een handomdraai video's toe aan een playlist</translation>
+<translation id="6263657785571415306">Blijf in je flow: voeg tijdens het browsen video's toe en bekijk ze later.</translation>
+<translation id="2839555636100404687">Video's en audio spelen beter af in Playlist</translation>
+<translation id="9079526681359439081">Afspelen op de achtergrond. Bediening vanaf het vergrendelingsscherm. En meer...</translation>
+<translation id="3620862810055853183">Playlist openen</translation>
+<translation id="3861012838874771868">Playlist-instellingen openen</translation>
+<translation id="5220099266891491416">Playlist-knop verbergen</translation>
+<translation id="7416347631175891923">Probeer het!</translation>
+<translation id="1173894706177603556">Naam wijzigen</translation>
+<translation id="3596306474342941843">Playlist verwijderen</translation>
+<translation id="7765158879357617694">Verplaatsen</translation>
+<translation id="3803384303807438047">Offline gegevens van item verwijderen</translation>
+<translation id="4195643157523330669">Openen op nieuw tabblad</translation>
+<translation id="4243710787042215766">Openen in privétabblad</translation>
+<translation id="8261506727792406068">Verwijder</translation>
+<translation id="377872456482681602">Selecteer eerst items</translation>
+<translation id="286472539388773794">Vul een geldige playlistnaam in</translation>
+<translation id="2824489375399072491">Delen met:</translation>
+<translation id="5319532905552885478">Er is al mediacontent toegevoegd aan de standaard-playlist</translation>
+<translation id="4802584673094436231">Voorbereiden...</translation>
+<translation id="481455355267255546">Volgende</translation>
+<translation id="5474757891469990756">Benut de volledige capaciteit van Leo met Premium:</translation>
+<translation id="4173478269537830374">Verken verschillende AI-modellen</translation>
+<translation id="3453542753968940696">Als eerste toegang tot krachtige modellen met verschillende vaardigheden.</translation>
+<translation id="3245401959451976966">Ontgrendel uw creativiteit</translation>
+<translation id="5031778211368112461">Krijg toegang tot modellen die beter geschikt zijn voor creatieve taken en het genereren van content.</translation>
+<translation id="4165928407303989823">Blijf bij het onderwerp</translation>
+<translation id="298783097210745222">Krijg nauwkeurige antwoorden voor meer genuanceerde gesprekken.</translation>
+<translation id="2389665228467129817">Chat langer</translation>
+<translation id="4314705522985583059">Krijg hogere responslimieten voor langere gesprekken.</translation>
+<translation id="6365289557497555234">Alle abonnementen worden automatisch verlengd, maar\nkunnen voor de verlengdatum op elk gewenst moment worden opgezegd.</translation>
+<translation id="6637015365469044269">Nu upgraden</translation>
+<translation id="614530507403667291">Standaardmodel voor nieuwe gesprekken</translation>
+<translation id="4071849832011229600">Standaardmodel</translation>
+<translation id="7557539689487606886">Neem Premium</translation>
 </translationbundle>

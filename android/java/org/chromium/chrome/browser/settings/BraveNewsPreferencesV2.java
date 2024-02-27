@@ -267,7 +267,10 @@ public class BraveNewsPreferencesV2 extends BravePreferenceFragment
     private void updateFollowerCount() {
         List<Publisher> followingPublisherList = BraveNewsUtils.getFollowingPublisherList();
         List<Channel> followingChannelList = BraveNewsUtils.getFollowingChannelList();
-        int followingCount = followingChannelList.size() + followingPublisherList.size();
+        int followingPublisherCount =
+                followingPublisherList != null ? followingPublisherList.size() : 0;
+        int followingChannelCount = followingChannelList != null ? followingChannelList.size() : 0;
+        int followingCount = followingPublisherCount + followingChannelCount;
         if (mLayoutFollowing != null && mTvFollowingCount != null) {
             mTvFollowingCount.setText(String.valueOf(followingCount));
             mLayoutFollowing.setVisibility(View.VISIBLE);

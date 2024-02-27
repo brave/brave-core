@@ -1,10 +1,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveShared
+import Shared
+import UIKit
 
 /// A view controller that provides translucent background overlay for its contents and a close button in top right corner.
 class TranslucentBottomSheet: UIViewController {
@@ -13,7 +13,10 @@ class TranslucentBottomSheet: UIViewController {
   var closeHandler: (() -> Void)?
 
   let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_translucent_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(
+      UIImage(named: "close_translucent_popup", in: .module, compatibleWith: nil)!.template,
+      for: .normal
+    )
     $0.tintColor = .white
   }
 
@@ -25,10 +28,11 @@ class TranslucentBottomSheet: UIViewController {
   required init?(coder aDecoder: NSCoder) { fatalError() }
 
   override func viewDidLoad() {
-    let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.dark)).then {
-      $0.frame = view.bounds
-      $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-    }
+    let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: UIBlurEffect.Style.dark))
+      .then {
+        $0.frame = view.bounds
+        $0.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+      }
 
     view.addSubview(blurEffectView)
 
@@ -66,12 +70,12 @@ class TranslucentBottomSheet: UIViewController {
       withDuration: duration,
       animations: {
         self.view.alpha = CGFloat.leastNormalMagnitude
+      },
+      completion: { _ in
+        self.closeHandler?()
+        self.view.removeFromSuperview()
+        self.removeFromParent()
       }
-    ) { _ in
-      self.closeHandler?()
-      self.view.removeFromSuperview()
-      self.removeFromParent()
-
-    }
+    )
   }
 }

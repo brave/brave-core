@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -42,7 +42,11 @@ public class SponsorCardView: FeedCardBackgroundButton, FeedCardContent {
 
   public override var accessibilityLabel: String? {
     get { feedView.accessibilityLabel }
-    set { assertionFailure("Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored") }
+    set {
+      assertionFailure(
+        "Accessibility label is inherited from a subview: \(String(describing: newValue)) ignored"
+      )
+    }
   }
 
   @objc private func tappedSelf() {

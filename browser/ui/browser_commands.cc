@@ -396,6 +396,33 @@ void MoveGroupToNewWindow(Browser* browser) {
   tsm->delegate()->MoveGroupToNewWindow(current_group_id.value());
 }
 
+bool HasDuplicateTabs(Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  auto* active_web_contents = tsm->GetActiveWebContents();
+  if (!active_web_contents) {
+    return false;
+  }
+
+  auto url = active_web_contents->GetVisibleURL();
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    // Don't check the active tab.
+    if (tsm->active_index() == i) {
+      continue;
+    }
+
+    auto* tab = tsm->GetWebContentsAt(i);
+    if (tab->GetVisibleURL() == url) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 void CloseDuplicateTabs(Browser* browser) {
   auto* tsm = browser->tab_strip_model();
   auto url = tsm->GetActiveWebContents()->GetVisibleURL();

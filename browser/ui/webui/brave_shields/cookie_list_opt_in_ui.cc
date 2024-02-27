@@ -10,7 +10,7 @@
 
 #include "base/feature_list.h"
 #include "brave/browser/ui/webui/brave_shields/cookie_list_opt_in_page_handler.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_shields/resources/cookie_list_opt_in/grit/cookie_list_opt_in_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "chrome/browser/profiles/profile.h"

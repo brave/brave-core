@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -14,11 +14,16 @@ public struct ActivityView: UIViewControllerRepresentable {
     self.activityItems = activityItems
   }
 
-  public func makeUIViewController(context: UIViewControllerRepresentableContext<ActivityView>) -> UIViewController {
+  public func makeUIViewController(
+    context: UIViewControllerRepresentableContext<ActivityView>
+  ) -> UIViewController {
     return UIViewController()
   }
 
-  public func updateUIViewController(_ uiViewController: UIViewController, context: UIViewControllerRepresentableContext<ActivityView>) {
+  public func updateUIViewController(
+    _ uiViewController: UIViewController,
+    context: UIViewControllerRepresentableContext<ActivityView>
+  ) {
     if isPresented {
       if uiViewController.presentedViewController != nil {
         return

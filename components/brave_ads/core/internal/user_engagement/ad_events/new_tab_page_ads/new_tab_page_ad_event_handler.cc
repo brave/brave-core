@@ -75,7 +75,7 @@ void NewTabPageAdEventHandler::GetForCreativeInstanceIdCallback(
   const NewTabPageAdInfo ad = BuildNewTabPageAd(creative_ad, placement_id);
 
   const database::table::AdEvents database_table;
-  database_table.GetForType(
+  database_table.GetUnexpiredForType(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(&NewTabPageAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,

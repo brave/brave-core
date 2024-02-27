@@ -62,7 +62,7 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     public void onStart() {
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
+            mBraveRewardsNativeWorker.addObserver(this);
         }
         super.onStart();
     }
@@ -70,7 +70,7 @@ public class BraveRewardsPreferences extends BravePreferenceFragment
     @Override
     public void onStop() {
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
         }
         super.onStop();
     }

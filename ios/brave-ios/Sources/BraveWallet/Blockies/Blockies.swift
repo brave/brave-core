@@ -1,18 +1,18 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 private struct XorshiftRandomNumberGenerator: RandomNumberGenerator {
   var x: Int32
   var y: Int32
   var z: Int32
   var w: Int32
-  
+
   mutating func next() -> UInt64 {
     let t = x ^ (x << 11)
     x = y
@@ -52,7 +52,7 @@ class Blockies {
     let normalized = Double(generator.next()) / Double(Int32.max)
     return UIColor(rgb: colors[Int(floor(normalized * 100)) % colors.count])
   }
-  
+
   func rand() -> Double {
     Double(generator.next()) / Double(Int32.max)
   }
@@ -61,7 +61,7 @@ class Blockies {
     let color = makeColor()
     let backgroundColor = makeColor()
     let spotColor = makeColor()
-    
+
     func data() -> [Double] {
       let dataLength = Int(ceil(Double(length) / 2.0))
       var data: [[Double]] = []
@@ -77,12 +77,12 @@ class Blockies {
       }
       return data.flatMap { $0 }
     }
-    
+
     let size = CGSize(width: CGFloat(length) * scale, height: CGFloat(length) * scale)
     let renderer = UIGraphicsImageRenderer(size: size)
     let data = data()
     let width = sqrt(Double(data.count))
-  
+
     let image = renderer.image { context in
       backgroundColor.setFill()
       context.fill(.init(origin: .zero, size: size))
@@ -92,18 +92,28 @@ class Blockies {
         let col = i % Int(width)
         let fillColor = value == 1 ? color : spotColor
         let shapeType = floor(rand() * 3)
-        
+
         switch shapeType {
         case 0:
           let rectSizeMultiplier = rand() * 2
-          let rect = CGRect(x: Int(col) * Int(scale), y: Int(row) * Int(scale), width: Int(scale * rectSizeMultiplier), height: Int(scale * rectSizeMultiplier))
+          let rect = CGRect(
+            x: Int(col) * Int(scale),
+            y: Int(row) * Int(scale),
+            width: Int(scale * rectSizeMultiplier),
+            height: Int(scale * rectSizeMultiplier)
+          )
           fillColor.setFill()
           context.fill(rect)
         case 1:
           let rectSizeMultiplier = rand()
           let x = Int(col) * Int(scale) + Int(scale) / 2 - Int(scale * rectSizeMultiplier / 2)
           let y = Int(row) * Int(scale) + Int(scale) / 2 - Int(scale * rectSizeMultiplier / 2)
-          let rect = CGRect(x: x, y: y, width: Int(scale * rectSizeMultiplier), height: Int(scale * rectSizeMultiplier))
+          let rect = CGRect(
+            x: x,
+            y: y,
+            width: Int(scale * rectSizeMultiplier),
+            height: Int(scale * rectSizeMultiplier)
+          )
           fillColor.setFill()
           context.cgContext.fillEllipse(in: rect)
         default:
@@ -111,7 +121,7 @@ class Blockies {
         }
       }
     }
-    
+
     return image
   }
 }
@@ -121,10 +131,10 @@ struct Blockie: View {
     case circle
     case rectangle
   }
-  
+
   var address: String
   var shape: Shape = .rectangle
-  
+
   private var base: some View {
     Image(uiImage: Blockies(seed: address.lowercased()).image(length: 4, scale: 25))
       .resizable()
@@ -142,13 +152,13 @@ struct Blockie: View {
 }
 
 struct BlockieMaterial: View {
-  
+
   init(address: String) {
     self.blockies = Blockies(seed: address.lowercased())
   }
-  
+
   private let blockies: Blockies
-  
+
   var body: some View {
     LinearGradient(
       colors: [.init(blockies.makeColor()), .init(blockies.makeColor())],

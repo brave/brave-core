@@ -1,20 +1,24 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import CoreData
-import Shared
-import Data
-import Preferences
 import BraveCore
 import BraveUI
+import CoreData
+import Data
+import Preferences
+import Shared
+import UIKit
 import os.log
 
 protocol SyncStatusDelegate: AnyObject {
   func syncStatusChanged()
 }
 
-class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, UITableViewDataSource {
-  
+class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate,
+  UITableViewDataSource
+{
+
   private enum Sections: Int, CaseIterable {
     case deviceList, deviceActions, syncTypes, chainRemoval
   }
@@ -46,9 +50,9 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     case syncChainDeleteConfirmation
     case syncChainDeleteError
   }
-  
+
   weak var syncStatusDelegate: SyncStatusDelegate?
-  
+
   // MARK: Private
 
   private let syncAPI: BraveSyncAPI
@@ -62,7 +66,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   /// After synchronization is completed, user needs to tap on `Done` to go back.
   /// Standard navigation is disabled then.
   private var isModallyPresented = false
-  
+
   private var tableView = UITableView(frame: .zero, style: .grouped)
   private let loadingView = UIView().then {
     $0.backgroundColor = UIColor(white: 0.5, alpha: 0.5)
@@ -76,26 +80,32 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     overlayDetails: EmptyOverlayStateDetails(
       title: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewTitle,
       description: Strings.OpenTabs.noDevicesSyncChainPlaceholderViewDescription,
-      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")))
-  
+      icon: UIImage(systemName: "exclamationmark.arrow.triangle.2.circlepath")
+    )
+  )
+
   // MARK: Lifecycle
 
-  init(isModallyPresented: Bool = false,
-       syncAPI: BraveSyncAPI,
-       syncProfileService: BraveSyncProfileServiceIOS,
-       tabManager: TabManager,
-       windowProtection: WindowProtection?) {
+  init(
+    isModallyPresented: Bool = false,
+    syncAPI: BraveSyncAPI,
+    syncProfileService: BraveSyncProfileServiceIOS,
+    tabManager: TabManager,
+    windowProtection: WindowProtection?
+  ) {
     self.isModallyPresented = isModallyPresented
     self.syncAPI = syncAPI
     self.syncProfileService = syncProfileService
     self.tabManager = tabManager
-    
+
     // Local Authentication (Biometric - Pincode) needed only for actions
     // Enabling - disabling password sync and add new device
-    super.init(windowProtection: windowProtection,
-               requiresAuthentication: false,
-               isModallyPresented: isModallyPresented,
-               dismissPresenter: false)
+    super.init(
+      windowProtection: windowProtection,
+      requiresAuthentication: false,
+      isModallyPresented: isModallyPresented,
+      dismissPresenter: false
+    )
   }
 
   required init?(coder: NSCoder) {
@@ -105,13 +115,13 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   override func viewDidLoad() {
     super.viewDidLoad()
     title = Strings.sync
-    
+
     tableView.do {
       $0.dataSource = self
       $0.delegate = self
       $0.tableHeaderView = makeInformationTextView(with: Strings.syncSettingsHeader)
     }
-    
+
     doLayout()
 
     syncServiceObserver = syncAPI.addServiceStateObserver { [weak self] in
@@ -119,11 +129,11 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       // from another device - Clean local sync chain
       self?.restartSyncSetupIfNecessary()
     }
-    
+
     syncDeviceObserver = syncAPI.addDeviceStateObserver { [weak self] in
       self?.updateDeviceList()
     }
-    
+
     restartSyncSetupIfNecessary()
     updateDeviceList()
   }
@@ -137,32 +147,36 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       navigationItem.leftBarButtonItem = UIBarButtonItem(
         barButtonSystemItem: .done,
         target: self,
-        action: #selector(doneTapped))
+        action: #selector(doneTapped)
+      )
     }
-    
+
     navigationItem.rightBarButtonItem = UIBarButtonItem(
       image: UIImage(systemName: "gearshape"),
       style: .plain,
       target: self,
-      action: #selector(onSyncInternalsTapped))
+      action: #selector(onSyncInternalsTapped)
+    )
   }
-  
+
   override func viewWillLayoutSubviews() {
-      super.viewWillLayoutSubviews()
+    super.viewWillLayoutSubviews()
 
     guard let headerView = tableView.tableHeaderView else { return }
 
-    let newSize = headerView.systemLayoutSizeFitting(CGSize(width: self.view.bounds.width, height: 0))
+    let newSize = headerView.systemLayoutSizeFitting(
+      CGSize(width: self.view.bounds.width, height: 0)
+    )
     headerView.frame.size.height = newSize.height
   }
-  
+
   private func restartSyncSetupIfNecessary() {
     if syncAPI.shouldLeaveSyncGroup {
       syncAPI.leaveSyncGroup()
       navigationController?.popToRootViewController(animated: true)
     }
   }
-  
+
   private func doLayout() {
     view.addSubview(tableView)
     loadingView.addSubview(loadingSpinner)
@@ -171,7 +185,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     tableView.snp.makeConstraints {
       $0.edges.equalTo(view)
     }
-    
+
     loadingView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -193,7 +207,10 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       message = Strings.syncRemoveLastDeviceMessage
       removeButtonName = Strings.syncRemoveLastDeviceRemoveButtonName
     case .currentDeviceLeft:
-      title = String(format: Strings.syncRemoveCurrentDeviceTitle, "\(deviceName) (\(Strings.syncThisDevice))")
+      title = String(
+        format: Strings.syncRemoveCurrentDeviceTitle,
+        "\(deviceName) (\(Strings.syncThisDevice))"
+      )
       message = Strings.syncRemoveCurrentDeviceMessage
       removeButtonName = Strings.removeDevice
     case .otherDeviceLeft:
@@ -202,7 +219,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       removeButtonName = Strings.removeDevice
     case .syncChainDeleteConfirmation:
       title = Strings.Sync.syncDeleteAccountAlertTitle
-      message = "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1).\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)"
+      message =
+        "\(Strings.Sync.syncDeleteAccountAlertDescriptionPart1).\n\n\(Strings.Sync.syncDeleteAccountAlertDescriptionPart2)"
       removeButtonName = Strings.delete
     case .syncChainDeleteError:
       title = Strings.Sync.syncChainAccountDeletionErrorTitle
@@ -210,7 +228,8 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       removeButtonName = Strings.OKString
     }
 
-    guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName else { fatalError() }
+    guard let popupTitle = title, let popupMessage = message, let popupButtonName = removeButtonName
+    else { fatalError() }
 
     let popup = AlertPopupView(title: popupTitle, message: popupMessage)
 
@@ -231,10 +250,10 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
           self.syncAPI.removeAllObservers()
           // Start  loading and diable navigation while delete action is happening
           self.enableNavigationPrevention()
-          
+
           // Permanently Delete action is called on brave-core side
           self.syncAPI.permanentlyDeleteAccount { status in
-            
+
             switch status {
             case .throttled, .partialFailure, .transientError:
               self.presentAlertPopup(for: .syncChainDeleteError)
@@ -243,9 +262,9 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
               self.syncAPI.leaveSyncGroup(preservingObservers: true)
               self.syncStatusDelegate?.syncStatusChanged()
             }
-            
+
             self.disableNavigationPrevention()
-            
+
             if self.isModallyPresented {
               self.navigationController?.dismiss(animated: true)
             } else {
@@ -264,12 +283,12 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
 
   @objc private func didToggleSyncType(_ toggle: UISwitch) {
     guard let syncDataType = SyncDataTypes(rawValue: toggle.tag) else {
-       Logger.module.error("Invalid Sync DataType")
-       return
+      Logger.module.error("Invalid Sync DataType")
+      return
     }
-    
+
     let toggleExistingStatus = !toggle.isOn
-    
+
     if syncDataType == .passwords {
       if toggleExistingStatus {
         performSyncDataTypeStatusChange(type: syncDataType)
@@ -279,7 +298,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
             toggle.setOn(toggleExistingStatus, animated: false)
             return
           }
-          
+
           toggle.setOn(!toggleExistingStatus, animated: false)
           performSyncDataTypeStatusChange(type: syncDataType)
         }
@@ -287,7 +306,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
     } else {
       performSyncDataTypeStatusChange(type: syncDataType)
     }
-    
+
     func performSyncDataTypeStatusChange(type: SyncDataTypes) {
       switch type {
       case .bookmarks:
@@ -298,7 +317,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
         Preferences.Chromium.syncPasswordsEnabled.value = !toggleExistingStatus
       case .openTabs:
         Preferences.Chromium.syncOpenTabsEnabled.value = !toggleExistingStatus
-        
+
         // Sync Regular Tabs when open tabs are enabled
         if Preferences.Chromium.syncOpenTabsEnabled.value {
           tabManager.addRegularTabsToSyncChain()
@@ -308,7 +327,7 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       syncAPI.enableSyncTypes(syncProfileService: syncProfileService)
     }
   }
-  
+
   /// Update visibility of view shown when no devices returned for sync session
   /// This view is used for error state and will enable users to fetch details from sync internals
   /// - Parameter isHidden: Boolean to set isHidden
@@ -319,14 +338,14 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
       if emptyStateOverlayView.superview == nil {
         view.addSubview(emptyStateOverlayView)
         view.bringSubviewToFront(emptyStateOverlayView)
-        
+
         emptyStateOverlayView.snp.makeConstraints {
           $0.edges.equalTo(tableView)
         }
       }
     }
   }
-  
+
   // MARK: Actions
 
   @objc
@@ -338,12 +357,12 @@ class SyncSettingsTableViewController: SyncViewController, UITableViewDelegate, 
   private func onSyncInternalsTapped() {
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
-      
+
       let syncInternalsController = ChromeWebViewController(privateBrowsing: false).then {
         $0.title = Strings.braveSyncInternalsTitle
         $0.loadURL("brave://sync-internals")
       }
-      
+
       self.navigationController?.pushViewController(syncInternalsController, animated: true)
     }
   }
@@ -355,7 +374,7 @@ extension SyncSettingsTableViewController {
 
   func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     defer { tableView.deselectRow(at: indexPath, animated: true) }
-    
+
     guard let section = Sections(rawValue: indexPath.section) else {
       return
     }
@@ -365,7 +384,7 @@ extension SyncSettingsTableViewController {
       addAnotherDevice()
       return
     }
-    
+
     // Delete Sync Chain
     if section == .chainRemoval {
       presentAlertPopup(for: .syncChainDeleteConfirmation)
@@ -374,8 +393,9 @@ extension SyncSettingsTableViewController {
 
     // Device List
     guard section == .deviceList,
-          !devices.isEmpty,
-          let device = devices[safe: indexPath.row] else {
+      !devices.isEmpty,
+      let device = devices[safe: indexPath.row]
+    else {
       return
     }
 
@@ -388,7 +408,11 @@ extension SyncSettingsTableViewController {
       return
     }
 
-    let actionSheet = UIAlertController(title: device.name, message: nil, preferredStyle: .actionSheet)
+    let actionSheet = UIAlertController(
+      title: device.name,
+      message: nil,
+      preferredStyle: .actionSheet
+    )
     if UIDevice.current.userInterfaceIdiom == .pad {
       let cell = tableView.cellForRow(at: indexPath)
       actionSheet.popoverPresentationController?.sourceView = cell
@@ -396,7 +420,8 @@ extension SyncSettingsTableViewController {
       actionSheet.popoverPresentationController?.permittedArrowDirections = [.up, .down]
     }
 
-    let removeAction = UIAlertAction(title: Strings.syncRemoveDeviceAction, style: .destructive) { _ in
+    let removeAction = UIAlertAction(title: Strings.syncRemoveDeviceAction, style: .destructive) {
+      _ in
       if !DeviceInfo.hasConnectivity() {
         self.present(SyncAlerts.noConnection, animated: true)
         return
@@ -507,12 +532,12 @@ extension SyncSettingsTableViewController {
     cell.preservesSuperviewLayoutMargins = false
     cell.separatorInset = UIEdgeInsets.zero
     cell.layoutMargins = UIEdgeInsets.zero
-    
+
     cell.textLabel?.do {
       $0.textAlignment = .center
       $0.font = UIFont.systemFont(ofSize: 17, weight: UIFont.Weight.regular)
     }
-    
+
     switch indexPath.section {
     case Sections.deviceActions.rawValue:
       cell.textLabel?.text = Strings.syncAddAnotherDevice
@@ -595,9 +620,9 @@ extension SyncSettingsTableViewController {
   private func addAnotherDevice() {
     askForAuthentication(viewType: .sync) { [weak self] status, error in
       guard let self = self, status else { return }
-      
+
       let view = SyncSelectDeviceTypeViewController()
-      
+
       view.syncInitHandler = { title, type in
         let view = SyncAddDeviceViewController(title: title, type: type, syncAPI: self.syncAPI)
         view.addDeviceHandler = {
@@ -605,7 +630,7 @@ extension SyncSettingsTableViewController {
         }
         self.navigationController?.pushViewController(view, animated: true)
       }
-      
+
       self.navigationController?.pushViewController(view, animated: true)
     }
   }

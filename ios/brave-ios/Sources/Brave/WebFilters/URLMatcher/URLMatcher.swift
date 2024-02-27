@@ -1,10 +1,10 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
+import Foundation
 import os.log
 
 /// An interface representing a match rule.
@@ -41,10 +41,10 @@ extension MatcherRuleProtocol {
 /// A class that, given a set of rules, helps in returning a redirect URL
 struct URLMatcher<Rule: MatcherRuleProtocol> {
   typealias MatcherRuleEntry = (rule: Rule, relevantPatterns: [String])
-  private let etldToRule: [String: [MatcherRuleEntry]] // A
-  private let queryToRule: [String: Rule] // B
-  private let otherRules: [Rule] // C
-  
+  private let etldToRule: [String: [MatcherRuleEntry]]  // A
+  private let queryToRule: [String: Rule]  // B
+  private let otherRules: [Rule]  // C
+
   /// Initialize this matcher with the given rule set
   ///
   /// **Rules**
@@ -58,9 +58,9 @@ struct URLMatcher<Rule: MatcherRuleProtocol> {
   /// 4. Create a map of query parameter name -> bounce tracking rule
   /// 5. For each rule in bucket B, for each query parameter, add it to the map from step 4
   init(rules: [Result<Rule, Error>]) {
-    var etldToRule: [String: [MatcherRuleEntry]] = [:] // A
-    var queryToRule: [String: Rule] = [:] // B
-    var otherRules: [Rule] = [] // C
+    var etldToRule: [String: [MatcherRuleEntry]] = [:]  // A
+    var queryToRule: [String: Rule] = [:]  // B
+    var otherRules: [Rule] = []  // C
 
     for result in rules {
       do {
@@ -88,11 +88,13 @@ struct URLMatcher<Rule: MatcherRuleProtocol> {
               otherRules.append(rule)
             }
           default:
-            ContentBlockerManager.log.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`")
+            ContentBlockerManager.log.error(
+              "Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`"
+            )
             continue
           }
         }
-        
+
         // Add or append the entry for each etld
         for (etld1, relevantPatterns) in etldToRelevantPatterns {
           var entries = etldToRule[etld1] ?? []
@@ -108,7 +110,7 @@ struct URLMatcher<Rule: MatcherRuleProtocol> {
     self.queryToRule = queryToRule
     self.otherRules = otherRules
   }
-  
+
   /// Attempts to find a valid rule for the given URL
   ///
   /// **Rules**
@@ -139,9 +141,11 @@ struct URLMatcher<Rule: MatcherRuleProtocol> {
   /// - Returns: A rule for the given url
   private func matchingCachedQueryParamRule(for url: URL) -> Rule? {
     // Extract the redirect URL
-    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else { return nil }
+    guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false) else {
+      return nil
+    }
     guard let queryItems = components.queryItems else { return nil }
-    
+
     for queryItem in queryItems {
       if let rule = queryToRule[queryItem.name], !rule.isExcluded(url: url) {
         return rule
@@ -161,7 +165,9 @@ extension URL {
     case .success:
       return urlPattern.matchesURL(self)
     default:
-      ContentBlockerManager.log.error("Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`")
+      ContentBlockerManager.log.error(
+        "Cannot parse pattern `\(pattern)`. Got status `\(parseResult.rawValue)`"
+      )
       return false
     }
   }

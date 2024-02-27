@@ -23,6 +23,21 @@ class speedreaderUtils {
         return document.getElementById(id)
     }
 
+    static adoptStyles = () => {
+        for (const style of document.styleSheets) {
+            style.disabled = true
+        }
+
+        const braveStyles =
+            document.querySelectorAll('script[type="brave-style-data"]')
+        for (const styleData of braveStyles) {
+            const style = new CSSStyleSheet()
+            style.replaceSync(styleData.innerText)
+            document.adoptedStyleSheets.push(style)
+        }
+        document.body.hidden = false
+    }
+
     static initShowOriginalLink = () => {
         const link = this.$(this.showOriginalLinkId)
         if (!link)
@@ -65,6 +80,20 @@ class speedreaderUtils {
     static initTextToSpeak = () => {
         if (!this.isTtsEnabled()) {
             return
+        }
+
+        {
+            const spans =
+                this.$(this.contentDivId)?.querySelectorAll('p > span')
+
+            for (const span of spans) {
+                const p = span.parentNode
+
+                while (span.childNodes.length > 0) {
+                    p.insertBefore(span.firstChild, span)
+                }
+                p.removeChild(span)
+            }
         }
 
         let textToSpeak = 0
@@ -267,6 +296,7 @@ class speedreaderUtils {
         speedreaderUtils.defaultSpeedreaderData,
         window.speedreaderData)
 
+    speedreaderUtils.adoptStyles()
     speedreaderUtils.initShowOriginalLink()
     speedreaderUtils.calculateReadtime()
     speedreaderUtils.initTextToSpeak()

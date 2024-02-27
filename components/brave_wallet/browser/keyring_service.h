@@ -167,7 +167,7 @@ class KeyringService : public KeyedService, public mojom::KeyringService {
       bool is_eip712 = false);
 
   std::vector<uint8_t> SignMessageBySolanaKeyring(
-      const mojom::AccountId& account_id,
+      const mojom::AccountIdPtr& account_id,
       const std::vector<uint8_t>& message);
   bool RecoverAddressByDefaultKeyring(const std::vector<uint8_t>& message,
                                       const std::vector<uint8_t>& signature,

@@ -257,6 +257,8 @@ export const useReceiveAddressQuery = (
   const [receiveAddress, setReceiveAddress] = React.useState<string>(
     accountId?.address || ''
   )
+  const [isFetchingAddress, setIsFetchingAddress] =
+    React.useState<boolean>(false)
 
   // mutations
   const [generateReceiveAddress] = useGenerateReceiveAddressMutation()
@@ -272,9 +274,11 @@ export const useReceiveAddressQuery = (
 
     const fetchAddress = async () => {
       if (accountId) {
+        setIsFetchingAddress(true)
         const address = await generateReceiveAddress(accountId).unwrap()
         if (!ignore) {
           setReceiveAddress(address)
+          setIsFetchingAddress(false)
         }
       }
     }
@@ -291,7 +295,10 @@ export const useReceiveAddressQuery = (
     }
   }, [accountId, generateReceiveAddress])
 
-  return receiveAddress
+  return {
+    receiveAddress,
+    isFetchingAddress
+  }
 }
 
 export const useGetIsRegistryTokenQuery = (

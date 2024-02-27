@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -12,9 +12,9 @@ struct RecoveryPhrasePager: View {
   var pagerHeight: CGFloat = 8
   var activePagerColor: Color = Color(.braveBlurpleTint)
   var inactivePagerColor: Color = Color(.braveDisabled)
-  
+
   @Binding var activeIndex: Int
-  
+
   var body: some View {
     HStack(spacing: 4) {
       ForEach(0..<pageNumber, id: \.self) { index in

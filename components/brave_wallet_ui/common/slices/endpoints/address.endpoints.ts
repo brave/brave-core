@@ -91,6 +91,32 @@ export const addressEndpoints = ({
       }
     }),
 
+    validateUnifiedAddress: query<
+      BraveWallet.ZCashAddressValidationResult,
+      {
+        address: string,
+        testnet: boolean
+      }
+    >({
+      queryFn: async (arg, { endpoint }, _extra, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+          const { result } =
+            await api.zcashWalletService.validateZCashAddress(
+                arg.address, arg.testnet)
+          return {
+            data: result
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            `Failed to validate Zcash address: ${arg.address}`,
+            error
+          )
+        }
+      }
+    }),
+
     getAddressFromNameServiceUrl: query<
       { address: string; requireOffchainConsent: boolean },
       {

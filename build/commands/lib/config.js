@@ -68,13 +68,19 @@ const getNPMConfig = (key, default_value = undefined) => {
       if (key.startsWith('bitflyer') ||
           key.startsWith('brave') ||
           key.startsWith('gemini') ||
+          key.startsWith('google') ||
           key.startsWith('rewards') ||
           key.startsWith('p3a') ||
           key.startsWith('rbe') ||
+          key.startsWith('sardine') ||
           key.startsWith('updater') ||
+          key.startsWith('uphold') ||
           key.startsWith('zebpay')) {
         Log.warn(
-          `Warning: found ${key} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all configuration to src/brave/.env immediately to avoid potential issues.`
+          `Warning: found ${key.replace(/-/g, '_')} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all Brave-core configuration to src/brave/.env immediately to avoid potential issues.\n` +
+          'Internal wiki: https://github.com/brave/devops/wiki/%60.env%60-config-for-Brave-Developers\n' +
+          'Public wiki: https://github.com/brave/brave-browser/wiki/Build-configuration\n' +
+          'If the found variable is not related to Brave-core, please ignore this warning.'
         )
         break
       }
@@ -135,6 +141,7 @@ const getBraveVersion = (ignorePatchVersionNumber) => {
 
 const Config = function () {
   this.isCI = process.env.BUILD_ID !== undefined || process.env.TEAMCITY_VERSION !== undefined
+  this.internalDepsUrl = 'https://vhemnu34de4lf5cj6bx2wwshyy0egdxk.lambda-url.us-west-2.on.aws'
   this.defaultBuildConfig = 'Component'
   this.buildConfig = this.defaultBuildConfig
   this.signTarget = 'sign_app'
@@ -617,6 +624,9 @@ Config.prototype.buildArgs = function () {
     args.disable_android_lint = false
 
     args.android_aab_to_apk = this.androidAabToApk
+
+    // This optimization causes crash on Android 8 and Android 8.1 arm64 devices.
+    args.use_relr_relocations = false
 
     // These do not exist on android
     // TODO - recheck
@@ -1234,7 +1244,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
       env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
-      env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = 'https://brave-build-deps-public.s3.brave.com/windows-hermetic-toolchain/'
+      env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 
     if (this.getCachePath()) {

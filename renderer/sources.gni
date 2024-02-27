@@ -24,7 +24,7 @@ brave_chrome_renderer_deps = [
   "//brave/components/ai_chat/core/common/buildflags",
   "//brave/components/brave_search/common",
   "//brave/components/brave_search/renderer",
-  "//brave/components/brave_shields/common",
+  "//brave/components/brave_shields/core/common",
   "//brave/components/brave_vpn/common/buildflags",
   "//brave/components/brave_wallet/common",
   "//brave/components/brave_wallet/renderer",

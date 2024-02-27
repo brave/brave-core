@@ -23,7 +23,7 @@
 #include "brave/components/brave_player/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/buildflags/buildflags.h"
 #include "brave/components/brave_rewards/common/features.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_sync/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/features.h"
@@ -923,6 +923,14 @@
           "back to HTTP.",                                                     \
           kOsAll,                                                              \
           FEATURE_VALUE_TYPE(net::features::kBraveHttpsByDefault),             \
+      },                                                                       \
+      {                                                                        \
+          "fallback-dns-over-https",                                           \
+          "Use a fallback DoH provider",                                       \
+          "In Automatic DoH mode, use a fallback DoH provider if the current " \
+          "provider doesn't offer Secure DNS.",                                \
+          kOsAll,                                                              \
+          FEATURE_VALUE_TYPE(net::features::kBraveFallbackDoHProvider),        \
       },                                                                       \
       {                                                                        \
           "brave-show-strict-fingerprinting-mode",                             \

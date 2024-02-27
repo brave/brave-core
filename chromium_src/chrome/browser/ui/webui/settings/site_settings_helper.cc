@@ -9,7 +9,7 @@
 #include <vector>
 
 #include "base/containers/cxx20_erase_vector.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "third_party/blink/public/common/features.h"
 
 #define HasRegisteredGroupName HasRegisteredGroupName_ChromiumImpl

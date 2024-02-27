@@ -1,13 +1,13 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveStrings
+import BraveUI
+import FeedKit
 import Foundation
 import SwiftUI
-import BraveUI
-import BraveStrings
-import FeedKit
 
 enum FindFeedsError: Error, Identifiable {
   /// An error occured while attempting to download the page
@@ -18,7 +18,7 @@ enum FindFeedsError: Error, Identifiable {
   case parserError(ParserError)
   /// No feeds were found at the given URL
   case noFeedsFound
-  
+
   var localizedDescription: String {
     switch self {
     case .dataTaskError(let error as URLError) where error.code == .notConnectedToInternet:
@@ -31,7 +31,7 @@ enum FindFeedsError: Error, Identifiable {
       return Strings.BraveNews.addSourceNoFeedsFoundMessage
     }
   }
-  
+
   var id: String {
     localizedDescription
   }
@@ -42,7 +42,7 @@ struct OPMLImporterViewModifier: ViewModifier {
   var dataSource: FeedDataSource
   @State private var opmlParsedResult: OPMLParsedResult?
   @State private var importError: FindFeedsError?
-  
+
   func body(content: Content) -> some View {
     content
       .fileImporter(
@@ -78,7 +78,7 @@ struct OPMLImporterViewModifier: ViewModifier {
         )
       }
   }
-  
+
   private struct OPMLParsedResult: Hashable, Identifiable {
     var url: URL
     var locations: [RSSFeedLocation]
@@ -86,12 +86,12 @@ struct OPMLImporterViewModifier: ViewModifier {
       url.absoluteString
     }
   }
-  
+
   private func rssLocationFromOPMLOutline(_ outline: OPML.Outline) -> RSSFeedLocation? {
     guard let url = outline.xmlUrl?.asURL else { return nil }
     return .init(title: outline.text, url: url)
   }
-  
+
   private func importOPML(from url: URL) {
     guard url.isFileURL, let data = try? Data(contentsOf: url) else {
       isPresented = false

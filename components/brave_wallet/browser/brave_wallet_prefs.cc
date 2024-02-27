@@ -53,26 +53,6 @@ constexpr char kBraveWalletUserAssetsAddIsSpamMigrated[] =
 constexpr char kBraveWalletUserAssetsAddIsERC1155Migrated[] =
     "brave.wallet.user.assets.add_is_erc1155_migrated";
 
-base::Value::List GetDefaultUserAssets() {
-  base::Value::List user_assets_pref;
-  for (auto& asset : BraveWalletService::GetDefaultEthereumAssets()) {
-    user_assets_pref.Append(std::move(asset));
-  }
-  for (auto& asset : BraveWalletService::GetDefaultSolanaAssets()) {
-    user_assets_pref.Append(std::move(asset));
-  }
-  for (auto& asset : BraveWalletService::GetDefaultFilecoinAssets()) {
-    user_assets_pref.Append(std::move(asset));
-  }
-  for (auto& asset : BraveWalletService::GetDefaultBitcoinAssets()) {
-    user_assets_pref.Append(std::move(asset));
-  }
-  for (auto& asset : BraveWalletService::GetDefaultZCashAssets()) {
-    user_assets_pref.Append(std::move(asset));
-  }
-  return user_assets_pref;
-}
-
 base::Value::Dict GetDefaultSelectedNetworks() {
   base::Value::Dict selected_networks;
   selected_networks.Set(kEthereumPrefKey, mojom::kMainnetChainId);

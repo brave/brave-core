@@ -1,10 +1,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import DesignSystem
 import Shared
+import UIKit
 
 /// A big UISwitch that has a fancy animated gradient when its turned on
 ///
@@ -119,7 +119,7 @@ class ShieldsSwitch: UIControl {
     get {
       "\(Strings.Shields.statusTitle): \(isOn ? Strings.Shields.statusValueUp : Strings.Shields.statusValueDown)"
     }
-    set { assertionFailure() }  // swiftlint:disable:this unused_setter_value
+    set { assertionFailure() }
   }
 
   @available(*, unavailable)
@@ -138,7 +138,8 @@ class ShieldsSwitch: UIControl {
   override func layoutSubviews() {
     super.layoutSubviews()
 
-    gradientView.layer.shadowPath = UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2.0).cgPath
+    gradientView.layer.shadowPath =
+      UIBezierPath(roundedRect: bounds, cornerRadius: bounds.height / 2.0).cgPath
     backgroundView.layer.cornerRadius = bounds.size.height / 2.0
     gradientView.layer.cornerRadius = bounds.size.height / 2.0
     thumbView.layer.cornerRadius = thumbView.bounds.size.height / 2.0

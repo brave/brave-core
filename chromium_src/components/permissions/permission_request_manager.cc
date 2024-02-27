@@ -48,19 +48,13 @@ void PermissionRequestManager::AcceptDenyCancel(
   DCHECK((accepted_requests.size() + denied_requests.size() +
           cancelled_requests.size()) == requests_.size());
 
-  // We need to process requests in reverse order because
-  // PermissionRequestQueue impelementation of Push and Pop are paired with
-  // base::circular_dequeue's (push_back, pop_back) and (push_front, pop_front)
-  // Once pending_permission_requests_ is popped to the vector request_, the
-  // order is fixed because the reorder takes place in
-  // pending_permission_requests_.
-  for (auto it = requests_.crbegin(); it != requests_.crend(); ++it) {
-    if (base::Contains(accepted_requests, *it)) {
-      PermissionGrantedIncludingDuplicates(*it, /*is_one_time=*/false);
-    } else if (base::Contains(denied_requests, *it)) {
-      PermissionDeniedIncludingDuplicates(*it);
+  for (const auto& request : requests_) {
+    if (base::Contains(accepted_requests, request)) {
+      PermissionGrantedIncludingDuplicates(request, /*is_one_time=*/false);
+    } else if (base::Contains(denied_requests, request)) {
+      PermissionDeniedIncludingDuplicates(request);
     } else {
-      CancelledIncludingDuplicates(*it);
+      CancelledIncludingDuplicates(request);
     }
   }
 

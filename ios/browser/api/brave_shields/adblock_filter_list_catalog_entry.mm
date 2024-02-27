@@ -7,7 +7,7 @@
 
 #include "base/strings/sys_string_conversions.h"
 #include "brave/base/mac/conversions.h"
-#include "brave/components/brave_shields/browser/filter_list_catalog_entry.h"
+#include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 
 @interface AdblockFilterListCatalogEntry ()
 @property(nonatomic, copy) NSString* uuid;

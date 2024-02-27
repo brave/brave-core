@@ -753,6 +753,8 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR},
     {"braveWalletInvalidRecipientAddress",
      IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS},
+    {"braveWalletInvalidZcashUnifiedRecipientAddress",
+     IDS_BRAVE_WALLET_INVALID_ZCASH_UNIFIED_RECIPIENT_ADDRESS},
     {"braveWalletChecksumModalTitle", IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE},
     {"braveWalletChecksumModalDescription",
      IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION},
@@ -1460,6 +1462,11 @@ inline constexpr char kSolanaPrefKey[] = "solana";
 
 inline constexpr char kEthereumBlockTagEarliest[] = "earliest";
 inline constexpr char kEthereumBlockTagLatest[] = "latest";
+
+inline constexpr char kBitcoinMainnetRpcEndpoint[] =
+    "https://bitcoin-mainnet.wallet.brave.com/";
+inline constexpr char kBitcoinTestnetRpcEndpoint[] =
+    "https://blockstream.info/testnet/api/";
 
 const std::string GetSardineNetworkName(const std::string& chain_id);
 const base::flat_map<std::string, std::string>& GetInfuraChainEndpoints();

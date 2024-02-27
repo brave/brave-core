@@ -1,25 +1,25 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 struct SelectAccountTokenView: View {
-  
+
   @ObservedObject var store: SelectAccountTokenStore
   @ObservedObject var networkStore: NetworkStore
-  
+
   @State private var isPresentingNetworkFilter = false
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   // Asset image sizing
   @ScaledMetric private var assetLogoLength: CGFloat = 40
   private var maxAssetLogoLength: CGFloat = 80
   @ScaledMetric private var networkSymbolLength: CGFloat = 15
   private var maxNetworkSymbolLength: CGFloat = 30
-  
+
   init(
     store: SelectAccountTokenStore,
     networkStore: NetworkStore
@@ -27,7 +27,7 @@ struct SelectAccountTokenView: View {
     self.store = store
     self.networkStore = networkStore
   }
-  
+
   var body: some View {
     List {
       if !store.isSetup {
@@ -54,7 +54,9 @@ struct SelectAccountTokenView: View {
     )
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
-        Button(action: { presentationMode.dismiss() }) {
+        Button {
+          presentationMode.dismiss()
+        } label: {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
@@ -63,10 +65,15 @@ struct SelectAccountTokenView: View {
         networkFilterButton
         Spacer()
         if shouldShowZeroBalanceButton {
-          Button(action: { store.isHidingZeroBalances.toggle() }) {
-            Text(store.isHidingZeroBalances ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances)
-              .font(.footnote.weight(.medium))
-              .foregroundColor(Color(.braveBlurpleTint))
+          Button {
+            store.isHidingZeroBalances.toggle()
+          } label: {
+            Text(
+              store.isHidingZeroBalances
+                ? Strings.Wallet.showZeroBalances : Strings.Wallet.hideZeroBalances
+            )
+            .font(.footnote.weight(.medium))
+            .foregroundColor(Color(.braveBlurpleTint))
           }
         }
       }
@@ -75,18 +82,18 @@ struct SelectAccountTokenView: View {
       store.resetFilters()
     }
   }
-  
+
   private var shouldShowZeroBalanceButton: Bool {
     if !store.isHidingZeroBalances {
       return true
     }
     return store.accountSections.isEmpty
   }
-  
+
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
@@ -108,7 +115,7 @@ struct SelectAccountTokenView: View {
       }
     }
   }
-  
+
   private var accountSections: some View {
     ForEach(store.accountSections) { accountSection in
       Section(
@@ -138,15 +145,20 @@ struct SelectAccountTokenView: View {
         header: {
           WalletListHeaderView {
             HStack {
-              Text("\(accountSection.account.name) (\(accountSection.account.address.truncatedAddress))")
+              Text(
+                "\(accountSection.account.name) (\(accountSection.account.address.truncatedAddress))"
+              )
               Spacer()
               Menu(
                 content: {
                   Text(accountSection.account.address.zwspOutput)
-                  Button(action: {
+                  Button {
                     UIPasteboard.general.string = accountSection.account.address
-                  }) {
-                    Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
+                  } label: {
+                    Label(
+                      Strings.Wallet.copyAddressButtonTitle,
+                      braveSystemImage: "leo.copy.plain-text"
+                    )
                   }
                 },
                 label: {
@@ -161,13 +173,15 @@ struct SelectAccountTokenView: View {
       )
     }
   }
-  
-  private func buildAccountSection(_ accountSection: SelectAccountTokenStore.AccountSection) -> some View {
+
+  private func buildAccountSection(
+    _ accountSection: SelectAccountTokenStore.AccountSection
+  ) -> some View {
     ForEach(accountSection.tokenBalances) { tokenBalance in
-      Button(action: {
+      Button {
         store.didSelect(accountSection.account, tokenBalance.token)
         presentationMode.dismiss()
-      }) {
+      } label: {
         if tokenBalance.token.isErc721 || tokenBalance.token.isNft {
           NFTAssetView(
             image: NFTIconView(
@@ -204,7 +218,8 @@ struct SelectAccountTokenView: View {
             quantity: String(format: "%.04f", tokenBalance.balance ?? 0).trimmingTrailingZeros,
             isLoadingBalance: store.isLoadingBalances && tokenBalance.balance == nil,
             price: tokenBalance.price ?? "0",
-            isLoadingPrice: (store.isLoadingPrices || store.isLoadingBalances) && tokenBalance.price == nil
+            isLoadingPrice: (store.isLoadingPrices || store.isLoadingBalances)
+              && tokenBalance.price == nil
           )
         }
       }
@@ -222,9 +237,9 @@ struct SelectAccountTokenAssetView<ImageView: View>: View {
   let isLoadingBalance: Bool
   let price: String
   let isLoadingPrice: Bool
-  
+
   private var priceDisplay: String {
-    if isLoadingPrice { // larger for shimmer effect
+    if isLoadingPrice {  // larger for shimmer effect
       return "0.000"
     }
     if price.isEmpty {
@@ -232,7 +247,7 @@ struct SelectAccountTokenAssetView<ImageView: View>: View {
     }
     return price
   }
-  
+
   var body: some View {
     AssetView(
       image: image,
@@ -258,10 +273,10 @@ struct SelectAccountTokenAssetView<ImageView: View>: View {
 }
 
 struct SkeletonLoadingAssetView: View {
-  
+
   @ScaledMetric var assetLogoLength: CGFloat = 40
   var maxAssetLogoLength: CGFloat = 80
-  
+
   var body: some View {
     SelectAccountTokenAssetView(
       image: {

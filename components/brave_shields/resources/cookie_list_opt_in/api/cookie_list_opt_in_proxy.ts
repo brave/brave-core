@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import * as mojom from 'gen/brave/components/brave_shields/common/cookie_list_opt_in.mojom.m.js'
+import * as mojom from 'gen/brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.m.js'
 
 let instance: CookieListOptInProxy | null = null
 

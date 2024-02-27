@@ -30,9 +30,7 @@ import org.chromium.chrome.browser.crypto_wallet.util.AssetUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.JavaUtils;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkResponsesCollector;
 import org.chromium.chrome.browser.crypto_wallet.util.NetworkUtils;
-import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.crypto_wallet.util.WalletConstants;
-import org.chromium.chrome.browser.crypto_wallet.web_ui.WebUiActivityType;
 import org.chromium.chrome.browser.util.Triple;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.url.internal.mojom.Origin;
@@ -224,18 +222,21 @@ public class NetworkModel implements JsonRpcServiceObserver {
     }
 
     /**
-     * Create a network selector model to handle either default or local state (onscreen e.g. {@link
-     * org.chromium.chrome.browser.crypto_wallet.fragments.PortfolioFragment}). Local network
+     * Create a network selector model to handle either default or local state. Local network
      * selection can be used by many views so make sure to use the same key which acts as a contract
      * between the view and the selection activity.
+     *
      * @param key acts as a binding key between caller and selection activity.
      * @param mode to handle network selection event globally or locally.
      * @param selectionMode to allow Single or Multiple network selection.
      * @param lifecycle to auto remove network-selection objects.
      * @return NetworkSelectorModel object.
      */
-    public NetworkSelectorModel openNetworkSelectorModel(String key, NetworkSelectorModel.Mode mode,
-            NetworkSelectorModel.SelectionMode selectionMode, Lifecycle lifecycle) {
+    public NetworkSelectorModel openNetworkSelectorModel(
+            String key,
+            NetworkSelectorModel.Mode mode,
+            NetworkSelectorModel.SelectionMode selectionMode,
+            Lifecycle lifecycle) {
         NetworkSelectorModel networkSelectorModel;
         if (key == null) {
             return new NetworkSelectorModel(mode, selectionMode, this, mContext);
@@ -401,18 +402,6 @@ public class NetworkModel implements JsonRpcServiceObserver {
 
     public void clearCreateAccountState() {
         _mNeedToCreateAccountForNetwork.postValue(null);
-    }
-
-    public List<NetworkInfo> stripNoBuyNetworks(
-            List<NetworkInfo> networkInfos, WebUiActivityType type) {
-        List<NetworkInfo> networkInfosFiltered = new ArrayList<>();
-        for (NetworkInfo networkInfo : networkInfos) {
-            if (type == WebUiActivityType.BUY && Utils.allowBuy(networkInfo.chainId)) {
-                networkInfosFiltered.add(networkInfo);
-            }
-        }
-
-        return networkInfosFiltered;
     }
 
     public NetworkInfo getNetwork(String chainId) {

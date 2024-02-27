@@ -1,49 +1,58 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 
 extension BraveWallet.SolanaInstruction {
-  
+
   var isSystemProgram: Bool {
     programId == BraveWallet.SolanaSystemProgramId
   }
-  
+
   var isTokenProgram: Bool {
     programId == BraveWallet.SolanaTokenProgramId
   }
-  
+
   var isAssociatedTokenProgram: Bool {
     programId == BraveWallet.SolanaAssociatedTokenProgramId
   }
-  
+
   var isSysvarRentProgram: Bool {
     programId == BraveWallet.SolanaSysvarRentProgramId
   }
-  
+
   var instructionName: String {
     guard let decodedData = self.decodedData else {
       return Strings.Wallet.solanaUnknownInstructionName
     }
     if isSystemProgram,
-       let instructionType = BraveWallet.SolanaSystemInstruction(rawValue: Int(decodedData.instructionType)) {
+      let instructionType = BraveWallet.SolanaSystemInstruction(
+        rawValue: Int(decodedData.instructionType)
+      )
+    {
       let name = instructionType.name
       return String.localizedStringWithFormat(Strings.Wallet.solanaSystemProgramName, name)
-    } else if isTokenProgram, let instructionType = BraveWallet.SolanaTokenInstruction(rawValue: Int(decodedData.instructionType)) {
+    } else if isTokenProgram,
+      let instructionType = BraveWallet.SolanaTokenInstruction(
+        rawValue: Int(decodedData.instructionType)
+      )
+    {
       let name = instructionType.name
       return String.localizedStringWithFormat(Strings.Wallet.solanaTokenProgramName, name)
     }
     return Strings.Wallet.solanaUnknownInstructionName
   }
-  
+
   /// Returns the `to_account` pubkey for the instruction if available
   var toPubkey: String? {
-    guard let index = decodedData?.accountParams.firstIndex(
-      where: { $0.name == BraveWallet.ToAccount }
-    ) else { return nil }
-    
+    guard
+      let index = decodedData?.accountParams.firstIndex(
+        where: { $0.name == BraveWallet.ToAccount }
+      )
+    else { return nil }
+
     // Do not show account public key of address table lookup account because
     // it might give the wrong impression to users. For example, users might
     // think they're sending funds to this address table lookup account, but
@@ -53,16 +62,18 @@ extension BraveWallet.SolanaInstruction {
     if isAddrTableLookupAccount {
       return nil
     }
-    
+
     return accountMetas[safe: index]?.pubkey
   }
-  
+
   /// Returns the `from_account` pubkey for the instruction if available
   var fromPubkey: String? {
-    guard let index = decodedData?.accountParams.firstIndex(
-      where: { $0.name == BraveWallet.FromAccount }
-    ) else { return nil }
-    
+    guard
+      let index = decodedData?.accountParams.firstIndex(
+        where: { $0.name == BraveWallet.FromAccount }
+      )
+    else { return nil }
+
     // Do not show account public key of address table lookup account because
     // it might give the wrong impression to users. For example, users might
     // think they're sending funds to this address table lookup account, but
@@ -72,10 +83,10 @@ extension BraveWallet.SolanaInstruction {
     if isAddrTableLookupAccount {
       return nil
     }
-    
+
     return accountMetas[safe: index]?.pubkey
   }
-  
+
   /// Generates the `KeyValue` pairs for the accounts in the `SolanaInstruction`.
   var accountKeyValues: [SolanaTxDetails.ParsedSolanaInstruction.KeyValue] {
     guard let decodedData else {
@@ -87,39 +98,47 @@ extension BraveWallet.SolanaInstruction {
         // Address Lookup Table Account: <account pubkey>
         // Address Lookup Table Index: <index in address lookup table>
         // ...
-        return [SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
-          key: Strings.Wallet.solanaInstructionAccounts,
-          value: addrTableLookupIndexValues.joined(separator: "\n")
-        )]
+        return [
+          SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
+            key: Strings.Wallet.solanaInstructionAccounts,
+            value: addrTableLookupIndexValues.joined(separator: "\n")
+          )
+        ]
       }
       // Otherwise display as:
       // Accounts:
       // <account pubkey>
       // ...
       let accountPubkeys = accountMetas.map(\.pubkey)
-      return [SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
-        key: Strings.Wallet.solanaInstructionAccounts,
-        value: accountPubkeys.isEmpty ? "[]" : accountPubkeys.joined(separator: "\n")
-      )]
+      return [
+        SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
+          key: Strings.Wallet.solanaInstructionAccounts,
+          value: accountPubkeys.isEmpty ? "[]" : accountPubkeys.joined(separator: "\n")
+        )
+      ]
     }
-    return decodedData.accountParams.enumerated().compactMap { (index, param) -> SolanaTxDetails.ParsedSolanaInstruction.KeyValue? in
-      if param.name == BraveWallet.Signers { // special case
+    return decodedData.accountParams.enumerated().compactMap {
+      (index, param) -> SolanaTxDetails.ParsedSolanaInstruction.KeyValue? in
+      if param.name == BraveWallet.Signers {  // special case
         // the signers are the `accountMetas` from this index to the end of the array
         // its possible to have any number of signers, including 0
         if accountMetas[safe: index] != nil {
           let signers = accountMetas[index...].map(\.pubkey)
             .map { pubkey in "\(pubkey)" }
             .joined(separator: "\n")
-          return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(key: param.localizedName, value: signers)
+          return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
+            key: param.localizedName,
+            value: signers
+          )
         } else {
-          return nil // no signers
+          return nil  // no signers
         }
       } else {
         guard let account = accountMetas[safe: index] else { return nil }
-        
+
         if let addrTableLookupIndexValue = accountMetas[safe: index]?.addrTableLookupIndexValue {
           return SolanaTxDetails.ParsedSolanaInstruction.KeyValue(
-            key: param.localizedName, // use localized param name for known instruction type
+            key: param.localizedName,  // use localized param name for known instruction type
             value: addrTableLookupIndexValue
           )
         } else {
@@ -144,7 +163,8 @@ extension BraveWallet.SolanaAccountMeta {
     // Address Lookup Table Account: <account pubkey>
     // Address Lookup Table Index: <index in address lookup table>
     let addressLookupTableAccount = "\(Strings.Wallet.solanaInstructionAddressLookupAcc): \(pubkey)"
-    let addressLookupTableIndex = "\(Strings.Wallet.solanaInstructionAddressLookupIndex): \(addrTableLookupIndex.val)"
+    let addressLookupTableIndex =
+      "\(Strings.Wallet.solanaInstructionAddressLookupIndex): \(addrTableLookupIndex.val)"
     return "\(addressLookupTableAccount)\n\(addressLookupTableIndex)"
   }
 }

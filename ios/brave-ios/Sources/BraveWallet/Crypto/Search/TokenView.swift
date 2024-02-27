@@ -1,16 +1,16 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
+import SwiftUI
 
 struct TokenView<ImageView: View>: View {
   var token: BraveWallet.BlockchainToken
   var network: BraveWallet.NetworkInfo
   var image: () -> ImageView
-  
+
   init(
     token: BraveWallet.BlockchainToken,
     network: BraveWallet.NetworkInfo,
@@ -20,7 +20,7 @@ struct TokenView<ImageView: View>: View {
     self.network = network
     self.image = image
   }
-  
+
   var body: some View {
     HStack(spacing: 8) {
       image()

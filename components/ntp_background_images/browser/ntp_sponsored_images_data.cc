@@ -342,7 +342,8 @@ std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundAt(
   return data;
 }
 
-std::optional<base::Value::Dict> NTPSponsoredImagesData::GetBackgroundByAdInfo(
+std::optional<base::Value::Dict>
+NTPSponsoredImagesData::GetBackgroundFromAdInfo(
     const brave_ads::NewTabPageAdInfo& ad_info) {
   // Find campaign
   size_t campaign_index = 0;

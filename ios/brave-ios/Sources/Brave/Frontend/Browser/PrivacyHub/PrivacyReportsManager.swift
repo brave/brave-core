@@ -1,28 +1,28 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import Preferences
-import Data
-import UIKit
 import BraveVPN
+import Data
+import Foundation
+import Preferences
+import Shared
+import UIKit
 import os.log
 
 public struct PrivacyReportsManager {
 
   // MARK: - Data processing
-  
+
   /// For performance reasons the blocked requests are not persisted in the database immediately.
   /// Instead a periodic timer is run and all requests gathered during this timeframe are saved in one database transaction.
   public static var pendingBlockedRequests: [(host: String, domain: URL, date: Date)] = []
-  
+
   private static func processBlockedRequests() {
     let itemsToSave = pendingBlockedRequests
     pendingBlockedRequests.removeAll()
-    
+
     // To handle any weird edge cases when user disables data capturing while there are pending items to save
     // we drop them before saving to DB.
     if !Preferences.PrivacyReports.captureShieldsData.value { return }
@@ -35,19 +35,20 @@ public struct PrivacyReportsManager {
 
   public static func scheduleProcessingBlockedRequests(isPrivateBrowsing: Bool) {
     saveBlockedResourcesTimer?.invalidate()
-    
+
     let timeInterval = AppConstants.buildChannel.isPublic ? 60.0 : 10.0
 
-    saveBlockedResourcesTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
+    saveBlockedResourcesTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true)
+    { _ in
       if !isPrivateBrowsing {
         processBlockedRequests()
       }
     }
   }
-  
+
   public static func scheduleVPNAlertsTask() {
     vpnAlertsTimer?.invalidate()
-    
+
     // Because fetching VPN alerts involves making a url request,
     // the time interval to fetch them is longer than the local on-device blocked request processing.
     let timeInterval = AppConstants.buildChannel.isPublic ? 5.minutes : 1.minutes
@@ -57,23 +58,25 @@ public struct PrivacyReportsManager {
       }
     }
   }
-  
+
   public static func clearAllData() {
     BraveVPNAlert.clearData()
     BlockedResource.clearData()
   }
-  
+
   public static func consolidateData(dayRange range: Int = 30) {
     if Preferences.PrivacyReports.nextConsolidationDate.value == nil {
       Preferences.PrivacyReports.nextConsolidationDate.value = Date().advanced(by: 7.days)
     }
-      
-    if let consolidationDate = Preferences.PrivacyReports.nextConsolidationDate.value, Date() < consolidationDate {
+
+    if let consolidationDate = Preferences.PrivacyReports.nextConsolidationDate.value,
+      Date() < consolidationDate
+    {
       return
     }
-    
+
     Preferences.PrivacyReports.nextConsolidationDate.value = Date().advanced(by: 7.days)
-    
+
     BlockedResource.consolidateData(olderThan: range)
     BraveVPNAlert.consolidateData(olderThan: range)
   }
@@ -83,7 +86,7 @@ public struct PrivacyReportsManager {
   static func prepareView(isPrivateBrowsing: Bool) -> PrivacyReportsView {
     let last = BraveVPNAlert.last(3)
     let view = PrivacyReportsView(lastVPNAlerts: last, isPrivateBrowsing: isPrivateBrowsing)
-    
+
     Preferences.PrivacyReports.ntpOnboardingCompleted.value = true
 
     return view
@@ -99,7 +102,7 @@ public struct PrivacyReportsManager {
     if debugMode {
       cancelNotification()
     }
-    
+
     if !Preferences.PrivacyReports.captureShieldsData.value {
       cancelNotification()
       return
@@ -135,17 +138,25 @@ public struct PrivacyReportsManager {
       }
 
       let trigger = UNCalendarNotificationTrigger(dateMatching: dateComponents, repeats: true)
-      let request = UNNotificationRequest(identifier: notificationID, content: content, trigger: trigger)
-      
+      let request = UNNotificationRequest(
+        identifier: notificationID,
+        content: content,
+        trigger: trigger
+      )
+
       notificationCenter.add(request) { error in
         if let error = error {
-          Logger.module.error("Scheduling privacy reports notification error: \(error.localizedDescription)")
+          Logger.module.error(
+            "Scheduling privacy reports notification error: \(error.localizedDescription)"
+          )
         }
       }
     }
   }
 
   static func cancelNotification() {
-    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [notificationID])
+    UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [
+      notificationID
+    ])
   }
 }

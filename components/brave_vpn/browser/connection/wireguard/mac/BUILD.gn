@@ -12,8 +12,8 @@ source_set("mac") {
   visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
 
   sources = [
-    "brave_vpn_wireguard_connection_api_mac.h",
-    "brave_vpn_wireguard_connection_api_mac.mm",
+    "wireguard_connection_api_impl_mac.h",
+    "wireguard_connection_api_impl_mac.mm",
   ]
 
   deps = [

@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
-import BraveShared
 
 class NetworkErrorPageHandler: InterstitialPageHandler {
   static func isNetworkError(errorCode: Int) -> Bool {
@@ -15,11 +15,12 @@ class NetworkErrorPageHandler: InterstitialPageHandler {
 
     return errorCode == NSURLErrorNotConnectedToInternet
   }
-  
+
   func canHandle(error: NSError) -> Bool {
     // Handle CFNetwork Error
     if error.domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(error.code)) {
+      let code = CFNetworkErrors(rawValue: Int32(error.code))
+    {
 
       let handledCodes: [CFNetworkErrors] = [
         .cfurlErrorNotConnectedToInternet
@@ -53,7 +54,8 @@ class NetworkErrorPageHandler: InterstitialPageHandler {
 
     // Update the error code domain
     if domain == kCFErrorDomainCFNetwork as String,
-      let code = CFNetworkErrors(rawValue: Int32(model.errorCode)) {
+      let code = CFNetworkErrors(rawValue: Int32(model.errorCode))
+    {
       domain = GenericErrorPageHandler.CFErrorToName(code)
     } else if domain == NSURLErrorDomain {
       domain = GenericErrorPageHandler.NSURLErrorToName(model.errorCode)

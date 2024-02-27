@@ -51,7 +51,7 @@ class CreativeNotificationAds final : public TableInterface {
   void GetForSegments(const SegmentList& segments,
                       GetCreativeNotificationAdsCallback callback) const;
 
-  void GetAll(GetCreativeNotificationAdsCallback callback) const;
+  void GetForActiveCampaigns(GetCreativeNotificationAdsCallback callback) const;
 
   void SetBatchSize(const int batch_size) {
     CHECK_GT(batch_size, 0);
@@ -65,6 +65,8 @@ class CreativeNotificationAds final : public TableInterface {
   void Migrate(mojom::DBTransactionInfo* transaction, int to_version) override;
 
  private:
+  void MigrateToV35(mojom::DBTransactionInfo* transaction);
+
   void InsertOrUpdate(mojom::DBTransactionInfo* transaction,
                       const CreativeNotificationAdList& creative_ads);
 

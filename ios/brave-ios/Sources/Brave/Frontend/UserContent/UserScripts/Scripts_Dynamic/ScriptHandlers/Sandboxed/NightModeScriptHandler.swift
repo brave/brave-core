@@ -2,11 +2,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0
 
-import Foundation
-import WebKit
-import Shared
-import Preferences
 import Data
+import Foundation
+import Preferences
+import Shared
+import WebKit
 
 class NightModeScriptHandler: TabContentScript {
   fileprivate weak var tab: Tab?
@@ -24,15 +24,23 @@ class NightModeScriptHandler: TabContentScript {
   static let messageHandlerName = "\(scriptName)_\(messageUUID)"
   static let scriptSandbox: WKContentWorld = .defaultClient
   static let userScript: WKUserScript? = {
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: "window.__firefox__.NightMode.setEnabled(true);"),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: true,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: "window.__firefox__.NightMode.setEnabled(true);"
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: true,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: @escaping (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: @escaping (Any?, String?) -> Void
+  ) {
     // Do nothing.
   }
 
@@ -52,7 +60,7 @@ class NightModeScriptHandler: TabContentScript {
       }
     }
   }
-  
+
   static func executeScript(for webView: WKWebView, isNightModeEnabled: Bool) {
     webView.evaluateSafeJavaScript(
       functionName: "window.__firefox__.NightMode.setEnabled",

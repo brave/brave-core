@@ -10,7 +10,7 @@
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_search_conversion/features.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/debounce/core/common/features.h"
@@ -43,6 +43,7 @@
     &speedreader::kSpeedreaderFeature,                                  \
     &debounce::features::kBraveDebounce,                                \
     &net::features::kBraveHttpsByDefault,                               \
+    &net::features::kBraveFallbackDoHProvider,                          \
     &google_sign_in_permission::features::kBraveGoogleSignInPermission, \
     &net::features::kBraveForgetFirstPartyStorage,                      \
     &brave_shields::features::kBraveShowStrictFingerprintingMode,       \

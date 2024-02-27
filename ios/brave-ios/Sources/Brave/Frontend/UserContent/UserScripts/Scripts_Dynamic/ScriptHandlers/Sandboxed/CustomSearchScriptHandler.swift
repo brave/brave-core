@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import WebKit
@@ -20,15 +20,23 @@ class CustomSearchScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     replyHandler(nil, nil)
     // We don't listen to messages because the BVC calls the searchHelper script by itself.
   }

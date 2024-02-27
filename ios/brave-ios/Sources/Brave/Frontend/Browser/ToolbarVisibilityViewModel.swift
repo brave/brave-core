@@ -1,11 +1,11 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import SwiftUI
+import UIKit
 
 /// A tool that will allow you to control the collapsing of toolbars surrounding a scroll view similarly to
 /// mobile Safari.
@@ -41,21 +41,21 @@ import SwiftUI
 /// 2. In the case of mobile Safari, tapping the collapsed URL bar will expand the toolbars. This will be up
 ///    to the UI to handle by setting ``toolbarState`` itself if some collapsed URL bar UI exists.
 @MainActor class ToolbarVisibilityViewModel: ObservableObject {
-  
+
   /// Creates a view model with an estimation of the travel distance.
   ///
   /// Update this value when you have a correct value by setting ``transitionDistance``
   init(estimatedTransitionDistance: CGFloat) {
     self.transitionDistance = estimatedTransitionDistance
   }
-  
+
   /// The display state of toolbars surrounding some observed scroll view
   enum ToolbarState {
     /// Any toolbars are expanded and fully visible. Scrolling to the top is available
     case expanded
     /// Any toolbars are collapsed
     case collapsed
-    
+
     /// The inverse of the current state
     var inversed: ToolbarState {
       switch self {
@@ -63,16 +63,16 @@ import SwiftUI
       case .collapsed: return .expanded
       }
     }
-    
+
     /// Inverses the current toolbar state
     mutating func inverse() {
       self = inversed
     }
   }
-  
+
   /// Whether or not actions should be handled
   var isEnabled: Bool = true
-  
+
   /// The current toolbar state based on previous actions sent
   @Published var toolbarState: ToolbarState = .expanded {
     didSet {
@@ -80,19 +80,19 @@ import SwiftUI
       interactiveTransitionProgress = nil
     }
   }
-  
+
   /// The SwiftUI animation to use when manually updating the toolbar state.
   ///
   /// This animation will be used by default when user actions end up inversing the state of the toolbar
   var toolbarChangeAnimation: Animation {
     .spring(response: 0.25, dampingFraction: 0.8, blendDuration: 0)
   }
-  
+
   /// A UIKit animation to use when manually updating the toolbar state
   var toolbarChangePropertyAnimator: UIViewPropertyAnimator {
     .init(duration: 0.25, dampingRatio: 1)
   }
-  
+
   /// The travel distance between the ``ToolbarState/expanded`` and ``ToolbarState/collapsed`` toolbar states
   ///
   /// This is how much the user has to pan before the current toolbar state inverses.
@@ -101,17 +101,17 @@ import SwiftUI
   /// available. For bottom bar this should be the drag distance before a full state change (to match Safari
   /// this will be the bottom safe area height)
   var transitionDistance: CGFloat
-  
+
   /// The progress between the current state and its inverse during an interactive transition such as
   /// panning the scroll view
   @Published private(set) var interactiveTransitionProgress: CGFloat?
-  
+
   /// A minimum content height that can be set to stop the toolbar from collapsing.
   ///
   /// When this is set to `nil`, the current scroll view's content height and ``transitionDistance`` will
   /// determine if the toolbar can collapse.
   var minimumCollapsableContentHeight: CGFloat?
-  
+
   /// A snapshot in time for a scrolling container.
   ///
   /// Contains some basic info required to handle toolbar visibility
@@ -122,18 +122,18 @@ import SwiftUI
     var frameHeight: CGFloat
     var isDecelerating: Bool
   }
-  
+
   /// Vertical axis related information during a pan on a scroll view
   struct PanState {
     var yTranslation: CGFloat
     var yVelocity: CGFloat
   }
-  
+
   /// Whether or not scrolling to the top of a scroll view is allowed when tapping the status bar
   var isScrollToTopAllowed: Bool {
     toolbarState == .expanded
   }
-  
+
   /// An user action that may alter the current toolbar state
   enum Action {
     /// The user dragged/scrolled the scroll view
@@ -145,7 +145,7 @@ import SwiftUI
     /// The user tapped the status bar to scroll to the top.
     case tappedStatusBar
   }
-  
+
   func send(action: Action) {
     if !isEnabled { return }
     switch action {
@@ -175,14 +175,14 @@ import SwiftUI
       }
     }
   }
-  
+
   /// Distance travelled after decelerating to zero velocity at a constant rate
   private func project(initialVelocity: CGFloat, decelerationRate: CGFloat) -> CGFloat {
     (initialVelocity / 1000.0) * decelerationRate / (1.0 - decelerationRate)
   }
-  
+
   private var initialSnapshot: ScrollViewSnapshot?
-  
+
   private func dragged(_ snapshot: ScrollViewSnapshot, pan: PanState) {
     if !isContentHeightSufficientForCollapse(snapshot) || transitionDistance.isZero {
       if toolbarState == .collapsed {
@@ -190,13 +190,16 @@ import SwiftUI
       }
       return
     }
-    
+
     let ty = pan.yTranslation
     let normalizedOffset = snapshot.contentOffset.y + snapshot.contentInset.top
-    let isRubberBandingBottomEdge = snapshot.contentOffset.y + snapshot.frameHeight > snapshot.contentHeight
+    let isRubberBandingBottomEdge =
+      snapshot.contentOffset.y + snapshot.frameHeight > snapshot.contentHeight
     // If we're not starting from 0 and are expanded then we actually want to handle it the same way as from
     // further down the page
-    if normalizedOffset < transitionDistance, normalizedOffset - ty == 0 || toolbarState == .collapsed {
+    if normalizedOffset < transitionDistance,
+      normalizedOffset - ty == 0 || toolbarState == .collapsed
+    {
       // content offset of scroll view: 0 -> transitionDistance is always interactive
       var progress = max(0.0, min(1.0, normalizedOffset / transitionDistance))
       if toolbarState == .collapsed {
@@ -209,18 +212,24 @@ import SwiftUI
       //   - once it has fully collapsed though scrolling back up does nothing until touch up
       //   - don't shrink if we're near the bottom and don't have enough space to collapse
       let startOffset = normalizedOffset + ty
-      if startOffset + snapshot.frameHeight <= snapshot.contentHeight - transitionDistance, !isRubberBandingBottomEdge {
+      if startOffset + snapshot.frameHeight <= snapshot.contentHeight - transitionDistance,
+        !isRubberBandingBottomEdge
+      {
         let progress = max(0.0, min(1.0, -ty / transitionDistance))
         interactiveTransitionProgress = progress
       }
     }
-    
+
     if interactiveTransitionProgress == 1 {
       toolbarState.inverse()
     }
   }
-  
-  private func endedDrag(_ snapshot: ScrollViewSnapshot, initialSnapshot: ScrollViewSnapshot, pan: PanState) {
+
+  private func endedDrag(
+    _ snapshot: ScrollViewSnapshot,
+    initialSnapshot: ScrollViewSnapshot,
+    pan: PanState
+  ) {
     if !isContentHeightSufficientForCollapse(snapshot) || transitionDistance.isZero {
       if interactiveTransitionProgress != nil || toolbarState == .collapsed {
         // Cancel the transition
@@ -228,23 +237,34 @@ import SwiftUI
       }
       return
     }
-    
+
     let normalizedOffset = snapshot.contentOffset.y + snapshot.contentInset.top
     let velocity = pan.yVelocity
-    let projectedDelta = project(initialVelocity: velocity, decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+    let projectedDelta = project(
+      initialVelocity: velocity,
+      decelerationRate: UIScrollView.DecelerationRate.normal.rawValue
+    )
     let projectedOffset = normalizedOffset - projectedDelta
     let isScrollingDown = snapshot.contentOffset.y > initialSnapshot.contentOffset.y
-    let isRubberBandingBottomEdge = initialSnapshot.contentOffset.y + snapshot.frameHeight >= snapshot.contentHeight && isScrollingDown
+    let isRubberBandingBottomEdge =
+      initialSnapshot.contentOffset.y + snapshot.frameHeight >= snapshot.contentHeight
+      && isScrollingDown
     var resolvedState = toolbarState
     switch toolbarState {
     case .collapsed:
-      let isScrollingIntoSafeArea = (snapshot.isDecelerating ? projectedOffset : normalizedOffset) < transitionDistance
-      let isScrollingUpWithForce = snapshot.isDecelerating && velocity > 0 && projectedDelta > transitionDistance
-      if isScrollingIntoSafeArea || isScrollingUpWithForce || (isRubberBandingBottomEdge && velocity < -200) {
+      let isScrollingIntoSafeArea =
+        (snapshot.isDecelerating ? projectedOffset : normalizedOffset) < transitionDistance
+      let isScrollingUpWithForce =
+        snapshot.isDecelerating && velocity > 0 && projectedDelta > transitionDistance
+      if isScrollingIntoSafeArea || isScrollingUpWithForce
+        || (isRubberBandingBottomEdge && velocity < -200)
+      {
         resolvedState = .expanded
       }
     case .expanded:
-      if snapshot.isDecelerating, velocity < 0, abs(projectedOffset) > transitionDistance, !isRubberBandingBottomEdge {
+      if snapshot.isDecelerating, velocity < 0, abs(projectedOffset) > transitionDistance,
+        !isRubberBandingBottomEdge
+      {
         resolvedState = .collapsed
       }
     }
@@ -252,7 +272,7 @@ import SwiftUI
       toolbarState = resolvedState
     }
   }
-  
+
   /// Whether or not the scroll view's content size is large enough to support collapsing toolbars
   private func isContentHeightSufficientForCollapse(_ snapshot: ScrollViewSnapshot) -> Bool {
     if let minimumContentHeightThatAllowsCollapsing = minimumCollapsableContentHeight {
@@ -260,27 +280,31 @@ import SwiftUI
     }
     return snapshot.contentHeight > snapshot.frameHeight + transitionDistance
   }
-  
+
   // MARK: - UIScrollView setup
-  
+
   private lazy var coordinator: ScrollViewCoordinator = .init(viewModel: self)
   private var scrollViewObservation: NSKeyValueObservation?
-  
+
   /// Sets up the `delegate` on the passed in `UIScrollView` to automatically handle scrolling behaviours
   /// from users.
   ///
   /// If you need to control the delegate yourself, consider calling actions yourself instead
   func beginObservingScrollView(_ scrollView: UIScrollView) {
     scrollView.panGestureRecognizer.addTarget(self, action: #selector(pannedScrollView(_:)))
-    scrollViewObservation = scrollView.observe(\.contentSize, options: [.old, .new], changeHandler: { [weak self] scrollView, change in
-      guard change.oldValue != change.newValue else { return }
-      DispatchQueue.main.async { [self] in
-        self?.send(action: .contentSizeChanged(snapshot: Self.snapshotData(from: scrollView)))
+    scrollViewObservation = scrollView.observe(
+      \.contentSize,
+      options: [.old, .new],
+      changeHandler: { [weak self] scrollView, change in
+        guard change.oldValue != change.newValue else { return }
+        DispatchQueue.main.async { [self] in
+          self?.send(action: .contentSizeChanged(snapshot: Self.snapshotData(from: scrollView)))
+        }
       }
-    })
+    )
     scrollView.delegate = coordinator
   }
-  
+
   func endScrollViewObservation(_ scrollView: UIScrollView) {
     scrollView.panGestureRecognizer.removeTarget(self, action: nil)
     scrollViewObservation?.invalidate()
@@ -292,26 +316,26 @@ import SwiftUI
 extension ToolbarVisibilityViewModel {
   @objc private func pannedScrollView(_ pan: UIPanGestureRecognizer) {
     guard let scrollView = pan.view as? UIScrollView else { return }
-    
+
     let snapshot: ScrollViewSnapshot = Self.snapshotData(from: scrollView)
     let panData: PanState = .init(
       yTranslation: pan.translation(in: scrollView).y,
       yVelocity: pan.velocity(in: scrollView).y
     )
-    
+
     send(action: .dragged(snapshot: snapshot, panData: panData))
-    
+
     if pan.state == .ended {
       send(action: .endedDrag(snapshot: snapshot, panData: panData))
     }
   }
-  
+
   private class ScrollViewCoordinator: NSObject, UIScrollViewDelegate {
     private weak var viewModel: ToolbarVisibilityViewModel?
     init(viewModel: ToolbarVisibilityViewModel) {
       self.viewModel = viewModel
     }
-    
+
     func scrollViewShouldScrollToTop(_ scrollView: UIScrollView) -> Bool {
       guard let viewModel = viewModel else {
         return true
@@ -321,7 +345,7 @@ extension ToolbarVisibilityViewModel {
       return isScrollToTopAllowed
     }
   }
-  
+
   private static func snapshotData(from scrollView: UIScrollView) -> ScrollViewSnapshot {
     .init(
       contentOffset: scrollView.contentOffset,

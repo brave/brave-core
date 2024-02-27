@@ -3425,15 +3425,14 @@ TEST_F(KeyringServiceUnitTest, SignMessage) {
   EXPECT_TRUE(
       service
           .SignMessageBySolanaKeyring(
-              *MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
-                             mojom::AccountKind::kDerived,
-                             "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
+              MakeAccountId(mojom::CoinType::SOL, mojom::KeyringId::kSolana,
+                            mojom::AccountKind::kDerived,
+                            "0xf81229FE54D8a20fBc1e1e2a3451D1c7489437Db"),
               message)
           .empty());
 
   EXPECT_FALSE(
-      service
-          .SignMessageBySolanaKeyring(*first_sol_account->account_id, message)
+      service.SignMessageBySolanaKeyring(first_sol_account->account_id, message)
           .empty());
 }
 

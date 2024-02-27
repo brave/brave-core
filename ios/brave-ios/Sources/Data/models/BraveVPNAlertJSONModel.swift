@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -51,7 +51,12 @@ public struct BraveVPNAlertJSONModel: Decodable {
     case "log":
       self.action = .log
     default:
-      throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.action], debugDescription: "Casting `action` failed, incorrect value: \(actionString)"))
+      throw DecodingError.dataCorrupted(
+        .init(
+          codingPath: [CodingKeys.action],
+          debugDescription: "Casting `action` failed, incorrect value: \(actionString)"
+        )
+      )
     }
 
     let categoryString = try container.decode(String.self, forKey: .category)
@@ -63,7 +68,12 @@ public struct BraveVPNAlertJSONModel: Decodable {
     case "privacy-tracker-app":
       self.category = .app
     default:
-      throw DecodingError.dataCorrupted(.init(codingPath: [CodingKeys.category], debugDescription: "Casting `category` failed, incorrect value: \(categoryString)"))
+      throw DecodingError.dataCorrupted(
+        .init(
+          codingPath: [CodingKeys.category],
+          debugDescription: "Casting `category` failed, incorrect value: \(categoryString)"
+        )
+      )
     }
   }
 }

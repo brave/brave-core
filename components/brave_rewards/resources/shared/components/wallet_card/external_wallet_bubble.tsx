@@ -5,6 +5,8 @@
 
 import * as React from 'react'
 
+import Icon from '@brave/leo/react/icon'
+
 import { ExternalWallet, getExternalWalletProviderName } from '../../lib/external_wallet'
 import { ExternalWalletAction } from './external_wallet_action'
 
@@ -56,7 +58,10 @@ export function ExternalWalletBubble (props: Props) {
       case mojom.WalletStatus.kConnected:
         return (
           <button onClick={actionHandler('view-account')}>
-            {formatMessage(getString('walletAccountLink'), [providerName])}
+            <span>
+              {formatMessage(getString('walletAccountLink'), [providerName])}
+            </span>
+            <Icon name='launch' />
           </button>
         )
     }

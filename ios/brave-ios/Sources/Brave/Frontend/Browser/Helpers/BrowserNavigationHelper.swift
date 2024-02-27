@@ -1,12 +1,12 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveVPN
 import Foundation
 import Shared
 import UIKit
-import BraveVPN
 
 /// Handles displaying controllers such as settings, bookmarks, etc. on top of
 /// the browser.
@@ -21,7 +21,8 @@ class BrowserNavigationHelper {
   private typealias DoneButton = (style: UIBarButtonItem.SystemItem, position: DoneButtonPosition)
 
   private func open(
-    _ viewController: UIViewController, doneButton: DoneButton,
+    _ viewController: UIViewController,
+    doneButton: DoneButton,
     allowSwipeToDismiss: Bool = true
   ) {
     let nav = SettingsNavigationController(rootViewController: viewController).then {
@@ -30,7 +31,11 @@ class BrowserNavigationHelper {
         UIDevice.current.userInterfaceIdiom == .phone ? .pageSheet : .formSheet
     }
 
-    let button = UIBarButtonItem(barButtonSystemItem: doneButton.style, target: nav, action: #selector(nav.done))
+    let button = UIBarButtonItem(
+      barButtonSystemItem: doneButton.style,
+      target: nav,
+      action: #selector(nav.done)
+    )
 
     switch doneButton.position {
     case .left: nav.navigationBar.topItem?.leftBarButtonItem = button
@@ -46,7 +51,8 @@ class BrowserNavigationHelper {
     let vc = BookmarksViewController(
       folder: bvc.bookmarkManager.lastVisitedFolder(),
       bookmarkManager: bvc.bookmarkManager,
-      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing)
+      isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing
+    )
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
@@ -62,15 +68,16 @@ class BrowserNavigationHelper {
       isPrivateBrowsing: bvc.privateBrowsingManager.isPrivateBrowsing,
       isModallyPresented: isModal,
       historyAPI: bvc.braveCore.historyAPI,
-      tabManager: bvc.tabManager)
+      tabManager: bvc.tabManager
+    )
     vc.toolbarUrlActionsDelegate = bvc
 
     open(vc, doneButton: DoneButton(style: .done, position: .right))
   }
-  
+
   func openVPNBuyScreen(iapObserver: IAPObserver) {
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
-    
+
     open(vc, doneButton: DoneButton(style: .done, position: .left))
   }
 
@@ -79,18 +86,21 @@ class BrowserNavigationHelper {
     dismissView()
 
     guard let tab = bvc.tabManager.selectedTab, let url = tab.url else { return }
-    
+
     Task { @MainActor in
       @MainActor func share(url: URL) {
         bvc.presentActivityViewController(
           url,
           tab: url.isFileURL ? nil : bvc.tabManager.selectedTab,
           sourceView: bvc.view,
-          sourceRect: bvc.view.convert(bvc.topToolbar.menuButton.frame, from: bvc.topToolbar.menuButton.superview),
+          sourceRect: bvc.view.convert(
+            bvc.topToolbar.menuButton.frame,
+            from: bvc.topToolbar.menuButton.superview
+          ),
           arrowDirection: [.up]
         )
       }
-      
+
       if let temporaryDocument = tab.temporaryDocument {
         let tempDocURL = await temporaryDocument.getURL()
         // If we successfully got a temp file URL, share it like a downloaded file,
@@ -114,7 +124,7 @@ class BrowserNavigationHelper {
   func openPlaylist() {
     bvc?.openPlaylist(tab: nil, item: nil)
   }
-  
+
   func openWallet() {
     bvc?.presentWallet()
   }

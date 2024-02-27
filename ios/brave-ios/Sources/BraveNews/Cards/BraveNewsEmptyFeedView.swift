@@ -1,11 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveUI
 import BraveShared
+import BraveUI
+import Foundation
 import Shared
 import UIKit
 
@@ -59,7 +59,9 @@ public class BraveNewsEmptyFeedView: UIView, FeedCardContent {
     }
 
     stackView.addStackViewItems(
-      .view(UIImageView(image: UIImage(named: "brave-today-error", in: .module, compatibleWith: nil)!)),
+      .view(
+        UIImageView(image: UIImage(named: "brave-today-error", in: .module, compatibleWith: nil)!)
+      ),
       .customSpace(16),
       .view(titleLabel),
       .view(messageLabel),
@@ -67,7 +69,11 @@ public class BraveNewsEmptyFeedView: UIView, FeedCardContent {
       .view(sourcesAndSettingsButton)
     )
 
-    sourcesAndSettingsButton.addTarget(self, action: #selector(tappedSettingsButton), for: .touchUpInside)
+    sourcesAndSettingsButton.addTarget(
+      self,
+      action: #selector(tappedSettingsButton),
+      for: .touchUpInside
+    )
   }
 
   @available(*, unavailable)

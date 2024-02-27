@@ -6,7 +6,7 @@
 #ifndef BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_FIELDS_H_
 #define BRAVE_COMPONENTS_WEBCOMPAT_REPORTER_BROWSER_FIELDS_H_
 
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
 
 namespace webcompat_reporter {
 
@@ -23,6 +23,8 @@ inline constexpr char kDomainField[] = "domain";
 inline constexpr char kDetailsField[] = "additionalDetails";
 inline constexpr char kContactField[] = "contactInfo";
 inline constexpr char kApiKeyField[] = "api_key";
+
+inline constexpr char kUISourceField[] = "ui_source";
 
 const char* GetAdBlockModeString(
     brave_shields::mojom::AdBlockMode ad_block_mode);

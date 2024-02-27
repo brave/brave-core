@@ -198,12 +198,18 @@ void AIChatUIPageHandler::OpenURL(const GURL& url) {
     return;
   }
 
+#if !BUILDFLAG(IS_ANDROID)
   auto* contents_to_navigate = (active_chat_tab_helper_)
                                    ? active_chat_tab_helper_->web_contents()
                                    : web_contents();
   contents_to_navigate->OpenURL({url, content::Referrer(),
                                  WindowOpenDisposition::NEW_FOREGROUND_TAB,
                                  ui::PAGE_TRANSITION_LINK, false});
+#else
+  // We handle open link different on Android as we need to close the chat
+  // window because it's always full screen
+  ai_chat::OpenURL(url.spec());
+#endif
 }
 
 void AIChatUIPageHandler::GoPremium() {
@@ -285,9 +291,10 @@ void AIChatUIPageHandler::RateMessage(bool is_liked,
 void AIChatUIPageHandler::SendFeedback(const std::string& category,
                                        const std::string& feedback,
                                        const std::string& rating_id,
+                                       bool send_hostname,
                                        SendFeedbackCallback callback) {
   active_chat_tab_helper_->SendFeedback(category, feedback, rating_id,
-                                        std::move(callback));
+                                        send_hostname, std::move(callback));
 }
 
 void AIChatUIPageHandler::MarkAgreementAccepted() {
@@ -408,6 +415,15 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
     ai_chat::mojom::PremiumStatus status,
     ai_chat::mojom::PremiumInfoPtr info) {
   if (page_.is_bound()) {
+#if BUILDFLAG(IS_ANDROID)
+    // There is no UI for android to "refresh" with an iAP - we are likely still
+    // authenticating after first iAP, so we should show as active.
+    if (status == mojom::PremiumStatus::ActiveDisconnected &&
+        profile_->GetPrefs()->GetBoolean(
+            prefs::kBraveChatSubscriptionActiveAndroid)) {
+      status = mojom::PremiumStatus::Active;
+    }
+#endif
     std::move(callback).Run(status, std::move(info));
   }
 }

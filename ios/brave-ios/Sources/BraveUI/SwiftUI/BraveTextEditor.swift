@@ -3,23 +3,23 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 /// A `TextEditor` made to look in the same way as `BraveTextFieldStyle` and adds a similar looking "prompt" (placeholder) to the view.
 public struct BraveTextEditor: View {
   @Binding private var text: String
   private let prompt: String
-  
+
   private var isPromptHidden: Bool {
     text.isEmpty ? false : true
   }
-  
+
   public init(text: Binding<String>, prompt: String) {
     _text = text
     self.prompt = prompt
   }
-  
+
   public var body: some View {
     TextEditor(text: $text)
       .braveTextEditorStyle()

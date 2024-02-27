@@ -1,13 +1,14 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
-import Shared
 import Preferences
+import Shared
 import WebKit
-@testable import UserAgent
+import XCTest
+
 @testable import Brave
+@testable import UserAgent
 
 class UserAgentTests: XCTestCase {
 
@@ -17,7 +18,11 @@ class UserAgentTests: XCTestCase {
   }
 
   let desktopUARegex: (String) -> Bool = { ua in
-    let range = ua.range(of: "^Mozilla/5\\.0 \\(Macintosh; Intel Mac OS X [0-9_]+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Safari/[0-9\\.]+$", options: .regularExpression)
+    let range = ua.range(
+      of:
+        "^Mozilla/5\\.0 \\(Macintosh; Intel Mac OS X [0-9_]+\\) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Safari/[0-9\\.]+$",
+      options: .regularExpression
+    )
     return range != nil
   }
 
@@ -27,7 +32,11 @@ class UserAgentTests: XCTestCase {
       ? "\\(iPhone; CPU iPhone OS [0-9_]+ like Mac OS X\\)"
       : "\\(iPad; CPU OS [0-9_]+ like Mac OS X\\)"
 
-    let range = ua.range(of: "^Mozilla/5\\.0 \(cpuPart) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$", options: .regularExpression)
+    let range = ua.range(
+      of:
+        "^Mozilla/5\\.0 \(cpuPart) AppleWebKit/[0-9\\.]+ \\(KHTML, like Gecko\\) Version/[0-9\\.]+ Mobile/[A-Za-z0-9]+ Safari/[0-9\\.]+$",
+      options: .regularExpression
+    )
     return range != nil
   }
 
@@ -41,7 +50,11 @@ class UserAgentTests: XCTestCase {
 
     let webView = BraveWebView(frame: .zero, isPrivate: false)
 
-    webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
+    webView.evaluateSafeJavaScript(
+      functionName: "navigator.userAgent",
+      contentWorld: .page,
+      asFunction: false
+    ) { result, error in
       let userAgent = result as! String
       if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
         XCTFail("User agent did not match expected pattern! \(userAgent)")
@@ -60,14 +73,23 @@ class UserAgentTests: XCTestCase {
     let webView = BraveWebView(frame: .zero, isPrivate: false)
     let wkWebView = WKWebView()
 
-    webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", args: [], contentWorld: .page, asFunction: false) { result, error in
+    webView.evaluateSafeJavaScript(
+      functionName: "navigator.userAgent",
+      args: [],
+      contentWorld: .page,
+      asFunction: false
+    ) { result, error in
 
       guard let braveFirstPartOfUA = (result as? String)?.components(separatedBy: "Gecko") else {
         XCTFail("Could not unwrap BraveWebView UA")
         return
       }
 
-      wkWebView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { wkResult, wkError in
+      wkWebView.evaluateSafeJavaScript(
+        functionName: "navigator.userAgent",
+        contentWorld: .page,
+        asFunction: false
+      ) { wkResult, wkError in
         guard
           let wkWebViewFirstPartOfUA = (result as? String)?
             .components(separatedBy: "Gecko")
@@ -92,7 +114,8 @@ class UserAgentTests: XCTestCase {
   func testDesktopUserAgent() {
     // Must run on iPad iOS 13+
     if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13 {
+      || ProcessInfo().operatingSystemVersion.majorVersion < 13
+    {
       return
     }
 
@@ -101,7 +124,11 @@ class UserAgentTests: XCTestCase {
     let expectation = self.expectation(description: "Found Firefox user agent")
     let webView = BraveWebView(frame: .zero, isPrivate: false)
 
-    webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
+    webView.evaluateSafeJavaScript(
+      functionName: "navigator.userAgent",
+      contentWorld: .page,
+      asFunction: false
+    ) { result, error in
       let userAgent = result as! String
       if self.mobileUARegex(userAgent) || !self.desktopUARegex(userAgent) {
         XCTFail("User agent did not match expected pattern! \(userAgent)")
@@ -115,7 +142,8 @@ class UserAgentTests: XCTestCase {
   func testIpadMobileUserAgent() {
     // Must run on iPad iOS 13+
     if UIDevice.current.userInterfaceIdiom != .pad
-      || ProcessInfo().operatingSystemVersion.majorVersion < 13 {
+      || ProcessInfo().operatingSystemVersion.majorVersion < 13
+    {
       return
     }
 
@@ -126,7 +154,11 @@ class UserAgentTests: XCTestCase {
     let expectation = self.expectation(description: "Found Firefox user agent")
     let webView = BraveWebView(frame: .zero, isPrivate: false)
 
-    webView.evaluateSafeJavaScript(functionName: "navigator.userAgent", contentWorld: .page, asFunction: false) { result, error in
+    webView.evaluateSafeJavaScript(
+      functionName: "navigator.userAgent",
+      contentWorld: .page,
+      asFunction: false
+    ) { result, error in
       let userAgent = result as! String
       if !self.mobileUARegex(userAgent) || self.desktopUARegex(userAgent) {
         XCTFail("User agent did not match expected pattern! \(userAgent)")

@@ -46,12 +46,12 @@
 #include "brave/components/brave_search/common/brave_search_default.mojom.h"
 #include "brave/components/brave_search/common/brave_search_fallback.mojom.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
-#include "brave/components/brave_shields/browser/ad_block_service.h"
-#include "brave/components/brave_shields/browser/brave_farbling_service.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
-#include "brave/components/brave_shields/browser/domain_block_navigation_throttle.h"
-#include "brave/components/brave_shields/common/brave_shield_constants.h"
-#include "brave/components/brave_shields/common/features.h"
+#include "brave/components/brave_shields/content/browser/ad_block_service.h"
+#include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/domain_block_navigation_throttle.h"
+#include "brave/components/brave_shields/core/common/brave_shield_constants.h"
+#include "brave/components/brave_shields/core/common/features.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_p3a_private.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -232,8 +232,8 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_rewards/common/features.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
-#include "brave/components/brave_shields/common/brave_shields_panel.mojom.h"
-#include "brave/components/brave_shields/common/cookie_list_opt_in.mojom.h"
+#include "brave/components/brave_shields/core/common/brave_shields_panel.mojom.h"
+#include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #endif
@@ -813,7 +813,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
   auto* prefs =
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
-      !render_frame_host->GetBrowserContext()->IsTor()) {
+      brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
@@ -1253,9 +1253,11 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
 #endif
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  if (auto ai_chat_throttle =
-          ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
-    throttles.push_back(std::move(ai_chat_throttle));
+  if (brave::IsRegularProfile(context)) {
+    if (auto ai_chat_throttle =
+            ai_chat::AiChatThrottle::MaybeCreateThrottleFor(handle)) {
+      throttles.push_back(std::move(ai_chat_throttle));
+    }
   }
 #endif  // ENABLE_AI_CHAT
 

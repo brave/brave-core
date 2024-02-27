@@ -1,7 +1,7 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import SwiftUI
 
@@ -102,7 +102,8 @@ struct BraveButtonStyle_Previews: PreviewProvider {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
             ForEach(defaultSizes.indices, id: \.self) { historyIndex in
-              Button(action: {}) {
+              Button {
+              } label: {
                 Text(verbatim: "Button text")
               }
               .buttonStyle(BraveFilledButtonStyle(size: defaultSizes[historyIndex]))
@@ -116,7 +117,8 @@ struct BraveButtonStyle_Previews: PreviewProvider {
         ForEach([false, true], id: \.self) { disabled in
           VStack {
             ForEach(defaultSizes.indices, id: \.self) { historyIndex in
-              Button(action: {}) {
+              Button {
+              } label: {
                 Text(verbatim: "Button text")
               }
               .buttonStyle(BraveOutlineButtonStyle(size: defaultSizes[historyIndex]))

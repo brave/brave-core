@@ -420,8 +420,19 @@ void BraveAppMenuModel::RemoveUpstreamMenus() {
 
   // Remove upstream's clear browsing data. It'll be added into history sub
   // menu at RecentTabsSubMenuModel::Build().
-  if (const auto index =
-          more_tools_model->GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA)) {
+  if (features::IsChromeRefresh2023()) {
+    auto index = GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA);
+    CHECK(index);
+    RemoveItemAt(*index);
+
+    // Remove upstream's profile menu. "Add new profile" will be added into more
+    // tools sub menu.
+    index = GetIndexOfCommandId(IDC_PROFILE_MENU_IN_APP_MENU);
+    CHECK(index);
+    RemoveItemAt(*index);
+  } else {
+    const auto index =
+        more_tools_model->GetIndexOfCommandId(IDC_CLEAR_BROWSING_DATA);
     more_tools_model->RemoveItemAt(*index);
   }
 

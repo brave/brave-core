@@ -9,10 +9,15 @@
 #include <string>
 
 #include "base/functional/callback_forward.h"
+#include "base/memory/scoped_refptr.h"
 
 namespace content {
 class WebContents;
 }  // namespace content
+
+namespace network {
+class SharedURLLoaderFactory;
+}  // namespace network
 
 namespace ai_chat {
 
@@ -22,7 +27,9 @@ using FetchPageContentCallback =
                             std::string invalidation_token)>;
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
-                      FetchPageContentCallback callback);
+                      FetchPageContentCallback callback,
+                      scoped_refptr<network::SharedURLLoaderFactory>
+                          url_loader_factory = nullptr);
 
 }  // namespace ai_chat
 

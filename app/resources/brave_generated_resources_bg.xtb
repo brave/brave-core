@@ -254,6 +254,8 @@
 <translation id="480565261566115689">Минимизиране на разделите</translation>
 <translation id="7194343495483122559">Разгъване на разделите</translation>
 <translation id="1199054713803577378">Минимизиране на разделите</translation>
+<translation id="1337946268962884806">Персонализирана поръчка</translation>
+<translation id="8373664339577369248">персонализирана поръчка</translation>
 <translation id="8120600068258956006">Добавяне към плейлист</translation>
 <translation id="650694591627983430">Медия, намерена на тази страница</translation>
 <translation id="8525248723479742219">Възпроизвеждане по-късно</translation>
@@ -303,6 +305,9 @@
 <translation id="2800828306627475693">Изключване на повтаряне</translation>
 <translation id="1748244367114657861">Повтаряне на 1</translation>
 <translation id="6421906998825794164">Повтаряне на всички</translation>
+<translation id="6453210454707928697">Неуспешно възпроизвеждане на елемента.</translation>
+<translation id="8741852840789907931">[<ph name="ITEM_NAME"/>] може да е изтекъл. Искате ли да го възстановите?</translation>
+<translation id="6155018868740116868">Възстанови</translation>
 <translation id="1727684853006449697">Brave Player</translation>
 <translation id="9156965752763025780">Промените ви ще влязат в сила следващия път, когато стартирате отново Brave.</translation>
 <translation id="7179921470347911571">Презареди сега</translation>
@@ -325,6 +330,8 @@
 <translation id="5860254591544742609">Показване на заглавната лента</translation>
 <translation id="5371926069408837914">Разширяване на панела с вертикални раздели при преминаване с мишката, когато е сгънат</translation>
 <translation id="3367129510799209147">Режим на задържане на раздел</translation>
+<translation id="515949045075831661">Покажи отдясно</translation>
+<translation id="3725395376319291415">Покажи отляво</translation>
 <translation id="2113977810652731515">Карта</translation>
 <translation id="4096343215397759358">Карта с преглед</translation>
 <translation id="5297085818601043899">Пояснение</translation>
@@ -361,7 +368,7 @@
 <translation id="4057614912106618659">Brave вече е в док станция</translation>
 <translation id="3195845168740336657">Настройки на щитовете</translation>
 <translation id="754769152790647708">Състояние на щитовете</translation>
-<translation id="3615717588724840230">Сайтовете могат да блокират тракери, реклами и пръстови отпечатъци с помощта на щитовете</translation>
+<translation id="4868109105992358853">Щитовете могат да блокират тракери, реклами и пръстови отпечатъци</translation>
 <translation id="5690973901138662477">Вдигнати щитове</translation>
 <translation id="4697275813919189958">Свалени щитове</translation>
 <translation id="6303294677342628402">Защити</translation>
@@ -416,7 +423,7 @@
 <translation id="5567412479632285879">Наградите на Brave са дезактивирани</translation>
 <translation id="413570371620795359">Отворете панела награди за активиране и започване</translation>
 <translation id="1051600834033686945">Отворете пълните настройки на Brave Rewards</translation>
-<translation id="6333347122924254968">Показване на иконата с награди в Brave в адресната лента</translation>
+<translation id="8826461509529116322">Покажи бутона на Награди в Brave</translation>
 <translation id="9185018653595759199">Блокиране на социални медии</translation>
 <translation id="863171915776379000">Разреши влизане с Фейсбук и вградени публикации</translation>
 <translation id="5165042248369837294">Разреши вградени туитове на Twitter</translation>
@@ -724,6 +731,7 @@
 <translation id="1014480593522400586">Изчистване на данните на Leo</translation>
 <translation id="8681157601856387010">Нулирането на асистента Leo ще изисква от вас да се включите, за да използвате Brave Leo в бъдеще и също така ще изчисти историята на чата ви. Изчистване на историята на чата ви ще изтрие всички ваши предишни разговори с Brave
 Leo. Това действие не може да бъде отменено.</translation>
+<translation id="5574059574002819179">Настройте предложенията за автоматично довършване.</translation>
 <translation id="8157373421434119674">Данни и история на чата</translation>
 <translation id="614530507403667291">Образец по подразбиране за нови разговори</translation>
 <translation id="349846214503465941">Активиране на плейлиста</translation>

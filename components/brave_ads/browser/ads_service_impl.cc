@@ -186,24 +186,6 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
     )");
 }
 
-mojom::DBCommandResponseInfoPtr RunDBTransactionOnFileTaskRunner(
-    mojom::DBTransactionInfoPtr transaction,
-    Database* database) {
-  CHECK(transaction);
-
-  mojom::DBCommandResponseInfoPtr command_response =
-      mojom::DBCommandResponseInfo::New();
-
-  if (!database) {
-    command_response->status =
-        mojom::DBCommandResponseInfo::StatusType::RESPONSE_ERROR;
-  } else {
-    database->RunTransaction(std::move(transaction), command_response.get());
-  }
-
-  return command_response;
-}
-
 void RegisterResourceComponentsForCountryCode(const std::string& country_code) {
   g_brave_browser_process->resource_component()
       ->RegisterComponentForCountryCode(country_code);
@@ -455,8 +437,8 @@ void AdsServiceImpl::Initialize(const size_t current_start_number) {
 void AdsServiceImpl::InitializeDatabase() {
   CHECK(!database_);
 
-  database_ =
-      std::make_unique<Database>(base_path_.AppendASCII("database.sqlite"));
+  database_ = base::SequenceBound<Database>(
+      file_task_runner_, base_path_.AppendASCII("database.sqlite"));
 }
 
 void AdsServiceImpl::InitializeRewardsWallet(
@@ -1085,11 +1067,7 @@ void AdsServiceImpl::Shutdown() {
 
   CloseAdaptiveCaptcha();
 
-  if (database_) {
-    const bool success =
-        file_task_runner_->DeleteSoon(FROM_HERE, database_.release());
-    CHECK(success) << "Failed to release database";
-  }
+  database_.Reset();
 
   if (is_bat_ads_initialized_) {
     VLOG(2) << "Shutdown Bat Ads Service";
@@ -1725,12 +1703,11 @@ void AdsServiceImpl::ShowScheduledCaptchaNotification(
 void AdsServiceImpl::RunDBTransaction(mojom::DBTransactionInfoPtr transaction,
                                       RunDBTransactionCallback callback) {
   CHECK(transaction);
+  CHECK(database_);
 
-  file_task_runner_->PostTaskAndReplyWithResult(
-      FROM_HERE,
-      base::BindOnce(&RunDBTransactionOnFileTaskRunner, std::move(transaction),
-                     database_.get()),
-      std::move(callback));
+  database_.AsyncCall(&Database::RunTransaction)
+      .WithArgs(std::move(transaction))
+      .Then(std::move(callback));
 }
 
 void AdsServiceImpl::RecordP2AEvents(const std::vector<std::string>& events) {
@@ -1846,6 +1823,8 @@ void AdsServiceImpl::OnDidUpdateResourceComponent(
     bat_ads_client_notifier_remote_->NotifyDidUpdateResourceComponent(
         manifest_version, id);
   }
+
+  PrefetchNewTabPageAd();
 }
 
 void AdsServiceImpl::OnDidUnregisterResourceComponent(const std::string& id) {

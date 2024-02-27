@@ -160,7 +160,7 @@ export const WalletPageWrapper = (props: Props) => {
       )}
       <Wrapper
         noPadding={noPadding}
-        isPanel={isPanel}
+        noTopPosition={isPanel || isAndroid}
       >
         {isWalletCreated && !hideHeader && !isPanel && !isAndroid && (
           <TabHeader hideHeaderMenu={hideHeaderMenu} />
@@ -205,6 +205,7 @@ export const WalletPageWrapper = (props: Props) => {
                 <CardHeader
                   shadowOpacity={headerShadowOpacity}
                   isPanel={isPanel}
+                  isAndroid={isAndroid}
                   useDarkBackground={useDarkBackground}
                   backgroundOpacity={headerBackgroundOpacity}
                 >

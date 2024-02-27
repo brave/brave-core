@@ -1,16 +1,16 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import BraveShared
-import Shared
-import AVKit
 import AVFoundation
-import Playlist
+import AVKit
+import BraveShared
+import Foundation
 import MediaPlayer
+import Playlist
+import Shared
+import UIKit
 
 protocol VideoViewDelegate: AnyObject {
   func onPreviousTrack(_ videoView: VideoView, isUserInitiated: Bool)
@@ -57,7 +57,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     $0.isUserInteractionEnabled = true
     $0.backgroundColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 0.4024561216)
   }
-  
+
   private let staticImageView = UIImageView().then {
     $0.contentMode = .scaleAspectFit
     $0.isUserInteractionEnabled = true
@@ -107,18 +107,50 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     backgroundColor = .black
 
     // Controls
-    infoView.sidePanelButton.addTarget(self, action: #selector(onSidePanel(_:)), for: .touchUpInside)
-    infoView.pictureInPictureButton.addTarget(self, action: #selector(onPictureInPicture(_:)), for: .touchUpInside)
-    infoView.fullscreenButton.addTarget(self, action: #selector(onFullscreen(_:)), for: .touchUpInside)
-    infoView.exitButton.addTarget(self, action: #selector(onExitFullscreen(_:)), for: .touchUpInside)
+    infoView.sidePanelButton.addTarget(
+      self,
+      action: #selector(onSidePanel(_:)),
+      for: .touchUpInside
+    )
+    infoView.pictureInPictureButton.addTarget(
+      self,
+      action: #selector(onPictureInPicture(_:)),
+      for: .touchUpInside
+    )
+    infoView.fullscreenButton.addTarget(
+      self,
+      action: #selector(onFullscreen(_:)),
+      for: .touchUpInside
+    )
+    infoView.exitButton.addTarget(
+      self,
+      action: #selector(onExitFullscreen(_:)),
+      for: .touchUpInside
+    )
 
     controlsView.repeatButton.addTarget(self, action: #selector(onRepeat(_:)), for: .touchUpInside)
     controlsView.playPauseButton.addTarget(self, action: #selector(onPlay(_:)), for: .touchUpInside)
-    controlsView.playbackRateButton.addTarget(self, action: #selector(onPlaybackRateChanged(_:)), for: .touchUpInside)
-    controlsView.skipBackButton.addTarget(self, action: #selector(onSeekBackwards(_:)), for: .touchUpInside)
-    controlsView.skipForwardButton.addTarget(self, action: #selector(onSeekForwards(_:)), for: .touchUpInside)
-    controlsView.skipBackButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(onSeekPrevious(_:))))
-    controlsView.skipForwardButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(onSeekNext(_:))))
+    controlsView.playbackRateButton.addTarget(
+      self,
+      action: #selector(onPlaybackRateChanged(_:)),
+      for: .touchUpInside
+    )
+    controlsView.skipBackButton.addTarget(
+      self,
+      action: #selector(onSeekBackwards(_:)),
+      for: .touchUpInside
+    )
+    controlsView.skipForwardButton.addTarget(
+      self,
+      action: #selector(onSeekForwards(_:)),
+      for: .touchUpInside
+    )
+    controlsView.skipBackButton.addGestureRecognizer(
+      UILongPressGestureRecognizer(target: self, action: #selector(onSeekPrevious(_:)))
+    )
+    controlsView.skipForwardButton.addGestureRecognizer(
+      UILongPressGestureRecognizer(target: self, action: #selector(onSeekNext(_:)))
+    )
     controlsView.nextButton.addTarget(self, action: #selector(onNextTrack(_:)), for: .touchUpInside)
 
     // Layout
@@ -153,23 +185,35 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     controlsView.trackBar.delegate = self
 
     // Gestures
-    let overlayTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onOverlayTapped(_:))).then {
+    let overlayTappedGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(onOverlayTapped(_:))
+    ).then {
       $0.numberOfTapsRequired = 1
       $0.numberOfTouchesRequired = 1
     }
 
-    let overlayDoubleTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onOverlayDoubleTapped(_:))).then {
+    let overlayDoubleTappedGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(onOverlayDoubleTapped(_:))
+    ).then {
       $0.numberOfTapsRequired = 2
       $0.numberOfTouchesRequired = 1
       $0.delegate = self
     }
 
     // Used for timeline and volume gestures
-    let overlayDraggedGesture = UIPanGestureRecognizer(target: self, action: #selector(onOverlayDragged(_:))).then {
+    let overlayDraggedGesture = UIPanGestureRecognizer(
+      target: self,
+      action: #selector(onOverlayDragged(_:))
+    ).then {
       $0.delegate = self
     }
 
-    let favIconTappedGesture = UITapGestureRecognizer(target: self, action: #selector(onFavIconTapped(_:))).then {
+    let favIconTappedGesture = UITapGestureRecognizer(
+      target: self,
+      action: #selector(onFavIconTapped(_:))
+    ).then {
       $0.numberOfTapsRequired = 1
       $0.numberOfTouchesRequired = 1
     }
@@ -201,8 +245,14 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     let isPlaying = delegate?.isPlaying == true
 
     if isSeeking {
-      toggleOverlays(showOverlay: true, except: [overlayView, infoView, controlsView.playPauseButton], display: [controlsView.trackBar])
-    } else if (isPlaying && !isOverlayDisplayed) || (!isPlaying && !isSeeking && !isOverlayDisplayed) {
+      toggleOverlays(
+        showOverlay: true,
+        except: [overlayView, infoView, controlsView.playPauseButton],
+        display: [controlsView.trackBar]
+      )
+    } else if (isPlaying && !isOverlayDisplayed)
+      || (!isPlaying && !isSeeking && !isOverlayDisplayed)
+    {
       toggleOverlays(showOverlay: true)
       isOverlayDisplayed = true
 
@@ -246,7 +296,9 @@ class VideoView: UIView, VideoTrackerBarDelegate {
       // Advance video by 15 seconds.
       self.seekForwards()
       // If there's a click in the central area
-    } else if tapLocation.x > 0.4 * bounds.size.width && 0.4 * bounds.size.width < 0.6 * bounds.size.width {
+    } else if tapLocation.x > 0.4 * bounds.size.width
+      && 0.4 * bounds.size.width < 0.6 * bounds.size.width
+    {
       // Pause/resume the video
       if delegate?.isPlaying == true {
         self.pause()
@@ -263,7 +315,9 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
       toggleOverlays(showOverlay: true)
       if let currentPlayer = playerLayer?.player {
-        let currentSeconds = CGFloat(currentPlayer.currentTime().value) / CGFloat((currentPlayer.currentTime().timescale))
+        let currentSeconds =
+          CGFloat(currentPlayer.currentTime().value)
+          / CGFloat((currentPlayer.currentTime().timescale))
         dragStartedTimelinePos = currentSeconds
       }
     }
@@ -312,7 +366,9 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
         // Horizontal or vertical pan?
         if currentDraggingDirection == .noDirection {
-          if abs(gestureRecognizer.velocity(in: self).y) > abs(gestureRecognizer.velocity(in: self).x) {
+          if abs(gestureRecognizer.velocity(in: self).y)
+            > abs(gestureRecognizer.velocity(in: self).x)
+          {
             currentDraggingDirection = .verticalDirection
           } else {
             currentDraggingDirection = .horizontalDirection
@@ -321,8 +377,8 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
         if currentDraggingDirection == .verticalDirection {
 
-          // Vertical dragging adjusts volume.
-          let vDragRatio = 4 * gestureRecognizer.translation(in: self).y / bounds.height  // (-0.5 ... 0.5) * 4
+          // Vertical dragging adjusts volume. (-0.5 ... 0.5) * 4
+          let vDragRatio = 4 * gestureRecognizer.translation(in: self).y / bounds.height
 
           if vDragRatio != 0 && self.dragStartedVolume >= 0 {
             if let slider = volumeView.subviews.first(where: { $0 is UISlider }) as? UISlider {
@@ -335,11 +391,12 @@ class VideoView: UIView, VideoTrackerBarDelegate {
           // End of vertical panning processing.
         } else {
 
-          // Otherwise it's a horizontal pan.
-          let dragRatio = gestureRecognizer.translation(in: self).x / bounds.width  // (-0.5 ... 0.5)*1
+          // Otherwise it's a horizontal pan. (-0.5 ... 0.5)*1
+          let dragRatio = gestureRecognizer.translation(in: self).x / bounds.width
           var vidDurationSeconds = 0.0
           if let currentItem = currentPlayer.currentItem {
-            vidDurationSeconds = CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale))
+            vidDurationSeconds =
+              CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale))
           }
           var finalSeconds = dragStartedTimelinePos + dragRatio * vidDurationSeconds
 
@@ -356,14 +413,25 @@ class VideoView: UIView, VideoTrackerBarDelegate {
             delegate.pause(self)
           }
 
-          toggleOverlays(showOverlay: false, except: [infoView, controlsView], display: [controlsView])
+          toggleOverlays(
+            showOverlay: false,
+            except: [infoView, controlsView],
+            display: [controlsView]
+          )
           isOverlayDisplayed = true
 
           if let currentItem = currentPlayer.currentItem {
-            let trackbarPos = CMTime(seconds: finalSeconds, preferredTimescale: currentItem.duration.timescale)
-            let trackbarLen = CMTime(seconds: CGFloat((currentItem.duration.value)) / CGFloat((currentItem.duration.timescale)), preferredTimescale: currentItem.duration.timescale)
-
-            controlsView.trackBar.setTimeRange(currentTime: trackbarPos, endTime: trackbarLen)  // Move the slider.
+            let trackbarPos = CMTime(
+              seconds: finalSeconds,
+              preferredTimescale: currentItem.duration.timescale
+            )
+            let trackbarLen = CMTime(
+              seconds: CGFloat((currentItem.duration.value))
+                / CGFloat((currentItem.duration.timescale)),
+              preferredTimescale: currentItem.duration.timescale
+            )
+            // Move the slider.
+            controlsView.trackBar.setTimeRange(currentTime: trackbarPos, endTime: trackbarLen)
             seek(to: finalSeconds)  // And rewind the video.
           }
           // End of horizontal panning processing.
@@ -435,10 +503,16 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
     if wasPlaying {
       delegate.play(self)
-      controlsView.playPauseButton.setImage(UIImage(named: "playlist_pause", in: .module, compatibleWith: nil)!, for: .normal)
+      controlsView.playPauseButton.setImage(
+        UIImage(named: "playlist_pause", in: .module, compatibleWith: nil)!,
+        for: .normal
+      )
     } else {
       delegate.pause(self)
-      controlsView.playPauseButton.setImage(UIImage(named: "playlist_play", in: .module, compatibleWith: nil)!, for: .normal)
+      controlsView.playPauseButton.setImage(
+        UIImage(named: "playlist_play", in: .module, compatibleWith: nil)!,
+        for: .normal
+      )
     }
   }
 
@@ -549,13 +623,17 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 
   private func toggleOverlays(showOverlay: Bool, except: [UIView] = [], display: [UIView] = []) {
     UIView.animate(
-      withDuration: 1.0, delay: 0.0, usingSpringWithDamping: 1.0, initialSpringVelocity: 1.0, options: [.curveEaseInOut, .allowUserInteraction],
+      withDuration: 1.0,
+      delay: 0.0,
+      usingSpringWithDamping: 1.0,
+      initialSpringVelocity: 1.0,
+      options: [.curveEaseInOut, .allowUserInteraction],
       animations: {
         self.subviews.forEach({
           if $0 == self.particleView || $0 == self.staticImageView {
             return
           }
-          
+
           if !except.contains($0) {
             $0.alpha = showOverlay ? 1.0 : 0.0
           } else if display.contains($0) {
@@ -564,9 +642,10 @@ class VideoView: UIView, VideoTrackerBarDelegate {
             $0.alpha = 0.0
           }
         })
-      })
+      }
+    )
   }
-  
+
   func setStaticImage(image: UIImage?) {
     staticImageView.image = image
     staticImageView.isHidden = image == nil
@@ -604,7 +683,7 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     infoView.clearFavIcon()
     controlsView.trackBar.setTimeRange(currentTime: .zero, endTime: .zero)
   }
-  
+
   func setMediaIsLive(_ isLiveMedia: Bool) {
     self.isMediaLive = isLiveMedia
     controlsView.trackBar.isUserInteractionEnabled = !isLiveMedia
@@ -642,17 +721,19 @@ class VideoView: UIView, VideoTrackerBarDelegate {
     if let playerLayer = playerLayer {
       layer.insertSublayer(playerLayer, at: 0)
       layer.insertSublayer(staticImageView.layer, at: 1)
-      
+
       if let player = playerLayer.player {
         playerStatusObserver = player.observe(
-          \AVPlayer.currentItem?.tracks, options: [.new],
+          \AVPlayer.currentItem?.tracks,
+          options: [.new],
           changeHandler: { [weak self] _, change in
             guard let self = self else { return }
-            
+
             DispatchQueue.main.async {
               if let tracks = change.newValue,
-                 !(tracks?.isEmpty ?? true),
-                 !(self.delegate?.isVideoTracksAvailable ?? true) {
+                !(tracks?.isEmpty ?? true),
+                !(self.delegate?.isVideoTracksAvailable ?? true)
+              {
                 self.particleView.alpha = 1.0
               } else {
                 self.particleView.alpha = 0.0
@@ -698,9 +779,14 @@ class VideoView: UIView, VideoTrackerBarDelegate {
 }
 
 extension VideoView: UIGestureRecognizerDelegate {
-  func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldReceive touch: UITouch) -> Bool {
+  func gestureRecognizer(
+    _ gestureRecognizer: UIGestureRecognizer,
+    shouldReceive touch: UITouch
+  ) -> Bool {
     let location = touch.location(in: self)
     let restrictedViews = [infoView, controlsView]
-    return !restrictedViews.contains(where: { $0.point(inside: self.convert(location, to: $0), with: nil) })
+    return !restrictedViews.contains(where: {
+      $0.point(inside: self.convert(location, to: $0), with: nil)
+    })
   }
 }

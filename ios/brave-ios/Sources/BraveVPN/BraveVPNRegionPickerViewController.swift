@@ -1,14 +1,14 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveUI
+import GuardianConnect
 import Lottie
 import NetworkExtension
-import GuardianConnect
+import Shared
+import UIKit
 
 public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
   private let regionList: [GRDRegion]
@@ -38,7 +38,7 @@ public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
 
     tableView.delegate = self
     tableView.dataSource = self
-    
+
     super.viewDidLoad()
   }
 
@@ -52,7 +52,7 @@ public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
       dispatchGroup = nil
     }
   }
-  
+
   deinit {
     timeoutTimer?.invalidate()
   }
@@ -61,7 +61,7 @@ public class BraveVPNRegionPickerViewController: BraveVPNPickerViewController {
 // MARK: - UITableView Data Source & Delegate
 
 extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDataSource {
-  
+
   public func numberOfSections(in tableView: UITableView) -> Int {
     Section.allCases.count
   }
@@ -78,7 +78,10 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     return nil
   }
 
-  public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  public func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let cell = tableView.dequeueReusableCell(for: indexPath) as VPNRegionCell
     cell.accessoryType = .none
 
@@ -108,8 +111,9 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
 
     // Tapped on the same cell, do nothing
     let sameRegionSelected = region.displayName == BraveVPN.selectedRegion?.displayName
-    let sameAutomaticRegionSelected = indexPath.section == Section.automatic.rawValue && BraveVPN.isAutomaticRegion
-    
+    let sameAutomaticRegionSelected =
+      indexPath.section == Section.automatic.rawValue && BraveVPN.isAutomaticRegion
+
     if sameRegionSelected || sameAutomaticRegionSelected {
       return
     }
@@ -127,7 +131,7 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
     // Here we observe vpn status and we show success alert if it connected,
     // otherwise an error alert is show if it did not manage to connect in 60 seconds.
     self.dispatchGroup?.enter()
-    
+
     BraveVPN.changeVPNRegion(to: newRegion) { [weak self] success in
       guard let self = self else { return }
 
@@ -135,13 +139,17 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
         self.markRegionChangeFailed()
       } else {
         // Start a timeout timer
-        self.timeoutTimer = Timer.scheduledTimer(withTimeInterval: 60, repeats: false, block: { [weak self] _ in
-          guard let self = self else { return }
-          self.markRegionChangeFailed()
-        })
+        self.timeoutTimer = Timer.scheduledTimer(
+          withTimeInterval: 60,
+          repeats: false,
+          block: { [weak self] _ in
+            guard let self = self else { return }
+            self.markRegionChangeFailed()
+          }
+        )
       }
     }
-    
+
     dispatchGroup?.notify(queue: .main) { [weak self] in
       guard let self = self else { return }
       if self.vpnRegionChangeSuccess {
@@ -150,12 +158,14 @@ extension BraveVPNRegionPickerViewController: UITableViewDelegate, UITableViewDa
           BraveVPN.fetchLastUsedRegionDetail()
         }
       } else {
-        self.showErrorAlert(title: Strings.VPN.regionPickerErrorTitle,
-                            message: Strings.VPN.regionPickerErrorMessage)
+        self.showErrorAlert(
+          title: Strings.VPN.regionPickerErrorTitle,
+          message: Strings.VPN.regionPickerErrorMessage
+        )
       }
     }
   }
-  
+
   private func markRegionChangeFailed() {
     vpnRegionChangeSuccess = false
     dispatchGroup?.leave()
