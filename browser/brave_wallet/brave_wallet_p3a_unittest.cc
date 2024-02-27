@@ -76,6 +76,12 @@ class BraveWalletP3AUnitTest : public testing::Test {
     return GetAccountUtils().EnsureSolAccount(index)->account_id->Clone();
   }
 
+  mojom::AccountIdPtr fil_from() { return FilAccount(0); }
+
+  mojom::AccountIdPtr FilAccount(size_t index) {
+    return GetAccountUtils().EnsureFilAccount(index)->account_id->Clone();
+  }
+
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content](const network::ResourceRequest& request) {
@@ -120,6 +126,69 @@ class BraveWalletP3AUnitTest : public testing::Test {
                 request.url.spec(),
                 "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + tx_hash +
                     "\"}");
+          }
+        }));
+  }
+
+  void SetFilInterceptor(const std::string& from_account,
+                         const std::string& to_account) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, from_account, to_account](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          base::Value::Dict request_root =
+              base::test::ParseJsonDict(request_string);
+
+          std::string* method = request_root.FindString("method");
+          ASSERT_TRUE(method);
+
+          if (*method == "Filecoin.GasEstimateMessageGas") {
+            std::string gas_response = R"({
+                      "jsonrpc": "2.0",
+                      "result": {
+                        "Version": 0,
+                        "To": "{to}",
+                        "From": "{from}",
+                        "Nonce": 5,
+                        "Value": "42",
+                        "GasLimit": 598585,
+                        "GasFeeCap": "100820",
+                        "GasPremium": "99766",
+                        "Method": 0,
+                        "Params": "",
+                        "CID": {
+                          "/":
+                          "bafy2bzacedkdoldmztwjwi3jvxhxo4qqp7haufuifpqzregfqkthlyhhf2lfu"
+                        }
+                      },
+                      "id": 1
+                    })";
+            base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{to}",
+                                               to_account);
+            base::ReplaceSubstringsAfterOffset(&gas_response, 0, "{from}",
+                                               from_account);
+            url_loader_factory_.AddResponse(request.url.spec(), gas_response);
+          } else if (*method == "Filecoin.MpoolGetNonce") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                R"({ "jsonrpc": "2.0", "id": 1, "result": 1 })");
+          } else if (*method == "Filecoin.StateSearchMsgLimited") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                R"({ "jsonrpc": "2.0", "id": 1, "result": {}})");
+          } else if (*method == "Filecoin.ChainHead") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                R"({ "jsonrpc": "2.0", "id": 1, "result": {}})");
+          } else if (*method == "Filecoin.MpoolPush") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                R"({ "id": 1, "jsonrpc": "2.0", "result": { "/": 
+                "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4" }
+                })");
           }
         }));
   }
@@ -546,9 +615,20 @@ TEST_F(BraveWalletP3AUnitTest, FilTransactionSentObservation) {
   keyring_service_->AddAccountSync(mojom::CoinType::FIL,
                                    mojom::kFilecoinKeyringId, "Account 1");
 
-  // TODO(stephenheaps): Create & add unapproved FIL transaction
+  // Create & add unapproved FIL transaction
+  std::string to_account = "f1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q";
+  SetFilInterceptor(fil_from()->address, to_account);
+  auto tx_data = mojom::FilTxData::New("" /* nonce */, "" /* gas_premium */,
+                                       "" /* gas_fee_cap */, "" /* gas_limit */,
+                                       "" /* max_fee */, to_account, "11");
+  std::string tx_meta_id;
+  EXPECT_TRUE(AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewFilTxData(std::move(tx_data)),
+      mojom::kFilecoinMainnet, fil_from(), &tx_meta_id));
 
-  // TODO(stephenheaps): Approve the FIL transaction
+  // Approve the FIL transaction
+  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::FIL, mojom::kFilecoinMainnet,
+                                 tx_meta_id));
 
   // Verify FilTransactionSent
   histogram_tester_->ExpectUniqueSample(kFilTransactionSentHistogramName, 1, 1);
