@@ -197,9 +197,9 @@ async function checkInternalDepsEndpoint() {
   try {
     const response = await fetch(
       `${config.internalDepsUrl}/windows-hermetic-toolchain/test.txt`,
-      { method: 'HEAD', signal: AbortSignal.timeout(5000) }
+      { method: 'HEAD', signal: AbortSignal.timeout(5000), redirect: 'manual' }
     )
-    return response.ok
+    return response.status == 302
   } catch (error) {
     return false
   }
