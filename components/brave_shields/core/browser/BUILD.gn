@@ -31,4 +31,5 @@ static_library("browser") {
     "//components/prefs",
     "//crypto",
   ]
+  public_deps = [ "//base" ]
 }
