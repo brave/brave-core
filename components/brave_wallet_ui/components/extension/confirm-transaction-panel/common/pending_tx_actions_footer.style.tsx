@@ -7,6 +7,14 @@ import styled from 'styled-components'
 
 export const rejectAllButtonRowPadding = '16px 0px 4px 0px'
 
+export const FooterContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8px;
+  width: 100%;
+`
+
 export const FooterButtonRow = styled.div`
   display: flex;
   flex-direction: row;
@@ -17,4 +25,9 @@ export const FooterButtonRow = styled.div`
   margin-bottom: 14px;
   margin-top: 12px;
   gap: 16px;
+
+  & > * {
+    display: flex;
+    flex: 1;
+  }
 `
