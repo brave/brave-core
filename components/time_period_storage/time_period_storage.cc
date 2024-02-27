@@ -15,6 +15,12 @@
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
 
+namespace {
+// Used to compensate for DST-related differences. i.e. time
+// method arguments not matching up with stored time values.
+constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
+}  // namespace
+
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days)
@@ -97,7 +103,8 @@ uint64_t TimePeriodStorage::GetPeriodSumInTimeRange(
                          [start_time, end_time](uint64_t acc, const auto& u2) {
                            uint64_t add = 0;
                            // Check only last continious days.
-                           if (u2.day >= start_time && u2.day <= end_time) {
+                           if (u2.day >= start_time - kPotentialDSTOffset &&
+                               u2.day <= end_time + kPotentialDSTOffset) {
                              add = u2.value;
                            }
                            return acc + add;
@@ -148,7 +155,7 @@ void TimePeriodStorage::FilterToPeriod() {
   // Push daily values for new days. In loop condition, add one hour
   // to now_midnight to account for DST changes.
   for (base::Time day_midnight = last_saved_midnight + base::Days(1);
-       day_midnight <= (now_midnight + base::Hours(1));
+       day_midnight <= (now_midnight + kPotentialDSTOffset);
        day_midnight += base::Days(1)) {
     // Day changed. Since we consider only small incoming intervals, lets just
     // save it with a new timestamp.

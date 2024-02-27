@@ -28,6 +28,7 @@ class AIChatMetricsUnitTest : public testing::Test {
   void SetUp() override {
     auto* registry = local_state_.registry();
     AIChatMetrics::RegisterPrefs(registry);
+    task_environment_.FastForwardBy(base::Days(30));
     ai_chat_metrics_ = std::make_unique<AIChatMetrics>(&local_state_);
   }
 

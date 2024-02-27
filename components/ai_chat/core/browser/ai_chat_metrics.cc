@@ -206,19 +206,19 @@ void AIChatMetrics::ReportOmniboxCounts() {
     return;
   }
 
-  base::Time today_midnight = base::Time::Now();
-  base::Time one_week_ago = today_midnight - base::Days(7);
-  base::Time two_weeks_ago = today_midnight - base::Days(14);
+  base::Time today_midnight = base::Time::Now().LocalMidnight();
+  base::Time one_week_ago = today_midnight - base::Days(6);
+  base::Time two_weeks_ago = today_midnight - base::Days(13);
   uint64_t autocomplete_count_this_week =
       omnibox_autocomplete_storage_.GetPeriodSumInTimeRange(one_week_ago,
                                                             today_midnight);
   uint64_t autocomplete_count_last_week =
-      omnibox_autocomplete_storage_.GetPeriodSumInTimeRange(two_weeks_ago,
-                                                            one_week_ago);
+      omnibox_autocomplete_storage_.GetPeriodSumInTimeRange(
+          two_weeks_ago, one_week_ago - base::Days(1));
   uint64_t open_count_this_week = omnibox_open_storage_.GetPeriodSumInTimeRange(
       one_week_ago, today_midnight);
   uint64_t open_count_last_week = omnibox_open_storage_.GetPeriodSumInTimeRange(
-      two_weeks_ago, one_week_ago);
+      two_weeks_ago, one_week_ago - base::Days(1));
 
   double open_ratio_this_week =
       static_cast<double>(open_count_this_week) /
