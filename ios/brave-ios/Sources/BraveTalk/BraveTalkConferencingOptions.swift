@@ -15,6 +15,8 @@ extension JitsiMeetConferenceOptions {
       builder.serverURL = URL(string: "https://8x8.vc")
       builder.setFeatureFlag("calendar.enabled", withBoolean: false)
       builder.setFeatureFlag("resolution", withValue: 360)
+      builder.setFeatureFlag("add-people.enabled", withBoolean: false)
+      builder.setFeatureFlag("invite-dial-in.enabled", withBoolean: false)
       builder.setSubject("Brave Talk")
       builder.setConfigOverride("localSubject", withValue: "Brave Talk")
       builder.setConfigOverride("analytics", with: ["disabled": true, "rtcstatsEnabled": false])
@@ -47,6 +49,7 @@ extension JitsiMeetConferenceOptions {
       builder.setConfigOverride("transcribingEnabled", withBoolean: false)
       builder.setConfigOverride("useHostPageLocalStorage", withBoolean: true)
       builder.setConfigOverride("videoQuality", with: ["persist": true])
+      builder.setConfigOverride("testing.mobileXmppWsThreshold", withValue: 100)
     }
   }
 }
