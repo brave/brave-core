@@ -130,18 +130,18 @@ class BraveSchemeLoadBrowserTest : public InProcessBrowserTest,
   }
 
   void TestURLIsLoadedInPrivateWindow(const std::string& url) {
-    Browser* private_browser = CreateIncognitoBrowser(nullptr);
+    Browser* private_browser = CreateIncognitoBrowser();
     TabStripModel* private_model = private_browser->tab_strip_model();
     EXPECT_EQ("about:blank",
               private_model->GetActiveWebContents()->GetVisibleURL().spec());
 
-    NavigateParams params(private_browser, GURL(url),
-                          ui::PAGE_TRANSITION_TYPED);
-    Navigate(&params);
-    base::RunLoop().RunUntilIdle();
+    content::WebContents* web_contents = private_model->GetActiveWebContents();
+    EXPECT_TRUE(content::NavigateToURL(web_contents, GURL(url)));
 
-    EXPECT_EQ(url,
-              private_model->GetActiveWebContents()->GetVisibleURL().spec());
+    content::WaitForLoadStop(web_contents);
+
+    EXPECT_EQ(url, web_contents->GetVisibleURL().spec());
+    EXPECT_EQ(web_contents->GetVisibleURL().spec(), url);
   }
 
   base::RepeatingClosure quit_closure_;
