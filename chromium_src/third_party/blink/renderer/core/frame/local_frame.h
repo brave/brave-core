@@ -13,8 +13,12 @@ class SkBitmap;
   SkBitmap GetImageAtViewportPoint(const gfx::Point& viewport_point); \
   void CopyImageAtViewportPoint
 
-#include "src/third_party/blink/renderer/core/frame/local_frame.h"  // IWYU pragma: export
+#define ScriptEnabled                    \
+  ScriptEnabled(const KURL& script_url); \
+  bool ScriptEnabled_ChromiumImpl
 
+#include "src/third_party/blink/renderer/core/frame/local_frame.h"  // IWYU pragma: export
+#undef ScriptEnabled
 #undef CopyImageAtViewportPoint
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_FRAME_H_
