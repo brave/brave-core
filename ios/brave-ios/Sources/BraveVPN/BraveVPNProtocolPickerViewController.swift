@@ -1,17 +1,17 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
 import BraveUI
+import GuardianConnect
 import Lottie
 import NetworkExtension
-import GuardianConnect
+import Shared
+import UIKit
 
 class BraveVPNProtocolPickerViewController: BraveVPNPickerViewController {
-  
+
   private let tunnelProtocolList: [TransportProtocol]
 
   /// This group monitors vpn connection status.
@@ -32,10 +32,10 @@ class BraveVPNProtocolPickerViewController: BraveVPNPickerViewController {
 
     tableView.delegate = self
     tableView.dataSource = self
-    
+
     super.viewDidLoad()
   }
-  
+
   override func vpnConfigChanged(notification: NSNotification) {
     guard let connection = notification.object as? NEVPNConnection else { return }
 
@@ -50,7 +50,7 @@ class BraveVPNProtocolPickerViewController: BraveVPNPickerViewController {
 // MARK: - UITableView Data Source & Delegate
 
 extension BraveVPNProtocolPickerViewController: UITableViewDelegate, UITableViewDataSource {
-  
+
   func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
     tunnelProtocolList.count
   }
@@ -65,7 +65,7 @@ extension BraveVPNProtocolPickerViewController: UITableViewDelegate, UITableView
 
     guard let tunnelProtocol = tunnelProtocolList[safe: indexPath.row] else { return cell }
     cell.textLabel?.text = GRDTransportProtocol.prettyTransportProtocolString(for: tunnelProtocol)
-    
+
     let activeProtocolOption = GRDTransportProtocol.getUserPreferredTransportProtocol()
 
     if activeProtocolOption == tunnelProtocol {
@@ -79,29 +79,31 @@ extension BraveVPNProtocolPickerViewController: UITableViewDelegate, UITableView
     tableView.deselectRow(at: indexPath, animated: true)
 
     guard let tunnelProtocol = tunnelProtocolList[safe: indexPath.row] else { return }
-    
+
     let activeProtocolOption = GRDTransportProtocol.getUserPreferredTransportProtocol()
 
     // Same option is selected do nothing
     if activeProtocolOption == tunnelProtocol {
       return
     }
-      
+
     isLoading = true
-    
+
     BraveVPN.changePreferredTransportProtocol(with: tunnelProtocol) { [weak self] success in
       guard let self else { return }
 
       DispatchQueue.main.async {
         self.isLoading = false
-        
+
         if success {
           self.dismiss(animated: true) {
             self.showSuccessAlert(text: Strings.VPN.protocolSwitchSuccessPopupText)
           }
         } else {
-          self.showErrorAlert(title: Strings.VPN.protocolPickerErrorTitle,
-                              message: Strings.VPN.protocolPickerErrorMessage)
+          self.showErrorAlert(
+            title: Strings.VPN.protocolPickerErrorTitle,
+            message: Strings.VPN.protocolPickerErrorMessage
+          )
         }
       }
     }

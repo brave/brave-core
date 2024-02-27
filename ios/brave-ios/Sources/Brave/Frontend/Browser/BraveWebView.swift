@@ -1,12 +1,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
-import Shared
 import BraveShared
+import Foundation
+import Shared
 import UserAgent
+import WebKit
 
 class BraveWebView: WKWebView {
   lazy var findInPageDelegate: WKWebViewFindStringFindDelegate? = {
@@ -27,7 +27,11 @@ class BraveWebView: WKWebView {
     return dataStore
   }
 
-  init(frame: CGRect, configuration: WKWebViewConfiguration = WKWebViewConfiguration(), isPrivate: Bool = true) {
+  init(
+    frame: CGRect,
+    configuration: WKWebViewConfiguration = WKWebViewConfiguration(),
+    isPrivate: Bool = true
+  ) {
     if isPrivate {
       configuration.websiteDataStore = BraveWebView.sharedNonPersistentStore()
     } else {
@@ -39,13 +43,13 @@ class BraveWebView: WKWebView {
     if #available(iOS 16.0, *) {
       isFindInteractionEnabled = true
     }
-    
+
     customUserAgent = UserAgent.userAgentForDesktopMode
-#if compiler(>=5.8)
+    #if compiler(>=5.8)
     if #available(iOS 16.4, *) {
       isInspectable = true
     }
-#endif
+    #endif
   }
 
   static func removeNonPersistentStore() {

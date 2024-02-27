@@ -1,22 +1,22 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
 import SwiftUI
 
 class NetworkSelectionStore: ObservableObject, WalletObserverStore {
-  
+
   enum Mode: Equatable {
     case select(isForOrigin: Bool)
     case formSelection
   }
-  
+
   let mode: Mode
   var networkStore: NetworkStore
-  
+
   /// If we are prompting the user to add an account for the `nextNetwork.coin` type
   @Published var isPresentingNextNetworkAlert = false
   /// The network the user wishes to switch to, but does not (yet) have an account for `nextNetwork.coin` type
@@ -25,9 +25,9 @@ class NetworkSelectionStore: ObservableObject, WalletObserverStore {
   @Published var isPresentingAddAccount: Bool = false
   /// The network the user wishes to choose for adding a custom asset
   @Published var networkSelectionInForm: BraveWallet.NetworkInfo?
-  
+
   var isObserving: Bool = false
-  
+
   init(
     mode: Mode = .select(isForOrigin: false),
     networkStore: NetworkStore
@@ -35,10 +35,10 @@ class NetworkSelectionStore: ObservableObject, WalletObserverStore {
     self.mode = mode
     self.networkStore = networkStore
   }
-  
+
   @MainActor func selectNetwork(_ network: BraveWallet.NetworkInfo) async -> Bool {
     switch mode {
-    case let .select(isForOrigin):
+    case .select(let isForOrigin):
       let error = await networkStore.setSelectedChain(network, isForOrigin: isForOrigin)
       switch error {
       case .selectedChainHasNoAccounts:
@@ -53,7 +53,7 @@ class NetworkSelectionStore: ObservableObject, WalletObserverStore {
       return true
     }
   }
-  
+
   func handleCreateAccountAlertResponse(shouldCreateAccount: Bool) {
     if shouldCreateAccount {
       // show create account for `nextNetwork.coin`
@@ -65,7 +65,7 @@ class NetworkSelectionStore: ObservableObject, WalletObserverStore {
       self.nextNetwork = nil
     }
   }
-  
+
   /// Should be called after dismissing create account. Returns true if an account was created and we switched networks.
   @MainActor func handleDismissAddAccount() async -> Bool {
     guard let nextNetwork = nextNetwork else { return false }

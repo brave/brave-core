@@ -1,12 +1,12 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
 import Combine
 import DesignSystem
+import Foundation
+import UIKit
 
 private let tabBarHeight: CGFloat = 40.0
 
@@ -44,13 +44,15 @@ class TabbedPageViewController: UIViewController {
             .sink { [weak self] (vc, title) in
               guard let self = self else { return }
               var snapshot = self.tabsBar.dataSource.snapshot()
-              if let index = snapshot.itemIdentifiers.firstIndex(where: { $0.viewController === vc }) {
+              if let index = snapshot.itemIdentifiers.firstIndex(where: { $0.viewController === vc }
+              ) {
                 let item = snapshot.itemIdentifiers[index]
                 snapshot.reloadItems([item])
                 self.tabsBar.dataSource.apply(snapshot, animatingDifferences: false)
               }
             },
-          forKey: vc)
+          forKey: vc
+        )
       }
 
       updateTabsBarSelectionIndicator(pageIndex: 0)
@@ -68,21 +70,21 @@ class TabbedPageViewController: UIViewController {
   )
 
   private var contentOffsetObservation: NSKeyValueObservation?
-  
+
   private let selectedIndexChanged: ((Int) -> Void)?
-  
+
   public init(
     selectedIndexChanged: ((Int) -> Void)?
   ) {
     self.selectedIndexChanged = selectedIndexChanged
     super.init(nibName: nil, bundle: nil)
   }
-  
+
   @available(*, unavailable)
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
+
   override func viewDidLoad() {
     super.viewDidLoad()
 
@@ -191,7 +193,9 @@ class TabbedPageViewController: UIViewController {
       // `UIPageViewController`'s scroll view actually always has a contentSize of 3 pages since
       // the data source just asks for each page one at a time, hence subtracing 1 page worth before
       // computing the delta
-      let delta = (contentOffset.x - pageViewController.view.bounds.width) / pageViewController.view.bounds.width
+      let delta =
+        (contentOffset.x - pageViewController.view.bounds.width)
+        / pageViewController.view.bounds.width
       return max(-1, min(1, delta))
     }()
 
@@ -266,7 +270,8 @@ extension TabbedPageViewController: UIPageViewControllerDelegate {
   /// `UIPageViewController`
   private var currentIndex: Int? {
     if let currentController = pageViewController.viewControllers?.first,
-      let currentIndex = pages.firstIndex(of: currentController) {
+      let currentIndex = pages.firstIndex(of: currentController)
+    {
       return currentIndex
     }
     return nil

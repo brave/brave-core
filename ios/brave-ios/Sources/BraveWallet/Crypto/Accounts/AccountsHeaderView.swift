@@ -1,12 +1,12 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
-import DesignSystem
 import BraveCore
+import DesignSystem
+import Strings
+import SwiftUI
 
 struct AccountsHeaderView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -18,7 +18,9 @@ struct AccountsHeaderView: View {
 
   var body: some View {
     HStack {
-      Button(action: { isPresentingBackup = true }) {
+      Button {
+        isPresentingBackup = true
+      } label: {
         HStack {
           Image(braveSystemName: "leo.safe")
             .foregroundColor(Color(.braveLabel))
@@ -29,9 +31,9 @@ struct AccountsHeaderView: View {
       }
       Spacer()
       HStack(spacing: 16) {
-        Button(action: {
+        Button {
           isPresentingAddAccount = true
-        }) {
+        } label: {
           Label(Strings.Wallet.addAccountTitle, systemImage: "plus")
             .labelStyle(.iconOnly)
         }
@@ -39,7 +41,8 @@ struct AccountsHeaderView: View {
           destination: Web3SettingsView(
             settingsStore: settingsStore,
             networkStore: networkStore,
-            keyringStore: keyringStore)
+            keyringStore: keyringStore
+          )
         ) {
           Label(Strings.Wallet.settings, braveSystemImage: "leo.settings")
             .labelStyle(.iconOnly)

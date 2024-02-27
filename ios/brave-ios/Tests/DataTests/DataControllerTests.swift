@@ -1,14 +1,17 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
 import CoreData
 import TestHelpers
+import XCTest
+
 @testable import Data
 
 class DataControllerTests: CoreDataTestCase {
-  let fetchRequest = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "Bookmark"))
+  let fetchRequest = NSFetchRequest<NSFetchRequestResult>(
+    entityName: String(describing: "Bookmark")
+  )
 
   private func entity(for context: NSManagedObjectContext) -> NSEntityDescription {
     return NSEntityDescription.entity(forEntityName: String(describing: "Bookmark"), in: context)!
@@ -20,7 +23,9 @@ class DataControllerTests: CoreDataTestCase {
     XCTAssertEqual(try! viewContext.count(for: fetchRequest), 0)
 
     // Checking rest of entities
-    let favoriteFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: "Bookmark"))
+    let favoriteFR = NSFetchRequest<NSFetchRequestResult>(
+      entityName: String(describing: "Bookmark")
+    )
     XCTAssertEqual(try! viewContext.count(for: favoriteFR), 0)
 
     let domainFR = NSFetchRequest<NSFetchRequestResult>(entityName: String(describing: Domain.self))

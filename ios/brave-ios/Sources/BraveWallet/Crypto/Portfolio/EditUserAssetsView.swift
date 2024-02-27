@@ -1,38 +1,38 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
-import Strings
-import BraveShared
 import BraveCore
+import BraveShared
 import BraveUI
+import Foundation
+import Strings
+import SwiftUI
 
 private struct EditTokenView: View {
   @ObservedObject var assetStore: AssetStore
-  
+
   @Binding var tokenNeedsTokenId: BraveWallet.BlockchainToken?
-  
+
   @State var nftMetadata: NFTMetadata?
-  
+
   private var tokenName: String {
-    if (assetStore.token.isErc721 || assetStore.token.isNft), !assetStore.token.tokenId.isEmpty {
+    if assetStore.token.isErc721 || assetStore.token.isNft, !assetStore.token.tokenId.isEmpty {
       return assetStore.token.nftTokenTitle
     } else {
       return assetStore.token.name
     }
   }
-  
+
   var body: some View {
-    Button(action: {
+    Button {
       if assetStore.token.isErc721, assetStore.token.tokenId.isEmpty {
         tokenNeedsTokenId = assetStore.token
       } else {
         assetStore.isVisible.toggle()
       }
-    }) {
+    } label: {
       HStack(spacing: 8) {
         if assetStore.token.isErc721 || assetStore.token.isNft {
           NFTIconView(
@@ -52,8 +52,14 @@ private struct EditTokenView: View {
           Text(tokenName)
             .fontWeight(.semibold)
             .foregroundColor(Color(.bravePrimary))
-          Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, assetStore.token.symbol, assetStore.network.chainName))
-            .foregroundColor(Color(.secondaryBraveLabel))
+          Text(
+            String.localizedStringWithFormat(
+              Strings.Wallet.userAssetSymbolNetworkDesc,
+              assetStore.token.symbol,
+              assetStore.network.chainName
+            )
+          )
+          .foregroundColor(Color(.secondaryBraveLabel))
         }
         .font(.footnote)
         Spacer()
@@ -88,27 +94,28 @@ struct EditUserAssetsView: View {
     var stores = userAssetsStore.assetStores
     if !normalizedQuery.isEmpty {
       stores = stores.filter {
-        $0.token.symbol.lowercased().contains(normalizedQuery) || $0.token.name.lowercased().contains(normalizedQuery)
+        $0.token.symbol.lowercased().contains(normalizedQuery)
+          || $0.token.name.lowercased().contains(normalizedQuery)
       }
     }
     return stores.sorted(by: { $0.isVisible && !$1.isVisible })
   }
-  
+
   private var networkFilterButton: some View {
-    Button(action: {
+    Button {
       self.isPresentingNetworkFilter = true
-    }) {
+    } label: {
       Image(braveSystemName: "leo.tune")
         .font(.footnote.weight(.medium))
         .foregroundColor(Color(.braveBlurpleTint))
         .clipShape(Rectangle())
     }
   }
-  
+
   private var addCustomAssetButton: some View {
-    Button(action: {
+    Button {
       isAddingCustomAsset = true
-    }) {
+    } label: {
       Image(systemName: "plus")
     }
   }
@@ -137,9 +144,9 @@ struct EditUserAssetsView: View {
                 if store.isCustomToken {
                   EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
                     .swipeActions(edge: .trailing) {
-                      Button(role: .destructive, action: {
+                      Button(role: .destructive) {
                         removeCustomToken(store.token)
-                      }) {
+                      } label: {
                         Label(Strings.Wallet.delete, systemImage: "trash")
                       }
                     }
@@ -171,66 +178,74 @@ struct EditUserAssetsView: View {
           addCustomAssetButton
         }
         ToolbarItemGroup(placement: .confirmationAction) {
-          Button(action: {
+          Button {
             presentationMode.dismiss()
-          }) {
+          } label: {
             Text(Strings.done)
               .foregroundColor(Color(.braveBlurpleTint))
           }
         }
-      } // List
-    } // NavigationView
-    .background(Color.clear.sheet(
-      isPresented: Binding(
-        get: { tokenNeedsTokenId != nil },
-        set: { if !$0 { tokenNeedsTokenId = nil } }
-      )
-    ) {
-      AddCustomAssetView(
-        networkStore: networkStore,
-        networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
-        keyringStore: keyringStore,
-        userAssetStore: userAssetsStore,
-        tokenNeedsTokenId: tokenNeedsTokenId,
-        supportedTokenTypes: [.nft]
-      )
-      .onDisappear {
-        networkStore.closeNetworkSelectionStore()
-      }
-    })
-    .background(Color.clear.alert(isPresented: $isPresentingAssetRemovalError) {
-      Alert(
-        title: Text(Strings.Wallet.removeCustomTokenErrorTitle),
-        message: Text(Strings.Wallet.removeCustomTokenErrorMessage),
-        dismissButton: .default(Text(Strings.OKString))
-      )
-    })
-    .background(Color.clear.sheet(isPresented: $isPresentingNetworkFilter) {
-      NavigationView {
-        NetworkFilterView(
-          networks: userAssetsStore.networkFilters,
+      }  // List
+    }  // NavigationView
+    .background(
+      Color.clear.sheet(
+        isPresented: Binding(
+          get: { tokenNeedsTokenId != nil },
+          set: { if !$0 { tokenNeedsTokenId = nil } }
+        )
+      ) {
+        AddCustomAssetView(
           networkStore: networkStore,
-          saveAction: { selectedNetworks in
-            userAssetsStore.networkFilters = selectedNetworks
-          }
+          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+          keyringStore: keyringStore,
+          userAssetStore: userAssetsStore,
+          tokenNeedsTokenId: tokenNeedsTokenId,
+          supportedTokenTypes: [.nft]
+        )
+        .onDisappear {
+          networkStore.closeNetworkSelectionStore()
+        }
+      }
+    )
+    .background(
+      Color.clear.alert(isPresented: $isPresentingAssetRemovalError) {
+        Alert(
+          title: Text(Strings.Wallet.removeCustomTokenErrorTitle),
+          message: Text(Strings.Wallet.removeCustomTokenErrorMessage),
+          dismissButton: .default(Text(Strings.OKString))
         )
       }
-      .navigationViewStyle(.stack)
-      .onDisappear {
-        networkStore.closeNetworkSelectionStore()
+    )
+    .background(
+      Color.clear.sheet(isPresented: $isPresentingNetworkFilter) {
+        NavigationView {
+          NetworkFilterView(
+            networks: userAssetsStore.networkFilters,
+            networkStore: networkStore,
+            saveAction: { selectedNetworks in
+              userAssetsStore.networkFilters = selectedNetworks
+            }
+          )
+        }
+        .navigationViewStyle(.stack)
+        .onDisappear {
+          networkStore.closeNetworkSelectionStore()
+        }
       }
-    })
-    .background(Color.clear.sheet(isPresented: $isAddingCustomAsset) {
-      AddCustomAssetView(
-        networkStore: networkStore,
-        networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
-        keyringStore: keyringStore,
-        userAssetStore: userAssetsStore
-      )
-      .onDisappear {
-        networkStore.closeNetworkSelectionStore()
+    )
+    .background(
+      Color.clear.sheet(isPresented: $isAddingCustomAsset) {
+        AddCustomAssetView(
+          networkStore: networkStore,
+          networkSelectionStore: networkStore.openNetworkSelectionStore(mode: .formSelection),
+          keyringStore: keyringStore,
+          userAssetStore: userAssetsStore
+        )
+        .onDisappear {
+          networkStore.closeNetworkSelectionStore()
+        }
       }
-    })
+    )
   }
 
   private func removeCustomToken(_ token: BraveWallet.BlockchainToken) {

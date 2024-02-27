@@ -1,12 +1,12 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveCore
-import Static
 import Shared
+import Static
+import UIKit
 
 extension BraveCore.BraveRewards.PromotionStatus {
   fileprivate var displayText: String {
@@ -49,7 +49,11 @@ class RewardsInternalsPromotionListController: TableViewController {
   override func viewDidLoad() {
     title = Strings.RewardsInternals.promotionsTitle
 
-    navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(tappedShare)).then {
+    navigationItem.rightBarButtonItem = UIBarButtonItem(
+      barButtonSystemItem: .action,
+      target: self,
+      action: #selector(tappedShare)
+    ).then {
       $0.accessibilityLabel = Strings.RewardsInternals.shareInternalsTitle
     }
 
@@ -69,20 +73,43 @@ class RewardsInternalsPromotionListController: TableViewController {
       $0.maximumFractionDigits = 3
     }
 
-    let promotions = (rewardsAPI.pendingPromotions + rewardsAPI.finishedPromotions).sorted(by: { $0.claimedAt < $1.claimedAt })
+    let promotions = (rewardsAPI.pendingPromotions + rewardsAPI.finishedPromotions).sorted(by: {
+      $0.claimedAt < $1.claimedAt
+    })
     dataSource.sections = promotions.map { promo in
       var rows = [
         Row(text: Strings.RewardsInternals.status, detailText: promo.status.displayText),
-        Row(text: Strings.RewardsInternals.amount, detailText: "\(batFormatter.string(from: NSNumber(value: promo.approximateValue)) ?? "0.0") \(Strings.BAT)"),
+        Row(
+          text: Strings.RewardsInternals.amount,
+          detailText:
+            "\(batFormatter.string(from: NSNumber(value: promo.approximateValue)) ?? "0.0") \(Strings.batSymbol)"
+        ),
         Row(text: Strings.RewardsInternals.type, detailText: promo.type.displayText),
-        Row(text: Strings.RewardsInternals.expiresAt, detailText: dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(promo.expiresAt)))),
-        Row(text: Strings.RewardsInternals.legacyPromotion, detailText: promo.legacyClaimed ? Strings.yes : Strings.no),
+        Row(
+          text: Strings.RewardsInternals.expiresAt,
+          detailText: dateFormatter.string(
+            from: Date(timeIntervalSince1970: TimeInterval(promo.expiresAt))
+          )
+        ),
+        Row(
+          text: Strings.RewardsInternals.legacyPromotion,
+          detailText: promo.legacyClaimed ? Strings.yes : Strings.no
+        ),
         Row(text: Strings.RewardsInternals.version, detailText: "\(promo.version)"),
       ]
       if promo.status == .finished {
         rows.append(contentsOf: [
-          Row(text: Strings.RewardsInternals.claimedAt, detailText: dateFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(promo.claimedAt)))),
-          Row(text: Strings.RewardsInternals.claimID, detailText: promo.claimId, cellClass: SubtitleCell.self),
+          Row(
+            text: Strings.RewardsInternals.claimedAt,
+            detailText: dateFormatter.string(
+              from: Date(timeIntervalSince1970: TimeInterval(promo.claimedAt))
+            )
+          ),
+          Row(
+            text: Strings.RewardsInternals.claimID,
+            detailText: promo.claimId,
+            cellClass: SubtitleCell.self
+          ),
         ])
       }
       return .init(
@@ -94,7 +121,10 @@ class RewardsInternalsPromotionListController: TableViewController {
   }
 
   @objc private func tappedShare() {
-    let controller = RewardsInternalsShareController(rewardsAPI: self.rewardsAPI, initiallySelectedSharables: [.promotions])
+    let controller = RewardsInternalsShareController(
+      rewardsAPI: self.rewardsAPI,
+      initiallySelectedSharables: [.promotions]
+    )
     let container = UINavigationController(rootViewController: controller)
     present(container, animated: true)
   }
@@ -103,7 +133,11 @@ class RewardsInternalsPromotionListController: TableViewController {
 /// A file generator that creates JSON files containing all of the promotions that the user has claimed
 /// or has pending to claim
 struct RewardsInternalsPromotionsGenerator: RewardsInternalsFileGenerator {
-  func generateFiles(at path: String, using builder: RewardsInternalsSharableBuilder, completion: @escaping (Error?) -> Void) {
+  func generateFiles(
+    at path: String,
+    using builder: RewardsInternalsSharableBuilder,
+    completion: @escaping (Error?) -> Void
+  ) {
     let rewardsAPI = builder.rewardsAPI
     rewardsAPI.updatePendingAndFinishedPromotions {
       let promotions = rewardsAPI.finishedPromotions + rewardsAPI.pendingPromotions
@@ -113,12 +147,16 @@ struct RewardsInternalsPromotionsGenerator: RewardsInternalsFileGenerator {
           "Status": promo.status.displayText,
           "Amount": promo.approximateValue,
           "Type": promo.type.displayText,
-          "Expires at": builder.dateAndTimeFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(promo.expiresAt))),
+          "Expires at": builder.dateAndTimeFormatter.string(
+            from: Date(timeIntervalSince1970: TimeInterval(promo.expiresAt))
+          ),
           "Legacy promotion": promo.legacyClaimed ? "Yes" : "No",
           "Version": promo.version,
         ]
         if promo.status == .finished {
-          data["Claimed at"] = builder.dateAndTimeFormatter.string(from: Date(timeIntervalSince1970: TimeInterval(promo.claimedAt)))
+          data["Claimed at"] = builder.dateAndTimeFormatter.string(
+            from: Date(timeIntervalSince1970: TimeInterval(promo.claimedAt))
+          )
           data["Claim ID"] = promo.claimId
         }
         return data

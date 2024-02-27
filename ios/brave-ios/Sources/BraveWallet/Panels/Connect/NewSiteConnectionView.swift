@@ -1,14 +1,14 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import Strings
-import BraveShared
-import DesignSystem
 import BraveCore
+import BraveShared
 import BraveUI
+import DesignSystem
+import Strings
+import SwiftUI
 
 /// A view to display to a user to allow them to setup a connection to a dApp for the first time.
 public struct NewSiteConnectionView: View {
@@ -18,7 +18,7 @@ public struct NewSiteConnectionView: View {
   var coin: BraveWallet.CoinType
   var onConnect: (_ addresses: [String]) -> Void
   var onDismiss: () -> Void
-  
+
   public init(
     origin: URLOrigin,
     accounts: [String],
@@ -39,12 +39,12 @@ public struct NewSiteConnectionView: View {
   private let maxFaviconSize: CGFloat = 96
   @State private var selectedAccounts: Set<BraveWallet.AccountInfo.ID> = []
   @State private var isConfirmationViewVisible: Bool = false
-  
+
   private var accountInfos: [BraveWallet.AccountInfo] {
     let allAccounts = keyringStore.allAccounts.filter { $0.coin == coin }
     return allAccounts.filter { self.accounts.contains($0.address) }
   }
-  
+
   @ViewBuilder private func originAndFavicon(urlOrigin: URLOrigin) -> some View {
     urlOrigin.url.map { url in
       FaviconReader(url: url) { image in
@@ -65,7 +65,7 @@ public struct NewSiteConnectionView: View {
       .foregroundColor(Color(.braveLabel))
       .multilineTextAlignment(.center)
   }
-  
+
   private var headerView: some View {
     VStack(spacing: 8) {
       originAndFavicon(urlOrigin: origin)
@@ -77,7 +77,7 @@ public struct NewSiteConnectionView: View {
     }
     .frame(maxWidth: .infinity)
   }
-  
+
   private var cautionFooterView: some View {
     Text(Strings.Wallet.newSiteConnectFooter)
       .frame(maxWidth: .infinity)
@@ -85,7 +85,7 @@ public struct NewSiteConnectionView: View {
       .foregroundColor(Color(.braveLabel))
       .multilineTextAlignment(.center)
   }
-  
+
   public var body: some View {
     NavigationView {
       List {
@@ -107,7 +107,7 @@ public struct NewSiteConnectionView: View {
                 // only allow selecting one Solana account at a time
                 selectedAccounts = .init(arrayLiteral: account.id)
               default:
-                break // not supported
+                break  // not supported
               }
             } label: {
               HStack {
@@ -146,11 +146,15 @@ public struct NewSiteConnectionView: View {
           .animation(.default, value: selectedAccounts.isEmpty)
           .frame(maxWidth: .infinity)
           .background(
-            NavigationLink(isActive: $isConfirmationViewVisible, destination: {
-              confirmationView
-            }, label: {
-              EmptyView()
-            })
+            NavigationLink(
+              isActive: $isConfirmationViewVisible,
+              destination: {
+                confirmationView
+              },
+              label: {
+                EmptyView()
+              }
+            )
             .hidden()
           )
           .listRowBackground(Color(.braveGroupedBackground))
@@ -174,10 +178,11 @@ public struct NewSiteConnectionView: View {
     .navigationViewStyle(.stack)
     .onAppear {
       if accounts.contains(keyringStore.selectedAccount.address),
-         keyringStore.selectedAccount.coin == coin {
+        keyringStore.selectedAccount.coin == coin
+      {
         // currently selected account exists in permissions request, select it
         selectedAccounts.insert(keyringStore.selectedAccount.id)
-      } else { // Need to fetch selected account for coin
+      } else {  // Need to fetch selected account for coin
         Task { @MainActor in
           if let selectedAccount = await keyringStore.selectedDappAccount(for: coin) {
             if accounts.contains(selectedAccount.address) {
@@ -192,14 +197,14 @@ public struct NewSiteConnectionView: View {
       }
     }
   }
-  
+
   private var accountsAddressesToConfirm: String {
     accountInfos
       .filter { selectedAccounts.contains($0.id) }
       .map(\.address.truncatedAddress)
       .joined(separator: ", ")
   }
-  
+
   @ViewBuilder private var confirmationView: some View {
     List {
       Section {
@@ -228,7 +233,8 @@ public struct NewSiteConnectionView: View {
       }
       Section {
         Button {
-          let accounts = accountInfos
+          let accounts =
+            accountInfos
             .filter { selectedAccounts.contains($0.id) }
             .map(\.address)
           onConnect(accounts)
@@ -256,12 +262,22 @@ struct NewSiteConnectionView_Previews: PreviewProvider {
       coin: .eth,
       keyringStore: {
         let store = KeyringStore.previewStoreWithWalletCreated
-        store.addPrimaryAccount("Account 2", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
-        store.addPrimaryAccount("Account 3", coin: .eth, chainId: BraveWallet.MainnetChainId, completion: nil)
+        store.addPrimaryAccount(
+          "Account 2",
+          coin: .eth,
+          chainId: BraveWallet.MainnetChainId,
+          completion: nil
+        )
+        store.addPrimaryAccount(
+          "Account 3",
+          coin: .eth,
+          chainId: BraveWallet.MainnetChainId,
+          completion: nil
+        )
         return store
       }(),
       onConnect: { _ in },
-      onDismiss: { }
+      onDismiss: {}
     )
   }
 }

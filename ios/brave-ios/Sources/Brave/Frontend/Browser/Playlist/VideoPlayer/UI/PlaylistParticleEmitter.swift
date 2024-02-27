@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -36,9 +36,16 @@ class PlaylistParticleEmitter: UIView {
     }
   }
 
-  private func generateEmitterCells() -> (base: CAEmitterCell, trailing: CAEmitterCell, particle: CAEmitterCell) {
+  private func generateEmitterCells() -> (
+    base: CAEmitterCell, trailing: CAEmitterCell, particle: CAEmitterCell
+  ) {
     let baseEmitter = CAEmitterCell().then {
-      $0.color = #colorLiteral(red: 0.4980392157, green: 0.4980392157, blue: 0.4980392157, alpha: 0.5)
+      $0.color = #colorLiteral(
+        red: 0.4980392157,
+        green: 0.4980392157,
+        blue: 0.4980392157,
+        alpha: 0.5
+      )
       $0.redRange = 0.9
       $0.greenRange = 0.9
       $0.blueRange = 0.9

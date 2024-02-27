@@ -1,10 +1,12 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// swift-format-ignore-file
 
-import Foundation
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import BraveCore
+import Foundation
 
 #if DEBUG
 
@@ -26,7 +28,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
-  
+
   static let previewDaiToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0xad6d458402f60fd3bd25163575031acdce07538d",
     name: "Dai Stablecoin",
@@ -44,7 +46,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
-  
+
   static let mockUSDCToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0x07865c6e87b9f70255377e024ace6630c1eaa37f",
     name: "USDC",
@@ -62,7 +64,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
-  
+
   static let mockSolToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "",
     name: "Solana",
@@ -80,7 +82,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.SolanaMainnet,
     coin: .sol
   )
-  
+
   static let mockSpdToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0x1111111111222222222233333333334444444444",
     name: "Solpad",
@@ -98,7 +100,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.SolanaMainnet,
     coin: .sol
   )
-  
+
   static let mockERC721NFTToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "0xaaaaaaaaaa222222222233333333334444444444",
     name: "XENFT",
@@ -116,7 +118,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.MainnetChainId,
     coin: .eth
   )
-  
+
   static let mockSolanaNFTToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "aaaaaaaaaa222222222233333333334444444444",
     name: "SOLNFT",
@@ -134,7 +136,7 @@ extension BraveWallet.BlockchainToken {
     chainId: BraveWallet.SolanaMainnet,
     coin: .sol
   )
-  
+
   static let mockFilToken: BraveWallet.BlockchainToken = .init(
     contractAddress: "",
     name: "Filcoin",
@@ -201,9 +203,9 @@ extension BraveWallet.TransactionInfo {
       txType: .ethSend,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca"
@@ -224,7 +226,7 @@ extension BraveWallet.TransactionInfo {
             to: "0xdef1c0ded9bec7f1a1670819833240f027b25eff",
             value: "0x9cacb762984000",
             data: _transactionBase64ToData(
-              // swiftlint:disable:next line_length
+
               "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"
             ),
             signOnly: false,
@@ -240,9 +242,9 @@ extension BraveWallet.TransactionInfo {
       txType: .other,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0xdef1c0ded9bec7f1a1670819833240f027b25eff"
@@ -263,7 +265,9 @@ extension BraveWallet.TransactionInfo {
             gasLimit: "0x520ca",
             to: BraveWallet.BlockchainToken.previewDaiToken.contractAddress,
             value: "0x0",
-            data: _transactionBase64ToData("CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="),
+            data: _transactionBase64ToData(
+              "CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="
+            ),
             signOnly: false,
             signedTransaction: nil
           ),
@@ -276,10 +280,13 @@ extension BraveWallet.TransactionInfo {
       txStatus: .confirmed,
       txType: .erc20Approve,
       txParams: ["address", "uint256"],
-      txArgs: ["0xe592427a0aece92de3edee1f18e0157c05861564Z", "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"],
-      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      txArgs: [
+        "0xe592427a0aece92de3edee1f18e0157c05861564Z",
+        "0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      ],
+      createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: BraveWallet.BlockchainToken.previewDaiToken.contractAddress
@@ -300,7 +307,9 @@ extension BraveWallet.TransactionInfo {
             gasLimit: "0x12e61",
             to: BraveWallet.BlockchainToken.mockERC721NFTToken.contractAddress,
             value: "0x0",
-            data: _transactionBase64ToData("CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="),
+            data: _transactionBase64ToData(
+              "CV6nswAAAAAAAAAAAAAAAOWSQnoK7Okt4+3uHxjgFXwFhhVk//////////////////////////////////////////8="
+            ),
             signOnly: false,
             signedTransaction: nil
           ),
@@ -314,13 +323,13 @@ extension BraveWallet.TransactionInfo {
       txType: .erc721SafeTransferFrom,
       txParams: ["address", "address", "uint256"],
       txArgs: [
-        "0x35dcec532e809a3daa04ed3fd958586f7bac9191", // owner
-        "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca", // to address
-        BraveWallet.BlockchainToken.mockERC721NFTToken.tokenId // token id
+        "0x35dcec532e809a3daa04ed3fd958586f7bac9191",  // owner
+        "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca",  // to address
+        BraveWallet.BlockchainToken.mockERC721NFTToken.tokenId,  // token id
       ],
-      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       chainId: BraveWallet.MainnetChainId,
       effectiveRecipient: "0x3f2116ef98fcab1a9c3c2d8988e0064ab59acfca"
@@ -332,7 +341,8 @@ extension BraveWallet.TransactionInfo {
       id: "3d3c7715-f5f2-4f70-ab97-7fb8d3b2a3cd",
       fromAddress: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
       from: BraveWallet.AccountInfo.mockSolAccount.accountId,
-      txHash: "2rbyfcSQ9xCem4wtpjMYD4u6PdKE9YcBurCHDgkMcAaBMh8CirQvuLYtj8AyaYu62ekwWKM1UDZ2VLRB4uN96Fcu",
+      txHash:
+        "2rbyfcSQ9xCem4wtpjMYD4u6PdKE9YcBurCHDgkMcAaBMh8CirQvuLYtj8AyaYu62ekwWKM1UDZ2VLRB4uN96Fcu",
       txDataUnion: .init(
         solanaTxData: .init(
           recentBlockhash: "",
@@ -340,7 +350,7 @@ extension BraveWallet.TransactionInfo {
           feePayer: BraveWallet.AccountInfo.mockSolAccount.accountId.address,
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
           splTokenMintAddress: "",
-          lamports: UInt64(100000000),
+          lamports: UInt64(100_000_000),
           amount: UInt64(0),
           txType: .solanaSystemTransfer,
           instructions: [.init()],
@@ -356,12 +366,12 @@ extension BraveWallet.TransactionInfo {
       txType: .solanaSystemTransfer,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1667854800), // Monday, November 7, 2022 9:00:00 PM GMT
-      submittedTime: Date(timeIntervalSince1970: 1667854810), // Monday, November 7, 2022 9:00:10 PM GMT
-      confirmedTime: Date(timeIntervalSince1970: 1667854820), // Monday, November 7, 2022 9:00:20 PM GMT
+      createdTime: Date(timeIntervalSince1970: 1_667_854_800),  // Monday, November 7, 2022 9:00:00 PM GMT
+      submittedTime: Date(timeIntervalSince1970: 1_667_854_810),  // Monday, November 7, 2022 9:00:10 PM GMT
+      confirmedTime: Date(timeIntervalSince1970: 1_667_854_820),  // Monday, November 7, 2022 9:00:20 PM GMT
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil // Currently only available for ETH and FIL
+      effectiveRecipient: nil  // Currently only available for ETH and FIL
     )
   }
   /// Solana Token Transfer
@@ -379,7 +389,7 @@ extension BraveWallet.TransactionInfo {
           toWalletAddress: "FoVyVfWMwoK7QgS4fcULpPSdLEp2PB5aj5ATs8VhPEv2",
           splTokenMintAddress: "0x1111111111222222222233333333334444444444",
           lamports: UInt64(0),
-          amount: UInt64(100000000),
+          amount: UInt64(100_000_000),
           txType: .solanaSplTokenTransfer,
           instructions: [.init()],
           version: .legacy,
@@ -394,12 +404,12 @@ extension BraveWallet.TransactionInfo {
       txType: .solanaSplTokenTransfer,
       txParams: [],
       txArgs: [],
-      createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-      submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-      confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+      createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+      submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+      confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
       originInfo: .init(),
       chainId: BraveWallet.SolanaMainnet,
-      effectiveRecipient: nil // Currently only available for ETH and FIL
+      effectiveRecipient: nil  // Currently only available for ETH and FIL
     )
   }
   /// Filecoin Unapproved Send
@@ -409,24 +419,25 @@ extension BraveWallet.TransactionInfo {
     from: BraveWallet.AccountInfo.mockFilAccount.accountId,
     txHash: "",
     txDataUnion:
-        .init(filTxData:
-            .init(nonce: "",
-                  gasPremium: "100911",
-                  gasFeeCap: "101965",
-                  gasLimit: "1527953",
-                  maxFee: "0",
-                  to: "t1xqhfiydm2yq6augugonr4zpdllh77iw53aexztb",
-                  value: "1000000000000000000"
-                 )
-        ),
+      .init(
+        filTxData:
+          .init(
+            nonce: "",
+            gasPremium: "100911",
+            gasFeeCap: "101965",
+            gasLimit: "1527953",
+            maxFee: "0",
+            to: "t1xqhfiydm2yq6augugonr4zpdllh77iw53aexztb",
+            value: "1000000000000000000"
+          )
+      ),
     txStatus: .unapproved,
     txType: .other,
     txParams: [],
-    txArgs: [
-    ],
-    createdTime: Date(timeIntervalSince1970: 1636399671), // Monday, November 8, 2021 7:27:51 PM
-    submittedTime: Date(timeIntervalSince1970: 1636399673), // Monday, November 8, 2021 7:27:53 PM
-    confirmedTime: Date(timeIntervalSince1970: 1636402508), // Monday, November 8, 2021 8:15:08 PM
+    txArgs: [],
+    createdTime: Date(timeIntervalSince1970: 1_636_399_671),  // Monday, November 8, 2021 7:27:51 PM
+    submittedTime: Date(timeIntervalSince1970: 1_636_399_673),  // Monday, November 8, 2021 7:27:53 PM
+    confirmedTime: Date(timeIntervalSince1970: 1_636_402_508),  // Monday, November 8, 2021 8:15:08 PM
     originInfo: nil,
     chainId: BraveWallet.FilecoinMainnet,
     effectiveRecipient: nil
@@ -459,11 +470,11 @@ extension BraveWallet.SignMessageRequest {
 }
 
 extension TransactionSummary {
-  
+
   static var previewConfirmedSend = previewSummary(from: .previewConfirmedSend)
   static var previewConfirmedSwap = previewSummary(from: .previewConfirmedSwap)
   static var previewConfirmedERC20Approve = previewSummary(from: .previewConfirmedERC20Approve)
-  
+
   static func previewSummary(from txInfo: BraveWallet.TransactionInfo) -> Self {
     TransactionParser.transactionSummary(
       from: txInfo,
@@ -480,10 +491,12 @@ extension TransactionSummary {
 }
 
 extension ParsedTransaction {
-  
+
   static var previewConfirmedSend = previewParsedTransaction(from: .previewConfirmedSend)
   static var previewConfirmedSwap = previewParsedTransaction(from: .previewConfirmedSwap)
-  static var previewConfirmedERC20Approve = previewParsedTransaction(from: .previewConfirmedERC20Approve)
+  static var previewConfirmedERC20Approve = previewParsedTransaction(
+    from: .previewConfirmedERC20Approve
+  )
 
   static func previewParsedTransaction(from txInfo: BraveWallet.TransactionInfo) -> Self? {
     TransactionParser.parseTransaction(
@@ -507,12 +520,12 @@ extension BraveWallet.CoinMarket {
       symbol: "btc",
       name: "Bitcoin",
       image: "https://assets.cgproxy.brave.com/coins/images/1/large/bitcoin.png?1547033579",
-      marketCap: 547558353670,
+      marketCap: 547_558_353_670,
       marketCapRank: 1,
       currentPrice: 28324,
       priceChange24h: 163.96,
       priceChangePercentage24h: 0.58225,
-      totalVolume: 30825602847
+      totalVolume: 30_825_602_847
     )
   }
   static var mockCoinMarketEth: BraveWallet.CoinMarket {
@@ -521,12 +534,12 @@ extension BraveWallet.CoinMarket {
       symbol: "eth",
       name: "Ethereum",
       image: "https://assets.cgproxy.brave.com/coins/images/279/large/ethereum.png?1595348880",
-      marketCap: 223719056533,
+      marketCap: 223_719_056_533,
       marketCapRank: 2,
       currentPrice: 1860.57,
       priceChange24h: -4.2550480604149925,
       priceChangePercentage24h: -0.22817,
-      totalVolume: 15998007227
+      totalVolume: 15_998_007_227
     )
   }
 }

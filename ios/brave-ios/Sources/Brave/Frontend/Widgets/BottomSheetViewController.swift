@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import SnapKit
@@ -43,7 +43,10 @@ class BottomSheetViewController: UIViewController {
   }
 
   private let closeButton = UIButton().then {
-    $0.setImage(UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template, for: .normal)
+    $0.setImage(
+      UIImage(named: "close_popup", in: .module, compatibleWith: nil)!.template,
+      for: .normal
+    )
     $0.tintColor = .lightGray
   }
 
@@ -60,7 +63,12 @@ class BottomSheetViewController: UIViewController {
         backgroundOverlayView.alpha = (maxY - yPosition) / maxY
 
         let newFrame = contentView.frame
-        contentView.frame = CGRect(x: newFrame.minX, y: yPosition, width: newFrame.width, height: newFrame.height)
+        contentView.frame = CGRect(
+          x: newFrame.minX,
+          y: yPosition,
+          width: newFrame.width,
+          height: newFrame.height
+        )
         view.layoutIfNeeded()
       }
 
@@ -99,7 +107,8 @@ class BottomSheetViewController: UIViewController {
   }
 
   private var isLandscapePhone: Bool {
-    traitCollection.userInterfaceIdiom == .phone && UIApplication.shared.statusBarOrientation.isLandscape
+    traitCollection.userInterfaceIdiom == .phone
+      && UIApplication.shared.statusBarOrientation.isLandscape
   }
 
   // MARK: - Lifecycle
@@ -119,7 +128,10 @@ class BottomSheetViewController: UIViewController {
 
     contentView.backgroundColor = .white
 
-    let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(handlePanGesture))
+    let panGestureRecognizer = UIPanGestureRecognizer(
+      target: self,
+      action: #selector(handlePanGesture)
+    )
     contentView.addGestureRecognizer(panGestureRecognizer)
 
     contentView.addSubview(handleView)
@@ -217,7 +229,8 @@ class BottomSheetViewController: UIViewController {
 
     let projectedVelocity = project(
       initialVelocity: pan.velocity(in: contentView).y,
-      decelerationRate: UIScrollView.DecelerationRate.normal.rawValue)
+      decelerationRate: UIScrollView.DecelerationRate.normal.rawValue
+    )
 
     let nextYPosition: CGFloat
 
@@ -236,14 +249,14 @@ class BottomSheetViewController: UIViewController {
       withDuration: animationDuration,
       animations: {
         self.yPosition = nextYPosition
-
+      },
+      completion: { _ in
+        if nextYPosition > 0 {
+          self.view.removeFromSuperview()
+          self.removeFromParent()
+        }
       }
-    ) { _ in
-      if nextYPosition > 0 {
-        self.view.removeFromSuperview()
-        self.removeFromParent()
-      }
-    }
+    )
   }
 
   private func show() {
@@ -262,11 +275,12 @@ class BottomSheetViewController: UIViewController {
       withDuration: animationDuration,
       animations: {
         self.yPosition = self.view.frame.maxY
+      },
+      completion: { _ in
+        self.view.removeFromSuperview()
+        self.removeFromParent()
       }
-    ) { _ in
-      self.view.removeFromSuperview()
-      self.removeFromParent()
-    }
+    )
   }
 
   // Distance travelled after decelerating to zero velocity at a constant rate (credit: a WWDC video)

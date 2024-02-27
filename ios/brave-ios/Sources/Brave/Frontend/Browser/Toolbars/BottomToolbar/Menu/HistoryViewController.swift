@@ -1,19 +1,19 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import BraveShared
-import Preferences
-import Storage
-import Data
-import CoreData
 import BraveCore
-import Favicon
-import UIKit
+import BraveShared
+import CoreData
+import Data
 import DesignSystem
+import Favicon
+import Foundation
+import Preferences
 import ScreenTime
+import Shared
+import Storage
+import UIKit
 
 class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol {
 
@@ -24,13 +24,16 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       title: Preferences.Privacy.privateBrowsingOnly.value
         ? Strings.History.historyPrivateModeOnlyStateTitle
         : Strings.History.historyEmptyStateTitle,
-      icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)))
-  
+      icon: UIImage(named: "emptyHistory", in: .module, compatibleWith: nil)
+    )
+  )
+
   private let historyAPI: BraveHistoryAPI
   private let tabManager: TabManager
   private var historyFRC: HistoryV2FetchResultsController?
 
-  private let isPrivateBrowsing: Bool  /// Certain bookmark actions are different in private browsing mode.
+  private let isPrivateBrowsing: Bool
+  /// Certain bookmark actions are different in private browsing mode.
   private let isModallyPresented: Bool
   private var isHistoryRefreshing = false
 
@@ -39,7 +42,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
   private let searchController = UISearchController(searchResultsController: nil)
   private var searchQuery = ""
 
-  init(isPrivateBrowsing: Bool, isModallyPresented: Bool = false, historyAPI: BraveHistoryAPI, tabManager: TabManager) {
+  init(
+    isPrivateBrowsing: Bool,
+    isModallyPresented: Bool = false,
+    historyAPI: BraveHistoryAPI,
+    tabManager: TabManager
+  ) {
     self.isPrivateBrowsing = isPrivateBrowsing
     self.isModallyPresented = isModallyPresented
     self.historyAPI = historyAPI
@@ -69,11 +77,20 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         $0.searchController = searchController
         $0.hidesSearchBarWhenScrolling = false
         $0.rightBarButtonItem =
-          UIBarButtonItem(image: UIImage(braveSystemNamed: "leo.trash")!.template, style: .done, target: self, action: #selector(performDeleteAll))
+          UIBarButtonItem(
+            image: UIImage(braveSystemNamed: "leo.trash")!.template,
+            style: .done,
+            target: self,
+            action: #selector(performDeleteAll)
+          )
       }
-      
+
       if isModallyPresented {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(performDone))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+          barButtonSystemItem: .done,
+          target: self,
+          action: #selector(performDone)
+        )
       }
     }
 
@@ -114,7 +131,7 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         historyAPI.waitForHistoryServiceLoaded { [weak self] in
           guard let self = self else { return }
 
-          self.reloadData() {
+          self.reloadData {
             self.isHistoryRefreshing = false
             self.isLoading = false
           }
@@ -164,7 +181,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
         emptyStateOverlayView.updateInfoLabel(
           with: Preferences.Privacy.privateBrowsingOnly.value
             ? Strings.History.historyPrivateModeOnlyStateTitle
-            : Strings.History.historyEmptyStateTitle)
+            : Strings.History.historyEmptyStateTitle
+        )
       }
 
       view.addSubview(emptyStateOverlayView)
@@ -181,55 +199,67 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       searchHistoryTimer = nil
     }
   }
-  
+
   // MARK: Actions
 
   @objc private func performDeleteAll() {
-    let style: UIAlertController.Style = UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
+    let style: UIAlertController.Style =
+      UIDevice.current.userInterfaceIdiom == .pad ? .alert : .actionSheet
     let alert = UIAlertController(
-      title: Strings.History.historyClearAlertTitle, message: Strings.History.historyClearAlertDescription, preferredStyle: style)
+      title: Strings.History.historyClearAlertTitle,
+      message: Strings.History.historyClearAlertDescription,
+      preferredStyle: style
+    )
 
     alert.addAction(
       UIAlertAction(
-        title: Strings.History.historyClearActionTitle, style: .destructive,
+        title: Strings.History.historyClearActionTitle,
+        style: .destructive,
         handler: { [weak self] _ in
-          guard let self = self, let allHistoryItems = historyFRC?.fetchedObjects  else {
+          guard let self = self, let allHistoryItems = historyFRC?.fetchedObjects else {
             return
           }
 
           // Deleting Local History
           self.historyAPI.deleteAll {
             // Clearing Tab History with entire history entry
-            self.tabManager.clearTabHistory() {
+            self.tabManager.clearTabHistory {
               self.refreshHistory()
             }
-            
+
             // Clearing History should clear Recently Closed
             RecentlyClosed.removeAll()
-            
+
             // Donate Clear Browser History for suggestions
-            let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(type: .clearBrowsingHistory)
+            let clearBrowserHistoryActivity = ActivityShortcutManager.shared.createShortcutActivity(
+              type: .clearBrowsingHistory
+            )
             self.userActivity = clearBrowserHistoryActivity
             clearBrowserHistoryActivity.becomeCurrent()
           }
-          
+
           // Asking Sync Engine To Remove Visits
           for historyItems in allHistoryItems {
             self.historyAPI.removeHistory(historyItems)
           }
-        }))
+        }
+      )
+    )
     alert.addAction(UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil))
 
     present(alert, animated: true, completion: nil)
   }
-  
+
   @objc private func performDone() {
     dismiss(animated: true)
   }
-  
+
   // MARK: UITableViewDelegate - UITableViewDataSource
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let cell = super.tableView(tableView, cellForRowAt: indexPath)
     configureCell(cell, atIndexPath: indexPath)
 
@@ -265,7 +295,8 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
 
       let domain = Domain.getOrCreate(
         forUrl: historyItem.url,
-        persistent: !isPrivateBrowsing)
+        persistent: !isPrivateBrowsing
+      )
 
       if domain.url?.asURL != nil {
         cell.imageView?.loadFavicon(for: historyItem.url, isPrivateBrowsing: isPrivateBrowsing)
@@ -286,9 +317,12 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     if let url = URL(string: historyItem.url.absoluteString) {
       // Donate Custom Intent Open Website
       if url.isSecureWebPage(), !isPrivateBrowsing {
-        ActivityShortcutManager.shared.donateCustomIntent(for: .openHistory, with: url.absoluteString)
+        ActivityShortcutManager.shared.donateCustomIntent(
+          for: .openHistory,
+          with: url.absoluteString
+        )
       }
-      
+
       dismiss(animated: true) {
         self.toolbarUrlActionsDelegate?.select(url: url, isUserDefinedURLNavigation: false)
       }
@@ -309,22 +343,26 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     return historyFRC?.objectCount(for: section) ?? 0
   }
 
-  func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+  func tableView(
+    _ tableView: UITableView,
+    commit editingStyle: UITableViewCell.EditingStyle,
+    forRowAt indexPath: IndexPath
+  ) {
     switch editingStyle {
     case .delete:
       guard let historyItem = historyFRC?.object(at: indexPath) else { return }
       historyAPI.removeHistory(historyItem)
-      
+
       // Reoving a history item should remove its corresponded Recently Closed item
       RecentlyClosed.remove(with: historyItem.url.absoluteString)
-      
+
       do {
         let screenTimeHistory = try STWebHistory(bundleIdentifier: Bundle.main.bundleIdentifier!)
         screenTimeHistory.deleteHistory(for: historyItem.url)
       } catch {
         assertionFailure("STWebHistory could not be initialized: \(error)")
       }
-      
+
       if isHistoryBeingSearched {
         reloadDataAndShowLoading(with: searchQuery)
       } else {
@@ -335,19 +373,28 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
     }
   }
 
-  func tableView(_ tableView: UITableView, contextMenuConfigurationForRowAt indexPath: IndexPath, point: CGPoint) -> UIContextMenuConfiguration? {
+  func tableView(
+    _ tableView: UITableView,
+    contextMenuConfigurationForRowAt indexPath: IndexPath,
+    point: CGPoint
+  ) -> UIContextMenuConfiguration? {
     guard let historyItemURL = historyFRC?.object(at: indexPath)?.url else {
       return nil
     }
 
-    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) { [unowned self] _ in
+    return UIContextMenuConfiguration(identifier: indexPath as NSCopying, previewProvider: nil) {
+      [unowned self] _ in
       let openInNewTabAction = UIAction(
         title: Strings.openNewTabButtonTitle,
         image: UIImage(systemName: "plus.square.on.square"),
         handler: UIAction.deferredActionHandler { _ in
-          self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: self.isPrivateBrowsing)
+          self.toolbarUrlActionsDelegate?.openInNewTab(
+            historyItemURL,
+            isPrivate: self.isPrivateBrowsing
+          )
           self.presentingViewController?.dismiss(animated: true)
-        })
+        }
+      )
 
       let newPrivateTabAction = UIAction(
         title: Strings.openNewPrivateTabButtonTitle,
@@ -362,21 +409,24 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
           } else {
             self.toolbarUrlActionsDelegate?.openInNewTab(historyItemURL, isPrivate: true)
           }
-        })
+        }
+      )
 
       let copyAction = UIAction(
         title: Strings.copyLinkActionTitle,
         image: UIImage(systemName: "doc.on.doc"),
         handler: UIAction.deferredActionHandler { _ in
           self.toolbarUrlActionsDelegate?.copy(historyItemURL)
-        })
+        }
+      )
 
       let shareAction = UIAction(
         title: Strings.shareLinkActionTitle,
         image: UIImage(systemName: "square.and.arrow.up"),
         handler: UIAction.deferredActionHandler { _ in
           self.toolbarUrlActionsDelegate?.share(historyItemURL)
-        })
+        }
+      )
 
       var newTabActionMenu: [UIAction] = [openInNewTabAction]
 
@@ -385,9 +435,17 @@ class HistoryViewController: SiteTableViewController, ToolbarUrlActionsProtocol 
       }
 
       let urlMenu = UIMenu(title: "", options: .displayInline, children: newTabActionMenu)
-      let linkMenu = UIMenu(title: "", options: .displayInline, children: [copyAction, shareAction])
+      let linkMenu = UIMenu(
+        title: "",
+        options: .displayInline,
+        children: [copyAction, shareAction]
+      )
 
-      return UIMenu(title: historyItemURL.absoluteString, identifier: nil, children: [urlMenu, linkMenu])
+      return UIMenu(
+        title: historyItemURL.absoluteString,
+        identifier: nil,
+        children: [urlMenu, linkMenu]
+      )
     }
   }
 }
@@ -404,7 +462,13 @@ extension HistoryViewController: HistoryV2FetchResultsDelegate {
     tableView.endUpdates()
   }
 
-  func controller(_ controller: HistoryV2FetchResultsController, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?) {
+  func controller(
+    _ controller: HistoryV2FetchResultsController,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  ) {
     switch type {
     case .insert:
       if let indexPath = newIndexPath {
@@ -432,7 +496,12 @@ extension HistoryViewController: HistoryV2FetchResultsDelegate {
     updateEmptyPanelState()
   }
 
-  func controller(_ controller: HistoryV2FetchResultsController, didChange sectionInfo: NSFetchedResultsSectionInfo, atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType) {
+  func controller(
+    _ controller: HistoryV2FetchResultsController,
+    didChange sectionInfo: NSFetchedResultsSectionInfo,
+    atSectionIndex sectionIndex: Int,
+    for type: NSFetchedResultsChangeType
+  ) {
     switch type {
     case .insert:
       let sectionIndexSet = IndexSet(integer: sectionIndex)
@@ -459,7 +528,13 @@ extension HistoryViewController: UISearchResultsUpdating {
     invalidateSearchTimer()
 
     searchHistoryTimer =
-      Timer.scheduledTimer(timeInterval: 0.1, target: self, selector: #selector(fetchSearchResults(timer:)), userInfo: query, repeats: false)
+      Timer.scheduledTimer(
+        timeInterval: 0.1,
+        target: self,
+        selector: #selector(fetchSearchResults(timer:)),
+        userInfo: query,
+        repeats: false
+      )
   }
 
   @objc private func fetchSearchResults(timer: Timer) {

@@ -1,15 +1,15 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
 import Shared
+import UIKit
 
 extension BrowserViewController {
   func launchNativeBraveTalk(tab: Tab?, room: String, token: String) {
-#if canImport(BraveTalk)
+    #if canImport(BraveTalk)
     braveTalkJitsiCoordinator.launchNativeBraveTalk(
       for: room,
       token: token,
@@ -21,8 +21,9 @@ extension BrowserViewController {
         // When we close the call, redirect to Brave Talk home page if the selected tab is still the original
         // talk URL
         if let url = self.tabManager.selectedTab?.url,
-           let currentHost = url.host,
-           DomainUserScript.braveTalkHelper.associatedDomains.contains(currentHost) {
+          let currentHost = url.host,
+          DomainUserScript.braveTalkHelper.associatedDomains.contains(currentHost)
+        {
           var components = URLComponents()
           components.host = currentHost
           components.scheme = url.scheme
@@ -30,6 +31,6 @@ extension BrowserViewController {
         }
       }
     )
-#endif
+    #endif
   }
 }

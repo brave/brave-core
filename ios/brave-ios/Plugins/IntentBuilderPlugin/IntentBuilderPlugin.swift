@@ -1,10 +1,10 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import PackagePlugin
 import Foundation
+import PackagePlugin
 
 @main
 struct IntentBuilderPlugin: BuildToolPlugin {
@@ -25,7 +25,7 @@ struct IntentBuilderPlugin: BuildToolPlugin {
             "-output", outputDirectory,
             "-language", "Swift",
             "-swiftVersion", "5.6",
-            "-classPrefix", ""
+            "-classPrefix", "",
           ],
           outputFilesDirectory: outputDirectory
         )

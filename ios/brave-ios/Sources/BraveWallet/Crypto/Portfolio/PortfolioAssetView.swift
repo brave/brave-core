@@ -1,10 +1,10 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import Preferences
+import SwiftUI
 
 struct PortfolioAssetView: View {
   var image: AssetIconView
@@ -14,12 +14,12 @@ struct PortfolioAssetView: View {
   var amount: String
   var quantity: String
   let shouldHideBalance: Bool
-  
+
   @ObservedObject private var isShowingBalances = Preferences.Wallet.isShowingBalances
-  
+
   init(
     image: AssetIconView,
-    title: String, 
+    title: String,
     symbol: String,
     networkName: String,
     amount: String,
@@ -80,13 +80,13 @@ struct PortfolioAssetView_Previews: PreviewProvider {
 #endif
 
 struct NFTAssetView: View {
-  
+
   let image: NFTIconView
   let title: String
   let symbol: String
   let networkName: String
   let quantity: String
-  
+
   var body: some View {
     AssetView(
       image: { image },
@@ -135,9 +135,15 @@ struct AssetView<ImageView: View, AccessoryContent: View>: View {
           .font(.footnote)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        Text(String.localizedStringWithFormat(Strings.Wallet.userAssetSymbolNetworkDesc, symbol, networkName))
-          .font(.caption)
-          .foregroundColor(Color(.braveLabel))
+        Text(
+          String.localizedStringWithFormat(
+            Strings.Wallet.userAssetSymbolNetworkDesc,
+            symbol,
+            networkName
+          )
+        )
+        .font(.caption)
+        .foregroundColor(Color(.braveLabel))
       }
       .multilineTextAlignment(.leading)
       Spacer()

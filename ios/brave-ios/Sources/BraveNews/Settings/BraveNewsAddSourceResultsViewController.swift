@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import BraveUI
-import Shared
 import BraveStrings
+import BraveUI
+import Foundation
 import Preferences
+import Shared
 import UIKit
 
 public class BraveNewsAddSourceResultsViewController: UITableViewController {
@@ -61,7 +61,11 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
 
     if navigationController?.viewControllers.first === self {
       // Presented via share screen or isolated
-      navigationItem.leftBarButtonItem = .init(barButtonSystemItem: .cancel, target: self, action: #selector(tappedCancel))
+      navigationItem.leftBarButtonItem = .init(
+        barButtonSystemItem: .cancel,
+        target: self,
+        action: #selector(tappedCancel)
+      )
     }
   }
 
@@ -84,7 +88,8 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
   public override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
     let locations = indexPath.section == 0 ? secureLocations : insecureLocations
     if let location = locations[safe: indexPath.row],
-      let cell = tableView.cellForRow(at: indexPath) as? FeedLocationCell {
+      let cell = tableView.cellForRow(at: indexPath) as? FeedLocationCell
+    {
       if selectedLocations.remove(location) == nil {
         selectedLocations.insert(location)
       }
@@ -96,14 +101,22 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
 
   // MARK: - UITableViewDataSource
 
-  public override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  public override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     let locations = indexPath.section == 0 ? secureLocations : insecureLocations
     guard let location = locations[safe: indexPath.row] else {
       assertionFailure()
       return UITableViewCell()
     }
     let cell = tableView.dequeueReusableCell(for: indexPath) as FeedLocationCell
-    cell.imageView?.image = indexPath.section == 0 ? UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil)?.applyingSymbolConfiguration(.init(font: .preferredFont(for: .body, weight: .semibold), scale: .small)) : UIImage(named: "insecure-site-icon", in: .module, compatibleWith: nil)!
+    cell.imageView?.image =
+      indexPath.section == 0
+      ? UIImage(braveSystemNamed: "brave.lock.alt", compatibleWith: nil)?
+        .applyingSymbolConfiguration(
+          .init(font: .preferredFont(for: .body, weight: .semibold), scale: .small)
+        ) : UIImage(named: "insecure-site-icon", in: .module, compatibleWith: nil)!
     cell.imageView?.tintColor = .braveLabel
     cell.textLabel?.text = location.title
     cell.detailTextLabel?.text = location.url.absoluteString
@@ -111,7 +124,10 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
     return cell
   }
 
-  public override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  public override func tableView(
+    _ tableView: UITableView,
+    numberOfRowsInSection section: Int
+  ) -> Int {
     section == 0 ? secureLocations.count : insecureLocations.count
   }
 
@@ -119,7 +135,10 @@ public class BraveNewsAddSourceResultsViewController: UITableViewController {
     insecureLocations.isEmpty ? 1 : 2
   }
 
-  public override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+  public override func tableView(
+    _ tableView: UITableView,
+    titleForHeaderInSection section: Int
+  ) -> String? {
     if section == 1 {
       return Strings.BraveNews.insecureSourcesHeader
     }

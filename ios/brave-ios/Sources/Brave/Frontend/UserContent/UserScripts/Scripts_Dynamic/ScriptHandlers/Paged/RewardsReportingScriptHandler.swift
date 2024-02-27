@@ -1,11 +1,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
 import BraveCore
+import Foundation
 import Shared
+import WebKit
 import os.log
 
 class RewardsReportingScriptHandler: TabContentScript {
@@ -25,16 +25,24 @@ class RewardsReportingScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentStart,
-                        forMainFrameOnly: false,
-                        in: scriptSandbox)
+
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentStart,
+      forMainFrameOnly: false,
+      in: scriptSandbox
+    )
   }()
 
-  func userContentController(_ userContentController: WKUserContentController, didReceiveScriptMessage message: WKScriptMessage, replyHandler: (Any?, String?) -> Void) {
+  func userContentController(
+    _ userContentController: WKUserContentController,
+    didReceiveScriptMessage message: WKScriptMessage,
+    replyHandler: (Any?, String?) -> Void
+  ) {
     defer { replyHandler(nil, nil) }
     struct Content: Decodable {
       var method: String
@@ -46,7 +54,7 @@ class RewardsReportingScriptHandler: TabContentScript {
     if tab?.isPrivate == true || !rewards.isEnabled {
       return
     }
-    
+
     if !verifyMessage(message: message) {
       assertionFailure("Missing required security token.")
       return
@@ -69,10 +77,17 @@ class RewardsReportingScriptHandler: TabContentScript {
 
         guard let url = URL(string: content.url) else { return }
         let refURL = URL(string: content.referrerUrl ?? "")
-        rewards.reportXHRLoad(url: url, tabId: Int(tab.rewardsId), firstPartyURL: tabURL, referrerURL: refURL)
+        rewards.reportXHRLoad(
+          url: url,
+          tabId: Int(tab.rewardsId),
+          firstPartyURL: tabURL,
+          referrerURL: refURL
+        )
       }
     } catch {
-      adsRewardsLog.error("Failed to parse message from rewards reporting JS: \(error.localizedDescription)")
+      adsRewardsLog.error(
+        "Failed to parse message from rewards reporting JS: \(error.localizedDescription)"
+      )
     }
   }
 }

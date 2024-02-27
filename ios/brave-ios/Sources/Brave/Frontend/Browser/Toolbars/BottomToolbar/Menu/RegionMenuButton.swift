@@ -1,15 +1,15 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
 import BraveShared
-import SwiftUI
 import BraveUI
 import BraveVPN
+import Foundation
 import GuardianConnect
+import Shared
+import SwiftUI
 
 /// A menu button that provides a shortcut to changing Brave VPN region
 struct RegionMenuButton: View {
@@ -24,14 +24,16 @@ struct RegionMenuButton: View {
     guard settingTitleEnabled else {
       return nil
     }
-    
-    return vpnRegionInfo?.settingTitle ?? String(
-      format: Strings.VPN.vpnRegionSelectorButtonSubTitle,
-      Strings.VPN.regionPickerAutomaticModeCellText)
+
+    return vpnRegionInfo?.settingTitle
+      ?? String(
+        format: Strings.VPN.vpnRegionSelectorButtonSubTitle,
+        Strings.VPN.regionPickerAutomaticModeCellText
+      )
   }
-  
+
   @State private var isVPNEnabled = BraveVPN.isConnected
-  
+
   var body: some View {
     HStack {
       if isVPNEnabled {
@@ -39,7 +41,8 @@ struct RegionMenuButton: View {
           MenuItemHeaderView(
             icon: vpnRegionInfo?.regionFlag ?? Image(braveSystemName: "leo.globe"),
             title: Strings.VPN.vpnRegionSelectorButtonTitle,
-            subtitle: subTitle)
+            subtitle: subTitle
+          )
           Spacer()
           Image(braveSystemName: "leo.arrow.small-right")
             .foregroundColor(Color(.secondaryBraveLabel))
@@ -47,9 +50,9 @@ struct RegionMenuButton: View {
         .padding(.horizontal, 14)
         .frame(maxWidth: .infinity, minHeight: 48.0, alignment: .leading)
         .background(
-          Button(action: {
+          Button {
             regionSelectAction()
-          }) {
+          } label: {
             Color.clear
           }
           .buttonStyle(TableCellButtonStyle())

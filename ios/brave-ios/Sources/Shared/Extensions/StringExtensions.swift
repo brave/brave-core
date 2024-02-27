@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 import os.log
@@ -46,7 +46,13 @@ extension String {
     return self.trimmingCharacters(in: CharacterSet(charactersIn: charactersInString))
   }
 
-  public static func contentsOfFileWithResourceName(_ name: String, ofType type: String, fromBundle bundle: Bundle, encoding: String.Encoding, error: NSErrorPointer) -> String? {
+  public static func contentsOfFileWithResourceName(
+    _ name: String,
+    ofType type: String,
+    fromBundle bundle: Bundle,
+    encoding: String.Encoding,
+    error: NSErrorPointer
+  ) -> String? {
     return bundle.path(forResource: name, ofType: type).flatMap {
       try? String(contentsOfFile: $0, encoding: encoding)
     }
@@ -57,13 +63,11 @@ extension String {
     return cleaned.trimmingCharacters(in: .whitespacesAndNewlines).components(separatedBy: string)
   }
 
-  /*
-     Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
-     - Parameter length: Desired maximum lengths of a string
-     - Parameter trailing: A 'String' that will be appended after the truncation.
-
-     - Returns: 'String' object.
-     */
+  /// Truncates the string to the specified length number of characters and appends an optional trailing string if longer.
+  /// - Parameter length: Desired maximum lengths of a string
+  /// - Parameter trailing: A 'String' that will be appended after the truncation.
+  ///
+  /// - Returns: 'String' object.
   public func truncate(length: Int, trailing: String = "…") -> String {
     return (self.count > length) ? self.prefix(length) + trailing : self
   }
@@ -116,7 +120,9 @@ extension String {
       let encodedString = String(decoding: data, as: UTF8.self)
       return String(encodedString.dropLast().dropFirst())
     } catch {
-      Logger.module.error("Failed to escape a string containing javascript: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to escape a string containing javascript: \(error.localizedDescription)"
+      )
       return nil
     }
   }

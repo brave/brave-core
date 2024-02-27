@@ -1,11 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
 import BraveCore
-import os.log
-import Preferences
 import BraveShared
+import Foundation
+import Preferences
+import Shared
+import os.log
 
 public class DAU {
 
@@ -15,13 +17,12 @@ public class DAU {
   private static let apiVersion = 1
 
   private static var baseUrl: String {
-    get {
-      let domain = AppConstants.buildChannel.isPublic
-        ? "https://laptop-updates.brave.com/"
-        : "https://laptop-updates.bravesoftware.com/"
+    let domain =
+      AppConstants.buildChannel.isPublic
+      ? "https://laptop-updates.brave.com/"
+      : "https://laptop-updates.bravesoftware.com/"
 
-      return "\(domain)\(apiVersion)/usage/ios?platform=ios"
-    }
+    return "\(domain)\(apiVersion)/usage/ios?platform=ios"
   }
   /// Number of seconds that determins when a user is "active"
   private let pingRefreshDuration = 5.minutes
@@ -84,7 +85,8 @@ public class DAU {
         target: self,
         selector: #selector(sendPingToServerInternal),
         userInfo: nil,
-        repeats: true)
+        repeats: true
+      )
 
     return true
   }
@@ -107,7 +109,9 @@ public class DAU {
     pingRequest?.queryItems = paramsAndPrefs.queryParams
 
     guard let pingRequestUrl = pingRequest?.url else {
-      Logger.module.error("Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")")
+      Logger.module.error(
+        "Stats failed to update, via invalud URL: \(pingRequest?.description ?? "😡")"
+      )
       return
     }
 
@@ -203,7 +207,8 @@ public class DAU {
     // Installation date for `dtoi` param has a limited lifetime.
     // After that we clear the install date from the app and always send null `dtoi` param.
     if let installationDate = Preferences.DAU.installationDate.value,
-      retentionMeasureDatePassed(todayDate: date, installDate: installationDate) {
+      retentionMeasureDatePassed(todayDate: date, installDate: installationDate)
+    {
       Preferences.DAU.installationDate.value = nil
     }
 
@@ -223,7 +228,11 @@ public class DAU {
       headers["x-brave-api-key"] = key
     }
 
-    return ParamsAndPrefs(queryParams: params, headers: headers, lastLaunchInfoPreference: lastPingTimestamp)
+    return ParamsAndPrefs(
+      queryParams: params,
+      headers: headers,
+      lastLaunchInfoPreference: lastPingTimestamp
+    )
   }
 
   private func retentionMeasureDatePassed(todayDate: Date, installDate: Date) -> Bool {
@@ -263,7 +272,11 @@ public class DAU {
     let correctAppVersionPattern = "^\\d+.\\d+$"
     do {
       let regex = try NSRegularExpression(pattern: correctAppVersionPattern, options: [])
-      let match = regex.firstMatch(in: version, options: [], range: NSRange(location: 0, length: version.count))
+      let match = regex.firstMatch(
+        in: version,
+        options: [],
+        range: NSRange(location: 0, length: version.count)
+      )
 
       return match != nil
     } catch {
@@ -278,7 +291,9 @@ public class DAU {
 
   /// All first app installs are normalized to first day of the week.
   /// e.g. user installs app on wednesday 2017-22-11, his install date is recorded as of 2017-20-11(Monday)
-  func weekOfInstallationParam(for woi: String? = Preferences.DAU.weekOfInstallation.value) -> URLQueryItem {
+  func weekOfInstallationParam(
+    for woi: String? = Preferences.DAU.weekOfInstallation.value
+  ) -> URLQueryItem {
     var woi = woi
     // This _should_ be set all the time
     if woi == nil {
@@ -315,7 +330,9 @@ public class DAU {
       return calendar.nextDate(after: lastPingDate, matching: components, matchingPolicy: .nextTime)
     }
 
-    if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate), nowDay > lastPingDay {
+    if let nowDay = eraDayOrdinal(date), let lastPingDay = eraDayOrdinal(lastPingDate),
+      nowDay > lastPingDay
+    {
       pings.insert(.daily)
     } else {
       // Not a new day, no need to check for weekly or monthly stats.
@@ -323,7 +340,9 @@ public class DAU {
     }
 
     let mondayWeekday = 2
-    if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)), date >= nextMonday {
+    if let nextMonday = nextDate(matching: DateComponents(weekday: mondayWeekday)),
+      date >= nextMonday
+    {
       pings.insert(.weekly)
       // Adding daily stat here for safety, see #2572.
       pings.insert(.daily)
@@ -391,12 +410,18 @@ extension Date {
     // We look for a previous monday because Sunday is considered a beggining of a new week using default gregorian calendar.
     // For example if today is Sunday, the next Monday using Calendar would be the day after Sunday which is wrong.
     // That's why backward search may sound counter intuitive.
-    guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else { return nil }
+    guard let monday = self.next(.monday, direction: .backward, considerSelf: true) else {
+      return nil
+    }
 
     return DAU.dateFormatter.string(from: monday)
   }
 
-  private func next(_ weekday: Weekday, direction: Calendar.SearchDirection = .forward, considerSelf: Bool = false) -> Date? {
+  private func next(
+    _ weekday: Weekday,
+    direction: Calendar.SearchDirection = .forward,
+    considerSelf: Bool = false
+  ) -> Date? {
     let calendar = DAU.calendar
     let components = DateComponents(weekday: weekday.rawValue)
 
@@ -408,10 +433,12 @@ extension Date {
       after: self,
       matching: components,
       matchingPolicy: .nextTime,
-      direction: direction)
+      direction: direction
+    )
   }
 
   enum Weekday: Int {
-    case sunday = 1, monday, tuesday, wednesday, thursday, friday, saturday
+    case sunday = 1
+    case monday, tuesday, wednesday, thursday, friday, saturday
   }
 }

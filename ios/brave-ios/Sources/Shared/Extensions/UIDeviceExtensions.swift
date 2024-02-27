@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
-public extension UIDevice {
+extension UIDevice {
 
-  var modelName: String {
+  public var modelName: String {
     var systemInfo = utsname()
     uname(&systemInfo)
     let machineMirror = Mirror(reflecting: systemInfo.machine)
@@ -55,11 +55,11 @@ public extension UIDevice {
     }
   }
 
-  static var isIpad: Bool {
+  public static var isIpad: Bool {
     return UIDevice.current.userInterfaceIdiom == .pad
   }
 
-  static var isPhone: Bool {
+  public static var isPhone: Bool {
     return UIDevice.current.userInterfaceIdiom == .phone
   }
 }

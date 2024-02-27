@@ -1,20 +1,20 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveCore
 import DesignSystem
+import SwiftUI
 
 struct SaferSignMessageRequestContainerView: View {
-  
+
   let account: BraveWallet.AccountInfo
   let request: BraveWallet.SignMessageRequest
   let network: BraveWallet.NetworkInfo?
   let requestIndex: Int
   let requestCount: Int
-  
+
   let namedFromAddress: String
   let receiverAddress: String
   let namedReceiverAddress: String
@@ -31,23 +31,23 @@ struct SaferSignMessageRequestContainerView: View {
   var action: (_ approved: Bool) -> Void
 
   @State private var isShowingDetails: Bool = false
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @Environment(\.pixelLength) private var pixelLength
   @ScaledMetric private var faviconSize = 48
   private let maxFaviconSize: CGFloat = 72
   @ScaledMetric private var assetNetworkIconSize: CGFloat = 15
   private let maxAssetNetworkIconSize: CGFloat = 20
-  
+
   var body: some View {
     ScrollView {
       VStack {
         requestsHeader
-        
+
         originAndFavicon
 
         Spacer(minLength: 20)
-        
+
         if isShowingDetails {
           SignMessageRequestContentView(
             request: request,
@@ -72,9 +72,9 @@ struct SaferSignMessageRequestContainerView: View {
           )
 
         }
-        
+
         networkFeeSection
-        
+
         buttonsContainer
           .padding(.top)
           .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
@@ -105,7 +105,7 @@ struct SaferSignMessageRequestContainerView: View {
     .navigationTitle(Strings.Wallet.swapConfirmationTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
-  
+
   /// Header containing the current requests network chain name, and a `1 of N` & `Next` button when there are multiple requests.
   private var requestsHeader: some View {
     HStack {
@@ -124,7 +124,7 @@ struct SaferSignMessageRequestContainerView: View {
       }
     }
   }
-  
+
   private var originAndFavicon: some View {
     VStack {
       Group {
@@ -151,7 +151,7 @@ struct SaferSignMessageRequestContainerView: View {
         }
       }
       .frame(width: min(faviconSize, maxFaviconSize), height: min(faviconSize, maxFaviconSize))
-      
+
       Text(originInfo: request.originInfo)
         .foregroundColor(Color(.braveLabel))
         .font(.subheadline)
@@ -159,7 +159,7 @@ struct SaferSignMessageRequestContainerView: View {
         .padding(.top, 8)
     }
   }
-  
+
   private var networkFeeSection: some View {
     VStack(alignment: .leading, spacing: 4) {
       HStack {
@@ -177,16 +177,19 @@ struct SaferSignMessageRequestContainerView: View {
                   .stroke(Color(.braveSeparator))
               }
             }
-            .frame(width: min(assetNetworkIconSize, maxAssetNetworkIconSize), height: min(assetNetworkIconSize, maxAssetNetworkIconSize))
+            .frame(
+              width: min(assetNetworkIconSize, maxAssetNetworkIconSize),
+              height: min(assetNetworkIconSize, maxAssetNetworkIconSize)
+            )
             Text(Strings.Wallet.braveSwapFree)
               .foregroundColor(Color(.braveLabel))
           }
           .frame(maxWidth: .infinity, alignment: .leading)
         }
         Spacer()
-        Button(action: {
+        Button {
           isShowingDetails.toggle()
-        }) {
+        } label: {
           Text(detailsButtonTitle)
             .fontWeight(.medium)
             .foregroundColor(Color(braveSystemName: .textInteractive))
@@ -195,14 +198,14 @@ struct SaferSignMessageRequestContainerView: View {
     }
     .frame(maxWidth: .infinity)
   }
-  
+
   private var detailsButtonTitle: String {
     if isShowingDetails {
       return Strings.Wallet.hideDetailsButtonTitle
     }
     return Strings.Wallet.confirmationViewModeDetails
   }
-  
+
   /// Cancel & Sign button container
   @ViewBuilder private var buttonsContainer: some View {
     if sizeCategory.isAccessibilityCategory {
@@ -215,20 +218,20 @@ struct SaferSignMessageRequestContainerView: View {
       }
     }
   }
-  
+
   /// Cancel and Sign buttons
   @ViewBuilder private var buttons: some View {
-    Button(action: { // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     .disabled(requestIndex != 0)
-    Button(action: { // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
         .imageScale(.large)
     }

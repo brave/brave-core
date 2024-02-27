@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import WidgetKit
-import SwiftUI
-import Shared
 import BraveWidgetsModels
+import Shared
+import SwiftUI
+import WidgetKit
 
 struct StatsWidget: Widget {
   var body: some WidgetConfiguration {
@@ -16,9 +16,9 @@ struct StatsWidget: Widget {
     .supportedFamilies([.systemMedium])
     .configurationDisplayName(Strings.Widgets.shieldStatsTitle)
     .description(Strings.Widgets.shieldStatsDescription)
-#if swift(>=5.9)
+    #if swift(>=5.9)
     .contentMarginsDisabled()
-#endif
+    #endif
   }
 }
 
@@ -111,11 +111,23 @@ struct StatsWidget_Previews: PreviewProvider {
     let kinds: [StatKind] = [.adsBlocked, .dataSaved, .timeSaved]
     return kinds.map { StatData(name: $0.name, value: $0.displayString, color: $0.valueColor) }
   }
-  
+
   static var fullStats: [StatData] {
-    let ads = StatData(name: StatKind.adsBlocked.name, value: "113K", color: StatKind.adsBlocked.valueColor)
-    let data = StatData(name: StatKind.dataSaved.name, value: "3,47GB", color: StatKind.dataSaved.valueColor)
-    let time = StatData(name: StatKind.timeSaved.name, value: "1h", color: StatKind.timeSaved.valueColor)
+    let ads = StatData(
+      name: StatKind.adsBlocked.name,
+      value: "113K",
+      color: StatKind.adsBlocked.valueColor
+    )
+    let data = StatData(
+      name: StatKind.dataSaved.name,
+      value: "3,47GB",
+      color: StatKind.dataSaved.valueColor
+    )
+    let time = StatData(
+      name: StatKind.timeSaved.name,
+      value: "1h",
+      color: StatKind.timeSaved.valueColor
+    )
     return [ads, data, time]
   }
 

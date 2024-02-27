@@ -3,28 +3,31 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import BraveCore
 import Brave
+import BraveCore
+import BraveNews
 import Data
-import RuntimeWarnings
-import Shared
+import Foundation
 import Growth
 import Preferences
+import RuntimeWarnings
+import Shared
 import Storage
-import BraveNews
-import os.log
+import UIKit
 import UserAgent
+import os.log
 
-private let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
+private let adsRewardsLog = Logger(
+  subsystem: Bundle.main.bundleIdentifier!,
+  category: "ads-rewards"
+)
 
 /// Class that does startup initialization
 /// Everything in this class can only be execute ONCE
 /// IE: BraveCore initialization, BuildChannel, Migrations, etc.
 public class AppState {
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "app-state")
-  
+
   public static let shared = AppState()
 
   public let braveCore: BraveCoreMain
@@ -35,7 +38,7 @@ public class AppState {
   public let newsFeedDataSource: FeedDataSource
   public let uptimeMonitor = UptimeMonitor()
   private var didBecomeActive = false
-  
+
   public var state: State = .launching(options: [:], active: false) {
     didSet {
       switch state {
@@ -43,7 +46,7 @@ public class AppState {
         if didBecomeActive {
           assertionFailure("Cannot set launching state twice!")
         }
-        
+
         if isActive && !didBecomeActive {
           // We have to wait until pre 1.12 migration is done until we proceed with database
           // initialization. This is because Database container may change. See bugs #3416, #3377.
@@ -62,15 +65,18 @@ public class AppState {
       }
     }
   }
-  
+
   private(set) public lazy var diskImageStore = { () -> DiskImageStore? in
     do {
       return try DiskImageStore(
         files: profile.files,
         namespace: "TabManagerScreenshots",
-        quality: UIConstants.screenshotQuality)
+        quality: UIConstants.screenshotQuality
+      )
     } catch {
-      log.error("Failed to create an image store for files: \(self.profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)")
+      log.error(
+        "Failed to create an image store for files: \(self.profile.files.rootPath) and namespace: \"TabManagerScreenshots\": \(error.localizedDescription)"
+      )
     }
     return nil
   }()
@@ -86,22 +92,22 @@ public class AppState {
 
     // Setup DAU
     dau = DAU(braveCoreStats: braveCore.braveStats)
-    
+
     // Setup Profile
     profile = BrowserProfile(localName: "profile")
 
     // Setup Migrations
     migration = Migration(braveCore: braveCore)
-    
+
     // Perform Migrations
     migration.launchMigrations(keyPrefix: profile.prefs.getBranchPrefix(), profile: profile)
-    
+
     // Setup Rewards & Ads
     let configuration = BraveRewards.Configuration.current()
     Self.migrateAdsConfirmations(for: configuration)
     rewards = BraveRewards(configuration: configuration)
     newsFeedDataSource = FeedDataSource()
-    
+
     // Setup Custom URL scheme handlers
     setupCustomSchemeHandlers(profile: profile)
   }
@@ -125,7 +131,7 @@ public class AppState {
         // Nothing to print
         return true
       }
-      
+
       if severity == .fatal {
         let filename = URL(fileURLWithPath: file).lastPathComponent
         #if DEBUG
@@ -134,7 +140,10 @@ public class AppState {
           .fault,
           dso: os_rw.dso,
           log: os_rw.log(category: "BraveCore"),
-          "[%@:%ld] > %@", filename, line, message
+          "[%@:%ld] > %@",
+          filename,
+          line,
+          message
         )
         return true
         #else
@@ -152,14 +161,14 @@ public class AppState {
         default: return .debug
         }
       }()
-      
+
       let braveCoreLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-core")
       if AppConstants.buildChannel.isPublic {
         braveCoreLogger.log(level: level, "\(message, privacy: .private)")
       } else {
         braveCoreLogger.log(level: level, "\(message, privacy: .public)")
       }
-      
+
       return true
     }
 
@@ -179,11 +188,11 @@ public class AppState {
       }
     }
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
-    
+
     // Initialize BraveCore
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
   }
-  
+
   private func setupCustomSchemeHandlers(profile: Profile) {
     let responders: [(String, InternalSchemeResponse)] = [
       (AboutHomeHandler.path, AboutHomeHandler()),
@@ -193,15 +202,16 @@ public class AppState {
       (ReaderModeHandler.path, ReaderModeHandler(profile: profile)),
       (IPFSSchemeHandler.path, IPFSSchemeHandler()),
       (Web3DomainHandler.path, Web3DomainHandler()),
-      (BlockedDomainHandler.path, BlockedDomainHandler())
+      (BlockedDomainHandler.path, BlockedDomainHandler()),
     ]
 
     responders.forEach { (path, responder) in
       InternalSchemeHandler.responders[path] = responder
     }
   }
-  
-  private static func migrateAdsConfirmations(for configuruation: Brave.BraveRewards.Configuration) {
+
+  private static func migrateAdsConfirmations(for configuruation: Brave.BraveRewards.Configuration)
+  {
     // To ensure after a user launches 1.21 that their ads confirmations, viewed count and
     // estimated payout remain correct.
     //
@@ -213,7 +223,9 @@ public class AppState {
     let adsConfirmations = base.appendingPathComponent("ads/confirmations.json")
     let fm = FileManager.default
 
-    if !fm.fileExists(atPath: ledgerStateContainer.path) || fm.fileExists(atPath: adsConfirmations.path) {
+    if !fm.fileExists(atPath: ledgerStateContainer.path)
+      || fm.fileExists(atPath: adsConfirmations.path)
+    {
       // Nothing to migrate or already migrated
       return
     }
@@ -226,7 +238,9 @@ public class AppState {
       }
       try confirmations.write(toFile: adsConfirmations.path, atomically: true, encoding: .utf8)
     } catch {
-      adsRewardsLog.error("Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)")
+      adsRewardsLog.error(
+        "Failed to migrate confirmations.json to ads folder: \(error.localizedDescription)"
+      )
     }
   }
 }

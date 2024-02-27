@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
@@ -14,14 +14,15 @@ struct SwipeAnimationParameters {
   let recenterAnimationDuration: TimeInterval
 }
 
-private let DefaultParameters =
+private let defaultSwipeAnimationParameters =
   SwipeAnimationParameters(
     totalRotationInDegrees: 10,
     deleteThreshold: 80,
     totalScale: 0.9,
     totalAlpha: 0,
     minExitVelocity: 800,
-    recenterAnimationDuration: 0.15)
+    recenterAnimationDuration: 0.15
+  )
 
 protocol SwipeAnimatorDelegate: AnyObject {
   func swipeAnimator(_ animator: SwipeAnimator, viewWillExitContainerBounds: UIView)
@@ -43,7 +44,7 @@ class SwipeAnimator: NSObject {
     return CGPoint(x: animatingView.frame.width / 2, y: animatingView.frame.height / 2)
   }
 
-  init(animatingView: UIView, params: SwipeAnimationParameters = DefaultParameters) {
+  init(animatingView: UIView, params: SwipeAnimationParameters = defaultSwipeAnimationParameters) {
     self.animatingView = animatingView
     self.params = params
 
@@ -68,7 +69,8 @@ extension SwipeAnimator {
       animations: {
         self.animatingView?.transform = .identity
         self.animatingView?.alpha = 1
-      })
+      }
+    )
   }
 
   fileprivate func animateAwayWithVelocity(_ velocity: CGPoint, speed: CGFloat) {
@@ -90,7 +92,8 @@ extension SwipeAnimator {
         if finished {
           animatingView.alpha = 0
         }
-      })
+      }
+    )
   }
 
   fileprivate func transformForTranslation(_ translation: CGFloat) -> CGAffineTransform {
@@ -143,7 +146,10 @@ extension SwipeAnimator {
 
   func close(right: Bool) {
     let direction = CGFloat(right ? -1 : 1)
-    animateAwayWithVelocity(CGPoint(x: -direction * params.minExitVelocity, y: 0), speed: direction * params.minExitVelocity)
+    animateAwayWithVelocity(
+      CGPoint(x: -direction * params.minExitVelocity, y: 0),
+      speed: direction * params.minExitVelocity
+    )
   }
 
   @discardableResult @objc func closeWithoutGesture() -> Bool {

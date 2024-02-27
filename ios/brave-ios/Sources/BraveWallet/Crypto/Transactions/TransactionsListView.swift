@@ -1,7 +1,7 @@
-/* Copyright 2023 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2023 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import SwiftUI
@@ -9,14 +9,14 @@ import SwiftUI
 struct TransactionSection: Equatable, Identifiable {
   var id: Date { date }
   let date: Date
-  
+
   let transactions: [ParsedTransaction]
 }
 
 /// List of transactions separated by date with a search bar and filter button.
 /// Used in Activity tab, Asset Details (#8137), etc.
 struct TransactionsListView: View {
-  
+
   /// All `TransactionSection` items, unfiltered.
   let transactionSections: [TransactionSection]
   /// Query displayed in the search bar above the transactions.
@@ -27,7 +27,7 @@ struct TransactionsListView: View {
   let filtersButtonTapped: () -> Void
   /// Called when a transaction is tapped.
   let transactionTapped: (BraveWallet.TransactionInfo) -> Void
-  
+
   /// Returns `transactionSections` filtered using the `filter` value.
   var filteredTransactionSections: [TransactionSection] {
     if query.isEmpty {
@@ -45,46 +45,52 @@ struct TransactionsListView: View {
       return TransactionSection(date: transactionSection.date, transactions: filteredTransactions)
     }
   }
-  
+
   var body: some View {
     ScrollView {
-      LazyVStack(pinnedViews: [.sectionHeaders]) { // pin search bar + filters
-        Section(content: {
-          LazyVStack { // don't pin date headers
-            if filteredTransactionSections.isEmpty {
-              emptyState
-                .listRowBackground(Color.clear)
-            } else {
-              ForEach(filteredTransactionSections) { section in
-                Section(content: {
-                  ForEach(section.transactions, id: \.transaction.id) { parsedTransaction in
-                    Button(action: {
-                      transactionTapped(parsedTransaction.transaction)
-                    }) {
-                      TransactionSummaryViewContainer(
-                        parsedTransaction: parsedTransaction
-                      )
+      LazyVStack(pinnedViews: [.sectionHeaders]) {  // pin search bar + filters
+        Section(
+          content: {
+            LazyVStack {  // don't pin date headers
+              if filteredTransactionSections.isEmpty {
+                emptyState
+                  .listRowBackground(Color.clear)
+              } else {
+                ForEach(filteredTransactionSections) { section in
+                  Section(
+                    content: {
+                      ForEach(section.transactions, id: \.transaction.id) { parsedTransaction in
+                        Button {
+                          transactionTapped(parsedTransaction.transaction)
+                        } label: {
+                          TransactionSummaryViewContainer(
+                            parsedTransaction: parsedTransaction
+                          )
+                        }
+                        .listRowInsets(.zero)
+                      }
+                    },
+                    header: {
+                      Text(section.date, style: .date)
+                        .font(.subheadline.weight(.semibold))
+                        .foregroundColor(Color(braveSystemName: .textTertiary))
+                        .frame(maxWidth: .infinity, alignment: .leading)
                     }
-                    .listRowInsets(.zero)
-                  }
-                }, header: {
-                  Text(section.date, style: .date)
-                    .font(.subheadline.weight(.semibold))
-                    .foregroundColor(Color(braveSystemName: .textTertiary))
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                })
+                  )
+                }
               }
             }
+            .padding(.horizontal)
+          },
+          header: {
+            searchBarAndFiltersContainer
           }
-          .padding(.horizontal)
-        }, header: {
-          searchBarAndFiltersContainer
-        })
+        )
       }
     }
     .background(Color(braveSystemName: .containerBackground))
   }
-  
+
   private var searchBarAndFiltersContainer: some View {
     VStack(spacing: 0) {
       HStack(spacing: 10) {
@@ -102,7 +108,7 @@ struct TransactionsListView: View {
     .frame(maxWidth: .infinity)
     .background(Color(braveSystemName: .containerBackground))
   }
-  
+
   private var emptyState: some View {
     VStack(alignment: .center, spacing: 10) {
       Text(Strings.Wallet.activityPageEmptyTitle)
@@ -130,7 +136,7 @@ struct TransactionsListView_Previews: PreviewProvider {
           transactions: [
             .previewConfirmedSend,
             .previewConfirmedSwap,
-            .previewConfirmedERC20Approve
+            .previewConfirmedERC20Approve,
           ].compactMap { $0 }
         )
       ],

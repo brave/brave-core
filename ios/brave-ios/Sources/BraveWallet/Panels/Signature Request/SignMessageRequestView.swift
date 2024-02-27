@@ -1,17 +1,17 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveStrings
 import BraveCore
+import BraveStrings
 import DesignSystem
+import SwiftUI
 
 /// View for showing `SignMessageRequest` for
 /// ethSignTypedData, ethStandardSignData, & solanaSignData
 struct SignMessageRequestView: View {
-  
+
   let account: BraveWallet.AccountInfo
   let request: BraveWallet.SignMessageRequest
   let network: BraveWallet.NetworkInfo?
@@ -24,11 +24,11 @@ struct SignMessageRequestView: View {
   @Binding var showOrignalMessage: [Int32: Bool]
   var nextTapped: () -> Void
   var action: (_ approved: Bool) -> Void
-  
+
   @Environment(\.sizeCategory) private var sizeCategory
   @ScaledMetric private var blockieSize = 54
   private let maxBlockieSize: CGFloat = 108
-  
+
   /// Header containing the current requests network chain name, and a `1 of N` & `Next` button when there are multiple requests.
   private var requestsHeader: some View {
     HStack {
@@ -47,7 +47,7 @@ struct SignMessageRequestView: View {
       }
     }
   }
-  
+
   private var accountInfoAndOrigin: some View {
     VStack(spacing: 8) {
       Blockie(address: account.address)
@@ -69,27 +69,27 @@ struct SignMessageRequestView: View {
     }
     .accessibilityElement(children: .combine)
   }
-  
+
   var body: some View {
     ScrollView {
       VStack {
         requestsHeader
-        
+
         VStack(spacing: 12) {
           accountInfoAndOrigin
-          
+
           Text(Strings.Wallet.signatureRequestSubtitle)
             .font(.headline)
             .foregroundColor(Color(.bravePrimary))
         }
         .padding(.vertical, 32)
-        
+
         SignMessageRequestContentView(
           request: request,
           needPilcrowFormatted: $needPilcrowFormatted,
           showOrignalMessage: $showOrignalMessage
         )
-        
+
         buttonsContainer
           .padding(.top)
           .opacity(sizeCategory.isAccessibilityCategory ? 0 : 1)
@@ -120,7 +120,7 @@ struct SignMessageRequestView: View {
     }
     .navigationTitle(Strings.Wallet.signatureRequestTitle)
   }
-  
+
   /// Cancel & Sign button container
   @ViewBuilder private var buttonsContainer: some View {
     if sizeCategory.isAccessibilityCategory {
@@ -133,20 +133,20 @@ struct SignMessageRequestView: View {
       }
     }
   }
-  
+
   /// Cancel and Sign buttons
   @ViewBuilder private var buttons: some View {
-    Button(action: { // cancel
+    Button {  // cancel
       action(false)
-    }) {
+    } label: {
       Label(Strings.cancelButtonTitle, systemImage: "xmark")
         .imageScale(.large)
     }
     .buttonStyle(BraveOutlineButtonStyle(size: .large))
     .disabled(requestIndex != 0)
-    Button(action: { // approve
+    Button {  // approve
       action(true)
-    }) {
+    } label: {
       Label(Strings.Wallet.sign, braveSystemImage: "leo.key")
         .imageScale(.large)
     }
@@ -157,18 +157,20 @@ struct SignMessageRequestView: View {
 
 /// View that displays the current index, total number of items and a `Next` button to move to next index.
 struct NextIndexButton: View {
-  
+
   let currentIndex: Int
   let count: Int
   let nextTapped: () -> Void
-  
+
   var body: some View {
     HStack {
-      Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, currentIndex + 1, count))
-        .fontWeight(.semibold)
-      Button(action: {
+      Text(
+        String.localizedStringWithFormat(Strings.Wallet.transactionCount, currentIndex + 1, count)
+      )
+      .fontWeight(.semibold)
+      Button {
         nextTapped()
-      }) {
+      } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
           .foregroundColor(Color(.braveBlurpleTint))

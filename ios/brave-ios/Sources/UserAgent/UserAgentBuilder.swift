@@ -1,6 +1,6 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -45,7 +45,7 @@ public struct UserAgentBuilder {
   // These are not super precise because each iOS version can have slighly different desktop UA.
   // The only differences are with exact `Version/XX` and `MAC OS X 10_XX` numbers.
   private var desktopUA: String {
-    
+
     let iOS17DesktopUA =
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) \
@@ -61,7 +61,7 @@ public struct UserAgentBuilder {
       Version/16.6 \
       Safari/605.1.15
       """
-    
+
     let iOS15DesktopUA =
       """
       Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_6) \

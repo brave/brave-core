@@ -1,15 +1,20 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AVKit
 import Foundation
 import UIKit
-import AVKit
 
 class VideoPlayerControlsView: UIView {
   private let blurView = UIVisualEffectView(effect: UIBlurEffect(style: .systemMaterialDark)).then {
-    $0.contentView.backgroundColor = #colorLiteral(red: 0.231372549, green: 0.2431372549, blue: 0.3098039216, alpha: 0.8)
+    $0.contentView.backgroundColor = #colorLiteral(
+      red: 0.231372549,
+      green: 0.2431372549,
+      blue: 0.3098039216,
+      alpha: 0.8
+    )
   }
 
   private let topControlsStackView = UIStackView().then {

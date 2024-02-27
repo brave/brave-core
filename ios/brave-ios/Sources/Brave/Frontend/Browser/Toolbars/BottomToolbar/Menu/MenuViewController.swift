@@ -1,15 +1,15 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import PanModal
-import Shared
 import BraveShared
 import BraveUI
-import SwiftUI
 import Growth
+import PanModal
+import Shared
+import SwiftUI
+import UIKit
 
 struct MenuItemHeaderView: View {
   @Environment(\.colorScheme) private var colorScheme: ColorScheme
@@ -79,7 +79,10 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
   private var menuNavigationDelegate: MenuNavigationControllerDelegate?
   private let initialHeight: CGFloat
 
-  init<MenuContent: View>(initialHeight: CGFloat, @ViewBuilder content: (MenuViewController) -> MenuContent) {
+  init<MenuContent: View>(
+    initialHeight: CGFloat,
+    @ViewBuilder content: (MenuViewController) -> MenuContent
+  ) {
     self.initialHeight = initialHeight
     super.init(nibName: nil, bundle: nil)
     viewControllers = [MenuHostingController(content: content(self))]
@@ -146,7 +149,7 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
     navigationBar.isTranslucent = false
     recordMenuOpenedP3A()
   }
-  
+
   private func recordMenuOpenedP3A() {
     var storage = P3ATimedStorage<Int>.menuPresentedStorage
     storage.add(value: 1, to: Date())
@@ -169,7 +172,8 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
 
     // Bug with pan modal + hidden nav bar causes safe area insets to zero out
     if view.safeAreaInsets == .zero, isPanModalPresented,
-      var insets = view.window?.safeAreaInsets {
+      var insets = view.window?.safeAreaInsets
+    {
       // When that happens we re-set them via additionalSafeAreaInsets to the windows safe
       // area insets. Since the pan modal appears over the entire screen we can safely use
       // the windows safe area. Top will stay 0 since we are using non-translucent nav bar
@@ -196,7 +200,8 @@ class MenuViewController: UINavigationController, UIPopoverPresentationControlle
 
   override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
     if let _ = presentedViewController as? InnerMenuNavigationController,
-      presentingViewController?.presentedViewController === self {
+      presentingViewController?.presentedViewController === self
+    {
       isDismissing = true
       presentingViewController?.dismiss(animated: flag, completion: completion)
     } else {
@@ -233,7 +238,9 @@ extension MenuViewController: PanModalPresentable {
         if let scrollView = view as? UIScrollView {
           return scrollView
         }
-        if !view.subviews.isEmpty, let childScrollView = _scrollViewChild(in: view, depth: depth + 1) {
+        if !view.subviews.isEmpty,
+          let childScrollView = _scrollViewChild(in: view, depth: depth + 1)
+        {
           return childScrollView
         }
       }
@@ -324,7 +331,10 @@ private class MenuHostingController<MenuContent: View>: UIHostingController<Menu
         // Have to increase the content size by the hidden nav bar height so that the size
         // doesn't change when the user navigates within the menu where the nav bar is
         // visible.
-        height: min(max(size.height + 16, minimumPopoverHeight), maximumPopoverHeight + navBarHeight)
+        height: min(
+          max(size.height + 16, minimumPopoverHeight),
+          maximumPopoverHeight + navBarHeight
+        )
       )
     }()
     view.backgroundColor = .braveGroupedBackground
@@ -354,13 +364,19 @@ private class MenuNavigationControllerDelegate: NSObject, UINavigationController
   ) {
     panModal?.panModalSetNeedsLayoutUpdate()
   }
-  
-  public func navigationControllerSupportedInterfaceOrientations(_ navigationController: UINavigationController) -> UIInterfaceOrientationMask {
-    return navigationController.visibleViewController?.supportedInterfaceOrientations ?? navigationController.supportedInterfaceOrientations
+
+  public func navigationControllerSupportedInterfaceOrientations(
+    _ navigationController: UINavigationController
+  ) -> UIInterfaceOrientationMask {
+    return navigationController.visibleViewController?.supportedInterfaceOrientations
+      ?? navigationController.supportedInterfaceOrientations
   }
 
-  public func navigationControllerPreferredInterfaceOrientationForPresentation(_ navigationController: UINavigationController) -> UIInterfaceOrientation {
-    return navigationController.visibleViewController?.preferredInterfaceOrientationForPresentation ?? navigationController.preferredInterfaceOrientationForPresentation
+  public func navigationControllerPreferredInterfaceOrientationForPresentation(
+    _ navigationController: UINavigationController
+  ) -> UIInterfaceOrientation {
+    return navigationController.visibleViewController?.preferredInterfaceOrientationForPresentation
+      ?? navigationController.preferredInterfaceOrientationForPresentation
   }
 }
 
@@ -392,5 +408,7 @@ class ColorAwareNavigationController: UINavigationController {
 }
 
 extension P3ATimedStorage where Value == Int {
-  fileprivate static var menuPresentedStorage: Self { .init(name: "menu-presented", lifetimeInDays: 7) }
+  fileprivate static var menuPresentedStorage: Self {
+    .init(name: "menu-presented", lifetimeInDays: 7)
+  }
 }

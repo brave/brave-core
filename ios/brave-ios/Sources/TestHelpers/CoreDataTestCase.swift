@@ -1,11 +1,12 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
 import CoreData
-@testable import Data
 import Preferences
+import XCTest
+
+@testable import Data
 
 open class CoreDataTestCase: XCTestCase {
 
@@ -24,7 +25,11 @@ open class CoreDataTestCase: XCTestCase {
   // after changes are merged into context.
   /// Use `inverted` property if you want to verify that DB save did not happen.
   /// This is useful for early return database checks.
-  open func backgroundSaveAndWaitForExpectation(name: String? = nil, inverted: Bool = false, code: () -> Void) {
+  open func backgroundSaveAndWaitForExpectation(
+    name: String? = nil,
+    inverted: Bool = false,
+    code: () -> Void
+  ) {
     let mergeExpectation = expectation(description: "merge")
     let saveExpectation = expectation(
       forNotification: .NSManagedObjectContextDidSave,

@@ -1,35 +1,36 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
-import Shared
-import Fuzi
 import FeedKit
+import Fuzi
+import Shared
+import SwiftUI
 
 struct SearchResultsView: View {
   @ObservedObject var dataSource: FeedDataSource
   var query: String
   var results: SearchResults
-  
+
   @State private var rssResults: RSSSearchResults?
-  @State private var rssSearchError: FindFeedsError? // TODO: Take this out
+  @State private var rssSearchError: FindFeedsError?  // TODO: Take this out
   @State private var rssSearchTask: URLSessionDataTask?
-  
+
   private var urlQuery: URL? {
     URIFixup.getURL(query)
   }
-  
+
   var body: some View {
     List {
       if !results.channels.isEmpty {
         Section {
           ForEach(results.channels, id: \.self) { channel in
-            let shouldShowRegionSubtitle = results.channels.filter {
-              $0.name == channel.name
-            }.count > 1
+            let shouldShowRegionSubtitle =
+              results.channels.filter {
+                $0.name == channel.name
+              }.count > 1
             ChannelLabel(
               title: channel.name,
               subtitle: shouldShowRegionSubtitle ? channel.localeDescription : nil,
@@ -44,7 +45,10 @@ struct SearchResultsView: View {
       if !results.sources.isEmpty {
         Section {
           ForEach(results.sources) { source in
-            SourceLabel(source: source, isFollowing: dataSource.isFollowingSourceBinding(source: source))
+            SourceLabel(
+              source: source,
+              isFollowing: dataSource.isFollowingSourceBinding(source: source)
+            )
           }
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
         } header: {
@@ -74,8 +78,10 @@ struct SearchResultsView: View {
             }
           } label: {
             HStack {
-              (Text("\(Strings.BraveNews.getFeedsFromSiteButtonTitle) ").font(.footnote.weight(.medium)) + Text(urlQuery.absoluteString).font(.footnote.weight(.semibold)))
-                .multilineTextAlignment(.leading)
+              (Text("\(Strings.BraveNews.getFeedsFromSiteButtonTitle) ").font(
+                .footnote.weight(.medium)
+              ) + Text(urlQuery.absoluteString).font(.footnote.weight(.semibold)))
+              .multilineTextAlignment(.leading)
               Spacer()
               if rssSearchTask?.state == .running {
                 ProgressView()
@@ -86,7 +92,12 @@ struct SearchResultsView: View {
           .sheet(item: $rssResults) { results in
             UIKitController(
               UINavigationController(
-                rootViewController: BraveNewsAddSourceResultsViewController(dataSource: dataSource, searchedURL: urlQuery, rssFeedLocations: results.locations, sourcesAdded: nil)
+                rootViewController: BraveNewsAddSourceResultsViewController(
+                  dataSource: dataSource,
+                  searchedURL: urlQuery,
+                  rssFeedLocations: results.locations,
+                  sourcesAdded: nil
+                )
               )
             )
           }
@@ -104,15 +115,20 @@ struct SearchResultsView: View {
     }
     .listStyle(.insetGrouped)
     .listBackgroundColor(Color(.braveGroupedBackground))
-    .overlay(Group {
-      if results.isEmpty, urlQuery == nil {
-        Text(Strings.BraveNews.noResultsFound)
-          .foregroundColor(Color(.secondaryBraveLabel))
+    .overlay(
+      Group {
+        if results.isEmpty, urlQuery == nil {
+          Text(Strings.BraveNews.noResultsFound)
+            .foregroundColor(Color(.secondaryBraveLabel))
+        }
       }
-    })
+    )
   }
-  
-  private func downloadPageData(for url: URL, _ completion: @escaping (Result<[RSSFeedLocation], FindFeedsError>) -> Void) {
+
+  private func downloadPageData(
+    for url: URL,
+    _ completion: @escaping (Result<[RSSFeedLocation], FindFeedsError>) -> Void
+  ) {
     let session: URLSession = {
       let configuration = URLSessionConfiguration.ephemeral
       configuration.timeoutIntervalForRequest = 5
@@ -125,13 +141,13 @@ struct SearchResultsView: View {
         return
       }
       guard let data = data,
-            let root = try? HTMLDocument(data: data),
-            let url = response?.url
+        let root = try? HTMLDocument(data: data),
+        let url = response?.url
       else {
         completion(.failure(.invalidData))
         return
       }
-      
+
       // Check if `data` is actually an RSS feed
       if case .success(let feed) = FeedParser(data: data).parse() {
         // User provided a direct feed
@@ -147,36 +163,38 @@ struct SearchResultsView: View {
         completion(.success([.init(title: title, url: url)]))
         return
       }
-      
+
       // Check if `data` is actually an OPML list
       if let opml = OPMLParser.parse(data: data), !opml.outlines.isEmpty {
         let locations = opml.outlines.compactMap(self.rssLocationFromOPMLOutline)
         completion(locations.isEmpty ? .failure(.noFeedsFound) : .success(locations))
         return
       }
-      
+
       // Ensure page is reloaded to final landing page before looking for
       // favicons
       var reloadUrl: URL?
       for meta in root.xpath("//head/meta") {
         if let refresh = meta["http-equiv"]?.lowercased(), refresh == "refresh",
-           let content = meta["content"],
-           let index = content.range(of: "URL="),
-           let url = NSURL(string: String(content.suffix(from: index.upperBound))) {
+          let content = meta["content"],
+          let index = content.range(of: "URL="),
+          let url = NSURL(string: String(content.suffix(from: index.upperBound)))
+        {
           reloadUrl = url as URL
         }
       }
-      
+
       if let url = reloadUrl {
         self.downloadPageData(for: url, completion)
         return
       }
-      
+
       var feeds: [RSSFeedLocation] = []
-      let xpath = "//head//link[contains(@type, 'application/rss+xml') or contains(@type, 'application/atom+xml') or contains(@type, 'application/json')]"
+      let xpath =
+        "//head//link[contains(@type, 'application/rss+xml') or contains(@type, 'application/atom+xml') or contains(@type, 'application/json')]"
       for link in root.xpath(xpath) {
         guard let href = link["href"], let url = URL(string: href, relativeTo: url),
-              url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+          url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
         else {
           continue
         }
@@ -190,12 +208,12 @@ struct SearchResultsView: View {
     }
     rssSearchTask?.resume()
   }
-  
+
   private func rssLocationFromOPMLOutline(_ outline: OPML.Outline) -> RSSFeedLocation? {
     guard let url = outline.xmlUrl?.asURL else { return nil }
     return .init(title: outline.text, url: url)
   }
-  
+
   private struct RSSSearchResults: Identifiable {
     var locations: [RSSFeedLocation]
     var id: String {

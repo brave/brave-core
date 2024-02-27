@@ -1,14 +1,14 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import Data
 import FeedKit
+import Foundation
 import Fuzi
-import Shared
 import Growth
+import Shared
 import SwiftUI
 
 public struct RSSFeedLocation: Hashable, Identifiable {
@@ -18,7 +18,7 @@ public struct RSSFeedLocation: Hashable, Identifiable {
   public var id: String {
     url.absoluteString
   }
-  
+
   public init(title: String? = nil, url: URL) {
     self.title = title
     self.url = url
@@ -55,7 +55,8 @@ extension FeedDataSource {
     }
     RSSFeedSource.insert(
       title: location.title,
-      feedUrl: feedUrl)
+      feedUrl: feedUrl
+    )
     setNeedsReloadCards()
     recordTotalExternalFeedsP3A()
     recordExternalFeedCountChange(1)
@@ -83,7 +84,7 @@ extension FeedDataSource {
   public func isRSSFeedEnabled(_ location: RSSFeedLocation) -> Bool {
     FeedSourceOverride.get(fromId: location.id)?.enabled ?? true
   }
-  
+
   @MainActor public func isFollowingRSSFeedBinding(feed: RSSFeedLocation) -> Binding<Bool> {
     .init {
       self.rssFeedLocations.contains(where: { $0.id == feed.id })
@@ -97,11 +98,11 @@ extension FeedDataSource {
       objectWillChange.send()
     }
   }
-  
+
   public func updateRSSFeed(feed: RSSFeedLocation, title: String) {
     RSSFeedSource.update(feedUrl: feed.id, title: title)
   }
-  
+
   @MainActor public func purgeDisabledRSSLocations() {
     // News 2.0 no longer allows keeping RSS feeds, so this will attempt to remove any RSS feeds the user has
     // specifically disabled
@@ -114,9 +115,9 @@ extension FeedDataSource {
       removeRSSFeed(.init(title: nil, url: url))
     }
   }
-  
+
   // MARK: - P3A
-  
+
   func recordTotalExternalFeedsP3A() {
     // Q49 How many external feeds do you have in total?
     Task { @MainActor in
@@ -127,7 +128,7 @@ extension FeedDataSource {
       )
     }
   }
-  
+
   func recordExternalFeedCountChange(_ delta: Int) {
     // Q48 How many external feeds did you add last week?
     var storage = P3ATimedStorage<Int>.rssFeedCountStorage
@@ -144,7 +145,8 @@ extension FeedItem.Content {
   private static func imageURL(from document: HTMLDocument, releativeTo baseURL: URL?) -> URL? {
     if let src = document.firstChild(xpath: "//img[@src]")?.attr("src"),
       let url = URL(string: src, relativeTo: baseURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    {
       return url
     }
     return nil
@@ -172,7 +174,8 @@ extension FeedItem.Content {
     var description = ""
     var imageURL: URL?
     if let image = feedItem.image, let url = URL(string: image, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    {
       imageURL = url
     }
     if let text = feedItem.contentText {
@@ -180,7 +183,8 @@ extension FeedItem.Content {
     }
     if let html = feedItem.contentHtml, let doc = try? HTMLDocument(string: html) {
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
+      {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {
@@ -207,7 +211,8 @@ extension FeedItem.Content {
     // JSON RSS which have `url` and `external_url` fields and are more concise.
     func entryURL(from urls: [URL], feedURL: URL) -> URL? {
       guard let feedURLDomain = feedURL.baseDomain,
-            let postURL = urls.first(where: { $0.baseDomain == feedURLDomain }) else {
+        let postURL = urls.first(where: { $0.baseDomain == feedURLDomain })
+      else {
         return urls.first
       }
       return postURL
@@ -224,17 +229,20 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    {
       imageURL = url
     }
     if feedItem.summary?.attributes?.type == "text" {
       description = feedItem.summary?.value ?? ""
     } else if feedItem.content?.attributes?.type == "html",
       let html = feedItem.content?.value,
-      let doc = try? HTMLDocument(string: html) {
+      let doc = try? HTMLDocument(string: html)
+    {
       // Find one in description?
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
+      {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {
@@ -267,12 +275,14 @@ extension FeedItem.Content {
     var imageURL: URL?
     if let thumbnail = feedItem.media?.mediaThumbnails?.first?.attributes?.url,
       let url = URL(string: thumbnail, relativeTo: location.url.domainURL),
-      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url) {
+      url.isWebPage(includeDataURIs: false), !InternalURL.isValid(url: url)
+    {
       imageURL = url
     }
     if let html = feedItem.description, let doc = try? HTMLDocument(string: html) {
       if imageURL == nil,
-        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL) {
+        let imageURLFromHTML = Self.imageURL(from: doc, releativeTo: location.url.domainURL)
+      {
         imageURL = imageURLFromHTML
       }
       if description.isEmpty, let text = Self.descriptionText(from: doc) {
@@ -306,7 +316,14 @@ extension FeedItem.Source {
   init?(from feed: FeedKit.Feed, location: RSSFeedLocation) {
     let id = location.id
     guard let title = feed.title else { return nil }
-    self.init(id: id, isDefault: true, category: "", name: title, isUserSource: true, destinationDomains: [])
+    self.init(
+      id: id,
+      isDefault: true,
+      category: "",
+      name: title,
+      isUserSource: true,
+      destinationDomains: []
+    )
   }
 }
 
@@ -324,5 +341,7 @@ extension Feed {
 }
 
 extension P3ATimedStorage where Value == Int {
-  fileprivate static var rssFeedCountStorage: Self { .init(name: "rss-feeds-added", lifetimeInDays: 7) }
+  fileprivate static var rssFeedCountStorage: Self {
+    .init(name: "rss-feeds-added", lifetimeInDays: 7)
+  }
 }

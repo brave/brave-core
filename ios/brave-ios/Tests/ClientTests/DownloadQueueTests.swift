@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import XCTest
 
@@ -11,7 +11,7 @@ class DownloadQueueTests: XCTestCase {
 
   func test_enqueue_whenItHasDownloads_sendsCorrectMessage() {
     let (sut, delegate) = makeSUT()
-    let download = DownloadSpy()    
+    let download = DownloadSpy()
     sut.downloads = [Download(), Download()]
 
     sut.enqueue(download)
@@ -125,9 +125,14 @@ class DownloadQueueTests: XCTestCase {
     sut.download(download, didDownloadBytes: 1000)
     sut.download(download, didDownloadBytes: 1000)
 
-    XCTAssertEqual(delegate.receivedMessages, [.didDownloadCombinedBytes(bytes: 1000),
-                                               .didDownloadCombinedBytes(bytes: 2000),
-                                               .didDownloadCombinedBytes(bytes: 3000)])
+    XCTAssertEqual(
+      delegate.receivedMessages,
+      [
+        .didDownloadCombinedBytes(bytes: 1000),
+        .didDownloadCombinedBytes(bytes: 2000),
+        .didDownloadCombinedBytes(bytes: 3000),
+      ]
+    )
   }
 
   func test_downloadDidFinishDownloadingTo_whenDownloadsAreEmpty_doNothing() {
@@ -173,8 +178,13 @@ class DownloadQueueTests: XCTestCase {
     let location = URL(string: "https://some-location")!
     sut.download(download, didFinishDownloadingTo: location)
 
-    XCTAssertEqual(delegate.receivedMessages, [.didFinishDownloadingTo(location: location),
-                                               .didCompleteWithError(error: nil)])
+    XCTAssertEqual(
+      delegate.receivedMessages,
+      [
+        .didFinishDownloadingTo(location: location),
+        .didCompleteWithError(error: nil),
+      ]
+    )
   }
 }
 
@@ -189,30 +199,30 @@ private func makeSUT() -> (sut: DownloadQueue, delegate: DownloadQueueDelegateSp
 }
 
 private class DownloadSpy: Download {
-    enum Message {
-      case resume
-      case cancel
-      case pause
-    }
+  enum Message {
+    case resume
+    case cancel
+    case pause
+  }
 
-    var receivedMessages: [Message] = []
+  var receivedMessages: [Message] = []
 
-    override func resume() {
-      receivedMessages.append(.resume)
-    }
-    
-    override func cancel() {
-      receivedMessages.append(.cancel)
-    }
+  override func resume() {
+    receivedMessages.append(.resume)
+  }
 
-    override func pause() {
-      receivedMessages.append(.pause)
-    }
+  override func cancel() {
+    receivedMessages.append(.cancel)
+  }
+
+  override func pause() {
+    receivedMessages.append(.pause)
+  }
 }
 
 private class DownloadQueueDelegateSpy: DownloadQueueDelegate {
   enum DownloadQueueError: Error {
-      case downloadError
+    case downloadError
   }
 
   enum Message: Equatable {
@@ -228,11 +238,19 @@ private class DownloadQueueDelegateSpy: DownloadQueueDelegate {
     receivedMessages.append(.didStartDownload)
   }
 
-  func downloadQueue(_ downloadQueue: DownloadQueue, didDownloadCombinedBytes combinedBytesDownloaded: Int64, combinedTotalBytesExpected: Int64?) {
+  func downloadQueue(
+    _ downloadQueue: DownloadQueue,
+    didDownloadCombinedBytes combinedBytesDownloaded: Int64,
+    combinedTotalBytesExpected: Int64?
+  ) {
     receivedMessages.append(.didDownloadCombinedBytes(bytes: combinedBytesDownloaded))
   }
 
-  func downloadQueue(_ downloadQueue: DownloadQueue, download: Download, didFinishDownloadingTo location: URL) {
+  func downloadQueue(
+    _ downloadQueue: DownloadQueue,
+    download: Download,
+    didFinishDownloadingTo location: URL
+  ) {
     receivedMessages.append(.didFinishDownloadingTo(location: location))
   }
 

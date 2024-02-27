@@ -1,13 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import BraveCore
+import UIKit
 
 // MARK: - Local Resource URL Extensions
 extension URL {
-  
+
   public func allocatedFileSize() -> Int64 {
     // First try to get the total allocated size and in failing that, get the file allocated size
     return getResourceLongLongForKey(URLResourceKey.totalFileAllocatedSizeKey.rawValue)
@@ -50,11 +50,11 @@ extension URL {
   public func lastComponentIsPrefixedBy(_ prefix: String) -> Bool {
     return (pathComponents.last?.hasPrefix(prefix) ?? false)
   }
-  
+
   public func shouldRequestBeOpenedAsPopup() -> Bool {
     // List of schemes that are allowed to be opened in new tabs.
     let schemesAllowedToBeOpenedAsPopups = ["http", "https", "javascript", "about", "whatsapp"]
-    
+
     // Treat `window.open("")` the same as `window.open("about:blank")`.
     if absoluteString.isEmpty {
       return true
@@ -69,7 +69,17 @@ extension URL {
 }
 
 // The list of permanent URI schemes has been taken from http://www.iana.org/assignments/uri-schemes/uri-schemes.xhtml
-private let permanentURISchemes = ["aaa", "aaas", "about", "acap", "acct", "cap", "cid", "coap", "coaps", "crid", "data", "dav", "dict", "dns", "example", "file", "ftp", "geo", "go", "gopher", "h323", "http", "https", "iax", "icap", "im", "imap", "info", "ipp", "ipps", "iris", "iris.beep", "iris.lwz", "iris.xpc", "iris.xpcs", "itms-apps", "itms-appss", "itmss", "jabber", "javascript", "ldap", "mailto", "mid", "msrp", "msrps", "mtqp", "mupdate", "news", "nfs", "ni", "nih", "nntp", "opaquelocktoken", "pkcs11", "pop", "pres", "reload", "rtsp", "rtsps", "rtspu", "service", "session", "shttp", "sieve", "sip", "sips", "sms", "snmp", "soap.beep", "soap.beeps", "stun", "stuns", "tag", "tel", "telnet", "tftp", "thismessage", "tip", "tn3270", "turn", "turns", "tv", "urn", "vemmi", "vnc", "ws", "wss", "xcon", "xcon-userid", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "z39.50r", "z39.50s"]
+private let permanentURISchemes = [
+  "aaa", "aaas", "about", "acap", "acct", "cap", "cid", "coap", "coaps", "crid", "data", "dav",
+  "dict", "dns", "example", "file", "ftp", "geo", "go", "gopher", "h323", "http", "https", "iax",
+  "icap", "im", "imap", "info", "ipp", "ipps", "iris", "iris.beep", "iris.lwz", "iris.xpc",
+  "iris.xpcs", "itms-apps", "itms-appss", "itmss", "jabber", "javascript", "ldap", "mailto", "mid",
+  "msrp", "msrps", "mtqp", "mupdate", "news", "nfs", "ni", "nih", "nntp", "opaquelocktoken",
+  "pkcs11", "pop", "pres", "reload", "rtsp", "rtsps", "rtspu", "service", "session", "shttp",
+  "sieve", "sip", "sips", "sms", "snmp", "soap.beep", "soap.beeps", "stun", "stuns", "tag", "tel",
+  "telnet", "tftp", "thismessage", "tip", "tn3270", "turn", "turns", "tv", "urn", "vemmi", "vnc",
+  "ws", "wss", "xcon", "xcon-userid", "xmlrpc.beep", "xmlrpc.beeps", "xmpp", "z39.50r", "z39.50s",
+]
 
 private let ignoredSchemes = ["data"]
 private let supportedSchemes = permanentURISchemes.filter { !ignoredSchemes.contains($0) }
@@ -99,11 +109,9 @@ extension URL {
     return results
   }
 
-  /**
-     * Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
-     *
-     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => foo
-     **/
+  /// Returns the second level domain (SLD) of a url. It removes any subdomain/TLD
+  ///
+  /// E.g., https://m.foo.com/bar/baz?noo=abc#123  => foo
   public var hostSLD: String {
     guard let publicSuffix = self.publicSuffix, let baseDomain = self.baseDomain else {
       return self.normalizedHost() ?? self.absoluteString
@@ -118,7 +126,9 @@ extension URL {
   public var absoluteDisplayString: String {
     var urlString = self.absoluteString
     // For http URLs, get rid of the trailing slash if the path is empty or '/'
-    if (self.scheme == "http" || self.scheme == "https") && (self.path == "/") && urlString.hasSuffix("/") {
+    if (self.scheme == "http" || self.scheme == "https") && (self.path == "/")
+      && urlString.hasSuffix("/")
+    {
       urlString = String(urlString[..<urlString.index(urlString.endIndex, offsetBy: -1)])
     }
     // If it's basic http, strip out the string but leave anything else in
@@ -145,8 +155,10 @@ extension URL {
     if let internalUrl = InternalURL(self), internalUrl.isErrorPage {
       return internalUrl.originalURLFromErrorPage?.displayURL
     }
-    
-    if let internalUrl = InternalURL(self), internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage {
+
+    if let internalUrl = InternalURL(self),
+      internalUrl.isSessionRestore || internalUrl.isWeb3URL || internalUrl.isBlockedPage
+    {
       return internalUrl.extractedUrlParam?.displayURL
     }
 
@@ -166,10 +178,10 @@ extension URL {
     guard let scheme = self.scheme else { return absoluteString }
     return absoluteString.replacingOccurrences(of: "\(scheme)://", with: "")
   }
-  
+
   public var schemelessAbsoluteDisplayString: String {
     var urlString = withoutWWW.schemelessAbsoluteString
-    
+
     // For http URLs, get rid of the trailing slash if the path is empty or '/'
     if self.path == "/", urlString.hasSuffix("/") {
       urlString = String(urlString[..<urlString.index(urlString.endIndex, offsetBy: -1)])
@@ -178,13 +190,10 @@ extension URL {
     return urlString
   }
 
-  /**
-    Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix
-    with the base private domain attached to the front. For example, for the URL www.bbc.co.uk, the base domain
-    would be bbc.co.uk. The base domain includes the public suffix (co.uk) + one level down (bbc).
-
-    :returns: The base domain string for the given host name.
-    */
+  /// Returns the base domain from a given hostname. The base domain name is defined as the public domain suffix
+  /// with the base private domain attached to the front. For example, for the URL www.bbc.co.uk, the base domain
+  /// would be bbc.co.uk. The base domain includes the public suffix (co.uk) + one level down (bbc).
+  /// - returns The base domain string for the given host name.
   public var baseDomain: String? {
     guard !isIPv6, let host = host else { return nil }
 
@@ -192,18 +201,16 @@ extension URL {
     if !host.contains(".") {
       return host
     }
-    
+
     let registry = (self as NSURL).domainAndRegistry
     return registry.isEmpty ? nil : registry
   }
 
-  /**
-     * Returns just the domain, but with the same scheme.
-     *
-     * E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com
-     *
-     * Any failure? Return this URL.
-     */
+  /// Returns just the domain, but with the same scheme.
+  ///
+  /// E.g., https://m.foo.com/bar/baz?noo=abc#123  => https://foo.com
+  ///
+  /// Any failure? Return this URL.
   public var domainURL: URL {
     if let normalized = self.normalizedHost() {
       // Use URLComponents instead of URL since the former correctly preserves
@@ -217,7 +224,7 @@ extension URL {
 
     return self
   }
-  
+
   public var withoutFragment: URL {
     var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
     components?.fragment = nil
@@ -226,7 +233,8 @@ extension URL {
 
   public var withoutWWW: URL {
     if let normalized = self.normalizedHost(stripWWWSubdomainOnly: true),
-      var components = URLComponents(url: self, resolvingAgainstBaseURL: false) {
+      var components = URLComponents(url: self, resolvingAgainstBaseURL: false)
+    {
       components.scheme = self.scheme
       components.port = self.port
       components.host = normalized
@@ -239,7 +247,9 @@ extension URL {
   public func normalizedHost(stripWWWSubdomainOnly: Bool = false) -> String? {
     // Use components.host instead of self.host since the former correctly preserves
     // brackets for IPv6 hosts, whereas the latter strips them.
-    guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false), var host = components.host, host != "" else {
+    guard let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+      var host = components.host, host != ""
+    else {
       return nil
     }
 
@@ -252,12 +262,9 @@ extension URL {
     return host
   }
 
-  /**
-    Returns the public portion of the host name determined by the public suffix list found here: https://publicsuffix.org/list/.
-    For example for the url www.bbc.co.uk, based on the entries in the TLD list, the public suffix would return co.uk.
-
-    :returns: The public suffix for within the given hostname.
-    */
+  /// Returns the public portion of the host name determined by the public suffix list found here: https://publicsuffix.org/list/.
+  /// For example for the url www.bbc.co.uk, based on the entries in the TLD list, the public suffix would return co.uk.
+  /// - returns The public suffix for within the given hostname.
   public var publicSuffix: String? {
     let registry = (self as NSURL).registry
     return registry.isEmpty ? nil : registry
@@ -278,7 +285,10 @@ extension URL {
     guard self.isLocal else {
       return false
     }
-    let utilityURLs = ["/\(InternalURL.Path.errorpage.rawValue)", "/\(InternalURL.Path.sessionrestore.rawValue)", "/about/home", "/\(InternalURL.Path.readermode.rawValue)"]
+    let utilityURLs = [
+      "/\(InternalURL.Path.errorpage.rawValue)", "/\(InternalURL.Path.sessionrestore.rawValue)",
+      "/about/home", "/\(InternalURL.Path.readermode.rawValue)",
+    ]
     return utilityURLs.contains { self.path.hasPrefix($0) }
   }
 
@@ -298,10 +308,8 @@ extension URL {
     return host?.contains(":") ?? false
   }
 
-  /**
-     Returns whether the URL's scheme is one of those listed on the official list of URI schemes.
-     This only accepts permanent schemes: historical and provisional schemes are not accepted.
-     */
+  /// Returns whether the URL's scheme is one of those listed on the official list of URI schemes.
+  /// This only accepts permanent schemes: historical and provisional schemes are not accepted.
   public var schemeIsValid: Bool {
     guard let scheme = scheme else { return false }
     return supportedSchemes.contains(scheme.lowercased())
@@ -324,14 +332,21 @@ extension URL {
 
 extension URL {
   public var isReaderModeURL: Bool {
-    let scheme = self.scheme, host = self.host, path = self.path
-    return scheme == InternalURL.scheme && host == InternalURL.host && path == "/\(InternalURL.Path.readermode.rawValue)"
+    let scheme = self.scheme
+    let host = self.host
+    let path = self.path
+    return scheme == InternalURL.scheme && host == InternalURL.host
+      && path == "/\(InternalURL.Path.readermode.rawValue)"
   }
 
   public var decodeReaderModeURL: URL? {
     if self.isReaderModeURL {
-      if let components = URLComponents(url: self, resolvingAgainstBaseURL: false), let queryItems = components.queryItems {
-        if let queryItem = queryItems.first(where: { $0.name == "url" }), let value = queryItem.value {
+      if let components = URLComponents(url: self, resolvingAgainstBaseURL: false),
+        let queryItems = components.queryItems
+      {
+        if let queryItem = queryItems.first(where: { $0.name == "url" }),
+          let value = queryItem.value
+        {
           return URL(string: value)
         }
       }
@@ -340,7 +355,8 @@ extension URL {
   }
 
   public func encodeReaderModeURL(_ baseReaderModeURL: String) -> URL? {
-    if let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
+    if let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+    {
       if let aboutReaderURL = URL(string: "\(baseReaderModeURL)?url=\(encodedURL)") {
         return aboutReaderURL
       }
@@ -352,7 +368,7 @@ extension URL {
 // Helpers to deal with ErrorPage URLs
 
 extension URL {
-  
+
   // Check if the website is a night mode blocked site
   public var isNightModeBlockedURL: Bool {
     guard let host = self.normalizedHostAndPath else {
@@ -360,24 +376,30 @@ extension URL {
     }
 
     /// Site domains that should not inject night mode
-    let majorsiteList = ["twitter", "youtube", "twitch",
-                         "soundcloud", "github", "netflix",
-                         "imdb", "mail.proton"]
-    
-    let searchSiteList = ["search.brave", "google", "qwant",
-                          "startpage", "duckduckgo", "presearch"]
-    
+    let majorsiteList = [
+      "twitter", "youtube", "twitch",
+      "soundcloud", "github", "netflix",
+      "imdb", "mail.proton",
+    ]
+
+    let searchSiteList = [
+      "search.brave", "google", "qwant",
+      "startpage", "duckduckgo", "presearch",
+    ]
+
     let devSiteList = ["macrumors", "9to5mac", "developer.apple"]
-                    
-    let casualSiteList = ["wowhead", "xbox", "thegamer",
-                          "cineplex", "starwars"]
-    
+
+    let casualSiteList = [
+      "wowhead", "xbox", "thegamer",
+      "cineplex", "starwars",
+    ]
+
     let darkModeEnabledSiteList =
       majorsiteList + searchSiteList + devSiteList + casualSiteList
-    
+
     return darkModeEnabledSiteList.contains(where: host.contains)
   }
-  
+
   // Check if the website is search engine
   public var isSearchEngineURL: Bool {
     guard let host = self.normalizedHostAndPath else {
@@ -385,17 +407,19 @@ extension URL {
     }
 
     /// Site domains that is considered as search engine
-    let siteList = ["google", "bing", "duckduckgo",
-                    "ecosia", "qwant", "startpage",
-                    "yandex", "search.brave"]
-    
+    let siteList = [
+      "google", "bing", "duckduckgo",
+      "ecosia", "qwant", "startpage",
+      "yandex", "search.brave",
+    ]
+
     return siteList.contains(where: host.contains)
   }
 
   // Check if the website is supporting showing Add To playlist toast
   public var isPlaylistSupportedSiteURL: Bool {
     let urlHost = self.host ?? self.hostSLD
-    
+
     var siteList = Set<String>([
       "youtube.com", "vimeo.com", "twitch.tv",
       "soundcloud.com", "dailymotion.com", "udemy.com",
@@ -406,7 +430,7 @@ extension URL {
       "lbry.tv", "luminarypodcasts.com", "marthastewart.com",
       "bbcgoodfood.com", "bt.com", "skysports.com", "sky.co.nz",
       "kayosports.com.au", "listennotes.com", "vid.puffyan.us",
-      "twitter.com", "x.com"
+      "twitter.com", "x.com",
     ])
 
     /// Additional sites for Japanese locale
@@ -421,14 +445,14 @@ extension URL {
         "asuka-academy.com", "chugakujuken.com", "ic0.tv",
         "aoi-zemi.com", "prog-8.com", "jmooc.jp", "schoo.jp",
         "nlp.netlearning.co.jp", "gacco.org", "dic.okedou.app",
-        "okedou.app", "sports.yahoo.co.jp", "soccer.skyperfectv.co.jp"
+        "okedou.app", "sports.yahoo.co.jp", "soccer.skyperfectv.co.jp",
       ])
       siteList.formUnion(japanList)
     }
 
     return siteList.contains(where: urlHost.contains)
   }
-  
+
   public var isPlaylistBlockedSiteURL: Bool {
     let urlHost = self.host ?? self.hostSLD
     return urlHost == "talk.brave.com"
@@ -437,7 +461,8 @@ extension URL {
   public func uniquePathForFilename(_ filename: String) throws -> URL {
     let basePath = self.appendingPathComponent(filename)
     let fileExtension = basePath.pathExtension
-    let filenameWithoutExtension = !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
+    let filenameWithoutExtension =
+      !fileExtension.isEmpty ? String(filename.dropLast(fileExtension.count + 1)) : filename
 
     var proposedPath = basePath
     var count = 0
@@ -446,7 +471,8 @@ extension URL {
       count += 1
 
       let proposedFilenameWithoutExtension = "\(filenameWithoutExtension) (\(count))"
-      proposedPath = self.appendingPathComponent(proposedFilenameWithoutExtension).appendingPathExtension(fileExtension)
+      proposedPath = self.appendingPathComponent(proposedFilenameWithoutExtension)
+        .appendingPathExtension(fileExtension)
     }
 
     return proposedPath
@@ -481,17 +507,19 @@ extension String {
   }
 
   public var bookmarkletURL: URL? {
-    if self.isBookmarklet, let escaped = self.addingPercentEncoding(withAllowedCharacters: .URLAllowed) {
+    if self.isBookmarklet,
+      let escaped = self.addingPercentEncoding(withAllowedCharacters: .urlAllowed)
+    {
       return URL(string: escaped)
     }
     return nil
   }
-  
+
   public func removeSchemeFromURLString(_ scheme: String?) -> String {
     guard let scheme = scheme else {
       return self
     }
-    
+
     return replacingOccurrences(of: "\(scheme)://", with: "")
   }
 }
@@ -503,15 +531,20 @@ public struct InternalURL {
   public static let scheme = "internal"
   public static let host = "local"
   public static let baseUrl = "\(scheme)://\(host)"
-  
+
   public enum Path: String {
     case errorpage
     case sessionrestore
     case readermode = "reader-mode"
     case blocked
-    
+
     func matches(_ string: String) -> Bool {
-      return string.range(of: "/?\(self.rawValue)", options: .regularExpression, range: nil, locale: nil) != nil
+      return string.range(
+        of: "/?\(self.rawValue)",
+        options: .regularExpression,
+        range: nil,
+        locale: nil
+      ) != nil
     }
   }
 
@@ -522,7 +555,8 @@ public struct InternalURL {
   }
 
   public let url: URL
-  private let sessionRestoreHistoryItemBaseUrl = "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url="
+  private let sessionRestoreHistoryItemBaseUrl =
+    "\(InternalURL.baseUrl)/\(InternalURL.Path.sessionrestore.rawValue)?url="
 
   public static func isValid(url: URL) -> Bool {
     return InternalURL.scheme == url.scheme && InternalURL.host == url.host
@@ -541,7 +575,9 @@ public struct InternalURL {
   }
 
   public var stripAuthorization: String {
-    guard var components = URLComponents(string: url.absoluteString), let items = components.queryItems else { return url.absoluteString }
+    guard var components = URLComponents(string: url.absoluteString),
+      let items = components.queryItems
+    else { return url.absoluteString }
     components.queryItems = items.filter { !Param.uuidkey.matches($0.name) }
     if let items = components.queryItems, items.count == 0 {
       components.queryItems = nil  // This cleans up the url to not end with a '?'
@@ -558,7 +594,9 @@ public struct InternalURL {
     if var item = components.queryItems?.first(where: { Param.uuidkey.matches($0.name) }) {
       item.value = InternalURL.uuid
     } else {
-      components.queryItems?.append(URLQueryItem(name: Param.uuidkey.rawValue, value: InternalURL.uuid))
+      components.queryItems?.append(
+        URLQueryItem(name: Param.uuidkey.rawValue, value: InternalURL.uuid)
+      )
     }
     return components.url
   }
@@ -569,14 +607,16 @@ public struct InternalURL {
 
   public var isErrorPage: Bool {
     // Error pages can be nested in session restore URLs, and session restore handler will forward them to the error page handler
-    let path = url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl) ? extractedUrlParam?.path : url.path
+    let path =
+      url.absoluteString.hasPrefix(sessionRestoreHistoryItemBaseUrl)
+      ? extractedUrlParam?.path : url.path
     return InternalURL.Path.errorpage.matches(path ?? "")
   }
-  
+
   public var isBlockedPage: Bool {
     return InternalURL.Path.blocked.matches(url.path)
   }
-  
+
   public var isReaderModePage: Bool {
     return InternalURL.Path.readermode.matches(url.path)
   }
@@ -621,24 +661,24 @@ public struct InternalURL {
     }
     return nil
   }
-  
+
   public var isWeb3URL: Bool {
     return web3Component != nil
   }
-  
+
   /// Return the path after "web3/" in the URI.
   public var web3Component: String? {
     let web3Path = "/web3/"
     guard let url = NSURL(idnString: stripAuthorization) as? URL else {
       return nil
     }
-    
+
     if url.path.hasPrefix(web3Path) {
       return String(url.path.dropFirst(web3Path.count))
     }
     return nil
   }
-  
+
   public var displayURL: URL? {
     if isErrorPage {
       return originalURLFromErrorPage

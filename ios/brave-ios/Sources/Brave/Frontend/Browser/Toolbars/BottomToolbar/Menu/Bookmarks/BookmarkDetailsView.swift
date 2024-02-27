@@ -1,11 +1,11 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import SnapKit
-import Shared
 import Data
+import Shared
+import SnapKit
+import UIKit
 
 class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
 
@@ -107,6 +107,9 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
   }
 
   private func validateCodeFields() -> Bool {
-    return BookmarkValidation.validateBookmarklet(title: titleTextField.text, url: urlTextField?.text)
+    return BookmarkValidation.validateBookmarklet(
+      title: titleTextField.text,
+      url: urlTextField?.text
+    )
   }
 }

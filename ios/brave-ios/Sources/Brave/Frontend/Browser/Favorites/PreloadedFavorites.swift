@@ -1,8 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public License, v. 2.0. If a copy of the MPL was not distributed with this file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import Foundation
 import Shared
-import BraveShared
 import os.log
 
 typealias FavoriteSite = (url: URL, title: String)
@@ -64,8 +66,9 @@ struct PreloadedFavorites {
 
     var preloadedFavorites = [FavoriteSite]()
 
-    // Locale consists of language and region, region makes more sense when it comes to setting preloaded websites imo.
-    let region = Locale.current.regionCode ?? ""  // Empty string will go to the default switch case
+    // Locale consists of language and region, region makes more sense when it comes to setting
+    // preloaded websites imo. Empty string will go to the default switch case
+    let region = Locale.current.regionCode ?? ""
     Logger.module.debug("Preloading favorites, current region: \(region)")
 
     switch region {

@@ -1,7 +1,7 @@
 // Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 
@@ -9,8 +9,18 @@ import BraveCore
 
 class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
 
-  var _reportProvider: ((_ providerType: BraveWallet.JSProviderType, _ coinType: BraveWallet.CoinType, _ allowProviderOverwrite: Bool) -> Void)?
-  func report(_ providerType: BraveWallet.JSProviderType, coinType: BraveWallet.CoinType, allowProviderOverwrite: Bool) {
+  var _reportProvider:
+    (
+      (
+        _ providerType: BraveWallet.JSProviderType, _ coinType: BraveWallet.CoinType,
+        _ allowProviderOverwrite: Bool
+      ) -> Void
+    )?
+  func report(
+    _ providerType: BraveWallet.JSProviderType,
+    coinType: BraveWallet.CoinType,
+    allowProviderOverwrite: Bool
+  ) {
     _reportProvider?(providerType, coinType, allowProviderOverwrite)
   }
 

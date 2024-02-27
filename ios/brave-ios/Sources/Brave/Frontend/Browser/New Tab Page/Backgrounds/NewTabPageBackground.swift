@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import BraveUI
 import Foundation
 import Preferences
-import BraveUI
 import UIKit
-import BraveCore
 
 /// The current background for a given New Tab Page.
 ///
@@ -46,7 +46,7 @@ class NewTabPageBackground: PreferencesObserver {
     Preferences.NewTabPage.backgroundImages.observe(from: self)
     Preferences.NewTabPage.backgroundSponsoredImages.observe(from: self)
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
-    
+
     recordSponsoredImagesEnabledP3A()
   }
 
@@ -61,18 +61,21 @@ class NewTabPageBackground: PreferencesObserver {
     // cause sponsored images to also be toggled at the same time
     timer?.invalidate()
     timer = Timer.scheduledTimer(
-      withTimeInterval: 0.25, repeats: false,
+      withTimeInterval: 0.25,
+      repeats: false,
       block: { [weak self] _ in
         guard let self = self else { return }
         self.currentBackground = self.dataSource.newBackground()
         self.recordSponsoredImagesEnabledP3A()
-      })
+      }
+    )
   }
-  
+
   private func recordSponsoredImagesEnabledP3A() {
     // Q26 Is the sponsored new tab page option enabled?
-    let isSIEnabled = Preferences.NewTabPage.backgroundImages.value &&
-      Preferences.NewTabPage.backgroundSponsoredImages.value
+    let isSIEnabled =
+      Preferences.NewTabPage.backgroundImages.value
+      && Preferences.NewTabPage.backgroundSponsoredImages.value
     UmaHistogramBoolean("Brave.NTP.SponsoredImagesEnabled", isSIEnabled)
   }
 }

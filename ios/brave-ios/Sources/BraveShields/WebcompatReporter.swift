@@ -3,10 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import Foundation
 import Shared
 import os.log
-import BraveCore
 
 public class WebcompatReporter {
   static let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "WebcompatReporter")
@@ -32,13 +32,19 @@ public class WebcompatReporter {
     let isVPNEnabled: Bool
 
     var domain: String? {
-      return cleanedURL.normalizedHost() != nil ? cleanedURL.domainURL.absoluteString : cleanedURL.baseDomain
+      return cleanedURL.normalizedHost() != nil
+        ? cleanedURL.domainURL.absoluteString : cleanedURL.baseDomain
     }
 
     public init(
-      cleanedURL: URL, additionalDetails: String? = nil, contactInfo: String? = nil,
-      areShieldsEnabled: Bool, adBlockLevel: ShieldLevel, fingerprintProtectionLevel: ShieldLevel,
-      adBlockListTitles: [String], isVPNEnabled: Bool
+      cleanedURL: URL,
+      additionalDetails: String? = nil,
+      contactInfo: String? = nil,
+      areShieldsEnabled: Bool,
+      adBlockLevel: ShieldLevel,
+      fingerprintProtectionLevel: ShieldLevel,
+      adBlockListTitles: [String],
+      isVPNEnabled: Bool
     ) {
       self.cleanedURL = cleanedURL
       self.additionalDetails = additionalDetails
@@ -77,24 +83,35 @@ public class WebcompatReporter {
       // (the full URL) if the URL can't be normalized. If the URL can't be normalized, send only
       // the base domain without scheme.
       guard let domain = report.domain else {
-        throw EncodingError.invalidValue(CodingKeys.domain, EncodingError.Context(
-          codingPath: encoder.codingPath, debugDescription: "Cannot extract `domain` from url"
-        ))
+        throw EncodingError.invalidValue(
+          CodingKeys.domain,
+          EncodingError.Context(
+            codingPath: encoder.codingPath,
+            debugDescription: "Cannot extract `domain` from url"
+          )
+        )
       }
 
       guard let apiKey = apiKey else {
-        throw EncodingError.invalidValue(CodingKeys.apiKey, EncodingError.Context(
-          codingPath: encoder.codingPath, debugDescription: "Missing api_key"
-        ))
+        throw EncodingError.invalidValue(
+          CodingKeys.apiKey,
+          EncodingError.Context(
+            codingPath: encoder.codingPath,
+            debugDescription: "Missing api_key"
+          )
+        )
       }
 
-      var container: KeyedEncodingContainer<CodingKeys> = encoder.container(keyedBy: CodingKeys.self)
+      var container: KeyedEncodingContainer<CodingKeys> = encoder.container(
+        keyedBy: CodingKeys.self
+      )
       try container.encode(domain, forKey: .domain)
       try container.encode(report.cleanedURL.absoluteString, forKey: .url)
       try container.encodeIfPresent(report.additionalDetails, forKey: .additionalDetails)
       try container.encodeIfPresent(report.contactInfo, forKey: .contactInfo)
       try container.encodeIfPresent(languageCode, forKey: .languages)
-      try container.encode(true, forKey: .languageFarblingEnabled) // This is always enabled in iOS web-kit
+      // languageFarblingEnabled is always enabled in iOS WebKit
+      try container.encode(true, forKey: .languageFarblingEnabled)
       try container.encode(report.areShieldsEnabled, forKey: .shieldsEnabled)
       try container.encode(report.isVPNEnabled, forKey: .braveVPNEnabled)
       try container.encode(report.adBlockListTitles.joined(separator: ","), forKey: .adBlockLists)
@@ -170,15 +187,17 @@ public class WebcompatReporter {
         return false
       }
     } catch {
-      Logger.module.error("Failed to setup webcompat request payload: \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to setup webcompat request payload: \(error.localizedDescription)"
+      )
       return false
     }
   }
 }
 
-private extension ShieldLevel {
+extension ShieldLevel {
   /// The value that is sent to the webcompat report server
-  var reportLabel: String {
+  fileprivate var reportLabel: String {
     switch self {
     case .aggressive: return "aggressive"
     case .standard: return "standard"

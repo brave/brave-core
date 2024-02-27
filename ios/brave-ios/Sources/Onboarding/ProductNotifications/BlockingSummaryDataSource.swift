@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
 import Shared
+import UIKit
 import os.log
 
 // MARK: - BlockingSummary
@@ -58,7 +58,7 @@ public class BlockingSummaryDataSource {
 
   public init(with filePath: String? = nil) {
     let path = filePath ?? Bundle.module.path(forResource: "blocking-summary-test", ofType: "json")
- 
+
     blockingSummaryList = fetchBlockingSummaryObjects(with: path)
   }
 
@@ -86,7 +86,9 @@ public class BlockingSummaryDataSource {
     do {
       blockingSummaryList = try JSONDecoder().decode([BlockingSummary].self, from: blockSummaryData)
     } catch {
-      Logger.module.error("Failed to decode blockign summary object from json Data \(error.localizedDescription)")
+      Logger.module.error(
+        "Failed to decode blockign summary object from json Data \(error.localizedDescription)"
+      )
     }
 
     return blockingSummaryList

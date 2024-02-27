@@ -32,8 +32,8 @@ struct BraveTextInputStyleModifier: ViewModifier {
   }
 }
 
-public extension TextEditor {
-  func braveTextEditorStyle() -> some View {
+extension TextEditor {
+  public func braveTextEditorStyle() -> some View {
     return self.modifier(BraveTextInputStyleModifier())
   }
 }

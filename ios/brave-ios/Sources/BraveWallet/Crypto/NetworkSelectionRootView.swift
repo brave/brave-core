@@ -1,14 +1,14 @@
-/* Copyright 2022 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2022 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
-import SwiftUI
 import Preferences
+import SwiftUI
 
 struct NetworkSelectionRootView: View {
-  
+
   var navigationTitle: String
   var selectedNetworks: [BraveWallet.NetworkInfo]
   var allNetworks: [BraveWallet.NetworkInfo]
@@ -16,7 +16,7 @@ struct NetworkSelectionRootView: View {
   var showsSelectAllButton: Bool
   var selectNetwork: (BraveWallet.NetworkInfo) -> Void
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   init(
     navigationTitle: String,
     selectedNetworks: [BraveWallet.NetworkInfo],
@@ -32,7 +32,7 @@ struct NetworkSelectionRootView: View {
     self.showsSelectAllButton = showsSelectAllButton
     self.selectNetwork = selectNetwork
   }
-  
+
   var body: some View {
     ScrollView {
       LazyVStack(spacing: 0) {
@@ -44,7 +44,9 @@ struct NetworkSelectionRootView: View {
           select: selectNetwork
         )
         ForEach(allNetworks.primaryNetworks) { network in
-          Button(action: { selectNetwork(network) }) {
+          Button {
+            selectNetwork(network)
+          } label: {
             NetworkRowView(
               network: network,
               isSelected: selectedNetworks.contains(network)
@@ -52,10 +54,10 @@ struct NetworkSelectionRootView: View {
           }
           .buttonStyle(FadeButtonStyle())
         }
-        
+
         DividerLine()
           .padding(.top, 12)
-        
+
         SelectAllHeaderView(
           title: Strings.Wallet.networkSelectionSecondaryNetworks,
           showsSelectAllButton: showsSelectAllButton,
@@ -64,7 +66,9 @@ struct NetworkSelectionRootView: View {
           select: selectNetwork
         )
         ForEach(allNetworks.secondaryNetworks) { network in
-          Button(action: { selectNetwork(network) }) {
+          Button {
+            selectNetwork(network)
+          } label: {
             NetworkRowView(
               network: network,
               isSelected: selectedNetworks.contains(network)
@@ -72,11 +76,11 @@ struct NetworkSelectionRootView: View {
           }
           .buttonStyle(FadeButtonStyle())
         }
-        
+
         if Preferences.Wallet.showTestNetworks.value && !allNetworks.testNetworks.isEmpty {
           DividerLine()
             .padding(.top, 12)
-          
+
           SelectAllHeaderView(
             title: Strings.Wallet.networkSelectionTestNetworks,
             showsSelectAllButton: showsSelectAllButton,
@@ -85,7 +89,9 @@ struct NetworkSelectionRootView: View {
             select: selectNetwork
           )
           ForEach(allNetworks.testNetworks) { network in
-            Button(action: { selectNetwork(network) }) {
+            Button {
+              selectNetwork(network)
+            } label: {
               NetworkRowView(
                 network: network,
                 isSelected: selectedNetworks.contains(network)
@@ -102,7 +108,9 @@ struct NetworkSelectionRootView: View {
     .toolbar {
       ToolbarItemGroup(placement: .cancellationAction) {
         if showsCancelButton {
-          Button(action: { presentationMode.dismiss() }) {
+          Button {
+            presentationMode.dismiss()
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -122,10 +130,10 @@ struct NetworkSelectionRootView_Previews: PreviewProvider {
         allNetworks: [
           .mockMainnet, .mockSolana,
           .mockPolygon, .mockCelo,
-          .mockGoerli, .mockSolanaTestnet
+          .mockGoerli, .mockSolanaTestnet,
         ],
         selectNetwork: { _ in
-          
+
         }
       )
     }
@@ -139,7 +147,7 @@ private struct NetworkRowView: View {
   var isSelected: Bool
 
   @ScaledMetric private var length: CGFloat = 30
-  
+
   init(
     network: BraveWallet.NetworkInfo,
     isSelected: Bool
@@ -166,7 +174,7 @@ private struct NetworkRowView: View {
         Text(network.chainName)
           .font(.body)
       }
-      .frame(minHeight: length) // maintain height for All Networks row w/o icon
+      .frame(minHeight: length)  // maintain height for All Networks row w/o icon
       Spacer()
       checkmark
     }

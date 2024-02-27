@@ -1,7 +1,7 @@
 // Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 
@@ -16,10 +16,9 @@ class BraveSearchResultAdManager: NSObject {
   private var searchResultAds = [String: BraveAds.SearchResultAdInfo]()
 
   init?(url: URL, rewards: BraveRewards, isPrivateBrowsing: Bool) {
-    if !BraveAds.shouldSupportSearchResultAds() ||
-      !BraveSearchManager.isValidURL(url) ||
-      isPrivateBrowsing ||
-      rewards.isEnabled {
+    if !BraveAds.shouldSupportSearchResultAds() || !BraveSearchManager.isValidURL(url)
+      || isPrivateBrowsing || rewards.isEnabled
+    {
       return nil
     }
 
@@ -31,8 +30,9 @@ class BraveSearchResultAdManager: NSObject {
   }
 
   func triggerSearchResultAdViewedEvent(
-        placementId: String,
-        searchResultAd: BraveAds.SearchResultAdInfo) {
+    placementId: String,
+    searchResultAd: BraveAds.SearchResultAdInfo
+  ) {
     searchResultAds[placementId] = searchResultAd
 
     guard let searchResultAd = searchResultAds[placementId] else {
@@ -42,7 +42,8 @@ class BraveSearchResultAdManager: NSObject {
     rewards.ads.triggerSearchResultAdEvent(
       searchResultAd,
       eventType: .viewed,
-      completion: { _ in })
+      completion: { _ in }
+    )
   }
 
   func maybeTriggerSearchResultAdClickedEvent(_ url: URL) {
@@ -57,15 +58,16 @@ class BraveSearchResultAdManager: NSObject {
     rewards.ads.triggerSearchResultAdEvent(
       searchResultAd,
       eventType: .clicked,
-      completion: { _ in })
+      completion: { _ in }
+    )
   }
 
   private func getPlacementID(_ url: URL) -> String? {
-    if !BraveSearchManager.isValidURL(url) ||
-       url.path != searchResultAdClickedUrlPath {
+    if !BraveSearchManager.isValidURL(url) || url.path != searchResultAdClickedUrlPath {
       return nil
     }
-    guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems else {
+    guard let queryItems = URLComponents(url: url, resolvingAgainstBaseURL: false)?.queryItems
+    else {
       return nil
     }
     return queryItems.first(where: { $0.name == placementId })?.value

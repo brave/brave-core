@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import Data
+import Preferences
 import Shared
 import Storage
-import Data
-import BraveCore
-import Preferences
 
 /// Shared data source for the SearchViewController and the URLBar domain completion.
 /// Since both of these use the same query, we can perform the query once and dispatch the results.
@@ -16,7 +16,11 @@ class SearchLoader: Loader<[Site], SearchViewController> {
   var autocompleteSuggestionHandler: ((String) -> Void)?
 
   init(historyAPI: BraveHistoryAPI, bookmarkManager: BookmarkManager, tabManager: TabManager) {
-    frequencyQuery = FrequencyQuery(historyAPI: historyAPI, bookmarkManager: bookmarkManager, tabManager: tabManager)
+    frequencyQuery = FrequencyQuery(
+      historyAPI: historyAPI,
+      bookmarkManager: bookmarkManager,
+      tabManager: tabManager
+    )
   }
 
   var query: String = "" {
@@ -28,7 +32,7 @@ class SearchLoader: Loader<[Site], SearchViewController> {
         load([])
         return
       }
-      
+
       if query.isEmpty {
         load([])
         return
@@ -65,8 +69,13 @@ class SearchLoader: Loader<[Site], SearchViewController> {
     // Extract the pre-path substring from the URL. This should be more efficient than parsing via
     // NSURL since we need to only look at the beginning of the string.
     // Note that we won't match non-HTTP(S) URLs.
-    guard let urlBeforePathRegex = try? NSRegularExpression(pattern: "^https?://([^/]+)/", options: []),
-      let match = urlBeforePathRegex.firstMatch(in: url, options: [], range: NSRange(location: 0, length: url.count))
+    guard
+      let urlBeforePathRegex = try? NSRegularExpression(pattern: "^https?://([^/]+)/", options: []),
+      let match = urlBeforePathRegex.firstMatch(
+        in: url,
+        options: [],
+        range: NSRange(location: 0, length: url.count)
+      )
     else {
       return nil
     }
@@ -91,10 +100,17 @@ class SearchLoader: Loader<[Site], SearchViewController> {
 
   fileprivate func completionForDomain(_ domain: String) -> String? {
     let domainWithDotPrefix: String = ".\(domain)"
-    if let range = domainWithDotPrefix.range(of: ".\(query)", options: .caseInsensitive, range: nil, locale: nil) {
+    if let range = domainWithDotPrefix.range(
+      of: ".\(query)",
+      options: .caseInsensitive,
+      range: nil,
+      locale: nil
+    ) {
       // We don't actually want to match the top-level domain ("com", "org", etc.) by itself, so
       // so make sure the result includes at least one ".".
-      let matchedDomain = String(domainWithDotPrefix.suffix(from: domainWithDotPrefix.index(range.lowerBound, offsetBy: 1)))
+      let matchedDomain = String(
+        domainWithDotPrefix.suffix(from: domainWithDotPrefix.index(range.lowerBound, offsetBy: 1))
+      )
       if matchedDomain.contains(".") {
         return matchedDomain
       }

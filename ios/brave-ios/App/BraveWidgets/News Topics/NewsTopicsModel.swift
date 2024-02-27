@@ -3,15 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CodableHelpers
+import Foundation
 import OrderedCollections
 import UIKit
 
 /// Handles fetching Brave News Topics for widgets
 struct NewsTopicsModel {
   var fetchNewsTopics: @Sendable () async -> [NewsTopic]
-  var fetchImageThumbnailsForTopics: @Sendable ([NewsTopic], CGSize) async -> [NewsTopic.ID: UIImage]
+  var fetchImageThumbnailsForTopics:
+    @Sendable ([NewsTopic], CGSize) async -> [NewsTopic.ID: UIImage]
 }
 
 extension NewsTopicsModel {
@@ -26,13 +27,19 @@ extension NewsTopicsModel {
       fetchNewsTopics: {
         do {
           // At the moment there is only english US topics
-          let url = URL(string: "https://brave-today-cdn.brave.com/news-topic-clustering/widget_topic_news.en_US.json")!
+          let url = URL(
+            string:
+              "https://brave-today-cdn.brave.com/news-topic-clustering/widget_topic_news.en_US.json"
+          )!
           let session = URLSession(configuration: .default)
           let (data, _) = try await session.data(for: URLRequest(url: url))
-          
+
           let topics = Dictionary(
-            grouping: try JSONDecoder.topicsDecoder.decode([FailableDecodable<NewsTopic>].self, from: data)
-              .compactMap(\.wrappedValue).sorted(by: >),
+            grouping: try JSONDecoder.topicsDecoder.decode(
+              [FailableDecodable<NewsTopic>].self,
+              from: data
+            )
+            .compactMap(\.wrappedValue).sorted(by: >),
             by: \.topicIndex
           )
           let maxCount = topics.values.map(\.count).max() ?? 0
@@ -50,13 +57,18 @@ extension NewsTopicsModel {
         }
       },
       fetchImageThumbnailsForTopics: { topics, thumbnailSize in
-        return await withTaskGroup(of: (String, UIImage?).self, returning: [String: UIImage].self) { group in
+        return await withTaskGroup(of: (String, UIImage?).self, returning: [String: UIImage].self) {
+          group in
           var images: [String: UIImage] = [:]
-          let session = URLSession(configuration: .default, delegate: nil, delegateQueue: {
-            let queue = OperationQueue()
-            queue.maxConcurrentOperationCount = 3
-            return queue
-          }())
+          let session = URLSession(
+            configuration: .default,
+            delegate: nil,
+            delegateQueue: {
+              let queue = OperationQueue()
+              queue.maxConcurrentOperationCount = 3
+              return queue
+            }()
+          )
           for topic in topics {
             guard let imageURL = topic.imageURL else { continue }
             group.addTask {
@@ -82,13 +94,22 @@ extension NewsTopicsModel {
 
 extension NewsTopicsModel {
   static var mock: Self {
-    let data = try! Data(contentsOf: Bundle.main.url(forResource: "topics_news.en_US", withExtension: "json", subdirectory: nil)!)
+    let data = try! Data(
+      contentsOf: Bundle.main.url(
+        forResource: "topics_news.en_US",
+        withExtension: "json",
+        subdirectory: nil
+      )!
+    )
     return .init(
       fetchNewsTopics: {
         do {
           let topics = Dictionary(
-            grouping: try JSONDecoder.topicsDecoder.decode([FailableDecodable<NewsTopic>].self, from: data)
-              .compactMap(\.wrappedValue).sorted(by: >),
+            grouping: try JSONDecoder.topicsDecoder.decode(
+              [FailableDecodable<NewsTopic>].self,
+              from: data
+            )
+            .compactMap(\.wrappedValue).sorted(by: >),
             by: \.topicIndex
           )
           let maxCount = topics.values.map(\.count).max() ?? 0
@@ -132,7 +153,7 @@ struct NewsTopic: Decodable, Comparable, Identifiable, Hashable {
   var date: Date
   var score: Double
   var category: String
-  
+
   enum CodingKeys: String, CodingKey {
     case topicIndex = "topic_index"
     case title
@@ -144,19 +165,19 @@ struct NewsTopic: Decodable, Comparable, Identifiable, Hashable {
     case score
     case category
   }
-  
+
   static func < (lhs: Self, rhs: Self) -> Bool {
     return lhs.score < rhs.score
   }
-  
+
   var id: String {
     url.absoluteString
   }
-  
+
   func hash(into hasher: inout Hasher) {
     hasher.combine(url)
   }
-  
+
   static func == (lhs: Self, rhs: Self) -> Bool {
     lhs.url == rhs.url
   }

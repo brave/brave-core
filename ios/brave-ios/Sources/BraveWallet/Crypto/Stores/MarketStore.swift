@@ -27,7 +27,7 @@ public class MarketStore: ObservableObject, WalletObserverStore {
   }
   /// Indicates `MarketStore` is loading coins in markets
   @Published var isLoading: Bool = false
-  
+
   private let assetRatioService: BraveWalletAssetRatioService
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
@@ -40,7 +40,7 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     $0.roundingMode = .up
   }
   var isObserving: Bool = false
-  
+
   init(
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
@@ -52,7 +52,7 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     self.rpcService = rpcService
     self.walletService = walletService
   }
-  
+
   private var updateTask: Task<Void, Never>?
   func update() {
     isLoading = true
@@ -60,14 +60,17 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       // update market coins
       guard !Task.isCancelled else { return }
-      let (success, assets) = await assetRatioService.coinMarkets(priceFormatter.currencyCode, limit: UInt8(assetsRequestLimit))
+      let (success, assets) = await assetRatioService.coinMarkets(
+        priceFormatter.currencyCode,
+        limit: UInt8(assetsRequestLimit)
+      )
       if success {
         self.coins = assets
       }
       // update currency code
       guard !Task.isCancelled else { return }
       self.currencyCode = await walletService.defaultBaseCurrency()
-      
+
       self.isLoading = false
     }
   }

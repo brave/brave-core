@@ -1,12 +1,12 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
+import BraveShared
 import BraveUI
 import Shared
-import BraveShared
+import UIKit
 
 extension BraveTalkRewardsOptInViewController {
   class View: UIView {
@@ -26,7 +26,9 @@ extension BraveTalkRewardsOptInViewController {
       $0.titleLabel?.adjustsFontForContentSizeCategory = true
     }
 
-    private let image = UIImageView(image: UIImage(named: "rewards_onboarding_cashback", in: .module, compatibleWith: nil)!).then {
+    private let image = UIImageView(
+      image: UIImage(named: "rewards_onboarding_cashback", in: .module, compatibleWith: nil)!
+    ).then {
       $0.contentMode = .scaleAspectFit
 
       $0.layer.shadowColor = UIColor.black.cgColor
@@ -57,7 +59,8 @@ extension BraveTalkRewardsOptInViewController {
       $0.text = String(
         format: Strings.Rewards.braveTalkRewardsOptInDisclaimer,
         Strings.OBRewardsAgreementDetailLink,
-        Strings.privacyPolicy)
+        Strings.privacyPolicy
+      )
       $0.font = .preferredFont(forTextStyle: .caption1)
       $0.adjustsFontForContentSizeCategory = true
       $0.textColor = .braveLabel
@@ -68,7 +71,9 @@ extension BraveTalkRewardsOptInViewController {
       ])
     }
 
-    private let optinBackground = UIImageView(image: UIImage(named: "optin_bg", in: .module, compatibleWith: nil)!).then {
+    private let optinBackground = UIImageView(
+      image: UIImage(named: "optin_bg", in: .module, compatibleWith: nil)!
+    ).then {
       $0.contentMode = .scaleAspectFit
     }
 
@@ -85,7 +90,8 @@ extension BraveTalkRewardsOptInViewController {
           .view(title),
           .view(body),
           .view(enableRewardsButton),
-          .view(disclaimer))
+          .view(disclaimer)
+        )
 
         $0.layoutMargins = .init(top: 44, left: 32, bottom: 24, right: 32)
         $0.isLayoutMarginsRelativeArrangement = true
@@ -147,7 +153,8 @@ extension BraveTalkRewardsOptInViewController {
       super.traitCollectionDidChange(previousTraitCollection)
 
       if previousTraitCollection?.preferredContentSizeCategory
-        != traitCollection.preferredContentSizeCategory {
+        != traitCollection.preferredContentSizeCategory
+      {
 
         DispatchQueue.main.async {
           self.setupButtonConstaints()

@@ -1,10 +1,10 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import SnapKit
 import Shared
+import SnapKit
 import UIKit
 
 private struct TabsButtonUX {
@@ -25,7 +25,7 @@ class TabsButton: UIButton {
     $0.layer.cornerCurve = .continuous
     $0.isUserInteractionEnabled = false
   }
-  
+
   var browserColors: any BrowserColors = .standard {
     didSet {
       updateForTraitCollectionAndBrowserColors()
@@ -65,19 +65,28 @@ class TabsButton: UIButton {
     super.traitCollectionDidChange(previousTraitCollection)
     updateForTraitCollectionAndBrowserColors()
   }
-  
+
   private func updateForTraitCollectionAndBrowserColors() {
     // CGColor's do not get automatic updates
     countLabel.textColor = isHighlighted ? browserColors.iconActive : browserColors.iconDefault
-    borderView.layer.borderColor = isHighlighted ? browserColors.iconActive.cgColor : browserColors.iconDefault.resolvedColor(with: traitCollection).cgColor
-    
-    let toolbarTraitCollection = UITraitCollection(preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory)
+    borderView.layer.borderColor =
+      isHighlighted
+      ? browserColors.iconActive.cgColor
+      : browserColors.iconDefault.resolvedColor(with: traitCollection).cgColor
+
+    let toolbarTraitCollection = UITraitCollection(
+      preferredContentSizeCategory: traitCollection.toolbarButtonContentSizeCategory
+    )
     let metrics = UIFontMetrics(forTextStyle: .body)
     borderView.snp.remakeConstraints {
       $0.center.equalToSuperview()
       $0.size.equalTo(metrics.scaledValue(for: 20, compatibleWith: toolbarTraitCollection))
     }
-    countLabel.font = .systemFont(ofSize: UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: toolbarTraitCollection).pointSize, weight: .bold)
+    countLabel.font = .systemFont(
+      ofSize: UIFont.preferredFont(forTextStyle: .caption2, compatibleWith: toolbarTraitCollection)
+        .pointSize,
+      weight: .bold
+    )
   }
 
   private var currentCount: Int?
@@ -92,7 +101,11 @@ class TabsButton: UIButton {
     self.accessibilityValue = countToBe
   }
 
-  override func contextMenuInteraction(_ interaction: UIContextMenuInteraction, willDisplayMenuFor configuration: UIContextMenuConfiguration, animator: UIContextMenuInteractionAnimating?) {
+  override func contextMenuInteraction(
+    _ interaction: UIContextMenuInteraction,
+    willDisplayMenuFor configuration: UIContextMenuConfiguration,
+    animator: UIContextMenuInteractionAnimating?
+  ) {
     UIImpactFeedbackGenerator(style: .medium).bzzt()
   }
 }

@@ -1,13 +1,13 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SnapKit
-import Shared
-import UIKit
 import BraveUI
 import Favicon
+import Foundation
+import Shared
+import SnapKit
+import UIKit
 
 class SnackBarUX {
   static var maxWidth: CGFloat = 400
@@ -15,11 +15,9 @@ class SnackBarUX {
   static let highlightColor = UIColor.braveInfoBorder.withAlphaComponent(0.9)
 }
 
-/**
- * A specialized version of UIButton for use in SnackBars. These are displayed evenly
- * spaced in the bottom of the bar. The main convenience of these is that you can pass
- * in a callback in the constructor (although these also style themselves appropriately).
- */
+/// A specialized version of UIButton for use in SnackBars. These are displayed evenly
+/// spaced in the bottom of the bar. The main convenience of these is that you can pass
+/// in a callback in the constructor (although these also style themselves appropriately).
 typealias SnackBarCallback = (_ bar: SnackBar) -> Void
 class SnackButton: UIButton {
   let callback: SnackBarCallback?
@@ -31,7 +29,7 @@ class SnackButton: UIButton {
     super.init(frame: .zero)
 
     setTitle(title, for: .normal)
-    titleLabel?.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
+    titleLabel?.font = DynamicFontHelper.defaultHelper.defaultMediumFont
     setTitleColor(.braveBlurpleTint, for: .highlighted)
     setTitleColor(.braveLabel, for: .normal)
     addTarget(self, action: #selector(onClick), for: .touchUpInside)
@@ -75,7 +73,7 @@ class SnackBar: UIView {
 
   private lazy var textLabel: UILabel = {
     let label = UILabel()
-    label.font = DynamicFontHelper.defaultHelper.DefaultMediumFont
+    label.font = DynamicFontHelper.defaultHelper.defaultMediumFont
     label.lineBreakMode = .byWordWrapping
     label.setContentCompressionResistancePriority(.required, for: .horizontal)
     label.backgroundColor = nil
@@ -159,11 +157,9 @@ class SnackBar: UIView {
     fatalError("init(coder:) has not been implemented")
   }
 
-  /**
-     * Called to check if the snackbar should be removed or not. By default, Snackbars persist forever.
-     * Override this class or use a class like CountdownSnackbar if you want things expire
-     * - returns: true if the snackbar should be kept alive
-     */
+  /// Called to check if the snackbar should be removed or not. By default, Snackbars persist forever.
+  /// Override this class or use a class like CountdownSnackbar if you want things expire
+  /// - returns: true if the snackbar should be kept alive
   func shouldPersist(_ tab: Tab) -> Bool {
     return true
   }
@@ -203,11 +199,9 @@ class SnackBar: UIView {
   }
 }
 
-/**
- * A special version of a snackbar that persists for at least a timeout. After that
- * it will dismiss itself on the next page load where this tab isn't showing. As long as
- * you stay on the current tab though, it will persist until you interact with it.
- */
+/// A special version of a snackbar that persists for at least a timeout. After that
+/// it will dismiss itself on the next page load where this tab isn't showing. As long as
+/// you stay on the current tab though, it will persist until you interact with it.
 class TimerSnackBar: SnackBar {
   fileprivate var timer: Timer?
   fileprivate var timeout: TimeInterval
@@ -222,12 +216,21 @@ class TimerSnackBar: SnackBar {
   }
 
   static func showAppStoreConfirmationBar(forTab tab: Tab, appStoreURL: URL) {
-    let bar = TimerSnackBar(text: Strings.externalLinkAppStoreConfirmationTitle, img: Favicon.defaultImage)
-    let openAppStore = SnackButton(title: Strings.OKString, accessibilityIdentifier: "ConfirmOpenInAppStore") { bar in
+    let bar = TimerSnackBar(
+      text: Strings.externalLinkAppStoreConfirmationTitle,
+      img: Favicon.defaultImage
+    )
+    let openAppStore = SnackButton(
+      title: Strings.OKString,
+      accessibilityIdentifier: "ConfirmOpenInAppStore"
+    ) { bar in
       tab.removeSnackbar(bar)
       UIApplication.shared.open(appStoreURL)
     }
-    let cancelButton = SnackButton(title: Strings.cancelButtonTitle, accessibilityIdentifier: "CancelOpenInAppStore") { bar in
+    let cancelButton = SnackButton(
+      title: Strings.cancelButtonTitle,
+      accessibilityIdentifier: "CancelOpenInAppStore"
+    ) { bar in
       tab.removeSnackbar(bar)
     }
     bar.addButton(openAppStore)
@@ -236,7 +239,13 @@ class TimerSnackBar: SnackBar {
   }
 
   override func show() {
-    self.timer = Timer(timeInterval: timeout, target: self, selector: #selector(timerDone), userInfo: nil, repeats: false)
+    self.timer = Timer(
+      timeInterval: timeout,
+      target: self,
+      selector: #selector(timerDone),
+      userInfo: nil,
+      repeats: false
+    )
     RunLoop.current.add(self.timer!, forMode: .default)
     super.show()
   }

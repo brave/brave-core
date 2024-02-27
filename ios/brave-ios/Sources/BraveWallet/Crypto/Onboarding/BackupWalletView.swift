@@ -1,12 +1,12 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import DesignSystem
+import Foundation
 import Strings
+import SwiftUI
 
 struct BackupWalletView: View {
   @ObservedObject var keyringStore: KeyringStore
@@ -15,7 +15,7 @@ struct BackupWalletView: View {
   @State private var acknowledgedWarning: Bool = false
   @State private var recoveryWords: [RecoveryWord] = []
   private let requirePasswordEntry: Bool
-  
+
   init(
     password: String?,
     keyringStore: KeyringStore
@@ -24,24 +24,24 @@ struct BackupWalletView: View {
     self.password = password ?? ""
     self.keyringStore = keyringStore
   }
-  
+
   private var isContinueButtonDisabled: Bool {
     !acknowledgedWarning || password.isEmpty
   }
-  
+
   private func continueToBackupPhrase() {
     guard acknowledgedWarning else {
       // user can press return in field to execute when continue button is disabled
       return
     }
-    
+
     // Dismiss keyboard for password field before leaving this view #8445.
     // Without dismissal, it's possible the scroll view in the detail view
     // has incorrect frame (sitting above the area the keyboard used to be)
     // which can show the scroll view contents out of the scroll bounds
     // but will block tap interactions.
     resignFirstResponder()
-    
+
     keyringStore.recoveryPhrase(password: password) { words in
       if words.isEmpty {
         passwordError = .incorrectPassword
@@ -50,16 +50,21 @@ struct BackupWalletView: View {
       }
     }
   }
-  
+
   private func resignFirstResponder() {
-    UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+    UIApplication.shared.sendAction(
+      #selector(UIResponder.resignFirstResponder),
+      to: nil,
+      from: nil,
+      for: nil
+    )
   }
 
   var body: some View {
     ScrollView(.vertical) {
       VStack(spacing: 24) {
         Image("graphic-save", bundle: .module)
-        
+
         VStack(spacing: 14) {
           Text(Strings.Wallet.backupWalletTitle)
             .font(.headline)
@@ -69,14 +74,14 @@ struct BackupWalletView: View {
             .foregroundColor(Color(.braveLabel))
         }
         .multilineTextAlignment(.center)
-        
+
         Toggle(Strings.Wallet.backupWalletDisclaimer, isOn: $acknowledgedWarning)
           .font(.footnote)
           .toggleStyle(SwitchToggleStyle(tint: .accentColor))
           .foregroundColor(Color(.braveLabel))
           .padding(.horizontal, 20)
           .padding(.vertical, 10)
-        
+
         if requirePasswordEntry {
           PasswordEntryField(
             password: $password,
@@ -87,17 +92,17 @@ struct BackupWalletView: View {
             onCommit: continueToBackupPhrase
           )
         }
-        
+
         Button(action: continueToBackupPhrase) {
           Text(Strings.Wallet.continueButtonTitle)
         }
         .buttonStyle(BraveFilledButtonStyle(size: .normal))
         .disabled(isContinueButtonDisabled)
-        
+
         if keyringStore.isOnboardingVisible {
-          Button(action: {
+          Button {
             keyringStore.markOnboardingCompleted()
-          }) {
+          } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
@@ -130,10 +135,11 @@ struct BackupWalletView: View {
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
   }
-  
+
   struct ToolbarModifier: ViewModifier {
     var isShowingCancel: Bool
 
@@ -144,9 +150,9 @@ struct BackupWalletView: View {
         content
           .toolbar {
             ToolbarItemGroup(placement: .cancellationAction) {
-              Button(action: {
+              Button {
                 presentationMode.dismiss()
-              }) {
+              } label: {
                 Text(Strings.cancelButtonTitle)
                   .foregroundColor(Color(.braveBlurpleTint))
               }

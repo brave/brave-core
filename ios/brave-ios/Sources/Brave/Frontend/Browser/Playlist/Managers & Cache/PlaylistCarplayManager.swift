@@ -1,17 +1,17 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Combine
-import MediaPlayer
 import CarPlay
-import Shared
+import Combine
 import Data
-import Preferences
-import os.log
+import Foundation
+import MediaPlayer
 import Playlist
+import Preferences
+import Shared
+import os.log
 
 /// Lightweight class that manages a single MediaPlayer item
 /// The MediaPlayer is then passed to any controller that needs to use it.
@@ -39,21 +39,26 @@ public class PlaylistCarplayManager: NSObject {
       // After all, we can't play media simultaneously.
       if let selectedTab = browserController?.tabManager.selectedTab,
         let playlistItem = selectedTab.playlistItem,
-        PlaylistManager.shared.index(of: playlistItem.tagId) == nil {
-        
+        PlaylistManager.shared.index(of: playlistItem.tagId) == nil
+      {
+
         // Support for `blob:` Playlist Items
-        if playlistItem.src.hasPrefix("blob:") && PlaylistManager.shared.allItems.filter({ $0.pageSrc == playlistItem.pageSrc }).first != nil {
+        if playlistItem.src.hasPrefix("blob:")
+          && PlaylistManager.shared.allItems.filter({ $0.pageSrc == playlistItem.pageSrc }).first
+            != nil
+        {
           return
         }
-        
+
         browserController?.updatePlaylistURLBar(
           tab: selectedTab,
           state: .newItem,
-          item: playlistItem)
+          item: playlistItem
+        )
       }
     }
   }
-  
+
   public func destroyPiP() {
     // This is the only way to have the system kill picture in picture as the restoration controller is deallocated
     // And that means the video is deallocated, its AudioSession is stopped, and the Picture-In-Picture controller is deallocated.
@@ -95,18 +100,26 @@ public class PlaylistCarplayManager: NSObject {
     // If there is no media player, create one,
     // pass it to the car-play controller
     let mediaPlayer = self.mediaPlayer ?? MediaPlayer()
-    let mediaStreamer = PlaylistMediaStreamer(playerView: currentWindow ?? UIView(), webLoaderFactory: LivePlaylistWebLoaderFactory())
+    let mediaStreamer = PlaylistMediaStreamer(
+      playerView: currentWindow ?? UIView(),
+      webLoaderFactory: LivePlaylistWebLoaderFactory()
+    )
 
     // Construct the CarPlay UI
     let carPlayController = PlaylistCarplayController(
       mediaStreamer: mediaStreamer,
       player: mediaPlayer,
-      interfaceController: carplayInterface)
+      interfaceController: carplayInterface
+    )
     self.mediaPlayer = mediaPlayer
     return carPlayController
   }
 
-  func getPlaylistController(tab: Tab?, initialItem: PlaylistInfo?, initialItemPlaybackOffset: Double) -> PlaylistViewController {
+  func getPlaylistController(
+    tab: Tab?,
+    initialItem: PlaylistInfo?,
+    initialItemPlaybackOffset: Double
+  ) -> PlaylistViewController {
 
     // If background playback is enabled (on iPhone), tabs will continue to play media
     // Even if another controller is presented and even when PIP is enabled in playlist.
@@ -127,7 +140,8 @@ public class PlaylistCarplayManager: NSObject {
         mediaPlayer: mediaPlayer,
         initialItem: initialItem,
         initialItemPlaybackOffset: initialItemPlaybackOffset,
-        isPrivateBrowsing: browserController?.privateBrowsingManager.isPrivateBrowsing == true)
+        isPrivateBrowsing: browserController?.privateBrowsingManager.isPrivateBrowsing == true
+      )
     self.mediaPlayer = mediaPlayer
     return playlistController
   }
@@ -140,20 +154,26 @@ public class PlaylistCarplayManager: NSObject {
     if let tab = tab,
       let item = tab.playlistItem,
       let webView = tab.webView,
-      let tag = tab.playlistItem?.tagId {
-      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: tag) { [unowned self] currentTime in
+      let tag = tab.playlistItem?.tagId
+    {
+      PlaylistScriptHandler.getCurrentTime(webView: webView, nodeTag: tag) {
+        [unowned self] currentTime in
         completion(
           self.getPlaylistController(
             tab: tab,
             initialItem: item,
-            initialItemPlaybackOffset: currentTime))
+            initialItemPlaybackOffset: currentTime
+          )
+        )
       }
     } else {
       return completion(
         getPlaylistController(
           tab: tab,
           initialItem: nil,
-          initialItemPlaybackOffset: 0.0))
+          initialItemPlaybackOffset: 0.0
+        )
+      )
     }
   }
 

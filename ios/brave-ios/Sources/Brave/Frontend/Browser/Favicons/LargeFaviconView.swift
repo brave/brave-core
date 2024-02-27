@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveShared
 import Data
-import UIKit
 import Favicon
+import Foundation
+import UIKit
 
 struct FaviconUX {
   static let faviconBorderColor = UIColor(white: 0, alpha: 0.2)
@@ -16,15 +16,19 @@ struct FaviconUX {
 
 /// Displays a large favicon given some favorite
 class LargeFaviconView: UIView {
-  func loadFavicon(siteURL: URL, isPrivateBrowsing: Bool, monogramFallbackCharacter: Character? = nil) {
+  func loadFavicon(
+    siteURL: URL,
+    isPrivateBrowsing: Bool,
+    monogramFallbackCharacter: Character? = nil
+  ) {
     faviconTask?.cancel()
     if let favicon = FaviconFetcher.getIconFromCache(for: siteURL) {
       faviconTask = nil
-      
+
       self.imageView.image = favicon.image ?? Favicon.defaultImage
       self.backgroundColor = favicon.backgroundColor
       self.imageView.contentMode = .scaleAspectFit
-      
+
       if let image = favicon.image {
         self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
       } else {
@@ -32,22 +36,25 @@ class LargeFaviconView: UIView {
       }
       return
     }
-    
+
     faviconTask = Task { @MainActor in
       let isPersistent = !isPrivateBrowsing
       do {
-        let favicon = try await FaviconFetcher.loadIcon(url: siteURL,
-                                                        kind: .largeIcon,
-                                                        persistent: isPersistent)
-        
+        let favicon = try await FaviconFetcher.loadIcon(
+          url: siteURL,
+          kind: .largeIcon,
+          persistent: isPersistent
+        )
+
         self.imageView.image = favicon.image
         self.backgroundColor = favicon.backgroundColor
         self.imageView.contentMode = .scaleAspectFit
-        
+
         if let image = favicon.image {
           self.backgroundView.isHidden = !favicon.isMonogramImage && !image.hasTransparentEdges
         } else {
-          self.backgroundView.isHidden = !favicon.hasTransparentBackground && !favicon.isMonogramImage
+          self.backgroundView.isHidden =
+            !favicon.hasTransparentBackground && !favicon.isMonogramImage
         }
       } catch {
         self.imageView.image = Favicon.defaultImage

@@ -1,14 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import UIKit
 
 extension UIView {
-  /**
-     * Takes a screenshot of the view with the given size.
-     */
+  /// Takes a screenshot of the view with the given size.
   func screenshot(_ size: CGSize, offset: CGPoint? = nil, quality: CGFloat = 1) -> UIImage? {
     assert(0...1 ~= quality)
 
@@ -19,7 +17,7 @@ extension UIView {
     guard size.width > 0, size.height > 0 else {
       return nil
     }
-    
+
     UIGraphicsBeginImageContextWithOptions(size, false, UIScreen.main.scale * quality)
     drawHierarchy(in: CGRect(origin: offset, size: frame.size), afterScreenUpdates: false)
     let image = UIGraphicsGetImageFromCurrentImageContext()
@@ -28,11 +26,13 @@ extension UIView {
     return image
   }
 
-  /**
-     * Takes a screenshot of the view with the given aspect ratio.
-     * An aspect ratio of 0 means capture the entire view.
-     */
-  func screenshot(_ aspectRatio: CGFloat = 0, offset: CGPoint? = nil, quality: CGFloat = 1) -> UIImage? {
+  /// Takes a screenshot of the view with the given aspect ratio.
+  /// An aspect ratio of 0 means capture the entire view.
+  func screenshot(
+    _ aspectRatio: CGFloat = 0,
+    offset: CGPoint? = nil,
+    quality: CGFloat = 1
+  ) -> UIImage? {
     assert(aspectRatio >= 0)
 
     var size: CGSize
@@ -60,12 +60,14 @@ extension UIView {
     }
   }
 
-  /**
-     * rounds the requested corners of a view with the provided radius
-     */
+  /// rounds the requested corners of a view with the provided radius
   func addRoundedCorners(_ cornersToRound: UIRectCorner, cornerRadius: CGSize, color: UIColor) {
     let rect = bounds
-    let maskPath = UIBezierPath(roundedRect: rect, byRoundingCorners: cornersToRound, cornerRadii: cornerRadius)
+    let maskPath = UIBezierPath(
+      roundedRect: rect,
+      byRoundingCorners: cornersToRound,
+      cornerRadii: cornerRadius
+    )
 
     // Create the shape layer and set its path
     let maskLayer = CAShapeLayer()
@@ -81,9 +83,7 @@ extension UIView {
     backgroundColor = .clear
   }
 
-  /**
-     This allows us to find the view in a current view hierarchy that is currently the first responder
-     */
+  /// This allows us to find the view in a current view hierarchy that is currently the first responder
   static func findSubViewWithFirstResponder(_ view: UIView) -> UIView? {
     let subviews = view.subviews
 
@@ -95,7 +95,9 @@ extension UIView {
       return firstResponderSubview
     }
 
-    guard let firstSubview = subviews.first(where: { !($0 is UIRefreshControl) }) else { return nil }
+    guard let firstSubview = subviews.first(where: { !($0 is UIRefreshControl) }) else {
+      return nil
+    }
 
     return findSubViewWithFirstResponder(firstSubview)
   }

@@ -1,14 +1,15 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import XCTest
-import CoreData
 import BraveShared
-import Preferences
-@testable import Data
 import BraveShields
+import CoreData
+import Preferences
 import TestHelpers
+import XCTest
+
+@testable import Data
 
 class DomainTests: CoreDataTestCase {
   let fetchRequest = NSFetchRequest<Domain>(entityName: String(describing: Domain.self))
@@ -24,7 +25,7 @@ class DomainTests: CoreDataTestCase {
   let polygon = URL(string: "https://wallet.polygon.technology")!
   let walletEthAccount = "0x4D60d71F411AB671f614eD0ec5B71bEedB46287d"
   let walletEthAccount2 = "0x4d60d71f411ab671f614ed0ec5b71beedb46287d"
-  
+
   let magicEden = URL(string: "https://magiceden.io")!
   let raydium = URL(string: "https://raydium.io")!
   let walletSolAccount = "8uMdzdJ6Mtsh2vGhJJGCfwo8PZrnZZ3qbT85wbo1o4xt"
@@ -61,10 +62,10 @@ class DomainTests: CoreDataTestCase {
 
   @MainActor func testDefaultShieldSettings() {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
 
     XCTAssertEqual(domain.bookmarks?.count, 0)
     XCTAssertEqual(domain.url, url.domainURL.absoluteString)
@@ -74,40 +75,56 @@ class DomainTests: CoreDataTestCase {
     let domain = Domain.getOrCreate(forUrl: url, persistent: true)
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url, shield: .AllOff, isOn: true, isPrivateBrowsing: false)
+      Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: true, isPrivateBrowsing: false)
     }
 
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertFalse(
+      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
+    )
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
+    XCTAssertFalse(
+      domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true)
+    )
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url, shield: .AllOff, isOn: false, isPrivateBrowsing: false)
+      Domain.setBraveShield(forUrl: url, shield: .allOff, isOn: false, isPrivateBrowsing: false)
     }
 
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AllOff, considerAllShieldsOption: true))
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.NoScript, considerAllShieldsOption: true))
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.FpProtection, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.allOff, considerAllShieldsOption: true))
+    XCTAssertFalse(domain.isShieldExpected(BraveShield.noScript, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.fpProtection, considerAllShieldsOption: true))
   }
 
   /// Tests non-HTTPSE shields
   @MainActor func testNormalShieldSettings() {
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: false, isPrivateBrowsing: false)
+      Domain.setBraveShield(
+        forUrl: url2HTTPS,
+        shield: .adblockAndTp,
+        isOn: false,
+        isPrivateBrowsing: false
+      )
     }
-    
+
     let domain = Domain.getOrCreate(forUrl: url2HTTPS, persistent: true)
     // These should be the same in this situation
-    XCTAssertFalse(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
+    XCTAssertFalse(
+      domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true)
+    )
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setBraveShield(forUrl: url2HTTPS, shield: .AdblockAndTp, isOn: true, isPrivateBrowsing: false)
+      Domain.setBraveShield(
+        forUrl: url2HTTPS,
+        shield: .adblockAndTp,
+        isOn: true,
+        isPrivateBrowsing: false
+      )
     }
 
     domain.managedObjectContext?.refreshAllObjects()
-    XCTAssertTrue(domain.isShieldExpected(BraveShield.AdblockAndTp, considerAllShieldsOption: true))
+    XCTAssertTrue(domain.isShieldExpected(BraveShield.adblockAndTp, considerAllShieldsOption: true))
   }
 
   func testWalletEthDappPermission() {
@@ -115,61 +132,101 @@ class DomainTests: CoreDataTestCase {
     let polygonDomain = Domain.getOrCreate(forUrl: polygon, persistent: true)
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: compound,
+        coin: .eth,
+        accounts: [walletEthAccount],
+        grant: true
+      )
     }
 
     XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount2], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: compound,
+        coin: .eth,
+        accounts: [walletEthAccount2],
+        grant: true
+      )
     }
     XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount2))
 
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: false)
+      Domain.setWalletPermissions(
+        forUrl: compound,
+        coin: .eth,
+        accounts: [walletEthAccount],
+        grant: false
+      )
     }
     XCTAssertFalse(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
 
     XCTAssertNil(polygonDomain.wallet_permittedAccounts)
   }
-  
+
   func testWalletSolanaDappPermission() {
     let magicEdenDomain = Domain.getOrCreate(forUrl: magicEden, persistent: true)
     let raydiumDomain = Domain.getOrCreate(forUrl: raydium, persistent: true)
-    
+
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: magicEden,
+        coin: .sol,
+        accounts: [walletSolAccount],
+        grant: true
+      )
     }
-    
+
     XCTAssertTrue(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount))
     XCTAssertFalse(magicEdenDomain.walletPermissions(for: .eth, account: walletSolAccount))
-    
+
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount2], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: magicEden,
+        coin: .sol,
+        accounts: [walletSolAccount2],
+        grant: true
+      )
     }
     XCTAssertTrue(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount2))
     XCTAssertFalse(magicEdenDomain.walletPermissions(for: .eth, account: walletSolAccount2))
-    
+
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: magicEden, coin: .sol, accounts: [walletSolAccount2], grant: false)
+      Domain.setWalletPermissions(
+        forUrl: magicEden,
+        coin: .sol,
+        accounts: [walletSolAccount2],
+        grant: false
+      )
     }
     XCTAssertFalse(magicEdenDomain.walletPermissions(for: .sol, account: walletSolAccount2))
-    
+
     XCTAssertNil(raydiumDomain.wallet_solanaPermittedAcccounts)
   }
-  
+
   func testClearAllWalletPermissions() {
     let compondDomain = Domain.getOrCreate(forUrl: compound, persistent: true)
     let raydiumDomain = Domain.getOrCreate(forUrl: raydium, persistent: true)
-    
+
     // add permissions for `compound` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: compound, coin: .eth, accounts: [walletEthAccount], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: compound,
+        coin: .eth,
+        accounts: [walletEthAccount],
+        grant: true
+      )
     }
     XCTAssertTrue(compondDomain.walletPermissions(for: .eth, account: walletEthAccount))
     // add permissions for `raydium` Domain
     backgroundSaveAndWaitForExpectation {
-      Domain.setWalletPermissions(forUrl: raydium, coin: .sol, accounts: [walletSolAccount], grant: true)
+      Domain.setWalletPermissions(
+        forUrl: raydium,
+        coin: .sol,
+        accounts: [walletSolAccount],
+        grant: true
+      )
     }
     XCTAssertTrue(raydiumDomain.walletPermissions(for: .sol, account: walletSolAccount))
     // Remove all eth permissions

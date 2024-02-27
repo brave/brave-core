@@ -1,11 +1,11 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
 import CoreData
+import Foundation
 import OrderedCollections
 import Shared
 
@@ -18,12 +18,19 @@ protocol HistoryV2FetchResultsDelegate: AnyObject {
   func controllerDidChangeContent(_ controller: HistoryV2FetchResultsController)
 
   func controller(
-    _ controller: HistoryV2FetchResultsController, didChange anObject: Any,
-    at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?)
+    _ controller: HistoryV2FetchResultsController,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  )
 
   func controller(
-    _ controller: HistoryV2FetchResultsController, didChange sectionInfo: NSFetchedResultsSectionInfo,
-    atSectionIndex sectionIndex: Int, for type: NSFetchedResultsChangeType)
+    _ controller: HistoryV2FetchResultsController,
+    didChange sectionInfo: NSFetchedResultsSectionInfo,
+    atSectionIndex sectionIndex: Int,
+    for type: NSFetchedResultsChangeType
+  )
 
   func controllerDidReloadContents(_ controller: HistoryV2FetchResultsController)
 }
@@ -98,7 +105,8 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
         DispatchQueue.main.async {
           self.delegate?.controllerDidReloadContents(self)
         }
-      })
+      }
+    )
   }
 
   // MARK: Internal
@@ -121,13 +129,15 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
     clearHistoryData()
 
     historyAPI?.search(
-      withQuery: withQuery, maxCount: 200,
+      withQuery: withQuery,
+      maxCount: 200,
       completion: { [weak self] historyNodeList in
         guard let self = self else { return }
 
         self.historyList = historyNodeList.map { [unowned self] historyItem in
           if let section = self.fetchHistoryTimePeriod(dateAdded: historyItem.dateAdded),
-            let numOfItemInSection = self.sectionDetails[section] {
+            let numOfItemInSection = self.sectionDetails[section]
+          {
             self.sectionDetails.updateValue(numOfItemInSection + 1, forKey: section)
           }
 
@@ -135,7 +145,8 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
         }
 
         completion()
-      })
+      }
+    )
   }
 
   func object(at indexPath: IndexPath) -> HistoryNode? {
@@ -197,14 +208,20 @@ class Historyv2Fetcher: NSObject, HistoryV2FetchResultsController {
   private func getDate(_ dayOffset: Int) -> Date {
     let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
     let nowComponents = calendar.dateComponents(
-      [Calendar.Component.year, Calendar.Component.month, Calendar.Component.day], from: Date())
+      [Calendar.Component.year, Calendar.Component.month, Calendar.Component.day],
+      from: Date()
+    )
 
     guard let today = calendar.date(from: nowComponents) else {
       return Date()
     }
 
     return (calendar as NSCalendar).date(
-      byAdding: NSCalendar.Unit.day, value: dayOffset, to: today, options: []) ?? Date()
+      byAdding: NSCalendar.Unit.day,
+      value: dayOffset,
+      to: today,
+      options: []
+    ) ?? Date()
   }
 
   private func clearHistoryData() {

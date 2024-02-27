@@ -1,11 +1,11 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveShared
 import BraveUI
+import Foundation
 import Shared
 import UIKit
 
@@ -60,10 +60,12 @@ extension BraveRewardsViewController {
                     .view(subtitleLabel)
                   )
                   $0.setContentHuggingPriority(.required, for: .vertical)
-                }),
+                }
+              ),
               .view(rewardsToggle)
             )
-          }),
+          }
+        ),
         .view(
           UIStackView().then {
             $0.axis = .vertical
@@ -71,7 +73,8 @@ extension BraveRewardsViewController {
             $0.addStackViewItems(
               .view(statusView)
             )
-          }),
+          }
+        ),
         .view(publisherView)
       )
     }

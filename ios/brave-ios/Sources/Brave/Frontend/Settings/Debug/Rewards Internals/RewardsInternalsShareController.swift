@@ -1,14 +1,14 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import BraveUI
 import BraveCore
-import Static
-import Shared
 import BraveShared
+import BraveUI
+import Shared
+import Static
+import UIKit
 
 private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
   override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -18,7 +18,8 @@ private class RewardsInternalsSharableCell: UITableViewCell, TableViewReusable {
     detailTextLabel?.numberOfLines = 0
     selectedBackgroundView = UIView()
     selectedBackgroundView?.backgroundColor = .init {
-      $0.userInterfaceStyle == .dark ? UIColor(white: 0.2, alpha: 1.0) : UIColor.braveBlurpleTint.withAlphaComponent(0.06)
+      $0.userInterfaceStyle == .dark
+        ? UIColor(white: 0.2, alpha: 1.0) : UIColor.braveBlurpleTint.withAlphaComponent(0.06)
     }
   }
   @available(*, unavailable)
@@ -47,7 +48,9 @@ class RewardsInternalsShareController: UITableViewController {
         initiallySelectedSharables.firstIndex(where: { $0.id == sharable.id })
       }
     // Ensure basic info is always selected
-    if !initiallySelectedSharables.contains(.basic), let indexOfBasic = sharables.firstIndex(of: .basic) {
+    if !initiallySelectedSharables.contains(.basic),
+      let indexOfBasic = sharables.firstIndex(of: .basic)
+    {
       self.initiallySelectedSharables.insert(indexOfBasic, at: 0)
     }
 
@@ -76,7 +79,11 @@ class RewardsInternalsShareController: UITableViewController {
     tableView.allowsMultipleSelectionDuringEditing = true
     tableView.setEditing(true, animated: false)
     for index in initiallySelectedSharables {
-      tableView.selectRow(at: IndexPath(row: index, section: 0), animated: false, scrollPosition: .none)
+      tableView.selectRow(
+        at: IndexPath(row: index, section: 0),
+        animated: false,
+        scrollPosition: .none
+      )
     }
 
     tableView.tableFooterView = progressIndiciator
@@ -84,7 +91,11 @@ class RewardsInternalsShareController: UITableViewController {
 
     progressIndiciator.sizeToFit()
 
-    navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(tappedCancel))
+    navigationItem.leftBarButtonItem = UIBarButtonItem(
+      barButtonSystemItem: .cancel,
+      target: self,
+      action: #selector(tappedCancel)
+    )
   }
 
   @objc private func tappedCancel() {
@@ -98,7 +109,12 @@ class RewardsInternalsShareController: UITableViewController {
 
   override func viewDidLayoutSubviews() {
     super.viewDidLayoutSubviews()
-    progressIndiciator.frame = CGRect(x: 16, y: progressIndiciator.frame.origin.y, width: view.bounds.width - 32, height: 16)
+    progressIndiciator.frame = CGRect(
+      x: 16,
+      y: progressIndiciator.frame.origin.y,
+      width: view.bounds.width - 32,
+      height: 16
+    )
   }
 
   private let shareProgress = Progress()
@@ -122,7 +138,9 @@ class RewardsInternalsShareController: UITableViewController {
         try FileManager.default.removeItem(at: zipPath)
       }
     } catch {
-      adsRewardsLog.warning("Failed to cleanup sharing Rewards Internals files: \(error.localizedDescription)")
+      adsRewardsLog.warning(
+        "Failed to cleanup sharing Rewards Internals files: \(error.localizedDescription)"
+      )
     }
   }
 
@@ -141,23 +159,37 @@ class RewardsInternalsShareController: UITableViewController {
       $0.dateStyle = .long
       $0.timeStyle = .long
     }
-    let builder = RewardsInternalsSharableBuilder(rewardsAPI: self.rewardsAPI, dateFormatter: dateFormatter, dateAndTimeFormatter: dateAndTimeFormatter)
+    let builder = RewardsInternalsSharableBuilder(
+      rewardsAPI: self.rewardsAPI,
+      dateFormatter: dateFormatter,
+      dateAndTimeFormatter: dateAndTimeFormatter
+    )
     do {
       if FileManager.default.fileExists(atPath: dropDirectory.path) {
         try FileManager.default.removeItem(at: dropDirectory)
       }
-      try FileManager.default.createDirectory(at: dropDirectory, withIntermediateDirectories: true, attributes: nil)
+      try FileManager.default.createDirectory(
+        at: dropDirectory,
+        withIntermediateDirectories: true,
+        attributes: nil
+      )
       let group = DispatchGroup()
 
       isSharing = true
       for sharable in sharables {
         let sharableFolder = dropDirectory.appendingPathComponent(sharable.id)
-        try FileManager.default.createDirectory(at: sharableFolder, withIntermediateDirectories: true, attributes: nil)
+        try FileManager.default.createDirectory(
+          at: sharableFolder,
+          withIntermediateDirectories: true,
+          attributes: nil
+        )
         group.enter()
         sharable.generator.generateFiles(at: sharableFolder.path, using: builder) { error in
           defer { group.leave() }
           if let error = error {
-            adsRewardsLog.error("Failed to generate files for the Rewards Intenrnals sharable with ID: \(sharable.id). Error: \(error.localizedDescription)")
+            adsRewardsLog.error(
+              "Failed to generate files for the Rewards Intenrnals sharable with ID: \(sharable.id). Error: \(error.localizedDescription)"
+            )
           }
         }
       }
@@ -174,22 +206,30 @@ class RewardsInternalsShareController: UITableViewController {
             queue: .init()
           ) { error in
             if let error {
-              adsRewardsLog.error("Failed to zip up internals files. Error: \(error.localizedDescription)")
+              adsRewardsLog.error(
+                "Failed to zip up internals files. Error: \(error.localizedDescription)"
+              )
               return
             }
             do {
               try FileManager.default.moveItem(at: readingIntent.url, to: self.zipPath)
               DispatchQueue.main.async {
-                let controller = UIActivityViewController(activityItems: [self.zipPath], applicationActivities: nil)
-                controller.popoverPresentationController?.sourceView = self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
+                let controller = UIActivityViewController(
+                  activityItems: [self.zipPath],
+                  applicationActivities: nil
+                )
+                controller.popoverPresentationController?.sourceView =
+                  self.tableView.cellForRow(at: senderIndexPath) ?? self.tableView
                 controller.popoverPresentationController?.permittedArrowDirections = [.up, .down]
                 controller.completionWithItemsHandler = { _, _, _, _ in
                   self.cleanup()
                 }
                 self.present(controller, animated: true)
               }
-            } catch { 
-              adsRewardsLog.error("Failed to move coordinated rewards internals zip file. Error: \(error.localizedDescription)")
+            } catch {
+              adsRewardsLog.error(
+                "Failed to move coordinated rewards internals zip file. Error: \(error.localizedDescription)"
+              )
             }
           }
         } catch {
@@ -198,7 +238,9 @@ class RewardsInternalsShareController: UITableViewController {
         }
       }
     } catch {
-      adsRewardsLog.error("Failed to make temporary directory for rewards internals sharing: \(error.localizedDescription)")
+      adsRewardsLog.error(
+        "Failed to make temporary directory for rewards internals sharing: \(error.localizedDescription)"
+      )
       self.cleanup()
     }
   }
@@ -216,7 +258,10 @@ class RewardsInternalsShareController: UITableViewController {
     return 1  // Share button
   }
 
-  override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     if indexPath.section == 0 {
       let sharable = sharables[indexPath.row]
       let cell = tableView.dequeueReusableCell(for: indexPath) as RewardsInternalsSharableCell
@@ -236,7 +281,10 @@ class RewardsInternalsShareController: UITableViewController {
 
   // MARK: - UITableViewDelegate
 
-  override func tableView(_ tableView: UITableView, willDeselectRowAt indexPath: IndexPath) -> IndexPath? {
+  override func tableView(
+    _ tableView: UITableView,
+    willDeselectRowAt indexPath: IndexPath
+  ) -> IndexPath? {
     if indexPath.row == 0 && indexPath.section == 0 {
       return nil
     }

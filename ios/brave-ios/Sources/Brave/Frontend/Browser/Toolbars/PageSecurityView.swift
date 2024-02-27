@@ -1,13 +1,13 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import BraveCore
 import BraveUI
+import Foundation
 import Shared
+import SwiftUI
 
 /// Displays warnings about the pages security
 ///
@@ -17,9 +17,9 @@ struct PageSecurityView: View {
   var secureState: TabSecureContentState
   var hasCertificate: Bool
   var presentCertificateViewer: () -> Void
-  
+
   @Environment(\.pixelLength) private var pixelLength
-  
+
   private var warningTitle: String {
     switch secureState {
     case .secure, .localhost:
@@ -30,7 +30,7 @@ struct PageSecurityView: View {
       return Strings.PageSecurityView.pageNotFullySecureTitle
     }
   }
-  
+
   var body: some View {
     VStack(alignment: .leading, spacing: 0) {
       VStack(alignment: .leading, spacing: 16) {
@@ -59,7 +59,10 @@ struct PageSecurityView: View {
           presentCertificateViewer()
         } label: {
           HStack(alignment: .firstTextBaseline) {
-            Label(Strings.PageSecurityView.viewCertificateButtonTitle, braveSystemImage: "leo.lock.plain")
+            Label(
+              Strings.PageSecurityView.viewCertificateButtonTitle,
+              braveSystemImage: "leo.lock.plain"
+            )
             Spacer()
             Image(braveSystemName: "leo.carat.right")
               .imageScale(.large)
@@ -72,12 +75,14 @@ struct PageSecurityView: View {
     }
     .background(Color(.braveBackground))
     .frame(maxWidth: BraveUX.baseDimensionValue, alignment: .leading)
-#if DEBUG
+    #if DEBUG
     .onAppear {
-      assert(secureState.shouldDisplayWarning, 
-             "Currently only supports displaying insecure warnings")
+      assert(
+        secureState.shouldDisplayWarning,
+        "Currently only supports displaying insecure warnings"
+      )
     }
-#endif
+    #endif
   }
 }
 
@@ -94,7 +99,7 @@ extension PageSecurityView: PopoverContentComponent {
     displayURL: "http.badssl.com",
     secureState: .missingSSL,
     hasCertificate: false,
-    presentCertificateViewer: { }
+    presentCertificateViewer: {}
   )
   .clipShape(RoundedRectangle(cornerRadius: 10, style: .continuous))
   .shadow(radius: 10, x: 0, y: 1)

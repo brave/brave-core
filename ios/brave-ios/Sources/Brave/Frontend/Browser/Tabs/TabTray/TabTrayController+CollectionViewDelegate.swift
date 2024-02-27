@@ -1,7 +1,7 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import UIKit
 
@@ -20,7 +20,11 @@ extension TabTrayController: UICollectionViewDelegate {
 // MARK: UICollectionViewDragDelegate
 
 extension TabTrayController: UICollectionViewDragDelegate {
-  func collectionView(_ collectionView: UICollectionView, itemsForBeginning session: UIDragSession, at indexPath: IndexPath) -> [UIDragItem] {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    itemsForBeginning session: UIDragSession,
+    at indexPath: IndexPath
+  ) -> [UIDragItem] {
     guard let tab = dataSource.itemIdentifier(for: indexPath) else { return [] }
 
     UIImpactFeedbackGenerator(style: .medium).bzzt()
@@ -50,7 +54,11 @@ extension TabTrayController: UICollectionViewDropDelegate {
     applySnapshot()
   }
 
-  func collectionView(_ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession, withDestinationIndexPath destinationIndexPath: IndexPath?) -> UICollectionViewDropProposal {
+  func collectionView(
+    _ collectionView: UICollectionView,
+    dropSessionDidUpdate session: UIDropSession,
+    withDestinationIndexPath destinationIndexPath: IndexPath?
+  ) -> UICollectionViewDropProposal {
 
     guard let localDragSession = session.localDragSession,
       let item = localDragSession.items.first,

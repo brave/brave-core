@@ -1,9 +1,9 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Shared
 import BraveUI
+import Shared
 import UIKit
 
 private struct SettingsTableSectionHeaderFooterViewUX {
@@ -57,15 +57,25 @@ class SettingsTableSectionHeaderFooterView: UITableViewHeaderFooterView, TableVi
     switch titleAlignment {
     case .top:
       titleLabel.snp.remakeConstraints { make in
-        make.left.right.equalTo(self).inset(SettingsTableSectionHeaderFooterViewUX.titleHorizontalPadding)
+        make.left.right.equalTo(self).inset(
+          SettingsTableSectionHeaderFooterViewUX.titleHorizontalPadding
+        )
         make.top.equalTo(self).offset(SettingsTableSectionHeaderFooterViewUX.titleVerticalPadding)
-        make.bottom.equalTo(self).offset(-SettingsTableSectionHeaderFooterViewUX.titleVerticalLongPadding)
+        make.bottom.equalTo(self).offset(
+          -SettingsTableSectionHeaderFooterViewUX.titleVerticalLongPadding
+        )
       }
     case .bottom:
       titleLabel.snp.remakeConstraints { make in
-        make.left.right.equalTo(self).inset(SettingsTableSectionHeaderFooterViewUX.titleHorizontalPadding)
-        make.bottom.equalTo(self).offset(-SettingsTableSectionHeaderFooterViewUX.titleVerticalPadding)
-        make.top.equalTo(self).offset(SettingsTableSectionHeaderFooterViewUX.titleVerticalLongPadding)
+        make.left.right.equalTo(self).inset(
+          SettingsTableSectionHeaderFooterViewUX.titleHorizontalPadding
+        )
+        make.bottom.equalTo(self).offset(
+          -SettingsTableSectionHeaderFooterViewUX.titleVerticalPadding
+        )
+        make.top.equalTo(self).offset(
+          SettingsTableSectionHeaderFooterViewUX.titleVerticalLongPadding
+        )
       }
     }
   }

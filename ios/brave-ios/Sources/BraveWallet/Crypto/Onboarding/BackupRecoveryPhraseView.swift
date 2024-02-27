@@ -1,18 +1,19 @@
-/* Copyright 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// Copyright 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
 import DesignSystem
-import Strings
-import struct Shared.AppConstants
+import Foundation
 import Preferences
+import Strings
+import SwiftUI
+
+import struct Shared.AppConstants
 
 struct BackupRecoveryPhraseView: View {
   @ObservedObject var keyringStore: KeyringStore
-  
+
   @State private var password: String
   @State private var recoveryWords: [RecoveryWord] = []
   @State private var isViewRecoveryPermitted: Bool = false
@@ -65,9 +66,11 @@ struct BackupRecoveryPhraseView: View {
           copyRecoveryPhrase()
         } label: {
           if hasCopied {
-            Text("\(Strings.Wallet.copiedToPasteboard)  \(Image(braveSystemName: "leo.check.normal"))")
-              .font(.subheadline.bold())
-              .foregroundColor(Color(.braveSuccessLabel))
+            Text(
+              "\(Strings.Wallet.copiedToPasteboard)  \(Image(braveSystemName: "leo.check.normal"))"
+            )
+            .font(.subheadline.bold())
+            .foregroundColor(Color(.braveSuccessLabel))
           } else {
             Text(Strings.Wallet.copyToPasteboard)
               .font(.subheadline.bold())
@@ -78,7 +81,7 @@ struct BackupRecoveryPhraseView: View {
         .hidden(isHidden: !isViewRecoveryPermitted)
         .disabled(hasCopied)
         Button {
-          if isViewRecoveryPermitted { // user has revealed the phrases, continue to the next step
+          if isViewRecoveryPermitted {  // user has revealed the phrases, continue to the next step
             var loop = 3
             var indexes: [Int] = []
             while loop != 0 {
@@ -89,11 +92,13 @@ struct BackupRecoveryPhraseView: View {
               }
             }
             verifyRecoveryWordIndexes = indexes
-          } else { // user wants to reveal the phrases
+          } else {  // user wants to reveal the phrases
             isViewRecoveryPermitted = true
           }
         } label: {
-          Text(isViewRecoveryPermitted ? Strings.Wallet.continueButtonTitle : Strings.Wallet.viewRecoveryPhraseButtonTitle
+          Text(
+            isViewRecoveryPermitted
+              ? Strings.Wallet.continueButtonTitle : Strings.Wallet.viewRecoveryPhraseButtonTitle
           )
           .frame(maxWidth: .infinity)
         }
@@ -101,9 +106,9 @@ struct BackupRecoveryPhraseView: View {
         .padding(.top, 72)
         .padding(.horizontal)
         if keyringStore.isOnboardingVisible {
-          Button(action: {
+          Button {
             isShowingSkipWarning = true
-          }) {
+          } label: {
             Text(Strings.Wallet.skipButtonTitle)
               .font(Font.subheadline.weight(.medium))
               .foregroundColor(Color(.braveLabel))
@@ -113,7 +118,10 @@ struct BackupRecoveryPhraseView: View {
       }
       .padding()
     }
-    .transparentNavigationBar(backButtonTitle: Strings.Wallet.backupRecoveryPhraseBackButtonTitle, backButtonDisplayMode: .generic)
+    .transparentNavigationBar(
+      backButtonTitle: Strings.Wallet.backupRecoveryPhraseBackButtonTitle,
+      backButtonDisplayMode: .generic
+    )
     .background(Color(.braveBackground).edgesIgnoringSafeArea(.all))
     .alertOnScreenshot {
       Alert(
@@ -126,7 +134,7 @@ struct BackupRecoveryPhraseView: View {
       NavigationLink(
         isActive: Binding(
           get: { verifyRecoveryWordIndexes != nil },
-          set: { if !$0 { verifyRecoveryWordIndexes = nil }}
+          set: { if !$0 { verifyRecoveryWordIndexes = nil } }
         ),
         destination: {
           if let verifyRecoveryWordIndexes {
@@ -140,20 +148,27 @@ struct BackupRecoveryPhraseView: View {
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
     .background(
       WalletPromptView(
         isPresented: $isShowingSkipWarning,
-        primaryButton: WalletPromptButton(title: Strings.Wallet.editTransactionErrorCTA, action: { _ in
-          isShowingSkipWarning = false
-        }),
-        secondaryButton: WalletPromptButton(title: Strings.Wallet.backupSkipButtonTitle, action: { _ in
-          isShowingSkipWarning = false
-          // Skip button is only shown during onboarding
-          keyringStore.reportP3AOnboarding(action: .completeRecoverySkipped)
-          Preferences.Wallet.isOnboardingCompleted.value = true
-        }),
+        primaryButton: WalletPromptButton(
+          title: Strings.Wallet.editTransactionErrorCTA,
+          action: { _ in
+            isShowingSkipWarning = false
+          }
+        ),
+        secondaryButton: WalletPromptButton(
+          title: Strings.Wallet.backupSkipButtonTitle,
+          action: { _ in
+            isShowingSkipWarning = false
+            // Skip button is only shown during onboarding
+            keyringStore.reportP3AOnboarding(action: .completeRecoverySkipped)
+            Preferences.Wallet.isOnboardingCompleted.value = true
+          }
+        ),
         showCloseButton: false,
         content: {
           VStack(alignment: .leading, spacing: 20) {
@@ -166,7 +181,8 @@ struct BackupRecoveryPhraseView: View {
           }
           .multilineTextAlignment(.leading)
           .padding(.vertical, 20)
-        })
+        }
+      )
     )
     .onAppear {
       keyringStore.recoveryPhrase(password: password) { words in

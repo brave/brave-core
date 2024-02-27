@@ -1,12 +1,12 @@
 // Copyright 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
 import BraveShared
-import os.log
 import WebKit
+import os.log
 
 class BraveSearchResultAdScriptHandler: TabContentScript {
   private struct SearchResultAdResponse: Decodable {
@@ -42,12 +42,16 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
     guard var script = loadUserScript(named: scriptName) else {
       return nil
     }
-    return WKUserScript(source: secureScript(handlerName: messageHandlerName,
-                                             securityToken: scriptId,
-                                             script: script),
-                        injectionTime: .atDocumentEnd,
-                        forMainFrameOnly: true,
-                        in: scriptSandbox)
+    return WKUserScript(
+      source: secureScript(
+        handlerName: messageHandlerName,
+        securityToken: scriptId,
+        script: script
+      ),
+      injectionTime: .atDocumentEnd,
+      forMainFrameOnly: true,
+      in: scriptSandbox
+    )
   }()
 
   func userContentController(
@@ -63,15 +67,18 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
     }
 
     guard let tab = tab,
-          let braveSearchResultAdManager = tab.braveSearchResultAdManager
+      let braveSearchResultAdManager = tab.braveSearchResultAdManager
     else {
       Logger.module.error("Failed to get brave search result ad handler")
       return
     }
 
     guard JSONSerialization.isValidJSONObject(message.body),
-          let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
-          let searchResultAds = try? JSONDecoder().decode(SearchResultAdResponse.self, from: messageData)
+      let messageData = try? JSONSerialization.data(withJSONObject: message.body, options: []),
+      let searchResultAds = try? JSONDecoder().decode(
+        SearchResultAdResponse.self,
+        from: messageData
+      )
     else {
       Logger.module.error("Failed to parse search result ads response")
       return
@@ -86,15 +93,16 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
   ) {
     for ad in searchResultAds.creatives {
       guard let rewardsValue = Double(ad.rewardsValue)
-        else {
-          Logger.module.error("Failed to process search result ads JSON-LD")
-          return
+      else {
+        Logger.module.error("Failed to process search result ads JSON-LD")
+        return
       }
 
       var conversion: BraveAds.ConversionInfo?
       if let conversionUrlPatternValue = ad.conversionUrlPatternValue,
-         let conversionObservationWindowValue = ad.conversionObservationWindowValue {
-         let timeInterval = TimeInterval(conversionObservationWindowValue) * 1.days
+        let conversionObservationWindowValue = ad.conversionObservationWindowValue
+      {
+        let timeInterval = TimeInterval(conversionObservationWindowValue) * 1.days
         conversion = .init(
           urlPattern: conversionUrlPatternValue,
           verifiableAdvertiserPublicKeyBase64: ad.conversionAdvertiserPublicKeyValue,
@@ -117,7 +125,9 @@ class BraveSearchResultAdScriptHandler: TabContentScript {
       )
 
       braveSearchResultAdManager.triggerSearchResultAdViewedEvent(
-        placementId: ad.placementId, searchResultAd:searchResultAd)
+        placementId: ad.placementId,
+        searchResultAd: searchResultAd
+      )
     }
   }
 }

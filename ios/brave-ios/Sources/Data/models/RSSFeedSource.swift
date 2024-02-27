@@ -1,10 +1,10 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CoreData
+import Foundation
 
 public final class RSSFeedSource: NSManagedObject, CRUD {
   @NSManaged public var title: String?
@@ -37,7 +37,7 @@ public final class RSSFeedSource: NSManagedObject, CRUD {
       try? context.save()
     }
   }
-  
+
   public class func update(feedUrl: String, title: String) {
     DataController.perform { context in
       if let source = getInternal(feedUrl: feedUrl, context: context) {
@@ -45,8 +45,9 @@ public final class RSSFeedSource: NSManagedObject, CRUD {
       }
     }
   }
-  
-  private class func getInternal(feedUrl: String, context: NSManagedObjectContext) -> RSSFeedSource? {
+
+  private class func getInternal(feedUrl: String, context: NSManagedObjectContext) -> RSSFeedSource?
+  {
     let predicate = NSPredicate(format: "\(#keyPath(RSSFeedSource.feedUrl)) == %@", feedUrl)
     return first(where: predicate, context: context)
   }

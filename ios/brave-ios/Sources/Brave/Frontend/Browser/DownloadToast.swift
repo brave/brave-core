@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -42,17 +42,33 @@ class DownloadToast: Toast {
   }
 
   var descriptionText: String {
-    let downloadedSize = ByteCountFormatter.string(fromByteCount: combinedBytesDownloaded, countStyle: .file)
-    let expectedSize = combinedTotalBytesExpected != nil ? ByteCountFormatter.string(fromByteCount: combinedTotalBytesExpected!, countStyle: .file) : nil
-    let descriptionText = expectedSize != nil ? String(format: Strings.downloadProgressToastDescriptionText, downloadedSize, expectedSize!) : downloadedSize
+    let downloadedSize = ByteCountFormatter.string(
+      fromByteCount: combinedBytesDownloaded,
+      countStyle: .file
+    )
+    let expectedSize =
+      combinedTotalBytesExpected != nil
+      ? ByteCountFormatter.string(fromByteCount: combinedTotalBytesExpected!, countStyle: .file)
+      : nil
+    let descriptionText =
+      expectedSize != nil
+      ? String(format: Strings.downloadProgressToastDescriptionText, downloadedSize, expectedSize!)
+      : downloadedSize
 
     guard downloads.count > 1 else {
       return descriptionText
     }
 
-    let fileCountDescription = String(format: Strings.downloadMultipleFilesToastDescriptionText, downloads.count)
+    let fileCountDescription = String(
+      format: Strings.downloadMultipleFilesToastDescriptionText,
+      downloads.count
+    )
 
-    return String(format: Strings.downloadMultipleFilesAndProgressToastDescriptionText, fileCountDescription, descriptionText)
+    return String(
+      format: Strings.downloadMultipleFilesAndProgressToastDescriptionText,
+      fileCountDescription,
+      descriptionText
+    )
   }
 
   var downloads: [Download] = []
@@ -115,7 +131,9 @@ class DownloadToast: Toast {
     horizontalStackView.alignment = .center
     horizontalStackView.spacing = ButtonToastUX.toastPadding
 
-    let icon = UIImageView(image: UIImage(named: "download", in: .module, compatibleWith: nil)!.template)
+    let icon = UIImageView(
+      image: UIImage(named: "download", in: .module, compatibleWith: nil)!.template
+    )
     icon.tintColor = .white
     horizontalStackView.addArrangedSubview(icon)
 
@@ -140,10 +158,14 @@ class DownloadToast: Toast {
 
     horizontalStackView.addArrangedSubview(labelStackView)
 
-    let cancel = UIImageView(image: UIImage(named: "close-medium", in: .module, compatibleWith: nil)!.template)
+    let cancel = UIImageView(
+      image: UIImage(named: "close-medium", in: .module, compatibleWith: nil)!.template
+    )
     cancel.tintColor = .white
     cancel.isUserInteractionEnabled = true
-    cancel.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(buttonPressed)))
+    cancel.addGestureRecognizer(
+      UITapGestureRecognizer(target: self, action: #selector(buttonPressed))
+    )
     horizontalStackView.addArrangedSubview(cancel)
 
     toastView.backgroundColor = DownloadToastUX.toastBackgroundColor
@@ -168,15 +190,26 @@ class DownloadToast: Toast {
   }
 
   @objc func buttonPressed(_ gestureRecognizer: UIGestureRecognizer) {
-    let alert = AlertController(title: Strings.cancelDownloadDialogTitle, message: Strings.cancelDownloadDialogMessage, preferredStyle: .alert)
-    alert.addAction(UIAlertAction(title: Strings.cancelDownloadDialogResume, style: .cancel, handler: nil), accessibilityIdentifier: "cancelDownloadAlert.resume")
+    let alert = AlertController(
+      title: Strings.cancelDownloadDialogTitle,
+      message: Strings.cancelDownloadDialogMessage,
+      preferredStyle: .alert
+    )
+    alert.addAction(
+      UIAlertAction(title: Strings.cancelDownloadDialogResume, style: .cancel, handler: nil),
+      accessibilityIdentifier: "cancelDownloadAlert.resume"
+    )
     alert.addAction(
       UIAlertAction(
-        title: Strings.cancelDownloadDialogCancel, style: .default,
+        title: Strings.cancelDownloadDialogCancel,
+        style: .default,
         handler: { action in
           self.completionHandler?(true)
           self.dismiss(true)
-        }), accessibilityIdentifier: "cancelDownloadAlert.cancel")
+        }
+      ),
+      accessibilityIdentifier: "cancelDownloadAlert.cancel"
+    )
 
     viewController?.present(alert, animated: true, completion: nil)
   }

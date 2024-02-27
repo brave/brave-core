@@ -1,11 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import WebKit
-import Shared
 import BraveShared
+import Foundation
+import Shared
+import WebKit
 
 private let apostropheEncoded = "%27"
 
@@ -13,7 +13,14 @@ extension WKWebView {
   // Use JS to redirect the page without adding a history entry
   func replaceLocation(with url: URL) {
     let safeUrl = url.absoluteString.replacingOccurrences(of: "'", with: apostropheEncoded)
-    evaluateSafeJavaScript(functionName: "location.replace", args: ["'\(safeUrl)'"], contentWorld: .defaultClient, escapeArgs: false, asFunction: true, completion: nil)
+    evaluateSafeJavaScript(
+      functionName: "location.replace",
+      args: ["'\(safeUrl)'"],
+      contentWorld: .defaultClient,
+      escapeArgs: false,
+      asFunction: true,
+      completion: nil
+    )
   }
 }
 
@@ -88,7 +95,8 @@ public class SessionRestoreHandler: InternalSchemeResponse {
 
     // From here on, handle 'history=' query param
     let response = InternalSchemeHandler.response(forUrl: url.url)
-    guard let sessionRestorePath = Bundle.module.path(forResource: "SessionRestore", ofType: "html"),
+    guard
+      let sessionRestorePath = Bundle.module.path(forResource: "SessionRestore", ofType: "html"),
       var html = try? String(contentsOfFile: sessionRestorePath)
     else {
       assert(false)
@@ -96,7 +104,10 @@ public class SessionRestoreHandler: InternalSchemeResponse {
     }
 
     html = html.replacingOccurrences(of: "%INSERT_UUID_VALUE%", with: InternalURL.uuid)
-    html = html.replacingOccurrences(of: "%security_token%", with: SessionRestoreScriptHandler.scriptId)
+    html = html.replacingOccurrences(
+      of: "%security_token%",
+      with: SessionRestoreScriptHandler.scriptId
+    )
 
     guard let data = html.data(using: .utf8) else {
       assert(false)
@@ -105,6 +116,6 @@ public class SessionRestoreHandler: InternalSchemeResponse {
 
     return (response, data)
   }
-  
-  public init() { }
+
+  public init() {}
 }

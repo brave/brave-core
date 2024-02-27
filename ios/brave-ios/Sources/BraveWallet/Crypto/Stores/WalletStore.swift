@@ -1,13 +1,13 @@
 // Copyright 2021 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
-import Combine
-import Preferences
 import BraveUI
+import Combine
+import Foundation
+import Preferences
 
 /// The main wallet store
 public class WalletStore {
@@ -21,32 +21,32 @@ public class WalletStore {
       keyringStore.origin = origin
     }
   }
-  
+
   public let onPendingRequestUpdated = PassthroughSubject<Void, Never>()
-  
+
   var isPresentingWalletPanel: Bool = false {
     didSet {
-      if oldValue, !isPresentingWalletPanel { // dismiss
-        if !isPresentingFullWallet { // both full wallet and wallet panel are dismissed
+      if oldValue, !isPresentingWalletPanel {  // dismiss
+        if !isPresentingFullWallet {  // both full wallet and wallet panel are dismissed
           self.tearDown()
         } else {
           // dismiss panel to present full screen. observer should be setup")
           self.setupObservers()
         }
-      } else if !oldValue, isPresentingWalletPanel { // present
+      } else if !oldValue, isPresentingWalletPanel {  // present
         self.setupObservers()
       }
     }
   }
   var isPresentingFullWallet: Bool = false {
     didSet {
-      if oldValue, !isPresentingFullWallet { // dismiss
-        if !isPresentingWalletPanel { // both panel and full wallet are dismissed
+      if oldValue, !isPresentingFullWallet {  // dismiss
+        if !isPresentingWalletPanel {  // both panel and full wallet are dismissed
           self.tearDown()
         } else {
           // panel is still visible, do not tear down
         }
-      } else if !oldValue, isPresentingFullWallet { // present
+      } else if !oldValue, isPresentingFullWallet {  // present
         if isPresentingWalletPanel {
           // observers should be setup when wallet panel is presented
         } else {
@@ -95,12 +95,12 @@ public class WalletStore {
       walletP3A: walletP3A
     )
   }
-  
+
   public func setupObservers() {
     keyringStore.setupObservers()
     cryptoStore?.setupObservers()
   }
-  
+
   public func tearDown() {
     keyringStore.tearDown()
     cryptoStore?.tearDown()

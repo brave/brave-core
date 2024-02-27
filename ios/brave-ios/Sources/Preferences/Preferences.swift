@@ -1,11 +1,11 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Combine
 import Foundation
 import Shared
 import os.log
-import Combine
 
 /// The applications preferences container
 ///
@@ -40,9 +40,9 @@ extension Preferences {
     @Published public var value: ValueType {
       didSet {
         if value == oldValue { return }
-        
+
         writePreferenceValue(container, key, value)
-        
+
         container.synchronize()
 
         let key = self.key
@@ -63,9 +63,9 @@ extension Preferences {
     public func reset() {
       value = defaultValue
     }
-    
+
     private var writePreferenceValue: ((UserDefaults, String, ValueType) -> Void)
-    
+
     fileprivate init(
       key: String,
       initialValue: ValueType,
@@ -116,7 +116,8 @@ extension Preferences.Option {
   }
   /// Creates a preference storing an dictionary of user defaults supported value types
   public convenience init<K, V>(
-    key: String, default: ValueType,
+    key: String,
+    default: ValueType,
     container: UserDefaults = Preferences.defaultContainer
   ) where K: StringProtocol, V: UserDefaultsEncodable, ValueType == [K: V] {
     self.init(key: key, defaultValue: `default`, container: container)
@@ -183,7 +184,9 @@ extension Preferences.Option {
         if let value = ValueType(rawValue: rawValue) {
           return value
         } else {
-          Logger.module.error("Failed to load enum preference \"\(key)\" with raw value \(String(describing: rawValue))")
+          Logger.module.error(
+            "Failed to load enum preference \"\(key)\" with raw value \(String(describing: rawValue))"
+          )
         }
       }
       return `default`
@@ -196,7 +199,7 @@ extension Preferences.Option {
       writePreferenceValue: { $0.setValue($2.rawValue, forKey: $1) }
     )
   }
-  
+
   /// Creates a preference storing an optional raw representable where the raw value is a user defaults
   /// supported value type
   public convenience init<R>(
@@ -239,4 +242,5 @@ extension URL: UserDefaultsEncodable {}
 extension Data: UserDefaultsEncodable {}
 extension Date: UserDefaultsEncodable {}
 extension Array: UserDefaultsEncodable where Element: UserDefaultsEncodable {}
-extension Dictionary: UserDefaultsEncodable where Key: StringProtocol, Value: UserDefaultsEncodable {}
+extension Dictionary: UserDefaultsEncodable
+where Key: StringProtocol, Value: UserDefaultsEncodable {}

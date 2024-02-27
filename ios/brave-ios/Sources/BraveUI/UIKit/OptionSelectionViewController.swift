@@ -1,13 +1,15 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Static
 import UIKit
 
-public class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableViewController {
-  public typealias SelectedOptionChanged = (OptionSelectionViewController<OptionType>, OptionType) -> Void
+public class OptionSelectionViewController<OptionType: RepresentableOptionType>: TableViewController
+{
+  public typealias SelectedOptionChanged = (OptionSelectionViewController<OptionType>, OptionType)
+    -> Void
 
   let options: [OptionType]
   private let optionChanged: SelectedOptionChanged
@@ -44,7 +46,8 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     style: UITableView.Style = .grouped,
     options: [OptionType],
     selectedOption: OptionType? = nil,
-    optionChanged: @escaping SelectedOptionChanged) {
+    optionChanged: @escaping SelectedOptionChanged
+  ) {
     assert(!options.isEmpty, "There should always be at least 1 option to choose from")
 
     self.options = options
@@ -52,14 +55,14 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
     self.optionChanged = optionChanged
 
     super.init(style: style)
-      
+
     var header: Section.Extremity?
     var footer: Section.Extremity?
 
     if let headerText = headerText {
       header = .title(headerText)
     }
-      
+
     if let footerText = footerText {
       footer = .title(footerText)
     }
@@ -75,7 +78,10 @@ public class OptionSelectionViewController<OptionType: RepresentableOptionType>:
               self.selectedOption = o
               self.updateRowsForSelectedOption()
               self.navigationController?.popViewController(animated: true)
-            }, image: o.image, accessory: o == selectedOption ? .checkmark : .none)
+            },
+            image: o.image,
+            accessory: o == selectedOption ? .checkmark : .none
+          )
         },
         footer: footer
       )

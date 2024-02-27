@@ -1,24 +1,41 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import Storage
-import Preferences
 import Data
 import Favicon
+import Preferences
+import Shared
+import Storage
+import UIKit
 
 // MARK: - SearchViewControllerDelegate
 
 protocol SearchViewControllerDelegate: AnyObject {
-  func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String, braveSearchPromotion: Bool)
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmit query: String,
+    braveSearchPromotion: Bool
+  )
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL)
-  func searchViewController(_ searchViewController: SearchViewController, didSelectOpenTab tabInfo: (id: UUID?, url: URL))
-  func searchViewController(_ searchViewController: SearchViewController, didLongPressSuggestion suggestion: String)
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSelectOpenTab tabInfo: (id: UUID?, url: URL)
+  )
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didLongPressSuggestion suggestion: String
+  )
   func presentSearchSettingsController()
-  func searchViewController(_ searchViewController: SearchViewController, didHighlightText text: String, search: Bool)
-  func searchViewController(_ searchViewController: SearchViewController, shouldFindInPage query: String)
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didHighlightText text: String,
+    search: Bool
+  )
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    shouldFindInPage query: String
+  )
   func searchViewControllerAllowFindInPage() -> Bool
 }
 
@@ -56,12 +73,15 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       $0.leading.trailing.equalTo(scrollView.frameLayoutGuide)
     }
   }
-  private let backgroundView = UIVisualEffectView(effect: UIBlurEffect(style: .systemUltraThinMaterial))
+  private let backgroundView = UIVisualEffectView(
+    effect: UIBlurEffect(style: .systemUltraThinMaterial)
+  )
   private let searchEngineScrollViewContent = UIView()
-  
+
   private lazy var suggestionLongPressGesture = UILongPressGestureRecognizer(
     target: self,
-    action: #selector(onSuggestionLongPressed(_:)))
+    action: #selector(onSuggestionLongPressed(_:))
+  )
 
   var searchDelegate: SearchViewControllerDelegate?
   var isUsingBottomBar: Bool = false {
@@ -79,9 +99,9 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   init(with dataSource: SearchSuggestionDataSource, browserColors: some BrowserColors) {
     self.dataSource = dataSource
     self.browserColors = browserColors
-    
+
     super.init(nibName: nil, bundle: nil)
-    
+
     dataSource.delegate = self
   }
 
@@ -92,7 +112,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   deinit {
     NotificationCenter.default.removeObserver(self, name: .dynamicFontChanged, object: nil)
   }
-  
+
   public override func viewSafeAreaInsetsDidChange() {
     super.viewSafeAreaInsetsDidChange()
     layoutSearchEngineScrollView()
@@ -100,17 +120,18 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
   override public func viewDidLoad() {
     super.viewDidLoad()
-    
+
     view.insertSubview(backgroundView, belowSubview: tableView)
-    
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
-    
+
     // Have to apply a custom alpha here because UIVisualEffectView blurs come with their own tint
-    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass.withAlphaComponent(0.8)
+    backgroundView.contentView.backgroundColor = browserColors.containerFrostedGlass
+      .withAlphaComponent(0.8)
     searchEngineScrollView.backgroundColor = browserColors.containerBackground
-    
+
     setupSearchEngineScrollViewIfNeeded()
 
     KeyboardHelper.defaultHelper.addDelegate(self)
@@ -121,12 +142,23 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       $0.sectionHeaderTopPadding = 5
       $0.backgroundColor = .clear
       $0.addGestureRecognizer(suggestionLongPressGesture)
-      $0.register(SearchSuggestionPromptCell.self, forCellReuseIdentifier: SearchSuggestionPromptCell.identifier)
+      $0.register(
+        SearchSuggestionPromptCell.self,
+        forCellReuseIdentifier: SearchSuggestionPromptCell.identifier
+      )
       $0.register(SuggestionCell.self, forCellReuseIdentifier: SuggestionCell.identifier)
-      $0.register(BraveSearchPromotionCell.self, forCellReuseIdentifier: BraveSearchPromotionCell.identifier)
+      $0.register(
+        BraveSearchPromotionCell.self,
+        forCellReuseIdentifier: BraveSearchPromotionCell.identifier
+      )
       $0.register(UITableViewCell.self, forCellReuseIdentifier: "default")
     }
-    NotificationCenter.default.addObserver(self, selector: #selector(dynamicFontChanged), name: .dynamicFontChanged, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(dynamicFontChanged),
+      name: .dynamicFontChanged,
+      object: nil
+    )
   }
 
   override public func viewWillAppear(_ animated: Bool) {
@@ -135,19 +167,27 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     reloadData()
   }
 
-  override public func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+  override public func viewWillTransition(
+    to size: CGSize,
+    with coordinator: UIViewControllerTransitionCoordinator
+  ) {
     super.viewWillTransition(to: size, with: coordinator)
     // The height of the suggestions row may change, so call reloadData() to recalculate cell heights.
     coordinator.animate(
       alongsideTransition: { _ in
         self.tableView.reloadData()
-      }, completion: nil)
+      },
+      completion: nil
+    )
   }
 
   private func animateSearchEnginesWithKeyboard(_ keyboardState: KeyboardState) {
     layoutSearchEngineScrollView()
 
-    UIViewPropertyAnimator(duration: keyboardState.animationDuration, curve: keyboardState.animationCurve) {
+    UIViewPropertyAnimator(
+      duration: keyboardState.animationDuration,
+      curve: keyboardState.animationCurve
+    ) {
       self.view.layoutIfNeeded()
     }
     .startAnimation()
@@ -185,14 +225,16 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   private func layoutSearchEngineScrollView() {
     if !dataSource.hasQuickSearchEngines { return }
 
-    let keyboardHeight = KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
+    let keyboardHeight =
+      KeyboardHelper.defaultHelper.currentState?.intersectionHeightForView(view) ?? 0
 
     searchEngineScrollView.snp.remakeConstraints { make in
       make.leading.trailing.equalTo(view)
       if isUsingBottomBar {
         let offset: CGFloat
         if keyboardHeight > 0 {
-          offset = keyboardHeight - abs(additionalSafeAreaInsets.bottom - view.safeAreaInsets.bottom)
+          offset =
+            keyboardHeight - abs(additionalSafeAreaInsets.bottom - view.safeAreaInsets.bottom)
         } else {
           offset = 0
         }
@@ -204,8 +246,9 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   }
 
   private func layoutSuggestionsOptInPrompt() {
-    if dataSource.tabType.isPrivate ||
-        dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == false {
+    if dataSource.tabType.isPrivate
+      || dataSource.searchEngines?.shouldShowSearchSuggestionsOptIn == false
+    {
       reloadData()
       return
     }
@@ -217,16 +260,16 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     tableView.snp.remakeConstraints { make in
       make.top.equalTo(view.snp.top)
       make.leading.trailing.equalTo(view)
-      make.bottom.equalTo(dataSource.hasQuickSearchEngines ?
-                          searchEngineScrollView.snp.top :
-                          self.view)
+      make.bottom.equalTo(
+        dataSource.hasQuickSearchEngines ? searchEngineScrollView.snp.top : self.view
+      )
     }
   }
 
   override func reloadData() {
     dataSource.querySuggestClient()
   }
-  
+
   func setupSearchEngineList() {
     // Cancel requests that are not executed
     dataSource.cancelPendingSuggestionsRequests()
@@ -238,7 +281,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     reloadSearchEngines()
     layoutSuggestionsOptInPrompt()
   }
-  
+
   func setSearchQuery(query: String) {
     dataSource.searchQuery = query
     dataSource.querySuggestClient()
@@ -250,7 +293,10 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
     // search settings icon
     let searchButton = UIButton()
-    searchButton.setImage(UIImage(named: "quickSearch", in: .module, compatibleWith: nil)!.template, for: [])
+    searchButton.setImage(
+      UIImage(named: "quickSearch", in: .module, compatibleWith: nil)!.template,
+      for: []
+    )
     searchButton.imageView?.contentMode = .center
     searchButton.backgroundColor = .clear
     searchButton.addTarget(self, action: #selector(didClickSearchButton), for: .touchUpInside)
@@ -267,8 +313,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       make.size.equalTo(SearchViewControllerUX.faviconSize)
       // offset the left edge to align with search results
       make.left.equalTo(leftEdge).offset(SearchViewControllerUX.searchButtonMargin * 2)
-      make.top.equalTo(searchEngineScrollViewContent).offset(SearchViewControllerUX.searchButtonMargin)
-      make.bottom.equalTo(searchEngineScrollViewContent).offset(-SearchViewControllerUX.searchButtonMargin)
+      make.top.equalTo(searchEngineScrollViewContent).offset(
+        SearchViewControllerUX.searchButtonMargin
+      )
+      make.bottom.equalTo(searchEngineScrollViewContent).offset(
+        -SearchViewControllerUX.searchButtonMargin
+      )
     }
 
     // search engines
@@ -279,7 +329,10 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       engineButton.imageView?.contentMode = .scaleAspectFit
       engineButton.backgroundColor = .clear
       engineButton.addTarget(self, action: #selector(didSelectEngine), for: .touchUpInside)
-      engineButton.accessibilityLabel = String(format: Strings.searchEngineFormatText, engine.shortName)
+      engineButton.accessibilityLabel = String(
+        format: Strings.searchEngineFormatText,
+        engine.shortName
+      )
 
       engineButton.imageView?.snp.makeConstraints { make in
         make.width.height.equalTo(SearchViewControllerUX.faviconSize)
@@ -305,7 +358,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     self.data = Array(data.prefix(5))
     tableView.reloadData()
   }
-  
+
   private func isBraveSearchPrompt(for indexPath: IndexPath) -> Bool {
     guard let section = dataSource.availableSections[safe: indexPath.section] else {
       return false
@@ -315,10 +368,13 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestionsOptIn:
       return indexPath.row == 1 && dataSource.braveSearchPromotionAvailable
     case .searchSuggestions:
-      let index = traitCollection.horizontalSizeClass == .regular && UIDevice.current.orientation.isPortrait ? 4 : 2
+      let index =
+        traitCollection.horizontalSizeClass == .regular && UIDevice.current.orientation.isPortrait
+        ? 4 : 2
       switch dataSource.suggestions.count {
       case 0...index:
-        return indexPath.row == dataSource.suggestions.count && dataSource.braveSearchPromotionAvailable
+        return indexPath.row == dataSource.suggestions.count
+          && dataSource.braveSearchPromotionAvailable
       default:
         return indexPath.row == index && dataSource.braveSearchPromotionAvailable
       }
@@ -326,15 +382,16 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       return false
     }
   }
-  
+
   private func changeBraveSearchPromotionState() {
     // The promotion state will changed "maybeLaterUpcomingSession" next launch
-    if Preferences.BraveSearch.braveSearchPromotionCompletionState.value !=
-        BraveSearchPromotionState.maybeLaterSameSession.rawValue {
-        Preferences.BraveSearch.braveSearchPromotionCompletionState.value += 1
+    if Preferences.BraveSearch.braveSearchPromotionCompletionState.value
+      != BraveSearchPromotionState.maybeLaterSameSession.rawValue
+    {
+      Preferences.BraveSearch.braveSearchPromotionCompletionState.value += 1
     }
   }
-  
+
   private func submitSeachTemplateQuery(isBraveSearchPromotion: Bool) {
     if !dataSource.tabType.isPrivate {
       RecentSearch.addItem(type: .text, text: dataSource.searchQuery, websiteUrl: nil)
@@ -342,7 +399,8 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     searchDelegate?.searchViewController(
       self,
       didSubmit: dataSource.searchQuery,
-      braveSearchPromotion: isBraveSearchPromotion)
+      braveSearchPromotion: isBraveSearchPromotion
+    )
   }
 
   // MARK: Actions
@@ -384,7 +442,9 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestions:
       if !isBraveSearchPrompt(for: indexPath) {
         // Assume that only the default search engine can provide search suggestions.
-        let engine = dataSource.searchEngines?.defaultEngine(forType: dataSource.tabType == .private ? .privateMode : .standard)
+        let engine = dataSource.searchEngines?.defaultEngine(
+          forType: dataSource.tabType == .private ? .privateMode : .standard
+        )
         let suggestion = dataSource.suggestions[indexPath.row]
 
         var url = URIFixup.getURL(suggestion)
@@ -418,7 +478,10 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override public func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+  override public func tableView(
+    _ tableView: UITableView,
+    heightForRowAt indexPath: IndexPath
+  ) -> CGFloat {
     if let currentSection = dataSource.availableSections[safe: indexPath.section] {
       switch currentSection {
       case .quickBar:
@@ -444,11 +507,18 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .quickBar: return nil
     case .searchSuggestionsOptIn: return nil
     case .searchSuggestions:
-      if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(forType: dataSource.tabType == .private ? .privateMode : .standard) {
-        if defaultSearchEngine.shortName.contains(Strings.searchSuggestionSectionTitleNoSearchFormat) || defaultSearchEngine.shortName.lowercased().contains("search") {
+      if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(
+        forType: dataSource.tabType == .private ? .privateMode : .standard
+      ) {
+        if defaultSearchEngine.shortName.contains(
+          Strings.searchSuggestionSectionTitleNoSearchFormat
+        ) || defaultSearchEngine.shortName.lowercased().contains("search") {
           return defaultSearchEngine.displayName
         }
-        return String(format: Strings.searchSuggestionSectionTitleFormat, defaultSearchEngine.displayName)
+        return String(
+          format: Strings.searchSuggestionSectionTitleFormat,
+          defaultSearchEngine.displayName
+        )
       }
       return Strings.searchSuggestionsSectionHeader
     case .openTabsAndHistoryAndBookmarks: return Strings.searchHistorySectionHeader
@@ -456,13 +526,20 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  func tableView(_ tableView: UITableView, willDisplayHeaderView view: UIView, forSection section: Int) {
+  func tableView(
+    _ tableView: UITableView,
+    willDisplayHeaderView view: UIView,
+    forSection section: Int
+  ) {
     if let headerView = view as? UITableViewHeaderFooterView {
       headerView.textLabel?.textColor = .bravePrimary
     }
   }
 
-  override public func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+  override public func tableView(
+    _ tableView: UITableView,
+    heightForHeaderInSection section: Int
+  ) -> CGFloat {
     guard let searchSection = dataSource.availableSections[safe: section] else { return 0 }
     let headerHeight: CGFloat = 22
 
@@ -479,14 +556,15 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       if !Preferences.Search.showBrowserSuggestions.value {
         return 0
       }
-      
+
       // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
       // when search suggestions is not enabled
       if Preferences.Privacy.privateBrowsingOnly.value,
-        dataSource.searchEngines?.shouldShowSearchSuggestions == false {
+        dataSource.searchEngines?.shouldShowSearchSuggestions == false
+      {
         return 0
       }
-      
+
       return data.isEmpty ? 0 : 2.0 * headerHeight
     case .findInPage:
       if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
@@ -514,23 +592,29 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
   }
 
-  override public func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+  override public func tableView(
+    _ tableView: UITableView,
+    cellForRowAt indexPath: IndexPath
+  ) -> UITableViewCell {
     func createSearchSuggestionPromotionCell() -> UITableViewCell {
-      let cell = tableView.dequeueReusableCell(withIdentifier: BraveSearchPromotionCell.identifier, for: indexPath)
+      let cell = tableView.dequeueReusableCell(
+        withIdentifier: BraveSearchPromotionCell.identifier,
+        for: indexPath
+      )
       if let promotionSearchCell = cell as? BraveSearchPromotionCell {
         promotionSearchCell.trySearchEngineTapped = { [weak self] in
           self?.submitSeachTemplateQuery(isBraveSearchPromotion: true)
         }
-        
+
         promotionSearchCell.dismissTapped = { [weak self] in
           self?.changeBraveSearchPromotionState()
           tableView.reloadData()
         }
       }
-      
+
       return cell
     }
-    
+
     guard let section = dataSource.availableSections[safe: indexPath.section] else {
       return UITableViewCell()
     }
@@ -540,7 +624,11 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       let cell = TwoLineTableViewCell()
       cell.textLabel?.text = dataSource.searchQuery
       cell.textLabel?.textColor = .bravePrimary
-      cell.imageView?.image = UIImage(named: "search_bar_find_in_page_icon", in: .module, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+      cell.imageView?.image = UIImage(
+        named: "search_bar_find_in_page_icon",
+        in: .module,
+        compatibleWith: nil
+      )?.withRenderingMode(.alwaysTemplate)
       cell.imageView?.tintColor = browserColors.iconDefault
       cell.imageView?.contentMode = .center
       cell.backgroundColor = .clear
@@ -552,7 +640,10 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       if isBraveSearchPrompt(for: indexPath) {
         cell = createSearchSuggestionPromotionCell()
       } else {
-        cell = tableView.dequeueReusableCell(withIdentifier: SearchSuggestionPromptCell.identifier, for: indexPath)
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: SearchSuggestionPromptCell.identifier,
+          for: indexPath
+        )
         if let promptCell = cell as? SearchSuggestionPromptCell {
           promptCell.selectionStyle = .none
           promptCell.onOptionSelected = { [weak self] option in
@@ -570,7 +661,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           }
         }
       }
-          
+
       guard let tableViewCell = cell else { return UITableViewCell() }
       tableViewCell.separatorInset = .zero
 
@@ -581,11 +672,21 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       if isBraveSearchPrompt(for: indexPath) {
         cell = createSearchSuggestionPromotionCell()
       } else {
-        cell = tableView.dequeueReusableCell(withIdentifier: SuggestionCell.identifier, for: indexPath)
+        cell = tableView.dequeueReusableCell(
+          withIdentifier: SuggestionCell.identifier,
+          for: indexPath
+        )
 
-        if let suggestionCell = cell as? SuggestionCell, let suggestion = dataSource.suggestions[safe: indexPath.row] {
+        if let suggestionCell = cell as? SuggestionCell,
+          let suggestion = dataSource.suggestions[safe: indexPath.row]
+        {
           suggestionCell.setTitle(suggestion)
-          suggestionCell.separatorInset = UIEdgeInsets(top: 0.0, left: view.bounds.width, bottom: 0.0, right: -view.bounds.width)
+          suggestionCell.separatorInset = UIEdgeInsets(
+            top: 0.0,
+            left: view.bounds.width,
+            bottom: 0.0,
+            right: -view.bounds.width
+          )
           suggestionCell.openButtonActionHandler = { [weak self] in
             guard let self = self else { return }
 
@@ -593,7 +694,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
           }
         }
       }
-      
+
       guard let tableViewCell = cell else { return UITableViewCell() }
       tableViewCell.separatorInset = .zero
 
@@ -601,42 +702,53 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .openTabsAndHistoryAndBookmarks:
       let cell = super.tableView(tableView, cellForRowAt: indexPath)
       let site = data[indexPath.row]
-      
+
       let detailTextForTabSuggestions = NSMutableAttributedString()
-      
+
       detailTextForTabSuggestions.append(
         NSAttributedString(
           string: Strings.searchSuggestionOpenTabActionTitle,
           attributes: [
-            .font: DynamicFontHelper.defaultHelper.SmallSizeBoldWeightAS,
-            .foregroundColor: browserColors.textSecondary
-          ]))
+            .font: DynamicFontHelper.defaultHelper.smallSizeBoldWeightAS,
+            .foregroundColor: browserColors.textSecondary,
+          ]
+        )
+      )
 
       detailTextForTabSuggestions.append(
         NSAttributedString(
           string: " · \(site.url)",
           attributes: [
-            .font: DynamicFontHelper.defaultHelper.SmallSizeRegularWeightAS,
-            .foregroundColor: browserColors.textSecondary
-          ]))
-      
+            .font: DynamicFontHelper.defaultHelper.smallSizeRegularWeightAS,
+            .foregroundColor: browserColors.textSecondary,
+          ]
+        )
+      )
+
       if let cell = cell as? TwoLineTableViewCell {
         cell.textLabel?.textColor = browserColors.textPrimary
         if site.siteType == .tab {
-          cell.setLines(site.title, detailText: nil, detailAttributedText: detailTextForTabSuggestions)
+          cell.setLines(
+            site.title,
+            detailText: nil,
+            detailAttributedText: detailTextForTabSuggestions
+          )
         } else {
           cell.setLines(site.title, detailText: site.url)
         }
         cell.setRightBadge(site.siteType.icon?.template ?? nil)
         cell.accessoryView?.tintColor = browserColors.iconDefault
-        
+
         cell.imageView?.contentMode = .scaleAspectFit
         cell.imageView?.layer.borderColor = SearchViewControllerUX.iconBorderColor.cgColor
         cell.imageView?.layer.borderWidth = SearchViewControllerUX.iconBorderWidth
-        cell.imageView?.loadFavicon(for: site.tileURL, isPrivateBrowsing: dataSource.tabType.isPrivate)
+        cell.imageView?.loadFavicon(
+          for: site.tileURL,
+          isPrivateBrowsing: dataSource.tabType.isPrivate
+        )
         cell.backgroundColor = .clear
       }
-        
+
       return cell
     case .findInPage:
       let cell = tableView.dequeueReusableCell(withIdentifier: "default", for: indexPath)
@@ -647,12 +759,15 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       cell.textLabel?.lineBreakMode = .byWordWrapping
       cell.textLabel?.textAlignment = .left
       cell.backgroundColor = .clear
-        
+
       return cell
     }
   }
 
-  override public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+  override public func tableView(
+    _ tableView: UITableView,
+    numberOfRowsInSection section: Int
+  ) -> Int {
     guard let section = dataSource.availableSections[safe: section] else {
       return 0
     }
@@ -663,29 +778,35 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     case .searchSuggestionsOptIn:
       return dataSource.braveSearchPromotionAvailable ? 2 : 1
     case .searchSuggestions:
-      guard let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions else { return 0 }
-      
-      var searchSuggestionsCount = min(dataSource.suggestions.count, dataSource.maxSearchSuggestions)
+      guard let shouldShowSuggestions = dataSource.searchEngines?.shouldShowSearchSuggestions else {
+        return 0
+      }
+
+      var searchSuggestionsCount = min(
+        dataSource.suggestions.count,
+        dataSource.maxSearchSuggestions
+      )
       if dataSource.braveSearchPromotionAvailable {
         searchSuggestionsCount += 1
       }
-      
-      return shouldShowSuggestions &&
-        !dataSource.searchQuery.looksLikeAURL() &&
-        !dataSource.tabType.isPrivate ? searchSuggestionsCount : 0
+
+      return shouldShowSuggestions && !dataSource.searchQuery.looksLikeAURL()
+        && !dataSource.tabType.isPrivate ? searchSuggestionsCount : 0
     case .openTabsAndHistoryAndBookmarks:
       // Check for History Bookmarks Open Tabs suggestions
       // Show Browser Suggestions Preference effects all the modes
       if !Preferences.Search.showBrowserSuggestions.value {
-          return 0
-      }
-      
-      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
-      // when search suggestions is not enabled
-      if Preferences.Privacy.privateBrowsingOnly.value, dataSource.searchEngines?.shouldShowSearchSuggestions == false {
         return 0
       }
-      
+
+      // Private Browsing Mode (PBM) should *not* show items from normal mode History etc
+      // when search suggestions is not enabled
+      if Preferences.Privacy.privateBrowsingOnly.value,
+        dataSource.searchEngines?.shouldShowSearchSuggestions == false
+      {
+        return 0
+      }
+
       return data.count
     case .findInPage:
       if let sd = searchDelegate, sd.searchViewControllerAllowFindInPage() {
@@ -722,11 +843,17 @@ extension SearchViewController: SearchSuggestionDataSourceDelegate {
 // MARK: - KeyboardHelperDelegate
 
 extension SearchViewController: KeyboardHelperDelegate {
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillShowWithState state: KeyboardState) {
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillShowWithState state: KeyboardState
+  ) {
     animateSearchEnginesWithKeyboard(state)
   }
 
-  public func keyboardHelper(_ keyboardHelper: KeyboardHelper, keyboardWillHideWithState state: KeyboardState) {
+  public func keyboardHelper(
+    _ keyboardHelper: KeyboardHelper,
+    keyboardWillHideWithState state: KeyboardState
+  ) {
     animateSearchEnginesWithKeyboard(state)
   }
 }
@@ -738,9 +865,10 @@ extension SearchViewController {
     if gestureRecognizer.state == .began {
       let location = gestureRecognizer.location(in: self.tableView)
       if let indexPath = tableView.indexPathForRow(at: location),
-         let section = dataSource.availableSections[safe: indexPath.section],
+        let section = dataSource.availableSections[safe: indexPath.section],
         let suggestion = dataSource.suggestions[safe: indexPath.row],
-        section == .searchSuggestions {
+        section == .searchSuggestions
+      {
         searchDelegate?.searchViewController(self, didLongPressSuggestion: suggestion)
       }
     }
@@ -749,9 +877,7 @@ extension SearchViewController {
 
 // MARK: - ButtonScrollView
 
-/**
- * UIScrollView that prevents buttons from interfering with scroll.
- */
+/// UIScrollView that prevents buttons from interfering with scroll.
 private class ButtonScrollView: UIScrollView {
   fileprivate override func touchesShouldCancel(in view: UIView) -> Bool {
     return true

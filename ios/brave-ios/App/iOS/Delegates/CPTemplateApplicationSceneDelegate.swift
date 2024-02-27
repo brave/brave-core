@@ -3,11 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import CarPlay
-import Shared
 import Brave
+import CarPlay
+import Foundation
+import Shared
+import UIKit
 import os.log
 
 class CarplayTemplateApplicationSceneDelegate: NSObject {
@@ -16,27 +16,35 @@ class CarplayTemplateApplicationSceneDelegate: NSObject {
 
   // MARK: UISceneDelegate
 
-  func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
+  func scene(
+    _ scene: UIScene,
+    willConnectTo session: UISceneSession,
+    options connectionOptions: UIScene.ConnectionOptions
+  ) {
     if scene is CPTemplateApplicationScene,
-      session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+      session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
+    {
       log.debug("Template application scene will connect.")
     }
   }
 
   func sceneDidDisconnect(_ scene: UIScene) {
-    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
+    {
       log.debug("Template application scene did disconnect.")
     }
   }
 
   func sceneDidBecomeActive(_ scene: UIScene) {
-    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
+    {
       log.debug("Template application scene did become active.")
     }
   }
 
   func sceneWillResignActive(_ scene: UIScene) {
-    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName {
+    if scene.session.configuration.name == CarplayTemplateApplicationSceneDelegate.configurationName
+    {
       log.debug("Template application scene will resign active.")
     }
   }
@@ -46,7 +54,10 @@ class CarplayTemplateApplicationSceneDelegate: NSObject {
 
 extension CarplayTemplateApplicationSceneDelegate: CPTemplateApplicationSceneDelegate {
 
-  func templateApplicationScene(_ templateApplicationScene: CPTemplateApplicationScene, didConnect interfaceController: CPInterfaceController) {
+  func templateApplicationScene(
+    _ templateApplicationScene: CPTemplateApplicationScene,
+    didConnect interfaceController: CPInterfaceController
+  ) {
     log.debug("Template application scene did connect.")
 
     DispatchQueue.main.async {

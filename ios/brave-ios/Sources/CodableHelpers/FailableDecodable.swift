@@ -1,7 +1,7 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 
@@ -42,11 +42,11 @@ import Foundation
       wrappedValue = try container.decode(T.self)
     } catch {
       wrappedValue = nil
-#if DEBUG
+      #if DEBUG
       // In debug builds we print out failed decodes to console so we can fix the issue or notify the
       // appropriate team about some malformed JSON
       print("FailableDecodable failed to decode to type \(T.self): \(error.localizedDescription)")
-#endif
+      #endif
       decodingError = error
     }
   }

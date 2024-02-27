@@ -1,6 +1,6 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
 import Shared
@@ -40,7 +40,10 @@ class ShareExtensionHelper {
       activityItems.append(TitleActivityItemProvider(title: title))
     }
 
-    let activityViewController = UIActivityViewController(activityItems: activityItems, applicationActivities: applicationActivities)
+    let activityViewController = UIActivityViewController(
+      activityItems: activityItems,
+      applicationActivities: applicationActivities
+    )
 
     // Hide 'Add to Reading List' which currently uses Safari.
     // We would also hide View Later, if possible, but the exclusion list doesn't currently support

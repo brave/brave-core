@@ -1,18 +1,18 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import BraveShared
-import Preferences
 import BraveCore
-import Lottie
-import UIKit
-import Storage
-import SnapKit
+import BraveShared
 import BraveUI
+import Foundation
+import Lottie
+import Preferences
 import SafariServices
+import Shared
+import SnapKit
+import Storage
+import UIKit
 
 public enum OnboardingRewardsState {
   case skipped
@@ -20,13 +20,15 @@ public enum OnboardingRewardsState {
 }
 
 public class OnboardingRewardsAgreementViewController: UIViewController {
-  public var onOnboardingStateChanged: ((OnboardingRewardsAgreementViewController, _ state: OnboardingRewardsState) -> Void)?
+  public var onOnboardingStateChanged:
+    ((OnboardingRewardsAgreementViewController, _ state: OnboardingRewardsState) -> Void)?
   public var onRewardsStatusChanged: ((Bool) -> Void)?
 
   public init() {
     super.init(nibName: nil, bundle: nil)
 
-    modalPresentationStyle = UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
+    modalPresentationStyle =
+      UIDevice.current.userInterfaceIdiom == .phone ? .fullScreen : .formSheet
 
     // Prevent dismissing the modal by swipe
     isModalInPresentation = true
@@ -37,7 +39,7 @@ public class OnboardingRewardsAgreementViewController: UIViewController {
   required init(coder: NSCoder) { fatalError() }
 
   private var contentView: View {
-    return view as! View  // swiftlint:disable:this force_cast
+    return view as! View
   }
 
   public override func loadView() {
@@ -122,10 +124,11 @@ extension OnboardingRewardsAgreementViewController {
       $0.spacing = 32
     }
 
-    private let titleLabel = OnboardingCommon.Views.primaryText(Strings.OBRewardsAgreementTitle).then {
-      $0.numberOfLines = 0
-      $0.textColor = .braveLabel
-    }
+    private let titleLabel = OnboardingCommon.Views.primaryText(Strings.OBRewardsAgreementTitle)
+      .then {
+        $0.numberOfLines = 0
+        $0.textColor = .braveLabel
+      }
 
     private let subtitleLabel = OnboardingCommon.Views.secondaryText(Strings.OBRewardsDetail).then {
       $0.numberOfLines = 0
@@ -171,7 +174,8 @@ extension OnboardingRewardsAgreementViewController {
           attributes: [
             .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
             .foregroundColor: UIColor.braveLabel,
-          ])
+          ]
+        )
 
         text.append(
           NSAttributedString(
@@ -179,7 +183,9 @@ extension OnboardingRewardsAgreementViewController {
             attributes: [
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
               .foregroundColor: UIColor.braveLabel,
-            ]))
+            ]
+          )
+        )
 
         text.append(
           NSAttributedString(
@@ -188,7 +194,9 @@ extension OnboardingRewardsAgreementViewController {
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
               .foregroundColor: OnboardingCommon.UX.linkColor,
               .link: "brave_terms_of_service",
-            ]))
+            ]
+          )
+        )
 
         text.append(
           NSAttributedString(
@@ -196,7 +204,9 @@ extension OnboardingRewardsAgreementViewController {
             attributes: [
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
               .foregroundColor: UIColor.braveLabel,
-            ]))
+            ]
+          )
+        )
 
         text.append(
           NSAttributedString(
@@ -205,13 +215,19 @@ extension OnboardingRewardsAgreementViewController {
               .font: UIFont.systemFont(ofSize: fontSize, weight: UIFont.Weight.regular),
               .foregroundColor: OnboardingCommon.UX.linkColor,
               .link: "brave_privacy_policy",
-            ]))
+            ]
+          )
+        )
 
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineBreakMode = .byWordWrapping
         paragraphStyle.alignment = .center
 
-        text.addAttribute(.paragraphStyle, value: paragraphStyle, range: NSRange(location: 0, length: text.length))
+        text.addAttribute(
+          .paragraphStyle,
+          value: paragraphStyle,
+          range: NSRange(location: 0, length: text.length)
+        )
 
         return text
       }()
@@ -227,7 +243,8 @@ extension OnboardingRewardsAgreementViewController {
       subTitle.addAttribute(
         .foregroundColor,
         value: UIColor.braveLabel,
-        range: NSRange(location: 0, length: subTitle.length))
+        range: NSRange(location: 0, length: subTitle.length)
+      )
       self.subtitleLabel.attributedText = subTitle
     }
 
@@ -242,7 +259,9 @@ extension OnboardingRewardsAgreementViewController {
 
       descriptionView.addSubview(descriptionStackView)
       descriptionStackView.snp.makeConstraints {
-        $0.edges.equalTo(descriptionView.safeAreaLayoutGuide.snp.edges).inset(OnboardingCommon.UX.descriptionContentInset)
+        $0.edges.equalTo(descriptionView.safeAreaLayoutGuide.snp.edges).inset(
+          OnboardingCommon.UX.descriptionContentInset
+        )
       }
 
       mainStackView.addArrangedSubview(descriptionView)
@@ -268,7 +287,12 @@ extension OnboardingRewardsAgreementViewController {
 
       // Design wants LESS offset on iPhone 8 than on iPhone X
       let offset = self.safeAreaInsets.top > 30 ? 0 : -OnboardingCommon.UX.animationContentInset
-      imageView.frame = CGRect(x: 0.0, y: OnboardingCommon.UX.animationContentInset + offset, width: newSize.width, height: newSize.height)
+      imageView.frame = CGRect(
+        x: 0.0,
+        y: OnboardingCommon.UX.animationContentInset + offset,
+        width: newSize.width,
+        height: newSize.height
+      )
     }
 
     @available(*, unavailable)
@@ -280,10 +304,15 @@ extension OnboardingRewardsAgreementViewController {
 
 extension OnboardingRewardsAgreementViewController.View: UITextViewDelegate {
   @objc
-  func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
-    if URL.absoluteString == "brave_terms_of_service" {
+  func textView(
+    _ textView: UITextView,
+    shouldInteractWith url: URL,
+    in characterRange: NSRange,
+    interaction: UITextItemInteraction
+  ) -> Bool {
+    if url.absoluteString == "brave_terms_of_service" {
       onTermsOfServicePressed?()
-    } else if URL.absoluteString == "brave_privacy_policy" {
+    } else if url.absoluteString == "brave_privacy_policy" {
       onPrivacyPolicyPressed?()
     }
     return false
@@ -316,8 +345,8 @@ extension OnboardingRewardsAgreementViewController {
   }
 }
 
-private extension String {
-  func boldWords(with font: UIFont, amount: Int) -> NSMutableAttributedString {
+extension String {
+  fileprivate func boldWords(with font: UIFont, amount: Int) -> NSMutableAttributedString {
     let mutableDescriptionText = NSMutableAttributedString(string: self)
 
     let components = self.components(separatedBy: " ")
@@ -326,7 +355,11 @@ private extension String {
         let nsRange = NSRange(range, in: self)
         let font = UIFont.systemFont(ofSize: font.pointSize, weight: UIFont.Weight.bold)
 
-        mutableDescriptionText.addAttribute(NSAttributedString.Key.font, value: font, range: nsRange)
+        mutableDescriptionText.addAttribute(
+          NSAttributedString.Key.font,
+          value: font,
+          range: nsRange
+        )
       }
     }
 

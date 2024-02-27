@@ -1,18 +1,18 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import Preferences
 import BraveCore
+import Preferences
+import Shared
+import UIKit
 import os.log
 
 enum NTPWallpaper {
   case image(NTPBackgroundImage)
   case sponsoredImage(NTPSponsoredImageBackground)
   case superReferral(NTPSponsoredImageBackground, code: String)
-  
+
   var backgroundImage: UIImage? {
     let imagePath: URL
     switch self {
@@ -25,7 +25,7 @@ enum NTPWallpaper {
     }
     return UIImage(contentsOfFile: imagePath.path)
   }
-  
+
   var logoImage: UIImage? {
     let imagePath: URL?
     switch self {
@@ -38,11 +38,11 @@ enum NTPWallpaper {
     }
     return imagePath.flatMap { UIImage(contentsOfFile: $0.path) }
   }
-  
+
   var focalPoint: CGPoint? {
     switch self {
     case .image:
-      return nil // Will eventually return a real value
+      return nil  // Will eventually return a real value
     case .sponsoredImage(let background):
       return background.focalPoint
     case .superReferral(let background, _):
@@ -52,7 +52,7 @@ enum NTPWallpaper {
 }
 
 public class NTPDataSource {
-  
+
   private(set) var privateBrowsingManager: PrivateBrowsingManager
 
   var initializeFavorites: ((_ sites: [NTPSponsoredImageTopSite]?) -> Void)?
@@ -77,14 +77,14 @@ public class NTPDataSource {
   public init(service: NTPBackgroundImagesService, privateBrowsingManager: PrivateBrowsingManager) {
     self.service = service
     self.privateBrowsingManager = privateBrowsingManager
-    
+
     Preferences.NewTabPage.selectedCustomTheme.observe(from: self)
-    
+
     self.service.sponsoredImageDataUpdated = { [weak self] _ in
       self?.sponsorComponentUpdated()
     }
   }
-  
+
   deinit {
     self.service.sponsoredImageDataUpdated = nil
   }
@@ -111,16 +111,22 @@ public class NTPDataSource {
       () -> ([NTPWallpaper], ImageRotationStrategy) in
 
       if let theme = service.superReferralImageData,
-         case let refCode = service.superReferralCode,
-         !refCode.isEmpty,
-        Preferences.NewTabPage.selectedCustomTheme.value != nil {
-        return (theme.campaigns.flatMap(\.backgrounds).map { NTPWallpaper.superReferral($0, code: refCode) }, .randomOrderAvoidDuplicates)
+        case let refCode = service.superReferralCode,
+        !refCode.isEmpty,
+        Preferences.NewTabPage.selectedCustomTheme.value != nil
+      {
+        return (
+          theme.campaigns.flatMap(\.backgrounds).map {
+            NTPWallpaper.superReferral($0, code: refCode)
+          }, .randomOrderAvoidDuplicates
+        )
       }
 
       if let sponsor = service.sponsoredImageData {
         let attemptSponsored =
           Preferences.NewTabPage.backgroundSponsoredImages.value
-          &&  Preferences.NewTabPage.backgroundRotationCounter.value == service.initialCountToBrandedWallpaper
+          && Preferences.NewTabPage.backgroundRotationCounter.value
+            == service.initialCountToBrandedWallpaper
           && !privateBrowsingManager.isPrivateBrowsing
 
         if attemptSponsored {
@@ -158,7 +164,8 @@ public class NTPDataSource {
         // To avoid issues, first fallback results in full set.
 
         // Chooses a new random index to use from the available indeces
-        let chosenIndex = availableBackgroundIndeces.randomElement() ?? availableRange.randomElement() ?? -1
+        let chosenIndex =
+          availableBackgroundIndeces.randomElement() ?? availableRange.randomElement() ?? -1
         assert(chosenIndex >= 0, "NTP index was nil, this is terrible.")
         assert(chosenIndex < backgroundSet.count, "NTP index is too large, BAD!")
 
@@ -180,9 +187,11 @@ public class NTPDataSource {
     guard let bgWithIndex = backgroundSet[safe: backgroundIndex] else { return nil }
     return bgWithIndex
   }
-  
+
   func sponsorComponentUpdated() {
-    if let superReferralImageData = service.superReferralImageData, superReferralImageData.isSuperReferral {
+    if let superReferralImageData = service.superReferralImageData,
+      superReferralImageData.isSuperReferral
+    {
       if Preferences.NewTabPage.preloadedFavoritiesInitialized.value {
         replaceFavoritesIfNeeded?(superReferralImageData.topSites)
       } else {

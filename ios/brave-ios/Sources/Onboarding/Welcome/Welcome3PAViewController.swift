@@ -1,19 +1,19 @@
 // Copyright 2022 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import UIKit
-import Shared
-import BraveUI
 import BraveCore
+import BraveUI
+import Shared
+import UIKit
 
 public class Welcome3PAViewController: UIViewController {
 
   private let contentView = WelcomeViewCallout().then {
     $0.isBottomArrowHidden = true
   }
-  
+
   public override func viewDidLoad() {
     super.viewDidLoad()
 

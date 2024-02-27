@@ -1,10 +1,10 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import DeviceCheck
 import BraveCore
+import DeviceCheck
+import Foundation
 import Preferences
 import Shared
 import os.log
@@ -25,12 +25,15 @@ public struct DeviceCheckRegistration: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    guard let data = Data(base64Encoded: try container.decode(String.self, forKey: .enrollmentBlob)) else {
+    guard let data = Data(base64Encoded: try container.decode(String.self, forKey: .enrollmentBlob))
+    else {
       throw NSError(
-        domain: "com.brave.device.check.enrollment", code: -1,
+        domain: "com.brave.device.check.enrollment",
+        code: -1,
         userInfo: [
           NSLocalizedDescriptionKey: "Cannot decode enrollmentBlob"
-        ])
+        ]
+      )
     }
 
     enrollmentBlob = try JSONDecoder().decode(DeviceCheckEnrollment.self, from: data)
@@ -84,12 +87,16 @@ public struct AttestationVerifcation: Codable {
   public init(from decoder: Decoder) throws {
     let container = try decoder.container(keyedBy: CodingKeys.self)
 
-    guard let data = Data(base64Encoded: try container.decode(String.self, forKey: .attestationBlob)) else {
+    guard
+      let data = Data(base64Encoded: try container.decode(String.self, forKey: .attestationBlob))
+    else {
       throw NSError(
-        domain: "com.brave.device.check.enrollment", code: -1,
+        domain: "com.brave.device.check.enrollment",
+        code: -1,
         userInfo: [
           NSLocalizedDescriptionKey: "Cannot decode attestationBlob"
-        ])
+        ]
+      )
     }
 
     attestationBlob = try JSONDecoder().decode(AttestationBlob.self, from: data)
@@ -146,7 +153,10 @@ public class DeviceCheckClient {
     let code: Int
   }
 
-  public init(environment: BraveRewards.Configuration.Environment = BraveRewards.Configuration.current().environment) {
+  public init(
+    environment: BraveRewards.Configuration.Environment = BraveRewards.Configuration.current()
+      .environment
+  ) {
     self.environment = environment
   }
 
@@ -180,13 +190,19 @@ public class DeviceCheckClient {
   public func setAttestation(nonce: String, verification: AttestationVerifcation) async throws {
     let _: Data = try await executeRequest(.setAttestation(nonce, verification))
   }
-  
+
   public func solveAdaptiveCaptcha(
     paymentId: String,
     captchaId: String,
     verification: AttestationVerifcation
   ) async throws {
-    let _: Data = try await executeRequest(.solveCaptcha(paymentId: paymentId, captchaId: captchaId, nonce: verification.attestationBlob.nonce))
+    let _: Data = try await executeRequest(
+      .solveCaptcha(
+        paymentId: paymentId,
+        captchaId: captchaId,
+        nonce: verification.attestationBlob.nonce
+      )
+    )
   }
 
   // MARK: - Factory functions for generating structures to be used with the above server calls
@@ -207,62 +223,69 @@ public class DeviceCheckClient {
   }
 
   // Generates an enrollment structure to be used with `registerDevice`
-  public func generateEnrollment(paymentId: String, token: String) throws -> DeviceCheckRegistration {
+  public func generateEnrollment(paymentId: String, token: String) throws -> DeviceCheckRegistration
+  {
     guard let privateKey = try Cryptography.generateKey(id: DeviceCheckClient.privateKeyId) else {
       throw CryptographyError(description: "Unable to generate private key")
     }
-    
+
     guard let publicKey = try privateKey.getPublicAsPEM() else {
       throw CryptographyError(description: "Unable to retrieve public key")
     }
-    
+
     let enrollment = DeviceCheckEnrollment(
       paymentId: paymentId,
       publicKey: publicKey,
-      deviceToken: token)
-    
+      deviceToken: token
+    )
+
     let signature = try privateKey.sign(message: enrollment.bsonData()).base64EncodedString()
-    
+
     let registration = DeviceCheckRegistration(
       enrollmentBlob: enrollment,
-      signature: signature)
+      signature: signature
+    )
     return registration
   }
 
   // Generates an attestation structure to be used with `getAttestation`
   public func generateAttestation(paymentId: String) throws -> Attestation {
-    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId)
+    else {
       throw CryptographyError(description: "Unable to retrieve existing private key")
     }
-    
+
     guard let publicKeyFingerprint = try privateKey.getPublicKeySha256FingerPrint() else {
       throw CryptographyError(description: "Unable to retrieve public key")
     }
-    
+
     let attestation = Attestation(
       publicKeyHash: publicKeyFingerprint,
-      paymentId: paymentId)
-    
+      paymentId: paymentId
+    )
+
     return attestation
   }
 
   // Generates an attestation verification structure to be used with `setAttestation`
   public func generateAttestationVerification(nonce: String) throws -> AttestationVerifcation {
-    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId) else {
+    guard let privateKey = try Cryptography.getExistingKey(id: DeviceCheckClient.privateKeyId)
+    else {
       throw CryptographyError(description: "Unable to retrieve existing private key")
     }
-    
+
     let attestation = AttestationBlob(nonce: nonce)
     let signature = try privateKey.sign(message: try attestation.bsonData()).base64EncodedString()
     let verification = AttestationVerifcation(
       attestationBlob: attestation,
-      signature: signature)
-    
+      signature: signature
+    )
+
     return verification
   }
 }
 
-private extension DeviceCheckClient {
+extension DeviceCheckClient {
   // The base URL of the server
   private var baseURL: URL? {
     switch environment {
@@ -308,9 +331,14 @@ private extension DeviceCheckClient {
         let nonce = nonce.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? nonce
         return URL(string: "/v1/devicecheck/attestations/\(nonce)", relativeTo: client.baseURL)
       case .solveCaptcha(let paymentId, let captchaId, _):
-        let paymentId = paymentId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? paymentId
-        let captchaId = captchaId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? captchaId
-        return URL(string: "/v3/captcha/solution/\(paymentId)/\(captchaId)", relativeTo: client.baseURL)
+        let paymentId =
+          paymentId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? paymentId
+        let captchaId =
+          captchaId.addingPercentEncoding(withAllowedCharacters: .urlPathAllowed) ?? captchaId
+        return URL(
+          string: "/v3/captcha/solution/\(paymentId)/\(captchaId)",
+          relativeTo: client.baseURL
+        )
       }
     }
   }
@@ -318,53 +346,57 @@ private extension DeviceCheckClient {
   private func executeRequest<T: Codable>(_ request: Request) async throws -> T {
     let request = try encodeRequest(request)
     return try await withCheckedThrowingContinuation { continuation in
-      let task = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main).dataTask(with: request) { data, response, error in
-        
-        if let error = error {
-          continuation.resume(throwing: error)
-          return
-        }
-        
-        if let data = data, let error = try? JSONDecoder().decode(DeviceCheckError.self, from: data) {
-          continuation.resume(throwing: error)
-          return
-        }
-        
-        if let response = response as? HTTPURLResponse {
-          if response.statusCode < 200 || response.statusCode > 299 {
-            let error = DeviceCheckError(
-              message: "Validation Failed: Invalid Response Code",
-              code: response.statusCode
-            )
+      let task = URLSession(configuration: .ephemeral, delegate: nil, delegateQueue: .main)
+        .dataTask(with: request) { data, response, error in
+
+          if let error = error {
             continuation.resume(throwing: error)
             return
           }
+
+          if let data = data,
+            let error = try? JSONDecoder().decode(DeviceCheckError.self, from: data)
+          {
+            continuation.resume(throwing: error)
+            return
+          }
+
+          if let response = response as? HTTPURLResponse {
+            if response.statusCode < 200 || response.statusCode > 299 {
+              let error = DeviceCheckError(
+                message: "Validation Failed: Invalid Response Code",
+                code: response.statusCode
+              )
+              continuation.resume(throwing: error)
+              return
+            }
+          }
+
+          guard let data = data else {
+            continuation.resume(
+              throwing:
+                DeviceCheckError(message: "Validation Failed: Empty Server Response", code: 500)
+            )
+            return
+          }
+
+          if T.self == Data.self {
+            continuation.resume(returning: data as! T)
+            return
+          }
+
+          if T.self == String.self {
+            continuation.resume(returning: String(data: data, encoding: .utf8) as! T)
+            return
+          }
+
+          do {
+            let value = try JSONDecoder().decode(T.self, from: data)
+            continuation.resume(returning: value)
+          } catch {
+            continuation.resume(throwing: error)
+          }
         }
-        
-        guard let data = data else {
-          continuation.resume(throwing:
-            DeviceCheckError(message: "Validation Failed: Empty Server Response", code: 500)
-          )
-          return
-        }
-        
-        if T.self == Data.self {
-          continuation.resume(returning: data as! T) // swiftlint:disable:this force_cast
-          return
-        }
-        
-        if T.self == String.self {
-          continuation.resume(returning: String(data: data, encoding: .utf8) as! T) // swiftlint:disable:this force_cast
-          return
-        }
-        
-        do {
-          let value = try JSONDecoder().decode(T.self, from: data)
-          continuation.resume(returning: value)
-        } catch {
-          continuation.resume(throwing: error)
-        }
-      }
       task.resume()
     }
   }
@@ -391,7 +423,7 @@ private extension DeviceCheckClient {
     case .setAttestation(_, let parameters):
       request.httpBody = try JSONEncoder().encode(parameters)
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-      
+
     case .solveCaptcha(_, _, let nonce):
       request.httpBody = try JSONSerialization.data(withJSONObject: ["solution": nonce])
       request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -400,7 +432,7 @@ private extension DeviceCheckClient {
   }
 }
 
-private extension DeviceCheckClient {
+extension DeviceCheckClient {
 
   // Encodes parameters into the query component of the URL
   private func encodeQueryURL(url: URL, parameters: [String: String]) -> URL? {

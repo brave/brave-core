@@ -1,12 +1,12 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import Shared
-import Preferences
-import Intents
 import BraveWidgetsModels
+import Foundation
+import Intents
+import Preferences
+import Shared
 
 // Used by the App to navigate to different views.
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
@@ -23,7 +23,8 @@ public enum NavigationPath: Equatable {
 
   public init?(url: URL, isPrivateBrowsing: Bool) {
     let urlString = url.absoluteString
-    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" || url.isIPFSScheme {
+    if url.scheme?.lowercased() == "http" || url.scheme?.lowercased() == "https" || url.isIPFSScheme
+    {
       self = .url(webURL: url, isPrivate: isPrivateBrowsing)
       return
     }
@@ -32,7 +33,8 @@ public enum NavigationPath: Equatable {
       return nil
     }
 
-    guard let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject],
+    guard
+      let urlTypes = Bundle.main.object(forInfoDictionaryKey: "CFBundleURLTypes") as? [AnyObject],
       let urlSchemes = urlTypes.first?["CFBundleURLSchemes"] as? [String]
     else {
       assertionFailure()
@@ -43,7 +45,9 @@ public enum NavigationPath: Equatable {
       return nil
     }
 
-    if urlString.starts(with: "\(scheme)://deep-link"), let deepURL = components.valueForQuery("path"), let link = DeepLink(rawValue: deepURL) {
+    if urlString.starts(with: "\(scheme)://deep-link"),
+      let deepURL = components.valueForQuery("path"), let link = DeepLink(rawValue: deepURL)
+    {
       self = .deepLink(link)
     } else if urlString.starts(with: "\(scheme)://open-url") {
       let urlText = components.valueForQuery("url")
@@ -60,7 +64,8 @@ public enum NavigationPath: Equatable {
     } else if urlString.starts(with: "\(scheme)://shortcut"),
       let valueString = components.valueForQuery("path"),
       let value = WidgetShortcut.RawValue(valueString),
-      let path = WidgetShortcut(rawValue: value) {
+      let path = WidgetShortcut(rawValue: value)
+    {
       self = .widgetShortcutURL(path)
     } else {
       return nil
@@ -70,7 +75,8 @@ public enum NavigationPath: Equatable {
   static func handle(nav: NavigationPath, with bvc: BrowserViewController) {
     switch nav {
     case .deepLink(let link): NavigationPath.handleDeepLink(link, with: bvc)
-    case .url(let url, let isPrivate): NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
+    case .url(let url, let isPrivate):
+      NavigationPath.handleURL(url: url, isPrivate: isPrivate, with: bvc)
     case .text(let text): NavigationPath.handleText(text: text, with: bvc)
     case .widgetShortcutURL(let path): NavigationPath.handleWidgetShortcut(path, with: bvc)
     }
@@ -85,7 +91,12 @@ public enum NavigationPath: Equatable {
 
   private static func handleURL(url: URL?, isPrivate: Bool, with bvc: BrowserViewController) {
     if let newURL = url {
-      bvc.switchToTabForURLOrOpen(newURL, isPrivate: isPrivate, isPrivileged: false, isExternal: true)
+      bvc.switchToTabForURLOrOpen(
+        newURL,
+        isPrivate: isPrivate,
+        isPrivileged: false,
+        isExternal: true
+      )
       bvc.popToBVC()
     } else {
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: isPrivate)
@@ -96,20 +107,28 @@ public enum NavigationPath: Equatable {
     bvc.openBlankNewTab(
       attemptLocationFieldFocus: true,
       isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing,
-      searchFor: text)
+      searchFor: text
+    )
   }
 
-  private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController) {
+  private static func handleWidgetShortcut(_ path: WidgetShortcut, with bvc: BrowserViewController)
+  {
     switch path {
     case .unknown, .search:
       // Search
       if let url = bvc.tabManager.selectedTab?.url, InternalURL(url)?.isAboutHomeURL == true {
         bvc.focusURLBar()
       } else {
-        bvc.openBlankNewTab(attemptLocationFieldFocus: true, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing)
+        bvc.openBlankNewTab(
+          attemptLocationFieldFocus: true,
+          isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
+        )
       }
     case .newTab:
-      bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing)
+      bvc.openBlankNewTab(
+        attemptLocationFieldFocus: false,
+        isPrivate: bvc.privateBrowsingManager.isPrivateBrowsing
+      )
     case .newPrivateTab:
       if Preferences.Privacy.lockWithPasscode.value {
         bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: true)
@@ -129,7 +148,7 @@ public enum NavigationPath: Equatable {
     case .history:
       bvc.navigationHelper.openHistory()
     case .downloads:
-      bvc.navigationHelper.openDownloads() { success in
+      bvc.navigationHelper.openDownloads { success in
         if !success {
           bvc.displayOpenDownloadsError()
         }
@@ -143,7 +162,9 @@ public enum NavigationPath: Equatable {
     case .braveNews:
       bvc.openBlankNewTab(attemptLocationFieldFocus: false, isPrivate: false, isExternal: true)
       bvc.popToBVC()
-      guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else { return }
+      guard let newTabPageController = bvc.tabManager.selectedTab?.newTabPageViewController else {
+        return
+      }
       newTabPageController.scrollToBraveNews()
     @unknown default:
       assertionFailure()

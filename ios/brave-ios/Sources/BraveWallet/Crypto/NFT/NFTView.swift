@@ -3,17 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BraveCore
 import DesignSystem
 import Preferences
-import BraveCore
+import SwiftUI
 
 struct NFTView: View {
   var cryptoStore: CryptoStore
   @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var nftStore: NFTStore
-  
+
   @Binding var isPresentingFilters: Bool
   @Binding var isPresentingAddCustomNFT: Bool
   @State private var selectedNFTViewModel: NFTAssetViewModel?
@@ -21,11 +21,11 @@ struct NFTView: View {
   @State private var isNFTDiscoveryEnabled: Bool = false
   @State private var nftToBeRemoved: NFTAssetViewModel?
   @State private var groupToggleState: [NFTGroupViewModel.ID: Bool] = [:]
-  
+
   @Environment(\.buySendSwapDestination)
   private var buySendSwapDestination: Binding<BuySendSwapDestination?>
   @Environment(\.openURL) private var openWalletURL
-  
+
   private var emptyView: some View {
     VStack(alignment: .center, spacing: 10) {
       Text(nftStore.displayType.emptyTitle)
@@ -48,11 +48,13 @@ struct NFTView: View {
     .padding(.vertical, 60)
     .padding(.horizontal, 32)
   }
-  
+
   private let nftGrids = [GridItem(.adaptive(minimum: 120), spacing: 16, alignment: .top)]
-  
+
   @ViewBuilder private func nftLogo(_ nftViewModel: NFTAssetViewModel) -> some View {
-    if let image = nftViewModel.network.nativeTokenLogoImage, nftStore.filters.isShowingNFTNetworkLogo {
+    if let image = nftViewModel.network.nativeTokenLogoImage,
+      nftStore.filters.isShowingNFTNetworkLogo
+    {
       Image(uiImage: image)
         .resizable()
         .overlay {
@@ -63,7 +65,7 @@ struct NFTView: View {
         .frame(width: 24, height: 24)
     }
   }
-  
+
   @ViewBuilder private func nftImage(_ nftViewModel: NFTAssetViewModel) -> some View {
     Group {
       if let urlString = nftViewModel.nftMetadata?.imageURLString {
@@ -76,13 +78,16 @@ struct NFTView: View {
     }
     .cornerRadius(4)
   }
-  
+
   private var filtersButton: some View {
-    WalletIconButton(braveSystemName: "leo.filter.settings", action: {
-      isPresentingFilters = true
-    })
+    WalletIconButton(
+      braveSystemName: "leo.filter.settings",
+      action: {
+        isPresentingFilters = true
+      }
+    )
   }
-  
+
   private var nftHeaderView: some View {
     HStack {
       Menu {
@@ -132,36 +137,44 @@ struct NFTView: View {
       transaction.disablesAnimations = true
     }
   }
-  
+
   private var addCustomAssetButton: some View {
     WalletIconButton(braveSystemName: "leo.plus.add") {
       isPresentingAddCustomNFT = true
     }
   }
-  
+
   private var nftDiscoveryDescriptionText: NSAttributedString? {
     let attributedString = NSMutableAttributedString(
       string: Strings.Wallet.nftDiscoveryCalloutDescription,
-      attributes: [.foregroundColor: UIColor.secondaryBraveLabel, .font: UIFont.preferredFont(for: .subheadline, weight: .regular)]
+      attributes: [
+        .foregroundColor: UIColor.secondaryBraveLabel,
+        .font: UIFont.preferredFont(for: .subheadline, weight: .regular),
+      ]
     )
-    
-    attributedString.addAttributes([.underlineStyle: NSUnderlineStyle.single.rawValue], range: (attributedString.string as NSString).range(of: "SimpleHash")) // `SimpleHash` won't get translated
+
+    attributedString.addAttributes(
+      [.underlineStyle: NSUnderlineStyle.single.rawValue],
+      range: (attributedString.string as NSString).range(of: "SimpleHash")
+    )  // `SimpleHash` won't get translated
     attributedString.addAttribute(
       .link,
       value: WalletConstants.nftDiscoveryURL.absoluteString,
-      range: (attributedString.string as NSString).range(of: Strings.Wallet.nftDiscoveryCalloutDescriptionLearnMore)
+      range: (attributedString.string as NSString).range(
+        of: Strings.Wallet.nftDiscoveryCalloutDescriptionLearnMore
+      )
     )
-    
+
     return attributedString
   }
-  
+
   /// Builds the grids of NFTs without any grouping or expandable / collapse behaviour.
   @ViewBuilder private func nftGridsPlainView(_ group: NFTGroupViewModel) -> some View {
     LazyVGrid(columns: nftGrids) {
       ForEach(group.assets) { nft in
-        Button(action: {
+        Button {
           selectedNFTViewModel = nft
-        }) {
+        } label: {
           VStack(alignment: .leading, spacing: 4) {
             nftImage(nft)
               .overlay(alignment: .bottomTrailing) {
@@ -202,31 +215,41 @@ struct NFTView: View {
           }
         }
         .contextMenu {
-          Button(action: {
-            if nft.token.visible { // a collected visible NFT, mark as hidden
-              nftStore.updateNFTStatus(nft.token, visible: false, isSpam: false, isDeletedByUser: false)
-            } else { // either a hidden NFT or a junk NFT, mark as visible
-              nftStore.updateNFTStatus(nft.token, visible: true, isSpam: false, isDeletedByUser: false)
+          Button {
+            if nft.token.visible {  // a collected visible NFT, mark as hidden
+              nftStore.updateNFTStatus(
+                nft.token,
+                visible: false,
+                isSpam: false,
+                isDeletedByUser: false
+              )
+            } else {  // either a hidden NFT or a junk NFT, mark as visible
+              nftStore.updateNFTStatus(
+                nft.token,
+                visible: true,
+                isSpam: false,
+                isDeletedByUser: false
+              )
             }
-          }) {
-            if nft.token.visible { // a collected visible NFT
+          } label: {
+            if nft.token.visible {  // a collected visible NFT
               Label(Strings.recentSearchHide, braveSystemImage: "leo.eye.off")
-            } else if nft.token.isSpam { // a spam NFT
+            } else if nft.token.isSpam {  // a spam NFT
               Label(Strings.Wallet.nftUnspam, braveSystemImage: "leo.disable.outline")
-            } else { // a hidden but not spam NFT
+            } else {  // a hidden but not spam NFT
               Label(Strings.Wallet.nftUnhide, braveSystemImage: "leo.eye.on")
             }
           }
-          Button(action: {
+          Button {
             nftToBeRemoved = nft
-          }) {
+          } label: {
             Label(Strings.Wallet.nftRemoveFromWallet, braveSystemImage: "leo.trash")
           }
         }
       }
     }
   }
-  
+
   /// Builds the expandable /  collapseable section content for a given group.
   @ViewBuilder private func groupedNFTSection(_ group: NFTGroupViewModel) -> some View {
     if group.assets.isEmpty {
@@ -243,7 +266,7 @@ struct NFTView: View {
             .padding(.top)
         },
         label: {
-          if case let .account(account) = group.groupType {
+          if case .account(let account) = group.groupType {
             AddressView(address: account.address) {
               PortfolioAssetGroupHeaderView(group: group)
             }
@@ -254,7 +277,7 @@ struct NFTView: View {
       )
     }
   }
-  
+
   var body: some View {
     LazyVStack(spacing: 16) {
       nftHeaderView
@@ -293,10 +316,17 @@ struct NFTView: View {
           if let selectedNFTViewModel {
             NFTDetailView(
               keyringStore: keyringStore,
-              nftDetailStore: cryptoStore.nftDetailStore(for: selectedNFTViewModel.token, nftMetadata: selectedNFTViewModel.nftMetadata, owner: nftStore.owner(for: selectedNFTViewModel.token)),
+              nftDetailStore: cryptoStore.nftDetailStore(
+                for: selectedNFTViewModel.token,
+                nftMetadata: selectedNFTViewModel.nftMetadata,
+                owner: nftStore.owner(for: selectedNFTViewModel.token)
+              ),
               buySendSwapDestination: buySendSwapDestination,
               onNFTMetadataRefreshed: { nftMetadata in
-                nftStore.updateNFTMetadataCache(for: selectedNFTViewModel.token, metadata: nftMetadata)
+                nftStore.updateNFTMetadataCache(
+                  for: selectedNFTViewModel.token,
+                  metadata: nftMetadata
+                )
               },
               onNFTStatusUpdated: {
                 nftStore.update()
@@ -306,7 +336,8 @@ struct NFTView: View {
         },
         label: {
           EmptyView()
-        })
+        }
+      )
     )
     .background(
       WalletPromptView(
@@ -361,7 +392,12 @@ struct NFTView: View {
           title: Strings.Wallet.manageSiteConnectionsConfirmAlertRemove,
           action: { _ in
             guard let nft = nftToBeRemoved else { return }
-            nftStore.updateNFTStatus(nft.token, visible: false, isSpam: nft.token.isSpam, isDeletedByUser: true)
+            nftStore.updateNFTStatus(
+              nft.token,
+              visible: false,
+              isSpam: nft.token.isSpam,
+              isDeletedByUser: true
+            )
             nftToBeRemoved = nil
           }
         ),
@@ -383,7 +419,8 @@ struct NFTView: View {
           }
           .multilineTextAlignment(.center)
           .padding(.bottom, 24)
-        })
+        }
+      )
     )
     .onChange(of: keyringStore.isWalletLocked) { isLocked in
       guard isLocked else { return }
@@ -397,7 +434,9 @@ struct NFTView: View {
     .onAppear {
       Task {
         isNFTDiscoveryEnabled = await nftStore.isNFTDiscoveryEnabled()
-        if !isNFTDiscoveryEnabled && Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value {
+        if !isNFTDiscoveryEnabled
+          && Preferences.Wallet.shouldShowNFTDiscoveryPermissionCallout.value
+        {
           self.isShowingNFTDiscoveryAlert = true
         }
         nftStore.recordNFTGalleryView()
@@ -407,9 +446,9 @@ struct NFTView: View {
 }
 
 struct SkeletonLoadingNFTView: View {
-  
+
   private let nftGrids = [GridItem(.adaptive(minimum: 160), spacing: 16, alignment: .top)]
-  
+
   var body: some View {
     LazyVGrid(columns: nftGrids) {
       ForEach(0..<8) { _ in

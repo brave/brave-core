@@ -1,24 +1,30 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import BraveCore
 import CoreData
+import Foundation
 
 protocol BookmarksV2FetchResultsDelegate: AnyObject {
   func controllerWillChangeContent(_ controller: BookmarksV2FetchResultsController)
 
   func controllerDidChangeContent(_ controller: BookmarksV2FetchResultsController)
 
-  func controller(_ controller: BookmarksV2FetchResultsController, didChange anObject: Any, at indexPath: IndexPath?, for type: NSFetchedResultsChangeType, newIndexPath: IndexPath?)
+  func controller(
+    _ controller: BookmarksV2FetchResultsController,
+    didChange anObject: Any,
+    at indexPath: IndexPath?,
+    for type: NSFetchedResultsChangeType,
+    newIndexPath: IndexPath?
+  )
 
   func controllerDidReloadContents(_ controller: BookmarksV2FetchResultsController)
 }
 
 protocol BookmarksV2FetchResultsController {
-  /* weak */ var delegate: BookmarksV2FetchResultsDelegate? { get set }
+  var delegate: BookmarksV2FetchResultsDelegate? { get set }  // weak
 
   var fetchedObjects: [Bookmarkv2]? { get }
   var fetchedObjectsCount: Int { get }
@@ -45,7 +51,8 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
         DispatchQueue.main.async {
           self.delegate?.controllerDidReloadContents(self)
         }
-      })
+      }
+    )
   }
 
   var fetchedObjects: [Bookmarkv2]? {
@@ -76,10 +83,12 @@ class Bookmarkv2Fetcher: NSObject, BookmarksV2FetchResultsController {
 
       if children.isEmpty {
         throw NSError(
-          domain: "brave.core.migrator", code: -1,
+          domain: "brave.core.migrator",
+          code: -1,
           userInfo: [
             NSLocalizedFailureReasonErrorKey: "Invalid Bookmark Nodes"
-          ])
+          ]
+        )
       }
     }
   }
@@ -108,7 +117,8 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
         DispatchQueue.main.async {
           self.delegate?.controllerDidReloadContents(self)
         }
-      })
+      }
+    )
   }
 
   var fetchedObjects: [Bookmarkv2]? {
@@ -136,10 +146,12 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
 
     if children.isEmpty {
       throw NSError(
-        domain: "brave.core.migrator", code: -1,
+        domain: "brave.core.migrator",
+        code: -1,
         userInfo: [
           NSLocalizedFailureReasonErrorKey: "Invalid Bookmark Nodes"
-        ])
+        ]
+      )
     }
   }
 
@@ -149,7 +161,9 @@ class Bookmarkv2ExclusiveFetcher: NSObject, BookmarksV2FetchResultsController {
 
   private func getNestedFolders(_ node: BookmarkNode, guid: String?) -> [Bookmarkv2] {
     if let guid = guid {
-      return node.nestedChildFolders.filter({ $0.bookmarkNode.guid != guid }).map({ BraveBookmarkFolder($0) })
+      return node.nestedChildFolders.filter({ $0.bookmarkNode.guid != guid }).map({
+        BraveBookmarkFolder($0)
+      })
     }
     return node.nestedChildFolders.map({ BraveBookmarkFolder($0) })
   }

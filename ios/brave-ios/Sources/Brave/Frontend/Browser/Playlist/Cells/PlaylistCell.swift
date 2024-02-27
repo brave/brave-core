@@ -1,13 +1,13 @@
 // Copyright 2020 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import UIKit
-import SDWebImage
 import AVFoundation
 import BraveUI
+import Foundation
+import SDWebImage
+import UIKit
 
 class PlaylistAssetFetcher {
   let itemId: String
@@ -92,13 +92,13 @@ class PlaylistCell: UITableViewCell {
     contentView.addSubview(thumbnailHolder)
     contentView.addSubview(infoStackView)
     contentView.addSubview(separator)
-    
+
     thumbnailHolder.addSubview(iconView)
     thumbnailHolder.addSubview(loadingView)
-    
+
     infoStackView.addArrangedSubview(titleLabel)
     infoStackView.addArrangedSubview(detailLabel)
-    
+
     if traitCollection.preferredContentSizeCategory > .extraLarge {
       thumbnailHolder.snp.makeConstraints {
         $0.leading.trailing.equalToSuperview().inset(12.0)
@@ -173,7 +173,7 @@ class PlaylistCell: UITableViewCell {
       return .zero
     }
 
-    set {  // swiftlint:disable:this unused_setter_value
+    set {
       super.layoutMargins = .zero
     }
   }
@@ -183,8 +183,13 @@ class PlaylistCell: UITableViewCell {
       return UIEdgeInsets(top: 0, left: self.titleLabel.frame.origin.x, bottom: 0, right: 0)
     }
 
-    set {  // swiftlint:disable:this unused_setter_value
-      super.separatorInset = UIEdgeInsets(top: 0, left: self.titleLabel.frame.origin.x, bottom: 0, right: 0)
+    set {
+      super.separatorInset = UIEdgeInsets(
+        top: 0,
+        left: self.titleLabel.frame.origin.x,
+        bottom: 0,
+        right: 0
+      )
     }
   }
 }

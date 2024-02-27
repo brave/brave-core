@@ -4,14 +4,14 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import WidgetKit
 import SwiftUI
+import WidgetKit
 
 struct WidgetBackgroundViewModifier<BackgroundContent: View>: ViewModifier {
   var backgroundView: BackgroundContent
-  
+
   func body(content: Content) -> some View {
-#if swift(>=5.9)
+    #if swift(>=5.9)
     if #available(iOS 17.0, *) {
       content.containerBackground(for: .widget) {
         backgroundView
@@ -19,9 +19,9 @@ struct WidgetBackgroundViewModifier<BackgroundContent: View>: ViewModifier {
     } else {
       content.background(backgroundView)
     }
-#else
+    #else
     content.background(backgroundView)
-#endif
+    #endif
   }
 }
 

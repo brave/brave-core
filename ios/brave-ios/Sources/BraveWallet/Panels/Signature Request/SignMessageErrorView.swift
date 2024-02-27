@@ -1,21 +1,21 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at http://mozilla.org/MPL/2.0/.
+// file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveStrings
 import BraveCore
+import BraveStrings
 import DesignSystem
+import SwiftUI
 
 struct SignMessageErrorView: View {
-  
+
   var signMessageErrors: [BraveWallet.SignMessageError]
   var cryptoStore: CryptoStore
-  
+
   @State private var currentIndex: Int = 0
   @Environment(\.presentationMode) @Binding private var presentationMode
-  
+
   var body: some View {
     ScrollView {
       VStack(spacing: 16) {
@@ -23,14 +23,14 @@ struct SignMessageErrorView: View {
           signMessageErrorIndexDisplay
         }
         errorContainer
-        Button(action: {
+        Button {
           guard let currentRequest = signMessageErrors[safe: currentIndex] else { return }
           let isLastRequest = signMessageErrors.count <= 1
           cryptoStore.handleWebpageRequestResponse(.signMessageError(errorId: currentRequest.id))
           if isLastRequest {
             presentationMode.dismiss()
           }
-        }) {
+        } label: {
           Text(Strings.Wallet.confirmedTransactionCloseButtonTitle)
             .frame(maxWidth: .infinity)
         }
@@ -45,18 +45,24 @@ struct SignMessageErrorView: View {
     .navigationTitle(Strings.Wallet.securityRiskDetectedTitle)
     .navigationBarTitleDisplayMode(.inline)
   }
-  
+
   private var signMessageErrorIndexDisplay: some View {
     HStack {
-      Text(String.localizedStringWithFormat(Strings.Wallet.transactionCount, currentIndex + 1, signMessageErrors.count))
-        .fontWeight(.semibold)
-      Button(action: {
+      Text(
+        String.localizedStringWithFormat(
+          Strings.Wallet.transactionCount,
+          currentIndex + 1,
+          signMessageErrors.count
+        )
+      )
+      .fontWeight(.semibold)
+      Button {
         if currentIndex + 1 < signMessageErrors.count {
           currentIndex += 1
         } else {
           currentIndex = 0
         }
-      }) {
+      } label: {
         Text(Strings.Wallet.next)
           .fontWeight(.semibold)
           .foregroundColor(Color(.braveBlurpleTint))
@@ -64,7 +70,7 @@ struct SignMessageErrorView: View {
     }
     .frame(maxWidth: .infinity, alignment: .trailing)
   }
-  
+
   private var errorContainer: some View {
     VStack(spacing: 0) {
       if let currentSignMessageError = signMessageErrors[safe: currentIndex] {
