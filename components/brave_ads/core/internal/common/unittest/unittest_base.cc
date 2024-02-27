@@ -177,10 +177,12 @@ void UnitTestBase::AdvanceClockTo(const base::Time time) {
   return AdvanceClockBy(time - Now());
 }
 
-void UnitTestBase::AdvanceClockToMidnight(const bool is_local) {
-  const base::Time midnight_rounded_down_to_nearest_day =
-      is_local ? Now().LocalMidnight() : Now().UTCMidnight();
-  return AdvanceClockTo(midnight_rounded_down_to_nearest_day + base::Days(1));
+void UnitTestBase::AdvanceClockToLocalMidnight() {
+  return AdvanceClockTo(Now().LocalMidnight() + base::Days(1));
+}
+
+void UnitTestBase::AdvanceClockToUTCMidnight() {
+  return AdvanceClockTo(Now().UTCMidnight() + base::Days(1));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

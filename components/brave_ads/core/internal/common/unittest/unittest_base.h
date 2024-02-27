@@ -122,7 +122,8 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   // does not run tasks. See `TaskEnvironment` for more detail.
   void AdvanceClockBy(base::TimeDelta time_delta);
   void AdvanceClockTo(base::Time time);
-  void AdvanceClockToMidnight(bool is_local);
+  void AdvanceClockToLocalMidnight();
+  void AdvanceClockToUTCMidnight();
 
   base::test::TaskEnvironment task_environment_;
 
