@@ -5,7 +5,7 @@
 
 // types
 import { TokenBalancesRegistry } from '../common/slices/entities/token-balance.entity'
-import { BraveWallet } from '../constants/types'
+import { BraveWallet, SupportedTestNetworks } from '../constants/types'
 
 // utils
 import Amount from './amount'
@@ -95,4 +95,53 @@ export function createEmptyTokenBalancesRegistry(): TokenBalancesRegistry {
   return {
     accounts: {}
   }
+}
+
+export const getActiveWalletCount = (
+  accounts: BraveWallet.AccountInfo[],
+  tokenBalancesRegistry: TokenBalancesRegistry,
+  countTestNetworks: boolean
+) => {
+  const activeWalletCount: Record<BraveWallet.CoinType, number> = {}
+
+  accounts.map((account) => {
+    const accountBalances =
+      tokenBalancesRegistry.accounts[getAccountBalancesKey(account.accountId)]
+    if (!accountBalances) {
+      return
+    }
+
+    const coin = account.accountId.coin
+
+    if (activeWalletCount[coin] === undefined) {
+      activeWalletCount[coin] = 0
+    }
+
+    let chainsWithBalance: string[] = []
+
+    for (const [chainId, chainBalances] of Object.entries(
+      accountBalances.chains
+    )) {
+      for (const tokenBalance of Object.values(chainBalances.tokenBalances)) {
+        const amount = new Amount(tokenBalance)
+        if (amount && amount.gt('0')) {
+          chainsWithBalance = [...chainsWithBalance, chainId]
+          break
+        }
+      }
+    }
+
+    const hasMainnetBalance = chainsWithBalance.some(
+      (chainId) => !SupportedTestNetworks.includes(chainId)
+    )
+    const hasTestnetBalance = chainsWithBalance.some((chainId) =>
+      SupportedTestNetworks.includes(chainId)
+    )
+
+    if (hasMainnetBalance || (countTestNetworks && hasTestnetBalance)) {
+      activeWalletCount[coin] += 1
+    }
+  })
+
+  return activeWalletCount
 }

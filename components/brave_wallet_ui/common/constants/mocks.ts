@@ -317,6 +317,20 @@ export const mockBitcoinAccount: BraveWallet.AccountInfo = {
   hardware: undefined
 }
 
+export const mockBitcoinTestAccount: BraveWallet.AccountInfo = {
+  name: 'MockBitcoinTestAccount',
+  address: '',
+  accountId: {
+    coin: BraveWallet.CoinType.BTC,
+    keyringId: BraveWallet.KeyringId.kBitcoin84Testnet,
+    kind: BraveWallet.AccountKind.kDerived,
+    address: '',
+    bitcoinAccountIndex: 0,
+    uniqueKey: 'unique_key_MockBitcoinTestAccount'
+  },
+  hardware: undefined
+}
+
 export const mockBitcoinTestnetAccount: BraveWallet.AccountInfo = {
   name: 'MockBitcoinTestnetAccount',
   address: '',
