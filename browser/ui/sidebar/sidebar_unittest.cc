@@ -21,6 +21,7 @@
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/pref_service.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
+#include "components/version_info/channel.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gmock/include/gmock/gmock-matchers.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -68,6 +69,9 @@ class SidebarModelTest : public testing::Test {
   ~SidebarModelTest() override = default;
 
   void SetUp() override {
+    // Instantiate SidebarServiceFactory before creating TestingProfile
+    // as SidebarServiceFactory registers profile prefs.
+    SidebarServiceFactory::GetInstance();
     profile_ = std::make_unique<TestingProfile>();
     service_ = SidebarServiceFactory::GetForProfile(profile_.get());
     model_ = std::make_unique<SidebarModel>(profile_.get());
@@ -212,6 +216,15 @@ TEST_F(SidebarModelTest, TopItemTest) {
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kChatUI);
 #endif
+}
+
+TEST(SidebarUtilTest, SidebarShowOptionsDefaultTest) {
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
+            GetDefaultShowSidebarOption(version_info::Channel::STABLE));
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            GetDefaultShowSidebarOption(version_info::Channel::BETA));
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            GetDefaultShowSidebarOption(version_info::Channel::CANARY));
 }
 
 TEST(SidebarUtilTest, ConvertURLToBuiltInItemURLTest) {

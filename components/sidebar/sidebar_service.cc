@@ -45,8 +45,6 @@
 #include "brave/components/playlist/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
 
-using version_info::Channel;
-
 namespace sidebar {
 
 namespace {
@@ -81,18 +79,14 @@ bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
 }
 
 // static
-void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
-                                          version_info::Channel channel) {
+void SidebarService::RegisterProfilePrefs(
+    PrefRegistrySimple* registry,
+    ShowSidebarOption default_show_option) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterListPref(kSidebarHiddenBuiltInItems);
-
-  ShowSidebarOption option = ShowSidebarOption::kShowAlways;
-  if (channel == Channel::STABLE &&
-      !base::FeatureList::IsEnabled(features::kSidebarShowAlwaysOnStable)) {
-    option = ShowSidebarOption::kShowNever;
-  }
   registry->RegisterBooleanPref(kLeoPanelOneTimeOpen, false);
-  registry->RegisterIntegerPref(kSidebarShowOption, static_cast<int>(option));
+  registry->RegisterIntegerPref(kSidebarShowOption,
+                                static_cast<int>(default_show_option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
   registry->RegisterIntegerPref(
@@ -107,6 +101,12 @@ SidebarService::SidebarService(
       sidebar_p3a_(prefs),
       default_builtin_items_(default_builtin_items) {
   DCHECK(prefs_);
+  // Some non-sidebar unittest could not register the prefs.
+  if (!prefs_->FindPreference(kSidebarShowOption)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   MigratePrefSidebarBuiltInItemsToHidden();
 
   LoadSidebarItems();

@@ -24,6 +24,11 @@ inline constexpr char kLastUsedBuiltInItemType[] =
 inline constexpr char kLeoPanelOneTimeOpen[] =
     "brave.sidebar.leo_panel_one_time_open";
 
+// Indicates that it's target user for Sidebar Enabled-by-default test via
+// griffin. local state pref.
+inline constexpr char kTargetUserForSidebarEnabledTest[] =
+    "brave.sidebar.target_user_for_sidebar_enabled_test";
+
 // Indicates that sidebar alignment was changed by the browser itself, not by
 // users.
 inline constexpr char kSidebarAlignmentChangedTemporarily[] =

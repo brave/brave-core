@@ -9,6 +9,7 @@
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
+#include "chrome/browser/browser_process.h"
 #include "chrome/browser/search_engines/template_url_service_factory.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
@@ -30,6 +31,15 @@ bool IsLeoPanelAlreadyOpened(content::WebContents* contents) {
 // static
 void SidebarTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
+  if (!g_browser_process || !g_browser_process->local_state()) {
+    return;
+  }
+
+  if (!g_browser_process->local_state()->GetBoolean(
+          kTargetUserForSidebarEnabledTest)) {
+    return;
+  }
+
   if (!sidebar::features::kOpenOneShotLeoPanel.Get()) {
     return;
   }
