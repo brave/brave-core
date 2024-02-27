@@ -53,6 +53,7 @@ export function getInitialState (): HostState {
     declaredCountry: '',
     userType: 'unconnected',
     publishersVisitedCount: 0,
-    selfCustodyInviteDismissed: false
+    selfCustodyInviteDismissed: false,
+    isTermsOfServiceUpdateRequired: false
   }
 }

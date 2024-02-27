@@ -519,6 +519,10 @@ class NewTabPage extends React.Component<Props, State> {
       chrome.braveRewards.dismissSelfCustodyInvite()
     }
 
+    const onTosUpdateAccepted = () => {
+      chrome.braveRewards.acceptTermsOfServiceUpdate()
+    }
+
     return (
       <Rewards
         {...rewardsState}
@@ -538,6 +542,7 @@ class NewTabPage extends React.Component<Props, State> {
         onDismissNotification={this.dismissNotification}
         customMenuItems={customMenuItems}
         onSelfCustodyInviteDismissed={onSelfCustodyInviteDismissed}
+        onTermsOfServiceUpdateAccepted={onTosUpdateAccepted}
       />
     )
   }

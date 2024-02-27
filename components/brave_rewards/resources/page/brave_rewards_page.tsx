@@ -65,6 +65,10 @@ function userType (userType: number) {
   actions.onUserType(userType)
 }
 
+function isTermsOfServiceUpdateRequired (updateRequired: boolean) {
+  actions.onIsTermsOfServiceUpdateRequired(updateRequired)
+}
+
 function rewardsParameters (properties: Rewards.RewardsParameters) {
   actions.onRewardsParameters(properties)
   // Get the current AC amount after rewards parameters have been
@@ -266,6 +270,7 @@ Object.defineProperty(window, 'brave_rewards', {
   configurable: true,
   value: {
     userType,
+    isTermsOfServiceUpdateRequired,
     rewardsParameters,
     promotions,
     promotionClaimStarted,

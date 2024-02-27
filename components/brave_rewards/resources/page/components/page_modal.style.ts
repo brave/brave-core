@@ -5,16 +5,18 @@
 
 import styled from 'styled-components'
 
-export const root = styled.div`
+export const root =  styled.div.attrs({
+  'data-theme': 'light'
+})`
   background: #fff;
   padding: 32px;
   border-radius: 8px;
   box-shadow: 0px 0px 16px rgba(99, 105, 110, 0.2);
-  min-width: 550px;
+  min-width: 380px;
+  margin: 0 8px;
 
   .layout-narrow & {
     min-width: unset;
-    margin: 0 8px;
   }
 `
 

@@ -15,7 +15,8 @@ const style = {
     bottom: 0;
     right: 0;
     overflow: auto;
-    background: rgba(0, 0, 0, 0.7);
+    background: var(--modal-background, rgba(0, 0, 0, 0.7));
+    backdrop-filter: var(--modal-backdrop-filter, none);
     z-index: 9999;
     display: flex;
     flex-direction: column;
@@ -55,6 +56,7 @@ const style = {
 }
 
 interface ModalProps {
+  align?: 'center' | 'bottom'
   children: React.ReactNode
 }
 
@@ -90,7 +92,7 @@ export function Modal(props: ModalProps) {
       <style.content ref={onMountUnmount}>
         {props.children}
       </style.content>
-      <style.bottomSpacer />
+      {props.align === 'bottom' ? null : <style.bottomSpacer />}
     </style.root>
   )
 }

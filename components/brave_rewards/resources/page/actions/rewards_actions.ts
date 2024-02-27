@@ -21,6 +21,15 @@ export const onUserType =
 
 export const getUserType = () => action(types.GET_USER_TYPE)
 
+export const isTermsOfServiceUpdateRequired =
+  () => action(types.IS_TERMS_OF_SERVICE_UPDATE_REQUIRED)
+
+export const onIsTermsOfServiceUpdateRequired = (updateRequired: boolean) =>
+  action(types.ON_IS_TERMS_OF_SERVICE_UPDATE_REQUIRED, { updateRequired })
+
+export const acceptTermsOfServiceUpdate =
+  () => action(types.ACCEPT_TERMS_OF_SERVICE_UPDATE)
+
 export const getRewardsParameters = () => action(types.GET_REWARDS_PARAMETERS)
 
 export const onRewardsParameters = (properties: Rewards.RewardsParameters) =>

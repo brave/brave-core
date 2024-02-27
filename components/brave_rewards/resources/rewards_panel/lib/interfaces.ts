@@ -105,6 +105,7 @@ export interface HostState {
   userType: UserType
   publishersVisitedCount: number
   selfCustodyInviteDismissed: boolean
+  isTermsOfServiceUpdateRequired: boolean
 }
 
 export type HostListener = (state: HostState) => void
@@ -122,6 +123,8 @@ export interface Host {
   handleNotificationAction: (action: NotificationAction) => void
   dismissNotification: (notification: Notification) => void
   dismissSelfCustodyInvite: () => void
+  acceptTermsOfServiceUpdate: () => void
+  resetRewards: () => void
   solveGrantCaptcha: (solution: { x: number, y: number }) => void
   clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void

@@ -125,6 +125,7 @@ export function Settings () {
 
   React.useEffect(() => {
     actions.getUserType()
+    actions.isTermsOfServiceUpdateRequired()
     actions.getIsUnsupportedRegion()
     const date = new Date()
     actions.getBalanceReport(date.getMonth() + 1, date.getFullYear())

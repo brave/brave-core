@@ -28,6 +28,10 @@ class RewardsServiceObserver : public base::CheckedObserver {
   // updated.
   virtual void OnRewardsWalletCreated() {}
 
+  // Called when the user has accepted a new version of the Rewards terms of
+  // service.
+  virtual void OnTermsOfServiceUpdateAccepted() {}
+
   virtual void OnFetchPromotions(RewardsService* rewards_service,
                                  const mojom::Result result,
                                  const std::vector<mojom::PromotionPtr>& list) {

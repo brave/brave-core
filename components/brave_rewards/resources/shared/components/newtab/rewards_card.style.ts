@@ -608,3 +608,15 @@ export const selfCustodyInviteDismiss = styled.div`
   }
 `
 
+export const tosUpdateNotice = styled.div.attrs({
+  'data-theme': 'light'
+})`
+  margin: 8px -10px 0;
+
+  --tos-update-notice-border-radius: 8px;
+  --tos-update-notice-padding: 16px;
+  --tos-update-heading-padding-bottom: 0;
+  --tos-update-notice-heading-font: ${leo.font.heading.h4};
+  --tos-update-notice-text-font: ${leo.font.small.link};
+`;
+

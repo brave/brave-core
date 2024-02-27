@@ -37,6 +37,8 @@ class ExtensionRewardsServiceObserver : public RewardsServiceObserver {
 
   void OnRewardsWalletCreated() override;
 
+  void OnTermsOfServiceUpdateAccepted() override;
+
   void OnPublisherListNormalized(
       RewardsService* rewards_service,
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list) override;

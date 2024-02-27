@@ -123,7 +123,8 @@ function createHost (): Host {
     declaredCountry: 'US',
     userType: 'unconnected',
     publishersVisitedCount: 4,
-    selfCustodyInviteDismissed: false
+    selfCustodyInviteDismissed: true,
+    isTermsOfServiceUpdateRequired: true
   })
 
   return {
@@ -186,6 +187,14 @@ function createHost (): Host {
 
     dismissSelfCustodyInvite () {
       console.log('dismissSelfCustodyInvite')
+    },
+
+    acceptTermsOfServiceUpdate () {
+      console.log('acceptTermsOfServiceUpdate')
+    },
+
+    resetRewards () {
+      console.log('resetRewards')
     },
 
     solveGrantCaptcha (solution) {

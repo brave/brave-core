@@ -18,7 +18,6 @@ import ModalActivity from './modalActivity'
 import ModalContribute from './modalContribute'
 import ModalDonation from './modalDonation'
 import ModalRedirect from './modalRedirect'
-import ModalReset from './modalReset'
 import ModalShowAdsHistory from './modalShowAdsHistory'
 import NextContribution from './nextContribution'
 import Profile from './profile'
@@ -51,7 +50,6 @@ export {
   ModalContribute,
   ModalDonation,
   ModalRedirect,
-  ModalReset,
   ModalShowAdsHistory,
   NextContribution,
   Profile,

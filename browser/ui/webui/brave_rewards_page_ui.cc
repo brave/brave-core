@@ -110,6 +110,8 @@ class RewardsDOMHandler
   void IsInitialized(const base::Value::List& args);
   void GetUserType(const base::Value::List& args);
   void OnGetUserType(brave_rewards::mojom::UserType user_type);
+  void IsTermsOfServiceUpdateRequired(const base::Value::List& args);
+  void AcceptTermsOfServiceUpdate(const base::Value::List& args);
   void GetRewardsParameters(const base::Value::List& args);
   void IsAutoContributeSupported(const base::Value::List& args);
   void GetAutoContributeProperties(const base::Value::List& args);
@@ -251,6 +253,8 @@ class RewardsDOMHandler
 
   void OnRewardsWalletCreated() override;
 
+  void OnTermsOfServiceUpdateAccepted() override;
+
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
 
@@ -336,6 +340,14 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getUserType",
       base::BindRepeating(&RewardsDOMHandler::GetUserType,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.acceptTermsOfServiceUpdate",
+      base::BindRepeating(&RewardsDOMHandler::AcceptTermsOfServiceUpdate,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "brave_rewards.isTermsOfServiceUpdateRequired",
+      base::BindRepeating(&RewardsDOMHandler::IsTermsOfServiceUpdateRequired,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getRewardsParameters",
@@ -599,6 +611,24 @@ void RewardsDOMHandler::GetUserType(const base::Value::List&) {
       &RewardsDOMHandler::OnGetUserType, weak_factory_.GetWeakPtr()));
 }
 
+void RewardsDOMHandler::IsTermsOfServiceUpdateRequired(
+    const base::Value::List&) {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  if (rewards_service_) {
+    CallJavascriptFunction("brave_rewards.isTermsOfServiceUpdateRequired",
+                           rewards_service_->IsTermsOfServiceUpdateRequired());
+  }
+}
+
+void RewardsDOMHandler::AcceptTermsOfServiceUpdate(
+    const base::Value::List& args) {
+  if (rewards_service_) {
+    rewards_service_->AcceptTermsOfServiceUpdate();
+  }
+}
+
 void RewardsDOMHandler::OnGetUserType(
     brave_rewards::mojom::UserType user_type) {
   CallJavascriptFunction("brave_rewards.userType",
@@ -649,6 +679,7 @@ void RewardsDOMHandler::OnGetRewardsParameters(
   base::Value::Dict wallet_provider_regions;
   base::Time vbat_deadline;
   bool vbat_expired = false;
+
   if (parameters) {
     rate = parameters->rate;
     auto_contribute_choice = parameters->auto_contribute_choice;
@@ -1681,6 +1712,13 @@ void RewardsDOMHandler::OnRewardsWalletCreated() {
   GetUserType(base::Value::List());
   GetExternalWallet(base::Value::List());
   GetCountryCode(base::Value::List());
+}
+
+void RewardsDOMHandler::OnTermsOfServiceUpdateAccepted() {
+  if (!IsJavascriptAllowed()) {
+    return;
+  }
+  IsTermsOfServiceUpdateRequired(base::Value::List());
 }
 
 void RewardsDOMHandler::OnUnblindedTokensReady(

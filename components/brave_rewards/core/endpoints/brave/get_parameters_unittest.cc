@@ -115,7 +115,8 @@ INSTANTIATE_TEST_SUITE_P(
                   "defaultTipChoices": ["0", 1.25, 5, 10.5, "15"]
                 },
                 "vbatDeadline": "2022-12-24T15:04:45.352584Z",
-                "vbatExpired": true
+                "vbatExpired": true,
+                "tosVersion": 3
               }
             )",
             base::BindRepeating([]() -> Result {
@@ -159,6 +160,7 @@ INSTANTIATE_TEST_SUITE_P(
                                               &params->vbat_deadline));
 
               params->vbat_expired = true;
+              params->tos_version = 3;
 
               return params;
             })},

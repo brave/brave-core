@@ -67,11 +67,15 @@ export function Card () {
             publishersVisited={4}
             canConnectAccount={true}
             showSelfCustodyInvite={true}
+            isTermsOfServiceUpdateRequired={true}
             onEnableRewards={actionLogger('onEnableRewards')}
             onSelectCountry={actionLogger('onSelectCountry')}
             onClaimGrant={actionLogger('onClaimGrant')}
             onSelfCustodyInviteDismissed={
               actionLogger('onSelfCustodyInviteDismissed')
+            }
+            onTermsOfServiceUpdateAccepted={
+              actionLogger('onTermsOfServiceUpdateAgreed')
             }
           />
         </div>

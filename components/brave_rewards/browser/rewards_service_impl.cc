@@ -521,6 +521,10 @@ void RewardsServiceImpl::CreateRewardsWallet(
         prefs->SetString(prefs::kUserVersion, prefs::kCurrentUserVersion);
         prefs->SetBoolean(brave_ads::prefs::kOptedInToNotificationAds, true);
 
+        // Set the user's current ToS version.
+        prefs->SetInteger(prefs::kTosVersion,
+                          prefs->GetInteger(prefs::kParametersTosVersion));
+
         // Fetch the user's balance before turning on AC. We don't want to
         // automatically turn on AC if for some reason the user has a current
         // balance, as this could result in unintentional BAT transfers.
@@ -593,6 +597,27 @@ void RewardsServiceImpl::GetUserType(
 
   GetExternalWallet(
       base::BindOnce(on_external_wallet, AsWeakPtr(), std::move(callback)));
+}
+
+bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
+  auto* prefs = profile_->GetPrefs();
+  if (!prefs->GetBoolean(prefs::kEnabled)) {
+    return false;
+  }
+  int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+  int user_version = prefs->GetInteger(prefs::kTosVersion);
+  return user_version < params_version;
+}
+
+void RewardsServiceImpl::AcceptTermsOfServiceUpdate() {
+  if (IsTermsOfServiceUpdateRequired()) {
+    auto* prefs = profile_->GetPrefs();
+    int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
+    prefs->SetInteger(prefs::kTosVersion, params_version);
+    for (auto& observer : observers_) {
+      observer.OnTermsOfServiceUpdateAccepted();
+    }
+  }
 }
 
 std::string RewardsServiceImpl::GetCountryCode() const {

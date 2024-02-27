@@ -63,6 +63,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterDictionaryPref(prefs::kParametersWalletProviderRegions);
   registry->RegisterTimePref(prefs::kParametersVBatDeadline, base::Time());
   registry->RegisterBooleanPref(prefs::kParametersVBatExpired, false);
+  registry->RegisterIntegerPref(prefs::kParametersTosVersion, 1);
   registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
   registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");
@@ -73,6 +74,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kWalletSolana, "");
   registry->RegisterBooleanPref(prefs::kDisabledByPolicy, false);
   registry->RegisterIntegerPref(prefs::kWalletCreationEnvironment, -1);
+  registry->RegisterIntegerPref(prefs::kTosVersion, 1);
   registry->RegisterListPref(prefs::kRewardsPageViewCount);
 }
 

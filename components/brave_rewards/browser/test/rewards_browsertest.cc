@@ -170,7 +170,8 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 
   test_util::WaitForElementThenClick(contents(),
                                      "[data-test-id=manage-wallet-button]");
-  test_util::WaitForElementToAppear(contents(), "#modal");
+  test_util::WaitForElementToAppear(contents(),
+                                    "[data-test-id=rewards-reset-modal]");
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
@@ -257,10 +258,11 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ResetRewards) {
   test_util::WaitForElementThenClick(contents(),
                                      "[data-test-id=manage-wallet-button]");
 
-  test_util::WaitForElementToAppear(contents(), "#modal");
+  test_util::WaitForElementToAppear(contents(),
+                                    "[data-test-id=rewards-reset-modal]");
 
   test_util::WaitForElementToContain(
-      contents(), "[data-test-id='reset-text']",
+      contents(), "[data-test-id=rewards-reset-modal]",
       "By resetting, your current Brave Rewards profile will be deleted");
 }
 
