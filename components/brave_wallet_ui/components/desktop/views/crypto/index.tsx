@@ -73,8 +73,6 @@ export interface Props {
 export const CryptoView = ({ sessionRoute }: Props) => {
   const isAndroid = loadTimeData.getBoolean('isAndroid') || false
 
-  const { pageHandler } = getWalletPageApiProxy()
-
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
@@ -114,7 +112,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
   // methods
   const onShowBackup = React.useCallback(() => {
     if (isAndroid) {
-      pageHandler.showWalletBackupUI()
+      getWalletPageApiProxy().pageHandler.showWalletBackupUI()
       return
     }
 
