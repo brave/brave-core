@@ -352,19 +352,27 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, SmokeTest) {
   EXPECT_FALSE(speedreader_service()->IsEnabledForAllSites());
 
   NavigateToPageSynchronously(kTestPageReadable);
-
-  const bool is_correct_web_contents =
-      browser()->tab_strip_model()->GetWebContentsAt(1) == ActiveWebContents();
-  const auto second_load_page_length =
+  auto second_load_page_length =
       content::EvalJs(ActiveWebContents(), kGetContentLength,
                       content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                       ISOLATED_WORLD_ID_BRAVE_INTERNAL)
           .ExtractInt();
+  if (second_load_page_length == 1) {
+    // TODO(issues/36355): Sometimes browser failed to load this page.
+    ActiveWebContents()->GetController().Reload(content::ReloadType::NORMAL,
+                                                false);
+    content::WaitForLoadStop(ActiveWebContents());
+    second_load_page_length =
+        content::EvalJs(ActiveWebContents(), kGetContentLength,
+                        content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                        ISOLATED_WORLD_ID_BRAVE_INTERNAL)
+            .ExtractInt();
+  }
+
   EXPECT_LT(83000, second_load_page_length)
       << " First load length: " << first_load_page_length
       << " speedreaded length: " << speedreaded_length
-      << " Second load length: " << second_load_page_length
-      << " IsCorrectWebContents: " << is_correct_web_contents;
+      << " Second load length: " << second_load_page_length;
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Redirect) {
