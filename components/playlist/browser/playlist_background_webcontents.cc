@@ -8,7 +8,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_service.h"
-#include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 
@@ -43,18 +42,18 @@ void PlaylistBackgroundWebContents::Add(
   auto load_url_params = content::NavigationController::LoadURLParams(url);
 
   content::NavigationController& controller = web_contents->GetController();
-  if (service_->ShouldUseFakeUA(url) ||
-      base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    DVLOG(2) << __func__ << " Faked UA to detect media files";
+  if (service_->ShouldUseFakeUA(url)) {
+    DVLOG(2) << __FUNCTION__ << " Using fake UA to detect media files.";
 
-    blink::UserAgentOverride user_agent(
+    blink::UserAgentOverride user_agent_override(
         "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
         "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
         "Mobile/15E148 "
         "Safari/604.1",
         /* user_agent_metadata */ {});
-    web_contents->SetUserAgentOverride(user_agent,
-                                       /* override_in_new_tabs= */ true);
+
+    web_contents->SetUserAgentOverride(user_agent_override,
+                                       /* override_in_new_tabs = */ true);
     load_url_params.override_user_agent =
         content::NavigationController::UA_OVERRIDE_TRUE;
 
@@ -74,7 +73,7 @@ void PlaylistBackgroundWebContents::Remove(
         on_detected_media_callback,
     base::Value::List media,
     const GURL& url) {
-  CHECK(background_web_contents_.erase(web_contents));
+  background_web_contents_.erase(web_contents);
   std::move(on_detected_media_callback).Run(std::move(media), url);
 }
 
