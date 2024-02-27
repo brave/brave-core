@@ -16,7 +16,7 @@
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/search_result_ad_handler.h"
 #include "brave/components/brave_ads/content/browser/ad_units/search_result_ad/test_web_page_util.h"
 #include "brave/components/brave_ads/core/public/ads_feature.h"
-#include "testing/gmock/include/gmock/gmock.h"
+#include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 

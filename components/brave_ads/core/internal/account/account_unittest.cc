@@ -7,7 +7,7 @@
 
 #include "base/test/mock_callback.h"
 #include "brave/components/brave_ads/core/internal/account/account_observer_mock.h"
-#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"
+#include "brave/components/brave_ads/core/internal/account/issuers/issuers_info.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"

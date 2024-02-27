@@ -5,7 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
-#include "base/time/time.h"
+#include "base/time/time.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -15,7 +15,7 @@ namespace brave_ads {
 
 TEST(BraveAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
   // Act & Assert
-  EXPECT_EQ(6, DayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
+  EXPECT_EQ(/*friday*/ 6, DayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
 }
 
 TEST(BraveAdsCalendarUtilTest, DayOfWeek) {

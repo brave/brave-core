@@ -36,8 +36,7 @@ class BraveAdsRewardConfirmationUtilTest : public UnitTestBase {
 
     MockConfirmationUserData();
 
-    AdvanceClockTo(
-        TimeFromString("Mon, 8 Jul 1996 09:25:00", /*is_local=*/false));
+    AdvanceClockTo(TimeFromString("Mon, 8 Jul 1996 09:25", /*is_local=*/false));
   }
 
   TokenGeneratorMock token_generator_mock_;
