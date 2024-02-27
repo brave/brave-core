@@ -10,21 +10,21 @@
 #include "third_party/blink/renderer/platform/graphics/dom_node_id.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
-#define CreateFetchParameters                                          \
-  CreateFetchParameters_ChromiumImpl(                                  \
-      const KURL&, const SecurityOrigin*,                              \
-      scoped_refptr<const DOMWrapperWorld>, CrossOriginAttributeValue, \
-      const WTF::TextEncoding&, FetchParameters::DeferOption) const;   \
-  void SetDOMNodeId(DOMNodeId dom_node_id);                            \
-  DOMNodeId GetDOMNodeId() const;                                      \
-  void SetParentScriptId(int parent_script_id);                        \
-  int GetParentScriptId() const;                                       \
-                                                                       \
- private:                                                              \
-  DOMNodeId dom_node_id_ = kInvalidDOMNodeId;                          \
-  int parent_script_id_ = 0;                                           \
-                                                                       \
- public:                                                               \
+#define CreateFetchParameters                                           \
+  CreateFetchParameters_ChromiumImpl(                                   \
+      const KURL&, const SecurityOrigin*, const DOMWrapperWorld* world, \
+      CrossOriginAttributeValue, const WTF::TextEncoding&,              \
+      FetchParameters::DeferOption) const;                              \
+  void SetDOMNodeId(DOMNodeId dom_node_id);                             \
+  DOMNodeId GetDOMNodeId() const;                                       \
+  void SetParentScriptId(int parent_script_id);                         \
+  int GetParentScriptId() const;                                        \
+                                                                        \
+ private:                                                               \
+  DOMNodeId dom_node_id_ = kInvalidDOMNodeId;                           \
+  int parent_script_id_ = 0;                                            \
+                                                                        \
+ public:                                                                \
   FetchParameters CreateFetchParameters
 #endif  // BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
 
