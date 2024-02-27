@@ -7,6 +7,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/values_test_util.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/browser/brave_wallet/json_rpc_service_factory.h"
 #include "brave/browser/brave_wallet/keyring_service_factory.h"
@@ -69,11 +70,57 @@ class BraveWalletP3AUnitTest : public testing::Test {
     return GetAccountUtils().EnsureEthAccount(index)->account_id->Clone();
   }
 
+  mojom::AccountIdPtr sol_from() { return SolAccount(0); }
+
+  mojom::AccountIdPtr SolAccount(size_t index) {
+    return GetAccountUtils().EnsureSolAccount(index)->account_id->Clone();
+  }
+
   void SetInterceptor(const std::string& content) {
     url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
         [&, content](const network::ResourceRequest& request) {
           url_loader_factory_.ClearResponses();
           url_loader_factory_.AddResponse(request.url.spec(), content);
+        }));
+  }
+
+  void SetSolInterceptor(const std::string& latest_blockhash,
+                         uint64_t last_valid_block_height,
+                         const std::string& tx_hash,
+                         uint64_t block_height = 0,
+                         bool get_null_signature_statuses = false) {
+    url_loader_factory_.SetInterceptor(base::BindLambdaForTesting(
+        [&, latest_blockhash, tx_hash, last_valid_block_height,
+         block_height](const network::ResourceRequest& request) {
+          url_loader_factory_.ClearResponses();
+          std::string_view request_string(request.request_body->elements()
+                                              ->at(0)
+                                              .As<network::DataElementBytes>()
+                                              .AsStringPiece());
+          base::Value::Dict request_root =
+              base::test::ParseJsonDict(request_string);
+
+          std::string* method = request_root.FindString("method");
+          ASSERT_TRUE(method);
+
+          if (*method == "getLatestBlockhash") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":"
+                "{\"context\":{\"slot\":1069},\"value\":{\"blockhash\":\"" +
+                    latest_blockhash + "\", \"lastValidBlockHeight\":" +
+                    base::NumberToString(last_valid_block_height) + "}}}");
+          } else if (*method == "getBlockHeight") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(), R"({"jsonrpc":"2.0", "id":1, "result":)" +
+                                        base::NumberToString(block_height) +
+                                        "}");
+          } else if (*method == "sendTransaction") {
+            url_loader_factory_.AddResponse(
+                request.url.spec(),
+                "{\"jsonrpc\":\"2.0\",\"id\":1,\"result\":\"" + tx_hash +
+                    "\"}");
+          }
         }));
   }
 
@@ -128,6 +175,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   network::TestURLLoaderFactory url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
+  std::string tx_hash1_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
@@ -438,9 +486,53 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
   keyring_service_->AddAccountSync(mojom::CoinType::SOL,
                                    mojom::kSolanaKeyringId, "Account 1");
 
-  // TODO(stephenheaps): Create & add unapproved SOL transaction
+  // Create & add unapproved SOL transaction
+  const auto& from_account = sol_from();
+  std::string from_account_address = from_account->address;
 
-  // TODO(stephenheaps): Approve the SOL transaction
+  std::string to_account = "JDqrvDz8d8tFCADashbUKQDKfJZFobNy13ugN65t1wvV";
+  const std::vector<uint8_t> data = {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0};
+
+  std::vector<mojom::SolanaAccountMetaPtr> account_metas;
+  auto account_meta1 =
+      mojom::SolanaAccountMeta::New(from_account_address, nullptr, true, true);
+  auto account_meta2 =
+      mojom::SolanaAccountMeta::New(to_account, nullptr, false, true);
+  account_metas.push_back(std::move(account_meta1));
+  account_metas.push_back(std::move(account_meta2));
+
+  auto instruction = mojom::SolanaInstruction::New(
+      mojom::kSolanaSystemProgramId, std::move(account_metas), data, nullptr);
+  std::vector<mojom::SolanaInstructionPtr> instructions;
+  instructions.push_back(std::move(instruction));
+
+  auto solana_tx_data = mojom::SolanaTxData::New(
+      "", 0, from_account_address, to_account, "", 10000000, 0,
+      mojom::TransactionType::SolanaSystemTransfer, std::move(instructions),
+      mojom::SolanaMessageVersion::kLegacy,
+      mojom::SolanaMessageHeader::New(1, 0, 1),
+      std::vector<std::string>(
+          {from_account_address, to_account, mojom::kSolanaSystemProgramId}),
+      std::vector<mojom::SolanaMessageAddressTableLookupPtr>(), nullptr,
+      nullptr);
+
+  std::string tx_meta_id;
+  EXPECT_TRUE(AddUnapprovedTransaction(
+      mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
+      mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
+
+  tx_hash1_ =
+      "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpR"
+      "zrFmBV6UjKdiSZkQUW";
+  auto* latest_blockhash1_ = "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N";
+  auto last_valid_block_height1_ = 3090;
+
+  SetSolInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
+                    last_valid_block_height1_);
+
+  // Approve the SOL transaction
+  EXPECT_TRUE(ApproveTransaction(mojom::CoinType::SOL, mojom::kSolanaMainnet,
+                                 tx_meta_id));
 
   // Verify SolTransactionSent
   histogram_tester_->ExpectUniqueSample(kSolTransactionSentHistogramName, 1, 1);
