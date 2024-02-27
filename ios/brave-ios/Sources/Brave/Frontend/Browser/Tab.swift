@@ -88,6 +88,7 @@ class Tab: NSObject {
   private(set) var type: TabType = .regular
   
   var redirectURLs = [URL]()
+  var responses = [URL: URLResponse]()
 
   var isPrivate: Bool {
     return type.isPrivate
@@ -388,7 +389,7 @@ class Tab: NSObject {
       configuration!.enablePageTopColorSampling()
 
       if configuration!.urlSchemeHandler(forURLScheme: InternalURL.scheme) == nil {
-        configuration!.setURLSchemeHandler(InternalSchemeHandler(), forURLScheme: InternalURL.scheme)
+        configuration!.setURLSchemeHandler(InternalSchemeHandler(tab: self), forURLScheme: InternalURL.scheme)
       }
       let webView = TabWebView(frame: .zero, tab: self, configuration: configuration!, isPrivate: isPrivate)
       webView.delegate = self

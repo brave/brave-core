@@ -125,7 +125,9 @@ extension BrowserViewController {
     let backList = webView.backForwardList.backList
     let forwardList = webView.backForwardList.forwardList
 
-    guard let currentURL = webView.backForwardList.currentItem?.url, let readerModeURL = currentURL.encodeReaderModeURL("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)") else { return }
+    guard let currentURL = webView.backForwardList.currentItem?.url, 
+          let headers = (tab.responses[currentURL] as? HTTPURLResponse)?.allHeaderFields as? [String: String],
+          let readerModeURL = currentURL.encodeReaderModeURL("\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)", headers: headers) else { return }
 
     recordTimeBasedNumberReaderModeUsedP3A(activated: true)
     

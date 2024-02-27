@@ -20,6 +20,13 @@ public protocol InternalSchemeResponse {
 }
 
 public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
+  
+  private weak var tab: Tab?
+  
+  init(tab: Tab?) {
+    self.tab = tab
+    super.init()
+  }
 
   public static func response(forUrl url: URL) -> URLResponse {
     return URLResponse(url: url, mimeType: "text/html", expectedContentLength: -1, textEncodingName: "utf-8")
@@ -106,7 +113,7 @@ public class InternalSchemeHandler: NSObject, WKURLSchemeHandler {
       urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.noResponder)
       return
     }
-
+    
     guard let (urlResponse, data) = responder.response(forRequest: urlSchemeTask.request) else {
       urlSchemeTask.didFailWithError(InternalPageSchemeHandlerError.responderUnableToHandle)
       return

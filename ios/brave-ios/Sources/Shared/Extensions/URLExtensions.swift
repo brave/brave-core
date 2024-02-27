@@ -339,9 +339,16 @@ extension URL {
     return nil
   }
 
-  public func encodeReaderModeURL(_ baseReaderModeURL: String) -> URL? {
+  public func encodeReaderModeURL(_ baseReaderModeURL: String, headers: [String: String]) -> URL? {
+    var encodedHeaders: String?
+    if !headers.isEmpty, let data = try? JSONSerialization.data(withJSONObject: headers) {
+      encodedHeaders = data.base64EncodedString.addingPercentEncoding(withAllowedCharacters: .alphanumerics)
+    }
+    
     if let encodedURL = absoluteString.addingPercentEncoding(withAllowedCharacters: .alphanumerics) {
-      if let aboutReaderURL = URL(string: "\(baseReaderModeURL)?url=\(encodedURL)") {
+      if let encodedHeaders = encodedHeaders, let aboutReaderURL = URL(string: "\(baseReaderModeURL)?url=\(encodedURL)&headers=\(encodedHeaders)") {
+        return aboutReaderURL
+      } else if let aboutReaderURL = URL(string: "\(baseReaderModeURL)?url=\(encodedURL)") {
         return aboutReaderURL
       }
     }

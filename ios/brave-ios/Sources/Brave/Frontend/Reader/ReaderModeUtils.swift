@@ -32,6 +32,7 @@ struct ReaderModeUtils {
       .replacingOccurrences(of: "%READER-CONTENT%", with: readabilityResult.content)
       .replacingOccurrences(of: "%READER-DIRECTION%", with: readabilityResult.direction.javaScriptEscapedString?.unquotedIfNecessary ?? readabilityResult.direction.htmlEntityEncodedString)
       .replacingOccurrences(of: "%READER-MESSAGE%", with: "")
+      .replacingOccurrences(of: "%READER-ORIGINAL-PAGE-META-TAGS%", with: readabilityResult.cspMetaTags.joined(separator: "  \n"))
   }
 }
 
