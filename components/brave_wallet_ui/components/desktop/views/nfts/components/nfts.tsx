@@ -370,6 +370,7 @@ export const Nfts = (props: Props) => {
   const renderGridViewItem = React.useCallback(
     (nft: BraveWallet.BlockchainToken) => {
       const assetId = getAssetIdKey(nft)
+      const isSpam = allSpamNftsIds.includes(assetId)
 
       return (
         <NFTGridViewItem
@@ -378,9 +379,9 @@ export const Nfts = (props: Props) => {
           onSelectAsset={() => onSelectAsset(nft)}
           isTokenHidden={
             userTokensRegistry?.nonFungibleHiddenTokenIds.includes(assetId) ||
-            allSpamNftsIds.includes(assetId)
+            isSpam
           }
-          isTokenSpam={allSpamNftsIds.includes(assetId)}
+          isTokenSpam={isSpam}
         />
       )
     },

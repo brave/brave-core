@@ -508,7 +508,7 @@ export const tokenEndpoints = ({
         // Not using tokenId since spam NFTs are not
         // included in token registry by default
         token: BraveWallet.BlockchainToken
-        status: boolean
+        isSpam: boolean
       }
     >({
       queryFn: async (arg, { endpoint }, _extraOptions, baseQuery) => {
@@ -517,7 +517,7 @@ export const tokenEndpoints = ({
           const { braveWalletService } = api
           const { success } = await braveWalletService.setAssetSpamStatus(
             arg.token,
-            arg.status
+            arg.isSpam
           )
 
           // update user token
@@ -532,14 +532,17 @@ export const tokenEndpoints = ({
             throw new Error('Unable to delete token')
           }
 
-          const { success: addTokenSuccess } = await addUserToken({
-            braveWalletService,
-            cache,
-            tokenArg: { ...arg.token, isSpam: arg.status }
-          })
+          // track token if not spam
+          if (!arg.isSpam) {
+            const { success: addTokenSuccess } = await addUserToken({
+              braveWalletService,
+              cache,
+              tokenArg: { ...arg.token, isSpam: arg.isSpam }
+            })
 
-          if (!addTokenSuccess) {
-            throw new Error('Unable to add token')
+            if (!addTokenSuccess) {
+              throw new Error('Unable to add token')
+            }
           }
 
           return {

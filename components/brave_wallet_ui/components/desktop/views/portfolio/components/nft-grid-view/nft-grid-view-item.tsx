@@ -125,7 +125,7 @@ export const NFTGridViewItem = (props: Props) => {
     await restoreHiddenToken(getAssetIdKey(token))
     if (isTokenSpam) {
       // remove from spam
-      await updateNftSpamStatus({ token, status: false })
+      await updateNftSpamStatus({ token, isSpam: false })
     }
     dispatch(
       WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
@@ -134,7 +134,7 @@ export const NFTGridViewItem = (props: Props) => {
 
   const onUnSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, status: false })
+    await updateNftSpamStatus({ token, isSpam: false })
     dispatch(
       WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
     )
@@ -142,7 +142,7 @@ export const NFTGridViewItem = (props: Props) => {
 
   const onMarkAsSpam = async () => {
     setShowMore(false)
-    await updateNftSpamStatus({ token, status: true })
+    await updateNftSpamStatus({ token, isSpam: true })
     dispatch(
       WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
     )
