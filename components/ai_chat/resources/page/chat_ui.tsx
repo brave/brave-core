@@ -31,7 +31,10 @@ function App () {
 
 function initialize () {
   initLocale(loadTimeData.data_)
-  render(<App />, document.getElementById('mountPoint'))
+  const mountPoint = document.getElementById('mountPoint')
+  render(<App />, mountPoint, () => {
+    mountPoint?.classList.add('loaded')
+  })
 }
 
 document.addEventListener('DOMContentLoaded', initialize)
