@@ -79,6 +79,9 @@ const char kTestTtsStructure[] = "/speedreader/article/structure.html";
 const char kTestErrorPage[] = "/speedreader/article/page_not_reachable.html";
 const char kTestCSPHtmlPage[] = "/speedreader/article/csp_html.html";
 const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
+const char kTestCSPHackEquivPage[] = "/speedreader/article/csp_hack_equiv.html";
+const char kTestCSPHackCharsetPage[] =
+    "/speedreader/article/csp_hack_charset.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -890,7 +893,10 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
   ToggleSpeedreader();
 
-  for (const auto* page : {kTestCSPHtmlPage, kTestCSPHttpPage}) {
+  for (const auto* page : {kTestCSPHackEquivPage, kTestCSPHackCharsetPage,
+                           kTestCSPHtmlPage, kTestCSPHttpPage}) {
+    SCOPED_TRACE(page);
+
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
     console_observer.SetPattern(
         "Refused to load the image 'https://a.test/should_fail.png' because it "
@@ -904,6 +910,13 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
     )js";
     EXPECT_EQ(R"(<base href="https://a.test/"><base target="_blank">)",
               content::EvalJs(ActiveWebContents(), kCheckBaseTag,
+                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
+    constexpr const char kCheckNoMaliciousContent[] = R"js(
+      !document.getElementById('malicious1')
+    )js";
+    EXPECT_EQ(true,
+              content::EvalJs(ActiveWebContents(), kCheckNoMaliciousContent,
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
