@@ -9,6 +9,7 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
@@ -48,8 +49,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, RecordEvent) {
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35",
-                                /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(2);
@@ -83,8 +83,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpired) {
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
        GetUnexpiredIfCreativeSetExistsInCreativeSetConversions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35",
-                                /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   // Ad event: Recorded on 19th March 2024. This ad event should be included
   // because it has an associated creative set conversion.
@@ -118,8 +117,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35",
-                                /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   // Ad event: Recorded on 19th March 2024. This ad event should be included
   // because it will occur on the cusp of the expiry window.
@@ -144,8 +142,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredOnTheCuspOfExpiry) {
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForType) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 16:28",
-                                /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 16:28"));
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(3);
@@ -187,7 +184,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, GetUnexpiredForType) {
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
        GetUnexpiredForTypeIfCreativeSetExistsInCreativeSetConversions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   base::MockCallback<ResultCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(2);
@@ -231,7 +228,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest,
 
 TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   base::MockCallback<ResultCallback> result_callback;
   EXPECT_CALL(result_callback, Run(/*success=*/true)).Times(3);
@@ -268,7 +265,7 @@ TEST_F(BraveAdsAdEventsDatabaseTableTest, PurgeExpired) {
 TEST_F(BraveAdsAdEventsDatabaseTableTest,
        DoNotPurgeExpiredIfCreativeSetExistsInCreativeSetConversions) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   base::MockCallback<ResultCallback> result_callback;
   EXPECT_CALL(result_callback, Run(/*success=*/true)).Times(2);

@@ -10,14 +10,9 @@
 
 namespace base {
 class Time;
-class TimeDelta;
 }  // namespace base
 
 namespace brave_ads {
-
-base::Time TimeFromString(const std::string& time_string, bool is_local);
-base::TimeDelta TimeDeltaFromString(const std::string& time_string,
-                                    bool is_local);
 
 // The distance between the past, present and future is only a persistent
 // illusion. Albert Einstein.

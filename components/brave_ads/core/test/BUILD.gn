@@ -307,6 +307,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_string_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_tag_parser_util.h",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.cc",
+    "//brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.cc",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h",
     "//brave/components/brave_ads/core/internal/common/unittest/unittest_url_response_alias.h",

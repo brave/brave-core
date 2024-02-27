@@ -6,7 +6,7 @@
 #include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,41 +19,38 @@ class BraveAdsTimeDeltaUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTimeDeltaUtilTest, Months) {
   // Arrange
-  AdvanceClockTo(
-      TimeFromString("Wed, 31 Jan 2025 16:28",
-                     /*is_local=*/false));  // Happy 1st Birthday Florrie!
+  AdvanceClockTo(TimeFromUTCString(
+      "Wed, 31 Jan 2025 16:28"));  // Happy 1st Birthday Florrie!
 
   // Act & Assert
-  EXPECT_EQ(TimeDeltaFromString("Thu, 1 May 2025 16:28", /*is_local=*/false),
-            Months(3));
+  EXPECT_EQ(TimeDeltaFromUTCString("Thu, 1 May 2025 16:28"), Months(3));
 }
 
 TEST_F(BraveAdsTimeDeltaUtilTest, MonthsIfLeapYear) {
   // Arrange
-  AdvanceClockTo(
-      TimeFromString("Tue, 9 Jan 2024 16:10:19", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString(
+      /*National Static Electricity Day*/
+      "Tue, 9 Jan 2024 16:10:19"));  // Did you know that the charge on a single
+                                     // electron is 1.6 X 10-19 C.
 
   // Act & Assert
-  EXPECT_EQ(TimeDeltaFromString("Sat, 9 Mar 2024 16:10:19", /*is_local=*/false),
-            Months(2));
+  EXPECT_EQ(TimeDeltaFromUTCString("Sat, 9 Mar 2024 16:10:19"), Months(2));
 }
 
 TEST_F(BraveAdsTimeDeltaUtilTest, MonthsOnCuspOfYear) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Wed, 25 Dec 2024", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Wed, 25 Dec 2024"));
 
   // Act & Assert
-  EXPECT_EQ(TimeDeltaFromString("Sat, 25 Jan 2025", /*is_local=*/false),
-            Months(1));
+  EXPECT_EQ(TimeDeltaFromUTCString("Sat, 25 Jan 2025"), Months(1));
 }
 
 TEST_F(BraveAdsTimeDeltaUtilTest, MonthsOverMultipleYears) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Sun, 18 Nov 2029", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Sun, 18 Nov 2029"));
 
   // Act & Assert
-  EXPECT_EQ(TimeDeltaFromString("Sun, 18 May 2031", /*is_local=*/false),
-            Months(18));
+  EXPECT_EQ(TimeDeltaFromUTCString("Sun, 18 May 2031"), Months(18));
 }
 
 }  // namespace brave_ads

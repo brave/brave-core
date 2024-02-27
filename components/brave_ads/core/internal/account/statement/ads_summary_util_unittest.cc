@@ -8,6 +8,7 @@
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -18,7 +19,7 @@ class BraveAdsAdsSummaryUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -27,7 +28,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.0, ConfirmationType::kClicked,
@@ -41,7 +42,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
 
   const base::Time from_time = Now();
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("1 January 2021"));
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
       /*value=*/0.02, ConfirmationType::kViewed,
@@ -70,7 +71,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, GetAdsSummaryForDateRange) {
 
 TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -84,7 +85,7 @@ TEST_F(BraveAdsAdsSummaryUtilTest, DoNotGetAdsSummaryForDateRange) {
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("1 January 2021", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("1 January 2021"));
 
   // Act
   const base::flat_map<std::string, int32_t> ads_summary =

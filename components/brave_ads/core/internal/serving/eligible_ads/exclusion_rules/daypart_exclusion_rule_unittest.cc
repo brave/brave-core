@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_ad_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/creative_daypart_info.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/daypart_exclusion_rule_unittest_util.h"
@@ -21,8 +21,7 @@ class BraveAdsDaypartExclusionRuleTest : public UnitTestBase {
   void SetUp() override {
     UnitTestBase::SetUp();
 
-    AdvanceClockTo(TimeFromString("Sun, 19 Mar 2023 05:35",
-                                  /*is_local=*/true));  // Hello Rory!!!
+    AdvanceClockTo(TimeFromString("Sun, 19 Mar 2023 05:35"));  // Hello Rory!!!
   }
 
   const DaypartExclusionRule exclusion_rule_;

@@ -5,32 +5,14 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
-#include "base/check.h"
 #include "base/i18n/time_formatting.h"
 #include "base/time/time.h"
 
 namespace brave_ads {
 
-base::Time TimeFromString(const std::string& time_string, const bool is_local) {
-  base::Time time;
-
-  if (is_local) {
-    CHECK(base::Time::FromString(time_string.c_str(), &time));
-  } else {
-    CHECK(base::Time::FromUTCString(time_string.c_str(), &time));
-  }
-
-  return time;
-}
-
-base::TimeDelta TimeDeltaFromString(const std::string& time_string,
-                                    const bool is_local) {
-  return TimeFromString(time_string, is_local) - base::Time::Now();
-}
-
 base::Time DistantPast() {
   // Just after the myth of the beginning of time.
-  return base::Time() + base::Microseconds(1);
+  return base::Time() + base::Milliseconds(1);
 }
 
 std::string DistantPastAsIso8601() {

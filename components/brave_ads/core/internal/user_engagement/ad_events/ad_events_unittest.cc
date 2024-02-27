@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_unittest_util.h"
@@ -46,8 +47,7 @@ TEST_F(BraveAdsAdEventsTest, RecordAdEvent) {
 TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   // Arrange
   AdvanceClockTo(
-      TimeFromString("Tue, 19 Mar 2024 05:35",
-                     /*is_local=*/false));  // Happy 1st Birthday Rory!
+      TimeFromUTCString("Tue, 19 Mar 2024 05:35"));  // Happy 1st Birthday Rory!
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(4);
@@ -112,7 +112,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
 
 TEST_F(BraveAdsAdEventsTest, DoNotPurgeExpiredAdEventsOnTheCuspOfExpiry) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Tue, 19 Mar 2024 05:35", /*is_local=*/false));
+  AdvanceClockTo(TimeFromUTCString("Tue, 19 Mar 2024 05:35"));
 
   // Ad event: Recorded on 19th March 2024. This ad event should not be purged
   // because it will occur on the cusp of the expiry window.
@@ -143,8 +143,8 @@ TEST_F(BraveAdsAdEventsTest, DoNotPurgeExpiredAdEventsOnTheCuspOfExpiry) {
 
 TEST_F(BraveAdsAdEventsTest, PurgeOrphanedAdEvents) {
   // Arrange
-  AdvanceClockTo(TimeFromString("Wed, 31 Jan 2024 16:28",
-                                /*is_local=*/false));  // Hello Florrie!!!
+  AdvanceClockTo(
+      TimeFromUTCString("Wed, 31 Jan 2024 16:28"));  // Hello Florrie!!!
 
   base::MockCallback<AdEventCallback> record_ad_event_callback;
   EXPECT_CALL(record_ad_event_callback, Run(/*success=*/true)).Times(4);
