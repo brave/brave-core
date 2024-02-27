@@ -10,7 +10,7 @@
   IsAutocompleteEnabled() const; \
   virtual bool CurrentPageExists
 
-#include "src/components/omnibox/browser/omnibox_client.h"
+#include "src/components/omnibox/browser/omnibox_client.h"  // IWYU pragma: export
 
 #undef CurrentPageExists
 

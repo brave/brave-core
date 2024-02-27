@@ -8,7 +8,6 @@
 #include <algorithm>
 #include <optional>
 #include <string>
-#include <tuple>
 #include <utility>
 #include <vector>
 
@@ -116,7 +115,6 @@
 #include "content/public/common/content_switches.h"
 #include "content/public/common/url_constants.h"
 #include "extensions/buildflags/buildflags.h"
-#include "mojo/public/cpp/bindings/binder_map.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/registry_controlled_domains/registry_controlled_domain.h"
@@ -524,36 +522,6 @@ void MaybeBindSkusSdkImpl(
   skus::SkusServiceFactory::BindForContext(context, std::move(receiver));
 }
 
-template <typename Interface, typename... WebUIControllerSubclasses>
-void OverrideWebUIControllerInterfaceBinder(
-    mojo::BinderMapWithContext<RenderFrameHost*>* map) {
-  DCHECK(map->Contains<Interface>())
-      << "A binder for " << Interface::Name_
-      << " has not been registered. You can just use "
-         "|content::RegisterWebUIControllerInterfaceBinder|";
-  map->Add<Interface>(
-      base::BindRepeating([](content::RenderFrameHost* host,
-                             mojo::PendingReceiver<Interface> receiver) {
-        // This is expected to be called only for outermost main frames.
-        if (host->GetParentOrOuterDocument()) {
-          content::internal::ReceivedInvalidWebUIControllerMessage(host);
-          return;
-        }
-
-        const int size = sizeof...(WebUIControllerSubclasses);
-        bool is_bound = content::internal::BinderHelper<
-            Interface, size - 1, std::tuple<WebUIControllerSubclasses...>>::
-            BindInterface(host, std::move(receiver));
-
-        // This is expected to be called only for the right WebUI pages matching
-        // the same WebUI associated to the RenderFrameHost.
-        if (!is_bound) {
-          content::internal::ReceivedInvalidWebUIControllerMessage(host);
-          return;
-        }
-      }));
-}
-
 }  // namespace
 
 BraveContentBrowserClient::BraveContentBrowserClient() = default;
@@ -663,6 +631,15 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  auto ntp_registration =
+      registry.ForWebUI<BraveNewTabUI>()
+          .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
+          .Add<brave_news::mojom::BraveNewsController>();
+
+  if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
+    ntp_registration.Add<omnibox::mojom::PageHandler>();
+  }
+
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
@@ -861,25 +838,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 #endif
 
-// Brave News
-#if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-  if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    OverrideWebUIControllerInterfaceBinder<omnibox::mojom::PageHandler,
-                                           BraveNewTabUI, NewTabPageUI,
-                                           OmniboxPopupUI>(map);
-  }
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
