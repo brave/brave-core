@@ -8,6 +8,7 @@
 #include "base/test/mock_callback.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/common/time/time_delta_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table_util.h"
@@ -85,9 +86,7 @@ TEST_F(BraveAdsAdEventsTest, PurgeExpiredAdEvents) {
   database::SaveCreativeSetConversions(creative_set_conversions);
 
   // Move the clock forward to when the ad events expire.
-  const base::TimeDelta three_months =
-      base::Days(/*march*/ 31 + /*april*/ 30 + /*may*/ 31);
-  AdvanceClockBy(three_months);
+  AdvanceClockBy(Months(3));
 
   // Ad event 4: Recorded on 19th June 2024. This ad event should not be purged
   // because it occured within the expiry window.
@@ -127,9 +126,7 @@ TEST_F(BraveAdsAdEventsTest, DoNotPurgeExpiredAdEventsOnTheCuspOfExpiry) {
   RecordAdEvent(ad_event, record_ad_event_callback.Get());
 
   // Move the clock forward to just before the ad events expire.
-  const base::TimeDelta three_months =
-      base::Days(/*march*/ 31 + /*april*/ 30 + /*may*/ 31);
-  AdvanceClockBy(three_months - base::Milliseconds(1));
+  AdvanceClockBy(Months(3) - base::Milliseconds(1));
 
   base::MockCallback<AdEventCallback> purge_expired_ad_events_callback;
   EXPECT_CALL(purge_expired_ad_events_callback, Run(/*success=*/true));

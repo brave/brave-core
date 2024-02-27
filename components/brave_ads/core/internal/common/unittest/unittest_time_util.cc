@@ -23,6 +23,11 @@ base::Time TimeFromString(const std::string& time_string, const bool is_local) {
   return time;
 }
 
+base::TimeDelta TimeDeltaFromString(const std::string& time_string,
+                                    const bool is_local) {
+  return TimeFromString(time_string, is_local) - base::Time::Now();
+}
+
 base::Time DistantPast() {
   // Just after the myth of the beginning of time.
   return base::Time() + base::Microseconds(1);
