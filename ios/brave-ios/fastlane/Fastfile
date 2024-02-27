@@ -7,46 +7,55 @@ fastlane_version "2.86.0"
 default_platform :ios
 
 platform :ios do
-  desc "Run Unit Tests"
+  desc "Deprecated: use build_for_testing and test_without_build"
   lane :test do |options|
-    run_tests(
-      project: "App/Client.xcodeproj",
-      scheme: "Debug",
+    defaultScanParams = scan_params()
+    run_tests(defaultScanParams.merge!({
       devices: ["iPhone 15"],
-      code_coverage: true,
-      output_types: "junit",
-      output_files: "junit.xml",
       ensure_devices_found: true,
-      derived_data_path: "../../../out/DerivedData",
-      skip_testing: [
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
-        "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
-        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
-        "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
-        "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
-        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
-        "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
-      ]
-    )
+      skip_testing: skipped_tests()
+    }))
 
-    run_tests(
-      project: "App/Client.xcodeproj",
-      scheme: "Debug",
+    run_tests(defaultScanParams.merge!({
       devices: ["iPad (10th generation)"],
-      code_coverage: true,
       ensure_devices_found: true,
-      output_types: "junit",
       output_files: "junit-ipad.xml",
-      derived_data_path: "../../../out/DerivedData",
       skip_testing: [
         "ClientTests/UserAgentTests"
       ],
       xcargs: "-testPlan Brave_iPad"
-    )
+    }))
+  end
+
+  desc "Builds the app for testing"
+  lane :build_for_testing do |options|
+    defaultScanParams = scan_params()
+    run_tests(defaultScanParams.merge!({
+      build_for_testing: true,
+      output_style: "raw" # Don't need xcpretty for the build
+    }))
+  end
+
+  desc "Runs unit tests on a previous build (assumes build_for_testing is run)"
+  lane :test_without_building do |options|
+    defaultScanParams = scan_params()
+    run_tests(defaultScanParams.merge!({
+      test_without_building: true,
+      devices: ["iPhone 15"],
+      ensure_devices_found: true,
+      skip_testing: skipped_tests()
+    }))
+
+    run_tests(defaultScanParams.merge!({
+      test_without_building: true,
+      devices: ["iPad (10th generation)"],
+      ensure_devices_found: true,
+      output_files: "junit-ipad.xml",
+      testplan: "Brave_iPad",
+      skip_testing: [
+        "ClientTests/UserAgentTests"
+      ]
+    }))
   end
 
   desc "Creates a Brave Beta build for TestFlight."
@@ -148,6 +157,33 @@ platform :ios do
       output_directory: "build",
       derived_data_path: "../../../out/DerivedData",
     }
+  end
+
+  private_lane :scan_params do
+    {
+      project: "App/Client.xcodeproj",
+      scheme: "Debug",
+      code_coverage: true,
+      output_types: "junit",
+      output_files: "junit.xml",
+      derived_data_path: "../../../out/DerivedData"
+    }
+  end
+
+  private_lane :skipped_tests do
+    [
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemoveAllPermissions",
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissions",
+      "BraveWalletTests/ManageSiteConnectionsStoreTests/testRemovePermissionsLastPermission",
+      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInSolTxIfAvailable",
+      "BraveWalletTests/SendTokenStoreTests/testResolvedAddressUsedInEthTxIfAvailable",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionEthNetwork",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionSolNetwork",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
+      "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
+    ]
   end
 
 end
