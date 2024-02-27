@@ -113,9 +113,16 @@ const Marker = <Icon name='arrow-small-right' className='marker' />
 const PlaceholderMarker = <Icon />
 
 export function Item(props: { id: FeedView, name: string }) {
-  const { feedView, setFeedView } = useBraveNews()
+  const { feedView, setFeedView, reportSidebarFilterUsage } = useBraveNews()
   const topLevel = ['all', 'following'].includes(props.id)
-  return <CustomButton selected={props.id === feedView} onClick={() => setFeedView(props.id)} bold={topLevel}>
+  return <CustomButton
+    selected={props.id === feedView}
+    onClick={() => {
+      setFeedView(props.id)
+      reportSidebarFilterUsage()
+    }}
+    bold={topLevel}
+  >
     {props.name}
   </CustomButton>
 }

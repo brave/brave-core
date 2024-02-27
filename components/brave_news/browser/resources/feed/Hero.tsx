@@ -9,9 +9,11 @@ import ArticleMetaRow from './ArticleMetaRow';
 import Card, { BraveNewsLink, LargeImage, Title, braveNewsCardClickHandler } from './Card';
 import styled from 'styled-components';
 import { spacing } from '@brave/leo/tokens/css';
+import { useBraveNews } from '../shared/Context';
 
 interface Props {
   info: Info
+  feedDepth?: number
 }
 
 const Container = styled(Card)`
@@ -24,17 +26,29 @@ const Container = styled(Card)`
   }
 `
 
-export default function HeroArticle({ info }: Props) {
+export default function HeroArticle({ info, feedDepth }: Props) {
+  const { reportVisit } = useBraveNews()
   const { url, setElementRef } = useLazyUnpaddedImageUrl(info.data.image.paddedImageUrl?.url ?? info.data.image.imageUrl?.url, {
     useCache: true,
     rootElement: document.body,
     rootMargin: '500px 0px'
   })
-  return <Container onClick={braveNewsCardClickHandler(info.data.url.url)} ref={setElementRef}>
+  return <Container
+    onClick={() => {
+      braveNewsCardClickHandler(info.data.url.url)
+      if (feedDepth !== undefined) {
+        reportVisit(feedDepth)
+      }
+    }} ref={setElementRef}>
     <LargeImage src={url} />
     <ArticleMetaRow article={info.data} />
     <Title>
-      <BraveNewsLink href={info.data.url.url}>{info.data.title}</BraveNewsLink>
+      <BraveNewsLink
+        href={info.data.url.url}
+        feedDepth={feedDepth}
+      >
+        {info.data.title}
+      </BraveNewsLink>
     </Title>
   </Container>
 }

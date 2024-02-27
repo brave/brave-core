@@ -542,8 +542,7 @@ public class BraveNewTabPageLayout
                                         }
                                     }
                                     if (mBraveNewsController != null) {
-                                        mBraveNewsController.onSessionCardViewsCountChanged(
-                                                (short) mNewsSessionCardViews, newCardViews);
+                                        mBraveNewsController.onNewCardsViewed(newCardViews);
                                     }
                                     mPrevVisibleNewsCardPosition = lastVisibleItemPosition;
                                 }

@@ -46,6 +46,7 @@ const FeedContainer = styled.div`
 
 interface Props {
   feed: FeedV2 | undefined;
+  onViewCountChange?: (newViews: number) => void;
   onSessionStart?: () => void;
 }
 
@@ -85,7 +86,7 @@ const errors = {
   [FeedV2Error.NoFeeds]: <NoFeeds />
 }
 
-export default function Component({ feed, onSessionStart }: Props) {
+export default function Component({ feed, onViewCountChange, onSessionStart }: Props) {
   const [cardCount, setCardCount] = React.useState(getHistoryValue(HISTORY_CARD_COUNT, PAGE_SIZE));
 
   // Store the number of cards we've loaded in history - otherwise when we
@@ -134,10 +135,13 @@ export default function Component({ feed, onSessionStart }: Props) {
       return;
     }
     const newViews = largestCardCount - lastViewedCardCount.current;
-    if (!!onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
+    if (onSessionStart && lastViewedCardCount.current === 0 && newViews > 0) {
       onSessionStart();
     }
     lastViewedCardCount.current = largestCardCount;
+    if (onViewCountChange) {
+      onViewCountChange(newViews);
+    }
   }, {
     threshold: 1
   }));
@@ -156,6 +160,7 @@ export default function Component({ feed, onSessionStart }: Props) {
 
     loadMoreObserver.current.observe(el);
   }, [])
+
   const cards = React.useMemo(() => {
     const count = Math.min(feed?.items.length ?? 0, cardCount)
     let currentCardCount = 0;
@@ -172,16 +177,16 @@ export default function Component({ feed, onSessionStart }: Props) {
         el = <Advert info={item.advert} />
       }
       else if (item.article) {
-        el = <Article info={item.article} />
+        el = <Article info={item.article} feedDepth={currentCardCount} />
       }
       else if (item.cluster) {
-        el = <Cluster info={item.cluster} />
+        el = <Cluster info={item.cluster} feedDepth={currentCardCount} />
       }
       else if (item.discover) {
         el = <Discover info={item.discover} />
       }
       else if (item.hero) {
-        el = <HeroArticle info={item.hero} />
+        el = <HeroArticle info={item.hero} feedDepth={currentCardCount} />
       } else {
         throw new Error("Invalid item!" + JSON.stringify(item))
       }

@@ -189,7 +189,7 @@ void RegisterProfilePrefsForMigration(
 
   brave_rewards::RegisterProfilePrefsForMigration(registry);
 
-  brave_news::p3a::RegisterProfilePrefsForMigration(registry);
+  brave_news::p3a::NewsMetrics::RegisterProfilePrefsForMigration(registry);
 
   // Added May 2023
 #if defined(TOOLKIT_VIEWS)

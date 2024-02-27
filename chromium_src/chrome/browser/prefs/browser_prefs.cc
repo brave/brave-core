@@ -154,7 +154,7 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
   profile_prefs->ClearPref(sidebar::kSidebarAlignmentChangedTemporarily);
 #endif
 
-  brave_news::p3a::MigrateObsoleteProfilePrefs(profile_prefs);
+  brave_news::p3a::NewsMetrics::MigrateObsoleteProfilePrefs(profile_prefs);
 
   // Added September 2023
 #if !BUILDFLAG(IS_IOS)

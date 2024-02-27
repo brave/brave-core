@@ -91,8 +91,11 @@ class ChannelsControllerTest : public testing::Test {
         publishers_controller_(profile_.GetPrefs(),
                                &direct_feed_controller_,
                                &unsupported_publisher_migrator_,
-                               &api_request_helper_),
-        channels_controller_(profile_.GetPrefs(), &publishers_controller_) {
+                               &api_request_helper_,
+                               nullptr),
+        channels_controller_(profile_.GetPrefs(),
+                             &publishers_controller_,
+                             nullptr) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);
@@ -278,7 +281,8 @@ TEST_F(ChannelsControllerTest, ChannelMigrationsAreApplied) {
   channels_controller_.SetChannelSubscribed("en_US", "Tech News", true);
   channels_controller_.SetChannelSubscribed("en_US", "Sport", true);
 
-  ChannelsController controller(profile_.GetPrefs(), &publishers_controller_);
+  ChannelsController controller(profile_.GetPrefs(), &publishers_controller_,
+                                nullptr);
   EXPECT_FALSE(controller.GetChannelSubscribed("en_US", "Tech News"));
   EXPECT_TRUE(controller.GetChannelSubscribed("en_US", "Technology"));
   EXPECT_FALSE(controller.GetChannelSubscribed("en_US", "Sport"));
