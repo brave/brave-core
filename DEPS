@@ -132,6 +132,13 @@ hooks = [
                '--source-dir', '.',
                '--filter', '^[0-9]\{{1,\}}\.[0-9]\{{1,\}}\.[0-9]\{{1,\}}$'],
   },
+  {
+    # Downloads & overwrites Chromium's swift-format dep on macOS only
+    'name': 'download_swift_format',
+    'pattern': '.',
+    'condition': 'host_os == "mac"',
+    'action': ['python3', 'build/apple/download_swift_format.py', '509.0.0', '78daf8c0fb407f0de79a6ee042f9d92e634f876dbb6da366735752d1c1e696f7']
+  },
 ]
 
 include_rules = [
