@@ -292,7 +292,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func setDefaultSolanaWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
-  func discoverAssetsOnAllSupportedChains() {
+  func discoverAssets(onAllSupportedChains bypassRateLimit: Bool) {
   }
 
   func nftDiscoveryEnabled(completion: @escaping (Bool) -> Void) {
