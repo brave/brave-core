@@ -35,16 +35,16 @@ export const AccountDetailsMenu = (props: Props) => {
     <StyledWrapper yPosition={42}>
       {options.map((option) => (
         <React.Fragment key={option.id}>
-          <PopupButton onClick={() => onClickMenuOption(option.id)}>
-            <ButtonIcon name={option.icon} />
-            <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
-          </PopupButton>
-          {option.id === 'deposit' && (
+          {option.id === 'privateKey' && (
             <>
               <VerticalDivider />
               <VerticalSpace space='8px' />
             </>
           )}
+          <PopupButton onClick={() => onClickMenuOption(option.id)}>
+            <ButtonIcon name={option.icon} />
+            <PopupButtonText>{getLocale(option.name)}</PopupButtonText>
+          </PopupButton>
         </React.Fragment>
       ))}
     </StyledWrapper>
