@@ -82,6 +82,7 @@ const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
 const char kTestCSPHackEquivPage[] = "/speedreader/article/csp_hack_equiv.html";
 const char kTestCSPHackCharsetPage[] =
     "/speedreader/article/csp_hack_charset.html";
+const char kTestCSPOrderPage[] = "/speedreader/article/csp_order.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -893,15 +894,23 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, ErrorPage) {
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
   ToggleSpeedreader();
 
-  for (const auto* page : {kTestCSPHackEquivPage, kTestCSPHackCharsetPage,
-                           kTestCSPHtmlPage, kTestCSPHttpPage}) {
+  for (const auto* page :
+       {kTestCSPOrderPage, kTestCSPHackEquivPage, kTestCSPHackCharsetPage,
+        kTestCSPHtmlPage, kTestCSPHttpPage}) {
     SCOPED_TRACE(page);
 
-    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
-    console_observer.SetPattern(
+    content::WebContentsConsoleObserver img_observer(ActiveWebContents());
+    img_observer.SetPattern(
         "Refused to load the image 'https://a.test/should_fail.png' because it "
         "violates the following Content Security Policy directive: \"img-src "
         "'none'\".*");
+
+    content::WebContentsConsoleObserver baseuri_observer(ActiveWebContents());
+    baseuri_observer.SetPattern(
+        "Refused to set the document's base URI to 'https://a.test/' because "
+        "it violates the following Content Security Policy directive: "
+        "\"base-uri 'none'\".*");
+
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
     constexpr const char kCheckBaseTag[] = R"js(
@@ -920,7 +929,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 
-    EXPECT_TRUE(console_observer.Wait());
+    EXPECT_TRUE(img_observer.Wait());
+    EXPECT_TRUE(baseuri_observer.Wait());
   }
 }
 

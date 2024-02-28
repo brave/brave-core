@@ -285,35 +285,34 @@ pub fn extract_dom(
         _ => top_candidate.to_string(),
     };
 
-    if !meta.preserved_meta.is_empty() {
-        let mut meta_equiv = String::default();
+    let mut content_head = String::default();
 
-        for node in meta.preserved_meta.iter() {
-            meta_equiv += &node.to_string();
-        }
-        content = meta_equiv + &content;
-    }
-
-    if let Some(head) = dom::document_head(&dom) {
-        let mut base_content = String::default();
-
-        let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
-        for base in base_nodes {
-            base_content += &base.to_string();
-        }
-        content = base_content + &content;
+    if !meta.title.is_empty() {
+        let title_blob = format!("<title>{}</title>", &meta.title);
+        content_head += &title_blob;
     }
 
     if let Some(ref charset) = meta.charset {
         // Since we strip out the entire head, we need to include charset if one
         // was provided. Otherwise the browser will use the default encoding,
         // and surprisingly it's not utf-8 ;)
-        content = charset.to_string() + &content;
+        content_head += &charset.to_string();
     }
-    if !meta.title.is_empty() {
-        let title_blob = format!("<title>{}</title>", &meta.title);
-        content = title_blob + &content;
+
+    if !meta.preserved_meta.is_empty() {
+        for node in meta.preserved_meta.iter() {
+            content_head += &node.to_string();
+        }
     }
+
+    if let Some(head) = dom::document_head(&dom) {
+        let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
+        for base in base_nodes {
+            content_head += &base.to_string();
+        }
+    }
+
+    content = content_head + &content;
 
     if theme.is_some() || font_family.is_some() || font_size.is_some() || column_width.is_some() {
         let mut header: String = String::from("<html");
