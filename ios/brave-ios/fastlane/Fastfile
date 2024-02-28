@@ -163,6 +163,7 @@ platform :ios do
     {
       project: "App/Client.xcodeproj",
       scheme: "Debug",
+      prelaunch_simulator: true,
       code_coverage: true,
       output_types: "junit",
       output_files: "junit.xml",
