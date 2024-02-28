@@ -176,7 +176,8 @@ std::string BuildLlamaPrompt(
     const bool& is_mixtral,
     const std::string user_message) {
   // Always use a generic system message
-  std::string system_message = l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
+  std::string system_message =
+      l10n_util::GetStringUTF8(IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERIC);
   std::string date_and_time_string =
       base::UTF16ToUTF8(TimeFormatFriendlyDateAndTime(base::Time::Now()));
   std::string today_system_message = base::ReplaceStringPlaceholders(
