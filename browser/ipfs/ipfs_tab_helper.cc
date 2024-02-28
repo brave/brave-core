@@ -458,6 +458,7 @@ void IPFSTabHelper::MaybeCheckDNSLinkRecord(
 
   if (!IsDNSLinkCheckEnabled() || !headers || ipfs_resolved_url_.is_valid() ||
       !CanResolveURL(dnslink_target)) {
+    UpdateLocationBar();
     return;
   }
   int response_code = headers->response_code();
