@@ -27,6 +27,10 @@ inline constexpr auto kYouTubeHosts =
 std::optional<std::string> ChooseCaptionTrackUrl(
     base::Value::List* caption_tracks);
 
+// Parse YT metadata json string and choose the most appropriate caption track
+// url.
+std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string& body);
+
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_RENDERER_YT_UTIL_H_

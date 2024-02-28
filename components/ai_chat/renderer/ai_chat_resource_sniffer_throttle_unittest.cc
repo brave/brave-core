@@ -23,7 +23,7 @@
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "services/network/test/test_url_loader_client.h"
 #include "services/network/test/test_url_loader_factory.h"
-#include "testing/gmock/include/gmock/gmock-matchers.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/blink/public/common/loader/url_loader_throttle.h"
 #include "third_party/googletest/src/googletest/include/gtest/gtest.h"
@@ -89,17 +89,16 @@ class MojoDataPipeSender {
 class MockAIChatResourceSnifferThrottleDelegate
     : public AIChatResourceSnifferThrottleDelegate {
  public:
-  MockAIChatResourceSnifferThrottleDelegate() = default;
-  ~MockAIChatResourceSnifferThrottleDelegate() override = default;
-
-  void OnInterceptedPageContentChanged(mojom::PageContentPtr content) override {
-    ASSERT_TRUE(content->content->is_content_url());
-    ASSERT_EQ(content->type, mojom::PageContentType::VideoTranscriptYouTube);
-    OnInterceptedPageContentChanged_Data(
-        content->content->get_content_url().spec());
-  }
-
   MOCK_METHOD(void, OnInterceptedPageContentChanged_Data, (std::string));
+
+  void OnInterceptedPageContentChanged(
+      std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
+          content) override {
+    ASSERT_EQ(content->type,
+              AIChatResourceSnifferThrottleDelegate::InterceptedContentType::
+                  kYouTubeMetadataString);
+    OnInterceptedPageContentChanged_Data(content->content);
+  }
 
   base::WeakPtrFactory<MockAIChatResourceSnifferThrottleDelegate> weak_factory_{
       this};
@@ -281,30 +280,19 @@ TEST_F(AIChatResourceSnifferThrottleTest, DoesNotThrottleNonHTTP) {
 }
 
 TEST_F(AIChatResourceSnifferThrottleTest, Body_NonJson) {
-  // PNG
-  InterceptBodyRequestFor("\x89PNG\x0D\x0A\x1A\x0A");
-  EXPECT_CALL(ai_chat_throttle_delegate_, OnInterceptedPageContentChanged_Data)
-      .Times(0);
-}
-
-TEST_F(AIChatResourceSnifferThrottleTest, Body_InvalidJson) {
-  InterceptBodyRequestFor("{");
-  EXPECT_CALL(ai_chat_throttle_delegate_, OnInterceptedPageContentChanged_Data)
-      .Times(0);
-}
-
-TEST_F(AIChatResourceSnifferThrottleTest, Body_ValidNonYTJson) {
-  InterceptBodyRequestFor(R"({"captions": []})");
-  EXPECT_CALL(ai_chat_throttle_delegate_, OnInterceptedPageContentChanged_Data)
-      .Times(0);
+  // AIChatResourceSnifferThrottle doesn't parse the json as an optimization
+  // since it might not get used until an AIChat conversation message is about
+  // to be sent, so any body content should be passed to the delegate, we don't
+  // need to test for valid JSON
+  std::string body = "\x89PNG\x0D\x0A\x1A\x0A";
+  EXPECT_CALL(ai_chat_throttle_delegate_,
+              OnInterceptedPageContentChanged_Data(body))
+      .Times(1);
+  InterceptBodyRequestFor(body);
 }
 
 TEST_F(AIChatResourceSnifferThrottleTest, Body_ValidYTJson) {
-  EXPECT_CALL(
-      ai_chat_throttle_delegate_,
-      OnInterceptedPageContentChanged_Data("https://www.example.com/caption1"))
-      .Times(1);
-  InterceptBodyRequestFor(R"({
+  std::string body = R"({
     "captions": {
       "playerCaptionsTracklistRenderer": {
         "captionTracks": [
@@ -314,37 +302,20 @@ TEST_F(AIChatResourceSnifferThrottleTest, Body_ValidYTJson) {
         ]
       }
     }
-  })");
-  mojom::PageContentPtr expected_content = mojom::PageContent::New();
-  expected_content->type = mojom::PageContentType::VideoTranscriptYouTube;
-  expected_content->content = mojom::PageContentData::NewContentUrl(GURL());
+  })";
+  EXPECT_CALL(ai_chat_throttle_delegate_,
+              OnInterceptedPageContentChanged_Data(body))
+      .Times(1);
+  InterceptBodyRequestFor(body);
 }
 
-TEST_F(AIChatResourceSnifferThrottleTest, Abort_NoBodyPipe) {
-  GURL url("https://www.youtube.com/youtubei/v1/player");
-  auto throttle = MaybeCreateThrottleForUrl(url);
-  auto delegate = std::make_unique<MockDelegate>();
-  throttle->set_delegate(delegate.get());
-
-  auto response_head = network::mojom::URLResponseHead::New();
-  bool defer = false;
-  throttle->WillProcessResponse(url, response_head.get(), &defer);
-  EXPECT_FALSE(defer);
-  EXPECT_TRUE(delegate->is_intercepted());
-
-  // Send the body
-  std::string body = "This should be long enough to complete sniffing.";
-  body.resize(1024, 'a');
-  delegate->LoadResponseBody(body);
-  task_environment_.RunUntilIdle();
-
-  // Release a pipe for the body on the receiver side.
-  delegate->destination_loader_client()->response_body_release();
-  task_environment_.RunUntilIdle();
-
-  // Calling OnComplete should not crash.
-  delegate->CompleteResponse();
-  task_environment_.RunUntilIdle();
+TEST_F(AIChatResourceSnifferThrottleTest, LongBody) {
+  std::string body = "This should be long enough...";
+  body.resize(2048, 'a');
+  EXPECT_CALL(ai_chat_throttle_delegate_,
+              OnInterceptedPageContentChanged_Data(body))
+      .Times(1);
+  InterceptBodyRequestFor(body);
 }
 
 }  // namespace ai_chat

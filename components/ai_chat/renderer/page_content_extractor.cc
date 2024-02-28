@@ -16,7 +16,6 @@
 #include "base/containers/span.h"
 #include "base/functional/bind.h"
 #include "base/memory/ptr_util.h"
-#include "base/supports_user_data.h"
 #include "base/values.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
@@ -34,6 +33,8 @@
 #include "url/gurl.h"
 #include "url/url_constants.h"
 #include "v8/include/v8-isolate.h"
+
+namespace ai_chat {
 
 namespace {
 
@@ -72,8 +73,6 @@ constexpr auto kVideoTrackHosts =
 
 }  // namespace
 
-namespace ai_chat {
-
 PageContentExtractor::PageContentExtractor(
     content::RenderFrame* render_frame,
     service_manager::BinderRegistry* registry,
@@ -87,6 +86,8 @@ PageContentExtractor::PageContentExtractor(
   if (!render_frame->IsMainFrame()) {
     return;
   }
+  LOG(ERROR) << "New render frame!";
+
   // Bind mojom API to allow browser to communicate with this class
   // Being a RenderFrameObserver, this object is scoped to the RenderFrame.
   // Unretained is safe here because `registry` is also scoped to the
@@ -108,6 +109,36 @@ base::WeakPtr<PageContentExtractor> PageContentExtractor::GetWeakPtr() {
 void PageContentExtractor::ExtractPageContent(
     mojom::PageContentExtractor::ExtractPageContentCallback callback) {
   VLOG(1) << "AI Chat renderer has been asked for page content.";
+  // When content has been pushed to this class from a throttle via
+  // OnInterceptedPageContentChanged, use that content instead of fetching it
+  // from the page.
+  if (intercepted_content_) {
+    auto intercepted_content = std::move(intercepted_content_);
+    intercepted_content_.reset();
+    VLOG(1) << "Using intercepted content.";
+    DCHECK_EQ(intercepted_content->type,
+              InterceptedContentType::kYouTubeMetadataString)
+        << "Unexpected intercepted content type";
+    // Parse the YT metadata and extract the most appropriate caption Url
+    auto maybe_caption_url =
+        ParseAndChooseCaptionTrackUrl(intercepted_content->content);
+    if (maybe_caption_url.has_value()) {
+      GURL caption_url =
+          render_frame()->GetWebFrame()->GetDocument().CompleteURL(
+              blink::WebString::FromASCII(maybe_caption_url.value()));
+      if (caption_url.is_valid()) {
+        mojom::PageContentPtr content_update = mojom::PageContent::New();
+        content_update->type = mojom::PageContentType::VideoTranscriptYouTube;
+        content_update->content =
+            mojom::PageContentData::NewContentUrl(caption_url);
+        std::move(callback).Run(std::move(content_update));
+        return;
+      }
+    }
+    std::move(callback).Run({});
+    return;
+  }
+
   blink::WebLocalFrame* main_frame = render_frame()->GetWebFrame();
   GURL origin =
       url::Origin(((const blink::WebFrame*)main_frame)->GetSecurityOrigin())
@@ -174,23 +205,26 @@ void PageContentExtractor::ExtractPageContent(
 }
 
 void PageContentExtractor::OnInterceptedPageContentChanged(
-    mojom::PageContentPtr content_update) {
-  if (content_update->type == mojom::PageContentType::VideoTranscriptYouTube) {
-    DCHECK(content_update->content->is_content_url());
-    DVLOG(4) << __func__ << " - received new content: "
-             << content_update->content->get_content_url().spec();
+    std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
+        content_update) {
+  DCHECK_EQ(content_update->type,
+            AIChatResourceSnifferThrottleDelegate::InterceptedContentType::
+                kYouTubeMetadataString)
+      << " - unexpected content type";
+  DCHECK(!content_update->content.empty());
 
-    // Let the browser process know about the new content
-    mojo::AssociatedRemote<mojom::PageContentExtractorHost> host;
-    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&host);
-    if (host.is_bound()) {
-      host->OnInterceptedPageContentChanged(std::move(content_update));
-    } else {
-      DVLOG(1) << __func__ << " - no host bound to forward content to.";
-    }
+  // Store the new content for later, when we're asked for it, so that we
+  // don't have to do any parsing or fetching when there's no active
+  // conversation.
+  intercepted_content_ = std::move(content_update);
+  // Let the host know that new content was received so that it may record a
+  // "page" change.
+  mojo::AssociatedRemote<mojom::PageContentExtractorHost> host;
+  render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&host);
+  if (host.is_bound()) {
+    host->OnInterceptedPageContentChanged();
   } else {
-    NOTREACHED() << __func__
-                 << " - unexpected content type: " << content_update->type;
+    DVLOG(1) << __func__ << " - no host bound to forward content event to.";
   }
 }
 

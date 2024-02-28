@@ -33,5 +33,8 @@ interface PageContentExtractor {
 // Allows the renderer to notify the browser process of meaningful changes to
 // the content.
 interface PageContentExtractorHost {
-  OnInterceptedPageContentChanged(PageContent page_content);
+  // We don't send page content here due to an optimization for the majority of
+  // renderers without active AIChat conversations. We wait until the host
+  // requests it via PageContentExtractor.ExtractPageContent.
+  OnInterceptedPageContentChanged();
 };

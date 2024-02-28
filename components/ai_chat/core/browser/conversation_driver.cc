@@ -442,14 +442,6 @@ void ConversationDriver::GeneratePageContent(GetPageContentCallback callback) {
   DCHECK(is_conversation_active_)
       << "UI shouldn't allow operations for an inactive conversation";
 
-  if (is_content_subresource_dependent_ && !article_text_.empty()) {
-    // If the content is pushed from renderer, then we possibly do not have
-    // a way to fetch it on-demand. So we provide the cached content instead.
-    std::move(callback).Run(article_text_, is_video_,
-                            content_invalidation_token_);
-    return;
-  }
-
   // Only perform a fetch once at a time, and then use the results from
   // an in-progress operation.
   if (is_page_text_fetch_in_progress_) {

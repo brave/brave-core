@@ -8,9 +8,8 @@
 #include <optional>
 #include <string>
 
-#include "base/containers/contains.h"
-#include "base/containers/cxx20_erase_vector.h"
-#include "base/containers/map_util.h"
+#include "base/json/json_reader.h"
+#include "base/logging.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
 
@@ -70,6 +69,32 @@ std::optional<std::string> ChooseCaptionTrackUrl(
     return std::nullopt;
   }
   return *caption_url_raw;
+}
+
+std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string& body) {
+  if (!body.size()) {
+    return std::nullopt;
+  }
+
+  auto result_value =
+      base::JSONReader::ReadAndReturnValueWithError(body, base::JSON_PARSE_RFC);
+
+  if (!result_value.has_value() || result_value->is_string()) {
+    VLOG(1) << __func__ << ": parsing error: " << result_value.ToString();
+    return std::nullopt;
+  } else if (!result_value->is_dict()) {
+    VLOG(1) << __func__ << ": parsing error: not a dict";
+    return std::nullopt;
+  }
+
+  auto* caption_tracks = result_value->GetDict().FindListByDottedPath(
+      "captions.playerCaptionsTracklistRenderer.captionTracks");
+  if (!caption_tracks) {
+    VLOG(1) << __func__ << ": no caption tracks found";
+    return std::nullopt;
+  }
+
+  return ChooseCaptionTrackUrl(caption_tracks);
 }
 
 }  // namespace ai_chat

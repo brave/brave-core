@@ -522,17 +522,4 @@ void FetchPageContent(content::WebContents* web_contents,
   fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 
-void FetchPageContent(content::WebContents* web_contents,
-                      mojom::PageContentPtr content_hint,
-                      FetchPageContentCallback callback) {
-  auto* loader = web_contents->GetBrowserContext()
-                     ->GetDefaultStoragePartition()
-                     ->GetURLLoaderFactoryForBrowserProcess()
-                     .get();
-  auto* fetcher = new PageContentFetcher(loader);
-  // Invalidation token is blank because having PageContent implies content is
-  // new.
-  fetcher->OnTabContentResult(std::move(callback), "", std::move(content_hint));
-}
-
 }  // namespace ai_chat

@@ -55,8 +55,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
   void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
 
   // mojom::PageContentExtractorHost
-  void OnInterceptedPageContentChanged(
-      mojom::PageContentPtr page_content) override;
+  void OnInterceptedPageContentChanged() override;
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;

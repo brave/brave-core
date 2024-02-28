@@ -130,4 +130,60 @@ TEST(YTCaptionTrackTest, FallbackToFirst) {
   EXPECT_EQ(result.value(), "http://example.com/caption_de.vtt");
 }
 
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_NonJson) {
+  std::string body = "\x89PNG\x0D\x0A\x1A\x0A";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_EmptyJson) {
+  std::string body = "[]";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_InvalidJson) {
+  std::string body = "{";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNonYTJson) {
+  std::string body = R"({
+        "captions": []
+    })";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_FALSE(result.has_value());
+}
+
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidYTJson) {
+  std::string body = R"({
+    "captions": {
+      "playerCaptionsTracklistRenderer": {
+        "captionTracks": [
+          {
+            "baseUrl": "https://www.example.com/caption1"
+          }
+        ]
+      }
+    }
+  })";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_TRUE(result.has_value());
+  EXPECT_EQ(result.value(), "https://www.example.com/caption1");
+}
+
+TEST(YTCaptionTrackTest, ParseAndGetTrackUrl_ValidNoStructure) {
+  // Not the correct structure
+  std::string body = R"([
+        {
+          "kind": "captions",
+          "languageCode": "de",
+          "baseUrl": "http://example.com/caption_de.vtt"
+        }
+    ])";
+  auto result = ParseAndChooseCaptionTrackUrl(body);
+  EXPECT_FALSE(result.has_value());
+}
+
 }  // namespace ai_chat

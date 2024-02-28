@@ -6,14 +6,22 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_RENDERER_AI_CHAT_RESOURCE_SNIFFER_THROTTLE_DELEGATE_H_
 #define BRAVE_COMPONENTS_AI_CHAT_RENDERER_AI_CHAT_RESOURCE_SNIFFER_THROTTLE_DELEGATE_H_
 
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
+#include <memory>
+#include <string>
 
 namespace ai_chat {
 
 class AIChatResourceSnifferThrottleDelegate {
  public:
+  enum class InterceptedContentType {
+    kYouTubeMetadataString,
+  };
+  struct InterceptedContent {
+    InterceptedContentType type;
+    std::string content;
+  };
   virtual void OnInterceptedPageContentChanged(
-      mojom::PageContentPtr content) = 0;
+      std::unique_ptr<InterceptedContent> content) = 0;
 
  protected:
   virtual ~AIChatResourceSnifferThrottleDelegate() = default;

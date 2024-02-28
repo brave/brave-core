@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_AI_CHAT_RENDERER_PAGE_CONTENT_EXTRACTOR_H_
 
 #include <cstdint>
+#include <memory>
 #include <optional>
 #include <string>
 
@@ -58,7 +59,8 @@ class PageContentExtractor
 
   // AIChatResourceSnifferThrottleDelegate
   void OnInterceptedPageContentChanged(
-      mojom::PageContentPtr content_update) override;
+      std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
+          content_update) override;
 
   void BindReceiver(
       mojo::PendingReceiver<mojom::PageContentExtractor> receiver);
@@ -67,6 +69,9 @@ class PageContentExtractor
 
   int32_t global_world_id_;
   int32_t isolated_world_id_;
+
+  std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
+      intercepted_content_ = nullptr;
 
   base::WeakPtrFactory<PageContentExtractor> weak_ptr_factory_{this};
 };

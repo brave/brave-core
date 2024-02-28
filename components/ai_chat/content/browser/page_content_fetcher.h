@@ -31,9 +31,6 @@ void FetchPageContent(content::WebContents* web_contents,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory = nullptr);
-void FetchPageContent(content::WebContents* web_contents,
-                      mojom::PageContentPtr content_hint,
-                      FetchPageContentCallback callback);
 
 }  // namespace ai_chat
 

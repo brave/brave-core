@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_url_loader.h"
 
+#include <memory>
 #include <string>
 #include <utility>
 
@@ -12,8 +13,6 @@
 #include "base/logging.h"
 #include "base/types/expected.h"
 #include "base/values.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
-#include "brave/components/ai_chat/renderer/yt_util.h"
 #include "brave/components/body_sniffer/body_sniffer_url_loader.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
@@ -22,32 +21,6 @@ namespace ai_chat {
 namespace {
 
 constexpr uint32_t kReadBufferSize = 37000;  // average subresource size
-
-std::optional<std::string> GetCaptionTrackUrl(std::string& body) {
-  if (!body.size()) {
-    return std::nullopt;
-  }
-
-  auto result_value =
-      base::JSONReader::ReadAndReturnValueWithError(body, base::JSON_PARSE_RFC);
-
-  if (!result_value.has_value() || result_value->is_string()) {
-    VLOG(1) << __func__ << ": parsing error: " << result_value.ToString();
-    return std::nullopt;
-  } else if (!result_value->is_dict()) {
-    VLOG(1) << __func__ << ": parsing error: not a dict";
-    return std::nullopt;
-  }
-
-  auto* caption_tracks = result_value->GetDict().FindListByDottedPath(
-      "captions.playerCaptionsTracklistRenderer.captionTracks");
-  if (!caption_tracks) {
-    VLOG(1) << __func__ << ": no caption tracks found";
-    return std::nullopt;
-  }
-
-  return ChooseCaptionTrackUrl(caption_tracks);
-}
 
 }  // namespace
 
@@ -115,20 +88,14 @@ void AIChatResourceSnifferURLLoader::OnBodyWritable(MojoResult r) {
 void AIChatResourceSnifferURLLoader::CompleteLoading(std::string body) {
   DVLOG(4) << __func__ << ": got body length: " << body.size()
            << " for url: " << response_url_.spec();
-
-  auto maybe_caption_url = GetCaptionTrackUrl(body);
-
-  if (maybe_caption_url.has_value()) {
-    GURL caption_url = response_url_.Resolve(maybe_caption_url.value());
-    if (caption_url.is_valid()) {
-      mojom::PageContentPtr content_update = mojom::PageContent::New();
-      content_update->type = mojom::PageContentType::VideoTranscriptYouTube;
-      content_update->content =
-          mojom::PageContentData::NewContentUrl(GURL(caption_url));
-      delegate_->OnInterceptedPageContentChanged(std::move(content_update));
-    }
+  if (!body.empty()) {
+    auto content = std::make_unique<
+        AIChatResourceSnifferThrottleDelegate::InterceptedContent>();
+    content->type = AIChatResourceSnifferThrottleDelegate::
+        InterceptedContentType::kYouTubeMetadataString;
+    content->content = body;
+    delegate_->OnInterceptedPageContentChanged(std::move(content));
   }
-
   body_sniffer::BodySnifferURLLoader::CompleteLoading(std::move(body));
 }
 
