@@ -14,6 +14,7 @@
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/side_panel/side_panel_entry_id.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
+#include "components/google/core/common/google_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/template_url_service.h"
 #include "components/user_prefs/user_prefs.h"
@@ -99,6 +100,12 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
 
   // If side panel is already opened, don't open leo panel now.
   if (side_panel_ui->GetCurrentEntryId()) {
+    return;
+  }
+
+  // TODO(simonhong): Curious why below GetTemplateURLs() doesn't
+  // include google search.
+  if (google_util::IsGoogleSearchUrl(url)) {
     return;
   }
 
