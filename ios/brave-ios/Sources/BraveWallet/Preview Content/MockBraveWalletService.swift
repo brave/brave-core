@@ -308,7 +308,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
 
   func setPrivateWindowsEnabled(_ enabled: Bool) {
   }
-  
+
   func chainId(forActiveOrigin coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
     completion(BraveWallet.MainnetChainId)
   }
