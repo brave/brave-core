@@ -395,7 +395,7 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_privacy_reports);
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
-        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_addresses);
+        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);

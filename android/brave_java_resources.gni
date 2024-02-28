@@ -414,6 +414,7 @@ brave_java_resources = [
   "java/res/drawable/ic_arrow_forward.xml",
   "java/res/drawable/ic_arrow_left_right_directions.xml",
   "java/res/drawable/ic_arrow_right.xml",
+  "java/res/drawable/ic_autofill.xml",
   "java/res/drawable/ic_back.xml",
   "java/res/drawable/ic_bar_chart_20.xml",
   "java/res/drawable/ic_baseline_add_24.xml",

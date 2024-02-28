@@ -105,7 +105,7 @@
     <org.chromium.components.browser_ui.settings.ChromeSwitchPreference
         android:key="autofill_private_window"
         android:order="21"
-        android:icon="@drawable/ic_closing_all_closes_brave"
+        android:icon="@drawable/ic_autofill"
         android:title="@string/prefs_autofill_private_window_title"
         android:summary="@string/prefs_autofill_private_window_summary"/>
     <PreferenceCategory
