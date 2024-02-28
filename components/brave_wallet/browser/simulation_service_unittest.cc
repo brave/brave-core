@@ -15,6 +15,7 @@
 #include "base/test/bind.h"
 #include "base/test/gtest_util.h"
 #include "base/test/mock_callback.h"
+#include "base/test/scoped_feature_list.h"
 #include "base/test/task_environment.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
@@ -28,6 +29,7 @@
 #include "brave/components/brave_wallet/browser/solana_tx_meta.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/test_utils.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
@@ -190,6 +192,8 @@ class SimulationServiceUnitTest : public testing::Test {
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SimulationService> simulation_service_;
+  base::test::ScopedFeatureList feature_list_{
+      features::kBraveWalletTransactionSimulationsFeature};
 
  private:
   base::test::TaskEnvironment task_environment_;

@@ -248,6 +248,15 @@
           kOsDesktop | kOsAndroid,                                            \
           FEATURE_VALUE_TYPE(                                                 \
               brave_wallet::features::kBraveWalletAnkrBalancesFeature),       \
+      },                                                                      \
+      {                                                                       \
+          "brave-wallet-enable-transaction-simulations",                      \
+          "Enable transaction simulations",                                   \
+          "Enable usage of Blowfish API for running transaction simulations " \
+          "in Brave Wallet",                                                  \
+          kOsDesktop | kOsAndroid,                                            \
+          FEATURE_VALUE_TYPE(brave_wallet::features::                         \
+                                 kBraveWalletTransactionSimulationsFeature),  \
       })
 
 #define BRAVE_NEWS_FEATURE_ENTRIES                                             \
