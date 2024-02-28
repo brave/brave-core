@@ -29,6 +29,12 @@ using ::testing::_;
 
 namespace ai_chat {
 
+class MockCallback {
+ public:
+  MOCK_METHOD(void, OnDataReceived, (std::string));
+  MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
+};
+
 class EngineConsumerClaudeUnitTest : public testing::Test {
  public:
   EngineConsumerClaudeUnitTest() = default;
@@ -41,6 +47,11 @@ class EngineConsumerClaudeUnitTest : public testing::Test {
         std::make_unique<EngineConsumerClaudeRemote>(*model, nullptr, nullptr);
     engine_->SetAPIForTesting(
         std::make_unique<MockRemoteCompletionClient>(model->name));
+  }
+
+  MockRemoteCompletionClient* GetMockRemoteCompletionClient() {
+    return static_cast<MockRemoteCompletionClient*>(
+        engine_->GetAPIForTesting());
   }
 
   void TearDown() override {}
@@ -58,8 +69,7 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
       {mojom::CharacterType::ASSISTANT, mojom::ActionType::RESPONSE,
        mojom::ConversationTurnVisibility::VISIBLE, "The Mandalorian.",
        std::nullopt}};
-  auto* mock_remote_completion_client =
-      static_cast<MockRemoteCompletionClient*>(engine_->GetAPIForTesting());
+  auto* mock_remote_completion_client = GetMockRemoteCompletionClient();
   std::string prompt_before_time_and_date =
       "\n\nHuman: Here is the text of a web page in <page> tags:\n<page>\nThis "
       "is my page.\n</page>\n\nA user is reading this web page.\n\nThe current "
@@ -170,6 +180,44 @@ TEST_F(EngineConsumerClaudeUnitTest, TestGenerateAssistantResponse) {
           }));
   run_loop3.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+}
+
+TEST_F(EngineConsumerClaudeUnitTest, TestGenerateRewriteSuggestion) {
+  base::RunLoop run_loop;
+  testing::StrictMock<MockCallback> mock_callback;
+  engine_->SetMaxPageContentLengthForTesting(5);
+  auto* mock_client = GetMockRemoteCompletionClient();
+  EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
+      .WillOnce([&](const std::string& prompt,
+                    const std::vector<std::string>& history,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    EngineConsumer::GenerationDataCallback data_callback) {
+        // The excerpt should become "Hello" instead of "Hello World" due to
+        // the truncation and sanitization.
+        EXPECT_EQ(
+            prompt,
+            "\n\nHuman: This is an excerpt user selected to be "
+            "rewritten:\n<excerpt>\nHello\n</excerpt>\n\nRewrite the excerpt "
+            "in a funny tone.\nPut your rewritten version of the excerpt in "
+            "<response></response> tags.\n\nAssistant: <response>");
+        data_callback.Run("Re");
+        data_callback.Run("Reply");
+        std::move(callback).Run("");
+        run_loop.Quit();
+      });
+
+  EXPECT_CALL(mock_callback, OnDataReceived("Re"));
+  EXPECT_CALL(mock_callback, OnDataReceived("Reply"));
+  EXPECT_CALL(mock_callback, OnCompleted(EngineConsumer::GenerationResult("")));
+
+  engine_->GenerateRewriteSuggestion(
+      "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",
+      base::BindRepeating(&MockCallback::OnDataReceived,
+                          base::Unretained(&mock_callback)),
+      base::BindOnce(&MockCallback::OnCompleted,
+                     base::Unretained(&mock_callback)));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_client);
 }
 
 }  // namespace ai_chat

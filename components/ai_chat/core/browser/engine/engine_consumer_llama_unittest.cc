@@ -29,6 +29,12 @@ using ::testing::_;
 
 namespace ai_chat {
 
+class MockCallback {
+ public:
+  MOCK_METHOD(void, OnDataReceived, (std::string));
+  MOCK_METHOD(void, OnCompleted, (EngineConsumer::GenerationResult));
+};
+
 class EngineConsumerLlamaUnitTest : public testing::Test {
  public:
   EngineConsumerLlamaUnitTest() = default;
@@ -41,6 +47,11 @@ class EngineConsumerLlamaUnitTest : public testing::Test {
         std::make_unique<EngineConsumerLlamaRemote>(*model, nullptr, nullptr);
     engine_->SetAPIForTesting(
         std::make_unique<MockRemoteCompletionClient>(model->name));
+  }
+
+  MockRemoteCompletionClient* GetMockRemoteCompletionClient() {
+    return static_cast<MockRemoteCompletionClient*>(
+        engine_->GetAPIForTesting());
   }
 
   void TearDown() override {}
@@ -169,6 +180,52 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
           }));
   run_loop3.Run();
   testing::Mock::VerifyAndClearExpectations(mock_remote_completion_client);
+}
+
+TEST_F(EngineConsumerLlamaUnitTest, TestGenerateRewriteSuggestion) {
+  base::RunLoop run_loop;
+  testing::StrictMock<MockCallback> mock_callback;
+  engine_->SetMaxPageContentLengthForTesting(5);
+  auto* mock_client = GetMockRemoteCompletionClient();
+  EXPECT_CALL(*mock_client, QueryPrompt(_, _, _, _))
+      .WillOnce([&](const std::string& prompt,
+                    const std::vector<std::string>& history,
+                    EngineConsumer::GenerationCompletedCallback callback,
+                    EngineConsumer::GenerationDataCallback data_callback) {
+        // The excerpt should become "Hello" instead of "Hello World" due to
+        // the truncation and sanitization.
+        EXPECT_EQ(
+            prompt,
+            "<s>[INST] Your name is Leo, a helpful, respectful and honest AI "
+            "assistant created by the company Brave. You will be replying to a "
+            "user of the Brave browser. Always respond in a neutral tone. Be "
+            "polite and courteous. Answer concisely in no more than 50-80 "
+            "words. Don't append word counts at the end of your replies.\nYour "
+            "goal is to help user rewrite the excerpt and only include the "
+            "rewritten texts so user can copy and paste your response without "
+            "any modification.\n\nUser: This is an excerpt user selected to be "
+            "rewritten:\n<excerpt>\nHello\n</excerpt>\n\nRewrite the excerpt "
+            "in "
+            "a funny tone. [/INST] Sure, here is the rewritten version of the "
+            "excerpt: <response>");
+        data_callback.Run("Re");
+        data_callback.Run("Reply");
+        std::move(callback).Run("");
+        run_loop.Quit();
+      });
+
+  EXPECT_CALL(mock_callback, OnDataReceived("Re"));
+  EXPECT_CALL(mock_callback, OnDataReceived("Reply"));
+  EXPECT_CALL(mock_callback, OnCompleted(EngineConsumer::GenerationResult("")));
+
+  engine_->GenerateRewriteSuggestion(
+      "<excerpt>Hello World</excerpt>", "Rewrite the excerpt in a funny tone.",
+      base::BindRepeating(&MockCallback::OnDataReceived,
+                          base::Unretained(&mock_callback)),
+      base::BindOnce(&MockCallback::OnCompleted,
+                     base::Unretained(&mock_callback)));
+  run_loop.Run();
+  testing::Mock::VerifyAndClearExpectations(mock_client);
 }
 
 }  // namespace ai_chat

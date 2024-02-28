@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/core/browser/utils.h"
 
+#include "base/time/time.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -25,6 +26,28 @@ bool IsDisabledByPolicy(PrefService* prefs) {
 bool IsAIChatEnabled(PrefService* prefs) {
   DCHECK(prefs);
   return features::IsAIChatEnabled() && !IsDisabledByPolicy(prefs);
+}
+
+bool HasUserOptedIn(PrefService* prefs) {
+  if (!prefs) {
+    return false;
+  }
+
+  base::Time last_accepted_disclaimer =
+      prefs->GetTime(prefs::kLastAcceptedDisclaimer);
+  return !last_accepted_disclaimer.is_null();
+}
+
+void SetUserOptedIn(PrefService* prefs, bool opted_in) {
+  if (!prefs) {
+    return;
+  }
+
+  if (opted_in) {
+    prefs->SetTime(prefs::kLastAcceptedDisclaimer, base::Time::Now());
+  } else {
+    prefs->ClearPref(prefs::kLastAcceptedDisclaimer);
+  }
 }
 
 }  // namespace ai_chat

@@ -168,6 +168,27 @@ void EngineConsumerClaudeRemote::ClearAllQueries() {
   api_->ClearAllQueries();
 }
 
+void EngineConsumerClaudeRemote::GenerateRewriteSuggestion(
+    std::string text,
+    const std::string& question,
+    GenerationDataCallback received_callback,
+    GenerationCompletedCallback completed_callback) {
+  SanitizeInput(text);
+  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+
+  std::string prompt = base::StrCat(
+      {kHumanPromptSequence,
+       base::ReplaceStringPlaceholders(
+           l10n_util::GetStringUTF8(
+               IDS_AI_CHAT_CLAUDE_GENERATE_REWRITE_SUGGESTION_PROMPT),
+           {truncated_text, question}, nullptr),
+       kAIPromptSequence, "<response>"});
+  CheckPrompt(prompt);
+
+  api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
+                    std::move(received_callback));
+}
+
 void EngineConsumerClaudeRemote::GenerateQuestionSuggestions(
     const bool& is_video,
     const std::string& page_content,

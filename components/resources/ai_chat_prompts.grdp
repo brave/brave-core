@@ -65,6 +65,16 @@ Here is the conversational history (between the user and you) prior to the reque
 <message name="IDS_AI_CHAT_CLAUDE_QUESTION_PROMPT_SEGMENT" translateable="false">
 Propose up to 3 very short questions that a reader may ask about the content. Consider intriguing or unusual elements of the content, or structurally important. Separate each suggested question with the character "|". End the question list with a &lt;/response&gt; tag.</message>
 
+<message name="IDS_AI_CHAT_CLAUDE_GENERATE_REWRITE_SUGGESTION_PROMPT" translateable="false">
+This is an excerpt user selected to be rewritten:
+&lt;excerpt&gt;
+<ph name="EXCERPT">$1</ph>
+&lt;/excerpt&gt;
+
+<ph name="USER_REQUEST">$2</ph>
+Put your rewritten version of the excerpt in &lt;response&gt;&lt;/response&gt; tags.
+</message>
+
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE" translateable="false">Provide a concise list of up to 6 bullets on the most important points of the page.</message>
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT" translateable="false">Generate a summary of the excerpt.</message>
 <message name="IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO" translateable="false">Provide a concise list of up to 6 bullets of the most important points of the video.</message>
@@ -149,6 +159,24 @@ Your goal is to answer the user's requests exactly in concise manner.
 
 <message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED" translateable="false">
 Sure, here are three intriguing or unusual questions that a reader may ask about the page: &lt;ul&gt; &lt;li&gt;
+</message>
+
+<message name="IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT" translateable="false">
+This is an excerpt user selected to be rewritten:
+&lt;excerpt&gt;
+<ph name="EXCERPT">$1</ph>
+&lt;/excerpt&gt;
+
+<ph name="USER_REQUEST">$2</ph>
+</message>
+
+<message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_REWRITE_SUGGESTION" translateable="false">
+Your name is Leo, a helpful, respectful and honest AI assistant created by the company Brave. You will be replying to a user of the Brave browser. Always respond in a neutral tone. Be polite and courteous. Answer concisely in no more than 50-80 words. Don't append word counts at the end of your replies.
+Your goal is to help user rewrite the excerpt and only include the rewritten texts so user can copy and paste your response without any modification.
+</message>
+
+<message name="IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_REWRITE_SUGGESTION_RESPONSE_SEED" translateable="false">
+Sure, here is the rewritten version of the excerpt: &lt;response&gt;
 </message>
 
 </grit-part>
