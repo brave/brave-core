@@ -131,9 +131,7 @@ class PageContentFetcher {
 
   void StartGithub(
       GURL patch_url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       FetchPageContentCallback callback) {
-    url_loader_factory_ = url_loader_factory;
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = patch_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
@@ -501,16 +499,16 @@ void FetchPageContent(content::WebContents* web_contents,
     }
   }
 #endif
-  auto* fetcher = new PageContentFetcher();
   auto* loader = url_loader_factory_for_test.get()
                      ? url_loader_factory_for_test.get()
                      : web_contents->GetBrowserContext()
                            ->GetDefaultStoragePartition()
                            ->GetURLLoaderFactoryForBrowserProcess()
                            .get();
+  auto* fetcher = new PageContentFetcher(loader);
   auto patch_url = GetGithubPatchURLForPRURL(url);
   if (patch_url) {
-    fetcher->StartGithub(patch_url.value(), loader, std::move(callback));
+    fetcher->StartGithub(patch_url.value(), std::move(callback));
     return;
   }
 
@@ -518,7 +516,6 @@ void FetchPageContent(content::WebContents* web_contents,
   // GetRemoteInterfaces() cannot be null if the render frame is created.
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  auto* fetcher = new PageContentFetcher(loader);
   fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 

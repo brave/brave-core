@@ -10,7 +10,6 @@
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
-#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 
 namespace content {
 class WebContents;
