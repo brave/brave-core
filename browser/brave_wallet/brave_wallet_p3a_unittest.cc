@@ -186,7 +186,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
           } else if (*method == "Filecoin.MpoolPush") {
             url_loader_factory_.AddResponse(
                 request.url.spec(),
-                R"({ "id": 1, "jsonrpc": "2.0", "result": { "/": 
+                R"({ "id": 1, "jsonrpc": "2.0", "result": { "/":
                 "bafy2bzacea3wsdh6y3a36tb3skempjoxqpuyompjbmfeyf34fi3uy6uue42v4" }
                 })");
           }
