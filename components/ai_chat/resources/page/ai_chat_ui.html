@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" dir="$i18n{textdirection}">
   <head>
     <meta charset="UTF-8">
     <title>$i18n{siteTitle}</title>
@@ -12,6 +12,20 @@
     <script src="chrome-untrusted://resources/js/load_time_data_deprecated.js"></script>
     <script src="/strings.js"></script>
     <link rel="stylesheet" href="./styles.css">
+    <style>
+      @media (prefers-color-scheme: dark) {
+        body {
+          background-color: rgb(13, 18, 20); /* --leo-color-container-background optimization */
+        }
+      }
+      #mountPoint {
+        opacity: 0;
+        transition: opacity .18s ease-out;
+      }
+      #mountPoint.loaded {
+        opacity: 1;
+      }
+    </style>
   </head>
   <body>
     <script type="module" src="chat_ui.bundle.js"></script>
