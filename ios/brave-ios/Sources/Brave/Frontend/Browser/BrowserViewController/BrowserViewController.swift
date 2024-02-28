@@ -2071,8 +2071,10 @@ public class BrowserViewController: UIViewController {
       tab.secureContentState = .unknown
       logSecureContentState(tab: tab, path: path)
 
-      guard let serverTrust = tab.webView?.serverTrust else {
-        if let url = tab.webView?.url ?? tab.url {
+      guard let url = webView.url,
+        let serverTrust = webView.serverTrust
+      else {
+        if let url = webView.url {
           if InternalURL.isValid(url: url),
             let internalUrl = InternalURL(url),
             internalUrl.isAboutURL || internalUrl.isAboutHomeURL
@@ -2166,8 +2168,8 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-      guard let scheme = tab.webView?.url?.scheme,
-        let host = tab.webView?.url?.host
+      guard let scheme = url.scheme,
+        let host = url.host
       else {
         tab.secureContentState = .unknown
         logSecureContentState(tab: tab, path: path, details: "No webview URL host scheme)")
@@ -2177,7 +2179,7 @@ public class BrowserViewController: UIViewController {
       }
 
       let port: Int
-      if let urlPort = tab.webView?.url?.port {
+      if let urlPort = url.port {
         port = urlPort
       } else if scheme == "https" {
         port = 443
@@ -2315,15 +2317,8 @@ public class BrowserViewController: UIViewController {
     browser.tabManager.addTabsForURLs([url], zombie: false, isPrivate: isPrivate)
   }
 
-  public func switchToTabForURLOrOpen(
-    _ url: URL,
-    isPrivate: Bool = false,
-    isPrivileged: Bool,
-    isExternal: Bool = false
-  ) {
-    if !isExternal {
-      popToBVC()
-    }
+  public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool) {
+    popToBVC(isAnimated: false)
 
     if let tab = tabManager.getTabForURL(url, isPrivate: isPrivate) {
       tabManager.selectTab(tab)
@@ -2461,11 +2456,11 @@ public class BrowserViewController: UIViewController {
     present(settingsNavigationController, animated: true)
   }
 
-  func popToBVC(completion: (() -> Void)? = nil) {
+  func popToBVC(isAnimated: Bool = true, completion: (() -> Void)? = nil) {
     guard let currentViewController = navigationController?.topViewController else {
       return
     }
-    currentViewController.dismiss(animated: true, completion: completion)
+    currentViewController.dismiss(animated: isAnimated, completion: completion)
 
     if currentViewController != self {
       _ = self.navigationController?.popViewController(animated: true)
