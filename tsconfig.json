@@ -8,6 +8,7 @@
     "target": "es2019",
     "allowJs": true,
     // convert jsx to react components
+    "esModuleInterop": true,
     "jsx": "react",
     "lib": [
       "es6",
