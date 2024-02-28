@@ -7,10 +7,12 @@
 
 #include <optional>
 
+#include "base/command_line.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/sidebar/constants.h"
 #include "brave/components/sidebar/features.h"
@@ -233,7 +235,9 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
 
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel) {
-  if (channel != version_info::Channel::STABLE) {
+  if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDontShowAlwaysSidebarOnNonStable) &&
+      channel != version_info::Channel::STABLE) {
     return ShowSidebarOption::kShowAlways;
   }
 

@@ -30,6 +30,7 @@ source_set("sidebar") {
   deps = [
     "//base",
     "//brave/browser/profiles:util",
+    "//brave/components/constants",
     "//brave/components/sidebar",
     "//chrome/browser/profiles",
     "//chrome/common:channel_info",

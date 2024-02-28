@@ -52,6 +52,11 @@ inline constexpr char kTor[] = "tor";
 // Override update feed url. Only valid on macOS.
 inline constexpr char kUpdateFeedURL[] = "update-feed-url";
 
+// Don't set kShowAlways for non-stable channel.
+// It's useful to test SidebarShowAlwaysOnStable w/o griffin.
+inline constexpr char kDontShowAlwaysSidebarOnNonStable[] =
+    "dont-show-always-on-sidebar-non-stable";
+
 }  // namespace switches
 
 #endif  // BRAVE_COMPONENTS_CONSTANTS_BRAVE_SWITCHES_H_
