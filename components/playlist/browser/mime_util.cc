@@ -26,8 +26,6 @@ namespace {
 // * Mimetype to extension
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 //
-// Note that methods in "net/base/mime_util.h" have different result.
-//
 constexpr std::pair<std::string_view, base::FilePath::StringPieceType>
     kMimeToExtensionData[] = {
         /*m3u8*/
@@ -116,13 +114,13 @@ std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
 }
 
 std::optional<std::string> GetMimeTypeForFileExtension(
-    base::FilePath::StringPieceType file_extention) {
+    base::FilePath::StringPieceType file_extension) {
   static const base::NoDestructor<
       base::flat_map<base::FilePath::StringPieceType, std::string_view>>
       kExtensionToMimeMap(MakeExtensionToMimeMap(kMimeToExtensionData));
 
-  if (kExtensionToMimeMap->contains(file_extention)) {
-    return std::string(kExtensionToMimeMap->at(file_extention));
+  if (kExtensionToMimeMap->contains(file_extension)) {
+    return std::string(kExtensionToMimeMap->at(file_extension));
   }
 
   return std::nullopt;

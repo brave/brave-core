@@ -11,13 +11,16 @@
 
 #include "base/files/file_path.h"
 
+// Utilities for Mime <-> File extension conversion.
+// These have more broader coverage than "net/base/mime_util.h" has as for the
+// media types.
 namespace playlist::mime_util {
 
 std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
     std::string_view mime_type);
 
 std::optional<std::string> GetMimeTypeForFileExtension(
-    base::FilePath::StringPieceType file_extention);
+    base::FilePath::StringPieceType file_extension);
 
 }  // namespace playlist::mime_util
 

@@ -111,8 +111,7 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   } else if (type_string == "favicon") {
     type = kFavicon;
   } else {
-    NOTREACHED() << "type is not in {thumbnail,media,favicon}/ : "
-                 << type_string;
+    NOTREACHED() << "type is not in {thumbnail,media,favicon}: " << type_string;
   }
 }
 
