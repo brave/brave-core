@@ -8,7 +8,6 @@ import BraveCore
 #if DEBUG
 
 class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
-
   var _reportProvider:
     (
       (
@@ -16,8 +15,8 @@ class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
         _ allowProviderOverwrite: Bool
       ) -> Void
     )?
-  func report(
-    _ providerType: BraveWallet.JSProviderType,
+  func reportJsProvider(
+    providerType: BraveWallet.JSProviderType,
     coinType: BraveWallet.CoinType,
     allowProviderOverwrite: Bool
   ) {
@@ -25,12 +24,12 @@ class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
   }
 
   var _reportOnboarding: ((_ onboardingAction: BraveWallet.OnboardingAction) -> Void)?
-  func report(_ onboardingAction: BraveWallet.OnboardingAction) {
+  func reportOnboardingAction(_ onboardingAction: BraveWallet.OnboardingAction) {
     _reportOnboarding?(onboardingAction)
   }
 
   var _reportTransactionSent: ((_ coin: BraveWallet.CoinType, _ newSend: Bool) -> Void)?
-  func reportTransactionSent(_ coin: BraveWallet.CoinType, newSend: Bool) {
+  func reportTransactionSent(coin: BraveWallet.CoinType, newSend: Bool) {
     _reportTransactionSent?(coin, newSend)
   }
 
@@ -40,7 +39,7 @@ class TestBraveWalletP3A: BraveWalletBraveWalletP3A {
   }
 
   var _recordNftGalleryView: ((_ nftCount: Int32) -> Void)?
-  func recordNftGalleryView(_ nftCount: Int32) {
+  func recordNftGalleryView(nftCount: Int32) {
     _recordNftGalleryView?(nftCount)
   }
 }

@@ -110,7 +110,7 @@ class Tab: NSObject {
   private var _walletSolProvider: BraveWalletSolanaProvider?
   private var _walletKeyringService: BraveWalletKeyringService? {
     didSet {
-      _walletKeyringService?.add(self)
+      _walletKeyringService?.addObserver(self)
     }
   }
 

@@ -191,7 +191,8 @@ class SwapStoreTests: XCTestCase {
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
 
-    rpcService.setNetwork(BraveWallet.PolygonMainnetChainId, coin: .eth, origin: nil) { success in
+    rpcService.setNetwork(chainId: BraveWallet.PolygonMainnetChainId, coin: .eth, origin: nil) {
+      success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {

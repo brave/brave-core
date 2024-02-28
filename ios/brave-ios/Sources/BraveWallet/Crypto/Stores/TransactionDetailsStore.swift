@@ -103,7 +103,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
-      let networksForCoin = await rpcService.allNetworks(coin)
+      let networksForCoin = await rpcService.allNetworks(coin: coin)
       guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
@@ -114,7 +114,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       }
       self.network = network
       var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
-        network.chainId,
+        chainId: network.chainId,
         coin: network.coin
       )
       let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(
@@ -145,7 +145,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       var solEstimatedTxFee: UInt64?
       if transaction.coin == .sol {
         (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
-          network.chainId,
+          chainId: network.chainId,
           txMetaId: transaction.id
         )
       }
