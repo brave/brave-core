@@ -12,14 +12,10 @@ import { BraveWallet } from '../../../../../../constants/types'
 
 // hooks
 import {
-  useAssetManagement //
-} from '../../../../../../common/hooks/assets-management'
-import {
   useGetIpfsGatewayTranslatedNftUrlQuery,
-  useRestoreHiddenTokenMutation,
   useRemoveUserTokenMutation,
   useUpdateNftSpamStatusMutation,
-  useHideOrDeleteTokenMutation
+  useUpdateUserAssetVisibleMutation
 } from '../../../../../../common/slices/api.slice'
 
 // actions
@@ -83,13 +79,11 @@ export const NFTGridViewItem = (props: Props) => {
 
   // hooks
   const dispatch = useDispatch()
-  const { addNftToDeletedNftsList } = useAssetManagement()
 
   // mutations
   const [updateNftSpamStatus] = useUpdateNftSpamStatusMutation()
   const [removeUserToken] = useRemoveUserTokenMutation()
-  const [hideOrDeleteToken] = useHideOrDeleteTokenMutation()
-  const [restoreHiddenToken] = useRestoreHiddenTokenMutation()
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   // methods
   const onToggleShowMore = React.useCallback(
@@ -111,26 +105,23 @@ export const NFTGridViewItem = (props: Props) => {
 
   const onHideNft = React.useCallback(async () => {
     setShowMore(false)
-    await hideOrDeleteToken({
-      mode: 'hide',
-      tokenId: getAssetIdKey(token)
-    })
-    dispatch(
-      WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
-    )
-  }, [token, hideOrDeleteToken])
+    await updateUserAssetVisible({
+      token,
+      isVisible: false
+    }).unwrap()
+  }, [token, updateUserAssetVisible])
 
   const onUnHideNft = React.useCallback(async () => {
     setShowMore(false)
-    await restoreHiddenToken(getAssetIdKey(token))
+    await updateUserAssetVisible({
+      token,
+      isVisible: true
+    }).unwrap()
     if (isTokenSpam) {
       // remove from spam
       await updateNftSpamStatus({ token, isSpam: false })
     }
-    dispatch(
-      WalletActions.refreshNetworksAndTokens({ skipBalancesRefresh: true })
-    )
-  }, [token, restoreHiddenToken, isTokenSpam])
+  }, [token, updateUserAssetVisible, isTokenSpam])
 
   const onUnSpam = async () => {
     setShowMore(false)
@@ -150,9 +141,7 @@ export const NFTGridViewItem = (props: Props) => {
 
   const onConfirmDelete = async () => {
     setShowRemoveNftModal(false)
-
-    await removeUserToken(token)
-    addNftToDeletedNftsList(token)
+    await removeUserToken(getAssetIdKey(token)).unwrap()
   }
 
   return (

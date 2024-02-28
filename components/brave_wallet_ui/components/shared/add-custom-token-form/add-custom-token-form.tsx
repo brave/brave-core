@@ -14,11 +14,11 @@ import { getLocale } from '$web-common/locale'
 import { BraveWallet, WalletState } from '../../../constants/types'
 
 // hooks
-import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import {
   useGetCustomAssetSupportedNetworks //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
+import { useAddUserTokenMutation } from '../../../common/slices/api.slice'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
@@ -79,9 +79,10 @@ export const AddCustomTokenForm = (props: Props) => {
   // more state
   const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
 
-  // custom hooks
-  const { onAddCustomAsset } = useAssetManagement()
+  // mutations
+  const [addUserToken] = useAddUserTokenMutation()
 
+  // queries
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
@@ -209,13 +210,13 @@ export const AddCustomTokenForm = (props: Props) => {
     onChangeContractAddress('')
   }, [resetBaseInputFields, onChangeContractAddress])
 
-  const onClickAddCustomToken = React.useCallback(() => {
+  const onClickAddCustomToken = React.useCallback(async () => {
     if (!tokenInfo) {
       return
     }
-    onAddCustomAsset(tokenInfo)
+    await addUserToken(tokenInfo).unwrap()
     onHideForm()
-  }, [tokenInfo, onAddCustomAsset, onHideForm])
+  }, [tokenInfo, addUserToken, onHideForm])
 
   const onToggleShowAdvancedFields = () =>
     setShowAdvancedFields((prev) => !prev)

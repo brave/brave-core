@@ -18,9 +18,11 @@ import {
 } from '../../../common/slices/entities/network.entity'
 
 // hooks
-import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
-import { useGetNetworksRegistryQuery } from '../../../common/slices/api.slice'
+import {
+  useAddUserTokenMutation,
+  useGetNetworksRegistryQuery
+} from '../../../common/slices/api.slice'
 import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
 import { WalletSelectors } from '../../../common/selectors'
 import {
@@ -95,9 +97,10 @@ export const AddNftForm = (props: Props) => {
     BraveWallet.NetworkInfo | undefined
   >(selectedAssetNetwork)
 
-  // custom hooks
-  const { onAddCustomAsset } = useAssetManagement()
+  // mutations
+  const [addUserToken] = useAddUserTokenMutation()
 
+  // queries
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
@@ -210,17 +213,11 @@ export const AddNftForm = (props: Props) => {
         })
       )
     } else {
-      onAddCustomAsset(tokenInfo)
+      await addUserToken(tokenInfo).unwrap()
     }
 
     onHideForm()
-  }, [
-    tokenInfo,
-    selectedAsset,
-    tokenAlreadyExists,
-    onAddCustomAsset,
-    onHideForm
-  ])
+  }, [tokenInfo, selectedAsset, tokenAlreadyExists, addUserToken, onHideForm])
 
   const onHideNetworkDropDown = React.useCallback(() => {
     if (showNetworkDropDown) {
