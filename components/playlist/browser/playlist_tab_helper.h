@@ -70,7 +70,8 @@ class PlaylistTabHelper
   // content::WebContentsObserver:
   void ReadyToCommitNavigation(
       content::NavigationHandle* navigation_handle) override;
-  void PrimaryPageChanged(content::Page& page) override;
+  void DidFinishNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   // mojom::PlaylistServiceObserver:
   void OnEvent(mojom::PlaylistEvent event,
