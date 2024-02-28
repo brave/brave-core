@@ -217,7 +217,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaUpdatedFromContents(content::WebContents* contents);
+  void OnMediaDetected(base::Value media, content::WebContents* contents);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -238,6 +238,8 @@ class PlaylistService : public KeyedService,
       const std::vector<mojom::PlaylistItemPtr>& items);
 
   bool playlist_enabled() const { return *enabled_pref_; }
+
+  std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -309,8 +311,9 @@ class PlaylistService : public KeyedService,
   // https://github.com/brave/brave-browser/issues/30735
   void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                              const std::string& playlist_id);
-  void NotifyMediaFilesUpdated(const GURL& url,
-                               std::vector<mojom::PlaylistItemPtr> items);
+  void NotifyMediaFilesUpdated(
+      const GURL& url,
+      const std::vector<mojom::PlaylistItemPtr>& items);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
   void RemovePlaylistItemValue(const std::string& id);
