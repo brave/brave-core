@@ -142,13 +142,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.activeOrigin = payload
       },
 
-      addUserAssetError(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.addUserAssetError = payload
-      },
-
       initialized(
         state: WalletState,
         { payload }: PayloadAction<WalletInitializedPayload>

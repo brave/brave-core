@@ -4,14 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '$web-common/locale'
 
 // types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // hooks
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
@@ -71,13 +70,8 @@ export const AddCustomTokenForm = (props: Props) => {
   const [customAssetsNetwork, setCustomAssetsNetwork] =
     React.useState<BraveWallet.NetworkInfo>()
 
-  // redux
-  const addUserAssetError = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError
-  )
-
   // more state
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
@@ -214,8 +208,12 @@ export const AddCustomTokenForm = (props: Props) => {
     if (!tokenInfo) {
       return
     }
-    await addUserToken(tokenInfo).unwrap()
-    onHideForm()
+    try {
+      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+    } catch (error) {
+      setHasError(true)
+    }
   }, [tokenInfo, addUserToken, onHideForm])
 
   const onToggleShowAdvancedFields = () =>

@@ -23,8 +23,6 @@ import {
   useAddUserTokenMutation,
   useGetNetworksRegistryQuery
 } from '../../../common/slices/api.slice'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 import {
   useGetCustomAssetSupportedNetworks //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
@@ -65,9 +63,6 @@ export const AddNftForm = (props: Props) => {
   } = props
 
   // redux
-  const addUserAssetError = useSafeWalletSelector(
-    WalletSelectors.addUserAssetError
-  )
   const dispatch = useDispatch()
 
   const { data: networksRegistry = emptyNetworksRegistry } =
@@ -81,7 +76,7 @@ export const AddNftForm = (props: Props) => {
     React.useState<boolean>(false)
   const [showNetworkDropDown, setShowNetworkDropDown] =
     React.useState<boolean>(false)
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
   // Form States
   const [customTokenName, setCustomTokenName] = React.useState<
@@ -212,11 +207,16 @@ export const AddNftForm = (props: Props) => {
           updated: tokenInfo
         })
       )
-    } else {
-      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+      return
     }
 
-    onHideForm()
+    try {
+      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+    } catch (error) {
+      setHasError(true)
+    }
   }, [tokenInfo, selectedAsset, tokenAlreadyExists, addUserToken, onHideForm])
 
   const onHideNetworkDropDown = React.useCallback(() => {

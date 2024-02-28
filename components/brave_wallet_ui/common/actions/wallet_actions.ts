@@ -8,7 +8,6 @@ import { WalletActions } from '../slices/wallet.slice'
 // We must re-export actions here until we remove all imports of this file
 export const {
   activeOriginChanged,
-  addUserAssetError,
   autoLockMinutesChanged,
   backedUp,
   defaultBaseCryptocurrencyChanged,
