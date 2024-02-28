@@ -13,7 +13,7 @@ BASE_FEATURE(kSidebarShowAlwaysOnStable,
 
 const base::FeatureParam<bool> kOpenOneShotLeoPanel{
     &kSidebarShowAlwaysOnStable,
-    /*name=*/"OpenOneShotLeoPanel",
+    /*name=*/"open_one_shot_leo_panel",
     /*default_value=*/false};
 
 }  // namespace sidebar::features
