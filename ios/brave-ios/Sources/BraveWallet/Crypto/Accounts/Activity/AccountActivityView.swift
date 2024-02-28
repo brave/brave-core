@@ -195,7 +195,7 @@ struct AccountActivityView: View {
               title: Strings.Wallet.nftsTitle,
               description: String.localizedStringWithFormat(
                 nftCount == 1
-                ? Strings.Wallet.nftsSingularDescription : Strings.Wallet.nftsDescription,
+                  ? Strings.Wallet.nftsSingularDescription : Strings.Wallet.nftsDescription,
                 nftCount
               )
             )
