@@ -268,7 +268,10 @@ extension BrowserViewController {
     }
     
     // Display Certificate Activity
-    if let secureState = tabManager.selectedTab?.secureContentState, secureState != .missingSSL && secureState != .unknown {
+    if let tabURL = tabManager.selectedTab?.webView?.url,
+      tabManager.selectedTab?.webView?.serverTrust != nil
+        || ErrorPageHelper.hasCertificates(for: tabURL)
+    {
       activities.append(
         BasicMenuActivity(
           title: Strings.displayCertificate,
@@ -278,7 +281,7 @@ extension BrowserViewController {
       )
     } 
   
-    // Report Web-compat Issue Actibity
+    // Report Web-compat Issue Activity
     activities.append(
       BasicMenuActivity(
         title: Strings.Shields.reportABrokenSite,
