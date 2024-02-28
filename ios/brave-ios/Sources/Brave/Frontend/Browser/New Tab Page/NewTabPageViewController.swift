@@ -1199,15 +1199,16 @@ extension NewTabPageViewController {
     }
 
     UmaHistogramRecordValueToBucket(
-      "Brave.NTP.NewTabsCreated",
+      "Brave.NTP.NewTabsCreated.2",
       buckets: [
         0,
-        .r(1...3),
-        .r(4...8),
-        .r(9...20),
-        .r(21...50),
-        .r(51...100),
-        .r(101...),
+        1,
+        2,
+        3,
+        4,
+        .r(5...8),
+        .r(9...15),
+        .r(16...),
       ],
       value: newTabsCreatedAnswer
     )
