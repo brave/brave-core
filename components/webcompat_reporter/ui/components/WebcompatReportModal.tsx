@@ -30,17 +30,19 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
       onClose
     } = this.props
     return (
-      <RectangularCard>
-        {submitted ? (
-          <ConfirmationView/>
-        ) : (
-          <ReportView
-            siteUrl={siteUrl}
-            onSubmitReport={onSubmitReport}
-            onClose={onClose}
-          />
-        )}
-      </RectangularCard>
+      <div onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => e.preventDefault()}>
+        <RectangularCard>
+          {submitted ? (
+            <ConfirmationView/>
+          ) : (
+            <ReportView
+              siteUrl={siteUrl}
+              onSubmitReport={onSubmitReport}
+              onClose={onClose}
+            />
+          )}
+        </RectangularCard>
+      </div>
     )
   }
 }

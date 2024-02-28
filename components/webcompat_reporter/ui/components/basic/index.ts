@@ -20,6 +20,8 @@ export {
   NonInteractiveURL,
   SuccessIcon,
   Input,
+  Checkbox,
+  CheckboxLabel,
   TextArea,
   InputLabel
 } from './display'

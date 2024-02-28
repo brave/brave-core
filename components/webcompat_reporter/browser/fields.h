@@ -17,6 +17,7 @@ inline constexpr char kShieldsEnabledField[] = "shieldsEnabled";
 inline constexpr char kLanguagesField[] = "languages";
 inline constexpr char kLanguageFarblingField[] = "languageFarblingEnabled";
 inline constexpr char kBraveVPNEnabledField[] = "braveVPNEnabled";
+inline constexpr char kAttachScreenshotField[] = "attachScreenshot";
 
 inline constexpr char kSiteURLField[] = "url";
 inline constexpr char kDomainField[] = "domain";

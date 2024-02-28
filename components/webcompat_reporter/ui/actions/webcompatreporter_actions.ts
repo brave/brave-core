@@ -14,10 +14,11 @@ export const setDialogArgs = (dialogArgs: WebcompatReporter.DialogArgs) => {
   })
 }
 
-export const onSubmitReport = (details: string, contact: string) =>
+export const onSubmitReport = (details: string, contact: string, attachScreenshot: boolean) =>
   action(types.WEBCOMPATREPORTER_ON_SUBMIT_REPORT, {
     details,
-    contact
+    contact,
+    attachScreenshot
   })
 
 export const onClose = () =>

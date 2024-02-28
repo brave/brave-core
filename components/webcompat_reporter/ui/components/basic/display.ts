@@ -57,6 +57,7 @@ export const SuccessIcon = styled(CheckCircleIcon)`
 
 export const RectangularCard = styled(Card)<CardProps>`
   border-radius: 0;
+  user-select: none;
 `
 
 export const Input = styled.input`
@@ -83,6 +84,12 @@ export const Input = styled.input`
   }
 `
 
+export const Checkbox = styled(Input)`
+  width: unset;
+  margin-right: 6px;
+  vertical-align: middle;
+`
+
 export const InputLabel = styled.label`
   display: block;
   box-sizing: border-box;
@@ -90,6 +97,10 @@ export const InputLabel = styled.label`
   font-size: 12px;
   font-family: ${p => p.theme.fontFamily.body};
   padding-bottom: 4px;
+`
+
+export const CheckboxLabel = styled(InputLabel)`
+  display: unset;
 `
 
 export const TextArea = styled.textarea`

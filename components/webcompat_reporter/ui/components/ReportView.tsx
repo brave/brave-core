@@ -16,6 +16,8 @@ import {
   SideBySideButtons,
   PaddedButton,
   Input,
+  Checkbox,
+  CheckboxLabel,
   TextArea,
   FieldCtr,
   InputLabel
@@ -26,19 +28,20 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   siteUrl: string
-  onSubmitReport: (details: string, contact: string) => void
+  onSubmitReport: (details: string, contact: string, attachScreenshot: boolean) => void
   onClose: () => void
 }
 
 interface State {
   details: string
   contact: string
+  attachScreenshot: boolean
 }
 
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '' }
+    this.state = { details: '', contact: '', attachScreenshot: true }
   }
 
   render () {
@@ -47,7 +50,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
       onSubmitReport,
       onClose
     } = this.props
-    const { details, contact } = this.state
+    const { details, contact, attachScreenshot } = this.state
     return (
       <ModalLayout>
         <TextSection>
@@ -78,6 +81,17 @@ export default class ReportView extends React.PureComponent<Props, State> {
             id='contact-info'
           />
         </FieldCtr>
+        <FieldCtr>
+          <Checkbox
+            onChange={(ev) => this.setState({ attachScreenshot: ev.target.checked })}
+            type='checkbox'
+            checked={attachScreenshot}
+            id='attach-screenshot'
+          />
+          <CheckboxLabel htmlFor='attach-screenshot'>
+            {getLocale('attachScreenshotLabel')}
+          </CheckboxLabel>
+        </FieldCtr>
         <SideBySideButtons>
           <PaddedButton
             text={getLocale('cancel')}
@@ -91,7 +105,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
             level={'primary'}
             type={'accent'}
             size={'small'}
-            onClick={() => onSubmitReport(details, contact)}
+            onClick={() => onSubmitReport(details, contact, attachScreenshot)}
           />
         </SideBySideButtons>
       </ModalLayout>

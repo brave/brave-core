@@ -25,7 +25,8 @@ const webcompatReporterReducer: Reducer<WebcompatReporter.State | undefined> = (
         {
           ...state.dialogArgs,
           additionalDetails: action.payload.details || null,
-          contactInfo: action.payload.contact || null
+          contactInfo: action.payload.contact || null,
+          attachScreenshot: action.payload.attachScreenshot || false
         }
       ])
       state = {

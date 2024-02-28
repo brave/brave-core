@@ -57,7 +57,6 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   void OnDialogClosed(const std::string& json_retval) override;
   void OnCloseContents(WebContents* source, bool* out_close_dialog) override;
   bool ShouldShowDialogTitle() const override;
-
  private:
   base::Value::Dict params_;
 };

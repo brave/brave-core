@@ -1050,6 +1050,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER},
                   {"reportContactLabel",
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL},
+                  {"attachScreenshotLabel",
+                   IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL},
                   {"cancel", IDS_BRAVE_WEBCOMPATREPORTER_CANCEL},
                   {"submit", IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT},
                   // Confirmation modal
