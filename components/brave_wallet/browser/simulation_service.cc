@@ -12,6 +12,7 @@
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/simulation_request_helper.h"
 #include "brave/components/brave_wallet/browser/simulation_response_parser.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/constants/brave_services_key.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "net/base/load_flags.h"
@@ -178,22 +179,29 @@ void SimulationService::HasTransactionScanSupport(
     const std::string& chain_id,
     mojom::CoinType coin,
     HasTransactionScanSupportCallback callback) {
-  bool result = HasTransactionScanSupportInternal(chain_id, coin);
-  std::move(callback).Run(result);
+  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
+                          HasTransactionScanSupportInternal(chain_id, coin));
 }
 
 void SimulationService::HasMessageScanSupport(
     const std::string& chain_id,
     mojom::CoinType coin,
     HasMessageScanSupportCallback callback) {
-  bool result = HasMessageScanSupportInternal(chain_id, coin);
-  std::move(callback).Run(result);
+  std::move(callback).Run(IsTransactionSimulationsEnabled() &&
+                          HasMessageScanSupportInternal(chain_id, coin));
 }
 
 void SimulationService::ScanSolanaTransaction(
     mojom::SolanaTransactionRequestUnionPtr request,
     const std::string& language,
     ScanSolanaTransactionCallback callback) {
+  if (!IsTransactionSimulationsEnabled()) {
+    std::move(callback).Run(
+        nullptr, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+    return;
+  }
+
   if (!request) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
@@ -315,6 +323,13 @@ void SimulationService::ScanEVMTransaction(
     mojom::TransactionInfoPtr tx_info,
     const std::string& language,
     ScanEVMTransactionCallback callback) {
+  if (!IsTransactionSimulationsEnabled()) {
+    std::move(callback).Run(
+        nullptr, "",
+        l10n_util::GetStringUTF8(IDS_WALLET_REQUEST_PROCESSING_ERROR));
+    return;
+  }
+
   if (!tx_info) {
     std::move(callback).Run(
         nullptr, "", l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
