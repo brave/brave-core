@@ -98,9 +98,7 @@ const defaultState: WalletState = {
 export const WalletAsyncActions = {
   initialize: createAction<RefreshOpts>('initialize'),
   refreshAll: createAction<RefreshOpts>('refreshAll'),
-  addUserAsset: createAction<BraveWallet.BlockchainToken>('addUserAsset'),
   updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
-  removeUserAsset: createAction<BraveWallet.BlockchainToken>('removeUserAsset'),
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   walletCreated: createAction('walletCreated'),
