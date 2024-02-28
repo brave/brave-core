@@ -11,11 +11,16 @@ mod storage;
 use std::cell::RefCell;
 use std::fmt;
 use std::rc::Rc;
+use std::sync::Arc;
 use std::thread;
 
 use cxx::{type_id, ExternType, UniquePtr};
 use futures::executor::{LocalPool, LocalSpawner};
+use futures::future::BoxFuture;
+use futures::task::ArcWake;
+use futures::task::Context;
 use futures::task::LocalSpawnExt;
+use futures::task::waker_ref;
 use futures::lock::Mutex;
 
 use tracing::debug;
@@ -174,6 +179,7 @@ mod ffi {
         type StoragePurgeContext;
         type StorageSetContext;
         type StorageGetContext;
+        type ArcTask;
 
         type CppSDK;
         fn initialize_sdk(ctx: UniquePtr<SkusContext>, env: String) -> Box<CppSDK>;
@@ -218,13 +224,18 @@ mod ffi {
         );
 
         fn result_to_string(result: &SkusResult) -> String;
+
+        fn init_runner(
+            runner: UniquePtr<TaskRunner>,
+        );
+        fn poll(self: &ArcTask);
     }
 
     unsafe extern "C++" {
-        include!("brave/components/skus/browser/rs/cxx/src/shim.h");
 
         type SkusContext;
         type SkusUrlLoader;
+        type TaskRunner;
 
         fn shim_logMessage(file: &str, line: u32, level: TracingLevel, message: &str);
 
@@ -262,6 +273,11 @@ mod ffi {
             st_ctx: Box<StorageGetContext>,
         );
 
+        fn shim_postTask(
+            runner: &TaskRunner,
+            task: Box<ArcTask>,
+        );
+
         type RefreshOrderCallbackState;
         type RefreshOrderCallback = crate::RefreshOrderCallback;
         type FetchOrderCredentialsCallbackState;
@@ -275,6 +291,63 @@ mod ffi {
         type CreateOrderFromReceiptCallbackState;
         type CreateOrderFromReceiptCallback = crate::CreateOrderFromReceiptCallback;
     }
+}
+
+unsafe impl Sync for ffi::TaskRunner {}
+unsafe impl Send for ffi::TaskRunner {}
+
+/// A future that can reschedule itself to be polled by an `Executor`.
+struct Task {
+    /// In-progress future that should be pushed to completion.
+    ///
+    /// The `Mutex` is not necessary for correctness, since we only have
+    /// one thread executing tasks at once. However, Rust isn't smart
+    /// enough to know that `future` is only mutated from one thread,
+    /// so we need to use the `Mutex` to prove thread-safety. A production
+    /// executor would not need this, and could use `UnsafeCell` instead.
+    future: std::sync::Mutex<Option<BoxFuture<'static, ()>>>,
+
+    /// Handle to place the task itself back onto the task queue.
+    task_runner: UniquePtr<ffi::TaskRunner>,
+}
+
+struct ArcTask(Arc<Task>);
+
+impl ArcWake for Task {
+    fn wake_by_ref(arc_self: &Arc<Self>) {
+        // Implement `wake` by sending this task back onto the task channel
+        // so that it will be polled again by the executor.
+        let cloned = ArcTask(arc_self.clone());
+        ffi::shim_postTask(&arc_self.task_runner, Box::new(cloned));
+    }
+}
+
+impl ArcTask {
+    fn poll(&self) {
+        // Take the future, and if it has not yet completed (is still Some),
+        // poll it in an attempt to complete it.
+        let mut future_slot = self.0.future.lock().unwrap();
+        if let Some(mut future) = future_slot.take() {
+            // Create a `LocalWaker` from the task itself
+            let waker = waker_ref(&self.0);
+            let context = &mut Context::from_waker(&waker);
+            // `BoxFuture<T>` is a type alias for
+            // `Pin<Box<dyn Future<Output = T> + Send + 'static>>`.
+            // We can get a `Pin<&mut dyn Future + Send + 'static>`
+            // from it by calling the `Pin::as_mut` method.
+            if future.as_mut().poll(context).is_pending() {
+                // We're not done processing the future, so put it
+                // back in its task to be run again in the future.
+                *future_slot = Some(future);
+            }
+        }
+    }
+}
+
+// this is just a stub function to have cxx implement the UniquePtrTarget
+// trait for TaskRunner
+// TODO should pass runner as part of SDK initialization
+fn init_runner(runner: UniquePtr<ffi::TaskRunner>) {
 }
 
 pub struct CppSDK {
