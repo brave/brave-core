@@ -625,8 +625,17 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    // This optimization causes crash on Android 8 and Android 8.1 arm64 devices.
-    args.use_relr_relocations = false
+    if (this.targetArch == "arm64") {
+      // Flag use_relr_relocations is incompatible with Android 8 arm64, but
+      // makes huge optimizations on Android 9 and above.
+      // Decision is to specify android:minSdkVersion=28 for arm64 and keep
+      // 26(default) for arm32.
+      // Then:
+      //   - for Android 8 and 8.1 GP will supply arm32 bundle;
+      //   - for Android 9 and above GP will supply arm64 and we can enable all
+      //     optimizations.
+      args.default_min_sdk_version = 28
+    }
 
     // These do not exist on android
     // TODO - recheck
