@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/notreached.h"
+#include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "base/strings/utf_string_conversions.h"
@@ -17,6 +18,7 @@
 #include "brave/components/decentralized_dns/content/decentralized_dns_interstitial_controller_client.h"
 #include "brave/components/decentralized_dns/core/utils.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "brave/net/decentralized_dns/constants.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/security_interstitials/content/security_interstitial_controller_client.h"
@@ -67,13 +69,24 @@ void DecentralizedDnsOptInPage::CommandReceived(const std::string& command) {
 
 void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
     base::Value::Dict& load_time_data) {
-  const std::vector<std::u16string> infura_links = {
-      u"https://consensys.net/terms-of-use/",
-      u"https://consensys.net/privacy-policy/"};
-
+  const std::u16string infura = u"Infura";
+  const std::u16string infura_tou = u"https://consensys.net/terms-of-use/";
+  const std::u16string infura_privacy_policy =
+      u"https://consensys.net/privacy-policy/";
   const std::u16string sns_wiki_link =
       u"https://github.com/brave/brave-browser/wiki/"
       u"Resolve-Methods-for-Solana-Name-Service";
+  const std::u16string sol_domain = base::ASCIIToUTF16(std::string(kSolDomain));
+  const std::u16string eth_domain = base::ASCIIToUTF16(std::string(kEthDomain));
+
+  std::u16string unstoppable_domains;
+  for (auto* const domain : kUnstoppableDomains) {
+    unstoppable_domains =
+        base::StrCat({unstoppable_domains, base::ASCIIToUTF16(domain), u", "});
+  }
+  if (!unstoppable_domains.empty()) {
+    unstoppable_domains.resize(unstoppable_domains.size() - 2);
+  }
 
   if (IsUnstoppableDomainsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
@@ -85,18 +98,27 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
         "primaryParagraph",
         base::ReplaceStringPlaceholders(
             brave_l10n::GetLocalizedResourceUTF16String(
-                IDS_UNSTOPPABLE_DOMAINS_OPT_IN_PRIMARY_PARAGRAPH),
-            infura_links, nullptr));
+                IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
+            {infura, unstoppable_domains,
+             brave_l10n::GetLocalizedResourceUTF16String(
+                 IDS_UNSTOPPABLE_DOMAINS_OPT_IN_TITLE),
+             infura_tou, infura_privacy_policy},
+            nullptr));
   } else if (IsENSTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_ENS_OPT_IN_TITLE));
     load_time_data.Set("heading", brave_l10n::GetLocalizedResourceUTF16String(
                                       IDS_ENS_OPT_IN_HEADING));
-    load_time_data.Set("primaryParagraph",
-                       base::ReplaceStringPlaceholders(
-                           brave_l10n::GetLocalizedResourceUTF16String(
-                               IDS_ENS_OPT_IN_PRIMARY_PARAGRAPH),
-                           infura_links, nullptr));
+    load_time_data.Set(
+        "primaryParagraph",
+        base::ReplaceStringPlaceholders(
+            brave_l10n::GetLocalizedResourceUTF16String(
+                IDS_UNSTOPPABLE_DOMAINS_AND_ENS_OPT_IN_PRIMARY_PARAGRAPH),
+            {infura, eth_domain,
+             brave_l10n::GetLocalizedResourceUTF16String(
+                 IDS_ENS_DOMAIN_PROVIDER_NAME),
+             infura_tou, infura_privacy_policy},
+            nullptr));
   } else if (IsSnsTLD(request_url_.host_piece())) {
     load_time_data.Set("tabTitle", brave_l10n::GetLocalizedResourceUTF16String(
                                        IDS_SNS_OPT_IN_TITLE));
@@ -106,7 +128,7 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                        base::ReplaceStringPlaceholders(
                            brave_l10n::GetLocalizedResourceUTF16String(
                                IDS_SNS_OPT_IN_PRIMARY_PARAGRAPH),
-                           sns_wiki_link, nullptr));
+                           {sol_domain, sns_wiki_link}, nullptr));
   } else {
     NOTREACHED();
   }
@@ -116,9 +138,12 @@ void DecentralizedDnsOptInPage::PopulateInterstitialStrings(
                        brave_l10n::GetLocalizedResourceUTF16String(
                            IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_SNS_BUTTON));
   } else {
-    load_time_data.Set("primaryButtonText",
-                       brave_l10n::GetLocalizedResourceUTF16String(
-                           IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_INFURA_BUTTON));
+    load_time_data.Set(
+        "primaryButtonText",
+        base::ReplaceStringPlaceholders(
+            brave_l10n::GetLocalizedResourceUTF16String(
+                IDS_DECENTRALIZED_DNS_OPT_IN_PRIMARY_PROVIDER_BUTTON),
+            infura, nullptr));
   }
   load_time_data.Set("dontProceedButtonText",
                      brave_l10n::GetLocalizedResourceUTF16String(
