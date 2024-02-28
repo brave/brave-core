@@ -24,7 +24,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
     ),
   ]
   func price(
-    _ fromAssets: [String],
+    fromAssets: [String],
     toAssets: [String],
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (Bool, [BraveWallet.AssetPrice]) -> Void
@@ -47,7 +47,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
   }
 
   func priceHistory(
-    _ asset: String,
+    asset: String,
     vsAsset: String,
     timeframe: BraveWallet.AssetPriceTimeframe,
     completion: @escaping (Bool, [BraveWallet.AssetTimePrice]) -> Void
@@ -56,7 +56,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
   }
 
   func buyUrlV1(
-    _ provider: BraveWallet.OnRampProvider,
+    provider: BraveWallet.OnRampProvider,
     chainId: String,
     address: String,
     symbol: String,
@@ -68,7 +68,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
   }
 
   func sellUrl(
-    _ provider: BraveWallet.OffRampProvider,
+    provider: BraveWallet.OffRampProvider,
     chainId: String,
     symbol: String,
     amount: String,
@@ -79,7 +79,7 @@ class MockAssetRatioService: BraveWalletAssetRatioService {
   }
 
   func coinMarkets(
-    _ vsAsset: String,
+    vsAsset: String,
     limit: UInt8,
     completion: @escaping (Bool, [BraveWallet.CoinMarket]) -> Void
   ) {

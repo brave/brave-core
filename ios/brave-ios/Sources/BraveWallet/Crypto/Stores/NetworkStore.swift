@@ -95,8 +95,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
         Task { @MainActor [self] in
           // Verify correct account is selected for the new network.
           // This could occur from Eth Switch Chain request when Solana account selected.
-          let accountId = await self?.walletService.ensureSelectedAccount(
-            forChain: coin,
+          let accountId = await self?.walletService.ensureSelectedAccountForChain(
+            coin: coin,
             chainId: chainId
           )
           if accountId == nil {
@@ -107,13 +107,14 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
             self?.selectedChainIdForOrigin = chainId
           } else if origin == nil {
             self?.defaultSelectedChainId = chainId
-            self?.isSwapSupported = await self?.swapService.isSwapSupported(chainId) ?? false
+            self?.isSwapSupported =
+              await self?.swapService.isSwapSupported(chainId: chainId) ?? false
             if let origin = self?.origin {
               // The default network may be used for this origin if no
               // other network was assigned for this origin. If so, we
               // need to make sure the `selectedChainIdForOrigin` is updated
               // to reflect the correct network.
-              if let network = await self?.rpcService.network(coin, origin: origin) {
+              if let network = await self?.rpcService.network(coin: coin, origin: origin) {
                 self?.selectedChainIdForOrigin = network.chainId
               }
             }
@@ -131,7 +132,8 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       _selectedWalletAccountChanged: { [weak self] account in
         Task { @MainActor [self] in
           if self?.defaultSelectedChain.coin != account.coin {
-            if let selectedNetwork = await self?.rpcService.network(account.coin, origin: nil) {
+            if let selectedNetwork = await self?.rpcService.network(coin: account.coin, origin: nil)
+            {
               self?.defaultSelectedChainId = selectedNetwork.chainId
             }
           }
@@ -140,7 +142,10 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
             // other network was assigned for this origin. If so, we
             // need to make sure the `selectedChainIdForOrigin` is updated
             // to reflect the correct network.
-            if let selectedNetwork = await self?.rpcService.network(account.coin, origin: origin) {
+            if let selectedNetwork = await self?.rpcService.network(
+              coin: account.coin,
+              origin: origin
+            ) {
               self?.selectedChainIdForOrigin = selectedNetwork.chainId
             }
           }
@@ -160,14 +165,14 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   @MainActor private func updateSelectedChain() async {
     // fetch current selected network
     let selectedCoin = await keyringService.allAccounts().selectedAccount?.coin ?? .eth
-    let chain = await rpcService.network(selectedCoin, origin: nil)
+    let chain = await rpcService.network(coin: selectedCoin, origin: nil)
     // since we are fetch network from JsonRpcService,
     // we don't need to call `setNetwork` on JsonRpcService
     self.defaultSelectedChainId = chain.chainId
-    let chainForOrigin = await rpcService.network(selectedCoin, origin: origin)
+    let chainForOrigin = await rpcService.network(coin: selectedCoin, origin: origin)
     self.selectedChainIdForOrigin = chainForOrigin.chainId
     // update `isSwapSupported` for Buy/Send/Swap panel
-    self.isSwapSupported = await swapService.isSwapSupported(chain.chainId)
+    self.isSwapSupported = await swapService.isSwapSupported(chainId: chain.chainId)
   }
 
   @MainActor func updateChainList() async {
@@ -175,7 +180,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     self.allChains = await rpcService.allNetworksForSupportedCoins(respectTestnetPreference: false)
 
     // only support Ethereum custom chains
-    let customChainIds = await rpcService.customNetworks(.eth)
+    let customChainIds = await rpcService.customNetworks(coin: .eth)
     self.customChains = allChains.filter { customChainIds.contains($0.chainId) }
   }
 
@@ -201,25 +206,25 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
 
       let currentlySelectedCoin = allAccounts.selectedAccount?.coin ?? .eth
       let rpcServiceNetwork = await rpcService.network(
-        currentlySelectedCoin,
+        coin: currentlySelectedCoin,
         origin: isForOrigin ? origin : nil
       )
       guard rpcServiceNetwork.chainId != network.chainId else {
         if !isForOrigin {  // `isSwapSupported` is for the `defaultSelectedChain`
-          self.isSwapSupported = await swapService.isSwapSupported(network.chainId)
+          self.isSwapSupported = await swapService.isSwapSupported(chainId: network.chainId)
         }
         return .chainAlreadySelected
       }
 
       let success = await rpcService.setNetwork(
-        network.chainId,
+        chainId: network.chainId,
         coin: network.coin,
         origin: isForOrigin ? origin : nil
       )
       if success,
         !isForOrigin
       {  // `isSwapSupported` is for the `defaultSelectedChain`
-        self.isSwapSupported = await swapService.isSwapSupported(network.chainId)
+        self.isSwapSupported = await swapService.isSwapSupported(chainId: network.chainId)
       }
       return success ? nil : .unknown
     }
@@ -271,7 +276,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     if allChains.filter({ $0.coin == .eth }).contains(where: {
       $0.id.lowercased() == network.id.lowercased()
     }) {
-      let removeStatus = await rpcService.removeChain(network.chainId, coin: network.coin)
+      let removeStatus = await rpcService.removeChain(chainId: network.chainId, coin: network.coin)
       guard removeStatus else {
         return (false, "Not able to remove network chainId (\(network.chainId)")
       }
@@ -323,12 +328,12 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
       completion(false)
       return
     }
-    rpcService.removeChain(network.chainId, coin: network.coin) { [self] success in
+    rpcService.removeChain(chainId: network.chainId, coin: network.coin) { [self] success in
       if success {
         // check if its the current network, set mainnet the active net
         if network.id.lowercased() == defaultSelectedChainId.lowercased() {
           rpcService.setNetwork(
-            BraveWallet.MainnetChainId,
+            chainId: BraveWallet.MainnetChainId,
             coin: .eth,
             origin: nil,
             completion: { _ in }
@@ -345,7 +350,7 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
   }
 
   @MainActor func selectedNetwork(for coin: BraveWallet.CoinType) async -> BraveWallet.NetworkInfo {
-    await rpcService.network(coin, origin: nil)
+    await rpcService.network(coin: coin, origin: nil)
   }
 
   func customNetworkNativeAssetMigration(

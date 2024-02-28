@@ -327,7 +327,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         Task { @MainActor [self] in
           if let addNetworkDappRequestCompletion = self?.addNetworkDappRequestCompletion[chainId] {
             if error.isEmpty {
-              let allNetworks = await self?.rpcService.allNetworks(.eth)
+              let allNetworks = await self?.rpcService.allNetworks(coin: .eth)
               if let network = allNetworks?.first(where: { $0.chainId == chainId }) {
                 self?.userAssetManager.addUserAsset(network.nativeToken) {
                   self?.updateAssets()
@@ -667,7 +667,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     let allAccounts = await keyringService.allAccounts().accounts
     var allNetworksForCoin: [BraveWallet.CoinType: [BraveWallet.NetworkInfo]] = [:]
     for coin in WalletConstants.supportedCoinTypes() {
-      let allNetworks = await rpcService.allNetworks(coin)
+      let allNetworks = await rpcService.allNetworks(coin: coin)
       allNetworksForCoin[coin] = allNetworks
     }
     return await txService.pendingTransactions(
@@ -742,17 +742,17 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   ) {
     switch response {
     case .switchChain(let approved, let requestId):
-      rpcService.notifySwitchChainRequestProcessed(requestId, approved: approved)
+      rpcService.notifySwitchChainRequestProcessed(requestId: requestId, approved: approved)
     case .addNetwork(let approved, let chainId):
       // for add network request, approval requires network call so we must
       // wait for `onAddEthereumChainRequestCompleted` to know success/failure
       if approved, let completion {
         // store `completion` closure until notified of `onAddEthereumChainRequestCompleted` event
         addNetworkDappRequestCompletion[chainId] = completion
-        rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+        rpcService.addEthereumChainRequestCompleted(chainId: chainId, approved: approved)
       } else {  // not approved, or no completion closure provided.
         completion?(nil)
-        rpcService.addEthereumChainRequestCompleted(chainId, approved: approved)
+        rpcService.addEthereumChainRequestCompleted(chainId: chainId, approved: approved)
       }
       return
     case .addSuggestedToken(let approved, let token):
@@ -762,27 +762,32 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
         }
       }
       walletService.notifyAddSuggestTokenRequestsProcessed(
-        approved,
+        approved: approved,
         contractAddresses: [token.contractAddress]
       )
     case .signMessage(let approved, let id):
-      walletService.notifySignMessageRequestProcessed(approved, id: id, signature: nil, error: nil)
+      walletService.notifySignMessageRequestProcessed(
+        approved: approved,
+        id: id,
+        signature: nil,
+        error: nil
+      )
     case .signMessageError(let errorId):
-      walletService.notifySignMessageErrorProcessed(errorId)
+      walletService.notifySignMessageErrorProcessed(errorId: errorId)
     case .getEncryptionPublicKey(let approved, let requestId):
-      walletService.notifyGetPublicKeyRequestProcessed(requestId, approved: approved)
+      walletService.notifyGetPublicKeyRequestProcessed(requestId: requestId, approved: approved)
     case .decrypt(let approved, let requestId):
-      walletService.notifyDecryptRequestProcessed(requestId, approved: approved)
+      walletService.notifyDecryptRequestProcessed(requestId: requestId, approved: approved)
     case .signTransaction(let approved, let id):
       walletService.notifySignTransactionRequestProcessed(
-        approved,
+        approved: approved,
         id: id,
         signature: nil,
         error: nil
       )
     case .signAllTransactions(let approved, let id):
       walletService.notifySignAllTransactionsRequestProcessed(
-        approved,
+        approved: approved,
         id: id,
         signatures: nil,
         error: nil

@@ -878,14 +878,14 @@ extension BrowserViewController: WKNavigationDelegate {
       // on initialization. Fetching allowed accounts requires the origin; so we need to
       // initialize after `commitedURL` / `url` are updated above
       tab.walletEthProvider = provider
-      tab.walletEthProvider?.`init`(tab)
+      tab.walletEthProvider?.initialize(eventsListener: tab)
     }
     if let provider = braveCore.braveWalletAPI.solanaProvider(
       with: tab,
       isPrivateBrowsing: tab.isPrivate
     ) {
       tab.walletSolProvider = provider
-      tab.walletSolProvider?.`init`(tab)
+      tab.walletSolProvider?.initialize(eventsListener: tab)
     }
 
     rewards.reportTabNavigation(tabId: tab.rewardsId)

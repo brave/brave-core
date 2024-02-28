@@ -176,7 +176,7 @@ public class SettingsStore: ObservableObject, WalletObserverStore {
   }
 
   public func addKeyringServiceObserver(_ observer: BraveWalletKeyringServiceObserver) {
-    keyringService.add(observer)
+    keyringService.addObserver(observer)
   }
 
   private var manageSiteConnectionsStore: ManageSiteConnectionsStore?
@@ -203,7 +203,7 @@ extension SettingsStore {
   }
 
   func onDefaultBaseCurrencyChanged(_ currency: String) {
-    walletServiceObserver?.onDefaultBaseCurrencyChanged(currency)
+    walletServiceObserver?.onDefaultBaseCurrencyChanged(currency: currency)
   }
 }
 #endif

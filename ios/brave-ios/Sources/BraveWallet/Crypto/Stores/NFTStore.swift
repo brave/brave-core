@@ -705,7 +705,7 @@ public class NFTStore: ObservableObject, WalletObserverStore {
   func recordNFTGalleryView() {
     nftGalleryViewed = true
     let nftCount = userNFTGroups.flatMap(\.assets).count
-    walletP3A.recordNftGalleryView(Int32(nftCount))
+    walletP3A.recordNftGalleryView(nftCount: Int32(nftCount))
   }
 
   func updateNFTStatus(

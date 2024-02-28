@@ -45,7 +45,7 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
     self._selectedWalletAccountChanged = _selectedWalletAccountChanged
     self._selectedDappAccountChanged = _selectedDappAccountChanged
     self._accountsAdded = _accountsAdded
-    keyringService.add(self)
+    keyringService.addObserver(self)
   }
 
   func walletReset() {
@@ -72,16 +72,16 @@ class KeyringServiceObserver: BraveWalletKeyringServiceObserver {
   public func autoLockMinutesChanged() {
     _autoLockMinutesChanged?()
   }
-  public func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  public func selectedWalletAccountChanged(account: BraveWallet.AccountInfo) {
     _selectedWalletAccountChanged?(account)
   }
   public func selectedDappAccountChanged(
-    _ coin: BraveWallet.CoinType,
+    coin: BraveWallet.CoinType,
     account: BraveWallet.AccountInfo?
   ) {
     _selectedDappAccountChanged?(coin, account)
   }
-  public func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  public func accountsAdded(addedAccounts: [BraveWallet.AccountInfo]) {
     _accountsAdded?(addedAccounts)
   }
 }
@@ -120,26 +120,26 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     self._onDiscoverAssetsStarted = _onDiscoverAssetsStarted
     self._onDiscoverAssetsCompleted = _onDiscoverAssetsCompleted
     self._onResetWallet = _onResetWallet
-    walletService.add(self)
+    walletService.addObserver(self)
   }
 
-  func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  func onActiveOriginChanged(originInfo: BraveWallet.OriginInfo) {
     _onActiveOriginChanged?(originInfo)
   }
 
-  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  func onDefaultEthereumWalletChanged(wallet: BraveWallet.DefaultWallet) {
     _onDefaultEthereumWalletChanged?(wallet)
   }
 
-  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  func onDefaultSolanaWalletChanged(wallet: BraveWallet.DefaultWallet) {
     _onDefaultSolanaWalletChanged?(wallet)
   }
 
-  func onDefaultBaseCurrencyChanged(_ currency: String) {
+  func onDefaultBaseCurrencyChanged(currency: String) {
     _onDefaultBaseCurrencyChanged?(currency)
   }
 
-  func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  func onDefaultBaseCryptocurrencyChanged(cryptocurrency: String) {
     _onDefaultBaseCryptocurrencyChanged?(cryptocurrency)
   }
 
@@ -151,7 +151,7 @@ class WalletServiceObserver: BraveWalletBraveWalletServiceObserver {
     _onDiscoverAssetsStarted?()
   }
 
-  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+  func onDiscoverAssetsCompleted(discoveredAssets: [BraveWallet.BlockchainToken]) {
     _onDiscoverAssetsCompleted?(discoveredAssets)
   }
 
@@ -177,18 +177,18 @@ class TxServiceObserver: BraveWalletTxServiceObserver {
     self._onUnapprovedTxUpdated = _onUnapprovedTxUpdated
     self._onTransactionStatusChanged = _onTransactionStatusChanged
     self._onTxServiceReset = _onTxServiceReset
-    txService.add(self)
+    txService.addObserver(self)
   }
 
-  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
+  func onNewUnapprovedTx(txInfo: BraveWallet.TransactionInfo) {
     _onNewUnapprovedTx?(txInfo)
   }
 
-  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+  func onUnapprovedTxUpdated(txInfo: BraveWallet.TransactionInfo) {
     _onUnapprovedTxUpdated?(txInfo)
   }
 
-  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+  func onTransactionStatusChanged(txInfo: BraveWallet.TransactionInfo) {
     _onTransactionStatusChanged?(txInfo)
   }
 
@@ -214,18 +214,18 @@ class JsonRpcServiceObserver: BraveWalletJsonRpcServiceObserver {
     self._chainChangedEvent = _chainChangedEvent
     self._onAddEthereumChainRequestCompleted = _onAddEthereumChainRequestCompleted
     self._onIsEip1559Changed = _onIsEip1559Changed
-    rpcService.add(self)
+    rpcService.addObserver(self)
   }
 
-  func chainChangedEvent(_ chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
+  func chainChangedEvent(chainId: String, coin: BraveWallet.CoinType, origin: URLOrigin?) {
     _chainChangedEvent?(chainId, coin, origin)
   }
 
-  func onAddEthereumChainRequestCompleted(_ chainId: String, error: String) {
+  func onAddEthereumChainRequestCompleted(chainId: String, error: String) {
     _onAddEthereumChainRequestCompleted?(chainId, error)
   }
 
-  func onIsEip1559Changed(_ chainId: String, isEip1559: Bool) {
+  func onIsEip1559Changed(chainId: String, isEip1559: Bool) {
     _onIsEip1559Changed?(chainId, isEip1559)
   }
 }

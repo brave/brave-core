@@ -166,7 +166,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       param = MojoBase.Value(jsonString: args)?.dictionaryValue
     }
 
-    let (status, errorMessage, publicKey) = await provider.connect(param)
+    let (status, errorMessage, publicKey) = await provider.connect(arg: param)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
@@ -193,7 +193,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       signatures: signatures
     )
     let (status, errorMessage, result) = await provider.signAndSendTransaction(
-      param,
+      param: param,
       sendOptions: sendOptions
     )
     guard status == .success else {
@@ -218,7 +218,7 @@ class SolanaProviderScriptHandler: TabContentScript {
     }
     let displayEncoding = argsList[safe: 1]?.stringValue
     let (status, errorMessage, result) = await provider.signMessage(
-      blobMsg,
+      blobMsg: blobMsg,
       displayEncoding: displayEncoding
     )
     guard status == .success,
@@ -257,7 +257,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       updatedParamsDict[Keys.message.rawValue] = MojoBase.Value(binaryValue: blobMsg)
       argDict[Keys.params.rawValue] = MojoBase.Value(dictionaryValue: updatedParamsDict)
     }
-    let (status, errorMessage, result) = await provider.request(argDict)
+    let (status, errorMessage, result) = await provider.request(arg: argDict)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
@@ -292,7 +292,7 @@ class SolanaProviderScriptHandler: TabContentScript {
       serializedMessage: serializedMessage,
       signatures: signatures
     )
-    let (status, errorMessage, serializedTx, version) = await provider.signTransaction(param)
+    let (status, errorMessage, serializedTx, version) = await provider.signTransaction(param: param)
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }
@@ -333,7 +333,9 @@ class SolanaProviderScriptHandler: TabContentScript {
     guard !params.isEmpty else {
       return (nil, buildErrorJson(status: .invalidParams, errorMessage: "Invalid args"))
     }
-    let (status, errorMessage, serializedTxs, versions) = await provider.signAllTransactions(params)
+    let (status, errorMessage, serializedTxs, versions) = await provider.signAllTransactions(
+      params: params
+    )
     guard status == .success else {
       return (nil, buildErrorJson(status: status, errorMessage: errorMessage))
     }

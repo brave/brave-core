@@ -15,7 +15,7 @@ extension BraveWalletBlockchainRegistry {
       body: { @MainActor group -> [NetworkAssets] in
         for (index, network) in networks.enumerated() {
           group.addTask { @MainActor in
-            let allTokens = await self.allTokens(network.chainId, coin: network.coin)
+            let allTokens = await self.allTokens(chainId: network.chainId, coin: network.coin)
             return [
               NetworkAssets(
                 network: network,
@@ -42,7 +42,7 @@ extension BraveWalletBlockchainRegistry {
       body: { @MainActor group -> [BraveWallet.OnRampProvider: [BraveWallet.BlockchainToken]] in
         for provider in providers {
           group.addTask { @MainActor in
-            let allTokens = await self.buyTokens(provider, chainId: network.chainId)
+            let allTokens = await self.buyTokens(provider: provider, chainId: network.chainId)
             return [provider: allTokens]
           }
         }

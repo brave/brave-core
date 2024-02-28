@@ -51,7 +51,7 @@ public class BraveSkusManager {
   // MARK: - Handling SKU methods.
 
   func refreshOrder(for orderId: String, domain: String, resultJSON: @escaping (Any?) -> Void) {
-    sku.refreshOrder(domain, orderId: orderId) { completion in
+    sku.refreshOrder(domain: domain, orderId: orderId) { completion in
       do {
         guard let data = completion.data(using: .utf8) else { return }
         let json = try JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
@@ -69,7 +69,7 @@ public class BraveSkusManager {
     domain: String,
     resultCredential: @escaping (String) -> Void
   ) {
-    sku.fetchOrderCredentials(domain, orderId: orderId) { completion in
+    sku.fetchOrderCredentials(domain: domain, orderId: orderId) { completion in
       Logger.module.debug("skus fetchOrderCredentials")
       resultCredential(completion)
     }
@@ -81,7 +81,7 @@ public class BraveSkusManager {
     resultCredential: ((String) -> Void)?
   ) {
     Logger.module.debug("skus prepareCredentialsPresentation")
-    sku.prepareCredentialsPresentation(domain, path: path) { credential in
+    sku.prepareCredentialsPresentation(domain: domain, path: path) { credential in
       if !credential.isEmpty {
         if let vpnCredential = BraveSkusWebHelper.fetchVPNCredential(credential, domain: domain) {
           Preferences.VPN.skusCredential.value = credential
@@ -99,7 +99,7 @@ public class BraveSkusManager {
   }
 
   func credentialSummary(for domain: String, resultJSON: @escaping (Any?) -> Void) {
-    sku.credentialSummary(domain) { [self] completion in
+    sku.credentialSummary(domain: domain) { [self] completion in
       do {
         Logger.module.debug("skus credentialSummary")
 
