@@ -24,7 +24,9 @@ AIChatResourceSnifferThrottle::MaybeCreateThrottleFor(
     const GURL& url,
     scoped_refptr<base::SequencedTaskRunner> task_runner) {
   DCHECK(delegate);
-
+  // TODO(petemill): Allow some kind of config to be passed in to determine
+  // which hosts and paths to sniff, and how to parse it to a
+  // |mojom::PageContent|.
   if (url.SchemeIsHTTPOrHTTPS() && base::Contains(kYouTubeHosts, url.host()) &&
       base::EqualsCaseInsensitiveASCII(url.path(), kYouTubePlayerAPIPath)) {
     VLOG(1) << __func__ << " Creating throttle for url: " << url.spec();
