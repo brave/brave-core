@@ -119,7 +119,6 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
        IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG},
       {"rewriteCategoryTitle", IDS_AI_CHAT_CONTEXT_REWRITE},
       {"improveLabel", IDS_AI_CHAT_CONTEXT_IMPROVE},
-      {"simplifyLabel", IDS_AI_CHAT_CONTEXT_SIMPLIFY},
       {"changeToneLabel", IDS_AI_CHAT_CONTEXT_CHANGE_TONE},
       {"changeLengthLabel", IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH},
       {"academicizeLabel", IDS_AI_CHAT_CONTEXT_ACADEMICIZE},

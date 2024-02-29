@@ -46,11 +46,6 @@ function getCategoryAndItem(actionType: mojom.ActionType): {
           category: getLocale('rewriteCategoryTitle'),
           item: getLocale('improveLabel')
         }
-      case mojom.ActionType.SIMPLIFY:
-        return {
-          category: getLocale('rewriteCategoryTitle'),
-          item: getLocale('simplifyLabel')
-        }
       case mojom.ActionType.ACADEMICIZE:
         return {
           category: getLocale('changeToneLabel'),

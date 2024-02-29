@@ -74,7 +74,6 @@ Propose up to 3 very short questions that a reader may ask about the content. Co
 <message name="IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" translateable="false">Use the excerpt to generate a post that could be used on social platforms like Twitter.</message>
 <message name="IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG" translateable="false">Use the excerpt to generate a post that could be used on social platforms like Reddit.</message>
 <message name="IDS_AI_CHAT_QUESTION_IMPROVE" translateable="false">Improve the language of the excerpt. Include only the rewritten version in your response.</message>
-<message name="IDS_AI_CHAT_QUESTION_SIMPLIFY" translateable="false">Rewrite the excerpt in simpler terms so that it is easier to understand for a general audience. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_ACADEMICIZE" translateable="false">Rewrite the excerpt in an academic tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_PROFESSIONALIZE" translateable="false">Rewrite the excerpt in a professional tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_CASUALIZE" translateable="false">Rewrite the excerpt in a casual tone. Include only the rewritten version in your response.</message>

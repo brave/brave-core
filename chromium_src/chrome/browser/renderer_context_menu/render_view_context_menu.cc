@@ -245,7 +245,6 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
-    case IDC_AI_CHAT_CONTEXT_SIMPLIFY:
     case IDC_AI_CHAT_CONTEXT_CHANGE_TONE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
@@ -354,7 +353,6 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
-    case IDC_AI_CHAT_CONTEXT_SIMPLIFY:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
     case IDC_AI_CHAT_CONTEXT_CASUALIZE:
@@ -447,10 +445,6 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::IMPROVE);
       break;
-    case IDC_AI_CHAT_CONTEXT_SIMPLIFY:
-      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
-                                 ai_chat::mojom::ActionType::SIMPLIFY);
-      break;
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::ACADEMICIZE);
@@ -496,10 +490,6 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT, IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT);
   ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_EXPLAIN,
                                              IDS_AI_CHAT_CONTEXT_EXPLAIN);
-  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_PARAPHRASE,
-                                             IDS_AI_CHAT_CONTEXT_PARAPHRASE);
-  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_IMPROVE,
-                                             IDS_AI_CHAT_CONTEXT_IMPROVE);
   ai_chat_submenu_model_.AddSeparator(ui::NORMAL_SEPARATOR);
 
   ai_chat_submenu_model_.AddTitleWithStringId(IDS_AI_CHAT_CONTEXT_REWRITE);
@@ -507,8 +497,6 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
                                              IDS_AI_CHAT_CONTEXT_PARAPHRASE);
   ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_IMPROVE,
                                              IDS_AI_CHAT_CONTEXT_IMPROVE);
-  ai_chat_submenu_model_.AddItemWithStringId(IDC_AI_CHAT_CONTEXT_SIMPLIFY,
-                                             IDS_AI_CHAT_CONTEXT_SIMPLIFY);
 
   ai_chat_change_tone_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDS_AI_CHAT_CONTEXT_ACADEMICIZE);

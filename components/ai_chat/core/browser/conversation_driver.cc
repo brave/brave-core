@@ -76,8 +76,6 @@ GetActionTypeQuestionMap() {
                 IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
            {mojom::ActionType::IMPROVE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
-           {mojom::ActionType::SIMPLIFY,
-            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SIMPLIFY)},
            {mojom::ActionType::PROFESSIONALIZE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
            {mojom::ActionType::CASUALIZE,
