@@ -60,8 +60,6 @@ void SiteVisit::CheckIfLandedOnPage(const int32_t tab_id,
                                     const std::vector<GURL>& redirect_chain) {
   CHECK(last_clicked_ad_);
 
-  timer_.Stop();
-
   landed_page_tab_id_ = tab_id;
 
   const base::Time record_page_land_at = timer_.Start(

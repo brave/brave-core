@@ -52,7 +52,7 @@ void IssuersUrlRequest::PeriodicallyFetch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void IssuersUrlRequest::Fetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
+  if (is_fetching_ || timer_.IsRunning()) {
     return;
   }
 
@@ -118,7 +118,7 @@ void IssuersUrlRequest::FailedToFetchIssuers() {
 }
 
 void IssuersUrlRequest::FetchAfterDelay() {
-  CHECK(!retry_timer_.IsRunning());
+  CHECK(!timer_.IsRunning());
 
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE, GetFetchDelay(),
@@ -132,10 +132,10 @@ void IssuersUrlRequest::FetchAfterDelay() {
 void IssuersUrlRequest::Retry() {
   CHECK(!timer_.IsRunning());
 
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
-      FROM_HERE, kRetryAfter,
-      base::BindOnce(&IssuersUrlRequest::RetryCallback,
-                     weak_factory_.GetWeakPtr()));
+  const base::Time retry_at =
+      timer_.StartWithPrivacy(FROM_HERE, kRetryAfter,
+                              base::BindOnce(&IssuersUrlRequest::RetryCallback,
+                                             weak_factory_.GetWeakPtr()));
 
   BLOG(1, "Retry fetching issuers " << FriendlyDateAndTime(retry_at));
 
@@ -151,7 +151,7 @@ void IssuersUrlRequest::RetryCallback() {
 }
 
 void IssuersUrlRequest::StopRetrying() {
-  retry_timer_.Stop();
+  timer_.Stop();
 }
 
 void IssuersUrlRequest::NotifyDidFetchIssuers(

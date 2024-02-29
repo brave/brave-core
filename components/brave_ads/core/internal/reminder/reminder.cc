@@ -39,9 +39,14 @@ Reminder::~Reminder() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void Reminder::OnDidAddHistory(const HistoryItemInfo& history_item) {
+void Reminder::MaybeShowReminderAfterDelay(
+    const HistoryItemInfo& history_item) {
   timer_.Start(FROM_HERE, kMaybeShowReminderAfter,
                base::BindOnce(&MaybeShowReminder, history_item));
+}
+
+void Reminder::OnDidAddHistory(const HistoryItemInfo& history_item) {
+  MaybeShowReminderAfterDelay(history_item);
 }
 
 }  // namespace brave_ads

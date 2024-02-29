@@ -50,7 +50,7 @@ void SubdivisionUrlRequest::PeriodicallyFetch() {
 ///////////////////////////////////////////////////////////////////////////////
 
 void SubdivisionUrlRequest::Fetch() {
-  if (is_fetching_ || retry_timer_.IsRunning()) {
+  if (is_fetching_ || timer_.IsRunning()) {
     return;
   }
 
@@ -91,6 +91,8 @@ void SubdivisionUrlRequest::FetchCallback(
 }
 
 void SubdivisionUrlRequest::FetchAfterDelay() {
+  CHECK(!timer_.IsRunning());
+
   const base::Time fetch_at = timer_.StartWithPrivacy(
       FROM_HERE,
       ShouldDebug() ? kDebugFetchAfter : kFetchSubdivisionAfter.Get(),
@@ -124,7 +126,7 @@ void SubdivisionUrlRequest::FailedToFetchSubdivision() {
 void SubdivisionUrlRequest::Retry() {
   CHECK(!timer_.IsRunning());
 
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
+  const base::Time retry_at = timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&SubdivisionUrlRequest::RetryCallback,
                      weak_factory_.GetWeakPtr()));
@@ -143,7 +145,7 @@ void SubdivisionUrlRequest::RetryCallback() {
 }
 
 void SubdivisionUrlRequest::StopRetrying() {
-  retry_timer_.Stop();
+  timer_.Stop();
 }
 
 void SubdivisionUrlRequest::NotifyWillFetchSubdivision(

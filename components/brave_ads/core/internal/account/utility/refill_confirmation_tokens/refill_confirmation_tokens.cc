@@ -54,7 +54,7 @@ RefillConfirmationTokens::~RefillConfirmationTokens() {
 void RefillConfirmationTokens::MaybeRefill(const WalletInfo& wallet) {
   CHECK(wallet.IsValid());
 
-  if (is_processing_ || retry_timer_.IsRunning()) {
+  if (is_refilling_ || retry_timer_.IsRunning()) {
     return;
   }
 
@@ -78,9 +78,9 @@ void RefillConfirmationTokens::MaybeRefill(const WalletInfo& wallet) {
 ///////////////////////////////////////////////////////////////////////////////
 
 void RefillConfirmationTokens::Refill() {
-  CHECK(!is_processing_);
+  CHECK(!is_refilling_);
 
-  is_processing_ = true;
+  is_refilling_ = true;
 
   NotifyWillRefillConfirmationTokens();
 
@@ -277,7 +277,7 @@ void RefillConfirmationTokens::SuccessfullyRefilled() {
 
   Reset();
 
-  is_processing_ = false;
+  is_refilling_ = false;
 
   NotifyDidRefillConfirmationTokens();
 }
@@ -293,6 +293,8 @@ void RefillConfirmationTokens::FailedToRefill(const bool should_retry) {
 }
 
 void RefillConfirmationTokens::Retry() {
+  CHECK(!retry_timer_.IsRunning());
+
   const base::Time retry_at = retry_timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RefillConfirmationTokens::RetryCallback,
