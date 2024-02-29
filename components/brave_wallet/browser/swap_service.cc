@@ -315,10 +315,8 @@ GURL SwapService::GetZeroExQuoteURL(
   // this, noting the inability of /price to discover optimal RFQ quotes. This
   // should be considered a temporary workaround until 0x comes up with a
   // solution.
-  std::string spec =
-      base::StringPrintf(use_rfqt ? "%s/swap/v1/quote" : "%s/swap/v1/price",
-                         GetBaseSwapURL(params.from_chain_id).c_str());
-  GURL url(spec);
+  auto url = GURL(GetBaseSwapURL(params.from_chain_id))
+                 .Resolve(use_rfqt ? "/swap/v1/quote" : "/swap/v1/price");
   url = AppendZeroExSwapParams(url, params, fee_param);
   // That flag prevents an allowance validation by the 0x router. Disable it
   // here and perform the validation on the client side.
@@ -335,9 +333,8 @@ GURL SwapService::GetZeroExQuoteURL(
 GURL SwapService::GetZeroExTransactionURL(
     const mojom::SwapQuoteParams& params,
     const std::optional<std::string> fee_param) {
-  std::string spec = base::StringPrintf(
-      "%s/swap/v1/quote", GetBaseSwapURL(params.from_chain_id).c_str());
-  GURL url(spec);
+  auto url =
+      GURL(GetBaseSwapURL(params.from_chain_id)).Resolve("/swap/v1/quote");
   url = AppendZeroExSwapParams(url, params, fee_param);
 
   if (HasRFQTLiquidity(params.from_chain_id)) {
@@ -351,9 +348,7 @@ GURL SwapService::GetZeroExTransactionURL(
 GURL SwapService::GetJupiterQuoteURL(
     const mojom::SwapQuoteParams& params,
     const std::optional<std::string> fee_param) {
-  std::string spec = base::StringPrintf(
-      "%s/v6/quote", GetBaseSwapURL(params.from_chain_id).c_str());
-  GURL url(spec);
+  auto url = GURL(GetBaseSwapURL(params.from_chain_id)).Resolve("/v6/quote");
   url = AppendJupiterQuoteParams(url, params, fee_param);
 
   return url;
@@ -361,26 +356,17 @@ GURL SwapService::GetJupiterQuoteURL(
 
 // static
 GURL SwapService::GetJupiterTransactionURL(const std::string& chain_id) {
-  std::string spec =
-      base::StringPrintf("%s/v6/swap", GetBaseSwapURL(chain_id).c_str());
-  GURL url(spec);
-  return url;
+  return GURL(GetBaseSwapURL(chain_id)).Resolve("/v6/swap");
 }
 
 // static
 GURL SwapService::GetLiFiQuoteURL() {
-  std::string spec =
-      base::StringPrintf("%s/v1/advanced/routes", kLiFiBaseAPIURL);
-  GURL url(spec);
-  return url;
+  return GURL(kLiFiBaseAPIURL).Resolve("/v1/advanced/routes");
 }
 
 // static
 GURL SwapService::GetLiFiTransactionURL() {
-  std::string spec =
-      base::StringPrintf("%s/v1/advanced/stepTransaction", kLiFiBaseAPIURL);
-  GURL url(spec);
-  return url;
+  return GURL(kLiFiBaseAPIURL).Resolve("/v1/advanced/stepTransaction");
 }
 
 void SwapService::IsSwapSupported(const std::string& chain_id,
