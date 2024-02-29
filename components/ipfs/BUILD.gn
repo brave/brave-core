@@ -49,6 +49,10 @@ static_library("ipfs") {
     "ipld/block.h",
     "ipld/car_block_reader.cc",
     "ipld/car_block_reader.h",
+    "ipld/block_orchestrator.cc",
+    "ipld/block_orchestrator.h",
+    "ipld/trustless_client_types.cc",
+    "ipld/trustless_client_types.h",
   ]
 
   deps = [

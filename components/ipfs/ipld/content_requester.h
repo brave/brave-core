@@ -61,14 +61,14 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
   base::WeakPtrFactory<ContentRequester> weak_ptr_factory_{this};
 };
 
-class ContentReaderFactory {
+class ContentRequesterFactory {
  public:
-  ContentReaderFactory() = default;
-  ~ContentReaderFactory() = default;
-  ContentReaderFactory(const ContentReaderFactory&) = delete;
-  ContentReaderFactory(ContentReaderFactory&&) = delete;
-  ContentReaderFactory& operator=(const ContentReaderFactory&) = delete;
-  ContentReaderFactory& operator=(ContentReaderFactory&&) = delete;
+  ContentRequesterFactory() = default;
+  ~ContentRequesterFactory() = default;
+  ContentRequesterFactory(const ContentRequesterFactory&) = delete;
+  ContentRequesterFactory(ContentRequesterFactory&&) = delete;
+  ContentRequesterFactory& operator=(const ContentRequesterFactory&) = delete;
+  ContentRequesterFactory& operator=(ContentRequesterFactory&&) = delete;
 
   std::unique_ptr<ContentRequester> CreateCarContentRequester(
       const GURL& url,

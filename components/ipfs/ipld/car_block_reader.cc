@@ -69,7 +69,7 @@ bool ProcessHeader(const std::vector<uint8_t>& block_data,
   roots_dict.Set("roots", std::move(roots_items));
 
   callback.Run(block_factory->CreateCarBlock(
-      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt));
+      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt), false);
   return true;
 }
 }  // namespace
@@ -88,6 +88,7 @@ void CarBlockReader::OnRequestDataReceived(
   if (is_completed && !data) {
     is_header_retrieved_ = false;
     buffer_.clear();
+    callback.Run(nullptr, true);
     return;
   }
 
@@ -137,7 +138,7 @@ void CarBlockReader::OnRequestDataReceived(
                                         base::Value::Type::DICT);
       callback.Run(GetBlockFactory()->CreateCarBlock(
           block_info_result.cid.c_str(), std::move(json_value), nullptr,
-          absl::nullopt));
+          absl::nullopt), false);
       continue;
     }
 
@@ -151,7 +152,7 @@ void CarBlockReader::OnRequestDataReceived(
         block_content.cid.c_str(), base::Value(),
         std::make_unique<std::vector<uint8_t>>(block_content.data.begin(),
                                                block_content.data.end()),
-        verified));
+        verified), false);
   }
 }
 

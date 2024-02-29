@@ -31,7 +31,7 @@ bool IsPublicGatewayLink(const GURL& ipfs_url, PrefService* prefs) {
 
 namespace ipfs::ipld {
 
-std::unique_ptr<ContentRequester> ContentReaderFactory::CreateCarContentRequester(const GURL& url,
+std::unique_ptr<ContentRequester> ContentRequesterFactory::CreateCarContentRequester(const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
       const bool only_structure) {

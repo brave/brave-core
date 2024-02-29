@@ -9,6 +9,7 @@
 #include <utility>
 
 #include "brave/components/ipfs/ipld/block.h"
+#include "brave/components/ipfs/ipld/car_block_reader.h"
 #include "brave/components/ipfs/ipld/content_requester.h"
 
 namespace ipfs::ipld {
@@ -37,6 +38,18 @@ BlockReader::GetReadCallbackForTests(BlockReaderCallback callback) {
   return base::BindRepeating(&BlockReader::OnRequestDataReceived,
                              weak_ptr_factory_.GetWeakPtr(),
                              std::move(callback));
+}
+
+BlockReaderFactory::BlockReaderFactory() = default;
+BlockReaderFactory::~BlockReaderFactory() = default;
+
+std::unique_ptr<BlockReader> BlockReaderFactory::CreateCarBlockReader(
+    const GURL& url,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* prefs) {
+  return std::make_unique<CarBlockReader>(
+      content_reader_factory_->CreateCarContentRequester(
+          url, url_loader_factory, prefs));
 }
 
 }  // namespace ipfs::ipld
