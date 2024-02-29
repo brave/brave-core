@@ -7,7 +7,6 @@
 
 #include "base/functional/bind.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
-#include "brave/components/playlist/browser/playlist_service.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 
@@ -40,7 +39,7 @@ void PlaylistBackgroundWebContents::Add(
   auto load_url_params = content::NavigationController::LoadURLParams(url);
 
   content::NavigationController& controller = web_contents->GetController();
-  if (service_->ShouldUseFakeUA(url)) {
+  if (PlaylistBackgroundWebContentsHelper::ShouldUseFakeUA(url)) {
     DVLOG(2) << __FUNCTION__ << " Using fake UA to detect media files.";
 
     blink::UserAgentOverride user_agent_override(

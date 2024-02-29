@@ -170,12 +170,6 @@ std::vector<mojom::PlaylistItemPtr> PlaylistService::GetPlaylistItems(
     item->media_source = media_url;
     item->media_path = media_url;
     item->is_blob_from_media_source = *is_blob_from_media_source;
-    if (!CanCacheMedia(item)) {
-      LOG(ERROR)
-          << __func__
-          << "media scheme is not https:// nor blob: that we can cache from";
-      continue;
-    }
 
     if (thumbnail) {
       if (GURL thumbnail_url(*thumbnail);
@@ -204,45 +198,9 @@ std::vector<mojom::PlaylistItemPtr> PlaylistService::GetPlaylistItems(
   return items;
 }
 
-bool PlaylistService::CanCacheMedia(const mojom::PlaylistItemPtr& item) const {
-  GURL media_url(item->media_source);
-  if (media_url.SchemeIs(url::kHttpsScheme)) {
-    return true;
-  }
-
-  if (media_url.SchemeIsBlob()) {
-    if (item->is_blob_from_media_source) {
-      // At this moment, we have a few sites that we can get media files with
-      // hacks.
-      return media_detector_component_manager_->ShouldHideMediaSrcAPI(
-                 media_url) ||
-             media_detector_component_manager_->ShouldUseFakeUA(media_url);
-    }
-
-    // blob: which is not Media Source
-    // TODO(sko) Test and allow this case referring to
-    // https://github.com/brave/brave-core/pull/17246
-    return false;
-  }
-
-  return false;
-}
-
 bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     const mojom::PlaylistItemPtr& item) const {
-  GURL media_url(item->media_source);
-  if (media_url.SchemeIs(url::kHttpsScheme)) {
-    return false;
-  }
-
-  if (media_url.SchemeIsBlob() && item->is_blob_from_media_source) {
-    CHECK(media_detector_component_manager_->ShouldHideMediaSrcAPI(media_url) ||
-          media_detector_component_manager_->ShouldUseFakeUA(media_url));
-    return true;
-  }
-
-  NOTREACHED_NORETURN()
-      << "CanCacheMedia() should be true when this method is called";
+  return item->media_source.SchemeIsBlob() && item->is_blob_from_media_source;
 }
 
 void PlaylistService::AddMediaFilesFromContentsToPlaylist(
@@ -641,19 +599,6 @@ bool PlaylistService::HasPlaylistItem(const std::string& id) const {
   return prefs_->GetDict(kPlaylistItemsPref).FindDict(id);
 }
 
-bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
-    const GURL& url) const {
-  return ShouldUseFakeUA(url) ||
-         media_detector_component_manager_->ShouldHideMediaSrcAPI(url);
-}
-
-bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
-    const std::vector<mojom::PlaylistItemPtr>& items) {
-  return base::ranges::any_of(items, [&](const auto& item) {
-    return ShouldExtractMediaFromBackgroundWebContents(item);
-  });
-}
-
 const std::string& PlaylistService::GetMediaSourceAPISuppressorScript() const {
   return media_detector_component_manager_->GetMediaSourceAPISuppressorScript();
 }
@@ -705,7 +650,7 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     const std::string& playlist_id,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
-  if (items.size() == 1 && ShouldExtractMediaFromBackgroundWebContents(items)) {
+  if (items.size() == 1 && ShouldExtractMediaFromBackgroundWebContents(items[0])) {
     background_web_contents_->Add(
         items[0]->page_source,
         base::BindOnce(
@@ -873,25 +818,6 @@ void PlaylistService::CreatePlaylistItem(const mojom::PlaylistItemPtr& item,
                      std::move(on_dir_created)));
 
   playlist_p3a_.ReportNewUsage();
-}
-
-bool PlaylistService::ShouldGetMediaFromBackgroundWebContents(
-    content::WebContents* contents) const {
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    return true;
-  }
-
-  CHECK(contents);
-  const auto& url = contents->GetLastCommittedURL();
-  return ShouldGetMediaFromBackgroundWebContents(url);
-}
-
-bool PlaylistService::ShouldUseFakeUA(const GURL& url) const {
-  if (base::FeatureList::IsEnabled(features::kPlaylistFakeUA)) {
-    return true;
-  }
-
-  return media_detector_component_manager_->ShouldUseFakeUA(url);
 }
 
 void PlaylistService::OnPlaylistItemDirCreated(

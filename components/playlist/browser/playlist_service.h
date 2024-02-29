@@ -223,17 +223,10 @@ class PlaylistService : public KeyedService,
   void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
-  // Returns true when any of items contains blob: scheme, which we can't cache
-  // media directly from.
-  bool ShouldExtractMediaFromBackgroundWebContents(
-      const std::vector<mojom::PlaylistItemPtr>& items);
-
   bool playlist_enabled() const { return *enabled_pref_; }
 
   const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
-
-  bool ShouldUseFakeUA(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
@@ -267,8 +260,6 @@ class PlaylistService : public KeyedService,
   std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value::List list,
                                                        GURL page_url);
 
-  bool CanCacheMedia(const mojom::PlaylistItemPtr& item) const;
-
   bool ShouldExtractMediaFromBackgroundWebContents(
       const mojom::PlaylistItemPtr& item) const;
 
@@ -290,13 +281,6 @@ class PlaylistService : public KeyedService,
                 AddMediaFilesCallback callback,
                 base::Value::List media,
                 const GURL& url);
-
-  // Returns true when we should try getting media from a background web
-  // contents that is different from the given |contents|. which means it could
-  // have impact on performance/memory.
-  bool ShouldGetMediaFromBackgroundWebContents(
-      content::WebContents* contents) const;
-  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
