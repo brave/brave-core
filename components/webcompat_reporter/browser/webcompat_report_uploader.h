@@ -26,6 +26,7 @@ struct Report {
   Report();
   ~Report();
 
+  std::string channel;
   GURL report_url;
   bool shields_enabled;
   std::string ad_block_setting;

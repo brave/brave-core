@@ -16,6 +16,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
@@ -103,6 +104,7 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
       profile_prefs->GetString(language::prefs::kAcceptLanguages);
   pending_report_.language_farbling =
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled);
+  pending_report_.channel = brave::GetChannelName();
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;

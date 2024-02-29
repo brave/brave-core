@@ -57,6 +57,7 @@ void WebcompatReportUploader::SubmitReport(const Report& report) {
   report_details_dict.Set(kDetailsField, report.details.Clone());
   report_details_dict.Set(kContactField, report.contact.Clone());
 
+  report_details_dict.Set(kChannelField, report.channel);
   report_details_dict.Set(kShieldsEnabledField, report.shields_enabled);
   report_details_dict.Set(kAdBlockSettingField, report.ad_block_setting);
   report_details_dict.Set(kFPBlockSettingField, report.fp_block_setting);
