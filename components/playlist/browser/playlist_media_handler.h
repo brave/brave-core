@@ -33,11 +33,10 @@ namespace playlist {
 class PlaylistMediaHandler final
     : public content::WebContentsUserData<PlaylistMediaHandler>,
       public mojom::PlaylistMediaResponder {
- public:
   using Signature = void(base::Value::List, const GURL&);
-  using OnMediaDetectedCallback =
-      std::variant<base::OnceCallback<Signature>,
-                   base::RepeatingCallback<Signature>>;
+ public:
+  using OnceCallback = base::OnceCallback<Signature>;
+  using RepeatingCallback = base::RepeatingCallback<Signature>;
 
   PlaylistMediaHandler(const PlaylistMediaHandler&) = delete;
   PlaylistMediaHandler& operator=(const PlaylistMediaHandler&) = delete;
@@ -49,6 +48,8 @@ class PlaylistMediaHandler final
 
  private:
   friend class content::WebContentsUserData<PlaylistMediaHandler>;
+
+  using OnMediaDetectedCallback = std::variant<OnceCallback, RepeatingCallback>;
 
   // Depending on the callback you pass to
   // `PlaylistMediaHandler::CreateForWebContents()` when creating the

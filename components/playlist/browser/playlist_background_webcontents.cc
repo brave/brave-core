@@ -22,8 +22,7 @@ PlaylistBackgroundWebContents::~PlaylistBackgroundWebContents() = default;
 
 void PlaylistBackgroundWebContents::Add(
     const GURL& url,
-    base::OnceCallback<PlaylistMediaHandler::Signature>
-        on_detected_media_callback) {
+    PlaylistMediaHandler::OnceCallback on_media_detected_callback) {
   content::WebContents::CreateParams create_params(context_);
   create_params.is_never_visible = true;
 
@@ -34,10 +33,9 @@ void PlaylistBackgroundWebContents::Add(
       web_contents.get(),
       base::BindOnce(&PlaylistBackgroundWebContents::Remove,
                      weak_factory_.GetWeakPtr(), web_contents.get(),
-                     std::move(on_detected_media_callback)));
-  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
-      web_contents.get(), service_->GetMediaSourceAPISuppressorScript(),
-      service_->GetMediaDetectorScript(url));
+                     std::move(on_media_detected_callback)));
+  PlaylistBackgroundWebContentsHelper::CreateForWebContents(web_contents.get(),
+                                                            service_);
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);
 
@@ -69,12 +67,11 @@ void PlaylistBackgroundWebContents::Add(
 
 void PlaylistBackgroundWebContents::Remove(
     content::WebContents* web_contents,
-    base::OnceCallback<PlaylistMediaHandler::Signature>
-        on_detected_media_callback,
+    PlaylistMediaHandler::OnceCallback on_media_detected_callback,
     base::Value::List media,
     const GURL& url) {
   background_web_contents_.erase(web_contents);
-  std::move(on_detected_media_callback).Run(std::move(media), url);
+  std::move(on_media_detected_callback).Run(std::move(media), url);
 }
 
 }  // namespace playlist

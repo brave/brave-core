@@ -111,8 +111,6 @@ class PlaylistTabHelper
 
   raw_ptr<PlaylistService> service_;
 
-  GURL target_url_;
-
   bool is_adding_items_ = false;
 
   base::OneShotTimer media_extraction_from_background_web_contents_timer_;
