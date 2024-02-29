@@ -6,8 +6,6 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 
-#include <string>
-
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -17,6 +15,8 @@ class WebContents;
 }  // namespace content
 
 namespace playlist {
+
+class PlaylistService;
 
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
@@ -36,13 +36,10 @@ class PlaylistBackgroundWebContentsHelper final
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
 
-  PlaylistBackgroundWebContentsHelper(
-      content::WebContents* web_contents,
-      const std::string& media_source_api_suppressor,
-      const std::string& media_detector);
+  PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
+                                      PlaylistService* service);
 
-  std::string media_source_api_suppressor_;
-  std::string media_detector_;
+  raw_ptr<PlaylistService> service_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };

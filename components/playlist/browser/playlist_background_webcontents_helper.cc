@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/logging.h"
+#include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/web_contents.h"
@@ -38,19 +39,18 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
       ->GetRemoteAssociatedInterfaces()
       ->GetInterface(&frame_observer_config);
   frame_observer_config->AddMediaSourceAPISuppressor(
-      media_source_api_suppressor_);
-  frame_observer_config->AddMediaDetector(media_detector_);
+      service_->GetMediaSourceAPISuppressorScript());
+  frame_observer_config->AddMediaDetector(
+      service_->GetMediaDetectorScript(url));
 }
 
 PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     content::WebContents* web_contents,
-    const std::string& media_source_api_suppressor,
-    const std::string& media_detector)
+    PlaylistService* service)
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      media_source_api_suppressor_(media_source_api_suppressor),
-      media_detector_(media_detector) {}
+      service_(service) {}
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);
 

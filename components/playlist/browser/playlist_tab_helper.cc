@@ -194,12 +194,6 @@ void PlaylistTabHelper::DidFinishNavigation(
     return;
   }
 
-  if (auto old_url =
-          std::exchange(target_url_, web_contents()->GetLastCommittedURL());
-      old_url == target_url_) {
-    return;
-  }
-
   // We're resetting data on finish, not on start, because navigation could fail
   // or aborted.
   ResetData();

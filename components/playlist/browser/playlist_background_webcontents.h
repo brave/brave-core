@@ -32,13 +32,11 @@ class PlaylistBackgroundWebContents final {
   ~PlaylistBackgroundWebContents();
 
   void Add(const GURL& url,
-           base::OnceCallback<PlaylistMediaHandler::Signature>
-               on_detected_media_callback);
+           PlaylistMediaHandler::OnceCallback on_media_detected_callback);
 
  private:
   void Remove(content::WebContents* web_contents,
-              base::OnceCallback<PlaylistMediaHandler::Signature>
-                  on_detected_media_callback,
+              PlaylistMediaHandler::OnceCallback on_media_detected_callback,
               base::Value::List media,
               const GURL& url);
 
