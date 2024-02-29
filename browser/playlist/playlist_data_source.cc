@@ -11,8 +11,10 @@
 #include <utility>
 
 #include "base/containers/heap_array.h"
+#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/memory_mapped_file.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/memory/ref_counted_memory.h"
@@ -40,19 +42,42 @@ namespace {
 
 constexpr int64_t kMediaChunkSizeInByte = 1024 * 1024 * 10;  // 10MB
 
-scoped_refptr<base::RefCountedMemory> ReadFileToString(
+class RefCountedMemMap : public base::RefCountedMemory {
+ public:
+  explicit RefCountedMemMap(const base::FilePath& path) {
+    base::File file = base::File(
+        path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+    if (!file.IsValid() || file.GetLength() > 1024 * 1024 * 100) {
+      // In order to avoid OOM crash, limits the file size to 100MB.
+      return;
+    }
+    initialized_ = memory_mapped_file_.Initialize(std::move(file));
+  }
+
+  bool initialized() const { return initialized_; }
+
+  const unsigned char* front() const override {
+    return memory_mapped_file_.data();
+  }
+  size_t size() const override { return memory_mapped_file_.length(); }
+
+ private:
+  ~RefCountedMemMap() override = default;
+
+  base::MemoryMappedFile memory_mapped_file_;
+  bool initialized_ = false;
+};
+
+scoped_refptr<base::RefCountedMemory> ReadMemoryMappedFile(
     const base::FilePath& path) {
   CHECK_CURRENTLY_NOT_ON_UI_THREAD();
 
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents)) {
-    VLOG(2) << __FUNCTION__ << " Failed to read " << path;
+  auto mem_mapped_file = base::MakeRefCounted<RefCountedMemMap>(path);
+  if (!mem_mapped_file->initialized()) {
     return nullptr;
   }
 
-  return base::MakeRefCounted<base::RefCountedBytes>(
-      reinterpret_cast<const unsigned char*>(contents.c_str()),
-      contents.length());
+  return mem_mapped_file;
 }
 
 content::URLDataSource::RangeDataResult ReadFileRange(
@@ -100,7 +125,7 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   const auto full_path = content::URLDataSource::URLToRequestPath(url);
   const auto paths = base::SplitStringPiece(
       full_path, "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
-  CHECK_EQ(paths.size(), 2u);
+  CHECK_EQ(paths.size(), 2u) << url.spec();
 
   id = paths.at(0);
   const auto& type_string = paths.at(1);
@@ -173,7 +198,7 @@ void PlaylistDataSource::GetThumbnail(
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, base::MayBlock(),
-      base::BindOnce(&ReadFileToString, thumbnail_path),
+      base::BindOnce(&ReadMemoryMappedFile, thumbnail_path),
       std::move(got_data_callback));
 }
 
@@ -220,6 +245,11 @@ void PlaylistDataSource::GetFavicon(
 }
 
 std::string PlaylistDataSource::GetMimeType(const GURL& url) {
+  if (url.is_empty()) {
+    // This could be reached on start up.
+    return {};
+  }
+
   switch (DataRequest data_request(url); data_request.type) {
     case DataRequest::kThumbnail:
       return "image/png";
@@ -238,6 +268,11 @@ bool PlaylistDataSource::AllowCaching() {
 }
 
 bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
+  if (url.is_empty()) {
+    // This could be reached on start up.
+    return false;
+  }
+
   return DataRequest(url).type == DataRequest::kMedia;
 }
 
