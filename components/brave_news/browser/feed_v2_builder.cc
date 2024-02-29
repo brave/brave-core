@@ -30,6 +30,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/components/brave_news/api/topics.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -37,7 +38,6 @@
 #include "brave/components/brave_news/browser/topics_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
-#include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_thread.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
@@ -823,9 +823,11 @@ struct FeedV2Builder::FeedGenerationInfo {
   ~FeedGenerationInfo() = default;
 };
 
-FeedV2Builder::UpdateRequest::UpdateRequest(UpdateSettings settings,
-                                            UpdateCallback callback)
-    : settings(std::move(settings)) {
+FeedV2Builder::UpdateRequest::UpdateRequest(
+    BraveNewsSubscriptions subscriptions,
+    UpdateSettings settings,
+    UpdateCallback callback)
+    : settings(std::move(settings)), subscriptions(std::move(subscriptions)) {
   callbacks.push_back(std::move(callback));
 }
 FeedV2Builder::UpdateRequest::~UpdateRequest() = default;
@@ -1012,21 +1014,16 @@ FeedV2Builder::FeedV2Builder(
     PublishersController& publishers_controller,
     ChannelsController& channels_controller,
     SuggestionsController& suggestions_controller,
-    PrefService& prefs,
     history::HistoryService& history_service,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
       suggestions_controller_(suggestions_controller),
-      prefs_(prefs),
-      fetcher_(publishers_controller, channels_controller, url_loader_factory),
+      fetcher_(publishers_controller, url_loader_factory),
       topics_fetcher_(url_loader_factory),
       signal_calculator_(publishers_controller,
                          channels_controller,
-                         prefs,
-                         history_service) {
-  publishers_observation_.Observe(&publishers_controller);
-}
+                         history_service) {}
 
 FeedV2Builder::~FeedV2Builder() = default;
 
@@ -1040,12 +1037,14 @@ void FeedV2Builder::AddListener(
   instance->OnUpdateAvailable(hash_);
 }
 
-void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
+void FeedV2Builder::BuildFollowingFeed(
+    const BraveNewsSubscriptions& subscriptions,
+    BuildFeedCallback callback) {
   FeedItems raw_feed_items;
   base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
                           [](const auto& item) { return item->Clone(); });
   GenerateFeed(
-      {.signals = true},
+      subscriptions, {.signals = true},
       mojom::FeedV2Type::NewFollowing(mojom::FeedV2FollowingType::New()),
       base::BindOnce([](FeedGenerationInfo info) {
         return GenerateBasicFeed(std::move(info),
@@ -1055,13 +1054,15 @@ void FeedV2Builder::BuildFollowingFeed(BuildFeedCallback callback) {
       std::move(callback));
 }
 
-void FeedV2Builder::BuildChannelFeed(const std::string& channel,
-                                     BuildFeedCallback callback) {
+void FeedV2Builder::BuildChannelFeed(
+    const BraveNewsSubscriptions& subscriptions,
+    const std::string& channel,
+    BuildFeedCallback callback) {
   FeedItems raw_feed_items;
   base::ranges::transform(raw_feed_items_, std::back_inserter(raw_feed_items),
                           [](const auto& item) { return item->Clone(); });
   GenerateFeed(
-      {.signals = true},
+      subscriptions, {.signals = true},
       mojom::FeedV2Type::NewChannel(mojom::FeedV2ChannelType::New(channel)),
       base::BindOnce(
           [](std::string channel, FeedGenerationInfo info) {
@@ -1105,10 +1106,12 @@ void FeedV2Builder::BuildChannelFeed(const std::string& channel,
       std::move(callback));
 }
 
-void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
-                                       BuildFeedCallback callback) {
+void FeedV2Builder::BuildPublisherFeed(
+    const BraveNewsSubscriptions& subscriptions,
+    const std::string& publisher_id,
+    BuildFeedCallback callback) {
   GenerateFeed(
-      {.signals = true},
+      subscriptions, {.signals = true},
       mojom::FeedV2Type::NewPublisher(
           mojom::FeedV2PublisherType::New(publisher_id)),
       base::BindOnce(
@@ -1142,22 +1145,26 @@ void FeedV2Builder::BuildPublisherFeed(const std::string& publisher_id,
       std::move(callback));
 }
 
-void FeedV2Builder::BuildAllFeed(BuildFeedCallback callback) {
-  GenerateFeed({.signals = true, .suggested_publishers = true},
+void FeedV2Builder::BuildAllFeed(const BraveNewsSubscriptions& subscriptions,
+                                 BuildFeedCallback callback) {
+  GenerateFeed(subscriptions, {.signals = true, .suggested_publishers = true},
                mojom::FeedV2Type::NewAll(mojom::FeedV2AllType::New()),
                base::BindOnce(&GenerateAllFeed), std::move(callback));
 }
 
-void FeedV2Builder::EnsureFeedIsUpdating() {
-  UpdateData({.signals = true,
+void FeedV2Builder::EnsureFeedIsUpdating(
+    const BraveNewsSubscriptions& subscriptions) {
+  UpdateData(subscriptions,
+             {.signals = true,
               .suggested_publishers = true,
               .feed = true,
               .topics = true},
              base::DoNothing());
 }
 
-void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
-  UpdateData({.signals = true},
+void FeedV2Builder::GetSignals(const BraveNewsSubscriptions& subscriptions,
+                               GetSignalsCallback callback) {
+  UpdateData(subscriptions, {.signals = true},
              base::BindOnce(
                  [](base::WeakPtr<FeedV2Builder> builder,
                     GetSignalsCallback callback) {
@@ -1173,10 +1180,11 @@ void FeedV2Builder::GetSignals(GetSignalsCallback callback) {
                  weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
 }
 
-void FeedV2Builder::RecheckFeedHash() {
+void FeedV2Builder::RecheckFeedHash(
+    const BraveNewsSubscriptions& subscriptions) {
   const auto& publishers = publishers_controller_->GetLastPublishers();
-  auto channels =
-      channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
+  auto channels = channels_controller_->GetChannelsFromPublishers(
+      publishers, subscriptions);
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
   for (const auto& listener : listeners_) {
@@ -1184,27 +1192,27 @@ void FeedV2Builder::RecheckFeedHash() {
   }
 }
 
-void FeedV2Builder::OnPublishersUpdated(
-    PublishersController* publishers_controller) {
-  RecheckFeedHash();
-}
-
-void FeedV2Builder::UpdateData(UpdateSettings settings,
+void FeedV2Builder::UpdateData(const BraveNewsSubscriptions& subscriptions,
+                               UpdateSettings settings,
                                UpdateCallback callback) {
   if (current_update_) {
     if (current_update_->IsSufficient(settings)) {
       current_update_->callbacks.push_back(std::move(callback));
     } else {
       if (!next_update_) {
-        next_update_.emplace(std::move(settings), std::move(callback));
+        next_update_.emplace(subscriptions, std::move(settings),
+                             std::move(callback));
       } else {
+        // Use the most recent subscription data we have.
+        next_update_->subscriptions = subscriptions;
         next_update_->AlsoUpdate(std::move(settings), std::move(callback));
       }
     }
     return;
   }
 
-  current_update_.emplace(std::move(settings), std::move(callback));
+  current_update_.emplace(subscriptions, std::move(settings),
+                          std::move(callback));
 
   PrepareAndFetch();
 }
@@ -1234,6 +1242,7 @@ void FeedV2Builder::PrepareAndFetch() {
 
 void FeedV2Builder::FetchFeed() {
   DVLOG(1) << __FUNCTION__;
+  CHECK(current_update_);
 
   // Don't refetch the feed if we have items (clearing the items will trigger a
   // refresh).
@@ -1245,6 +1254,7 @@ void FeedV2Builder::FetchFeed() {
   }
 
   fetcher_.FetchFeed(
+      current_update_->subscriptions,
       base::BindOnce(&FeedV2Builder::OnFetchedFeed,
                      // Unretained is safe here because the FeedFetcher is owned
                      // by this and uses weak pointers internally.
@@ -1262,6 +1272,7 @@ void FeedV2Builder::OnFetchedFeed(FeedItems items, ETags tags) {
 
 void FeedV2Builder::CalculateSignals() {
   DVLOG(1) << __FUNCTION__;
+  CHECK(current_update_);
 
   // Don't recalculate the signals unless they've been cleared.
   if (!signals_.empty()) {
@@ -1272,7 +1283,7 @@ void FeedV2Builder::CalculateSignals() {
   }
 
   signal_calculator_.GetSignals(
-      raw_feed_items_,
+      current_update_->subscriptions, raw_feed_items_,
       base::BindOnce(
           &FeedV2Builder::OnCalculatedSignals,
           // Unretained is safe here because we own the SignalCalculator, and it
@@ -1289,6 +1300,7 @@ void FeedV2Builder::OnCalculatedSignals(Signals signals) {
 
 void FeedV2Builder::GetSuggestedPublisherIds() {
   DVLOG(1) << __FUNCTION__;
+  CHECK(current_update_);
 
   // Don't get suggested publisher ids unless they're empty - clearing indicates
   // we should refetch.
@@ -1297,6 +1309,7 @@ void FeedV2Builder::GetSuggestedPublisherIds() {
     return;
   }
   suggestions_controller_->GetSuggestedPublisherIds(
+      current_update_->subscriptions,
       base::BindOnce(&FeedV2Builder::OnGotSuggestedPublisherIds,
                      weak_ptr_factory_.GetWeakPtr()));
 }
@@ -1336,8 +1349,8 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   // Recalculate the hash_ - this will be used to mark the source of generated
   // feeds.
   const auto& publishers = publishers_controller_->GetLastPublishers();
-  auto channels =
-      channels_controller_->GetChannelsFromPublishers(publishers, &*prefs_);
+  auto channels = channels_controller_->GetChannelsFromPublishers(
+      publishers, current_update_->subscriptions);
   std::tie(hash_, subscribed_count_) =
       GetFeedHashAndSubscribedCount(channels, publishers, feed_etags_);
 
@@ -1359,13 +1372,14 @@ void FeedV2Builder::NotifyUpdateCompleted() {
   }
 }
 
-void FeedV2Builder::GenerateFeed(UpdateSettings settings,
+void FeedV2Builder::GenerateFeed(const BraveNewsSubscriptions& subscriptions,
+                                 UpdateSettings settings,
                                  mojom::FeedV2TypePtr type,
                                  FeedGenerator generator,
                                  BuildFeedCallback callback) {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
   UpdateData(
-      std::move(settings),
+      subscriptions, std::move(settings),
       base::BindOnce(
           [](const base::WeakPtr<FeedV2Builder> builder,
              mojom::FeedV2TypePtr type, FeedGenerator generate,
@@ -1382,7 +1396,7 @@ void FeedV2Builder::GenerateFeed(UpdateSettings settings,
             std::vector<std::string> channels;
             for (const auto& [channel_id, channel] :
                  builder->channels_controller_->GetChannelsFromPublishers(
-                     publishers, &*builder->prefs_)) {
+                     publishers, builder->current_update_->subscriptions)) {
               if (base::Contains(channel->subscribed_locales, locale)) {
                 channels.push_back(channel_id);
               }

@@ -5,31 +5,24 @@
 
 #include "brave/components/brave_news/browser/channels_controller.h"
 
-#include <memory>
 #include <string>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/run_loop.h"
-#include "base/strings/string_util.h"
-#include "base/test/bind.h"
-#include "base/test/task_environment.h"
-#include "base/values.h"
+#include "base/functional/bind.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/browser/wait_for_callback.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -83,14 +76,9 @@ class BraveNewsChannelsControllerTest : public testing::Test {
   BraveNewsChannelsControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
-        direct_feed_controller_(profile_.GetPrefs(), nullptr),
-        publishers_controller_(profile_.GetPrefs(),
-                               &direct_feed_controller_,
-                               &api_request_helper_,
-                               nullptr),
-        channels_controller_(profile_.GetPrefs(),
-                             &publishers_controller_,
-                             nullptr) {
+        pref_manager_(*profile_.GetPrefs()),
+        publishers_controller_(&api_request_helper_),
+        channels_controller_(&publishers_controller_) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);
@@ -102,28 +90,11 @@ class BraveNewsChannelsControllerTest : public testing::Test {
   }
 
   brave_news::Channels GetAllChannels() {
-    base::RunLoop loop;
-    brave_news::Channels channels;
-    channels_controller_.GetAllChannels(
-        base::BindLambdaForTesting([&loop, &channels](brave_news::Channels c) {
-          channels = std::move(c);
-          loop.Quit();
-        }));
-    loop.Run();
-
-    return channels;
-  }
-
-  void SetSubscribedSources(const std::vector<std::string>& publisher_ids) {
-    ScopedDictPrefUpdate update(profile_.GetPrefs(), prefs::kBraveNewsSources);
-    for (const auto& id : publisher_ids) {
-      update->Set(id, true);
-    }
-  }
-
-  bool CombinedSourceExists(const std::string& publisher_id) {
-    const auto& value = profile_.GetPrefs()->GetDict(prefs::kBraveNewsSources);
-    return value.FindBool(publisher_id).has_value();
+    auto [channels] =
+        WaitForCallback(base::BindOnce(&ChannelsController::GetAllChannels,
+                                       base::Unretained(&channels_controller_),
+                                       pref_manager_.GetSubscriptions()));
+    return std::move(channels);
   }
 
  protected:
@@ -133,7 +104,7 @@ class BraveNewsChannelsControllerTest : public testing::Test {
   api_request_helper::APIRequestHelper api_request_helper_;
   TestingProfile profile_;
 
-  DirectFeedController direct_feed_controller_;
+  BraveNewsPrefManager pref_manager_;
   PublishersController publishers_controller_;
   ChannelsController channels_controller_;
 };
@@ -156,8 +127,8 @@ TEST_F(BraveNewsChannelsControllerTest, CanGetAllChannels) {
 }
 
 TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
-  channels_controller_.SetChannelSubscribed("en_US", "One", true);
-  channels_controller_.SetChannelSubscribed("en_US", "Five", true);
+  pref_manager_.SetChannelSubscribed("en_US", "One", true);
+  pref_manager_.SetChannelSubscribed("en_US", "Five", true);
 
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
@@ -184,8 +155,8 @@ TEST_F(BraveNewsChannelsControllerTest, GetAllChannelsLoadsSubscribedState) {
 
 TEST_F(BraveNewsChannelsControllerTest,
        GetAllChannelsLoadsCorrectLocaleSubscriptionStatus) {
-  channels_controller_.SetChannelSubscribed("en_US", "One", true);
-  channels_controller_.SetChannelSubscribed("ja_JA", "Five", true);
+  pref_manager_.SetChannelSubscribed("en_US", "One", true);
+  pref_manager_.SetChannelSubscribed("ja_JA", "Five", true);
 
   test_url_loader_factory_.AddResponse(GetPublishersURL(), kPublishersResponse,
                                        net::HTTP_OK);
@@ -203,85 +174,6 @@ TEST_F(BraveNewsChannelsControllerTest,
     EXPECT_EQ(it.first == "Five",
               base::Contains(it.second->subscribed_locales, "ja_JA"));
   }
-}
-
-TEST_F(BraveNewsChannelsControllerTest, CanToggleChannelSubscribed) {
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-
-  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
-  EXPECT_TRUE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-
-  channels_controller_.SetChannelSubscribed("en_US", "Test", false);
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-}
-
-TEST_F(BraveNewsChannelsControllerTest,
-       ChangingAChannelInOneLocaleDoesNotAffectOtherLocales) {
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
-
-  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
-  EXPECT_TRUE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
-
-  channels_controller_.SetChannelSubscribed("ja_JA", "Test", true);
-  EXPECT_TRUE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-  EXPECT_TRUE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
-
-  channels_controller_.SetChannelSubscribed("en_US", "Test", false);
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-  EXPECT_TRUE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
-
-  channels_controller_.SetChannelSubscribed("ja_JA", "Test", false);
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("en_US", "Test"));
-  EXPECT_FALSE(channels_controller_.GetChannelSubscribed("ja_JA", "Test"));
-}
-
-TEST_F(BraveNewsChannelsControllerTest, NoChannelsNoChannelLocales) {
-  EXPECT_EQ(0u, channels_controller_.GetChannelLocales().size());
-}
-
-TEST_F(BraveNewsChannelsControllerTest, SubscribedChannelLocalesIncluded) {
-  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
-
-  auto locales = channels_controller_.GetChannelLocales();
-  EXPECT_EQ(1u, locales.size());
-  EXPECT_EQ("en_US", locales[0]);
-
-  channels_controller_.SetChannelSubscribed("en_US", "Foo", true);
-  locales = channels_controller_.GetChannelLocales();
-  EXPECT_EQ(1u, locales.size());
-
-  channels_controller_.SetChannelSubscribed("ja_JA", "Foo", true);
-  locales = channels_controller_.GetChannelLocales();
-  EXPECT_EQ(2u, locales.size());
-  EXPECT_EQ("en_US", locales[0]);
-  EXPECT_EQ("ja_JA", locales[1]);
-}
-
-TEST_F(BraveNewsChannelsControllerTest,
-       LocaleWithNoSubscribedChannelsIsNotIncluded) {
-  channels_controller_.SetChannelSubscribed("en_US", "Test", true);
-
-  auto locales = channels_controller_.GetChannelLocales();
-  EXPECT_EQ(1u, locales.size());
-  EXPECT_EQ("en_US", locales[0]);
-
-  channels_controller_.SetChannelSubscribed("en_US", "Test", false);
-  locales = channels_controller_.GetChannelLocales();
-  EXPECT_EQ(0u, locales.size());
-}
-
-TEST_F(BraveNewsChannelsControllerTest, ChannelMigrationsAreApplied) {
-  channels_controller_.SetChannelSubscribed("en_US", "Tech News", true);
-  channels_controller_.SetChannelSubscribed("en_US", "Sport", true);
-
-  ChannelsController controller(profile_.GetPrefs(), &publishers_controller_,
-                                nullptr);
-  EXPECT_FALSE(controller.GetChannelSubscribed("en_US", "Tech News"));
-  EXPECT_TRUE(controller.GetChannelSubscribed("en_US", "Technology"));
-  EXPECT_FALSE(controller.GetChannelSubscribed("en_US", "Sport"));
-  EXPECT_TRUE(controller.GetChannelSubscribed("en_US", "Sports"));
 }
 
 }  // namespace brave_news

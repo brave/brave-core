@@ -5,32 +5,27 @@
 
 #include "brave/components/brave_news/browser/publishers_controller.h"
 
-#include <memory>
+#include <tuple>
 #include <utility>
 #include <vector>
 
 #include "base/containers/contains.h"
 #include "base/functional/bind.h"
-#include "base/functional/callback_forward.h"
-#include "base/run_loop.h"
 #include "base/test/bind.h"
 #include "base/test/scoped_feature_list.h"
-#include "base/test/task_environment.h"
 #include "base/values.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
-#include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
+#include "brave/components/brave_news/browser/wait_for_callback.h"
 #include "brave/components/brave_news/common/pref_names.h"
-#include "brave/components/l10n/common/locale_util.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
-#include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "net/traffic_annotation/network_traffic_annotation_test_helper.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
-#include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -85,55 +80,16 @@ constexpr char kPublishersResponse[] = R"([
     }
 ])";
 
-class WaitForPublishersChanged : public PublishersController::Observer {
- public:
-  explicit WaitForPublishersChanged(PublishersController* controller)
-      : controller_(controller) {
-    controller->AddObserver(this);
-  }
-
-  WaitForPublishersChanged(const WaitForPublishersChanged&) = delete;
-  WaitForPublishersChanged& operator=(const WaitForPublishersChanged&) = delete;
-  ~WaitForPublishersChanged() override { controller_->RemoveObserver(this); }
-
-  void Wait() {
-    if (updated_) {
-      return;
-    }
-    loop_.Run();
-  }
-
-  void OnPublishersUpdated(PublishersController* controller) override {
-    updated_ = true;
-    loop_.Quit();
-  }
-
- private:
-  raw_ptr<PublishersController> controller_;
-  bool updated_ = false;
-  base::RunLoop loop_;
-};
-
 class BraveNewsPublishersControllerTest : public testing::Test {
  public:
   BraveNewsPublishersControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
-        direct_feed_controller_(profile_.GetPrefs(), nullptr),
-        publishers_controller_(profile_.GetPrefs(),
-                               &direct_feed_controller_,
-                               &api_request_helper_,
-                               nullptr) {
+        pref_manager_(*profile_.GetPrefs()),
+        publishers_controller_(&api_request_helper_) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
                                     true);
-  }
-
-  std::string GetV1SourcesUrl() {
-    std::string locale =
-        brave_l10n::GetDefaultISOLanguageCodeString() == "ja" ? "ja" : "";
-    return "https://" + brave_news::GetHostname() + "/sources." + locale +
-           "json";
   }
 
   std::string GetSourcesUrl() {
@@ -154,30 +110,21 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {
-    for (const auto& publisher :
-         direct_feed_controller_.ParseDirectFeedsPref()) {
-      if (publisher->publisher_id == publisher_id) {
-        return true;
-      }
-    }
-    return false;
+    return base::Contains(pref_manager_.GetSubscriptions().direct_feeds,
+                          publisher_id,
+                          [](const auto& feed) { return feed.id; });
   }
 
   Publishers GetPublishers() {
-    base::RunLoop loop;
-    Publishers publishers;
-    publishers_controller_.GetOrFetchPublishers(
-        base::BindLambdaForTesting([&publishers, &loop](Publishers result) {
-          publishers = std::move(result);
-          loop.Quit();
-        }));
-    loop.Run();
-    return publishers;
-  }
-
-  void WaitForUpdate() {
-    WaitForPublishersChanged waiter(&publishers_controller_);
-    waiter.Wait();
+    auto [publishers] = WaitForCallback(base::BindOnce(
+        [](BraveNewsPublishersControllerTest* test,
+           GetPublishersCallback callback) {
+          test->publishers_controller_.GetOrFetchPublishers(
+              test->pref_manager_.GetSubscriptions(), std::move(callback),
+              true);
+        },
+        base::Unretained(this)));
+    return std::move(publishers);
   }
 
  protected:
@@ -187,7 +134,7 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   network::TestURLLoaderFactory test_url_loader_factory_;
   api_request_helper::APIRequestHelper api_request_helper_;
   TestingProfile profile_;
-  DirectFeedController direct_feed_controller_;
+  BraveNewsPrefManager pref_manager_;
   PublishersController publishers_controller_;
 };
 
@@ -264,16 +211,10 @@ TEST_F(BraveNewsPublishersControllerTest,
         "enabled": false
     }])",
                                        net::HTTP_OK);
-  GetPublishers();
-
-  std::string locale;
-  base::RunLoop loop;
-  publishers_controller_.GetLocale(
-      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
-        locale = result;
-        loop.Quit();
-      }));
-  loop.Run();
+  auto [locale] =
+      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
+                                     base::Unretained(&publishers_controller_),
+                                     pref_manager_.GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
@@ -322,14 +263,10 @@ TEST_F(BraveNewsPublishersControllerTest,
                                        net::HTTP_OK);
   GetPublishers();
 
-  std::string locale;
-  base::RunLoop loop;
-  publishers_controller_.GetLocale(
-      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
-        locale = result;
-        loop.Quit();
-      }));
-  loop.Run();
+  auto [locale] =
+      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
+                                     base::Unretained(&publishers_controller_),
+                                     pref_manager_.GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
@@ -377,14 +314,10 @@ TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
                                        net::HTTP_OK);
   GetPublishers();
 
-  std::string locale;
-  base::RunLoop loop;
-  publishers_controller_.GetLocale(
-      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
-        locale = result;
-        loop.Quit();
-      }));
-  loop.Run();
+  auto [locale] =
+      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
+                                     base::Unretained(&publishers_controller_),
+                                     pref_manager_.GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 
@@ -439,14 +372,11 @@ TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {
         "enabled": false
     }])",
                                        net::HTTP_OK);
-  std::string locale;
-  base::RunLoop loop;
-  publishers_controller_.GetLocale(
-      base::BindLambdaForTesting([&locale, &loop](const std::string& result) {
-        locale = result;
-        loop.Quit();
-      }));
-  loop.Run();
+
+  auto [locale] =
+      WaitForCallback(base::BindOnce(&PublishersController::GetLocale,
+                                     base::Unretained(&publishers_controller_),
+                                     pref_manager_.GetSubscriptions()));
 
   EXPECT_EQ("en_US", locale);
 }
@@ -457,37 +387,6 @@ TEST_F(BraveNewsPublishersControllerTest, CanGetPublishers) {
 
   auto result = GetPublishers();
   EXPECT_EQ(3u, result.size());
-}
-
-TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
-                                       net::HTTP_OK);
-
-  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
-  auto result = GetPublishers();
-  EXPECT_EQ(0u, result.size());
-}
-
-TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
-                                       net::HTTP_OK);
-
-  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                  false);
-  auto result = GetPublishers();
-  EXPECT_EQ(0u, result.size());
-}
-
-TEST_F(BraveNewsPublishersControllerTest,
-       DoesntFetchPublishersWhenNotShowingAndNotOptedIn) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
-                                       net::HTTP_OK);
-
-  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
-                                  false);
-  profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
-  auto result = GetPublishers();
-  EXPECT_EQ(0u, result.size());
 }
 
 }  // namespace brave_news

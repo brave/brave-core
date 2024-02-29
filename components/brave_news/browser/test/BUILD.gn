@@ -10,6 +10,7 @@ source_set("brave_news_unit_tests") {
   testonly = true
   sources = [
     "//brave/components/brave_news/browser/brave_news_p3a_unittest.cc",
+    "//brave/components/brave_news/browser/brave_news_pref_manager_unittest.cc",
     "//brave/components/brave_news/browser/channels_controller_unittest.cc",
     "//brave/components/brave_news/browser/combined_feed_parsing_unittest.cc",
     "//brave/components/brave_news/browser/direct_feed_controller_unittest.cc",
@@ -24,6 +25,7 @@ source_set("brave_news_unit_tests") {
   ]
 
   deps = [
+    ":brave_news_unit_tests_support",
     "//base/test:test_support",
     "//brave/components/api_request_helper",
     "//brave/components/brave_news/browser",
@@ -42,4 +44,15 @@ source_set("brave_news_unit_tests") {
   ]
 
   public_deps = [ "//brave/components/brave_news/rust:rust_lib" ]
+}
+
+source_set("brave_news_unit_tests_support") {
+  testonly = true
+
+  sources = [ "//brave/components/brave_news/browser/wait_for_callback.h" ]
+
+  deps = [
+    "//base",
+    "//base/test:test_support",
+  ]
 }

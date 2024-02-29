@@ -6,20 +6,17 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_BRAVE_NEWS_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_BRAVE_NEWS_CONTROLLER_H_
 
-#include <cstddef>
 #include <memory>
 #include <string>
 
-#include "base/containers/flat_map.h"
-#include "base/functional/callback_forward.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
-#include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/feed_controller.h"
@@ -31,8 +28,6 @@
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/prefs/pref_registry_simple.h"
-#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
@@ -42,7 +37,6 @@
 #include "services/network/public/cpp/network_connection_tracker.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
-class PrefRegistrySimple;
 class PrefService;
 
 namespace brave_ads {
@@ -59,8 +53,6 @@ class HistoryService;
 
 namespace brave_news {
 
-bool GetIsEnabled(PrefService* prefs);
-
 // Browser-side handler for Brave News mojom API, 1 per profile
 // Orchestrates FeedController and PublishersController for data, as well as
 // owning prefs data.
@@ -68,11 +60,9 @@ bool GetIsEnabled(PrefService* prefs);
 class BraveNewsController
     : public KeyedService,
       public mojom::BraveNewsController,
-      public PublishersController::Observer,
-      public net::NetworkChangeNotifier::NetworkChangeObserver {
+      public net::NetworkChangeNotifier::NetworkChangeObserver,
+      public BraveNewsPrefManager::PrefObserver {
  public:
-  static void RegisterProfilePrefs(PrefRegistrySimple* registry);
-
   BraveNewsController(
       PrefService* prefs,
       favicon::FaviconService* favicon_service,
@@ -92,6 +82,8 @@ class BraveNewsController
   PublishersController* publisher_controller() {
     return &publishers_controller_;
   }
+
+  BraveNewsPrefManager* prefs() { return &pref_manager_; }
 
   bool MaybeInitFeedV2();
 
@@ -155,29 +147,34 @@ class BraveNewsController
   void OnDisplayAdView(const std::string& item_id,
                        const std::string& creative_instance_id) override;
 
-  // PublishersController::Observer:
-  void OnPublishersUpdated(brave_news::PublishersController*) override;
-
   // net::NetworkChangeNotifier::NetworkChangeObserver:
   void OnNetworkChanged(
       net::NetworkChangeNotifier::ConnectionType type) override;
 
+  // BraveNewsPrefManager::PrefsObserver:
+  void OnConfigChanged() override;
+  void OnPublishersChanged() override;
+  void OnChannelsChanged() override;
+
  private:
-  void OnOptInChange();
   void ConditionallyStartOrStopTimer();
   void CheckForFeedsUpdate();
   void CheckForPublishersUpdate();
-  void HandleSubscriptionsChanged();
   void Prefetch();
   void MaybeInitPrefs();
 
-  raw_ptr<PrefService> prefs_ = nullptr;
+  void NotifyPublishersChanged(mojom::PublishersEventPtr event);
+  void NotifyChannelsChanged(mojom::ChannelsEventPtr event);
+
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<brave_ads::AdsService> ads_service_ = nullptr;
   api_request_helper::APIRequestHelper api_request_helper_;
   brave_private_cdn::PrivateCDNRequestHelper private_cdn_request_helper_;
   raw_ptr<history::HistoryService> history_service_;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+
+  BraveNewsPrefManager pref_manager_;
+  BraveNewsSubscriptions last_subscriptions_;
 
   p3a::NewsMetrics news_metrics_;
 
@@ -188,17 +185,17 @@ class BraveNewsController
   SuggestionsController suggestions_controller_;
   std::unique_ptr<FeedV2Builder> feed_v2_builder_;
 
-  PrefChangeRegistrar pref_change_registrar_;
   base::OneShotTimer timer_prefetch_;
-  base::OneShotTimer p3a_enabled_report_timer_;
   base::RepeatingTimer timer_feed_update_;
   base::RepeatingTimer timer_publishers_update_;
   base::CancelableTaskTracker task_tracker_;
 
-  base::ScopedObservation<PublishersController, PublishersController::Observer>
-      publishers_observation_;
+  base::ScopedObservation<BraveNewsPrefManager,
+                          BraveNewsPrefManager::PrefObserver>
+      prefs_observation_{this};
   mojo::ReceiverSet<mojom::BraveNewsController> receivers_;
   mojo::RemoteSet<mojom::PublishersListener> publishers_listeners_;
+  mojo::RemoteSet<mojom::ChannelsListener> channels_listeners_;
   mojo::RemoteSet<mojom::ConfigurationListener> configuration_listeners_;
   base::WeakPtrFactory<BraveNewsController> weak_ptr_factory_;
 };

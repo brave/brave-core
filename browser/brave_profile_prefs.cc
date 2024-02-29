@@ -22,6 +22,7 @@
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_perf_predictor/browser/p3a_bandwidth_savings_tracker.h"
 #include "brave/components/brave_perf_predictor/browser/perf_predictor_tab_helper.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -227,7 +228,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_shields::RegisterShieldsP3AProfilePrefs(registry);
 
-  brave_news::BraveNewsController::RegisterProfilePrefs(registry);
+  brave_news::BraveNewsPrefManager::RegisterProfilePrefs(registry);
 
   // TODO(shong): Migrate this to local state also and guard in ENABLE_WIDEVINE.
   // We don't need to display "don't ask widevine prompt option" in settings

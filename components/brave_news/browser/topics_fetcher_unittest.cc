@@ -8,10 +8,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/run_loop.h"
-#include "base/test/bind.h"
-#include "base/time/time.h"
-#include "chrome/test/base/testing_profile.h"
+#include "base/functional/bind.h"
+#include "brave/components/brave_news/browser/wait_for_callback.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
@@ -209,18 +207,9 @@ class BraveNewsTopicsFetcherTest : public testing::Test {
       : fetcher_(test_url_loader_factory_.GetSafeWeakWrapper()) {}
 
   std::vector<TopicAndArticles> GetTopics() {
-    base::RunLoop loop;
-    std::vector<TopicAndArticles> topics;
-
-    fetcher_.GetTopics(
-        "en_US", base::BindLambdaForTesting(
-                     [&loop, &topics](std::vector<TopicAndArticles> result) {
-                       topics = std::move(result);
-                       loop.Quit();
-                     }));
-    loop.Run();
-
-    return topics;
+    auto [topics] = WaitForCallback(base::BindOnce(
+        &TopicsFetcher::GetTopics, base::Unretained(&fetcher_), "en_US"));
+    return std::move(topics);
   }
 
   network::TestURLLoaderFactory& url_loader_factory() {

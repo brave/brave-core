@@ -49,7 +49,7 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
               contents->GetBrowserContext())) {
   CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
 
-  publishers_observation_.Observe(controller_->publisher_controller());
+  pref_observation_.Observe(controller_->prefs());
   controller_->GetPublishers(base::DoNothing());
 }
 
@@ -220,6 +220,11 @@ bool BraveNewsTabHelper::ShouldFindFeeds() {
          prefs->GetBoolean(brave_news::prefs::kShouldShowToolbarButton);
 }
 
+void BraveNewsTabHelper::OnReceivedNewPublishers(
+    brave_news::Publishers publishers) {
+  AvailableFeedsChanged();
+}
+
 void BraveNewsTabHelper::AvailableFeedsChanged() {
   const auto& feed_urls = GetAvailableFeedUrls();
   for (auto& observer : observers_) {
@@ -249,10 +254,11 @@ void BraveNewsTabHelper::DOMContentLoaded(content::RenderFrameHost* rfh) {
                                      GetWebContents().GetLastCommittedURL()));
 }
 
-void BraveNewsTabHelper::OnPublishersUpdated(
-    brave_news::PublishersController*) {
+void BraveNewsTabHelper::OnPublishersChanged() {
   DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
-  AvailableFeedsChanged();
+  controller_->GetPublishers(
+      base::BindOnce(&BraveNewsTabHelper::OnReceivedNewPublishers,
+                     weak_ptr_factory_.GetWeakPtr()));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveNewsTabHelper);

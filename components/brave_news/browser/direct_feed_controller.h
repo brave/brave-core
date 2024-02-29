@@ -6,9 +6,6 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_DIRECT_FEED_CONTROLLER_H_
 #define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_DIRECT_FEED_CONTROLLER_H_
 
-#include <list>
-#include <memory>
-#include <optional>
 #include <queue>
 #include <string>
 #include <vector>
@@ -31,24 +28,12 @@ using IsValidCallback =
 // directly from the feed source server.
 class DirectFeedController {
  public:
-  DirectFeedController(
-      PrefService* prefs,
+  explicit DirectFeedController(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   ~DirectFeedController();
   DirectFeedController(const DirectFeedController&) = delete;
   DirectFeedController& operator=(const DirectFeedController&) = delete;
 
-  // Adds a direct feed pref. Returns false if the publisher already exists, and
-  // true otherwise.
-  bool AddDirectFeedPref(const GURL& feed_url,
-                         const std::string& title,
-                         const std::optional<std::string>& id = std::nullopt);
-
-  // Removes a direct feed pref
-  void RemoveDirectFeedPref(const std::string& publisher_id);
-
-  // Returns a list of all the direct feeds currently subscribed to.
-  std::vector<mojom::PublisherPtr> ParseDirectFeedsPref();
   void VerifyFeedUrl(const GURL& feed_url, IsValidCallback callback);
   void FindFeeds(const GURL& possible_feed_or_site_url,
                  mojom::BraveNewsController::FindFeedsCallback callback);

@@ -16,6 +16,7 @@
 #include "base/memory/scoped_refptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
@@ -58,34 +59,36 @@ using ArticleInfo = std::tuple<mojom::FeedItemMetadataPtr, ArticleWeight>;
 using ArticleInfos = std::vector<ArticleInfo>;
 using PickArticles = base::RepeatingCallback<int(const ArticleInfos& infos)>;
 
-class FeedV2Builder : public PublishersController::Observer {
+class FeedV2Builder {
  public:
   FeedV2Builder(
       PublishersController& publishers_controller,
       ChannelsController& channels_controller,
       SuggestionsController& suggestions_controller,
-      PrefService& prefs,
       history::HistoryService& history_service,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
   FeedV2Builder(const FeedV2Builder&) = delete;
   FeedV2Builder& operator=(const FeedV2Builder&) = delete;
-  ~FeedV2Builder() override;
+  ~FeedV2Builder();
 
   void AddListener(mojo::PendingRemote<mojom::FeedListener> listener);
 
-  void BuildFollowingFeed(BuildFeedCallback callback);
-  void BuildChannelFeed(const std::string& channel, BuildFeedCallback callback);
-  void BuildPublisherFeed(const std::string& publisher_id,
+  void BuildFollowingFeed(const BraveNewsSubscriptions& subscriptions,
                           BuildFeedCallback callback);
-  void BuildAllFeed(BuildFeedCallback callback);
-  void EnsureFeedIsUpdating();
+  void BuildChannelFeed(const BraveNewsSubscriptions& subscriptions,
+                        const std::string& channel,
+                        BuildFeedCallback callback);
+  void BuildPublisherFeed(const BraveNewsSubscriptions& subscriptions,
+                          const std::string& publisher_id,
+                          BuildFeedCallback callback);
+  void BuildAllFeed(const BraveNewsSubscriptions& subscriptions,
+                    BuildFeedCallback callback);
+  void EnsureFeedIsUpdating(const BraveNewsSubscriptions& subscriptions);
 
-  void GetSignals(GetSignalsCallback callback);
+  void GetSignals(const BraveNewsSubscriptions& subscriptions,
+                  GetSignalsCallback callback);
 
-  void RecheckFeedHash();
-
-  // PublishersController::Observer:
-  void OnPublishersUpdated(PublishersController* controller) override;
+  void RecheckFeedHash(const BraveNewsSubscriptions& subscriptions);
 
  private:
   struct FeedGenerationInfo;
@@ -120,8 +123,11 @@ class FeedV2Builder : public PublishersController::Observer {
   struct UpdateRequest {
     UpdateSettings settings;
     std::vector<UpdateCallback> callbacks;
+    BraveNewsSubscriptions subscriptions;
 
-    explicit UpdateRequest(UpdateSettings settings, UpdateCallback callback);
+    explicit UpdateRequest(BraveNewsSubscriptions subscriptions,
+                           UpdateSettings settings,
+                           UpdateCallback callback);
     ~UpdateRequest();
     UpdateRequest(const UpdateRequest&) = delete;
     UpdateRequest& operator=(const UpdateRequest&) = delete;
@@ -145,7 +151,9 @@ class FeedV2Builder : public PublishersController::Observer {
                                             PickArticles pick_article);
   static mojom::FeedV2Ptr GenerateAllFeed(FeedGenerationInfo info);
 
-  void UpdateData(UpdateSettings settings, UpdateCallback callback);
+  void UpdateData(const BraveNewsSubscriptions& subscriptions,
+                  UpdateSettings settings,
+                  UpdateCallback callback);
 
   void PrepareAndFetch();
   void FetchFeed();
@@ -163,7 +171,8 @@ class FeedV2Builder : public PublishersController::Observer {
 
   void NotifyUpdateCompleted();
 
-  void GenerateFeed(UpdateSettings settings,
+  void GenerateFeed(const BraveNewsSubscriptions& subscriptions,
+                    UpdateSettings settings,
                     mojom::FeedV2TypePtr type,
                     FeedGenerator generator,
                     BuildFeedCallback callback);
@@ -171,10 +180,6 @@ class FeedV2Builder : public PublishersController::Observer {
   raw_ref<PublishersController> publishers_controller_;
   raw_ref<ChannelsController> channels_controller_;
   raw_ref<SuggestionsController> suggestions_controller_;
-  raw_ref<PrefService> prefs_;
-
-  base::ScopedObservation<PublishersController, PublishersController::Observer>
-      publishers_observation_{this};
 
   FeedFetcher fetcher_;
   TopicsFetcher topics_fetcher_;

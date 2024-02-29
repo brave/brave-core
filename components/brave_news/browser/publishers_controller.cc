@@ -6,7 +6,6 @@
 #include "brave/components/brave_news/browser/publishers_controller.h"
 
 #include <algorithm>
-#include <cstddef>
 #include <iterator>
 #include <memory>
 #include <optional>
@@ -14,23 +13,19 @@
 #include <utility>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/containers/contains.h"
-#include "base/feature_list.h"
+#include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/strcat.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
-#include "brave/components/brave_news/browser/brave_news_controller.h"
-#include "brave/components/brave_news/browser/brave_news_p3a.h"
-#include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
-#include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_private_cdn/headers.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "url/origin.h"
@@ -70,17 +65,46 @@ mojom::Publisher* FindMatchPreferringLocale(
   // matching publisher.
   return match;
 }
+
+// Apart from fetching, we need to make sure the
+void ApplySubscriptions(Publishers& publishers,
+                        const BraveNewsSubscriptions& subscriptions) {
+  // Remove all direct feeds - they'll get re-added.
+  for (auto it = publishers.begin(); it != publishers.end();) {
+    if (it->second->type == mojom::PublisherType::DIRECT_SOURCE) {
+      publishers.erase(it);
+    } else {
+      it++;
+    }
+  }
+
+  // Update the user subscription status.
+  for (auto& [id, publisher] : publishers) {
+    if (subscriptions.enabled_publishers.contains(id)) {
+      publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
+    } else if (subscriptions.disabled_publishers.contains(id)) {
+      publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
+    } else {
+      publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
+    }
+  }
+
+  // Add direct feeds
+  std::vector<mojom::PublisherPtr> direct_publishers;
+  ParseDirectPublisherList(subscriptions.direct_feeds, &direct_publishers);
+  for (auto it = direct_publishers.begin(); it != direct_publishers.end();
+       it++) {
+    auto move_it = std::make_move_iterator(it);
+    auto publisher = *move_it;
+    publishers.insert_or_assign(publisher->publisher_id, std::move(publisher));
+  }
+}
+
 }  // namespace
 
 PublishersController::PublishersController(
-    PrefService* prefs,
-    DirectFeedController* direct_feed_controller,
-    api_request_helper::APIRequestHelper* api_request_helper,
-    p3a::NewsMetrics* news_metrics)
-    : prefs_(prefs),
-      direct_feed_controller_(direct_feed_controller),
-      api_request_helper_(api_request_helper),
-      news_metrics_(news_metrics),
+    api_request_helper::APIRequestHelper* api_request_helper)
+    : api_request_helper_(api_request_helper),
       on_current_update_complete_(new base::OneShotEvent()) {}
 
 PublishersController::~PublishersController() = default;
@@ -118,24 +142,13 @@ const Publishers& PublishersController::GetLastPublishers() const {
   return publishers_;
 }
 
-void PublishersController::AddObserver(Observer* observer) {
-  observers_.AddObserver(observer);
-}
-
-void PublishersController::RemoveObserver(Observer* observer) {
-  observers_.RemoveObserver(observer);
-}
-
 // To be consumed outside of the class - provides a clone
 void PublishersController::GetOrFetchPublishers(
+    const BraveNewsSubscriptions& subscriptions,
     GetPublishersCallback callback,
     bool wait_for_current_update /* = false */) {
-  if (!GetIsEnabled(prefs_)) {
-    std::move(callback).Run({});
-    return;
-  }
-
   GetOrFetchPublishers(
+      subscriptions,
       base::BindOnce(
           [](PublishersController* controller, GetPublishersCallback callback) {
             // Either there was already data, or the fetch was complete
@@ -154,38 +167,47 @@ void PublishersController::GetOrFetchPublishers(
 
 // To be consumed internally - provides no data so that we don't need to clone,
 // as data can be accessed via class property
-void PublishersController::GetOrFetchPublishers(base::OnceClosure callback,
-                                                bool wait_for_current_update) {
+void PublishersController::GetOrFetchPublishers(
+    const BraveNewsSubscriptions& subscriptions,
+    base::OnceClosure callback,
+    bool wait_for_current_update) {
   // If in-memory data is already present, no need to wait,
   // otherwise wait for fetch to be complete.
   // Also don't wait if there's an update in progress and this caller
   // wishes to wait.
   if (!publishers_.empty() &&
       (!wait_for_current_update || !is_update_in_progress_)) {
+    // Make sure the subscriptions are up to date.
+    ApplySubscriptions(publishers_, subscriptions);
     std::move(callback).Run();
     return;
   }
   // Ensure data is currently being fetched and subscribe to know
   // when that is complete.
   on_current_update_complete_->Post(FROM_HERE, std::move(callback));
-  EnsurePublishersIsUpdating();
+  EnsurePublishersIsUpdating(subscriptions);
 }
 
 void PublishersController::GetLocale(
+    const BraveNewsSubscriptions& subscriptions,
     mojom::BraveNewsController::GetLocaleCallback callback) {
-  GetOrFetchPublishers(base::BindOnce(
-      [](PublishersController* controller,
-         mojom::BraveNewsController::GetLocaleCallback callback, Publishers _) {
-        std::move(callback).Run(controller->default_locale_);
-      },
-      base::Unretained(this), std::move(callback)));
+  GetOrFetchPublishers(
+      subscriptions,
+      base::BindOnce(
+          [](PublishersController* controller,
+             mojom::BraveNewsController::GetLocaleCallback callback,
+             Publishers _) {
+            std::move(callback).Run(controller->default_locale_);
+          },
+          base::Unretained(this), std::move(callback)));
 }
 
 const std::string& PublishersController::GetLastLocale() const {
   return default_locale_;
 }
 
-void PublishersController::EnsurePublishersIsUpdating() {
+void PublishersController::EnsurePublishersIsUpdating(
+    const BraveNewsSubscriptions& subscriptions) {
   // Only 1 update at a time, other calls for data will wait for
   // the current operation via the `on_current_update_complete_` OneShotEvent.
   if (is_update_in_progress_) {
@@ -198,6 +220,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
                     brave_news::kRegionUrlPart, "json"}));
   auto on_request = base::BindOnce(
       [](PublishersController* controller,
+         const BraveNewsSubscriptions& subscriptions,
          api_request_helper::APIRequestResult api_request_result) {
         // TODO(petemill): handle bad status or response
         std::optional<Publishers> publisher_list =
@@ -212,51 +235,7 @@ void PublishersController::EnsurePublishersIsUpdating() {
           return;
         }
 
-        // Add user enabled statuses
-        const auto& publisher_prefs =
-            controller->prefs_->GetDict(prefs::kBraveNewsSources);
-        std::vector<std::string> missing_publishers;
-        size_t total_enabled_publishers = 0;
-        for (const auto&& [key, value] : publisher_prefs) {
-          auto publisher_id = key;
-          auto is_user_enabled = value.GetIfBool();
-          if (publisher_list->contains(publisher_id) &&
-              is_user_enabled.has_value()) {
-            (*publisher_list)[publisher_id]->user_enabled_status =
-                (is_user_enabled.value()
-                     ? brave_news::mojom::UserEnabled::ENABLED
-                     : brave_news::mojom::UserEnabled::DISABLED);
-            if (is_user_enabled.value()) {
-              total_enabled_publishers++;
-            }
-          } else {
-            VLOG(1) << "Publisher list did not contain publisher found in"
-                       "user prefs: "
-                    << publisher_id
-                    << ". This could be because we've removed the publisher. "
-                       "Attempting to migrate to a direct feed.";
-            // We only care about missing publishers if the user was subscribed
-            // to them.
-            if (is_user_enabled.value_or(false)) {
-              missing_publishers.push_back(publisher_id);
-            }
-          }
-        }
-        if (controller->news_metrics_) {
-          controller->news_metrics_->RecordTotalSubscribedCount(
-              p3a::SubscribeType::kPublishers, total_enabled_publishers);
-        }
-
-        // Add direct feeds
-        std::vector<mojom::PublisherPtr> direct_publishers =
-            controller->direct_feed_controller_->ParseDirectFeedsPref();
-        for (auto it = direct_publishers.begin(); it != direct_publishers.end();
-             it++) {
-          auto move_it = std::make_move_iterator(it);
-          auto publisher = *move_it;
-          publisher_list->insert_or_assign(publisher->publisher_id,
-                                           std::move(publisher));
-        }
+        ApplySubscriptions(*publisher_list, subscriptions);
 
         // Set memory cache
         controller->publishers_ = std::move(*publisher_list);
@@ -268,12 +247,8 @@ void PublishersController::EnsurePublishersIsUpdating() {
         controller->is_update_in_progress_ = false;
         controller->on_current_update_complete_ =
             std::make_unique<base::OneShotEvent>();
-        // Observers
-        for (auto& observer : controller->observers_) {
-          observer.OnPublishersUpdated(controller);
-        }
       },
-      base::Unretained(this));
+      base::Unretained(this), subscriptions);
   api_request_helper_->Request(
       "GET", sources_url, "", "", std::move(on_request),
       brave::private_cdn_headers, {.auto_retry_on_network_change = true});
