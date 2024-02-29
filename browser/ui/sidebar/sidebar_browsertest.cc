@@ -8,6 +8,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -29,8 +30,10 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -41,6 +44,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -791,6 +795,126 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
   }
 }
 
+class MockSidebarModelObserver : public SidebarModel::Observer {
+ public:
+  MockSidebarModelObserver() = default;
+  ~MockSidebarModelObserver() override = default;
+
+  MOCK_METHOD(void,
+              OnItemAdded,
+              (const SidebarItem& item, size_t index, bool user_gesture),
+              (override));
+  MOCK_METHOD(void,
+              OnItemMoved,
+              (const SidebarItem& item, size_t from, size_t to),
+              (override));
+  MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
+  MOCK_METHOD(void,
+              OnActiveIndexChanged,
+              (std::optional<size_t> old_index,
+               std::optional<size_t> new_index),
+              (override));
+  MOCK_METHOD(void,
+              OnItemUpdated,
+              (const SidebarItem& item, const SidebarItemUpdate& update),
+              (override));
+  MOCK_METHOD(void,
+              OnFaviconUpdatedForItem,
+              (const SidebarItem& item, const gfx::ImageSkia& image),
+              (override));
+};
+
+class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
+    : public testing::WithParamInterface<bool>,
+      public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithkSidebarShowAlwaysOnStable() {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeatureWithParameters(
+          sidebar::features::kSidebarShowAlwaysOnStable,
+          {{"open_one_shot_leo_panel", "true"}});
+    } else {
+      feature_list_.InitAndEnableFeature(
+          sidebar::features::kSidebarShowAlwaysOnStable);
+    }
+  }
+  ~SidebarBrowserTestWithkSidebarShowAlwaysOnStable() override = default;
+
+  void SetUp() override { SidebarBrowserTest::SetUp(); }
+
+  void TearDown() override { SidebarBrowserTest::TearDown(); }
+
+  // For skipping SidebarBrowserTest's PreRunTestOnMainThread
+  // as show option is set explicitely there.
+  void PreRunTestOnMainThread() override {
+    InProcessBrowserTest::PreRunTestOnMainThread();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    SidebarBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kDontShowAlwaysSidebarOnNonStable);
+    command_line->AppendSwitch(switches::kForceFirstRun);
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+  testing::NiceMock<MockSidebarModelObserver> observer_;
+  base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{
+      &observer_};
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
+                       SidebarShowAlwaysTest) {
+  observation_.Observe(model());
+
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            sidebar_service->GetSidebarShowOption());
+
+  // Check one shot leo panel is opened or not based on test parameter.
+  if (GetParam()) {
+    // If leo panel is opened, panel active index is changed.
+    EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
+        .Times(1);
+  } else {
+    EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
+        .Times(0);
+  }
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.brave.com/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  if (GetParam()) {
+    // Check one shot panel is opened.
+    WaitUntil(base::BindLambdaForTesting(
+        [&]() { return GetSidePanel()->GetVisible(); }));
+  }
+
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  panel_ui->Close();
+  WaitUntil(base::BindLambdaForTesting(
+      [&]() { return !GetSidePanel()->GetVisible(); }));
+
+  // Check one shot panel is not opened anymore.
+  EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.brave.com/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
+    ::testing::Bool());
+
 class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
  public:
   SidebarBrowserTestWithChromeRefresh2023() = default;
@@ -799,7 +923,7 @@ class SidebarBrowserTestWithChromeRefresh2023 : public SidebarBrowserTest {
   void SetUp() override {
     SidebarBrowserTest::SetUp();
 
-    feature_list_.InitAndEnableFeature(features::kChromeRefresh2023);
+    feature_list_.InitAndEnableFeature(::features::kChromeRefresh2023);
   }
 
   base::test::ScopedFeatureList feature_list_;

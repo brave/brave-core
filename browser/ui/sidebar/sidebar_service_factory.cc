@@ -37,6 +37,7 @@ SidebarServiceFactory::SidebarServiceFactory()
     : BrowserContextKeyedServiceFactory(
           "SidebarService",
           BrowserContextDependencyManager::GetInstance()) {
+  // Early return if the preference is already set or not existed(in test).
   if (!g_browser_process || !g_browser_process->local_state()) {
     return;
   }
@@ -47,6 +48,7 @@ SidebarServiceFactory::SidebarServiceFactory()
     return;
   }
 
+  // Set target user(new user & feature enabled) flag only once.
   if (g_browser_process->local_state()->GetBoolean(
           kTargetUserForSidebarEnabledTest)) {
     return;

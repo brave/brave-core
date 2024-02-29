@@ -7,6 +7,7 @@
 
 #include <optional>
 
+#include "base/check_is_test.h"
 #include "base/command_line.h"
 #include "brave/browser/ui/brave_browser.h"
 #include "brave/browser/ui/sidebar/sidebar_controller.h"
@@ -242,6 +243,7 @@ SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
   }
 
   if (!g_browser_process) {
+    CHECK_IS_TEST();
     return ShowSidebarOption::kShowAlways;
   }
 
