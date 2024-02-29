@@ -20,6 +20,9 @@ rust_static_library("rust_lib") {
   ]
 
   if (enable_orchard_crate) {
-    deps += [ "//brave/third_party/rust/orchard/v0_7:lib" ]
+    deps += [
+      "//brave/third_party/rust/orchard/v0_7:lib",
+      "//brave/third_party/rust/zip32/v0_1:lib",
+    ]
   }
 }
