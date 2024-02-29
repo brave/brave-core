@@ -25,6 +25,7 @@ buildflag_header("buildflags") {
     "BRAVE_ZERO_EX_API_KEY=\"$brave_zero_ex_api_key\"",
     "ENABLE_BITCOIN_BY_DEFAULT=$enable_bitcoin_by_default",
     "ENABLE_ZCASH_BY_DEFAULT=$enable_zcash_by_default",
+    "ENABLE_ORCHARD=$enable_orchard_crate",
   ]
 }
 

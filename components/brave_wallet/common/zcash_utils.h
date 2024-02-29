@@ -8,11 +8,23 @@
 
 #include <optional>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/containers/span.h"
 
 namespace brave_wallet {
+
+// https://zips.z.cash/zip-0316#encoding-of-unified-addresses
+enum ZCashAddrType {
+  kP2PKH = 0x00,
+  kP2PSH = 0x01,
+  kSapling = 0x02,
+  kOrchard = 0x03,
+  kMaxValue = kOrchard
+};
+
+using ParsedAddress = std::pair<ZCashAddrType, std::vector<uint8_t>>;
 
 struct DecodedZCashAddress {
   DecodedZCashAddress();
@@ -41,7 +53,31 @@ std::optional<DecodedZCashAddress> DecodeZCashAddress(
 std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
                                                 bool testnet);
 
+std::optional<std::string> GetMergedUnifiedAddress(
+    const std::vector<ParsedAddress>& parts,
+    bool testnet);
+
+std::optional<std::string> GetOrchardUnifiedAddress(
+    base::span<const uint8_t> orchard_part,
+    bool testnet);
+
+std::optional<std::vector<uint8_t>> GetOrchardRawBytes(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::vector<uint8_t>> GetTransparentRawBytes(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
+    const std::string& unified_address,
+    bool is_testnet);
+
 std::optional<std::string> ExtractTransparentPart(
+    const std::string& unified_address,
+    bool is_testnet);
+
+std::optional<std::string> ExtractOrchardPart(
     const std::string& unified_address,
     bool is_testnet);
 
