@@ -28,11 +28,13 @@ TestFiltersProvider::TestFiltersProvider(const std::string& rules,
 TestFiltersProvider::TestFiltersProvider(const std::string& rules,
                                          const std::string& resources,
                                          bool engine_is_default,
-                                         uint8_t permission_mask)
+                                         uint8_t permission_mask,
+                                         bool is_initialized)
     : AdBlockFiltersProvider(engine_is_default),
       rules_(rules),
       resources_(resources),
-      permission_mask_(permission_mask) {}
+      permission_mask_(permission_mask),
+      is_initialized_(is_initialized) {}
 
 TestFiltersProvider::~TestFiltersProvider() = default;
 
@@ -51,6 +53,16 @@ void TestFiltersProvider::LoadFilterSet(
 void TestFiltersProvider::LoadResources(
     base::OnceCallback<void(const std::string& resources_json)> cb) {
   std::move(cb).Run(resources_);
+}
+
+void TestFiltersProvider::Initialize() {
+  CHECK(!is_initialized_);
+  is_initialized_ = true;
+  NotifyObservers(engine_is_default_);
+}
+
+bool TestFiltersProvider::IsInitialized() const {
+  return is_initialized_;
 }
 
 }  // namespace brave_shields
