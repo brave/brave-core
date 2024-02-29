@@ -198,6 +198,10 @@ export const batAmount = styled.div`
   }
 `
 
+export const batAmountForTesting = styled.div`
+  display: none;
+`
+
 export const balanceSpinner = styled.div`
   font-size: 14px;
   line-height: 18px;
