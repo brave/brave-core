@@ -66,7 +66,8 @@ export function createWalletApiBase() {
       'ConnectedAccounts',
       'DefaultEthWallet',
       'DefaultSolWallet',
-      'IsMetaMaskInstalled'
+      'IsMetaMaskInstalled',
+      'IsPrivateWindow'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
