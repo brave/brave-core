@@ -9,6 +9,7 @@
 #include <string>
 #include <utility>
 
+#include "base/command_line.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/ranges/algorithm.h"
@@ -21,8 +22,6 @@
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
-
-#include "base/command_line.h"
 
 namespace brave_wallet {
 

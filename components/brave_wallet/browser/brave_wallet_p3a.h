@@ -132,11 +132,10 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<PrefService> local_state_;
 
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+  mojo::Receiver<mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
 
-  mojo::Receiver<brave_wallet::mojom::TxServiceObserver>
-      tx_service_observer_receiver_{this};
+  mojo::Receiver<mojom::TxServiceObserver> tx_service_observer_receiver_{this};
 
   base::OneShotTimer onboarding_report_timer_;
 
