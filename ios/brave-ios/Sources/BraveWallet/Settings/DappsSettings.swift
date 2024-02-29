@@ -97,15 +97,11 @@ struct DappsSettings: View {
       ) {
         Group {
           if visibleSiteConnections.isEmpty {
-            HStack {
-              Spacer()
-              Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .font(.footnote)
-                .multilineTextAlignment(.center)
-              Spacer()
-            }
-            .padding(.vertical)
+            Text(Strings.Wallet.dappsSettingsConnectedSitesSectionEmpty)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .font(.footnote)
+              .multilineTextAlignment(.leading)
+              .padding(.vertical, 6)
           } else {
             ForEach(visibleSiteConnections) { siteConnection in
               NavigationLink(
