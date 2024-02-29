@@ -8,6 +8,7 @@ import JavaScriptCore
 import SwiftUI
 import os.log
 import Shared
+import Fuzi
 
 class HighlightJS {
   private let context: JSContext
@@ -50,7 +51,7 @@ class HighlightJS {
       
       // If our custom parser can parse the string, then use it.
       // It's significantly faster than Apple's parser.
-      if let string = HLJSParser.parse(code, styleSheet: theme, preferredFont: preferredFont) {
+      if let string = HLJSParser.parse("<pre><code class='hljs'>\(code)</code></pre>", styleSheet: theme, preferredFont: preferredFont) {
         return processAttributedString(string, preferredFont: preferredFont)
       }
       
@@ -129,57 +130,68 @@ class HighlightJS {
 
 private struct HLJSParser {
   static func parse(_ string: String, styleSheet: [BasicCSSParser.CSSStyle], preferredFont: UIFont) -> NSMutableAttributedString? {
-    let scanner = Scanner(string: string)
-    scanner.charactersToBeSkipped = nil
-      
-    let result = NSMutableAttributedString()
-    var styleAttributes = ["hljs"]
-    
-    while !scanner.isAtEnd {
-      let tagContent = scanner.scanUpToString("<")
-      if let tagContent = tagContent {
-        if !tagContent.isEmpty {
-          result.append(styleString(tagContent, properties: styleAttributes, styleSheet: styleSheet, preferredFont: preferredFont))
-        }
-        
-        if scanner.isAtEnd {
-          break
-        }
-      }
-      
-      scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-      let nextToken = scanner.string[scanner.currentIndex..<scanner.string.index(after: scanner.currentIndex)]
-      
-      if nextToken == "s" {
-        _ = scanner.scanString("span class=\"")
-        let tagAttributes = scanner.scanUpToString("\">")
-        _ = scanner.scanString("\">")
-        
-        if let tagAttributes = tagAttributes {
-          styleAttributes.append(".\(tagAttributes)")
-        }
-      } else if nextToken == "/" {
-        _ = scanner.scanString("/span>")
-        styleAttributes.removeLast()
-      } else {
-        result.append(styleString("<", properties: styleAttributes, styleSheet: styleSheet, preferredFont: preferredFont))
-        scanner.currentIndex = scanner.string.index(after: scanner.currentIndex)
-      }
+    if string.isEmpty {
+      return nil
     }
     
-    guard let regex = try? NSRegularExpression(pattern: "&#?[A-Z0-9]+?;", options: [.caseInsensitive]) else {
+    do {
+      let doc = try HTMLDocument(string: string, encoding: .utf8)
+      
+      // Setup Stacks
+      var styleAttributes = [String]()
+      var nodes: [XMLNode?] = doc.body?.childNodes(ofTypes: [.Text, .Element]).reversed() ?? []
+      
+      if nodes.isEmpty {
+        return nil
+      }
+      
+      // Stack based parsing instead of recursion
+      let result = NSMutableAttributedString()
+      while !nodes.isEmpty {
+        // We encountered the nil delimiter
+        guard let node = nodes.removeLast() else {
+          
+          // Pop the style from the stack
+          if !styleAttributes.isEmpty {
+            _ = styleAttributes.removeLast()
+          }
+          
+          continue
+        }
+        
+        // Text node encountered
+        if node.type == XMLNodeType.Text {
+          
+          // Style the text
+          result.append(styleString(node.stringValue,
+                                    properties: styleAttributes,
+                                    styleSheet: styleSheet,
+                                    preferredFont: preferredFont))
+          continue
+        }
+        
+        // Must be element.type == XMLNodeType.Element due to our node selector
+        guard let element = node.toElement() else {
+          continue
+        }
+        
+        // Push the style onto the stack
+        if let style = element.attr("class") {
+          styleAttributes.append(style)
+        }
+        
+        // Delimiter to know when to pop the styles of the stack
+        nodes.append(nil)
+        
+        // Push the nested child nodes
+        nodes.append(contentsOf: element.childNodes(ofTypes: [.Text, .Element]).reversed())
+      }
+      
       return result
+    } catch {
+      Logger.module.error("[HLJSParser] - Error Parsing HTML: \(error)")
+      return nil
     }
-
-    let matches = regex.matches(in: result.string, options: [], range: NSRange(location: 0, length: result.length))
-    for match in matches.reversed() {
-      if let range = Range(match.range, in: result.string) {
-        let entity = result.string[range]
-        result.replaceCharacters(in: match.range, with: decodeEntities(String(entity)))
-      }
-    }
-    
-    return result
   }
   
   private static func styleString(_ string: String, properties: [String], styleSheet: [BasicCSSParser.CSSStyle], preferredFont: UIFont) -> NSAttributedString {
@@ -228,7 +240,7 @@ private struct HLJSParser {
         default:
           attribute = nil
         }
-
+        
         if let attribute = attribute, let attributeValue = attributeValue {
           result.addAttribute(attribute, value: attributeValue, range: NSRange(location: 0, length: string.count))
         }
@@ -237,69 +249,8 @@ private struct HLJSParser {
     
     return result
   }
-  
-  private static func decodeEntities(_ string: String) -> String {
-    var decodedString = string
-    
-    let code: UInt32?
-    if string.hasPrefix("&#x") || string.hasPrefix("&#X") {
-      code = UInt32(string.dropFirst(3).dropLast(), radix: 16)
-    } else if string.hasPrefix("&#") {
-      code = UInt32(string.dropFirst(2).dropLast(), radix: 10)
-    } else {
-      code = nil
-    }
-    
-    if let code = code, let scalar = UnicodeScalar(code) {
-      return String(scalar)
-    }
-      
-    let entities = [
-      "&quot;" : "\"", "&amp;" : "&", "&apos;" : "'",
-      "&lt;" : "<", "&gt;" : ">", "&nbsp;" : " ",
-      "&iexcl;" : "¡", "&cent;" : "¢", "&pound;" : "£",
-      "&curren;" : "¤", "&yen;" : "¥", "&brvbar;" : "¦",
-      "&sect;" : "§", "&uml;" : "¨", "&copy;" : "©",
-      "&ordf;" : "ª", "&laquo;" : "«", "&not;" : "¬",
-      "&shy;" : "\u{00AD}", "&reg;" : "®", "&macr;" : "¯",
-      "&deg;" : "°", "&plusmn;" : "±", "&sup2;" : "²",
-      "&sup3;" : "³", "&acute;" : "´", "&micro;" : "µ",
-      "&para;" : "¶", "&middot;" : "·", "&cedil;" : "¸",
-      "&sup1;" : "¹", "&ordm;" : "º", "&raquo;" : "»",
-      "&frac14;" : "¼", "&frac12;" : "½", "&frac34;" : "¾",
-      "&iquest;" : "¿", "&divide;" : "÷",
-      "&ETH;" : "Ð", "&eth;" : "ð", "&THORN;" : "Þ",
-      "&thorn;" : "þ", "&AElig;" : "Æ", "&aelig;" : "æ",
-      "&OElig;" : "Œ", "&oelig;" : "œ", "&Aring;" : "Å",
-      "&Auml;" : "Ä", "&Ccedil;" : "Ç", "&Egrave;" : "È",
-      "&Eacute;" : "É", "&Ecirc;" : "Ê", "&Euml;" : "Ë",
-      "&Igrave;" : "Ì", "&Iacute;" : "Í", "&Icirc;" : "Î",
-      "&Iuml;" : "Ï", "&Ntilde;" : "Ñ", "&Ograve;" : "Ò",
-      "&Oacute;" : "Ó", "&Ocirc;" : "Ô", "&Otilde;" : "Õ",
-      "&Ouml;" : "Ö", "&times;" : "×", "&Oslash;" : "Ø",
-      "&Ugrave;" : "Ù", "&Uacute;" : "Ú", "&Ucirc;" : "Û",
-      "&Uuml;" : "Ü", "&Yacute;" : "Ý", "&szlig;" : "ß",
-      "&agrave;" : "à", "&aacute;" : "á", "&acirc;" : "â",
-      "&atilde;" : "ã", "&auml;" : "ä", "&aring;" : "å",
-      "&ccedil;" : "ç", "&egrave;" : "è", "&eacute;" : "é",
-      "&ecirc;" : "ê", "&euml;" : "ë", "&igrave;" : "ì",
-      "&iacute;" : "í", "&icirc;" : "î", "&iuml;" : "ï",
-      "&ntilde;" : "ñ", "&ograve;" : "ò", "&oacute;" : "ó",
-      "&ocirc;" : "ô", "&otilde;" : "õ", "&ouml;" : "ö",
-      "&oslash;" : "ø", "&ugrave;" : "ù", "&uacute;" : "ú",
-      "&ucirc;" : "û", "&uuml;" : "ü", "&yacute;" : "ý",
-      "&yuml;" : "ÿ"
-    ]
-      
-    for (entity, character) in entities {
-      decodedString = decodedString.replacingOccurrences(of: entity, with: character)
-    }
-    
-    return decodedString
-  }
 }
-
-
+  
 struct BasicCSSParser {
   struct CSSStyle: Hashable {
     let selector: String
