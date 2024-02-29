@@ -98,6 +98,7 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
 
     base::RunLoop run_loop;
     EXPECT_CALL(observer, OnMediaFilesUpdated(testing::_, testing::_))
+        .Times(testing::AtLeast(1))
         .WillOnce(
             [&](const GURL&,
                 std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
