@@ -40,7 +40,7 @@ namespace {
   CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) \
       << "This must be called on a background thread."
 
-constexpr int64_t kMediaChunkSizeInByte = 1024 * 1024 * 10;  // 10MB
+constexpr int64_t kMediaChunkSizeInByte = 1024 * 1024 * 1;  // 1MB
 
 class RefCountedMemMap : public base::RefCountedMemory {
  public:
