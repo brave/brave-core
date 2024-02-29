@@ -34,6 +34,9 @@ void ShowTextRecognitionDialog(content::WebContents* web_contents,
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
 void ShowBraveVpnIKEv2FallbackDialog();
 #endif
+
+void ShowWaybackMachineWebModalDialog(content::WebContents* web_contents);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_DIALOGS_H_

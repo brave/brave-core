@@ -5,12 +5,12 @@
 
 #include "brave/browser/infobars/brave_wayback_machine_delegate_impl.h"
 
+#include <memory>
+
 #include "base/command_line.h"
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_infobar_delegate.h"
+#include "brave/browser/ui/browser_dialogs.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 #include "brave/components/constants/brave_switches.h"
-#include "components/infobars/content/content_infobar_manager.h"
-#include "components/infobars/core/infobar.h"
 
 // static
 void BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(
@@ -28,12 +28,7 @@ void BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(
 BraveWaybackMachineDelegateImpl::BraveWaybackMachineDelegateImpl() = default;
 BraveWaybackMachineDelegateImpl::~BraveWaybackMachineDelegateImpl() = default;
 
-
-void BraveWaybackMachineDelegateImpl::CreateInfoBar(
+void BraveWaybackMachineDelegateImpl::ShowWaybackMachineDialog(
     content::WebContents* web_contents) {
-  infobars::ContentInfoBarManager::FromWebContents(web_contents)
-      ->AddInfoBar(CreateInfoBarView(
-                       std::make_unique<BraveWaybackMachineInfoBarDelegate>(),
-                       web_contents),
-                   true);
+  brave::ShowWaybackMachineWebModalDialog(web_contents);
 }
