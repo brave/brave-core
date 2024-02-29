@@ -116,7 +116,8 @@ public class BravePlaylistPreferences extends BravePreferenceFragment
             return;
         }
 
-        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
+        mPlaylistService =
+                PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(getProfile(), this);
     }
 
     @Override

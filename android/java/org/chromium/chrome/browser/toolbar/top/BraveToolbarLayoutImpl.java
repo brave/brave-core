@@ -373,11 +373,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void initPlaylistService() {
-        if (mPlaylistService != null) {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (mPlaylistService != null || currentTab == null) {
             return;
         }
 
-        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
+        if (currentTab.isIncognito()) {
+            return;
+        }
+
+        mPlaylistService =
+                PlaylistServiceFactoryAndroid.getInstance()
+                        .getPlaylistService(
+                                Profile.fromWebContents(currentTab.getWebContents()), this);
     }
 
     @Override
@@ -582,10 +590,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private static boolean isPlaylistEnabledByPrefsAndFlags() {
+    private boolean isPlaylistEnabledByPrefsAndFlags() {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (currentTab == null) {
+            return false;
+        }
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true);
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+                && !currentTab.isIncognito();
     }
 
     private void hidePlaylistButton() {
@@ -617,7 +630,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void findMediaFiles(Tab tab) {
-        if (isPlaylistEnabledByPrefsAndFlags() && mPlaylistService != null) {
+        if (mPlaylistService != null && isPlaylistEnabledByPrefsAndFlags()) {
             hidePlaylistButton();
             mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {});
         }
