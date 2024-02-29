@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_MEDIA_RESPONDER_IMPL_H_
 
 #include <variant>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/values.h"
@@ -33,7 +34,7 @@ namespace playlist {
 class PlaylistMediaHandler final
     : public content::WebContentsUserData<PlaylistMediaHandler>,
       public mojom::PlaylistMediaResponder {
-  using Signature = void(base::Value::List, const GURL&);
+  using Signature = void(std::vector<mojom::PlaylistItemPtr>, const GURL&);
  public:
   using OnceCallback = base::OnceCallback<Signature>;
   using RepeatingCallback = base::RepeatingCallback<Signature>;

@@ -67,7 +67,7 @@ void PlaylistBackgroundWebContents::Add(
 void PlaylistBackgroundWebContents::Remove(
     content::WebContents* web_contents,
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
-    base::Value::List media,
+    std::vector<mojom::PlaylistItemPtr> media,
     const GURL& url) {
   background_web_contents_.erase(web_contents);
   std::move(on_media_detected_callback).Run(std::move(media), url);
