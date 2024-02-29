@@ -19,24 +19,18 @@
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/components/brave_wallet/rust/lib.rs.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
+#include "brave/third_party/bitcoin-core/src/src/bech32.h"
+#include "brave/third_party/bitcoin-core/src/src/util/strencodings.h"
 
 namespace brave_wallet {
 
 namespace {
+constexpr char kTestnetHRP[] = "utest";
+constexpr char kMainnetHRP[] = "u";
 constexpr size_t kPaddedHrpSize = 16;
 constexpr size_t kPubKeyHashSize = 20;
 constexpr size_t kPrefixSize = 2;
 
-// https://zips.z.cash/zip-0316#encoding-of-unified-addresses
-enum AddrType {
-  kP2PKH = 0x00,
-  kP2PSH = 0x01,
-  kSapling = 0x02,
-  kOrchard = 0x03,
-  kMaxValue = kOrchard
-};
-
-using ParsedAddress = std::pair<AddrType, std::vector<uint8_t>>;
 
 // https://btcinformation.org/en/developer-reference#compactsize-unsigned-integers
 std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
@@ -63,12 +57,22 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
   return value;
 }
 
-std::optional<std::vector<ParsedAddress>> ParseUnifiedAddress(
+std::vector<uint8_t> SerializeUnifiedAddress(std::vector<ParsedAddress> parts) {
+  std::vector<uint8_t> result;
+  BtcLikeSerializerStream stream(&result);
+  for (const auto& part : parts) {
+    stream.PushCompactSize(part.first);
+    stream.PushSizeAndBytes(part.second);
+  }
+  return result;
+}
+
+std::optional<std::vector<ParsedAddress>> ParseUnifiedAddressBody(
     base::span<const uint8_t> dejumbled_data) {
   std::vector<ParsedAddress> result;
   while (!dejumbled_data.empty()) {
     auto type = ReadCompactSize(dejumbled_data);
-    if (!type || *type > AddrType::kMaxValue) {
+    if (!type || *type > ZCashAddrType::kMaxValue) {
       return std::nullopt;
     }
     auto size = ReadCompactSize(dejumbled_data);
@@ -76,7 +80,7 @@ std::optional<std::vector<ParsedAddress>> ParseUnifiedAddress(
       return std::nullopt;
     }
     ParsedAddress addr;
-    addr.first = static_cast<AddrType>(*type);
+    addr.first = static_cast<ZCashAddrType>(*type);
     addr.second =
         std::vector(dejumbled_data.begin(), dejumbled_data.begin() + *size);
     result.push_back(std::move(addr));
@@ -103,7 +107,8 @@ DecodedZCashAddress& DecodedZCashAddress::operator=(
     DecodedZCashAddress&& other) = default;
 
 bool IsUnifiedAddress(const std::string& address) {
-  return address.starts_with("u1") || address.starts_with("utest1");
+  return address.starts_with(base::StrCat({kTestnetHRP, "1"})) ||
+         address.starts_with(base::StrCat({kMainnetHRP, "1"}));
 }
 
 bool IsUnifiedTestnetAddress(const std::string& address) {
@@ -181,8 +186,7 @@ std::vector<uint8_t> ZCashAddressToScriptPubkey(const std::string& address,
   return data;
 }
 
-// https://zips.z.cash/zip-0316#encoding-of-unified-addresses
-std::optional<std::string> ExtractTransparentPart(
+std::optional<std::vector<ParsedAddress>> ExtractParsedAddresses(
     const std::string& unified_address,
     bool is_testnet) {
   auto bech_result = decode_bech32(unified_address);
@@ -197,7 +201,7 @@ std::optional<std::string> ExtractTransparentPart(
     return std::nullopt;
   }
 
-  std::string expected_hrp = is_testnet ? "utest" : "u";
+  std::string expected_hrp = is_testnet ? kTestnetHRP : kMainnetHRP;
   if (unwrapped.hrp() != expected_hrp) {
     return std::nullopt;
   }
@@ -220,19 +224,112 @@ std::optional<std::string> ExtractTransparentPart(
     return std::nullopt;
   }
 
-  auto parts = ParseUnifiedAddress(
+  auto parts = ParseUnifiedAddressBody(
       base::make_span(*reverted).subspan(0, reverted->size() - kPaddedHrpSize));
+
+  return parts;
+}
+
+// https://zips.z.cash/zip-0316#encoding-of-unified-addresses
+std::optional<std::string> ExtractTransparentPart(
+    const std::string& unified_address,
+    bool is_testnet) {
+  auto transparent_bytes = GetTransparentRawBytes(unified_address, is_testnet);
+  if (transparent_bytes) {
+    return PubkeyHashToTransparentAddress(transparent_bytes.value(),
+                                          is_testnet);
+  }
+  return std::nullopt;
+}
+
+std::optional<std::array<uint8_t, 43>> GetOrchardRawBytes(
+    const std::string& unified_address,
+    bool is_testnet) {
+  auto parts = ExtractParsedAddresses(unified_address, is_testnet);
+
   if (!parts.has_value()) {
     return std::nullopt;
   }
 
   for (const auto& part : parts.value()) {
-    if (part.first == AddrType::kP2PKH) {
-      return PubkeyHashToTransparentAddress(part.second, is_testnet);
+    if (part.first == ZCashAddrType::kOrchard) {
+      if (part.second.size() != 43) {
+        return std::nullopt;
+      }
+      std::array<uint8_t, 43> result;
+      std::copy(part.second.begin(), part.second.end(), result.begin());
+      return result;
     }
   }
 
   return std::nullopt;
+}
+
+std::optional<std::vector<uint8_t>> GetTransparentRawBytes(
+    const std::string& unified_address,
+    bool is_testnet) {
+  auto parts = ExtractParsedAddresses(unified_address, is_testnet);
+  if (!parts.has_value()) {
+    return std::nullopt;
+  }
+
+  for (const auto& part : parts.value()) {
+    if (part.first == ZCashAddrType::kP2PKH) {
+      return part.second;
+    }
+  }
+
+  return std::nullopt;
+}
+
+std::optional<std::string> ExtractOrchardPart(
+    const std::string& unified_address,
+    bool is_testnet) {
+  auto bytes = GetOrchardRawBytes(unified_address, is_testnet);
+  if (!bytes) {
+    return std::nullopt;
+  }
+  return GetOrchardUnifiedAddress(bytes.value(), is_testnet);
+}
+
+std::optional<std::string> GetMergedUnifiedAddress(
+    const std::vector<ParsedAddress>& parts,
+    bool testnet) {
+  if (parts.empty()) {
+    return std::nullopt;
+  }
+  auto bytes = SerializeUnifiedAddress(parts);
+
+  std::string hrp = testnet ? kTestnetHRP : kMainnetHRP;
+  std::vector<uint8_t> padded_hrp(kPaddedHrpSize, 0);
+  std::copy(reinterpret_cast<const uint8_t*>(hrp.c_str()),
+            reinterpret_cast<const uint8_t*>(hrp.c_str()) + hrp.length(),
+            padded_hrp.begin());
+  bytes.insert(bytes.end(), padded_hrp.begin(), padded_hrp.end());
+
+  auto jumbled = ApplyF4Jumble(bytes);
+  if (!jumbled) {
+    return std::nullopt;
+  }
+
+  std::vector<unsigned char> u5;
+  ConvertBits<8, 5, true>([&](unsigned char c) { u5.push_back(c); },
+                          jumbled.value().begin(), jumbled.value().end());
+  auto encoded = bech32::Encode(bech32::Encoding::BECH32M, hrp, u5);
+  if (encoded.empty()) {
+    return std::nullopt;
+  }
+  return encoded;
+}
+
+std::optional<std::string> GetOrchardUnifiedAddress(
+    base::span<const uint8_t> orchard_part,
+    bool testnet) {
+  return GetMergedUnifiedAddress(
+      {ParsedAddress(
+          ZCashAddrType::kOrchard,
+          std::vector<uint8_t>(orchard_part.begin(), orchard_part.end()))},
+      testnet);
 }
 
 }  // namespace brave_wallet
