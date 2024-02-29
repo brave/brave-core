@@ -8,7 +8,7 @@ import SwiftUI
 
 class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
-  let transaction: BraveWallet.TransactionInfo
+  var transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
 
@@ -81,14 +81,14 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     guard !isObserving else { return }
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
-      _onNewUnapprovedTx: { [weak self] _ in
-        self?.update()
+      _onNewUnapprovedTx: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
-      _onUnapprovedTxUpdated: { [weak self] _ in
-        self?.update()
+      _onUnapprovedTxUpdated: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
-      _onTransactionStatusChanged: { [weak self] _ in
-        self?.update()
+      _onTransactionStatusChanged: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
       _onTxServiceReset: { [weak self] in
         self?.update()
@@ -98,6 +98,15 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
   func tearDown() {
     txServiceObserver = nil
+  }
+
+  func updateTransaction(_ transaction: BraveWallet.TransactionInfo) {
+    guard transaction.id == self.transaction.id else {
+      // not the transaction currently open
+      return
+    }
+    self.transaction = transaction
+    self.update()
   }
 
   func update() {
@@ -113,7 +122,7 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         return
       }
       self.network = network
-      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
+      let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
         chainId: network.chainId,
         coin: network.coin
       )
