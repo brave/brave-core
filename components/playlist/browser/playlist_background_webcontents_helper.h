@@ -28,16 +28,20 @@ class PlaylistBackgroundWebContentsHelper final
       const PlaylistBackgroundWebContentsHelper&) = delete;
   ~PlaylistBackgroundWebContentsHelper() override;
 
-  // content::WebContentsObserver:
-  void ReadyToCommitNavigation(
-      content::NavigationHandle* navigation_handle) override;
+  static bool ShouldUseFakeUA(const GURL& url);
 
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
 
+  static bool ShouldSuppressMediaSourceAPI(const GURL& url);
+
   PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
                                       PlaylistService* service);
+
+  // content::WebContentsObserver:
+  void ReadyToCommitNavigation(
+      content::NavigationHandle* navigation_handle) override;
 
   raw_ptr<PlaylistService> service_;
 
