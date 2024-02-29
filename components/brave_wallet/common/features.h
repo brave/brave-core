@@ -18,6 +18,7 @@ BASE_DECLARE_FEATURE(kBraveWalletBitcoinFeature);
 extern const base::FeatureParam<int> kBitcoinRpcThrottle;
 extern const base::FeatureParam<bool> kBitcoinTestnetDiscovery;
 BASE_DECLARE_FEATURE(kBraveWalletZCashFeature);
+extern const base::FeatureParam<bool> kZCashShieldedEnabled;
 BASE_DECLARE_FEATURE(kBraveWalletAnkrBalancesFeature);
 BASE_DECLARE_FEATURE(kBraveWalletTransactionSimulationsFeature);
 

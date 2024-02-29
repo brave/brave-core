@@ -18,6 +18,12 @@ use bech32::FromBase32;
 use ffi::{Bech32DecodeVariant};
 use bech32::Error as Bech32Error;
 
+use zip32::ChildIndex as OrchardChildIndex;
+use orchard::keys::Scope as OrchardScope;
+use orchard::keys::FullViewingKey as OrchardFVK;
+use orchard::zip32::Error as Zip32Error;
+use orchard::zip32::ExtendedSpendingKey;
+
 macro_rules! impl_result {
     ($t:ident, $r:ident, $f:ident) => {
         impl $r {
@@ -73,11 +79,17 @@ mod ffi {
         type Ed25519DalekExtendedSecretKey;
         type Ed25519DalekSignature;
         type Bech32DecodeValue;
+        type OrchardExtendedSpendingKey;
 
         type Ed25519DalekExtendedSecretKeyResult;
         type Ed25519DalekSignatureResult;
         type Ed25519DalekVerificationResult;
         type Bech32DecodeResult;
+        type OrchardExtendedSpendingKeyResult;
+
+        fn generate_orchard_extended_spending_key_from_seed(
+            bytes: &[u8]
+        ) -> Box<OrchardExtendedSpendingKeyResult>;
 
         fn generate_ed25519_extended_secrect_key_from_seed(
             bytes: &[u8],
@@ -132,6 +144,23 @@ mod ffi {
         fn is_ok(self: &Bech32DecodeResult) -> bool;
         fn error_message(self: &Bech32DecodeResult) -> String;
         fn unwrap(self: &Bech32DecodeResult) -> &Bech32DecodeValue;
+
+        fn is_ok(self: &OrchardExtendedSpendingKeyResult) -> bool;
+        fn error_message(self: &OrchardExtendedSpendingKeyResult) -> String;
+        fn unwrap(self: &OrchardExtendedSpendingKeyResult) -> &OrchardExtendedSpendingKey;
+
+        fn derive(
+            self: &OrchardExtendedSpendingKey,
+            index: u32
+        ) -> Box<OrchardExtendedSpendingKeyResult>;
+        fn external_address(
+            self: &OrchardExtendedSpendingKey,
+            diversifier_index: u32
+        ) -> [u8; 43];
+        fn internal_address(
+            self: &OrchardExtendedSpendingKey,
+            diversifier_index: u32
+        ) -> [u8; 43];
     }
 }
 
@@ -142,6 +171,7 @@ pub enum Error {
     ChildIndex(ChildIndexError),
     Signature(SignatureError),
     Bech32(Bech32Error),
+    Zip32(Zip32Error)
 }
 
 impl_error!(Ed25519Bip32Error, Ed25519Bip32);
@@ -149,6 +179,7 @@ impl_error!(DerivationPathParseError, DerivationPathParse);
 impl_error!(ChildIndexError, ChildIndex);
 impl_error!(SignatureError, Signature);
 impl_error!(Bech32Error, Bech32);
+impl_error!(Zip32Error, Zip32);
 
 impl fmt::Display for Error {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -158,6 +189,7 @@ impl fmt::Display for Error {
             Error::ChildIndex(e) => write!(f, "Error: {}", e.to_string()),
             Error::Signature(e) => write!(f, "Error: {}", e.to_string()),
             Error::Bech32(e) => write!(f, "Error: {}", e.to_string()),
+            Error::Zip32(e) => write!(f, "Error: {}", e.to_string()),
         }
     }
 }
@@ -170,15 +202,18 @@ pub struct Bech32Decoded {
 pub struct Bech32DecodeValue(Bech32Decoded);
 pub struct Ed25519DalekExtendedSecretKey(ExtendedSecretKey);
 pub struct Ed25519DalekSignature(Signature);
+pub struct OrchardExtendedSpendingKey(ExtendedSpendingKey);
 
 struct Ed25519DalekExtendedSecretKeyResult(Result<Ed25519DalekExtendedSecretKey, Error>);
 struct Ed25519DalekSignatureResult(Result<Ed25519DalekSignature, Error>);
 struct Ed25519DalekVerificationResult(Result<(), Error>);
 struct Bech32DecodeResult(Result<Bech32DecodeValue, Error>);
+struct OrchardExtendedSpendingKeyResult(Result<OrchardExtendedSpendingKey, Error>);
 
 impl_result!(Ed25519DalekExtendedSecretKey, Ed25519DalekExtendedSecretKeyResult, ExtendedSecretKey);
 impl_result!(Ed25519DalekSignature, Ed25519DalekSignatureResult, Signature);
 impl_result!(Bech32DecodeValue, Bech32DecodeResult, Bech32Decoded);
+impl_result!(OrchardExtendedSpendingKey, OrchardExtendedSpendingKeyResult, ExtendedSpendingKey);
 
 impl From<bech32::Variant> for Bech32DecodeVariant {
     fn from(v: bech32::Variant) -> Bech32DecodeVariant {
@@ -212,6 +247,14 @@ impl From<Result<(), Error>> for Ed25519DalekVerificationResult {
             Err(e) => Self(Err(e)),
         }
     }
+}
+
+fn generate_orchard_extended_spending_key_from_seed(
+    bytes: &[u8]
+) -> Box<OrchardExtendedSpendingKeyResult> {
+  Box::new(OrchardExtendedSpendingKeyResult::from(
+    ExtendedSpendingKey::master(&bytes).map_err(|err| Error::from(err)))
+  )
 }
 
 fn generate_ed25519_extended_secrect_key_from_seed(
@@ -320,7 +363,7 @@ impl Ed25519DalekSignature {
 
 impl Bech32DecodeValue {
     fn hrp(self: &Bech32DecodeValue) -> String {
-       self.0.hrp.clone()
+        self.0.hrp.clone()
     }
     fn data(self: &Bech32DecodeValue) -> Vec<u8> {
         self.0.data.clone()
@@ -329,3 +372,34 @@ impl Bech32DecodeValue {
         self.0.variant.clone()
     }
 }
+
+impl OrchardExtendedSpendingKey {
+    fn derive(
+        self: &OrchardExtendedSpendingKey,
+        index: u32
+    ) -> Box<OrchardExtendedSpendingKeyResult> {
+        Box::new(OrchardExtendedSpendingKeyResult::from(
+            self.0.derive_child(
+                OrchardChildIndex::hardened(index))
+                .map_err(|err| Error::from(err))))
+    }
+
+    fn external_address(
+        self: &OrchardExtendedSpendingKey,
+        diversifier_index: u32
+    ) -> [u8; 43] {
+        let address = OrchardFVK::from(&self.0).address_at(
+            diversifier_index, OrchardScope::External);
+        address.to_raw_address_bytes()
+    }
+
+    fn internal_address(
+        self: &OrchardExtendedSpendingKey,
+        diversifier_index: u32
+    ) -> [u8; 43] {
+        let address = OrchardFVK::from(&self.0).address_at(
+            diversifier_index, OrchardScope::Internal);
+        address.to_raw_address_bytes()
+    }
+}
+
