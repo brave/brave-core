@@ -76,6 +76,7 @@ Propose up to 3 very short questions that a reader may ask about the content. Co
 <message name="IDS_AI_CHAT_QUESTION_IMPROVE" translateable="false">Improve the language of the excerpt. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_ACADEMICIZE" translateable="false">Rewrite the excerpt in an academic tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_PROFESSIONALIZE" translateable="false">Rewrite the excerpt in a professional tone. Include only the rewritten version in your response.</message>
+<message name="IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE" translateable="false">Rewrite the excerpt in a persuasive tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_CASUALIZE" translateable="false">Rewrite the excerpt in a casual tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_FUNNY_TONE" translateable="false">Rewrite the excerpt in a funny tone. Include only the rewritten version in your response.</message>
 <message name="IDS_AI_CHAT_QUESTION_SHORTEN" translateable="false">Generate a shortened version of the excerpt in paragraph format by removing unnecessary details and refining the language for brevity. Include only the rewritten version in your response.</message>

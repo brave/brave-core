@@ -56,6 +56,11 @@ function getCategoryAndItem(actionType: mojom.ActionType): {
           category: getLocale('changeToneLabel'),
           item: getLocale('professionalizeLabel')
         }
+      case mojom.ActionType.PERSUASIVE_TONE:
+        return {
+          category: getLocale('changeToneLabel'),
+          item: getLocale('persuasiveToneLabel')
+        }
       case mojom.ActionType.CASUALIZE:
         return {
           category: getLocale('changeToneLabel'),

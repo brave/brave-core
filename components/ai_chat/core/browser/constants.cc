@@ -123,6 +123,7 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"changeLengthLabel", IDS_AI_CHAT_CONTEXT_CHANGE_LENGTH},
       {"academicizeLabel", IDS_AI_CHAT_CONTEXT_ACADEMICIZE},
       {"professionalizeLabel", IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE},
+      {"persuasiveToneLabel", IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE},
       {"casualizeLabel", IDS_AI_CHAT_CONTEXT_CASUALIZE},
       {"funnyToneLabel", IDS_AI_CHAT_CONTEXT_FUNNY_TONE},
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},

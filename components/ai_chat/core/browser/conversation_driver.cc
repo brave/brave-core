@@ -78,6 +78,8 @@ GetActionTypeQuestionMap() {
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
            {mojom::ActionType::PROFESSIONALIZE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
+           {mojom::ActionType::PERSUASIVE_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE)},
            {mojom::ActionType::CASUALIZE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CASUALIZE)},
            {mojom::ActionType::FUNNY_TONE,

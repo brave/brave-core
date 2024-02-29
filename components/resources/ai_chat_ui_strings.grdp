@@ -306,6 +306,9 @@
   <message name="IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE" desc="The text label of context menu item to professionalize selected text">
     Professional
   </message>
+  <message name="IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE" desc="The text label of context menu item to rewrite the selected text in a persuasive tone">
+    Persuasive
+  </message>
   <message name="IDS_AI_CHAT_CONTEXT_ACADEMICIZE" desc="The text label of context menu item to academicize selected text">
     Academic
   </message>

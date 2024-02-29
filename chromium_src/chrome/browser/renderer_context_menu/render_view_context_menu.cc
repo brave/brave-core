@@ -248,6 +248,7 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_CHANGE_TONE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
+    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
     case IDC_AI_CHAT_CONTEXT_CASUALIZE:
     case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
     case IDC_AI_CHAT_CONTEXT_SHORTEN:
@@ -355,6 +356,7 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
+    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
     case IDC_AI_CHAT_CONTEXT_CASUALIZE:
     case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
     case IDC_AI_CHAT_CONTEXT_SHORTEN:
@@ -453,6 +455,10 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::PROFESSIONALIZE);
       break;
+    case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
+      helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
+                                 ai_chat::mojom::ActionType::PERSUASIVE_TONE);
+      break;
     case IDC_AI_CHAT_CONTEXT_CASUALIZE:
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::CASUALIZE);
@@ -502,6 +508,8 @@ void BraveRenderViewContextMenu::BuildAIChatMenu() {
       IDC_AI_CHAT_CONTEXT_ACADEMICIZE, IDS_AI_CHAT_CONTEXT_ACADEMICIZE);
   ai_chat_change_tone_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE, IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE);
+  ai_chat_change_tone_submenu_model_.AddItemWithStringId(
+      IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE, IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE);
   ai_chat_change_tone_submenu_model_.AddItemWithStringId(
       IDC_AI_CHAT_CONTEXT_CASUALIZE, IDS_AI_CHAT_CONTEXT_CASUALIZE);
   ai_chat_change_tone_submenu_model_.AddItemWithStringId(
