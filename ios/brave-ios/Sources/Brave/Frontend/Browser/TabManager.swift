@@ -1421,7 +1421,7 @@ extension TabManager: NSFetchedResultsControllerDelegate {
           let ethAccountAddressess = allAccounts.accounts.filter { $0.coin == .eth }.map(\.address)
           let allowedEthAccountAddresses =
             tab.getAllowedAccounts(.eth, accounts: ethAccountAddressess) ?? []
-          tab.accountsChangedEvent(Array(allowedEthAccountAddresses))
+          tab.accountsChangedEvent(accounts: Array(allowedEthAccountAddresses))
         }
       }
     }

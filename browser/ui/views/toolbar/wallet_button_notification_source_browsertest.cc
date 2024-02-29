@@ -186,16 +186,19 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
+    auto chain_id = brave_wallet::GetCurrentChainId(
+        browser()->profile()->GetPrefs(), brave_wallet::mojom::CoinType::FIL,
+        std::nullopt);
+    EXPECT_EQ(chain_id, "t");
+    EXPECT_EQ(from_account->account_id->unique_key,
+              "461_3_0_t17otcil7bookogjy3ywoslq5gf5tbisdkcfui2iq");
+
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data),
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::FIL,
-                                        std::nullopt),
-        from_account->account_id.Clone(),
+        std::move(tx_data), chain_id, from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           first_tx_meta_id = id;
-          EXPECT_TRUE(success);
+          EXPECT_TRUE(success) << err_message;
           run_loop.Quit();
         }));
 
@@ -369,16 +372,16 @@ IN_PROC_BROWSER_TEST_F(WalletButtonNotificationSourceTest,
         brave_wallet::mojom::FilTxData::New(
             "" /* nonce */, "10" /* gas_premium */, "10" /* gas_fee_cap */,
             "100" /* gas_limit */, "" /* max_fee */, to_account, "11"));
+    auto chain_id = brave_wallet::GetCurrentChainId(
+        browser()->profile()->GetPrefs(), brave_wallet::mojom::CoinType::FIL,
+        std::nullopt);
+    EXPECT_EQ(chain_id, "t");
     tx_service()->AddUnapprovedTransaction(
-        std::move(tx_data),
-        brave_wallet::GetCurrentChainId(browser()->profile()->GetPrefs(),
-                                        brave_wallet::mojom::CoinType::FIL,
-                                        std::nullopt),
-        from_account->account_id.Clone(),
+        std::move(tx_data), chain_id, from_account->account_id.Clone(),
         base::BindLambdaForTesting([&](bool success, const std::string& id,
                                        const std::string& err_message) {
           tx_meta_id = id;
-          EXPECT_TRUE(success);
+          EXPECT_TRUE(success) << err_message;
           run_loop.Quit();
         }));
 

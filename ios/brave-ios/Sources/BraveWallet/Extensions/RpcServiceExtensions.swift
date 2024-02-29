@@ -46,7 +46,10 @@ extension BraveWalletJsonRpcService {
       )
     case .sol:
       if network.isNativeAsset(token) {
-        solanaBalance(account.address, chainId: network.chainId) { lamports, status, errorMessage in
+        solanaBalance(pubkey: account.address, chainId: network.chainId) {
+          lamports,
+          status,
+          errorMessage in
           guard status == .success else {
             completion(nil)
             return
@@ -64,7 +67,7 @@ extension BraveWalletJsonRpcService {
         }
       } else {
         splTokenAccountBalance(
-          account.address,
+          walletAddress: account.address,
           tokenMintAddress: token.contractAddress,
           chainId: network.chainId
         ) { amount, _, _, status, errorMessage in
@@ -85,7 +88,10 @@ extension BraveWalletJsonRpcService {
         }
       }
     case .fil:
-      balance(account.address, coin: account.coin, chainId: network.chainId) { amount, status, _ in
+      balance(address: account.address, coin: account.coin, chainId: network.chainId) {
+        amount,
+        status,
+        _ in
         guard status == .success && !amount.isEmpty else {
           completion(nil)
           return
@@ -163,7 +169,10 @@ extension BraveWalletJsonRpcService {
       )
     case .sol:
       if network.isNativeAsset(token) {
-        solanaBalance(accountAddress, chainId: network.chainId) { lamports, status, errorMessage in
+        solanaBalance(pubkey: accountAddress, chainId: network.chainId) {
+          lamports,
+          status,
+          errorMessage in
           guard status == .success else {
             completion(nil)
             return
@@ -181,7 +190,7 @@ extension BraveWalletJsonRpcService {
         }
       } else {
         splTokenAccountBalance(
-          accountAddress,
+          walletAddress: accountAddress,
           tokenMintAddress: token.contractAddress,
           chainId: network.chainId
         ) { amount, _, _, status, errorMessage in
@@ -202,7 +211,10 @@ extension BraveWalletJsonRpcService {
         }
       }
     case .fil:
-      balance(accountAddress, coin: token.coin, chainId: network.chainId) { amount, status, _ in
+      balance(address: accountAddress, coin: token.coin, chainId: network.chainId) {
+        amount,
+        status,
+        _ in
         guard status == .success && !amount.isEmpty else {
           completion(nil)
           return
@@ -251,21 +263,21 @@ extension BraveWalletJsonRpcService {
   ) {
     if network.isNativeAsset(token) {
       balance(
-        accountAddress,
+        address: accountAddress,
         coin: .eth,
         chainId: network.chainId,
         completion: completion
       )
     } else if token.isErc20 {
       erc20TokenBalance(
-        token.contractAddress(in: network),
+        contract: token.contractAddress(in: network),
         address: accountAddress,
         chainId: network.chainId,
         completion: completion
       )
     } else if token.isErc721 {
       erc721TokenBalance(
-        token.contractAddress,
+        contractAddress: token.contractAddress,
         tokenId: token.tokenId,
         accountAddress: accountAddress,
         chainId: network.chainId,
@@ -359,7 +371,7 @@ extension BraveWalletJsonRpcService {
       guard let self = self else { return [] }
       for coinType in coins {
         group.addTask { @MainActor in
-          let chains = await self.allNetworks(coinType)
+          let chains = await self.allNetworks(coin: coinType)
           return chains.filter {  // localhost not supported
             $0.chainId != BraveWallet.LocalhostChainId
           }
@@ -390,7 +402,7 @@ extension BraveWalletJsonRpcService {
     var metaDataString = ""
     if token.isErc721 {
       let (_, metaData, result, errMsg) = await self.erc721Metadata(
-        token.contractAddress,
+        contract: token.contractAddress,
         tokenId: token.tokenId,
         chainId: token.chainId
       )
@@ -401,7 +413,7 @@ extension BraveWalletJsonRpcService {
       metaDataString = metaData
     } else {
       let (_, metaData, result, errMsg) = await self.solTokenMetadata(
-        token.chainId,
+        chainId: token.chainId,
         tokenMintAddress: token.contractAddress
       )
       if result != .success {
@@ -430,7 +442,7 @@ extension BraveWalletJsonRpcService {
           var metaDataString = ""
           if token.isErc721 {
             let (_, metaData, result, errMsg) = await self.erc721Metadata(
-              token.contractAddress,
+              contract: token.contractAddress,
               tokenId: token.tokenId,
               chainId: token.chainId
             )
@@ -441,7 +453,7 @@ extension BraveWalletJsonRpcService {
             metaDataString = metaData
           } else {
             let (_, metaData, result, errMsg) = await self.solTokenMetadata(
-              token.chainId,
+              chainId: token.chainId,
               tokenMintAddress: token.contractAddress
             )
             if result != .success {
@@ -478,7 +490,7 @@ extension BraveWalletJsonRpcService {
       for contractAddressesChainIdPair in contractAddressesChainIdPairs {
         group.addTask {
           let (token, _, _) = await self.ethTokenInfo(
-            contractAddressesChainIdPair.contractAddress,
+            contractAddress: contractAddressesChainIdPair.contractAddress,
             chainId: contractAddressesChainIdPair.chainId
           )
           if let token {

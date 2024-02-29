@@ -431,7 +431,7 @@ extension Tab: BraveWalletEventsListener {
     )
   }
 
-  func chainChangedEvent(_ chainId: String) {
+  func chainChangedEvent(chainId: String) {
     guard !isPrivate else { return }
 
     Task { @MainActor in
@@ -451,7 +451,7 @@ extension Tab: BraveWalletEventsListener {
     }
   }
 
-  func accountsChangedEvent(_ accounts: [String]) {
+  func accountsChangedEvent(accounts: [String]) {
     guard !isPrivate else { return }
 
     emitEthereumEvent(.ethereumAccountsChanged(accounts: accounts))
@@ -527,7 +527,7 @@ extension Tab: BraveWalletEventsListener {
     )
   }
 
-  func messageEvent(_ subscriptionId: String, result: MojoBase.Value) {
+  func messageEvent(subscriptionId: String, result: MojoBase.Value) {
     let eventArgs = MojoBase.Value(dictionaryValue: [
       "type": MojoBase.Value(stringValue: "eth_subscription"),
       "data": MojoBase.Value(dictionaryValue: [
@@ -540,7 +540,7 @@ extension Tab: BraveWalletEventsListener {
 }
 
 extension Tab: BraveWalletSolanaEventsListener {
-  func accountChangedEvent(_ account: String?) {
+  func accountChangedEvent(account: String?) {
     Task {
       if let webView = webView {
         let script: String
@@ -675,12 +675,12 @@ extension Tab: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
 
-  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  func selectedWalletAccountChanged(account: BraveWallet.AccountInfo) {
   }
 
-  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
+  func selectedDappAccountChanged(coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
 
-  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  func accountsAdded(addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }

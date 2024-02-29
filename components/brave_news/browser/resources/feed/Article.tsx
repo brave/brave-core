@@ -35,8 +35,8 @@ export default function Article({ info, hideChannel, feedDepth }: Props) {
 
   return <Container
       ref={setElementRef}
-      onClick={() => {
-        braveNewsCardClickHandler(url)
+      onClick={e => {
+        braveNewsCardClickHandler(url)(e)
         if (feedDepth !== undefined) {
           reportVisit(feedDepth)
         }

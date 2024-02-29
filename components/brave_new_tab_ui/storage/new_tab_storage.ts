@@ -65,7 +65,6 @@ export const defaultState: NewTab.State = {
     dismissedNotifications: [],
     rewardsEnabled: false,
     userType: '',
-    isUnsupportedRegion: false,
     declaredCountry: '',
     needsBrowserUpgradeToServeAds: false,
     promotions: [],

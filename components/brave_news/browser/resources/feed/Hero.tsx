@@ -34,8 +34,8 @@ export default function HeroArticle({ info, feedDepth }: Props) {
     rootMargin: '500px 0px'
   })
   return <Container
-    onClick={() => {
-      braveNewsCardClickHandler(info.data.url.url)
+    onClick={e => {
+      braveNewsCardClickHandler(info.data.url.url)(e)
       if (feedDepth !== undefined) {
         reportVisit(feedDepth)
       }

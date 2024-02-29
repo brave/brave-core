@@ -46,7 +46,6 @@ class BraveTabStrip : public TabStrip {
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
   void Layout() override;
-  void OnPaintBackground(gfx::Canvas* canvas) override;
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;

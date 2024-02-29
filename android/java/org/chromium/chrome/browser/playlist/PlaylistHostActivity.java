@@ -79,7 +79,10 @@ public class PlaylistHostActivity extends AsyncInitializationActivity
         if (mPlaylistService != null) {
             mPlaylistService = null;
         }
-        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
+        mPlaylistService =
+                PlaylistServiceFactoryAndroid.getInstance()
+                        .getPlaylistService(
+                                getProfileProviderSupplier().get().getOriginalProfile(), this);
         addPlaylistObserver();
     }
 

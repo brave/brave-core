@@ -325,23 +325,6 @@
         ]
       },
       {
-        "name": "isUnsupportedRegion",
-        "type": "function",
-        "description": "Whether the locale is unsupported for Brave Rewards",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "unsupportedRegion",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
-      },
-      {
         "name": "recordNTPPanelTrigger",
         "type": "function",
         "description": "Records an NTP Rewards card 'Start using Brave Rewards' click.",

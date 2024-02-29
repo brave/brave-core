@@ -255,8 +255,8 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       keyringService: keyringService,
       _selectedWalletAccountChanged: { [weak self] account in
         Task { @MainActor [self] in
-          guard let network = await self?.rpcService.network(account.coin, origin: nil),
-            let isSwapSupported = await self?.swapService.isSwapSupported(network.chainId),
+          guard let network = await self?.rpcService.network(coin: account.coin, origin: nil),
+            let isSwapSupported = await self?.swapService.isSwapSupported(chainId: network.chainId),
             isSwapSupported
           else {
             self?.accountInfo = account
@@ -275,12 +275,12 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       rpcService: rpcService,
       _chainChangedEvent: { [weak self] chainId, coin, origin in
         Task { @MainActor [self] in
-          guard let isSwapSupported = await self?.swapService.isSwapSupported(chainId),
+          guard let isSwapSupported = await self?.swapService.isSwapSupported(chainId: chainId),
             isSwapSupported
           else { return }
           guard
-            let _ = await self?.walletService.ensureSelectedAccount(
-              forChain: coin,
+            let _ = await self?.walletService.ensureSelectedAccountForChain(
+              coin: coin,
               chainId: chainId
             ),
             let selectedAccount = await self?.keyringService.allAccounts().selectedAccount
@@ -308,7 +308,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return
     }
 
-    rpcService.network(token.coin, origin: nil) { [weak self] network in
+    rpcService.network(coin: token.coin, origin: nil) { [weak self] network in
       self?.rpcService.balance(
         for: token,
         in: account.address,
@@ -389,14 +389,14 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     self.isMakingTx = true
     defer { self.isMakingTx = false }
     let coin = accountInfo.coin
-    let network = await rpcService.network(coin, origin: nil)
+    let network = await rpcService.network(coin: coin, origin: nil)
     guard let swapQuoteParams = self.swapQuoteParameters(for: .perSellAsset, in: network) else {
       self.state = .error(Strings.Wallet.unknownError)
       self.clearAllAmount()
       return false
     }
     let (swapTransactionUnion, _, _) = await swapService.transaction(
-      .init(zeroExTransactionParams: swapQuoteParams)
+      params: .init(zeroExTransactionParams: swapQuoteParams)
     )
     guard let swapResponse = swapTransactionUnion?.zeroExTransaction else {
       self.state = .error(Strings.Wallet.unknownError)
@@ -447,7 +447,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       )
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
       let (success, _, _) = await txService.addUnapprovedTransaction(
-        txDataUnion,
+        txDataUnion: txDataUnion,
         chainId: network.chainId,
         from: accountInfo.accountId
       )
@@ -508,9 +508,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     self.zeroExQuote = response
-    let network = await rpcService.network(selectedFromToken?.coin ?? .eth, origin: nil)
+    let network = await rpcService.network(coin: selectedFromToken?.coin ?? .eth, origin: nil)
     let (braveSwapFeeResponse, _) = await swapService.braveFee(
-      .init(
+      params: .init(
         chainId: network.chainId,
         inputToken: swapQuoteParams.fromToken,
         outputToken: swapQuoteParams.toToken,
@@ -552,9 +552,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     let allowance = WalletConstants.maxUInt256
     self.isMakingTx = true
     defer { self.isMakingTx = false }
-    let network = await rpcService.network(accountInfo.coin, origin: nil)
+    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
     let (success, data) = await ethTxManagerProxy.makeErc20ApproveData(
-      spenderAddress,
+      spenderAddress: spenderAddress,
       amount: allowance
     )
     guard success else {
@@ -584,7 +584,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     } else {
       let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
       let (success, _, _) = await txService.addUnapprovedTransaction(
-        txDataUnion,
+        txDataUnion: txDataUnion,
         chainId: network.chainId,
         from: accountInfo.accountId
       )
@@ -603,7 +603,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   ) async -> Bool {
     var maxPriorityFeePerGas = ""
     var maxFeePerGas = ""
-    let gasEstimation = await ethTxManagerProxy.gasEstimation1559(chainId)
+    let gasEstimation = await ethTxManagerProxy.gasEstimation1559(chainId: chainId)
     if let gasEstimation = gasEstimation {
       // Bump fast priority fee and max fee by 1 GWei if same as average fees.
       if gasEstimation.fastMaxPriorityFeePerGas == gasEstimation.avgMaxPriorityFeePerGas {
@@ -625,7 +625,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     )
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
     let (success, _, _) = await txService.addUnapprovedTransaction(
-      txDataUnion,
+      txDataUnion: txDataUnion,
       chainId: chainId,
       from: account.accountId
     )
@@ -659,9 +659,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     // Get ETH balance for this account because gas can only be paid in ETH
-    let network = await rpcService.network(accountInfo.coin, origin: nil)
+    let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
     let (balance, status, _) = await rpcService.balance(
-      accountInfo.address,
+      address: accountInfo.address,
       coin: network.coin,
       chainId: network.chainId
     )
@@ -709,7 +709,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     fromToken: BraveWallet.BlockchainToken
   ) async {
     let (allowance, status, _) = await rpcService.erc20TokenAllowance(
-      fromToken.contractAddress(in: network),
+      contract: fromToken.contractAddress(in: network),
       ownerAddress: ownerAddress,
       spenderAddress: spenderAddress,
       chainId: network.chainId
@@ -735,7 +735,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     network: BraveWallet.NetworkInfo
   ) async {
     self.isUpdatingPriceQuote = true
-    let (swapQuoteUnion, swapQuoteErrorUnion, _) = await swapService.quote(swapQuoteParams)
+    let (swapQuoteUnion, swapQuoteErrorUnion, _) = await swapService.quote(params: swapQuoteParams)
     defer { self.isUpdatingPriceQuote = false }
     guard !Task.isCancelled else { return }
     if let jupiterQuote = swapQuoteUnion?.jupiterQuote {
@@ -799,9 +799,9 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       selectedFromTokenPrice = rate.decimalDescription
     }
 
-    let network = await rpcService.network(selectedFromToken?.coin ?? .sol, origin: nil)
+    let network = await rpcService.network(coin: selectedFromToken?.coin ?? .sol, origin: nil)
     let (braveSwapFeeResponse, _) = await swapService.braveFee(
-      .init(
+      params: .init(
         chainId: network.chainId,
         inputToken: swapQuoteParams.fromToken,
         outputToken: swapQuoteParams.toToken,
@@ -842,7 +842,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
     self.isMakingTx = true
     defer { self.isMakingTx = false }
-    let network = await rpcService.network(.sol, origin: nil)
+    let network = await rpcService.network(coin: .sol, origin: nil)
 
     let jupiterTransactionParams: BraveWallet.JupiterTransactionParams = .init(
       quote: jupiterQuote,
@@ -850,7 +850,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       userPublicKey: accountInfo.address
     )
     let (swapTransactionUnion, errorResponseUnion, _) = await swapService.transaction(
-      .init(jupiterTransactionParams: jupiterTransactionParams)
+      params: .init(jupiterTransactionParams: jupiterTransactionParams)
     )
     guard let jupiterTransaction = swapTransactionUnion?.jupiterTransaction else {
       // check balance first because error can cause by insufficient balance
@@ -871,10 +871,10 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       self.state = .error(Strings.Wallet.unknownError)
       return false
     }
-    let (solTxData, status, _) = await solTxManagerProxy.makeTxData(
-      fromBase64EncodedTransaction: jupiterTransaction,
+    let (solTxData, status, _) = await solTxManagerProxy.makeTxDataFromBase64EncodedTransaction(
+      jupiterTransaction,
       txType: .solanaSwap,
-      send: .init(
+      sendOptions: .init(
         maxRetries: .init(maxRetries: 3),
         preflightCommitment: "processed",
         skipPreflight: .init(skipPreflight: true)
@@ -885,7 +885,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
       return false
     }
     let (success, _, _) = await txService.addUnapprovedTransaction(
-      .init(solanaTxData: solTxData),
+      txDataUnion: .init(solanaTxData: solTxData),
       chainId: network.chainId,
       from: accountInfo.accountId
     )
@@ -941,7 +941,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
         self.state = .idle
         return
       }
-      let network = await rpcService.network(accountInfo.coin, origin: nil)
+      let network = await rpcService.network(coin: accountInfo.coin, origin: nil)
       guard !Task.isCancelled else { return }
       // Entering a buy amount is disabled for Solana swaps, always use
       // `SwapParamsBase.perSellAsset` to fetch quote based on the sell amount.
@@ -973,7 +973,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
   ) async {
     self.isUpdatingPriceQuote = true
     defer { self.isUpdatingPriceQuote = false }
-    let (swapQuoteUnion, swapQuoteErrorUnion, _) = await swapService.quote(swapQuoteParams)
+    let (swapQuoteUnion, swapQuoteErrorUnion, _) = await swapService.quote(params: swapQuoteParams)
     if let swapResponse = swapQuoteUnion?.zeroExQuote {
       await self.handleEthPriceQuoteResponse(
         swapResponse,
@@ -1065,11 +1065,11 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
     }
 
     // All tokens from token registry
-    self.rpcService.network(accountInfo.coin, origin: nil) { network in
+    self.rpcService.network(coin: accountInfo.coin, origin: nil) { network in
       // Closure run after validating the prefilledToken (if applicable)
       let continueClosure: (BraveWallet.NetworkInfo) -> Void = { [weak self] network in
         guard let self = self else { return }
-        self.blockchainRegistry.allTokens(network.chainId, coin: network.coin) { tokens in
+        self.blockchainRegistry.allTokens(chainId: network.chainId, coin: network.coin) { tokens in
           // Native token on the current selected network
           let nativeAsset = network.nativeToken
           // visible custom tokens added by users
@@ -1111,7 +1111,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
           self.selectedFromToken = prefilledToken
           continueClosure(network)
         } else {
-          self.rpcService.allNetworks(prefilledToken.coin) { allNetworksForTokenCoin in
+          self.rpcService.allNetworks(coin: prefilledToken.coin) { allNetworksForTokenCoin in
             guard
               let networkForToken = allNetworksForTokenCoin.first(where: {
                 $0.chainId == prefilledToken.chainId
@@ -1122,7 +1122,7 @@ public class SwapTokenStore: ObservableObject, WalletObserverStore {
               return
             }
             self.rpcService.setNetwork(
-              networkForToken.chainId,
+              chainId: networkForToken.chainId,
               coin: networkForToken.coin,
               origin: nil
             ) { success in

@@ -103,7 +103,6 @@ class Tab: NSObject {
 
   var secureContentState: TabSecureContentState = .unknown
   var sslPinningError: Error?
-  var sslPinningTrust: SecTrust?
 
   private let _syncTab: BraveSyncTab?
   private let _faviconDriver: FaviconDriver?
@@ -111,7 +110,7 @@ class Tab: NSObject {
   private var _walletSolProvider: BraveWalletSolanaProvider?
   private var _walletKeyringService: BraveWalletKeyringService? {
     didSet {
-      _walletKeyringService?.add(self)
+      _walletKeyringService?.addObserver(self)
     }
   }
 

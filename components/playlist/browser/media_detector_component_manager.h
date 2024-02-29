@@ -45,6 +45,8 @@ class MediaDetectorComponentManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  const std::string& GetMediaSourceAPISuppressorScript();
+
   // Returns a script to get media from page. If the script isn't fetched
   // from component yet, will return a local script.
   std::string GetMediaDetectorScript(const GURL& url);
@@ -72,6 +74,7 @@ class MediaDetectorComponentManager {
   bool register_requested_ = false;
   raw_ptr<component_updater::ComponentUpdateService> component_update_service_;
 
+  std::string media_source_api_suppressor_;
   std::string base_script_;
 
   std::vector<net::SchemefulSite> sites_to_hide_media_src_api_;

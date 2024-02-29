@@ -19,7 +19,7 @@ extension BraveWalletAssetRatioService {
     // make sure there is no duplicate priceId
     let uniquePriceIds = Array(Set(fromAssets))
     let (success, prices) = await self.price(
-      uniquePriceIds,
+      fromAssets: uniquePriceIds,
       toAssets: toAssets,
       timeframe: timeframe
     )
@@ -41,7 +41,7 @@ extension BraveWalletAssetRatioService {
       uniquePriceIds.forEach { asset in
         group.addTask { @MainActor in
           let (success, prices) = await self.price(
-            [asset],
+            fromAssets: [asset],
             toAssets: toAssets,
             timeframe: timeframe
           )
@@ -72,7 +72,8 @@ extension BraveWalletAssetRatioService {
   ) {
     // make sure there is no duplicate priceId
     let uniquePriceIds = Array(Set(fromAssets))
-    price(uniquePriceIds, toAssets: toAssets, timeframe: timeframe) { [self] success, prices in
+    price(fromAssets: uniquePriceIds, toAssets: toAssets, timeframe: timeframe) {
+      [self] success, prices in
       guard success else {
         self.priceIndividually(
           fromAssets,
@@ -99,7 +100,7 @@ extension BraveWalletAssetRatioService {
     let dispatchGroup = DispatchGroup()
     uniquePriceIds.forEach { asset in
       dispatchGroup.enter()
-      self.price([asset], toAssets: toAssets, timeframe: timeframe) { success, prices in
+      self.price(fromAssets: [asset], toAssets: toAssets, timeframe: timeframe) { success, prices in
         defer { dispatchGroup.leave() }
         pricesResults.append(PricesResult(prices, success ? 0 : 1))
       }

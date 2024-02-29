@@ -1366,8 +1366,7 @@ public class BraveRewardsPanel
                         if (mBraveRewardsViewPager != null
                                 && mBraveRewardsOnboardingPagerAdapter != null) {
                             if (mBraveRewardsViewPager.getCurrentItem()
-                                            == mBraveRewardsOnboardingPagerAdapter.getCount() - 2
-                                    && mBraveRewardsNativeWorker.canConnectAccount()) {
+                                    == mBraveRewardsOnboardingPagerAdapter.getCount() - 2) {
                                 if (mBraveRewardsOnboardingView != null) {
                                     mBraveRewardsOnboardingView.setVisibility(View.GONE);
                                 }
@@ -1548,7 +1547,6 @@ public class BraveRewardsPanel
                         }
                     }));
             BraveTouchUtils.ensureMinTouchTarget(rewardsPanelUnverifiedOnSectionLearnMoreText);
-            if (mBraveRewardsNativeWorker.canConnectAccount()) {
                 String sectionText = "<b>"
                         + mPopupView.getResources().getString(R.string.ready_to_start_earning_text)
                         + "</b> "
@@ -1557,12 +1555,6 @@ public class BraveRewardsPanel
                 rewardsPanelUnverifiedOnSectionText.setText(Html.fromHtml(sectionText));
                 connectAccountButton.setVisibility(View.VISIBLE);
                 rewardsPanelUnverifiedOnSectionLearnMoreText.setVisibility(View.GONE);
-            } else {
-                rewardsPanelUnverifiedOnSectionText.setText(mPopupView.getResources().getString(
-                        R.string.rewards_panel_unverified_on_section_unsupported_region_text));
-                connectAccountButton.setVisibility(View.GONE);
-                rewardsPanelUnverifiedOnSectionLearnMoreText.setVisibility(View.VISIBLE);
-            }
             rewardsPanelUnverifiedOffSection.setVisibility(View.GONE);
             mBraveRewardsNativeWorker.getPublishersVisitedCount();
         } else {

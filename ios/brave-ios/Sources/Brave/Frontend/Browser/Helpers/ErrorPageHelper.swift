@@ -104,11 +104,6 @@ class ErrorPageHelper {
       URLQueryItem(name: "timestamp", value: "\(Int(Date().timeIntervalSince1970 * 1000))"),
     ]
 
-    // The error came from WebKit's internal validation and the cert is untrusted
-    if error.userInfo["NSErrorPeerUntrustedByApple"] as? Bool == true {
-      queryItems.append(URLQueryItem(name: "peeruntrusted", value: "true"))
-    }
-
     // If this is an invalid certificate, show a certificate error allowing the
     // user to go back or continue. The certificate itself is encoded and added as
     // a query parameter to the error page URL; we then read the certificate from
@@ -184,6 +179,10 @@ extension ErrorPageHelper {
       return 0
     }
     return 0
+  }
+
+  static func hasCertificates(for url: URL) -> Bool {
+    return (url as NSURL).valueForQueryParameter(key: "badcerts") != nil
   }
 
   static func serverTrust(from errorURL: URL) throws -> SecTrust? {

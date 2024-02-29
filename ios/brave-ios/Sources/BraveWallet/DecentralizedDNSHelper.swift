@@ -57,7 +57,7 @@ public enum Web3Service: String, CaseIterable {
     case .ask:
       return .loadInterstitial(.unstoppable)
     case .enabled:
-      let (url, status, _) = await rpcService.unstoppableDomainsResolveDns(domain)
+      let (url, status, _) = await rpcService.unstoppableDomainsResolveDns(domain: domain)
       guard status == .success, let url else {
         return .none
       }
@@ -77,7 +77,7 @@ public enum Web3Service: String, CaseIterable {
       return .loadInterstitial(.ethereum)
     case .enabled:
       let (contentHash, isOffchainConsentRequired, status, _) = await rpcService.ensGetContentHash(
-        domain
+        domain: domain
       )
       if isOffchainConsentRequired {
         return .loadInterstitial(.ethereumOffchain)
@@ -104,7 +104,7 @@ public enum Web3Service: String, CaseIterable {
     case .ask:
       return .loadInterstitial(.solana)
     case .enabled:
-      let (url, status, _) = await rpcService.snsResolveHost(domain)
+      let (url, status, _) = await rpcService.snsResolveHost(domain: domain)
       guard status == .success,
         let url,
         !url.isBookmarklet

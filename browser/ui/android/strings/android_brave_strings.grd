@@ -3389,9 +3389,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
       Connect or create an account with one of our partners.
     </message>
-    <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
-      To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
-    </message>
     <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
       Learn more about earning BAT
     </message>

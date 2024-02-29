@@ -28,16 +28,6 @@ class BraveRewardsIsSupportedFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsIsUnsupportedRegionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.isUnsupportedRegion", UNKNOWN)
-
- protected:
-  ~BraveRewardsIsUnsupportedRegionFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsRecordNTPPanelTriggerFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.recordNTPPanelTrigger", UNKNOWN)

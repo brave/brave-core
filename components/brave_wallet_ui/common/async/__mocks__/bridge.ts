@@ -895,7 +895,8 @@ export class MockedWalletApiProxy {
           isWalletCreated: true,
           isWalletLocked: false,
           isNftPinningFeatureEnabled: false,
-          isAnkrBalancesFeatureEnabled: false
+          isAnkrBalancesFeatureEnabled: false,
+          isTransactionSimulationsFeatureEnabled: false
         }
       }
     }

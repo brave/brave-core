@@ -51,6 +51,11 @@ bool IsAnkrBalancesEnabled() {
       features::kBraveWalletAnkrBalancesFeature);
 }
 
+bool IsTransactionSimulationsEnabled() {
+  return base::FeatureList::IsEnabled(
+      features::kBraveWalletTransactionSimulationsFeature);
+}
+
 bool IsAllowed(PrefService* prefs) {
   return !IsDisabledByPolicy(prefs);
 }

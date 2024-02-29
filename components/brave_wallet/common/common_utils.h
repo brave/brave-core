@@ -32,6 +32,7 @@ bool IsNftPinningEnabled();
 bool IsBitcoinEnabled();
 bool IsZCashEnabled();
 bool IsAnkrBalancesEnabled();
+bool IsTransactionSimulationsEnabled();
 
 bool IsAllowed(PrefService* prefs);
 

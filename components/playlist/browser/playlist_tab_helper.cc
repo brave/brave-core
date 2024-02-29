@@ -19,6 +19,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -182,14 +183,26 @@ void PlaylistTabHelper::ExtractMediaFromBackgroundWebContents(
   ExtractMediaFromBackgroundContents();
 }
 
-void PlaylistTabHelper::RequestAsyncExecuteScript(
-    int32_t world_id,
-    const std::u16string& script,
-    base::OnceCallback<void(base::Value)> cb) {
-  GetRemote(web_contents()->GetPrimaryMainFrame())
-      ->RequestAsyncExecuteScript(
-          world_id, script, blink::mojom::UserActivationOption::kActivate,
-          blink::mojom::PromiseResultOption::kAwait, std::move(cb));
+void PlaylistTabHelper::ReadyToCommitNavigation(
+    content::NavigationHandle* navigation_handle) {
+  DVLOG(2) << __FUNCTION__;
+
+  if (!navigation_handle->IsInPrimaryMainFrame()) {
+    return;
+  }
+
+  const GURL url = navigation_handle->GetURL();
+  if (!url.SchemeIsHTTPOrHTTPS()) {
+    return;
+  }
+
+  mojo::AssociatedRemote<mojom::PlaylistRenderFrameObserverConfigurator>
+      frame_observer_config;
+  navigation_handle->GetRenderFrameHost()
+      ->GetRemoteAssociatedInterfaces()
+      ->GetInterface(&frame_observer_config);
+  frame_observer_config->AddMediaDetector(
+      service_->GetMediaDetectorScript(url));
 }
 
 void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
@@ -279,6 +292,10 @@ void PlaylistTabHelper::OnItemLocalDataDeleted(const std::string& id) {
 void PlaylistTabHelper::OnMediaFilesUpdated(
     const GURL& url,
     std::vector<mojom::PlaylistItemPtr> items) {
+  if (items.empty()) {
+    return;
+  }
+
   OnFoundMediaFromContents(url, std::move(items));
 }
 
@@ -478,19 +495,6 @@ void PlaylistTabHelper::OnPlaylistEnabledPrefChanged() {
     Observe(nullptr);
     ResetData();
   }
-}
-
-mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>&
-PlaylistTabHelper::GetRemote(content::RenderFrameHost* rfh) {
-  if (rfh != script_injector_rfh_ || !script_injector_remote_.is_bound()) {
-    script_injector_rfh_ = rfh;
-    if (script_injector_remote_.is_bound()) {
-      script_injector_remote_.reset();
-    }
-    rfh->GetRemoteAssociatedInterfaces()->GetInterface(
-        &script_injector_remote_);
-  }
-  return script_injector_remote_;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistTabHelper);
