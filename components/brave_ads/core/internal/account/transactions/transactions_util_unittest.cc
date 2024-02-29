@@ -7,6 +7,7 @@
 
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -17,7 +18,7 @@ class BraveAdsTransactionsUtilTest : public UnitTestBase {};
 
 TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -26,7 +27,7 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("25 December 2020"));
 
   const TransactionInfo transaction_2 = test::BuildUnreconciledTransaction(
       /*value=*/0.03, ConfirmationType::kClicked,
@@ -43,7 +44,7 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
 
 TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   // Arrange
-  AdvanceClockTo(TimeFromString("5 November 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("5 November 2020"));
 
   TransactionList transactions;
 
@@ -57,7 +58,7 @@ TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
-  AdvanceClockTo(TimeFromString("25 December 2020", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("25 December 2020"));
 
   // Act
   const TransactionList transactions_for_date_range =

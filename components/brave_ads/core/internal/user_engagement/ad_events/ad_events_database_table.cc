@@ -286,6 +286,32 @@ void AdEvents::RecordEvent(const AdEventInfo& ad_event,
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
+void AdEvents::GetAll(GetAdEventsCallback callback) const {
+  mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
+  mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();
+  command->type = mojom::DBCommandInfo::Type::READ;
+  command->sql = base::ReplaceStringPlaceholders(
+      R"(
+          SELECT
+            placement_id,
+            type,
+            confirmation_type,
+            campaign_id,
+            creative_set_id,
+            creative_instance_id,
+            advertiser_id,
+            segment,
+            created_at
+          FROM
+            $1;)",
+      {GetTableName()}, nullptr);
+  BindRecords(&*command);
+  transaction->commands.push_back(std::move(command));
+
+  RunDBTransaction(std::move(transaction),
+                   base::BindOnce(&GetCallback, std::move(callback)));
+}
+
 void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
   mojom::DBCommandInfoPtr command = mojom::DBCommandInfo::New();

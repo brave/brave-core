@@ -22,7 +22,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   NotifyBrowserDidResignActive();
   NotifyBrowserDidEnterBackground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {
@@ -58,7 +58,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest,
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {
@@ -93,7 +93,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnIOS) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {
@@ -115,7 +115,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnMacOS) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {
@@ -137,7 +137,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnWindows) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {
@@ -159,7 +159,7 @@ TEST_F(BraveAdsDoNotDisturbPermissionRuleTest, ShouldAlwaysAllowOnLinux) {
   NotifyBrowserDidBecomeActive();
   NotifyBrowserDidEnterForeground();
 
-  AdvanceClockToMidnight(/*is_local=*/true);
+  AdvanceClockToLocalMidnight();
 
   // Act & Assert
   {

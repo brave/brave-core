@@ -18,6 +18,7 @@
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
 #include "brave/components/brave_ads/core/internal/application_state/browser_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_unittest_util.h"
@@ -35,8 +36,7 @@ class BraveAdsConfirmationUserDataBuilderTest : public UnitTestBase {
 
     MockConfirmationUserData();
 
-    AdvanceClockTo(
-        TimeFromString("November 18 2020 12:34:56.789", /*is_local=*/false));
+    AdvanceClockTo(TimeFromUTCString("November 18 2020 12:34:56.789"));
   }
 };
 
