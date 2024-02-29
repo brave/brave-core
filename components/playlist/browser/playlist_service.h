@@ -208,7 +208,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaDetected(base::Value::List media, const GURL& url);
+  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> media, const GURL& url);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -257,9 +257,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
-  std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value::List list,
-                                                       GURL page_url);
-
   bool ShouldExtractMediaFromBackgroundWebContents(
       const mojom::PlaylistItemPtr& item) const;
 
@@ -274,13 +271,8 @@ class PlaylistService : public KeyedService,
   void AddMediaFilesFromItems(const std::string& playlist_id,
                               bool cache,
                               AddMediaFilesCallback callback,
-                              std::vector<mojom::PlaylistItemPtr> items);
-
-  void Callback(const std::string& playlist_id,
-                bool cache,
-                AddMediaFilesCallback callback,
-                base::Value::List media,
-                const GURL& url);
+                              std::vector<mojom::PlaylistItemPtr> items,
+                              const GURL&);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);

@@ -6,9 +6,12 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 
+#include <vector>
+
 #include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
+#include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "third_party/abseil-cpp/absl/container/flat_hash_set.h"
 
 class GURL;
@@ -37,7 +40,7 @@ class PlaylistBackgroundWebContents final {
  private:
   void Remove(content::WebContents* web_contents,
               PlaylistMediaHandler::OnceCallback on_media_detected_callback,
-              base::Value::List media,
+              std::vector<mojom::PlaylistItemPtr> media,
               const GURL& url);
 
   raw_ptr<content::BrowserContext> context_;

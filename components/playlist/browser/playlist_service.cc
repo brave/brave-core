@@ -103,101 +103,6 @@ void PlaylistService::Shutdown() {
 #endif  // BUILDFLAG(IS_ANDROID)
 }
 
-std::vector<mojom::PlaylistItemPtr> PlaylistService::GetPlaylistItems(
-    base::Value::List list,
-    GURL page_url) {
-  /* Expected output:
-    [
-      {
-        "mimeType": "video" | "audio",
-        "name": string,
-        "pageSrc": url,
-        "pageTitle": string
-        "src": url
-        "srcIsMediaSourceObjectURL": boolean,
-        "thumbnail": url | undefined
-        "duration": double | undefined
-        "author": string | undefined
-      }
-    ]
-  */
-
-  std::vector<mojom::PlaylistItemPtr> items;
-  for (const auto& media : list) {
-    if (!media.is_dict()) {
-      LOG(ERROR) << __func__ << " Got invalid item";
-      continue;
-    }
-
-    const auto& media_dict = media.GetDict();
-
-    auto* name = media_dict.FindString("name");
-    auto* page_title = media_dict.FindString("pageTitle");
-    auto* page_source = media_dict.FindString("pageSrc");
-    auto* mime_type = media_dict.FindString("mimeType");
-    auto* src = media_dict.FindString("src");
-    auto is_blob_from_media_source =
-        media_dict.FindBool("srcIsMediaSourceObjectURL");
-    if (!name || !page_source || !page_title || !mime_type || !src ||
-        !is_blob_from_media_source) {
-      LOG(ERROR) << __func__ << " required fields are not satisfied";
-      continue;
-    }
-
-    // nullable data
-    auto* thumbnail = media_dict.FindString("thumbnail");
-    auto* author = media_dict.FindString("author");
-    auto duration = media_dict.FindDouble("duration");
-
-    auto item = mojom::PlaylistItem::New();
-    item->id = base::Token::CreateRandom().ToString();
-    item->page_source = page_url;
-    item->page_redirected = GURL(*page_source);
-    item->name = *name;
-    // URL data
-    GURL media_url(*src);
-    if (!media_url.SchemeIs(url::kHttpsScheme) && !media_url.SchemeIsBlob()) {
-      continue;
-    }
-
-    if (media_url.SchemeIsBlob() &&
-        !GURL(media_url.path()).SchemeIs(url::kHttpsScheme)) {
-      // Double checking if the blob: is followed by https:// scheme.
-      // https://github.com/brave/playlist-component/pull/39#discussion_r1445408827
-      continue;
-    }
-
-    item->media_source = media_url;
-    item->media_path = media_url;
-    item->is_blob_from_media_source = *is_blob_from_media_source;
-
-    if (thumbnail) {
-      if (GURL thumbnail_url(*thumbnail);
-          !thumbnail_url.SchemeIs(url::kHttpsScheme)) {
-        LOG(ERROR) << __func__ << "thumbnail scheme is not https://";
-        thumbnail = nullptr;
-      }
-    }
-
-    if (duration.has_value()) {
-      item->duration =
-          base::TimeDeltaToValue(base::Seconds(*duration)).GetString();
-    }
-    if (thumbnail) {
-      item->thumbnail_source = GURL(*thumbnail);
-      item->thumbnail_path = GURL(*thumbnail);
-    }
-    if (author) {
-      item->author = *author;
-    }
-    items.push_back(std::move(item));
-  }
-
-  DVLOG(2) << __func__ << " Media detection result size: " << items.size();
-
-  return items;
-}
-
 bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
     const mojom::PlaylistItemPtr& item) const {
   return item->media_source.SchemeIsBlob() && item->is_blob_from_media_source;
@@ -405,20 +310,12 @@ bool PlaylistService::MoveItem(const PlaylistId& from,
   return true;
 }
 
-void PlaylistService::Callback(const std::string& playlist_id,
-                               bool cache,
-                               AddMediaFilesCallback callback,
-                               base::Value::List media,
-                               const GURL& url) {
-  AddMediaFilesFromItems(playlist_id, cache, std::move(callback),
-                         GetPlaylistItems(std::move(media), url));
-                               }
-
 void PlaylistService::AddMediaFilesFromItems(
     const std::string& playlist_id,
     bool cache,
     AddMediaFilesCallback callback,
-    std::vector<mojom::PlaylistItemPtr> items) {
+    std::vector<mojom::PlaylistItemPtr> items,
+    const GURL&) {
   if (items.empty()) {
     if (callback) {
       std::move(callback).Run({});
@@ -650,18 +547,17 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                                     const std::string& playlist_id,
                                     bool can_cache,
                                     AddMediaFilesCallback callback) {
-  if (items.size() == 1 && ShouldExtractMediaFromBackgroundWebContents(items[0])) {
-    background_web_contents_->Add(
-        items[0]->page_source,
-        base::BindOnce(
-            &PlaylistService::Callback, GetWeakPtr(), playlist_id,
-            can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-            std::move(callback)));
+  auto add_media_files_from_items = base::BindOnce(
+      &PlaylistService::AddMediaFilesFromItems, GetWeakPtr(), playlist_id,
+      can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
+      std::move(callback));
+
+  if (items.size() == 1 &&
+      ShouldExtractMediaFromBackgroundWebContents(items[0])) {
+    background_web_contents_->Add(items[0]->page_source,
+                                  std::move(add_media_files_from_items));
   } else {
-    AddMediaFilesFromItems(
-        playlist_id,
-        can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
-        std::move(callback), std::move(items));
+    std::move(add_media_files_from_items).Run(std::move(items), {});
   }
 }
 
@@ -986,14 +882,11 @@ void PlaylistService::RecoverLocalDataForItem(
       [](base::WeakPtr<PlaylistService> service,
          mojom::PlaylistItemPtr old_item,
          RecoverLocalDataForItemCallback callback,
-         base::Value::List media,
+         std::vector<mojom::PlaylistItemPtr> found_items,
          const GURL& url) {
         if (!service) {
           return;
         }
-
-        const std::vector<mojom::PlaylistItemPtr> found_items =
-            service->GetPlaylistItems(std::move(media), url);
 
         DCHECK(old_item);
         if (found_items.empty()) {
@@ -1236,12 +1129,11 @@ void PlaylistService::AddObserver(
   observers_.Add(std::move(observer));
 }
 
-void PlaylistService::OnMediaDetected(base::Value::List media, const GURL& url) {
+void PlaylistService::OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items,
+                                      const GURL& url) {
   if (!*enabled_pref_) {
     return;
   }
-
-  const auto items = GetPlaylistItems(std::move(media), url);
 
   DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
            << " were updated: count => " << items.size();
