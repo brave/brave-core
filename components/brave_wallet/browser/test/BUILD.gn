@@ -4,6 +4,7 @@
 # You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 import("//brave/build/config.gni")
+import("//brave/components/brave_wallet/common/config.gni")
 import("//brave/components/ipfs/buildflags/buildflags.gni")
 import("//testing/test.gni")
 
@@ -102,6 +103,10 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser/zcash/zcash_wallet_service_unittest.cc",
   ]
 
+  if (enable_orchard) {
+    sources += [ "//brave/components/brave_wallet/browser/internal/hd_key_zip32_unittest.cc" ]
+  }
+
   if (enable_ipfs_local_node) {
     sources += [
       "//brave/components/brave_wallet/browser/brave_wallet_auto_pin_service_unittest.cc",
@@ -127,6 +132,7 @@ source_set("brave_wallet_unit_tests") {
     "//brave/components/brave_wallet/browser:utils",
     "//brave/components/brave_wallet/browser/internal:hd_key",
     "//brave/components/brave_wallet/common",
+    "//brave/components/brave_wallet/common:buildflags",
     "//brave/components/brave_wallet/common:common_constants",
     "//brave/components/brave_wallet/common:mojom",
     "//brave/components/brave_wallet/common:test_support",

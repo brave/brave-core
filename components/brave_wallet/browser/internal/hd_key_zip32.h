@@ -1,0 +1,56 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+#ifndef BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ZIP32_H_
+#define BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ZIP32_H_
+
+#include <memory>
+#include <string>
+#include <vector>
+
+#include "brave/components/brave_wallet/common/buildflags.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
+#include "brave/components/zcash/rs/lib.rs.h"
+
+static_assert(BUILDFLAG(ENABLE_ORCHARD));
+
+namespace brave_wallet {
+
+enum class OrchardKind {
+  // External kind, can be used in account addresses
+  External,
+  // Internal "change" address
+  Internal
+};
+
+// Implements Orchard key generation from
+// https://zips.z.cash/zip-0032#orchard-child-key-derivation
+class HDKeyZip32 {
+ public:
+  explicit HDKeyZip32(rust::Box<zcash::OrchardExtendedSpendingKeyResult> esk);
+
+  ~HDKeyZip32();
+
+  // Generates master key using provided seed
+  static std::unique_ptr<HDKeyZip32> GenerateFromSeed(
+      base::span<const uint8_t> seed);
+
+  // Derives hardened key using index and the current key
+  std::unique_ptr<HDKeyZip32> DeriveHardenedChild(uint32_t index);
+
+  // Returns public or internal address that may be used as a recipient address
+  // in transactions
+  std::optional<std::array<uint8_t, kOrchardRawBytesSize>>
+  GetDiversifiedAddress(uint32_t div_index, OrchardKind kind);
+
+ private:
+  // Extended spending key is a root key of an account, all other keys can be
+  // derived from esk
+  rust::Box<zcash::OrchardExtendedSpendingKeyResult> extended_spending_key_;
+};
+
+}  // namespace brave_wallet
+
+#endif  // BRAVE_COMPONENTS_BRAVE_WALLET_BROWSER_INTERNAL_HD_KEY_ZIP32_H_
