@@ -35,6 +35,9 @@ export const DisclaimerText = styled(TextSection)`
   font-family: ${p => p.theme.fontFamily.body};
   margin: 0;
   line-height: 1.2;
+  a, a:visited, a:hover, a:active {
+    color: ${p => p.theme.color.text};
+  }
 `
 
 export const NonInteractiveURL = styled('p')<{}>`

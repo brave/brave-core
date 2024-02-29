@@ -38,6 +38,8 @@ interface State {
   attachScreenshot: boolean
 }
 
+const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
+
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
@@ -51,62 +53,89 @@ export default class ReportView extends React.PureComponent<Props, State> {
       onClose
     } = this.props
     const { details, contact, attachScreenshot } = this.state
+
+    const isInternalPage = siteUrl.startsWith('brave://') || siteUrl.startsWith('chrome://');
+
     return (
       <ModalLayout>
         <TextSection>
           <ModalTitle>{getLocale('reportModalTitle')}</ModalTitle>
         </TextSection>
-        <InfoText>{getLocale('reportExplanation')}</InfoText>
-        <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
-        <DisclaimerText>{getLocale('reportDisclaimer')}</DisclaimerText>
-        <FieldCtr>
-          <TextArea
-            placeholder={getLocale('reportDetails')}
-            onChange={(ev) => this.setState({ details: ev.target.value })}
-            rows={7}
-            maxLength={2000}
-            value={details}
-          />
-        </FieldCtr>
-        <FieldCtr>
-          <InputLabel htmlFor='contact-info'>
-            {getLocale('reportContactLabel')}
-          </InputLabel>
-          <Input
-            placeholder={getLocale('reportContactPlaceholder')}
-            onChange={(ev) => this.setState({ contact: ev.target.value })}
-            type='text'
-            maxLength={2000}
-            value={contact}
-            id='contact-info'
-          />
-        </FieldCtr>
-        <FieldCtr>
-          <Checkbox
-            onChange={(ev) => this.setState({ attachScreenshot: ev.target.checked })}
-            type='checkbox'
-            checked={attachScreenshot}
-            id='attach-screenshot'
-          />
-          <CheckboxLabel htmlFor='attach-screenshot'>
-            {getLocale('attachScreenshotLabel')}
-          </CheckboxLabel>
-        </FieldCtr>
+        <InfoText>
+          {getLocale(isInternalPage ? 'reportInternalExplanation' : 'reportExplanation')}
+        </InfoText>
+        {!isInternalPage && 
+          <>
+            <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
+            <DisclaimerText>
+              {getLocale('reportDisclaimer')}
+              &nbsp;
+              <a href={WEBCOMPAT_INFO_WIKI_URL} target="_blank">
+                {getLocale('reportInfoLink')}
+              </a>
+            </DisclaimerText>
+            <FieldCtr>
+              <TextArea
+                placeholder={getLocale('reportDetails')}
+                onChange={(ev) => this.setState({ details: ev.target.value })}
+                rows={7}
+                maxLength={2000}
+                value={details}
+              />
+            </FieldCtr>
+            <FieldCtr>
+              <InputLabel htmlFor='contact-info'>
+                {getLocale('reportContactLabel')}
+              </InputLabel>
+              <Input
+                placeholder={getLocale('reportContactPlaceholder')}
+                onChange={(ev) => this.setState({ contact: ev.target.value })}
+                type='text'
+                maxLength={2000}
+                value={contact}
+                id='contact-info'
+              />
+            </FieldCtr>
+            <FieldCtr>
+              <Checkbox
+                onChange={(ev) => this.setState({ attachScreenshot: ev.target.checked })}
+                type='checkbox'
+                checked={attachScreenshot}
+                id='attach-screenshot'
+              />
+              <CheckboxLabel htmlFor='attach-screenshot'>
+                {getLocale('attachScreenshotLabel')}
+              </CheckboxLabel>
+            </FieldCtr>
+          </>
+        }
         <SideBySideButtons>
+          {!isInternalPage ?
+          <>
+            <PaddedButton
+              text={getLocale('cancel')}
+              level={'secondary'}
+              type={'default'}
+              size={'small'}
+              onClick={onClose}
+            />
+            <PaddedButton
+              text={getLocale('submit')}
+              level={'primary'}
+              type={'accent'}
+              size={'small'}
+              onClick={() => onSubmitReport(details, contact, attachScreenshot)}
+            />
+          </>
+        :
           <PaddedButton
-            text={getLocale('cancel')}
-            level={'secondary'}
-            type={'default'}
-            size={'small'}
-            onClick={onClose}
-          />
-          <PaddedButton
-            text={getLocale('submit')}
+            text={getLocale('close')}
             level={'primary'}
             type={'accent'}
             size={'small'}
-            onClick={() => onSubmitReport(details, contact, attachScreenshot)}
+            onClick={onClose}
           />
+        }
         </SideBySideButtons>
       </ModalLayout>
     )
