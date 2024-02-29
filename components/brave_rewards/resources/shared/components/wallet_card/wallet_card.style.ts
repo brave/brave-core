@@ -180,9 +180,15 @@ export const batAmount = styled.div`
   align-items: stretch;
   gap: 4px;
 
-  font-weight: 500;
-  font-size: 32px;
-  line-height: 48px;
+  .amount {
+    font: ${leo.font.default.regular};
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 48px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.04em;
+    padding-right: 4px;
+  }
 
   .currency {
     font-weight: 400;
@@ -193,6 +199,21 @@ export const batAmount = styled.div`
 `
 
 export const balanceSpinner = styled.div`
+  font-size: 14px;
+  line-height: 18px;
+  padding: 16px 0;
+  min-height: 62px;
+
+  animation-name: fade-in;
+  animation-delay: 1s;
+  animation-duration: .5s;
+  animation-fill-mode: both;
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: .8; }
+  }
+
   .icon {
     height: 24px;
     vertical-align: middle;
@@ -200,16 +221,19 @@ export const balanceSpinner = styled.div`
   }
 `
 
-export const loading = styled.span`
-  font-size: 14px;
-  line-height: 18px;
-  vertical-align: middle;
-`
-
 export const exchangeAmount = styled.div`
   font-size: 12px;
   line-height: 14px;
   opacity: 0.66;
+
+  .amount {
+    font: ${leo.font.default.regular};
+    font-size: 12px;
+    line-height: 14px;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.05em;
+    padding-right: 4px;
+  }
 `
 
 export const hiddenEarnings = styled.div`
