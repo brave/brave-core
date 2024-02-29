@@ -256,7 +256,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &permissions::features::kPermissionsPromptSurvey,
 #endif
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
-      &permissions::features::kPermissionStorageAccessAPI,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
       &privacy_sandbox::kCookieSettingsUiAlignment,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
