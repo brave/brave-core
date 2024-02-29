@@ -46,8 +46,8 @@ public enum PresentingContext {
   case accountSelection
   /// Shows the user transaction history of current selected account and network
   case transactionHistory
-  /// Shows the user one of the three transaction action screens 1. Buy 2. Send 3. Swap
-  case buySendSwap(_ destination: BuySendSwapDestination)
+  /// Shows the user one of the three transaction action screens 1. Buy 2. Send 3. Swap 4. Deposit
+  case walletAction(_ destination: WalletActionDestination)
   /// Shows the user the wallet settings screen
   case settings
   /// Shows when the users want to edit connected account the the webpage

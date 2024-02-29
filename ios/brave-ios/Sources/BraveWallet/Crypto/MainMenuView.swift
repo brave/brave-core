@@ -44,7 +44,7 @@ struct MainMenuView: View {
         } label: {
           MenuRowView(
             iconBraveSystemName: "leo.safe",
-            title: "Back Up Now"
+            title: Strings.Wallet.backUpWallet
           )
         }
         .frame(height: rowHeight)

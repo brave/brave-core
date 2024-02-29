@@ -8,7 +8,7 @@ import SwiftUI
 
 struct MultipleNetworkIconsView: View {
   let networks: [BraveWallet.NetworkInfo]
-  let maxIcons = 3
+  var maxIcons = 3
   @ScaledMetric var iconSize = 16.0
   var maxIconSize: CGFloat = 32
   @ScaledMetric var iconDotSize = 2.0
@@ -16,6 +16,7 @@ struct MultipleNetworkIconsView: View {
   var body: some View {
     MultipleCircleIconView(
       models: networks,
+      maxIcons: maxIcons,
       iconSize: iconSize,
       maxIconSize: maxIconSize,
       iconDotSize: iconDotSize,

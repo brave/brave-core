@@ -270,7 +270,7 @@ struct WalletPanelView: View {
         return tabDappStore.solConnectedAddresses.contains(selectedAccount.address)
           ? .connected : .disconnected
       }
-    case .fil, .btc:
+    case .fil, .btc, .zec:
       return .blocked
     @unknown default:
       return .blocked

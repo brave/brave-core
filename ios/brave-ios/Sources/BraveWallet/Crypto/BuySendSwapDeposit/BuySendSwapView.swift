@@ -7,20 +7,21 @@ import BraveCore
 import Strings
 import SwiftUI
 
-struct BuySendSwapView: View {
+struct WalletActionsView: View {
   var networkStore: NetworkStore
-  var action: (BuySendSwapDestination) -> Void
-  var destinations: [BuySendSwapDestination] = []
+  var action: (WalletActionDestination) -> Void
+  var destinations: [WalletActionDestination] = []
 
   init(
     networkStore: NetworkStore,
-    action: @escaping (BuySendSwapDestination) -> Void
+    action: @escaping (WalletActionDestination) -> Void
   ) {
     self.networkStore = networkStore
     self.action = action
-    self.destinations.append(BuySendSwapDestination(kind: .buy))
-    self.destinations.append(BuySendSwapDestination(kind: .send))
-    self.destinations.append(BuySendSwapDestination(kind: .swap))
+    self.destinations.append(WalletActionDestination(kind: .buy))
+    self.destinations.append(WalletActionDestination(kind: .send))
+    self.destinations.append(WalletActionDestination(kind: .swap))
+    self.destinations.append(WalletActionDestination(kind: .deposit))
   }
 
   var body: some View {
@@ -54,9 +55,9 @@ struct BuySendSwapView: View {
 }
 
 #if DEBUG
-struct BuySendSwapView_Previews: PreviewProvider {
+struct BuySendSwapDepositView_Previews: PreviewProvider {
   static var previews: some View {
-    BuySendSwapView(networkStore: .previewStore, action: { _ in })
+    WalletActionsView(networkStore: .previewStore, action: { _ in })
       .previewLayout(.sizeThatFits)
       //      .previewColorSchemes()
       .previewSizeCategories([.large, .accessibilityLarge])

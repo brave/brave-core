@@ -271,6 +271,20 @@ extension AccountsStore {
   }
 }
 
+extension DepositTokenStore {
+  static var previewStore: DepositTokenStore {
+    .init(
+      keyringService: BraveWallet.TestKeyringService(),
+      rpcService: BraveWallet.TestJsonRpcService(),
+      walletService: BraveWallet.TestBraveWalletService(),
+      blockchainRegistry: BraveWallet.TestBlockchainRegistry.previewBlockchainRegistry,
+      prefilledToken: nil,
+      prefilledAccount: nil,
+      userAssetManager: TestableWalletUserAssetManager()
+    )
+  }
+}
+
 extension BraveWallet.TestSolanaTxManagerProxy {
   static var previewProxy: BraveWallet.TestSolanaTxManagerProxy {
     let solTxManagerProxy = BraveWallet.TestSolanaTxManagerProxy()
@@ -285,6 +299,13 @@ extension BraveWallet.TestSolanaTxManagerProxy {
     }
 
     return solTxManagerProxy
+  }
+}
+
+extension BraveWallet.TestEthTxManagerProxy {
+  static var previewProxy: BraveWallet.TestEthTxManagerProxy {
+    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
+    return ethTxManagerProxy
   }
 }
 
@@ -303,6 +324,13 @@ extension BraveWallet.TestAssetRatioService {
     }
 
     return assetRatioService
+  }
+}
+
+extension BraveWallet.TestBlockchainRegistry {
+  static var previewBlockchainRegistry: BraveWallet.TestBlockchainRegistry {
+    let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
+    return blockchainRegistry
   }
 }
 

@@ -27,7 +27,7 @@ struct NetworkPicker: View {
   @State private var isPresentingAddNetwork: Bool = false
   @State private var networkSelectionStore: NetworkSelectionStore?
   @Environment(\.presentationMode) @Binding private var presentationMode
-  @Environment(\.buySendSwapDestination) @Binding private var buySendSwapDestination
+  @Environment(\.walletActionDestination) @Binding private var walletActionDestination
 
   init(
     style: Style = .`default`,
@@ -53,7 +53,7 @@ struct NetworkPicker: View {
           return false
         }
       }
-      if let destination = buySendSwapDestination {
+      if let destination = walletActionDestination {
         if destination.kind != .send {
           return !networkStore.isCustomChain(chain)
         }

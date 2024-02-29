@@ -149,7 +149,7 @@ struct AssetSearchView: View {
                     nftMetadata: allNFTMetadata[selectedToken.id],
                     owner: nil
                   ),
-                  buySendSwapDestination: .constant(nil)
+                  walletActionDestination: .constant(nil)
                 ) { metadata in
                   allNFTMetadata[selectedToken.id] = metadata
                 }
