@@ -190,8 +190,13 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
             }
         } else if attribute.get(local_name!("charset")).is_some() {
             meta_tags.charset = Some(node.clone());
-        } else if attribute.get(local_name!("http-equiv")).is_some() {
-            meta_tags.preserved_meta.push(node.clone());
+        } else if let Some(attr) = attribute.get(local_name!("http-equiv")) {
+            match attr.to_lowercase().as_str().trim() {
+                "content-type" | "content-security-policy" => {
+                    meta_tags.preserved_meta.push(node.clone());
+                }
+                _ => (),
+            }
         }
     }
 

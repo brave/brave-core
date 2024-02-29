@@ -922,7 +922,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
                               content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
                               ISOLATED_WORLD_ID_BRAVE_INTERNAL));
     constexpr const char kCheckNoMaliciousContent[] = R"js(
-      !document.getElementById('malicious1')
+      !document.getElementById('malicious1') &&
+      !document.querySelector('meta[http-equiv="undefinedHttpEquiv"]')
     )js";
     EXPECT_EQ(true,
               content::EvalJs(ActiveWebContents(), kCheckNoMaliciousContent,
