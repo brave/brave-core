@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversions.h"
 
 #include "base/check.h"
+#include "base/containers/adapters.h"
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
@@ -134,9 +135,9 @@ void Conversions::CheckForConversions(
   bool did_convert = false;
 
   // Click-through conversions should take priority over view-through
-  // conversions. Ad events are ordered in descending order by `created_at`;
+  // conversions. Ad events are ordered in chronological order by `created_at`;
   // click events are guaranteed to occur after view events.
-  for (const auto& ad_event : ad_events) {
+  for (const auto& ad_event : base::Reversed(ad_events)) {
     // Do we have a bucket with creative set conversions for this ad event?
     const auto iter =
         creative_set_conversion_buckets.find(ad_event.creative_set_id);
