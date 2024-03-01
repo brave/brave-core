@@ -7,14 +7,19 @@
 
 #include "base/strings/string_number_conversions.h"
 #include "base/timer/elapsed_timer.h"
+#include "content/browser/loader/keep_alive_url_loader_service.h"
+#include "content/browser/service_worker/service_worker_single_script_update_checker.h"
+#include "content/browser/service_worker/service_worker_updated_script_loader.h"
 #include "content/browser/webui/url_data_source_impl.h"
 #include "content/public/browser/url_data_source.h"
 #include "net/http/http_byte_range.h"
 #include "services/network/public/cpp/parsed_headers.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
 namespace content {
 namespace {
+
 void RangeDataAvailable(
     const GURL& url,
     network::mojom::URLResponseHeadPtr headers,
@@ -25,8 +30,21 @@ void RangeDataAvailable(
     std::optional<net::HttpByteRange> requested_range,
     base::ElapsedTimer url_request_elapsed_timer,
     URLDataSource::RangeDataResult result);
+
+network::mojom::URLResponseHeadPtr UseContentLengthFromHeaders(
+    network::mojom::URLResponseHeadPtr headers) {
+  if (auto content_length = headers->headers->GetContentLength();
+      content_length != -1) {
+    headers->content_length = content_length;
+  }
+  return headers;
+}
+
 }  // namespace
 }  // namespace content
+
+#define OnReceiveResponse(headers, ...) \
+  OnReceiveResponse(UseContentLengthFromHeaders(headers), __VA_ARGS__)
 
 #define GotDataCallback                                                     \
   GotDataCallback unused_callback;                                          \
@@ -46,67 +64,10 @@ void RangeDataAvailable(
 #include "src/content/browser/webui/web_ui_url_loader_factory.cc"
 
 #undef GotDataCallback
+#undef OnReceiveResponse
 
 namespace content {
 namespace {
-
-void ReadRangeData(
-    network::mojom::URLResponseHeadPtr headers,
-    mojo::PendingRemote<network::mojom::URLLoaderClient> client_remote,
-    base::ElapsedTimer url_request_elapsed_timer,
-    scoped_refptr<base::RefCountedMemory> bytes) {
-  TRACE_EVENT0("ui", "WebUIURLLoader::ReadRangeData");
-  if (!bytes) {
-    CallOnError(std::move(client_remote), net::ERR_FAILED);
-    return;
-  }
-
-  // The use of MojoCreateDataPipeOptions below means we'll be using uint32_t
-  // for sizes / offsets.
-  if (!base::IsValueInRangeForNumericType<uint32_t>(bytes->size())) {
-    CallOnError(std::move(client_remote), net::ERR_INSUFFICIENT_RESOURCES);
-    return;
-  }
-
-  uint32_t output_size = base::checked_cast<uint32_t>(bytes->size());
-
-  MojoCreateDataPipeOptions options;
-  options.struct_size = sizeof(MojoCreateDataPipeOptions);
-  options.flags = MOJO_CREATE_DATA_PIPE_FLAG_NONE;
-  options.element_num_bytes = 1;
-  options.capacity_num_bytes = output_size;
-  mojo::ScopedDataPipeProducerHandle pipe_producer_handle;
-  mojo::ScopedDataPipeConsumerHandle pipe_consumer_handle;
-  MojoResult create_result = mojo::CreateDataPipe(
-      &options, pipe_producer_handle, pipe_consumer_handle);
-  CHECK_EQ(create_result, MOJO_RESULT_OK);
-
-  void* buffer = nullptr;
-  uint32_t num_bytes = output_size;
-  MojoResult result = pipe_producer_handle->BeginWriteData(
-      &buffer, &num_bytes, MOJO_WRITE_DATA_FLAG_NONE);
-  CHECK_EQ(result, MOJO_RESULT_OK);
-  CHECK_GE(num_bytes, output_size);
-
-  base::ranges::copy(base::span(*bytes), static_cast<char*>(buffer));
-  result = pipe_producer_handle->EndWriteData(output_size);
-  CHECK_EQ(result, MOJO_RESULT_OK);
-
-  mojo::Remote<network::mojom::URLLoaderClient> client(
-      std::move(client_remote));
-
-  client->OnReceiveResponse(std::move(headers), std::move(pipe_consumer_handle),
-                            std::nullopt);
-
-  network::URLLoaderCompletionStatus status(net::OK);
-  status.encoded_data_length = output_size;
-  status.encoded_body_length = output_size;
-  status.decoded_body_length = output_size;
-  client->OnComplete(status);
-
-  UMA_HISTOGRAM_TIMES("WebUI.WebUIURLLoaderFactory.URLRequestLoadTime",
-                      url_request_elapsed_timer.Elapsed());
-}
 
 void RangeDataAvailable(
     const GURL& url,
@@ -120,6 +81,7 @@ void RangeDataAvailable(
     URLDataSource::RangeDataResult result) {
   TRACE_EVENT0("ui", "WebUIURLLoader::RangeDataAvailable");
   const auto& [bytes, range, total_size, mimetype] = result;
+
   // Fix up the response header in a HTTP Range spec
   // https://developer.mozilla.org/en-US/docs/Web/HTTP/Range_requests
   // The header should contain:
@@ -149,18 +111,7 @@ void RangeDataAvailable(
 
     headers->parsed_headers =
         network::PopulateParsedHeaders(headers->headers.get(), url);
-
-    // Since the bytes are from the memory mapped resource file, copying the
-    // data can lead to disk access. Needs to be posted to a SequencedTaskRunner
-    // as Mojo requires a SequencedTaskRunner::CurrentDefaultHandle in scope.
-    base::ThreadPool::CreateSequencedTaskRunner(
-        {base::TaskPriority::USER_BLOCKING, base::MayBlock(),
-         base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})
-        ->PostTask(FROM_HERE,
-                   base::BindOnce(ReadRangeData, std::move(headers),
-                                  std::move(client_remote),
-                                  std::move(url_request_elapsed_timer), bytes));
-    return;
+    requested_range.reset();
   }
 
   DataAvailable(std::move(headers), replacements, replace_in_js, source,
