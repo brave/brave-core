@@ -11,6 +11,7 @@ import { types } from '../constants/webcompatreporter_types'
 const defaultState: WebcompatReporter.State = {
   dialogArgs: {
     url: '',
+    isErrorPage: false,
     adBlockSetting: '',
     fpBlockSetting: '',
     shieldsEnabled: ''

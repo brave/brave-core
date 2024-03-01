@@ -28,6 +28,7 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   siteUrl: string
+  isErrorPage: boolean
   isHttpPage: boolean
   isLocalPage: boolean
   onSubmitReport: (details: string, contact: string, attachScreenshot: boolean) => void
@@ -51,6 +52,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
   render () {
     const {
       siteUrl,
+      isErrorPage,
       isHttpPage,
       isLocalPage,
       onSubmitReport,
@@ -58,13 +60,15 @@ export default class ReportView extends React.PureComponent<Props, State> {
     } = this.props
     const { details, contact, attachScreenshot } = this.state
 
-    const isIneligiblePage = !isHttpPage || isLocalPage
+    const isIneligiblePage = !isHttpPage || isLocalPage || isErrorPage
 
     let infoTextKey = 'reportExplanation'
     if (!isHttpPage) {
       infoTextKey = 'reportInternalExplanation'
     } else if (isLocalPage) {
       infoTextKey = 'reportLocalExplanation'
+    } else if (isErrorPage) {
+      infoTextKey = 'reportErrorPageExplanation'
     }
 
     return (
