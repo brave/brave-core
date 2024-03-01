@@ -175,8 +175,9 @@ class ConversationDriver {
                                       std::string result);
   void OnEngineCompletionComplete(int64_t navigation_id,
                                   EngineConsumer::GenerationResult result);
-  void OnSuggestedQuestionsResponse(int64_t navigation_id,
-                                    std::vector<std::string> result);
+  void OnSuggestedQuestionsResponse(
+      int64_t navigation_id,
+      EngineConsumer::SuggestedQuestionResult result);
   void OnSuggestedQuestionsChanged();
   void OnPageHasContentChanged(mojom::SiteInfoPtr site_info);
   void OnPremiumStatusReceived(
