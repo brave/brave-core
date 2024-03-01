@@ -10,8 +10,8 @@ assert(!is_android)
 
 source_set("ikev2") {
   sources = [
-    "brave_vpn_ras_connection_api_base.cc",
-    "brave_vpn_ras_connection_api_base.h",
+    "system_vpn_connection_api_impl_base.cc",
+    "system_vpn_connection_api_impl_base.h",
   ]
   deps = [
     "//base",
@@ -29,8 +29,8 @@ source_set("ikev2") {
 source_set("sim") {
   testonly = true
   sources = [
-    "brave_vpn_ras_connection_api_sim.cc",
-    "brave_vpn_ras_connection_api_sim.h",
+    "connection_api_impl_sim.cc",
+    "connection_api_impl_sim.h",
   ]
 
   deps = [
@@ -47,7 +47,7 @@ source_set("sim") {
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "brave_vpn_ras_connection_api_unittest.cc" ]
+  sources = [ "system_vpn_connection_api_unittest.cc" ]
 
   deps = [
     ":sim",

@@ -50,7 +50,7 @@ class BraveVPNRegionDataManager {
 
  private:
   friend class BraveVPNServiceTest;
-  friend class BraveVPNOSConnectionAPIUnitTest;
+  friend class SystemVPNConnectionAPIUnitTest;
 
   void SetDeviceRegion(const std::string& name);
 

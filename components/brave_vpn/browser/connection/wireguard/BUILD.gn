@@ -10,13 +10,15 @@ assert(!is_android)
 
 source_set("wireguard") {
   sources = [
-    "brave_vpn_wireguard_connection_api_base.cc",
-    "brave_vpn_wireguard_connection_api_base.h",
+    "wireguard_connection_api_impl_base.cc",
+    "wireguard_connection_api_impl_base.h",
   ]
   deps = [
     "credentials",
     "//base",
+    "//brave/components/brave_vpn/browser/api",
     "//brave/components/brave_vpn/browser/connection:api",
+    "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/common",
     "//brave/components/brave_vpn/common/mojom",
     "//brave/components/brave_vpn/common/wireguard",
@@ -31,6 +33,7 @@ source_set("unit_tests") {
 
   deps = [
     ":wireguard",
+    "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/common",
     "//components/sync_preferences:test_support",
     "//content/test:test_support",

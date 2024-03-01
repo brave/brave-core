@@ -3,8 +3,11 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/brave_vpn/browser/connection/wireguard/brave_vpn_wireguard_connection_api_base.h"
+#include "brave/components/brave_vpn/browser/connection/wireguard/wireguard_connection_api_impl_base.h"
 
+#include "brave/components/brave_vpn/browser/api/brave_vpn_api_request.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_connection_manager.h"
+#include "brave/components/brave_vpn/browser/connection/brave_vpn_region_data_manager.h"
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #include "brave/components/brave_vpn/common/pref_names.h"
@@ -15,24 +18,20 @@ namespace brave_vpn {
 
 using ConnectionState = mojom::ConnectionState;
 
-BraveVPNWireguardConnectionAPIBase::BraveVPNWireguardConnectionAPIBase(
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs)
-    : BraveVPNOSConnectionAPI(url_loader_factory, local_prefs) {
-  AddObserver(this);
-}
+WireguardConnectionAPIImplBase::WireguardConnectionAPIImplBase(
+    BraveVPNConnectionManager* manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    : ConnectionAPIImpl(manager, url_loader_factory) {}
 
-BraveVPNWireguardConnectionAPIBase::~BraveVPNWireguardConnectionAPIBase() {
-  RemoveObserver(this);
-}
+WireguardConnectionAPIImplBase::~WireguardConnectionAPIImplBase() = default;
 
-void BraveVPNWireguardConnectionAPIBase::SetSelectedRegion(
+void WireguardConnectionAPIImplBase::SetSelectedRegion(
     const std::string& name) {
-  GetRegionDataManager().SetSelectedRegion(name);
+  manager_->GetRegionDataManager().SetSelectedRegion(name);
   ResetConnectionInfo();
 }
 
-void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
+void WireguardConnectionAPIImplBase::RequestNewProfileCredentials(
     brave_vpn::wireguard::WireguardKeyPair key_pair) {
   if (!key_pair.has_value()) {
     VLOG(1) << __func__ << " : failed to get keypair";
@@ -42,17 +41,14 @@ void BraveVPNWireguardConnectionAPIBase::RequestNewProfileCredentials(
   }
   const auto [public_key, private_key] = key_pair.value();
   GetAPIRequest()->GetWireguardProfileCredentials(
-      base::BindOnce(
-          &BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials,
-          base::Unretained(this), private_key),
-      GetSubscriberCredential(local_prefs()), public_key, GetHostname());
+      base::BindOnce(&WireguardConnectionAPIImplBase::OnGetProfileCredentials,
+                     base::Unretained(this), private_key),
+      GetSubscriberCredential(manager_->local_prefs()),
+      public_key,
+      GetHostname());
 }
 
-void BraveVPNWireguardConnectionAPIBase::Connect() {
-  if (ScheduleConnectRequestIfNeeded()) {
-    return;
-  }
-
+void WireguardConnectionAPIImplBase::Connect() {
   VLOG(2) << __func__ << " : start connecting!";
   SetLastConnectionError(std::string());
   UpdateAndNotifyConnectionStateChange(ConnectionState::CONNECTING);
@@ -63,9 +59,10 @@ void BraveVPNWireguardConnectionAPIBase::Connect() {
     return;
   }
   // If user doesn't select region explicitely, use default device region.
-  std::string target_region_name = GetRegionDataManager().GetSelectedRegion();
+  std::string target_region_name =
+      manager_->GetRegionDataManager().GetSelectedRegion();
   if (target_region_name.empty()) {
-    target_region_name = GetRegionDataManager().GetDeviceRegion();
+    target_region_name = manager_->GetRegionDataManager().GetDeviceRegion();
     VLOG(2) << __func__ << " : start connecting with valid default_region: "
             << target_region_name;
   }
@@ -73,7 +70,7 @@ void BraveVPNWireguardConnectionAPIBase::Connect() {
   FetchHostnamesForRegion(target_region_name);
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
+void WireguardConnectionAPIImplBase::OnGetProfileCredentials(
     const std::string& client_private_key,
     const std::string& profile_credentials,
     bool success) {
@@ -94,45 +91,45 @@ void BraveVPNWireguardConnectionAPIBase::OnGetProfileCredentials(
   }
   auto serialized = parsed_credentials->ToString();
   if (serialized.has_value()) {
-    local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
-                             serialized.value());
+    manager_->local_prefs()->SetString(
+        prefs::kBraveVPNWireguardProfileCredentials, serialized.value());
   }
   PlatformConnectImpl(parsed_credentials.value());
 }
 
-void BraveVPNWireguardConnectionAPIBase::FetchProfileCredentials() {
+void WireguardConnectionAPIImplBase::FetchProfileCredentials() {
   if (!GetAPIRequest()) {
     return;
   }
   auto existing_credentials =
       wireguard::WireguardProfileCredentials::FromString(
-          local_prefs()->GetString(
+          manager_->local_prefs()->GetString(
               prefs::kBraveVPNWireguardProfileCredentials));
   if (!existing_credentials.has_value()) {
     RequestNewProfileCredentials(wireguard::GenerateNewX25519Keypair());
     return;
   }
   GetAPIRequest()->VerifyCredentials(
-      base::BindOnce(&BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials,
+      base::BindOnce(&WireguardConnectionAPIImplBase::OnVerifyCredentials,
                      weak_factory_.GetWeakPtr()),
       GetHostname(), existing_credentials->client_id,
-      GetSubscriberCredential(local_prefs()),
+      GetSubscriberCredential(manager_->local_prefs()),
       existing_credentials->api_auth_token);
 }
 
-void BraveVPNWireguardConnectionAPIBase::ResetConnectionInfo() {
+void WireguardConnectionAPIImplBase::ResetConnectionInfo() {
   VLOG(2) << __func__;
   ResetHostname();
-  local_prefs()->SetString(prefs::kBraveVPNWireguardProfileCredentials,
-                           std::string());
+  manager_->local_prefs()->SetString(
+      prefs::kBraveVPNWireguardProfileCredentials, std::string());
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
+void WireguardConnectionAPIImplBase::OnVerifyCredentials(
     const std::string& result,
     bool success) {
   auto existing_credentials =
       wireguard::WireguardProfileCredentials::FromString(
-          local_prefs()->GetString(
+          manager_->local_prefs()->GetString(
               prefs::kBraveVPNWireguardProfileCredentials));
   if (!success || !existing_credentials.has_value()) {
     VLOG(1) << __func__ << " : credentials verification failed ( " << result
@@ -143,14 +140,21 @@ void BraveVPNWireguardConnectionAPIBase::OnVerifyCredentials(
   PlatformConnectImpl(existing_credentials.value());
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnConnectionStateChanged(
+void WireguardConnectionAPIImplBase::UpdateAndNotifyConnectionStateChange(
     mojom::ConnectionState state) {
-  if (state == ConnectionState::CONNECT_FAILED) {
+  if (GetConnectionState() != state &&
+      state == ConnectionState::CONNECT_FAILED) {
     ResetConnectionInfo();
   }
+
+  ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange(state);
 }
 
-void BraveVPNWireguardConnectionAPIBase::OnDisconnected(bool success) {
+ConnectionAPIImpl::Type WireguardConnectionAPIImplBase::type() const {
+  return Type::WIREGUARD;
+}
+
+void WireguardConnectionAPIImplBase::OnDisconnected(bool success) {
   if (!success) {
     VLOG(1) << "Failed to stop wireguard tunnel service";
     SetLastConnectionError("Failed to stop wireguard tunnel service");

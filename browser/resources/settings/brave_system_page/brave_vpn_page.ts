@@ -4,16 +4,13 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import 'chrome://resources/cr_components/settings_prefs/prefs.js';
-import '../relaunch_confirmation_dialog.js';
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_icon_button/cr_icon_button.js';
 
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js'
 import {PrefsMixin, PrefsMixinInterface} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js';
 import {BaseMixin} from '../base_mixin.js'
-import {loadTimeData} from "../i18n_setup.js"
 import {getTemplate} from './brave_vpn_page.html.js'
-import {RelaunchMixin, RelaunchMixinInterface, RestartType} from '../relaunch_mixin.js'
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {BraveVPNBrowserProxy, BraveVPNBrowserProxyImpl} from './brave_vpn_browser_proxy.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
@@ -22,11 +19,10 @@ import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n
  * brave's vpn features.
  */
 const SettingsBraveVpnPageElementBase =
-  PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(RelaunchMixin(
-    PolymerElement))))) as {
+  PrefsMixin(BaseMixin(I18nMixin(WebUiListenerMixin(
+    PolymerElement)))) as {
     new(): PolymerElement &
            PrefsMixinInterface &
-           RelaunchMixinInterface &
            WebUiListenerMixinInterface &
            I18nMixinInterface
   }
@@ -42,29 +38,14 @@ export class SettingsBraveVpnPageElement
     return getTemplate()
   }
 
-  static get properties() {
-    return  {
-      prefs: {
-        type: Object,
-        notify: true,
-      },
-      toggleWireguardSubLabel_: String,
-      shouldShowRestart_: Boolean,
-    }
-  }
-
-  private initialProtocolValue_: Boolean;
   private toggleWireguardSubLabel_: String;
   private braveVpnConnected_: Boolean = false;
-  private shouldShowRestart_: Boolean = false;
 
   private vpnBrowserProxy_: BraveVPNBrowserProxy =
     BraveVPNBrowserProxyImpl.getInstance();
 
   override ready() {
     super.ready();
-    this.initialProtocolValue_ = this.getCurrentPrefValue()
-    this.updateState()
     this.addWebUiListener('brave-vpn-state-change', this.onVpnStateChange.bind(this))
     // <if expr="is_win">
     this.vpnBrowserProxy_.isBraveVpnConnected().then(this.onVpnStateChange.bind(this))
@@ -73,39 +54,12 @@ export class SettingsBraveVpnPageElement
 
   private onVpnStateChange(connected: boolean) {
     this.braveVpnConnected_ = connected
-    if (this.braveVpnConnected_) {
-      this.resetToInitialValue()
-    }
     this.updateState()
-  }
-
-  private getCurrentPrefValue(): boolean {
-    return this.getPref('brave.brave_vpn.wireguard_enabled').value
   }
 
   private updateState() {
     this.toggleWireguardSubLabel_ = this.braveVpnConnected_ ?
-      this.i18n('sublabelVpnConnected') : this.i18n('sublabelVpnDisconnected')
-    this.shouldShowRestart_ =
-        (this.initialProtocolValue_ !== this.getCurrentPrefValue()) &&
-        !this.braveVpnConnected_;
-  }
-
-  private resetToInitialValue() {
-    this.setPrefValue('brave.brave_vpn.wireguard_enabled',
-      this.initialProtocolValue_)
-  }
-
-  private onChange_() {
-    this.updateState();
-    if (!this.getCurrentPrefValue())
-      return
-  }
-
-  private onRestartClick_(e: Event) {
-    // Prevent event from bubbling up to the toggle button.
-    e.stopPropagation();
-    this.performRestart(RestartType.RESTART);
+      this.i18n('sublabelVpnConnected') : ''
   }
 }
 

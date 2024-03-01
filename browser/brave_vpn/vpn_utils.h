@@ -8,7 +8,6 @@
 
 #include <memory>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
 
 namespace content {
@@ -23,14 +22,13 @@ class PrefService;
 
 namespace brave_vpn {
 
-class BraveVPNOSConnectionAPI;
+class BraveVPNConnectionManager;
 
 bool IsBraveVPNEnabled(content::BrowserContext* context);
 bool IsAllowedForContext(content::BrowserContext* context);
-std::unique_ptr<BraveVPNOSConnectionAPI> CreateBraveVPNConnectionAPI(
+std::unique_ptr<BraveVPNConnectionManager> CreateBraveVPNConnectionManager(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* local_prefs,
-    base::RepeatingCallback<bool()> service_installer);
+    PrefService* local_prefs);
 
 }  // namespace brave_vpn
 

@@ -8,13 +8,19 @@
 
 #include <string>
 
+#include "base/files/file_path.h"
+
+namespace base {
+class FilePath;
+}  // namespace base
+
 namespace brave_vpn {
 
 bool ConfigureBraveWireguardService(const std::wstring& service_name);
-bool InstallBraveWireguardService();
+bool InstallBraveWireguardService(const base::FilePath& root_dir);
 bool UninstallBraveWireguardService();
 bool UninstallStatusTrayIcon();
-bool InstallBraveVPNHelperService();
+bool InstallBraveVPNHelperService(const base::FilePath& root_dir);
 
 }  // namespace brave_vpn
 

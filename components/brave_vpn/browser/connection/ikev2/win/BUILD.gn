@@ -23,17 +23,16 @@ source_set("ras_utils") {
 }
 
 source_set("win") {
-  visibility = [ "//brave/components/brave_vpn/browser/connection/*" ]
-
   sources = [
-    "brave_vpn_ras_connection_api_win.cc",
-    "brave_vpn_ras_connection_api_win.h",
+    "ras_connection_api_impl_win.cc",
+    "ras_connection_api_impl_win.h",
   ]
 
   deps = [
     ":ras_utils",
     "//base",
     "//brave/components/brave_vpn/browser/api",
+    "//brave/components/brave_vpn/browser/connection:api",
     "//brave/components/brave_vpn/browser/connection:common",
     "//brave/components/brave_vpn/browser/connection/ikev2",
     "//brave/components/brave_vpn/common",
