@@ -30,7 +30,7 @@ public class BraveTileView extends TileView {
         super.setTitle(title, titleLines);
         if (ProfileManager.isInitialized()) {
             TextView mTitleView = findViewById(R.id.tile_view_title);
-            if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                 mTitleView.setTextColor(
                         getContext().getColor(R.color.brave_state_time_count_color));

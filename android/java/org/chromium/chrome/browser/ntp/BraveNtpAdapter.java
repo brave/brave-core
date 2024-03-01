@@ -50,7 +50,7 @@ import org.chromium.chrome.browser.ntp_background_images.model.Wallpaper;
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.BackgroundImagesPreferences;
 import org.chromium.chrome.browser.util.BraveConstants;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
@@ -209,7 +209,7 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                             "QRCodeShareDialogFragment");
                 });
 
-            } else if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+            } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                     && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {

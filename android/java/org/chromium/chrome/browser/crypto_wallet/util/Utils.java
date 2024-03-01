@@ -72,6 +72,7 @@ import org.chromium.chrome.browser.app.ChromeActivity;
 import org.chromium.chrome.browser.crypto_wallet.activities.BraveWalletBaseActivity;
 import org.chromium.chrome.browser.crypto_wallet.model.AccountSelectorItemModel;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
 import org.chromium.ui.widget.Toast;
@@ -1070,7 +1071,7 @@ public class Utils {
             Log.e(TAG, "getProfile " + e);
         }
         if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
-        if (chromeActivity == null) return Profile.getLastUsedRegularProfile(); // Last resort
+        if (chromeActivity == null) return ProfileManager.getLastUsedRegularProfile(); // Last resort
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }

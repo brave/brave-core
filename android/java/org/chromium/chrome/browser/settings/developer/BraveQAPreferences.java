@@ -37,7 +37,7 @@ import org.chromium.chrome.browser.BraveRewardsObserver;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rewards.BraveRewardsPanel;
 import org.chromium.chrome.browser.settings.BravePreferenceFragment;
 import org.chromium.chrome.browser.util.BraveDbUtil;
@@ -110,7 +110,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (mIsStagingServer != null) {
             mIsStagingServer.setOnPreferenceChangeListener(this);
         }
-        mIsStagingServer.setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+        mIsStagingServer.setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                             .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
 
         mIsSyncStagingServer =
@@ -389,7 +389,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
             sharedPreferencesEditor.apply();
 
             BravePrefServiceBridge.getInstance().setSafetynetCheckFailed(false);
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.USE_REWARDS_STAGING_SERVER, mUseRewardsStagingServer);
             BraveRewardsHelper.setRewardsEnvChange(true);
 

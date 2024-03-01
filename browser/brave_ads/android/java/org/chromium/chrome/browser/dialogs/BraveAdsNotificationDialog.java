@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2020 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ /* Copyright (c) 2020 The Brave Authors. All rights reserved.
+  * This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.dialogs;
 
@@ -32,7 +30,7 @@ import org.chromium.chrome.browser.ChromeTabbedActivity;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.night_mode.GlobalNightModeStateProviderHolder;
 import org.chromium.chrome.browser.notifications.BraveOnboardingNotification;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab.TabLaunchType;
 
 public class BraveAdsNotificationDialog {
@@ -81,7 +79,7 @@ public class BraveAdsNotificationDialog {
                         mAdsDialog.dismiss();
                         mAdsDialog = null;
                         BraveAdsNativeHelper.nativeOnNotificationAdClosed(
-                                Profile.getLastUsedRegularProfile(), mNotificationId, true);
+                                ProfileManager.getLastUsedRegularProfile(), mNotificationId, true);
                         mNotificationId = null;
                     } else if (Math.abs(deltaXDp) <= MAX_DISTANCE_FOR_TAP) {
                         adsDialogTapped(mOrigin);
@@ -141,7 +139,7 @@ public class BraveAdsNotificationDialog {
 
         if (mNotificationId != null) {
             BraveAdsNativeHelper.nativeOnNotificationAdShown(
-                    Profile.getLastUsedRegularProfile(), mNotificationId);
+                    ProfileManager.getLastUsedRegularProfile(), mNotificationId);
         }
 
         mAdsDialog.show();
@@ -183,7 +181,7 @@ public class BraveAdsNotificationDialog {
             mAdsDialog.dismiss();
             mAdsDialog = null;
             BraveAdsNativeHelper.nativeOnNotificationAdClicked(
-                    Profile.getLastUsedRegularProfile(), mNotificationId);
+                    ProfileManager.getLastUsedRegularProfile(), mNotificationId);
         }
         mNotificationId = null;
     }
@@ -210,7 +208,7 @@ public class BraveAdsNotificationDialog {
                 mAdsDialog.dismiss();
                 mAdsDialog = null;
                 BraveAdsNativeHelper.nativeOnNotificationAdClosed(
-                        Profile.getLastUsedRegularProfile(), mNotificationId, false);
+                        ProfileManager.getLastUsedRegularProfile(), mNotificationId, false);
             }
         } catch (IllegalArgumentException e) {
             mAdsDialog = null;

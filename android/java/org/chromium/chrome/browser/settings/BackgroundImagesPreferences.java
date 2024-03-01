@@ -17,7 +17,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRelaunchUtils;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 import org.chromium.components.user_prefs.UserPrefs;
@@ -56,7 +56,7 @@ public class BackgroundImagesPreferences
         if (mShowBackgroundImagesPref != null) {
             mShowBackgroundImagesPref.setEnabled(true);
             mShowBackgroundImagesPref.setChecked(
-                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             mShowBackgroundImagesPref.setOnPreferenceChangeListener(this);
         }
@@ -64,10 +64,10 @@ public class BackgroundImagesPreferences
                 (ChromeSwitchPreference) findPreference(PREF_SHOW_SPONSORED_IMAGES);
         if (mShowSponsoredImagesPref != null) {
             mShowSponsoredImagesPref.setEnabled(
-                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setChecked(
-                    UserPrefs.get(Profile.getLastUsedRegularProfile())
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(
                                     BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE));
             mShowSponsoredImagesPref.setOnPreferenceChangeListener(this);
@@ -107,9 +107,9 @@ public class BackgroundImagesPreferences
 
     public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         if (PREF_SHOW_BACKGROUND_IMAGES.equals(preferenceName)) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(preferenceName)) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE, (boolean)newValue);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE, (boolean)newValue);
         } else {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
