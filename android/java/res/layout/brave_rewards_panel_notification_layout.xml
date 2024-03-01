@@ -134,8 +134,7 @@
      <include
             android:id="@+id/brave_rewards_notification_permission_id"
             layout="@layout/rewards_notification_permission_request"
-            android:visibility="gone"
-             />
+            android:visibility="gone" />
 
     </FrameLayout>
 
