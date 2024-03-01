@@ -346,7 +346,7 @@ void AdEvents::GetUnexpired(GetAdEventsCallback callback) const {
               '-3 months'
             )
           ORDER BY
-            created_at DESC;)",
+            created_at ASC;)",
       {GetTableName(),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
@@ -395,7 +395,7 @@ void AdEvents::GetUnexpiredForType(const mojom::AdType ad_type,
               )
             )
           ORDER BY
-            created_at DESC;)",
+            created_at ASC;)",
       {GetTableName(), ToString(static_cast<AdType>(ad_type)),
        base::NumberToString(ToChromeTimestampFromTime(base::Time::Now()))},
       nullptr);
