@@ -91,7 +91,7 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountCreatesNew) {
   AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
                                             bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   EXPECT_EQ(2u, GetAccountUtils().AllBtcAccounts().size());
   auto account_0 = GetAccountUtils().AllBtcAccounts()[0]->account_id->Clone();
@@ -132,7 +132,7 @@ TEST_F(AccountDiscoveryManagerUnitTest, DiscoverBtcAccountUpdatesExisting) {
   AccountDiscoveryManager discovery_manager(nullptr, keyring_service_.get(),
                                             bitcoin_wallet_service_.get());
   discovery_manager.StartDiscovery();
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   EXPECT_EQ(*mojom::BitcoinKeyId::New(0, 10 + 1),
             *keyring_service_->GetBitcoinAccountInfo(account_id)

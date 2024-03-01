@@ -37,9 +37,9 @@ class RemoteCompletionClientUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<RemoteCompletionClient> ai_chat_api_ = nullptr;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;

@@ -187,7 +187,7 @@ class SwapServiceUnitTest : public testing::Test {
     swap_service_->GetQuote(
         GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet),
         callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   void TestGetJupiterTransaction(
@@ -210,16 +210,16 @@ class SwapServiceUnitTest : public testing::Test {
 
     swap_service_->GetTransaction(
         GetCannedJupiterTransactionParams(output_mint), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
  protected:
   sync_preferences::TestingPrefServiceSyncable prefs_;
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   std::unique_ptr<SwapService> swap_service_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -303,7 +303,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                mojom::kPolygonMainnetChainId),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Case 2: null zeroExFee
@@ -344,7 +344,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuote) {
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                mojom::kPolygonMainnetChainId),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -383,7 +383,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteError) {
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                mojom::kPolygonMainnetChainId),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteUnexpectedReturn) {
@@ -400,7 +400,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExQuoteUnexpectedReturn) {
       GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                mojom::kPolygonMainnetChainId),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
@@ -490,7 +490,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
           GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                    mojom::kPolygonMainnetChainId)),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Case 2: null zeroExFee
@@ -536,7 +536,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransaction) {
           GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                    mojom::kPolygonMainnetChainId)),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -556,7 +556,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionError) {
           GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                    mojom::kPolygonMainnetChainId)),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
@@ -573,7 +573,7 @@ TEST_F(SwapServiceUnitTest, GetZeroExTransactionUnexpectedReturn) {
           GetCannedSwapQuoteParams(mojom::CoinType::ETH,
                                    mojom::kPolygonMainnetChainId)),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(SwapServiceUnitTest, GetZeroExQuoteURL) {
@@ -821,7 +821,7 @@ TEST_F(SwapServiceUnitTest, GetJupiterQuote) {
   swap_service_->GetQuote(
       GetCannedSwapQuoteParams(mojom::CoinType::SOL, mojom::kSolanaMainnet),
       callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // KO: empty JSON for conversion
@@ -872,7 +872,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
   base::MockCallback<mojom::SwapService::GetBraveFeeCallback> callback;
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Case 2: Jupiter swap on Solana (no fees)
@@ -893,7 +893,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
 
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Case 3: Jupiter swap on Solana (fees)
@@ -913,7 +913,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
 
   EXPECT_CALL(callback, Run(EqualsMojo(expected_response), ""));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Case 4: Unsupported network
@@ -923,7 +923,7 @@ TEST_F(SwapServiceUnitTest, GetBraveFee) {
               Run(EqualsMojo(mojom::BraveSwapFeeResponsePtr()),
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   swap_service_->GetBraveFee(params->Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 

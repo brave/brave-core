@@ -1720,9 +1720,9 @@ class JsonRpcServiceUnitTest : public testing::Test {
  protected:
   std::unique_ptr<JsonRpcService> json_rpc_service_;
   network::TestURLLoaderFactory url_loader_factory_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
   sync_preferences::TestingPrefServiceSyncable local_state_prefs_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -1847,7 +1847,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
             }
             callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
 
   callback_is_called = false;
@@ -1859,7 +1859,7 @@ TEST_F(JsonRpcServiceUnitTest, GetAllNetworks) {
 
             callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
 }
 
@@ -1983,7 +1983,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
             ASSERT_TRUE(error_message.empty());
             callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   EXPECT_THAT(GetAllUserAssets(prefs()),
               Contains(Eq(std::ref(expected_token))));
@@ -2002,7 +2002,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainApproved) {
         ASSERT_FALSE(error_message.empty());
         failed_callback_is_called = true;
       }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(failed_callback_is_called);
 
   json_rpc_service_->AddEthereumChainRequestCompleted("0x111", true);
@@ -2110,7 +2110,7 @@ TEST_F(JsonRpcServiceUnitTest, AddChain) {
     EXPECT_CALL(callback, Run("0x111", mojom::ProviderError::kSuccess, ""));
 
     json_rpc_service_->AddChain(chain.Clone(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     EXPECT_EQ(
         GURL("https://url1.com"),
         GetChain(prefs(), "0x111", mojom::CoinType::ETH)->rpc_endpoints[0]);
@@ -2195,7 +2195,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
             ASSERT_TRUE(error_message.empty());
             callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(callback_is_called);
 
   // Add a same chain.
@@ -2214,7 +2214,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
                                      IDS_SETTINGS_WALLET_NETWORKS_EXISTS));
         third_callback_is_called = true;
       }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(third_callback_is_called);
 
   // new chain, not valid rpc url
@@ -2241,7 +2241,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
                           base::ASCIIToUTF16(network_url.spec())));
             fourth_callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(fourth_callback_is_called);
 
   // new chain, broken validation response
@@ -2268,7 +2268,7 @@ TEST_F(JsonRpcServiceUnitTest, AddEthereumChainError) {
                           base::ASCIIToUTF16(GURL(network_url).spec())));
             fifth_callback_is_called = true;
           }));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   ASSERT_TRUE(fifth_callback_is_called);
 }
 
@@ -2368,7 +2368,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2386,7 +2386,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, true /* success */,
                      result));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2396,7 +2396,7 @@ TEST_F(JsonRpcServiceUnitTest, Request) {
       mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false /* success */,
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -2419,7 +2419,7 @@ TEST_F(JsonRpcServiceUnitTest, Request_BadHeaderValues) {
       mojom::kLocalhostChainId, request, true, base::Value(),
       mojom::CoinType::ETH,
       base::BindOnce(&OnRequestResponse, &callback_called, false, ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -2472,7 +2472,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0xb539d5"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2483,7 +2483,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2494,7 +2494,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2504,7 +2504,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2515,7 +2515,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2526,7 +2526,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       "addr", mojom::CoinType::FIL, mojom::kFilecoinMainnet,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "100000"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2536,7 +2536,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBalance) {
       "addr", mojom::CoinType::FIL, mojom::kFilecoinTestnet,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "100000"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -2677,7 +2677,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
                      "0x166e12cfce39a0000"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2688,7 +2688,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2699,7 +2699,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2710,7 +2710,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Invalid input should fail.
@@ -2721,7 +2721,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2732,7 +2732,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenBalance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -2751,7 +2751,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "",
                      "0x166e12cfce39a0000"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2763,7 +2763,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2775,7 +2775,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -2787,7 +2787,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Invalid input should fail.
@@ -2798,7 +2798,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC20TokenAllowance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -3079,7 +3079,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3089,7 +3089,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3099,7 +3099,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonRawResponse("Not a json");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3108,7 +3108,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonNetworkError) {
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -3119,7 +3119,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
@@ -3127,7 +3127,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(k0x3a2f3fAddr, mojom::ProviderError::kSuccess, ""));
@@ -3135,7 +3135,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_PolygonResult) {
   SetPolygonResponse("javajobs.crypto", k0x3a2f3fAddr);
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
@@ -3145,7 +3145,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnet) {
   SetPolygonResponse("brad.crypto", "");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnetError) {
@@ -3157,7 +3157,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_FallbackToEthMainnetError) {
   SetPolygonResponse("brad.crypto", "");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.crypto", MakeToken(),
                                                      callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_InvalidDomain) {
@@ -3168,7 +3168,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_InvalidDomain) {
   json_rpc_service_->UnstoppableDomainsGetWalletAddr("brad.test", MakeToken(),
                                                      callback.Get());
   EXPECT_EQ(0, url_loader_factory_.NumPending());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
@@ -3200,7 +3200,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
       "javajobs.crypto", MakeToken(), callback1.Get());
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "javajobs.crypto", MakeToken(), callback2.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(1, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(1, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback1);
@@ -3208,7 +3208,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_ManyCalls) {
 
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "another.crypto", MakeToken(), callback3.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(2, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(2, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback3);
@@ -3228,7 +3228,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                              "crypto.ETH.address", "ethaddr1");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // crypto.USDT.address is preferred over default.
@@ -3237,7 +3237,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                              "crypto.USDT.address", "ethaddr2");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // crypto.USDT.version.BEP20.address is the most preferred.
@@ -3246,7 +3246,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
       "test.crypto", "crypto.USDT.version.BEP20.address", "ethaddr3");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Address on Polygon network takes precedence over anything on ETH mainnet.
@@ -3255,7 +3255,7 @@ TEST_F(UnstoppableDomainsUnitTest, GetWalletAddr_MultipleKeys) {
                                          "polyaddr");
   json_rpc_service_->UnstoppableDomainsGetWalletAddr(
       "test.crypto", token.Clone(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -3268,7 +3268,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3278,7 +3278,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonTimeoutResponse();
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3288,7 +3288,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonRawResponse("Not a json");
   json_rpc_service_->UnstoppableDomainsResolveDns("brad.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>(),
@@ -3297,7 +3297,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonNetworkError) {
   SetPolygonRawResponse(MakeJsonRpcErrorResponse(-32005, "Error!"));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -3309,7 +3309,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
@@ -3318,7 +3318,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
@@ -3327,7 +3327,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_PolygonResult) {
   SetPolygonRawResponse(DnsBraveResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
@@ -3338,7 +3338,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(std::optional<GURL>("https://brave.com"),
@@ -3348,7 +3348,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnet) {
       MakeJsonRpcStringArrayResponse({"", "", "", "", "", "invalid url"}));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -3361,7 +3361,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback,
@@ -3371,7 +3371,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_FallbackToEthMainnetError) {
   SetPolygonRawResponse(DnsEmptyResponse());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -3382,7 +3382,7 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_InvalidDomain) {
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.test", callback.Get());
   EXPECT_EQ(0, url_loader_factory_.NumPending());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
@@ -3419,14 +3419,14 @@ TEST_F(UnstoppableDomainsUnitTest, ResolveDns_ManyCalls) {
                                                   callback1.Get());
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.crypto",
                                                   callback2.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(1, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(1, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback1);
   testing::Mock::VerifyAndClearExpectations(&callback2);
 
   json_rpc_service_->UnstoppableDomainsResolveDns("brave.x", callback3.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(2, eth_mainnet_getmany_call_handler_->calls_number());
   EXPECT_EQ(2, polygon_getmany_call_handler_->calls_number());
   testing::Mock::VerifyAndClearExpectations(&callback3);
@@ -3442,7 +3442,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
       mojom::kLocalhostChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x181f22e7a9"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Successful path when the network is not EIP1559
@@ -3452,7 +3452,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
       mojom::kLocalhostChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3462,7 +3462,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3472,7 +3472,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3482,7 +3482,7 @@ TEST_F(JsonRpcServiceUnitTest, GetBaseFeePerGas) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -3496,7 +3496,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559NotCalledForKnownChains) {
       .Times(1);
   EXPECT_TRUE(
       SetNetwork(mojom::kMainnetChainId, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
 }
 
@@ -3517,7 +3517,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
       .Times(1);
   EXPECT_TRUE(
       SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_TRUE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
 
@@ -3532,7 +3532,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
       .Times(1);
   EXPECT_TRUE(
       SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
 
@@ -3547,7 +3547,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
       .Times(1);
   EXPECT_TRUE(
       SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
 
@@ -3560,7 +3560,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559LocalhostChain) {
       .Times(1);
   EXPECT_TRUE(
       SetNetwork(mojom::kLocalhostChainId, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(mojom::kLocalhostChainId));
 }
@@ -3586,7 +3586,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
                                           testing::Eq(std::nullopt)))
       .Times(1);
   EXPECT_TRUE(SetNetwork(chain1.chain_id, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_TRUE(GetIsEip1559FromPrefs(chain1.chain_id));
 
@@ -3599,7 +3599,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
                                           testing::Eq(std::nullopt)))
       .Times(1);
   EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -3613,7 +3613,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
                                           testing::Eq(std::nullopt)))
       .Times(1);
   EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -3625,7 +3625,7 @@ TEST_F(JsonRpcServiceUnitTest, UpdateIsEip1559CustomChain) {
                                           testing::Eq(std::nullopt)))
       .Times(1);
   EXPECT_TRUE(SetNetwork(chain2.chain_id, mojom::CoinType::ETH, std::nullopt));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer));
   EXPECT_FALSE(GetIsEip1559FromPrefs(chain2.chain_id));
@@ -3643,7 +3643,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
                       l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
 
       json_rpc_service_->EnsGetEthAddr(domain, callback.Get());
-      base::RunLoop().RunUntilIdle();
+      task_environment_.RunUntilIdle();
     }
 
     {
@@ -3656,7 +3656,7 @@ TEST_F(JsonRpcServiceUnitTest, GetWalletAddrInvalidDomain) {
 
       json_rpc_service_->UnstoppableDomainsGetWalletAddr(
           domain, mojom::BlockchainToken::New(), callback.Get());
-      base::RunLoop().RunUntilIdle();
+      task_environment_.RunUntilIdle();
     }
   }
 }
@@ -3768,7 +3768,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3778,7 +3778,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3788,7 +3788,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetInterceptor(
@@ -3805,7 +3805,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
           &OnStringResponse, &callback_called, mojom::ProviderError::kSuccess,
           "",
           "0x983110309620D911731Ac0932219af06091b6744"));  // checksum address
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetHTTPRequestTimeoutInterceptor();
@@ -3815,7 +3815,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetInvalidJsonInterceptor();
@@ -3825,7 +3825,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetLimitExceededJsonErrorResponse();
@@ -3835,7 +3835,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721OwnerOf) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -3892,7 +3892,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3903,7 +3903,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3914,7 +3914,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -3925,7 +3925,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
                      mojom::ProviderError::kInvalidParams,
                      l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS),
                      ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetInterceptor(
@@ -3941,7 +3941,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       "0x983110309620D911731Ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Non-checksum address can get the same balance.
@@ -3951,7 +3951,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       "0x983110309620d911731ac0932219af06091b6744", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x1"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Non-owner gets balance 0x0.
@@ -3961,7 +3961,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       "0x983110309620d911731ac0932219af06091b7811", mojom::kMainnetChainId,
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", "0x0"));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetHTTPRequestTimeoutInterceptor();
@@ -3971,7 +3971,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetInvalidJsonInterceptor();
@@ -3981,7 +3981,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   SetLimitExceededJsonErrorResponse();
@@ -3991,7 +3991,7 @@ TEST_F(JsonRpcServiceUnitTest, GetERC721Balance) {
       base::BindOnce(&OnStringResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", ""));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -4061,7 +4061,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
       mojom::kMainnetChainId,
       base::BindOnce(&OnBoolResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", true));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Successful, but does not support the interface
@@ -4076,7 +4076,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
       mojom::kMainnetChainId,
       base::BindOnce(&OnBoolResponse, &callback_called,
                      mojom::ProviderError::kSuccess, "", false));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   // Invalid result, should be in hex form
@@ -4091,7 +4091,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                      false));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4103,7 +4103,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR),
                      false));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4115,7 +4115,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR),
                      false));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4126,7 +4126,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSupportsInterface) {
       base::BindOnce(&OnBoolResponse, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", false));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -4561,7 +4561,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTransactionCount) {
       mojom::kLocalhostChainId, "0x4e02f254184E904300e0775E4b8eeCB1",
       base::BindOnce(&OnEthUint256Response, &callback_called,
                      mojom::ProviderError::kSuccess, "", 1));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4571,7 +4571,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTransactionCount) {
       base::BindOnce(&OnEthUint256Response, &callback_called,
                      mojom::ProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4581,7 +4581,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTransactionCount) {
       base::BindOnce(&OnEthUint256Response, &callback_called,
                      mojom::ProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4591,7 +4591,7 @@ TEST_F(JsonRpcServiceUnitTest, GetEthTransactionCount) {
       base::BindOnce(&OnEthUint256Response, &callback_called,
                      mojom::ProviderError::kLimitExceeded,
                      "Request exceeds defined limit", 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -4605,7 +4605,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
       mojom::kLocalhostChainId, "t1h4n7rphclbmwyjcp6jrdiwlfcuwbroxy3jvg33q",
       base::BindOnce(&OnFilUint256Response, &callback_called,
                      mojom::FilecoinProviderError::kSuccess, "", UINT64_MAX));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4615,7 +4615,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
       base::BindOnce(&OnFilUint256Response, &callback_called,
                      mojom::FilecoinProviderError::kInternalError,
                      l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR), 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4626,7 +4626,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
       base::BindOnce(&OnFilUint256Response, &callback_called,
                      mojom::FilecoinProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR), 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 
   callback_called = false;
@@ -4636,7 +4636,7 @@ TEST_F(JsonRpcServiceUnitTest, GetFilTransactionCount) {
       base::BindOnce(&OnFilUint256Response, &callback_called,
                      mojom::FilecoinProviderError::kActorNotFound,
                      "resolution lookup failed", 0));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_called);
 }
 
@@ -5528,7 +5528,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr) {
   EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
@@ -5539,7 +5539,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain) {
   EXPECT_CALL(callback, Run(offchain_subdomain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetEthAddr(ens_subdomain_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
@@ -5554,7 +5554,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Subdomain_NoEnsip10Support) {
               Run("", false, mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetEthAddr(ens_subdomain_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
@@ -5566,7 +5566,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoResolver) {
               Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetEthAddr("unknown-host.eth", callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
@@ -5580,7 +5580,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support) {
   EXPECT_CALL(callback, Run(onchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
@@ -5596,7 +5596,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_NoEnsip10Support_GoOffchain) {
   EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
@@ -5611,7 +5611,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Gateway500Error) {
               Run("", false, mojom::ProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
@@ -5626,7 +5626,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_GatewayNoRecord) {
               Run("", false, mojom::ProviderError::kInvalidParams,
                   l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
@@ -5640,7 +5640,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
     // Called with `require_offchain_consent` == true.
     EXPECT_CALL(callback, Run("", true, mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     EXPECT_EQ(
         decentralized_dns::EnsOffchainResolveMethod::kAsk,
         decentralized_dns::GetEnsOffchainResolveMethod(local_state_prefs()));
@@ -5658,7 +5658,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
     EXPECT_CALL(callback, Run(offchain_eth_addr().ToHex(), false,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   // Disable in prefs.
@@ -5673,7 +5673,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetWalletAddr_Consent) {
                 Run("", false, mojom::ProviderError::kInternalError,
                     l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     json_rpc_service_->EnsGetEthAddr(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 }
 
@@ -5686,7 +5686,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash) {
   EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain) {
@@ -5698,7 +5698,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain) {
   EXPECT_CALL(callback, Run(offchain_subdomain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_subdomain_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain_NoEnsip10Support) {
@@ -5715,7 +5715,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Subdomain_NoEnsip10Support) {
       Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetContentHash(ens_subdomain_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
@@ -5729,7 +5729,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoResolver) {
       Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash("unknown-host.eth", callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
@@ -5745,7 +5745,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_NoEnsip10Support) {
   EXPECT_CALL(callback, Run(onchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest,
@@ -5764,7 +5764,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest,
   EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                             mojom::ProviderError::kSuccess, ""));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
@@ -5781,7 +5781,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Gateway500Error) {
       Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
@@ -5798,7 +5798,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_GatewayNoRecord) {
       Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInvalidParams,
           l10n_util::GetStringUTF8(IDS_WALLET_INVALID_PARAMETERS)));
   json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
@@ -5812,7 +5812,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
     EXPECT_CALL(callback, Run(std::vector<uint8_t>(), true,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   decentralized_dns::SetEnsOffchainResolveMethod(
@@ -5824,7 +5824,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
     EXPECT_CALL(callback, Run(offchain_contenthash(), false,
                               mojom::ProviderError::kSuccess, ""));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   // Disable in prefs.
@@ -5840,7 +5840,7 @@ TEST_F(ENSL2JsonRpcServiceUnitTest, GetContentHash_Consent) {
         Run(std::vector<uint8_t>(), false, mojom::ProviderError::kInternalError,
             l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
     json_rpc_service_->EnsGetContentHash(ens_host(), callback.Get());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 }
 
@@ -5992,7 +5992,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   EXPECT_CALL(callback, Run(NftOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error while checking nft mint. Fail resolution.
@@ -6001,7 +6001,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   mint_address_handler_->FailWithTimeout(false);
 
@@ -6011,7 +6011,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   get_program_accounts_handler_->FailWithTimeout(false);
 
@@ -6020,7 +6020,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_NftOwner) {
   EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -6033,7 +6033,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for domain key account. Fail resolution.
@@ -6042,7 +6042,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   domain_address_handler_->FailWithTimeout(false);
 
@@ -6052,7 +6052,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_DomainOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   domain_address_handler_->Disable(false);
@@ -6066,7 +6066,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   EXPECT_CALL(callback, Run(SolRecordAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // Bad signature. Fallback to owner address.
@@ -6074,7 +6074,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   sol_record_address_handler_->data()[170] ^= 123;
 
@@ -6084,7 +6084,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
               Run("", mojom::SolanaProviderError::kInternalError,
                   l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   sol_record_address_handler_->FailWithTimeout(false);
 
@@ -6093,7 +6093,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, GetWalletAddr_SolRecordOwner) {
   EXPECT_CALL(callback, Run(DomainOwnerAddress().ToBase58(),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsGetSolAddr(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -6102,7 +6102,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
   EXPECT_CALL(callback, Run(testing::Eq(url_value()),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for url record account. Fail resolution.
@@ -6112,7 +6112,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_UrlValue) {
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   url_record_address_handler_->FailWithTimeout(false);
 }
@@ -6125,7 +6125,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
   EXPECT_CALL(callback, Run(testing::Eq(ipfs_value()),
                             mojom::SolanaProviderError::kSuccess, ""));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   // HTTP error for ipfs record account. Fail resolution.
@@ -6135,7 +6135,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
   ipfs_record_address_handler_->FailWithTimeout(false);
 
@@ -6146,7 +6146,7 @@ TEST_F(SnsJsonRpcServiceUnitTest, ResolveHost_IpfsValue) {
       Run(testing::Eq(GURL()), mojom::SolanaProviderError::kInternalError,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR)));
   json_rpc_service_->SnsResolveHost(sns_host(), callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 

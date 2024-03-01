@@ -71,8 +71,9 @@ class DecentralizedDnsNetworkDelegateHelperTest : public testing::Test {
     return test_url_loader_factory_;
   }
 
- private:
   content::BrowserTaskEnvironment task_environment_;
+
+ private:
   std::unique_ptr<TestingProfile> profile_;
   std::unique_ptr<ScopedTestingLocalState> local_state_;
   network::TestURLLoaderFactory test_url_loader_factory_;
@@ -197,7 +198,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"", "", "", "", "", "https://brave.com"}),
       net::HTTP_REQUEST_TIMEOUT);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(brave_request_info->new_url_spec.empty());
 
   // Polygon result.
@@ -214,7 +215,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"hash", "", "", "", "", ""}),
       net::HTTP_OK);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "https://brave.com/");
 
   // Eth result.
@@ -230,7 +231,7 @@ TEST_F(DecentralizedDnsNetworkDelegateHelperTest,
       brave_wallet::MakeJsonRpcStringArrayResponse(
           {"hash", "", "", "", "", ""}),
       net::HTTP_OK);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_EQ(brave_request_info->new_url_spec, "ipfs://hash");
 }
 
