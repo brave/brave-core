@@ -177,15 +177,16 @@ export const PortfolioFungibleAsset = () => {
     )
   }, [selectedAssetsNetwork, accounts])
 
-  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
-    selectedAssetFromParams && candidateAccounts && selectedAssetsNetwork
-      ? {
-          network: selectedAssetsNetwork,
-          accounts: candidateAccounts,
-          tokens: [selectedAssetFromParams]
-        }
-      : skipToken
-  )
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useScopedBalanceUpdater(
+      selectedAssetFromParams && candidateAccounts && selectedAssetsNetwork
+        ? {
+            network: selectedAssetsNetwork,
+            accounts: candidateAccounts,
+            tokens: [selectedAssetFromParams]
+          }
+        : skipToken
+    )
 
   const tokenPriceIds = React.useMemo(
     () =>
@@ -534,6 +535,7 @@ export const PortfolioFungibleAsset = () => {
             selectedAsset={selectedAssetFromParams}
             selectedAssetTransactions={selectedAssetTransactions}
             tokenBalancesRegistry={tokenBalancesRegistry}
+            isLoadingBalances={isLoadingBalances}
             accounts={candidateAccounts}
             spotPriceRegistry={spotPriceRegistry}
           />

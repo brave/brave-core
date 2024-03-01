@@ -49,6 +49,7 @@ import {
 import {
   SellAssetModal //
 } from '../../../../popup-modals/sell-asset-modal/sell-asset-modal'
+import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
 
 // Hooks
 import {
@@ -90,6 +91,7 @@ interface Props {
   selectedAssetTransactions: SerializableTransactionInfo[]
   accounts: BraveWallet.AccountInfo[]
   tokenBalancesRegistry: TokenBalancesRegistry | undefined | null
+  isLoadingBalances: boolean
   spotPriceRegistry: SpotPriceRegistry | undefined
 }
 
@@ -100,6 +102,7 @@ export const AccountsAndTransactionsList = ({
   selectedAssetTransactions,
   accounts,
   tokenBalancesRegistry,
+  isLoadingBalances,
   spotPriceRegistry
 }: Props) => {
   // routing
@@ -213,6 +216,92 @@ export const AccountsAndTransactionsList = ({
     )
     dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
   }, [hidePortfolioBalances])
+
+  if (
+    hash !== WalletRoutes.TransactionsHash &&
+    isLoadingBalances &&
+    accountsList.length === 0
+  ) {
+    return (
+      <>
+        {!isRewardsToken && (
+          <Row padding='24px 0px'>
+            <SegmentedControl
+              navOptions={PortfolioAssetOptions}
+              width={384}
+            />
+          </Row>
+        )}
+        <Row
+          width='100%'
+          justifyContent='space-between'
+          alignItems='center'
+          marginBottom={18}
+          padding='0px 8px'
+        >
+          <Text
+            isBold={true}
+            textColor='text01'
+            textSize='16px'
+          >
+            {getLocale('braveWalletAccounts')}
+          </Text>
+          <div>
+            <LoadingSkeleton
+              width={60}
+              height={22}
+            />
+          </div>
+        </Row>
+        <VerticalDivider />
+        <VerticalSpacer space={8} />
+        <Row
+          padding='8px'
+          justifyContent='space-between'
+        >
+          <Row
+            width='unset'
+            justifyContent='flex-start'
+          >
+            <LoadingSkeleton
+              width={44}
+              height={44}
+              borderRadius={8}
+            />
+            <Column
+              padding='0px 0px 0px 12px'
+              alignItems='flex-start'
+            >
+              <LoadingSkeleton
+                width={80}
+                height={18}
+                borderRadius={8}
+              />
+              <VerticalSpacer space={4} />
+              <LoadingSkeleton
+                width={80}
+                height={16}
+                borderRadius={8}
+              />
+            </Column>
+          </Row>
+          <Column alignItems='flex-end'>
+            <LoadingSkeleton
+              width={80}
+              height={18}
+              borderRadius={8}
+            />
+            <VerticalSpacer space={4} />
+            <LoadingSkeleton
+              width={80}
+              height={16}
+              borderRadius={8}
+            />
+          </Column>
+        </Row>
+      </>
+    )
+  }
 
   return (
     <>
