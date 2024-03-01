@@ -16,6 +16,12 @@
 namespace playlist {
 namespace {
 
+//  Pairs of mimetype and file extension. Note that there are extensions that
+//  have the same mimetype. In that case, the first one will be picked from
+//  base::flat_map when building ext=>mimetype map. Also that's the reason why
+//  base::fixed_flat_map isn't used directly here, as base::fixed_flat_map sorts
+//  inputs.
+//
 // References
 // * List of mimetypes registered to IANA
 //   * Video:
@@ -27,44 +33,79 @@ namespace {
 // * Mimetype to extension
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 //
-constexpr auto kMimeToExtensionMap =
-    base::MakeFixedFlatMap<std::string_view, base::FilePath::StringPieceType>(
-        {/*m3u8*/
-         {"application/x-mpegurl", FILE_PATH_LITERAL("m3u8")},
-         {"application/vnd.apple.mpegurl", FILE_PATH_LITERAL("m3u8")},
-         {"audio/x-mpegurl", FILE_PATH_LITERAL("m3u8")},
-         {"audio/mpegurl", FILE_PATH_LITERAL("m3u8")},
-         /*aac*/
-         {"audio/aac", FILE_PATH_LITERAL("aac")},
-         /*flac*/
-         {"audio/flac", FILE_PATH_LITERAL("flac")},
-         /*mp3*/
-         {"audio/mp3", FILE_PATH_LITERAL("mp3")},
-         {"audio/x-mp3", FILE_PATH_LITERAL("mp3")},
-         {"audio/mpeg", FILE_PATH_LITERAL("mp3")},
-         /*wav*/
-         {"audio/wav", FILE_PATH_LITERAL("wav")},
-         {"audio/x-wav", FILE_PATH_LITERAL("wav")},
-         /*webm*/
-         {"audio/webm", FILE_PATH_LITERAL("weba")},
-         {"video/webm", FILE_PATH_LITERAL("webm")},
-         /*m4a*/
-         {"audio/x-m4a", FILE_PATH_LITERAL("m4a")},
-         /*3gp*/
-         {"video/3gpp", FILE_PATH_LITERAL("3gp")},
-         /*mp2t*/
-         {"video/mp2t", FILE_PATH_LITERAL("ts")},
-         /*mp4*/
-         {"video/mp4", FILE_PATH_LITERAL("mp4")},
-         {"audio/mp4", FILE_PATH_LITERAL("mp4")},
-         /*mpeg*/
-         {"video/mpeg", FILE_PATH_LITERAL("mpeg")},
-         /*ogg*/
-         {"application/ogg", FILE_PATH_LITERAL("ogx")},
-         {"audio/ogg", FILE_PATH_LITERAL("oga")},
-         {"video/ogg", FILE_PATH_LITERAL("ogv")},
-         /*m4v*/
-         {"video/x-m4v", FILE_PATH_LITERAL("m4v")}});
+constexpr std::pair<std::string_view, base::FilePath::StringPieceType>
+    kMimeToExtensionData[] = {
+        /*m3u8*/
+        {"application/x-mpegurl", FILE_PATH_LITERAL("m3u8")},
+        {"application/vnd.apple.mpegurl", FILE_PATH_LITERAL("m3u8")},
+        {"audio/x-mpegurl", FILE_PATH_LITERAL("m3u8")},
+        {"audio/mpegurl", FILE_PATH_LITERAL("m3u8")},
+        /*aac*/
+        {"audio/aac", FILE_PATH_LITERAL("aac")},
+        /*flac*/
+        {"audio/flac", FILE_PATH_LITERAL("flac")},
+        /*mp3*/
+        {"audio/mp3", FILE_PATH_LITERAL("mp3")},
+        {"audio/x-mp3", FILE_PATH_LITERAL("mp3")},
+        {"audio/mpeg", FILE_PATH_LITERAL("mp3")},
+        /*wav*/
+        {"audio/wav", FILE_PATH_LITERAL("wav")},
+        {"audio/x-wav", FILE_PATH_LITERAL("wav")},
+        /*webm*/
+        {"audio/webm", FILE_PATH_LITERAL("weba")},
+        {"video/webm", FILE_PATH_LITERAL("webm")},
+        /*m4a*/
+        {"audio/x-m4a", FILE_PATH_LITERAL("m4a")},
+        /*3gp*/
+        {"video/3gpp", FILE_PATH_LITERAL("3gp")},
+        /*mp2t*/
+        {"video/mp2t", FILE_PATH_LITERAL("ts")},
+        /*mp4*/
+        {"video/mp4", FILE_PATH_LITERAL("mp4")},
+        {"audio/mp4", FILE_PATH_LITERAL("mp4")},
+        /*mpeg*/
+        {"video/mpeg", FILE_PATH_LITERAL("mpeg")},
+        /*ogg*/
+        {"application/ogg", FILE_PATH_LITERAL("ogx")},
+        {"audio/ogg", FILE_PATH_LITERAL("oga")},
+        {"video/ogg", FILE_PATH_LITERAL("ogv")},
+        /*m4v*/
+        {"video/x-m4v", FILE_PATH_LITERAL("m4v")}};
+
+// Helper templates to build flat_map from array of pairs.
+template <typename T, size_t N, size_t... I>
+consteval auto MakeMimeToExtensionMap(const T (&pairs)[N],
+                                      std::index_sequence<I...>) {
+  return base::MakeFixedFlatMap<std::string_view,
+                                base::FilePath::StringPieceType>({pairs[I]...});
+}
+
+template <typename T, size_t N>
+consteval auto MakeMimeToExtensionMap(const T (&pairs)[N]) {
+  return MakeMimeToExtensionMap(pairs, std::make_index_sequence<N>());
+}
+
+// For extension to mime map, reverse the pair.
+template <typename T>
+auto ReversePair(const T& pair) {
+  return std::pair{pair.second, pair.first};
+}
+
+template <typename T, size_t N, size_t... I>
+auto MakeExtensionToMimeMap(const T (&pairs)[N], std::index_sequence<I...>) {
+  // base::flat_map discards duplicated key, so we can pass pairs without
+  // filtering. Only the first will be picked.
+  return base::flat_map<base::FilePath::StringPieceType, std::string_view>(
+      {ReversePair(pairs[I])...});
+}
+
+template <typename T, size_t N>
+auto MakeExtensionToMimeMap(const T (&pairs)[N]) {
+  return MakeExtensionToMimeMap(pairs, std::make_index_sequence<N>());
+}
+
+constexpr inline auto kMimeToExtensionMap =
+    MakeMimeToExtensionMap(kMimeToExtensionData);
 
 }  // namespace
 
@@ -85,13 +126,7 @@ std::optional<std::string> GetMimeTypeForFileExtension(
     base::FilePath::StringPieceType file_extension) {
   static const base::NoDestructor<
       base::flat_map<base::FilePath::StringPieceType, std::string_view>>
-      kExtensionToMimeMap(([]() {
-        base::flat_map<base::FilePath::StringPieceType, std::string_view> map;
-        for (const auto& [mime, ext] : kMimeToExtensionMap) {
-          map[ext] = mime;
-        }
-        return map;
-      })());
+      kExtensionToMimeMap(MakeExtensionToMimeMap(kMimeToExtensionData));
 
   if (auto iter = kExtensionToMimeMap->find(file_extension);
       iter != kExtensionToMimeMap->end()) {
