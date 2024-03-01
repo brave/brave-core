@@ -34,7 +34,22 @@ void PageMetricsTabHelper::DidStartNavigation(
     return;
   }
 
+  last_started_host_ = navigation_handle->GetURL().host();
   was_http_allowlist_ = IsHttpAllowedForHost(navigation_handle);
+}
+
+void PageMetricsTabHelper::DidRedirectNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (navigation_handle->GetURL().host() == last_started_host_) {
+    // Do not examine redirect events for URLs that have the same host
+    // as the original request. If the site was accessed via HTTP, it may
+    // have been added to the allowlist right after the original request was
+    // made. Examining the redirect request that follows post-HTTPS upgrade
+    // failure will result in an incorrect `was_http_allowlist_` result.
+    return;
+  }
+  // Check HTTP allowlist for redirected URL.
+  DidStartNavigation(navigation_handle);
 }
 
 void PageMetricsTabHelper::DidFinishNavigation(
@@ -63,16 +78,24 @@ void PageMetricsTabHelper::DidFinishNavigation(
 bool PageMetricsTabHelper::CheckNavigationEvent(
     content::NavigationHandle* navigation_handle,
     bool is_finished) {
-  return !(!page_metrics_ || !navigation_handle->IsInMainFrame() ||
-           navigation_handle->IsSameDocument() ||
-           navigation_handle->GetRestoreType() ==
-               content::RestoreType::kRestored ||
-           (is_finished && !navigation_handle->HasCommitted()) ||
-           !navigation_handle->GetURL().SchemeIsHTTPOrHTTPS());
+  if (!page_metrics_) {
+    return false;
+  }
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
+      !navigation_handle->GetURL().SchemeIsHTTPOrHTTPS() ||
+      navigation_handle->IsSameDocument() ||
+      navigation_handle->GetRestoreType() == content::RestoreType::kRestored) {
+    return false;
+  }
+  if (is_finished && !navigation_handle->HasCommitted()) {
+    return false;
+  }
+  return true;
 }
 
 bool PageMetricsTabHelper::IsHttpAllowedForHost(
     content::NavigationHandle* navigation_handle) {
+  CHECK(navigation_handle);
   content::WebContents* web_contents = navigation_handle->GetWebContents();
   if (!web_contents) {
     return false;

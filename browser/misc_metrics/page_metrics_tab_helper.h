@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
 #define BRAVE_BROWSER_MISC_METRICS_PAGE_METRICS_TAB_HELPER_H_
 
+#include <string>
+
 #include "base/memory/raw_ptr.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -35,6 +37,8 @@ class PageMetricsTabHelper
   // content::WebContentsObserver:
   void DidStartNavigation(
       content::NavigationHandle* navigation_handle) override;
+  void DidRedirectNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
@@ -43,6 +47,7 @@ class PageMetricsTabHelper
   bool IsHttpAllowedForHost(content::NavigationHandle* navigation_handle);
 
   bool was_http_allowlist_ = false;
+  std::string last_started_host_;
   raw_ptr<PageMetrics> page_metrics_;
 
   WEB_CONTENTS_USER_DATA_KEY_DECL();

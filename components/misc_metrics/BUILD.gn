@@ -24,7 +24,7 @@ static_library("misc_metrics") {
 
   deps = [
     "//base",
-    "//brave/components/brave_shields/browser",
+    "//brave/components/brave_shields/content/browser",
     "//brave/components/p3a_utils",
     "//brave/components/time_period_storage",
     "//components/autofill/core/browser",

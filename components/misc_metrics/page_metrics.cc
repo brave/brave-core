@@ -10,7 +10,7 @@
 #include "base/functional/bind.h"
 #include "base/logging.h"
 #include "base/time/time.h"
-#include "brave/components/brave_shields/browser/brave_shields_util.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/weekly_storage.h"
