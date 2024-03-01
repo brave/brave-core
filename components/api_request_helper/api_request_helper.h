@@ -128,7 +128,7 @@ class APIRequestHelper {
    private:
     friend class APIRequestHelper;
 
-    void ParseJsonImpl(const std::string& json,
+    void ParseJsonImpl(std::string json,
                        data_decoder::DataDecoder::ValueParseCallback callback);
 
     // Run completion callback if there are no operations in progress.

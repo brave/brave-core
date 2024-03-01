@@ -338,13 +338,14 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
 }
 
 void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
-    const std::string& json,
+    std::string json,
     data_decoder::DataDecoder::ValueParseCallback callback) {
 #if BUILDFLAG(BUILD_RUST_JSON_READER)
   if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
     task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
-        base::BindOnce(&base::DecodeJSONInRust, json, base::JSON_PARSE_RFC),
+        base::BindOnce(&base::DecodeJSONInRust, std::move(json),
+                       base::JSON_PARSE_RFC),
         base::BindOnce(
             [](data_decoder::DataDecoder::ValueParseCallback callback,
                base::JSONReader::Result result) {
@@ -547,7 +548,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
         };
 
     DVLOG(2) << "Going to call ParseJsonImpl";
-    ParseJsonImpl(std::move(std::string(json)),
+    ParseJsonImpl(std::string(json),
                   base::BindOnce(std::move(on_json_parsed),
                                  weak_ptr_factory_.GetWeakPtr()));
   }
