@@ -92,11 +92,11 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
+  background_web_contents_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   task_runner_.reset();
   playlist_streaming_.reset();
-  background_web_contents_.reset();
 
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
@@ -883,7 +883,7 @@ void PlaylistService::RecoverLocalDataForItem(
          mojom::PlaylistItemPtr old_item,
          RecoverLocalDataForItemCallback callback,
          std::vector<mojom::PlaylistItemPtr> found_items,
-         const GURL& url) {
+         const GURL&) {
         if (!service) {
           return;
         }
@@ -1107,6 +1107,7 @@ void PlaylistService::OnMediaFileDownloadFinished(
 
 void PlaylistService::OnEnabledPrefChanged() {
   if (!*enabled_pref_) {
+    background_web_contents_.reset();
     thumbnail_downloader_->CancelAllDownloadRequests();
     media_file_download_manager_->CancelAllDownloadRequests();
   }

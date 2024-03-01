@@ -189,6 +189,10 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
+interface PlaylistMediaResponder {
+  OnMediaDetected(mojo_base.mojom.ListValue media);
+};
+
 interface PlaylistStreamingObserver {
   OnResponseStarted(string url, int64 content_length);
   OnDataReceived(array<uint8> data_received);
@@ -198,8 +202,4 @@ interface PlaylistStreamingObserver {
 interface PlaylistRenderFrameObserverConfigurator {
   AddMediaSourceAPISuppressor(string media_source_api_suppressor);
   AddMediaDetector(string media_detector);
-};
-
-interface PlaylistMediaResponder {
-  OnMediaDetected(mojo_base.mojom.ListValue media);
 };
