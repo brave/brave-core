@@ -5,33 +5,40 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler_helper.h"
 
+#include <optional>
+#include <string>
+#include <utility>
+
 #include "base/json/values_util.h"
+#include "base/logging.h"
+#include "base/time/time.h"
+#include "base/token.h"
 #include "url/gurl.h"
 
 namespace playlist {
 
 std::vector<mojom::PlaylistItemPtr> ToPlaylistItems(base::Value::List list,
                                                     const GURL& url) {
-  /* Expected output:
+  /* Expected input:
     [
       {
         "mimeType": "video" | "audio",
         "name": string,
         "pageSrc": url,
-        "pageTitle": string
-        "src": url
+        "pageTitle": string,
+        "src": url,
         "srcIsMediaSourceObjectURL": boolean,
-        "thumbnail": url | undefined
-        "duration": double | undefined
+        "thumbnail": url | undefined,
+        "duration": double | undefined,
         "author": string | undefined
       }
     ]
   */
-
   std::vector<mojom::PlaylistItemPtr> items;
+
   for (const auto& media : list) {
     if (!media.is_dict()) {
-      LOG(ERROR) << __func__ << " Got invalid item";
+      LOG(ERROR) << __FUNCTION__ << ": media is not a dict";
       continue;
     }
 
@@ -46,7 +53,7 @@ std::vector<mojom::PlaylistItemPtr> ToPlaylistItems(base::Value::List list,
         media_dict.FindBool("srcIsMediaSourceObjectURL");
     if (!name || !page_source || !page_title || !mime_type || !src ||
         !is_blob_from_media_source) {
-      LOG(ERROR) << __func__ << " required fields are not satisfied";
+      LOG(ERROR) << __FUNCTION__ << ": media is missing required fields";
       continue;
     }
 
@@ -80,12 +87,12 @@ std::vector<mojom::PlaylistItemPtr> ToPlaylistItems(base::Value::List list,
     if (thumbnail) {
       if (GURL thumbnail_url(*thumbnail);
           !thumbnail_url.SchemeIs(url::kHttpsScheme)) {
-        LOG(ERROR) << __func__ << "thumbnail scheme is not https://";
+        LOG(ERROR) << __FUNCTION__ << "thumbnail scheme is not https://";
         thumbnail = nullptr;
       }
     }
 
-    if (duration.has_value()) {
+    if (duration) {
       item->duration =
           base::TimeDeltaToValue(base::Seconds(*duration)).GetString();
     }
@@ -99,7 +106,8 @@ std::vector<mojom::PlaylistItemPtr> ToPlaylistItems(base::Value::List list,
     items.push_back(std::move(item));
   }
 
-  DVLOG(2) << __func__ << " Media detection result size: " << items.size();
+  DVLOG(2) << __FUNCTION__ << ": successfully converted " << items.size()
+           << " items";
 
   return items;
 }
