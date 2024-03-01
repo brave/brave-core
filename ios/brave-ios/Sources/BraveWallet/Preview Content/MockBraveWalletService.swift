@@ -302,6 +302,13 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   func setNftDiscoveryEnabled(_ enabled: Bool) {
   }
 
+  func privateWindowsEnabled(_ completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+
+  func setPrivateWindowsEnabled(_ enabled: Bool) {
+  }
+
   func chainId(forActiveOrigin coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
     completion(BraveWallet.MainnetChainId)
   }
@@ -382,6 +389,9 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion: @escaping (String?, String?) -> Void
   ) {
     completion(nil, "Error Message")
+  }
+
+  func isPrivateWindow(_ completion: @escaping (Bool) -> Void) {
   }
 }
 #endif

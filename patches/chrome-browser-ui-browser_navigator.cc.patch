@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/browser_navigator.cc b/chrome/browser/ui/browser_navigator.cc
-index e805d59f87b459f106706b41be98b60aaa5786c8..047d7c3db07114f0e0bf98613090c8f2f8cfe1d2 100644
+index e805d59f87b459f106706b41be98b60aaa5786c8..0e284057a3da2f0286baa88de3bb259468e15fd1 100644
 --- a/chrome/browser/ui/browser_navigator.cc
 +++ b/chrome/browser/ui/browser_navigator.cc
 @@ -613,6 +613,7 @@ base::WeakPtr<content::NavigationHandle> Navigate(NavigateParams* params) {
@@ -10,11 +10,11 @@ index e805d59f87b459f106706b41be98b60aaa5786c8..047d7c3db07114f0e0bf98613090c8f2
  
    // Open System Apps in their standalone window if necessary.
    // TODO(crbug.com/1096345): Remove this code after we integrate with intent
-@@ -984,6 +985,7 @@ bool IsHostAllowedInIncognito(const GURL& url) {
-   if (scheme != content::kChromeUIScheme) {
-     return true;
+@@ -1029,6 +1030,7 @@ bool IsURLAllowedInIncognito(const GURL& url,
+     return stripped_url.is_valid() &&
+            IsURLAllowedInIncognito(stripped_url, browser_context);
    }
-+  BRAVE_IS_HOST_ALLOWED_IN_INCOGNITO
++  BRAVE_IS_URL_ALLOWED_IN_INCOGNITO
  
-   if (host == chrome::kChromeUIChromeSigninHost) {
- #if BUILDFLAG(IS_WIN)
+   return IsHostAllowedInIncognito(url);
+ }

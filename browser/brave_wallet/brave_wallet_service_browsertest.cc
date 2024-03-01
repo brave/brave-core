@@ -5,6 +5,8 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
+#include "base/test/bind.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "brave/browser/brave_wallet/brave_wallet_service_factory.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
@@ -85,7 +87,20 @@ class BraveWalletServiceTest : public InProcessBrowserTest {
                           ->GetServiceForContext(browser()->profile());
   }
 
+  void TestIsPrivateWindow(BraveWalletService* wallet_service,
+                           bool expected_result) {
+    base::MockCallback<base::OnceCallback<void(bool)>> callback;
+    EXPECT_CALL(callback, Run(expected_result)).Times(1);
+
+    wallet_service->IsPrivateWindow(callback.Get());
+  }
+
   BraveWalletService* wallet_service() { return wallet_service_; }
+  BraveWalletService* incognito_wallet_service() {
+    return brave_wallet::BraveWalletServiceFactory::GetInstance()
+        ->GetServiceForContext(
+            CreateIncognitoBrowser(browser()->profile())->profile());
+  }
   const net::EmbeddedTestServer* https_server() const { return &https_server_; }
 
  private:
@@ -142,6 +157,13 @@ IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, ActiveOrigin) {
   base::RunLoop().RunUntilIdle();
   EXPECT_TRUE(callback_called);
   EXPECT_EQ(observer.active_origin_info(), expected_origin_info);
+}
+
+IN_PROC_BROWSER_TEST_F(BraveWalletServiceTest, IsPrivateWindow) {
+  TestIsPrivateWindow(wallet_service(), false);
+  wallet_service()->SetPrivateWindowsEnabled(true);
+  TestIsPrivateWindow(incognito_wallet_service(), true);
+  TestIsPrivateWindow(wallet_service(), false);
 }
 
 }  // namespace brave_wallet
