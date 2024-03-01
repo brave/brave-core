@@ -445,6 +445,7 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
+                      const SkBitmap& image,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory_for_test) {
@@ -489,6 +490,10 @@ void FetchPageContent(content::WebContents* web_contents,
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   auto host = url.host();
   if (base::Contains(kScreenshotRetrievalHosts, host)) {
+    if (!image.empty()) {
+      OnScreenshot(std::move(callback), image);
+      return;
+    }
     content::RenderWidgetHostView* view =
         web_contents->GetRenderWidgetHostView();
     if (view) {

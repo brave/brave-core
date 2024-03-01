@@ -17,14 +17,21 @@
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
+#include "chrome/browser/printing/print_preview_data_service.h"
+#include "chrome/browser/printing/print_view_manager_common.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
+#include "components/printing/browser/print_composite_client.h"
 #include "components/user_prefs/user_prefs.h"
+#include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
+#include "mojo/public/cpp/bindings/callback_helpers.h"
+#include "printing/print_job_constants.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -32,6 +39,8 @@
 #include "chrome/browser/ui/android/tab_model/tab_model.h"
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #endif
+
+using printing::PrintCompositeClient;
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -113,7 +122,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
       network::mojom::CSPDirectiveName::TrustedTypes, "trusted-types default;");
 }
 
-AIChatUI::~AIChatUI() = default;
+AIChatUI::~AIChatUI() {
+  ClearPreviewUIId();
+}
 
 void AIChatUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver) {
@@ -124,22 +135,209 @@ void AIChatUI::BindInterface(
     embedder_->ShowUI();
   }
 
-  content::WebContents* web_contents = nullptr;
 #if !BUILDFLAG(IS_ANDROID)
   raw_ptr<Browser> browser =
       ai_chat::GetBrowserForWebContents(web_ui()->GetWebContents());
   DCHECK(browser);
   TabStripModel* tab_strip_model = browser->tab_strip_model();
   DCHECK(tab_strip_model);
-  web_contents = tab_strip_model->GetActiveWebContents();
+  web_contents_ = tab_strip_model->GetActiveWebContents();
 #else
-  web_contents = GetActiveWebContents(profile_);
+  web_contents_ = GetActiveWebContents(profile_);
 #endif
-  if (web_contents == web_ui()->GetWebContents()) {
-    web_contents = nullptr;
+  if (web_contents_ == web_ui()->GetWebContents()) {
+    web_contents_ = nullptr;
   }
   page_handler_ = std::make_unique<ai_chat::AIChatUIPageHandler>(
-      web_ui()->GetWebContents(), web_contents, profile_, std::move(receiver));
+      this, web_ui()->GetWebContents(), web_contents_.get(), profile_,
+      std::move(receiver));
+}
+
+mojo::PendingAssociatedRemote<PrintPreviewUI> AIChatUI::BindPrintPreviewUI() {
+  return receiver_.BindNewEndpointAndPassRemote();
+}
+
+void AIChatUI::DisconnectPrintPrieviewUI() {
+  receiver_.reset();
+}
+
+bool AIChatUI::IsBound() const {
+  return receiver_.is_bound();
+}
+
+void AIChatUI::SetPreviewUIId() {
+  DCHECK(!print_preview_ui_id_);
+  print_preview_ui_id_ =
+      printing::PrintPreviewUI::GetPrintPreviewUIIdMap().Add(this);
+  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
+      [*print_preview_ui_id_] = -1;
+}
+
+std::optional<int32_t> AIChatUI::GetPreviewUIId() {
+  return print_preview_ui_id_;
+}
+
+void AIChatUI::ClearPreviewUIId() {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
+  if (!print_preview_ui_id_) {
+    return;
+  }
+
+  DisconnectPrintPrieviewUI();
+  PrintPreviewDataService::GetInstance()->RemoveEntry(*print_preview_ui_id_);
+  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap().erase(
+      *print_preview_ui_id_);
+  printing::PrintPreviewUI::GetPrintPreviewUIIdMap().Remove(
+      *print_preview_ui_id_);
+  print_preview_ui_id_.reset();
+}
+
+void AIChatUI::OnPrintPreviewRequest(int request_id) {
+  printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
+      [*print_preview_ui_id_] = request_id;
+}
+
+void AIChatUI::SetOptionsFromDocument(
+    const printing::mojom::OptionsFromDocumentParamsPtr params,
+    int32_t request_id) {}
+
+void AIChatUI::DidPrepareDocumentForPreview(int32_t document_cookie,
+                                            int32_t request_id) {
+  DVLOG(3) << __func__ << ": id=" << request_id;
+  // For case of print preview, page metafile is used to composite into
+  // the document PDF at same time.  Need to indicate that this scenario
+  // is at play for the compositor.
+  auto* client = PrintCompositeClient::FromWebContents(web_contents_);
+  DCHECK(client);
+  if (client->GetIsDocumentConcurrentlyComposited(document_cookie)) {
+    return;
+  }
+
+  content::RenderFrameHost* render_frame_host =
+      printing::GetFrameToPrint(web_contents_.get());
+  // |render_frame_host| could be null when the print preview dialog is closed.
+  if (!render_frame_host) {
+    return;
+  }
+
+  client->PrepareToCompositeDocument(
+      document_cookie, render_frame_host,
+      PrintCompositeClient::GetDocumentType(),
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AIChatUI::OnPrepareForDocumentToPdfDone,
+                         weak_ptr_factory_.GetWeakPtr(), request_id),
+          printing::mojom::PrintCompositor::Status::kCompositingFailure));
+}
+void AIChatUI::DidPreviewPage(printing::mojom::DidPreviewPageParamsPtr params,
+                              int32_t request_id) {
+  DVLOG(3) << __func__ << ": id=" << request_id;
+  uint32_t page_index = params->page_index;
+  const printing::mojom::DidPrintContentParams& content = *params->content;
+  if (page_index == printing::kInvalidPageIndex ||
+      !content.metafile_data_region.IsValid()) {
+    return;
+  }
+
+  auto* client = PrintCompositeClient::FromWebContents(web_contents_);
+  DCHECK(client);
+
+  content::RenderFrameHost* render_frame_host =
+      printing::GetFrameToPrint(web_contents_.get());
+  if (!render_frame_host) {
+    DLOG(ERROR) << "No render frame host for print preview";
+    return;
+  }
+
+  client->CompositePage(
+      params->document_cookie, render_frame_host, content,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          base::BindOnce(&AIChatUI::OnCompositePdfPageDone,
+                         weak_ptr_factory_.GetWeakPtr(), page_index,
+                         params->document_cookie, request_id),
+          printing::mojom::PrintCompositor::Status::kCompositingFailure,
+          base::ReadOnlySharedMemoryRegion()));
+}
+void AIChatUI::MetafileReadyForPrinting(
+    printing::mojom::DidPreviewDocumentParamsPtr params,
+    int32_t request_id) {
+  DVLOG(3) << __func__ << ": id=" << request_id;
+  auto callback = base::BindOnce(&AIChatUI::OnCompositeToPdfDone,
+                                 weak_ptr_factory_.GetWeakPtr(),
+                                 params->document_cookie, request_id);
+
+  // Page metafile is used to composite into the document at same time.
+  // Need to provide particulars of how many pages are required before
+  // document will be completed.
+  auto* client = PrintCompositeClient::FromWebContents(web_contents_);
+  client->FinishDocumentComposition(
+      params->document_cookie, params->expected_pages_count,
+      mojo::WrapCallbackWithDefaultInvokeIfNotRun(
+          std::move(callback),
+          printing::mojom::PrintCompositor::Status::kCompositingFailure,
+          base::ReadOnlySharedMemoryRegion()));
+}
+void AIChatUI::PrintPreviewFailed(int32_t document_cookie, int32_t request_id) {
+  DLOG(ERROR) << __func__ << ": id=" << request_id;
+  if (print_preview_ui_id_) {
+    printing::PrintPreviewUI::GetPrintPreviewUIRequestIdMap()
+        [*print_preview_ui_id_] = -1;
+  }
+}
+void AIChatUI::PrintPreviewCancelled(int32_t document_cookie,
+                                     int32_t request_id) {
+  DLOG(ERROR) << __func__ << ": id=" << request_id;
+}
+void AIChatUI::PrinterSettingsInvalid(int32_t document_cookie,
+                                      int32_t request_id) {
+  DLOG(ERROR) << __func__ << ": id=" << request_id;
+}
+
+void AIChatUI::DidGetDefaultPageLayout(
+    printing::mojom::PageSizeMarginsPtr page_layout_in_points,
+    const gfx::RectF& printable_area_in_points,
+    bool all_pages_have_custom_size,
+    bool all_pages_have_custom_orientation,
+    int32_t request_id) {}
+
+void AIChatUI::DidStartPreview(printing::mojom::DidStartPreviewParamsPtr params,
+                               int32_t request_id) {
+  DVLOG(3) << __func__ << ": id=" << request_id;
+}
+
+void AIChatUI::OnPrepareForDocumentToPdfDone(
+    int32_t request_id,
+    printing::mojom::PrintCompositor::Status status) {
+  DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
+}
+
+void AIChatUI::OnCompositePdfPageDone(
+    uint32_t page_index,
+    int document_cookie,
+    int32_t request_id,
+    printing::mojom::PrintCompositor::Status status,
+    base::ReadOnlySharedMemoryRegion region) {
+  DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(print_preview_ui_id_);
+
+  PrintPreviewDataService::GetInstance()->SetDataEntry(
+      *print_preview_ui_id_, page_index,
+      base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+}
+
+void AIChatUI::OnCompositeToPdfDone(
+    int document_cookie,
+    int32_t request_id,
+    printing::mojom::PrintCompositor::Status status,
+    base::ReadOnlySharedMemoryRegion region) {
+  DVLOG(3) << __func__ << ": id=" << request_id << " , status=" << status;
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+  DCHECK(print_preview_ui_id_);
+  PrintPreviewDataService::GetInstance()->SetDataEntry(
+      *print_preview_ui_id_, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX,
+      base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
+  page_handler_->OnPreviewReady();
 }
 
 std::unique_ptr<content::WebUIController>

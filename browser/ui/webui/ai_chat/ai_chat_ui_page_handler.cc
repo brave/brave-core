@@ -11,18 +11,24 @@
 #include <utility>
 #include <vector>
 
+#include "base/json/json_reader.h"
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/printing/print_preview_data_service.h"
+#include "chrome/browser/printing/print_view_manager_common.h"
+#include "chrome/browser/printing/printing_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
+#include "chrome/services/printing/public/mojom/printing_service.mojom.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -31,6 +37,9 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "printing/print_job_constants.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/base/l10n/l10n_util.h"
 
 #if BUILDFLAG(IS_ANDROID)
@@ -55,11 +64,13 @@ using mojom::ConversationTurn;
 using mojom::ConversationTurnVisibility;
 
 AIChatUIPageHandler::AIChatUIPageHandler(
+    AIChatUI* owner,
     content::WebContents* owner_web_contents,
     content::WebContents* chat_context_web_contents,
     Profile* profile,
     mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver)
     : content::WebContentsObserver(owner_web_contents),
+      owner_(owner),
       profile_(profile),
       receiver_(this, std::move(receiver)) {
   // Standalone mode means Chat is opened as its own tab in the tab strip and
@@ -123,6 +134,69 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
   DCHECK(!active_chat_tab_helper_->IsRequestInProgress())
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
+
+  // TODO(darkdh): support pdf preview printing
+  content::RenderFrameHost* rfh =
+      printing::GetFrameToPrint(active_chat_tab_helper_->web_contents());
+  if (rfh) {
+    if (!print_render_frame_.is_bound()) {
+      rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
+    }
+    if (!owner_->IsBound()) {
+      print_render_frame_->SetPrintPreviewUI(owner_->BindPrintPreviewUI());
+    }
+    auto preview_ui_id = owner_->GetPreviewUIId();
+    if (!preview_ui_id) {
+      owner_->SetPreviewUIId();
+      preview_ui_id = owner_->GetPreviewUIId();
+    }
+    CHECK(preview_ui_id);
+
+    print_render_frame_->InitiatePrintPreview(false);
+
+    auto settings = base::JSONReader::Read(R"({
+   "collate": true,
+   "color": 2,
+   "copies": 1,
+   "deviceName": "Save as PDF",
+   "dpiHorizontal": 300,
+   "dpiVertical": 300,
+   "duplex": 0,
+   "headerFooterEnabled": true,
+   "isFirstRequest": true,
+   "landscape": false,
+   "marginsType": 0,
+   "mediaSize": {
+      "custom_display_name": "Letter",
+      "height_microns": 279400,
+      "imageable_area_bottom_microns": 0,
+      "imageable_area_left_microns": 0,
+      "imageable_area_right_microns": 215900,
+      "imageable_area_top_microns": 279400,
+      "is_default": true,
+      "name": "NA_LETTER",
+      "width_microns": 215900
+   },
+   "pageRange": [  ],
+   "pagesPerSheet": 1,
+   "previewModifiable": true,
+   "printerType": 2,
+   "rasterizePDF": false,
+   "scaleFactor": 100,
+   "scalingType": 0,
+   "shouldPrintBackgrounds": false,
+   "shouldPrintSelectionOnly": false,
+   "title": "test - Google Docs",
+   "url": "https://docs.google.com/document/d/1OhFiLobEhBthcoaEbPIe_oNNmIq19lCYIuA_YEnmJAQ/edit"
+  })");
+    CHECK(settings);
+    auto dict = std::move(*settings).TakeDict();
+    dict.Set(printing::kPreviewUIID, preview_ui_id.value());
+    dict.Set(printing::kPreviewRequestID, ++preview_request_id_);
+    owner_->OnPrintPreviewRequest(preview_request_id_);
+    print_render_frame_->PrintPreview(std::move(dict));
+  }
+
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
       ConversationTurnVisibility::VISIBLE, input, std::nullopt};
@@ -451,6 +525,51 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
 #endif
     std::move(callback).Run(status, std::move(info));
   }
+}
+
+void AIChatUIPageHandler::BitmapConverterDisconnected() {
+  DLOG(ERROR) << __func__;
+  // TODO(darkdh): cleanup
+}
+
+void AIChatUIPageHandler::GotBitmap(const SkBitmap& bitmap) {
+  VLOG(3) << __func__ << ": bitmap size: " << bitmap.width() << "x"
+          << bitmap.height();
+  pdf_to_bitmap_converter_.reset();
+  active_chat_tab_helper_->OnPreviewReady(bitmap);
+  auto preview_ui_id = owner_->GetPreviewUIId();
+  CHECK(preview_ui_id);
+  PrintPreviewDataService::GetInstance()->RemoveEntry(*preview_ui_id);
+  print_render_frame_->OnPrintPreviewDialogClosed();
+  owner_->DisconnectPrintPrieviewUI();
+}
+
+void AIChatUIPageHandler::OnPreviewReady() {
+  scoped_refptr<base::RefCountedMemory> data;
+  auto preview_ui_id = owner_->GetPreviewUIId();
+  CHECK(preview_ui_id);
+  PrintPreviewDataService::GetInstance()->GetDataEntry(
+      *preview_ui_id, printing::COMPLETE_PREVIEW_DOCUMENT_INDEX, &data);
+  if (!data.get()) {
+    DLOG(ERROR) << "no data from preview id: " << *preview_ui_id;
+    return;
+  }
+  auto pdf_region = base::ReadOnlySharedMemoryRegion::Create(data->size());
+  if (!pdf_region.IsValid()) {
+    DLOG(ERROR) << "Failed allocate memory for PDF file";
+    return;
+  }
+  memcpy(pdf_region.mapping.memory(), data->data(), data->size());
+  DCHECK(!pdf_to_bitmap_converter_.is_bound());
+  GetPrintingService()->BindPdfToBitmapConverter(
+      pdf_to_bitmap_converter_.BindNewPipeAndPassReceiver());
+  pdf_to_bitmap_converter_.set_disconnect_handler(
+      base::BindOnce(&AIChatUIPageHandler::BitmapConverterDisconnected,
+                     base::Unretained(this)));
+  pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(true);
+  pdf_to_bitmap_converter_->GetBitmap(
+      std::move(pdf_region.region),
+      base::BindOnce(&AIChatUIPageHandler::GotBitmap, base::Unretained(this)));
 }
 
 }  // namespace ai_chat

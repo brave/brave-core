@@ -1,0 +1,20 @@
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
+module printing.mojom;
+
+import "mojo/public/mojom/base/shared_memory.mojom";
+import "skia/public/mojom/bitmap.mojom";
+import "ui/gfx/geometry/mojom/geometry.mojom";
+
+interface PdfToBitmapConverter {
+  GetBitmap(mojo_base.mojom.ReadOnlySharedMemoryRegion pdf_region)
+      => (skia.mojom.BitmapN32? bitmap);
+
+  // Sets the status for enterprise policy `kPdfUseSkiaRendererEnabled`. It
+  // should be called immediately once `mojom::PdfToBitmapConverter` remote
+  // is bound and only when this policy is managed.
+  SetUseSkiaRendererPolicy(bool use_skia);
+};
