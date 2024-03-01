@@ -457,9 +457,6 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
       // Rust parser returns the trailing comma error. Log the
       // urls and send a crash dump to find where trailing commas
       // could still be used.
-      LOG(ERROR) << "[APIRequestHelper] JSON respose with trailing "
-                    "commas detected "
-                 << result.final_url();
       DEBUG_ALIAS_FOR_GURL(url_alias, result.final_url());
       DEBUG_ALIAS_FOR_CSTR(result_str, result_value.error().c_str(), 1024);
       base::debug::DumpWithoutCrashing();
