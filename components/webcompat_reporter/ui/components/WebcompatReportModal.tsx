@@ -29,6 +29,12 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
       onSubmitReport,
       onClose
     } = this.props
+
+    const parsedUrl = new URL(siteUrl)
+    const isHttpPage = parsedUrl.protocol === 'http:' || parsedUrl.protocol === 'https:'
+    const isLocalPage = parsedUrl.hostname === '127.0.0.1' ||
+      parsedUrl.hostname === 'localhost' || parsedUrl.hostname.endsWith('.local')
+
     return (
       <div onContextMenu={(e: React.MouseEvent<HTMLDivElement>) => e.preventDefault()}>
         <RectangularCard>
@@ -37,6 +43,8 @@ export default class WebcompatReportModal extends React.PureComponent<Props, {}>
           ) : (
             <ReportView
               siteUrl={siteUrl}
+              isHttpPage={isHttpPage}
+              isLocalPage={isLocalPage}
               onSubmitReport={onSubmitReport}
               onClose={onClose}
             />

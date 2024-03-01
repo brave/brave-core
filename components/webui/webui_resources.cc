@@ -1045,6 +1045,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_EXPLANATION},
                   {"reportInternalExplanation",
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_INTERNAL_EXPLANATION},
+                  {"reportLocalExplanation",
+                   IDS_BRAVE_WEBCOMPATREPORTER_REPORT_LOCAL_EXPLANATION},
                   {"reportDisclaimer",
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_DISCLAIMER2},
                   {"reportInfoLink", IDS_BRAVE_WEBCOMPATREPORTER_INFO_LINK},

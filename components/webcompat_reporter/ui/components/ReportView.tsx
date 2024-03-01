@@ -28,6 +28,8 @@ import { getLocale } from '../../../common/locale'
 
 interface Props {
   siteUrl: string
+  isHttpPage: boolean
+  isLocalPage: boolean
   onSubmitReport: (details: string, contact: string, attachScreenshot: boolean) => void
   onClose: () => void
 }
@@ -43,18 +45,27 @@ const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '', attachScreenshot: true }
+    this.state = { details: '', contact: '', attachScreenshot: false }
   }
 
   render () {
     const {
       siteUrl,
+      isHttpPage,
+      isLocalPage,
       onSubmitReport,
       onClose
     } = this.props
     const { details, contact, attachScreenshot } = this.state
 
-    const isInternalPage = siteUrl.startsWith('brave://') || siteUrl.startsWith('chrome://');
+    const isIneligiblePage = !isHttpPage || isLocalPage
+
+    let infoTextKey = 'reportExplanation'
+    if (!isHttpPage) {
+      infoTextKey = 'reportInternalExplanation'
+    } else if (isLocalPage) {
+      infoTextKey = 'reportLocalExplanation'
+    }
 
     return (
       <ModalLayout>
@@ -62,9 +73,9 @@ export default class ReportView extends React.PureComponent<Props, State> {
           <ModalTitle>{getLocale('reportModalTitle')}</ModalTitle>
         </TextSection>
         <InfoText>
-          {getLocale(isInternalPage ? 'reportInternalExplanation' : 'reportExplanation')}
+          {getLocale(infoTextKey)}
         </InfoText>
-        {!isInternalPage && 
+        {!isIneligiblePage &&
           <>
             <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
             <DisclaimerText>
@@ -110,7 +121,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
           </>
         }
         <SideBySideButtons>
-          {!isInternalPage ?
+          {!isIneligiblePage ?
           <>
             <PaddedButton
               text={getLocale('cancel')}

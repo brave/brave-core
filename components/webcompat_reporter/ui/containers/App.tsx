@@ -29,6 +29,7 @@ class WebcompatReportContainer extends React.Component<Props, {}> {
 
   render () {
     const { actions, reporterState } = this.props
+
     return (
       <WebcompatReportModal
         siteUrl={reporterState.dialogArgs.url}
