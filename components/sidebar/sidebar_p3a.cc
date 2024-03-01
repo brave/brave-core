@@ -5,6 +5,7 @@
 
 #include "brave/components/sidebar/sidebar_p3a.h"
 
+#include "base/check_is_test.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -26,6 +27,12 @@ SidebarP3A::SidebarP3A(PrefService* profile_prefs)
 SidebarP3A::~SidebarP3A() = default;
 
 void SidebarP3A::RecordEnabledSetting() {
+  // Some non-sidebar unittest could not register the prefs.
+  if (!profile_prefs_->FindPreference(kSidebarShowOption)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   bool is_enabled =
       profile_prefs_->GetInteger(kSidebarShowOption) !=
       static_cast<int>(SidebarService::ShowSidebarOption::kShowNever);

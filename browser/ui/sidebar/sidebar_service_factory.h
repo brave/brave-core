@@ -34,9 +34,9 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
 
   // This is the default display order
   static constexpr SidebarItem::BuiltInItemType kDefaultBuiltInItemTypes[] = {
+      SidebarItem::BuiltInItemType::kChatUI,
       SidebarItem::BuiltInItemType::kBraveTalk,
       SidebarItem::BuiltInItemType::kWallet,
-      SidebarItem::BuiltInItemType::kChatUI,
       SidebarItem::BuiltInItemType::kBookmarks,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kHistory,
@@ -63,6 +63,8 @@ class SidebarServiceFactory : public BrowserContextKeyedServiceFactory {
       content::BrowserContext* context) const override;
   content::BrowserContext* GetBrowserContextToUse(
       content::BrowserContext* context) const override;
+  void RegisterProfilePrefs(
+      user_prefs::PrefRegistrySyncable* registry) override;
 };
 
 }  // namespace sidebar
