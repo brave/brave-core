@@ -867,8 +867,7 @@ void PlaylistService::RecoverLocalDataForItem(
       [](base::WeakPtr<PlaylistService> service,
          mojom::PlaylistItemPtr old_item,
          RecoverLocalDataForItemCallback callback,
-         std::vector<mojom::PlaylistItemPtr> found_items,
-         const GURL&) {
+         std::vector<mojom::PlaylistItemPtr> found_items, const GURL&) {
         if (!service) {
           return;
         }
