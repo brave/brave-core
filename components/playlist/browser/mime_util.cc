@@ -8,6 +8,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/containers/contains.h"
+#include "base/containers/fixed_flat_map.h"
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
 #include "base/no_destructor.h"
@@ -26,7 +28,7 @@ namespace {
 // * Mimetype to extension
 //   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
 //
-constexpr std::pair<std::string_view, base::FilePath::StringPieceType>
+constexpr inline std::pair<std::string_view, base::FilePath::StringPieceType>
     kMimeToExtensionData[] = {
         /*m3u8*/
         {"application/x-mpegurl", FILE_PATH_LITERAL("m3u8")},
@@ -105,9 +107,9 @@ std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
   static const base::NoDestructor<
       base::flat_map<std::string_view, base::FilePath::StringPieceType>>
       kMimeToExtensionMap(MakeMimeToExtensionMap(kMimeToExtensionData));
-
-  if (kMimeToExtensionMap->contains(mime_type)) {
-    return base::FilePath::StringType(kMimeToExtensionMap->at(mime_type));
+  if (auto iter = kMimeToExtensionMap->find(mime_type);
+      iter != kMimeToExtensionMap->end()) {
+    return base::FilePath::StringType(iter->second);
   }
 
   return std::nullopt;
@@ -119,8 +121,9 @@ std::optional<std::string> GetMimeTypeForFileExtension(
       base::flat_map<base::FilePath::StringPieceType, std::string_view>>
       kExtensionToMimeMap(MakeExtensionToMimeMap(kMimeToExtensionData));
 
-  if (kExtensionToMimeMap->contains(file_extension)) {
-    return std::string(kExtensionToMimeMap->at(file_extension));
+  if (auto iter = kExtensionToMimeMap->find(file_extension);
+      iter != kExtensionToMimeMap->end()) {
+    return std::string(iter->second);
   }
 
   return std::nullopt;
