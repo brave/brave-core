@@ -83,7 +83,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     @Override
     public void onTextChanged(String textWithoutAutocomplete) {
         if (ProfileManager.isInitialized()
-                && !UserPrefs.get(Profile.getLastUsedRegularProfile())
+                && !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                             .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }

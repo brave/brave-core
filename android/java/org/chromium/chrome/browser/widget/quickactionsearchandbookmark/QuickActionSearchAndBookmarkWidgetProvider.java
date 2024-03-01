@@ -1,9 +1,9 @@
 /*
-  Copyright (c) 2022 The Brave Authors. All rights reserved.
-  This Source Code Form is subject to the terms of the Mozilla Public
-  License, v. 2.0. If a copy of the MPL was not distributed with this file,
-  You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ Copyright (c) 2022 The Brave Authors. All rights reserved.
+ This Source Code Form is subject to the terms of the Mozilla Public
+ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ You can obtain one at https://mozilla.org/MPL/2.0/.
+*/
 
 package org.chromium.chrome.browser.widget.quickactionsearchandbookmark;
 
@@ -47,6 +47,7 @@ import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
@@ -289,7 +290,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void setDefaultSearchEngineString(RemoteViews views) {
-        final Profile profile = Profile.getLastUsedRegularProfile();
+        final Profile profile = ProfileManager.getLastUsedRegularProfile();
         TemplateUrl templateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
                 profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
         if (templateUrl != null) {
@@ -341,7 +342,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void fetchGurlIcon(final int imageViewId, GURL gurl) {
-        LargeIconBridge largeIconBridge = new LargeIconBridge(Profile.getLastUsedRegularProfile());
+        LargeIconBridge largeIconBridge = new LargeIconBridge(ProfileManager.getLastUsedRegularProfile());
         LargeIconCallback callback = new LargeIconCallback() {
             @Override
             public void onLargeIconAvailable(Bitmap icon, int fallbackColor,

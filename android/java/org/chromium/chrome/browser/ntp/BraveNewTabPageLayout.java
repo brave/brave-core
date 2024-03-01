@@ -192,7 +192,7 @@ public class BraveNewTabPageLayout
         super(context, attrs);
 
         mContext = context;
-        mProfile = Profile.getLastUsedRegularProfile();
+        mProfile = ProfileManager.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         mNTPBackgroundImagesBridge.setNewTabPageListener(mNewTabPageListener);
         mDatabaseHelper = DatabaseHelper.getInstance();
@@ -1232,7 +1232,7 @@ public class BraveNewTabPageLayout
                 && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             setBackgroundImage(ntpImage);
 
-        } else if (UserPrefs.get(Profile.getLastUsedRegularProfile())
+        } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
                 && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
@@ -1488,7 +1488,7 @@ public class BraveNewTabPageLayout
     protected boolean isScrollableMvtEnabled() {
         return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
-                && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 

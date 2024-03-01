@@ -20,7 +20,7 @@ import org.chromium.chrome.browser.new_tab_url.DseNewTabUrlManager;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.ntp_background_images.util.SponsoredImageUtil;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabDelegateFactory;
@@ -65,7 +65,7 @@ public class BraveTabCreator extends ChromeTabCreator {
             if (chromeTabbedActivity != null && Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
                 TabModel tabModel = chromeTabbedActivity.getCurrentTabModel();
                 if (tabModel.getCount() >= SponsoredImageUtil.MAX_TABS
-                        && UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                    .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)) {
                     Tab tab = BraveActivity.class.cast(chromeTabbedActivity)
                                       .selectExistingTab(UrlConstants.NTP_URL);
@@ -90,7 +90,7 @@ public class BraveTabCreator extends ChromeTabCreator {
     }
 
     private void registerPageView() {
-        NTPBackgroundImagesBridge.getInstance(Profile.getLastUsedRegularProfile())
+        NTPBackgroundImagesBridge.getInstance(ProfileManager.getLastUsedRegularProfile())
                 .registerPageView();
     }
 }

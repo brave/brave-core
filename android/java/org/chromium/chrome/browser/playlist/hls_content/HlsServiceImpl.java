@@ -29,7 +29,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.playlist.PlaylistServiceFactoryAndroid;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.mojo.bindings.ConnectionErrorHandler;
 import org.chromium.mojo.system.MojoException;
 import org.chromium.playlist.mojom.PlaylistService;
@@ -226,7 +226,7 @@ public class HlsServiceImpl extends HlsService.Impl implements ConnectionErrorHa
         mPlaylistService =
                 PlaylistServiceFactoryAndroid.getInstance()
                         .getPlaylistService(
-                                Profile.getLastUsedRegularProfile(), HlsServiceImpl.this);
+                                ProfileManager.getLastUsedRegularProfile(), HlsServiceImpl.this);
     }
 
     @Override

@@ -20,7 +20,7 @@ import org.chromium.base.task.PostTask;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.chrome.browser.BraveRewardsNativeWorker;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.settings.developer.BraveQAPreferences;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.net.ChromiumNetworkAdapter;
@@ -108,124 +108,125 @@ public class AdaptiveCaptchaHelper {
 
     private static void attestPaymentId(
             String captchaId, String paymentId, String integrityToken, String uniqueValue) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            HttpURLConnection urlConnection = null;
-            String attestPaymentIdUrl =
-                    BraveRewardsNativeWorker.getInstance().getAttestationURLWithPaymentId(
-                            paymentId);
-            if (BraveQAPreferences.shouldVlogRewards()) {
-                Log.e(TAG, attestPaymentIdUrl);
-            }
-            NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
-                    "Brave attestation api android",
-                    "semantics {"
-                            + "  sender: 'Brave Android app'"
-                            + "  description: "
-                            + "    'This api attests play integrity token for the given payment ID'"
-                            + "  trigger: 'When payment id as captcha scheduled with integrity token'"
-                            + "  data:"
-                            + "    'integrity token, unique value, package name'"
-                            + "  destination: Brave grant endpoint"
-                            + "}"
-                            + "policy {"
-                            + "  cookies_allowed: NO"
-                            + "  policy_exception_justification: 'Not implemented.'"
-                            + "}");
-            String logMessage = "";
-            try {
-                URL url = new URL(attestPaymentIdUrl);
-                urlConnection = getUrlConnection(PUT_METHOD, url, annotation);
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    HttpURLConnection urlConnection = null;
+                    String attestPaymentIdUrl =
+                            BraveRewardsNativeWorker.getInstance()
+                                    .getAttestationURLWithPaymentId(paymentId);
+                    if (BraveQAPreferences.shouldVlogRewards()) {
+                        Log.e(TAG, attestPaymentIdUrl);
+                    }
+                    NetworkTrafficAnnotationTag annotation =
+                            NetworkTrafficAnnotationTag.createComplete(
+                                    "Brave attestation api android",
+                                    "semantics {  sender: 'Brave Android app'  description:    "
+                                        + " 'This api attests play integrity token for the given"
+                                        + " payment ID'  trigger: 'When payment id as captcha"
+                                        + " scheduled with integrity token'  data:    'integrity"
+                                        + " token, unique value, package name'  destination: Brave"
+                                        + " grant endpoint}policy {  cookies_allowed: NO "
+                                        + " policy_exception_justification: 'Not implemented.'}");
+                    String logMessage = "";
+                    try {
+                        URL url = new URL(attestPaymentIdUrl);
+                        urlConnection = getUrlConnection(PUT_METHOD, url, annotation);
 
-                writeRequestOutput(
-                        getAttestPaymentIdBody(integrityToken, uniqueValue), urlConnection);
+                        writeRequestOutput(
+                                getAttestPaymentIdBody(integrityToken, uniqueValue), urlConnection);
 
-                int responseCode = urlConnection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    solveCaptcha(captchaId, paymentId);
-                    logMessage = "Attest payment Id call is successful";
-                } else {
-                    logMessage = "Attest payment Id failed with " + responseCode + " : "
-                            + urlConnection.getResponseMessage();
-                    recordFailureAttempt();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            } finally {
-                if (urlConnection != null) urlConnection.disconnect();
-                if (BraveQAPreferences.shouldVlogRewards()) {
-                    Log.e(TAG, logMessage);
-                }
-            }
-        });
+                        int responseCode = urlConnection.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            solveCaptcha(captchaId, paymentId);
+                            logMessage = "Attest payment Id call is successful";
+                        } else {
+                            logMessage =
+                                    "Attest payment Id failed with "
+                                            + responseCode
+                                            + " : "
+                                            + urlConnection.getResponseMessage();
+                            recordFailureAttempt();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    } finally {
+                        if (urlConnection != null) urlConnection.disconnect();
+                        if (BraveQAPreferences.shouldVlogRewards()) {
+                            Log.e(TAG, logMessage);
+                        }
+                    }
+                });
     }
 
     private static void solveCaptcha(String captchaId, String paymentId) {
-        PostTask.postTask(TaskTraits.BEST_EFFORT_MAY_BLOCK, () -> {
-            HttpURLConnection urlConnection = null;
-            String solveCaptchaUrl = BraveRewardsNativeWorker.getInstance().getCaptchaSolutionURL(
-                    paymentId, captchaId);
-            if (BraveQAPreferences.shouldVlogRewards()) {
-                Log.e(TAG, solveCaptchaUrl);
-            }
-            NetworkTrafficAnnotationTag annotation = NetworkTrafficAnnotationTag.createComplete(
-                    "Brave attestation api android",
-                    "semantics {"
-                            + "  sender: 'Brave Android app'"
-                            + "  description: "
-                            + "    'This api solves captcha for the given payment ID'"
-                            + "  trigger: 'When attestation is successful with the give integrity token for provided payment id'"
-                            + "  data:"
-                            + "    'payment id'"
-                            + "  destination: Brave grant endpoint"
-                            + "}"
-                            + "policy {"
-                            + "  cookies_allowed: NO"
-                            + "  policy_exception_justification: 'Not implemented.'"
-                            + "}");
+        PostTask.postTask(
+                TaskTraits.BEST_EFFORT_MAY_BLOCK,
+                () -> {
+                    HttpURLConnection urlConnection = null;
+                    String solveCaptchaUrl =
+                            BraveRewardsNativeWorker.getInstance()
+                                    .getCaptchaSolutionURL(paymentId, captchaId);
+                    if (BraveQAPreferences.shouldVlogRewards()) {
+                        Log.e(TAG, solveCaptchaUrl);
+                    }
+                    NetworkTrafficAnnotationTag annotation =
+                            NetworkTrafficAnnotationTag.createComplete(
+                                    "Brave attestation api android",
+                                    "semantics {  sender: 'Brave Android app'  description:    "
+                                        + " 'This api solves captcha for the given payment ID' "
+                                        + " trigger: 'When attestation is successful with the give"
+                                        + " integrity token for provided payment id'  data:   "
+                                        + " 'payment id'  destination: Brave grant endpoint}policy"
+                                        + " {  cookies_allowed: NO  policy_exception_justification:"
+                                        + " 'Not implemented.'}");
 
-            String logMessage = "";
-            try {
-                URL url = new URL(String.format(solveCaptchaUrl, paymentId, captchaId));
-                urlConnection = getUrlConnection(POST_METHOD, url, annotation);
-                urlConnection.connect();
+                    String logMessage = "";
+                    try {
+                        URL url = new URL(String.format(solveCaptchaUrl, paymentId, captchaId));
+                        urlConnection = getUrlConnection(POST_METHOD, url, annotation);
+                        urlConnection.connect();
 
-                writeRequestOutput(getSolveCaptchaBody(paymentId), urlConnection);
+                        writeRequestOutput(getSolveCaptchaBody(paymentId), urlConnection);
 
-                int responseCode = urlConnection.getResponseCode();
-                if (responseCode == HttpURLConnection.HTTP_OK) {
-                    clearCaptchaPrefs();
-                    logMessage = "Captcha has been solved.";
-                } else {
-                    recordFailureAttempt();
-                    logMessage = "Captcha solution failed with " + responseCode + " : "
-                            + urlConnection.getResponseMessage();
-                }
-            } catch (Exception e) {
-                Log.e(TAG, e.getMessage());
-            } finally {
-                if (urlConnection != null) urlConnection.disconnect();
-                if (BraveQAPreferences.shouldVlogRewards()) {
-                    Log.e(TAG, logMessage);
-                }
-            }
-        });
+                        int responseCode = urlConnection.getResponseCode();
+                        if (responseCode == HttpURLConnection.HTTP_OK) {
+                            clearCaptchaPrefs();
+                            logMessage = "Captcha has been solved.";
+                        } else {
+                            recordFailureAttempt();
+                            logMessage =
+                                    "Captcha solution failed with "
+                                            + responseCode
+                                            + " : "
+                                            + urlConnection.getResponseMessage();
+                        }
+                    } catch (Exception e) {
+                        Log.e(TAG, e.getMessage());
+                    } finally {
+                        if (urlConnection != null) urlConnection.disconnect();
+                        if (BraveQAPreferences.shouldVlogRewards()) {
+                            Log.e(TAG, logMessage);
+                        }
+                    }
+                });
     }
 
     private static void clearCaptchaPrefs() {
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS, 0);
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.SCHEDULED_CAPTCHA_ID, "");
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID, "");
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setBoolean(BravePref.SCHEDULED_CAPTCHA_PAUSED, false);
     }
 
     private static void recordFailureAttempt() {
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS,
-                        UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                                 + 1);
     }
