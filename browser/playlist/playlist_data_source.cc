@@ -175,6 +175,7 @@ void PlaylistDataSource::StartDataRequest(
       break;
     case DataRequest::Type::kMedia:
       NOTREACHED() << "This request should call StartRangeDataRequest()";
+      std::move(got_data_callback).Run(nullptr);
       break;
   }
 }

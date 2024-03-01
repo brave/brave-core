@@ -5,7 +5,9 @@
 
 #include "brave/components/playlist/browser/mime_util.h"
 
+#include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
+#include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 TEST(PlaylistMimeUtilUnitTest, GetFileExtensionForMimetype) {
@@ -72,4 +74,24 @@ TEST(PlaylistMimeUtilUnitTest, GetMimeTypeForFileExtension) {
   EXPECT_FALSE(
       playlist::mime_util::GetMimeTypeForFileExtension(FILE_PATH_LITERAL("foo"))
           .has_value());
+}
+
+TEST(PlaylistMimeUtilUnitTest, BothMapShouldBeInSync) {
+  const auto supported_mimetypes = playlist::mime_util::GetSupportedMimetypes();
+  ASSERT_FALSE(supported_mimetypes.empty());
+
+  base::flat_map<base::FilePath::StringType, std::vector<std::string>>
+      extension_to_mimes;
+
+  for (auto mimetype : supported_mimetypes) {
+    auto extension = playlist::mime_util::GetFileExtensionForMimetype(mimetype);
+    ASSERT_TRUE(extension.has_value());
+    extension_to_mimes[extension.value()].push_back(mimetype);
+  }
+
+  for (const auto& [extension, mimes] : extension_to_mimes) {
+    auto mimetype = playlist::mime_util::GetMimeTypeForFileExtension(extension);
+    EXPECT_TRUE(mimetype.has_value());
+    EXPECT_THAT(mimes, testing::Contains(mimetype.value()));
+  }
 }

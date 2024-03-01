@@ -8,6 +8,7 @@
 
 #include <optional>
 #include <string>
+#include <vector>
 
 #include "base/files/file_path.h"
 
@@ -21,6 +22,8 @@ std::optional<base::FilePath::StringType> GetFileExtensionForMimetype(
 
 std::optional<std::string> GetMimeTypeForFileExtension(
     base::FilePath::StringPieceType file_extension);
+
+std::vector<std::string> GetSupportedMimetypes();
 
 }  // namespace playlist::mime_util
 

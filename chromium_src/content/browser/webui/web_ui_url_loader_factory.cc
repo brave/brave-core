@@ -93,7 +93,9 @@ void RangeDataAvailable(
   // * "Content-length: 10000" (the size of the whole file. Note that this is
   //                            different with what MDN says. But when
   //                            Content-length contains the range's size, then
-  //                            the <video> won't be played)
+  //                            the <video> won't be played). See also,
+  //    https://source.chromium.org/chromium/chromium/src/+/main:content/browser/webui/web_ui_url_loader_factory.cc;l=143-147;drc=2af756c3ed38c6fb6472c821fc71d79b07984cac
+  //
   // * "Content-type": "video/mp4" (or the correct mime type)
   if (bytes && range.IsValid()) {
     headers->headers->UpdateWithNewRange(range, total_size,
