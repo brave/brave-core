@@ -202,6 +202,10 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
   registry->RegisterStringPref(kBraveWalletSelectedWalletAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedEthDappAccount, "");
   registry->RegisterStringPref(kBraveWalletSelectedSolDappAccount, "");
+
+  registry->RegisterIntegerPref(
+      kBraveWalletTransactionSimulationOptInStatus,
+      static_cast<int>(brave_wallet::mojom::BlowfishOptInStatus::kUnset));
 }
 
 void RegisterLocalStatePrefsForMigration(PrefRegistrySimple* registry) {

@@ -26,6 +26,7 @@
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/browser/wallet_data_files_installer.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_response_helpers.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
@@ -1570,6 +1571,17 @@ void BraveWalletService::GetAnkrSupportedChainIds(
 
 void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
   std::move(callback).Run(is_private_window_);
+}
+
+void BraveWalletService::GetTransactionSimulationOptInStatus(
+    GetTransactionSimulationOptInStatusCallback callback) {
+  std::move(callback).Run(
+      ::brave_wallet::GetTransactionSimulationOptInStatus(profile_prefs_));
+}
+
+void BraveWalletService::SetTransactionSimulationOptInStatus(
+    mojom::BlowfishOptInStatus status) {
+  ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
 }
 
 }  // namespace brave_wallet

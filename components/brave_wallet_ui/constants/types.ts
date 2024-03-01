@@ -1048,8 +1048,6 @@ export type SwapAndSend = {
   name: string
 }
 
-export type TxSimulationOptInStatus = 'allowed' | 'denied' | 'unset'
-
 export enum SignDataSteps {
   SignRisk = 0,
   SignData = 1

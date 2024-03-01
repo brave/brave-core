@@ -393,5 +393,14 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
 
   func discoverAssetsOnAllSupportedChains(bypassRateLimit: Bool) {
   }
+
+  func transactionSimulationOptInStatus(
+    completion: @escaping (BraveWallet.BlowfishOptInStatus?) -> Void
+  ) {
+    completion(.unset)
+  }
+
+  func setTransactionSimulationOptInStatus(_ status: BraveWallet.BlowfishOptInStatus) {
+  }
 }
 #endif

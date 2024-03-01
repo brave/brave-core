@@ -27,6 +27,7 @@
 #include "base/values.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/buildflags.h"
@@ -2108,6 +2109,19 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
   }
 
   return result;
+}
+
+mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
+    PrefService* prefs) {
+  return static_cast<mojom::BlowfishOptInStatus>(
+      prefs->GetInteger(kBraveWalletTransactionSimulationOptInStatus));
+}
+
+void SetTransactionSimulationOptInStatus(
+    PrefService* prefs,
+    const mojom::BlowfishOptInStatus& status) {
+  prefs->SetInteger(kBraveWalletTransactionSimulationOptInStatus,
+                    static_cast<int>(status));
 }
 
 }  // namespace brave_wallet

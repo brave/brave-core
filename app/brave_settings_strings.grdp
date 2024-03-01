@@ -11,6 +11,15 @@
   <message name="IDS_SETTINGS_RELAUNCH_BUTTON_LABEL" desc="Notifies the user that they need to relaunch Brave">
     Relaunch Now
   </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_YES" desc="Select value">
+    Yes
+  </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_NO" desc="Select value">
+    No
+  </message>
+  <message name="IDS_SETTINGS_SELECT_VALUE_ASK" desc="Select value">
+    Ask
+  </message>
 
   <!-- Settings / Get started -->
   <message name="IDS_SETTINGS_BRAVE_GET_STARTED_TITLE" desc="The title for the Get Started section in settings">
@@ -1158,6 +1167,9 @@
   </message>
   <message name="IDS_SETTINGS_WALLET_RESET_CONFIRMATION_PHRASE" desc="The phrase users should type to reset wallet">
     Yes
+  </message>
+  <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC" desc="The description for the user's opt-in status of the transaction simulations service">
+    See the results of transactions before you sign
   </message>
 
   <!-- Settings / Wallet / Networks -->

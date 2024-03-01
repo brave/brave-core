@@ -11,7 +11,7 @@ import { createStore, combineReducers } from 'redux'
 import { createWalletReducer } from '../../slices/wallet.slice'
 
 // types
-import { BraveWallet, TxSimulationOptInStatus } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 import { WalletActions } from '../../actions'
 import type WalletApiProxy from '../../wallet_api_proxy'
 
@@ -126,7 +126,8 @@ export class MockedWalletApiProxy {
 
   svmSimulationResponse: BraveWallet.SolanaSimulationResponse | null = null
 
-  txSimulationOptInStatus: TxSimulationOptInStatus = 'allowed'
+  txSimulationOptInStatus: BraveWallet.BlowfishOptInStatus =
+    BraveWallet.BlowfishOptInStatus.kAllowed
 
   /**
    * balance = [accountAddress][chainId]

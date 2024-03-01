@@ -245,6 +245,12 @@ class BraveWalletService : public KeyedService,
 
   void IsPrivateWindow(IsPrivateWindowCallback callback) override;
 
+  void GetTransactionSimulationOptInStatus(
+      GetTransactionSimulationOptInStatusCallback callback) override;
+
+  void SetTransactionSimulationOptInStatus(
+      mojom::BlowfishOptInStatus status) override;
+
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
 

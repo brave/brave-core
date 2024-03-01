@@ -2181,6 +2181,10 @@ interface BraveWalletService {
   GetAnkrSupportedChainIds() => (array<string> chain_ids);
 
   IsPrivateWindow() => (bool is_private_window);
+
+  GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
+
+  SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
 };
 
 // For reporting wallet related P3A metrics.
@@ -2572,6 +2576,12 @@ enum BlowfishSolanaErrorKind {
 enum BlowfishSuggestedColor {
   kCredit,
   kDebit
+};
+
+enum BlowfishOptInStatus {
+  kUnset = 1,
+  kAllowed = 2,
+  kDenied = 3,
 };
 
 struct BlowfishPrice {

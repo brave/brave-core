@@ -19,6 +19,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/json_rpc_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom-shared.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/brave_wallet/common/value_conversion_utils.h"
@@ -36,6 +37,15 @@ namespace {
 
 base::Value::Dict MakeSelectValue(const std::u16string& name,
                                   ::brave_wallet::mojom::DefaultWallet value) {
+  base::Value::Dict item;
+  item.Set("value", static_cast<int>(value));
+  item.Set("name", name);
+  return item;
+}
+
+base::Value::Dict MakeSelectValue(
+    const std::u16string& name,
+    ::brave_wallet::mojom::BlowfishOptInStatus value) {
   base::Value::Dict item;
   item.Set("value", static_cast<int>(value));
   item.Set("name", name);
@@ -70,6 +80,11 @@ void BraveWalletHandler::RegisterMessages() {
       "getSolanaProviderOptions",
       base::BindRepeating(&BraveWalletHandler::GetSolanaProviderOptions,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "getTransactionSimulationOptInStatusOptions",
+      base::BindRepeating(
+          &BraveWalletHandler::GetTransactionSimulationOptInStatusOptions,
+          base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "removeChain", base::BindRepeating(&BraveWalletHandler::RemoveChain,
                                          base::Unretained(this)));
@@ -111,6 +126,10 @@ void BraveWalletHandler::RegisterMessages() {
       "isZCashEnabled", base::BindRepeating(&BraveWalletHandler::IsZCashEnabled,
                                             base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
+      "isTransactionSimulationsFeatureEnabled",
+      base::BindRepeating(&BraveWalletHandler::IsTransactionSimulationsEnabled,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
       "getPinnedNftCount",
       base::BindRepeating(&BraveWalletHandler::GetPinnedNftCount,
                           base::Unretained(this)));
@@ -141,6 +160,26 @@ void BraveWalletHandler::GetSolanaProviderOptions(
   list.Append(MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
                                   IDS_BRAVE_WALLET_WEB3_PROVIDER_NONE),
                               ::brave_wallet::mojom::DefaultWallet::None));
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(args[0], list);
+}
+
+void BraveWalletHandler::GetTransactionSimulationOptInStatusOptions(
+    const base::Value::List& args) {
+  base::Value::List list;
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_SETTINGS_SELECT_VALUE_ASK),
+                      ::brave_wallet::mojom::BlowfishOptInStatus::kUnset));
+  list.Append(
+      MakeSelectValue(brave_l10n::GetLocalizedResourceUTF16String(
+                          IDS_SETTINGS_SELECT_VALUE_YES),
+                      ::brave_wallet::mojom::BlowfishOptInStatus::kAllowed));
+  list.Append(MakeSelectValue(
+      brave_l10n::GetLocalizedResourceUTF16String(IDS_SETTINGS_SELECT_VALUE_NO),
+      ::brave_wallet::mojom::BlowfishOptInStatus::kDenied));
+
   CHECK_EQ(args.size(), 1U);
   AllowJavascript();
   ResolveJavascriptCallback(args[0], list);
@@ -356,6 +395,14 @@ void BraveWalletHandler::IsZCashEnabled(const base::Value::List& args) {
   AllowJavascript();
   ResolveJavascriptCallback(args[0],
                             base::Value(::brave_wallet::IsZCashEnabled()));
+}
+
+void BraveWalletHandler::IsTransactionSimulationsEnabled(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1U);
+  AllowJavascript();
+  ResolveJavascriptCallback(
+      args[0], base::Value(::brave_wallet::IsTransactionSimulationsEnabled()));
 }
 
 void BraveWalletHandler::GetPinnedNftCount(const base::Value::List& args) {
