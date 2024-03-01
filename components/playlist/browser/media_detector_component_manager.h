@@ -7,7 +7,6 @@
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_MEDIA_DETECTOR_COMPONENT_MANAGER_H_
 
 #include <string>
-#include <vector>
 
 #include "base/containers/flat_map.h"
 #include "base/files/file_path.h"
