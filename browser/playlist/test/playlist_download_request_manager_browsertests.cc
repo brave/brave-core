@@ -99,9 +99,12 @@ class PlaylistDownloadRequestManagerBrowserTest : public PlatformBrowserTest {
     base::RunLoop run_loop;
     EXPECT_CALL(observer, OnMediaFilesUpdated(testing::_, testing::_))
         .Times(testing::AtLeast(1))
-        .WillOnce(
+        .WillRepeatedly(
             [&](const GURL&,
                 std::vector<playlist::mojom::PlaylistItemPtr> actual_items) {
+              if (!run_loop.running()) {
+                return;
+              }
               OnGetMedia(test_info->name(), items,
                          url.is_valid() ? url.host() : destination_url.host(),
                          std::move(actual_items));
