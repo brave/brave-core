@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/common/time/time_constraint_util.h"
 
+#include "base/containers/adapters.h"
 #include "base/time/time.h"
 
 namespace brave_ads {
@@ -20,8 +21,8 @@ bool DoesHistoryRespectRollingTimeConstraint(
 
   const base::Time threshold = base::Time::Now() - time_constraint;
 
-  for (auto iter = history.crbegin(); iter != history.crend(); ++iter) {
-    if (*iter <= threshold) {
+  for (const auto& time : base::Reversed(history)) {
+    if (time <= threshold) {
       // If the time point exceeds the threshold, the cap has not been reached.
       break;
     }
