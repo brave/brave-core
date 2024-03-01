@@ -1126,6 +1126,7 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
+      "//brave/browser/storage_access_api:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/components/brave_wallet/browser:test_support",
       "//chrome/browser/apps/app_service:app_service",
