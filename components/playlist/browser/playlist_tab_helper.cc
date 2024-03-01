@@ -41,11 +41,11 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
-      contents, service);
   PlaylistMediaHandler::CreateForWebContents(
       contents, base::BindRepeating(&PlaylistService::OnMediaDetected,
                                     service->GetWeakPtr()));
+  content::WebContentsUserData<PlaylistTabHelper>::CreateForWebContents(
+      contents, service);
 }
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,

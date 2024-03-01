@@ -47,8 +47,7 @@ class PlaylistBackgroundWebContents final {
   raw_ptr<content::BrowserContext> context_;
   raw_ptr<PlaylistService> service_;
   absl::node_hash_map<std::unique_ptr<content::WebContents>, base::OneShotTimer>
-      background_web_contents_;  // absl::node_hash_map<> supports
-                                 // heterogeneous lookups
+      background_web_contents_;
 
   base::WeakPtrFactory<PlaylistBackgroundWebContents> weak_factory_{this};
 };
