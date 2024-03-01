@@ -407,16 +407,18 @@ public class WelcomeViewController: UIViewController {
     let attributionManager = controller.attributionManager
     
     Task { @MainActor in
+      var featureLinkType: FeatureLinkageType?
+
       do {
         if controller.p3aUtilities.isP3AEnabled {
           switch attributionManager.activeFetureLinkageLogic {
           case .campaingId:
             let featureType = try await attributionManager.handleSearchAdsFeatureLinkage()
-            attributionManager.adFeatureLinkage = featureType
+            featureLinkType = featureType
           case .reporting:
             // Handle API calls and send linkage type
             let featureType = try await controller.attributionManager.handleAdsReportingFeatureLinkage()
-            attributionManager.adFeatureLinkage = featureType
+            featureLinkType = featureType
           }
         } else {
           // p3a consent is not given
@@ -424,7 +426,11 @@ public class WelcomeViewController: UIViewController {
         }
         
         controller.calloutView.isLoading = false
-        close()
+        close() {
+          if let featureType = featureLinkType {
+            attributionManager.adFeatureLinkage = featureType
+          }
+        }
       } catch FeatureLinkageError.executionTimeout(let attributionData) {
         // Time out occurred while executing ad reports lookup
         // Ad Campaign Lookup is successful so dau server should be pinged
@@ -471,7 +477,7 @@ public class WelcomeViewController: UIViewController {
     animateToP3aState()
   }
 
-  private func close() {
+  private func close(completion: (() -> Void)? = nil) {
     var presenting: UIViewController = self
     while true {
       if let presentingController = presenting.presentingViewController {
@@ -488,7 +494,7 @@ public class WelcomeViewController: UIViewController {
     }
     
     Preferences.Onboarding.basicOnboardingProgress.value = OnboardingProgress.newTabPage.rawValue
-    presenting.dismiss(animated: false, completion: nil)
+    presenting.dismiss(animated: false, completion: completion)
   }
 }
 
