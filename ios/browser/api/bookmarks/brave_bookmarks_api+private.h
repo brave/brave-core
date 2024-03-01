@@ -12,13 +12,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-namespace bookmarks {
-class BookmarkModel;
-}
+class LegacyBookmarkModel;
 class BookmarkUndoService;
 
 @interface BraveBookmarksAPI (Private)
-- (instancetype)initWithBookmarkModel:(bookmarks::BookmarkModel*)bookmarkModel
+- (instancetype)initWithBookmarkModel:(LegacyBookmarkModel*)bookmarkModel
                   bookmarkUndoService:(BookmarkUndoService*)bookmarkUndoService;
 @end
 

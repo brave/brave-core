@@ -23,6 +23,7 @@
 #include "components/undo/bookmark_undo_service.h"
 #include "components/undo/undo_manager.h"
 #include "components/user_prefs/user_prefs.h"
+#include "ios/chrome/browser/bookmarks/model/legacy_bookmark_model.h"
 #include "ios/chrome/browser/shared/model/application_context/application_context.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state_manager.h"
@@ -50,7 +51,7 @@
 
 @interface IOSBookmarkNode () {
   const bookmarks::BookmarkNode* node_;
-  bookmarks::BookmarkModel* model_;  // UNOWNED
+  LegacyBookmarkModel* model_;  // UNOWNED
   bool owned_;
 }
 @end
@@ -58,7 +59,7 @@
 @implementation IOSBookmarkNode
 
 - (instancetype)initWithNode:(const bookmarks::BookmarkNode*)node
-                       model:(bookmarks::BookmarkModel*)model {
+                       model:(LegacyBookmarkModel*)model {
   if ((self = [super init])) {
     node_ = node;
     model_ = model;
@@ -465,14 +466,14 @@
 @end
 
 @interface BraveBookmarksAPI () {
-  bookmarks::BookmarkModel* bookmark_model_;    // NOT OWNED
+  LegacyBookmarkModel* bookmark_model_;         // NOT OWNED
   BookmarkUndoService* bookmark_undo_service_;  // NOT OWNED
 }
 @end
 
 @implementation BraveBookmarksAPI
 
-- (instancetype)initWithBookmarkModel:(bookmarks::BookmarkModel*)bookmarkModel
+- (instancetype)initWithBookmarkModel:(LegacyBookmarkModel*)bookmarkModel
                   bookmarkUndoService:
                       (BookmarkUndoService*)bookmarkUndoService {
   if ((self = [super init])) {
@@ -661,7 +662,7 @@
   bookmark_undo_service_->undo_manager()->Undo();
 }
 
-- (bookmarks::BookmarkModel*)getModel {
+- (LegacyBookmarkModel*)getModel {
   return bookmark_model_;
 }
 @end
