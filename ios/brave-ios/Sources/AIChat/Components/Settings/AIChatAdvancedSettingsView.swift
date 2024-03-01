@@ -21,7 +21,7 @@ public struct AIChatAdvancedSettingsView: View {
   @ObservedObject
   private var model: AIChatViewModel
   
-  @State
+  @StateObject
   private var viewModel = AIChatSubscriptionDetailModelView()
   
   @State 
