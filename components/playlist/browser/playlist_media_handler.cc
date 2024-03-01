@@ -172,24 +172,18 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
     return;
   }
 
-  static const std::string kFunction = __FUNCTION__;
+  DVLOG(2) << render_frame_host_id << " - " << __FUNCTION__ << ":\n" << media;
+
   const auto url = web_contents->GetLastCommittedURL();
   auto items = GetPlaylistItems(std::move(media), url);
   std::visit(
       base::Overloaded{
-          [&](base::OnceCallback<Signature>& on_media_detected_callback) {
+          [&](OnceCallback& on_media_detected_callback) {
             if (on_media_detected_callback) {
-              DVLOG(2) << render_frame_host_id << " - " << kFunction
-                       << " (background):\n"
-                       << media;
-
               std::move(on_media_detected_callback).Run(std::move(items), url);
             }
           },
-          [&](base::RepeatingCallback<Signature>& on_media_detected_callback) {
-            DVLOG(2) << render_frame_host_id << " - " << kFunction << ":\n"
-                     << media;
-
+          [&](RepeatingCallback& on_media_detected_callback) {
             on_media_detected_callback.Run(std::move(items), url);
           }},
       on_media_detected_callback_);
