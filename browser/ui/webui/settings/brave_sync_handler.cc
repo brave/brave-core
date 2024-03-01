@@ -187,7 +187,8 @@ void BraveSyncHandler::HandleGetQRCode(const base::Value::List& args) {
       base::as_byte_span(qr_code_string),
       qr_code_generator::ModuleStyle::kCircles,
       qr_code_generator::LocatorStyle::kRounded,
-      qr_code_generator::CenterImage::kDino);
+      qr_code_generator::CenterImage::kDino,
+      qr_code_generator::QuietZone::kWillBeAddedByClient);
 
   if (!qr_image.has_value()) {
     VLOG(1) << "QR code generator failure: "
