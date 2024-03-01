@@ -84,7 +84,8 @@
       native_options->render_module_style, native_options->render_locator_style,
       native_options->render_dino
           ? qr_code_generator::CenterImage::kDino
-          : qr_code_generator::CenterImage::kNoCenterImage);
+          : qr_code_generator::CenterImage::kNoCenterImage,
+      qr_code_generator::QuietZone::kWillBeAddedByClient);
   return [[BraveQRCodeGeneratorResult alloc] initWithOptions:qr_image];
 }
 @end
