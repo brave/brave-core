@@ -138,10 +138,8 @@ TEST_F(ApiRequestHelperUnitTest, SanitizedRequest) {
   SendRequest("{", base::Value());
   SendRequest("0", base::Value());
   SendRequest("a", base::Value());
-  // Android's sanitizer doesn't support trailing commas.
-#if !BUILDFLAG(IS_ANDROID)
-  SendRequest("{\"a\":1,}", ParseJson("{\"a\":1}"));
-#endif
+  // The sanitizer doesn't support trailing commas by default.
+  SendRequest("{\"a\":1,}", base::Value());
 }
 
 TEST_F(ApiRequestHelperUnitTest, RequestWithConversion) {
@@ -245,28 +243,21 @@ TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
   run_loop2.Run();
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]". We use a run loop to wait for the callback to be called, and
-  // we expect it to never be called.
-  base::RunLoop run_loop3;
-  SendMessageSSEJSON("data: [DONE]",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop3));
-  run_loop3.RunUntilIdle();
+  // "[DONE]".
+  SendMessageSSEJSON(
+      "data: [DONE]",
+      base::BindRepeating([](data_decoder::DataDecoder::ValueOrError result) {
+        ADD_FAILURE();
+      }));
+  task_environment_.RunUntilIdle();
 
   // Testing with no JSON and an empty string
-  base::RunLoop run_loop4;
-  SendMessageSSEJSON("",
-                     base::BindRepeating(
-                         [](base::RunLoop* run_loop,
-                            data_decoder::DataDecoder::ValueOrError result) {
-                           run_loop->Quit();
-                         },
-                         &run_loop4));
-  run_loop4.RunUntilIdle();
+  SendMessageSSEJSON(
+      "",
+      base::BindRepeating([](data_decoder::DataDecoder::ValueOrError result) {
+        ADD_FAILURE();
+      }));
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace api_request_helper
