@@ -264,7 +264,7 @@ class TabManager: NSObject {
 
       for tab in regularTabs {
         if let url = tab.fetchedURL, !tab.type.isPrivate, !url.isLocal,
-          !InternalURL.isValid(url: url), !url.isReaderModeURL
+          !InternalURL.isValid(url: url), !url.isInternalURL(for: .readermode)
         {
           tab.addTabInfoToSyncedSessions(url: url, displayTitle: tab.displayTitle)
         }

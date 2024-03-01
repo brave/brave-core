@@ -21,7 +21,7 @@ class ShieldsViewController: UIViewController, PopoverContentComponent {
   private lazy var url: URL? = {
     guard let _url = tab.url else { return nil }
 
-    if let tabURL = _url.stippedInternalURL {
+    if let tabURL = _url.strippedInternalURL {
       return tabURL
     }
 

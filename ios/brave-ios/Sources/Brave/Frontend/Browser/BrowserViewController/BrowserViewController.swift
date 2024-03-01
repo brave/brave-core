@@ -1682,7 +1682,7 @@ public class BrowserViewController: UIViewController {
       } else if !url.absoluteString.hasPrefix(
         "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)"
       ) {
-        hideActiveNewTabPageController(url.isReaderModeURL)
+        hideActiveNewTabPageController(url.isInternalURL(for: .readermode))
       }
     } else if isAboutHomeURL {
       showNewTabPageController()
@@ -2010,7 +2010,7 @@ public class BrowserViewController: UIViewController {
       if tab.secureContentState == .secure, !webView.hasOnlySecureContent,
         tab.url?.origin == tab.webView?.url?.origin
       {
-        if let url = tab.webView?.url, url.isReaderModeURL {
+        if let url = tab.webView?.url, url.isInternalURL(for: .readermode) {
           break
         }
 
@@ -2054,7 +2054,7 @@ public class BrowserViewController: UIViewController {
               details: "Certificate is missing (no serverTrust)"
             )
           }
-        } else if url.isReaderModeURL || InternalURL.isValid(url: url) {
+        } else if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
           tab.secureContentState = .localhost
           logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
         }
@@ -2135,7 +2135,7 @@ public class BrowserViewController: UIViewController {
             break
           }
 
-          if url.isReaderModeURL || InternalURL.isValid(url: url) {
+          if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
             tab.secureContentState = .localhost
             logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
 
@@ -2243,7 +2243,7 @@ public class BrowserViewController: UIViewController {
 
   func updateForwardStatusIfNeeded(webView: WKWebView) {
     if let forwardListItem = webView.backForwardList.forwardList.first,
-      forwardListItem.url.isReaderModeURL
+      forwardListItem.url.isInternalURL(for: .readermode)
     {
       navigationToolbar.updateForwardStatus(false)
     } else {
@@ -2256,7 +2256,7 @@ public class BrowserViewController: UIViewController {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     if let url = tab.url {
-      if url.isReaderModeURL {
+      if url.isInternalURL(for: .readermode) {
         showReaderModeBar(animated: false)
         NotificationCenter.default.addObserver(
           self,
@@ -2562,7 +2562,7 @@ public class BrowserViewController: UIViewController {
       // Whether to show search icon or + icon
       toolbar?.setSearchButtonState(url: url)
 
-      if !InternalURL.isValid(url: url) || url.isReaderModeURL, !url.isFileURL {
+      if !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode), !url.isFileURL {
         // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -2573,7 +2573,7 @@ public class BrowserViewController: UIViewController {
         )
 
         // Only add history of a url which is not a localhost url
-        if !url.isReaderModeURL {
+        if !url.isInternalURL(for: .readermode) {
           if !tab.isPrivate {
             braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date())
           }
