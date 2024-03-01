@@ -1,0 +1,22 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/. */
+
+source_set("browser_tests") {
+  assert(!is_android)
+
+  testonly = true
+  defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
+
+  sources = [ "api_browsertest.cc" ]
+
+  deps = [
+    "//base",
+    "//chrome/browser",
+    "//chrome/browser/policy:test_support",
+    "//chrome/browser/ui",
+    "//chrome/test:test_support_ui",
+    "//components/permissions:test_support",
+  ]
+}
