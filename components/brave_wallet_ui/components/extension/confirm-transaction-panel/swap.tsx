@@ -130,7 +130,6 @@ export function ConfirmSwapTransaction() {
       <PendingTransactionActionsFooter
         onConfirm={onConfirm}
         onReject={onReject}
-        rejectButtonType={'cancel'}
         isConfirmButtonDisabled={isConfirmButtonDisabled}
         rejectAllTransactions={rejectAllTransactions}
         transactionDetails={transactionDetails}
