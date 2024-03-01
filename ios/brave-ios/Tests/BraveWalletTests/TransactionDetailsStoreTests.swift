@@ -100,11 +100,18 @@ class TransactionDetailsStoreTests: XCTestCase {
     let parsedTransactionExpectation = expectation(description: "update-parsedTransaction")
     store.$parsedTransaction
       .dropFirst()
-      .first()
-      .sink { parsedTransaction in
+      .collect(2)
+      .sink { parsedTransactions in
+        guard parsedTransactions.count == 2,
+          let parsedTransaction = parsedTransactions.last
+        else {
+          XCTFail("Expected 2 parsedTransaction updates.")
+          return
+        }
         defer { parsedTransactionExpectation.fulfill() }
         XCTAssertNotNil(parsedTransaction)
         XCTAssertEqual(parsedTransaction?.transaction.txHash, transaction.txHash)
+        XCTAssertEqual(parsedTransaction?.gasFee, .init(fee: "0.003402", fiat: "$10.41008598"))
       }
       .store(in: &cancellables)
     let networkExpectation = expectation(description: "update-network")
@@ -153,7 +160,14 @@ class TransactionDetailsStoreTests: XCTestCase {
     let parsedTxExpectation = expectation(description: "update-parsedTx")
     store.$parsedTransaction
       .dropFirst()
-      .sink { parsedTransaction in
+      .collect(2)
+      .sink { parsedTransactions in
+        guard parsedTransactions.count == 2,
+          let parsedTransaction = parsedTransactions.first
+        else {
+          XCTFail("Expected 2 parsedTransaction updates.")
+          return
+        }
         defer { parsedTxExpectation.fulfill() }
         XCTAssertNotNil(parsedTransaction)
         XCTAssertEqual(parsedTransaction?.transaction.txHash, submittedTx.txHash)
@@ -166,7 +180,14 @@ class TransactionDetailsStoreTests: XCTestCase {
     let confirmedParsedTxExpectation = expectation(description: "update-parsedTx-confirmed")
     store.$parsedTransaction
       .dropFirst()
-      .sink { parsedTransaction in
+      .collect(2)
+      .sink { parsedTransactions in
+        guard parsedTransactions.count == 2,
+          let parsedTransaction = parsedTransactions.first
+        else {
+          XCTFail("Expected 2 parsedTransaction updates.")
+          return
+        }
         defer { confirmedParsedTxExpectation.fulfill() }
         XCTAssertNotNil(parsedTransaction)
         XCTAssertEqual(parsedTransaction?.transaction.txHash, confirmedTx.txHash)

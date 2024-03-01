@@ -1185,6 +1185,35 @@ extension ParsedTransaction {
     guard case .ethSwap(let ethSwapDetails) = details else { return nil }
     return ethSwapDetails
   }
+
+  var tokens: [BraveWallet.BlockchainToken] {
+    switch details {
+    case .ethSend(let details),
+      .erc20Transfer(let details),
+      .solSystemTransfer(let details),
+      .solSplTokenTransfer(let details):
+      if let token = details.fromToken {
+        return [token]
+      }
+    case .ethSwap(let details):
+      return [details.fromToken, details.toToken].compactMap { $0 }
+    case .ethErc20Approve(let details):
+      if let token = details.token {
+        return [token]
+      }
+    case .erc721Transfer(let details):
+      if let token = details.fromToken {
+        return [token]
+      }
+    case .filSend(let details):
+      if let token = details.sendToken {
+        return [token]
+      }
+    case .solDappTransaction, .solSwapTransaction, .other:
+      break
+    }
+    return []
+  }
 }
 
 extension BraveWallet.TransactionInfo {
