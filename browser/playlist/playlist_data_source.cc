@@ -131,11 +131,11 @@ PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
   id = paths.at(0);
   const auto& type_string = paths.at(1);
   if (type_string == "thumbnail") {
-    type = kThumbnail;
+    type = DataRequest::Type::kThumbnail;
   } else if (type_string == "media") {
-    type = kMedia;
+    type = DataRequest::Type::kMedia;
   } else if (type_string == "favicon") {
-    type = kFavicon;
+    type = DataRequest::Type::kFavicon;
   } else {
     NOTREACHED() << "type is not in {thumbnail,media,favicon}: " << type_string;
   }
@@ -164,13 +164,13 @@ void PlaylistDataSource::StartDataRequest(
   }
 
   switch (DataRequest data_request(url); data_request.type) {
-    case DataRequest::kThumbnail:
+    case DataRequest::Type::kThumbnail:
       GetThumbnail(data_request, wc_getter, std::move(got_data_callback));
       break;
-    case DataRequest::kFavicon:
+    case DataRequest::Type::kFavicon:
       GetFavicon(data_request, wc_getter, std::move(got_data_callback));
       break;
-    case DataRequest::kMedia:
+    case DataRequest::Type::kMedia:
       NOTREACHED() << "This request should call StartRangeDataRequest()";
       break;
   }
@@ -182,7 +182,7 @@ void PlaylistDataSource::StartRangeDataRequest(
     const net::HttpByteRange& range,
     GotRangeDataCallback callback) {
   DataRequest data_request(url);
-  CHECK_EQ(data_request.type, DataRequest::kMedia);
+  CHECK_EQ(data_request.type, DataRequest::Type::kMedia);
   CHECK(range.IsValid());
   GetMediaFile(data_request, wc_getter, range, std::move(callback));
 }
@@ -252,12 +252,12 @@ std::string PlaylistDataSource::GetMimeType(const GURL& url) {
   }
 
   switch (DataRequest data_request(url); data_request.type) {
-    case DataRequest::kThumbnail:
+    case DataRequest::Type::kThumbnail:
       return "image/png";
-    case DataRequest::kMedia:
+    case DataRequest::Type::kMedia:
       return "video/mp4";  //  Note that this will be fixed up based on the
                            //  actual file extension in WebUIUrlLoader.
-    case DataRequest::kFavicon:
+    case DataRequest::Type::kFavicon:
       return FaviconSource::GetMimeType(url);
   }
 
@@ -274,7 +274,7 @@ bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
     return false;
   }
 
-  return DataRequest(url).type == DataRequest::kMedia;
+  return DataRequest(url).type == DataRequest::Type::kMedia;
 }
 
 }  // namespace playlist

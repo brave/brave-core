@@ -42,7 +42,7 @@ class PlaylistDataSource : public FaviconSource {
 
  private:
   struct DataRequest {
-    enum Type {
+    enum class Type {
       kThumbnail,
       kMedia,
       kFavicon,
