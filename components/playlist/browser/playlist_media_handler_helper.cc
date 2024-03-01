@@ -10,8 +10,8 @@
 
 namespace playlist {
 
-std::vector<mojom::PlaylistItemPtr> GetPlaylistItems(base::Value::List list,
-                                                     const GURL& url) {
+std::vector<mojom::PlaylistItemPtr> ToPlaylistItems(base::Value::List list,
+                                                    const GURL& url) {
   /* Expected output:
     [
       {
