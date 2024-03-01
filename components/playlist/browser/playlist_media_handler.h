@@ -35,6 +35,7 @@ class PlaylistMediaHandler final
     : public content::WebContentsUserData<PlaylistMediaHandler>,
       public mojom::PlaylistMediaResponder {
   using Signature = void(std::vector<mojom::PlaylistItemPtr>, const GURL&);
+
  public:
   using OnceCallback = base::OnceCallback<Signature>;
   using RepeatingCallback = base::RepeatingCallback<Signature>;
@@ -53,11 +54,12 @@ class PlaylistMediaHandler final
   using OnMediaDetectedCallback = std::variant<OnceCallback, RepeatingCallback>;
 
   // Depending on the callback you pass to
-  // `PlaylistMediaHandler::CreateForWebContents()` when creating the
-  // `PlaylistMediaHandler`, you either get back the first non-empty list of
-  // media (`base::OnceCallback<>`/background `WebContents` case), or all the
-  // non-empty lists of media (`base::RepeatingCallback<>`/regular tab case), as
-  // long as the `WebContents` is alive.
+  // `PlaylistMediaHandler::CreateForWebContents()`,
+  // you either get back the first non-empty media list
+  // (`base::OnceCallback<>` case - used by background `WebContents`),
+  // or all the non-empty media lists
+  // (`base::RepeatingCallback<>` case - used by regular tabs),
+  // for the lifetime of the `WebContents`.
   PlaylistMediaHandler(content::WebContents* web_contents,
                        OnMediaDetectedCallback on_media_detected_callback);
 

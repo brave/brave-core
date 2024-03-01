@@ -5,7 +5,7 @@
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 
-#include <string>
+#include <utility>
 
 #include "base/check.h"
 #include "base/functional/callback.h"
@@ -23,11 +23,9 @@ void PlaylistMediaHandler::BindMediaResponderReceiver(
     content::RenderFrameHost* render_frame_host,
     mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver) {
   // TODO(sszaloki): do we have to do a service check here?
-  // auto* playlist_service =
-  //     PlaylistServiceFactory::GetForBrowserContext(
-  //         rfh->GetBrowserContext());
-  // if (!playlist_service) {
-  //   // We don't support playlist on OTR profile.
+  // if (!PlaylistServiceFactory::GetForBrowserContext(
+  //         render_frame_host->GetBrowserContext())) {
+  //   // We don't support playlist on OTR profiles.
   //   return;
   // }
 
@@ -50,11 +48,11 @@ PlaylistMediaHandler::PlaylistMediaHandler(
     : content::WebContentsUserData<PlaylistMediaHandler>(*web_contents),
       media_responder_receivers_(web_contents, this),
       on_media_detected_callback_(std::move(on_media_detected_callback)) {
-  std::visit(
+  CHECK(std::visit(
       [](auto& on_media_detected_callback) {
-        CHECK(on_media_detected_callback);
+        return !on_media_detected_callback.is_null();
       },
-      on_media_detected_callback_);
+      on_media_detected_callback_));
 }
 
 void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
@@ -81,7 +79,7 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
   DVLOG(2) << render_frame_host_id << " - " << __FUNCTION__ << ":\n" << media;
 
   const auto url = web_contents->GetLastCommittedURL();
-  auto items = GetPlaylistItems(std::move(media), url);
+  auto items = ToPlaylistItems(std::move(media), url);
   std::visit(
       base::Overloaded{
           [&](OnceCallback& on_media_detected_callback) {
