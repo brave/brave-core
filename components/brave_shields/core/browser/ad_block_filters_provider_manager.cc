@@ -55,6 +55,14 @@ std::string AdBlockFiltersProviderManager::GetNameForDebugging() {
 }
 
 void AdBlockFiltersProviderManager::OnChanged(bool is_for_default_engine) {
+  auto& filters_providers = is_for_default_engine
+                                ? default_engine_filters_providers_
+                                : additional_engine_filters_providers_;
+  for (auto*& provider : filters_providers) {
+    if (!provider->IsInitialized()) {
+      return;
+    }
+  }
   NotifyObservers(is_for_default_engine);
 }
 

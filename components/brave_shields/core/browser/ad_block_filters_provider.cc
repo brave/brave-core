@@ -45,6 +45,10 @@ void AdBlockFiltersProvider::NotifyObservers(bool is_for_default_engine) {
   }
 }
 
+bool AdBlockFiltersProvider::IsInitialized() const {
+  return true;
+}
+
 base::WeakPtr<AdBlockFiltersProvider> AdBlockFiltersProvider::AsWeakPtr() {
   return weak_factory_.GetWeakPtr();
 }
