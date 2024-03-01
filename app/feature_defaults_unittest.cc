@@ -245,7 +245,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &optimization_guide::features::kRemoteOptimizationGuideFetching,
       &optimization_guide::features::
           kRemoteOptimizationGuideFetchingAnonymousDataConsent,
-      &optimization_guide::features::kTextEmbeddingPageContentAnnotations,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
 #if BUILDFLAG(IS_ANDROID)
