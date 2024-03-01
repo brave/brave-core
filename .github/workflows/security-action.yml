@@ -25,6 +25,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           slack_token: ${{ secrets.HOTSPOTS_SLACK_TOKEN }} # optional
           codeql_config: ./.github/codeql/codeql-config.yml
+          gh_to_slack_user_map: ${{ secrets.GH_TO_SLACK_USER_MAP }}
           assignees: |
             fmarier
             thypon
