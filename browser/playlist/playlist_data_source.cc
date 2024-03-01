@@ -94,11 +94,13 @@ content::URLDataSource::RangeDataResult ReadFileRange(
   // Note that HTTP range's first and last position are inclusive.
   int64_t first_byte_position =
       range.HasFirstBytePosition() ? range.first_byte_position() : 0;
-  int64_t last_byte_position = range.HasLastBytePosition()
-                                   ? range.last_byte_position()
-                                   : std::numeric_limits<uint32_t>::max();
+  int64_t last_byte_position =
+      range.HasLastBytePosition()
+          ? range.last_byte_position()
+          : first_byte_position + kMediaChunkSizeInByte - 1;
   int64_t read_size = std::min(kMediaChunkSizeInByte,
                                last_byte_position - first_byte_position + 1);
+  CHECK_GE(read_size, 0);
 
   std::vector<unsigned char> buffer(read_size);
   auto read_result = file.Read(first_byte_position, buffer);
