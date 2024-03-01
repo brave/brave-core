@@ -6,15 +6,18 @@
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 
 #include <set>
-#include <utility>
 
+#include "base/feature_list.h"
 #include "base/logging.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/web_contents.h"
+#include "content/public/browser/render_frame_host.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#include "net/base/schemeful_site.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -84,11 +87,7 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
   frame_observer_config->AddMediaDetector(
       service_->GetMediaDetectorScript(url));
 
-  if (ShouldUseFakeUA(url)) {
-    return;
-  }
-
-  if (!ShouldSuppressMediaSourceAPI(url)) {
+  if (ShouldUseFakeUA(url) || !ShouldSuppressMediaSourceAPI(url)) {
     return;
   }
 

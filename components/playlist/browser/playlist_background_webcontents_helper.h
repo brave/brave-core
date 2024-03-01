@@ -9,6 +9,8 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
+class GURL;
+
 namespace content {
 class NavigationHandle;
 class WebContents;
