@@ -50,8 +50,7 @@ void PlaylistTabHelper::MaybeCreateForWebContents(
 
 PlaylistTabHelper::PlaylistTabHelper(content::WebContents* contents,
                                      PlaylistService* service)
-    : WebContentsUserData(*contents),
-      service_(service) {
+    : WebContentsUserData(*contents), service_(service) {
   Observe(contents);
   CHECK(service_);
   service_->AddObserver(playlist_observer_receiver_.BindNewPipeAndPassRemote());

@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/browser/playlist_background_webcontents.h"
 
+#include <utility>
+
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
@@ -80,11 +82,11 @@ void PlaylistBackgroundWebContents::Remove(
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
     std::vector<mojom::PlaylistItemPtr> items,
     const GURL& url) {
-  {
-    const auto node = background_web_contents_.extract(web_contents);
-    CHECK(!node.empty());
-    node.mapped().Stop();  // no-op if called by the timer
-  }
+  const auto it = background_web_contents_.find(web_contents);
+  CHECK(it != background_web_contents_.cend());
+  it->second.Stop();  // no-op if called by the timer
+  background_web_contents_.erase(it);
+
   std::move(on_media_detected_callback).Run(std::move(items), url);
 }
 

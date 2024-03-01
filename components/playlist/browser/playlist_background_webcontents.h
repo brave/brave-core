@@ -6,13 +6,15 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
 
+#include <map>
+#include <memory>
 #include <vector>
 
+#include "base/containers/unique_ptr_adapters.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
-#include "third_party/abseil-cpp/absl/container/node_hash_map.h"
 
 class GURL;
 
@@ -45,7 +47,9 @@ class PlaylistBackgroundWebContents final {
 
   raw_ptr<content::BrowserContext> context_;
   raw_ptr<PlaylistService> service_;
-  absl::node_hash_map<std::unique_ptr<content::WebContents>, base::OneShotTimer>
+  std::map<std::unique_ptr<content::WebContents>,
+           base::OneShotTimer,
+           base::UniquePtrComparator>
       background_web_contents_;
 
   base::WeakPtrFactory<PlaylistBackgroundWebContents> weak_factory_{this};

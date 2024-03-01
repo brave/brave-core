@@ -199,7 +199,8 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> media, const GURL& url);
+  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> media,
+                       const GURL& url);
 
   bool HasPlaylistItem(const std::string& id) const;
 

@@ -30,7 +30,8 @@ namespace playlist {
 // `OnMediaDetected` messages coming from remote `RenderFrame`s of a given
 // `WebContents`.
 // `mojom::PlaylistMediaResponder` is exposed to `RenderFrame`s in
-// `BraveContentBrowserClient::RegisterAssociatedInterfaceBindersForRenderFrameHost()`.
+// `BraveContentBrowserClient`'s
+// `RegisterAssociatedInterfaceBindersForRenderFrameHost()`.
 class PlaylistMediaHandler final
     : public content::WebContentsUserData<PlaylistMediaHandler>,
       public mojom::PlaylistMediaResponder {
