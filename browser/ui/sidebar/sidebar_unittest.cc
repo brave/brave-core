@@ -209,12 +209,16 @@ TEST_F(SidebarModelTest, ActiveIndexChangedAfterItemAdded) {
   EXPECT_THAT(model()->active_index(), Optional(2u));
 }
 
-// Check leo item is top-most item.
+// Check Leo item is top-most item.
 TEST_F(SidebarModelTest, TopItemTest) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
   const auto first_item = service()->items()[0];
   EXPECT_EQ(first_item.built_in_item_type,
             SidebarItem::BuiltInItemType::kChatUI);
+#else
+  const auto first_item = service()->items()[0];
+  EXPECT_EQ(first_item.built_in_item_type,
+            SidebarItem::BuiltInItemType::kReadingList);
 #endif
 }
 

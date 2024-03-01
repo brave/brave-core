@@ -7,6 +7,7 @@
 
 #include "base/metrics/field_trial_params.h"
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "chrome/browser/browser_process.h"
@@ -26,12 +27,17 @@ namespace sidebar {
 
 bool IsLeoPanelAlreadyOpened(content::WebContents* contents) {
   auto* prefs = user_prefs::UserPrefs::Get(contents->GetBrowserContext());
-  return prefs->GetBoolean(kLeoPanelOneTimeOpen);
+  return prefs->GetBoolean(kLeoPanelOneShotOpen);
 }
 
 // static
 void SidebarTabHelper::MaybeCreateForWebContents(
     content::WebContents* contents) {
+  // For now only used for one shot Leo panel open.
+#if !BUILDFLAG(ENABLE_AI_CHAT)
+  return;
+#endif
+
   if (!g_browser_process || !g_browser_process->local_state()) {
     return;
   }
@@ -45,7 +51,7 @@ void SidebarTabHelper::MaybeCreateForWebContents(
     return;
   }
 
-  // For now, we only support leo panel for regular profile.
+  // For now, we only support Leo panel for regular profile.
   auto* context = contents->GetBrowserContext();
   if (!brave::IsRegularProfile(context)) {
     return;
@@ -98,7 +104,7 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  // If side panel is already opened, don't open leo panel now.
+  // If side panel is already opened, don't open Leo panel now.
   if (side_panel_ui->GetCurrentEntryId()) {
     return;
   }
@@ -109,14 +115,14 @@ void SidebarTabHelper::PrimaryPageChanged(content::Page& page) {
     return;
   }
 
-  // Check this page to open one-time leo panel only for non-SERP page.
+  // Check this page to open one shot Leo panel only for non-SERP page.
   for (TemplateURL* turl : service->GetTemplateURLs()) {
     GURL search_url(turl->url());
     if (!search_url.is_valid()) {
       continue;
     }
 
-    // Don't launch leo panel for SERP page.
+    // Don't launch Leo panel for SERP page.
     if (search_url.host() == url.host()) {
       return;
     }

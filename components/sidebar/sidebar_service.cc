@@ -84,7 +84,7 @@ void SidebarService::RegisterProfilePrefs(
     ShowSidebarOption default_show_option) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterListPref(kSidebarHiddenBuiltInItems);
-  registry->RegisterBooleanPref(kLeoPanelOneTimeOpen, false);
+  registry->RegisterBooleanPref(kLeoPanelOneShotOpen, false);
   registry->RegisterIntegerPref(kSidebarShowOption,
                                 static_cast<int>(default_show_option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);

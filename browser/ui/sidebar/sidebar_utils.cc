@@ -237,7 +237,7 @@ bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type) {
 SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
     version_info::Channel channel) {
   if (!base::CommandLine::ForCurrentProcess()->HasSwitch(
-          switches::kDontShowAlwaysSidebarOnNonStable) &&
+          switches::kDontShowSidebarOnNonStable) &&
       channel != version_info::Channel::STABLE) {
     return ShowSidebarOption::kShowAlways;
   }

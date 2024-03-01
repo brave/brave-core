@@ -99,8 +99,8 @@ void SidebarController::ActivateItemAt(std::optional<size_t> index,
 
     if (sidebar::features::kOpenOneShotLeoPanel.Get() &&
         item.built_in_item_type == SidebarItem::BuiltInItemType::kChatUI) {
-      // Prevent one-time leo panel open.
-      browser_->profile()->GetPrefs()->SetBoolean(kLeoPanelOneTimeOpen, true);
+      // Prevent one-time Leo panel open.
+      browser_->profile()->GetPrefs()->SetBoolean(kLeoPanelOneShotOpen, true);
     }
     return;
   }

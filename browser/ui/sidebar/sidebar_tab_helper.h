@@ -11,7 +11,7 @@
 
 namespace sidebar {
 
-// Helper to launch the leo panel one time.
+// Helper to launch the Leo panel one time.
 class SidebarTabHelper : public content::WebContentsUserData<SidebarTabHelper>,
                          public content::WebContentsObserver {
  public:

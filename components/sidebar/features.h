@@ -14,7 +14,7 @@ namespace sidebar::features {
 // Whether to show the sidebar always on stable channel.
 BASE_DECLARE_FEATURE(kSidebarShowAlwaysOnStable);
 
-// Whether to open the leo panel only once.
+// Whether to open the Leo panel only once.
 extern const base::FeatureParam<bool> kOpenOneShotLeoPanel;
 
 }  // namespace sidebar::features

@@ -19,10 +19,10 @@ inline constexpr char kSidePanelWidth[] = "brave.sidebar.side_panel_width";
 inline constexpr char kLastUsedBuiltInItemType[] =
     "brave.sidebar.last_used_built_in_item_type";
 
-// Indicates that the leo side panel is opened once for Sidebar Enabled-by
+// Indicates that the Leo side panel is opened once for Sidebar Enabled-by
 // -default test via griffin.
-inline constexpr char kLeoPanelOneTimeOpen[] =
-    "brave.sidebar.leo_panel_one_time_open";
+inline constexpr char kLeoPanelOneShotOpen[] =
+    "brave.sidebar.leo_panel_one_shot_shot";
 
 // Indicates that it's target user for Sidebar Enabled-by-default test via
 // griffin. local state pref.

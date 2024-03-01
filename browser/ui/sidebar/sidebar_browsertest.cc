@@ -852,7 +852,7 @@ class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
 
   void SetUpCommandLine(base::CommandLine* command_line) override {
     SidebarBrowserTest::SetUpCommandLine(command_line);
-    command_line->AppendSwitch(switches::kDontShowAlwaysSidebarOnNonStable);
+    command_line->AppendSwitch(switches::kDontShowSidebarOnNonStable);
     command_line->AppendSwitch(switches::kForceFirstRun);
   }
 
@@ -871,9 +871,10 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             sidebar_service->GetSidebarShowOption());
 
-  // Check one shot leo panel is opened or not based on test parameter.
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // Check one shot Leo panel is opened or not based on test parameter.
   if (GetParam()) {
-    // If leo panel is opened, panel active index is changed.
+    // If Leo panel is opened, panel active index is changed.
     EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
         .Times(1);
   } else {
@@ -908,6 +909,7 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
   testing::Mock::VerifyAndClearExpectations(&observer_);
+#endif
 }
 
 INSTANTIATE_TEST_SUITE_P(

@@ -54,8 +54,8 @@ inline constexpr char kUpdateFeedURL[] = "update-feed-url";
 
 // Don't set kShowAlways for non-stable channel.
 // It's useful to test SidebarShowAlwaysOnStable w/o griffin.
-inline constexpr char kDontShowAlwaysSidebarOnNonStable[] =
-    "dont-show-always-on-sidebar-non-stable";
+inline constexpr char kDontShowSidebarOnNonStable[] =
+    "dont-show-on-sidebar-non-stable";
 
 }  // namespace switches
 
