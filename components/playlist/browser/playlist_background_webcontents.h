@@ -8,7 +8,6 @@
 
 #include <vector>
 
-#include "base/functional/callback_forward.h"
 #include "base/memory/weak_ptr.h"
 #include "base/timer/timer.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
@@ -41,7 +40,7 @@ class PlaylistBackgroundWebContents final {
  private:
   void Remove(content::WebContents* web_contents,
               PlaylistMediaHandler::OnceCallback on_media_detected_callback,
-              std::vector<mojom::PlaylistItemPtr> media,
+              std::vector<mojom::PlaylistItemPtr> items,
               const GURL& url);
 
   raw_ptr<content::BrowserContext> context_;
