@@ -27,18 +27,10 @@ struct Converter<base::Value::List> {
   static bool FromV8(v8::Isolate* isolate,
                      v8::Local<v8::Value> v8_value,
                      base::Value::List* out) {
-    if (v8_value.IsEmpty()) {
-      return false;
-    }
-
     std::unique_ptr<base::Value> base_value =
         content::V8ValueConverter::Create()->FromV8Value(
             v8_value, isolate->GetCurrentContext());
-    if (!base_value) {
-      return false;
-    }
-
-    if (!base_value->is_list()) {
+    if (!base_value || !base_value->is_list()) {
       return false;
     }
 
@@ -93,7 +85,7 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-const mojo::AssociatedRemote<playlist::mojom::PlaylistMediaResponder>&
+const mojo::AssociatedRemote<mojom::PlaylistMediaResponder>&
 PlaylistRenderFrameObserver::GetMediaResponder() {
   if (!media_responder_) {
     render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
