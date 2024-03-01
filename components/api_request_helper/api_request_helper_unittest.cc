@@ -54,7 +54,8 @@ class ApiRequestHelperUnitTest : public testing::Test {
         shared_url_loader_factory_);
     loader_wrapper_handler_ =
         std::make_unique<APIRequestHelper::URLLoaderHandler>(
-            api_request_helper_.get());
+            api_request_helper_.get(),
+            base::SequencedTaskRunner::GetCurrentDefault());
   }
   ~ApiRequestHelperUnitTest() override = default;
 
@@ -100,7 +101,7 @@ class ApiRequestHelperUnitTest : public testing::Test {
         "POST", network_url, "", "application/json", callback.Get(), {},
         APIRequestOptions(false, enable_cache, -1u, std::nullopt),
         std::move(conversion_callback));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
   }
 
   void SendMessageSSEJSON(std::string_view string_piece,
@@ -117,9 +118,9 @@ class ApiRequestHelperUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<APIRequestHelper> api_request_helper_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -211,7 +212,7 @@ TEST_F(ApiRequestHelperUnitTest, URLLoaderHandlerParsing) {
                        run_loop->Quit();
                      },
                      &run_loop));
-  run_loop.RunUntilIdle();
+  run_loop.Run();
 }
 
 TEST_F(ApiRequestHelperUnitTest, SSEJsonParsing) {
