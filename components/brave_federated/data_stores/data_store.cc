@@ -23,14 +23,9 @@ void DatabaseErrorCallback(sql::Database* db,
                            const base::FilePath& db_file_path,
                            int extended_error,
                            sql::Statement* stmt) {
-  if (sql::Recovery::ShouldRecover(extended_error)) {
-    // Prevent reentrant calls.
-    db->reset_error_callback();
-
-    // After this call, the |db| handle is poisoned so that future calls will
-    // return errors until the handle is re-opened.
-    sql::Recovery::RecoverDatabase(db, db_file_path);
-
+  if (sql::BuiltInRecovery::RecoverIfPossible(
+          db, extended_error,
+          sql::BuiltInRecovery::Strategy::kRecoverWithMetaVersionOrRaze)) {
     // The DLOG(FATAL) below is intended to draw immediate attention to errors
     // in newly-written code.  Database corruption is generally a result of OS
     // or hardware issues, not coding errors at the client level, so displaying
