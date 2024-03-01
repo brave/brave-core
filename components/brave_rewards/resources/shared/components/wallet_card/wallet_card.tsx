@@ -108,7 +108,10 @@ export function WalletCard (props: Props) {
         <style.balanceHeader>
           {getString('walletBalanceTitle')}
         </style.balanceHeader>
-        <style.batAmount data-test-id='rewards-balance-text'>
+        <style.batAmountForTesting data-test-id='rewards-balance-text'>
+          <TokenAmount amount={props.balance.valueOr(0)} />
+        </style.batAmountForTesting>
+        <style.batAmount>
           {
             !props.balance.hasValue()
               ? <style.balanceSpinner>
