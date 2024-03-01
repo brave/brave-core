@@ -6,6 +6,8 @@
 #include "brave/components/playlist/browser/playlist_background_webcontents.h"
 
 #include "base/functional/bind.h"
+#include "base/functional/callback_helpers.h"
+#include "base/timer/timer.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
@@ -28,11 +30,12 @@ void PlaylistBackgroundWebContents::Add(
   auto web_contents = content::WebContents::Create(create_params);
   web_contents->SetAudioMuted(true);
 
-  PlaylistMediaHandler::CreateForWebContents(
-      web_contents.get(),
-      base::BindOnce(&PlaylistBackgroundWebContents::Remove,
-                     weak_factory_.GetWeakPtr(), web_contents.get(),
-                     std::move(on_media_detected_callback)));
+  auto split = base::SplitOnceCallback(base::BindOnce(
+      &PlaylistBackgroundWebContents::Remove, weak_factory_.GetWeakPtr(),
+      web_contents.get(), std::move(on_media_detected_callback)));
+
+  PlaylistMediaHandler::CreateForWebContents(web_contents.get(),
+                                             std::move(split.first));
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(web_contents.get(),
                                                             service_);
 
@@ -61,7 +64,10 @@ void PlaylistBackgroundWebContents::Add(
 
   controller.LoadURLWithParams(load_url_params);
 
-  background_web_contents_.emplace(std::move(web_contents));
+  background_web_contents_[std::move(web_contents)].Start(
+      FROM_HERE, base::Seconds(10),
+      base::BindOnce(std::move(split.second),
+                     std::vector<mojom::PlaylistItemPtr>{}, GURL{}));
 }
 
 void PlaylistBackgroundWebContents::Remove(
@@ -69,7 +75,9 @@ void PlaylistBackgroundWebContents::Remove(
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
     std::vector<mojom::PlaylistItemPtr> media,
     const GURL& url) {
-  background_web_contents_.erase(web_contents);
+  const auto node = background_web_contents_.extract(web_contents);
+  CHECK(!node.empty());
+  node.mapped().Stop();  // no-op on timer going off
   std::move(on_media_detected_callback).Run(std::move(media), url);
 }
 
