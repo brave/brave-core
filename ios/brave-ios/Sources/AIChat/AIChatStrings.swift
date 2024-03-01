@@ -750,5 +750,19 @@ extension Strings {
       value: "N/A",
       comment: "The title to display when the duration of the subscription is unknown"
     )
+    public static let leoPageContextInfoIconAccessibilityTitle = NSLocalizedString(
+      "aichat.leoPageContextInfoIconAccessibilityTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Page Context Information",
+      comment: "The accessibility text to read out loud when the user taps on the info icon on the page context view"
+    )
+    public static let leoPageContextInfoDescriptionTitle = NSLocalizedString(
+      "aichat.leoPageContextInfoDescriptionTitle",
+      tableName: "BraveLeo",
+      bundle: .module,
+      value: "Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.",
+      comment: "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
+    )
   }
 }

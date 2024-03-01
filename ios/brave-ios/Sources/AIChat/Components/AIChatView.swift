@@ -186,11 +186,24 @@ public struct AIChatView: View {
       
       if model.apiError == .none && model.isAgreementAccepted ||
           (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        // TODO: When the user taps on the (info) icon, we should show a tool-tip
-        
         if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
           AIChatPageContextView(
-            isToggleOn: $model.shouldSendPageContents)
+            isToggleOn: $model.shouldSendPageContents,
+            infoContent: {
+              AIChatPageContextInfoView(url: model.getLastCommittedURL(), 
+                                        pageTitle: model.getPageTitle() ?? "")
+                .padding([.horizontal, .bottom])
+                .background(Color(braveSystemName: .containerBackground))
+                .osAvailabilityModifiers({ view in
+                  if #available(iOS 16.4, *) {
+                    view
+                      .presentationCompactAdaptation(.popover)
+                  } else {
+                    view
+                  }
+                })
+            }
+          )
           .padding(.horizontal, 8.0)
           .padding(.bottom, 12.0)
           .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
@@ -444,7 +457,8 @@ struct AIChatView_Preview: PreviewProvider {
         }
       )
       
-      Divider()
+      Color(braveSystemName: .dividerSubtle)
+        .frame(height: 1.0)
       
       GeometryReader { geometry in
         ScrollView {
@@ -488,7 +502,8 @@ struct AIChatView_Preview: PreviewProvider {
       
       Spacer()
       
-      AIChatPageContextView(isToggleOn: .constant(true))
+      AIChatPageContextView(
+        isToggleOn: .constant(true)) {}
         .padding()
       
       AIChatPromptInputView() {
