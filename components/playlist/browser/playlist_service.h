@@ -34,10 +34,6 @@ namespace base {
 class SequencedTaskRunner;
 }  // namespace base
 
-namespace blink::web_pref {
-struct WebPreferences;
-}  // namespace blink::web_pref
-
 namespace content {
 class BrowserContext;
 class WebContents;
@@ -131,11 +127,6 @@ class PlaylistService : public KeyedService,
   bool GetMediaPath(const std::string& id, base::FilePath* media_path);
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
-
-  // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsForBackgroundWebContents(
-      content::WebContents* web_contents,
-      blink::web_pref::WebPreferences* web_prefs);
 
   base::WeakPtr<PlaylistService> GetWeakPtr();
 

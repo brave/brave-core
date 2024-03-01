@@ -32,7 +32,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/filename_util.h"
-#include "third_party/blink/public/common/web_preferences/web_preferences.h"
 
 namespace playlist {
 namespace {
@@ -402,20 +401,6 @@ void PlaylistService::DownloadMediaFile(const mojom::PlaylistItemPtr& item,
 base::FilePath PlaylistService::GetPlaylistItemDirPath(
     const std::string& id) const {
   return base_dir_.AppendASCII(id);
-}
-
-void PlaylistService::ConfigureWebPrefsForBackgroundWebContents(
-    content::WebContents* web_contents,
-    blink::web_pref::WebPreferences* web_prefs) {
-  if (!*enabled_pref_) {
-    return;
-  }
-
-  if (!PlaylistBackgroundWebContentsHelper::FromWebContents(web_contents)) {
-    return;
-  }
-
-  web_prefs->force_cosmetic_filtering = true;
 }
 
 base::WeakPtr<PlaylistService> PlaylistService::GetWeakPtr() {
