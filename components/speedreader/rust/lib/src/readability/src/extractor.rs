@@ -83,7 +83,7 @@ pub struct Meta {
     pub description: Option<String>,
     pub charset: Option<Handle>,
     pub last_modified: Option<OffsetDateTime>,
-    pub preserved_meta: Vec<Handle>,
+    pub preserved_elements: Vec<Handle>,
 }
 
 impl Meta {
@@ -103,7 +103,7 @@ impl Meta {
         };
         self.charset = self.charset.or(other.charset);
         self.last_modified = self.last_modified.or(other.last_modified);
-        self.preserved_meta.extend(other.preserved_meta);
+        self.preserved_elements.extend(other.preserved_elements);
         self
     }
 }
@@ -123,6 +123,7 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     e.attributes.borrow().get(local_name!("type")) == Some("application/ld+json")
                 }
                 local_name!("meta") | local_name!("title") => true,
+                local_name!("base") => true,
                 _ => false,
             })
             .unwrap_or(false)
@@ -149,56 +150,61 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
         // NOTE: This unwrap is safe because the iterator only contains element types
         let data = node.as_element().unwrap();
 
-        if data.name.local != local_name!("meta") {
-            continue;
-        }
-        let attribute = data.attributes.borrow();
-        if let Some(property) =
-            attribute.get(local_name!("property")).or(attribute.get(local_name!("name")))
-        {
-            if let Some(ref content) = attribute.get(local_name!("content")) {
-                match property {
-                    "dc:title"
-                    | "dcterm:title"
-                    | "og:title"
-                    | "weibo:article:title"
-                    | "weibo:webpage:title"
-                    | "title"
-                    | "twitter:title" => {
-                        meta_tags.title = content.to_string();
-                    }
-                    "description"
-                    | "dc:description"
-                    | "dcterm:description"
-                    | "og:description"
-                    | "weibo:article:description"
-                    | "weibo:webpage:description"
-                    | "twitter:description" => {
-                        if let Some(ref desc) = meta_tags.description {
-                            if content.chars().count() < desc.chars().count() {
-                                meta_tags.description = Some(content.to_string());
+        match data.name.local {
+            local_name!("meta") => {
+                let attribute = data.attributes.borrow();
+                if let Some(property) =
+                    attribute.get(local_name!("property")).or(attribute.get(local_name!("name")))
+                {
+                    if let Some(ref content) = attribute.get(local_name!("content")) {
+                        match property {
+                            "dc:title"
+                            | "dcterm:title"
+                            | "og:title"
+                            | "weibo:article:title"
+                            | "weibo:webpage:title"
+                            | "title"
+                            | "twitter:title" => {
+                                meta_tags.title = content.to_string();
                             }
-                        } else {
-                            meta_tags.description = Some(content.to_string());
+                            "description"
+                            | "dc:description"
+                            | "dcterm:description"
+                            | "og:description"
+                            | "weibo:article:description"
+                            | "weibo:webpage:description"
+                            | "twitter:description" => {
+                                if let Some(ref desc) = meta_tags.description {
+                                    if content.chars().count() < desc.chars().count() {
+                                        meta_tags.description = Some(content.to_string());
+                                    }
+                                } else {
+                                    meta_tags.description = Some(content.to_string());
+                                }
+                            }
+                            "dc:creator" | "dcterm:creator" | "author" => {
+                                meta_tags.author = Some(content.to_string());
+                            }
+                            _ => (),
                         }
                     }
-                    "dc:creator" | "dcterm:creator" | "author" => {
-                        meta_tags.author = Some(content.to_string());
+                } else if attribute.get(local_name!("charset")).is_some() {
+                    meta_tags.preserved_elements.push(node.clone());
+                } else if let Some(attr) = attribute.get(local_name!("http-equiv")) {
+                    match attr.to_lowercase().as_str().trim() {
+                        "content-type" | "content-security-policy" => {
+                            meta_tags.preserved_elements.push(node.clone());
+                        }
+                        _ => (),
                     }
-                    _ => (),
                 }
             }
-        } else if attribute.get(local_name!("charset")).is_some() {
-            meta_tags.charset = Some(node.clone());
-        } else if let Some(attr) = attribute.get(local_name!("http-equiv")) {
-            match attr.to_lowercase().as_str().trim() {
-                "content-type" | "content-security-policy" => {
-                    meta_tags.preserved_meta.push(node.clone());
-                }
-                _ => (),
+            local_name!("base") => {
+                meta_tags.preserved_elements.push(node.clone());
             }
+            _ => (),
         }
-    }
+    } // match
 
     let mut meta = meta_jsonld.merge(meta_tags);
 
@@ -304,16 +310,9 @@ pub fn extract_dom(
         content_head += &charset.to_string();
     }
 
-    if !meta.preserved_meta.is_empty() {
-        for node in meta.preserved_meta.iter() {
+    if !meta.preserved_elements.is_empty() {
+        for node in meta.preserved_elements.iter() {
             content_head += &node.to_string();
-        }
-    }
-
-    if let Some(head) = dom::document_head(&dom) {
-        let base_nodes = dom::find_nodes_with_tag(&head, &["base"]);
-        for base in base_nodes {
-            content_head += &base.to_string();
         }
     }
 
