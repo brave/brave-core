@@ -7,10 +7,14 @@
 
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/timer/timer.h"
+#include "base/logging.h"
+#include "base/time/time.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
+#include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
@@ -30,12 +34,13 @@ void PlaylistBackgroundWebContents::Add(
   auto web_contents = content::WebContents::Create(create_params);
   web_contents->SetAudioMuted(true);
 
-  auto split = base::SplitOnceCallback(base::BindOnce(
-      &PlaylistBackgroundWebContents::Remove, weak_factory_.GetWeakPtr(),
-      web_contents.get(), std::move(on_media_detected_callback)));
+  auto [callback_for_media_handler, callback_for_timer] =
+      base::SplitOnceCallback(base::BindOnce(
+          &PlaylistBackgroundWebContents::Remove, weak_factory_.GetWeakPtr(),
+          web_contents.get(), std::move(on_media_detected_callback)));
 
-  PlaylistMediaHandler::CreateForWebContents(web_contents.get(),
-                                             std::move(split.first));
+  PlaylistMediaHandler::CreateForWebContents(
+      web_contents.get(), std::move(callback_for_media_handler));
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(web_contents.get(),
                                                             service_);
 
@@ -66,19 +71,21 @@ void PlaylistBackgroundWebContents::Add(
 
   background_web_contents_[std::move(web_contents)].Start(
       FROM_HERE, base::Seconds(10),
-      base::BindOnce(std::move(split.second),
-                     std::vector<mojom::PlaylistItemPtr>{}, GURL{}));
+      base::BindOnce(std::move(callback_for_timer),
+                     std::vector<mojom::PlaylistItemPtr>(), GURL()));
 }
 
 void PlaylistBackgroundWebContents::Remove(
     content::WebContents* web_contents,
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
-    std::vector<mojom::PlaylistItemPtr> media,
+    std::vector<mojom::PlaylistItemPtr> items,
     const GURL& url) {
-  const auto node = background_web_contents_.extract(web_contents);
-  CHECK(!node.empty());
-  node.mapped().Stop();  // no-op on timer going off
-  std::move(on_media_detected_callback).Run(std::move(media), url);
+  {
+    const auto node = background_web_contents_.extract(web_contents);
+    CHECK(!node.empty());
+    node.mapped().Stop();  // no-op if called by the timer
+  }
+  std::move(on_media_detected_callback).Run(std::move(items), url);
 }
 
 }  // namespace playlist
