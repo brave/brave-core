@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.resources.ResourceManager;
 
@@ -52,10 +53,14 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+            OnLongClickListener tabSwitcherLongclickListener,
+            ActivityTabProvider tabProvider,
+            Runnable openHomepageAction,
+            Callback<Integer> setUrlBarFocusAction,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             ThemeColorProvider themeColorProvider,
+            ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
+            LocationBarModel locationBarModel,
             /* Below are parameters from BottomControlsCoordinator */
             Activity activity,
             WindowAndroid windowAndroid,
