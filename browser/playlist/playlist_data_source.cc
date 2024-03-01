@@ -100,15 +100,16 @@ content::URLDataSource::RangeDataResult ReadFileRange(
   int64_t read_size = std::min(kMediaChunkSizeInByte,
                                last_byte_position - first_byte_position + 1);
 
-  auto buffer = base::HeapArray<uint8_t>::Uninit(read_size);
+  std::vector<unsigned char> buffer(read_size);
   auto read_result = file.Read(first_byte_position, buffer);
   if (!read_result.has_value()) {
     return {};
   }
   read_size = read_result.value();
+  buffer.resize(read_size);
 
   content::URLDataSource::RangeDataResult result;
-  result.buffer = base::MakeRefCounted<base::RefCountedBytes>(buffer);
+  result.buffer = base::RefCountedBytes::TakeVector(&buffer);
   result.file_size = file.GetLength();
   result.range = net::HttpByteRange::Bounded(
       first_byte_position, first_byte_position + read_size - 1);
