@@ -82,7 +82,7 @@ void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
   auto data = std::make_unique<std::vector<uint8_t>>(string_piece.begin(), string_piece.end());
 
-//  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
+// LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
   if (buffer_ready_callback_) {
     buffer_ready_callback_.Run(std::move(data), false);

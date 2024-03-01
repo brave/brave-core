@@ -7,17 +7,17 @@
 
 namespace ipfs::ipld {
 
-IpfsRequest::IpfsRequest(
-    GURL url,
+IpfsTrustlessRequest::IpfsTrustlessRequest(
+    const GURL& url,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url(std::move(url)), url_loader_factory(std::move(url_loader_factory)) {}
-IpfsRequest::~IpfsRequest() = default;
+    : url(url), url_loader_factory(std::move(url_loader_factory)) {}
+IpfsTrustlessRequest::~IpfsTrustlessRequest() = default;
 
-IpfsResponse::IpfsResponse(const std::string& mime,
+IpfsTrustlessResponse::IpfsTrustlessResponse(const std::string& mime,
                            const std::uint16_t& status,
-                           const std::string& body,
+                           const std::vector<uint8_t>& body,
                            const std::string& location)
     : mime(mime), status(status), body(body), location(location) {}
-IpfsResponse::~IpfsResponse() = default;
+IpfsTrustlessResponse::~IpfsTrustlessResponse() = default;
 
 }  // namespace ipfs::ipld

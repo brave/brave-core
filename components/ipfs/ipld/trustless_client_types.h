@@ -6,46 +6,69 @@
 #ifndef BRAVE_COMPONENTS_IPFS_IPLD_TRUSTLESS_CLIENT_TYPES_H_
 #define BRAVE_COMPONENTS_IPFS_IPLD_TRUSTLESS_CLIENT_TYPES_H_
 
+#include <cstdint>
+#include "base/functional/callback_forward.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
 namespace ipfs::ipld {
 
-struct IpfsRequest {
-  IpfsRequest(const IpfsRequest&) = delete;
-  IpfsRequest(IpfsRequest&&) = delete;
-  IpfsRequest& operator=(const IpfsRequest&) = delete;
-  IpfsRequest& operator=(IpfsRequest&&) = delete;
+struct IpfsTrustlessRequest {
+  IpfsTrustlessRequest(const IpfsTrustlessRequest&) = delete;
+  IpfsTrustlessRequest(IpfsTrustlessRequest&&) = delete;
+  IpfsTrustlessRequest& operator=(const IpfsTrustlessRequest&) = delete;
+  IpfsTrustlessRequest& operator=(IpfsTrustlessRequest&&) = delete;
 
-  IpfsRequest(
-      GURL url,
+  IpfsTrustlessRequest(
+      const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
-  ~IpfsRequest();
+  ~IpfsTrustlessRequest();
 
   GURL url;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory;
 };
 
-struct IpfsResponse {
-  IpfsResponse(const IpfsResponse&) = delete;
-  IpfsResponse(IpfsResponse&&) = delete;
-  IpfsResponse& operator=(const IpfsResponse&) = delete;
-  IpfsResponse& operator=(IpfsResponse&&) = delete;
+struct IpfsTrustlessResponse {
+  IpfsTrustlessResponse(const IpfsTrustlessResponse&) = delete;
+  IpfsTrustlessResponse(IpfsTrustlessResponse&&) = delete;
+  IpfsTrustlessResponse& operator=(const IpfsTrustlessResponse&) = delete;
+  IpfsTrustlessResponse& operator=(IpfsTrustlessResponse&&) = delete;
 
-  IpfsResponse(const std::string& mime,
+  IpfsTrustlessResponse(const std::string& mime,
                const std::uint16_t& status,
-               const std::string& body,
+               const std::vector<uint8_t>& body,
                const std::string& location);
-  ~IpfsResponse();
+  ~IpfsTrustlessResponse();
 
   std::string mime;
   std::uint16_t status;
-  std::string body;
+  std::vector<uint8_t> body;
   std::string location;
 };
 
 using IpfsRequestCallback =
-    base::OnceCallback<void(std::unique_ptr<IpfsResponse>)>;
+    base::RepeatingCallback<void(std::unique_ptr<IpfsTrustlessRequest>, std::unique_ptr<IpfsTrustlessResponse>)>;
+
+struct TrustlessTarget {
+  std::string cid;
+  std::string path;
+
+  bool IsCidTarget() const {
+    return !cid.empty() && path.empty();
+  }
+
+  bool IsPathTarget() const {
+    return !path.empty();
+  }
+};
+
+struct StringHash {
+  using is_transparent = void;
+  std::size_t operator()(std::string_view sv) const {
+    std::hash<std::string_view> hasher;
+    return hasher(sv);
+  }
+};
 
 }  // namespace ipfs::ipld
 

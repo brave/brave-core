@@ -8,7 +8,6 @@
 #include <cstddef>
 #include <cstdint>
 #include <memory>
-#include <sstream>
 #include <string>
 #include <utility>
 #include <vector>
@@ -39,7 +38,7 @@ absl::optional<base::Value> ParseJsonHelper(
       json,
       base::JSON_PARSE_CHROMIUM_EXTENSIONS | base::JSON_ALLOW_TRAILING_COMMAS);
   if (!result.has_value()) {
-    LOG(INFO) << "[IPFS] json:" << json;
+//    LOG(INFO) << "[IPFS] json:" << json;
     return absl::nullopt;
   }
 

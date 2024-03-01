@@ -4,12 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/ipfs/ipld/block_reader.h"
-#include "base/files/file_util.h"
-#include "base/files/scoped_temp_dir.h"
-#include "base/ranges/algorithm.h"
-#include "base/values.h"
-#include "brave/components/ipfs/ipld/car_block_reader.h"
-#include "brave/components/ipfs/ipld/car_content_requester.h"
 
 #include <cstdint>
 #include <memory>
@@ -18,13 +12,20 @@
 #include <unordered_map>
 
 #include "base/containers/contains.h"
+#include "base/files/file_util.h"
+#include "base/files/scoped_temp_dir.h"
+#include "base/functional/bind.h"
 #include "base/memory/scoped_refptr.h"
 #include "base/path_service.h"
+#include "base/ranges/algorithm.h"
 #include "base/test/bind.h"
 #include "base/test/test_timeouts.h"
+#include "base/values.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block.h"
+#include "brave/components/ipfs/ipld/car_block_reader.h"
+#include "brave/components/ipfs/ipld/car_content_requester.h"
 #include "brave/components/ipfs/ipld/content_requester.h"
 #include "brave/components/ipfs/pref_names.h"
 #include "chrome/browser/prefs/browser_prefs.h"
@@ -47,11 +48,11 @@
 #include "testing/gtest/include/gtest/gtest.h"
 #include "third_party/unrar/src/rartypes.hpp"
 #include "url/gurl.h"
-#include "base/functional/bind.h"
 
 namespace {
 
-constexpr char kSubDirWithMixedBlockFiles[] = "subdir-with-mixed-block-files.car";
+constexpr char kSubDirWithMixedBlockFiles[] =
+    "subdir-with-mixed-block-files.car";
 constexpr char kTestDataSubDir[] = "ipfs/ipld";
 
 const struct {
@@ -182,15 +183,21 @@ class BlockReaderUnitTest : public testing::Test {
   base::test::TaskEnvironment* task_environment() { return &task_environment_; }
   const base::FilePath& test_data_dir() const { return test_data_dir_; }
 
-  using ChunkCarFetcherCallback = base::RepeatingCallback<void(std::unique_ptr<std::string>)>;
-  void GetFileContentByChunks(const std::string& filename, const unsigned int chunk_size, ChunkCarFetcherCallback callback, uint64_t& file_size) const {
+  using ChunkCarFetcherCallback =
+      base::RepeatingCallback<void(std::unique_ptr<std::string>)>;
+  void GetFileContentByChunks(const std::string& filename,
+                              const unsigned int chunk_size,
+                              ChunkCarFetcherCallback callback,
+                              uint64_t& file_size) const {
     const auto full_path = test_data_dir_.AppendASCII(filename);
     uint64_t curr_pos = 0;
     std::string result;
     [&]() { ASSERT_TRUE(base::ReadFileToString(full_path, &result)); }();
-    while(curr_pos < result.size()) {
-      auto start_pos = result.begin()+curr_pos;
-      auto end_pos = start_pos + ((curr_pos+chunk_size < result.size()) ? chunk_size : (result.size() - curr_pos));      
+    while (curr_pos < result.size()) {
+      auto start_pos = result.begin() + curr_pos;
+      auto end_pos = start_pos + ((curr_pos + chunk_size < result.size())
+                                      ? chunk_size
+                                      : (result.size() - curr_pos));
       callback.Run(std::make_unique<std::string>(start_pos, end_pos));
       curr_pos += end_pos - start_pos;
     }
@@ -217,8 +224,14 @@ class BlockReaderUnitTest : public testing::Test {
 TEST_F(BlockReaderUnitTest, BasicTestSteps) {
   std::unordered_map<std::string, std::unique_ptr<ipfs::ipld::Block>>
       all_blocks;
+  int32_t complete_counter{0};
   auto request_callback = base::BindLambdaForTesting(
-      [&all_blocks](std::unique_ptr<ipfs::ipld::Block> block) {
+      [&all_blocks, &complete_counter](std::unique_ptr<ipfs::ipld::Block> block,
+                                       bool is_completed) {
+        if (is_completed && !block) {
+          complete_counter++;
+          return;
+        }
         all_blocks.try_emplace(block->Cid(), std::move(block));
       });
   url_loader_factory()->SetInterceptor(
@@ -256,13 +269,21 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
   EXPECT_GT(all_blocks.size(), 0UL);
   EXPECT_FALSE(br->content_requester_->IsStarted());
   TestBlockExisting(all_blocks);
+  EXPECT_EQ(complete_counter, 1);
 }
 
 TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
   std::unordered_map<std::string, std::unique_ptr<ipfs::ipld::Block>>
       all_blocks;
+  int32_t complete_counter{0};
   auto request_callback = base::BindLambdaForTesting(
-      [&all_blocks](std::unique_ptr<ipfs::ipld::Block> block) {
+      [&all_blocks, &complete_counter](std::unique_ptr<ipfs::ipld::Block> block,
+                                       bool is_completed) {
+        if (is_completed && !block) {
+          complete_counter++;
+          return;
+        }
+
         all_blocks.try_emplace(block->Cid(), std::move(block));
       });
   GURL url(kDefaultIpfsUrl);
@@ -272,17 +293,21 @@ TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
           base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
               url_loader_factory()),
           GetPrefs()));
-  br->content_requester_->buffer_ready_callback_ = br->GetReadCallbackForTests(std::move(request_callback));
+  br->content_requester_->buffer_ready_callback_ =
+      br->GetReadCallbackForTests(std::move(request_callback));
   br->content_requester_->is_started_ = true;
 
   const uint32_t chunk_size = 100;
   uint64_t file_size = 0;
   uint64_t read_bytes = 0;
-  GetFileContentByChunks(kSubDirWithMixedBlockFiles, chunk_size, base::BindLambdaForTesting([&](std::unique_ptr<std::string> data) {
-    EXPECT_LE(data->size(), chunk_size);
-    br->content_requester_->OnDataReceived(*data, base::NullCallback());
-    read_bytes+=data->size();
-  }), file_size);
+  GetFileContentByChunks(
+      kSubDirWithMixedBlockFiles, chunk_size,
+      base::BindLambdaForTesting([&](std::unique_ptr<std::string> data) {
+        EXPECT_LE(data->size(), chunk_size);
+        br->content_requester_->OnDataReceived(*data, base::NullCallback());
+        read_bytes += data->size();
+      }),
+      file_size);
   EXPECT_TRUE(br->is_header_retrieved_);
   EXPECT_TRUE(br->buffer_.empty());
 
@@ -291,6 +316,7 @@ TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
   EXPECT_FALSE(br->content_requester_->IsStarted());
   EXPECT_EQ(read_bytes, file_size);
   TestBlockExisting(all_blocks);
+  EXPECT_EQ(complete_counter, 1);
 }
 
 }  // namespace ipfs::ipld

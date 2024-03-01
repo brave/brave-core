@@ -17,17 +17,9 @@
 #include "partition_alloc/pointers/raw_ptr.h"
 
 namespace ipfs::ipld {
-struct StringHash {
-  using is_transparent = void;
-  std::size_t operator()(std::string_view sv) const {
-    std::hash<std::string_view> hasher;
-    return hasher(sv);
-  }
-};
 
 class BlockOrchestrator {
  public:
-
   explicit BlockOrchestrator(PrefService* pref_service);
   ~BlockOrchestrator();
 
@@ -36,17 +28,35 @@ class BlockOrchestrator {
   BlockOrchestrator& operator=(const BlockOrchestrator&) = delete;
   BlockOrchestrator& operator=(BlockOrchestrator&&) = delete;
 
-  void BuildResponse(std::unique_ptr<IpfsRequest> request,
+  void BuildResponse(std::unique_ptr<IpfsTrustlessRequest> request,
                      IpfsRequestCallback callback);
 
+  bool IsActive() const;
  private:
-  void OnBlockRead(std::unique_ptr<Block> block, bool is_completed);
+  FRIEND_TEST_ALL_PREFIXES(BlockOrchestratorUnitTest, RequestFile);
+  friend class BlockOrchestratorUnitTest;
 
-  std::unordered_map<std::string, std::unique_ptr<Block>, StringHash, std::equal_to<>>
-      dag_nodes_;
+  void OnBlockRead(std::unique_ptr<Block> block, bool is_completed);
+  void Reset();
+
+  void ProcessTarget(std::unique_ptr<TrustlessTarget> target) ;
+
+  std::unordered_map<std::string,
+                     std::unique_ptr<Block>,
+                     StringHash,
+                     std::equal_to<>> dag_nodes_;
+
+  void BlockChainForCid(Block* block) const;
+
+  // void CreateDagPathIndex();
+  // std::unordered_map<std::string,
+  //                    Block*,
+  //                    StringHash,
+  //                    std::equal_to<>> darg_nodes_path_index_;
+
   IpfsRequestCallback request_callback_;
-  std::unique_ptr<BlockReaderFactory> block_reader_factory_{
-      std::make_unique<BlockReaderFactory>()};
+  std::unique_ptr<IpfsTrustlessRequest> request_;
+  std::unique_ptr<BlockReader> block_reader_;
   raw_ptr<PrefService> pref_service_;
   base::WeakPtrFactory<BlockOrchestrator> weak_ptr_factory_{this};
 };

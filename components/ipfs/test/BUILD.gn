@@ -21,6 +21,7 @@ source_set("brave_ipfs_unit_tests") {
       "//brave/components/ipfs/ipld/ipld_utils_unittest.cc",
       "//brave/components/ipfs/ipld/car_content_requester_unittest.cc",
       "//brave/components/ipfs/ipld/block_reader_unittest.cc",
+      "//brave/components/ipfs/ipld/block_orchestrator_unittest.cc",
     ]
 
     if (enable_ipfs_local_node) {
