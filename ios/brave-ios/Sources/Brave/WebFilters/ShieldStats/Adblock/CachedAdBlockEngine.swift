@@ -26,11 +26,12 @@ public class CachedAdBlockEngine {
   }
 
   public enum FileType: Hashable, CustomDebugStringConvertible {
-    case text
+    case text, data
 
     public var debugDescription: String {
       switch self {
       case .text: return "txt"
+      case .data: return "dat"
       }
     }
   }
@@ -234,26 +235,35 @@ public class CachedAdBlockEngine {
     cachedFrameScriptTypes = FifoDict()
   }
 
+  /// Serialize the engine into data to be later loaded from cache
+  public func serialize() throws -> Data {
+    return try engine.serialize()
+  }
+
   /// Create an engine from the given resources
   public static func compile(
     filterListInfo: FilterListInfo,
     resourcesInfo: ResourcesInfo,
     isAlwaysAggressive: Bool
   ) throws -> CachedAdBlockEngine {
+    let engine = try makeEngine(from: filterListInfo)
+    try engine.useResources(fromFileURL: resourcesInfo.localFileURL)
+    let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
+    return CachedAdBlockEngine(
+      engine: engine,
+      filterListInfo: filterListInfo,
+      resourcesInfo: resourcesInfo,
+      serialQueue: serialQueue,
+      isAlwaysAggressive: isAlwaysAggressive
+    )
+  }
+
+  private static func makeEngine(from filterListInfo: FilterListInfo) throws -> AdblockEngine {
     switch filterListInfo.fileType {
+    case .data:
+      return try AdblockEngine(serializedData: Data(contentsOf: filterListInfo.localFileURL))
     case .text:
-      let engine = try AdblockEngine(
-        textFileURL: filterListInfo.localFileURL,
-        resourcesFileURL: resourcesInfo.localFileURL
-      )
-      let serialQueue = DispatchQueue(label: "com.brave.WrappedAdBlockEngine.\(UUID().uuidString)")
-      return CachedAdBlockEngine(
-        engine: engine,
-        filterListInfo: filterListInfo,
-        resourcesInfo: resourcesInfo,
-        serialQueue: serialQueue,
-        isAlwaysAggressive: isAlwaysAggressive
-      )
+      return try AdblockEngine(rules: String(contentsOf: filterListInfo.localFileURL))
     }
   }
 }
