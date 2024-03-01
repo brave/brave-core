@@ -9,6 +9,8 @@
 #include <optional>
 
 #include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/sidebar_service.h"
+#include "components/version_info/channel.h"
 
 class Browser;
 class GURL;
@@ -16,8 +18,6 @@ class PrefService;
 enum class SidePanelEntryId;
 
 namespace sidebar {
-
-class SidebarService;
 
 bool CanUseSidebar(Browser* browser);
 bool CanAddCurrentActiveTabToSidebar(Browser* browser);
@@ -39,6 +39,9 @@ std::optional<SidebarItem> AddItemForSidePanelIdIfNeeded(Browser* browser,
 
 bool IsDisabledItemForPrivate(SidebarItem::BuiltInItemType type);
 bool IsDisabledItemForGuest(SidebarItem::BuiltInItemType type);
+
+SidebarService::ShowSidebarOption GetDefaultShowSidebarOption(
+    version_info::Channel channel);
 }  // namespace sidebar
 
 #endif  // BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_UTILS_H_
