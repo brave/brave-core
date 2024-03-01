@@ -33,6 +33,8 @@ extension BraveCoreSwitchKey {
       return "Enable Features"
     case .p3aWalletCountTestNetworks:
       return "Brave Wallet Count Test Networks"
+    case .useDevGoUpdater:
+      return "Use staging CRX components"
     default:
       return ""
     }
@@ -42,7 +44,8 @@ extension BraveCoreSwitchKey {
     switch self {
     case .p3aDoNotRandomizeUploadInterval,
       .p3aIgnoreServerErrors,
-      .p3aWalletCountTestNetworks:
+      .p3aWalletCountTestNetworks,
+      .useDevGoUpdater:
       return true
     default:
       return false
@@ -279,6 +282,7 @@ struct BraveCoreDebugSwitchesView: View {
           } label: {
             SwitchContainer(.enableFeatures)
           }
+          SwitchContainer(.useDevGoUpdater)
         }
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
