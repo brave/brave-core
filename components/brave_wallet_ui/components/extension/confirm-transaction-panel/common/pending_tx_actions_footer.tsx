@@ -25,7 +25,6 @@ import {
 } from './pending_tx_actions_footer.style'
 
 interface Props {
-  rejectButtonType?: 'reject' | 'cancel'
   blowfishWarnings?: BraveWallet.BlowfishWarning[]
   setIsWarningCollapsed?: React.Dispatch<React.SetStateAction<boolean>>
   isWarningCollapsed?: boolean
@@ -47,7 +46,6 @@ export function PendingTransactionActionsFooter({
   isWarningCollapsed,
   setIsWarningCollapsed,
   blowfishWarnings,
-  rejectButtonType,
   isConfirmButtonDisabled,
   rejectAllTransactions,
   transactionDetails,
@@ -114,7 +112,7 @@ export function PendingTransactionActionsFooter({
     return {
       confirmButton: (
         <LeoSquaredButton
-          kind={hasWarnings ? 'plain-faint' : 'filled'}
+          kind={hasWarnings ? 'outline' : 'filled'}
           onClick={onClickConfirmTransaction}
           disabled={isConfirmButtonDisabled}
           isDisabled={isConfirmButtonDisabled}
@@ -125,14 +123,12 @@ export function PendingTransactionActionsFooter({
       ),
       rejectButton: (
         <LeoSquaredButton
-          kind={hasWarnings ? 'filled' : 'plain-faint'}
+          kind={hasWarnings ? 'filled' : 'outline'}
           onClick={onReject}
           disabled={transactionConfirmed}
           isDisabled={transactionConfirmed}
         >
-          {rejectButtonType === 'cancel'
-            ? getLocale('braveWalletButtonCancel')
-            : getLocale('braveWalletAllowSpendRejectButton')}
+          {getLocale('braveWalletAllowSpendRejectButton')}
         </LeoSquaredButton>
       )
     }
@@ -142,8 +138,7 @@ export function PendingTransactionActionsFooter({
     isConfirmButtonDisabled,
     isConfirmButtonDisabled,
     transactionConfirmed,
-    onReject,
-    rejectButtonType
+    onReject
   ])
 
   // computed
