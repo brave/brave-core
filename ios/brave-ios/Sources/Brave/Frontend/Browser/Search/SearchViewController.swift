@@ -7,14 +7,21 @@ import Favicon
 import Preferences
 import Shared
 import Storage
-import UIKit
 import Then
+import UIKit
 
 // MARK: - SearchViewControllerDelegate
 
 protocol SearchViewControllerDelegate: AnyObject {
-  func searchViewController(_ searchViewController: SearchViewController, didSubmit query: String, braveSearchPromotion: Bool)
-  func searchViewController(_ searchViewController: SearchViewController, didSubmitAIChat query: String)
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmit query: String,
+    braveSearchPromotion: Bool
+  )
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmitAIChat query: String
+  )
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL)
   func searchViewController(
     _ searchViewController: SearchViewController,
@@ -400,10 +407,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
       braveSearchPromotion: isBraveSearchPromotion
     )
   }
-  
+
   private func submitSearchQueryToAIChat() {
     searchDelegate?.searchViewController(
-      self, didSubmitAIChat: dataSource.searchQuery)
+      self,
+      didSubmitAIChat: dataSource.searchQuery
+    )
   }
 
   // MARK: Actions
@@ -624,23 +633,27 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
         $0.textLabel?.text = dataSource.searchQuery
         $0.textLabel?.textColor = .bravePrimary
         $0.imageView?.image = UIImage(
-          named: "search_bar_find_in_page_icon", in: .module, compatibleWith: nil)?.withRenderingMode(.alwaysTemplate)
+          named: "search_bar_find_in_page_icon",
+          in: .module,
+          compatibleWith: nil
+        )?.withRenderingMode(.alwaysTemplate)
         $0.imageView?.tintColor = browserColors.iconDefault
         $0.imageView?.contentMode = .center
         $0.backgroundColor = .clear
       }
-      
+
       return cell
     case .aiChat:
       let cell = TwoLineTableViewCell().then {
-        $0.textLabel?.text = "\(dataSource.searchQuery) - \(Strings.AIChat.askLeoSearchSuggestionTitle)"
+        $0.textLabel?.text =
+          "\(dataSource.searchQuery) - \(Strings.AIChat.askLeoSearchSuggestionTitle)"
         $0.textLabel?.textColor = .bravePrimary
         $0.imageView?.image = UIImage(named: "aichat-avatar", in: .module, compatibleWith: nil)
         $0.imageView?.tintColor = browserColors.iconDefault
         $0.imageView?.contentMode = .center
         $0.backgroundColor = .clear
       }
-      
+
       return cell
     case .searchSuggestionsOptIn:
       var cell: UITableViewCell?

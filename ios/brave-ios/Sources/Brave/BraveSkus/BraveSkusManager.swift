@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveVPN
 import Foundation
 import Preferences
 import Shared
-import AIChat
 import os.log
 
 public class BraveSkusManager {
@@ -16,64 +16,74 @@ public class BraveSkusManager {
 
   public init?(isPrivateMode: Bool) {
     guard let skusService = Skus.SkusServiceFactory.get(privateMode: isPrivateMode) else {
-      assert(isPrivateMode, "[SkusManager] - SkusServiceFactory failed to intialize in regular mode, something is wrong.")
+      assert(
+        isPrivateMode,
+        "[SkusManager] - SkusServiceFactory failed to intialize in regular mode, something is wrong."
+      )
       return nil
     }
 
     self.sku = skusService
   }
-  
+
   @MainActor
   public func refreshCredentials() async {
     if Preferences.VPN.skusCredential.value != nil,
-       let domain = Preferences.VPN.skusCredentialDomain.value,
-       let expirationDate = Preferences.VPN.expirationDate.value {
-      
+      let domain = Preferences.VPN.skusCredentialDomain.value,
+      let expirationDate = Preferences.VPN.expirationDate.value
+    {
+
       if expirationDate >= Date() {
-        _ =  await credentialSummary(for: domain)
+        _ = await credentialSummary(for: domain)
       } else {
-        Logger.module.debug("[SkusManager] - VPN Skus Credentials has not expired yet, no need to refresh it.")
+        Logger.module.debug(
+          "[SkusManager] - VPN Skus Credentials has not expired yet, no need to refresh it."
+        )
       }
     }
-    
+
     if Preferences.AIChat.subscriptionHasCredentials.value,
-       let expirationDate = Preferences.AIChat.subscriptionExpirationDate.value {
-      
+      let expirationDate = Preferences.AIChat.subscriptionExpirationDate.value
+    {
+
       if expirationDate >= Date() {
         _ = await credentialSummary(for: BraveStoreProductGroup.leo.skusDomain)
-        
+
       } else {
-        Logger.module.debug("[SkusManager] - Leo Skus Credentials has not expired yet, no need to refresh it.")
+        Logger.module.debug(
+          "[SkusManager] - Leo Skus Credentials has not expired yet, no need to refresh it."
+        )
       }
     }
   }
 
   // MARK: - Handling SKU methods.
-  
+
   @MainActor
   func refreshOrder(for orderId: String, domain: String) async -> Any? {
     Logger.module.debug("[SkusManager] - RefreshOrder")
     let order = await sku.refreshOrder(domain, orderId: orderId)
     guard !order.isEmpty,
-          let data = order.data(using: .utf8),
-          let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) else {
+      let data = order.data(using: .utf8),
+      let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+    else {
       Logger.module.debug("[SkusManager] - Failed to Serialize Order")
       return nil
     }
-    
+
     return json
   }
-  
+
   @MainActor
   func fetchOrderCredentials(for orderId: String, domain: String) async -> String {
     Logger.module.debug("[SkusManager] - FetchOrderCredentials")
     return await sku.fetchOrderCredentials(domain, orderId: orderId)
   }
-  
+
   @MainActor
   func prepareCredentialsPresentation(for domain: String, path: String) async -> String? {
     Logger.module.debug("[SkusManager] - PrepareCredentialsPresentation")
-    
+
     let credentialType = CredentialType.from(domain: domain)
     let credential = await sku.prepareCredentialsPresentation(domain, path: path)
     if !credential.isEmpty {
@@ -97,20 +107,21 @@ public class BraveSkusManager {
         break
       }
     }
-    
+
     return credential
   }
-  
+
   @MainActor
   func credentialSummary(for domain: String) async -> Any? {
     let summary = await sku.credentialSummary(domain)
     guard !summary.isEmpty,
-          let data = summary.data(using: .utf8),
-          let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed) else {
+      let data = summary.data(using: .utf8),
+      let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
+    else {
       Logger.module.debug("[SkusManager] - Failed to Serialize Credential Summary")
       return nil
     }
-    
+
     guard summary != "{}" else {
       return json
     }
@@ -141,15 +152,17 @@ public class BraveSkusManager {
         if !credentialSummary.active {
           Logger.module.debug("[SkusManager] - The credential summary is not active")
         }
-        
+
         if credentialSummary.remainingCredentialCount <= 0 {
-          Logger.module.debug("[SkusManager] - The credential summary does not have any remaining credentials")
-          
+          Logger.module.debug(
+            "[SkusManager] - The credential summary does not have any remaining credentials"
+          )
+
           // AI-Chat always has an `order` but VPN doesn't
           // Once we move VPN over to the Skus v2 then we can use CredentialSummary.order.id
           /*if let orderId = CredentialSummary.order.id {
             Logger.module.debug("[SkusManager] - Refreshing Credentials")
-            
+
             let credentials = await sku.fetchOrderCredentials(domain, orderId: orderId)
             if credentials.isEmpty {
               Logger.module.debug("[SkusManager] - Successfully Refreshed Credentials")
@@ -163,7 +176,7 @@ public class BraveSkusManager {
     } catch {
       Logger.module.error("[SkusManager] - \(error)")
     }
-    
+
     return json
   }
 
@@ -200,7 +213,7 @@ private enum CredentialType {
   case unknown
   case vpn
   case leo
-  
+
   static func from(domain: String) -> CredentialType {
     switch domain {
     case "vpn.brave.software", "vpn.bravesoftware.com", "vpn.brave.com": return .vpn
@@ -215,23 +228,23 @@ private struct CredentialSummary: Codable {
   let expiresAt: Date?
   let active: Bool
   let remainingCredentialCount: Int
-  
+
   static func from(data: Data) throws -> CredentialSummary {
     return try jsonDecoder.decode(Self.self, from: data)
   }
-  
+
   enum State {
     case valid
     case invalid
     case sessionExpired
   }
-  
+
   var state: State {
     if active && remainingCredentialCount > 0 { return .valid }
     if active && remainingCredentialCount == 0 { return .sessionExpired }
     return .invalid
   }
-  
+
   private static var jsonDecoder: JSONDecoder {
     let formatter = ISO8601DateFormatter()
     formatter.formatOptions = [
@@ -240,19 +253,22 @@ private struct CredentialSummary: Codable {
       .withDay,
       .withTime,
       .withDashSeparatorInDate,
-      .withColonSeparatorInTime
+      .withColonSeparatorInTime,
     ]
-    
+
     let decoder = JSONDecoder()
     decoder.keyDecodingStrategy = .convertFromSnakeCase
     decoder.dateDecodingStrategy = .custom({ decoder in
       let container = try decoder.singleValueContainer()
       let dateString = try container.decode(String.self)
-      
+
       guard let date = formatter.date(from: try container.decode(String.self)) else {
-        throw DecodingError.dataCorruptedError(in: container, debugDescription: "Cannot decode date string \(dateString)")
+        throw DecodingError.dataCorruptedError(
+          in: container,
+          debugDescription: "Cannot decode date string \(dateString)"
+        )
       }
-      
+
       return date
     })
     return decoder
@@ -262,23 +278,27 @@ private struct CredentialSummary: Codable {
 private struct CredentialCookie {
   let expirationDate: Date
   let cookie: String
-  
+
   static func from(credential: String, domain: String) -> CredentialCookie? {
     guard let credential = credential.unescape(),
-          let cookieDomain = URL(string: "https://\(domain)") else {
+      let cookieDomain = URL(string: "https://\(domain)")
+    else {
       return nil
     }
-    
-    guard let cookie = HTTPCookie.cookies(withResponseHeaderFields:
-                                            ["Set-Cookie": credential],
-                                          for: cookieDomain).first else {
+
+    guard
+      let cookie = HTTPCookie.cookies(
+        withResponseHeaderFields: ["Set-Cookie": credential],
+        for: cookieDomain
+      ).first
+    else {
       return nil
     }
-    
+
     guard let expirationDate = cookie.expiresDate else {
       return nil
     }
-    
+
     return CredentialCookie(expirationDate: expirationDate, cookie: cookie.value)
   }
 }

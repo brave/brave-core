@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 struct AIChatContextLimitErrorView: View {
   var newChatStarted: (() -> Void)?
@@ -14,13 +14,13 @@ struct AIChatContextLimitErrorView: View {
       Image(braveSystemName: "leo.warning.circle-filled")
         .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorIcon))
         .padding([.bottom, .trailing])
-      
+
       VStack(alignment: .leading, spacing: 0.0) {
         Text(Strings.AIChat.contextLimitErrorTitle)
           .font(.callout)
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom)
-        
+
         Button(action: {
           newChatStarted?()
         }) {

@@ -25,19 +25,45 @@ extension URL {
     public static let ntpTutorialPage = URL(string: "https://brave.com/ja/ntp-tutorial")!
     public static let privacyFeatures = URL(string: "https://brave.com/privacy-features/")!
     public static let support = URL(string: "https://support.brave.com")!
-    public static let p3aHelpArticle = URL(string: "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-")!
-    public static let braveVPNFaq = URL(string: "https://support.brave.com/hc/en-us/articles/360045045952")!
-    public static let braveVPNLinkReceiptProd = URL(string: "https://account.brave.com/?intent=connect-receipt&product=vpn")!
-    public static let braveVPNLinkReceiptStaging = URL(string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn")!
-    public static let braveVPNLinkReceiptDev = URL(string: "https://account.brave.software/?intent=connect-receipt&product=vpn")!
-    public static let safeBrowsingHelp = URL(string: "https://support.brave.com/hc/en-us/articles/15222663599629-Safe-Browsing-in-Brave")!
-    public static let screenTimeHelp = URL(string: "https://support.apple.com/guide/security/secd8831e732/web")!
-    public static let braveLeoManageSubscriptionProd = URL(string: "https://account.brave.com/plans")!
-    public static let braveLeoManageSubscriptionStaging = URL(string: "https://account.bravesoftware.com/plans")!
-    public static let braveLeoManageSubscriptionDev = URL(string: "https://account.brave.software/plans")!
-    public static let braveLeoLinkReceiptProd = URL(string: "https://account.brave.com/?intent=link-order&product=leo")!
-    public static let braveLeoLinkReceiptStaging = URL(string: "https://account.bravesoftware.com/?intent=link-order&product=leo")!
-    public static let braveLeoLinkReceiptDev = URL(string: "https://account.brave.software/?intent=link-order&product=leo")!
+    public static let p3aHelpArticle = URL(
+      string: "https://support.brave.com/hc/en-us/articles/9140465918093-What-is-P3A-in-Brave-"
+    )!
+    public static let braveVPNFaq = URL(
+      string: "https://support.brave.com/hc/en-us/articles/360045045952"
+    )!
+    public static let braveVPNLinkReceiptProd = URL(
+      string: "https://account.brave.com/?intent=connect-receipt&product=vpn"
+    )!
+    public static let braveVPNLinkReceiptStaging = URL(
+      string: "https://account.bravesoftware.com/?intent=connect-receipt&product=vpn"
+    )!
+    public static let braveVPNLinkReceiptDev = URL(
+      string: "https://account.brave.software/?intent=connect-receipt&product=vpn"
+    )!
+    public static let safeBrowsingHelp = URL(
+      string: "https://support.brave.com/hc/en-us/articles/15222663599629-Safe-Browsing-in-Brave"
+    )!
+    public static let screenTimeHelp = URL(
+      string: "https://support.apple.com/guide/security/secd8831e732/web"
+    )!
+    public static let braveLeoManageSubscriptionProd = URL(
+      string: "https://account.brave.com/plans"
+    )!
+    public static let braveLeoManageSubscriptionStaging = URL(
+      string: "https://account.bravesoftware.com/plans"
+    )!
+    public static let braveLeoManageSubscriptionDev = URL(
+      string: "https://account.brave.software/plans"
+    )!
+    public static let braveLeoLinkReceiptProd = URL(
+      string: "https://account.brave.com/?intent=link-order&product=leo"
+    )!
+    public static let braveLeoLinkReceiptStaging = URL(
+      string: "https://account.bravesoftware.com/?intent=link-order&product=leo"
+    )!
+    public static let braveLeoLinkReceiptDev = URL(
+      string: "https://account.brave.software/?intent=link-order&product=leo"
+    )!
   }
   public enum Apple {
     public static let manageSubscriptions = URL(

@@ -15,7 +15,7 @@ public protocol AppStoreProduct: RawRepresentable<String>, CaseIterable {
 /// A class that handles all AppStore Receipt related requests
 public class AppStoreReceipt {
   private init() {}
-  
+
   /// Retrieves the AppStore Purchase Receipt stored in the Application Bundle
   /// Returns the receipt as a Base64 encoded string
   public static var receipt: String {
@@ -23,11 +23,13 @@ public class AppStoreReceipt {
       guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
         throw AppStoreReceiptError.invalidReceiptURL
       }
-      
+
       do {
         return try Data(contentsOf: receiptUrl).base64EncodedString
       } catch {
-        Logger.module.error("[AppStoreReceipt] - Failed to retrieve AppStore Receipt: \(error.localizedDescription)")
+        Logger.module.error(
+          "[AppStoreReceipt] - Failed to retrieve AppStore Receipt: \(error.localizedDescription)"
+        )
         throw AppStoreReceiptError.invalidReceiptData
       }
     }
@@ -46,22 +48,22 @@ public class AppStoreReceipt {
             continuation.resume(throwing: error)
             return
           }
-          
+
           continuation.resume()
         }
       }
     }
   }
-  
+
   /// An AppStore Receipt Error
   enum AppStoreReceiptError: Error {
     /// No receipt found in the Application Bundle
     case invalidReceiptURL
-    
+
     /// Failed to read the AppStore Receipt from the Application Bundle
     case invalidReceiptData
   }
-  
+
   // There are two ways to force the AppStore to add receipts to the Bundle
   // The first is to use SKRefreshRequest and the second is to restore Transactions
   // SKReceiptRefreshRequest can be slow, so use only for testing
@@ -69,19 +71,19 @@ public class AppStoreReceipt {
   private class AppStoreReceiptRestorer: NSObject, SKRequestDelegate {
     private let request = SKReceiptRefreshRequest()
     private var onRefreshComplete: ((Error?) -> Void)?
-    
+
     override init() {
       super.init()
       self.request.delegate = self
     }
-    
+
     func restoreTransactions(with listener: @escaping (Error?) -> Void) {
       if onRefreshComplete == nil {
         self.onRefreshComplete = listener
         self.request.start()
       }
     }
-    
+
     func requestDidFinish(_ request: SKRequest) {
       self.onRefreshComplete?(nil)
       self.onRefreshComplete = nil
@@ -99,12 +101,12 @@ public class AppStoreReceipt {
   private class AppStoreReceiptRestorer: NSObject, SKPaymentTransactionObserver {
     private let queue = SKPaymentQueue()
     private var onRefreshComplete: ((Error?) -> Void)?
-    
+
     override init() {
       super.init()
       self.queue.add(self)
     }
-    
+
     /// Restores completed transactions which triggers an AppStore receipt refresh
     func restoreTransactions(with listener: @escaping (Error?) -> Void) {
       if onRefreshComplete == nil {
@@ -112,17 +114,20 @@ public class AppStoreReceipt {
         self.queue.restoreCompletedTransactions()
       }
     }
-    
-    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+
+    func paymentQueue(
+      _ queue: SKPaymentQueue,
+      updatedTransactions transactions: [SKPaymentTransaction]
+    ) {
       // No transactions to restore, so the receipt can be empty
       if transactions.isEmpty {
         onRefreshComplete?(SKError(.storeProductNotAvailable))
         onRefreshComplete = nil
         return
       }
-      
+
       var completion: (() -> Void)?
-      
+
       // Sort the transactions and restore the receipt
       transactions
         .sorted(using: KeyPathComparator(\.transactionDate, order: .reverse))
@@ -136,10 +141,10 @@ public class AppStoreReceipt {
                 self.onRefreshComplete = nil
               }
             }
-            
+
             // Apple states that all processes transactions must be marked finish after processing
             self.queue.finishTransaction(transaction)
-            
+
           case .restored:
             if completion == nil {
               completion = { [weak self] in
@@ -148,13 +153,13 @@ public class AppStoreReceipt {
                 self.onRefreshComplete = nil
               }
             }
-            
+
             // Apple states that all processes transactions must be marked finish after processing
             self.queue.finishTransaction(transaction)
-            
+
           case .purchasing, .deferred:
             break
-            
+
           case .failed:
             if completion == nil {
               completion = { [weak self] in
@@ -163,21 +168,24 @@ public class AppStoreReceipt {
                 self.onRefreshComplete = nil
               }
             }
-            
+
             // Apple states that all processes transactions must be marked finish after processing
             self.queue.finishTransaction(transaction)
-            
+
           @unknown default:
             break
           }
         }
-      
+
       // Finished restoring the receipt
       self.queue.remove(self)
       completion?()
     }
-    
-    func paymentQueue(_ queue: SKPaymentQueue, restoreCompletedTransactionsFailedWithError error: Error) {
+
+    func paymentQueue(
+      _ queue: SKPaymentQueue,
+      restoreCompletedTransactionsFailedWithError error: Error
+    ) {
       // Restoring the receipt failed
       self.onRefreshComplete?(error)
       self.onRefreshComplete = nil
@@ -193,57 +201,61 @@ public class AppStoreSDK: ObservableObject {
   struct Products {
     /// Products the customer consumes once. Not a subscription product.
     let consumable: [Product]
-    
+
     /// Products the customer does not consume. Not a subscription product.
     let nonConsumable: [Product]
-    
+
     /// Products the customer purchased that cannot be automatically renewed. Not a subscription product.
     let nonRenewable: [Product]
-    
+
     /// Products the customer purchased as a subscription that automatically renews. A subscription product.
     let autoRenewable: [Product]
-    
+
     /// All products the user has purchased or was given.
     var all: [Product] {
-      return consumable + nonConsumable +
-             nonRenewable + autoRenewable
+      return consumable + nonConsumable + nonRenewable + autoRenewable
     }
-    
+
     init() {
       self.consumable = []
       self.nonConsumable = []
       self.nonRenewable = []
       self.autoRenewable = []
     }
-    
-    init(consumable: [Product], nonConsumable: [Product], nonRenewable: [Product], autoRenewable: [Product]) {
+
+    init(
+      consumable: [Product],
+      nonConsumable: [Product],
+      nonRenewable: [Product],
+      autoRenewable: [Product]
+    ) {
       self.consumable = consumable
       self.nonConsumable = nonConsumable
       self.nonRenewable = nonRenewable
       self.autoRenewable = autoRenewable
     }
   }
-  
+
   /// Returns all available productson the store
   /// Each store must implement this function and return the list of products available
   /// - Returns: A list of products available in the store
   public var allAppStoreProducts: [any AppStoreProduct] {
     fatalError("[AppStoreSDK] - Not Implemented")
   }
-  
+
   /// Products Available on the AppStore
   @Published
   private(set) var allProducts = Products()
-  
+
   /// Products the customer has purchased
   @Published
   private(set) var purchasedProducts = Products()
 
   // MARK: - Private
-  
+
   /// Task that tracks AppStore product updates
   private var updateTask: Task<Void, Error>?
-  
+
   public init() {
     // Start updater immediately
     updateTask = Task.detached {
@@ -251,13 +263,13 @@ public class AppStoreSDK: ObservableObject {
         do {
           // Verify the transaction
           let transaction = try self.verify(result)
-          
+
           // Retrieve all products the user purchased
           let purchasedProducts = await self.fetchPurchasedProducts()
-          
+
           // Transactions must be marked as completed once processed
           await transaction.finish()
-          
+
           // Distribute the purchased products to the customer
           await MainActor.run {
             self.purchasedProducts = purchasedProducts
@@ -267,29 +279,29 @@ public class AppStoreSDK: ObservableObject {
         }
       }
     }
-    
+
     // Fetch initial products immediately
     Task.detached {
       // Retrieve all products the user purchased
       await self.fetchProducts()
-      
+
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
-      
+
       // Distribute the purchased products to the customer
       await MainActor.run {
         self.purchasedProducts = purchasedProducts
       }
     }
   }
-  
+
   deinit {
     // Stop listening to AppStore product updates
     updateTask?.cancel()
   }
-  
+
   // MARK: - Public
-  
+
   /// Retrieves a product's renewable subscription product
   /// - Parameter product: The product whose SKU to retrieve
   /// - Returns: The AppStore renewable subscription product
@@ -297,7 +309,7 @@ public class AppStoreSDK: ObservableObject {
   func subscription(for product: any AppStoreProduct) async -> Product? {
     allProducts.autoRenewable.first(where: { $0.id == product.rawValue })
   }
-  
+
   /// Retrieves a product's renewable subscription status
   /// - Parameter product: The product whose subscription status to retrieve
   /// - Returns: The renewable subscription's status
@@ -305,15 +317,17 @@ public class AppStoreSDK: ObservableObject {
   func status(for product: any AppStoreProduct) async -> [Product.SubscriptionInfo.Status] {
     (try? await subscription(for: product)?.subscription?.status) ?? []
   }
-  
+
   /// Retrieves a product's renewable subscription renewal information
   /// - Parameter product: The product whose renewal to retrieve
   /// - Returns: The renewable subscription's renewal information
   @MainActor
-  func renewalState(for product: any AppStoreProduct) async -> Product.SubscriptionInfo.RenewalState? {
+  func renewalState(
+    for product: any AppStoreProduct
+  ) async -> Product.SubscriptionInfo.RenewalState? {
     await status(for: product).first?.state
   }
-  
+
   /// Retrieves a product's transaction history
   /// - Parameter product: The product whose last transaction history to retrieve
   /// - Returns: The product's latest transaction history
@@ -326,10 +340,10 @@ public class AppStoreSDK: ObservableObject {
         Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
       }
     }
-    
+
     return nil
   }
-  
+
   /// Retrieves a customer's purchase entitlement of a specified product
   /// - Parameter product: The product whose current subscription to retrieve
   /// - Returns: The current product entitlement/purchase. Null if the customer is not currently entitled to this product
@@ -342,10 +356,10 @@ public class AppStoreSDK: ObservableObject {
         Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
       }
     }
-    
+
     return nil
   }
-  
+
   /// Purchases a product using In-App Purchases
   /// - Parameter product: The product customer wants to purchase
   /// - Returns: Returns the validated purchase transaction. Returns null if the transaction failed
@@ -355,26 +369,26 @@ public class AppStoreSDK: ObservableObject {
     case .success(let result):
       // Verify the transaction
       let transaction = try self.verify(result)
-      
+
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
-      
+
       // Transactions must be marked as completed once processed
       await transaction.finish()
-      
+
       // Distribute the purchased products to the customer
       await MainActor.run {
         self.purchasedProducts = purchasedProducts
       }
-      
+
       // Return the processed transaction
       return transaction
-      
+
     case .userCancelled, .pending:
       // The transaction is pending
       // Do nothing with the transaction
       return nil
-      
+
     @unknown default:
       // Some future states for transactions have been added
       // Do nothing with the transaction
@@ -382,7 +396,7 @@ public class AppStoreSDK: ObservableObject {
       return nil
     }
   }
-  
+
   /// Determines if the customer has currently purchased a product and is entitled to it.
   /// - Parameter product: The product whose purchase status to check
   /// - Returns: True if the customer is entitled to this product. False if the customer did not purchase the specified product
@@ -390,24 +404,24 @@ public class AppStoreSDK: ObservableObject {
     switch product.type {
     case .consumable:
       return allProducts.consumable.contains(product)
-      
+
     case .nonConsumable:
       return allProducts.nonConsumable.contains(product)
-      
+
     case .nonRenewable:
       return allProducts.nonRenewable.contains(product)
-      
+
     case .autoRenewable:
       return allProducts.autoRenewable.contains(product)
-      
+
     default:
       Logger.module.error("[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue)")
       return false
     }
   }
-  
+
   // MARK: - Private
-  
+
   /// Verifies a transaction/purchase on device.
   /// - Parameter result: The verification status of the Transaction or Product
   /// - Throws: Throws an exception if verification failed
@@ -416,7 +430,7 @@ public class AppStoreSDK: ObservableObject {
     switch result {
     case .unverified(_, let error):
       throw error
-      
+
     case .verified(let signedType):
       return signedType
     }
@@ -429,32 +443,36 @@ public class AppStoreSDK: ObservableObject {
       var nonConsumable = [Product]()
       var nonRenewable = [Product]()
       var autoRenewable = [Product]()
-      
+
       let products = try await Product.products(for: allAppStoreProducts.map({ $0.rawValue }))
       for product in products {
         switch product.type {
         case .consumable:
           consumable.append(product)
-          
+
         case .nonConsumable:
           nonConsumable.append(product)
-          
+
         case .nonRenewable:
           nonRenewable.append(product)
-          
+
         case .autoRenewable:
           autoRenewable.append(product)
-          
+
         default:
-          Logger.module.error("[AppStoreSDK] - Fetched Product of Unknown Type: \(product.type.rawValue)")
+          Logger.module.error(
+            "[AppStoreSDK] - Fetched Product of Unknown Type: \(product.type.rawValue)"
+          )
           break
         }
       }
-      
-      let availableProducts = Products(consumable: consumable,
-                                       nonConsumable: nonConsumable,
-                                       nonRenewable: nonRenewable,
-                                       autoRenewable: autoRenewable)
+
+      let availableProducts = Products(
+        consumable: consumable,
+        nonConsumable: nonConsumable,
+        nonRenewable: nonRenewable,
+        autoRenewable: autoRenewable
+      )
       await MainActor.run {
         self.allProducts = availableProducts
       }
@@ -470,46 +488,53 @@ public class AppStoreSDK: ObservableObject {
     var nonConsumable = [Product]()
     var nonRenewable = [Product]()
     var autoRenewable = [Product]()
-    
+
     for await result in Transaction.currentEntitlements {
       do {
         let transaction = try verify(result)
-        
+
         switch transaction.productType {
         case .consumable:
           if let product = allProducts.consumable.first(where: { $0.id == transaction.productID }) {
             consumable.append(product)
           }
           break
-          
+
         case .nonConsumable:
-          if let product = allProducts.nonConsumable.first(where: { $0.id == transaction.productID }) {
+          if let product = allProducts.nonConsumable.first(where: { $0.id == transaction.productID }
+          ) {
             nonConsumable.append(product)
           }
-          
+
         case .nonRenewable:
-          if let product = allProducts.nonRenewable.first(where: { $0.id == transaction.productID }) {
+          if let product = allProducts.nonRenewable.first(where: { $0.id == transaction.productID })
+          {
             // We can also filter non-renewable subscriptions by transaction.purchaseDate
             nonRenewable.append(product)
           }
-          
+
         case .autoRenewable:
-          if let product = allProducts.autoRenewable.first(where: { $0.id == transaction.productID }) {
+          if let product = allProducts.autoRenewable.first(where: { $0.id == transaction.productID }
+          ) {
             autoRenewable.append(product)
           }
-          
+
         default:
-          Logger.module.error("[AppStoreSDK] - Fetched Product of Unknown Type: \(transaction.productType.rawValue)")
+          Logger.module.error(
+            "[AppStoreSDK] - Fetched Product of Unknown Type: \(transaction.productType.rawValue)"
+          )
           break
         }
       } catch {
         Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
       }
     }
-    
-    return Products(consumable: consumable,
-                    nonConsumable: nonConsumable,
-                    nonRenewable: nonRenewable,
-                    autoRenewable: autoRenewable)
+
+    return Products(
+      consumable: consumable,
+      nonConsumable: nonConsumable,
+      nonRenewable: nonRenewable,
+      autoRenewable: autoRenewable
+    )
   }
 }

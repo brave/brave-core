@@ -268,9 +268,10 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     {
       AppState.shared.dau.sendPingToServer()
     }
-    
+
     Task { @MainActor in
-      let isPrivateBrowsing = scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
+      let isPrivateBrowsing =
+        scene.browserViewController?.privateBrowsingManager.isPrivateBrowsing == true
       await BraveSkusManager(isPrivateMode: isPrivateBrowsing)?.refreshCredentials()
     }
   }

@@ -12,8 +12,10 @@ extension Strings {
       "aichat.contextLimitErrorTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "This conversation is too long and cannot continue.\nThere may be other models available with which Leo is capable of maintaining accuracy for longer conversations.",
-      comment: "The title shown on limit reached error view, which is suggesting user to change default model"
+      value:
+        "This conversation is too long and cannot continue.\nThere may be other models available with which Leo is capable of maintaining accuracy for longer conversations.",
+      comment:
+        "The title shown on limit reached error view, which is suggesting user to change default model"
     )
     public static let newChatActionTitle = NSLocalizedString(
       "aichat.newChatActionTitle",
@@ -27,7 +29,8 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "There was a network issue connecting to Leo, check your connection and try again.",
-      comment: "The title for view that shows network - connection error and suggesting to try again"
+      comment:
+        "The title for view that shows network - connection error and suggesting to try again"
     )
     public static let retryActionTitle = NSLocalizedString(
       "aichat.retryActionTitle",
@@ -152,7 +155,8 @@ extension Strings {
       "aichat.chatIntroWebsiteHelpSubtitlePageSummarize",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:",
+      value:
+        "I can help you summarizing articles, expanding on a site's content and much more. Not sure where to start? Try this:",
       comment: "The subtitle for intro view which triggers website help for summary"
     )
     public static let chatIntroWebsiteHelpSubtitleArticleSummarize = NSLocalizedString(
@@ -173,7 +177,8 @@ extension Strings {
       "aichat.chatIntroJustTalkSubTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.",
+      value:
+        "Ask me anything! We can talk about any topic you want. I'm always learning and improving to provide better answers.",
       comment: "The subtitle for intro view which triggers just chat"
     )
     public static let introMessageTitle = NSLocalizedString(
@@ -188,49 +193,57 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "Llama 2 13b by Meta",
-      comment: "The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator"
+      comment:
+        "The model and creator for intro message - Llama 2 13b is the model name -- Meta is the creator"
     )
     public static let introMessageMixtralModelDescription = NSLocalizedString(
       "aichat.introMessageMixtralModelDescription",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Mixtral by Mistral AI",
-      comment: "The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator"
+      comment:
+        "The model and creator for intro message - Mixstral is the model name -- Mistral AI is the creator"
     )
     public static let introMessageClaudeInstantModelDescription = NSLocalizedString(
       "aichat.introMessageClaudeInstantModelDescription",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Claude Instant by Anthropic",
-      comment: "The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator"
+      comment:
+        "The model and creator for intro message - Claude Instant is the model -- Anthropic is the creator"
     )
     public static let introMessageLlamaMessageDescription = NSLocalizedString(
       "aichat.introMessageLlamaMessageDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.",
+      value:
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Llama 13B, a model created by Meta to be performant and applicable to many use cases.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageMixtralMessageDescription = NSLocalizedString(
       "aichat.introMessageMixtralMessageDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.",
+      value:
+        "Hi, I'm Leo. I'm a fully hosted AI assistant by Brave. I'm powered by Mixtral 8x7B, a model created by Mistral AI to handle advanced tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageClaudeInstantMessageDescription = NSLocalizedString(
       "aichat.introMessageClaudeInstantMessageDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.",
+      value:
+        "Hi, I'm Leo. I'm proxied by Brave and powered by Claude Instant, a model created by Anthropic to power conversational and text processing tasks.",
       comment: "The model intro message when you first enter the chat assistant"
     )
     public static let introMessageGenericMessageDescription = NSLocalizedString(
       "aichat.introMessageGenericMessageDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by %@. Ask me anything, and I'll do my best to answer.",
-      comment: "The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name"
+      value:
+        "Hi, I'm Leo. I'm an AI assistant by Brave. I'm powered by %@. Ask me anything, and I'll do my best to answer.",
+      comment:
+        "The model intro message when you first enter the chat assistant -- %@ is a place-holder for the model name"
     )
     public static let paywallViewTitle = NSLocalizedString(
       "aichat.paywallViewTitle",
@@ -250,7 +263,8 @@ extension Strings {
       "aichat.paywallPurchaseErrorDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
+      value:
+        "Unable to complete purchase. Please try again, or check your payment details on Apple and try again.",
       comment: "The error description when in app purcahse is erroneous."
     )
     public static let paywallYearlySubscriptionTitle = NSLocalizedString(
@@ -265,7 +279,8 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "SAVE UP TO 25%",
-      comment: "The description indicating yearly subscription that show how much user is saving percentage"
+      comment:
+        "The description indicating yearly subscription that show how much user is saving percentage"
     )
     public static let paywallYearlyPriceDividend = NSLocalizedString(
       "aichat.paywallYearlyPriceDividend",
@@ -293,7 +308,8 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "All subscriptions are auto-renewed but can be cancelled at any time before renewal.",
-      comment: "The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable."
+      comment:
+        "The text displayed on the bottom of paywall screen which indicates subscriptions are auto renewable."
     )
     public static let paywallPurchaseActionTitle = NSLocalizedString(
       "aichat.paywallPurchaseActionTitle",
@@ -642,8 +658,10 @@ extension Strings {
       "aichat.termsConditionsTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the **[Brave wiki](%@)** for more details.\n\nWhen you ask Leo a question it may use the context of the web page you are viewing or text you highlight to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers. See the **[privacy policy](%@)** for more information.",
-      comment: "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
+      value:
+        "Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the **[Brave wiki](%@)** for more details.\n\nWhen you ask Leo a question it may use the context of the web page you are viewing or text you highlight to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers. See the **[privacy policy](%@)** for more information.",
+      comment:
+        "The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls"
     )
     public static let termsConditionsApprovalActionTitle = NSLocalizedString(
       "aichat.termsConditionsApproveActionTitle",
@@ -656,15 +674,18 @@ extension Strings {
       "aichat.feedbackPremiumAdTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Leo Premium provides access to an expanded set of language models for even greater answer nuance. [Learn more](https://brave.com/) - [Dismiss](braveai://dismiss)",
-      comment: "The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated"
+      value:
+        "Leo Premium provides access to an expanded set of language models for even greater answer nuance. [Learn more](https://brave.com/) - [Dismiss](braveai://dismiss)",
+      comment:
+        "The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated"
     )
     public static let speechRecognizerDisclaimer = NSLocalizedString(
       "aichat.feedbackPremiumAdTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Brave does not store or share your voice inputs.",
-      comment: "The description indicating voice inputs from user is not store or shared and these inpurs are totally private."
+      comment:
+        "The description indicating voice inputs from user is not store or shared and these inpurs are totally private."
     )
     public static let microphonePermissionAlertTitle = NSLocalizedString(
       "aichat.microphonePermissionAlertTitle",
@@ -677,7 +698,8 @@ extension Strings {
       "aichat.microphonePermissionAlertDescription",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Please allow microphone access in iOS system settings for Brave to use anonymous voice entry.",
+      value:
+        "Please allow microphone access in iOS system settings for Brave to use anonymous voice entry.",
       comment: "The description for alert needed to have microphone permission"
     )
     public static let voiceInputButtonTitle = NSLocalizedString(
@@ -685,7 +707,8 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "Voice Input",
-      comment: "The accessibility description when pressing the microphone button to access voice entry."
+      comment:
+        "The accessibility description when pressing the microphone button to access voice entry."
     )
     public static let responseContextMenuRegenerateTitle = NSLocalizedString(
       "aichat.responseContextMenuRegenerateTitle",
@@ -755,14 +778,17 @@ extension Strings {
       tableName: "BraveLeo",
       bundle: .module,
       value: "Page Context Information",
-      comment: "The accessibility text to read out loud when the user taps on the info icon on the page context view"
+      comment:
+        "The accessibility text to read out loud when the user taps on the info icon on the page context view"
     )
     public static let leoPageContextInfoDescriptionTitle = NSLocalizedString(
       "aichat.leoPageContextInfoDescriptionTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.",
-      comment: "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
+      value:
+        "Toggle on to ask about this page. Its content will be sent to Brave Leo along with your messages.",
+      comment:
+        "The title to display when the user taps on the information icon on the page context view. Brave Leo is the name of the product and should not be translated."
     )
   }
 }

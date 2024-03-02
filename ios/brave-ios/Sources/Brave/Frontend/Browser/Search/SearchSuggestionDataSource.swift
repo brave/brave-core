@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveUI
 import Foundation
 import Preferences
 import Shared
 import os.log
-import AIChat
 
 // MARK: - SearchSuggestionDataSourceDelegate
 
@@ -70,13 +70,11 @@ class SearchSuggestionDataSource {
     var sections = [SearchListSection]()
     sections.append(.quickBar)
 
-    if !tabType.isPrivate &&
-        Preferences.AIChat.autocompleteSuggestionsEnabled.value {
+    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value {
       sections.append(.aiChat)
     }
-        
-    if !tabType.isPrivate &&
-        searchEngines?.shouldShowSearchSuggestionsOptIn == true {
+
+    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)
     }
 

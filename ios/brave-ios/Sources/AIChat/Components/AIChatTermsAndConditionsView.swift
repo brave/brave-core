@@ -3,16 +3,16 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 public struct AIChatTermsAndConditionsView: View {
   @Environment(\.dismiss)
   private var dismiss
-  
+
   @Binding
   var termsAndConditionsAccepted: Bool
-  
+
   public var body: some View {
     VStack(spacing: 16.0) {
       Text(Strings.AIChat.termsConditionsTitle)
@@ -21,17 +21,22 @@ public struct AIChatTermsAndConditionsView: View {
         .fixedSize(horizontal: false, vertical: true)
         .font(.body.weight(.semibold))
         .foregroundStyle(Color(braveSystemName: .textPrimary))
-      
-      Text(LocalizedStringKey(String.localizedStringWithFormat(
-        Strings.AIChat.termsConditionsDescription,
-        AIChatConstants.braveLeoWikiURL.absoluteString,
-        AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString)))
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-        .foregroundStyle(Color(braveSystemName: .textPrimary))
-        .tint(Color(braveSystemName: .primary50))
-      
+
+      Text(
+        LocalizedStringKey(
+          String.localizedStringWithFormat(
+            Strings.AIChat.termsConditionsDescription,
+            AIChatConstants.braveLeoWikiURL.absoluteString,
+            AIChatConstants.braveLeoPrivacyPolicyURL.absoluteString
+          )
+        )
+      )
+      .multilineTextAlignment(.leading)
+      .frame(maxWidth: .infinity, alignment: .leading)
+      .fixedSize(horizontal: false, vertical: true)
+      .foregroundStyle(Color(braveSystemName: .textPrimary))
+      .tint(Color(braveSystemName: .primary50))
+
       Button(action: {
         termsAndConditionsAccepted = true
       }) {

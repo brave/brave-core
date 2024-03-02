@@ -47,7 +47,7 @@ struct AdvancedShieldsSettingsView: View {
           NavigationLink(
             destination: { EmptyView() },
             label: {
-              ShieldLabelView(
+              LabelView(
                 title: Strings.manageWebsiteDataTitle,
                 subtitle: nil
               )

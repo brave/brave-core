@@ -3,38 +3,38 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveUI
 import BraveCore
-import Strings
+import BraveUI
 import DesignSystem
 import Preferences
 import StoreKit
+import Strings
+import SwiftUI
 
 public struct AIChatAdvancedSettingsView: View {
-  @Environment(\.openURL) 
+  @Environment(\.openURL)
   private var openURL
-  
+
   @Environment(\.dismiss)
   private var dismiss
-  
+
   @ObservedObject
   private var model: AIChatViewModel
-  
+
   @StateObject
   private var viewModel = AIChatSubscriptionDetailModelView()
-  
-  @State 
+
+  @State
   private var appStoreConnectionErrorPresented = false
 
   @State
   private var resetAndClearAlertErrorPresented = false
-  
+
   @State
   private var isPaywallPresented = false
 
   var isModallyPresented: Bool
-  
+
   public init(model: AIChatViewModel, isModallyPresented: Bool) {
     self.model = model
     self.isModallyPresented = isModallyPresented
@@ -45,14 +45,14 @@ public struct AIChatAdvancedSettingsView: View {
       NavigationView {
         settingsView
           .navigationTitle(Strings.AIChat.leoNavigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItemGroup(placement: .cancellationAction) {
-            Button(Strings.close) {
-              dismiss()
+          .navigationBarTitleDisplayMode(.inline)
+          .toolbar {
+            ToolbarItemGroup(placement: .cancellationAction) {
+              Button(Strings.close) {
+                dismiss()
+              }
             }
           }
-        }
       }
       .navigationViewStyle(.stack)
       .onAppear {
@@ -73,7 +73,7 @@ public struct AIChatAdvancedSettingsView: View {
         }
     }
   }
-  
+
   private var subscriptionMenuTitle: String {
     // Display the info from the AppStore
     if let state = viewModel.inAppPurchaseSubscriptionState {
@@ -86,20 +86,20 @@ public struct AIChatAdvancedSettingsView: View {
         return Strings.AIChat.goPremiumButtonTitle
       }
     }
-    
+
     // Display the info from SkusSDK
     if viewModel.skuOrderStatus == .active {
       return Strings.AIChat.manageSubscriptionsButtonTitle
     }
-    
+
     // No order found
     return Strings.AIChat.goPremiumButtonTitle
   }
-  
+
   private var subscriptionStatusTitle: String {
     // Display the info from the AppStore
     let inAppPurchaseProductType = viewModel.inAppPurchasedProductType
-    
+
     switch inAppPurchaseProductType {
     case .leoMonthly:
       return Strings.AIChat.monthlySubscriptionTitle
@@ -111,7 +111,7 @@ public struct AIChatAdvancedSettingsView: View {
 
     // Display the info from SkusSDK
     let skuProductType = viewModel.skuOrderProductType
-    
+
     switch skuProductType {
     case .monthly:
       return Strings.AIChat.monthlySubscriptionTitle
@@ -126,18 +126,18 @@ public struct AIChatAdvancedSettingsView: View {
     // No order found
     return "None"
   }
-  
+
   private var expirationDateTitle: String {
     let dateFormatter = ISO8601DateFormatter().then {
       $0.formatOptions = [.withYear, .withMonth, .withDay, .withDashSeparatorInDate]
     }
-    
+
     let periodToDate = { (subscription: StoreKit.Product.SubscriptionPeriod) -> Date? in
       let now = Date.now
       if subscription.value == 0 {
         return now
       }
-      
+
       switch subscription.unit {
       case .day:
         return Calendar.current.date(byAdding: .day, value: subscription.value, to: now)
@@ -151,20 +151,21 @@ public struct AIChatAdvancedSettingsView: View {
         return nil
       }
     }
-    
+
     if let period = viewModel.inAppPurchaseSubscriptionPeriod,
-       let date = periodToDate(period) {
+      let date = periodToDate(period)
+    {
       return dateFormatter.string(from: date)
     }
-    
+
     // Display the info from SkusSDK
     if let expiryDate = viewModel.skuOrderExpirationDate {
       return dateFormatter.string(from: expiryDate)
     }
-    
+
     return Strings.AIChat.leoSubscriptionUnknownDateTitle
   }
-  
+
   private var settingsView: some View {
     Form {
       Section {
@@ -172,7 +173,7 @@ public struct AIChatAdvancedSettingsView: View {
           title: Strings.AIChat.advancedSettingsAutocompleteTitle,
           option: Preferences.AIChat.autocompleteSuggestionsEnabled
         )
-        
+
         NavigationLink {
           AIChatDefaultModelView(aiModel: model)
         } label: {
@@ -185,24 +186,32 @@ public struct AIChatAdvancedSettingsView: View {
         Text(Strings.AIChat.advancedSettingsHeaderTitle)
           .textCase(nil)
       }
-      
+
       Section {
         if viewModel.canDisplaySubscriptionStatus {
           if viewModel.isSubscriptionStatusLoading {
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
-                            detail: subscriptionStatusTitle)
-            
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
-                            detail: expirationDateTitle)
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+              detail: subscriptionStatusTitle
+            )
+
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+              detail: expirationDateTitle
+            )
           } else {
             // Subscription information is loading
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
-                            detail: nil)
-            
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
-                            detail: nil)
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+              detail: nil
+            )
+
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+              detail: nil
+            )
           }
-          
+
           // Check subscription is activated with in-app purchase
           if viewModel.canSubscriptionBeLinked {
             Button(action: {
@@ -213,7 +222,7 @@ public struct AIChatAdvancedSettingsView: View {
                 subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
               )
             }
-            
+
             if viewModel.isDevReceiptLinkingAvailable {
               Button(action: {
                 openURL(.brave.braveLeoLinkReceiptStaging)
@@ -222,7 +231,7 @@ public struct AIChatAdvancedSettingsView: View {
                   title: "[Staging] Link receipt"
                 )
               }
-              
+
               Button(action: {
                 openURL(.brave.braveLeoLinkReceiptDev)
               }) {
@@ -231,12 +240,12 @@ public struct AIChatAdvancedSettingsView: View {
                 )
               }
             }
-            
+
             Button(action: {
               guard let url = URL.apple.manageSubscriptions else {
                 return
               }
-              
+
               // Opens Apple's 'manage subscription' screen
               if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:])
@@ -263,12 +272,14 @@ public struct AIChatAdvancedSettingsView: View {
         AIChatPaywallView()
       }
       .alert(isPresented: $appStoreConnectionErrorPresented) {
-        Alert(title: Text(Strings.AIChat.appStoreErrorTitle),
-              message: Text(Strings.AIChat.appStoreErrorSubTitle),
-              dismissButton: .default(Text(Strings.OKString)))
+        Alert(
+          title: Text(Strings.AIChat.appStoreErrorTitle),
+          message: Text(Strings.AIChat.appStoreErrorSubTitle),
+          dismissButton: .default(Text(Strings.OKString))
+        )
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      
+
       Section {
         Button(action: {
           resetAndClearAlertErrorPresented.toggle()
@@ -287,7 +298,8 @@ public struct AIChatAdvancedSettingsView: View {
           primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
             model.clearAndResetData()
           },
-          secondaryButton: .cancel())
+          secondaryButton: .cancel()
+        )
       }
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))

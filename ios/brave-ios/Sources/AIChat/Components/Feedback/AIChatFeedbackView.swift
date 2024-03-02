@@ -3,20 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import DesignSystem
-import SpeechRecognition
 import AVFoundation
+import DesignSystem
 import Introspect
+import SpeechRecognition
+import SwiftUI
 
 private struct MenuScaleTransition: GeometryEffect {
   var scalePercent: Double
-  
+
   var animatableData: Double {
     get { scalePercent }
     set { scalePercent = newValue }
   }
-  
+
   func effectValue(size: CGSize) -> ProjectionTransform {
     let projection = ProjectionTransform(
       CGAffineTransform(scaleX: 1.0, y: scalePercent)
@@ -28,13 +28,13 @@ private struct MenuScaleTransition: GeometryEffect {
 private struct DropdownView<ActionView, MenuView>: View where ActionView: View, MenuView: View {
   @Binding
   var showMenu: Bool
-  
+
   @ViewBuilder
   let actionView: () -> ActionView
-  
+
   @ViewBuilder
   let menuView: () -> MenuView
-  
+
   var body: some View {
     actionView()
       .opacity(showMenu ? 0.7 : 1.0)
@@ -55,13 +55,13 @@ private struct DropdownView<ActionView, MenuView>: View where ActionView: View, 
         .alignmentGuide(.bottom) { $0[.top] }
       }
       .animation(.easeInOut(duration: 0.20), value: showMenu)
-    }
+  }
 }
 
 private struct AIChatDropdownButton: View {
   var action: () -> Void
   var title: String
-  
+
   var body: some View {
     Button {
       action()
@@ -71,7 +71,7 @@ private struct AIChatDropdownButton: View {
           .font(.subheadline)
           .foregroundStyle(Color(braveSystemName: .textPrimary))
           .frame(maxWidth: .infinity, alignment: .leading)
-        
+
         Image(braveSystemName: "leo.arrow.small-down")
           .foregroundStyle(Color(braveSystemName: .iconDefault))
           .padding(.leading)
@@ -90,11 +90,12 @@ private struct AIChatDropdownButton: View {
   }
 }
 
-private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item.RawValue: StringProtocol, Item: Identifiable, Item: Hashable {
+private struct AIChatDropdownMenu<Item>: View
+where Item: RawRepresentable, Item.RawValue: StringProtocol, Item: Identifiable, Item: Hashable {
   @Binding
   var selectedItem: Item
   var items: [Item]
-  
+
   var body: some View {
     VStack(spacing: 0.0) {
       ForEach(items) { item in
@@ -106,7 +107,7 @@ private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item
               .font(.subheadline)
               .foregroundStyle(Color(braveSystemName: .textPrimary))
               .frame(maxWidth: .infinity, alignment: .leading)
-            
+
             if item == selectedItem {
               Image(braveSystemName: "leo.check.normal")
                 .foregroundStyle(Color(braveSystemName: .iconDefault))
@@ -114,7 +115,7 @@ private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item
           }
           .padding()
         }
-        
+
         if let last = items.last, item != last {
           Color(braveSystemName: .dividerSubtle)
             .frame(height: 1.0)
@@ -147,7 +148,7 @@ private struct AIChatDropdownMenu<Item>: View where Item: RawRepresentable, Item
 private struct AIChatDropdownView: View {
   @Binding
   var selectedItem: AIChatFeedbackOption
-  
+
   @State
   private var showMenu = false
 
@@ -157,17 +158,20 @@ private struct AIChatDropdownView: View {
         Text(Strings.AIChat.feedbackOptionsViewTitle)
           .font(.caption.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-        
+
         Text(verbatim: "*")
           .font(.caption.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorText))
       }
       .frame(maxWidth: .infinity, alignment: .leading)
-      
+
       DropdownView(showMenu: $showMenu) {
-        AIChatDropdownButton(action: {
-          showMenu.toggle()
-        }, title: selectedItem.rawValue)
+        AIChatDropdownButton(
+          action: {
+            showMenu.toggle()
+          },
+          title: selectedItem.rawValue
+        )
       } menuView: {
         AIChatDropdownMenu(selectedItem: $selectedItem, items: AIChatFeedbackOption.allCases)
           .offset(x: 0.0, y: 12.0)
@@ -181,20 +185,20 @@ private struct AIChatDropdownView: View {
 
 private struct AIChatFeedbackInputView: View {
   private var speechRecognizer = SpeechRecognizer()
-  
+
   @State
   private var isVoiceEntryPresented = false
-  
+
   @State
   private var isNoMicrophonePermissionPresented = false
-  
+
   @Binding
   var text: String
-  
+
   init(text: Binding<String>) {
     _text = text
   }
-  
+
   var body: some View {
     HStack {
       ZStack(alignment: .leading) {
@@ -215,7 +219,7 @@ private struct AIChatFeedbackInputView: View {
               }
             }
           })
-        
+
         if text.isEmpty {
           Text(Strings.AIChat.feedbackInputViewTitle)
             .font(.subheadline)
@@ -229,7 +233,7 @@ private struct AIChatFeedbackInputView: View {
       }
       .fixedSize(horizontal: false, vertical: true)
       .padding(.trailing)
-      
+
       if speechRecognizer.isVoiceSearchAvailable {
         Button {
           Task { @MainActor in
@@ -265,7 +269,7 @@ private struct AIChatFeedbackInputView: View {
       )
     }
   }
-  
+
   @MainActor
   private func activateSpeechRecognition() async {
     let permissionStatus = await speechRecognizer.askForUserPermission()
@@ -287,12 +291,15 @@ private struct AIChatFeedbackLeoPremiumAdView: View {
       .frame(maxWidth: .infinity, alignment: .leading)
       .padding()
       .background(
-        LinearGradient(gradient:
-                        Gradient(colors: [
-                          Color(UIColor(rgb: 0xF8BEDA)).opacity(0.1),
-                          Color(UIColor(rgb: 0xAD99FF)).opacity(0.1)]),
-                       startPoint: .init(x: 1.0, y: 1.0),
-                       endPoint: .zero),
+        LinearGradient(
+          gradient:
+            Gradient(colors: [
+              Color(UIColor(rgb: 0xF8BEDA)).opacity(0.1),
+              Color(UIColor(rgb: 0xAD99FF)).opacity(0.1),
+            ]),
+          startPoint: .init(x: 1.0, y: 1.0),
+          endPoint: .zero
+        ),
         in: RoundedRectangle(cornerRadius: 8.0, style: .continuous)
       )
   }
@@ -302,7 +309,7 @@ enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
   case notHelpful
   case notWorking
   case other
-  
+
   var id: RawValue { rawValue }
 
   var rawValue: String {
@@ -320,35 +327,35 @@ enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
 struct AIChatFeedbackView: View {
   @State
   private var category: AIChatFeedbackOption = .notHelpful
-  
+
   @State
   private var feedbackText: String = ""
-  
+
   let onSubmit: (String, String) -> Void
   let onCancel: () -> Void
-  
+
   var body: some View {
     VStack {
       Text(Strings.AIChat.feedbackViewMainTitle)
         .font(.body.weight(.semibold))
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding()
-      
+
       AIChatDropdownView(selectedItem: $category)
         .zIndex(999)
         .padding(.horizontal)
-      
+
       Text(Strings.AIChat.feedbackInputViewTitle)
         .font(.caption.weight(.semibold))
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding([.horizontal, .top])
-      
+
       AIChatFeedbackInputView(text: $feedbackText)
         .padding([.horizontal, .bottom])
-      
+
       AIChatFeedbackLeoPremiumAdView()
         .padding(.horizontal)
-      
+
       HStack {
         Button {
           onCancel()
@@ -358,7 +365,7 @@ struct AIChatFeedbackView: View {
             .foregroundStyle(Color(braveSystemName: .textSecondary))
         }
         .padding()
-        
+
         Button {
           onSubmit(category.rawValue, feedbackText)
         } label: {
@@ -380,7 +387,8 @@ struct AIChatFeedbackView_Previews: PreviewProvider {
     AIChatFeedbackView(
       onSubmit: {
         print("Submitted Feedback: \($0) -- \($1)")
-      }, onCancel: {
+      },
+      onCancel: {
         print("Cancelled Feedback")
       }
     )

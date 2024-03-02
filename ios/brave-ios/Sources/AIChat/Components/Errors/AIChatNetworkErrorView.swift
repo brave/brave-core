@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 struct AIChatNetworkErrorView: View {
   var onRetryRequest: () -> Void
-  
+
   var body: some View {
     HStack(alignment: .top, spacing: 0.0) {
       Image(braveSystemName: "leo.warning.circle-filled")
         .foregroundStyle(Color(braveSystemName: .systemfeedbackErrorIcon))
         .padding([.bottom, .trailing])
-      
+
       VStack(alignment: .leading, spacing: 0.0) {
         Text(Strings.AIChat.networkErrorViewTitle)
           .font(.callout)
@@ -46,7 +46,7 @@ struct AIChatNetworkErrorView: View {
 #if DEBUG
 struct AIChatNetworkErrorView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatNetworkErrorView() {}
+    AIChatNetworkErrorView {}
       .previewLayout(.sizeThatFits)
   }
 }

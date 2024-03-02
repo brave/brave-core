@@ -3,29 +3,29 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 private struct AIChatIntroBubbleView<ImageOverlay: View>: View {
   var title: String
   var subtitle: String
   var image: ImageOverlay
   var onSummarizePage: (() -> Void)?
-  
+
   var body: some View {
     VStack(spacing: 0.0) {
       VStack(alignment: .leading, spacing: 8.0) {
         Text(title)
           .font(.callout.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-        
+
         Text(subtitle)
           .font(.footnote)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
       }
       .frame(maxWidth: .infinity, alignment: .leading)
       .fixedSize(horizontal: false, vertical: true)
-      
+
       if let onSummarizePage = onSummarizePage {
         Button {
           onSummarizePage()
@@ -55,14 +55,14 @@ private struct AIChatIntroBubbleView<ImageOverlay: View>: View {
 
 struct AIChatIntroView: View {
   let onSummarizePage: (() -> Void)?
-  
+
   var body: some View {
     VStack(spacing: 0.0) {
       VStack(alignment: .leading, spacing: 8.0) {
         Text(Strings.AIChat.chatIntroTitle)
           .font(.largeTitle.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textPrimary))
-        
+
         Text(Strings.AIChat.chatIntroSubTitle)
           .font(.title.weight(.semibold))
           .foregroundStyle(Color(braveSystemName: .textTertiary))
@@ -71,8 +71,7 @@ struct AIChatIntroView: View {
       .fixedSize(horizontal: false, vertical: true)
       .padding(.horizontal, 24.0)
       .padding(.bottom, 36.0)
-      
-      
+
       AIChatIntroBubbleView(
         title: Strings.AIChat.chatIntroWebsiteHelpTitle,
         subtitle: onSummarizePage != nil
@@ -86,7 +85,7 @@ struct AIChatIntroView: View {
       .background(Color(braveSystemName: .purple10))
       .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
       .padding([.horizontal, .bottom], 12.0)
-      
+
       AIChatIntroBubbleView(
         title: Strings.AIChat.chatIntroJustTalkTitle,
         subtitle: Strings.AIChat.chatIntroJustTalkSubTitle,

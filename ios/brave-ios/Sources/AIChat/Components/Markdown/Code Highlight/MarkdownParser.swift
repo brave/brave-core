@@ -11,33 +11,39 @@ class MarkdownParser {
     let languageHint: String?
     let backgroundColor: Color
   }
-  
+
   struct StringBlock: Hashable {
     let string: AttributedString
     let codeBlock: CodeBlock?
   }
-  
-  static func parse(string: String, preferredFont: UIFont, useHLJS: Bool, isDarkTheme: Bool) -> [StringBlock]? {
-    guard let string = try? AttributedString(markdown: string, preferredFont: .init(preferredFont)) else {
+
+  static func parse(
+    string: String,
+    preferredFont: UIFont,
+    useHLJS: Bool,
+    isDarkTheme: Bool
+  ) -> [StringBlock]? {
+    guard let string = try? AttributedString(markdown: string, preferredFont: .init(preferredFont))
+    else {
       return nil
     }
-    
+
     var codeBlocks = [(languageHint: String?, range: Range<AttributedString.Index>)]()
-    
+
     // Chunk the string into text and code-blocks with their ranges
     string.runs[AttributeScopes.FoundationAttributes.PresentationIntentAttribute.self]
       .forEach { (intentAttribute, range) in
         guard let intentAttribute = intentAttribute else {
           return
         }
-        
+
         for intent in intentAttribute.components {
           if case .codeBlock(let languageHint) = intent.kind {
             codeBlocks.append((languageHint, range))
           }
         }
       }
-    
+
     codeBlocks.sort { $0.range.lowerBound < $1.range.lowerBound }
 
     var result = [StringBlock]()
@@ -46,48 +52,65 @@ class MarkdownParser {
       if startIndex < range.lowerBound {
         result.append(
           StringBlock(
-            string: AttributedString(string[startIndex..<range.lowerBound]
-              .trimmingCharacters(in: .whitespacesAndNewlines)),
-            codeBlock: nil)
+            string: AttributedString(
+              string[startIndex..<range.lowerBound]
+                .trimmingCharacters(in: .whitespacesAndNewlines)
+            ),
+            codeBlock: nil
+          )
         )
       }
-      
+
       let string = string[range]
         .trimmingCharacters(in: .whitespacesAndNewlines)
-      
+
       // Use Highlight-JS
       if useHLJS {
         let highlighter = isDarkTheme ? HighlightJS.dark : HighlightJS.light
-        if let highlighted = highlighter.highlight(String(string.characters), preferredFont: preferredFont, language: languageHint) {
+        if let highlighted = highlighter.highlight(
+          String(string.characters),
+          preferredFont: preferredFont,
+          language: languageHint
+        ) {
           result.append(
             StringBlock(
               string: highlighted.string,
-              codeBlock: CodeBlock(languageHint: languageHint,
-                                   backgroundColor: highlighted.backgroundColor ?? Color(UIColor(rgb: isDarkTheme ? 0x282C34 : 0xFAFAFA))))
+              codeBlock: CodeBlock(
+                languageHint: languageHint,
+                backgroundColor: highlighted.backgroundColor
+                  ?? Color(UIColor(rgb: isDarkTheme ? 0x282C34 : 0xFAFAFA))
+              )
+            )
           )
-          
+
           // Advance to the next range
           startIndex = range.upperBound
           continue
         }
       }
-      
+
       result.append(
         StringBlock(
           string: AttributedString(string),
-          codeBlock: CodeBlock(languageHint: languageHint,
-                               backgroundColor: Color(UIColor(rgb: isDarkTheme ? 0x282C34 : 0xFAFAFA))))
+          codeBlock: CodeBlock(
+            languageHint: languageHint,
+            backgroundColor: Color(UIColor(rgb: isDarkTheme ? 0x282C34 : 0xFAFAFA))
+          )
+        )
       )
-      
+
       // Advance to the next range
       startIndex = range.upperBound
     }
-    
+
     if startIndex < string.endIndex {
       result.append(
         StringBlock(
-          string: AttributedString(string[startIndex..<string.endIndex].trimmingCharacters(in: .whitespacesAndNewlines)),
-          codeBlock: nil)
+          string: AttributedString(
+            string[startIndex..<string.endIndex].trimmingCharacters(in: .whitespacesAndNewlines)
+          ),
+          codeBlock: nil
+        )
       )
     }
     return result.isEmpty ? nil : result

@@ -3,42 +3,49 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
+
 struct AIChatPageContextView<InfoView>: View where InfoView: View {
   @State
   private var shouldShowInformationPopover = false
-  
+
   @Binding
   var isToggleOn: Bool
-  
+
   @ViewBuilder
   var infoContent: (() -> InfoView)
-  
+
   var body: some View {
-    Toggle(isOn: $isToggleOn, label: {
-      HStack {
-        Text(Strings.AIChat.infoAboutPageContext)
-          .font(.footnote)
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
-        
-        Button(action: {
-          shouldShowInformationPopover = true
-        }, label: {
-          Label {
-            Text(Strings.AIChat.leoPageContextInfoDescriptionTitle)
-          } icon: {
-            Image(braveSystemName: "leo.info.outline")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .font(.footnote)
+    Toggle(
+      isOn: $isToggleOn,
+      label: {
+        HStack {
+          Text(Strings.AIChat.infoAboutPageContext)
+            .font(.footnote)
+            .foregroundStyle(Color(braveSystemName: .textTertiary))
+
+          Button(
+            action: {
+              shouldShowInformationPopover = true
+            },
+            label: {
+              Label {
+                Text(Strings.AIChat.leoPageContextInfoDescriptionTitle)
+              } icon: {
+                Image(braveSystemName: "leo.info.outline")
+                  .foregroundStyle(Color(braveSystemName: .iconDefault))
+                  .font(.footnote)
+              }
+              .labelStyle(.iconOnly)
+            }
+          )
+          .popover(isPresented: $shouldShowInformationPopover) {
+            infoContent()
           }
-          .labelStyle(.iconOnly)
-        })
-        .popover(isPresented: $shouldShowInformationPopover) {
-          infoContent()
         }
       }
-    })
+    )
     .tint(Color(braveSystemName: isToggleOn ? .primary60 : .gray30))
     .padding([.vertical, .trailing], 8.0)
     .padding(.leading, 12.0)

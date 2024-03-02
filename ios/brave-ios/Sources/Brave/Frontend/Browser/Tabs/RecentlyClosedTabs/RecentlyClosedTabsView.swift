@@ -8,9 +8,9 @@ import BraveShared
 import BraveUI
 import CoreData
 import Data
+import Favicon
 import Shared
 import SwiftUI
-import Favicon
 
 struct RecentlyClosedTabsView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode

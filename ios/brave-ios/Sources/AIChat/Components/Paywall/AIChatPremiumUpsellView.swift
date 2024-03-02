@@ -3,13 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 struct AIChatPremiumUpsellView: View {
   enum UpsellType {
     case premium, rateLimit
-    
+
     var title: String {
       switch self {
       case .premium:
@@ -18,7 +18,7 @@ struct AIChatPremiumUpsellView: View {
         return Strings.AIChat.paywallRateLimitTitle
       }
     }
-    
+
     var subtitle: String? {
       switch self {
       case .rateLimit:
@@ -27,14 +27,14 @@ struct AIChatPremiumUpsellView: View {
         return nil
       }
     }
-    
+
     var primaryActionTitle: String {
       switch self {
       case .premium, .rateLimit:
         return Strings.AIChat.paywallPremiumUpsellPrimaryAction
       }
     }
-    
+
     var dismissActionTitle: String {
       switch self {
       case .premium:
@@ -44,7 +44,7 @@ struct AIChatPremiumUpsellView: View {
       }
     }
   }
-  
+
   var upsellType: UpsellType
   var upgradeAction: (() -> Void)?
   var dismissAction: (() -> Void)?
@@ -53,10 +53,12 @@ struct AIChatPremiumUpsellView: View {
     VStack(spacing: 0.0) {
       PremiumUpsellTitleView(
         upsellType: upsellType,
-        isPaywallPresented: false)
+        isPaywallPresented: false
+      )
       .padding(24.0)
       PremiumUpsellDetailView(
-        isPaywallPresented: false)
+        isPaywallPresented: false
+      )
       .padding(8.0)
       PremiumUpsellActionView(
         upsellType: upsellType,
@@ -65,7 +67,8 @@ struct AIChatPremiumUpsellView: View {
         },
         dismissAction: {
           dismissAction?()
-        })
+        }
+      )
     }
     .background(Color(braveSystemName: .primary10))
     .frame(maxWidth: .infinity, alignment: .leading)
@@ -95,7 +98,7 @@ struct PremiumUpsellActionView: View {
         .padding(16.0)
     }
     .buttonStyle(.plain)
-    
+
     Button(action: {
       dismissAction?()
     }) {
@@ -115,13 +118,13 @@ struct PremiumUpsellActionView: View {
 
 struct PremiumUpsellTitleView: View {
   let upsellType: AIChatPremiumUpsellView.UpsellType
-  
+
   let isPaywallPresented: Bool
-  
+
   var foregroundTextColor: Color {
     isPaywallPresented ? Color.white : Color(braveSystemName: .textPrimary)
   }
-  
+
   var body: some View {
     switch upsellType {
     case .premium:
@@ -152,43 +155,49 @@ struct PremiumUpsellTitleView: View {
 
 struct PremiumUpsellDetailView: View {
   let isPaywallPresented: Bool
-  
+
   var body: some View {
     VStack(spacing: 0) {
       PremiumUpsellTopicView(
         topicType: .modelType,
-        isPaywallPresented: isPaywallPresented)
-          .padding()
-      
+        isPaywallPresented: isPaywallPresented
+      )
+      .padding()
+
       Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
         .frame(height: 1.0)
-      
+
       PremiumUpsellTopicView(
         topicType: .creativity,
-        isPaywallPresented: isPaywallPresented)
-          .padding()
-      
+        isPaywallPresented: isPaywallPresented
+      )
+      .padding()
+
       Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
         .frame(height: 1.0)
-      
+
       PremiumUpsellTopicView(
         topicType: .accuracy,
-        isPaywallPresented: isPaywallPresented)
-          .padding()
-      
+        isPaywallPresented: isPaywallPresented
+      )
+      .padding()
+
       Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20)
         .frame(height: 1.0)
-      
+
       PremiumUpsellTopicView(
         topicType: .chatLength,
-        isPaywallPresented: isPaywallPresented)
-          .padding()
+        isPaywallPresented: isPaywallPresented
+      )
+      .padding()
     }
     .frame(maxWidth: .infinity, alignment: .leading)
     .overlay(
       ContainerRelativeShape()
-        .strokeBorder(Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20),
-                      lineWidth: 1.0)
+        .strokeBorder(
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary70 : .primary20),
+          lineWidth: 1.0
+        )
     )
     .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
   }
@@ -197,7 +206,7 @@ struct PremiumUpsellDetailView: View {
 private struct PremiumUpsellTopicView: View {
 
   let topicType: UpsellTopicType
-  
+
   let isPaywallPresented: Bool
 
   var body: some View {
@@ -205,21 +214,29 @@ private struct PremiumUpsellTopicView: View {
       Image(braveSystemName: topicType.icon)
         .padding(8.0)
         .background(Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .primary20))
-        .foregroundColor(Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary60))
+        .foregroundColor(
+          Color(braveSystemName: isPaywallPresented ? .primitivePrimary80 : .primary60)
+        )
         .clipShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-      
+
       VStack(alignment: .leading, spacing: 6.0) {
         Text(topicType.title)
-          .font(isPaywallPresented
-                ? .headline
-                : .subheadline.weight(.semibold))
-          .foregroundStyle(isPaywallPresented
-                           ? Color.white
-                           : Color(braveSystemName: .textPrimary))
-        
+          .font(
+            isPaywallPresented
+              ? .headline
+              : .subheadline.weight(.semibold)
+          )
+          .foregroundStyle(
+            isPaywallPresented
+              ? Color.white
+              : Color(braveSystemName: .textPrimary)
+          )
+
         Text(topicType.subTitle)
           .font(.footnote)
-          .foregroundStyle(Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .textSecondary))
+          .foregroundStyle(
+            Color(braveSystemName: isPaywallPresented ? .primitivePrimary30 : .textSecondary)
+          )
       }
       .lineLimit(2)
       .truncationMode(.tail)
@@ -227,10 +244,10 @@ private struct PremiumUpsellTopicView: View {
       .fixedSize(horizontal: false, vertical: true)
     }
   }
-  
+
   fileprivate enum UpsellTopicType {
     case modelType, creativity, accuracy, chatLength
-    
+
     var icon: String {
       switch self {
       case .modelType:
@@ -243,7 +260,7 @@ private struct PremiumUpsellTopicView: View {
         return "leo.message.bubble-comments"
       }
     }
-    
+
     var title: String {
       switch self {
       case .modelType:
@@ -256,7 +273,7 @@ private struct PremiumUpsellTopicView: View {
         return Strings.AIChat.paywallUpsellChatLengthTopicTitle
       }
     }
-    
+
     var subTitle: String {
       switch self {
       case .modelType:

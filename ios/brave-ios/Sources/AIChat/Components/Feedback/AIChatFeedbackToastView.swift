@@ -3,18 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 private struct AIChatFeedbackToastModifier: ViewModifier {
   @State
   private var task: Task<Void, Error>?
-  
+
   private let displayDuration = 5.0
 
   @Binding
   var toastType: AIChatFeedbackToastType
-  
+
   func body(content: Content) -> some View {
     content
       .overlay(alignment: .bottom) {
@@ -33,17 +33,17 @@ private struct AIChatFeedbackToastModifier: ViewModifier {
         }
       }
   }
-  
+
   private func show() {
     guard displayDuration > 0.0 else { return }
     UIImpactFeedbackGenerator(style: .light).impactOccurred()
-    
+
     task?.cancel()
     task = Task.delayed(bySeconds: displayDuration) { @MainActor in
       dismiss()
     }
   }
-  
+
   private func dismiss() {
     task?.cancel()
     task = nil
@@ -56,17 +56,19 @@ enum AIChatFeedbackToastType: Equatable {
   case error(message: String)
   case success(isLiked: Bool, onAddFeedback: (() -> Void)? = nil)
   case submitted
-  
+
   static func == (lhs: AIChatFeedbackToastType, rhs: AIChatFeedbackToastType) -> Bool {
     switch (lhs, rhs) {
     case (.none, .none), (.submitted, .submitted):
       return true
     case (.error(let errorA), .error(let errorB)):
       return errorA == errorB
-    case (.success(let isLikedA, let onAddFeedbackA),
-          .success(let isLikedB, let onAddFeedbackB)):
-      return isLikedA == isLikedB &&
-             String(describing: onAddFeedbackA) == String(describing: onAddFeedbackB)
+    case (
+      .success(let isLikedA, let onAddFeedbackA),
+      .success(let isLikedB, let onAddFeedbackB)
+    ):
+      return isLikedA == isLikedB
+        && String(describing: onAddFeedbackA) == String(describing: onAddFeedbackB)
     default:
       return false
     }
@@ -76,7 +78,7 @@ enum AIChatFeedbackToastType: Equatable {
 struct AIChatFeedbackToastView: View {
   @Binding
   var toastType: AIChatFeedbackToastType
-  
+
   var body: some View {
     HStack(spacing: 0.0) {
       Text(title)
@@ -85,7 +87,7 @@ struct AIChatFeedbackToastView: View {
         .fixedSize(horizontal: false, vertical: true)
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.trailing)
-      
+
       trailingViewButton()
     }
     .padding()
@@ -97,7 +99,7 @@ struct AIChatFeedbackToastView: View {
     .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
     .padding(.horizontal)
   }
-  
+
   private var title: String {
     switch toastType {
     case .none:
@@ -105,14 +107,14 @@ struct AIChatFeedbackToastView: View {
     case .error(let message):
       return message
     case .success(let isLiked, _):
-      return isLiked 
-      ? Strings.AIChat.feedbackSuccessAnswerLikedTitle
-      : Strings.AIChat.feedbackSuccessAnswerDisLikedTitle
+      return isLiked
+        ? Strings.AIChat.feedbackSuccessAnswerLikedTitle
+        : Strings.AIChat.feedbackSuccessAnswerDisLikedTitle
     case .submitted:
       return Strings.AIChat.feedbackSubmittedTitle
     }
   }
-  
+
   @ViewBuilder
   private func trailingViewButton() -> some View {
     switch toastType {

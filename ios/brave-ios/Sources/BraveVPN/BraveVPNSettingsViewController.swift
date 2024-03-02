@@ -465,7 +465,7 @@ extension BraveVPNSettingsViewController: BraveVPNInAppPurchaseObserverDelegate 
   public func handlePromotedInAppPurchase() {
     // No-op
   }
-  
+
   private func handleOfferCodeError(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false

@@ -1778,13 +1778,16 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Private video calls, right in your browser",
-      comment: "The subtitle description of menu item Brave Talk")
+      comment: "The subtitle description of menu item Brave Talk"
+    )
     public static let braveLeoItemDescription = NSLocalizedString(
       "optionsMenu.braveLeoItemDescription",
       tableName: "BraveShared",
       bundle: .module,
       value: "Leo is an AI-powered smart assistant, built right into the browser",
-      comment: "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated.")
+      comment:
+        "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated."
+    )
     public static let braveNewsItemTitle = NSLocalizedString(
       "optionsMenu.braveNewsItemTitle",
       tableName: "BraveShared",
@@ -2029,7 +2032,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Brave Rewards",
-    comment: "Brave Rewards settings title"
+    comment: "Brave Rewards title"
+  )
+  public static let braveRewardsSettingsTitle = NSLocalizedString(
+    "BraveRewardsSettingsTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Rewards",
+    comment: "Brave Rewards title in settings"
   )
   public static let hideRewardsIcon = NSLocalizedString(
     "HideRewardsIcon",
@@ -3305,6 +3315,13 @@ extension Strings {
     value: "Brave Shields & Privacy",
     comment: ""
   )
+  public static let braveShieldsAndPrivacySettingsTitle = NSLocalizedString(
+    "BraveShieldsAndPrivacyTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shields & Privacy",
+    comment: ""
+  )
   public static let bookmarksImportAction = NSLocalizedString(
     "bookmarksImportAction",
     tableName: "BraveShared",
@@ -3718,57 +3735,373 @@ extension Strings {
     bundle: .module,
     value:
       "Using Private Tabs only changes what Brave does on your device, it doesn't change anyone else's behavior.\n\nSites always learn your IP address when you visit them. From this, they can often guess roughly where you are — typically your city. Sometimes that location guess can be much more specific. Sites also know everything you specifically tell them, such as search terms. If you log into a site, they'll know you're the owner of that account. You'll still be logged out when you close the Private Tabs because Brave will throw away the cookie which keeps you logged in.\n\nWhoever connects you to the Internet (your ISP) can see all of your network activity. Often, this is your mobile carrier. If you're connected to a Wi-Fi network, this is the owner of that network, and if you're using a VPN, then it's whoever runs that VPN. Your ISP can see which sites you visit as you visit them. If those sites use HTTPS, they can't make much more than an educated guess about what you do on those sites. But if a site only uses HTTP then your ISP can see everything: your search terms, which pages you read, and which links you follow.\n\nIf an employer manages your device, they might also keep track of what you do with it. Using Private Tabs probably won't stop them from knowing which sites you've visited. Someone else with access to your device could also have installed software which monitors your activity, and Private Tabs won't protect you from this either.",
-    comment: "Private tab detail text")
-  public static let privateTabLink = NSLocalizedString("PrivateTabLink", tableName: "BraveShared", bundle: .module, value: "Learn about Private Tabs.", comment: "Private tab information link")
-  public static let privateBrowsingOnlyWarning = NSLocalizedString("PrivateBrowsingOnlyWarning", tableName: "BraveShared", bundle: .module, value: "Private Browsing Only mode will close all your current tabs and log you out of all sites.", comment: "When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed")
-  public static let bravePanel = NSLocalizedString("BravePanel", tableName: "BraveShared", bundle: .module, value: "Brave Panel", comment: "Button to show the brave panel")
-  public static let rewardsPanel = NSLocalizedString("RewardsPanel", tableName: "BraveShared", bundle: .module, value: "Rewards Panel", comment: "Button to show the rewards panel")
-  public static let individualControls = NSLocalizedString("IndividualControls", tableName: "BraveShared", bundle: .module, value: "Individual Controls", comment: "title for per-site shield toggles")
-  public static let blockingMonitor = NSLocalizedString("BlockingMonitor", tableName: "BraveShared", bundle: .module, value: "Blocking Monitor", comment: "title for section showing page blocking statistics")
-  public static let siteShieldSettings = NSLocalizedString("SiteShieldSettings", tableName: "BraveShared", bundle: .module, value: "Shields", comment: "Brave panel topmost title")
-  public static let adsAndTrackers = NSLocalizedString("AdsAndTrackers", tableName: "BraveShared", bundle: .module, value: "Ads and Trackers", comment: "individual blocking statistic title")
-  public static let HTTPSUpgrades = NSLocalizedString("HTTPSUpgrades", tableName: "BraveShared", bundle: .module, value: "HTTPS Upgrades", comment: "individual blocking statistic title")
-  public static let scriptsBlocked = NSLocalizedString("ScriptsBlocked", tableName: "BraveShared", bundle: .module, value: "Scripts Blocked", comment: "individual blocking statistic title")
-  public static let fingerprintingMethods = NSLocalizedString("FingerprintingMethods", tableName: "BraveShared", bundle: .module, value: "Fingerprinting Methods", comment: "individual blocking statistic title")
-  public static let shieldsOverview = NSLocalizedString("ShieldsOverview", tableName: "BraveShared", bundle: .module, value: "Site Shields allow you to control when ads and trackers are blocked for each site that you visit. If you prefer to see ads on a specific site, you can enable them here.", comment: "shields overview message")
-  public static let shieldsOverviewFooter = NSLocalizedString("ShieldsOverviewFooter", tableName: "BraveShared", bundle: .module, value: "Note: Some sites may require scripts to work properly so this shield is turned off by default.", comment: "shields overview footer message")
-  public static let useRegionalAdblock = NSLocalizedString("UseRegionalAdblock", tableName: "BraveShared", bundle: .module, value: "Use regional adblock", comment: "Setting to allow user in non-english locale to use adblock rules specifc to their language")
-  public static let newFolderDefaultName = NSLocalizedString("NewFolderDefaultName", tableName: "BraveShared", bundle: .module, value: "New Folder", comment: "Default name for creating a new folder.")
-  public static let newBookmarkDefaultName = NSLocalizedString("NewBookmarkDefaultName", tableName: "BraveShared", bundle: .module, value: "New Bookmark", comment: "Default name for creating a new bookmark.")
-  public static let bookmarkTitlePlaceholderText = NSLocalizedString("BookmarkTitlePlaceholderText", tableName: "BraveShared", bundle: .module, value: "Name", comment: "Placeholder text for adding or editing a bookmark")
-  public static let bookmarkUrlPlaceholderText = NSLocalizedString("BookmarkUrlPlaceholderText", tableName: "BraveShared", bundle: .module, value: "Address", comment: "Placeholder text for adding or editing a bookmark")
-  public static let favoritesLocationFooterText = NSLocalizedString("FavoritesLocationFooterText", tableName: "BraveShared", bundle: .module, value: "Favorites are located on your home screen. These bookmarks are not synchronized with other devices.", comment: "Footer text when user selects to save to favorites when editing a bookmark")
-  public static let bookmarkRootLevelCellTitle = NSLocalizedString("BookmarkRootLevelCellTitle", tableName: "BraveShared", bundle: .module, value: "Bookmarks", comment: "Title for root level bookmarks cell")
-  public static let favoritesRootLevelCellTitle = NSLocalizedString("FavoritesRootLevelCellTitle", tableName: "BraveShared", bundle: .module, value: "Favorites", comment: "Title for favorites cell")
-  public static let addFolderActionCellTitle = NSLocalizedString("AddFolderActionCellTitle", tableName: "BraveShared", bundle: .module, value: "New folder", comment: "Cell title for add folder action")
-  public static let editBookmarkTableLocationHeader = NSLocalizedString("EditBookmarkTableLocationHeader", tableName: "BraveShared", bundle: .module, value: "Location", comment: "Header title for bookmark save location")
-  public static let newBookmarkTitle = NSLocalizedString("NewBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "New bookmark", comment: "Title for adding new bookmark")
-  public static let newFolderTitle = NSLocalizedString("NewFolderTitle", tableName: "BraveShared", bundle: .module, value: "New folder", comment: "Title for adding new folder")
-  public static let editBookmarkTitle = NSLocalizedString("EditBookmarkTitle", tableName: "BraveShared", bundle: .module, value: "Edit bookmark", comment: "Title for editing a bookmark")
-  public static let editFavoriteTitle = NSLocalizedString("EditFavoriteTitle", tableName: "BraveShared", bundle: .module, value: "Edit favorite", comment: "Title for editing a favorite bookmark")
-  public static let editFolderTitle = NSLocalizedString("EditFolderTitle", tableName: "BraveShared", bundle: .module, value: "Edit folder", comment: "Title for editing a folder")
-  public static let historyScreenTitle = NSLocalizedString("HistoryScreenTitle", tableName: "BraveShared", bundle: .module, value: "History", comment: "Title for history screen")
-  public static let bookmarksMenuItem = NSLocalizedString("BookmarksMenuItem", tableName: "BraveShared", bundle: .module, value: "Bookmarks", comment: "Title for bookmarks menu item")
-  public static let historyMenuItem = NSLocalizedString("HistortMenuItem", tableName: "BraveShared", bundle: .module, value: "History", comment: "Title for history menu item")
-  public static let settingsMenuItem = NSLocalizedString("SettingsMenuItem", tableName: "BraveShared", bundle: .module, value: "Settings", comment: "Title for settings menu item")
-  public static let leoMenuItem = NSLocalizedString("LeoMenuItem", tableName: "BraveShared", bundle: .module, value: "Leo", comment: "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated")
-  public static let passwordsMenuItem = NSLocalizedString("PasswordsMenuItem", tableName: "BraveShared", bundle: .module, value: "Passwords", comment: "Title for passwords menu item")
-  public static let addToMenuItem = NSLocalizedString("AddToMenuItem", tableName: "BraveShared", bundle: .module, value: "Add Bookmark", comment: "Title for the button to add a new website bookmark.")
-  public static let openTabsMenuItem = NSLocalizedString("OpenTabsMenuItem", tableName: "BraveShared", bundle: .module, value: "Open Tabs", comment: "Title for open tabs menu item")
-  public static let shareWithMenuItem = NSLocalizedString("ShareWithMenuItem", tableName: "BraveShared", bundle: .module, value: "Share with...", comment: "Title for sharing url menu item")
-  public static let openExternalAppURLGenericTitle = NSLocalizedString("ExternalAppURLAlertTitle", tableName: "BraveShared", bundle: .module, value: "Allow link to switch apps?", comment: "Allow link to switch apps?")
-  public static let openExternalAppURLTitle = NSLocalizedString("openExternalAppURLTitle", tableName: "BraveShared", bundle: .module, value: "Allow %@ to switch apps?", comment: "This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?'")
-  public static let openExternalAppURLMessage = NSLocalizedString("ExternalAppURLAlertMessage", tableName: "BraveShared", bundle: .module, value: "%@ will launch an external application", comment: "%@ will launch an external application")
-  public static let openExternalAppURLHost = NSLocalizedString("openExternalAppURLHost", tableName: "BraveShared", bundle: .module, value: "%@ says:", comment: "This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:'")
-  public static let openExternalAppURLAllow = NSLocalizedString("ExternalAppURLAllow", tableName: "BraveShared", bundle: .module, value: "Allow", comment: "Allow Brave to open the external app URL")
-  public static let openExternalAppURLDontAllow = NSLocalizedString("ExternalAppURLDontAllow", tableName: "BraveShared", bundle: .module, value: "Don't Allow", comment: "Don't allow Brave to open the external app URL")
-  public static let requestCameraPermissionPrompt = NSLocalizedString("requestCameraPermissionPrompt", tableName: "BraveShared", bundle: .module, value: "\"%@\" Would Like to Access the Camera", comment: "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\")")
-  public static let requestMicrophonePermissionPrompt = NSLocalizedString("requestMicrophonePermissionPrompt", tableName: "BraveShared", bundle: .module, value: "\"%@\" Would Like to Access the Microphone", comment: "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")")
-  public static let requestCameraAndMicrophonePermissionPrompt = NSLocalizedString("requestCameraAndMicrophonePermissionPrompt", tableName: "BraveShared", bundle: .module, value: "\"%@\" Would Like to Access the Camera and Microphone", comment: "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")")
-  public static let requestCaptureDevicePermissionPrompt = NSLocalizedString("requestCaptureDevicePermissionPrompt", tableName: "BraveShared", bundle: .module, value: "\"%@\" Would Like to Access a Media Capture Device", comment: "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")")
-  public static let requestCaptureDevicePermissionAllowButtonTitle = NSLocalizedString("requestCaptureDevicePermissionAllowButtonTitle", tableName: "BraveShared", bundle: .module, value: "Allow", comment: "A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone")
-  public static let downloadsMenuItem = NSLocalizedString("DownloadsMenuItem", tableName: "BraveShared", bundle: .module, value: "Downloads", comment: "Title for downloads menu item")
-  public static let downloadsPanelEmptyStateTitle = NSLocalizedString("DownloadsPanelEmptyStateTitle", tableName: "BraveShared", bundle: .module, value: "Downloaded files will show up here.", comment: "Title for when a user has nothing downloaded onto their device, and the list is empty.")
+    comment: "Private tab detail text"
+  )
+  public static let privateTabLink = NSLocalizedString(
+    "PrivateTabLink",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Learn about Private Tabs.",
+    comment: "Private tab information link"
+  )
+  public static let privateBrowsingOnlyWarning = NSLocalizedString(
+    "PrivateBrowsingOnlyWarning",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Private Browsing Only mode will close all your current tabs and log you out of all sites.",
+    comment:
+      "When 'Private Browsing Only' is enabled, we need to alert the user of their normal tabs being destroyed"
+  )
+  public static let bravePanel = NSLocalizedString(
+    "BravePanel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Brave Panel",
+    comment: "Button to show the brave panel"
+  )
+  public static let rewardsPanel = NSLocalizedString(
+    "RewardsPanel",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Rewards Panel",
+    comment: "Button to show the rewards panel"
+  )
+  public static let individualControls = NSLocalizedString(
+    "IndividualControls",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Individual Controls",
+    comment: "title for per-site shield toggles"
+  )
+  public static let blockingMonitor = NSLocalizedString(
+    "BlockingMonitor",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Blocking Monitor",
+    comment: "title for section showing page blocking statistics"
+  )
+  public static let siteShieldSettings = NSLocalizedString(
+    "SiteShieldSettings",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shields",
+    comment: "Brave panel topmost title"
+  )
+  public static let adsAndTrackers = NSLocalizedString(
+    "AdsAndTrackers",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Ads and Trackers",
+    comment: "individual blocking statistic title"
+  )
+  public static let HTTPSUpgrades = NSLocalizedString(
+    "HTTPSUpgrades",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "HTTPS Upgrades",
+    comment: "individual blocking statistic title"
+  )
+  public static let scriptsBlocked = NSLocalizedString(
+    "ScriptsBlocked",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Scripts Blocked",
+    comment: "individual blocking statistic title"
+  )
+  public static let fingerprintingMethods = NSLocalizedString(
+    "FingerprintingMethods",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Fingerprinting Methods",
+    comment: "individual blocking statistic title"
+  )
+  public static let shieldsOverview = NSLocalizedString(
+    "ShieldsOverview",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Site Shields allow you to control when ads and trackers are blocked for each site that you visit. If you prefer to see ads on a specific site, you can enable them here.",
+    comment: "shields overview message"
+  )
+  public static let shieldsOverviewFooter = NSLocalizedString(
+    "ShieldsOverviewFooter",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Note: Some sites may require scripts to work properly so this shield is turned off by default.",
+    comment: "shields overview footer message"
+  )
+  public static let useRegionalAdblock = NSLocalizedString(
+    "UseRegionalAdblock",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Use regional adblock",
+    comment:
+      "Setting to allow user in non-english locale to use adblock rules specifc to their language"
+  )
+  public static let newFolderDefaultName = NSLocalizedString(
+    "NewFolderDefaultName",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "New Folder",
+    comment: "Default name for creating a new folder."
+  )
+  public static let newBookmarkDefaultName = NSLocalizedString(
+    "NewBookmarkDefaultName",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "New Bookmark",
+    comment: "Default name for creating a new bookmark."
+  )
+  public static let bookmarkTitlePlaceholderText = NSLocalizedString(
+    "BookmarkTitlePlaceholderText",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Name",
+    comment: "Placeholder text for adding or editing a bookmark"
+  )
+  public static let bookmarkUrlPlaceholderText = NSLocalizedString(
+    "BookmarkUrlPlaceholderText",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Address",
+    comment: "Placeholder text for adding or editing a bookmark"
+  )
+  public static let favoritesLocationFooterText = NSLocalizedString(
+    "FavoritesLocationFooterText",
+    tableName: "BraveShared",
+    bundle: .module,
+    value:
+      "Favorites are located on your home screen. These bookmarks are not synchronized with other devices.",
+    comment: "Footer text when user selects to save to favorites when editing a bookmark"
+  )
+  public static let bookmarkRootLevelCellTitle = NSLocalizedString(
+    "BookmarkRootLevelCellTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Bookmarks",
+    comment: "Title for root level bookmarks cell"
+  )
+  public static let favoritesRootLevelCellTitle = NSLocalizedString(
+    "FavoritesRootLevelCellTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Favorites",
+    comment: "Title for favorites cell"
+  )
+  public static let addFolderActionCellTitle = NSLocalizedString(
+    "AddFolderActionCellTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "New folder",
+    comment: "Cell title for add folder action"
+  )
+  public static let editBookmarkTableLocationHeader = NSLocalizedString(
+    "EditBookmarkTableLocationHeader",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Location",
+    comment: "Header title for bookmark save location"
+  )
+  public static let newBookmarkTitle = NSLocalizedString(
+    "NewBookmarkTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "New bookmark",
+    comment: "Title for adding new bookmark"
+  )
+  public static let newFolderTitle = NSLocalizedString(
+    "NewFolderTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "New folder",
+    comment: "Title for adding new folder"
+  )
+  public static let editBookmarkTitle = NSLocalizedString(
+    "EditBookmarkTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit bookmark",
+    comment: "Title for editing a bookmark"
+  )
+  public static let editFavoriteTitle = NSLocalizedString(
+    "EditFavoriteTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit favorite",
+    comment: "Title for editing a favorite bookmark"
+  )
+  public static let editFolderTitle = NSLocalizedString(
+    "EditFolderTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Edit folder",
+    comment: "Title for editing a folder"
+  )
+  public static let historyScreenTitle = NSLocalizedString(
+    "HistoryScreenTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "History",
+    comment: "Title for history screen"
+  )
+  public static let bookmarksMenuItem = NSLocalizedString(
+    "BookmarksMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Bookmarks",
+    comment: "Title for bookmarks menu item"
+  )
+  public static let historyMenuItem = NSLocalizedString(
+    "HistortMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "History",
+    comment: "Title for history menu item"
+  )
+  public static let settingsMenuItem = NSLocalizedString(
+    "SettingsMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Settings",
+    comment: "Title for settings menu item"
+  )
+  public static let leoMenuItem = NSLocalizedString(
+    "LeoMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Leo",
+    comment:
+      "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated"
+  )
+  public static let passwordsMenuItem = NSLocalizedString(
+    "PasswordsMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Passwords",
+    comment: "Title for passwords menu item"
+  )
+  public static let addToMenuItem = NSLocalizedString(
+    "AddToMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Add Bookmark",
+    comment: "Title for the button to add a new website bookmark."
+  )
+  public static let openTabsMenuItem = NSLocalizedString(
+    "OpenTabsMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Open Tabs",
+    comment: "Title for open tabs menu item"
+  )
+  public static let shareWithMenuItem = NSLocalizedString(
+    "ShareWithMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Share with...",
+    comment: "Title for sharing url menu item"
+  )
+  public static let openExternalAppURLGenericTitle = NSLocalizedString(
+    "ExternalAppURLAlertTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Allow link to switch apps?",
+    comment: "Allow link to switch apps?"
+  )
+  public static let openExternalAppURLTitle = NSLocalizedString(
+    "openExternalAppURLTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Allow %@ to switch apps?",
+    comment:
+      "This will be used to indicate which website is calling the action. %@ will replace the name of the website for instance: 'Allow google.com to switch apps?'"
+  )
+  public static let openExternalAppURLMessage = NSLocalizedString(
+    "ExternalAppURLAlertMessage",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "%@ will launch an external application",
+    comment: "%@ will launch an external application"
+  )
+  public static let openExternalAppURLHost = NSLocalizedString(
+    "openExternalAppURLHost",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "%@ says:",
+    comment:
+      "This will be used to indicate which website is calling the action. %s will replace the name of the website for instance: 'google.com says:'"
+  )
+  public static let openExternalAppURLAllow = NSLocalizedString(
+    "ExternalAppURLAllow",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Allow",
+    comment: "Allow Brave to open the external app URL"
+  )
+  public static let openExternalAppURLDontAllow = NSLocalizedString(
+    "ExternalAppURLDontAllow",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Don't Allow",
+    comment: "Don't allow Brave to open the external app URL"
+  )
+  public static let requestCameraPermissionPrompt = NSLocalizedString(
+    "requestCameraPermissionPrompt",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "\"%@\" Would Like to Access the Camera",
+    comment:
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+  )
+  public static let requestMicrophonePermissionPrompt = NSLocalizedString(
+    "requestMicrophonePermissionPrompt",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "\"%@\" Would Like to Access the Microphone",
+    comment:
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+  )
+  public static let requestCameraAndMicrophonePermissionPrompt = NSLocalizedString(
+    "requestCameraAndMicrophonePermissionPrompt",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "\"%@\" Would Like to Access the Camera and Microphone",
+    comment:
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access their device's camera & microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+  )
+  public static let requestCaptureDevicePermissionPrompt = NSLocalizedString(
+    "requestCaptureDevicePermissionPrompt",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "\"%@\" Would Like to Access a Media Capture Device",
+    comment:
+      "A title that appears on a permissions dialog on whether or not the user wants to allow a web page to access some media capture device such as a camera or microphone. %@ will be replaced with the websites address (for example: \"talk.brave.com\")"
+  )
+  public static let requestCaptureDevicePermissionAllowButtonTitle = NSLocalizedString(
+    "requestCaptureDevicePermissionAllowButtonTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Allow",
+    comment:
+      "A button shown in a permission dialog that will grant the website the ability to use the device's camera or microphone"
+  )
+  public static let downloadsMenuItem = NSLocalizedString(
+    "DownloadsMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Downloads",
+    comment: "Title for downloads menu item"
+  )
+  public static let downloadsPanelEmptyStateTitle = NSLocalizedString(
+    "DownloadsPanelEmptyStateTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Downloaded files will show up here.",
+    comment:
+      "Title for when a user has nothing downloaded onto their device, and the list is empty."
+  )
 
   // MARK: - Themes
 
@@ -8641,6 +8974,13 @@ extension Strings {
       bundle: .module,
       value: "Brave News",
       comment: "The name of the feature"
+    )
+    public static let braveNewsTitle = NSLocalizedString(
+      "today.braveToday.title",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "News",
+      comment: "The name of the feature in settings"
     )
     public static let sourcesAndSettings = NSLocalizedString(
       "today.sourcesAndSettings",

@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import BraveUI
+import SwiftUI
 
 @available(iOS, introduced: 15.0, obsoleted: 16.0)
 public struct AIChatAdvancedSettingsLabelDetailView: View {
@@ -15,12 +15,12 @@ public struct AIChatAdvancedSettingsLabelDetailView: View {
     self.title = title
     self.detail = detail
   }
-  
+
   public var body: some View {
     HStack {
       LabelView(title: title)
       Spacer()
-      
+
       if let detail = detail {
         Text(detail)
           .foregroundColor(Color(.braveLabel))

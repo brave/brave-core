@@ -11,7 +11,12 @@ import UIKit
 struct BraveVPNCommonUI {
 
   struct UX {
-    static let purpleBackgroundColor = #colorLiteral(red: 0.0862745098, green: 0.06274509804, blue: 0.3960784314, alpha: 1)
+    static let purpleBackgroundColor = #colorLiteral(
+      red: 0.0862745098,
+      green: 0.06274509804,
+      blue: 0.3960784314,
+      alpha: 1
+    )
   }
 
   static var navigationBarAppearance: UINavigationBarAppearance {

@@ -3,24 +3,24 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
-import SwiftUI
-import SpeechRecognition
 import AVFoundation
+import Foundation
+import SpeechRecognition
+import SwiftUI
 
 struct AIChatSpeechRecognitionView: View {
   @ObservedObject
   var speechRecognizer: SpeechRecognizer
-  
+
   @Binding
   var isVoiceEntryPresented: Bool
-  
+
   @Binding
   var isNoMicrophonePermissionPresented: Bool
-  
+
   @Binding
   var recognizedText: String
-  
+
   var body: some View {
     SpeechToTextInputContentView(
       isPresented: $isVoiceEntryPresented,
@@ -49,10 +49,10 @@ struct AIChatSpeechRecognitionView: View {
         // Feedback indicating recognition is finalized
         AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
         UIImpactFeedbackGenerator(style: .medium).bzzt()
-        
+
         // Update Text
         recognizedText = recognition
-        
+
         // Clear the SpeechRecognizer
         speechRecognizer.clearSearch()
         isVoiceEntryPresented = false

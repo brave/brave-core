@@ -9,41 +9,41 @@ import SwiftUI
 extension AttributedString {
   private static let codeBlockForegroundColor = Color.white
   private static let codeInlineForegroundColor = Color.purple
-  
+
   private static var options: AttributedString.MarkdownParsingOptions {
     var result = AttributedString.MarkdownParsingOptions()
     result.allowsExtendedAttributes = true
     result.interpretedSyntax = .full
     result.failurePolicy = .returnPartiallyParsedIfPossible
     result.languageCode = nil
-    
+
     if #available(iOS 16, *) {
       result.appliesSourcePositionAttributes = false
     }
     return result
   }
-  
+
   init(markdown: String, preferredFont: Font) throws {
     var result = try AttributedString(
       markdown: markdown,
       options: AttributedString.options,
       baseURL: nil
     )
-    
+
     result.font = preferredFont
-    
+
     result.runs[InlinePresentationAttribute.self]
       .reversed()
       .forEach { (intent, range) in
         guard let intent = intent else {
           return
         }
-        
+
         var sourceAttributes = AttributeContainer()
         sourceAttributes.inlinePresentationIntent = intent
-        
+
         var targetAttributes = AttributeContainer()
-        
+
         switch intent {
         case .emphasized:
           targetAttributes.font = preferredFont.italic()
@@ -67,19 +67,19 @@ extension AttributedString {
         default:
           break
         }
-        
+
         result = result.replacingAttributes(sourceAttributes, with: targetAttributes)
       }
-    
+
     result.runs[PresentationAttribute.self]
       .reversed()
       .forEach { (intentAttribute, range) in
         guard let intentAttribute = intentAttribute else {
           return
         }
-        
+
         var listType = MarkdownListType.none
-        
+
         for intent in intentAttribute.components {
           switch intent.kind {
           case .paragraph:
@@ -109,14 +109,14 @@ extension AttributedString {
             if listType != .unordered {
               listType = .ordered
             }
-            
+
             if listType == .ordered {
               result.characters.insert(contentsOf: "\(index).\t", at: range.lowerBound)
             } else {
               result.characters.insert(contentsOf: "•\t", at: range.lowerBound)
             }
           case .codeBlock(_):
-            result[range].font = preferredFont.monospaced() //.italic()
+            result[range].font = preferredFont.monospaced()  //.italic()
             result[range].foregroundColor = AttributedString.codeBlockForegroundColor
           case .blockQuote:
             result[range].font = preferredFont.monospaced()
@@ -135,47 +135,50 @@ extension AttributedString {
 
           case .tableCell(_):
             break
-            
+
           @unknown default:
             break
           }
         }
-        
+
         if range.lowerBound != result.startIndex {
           result.characters.insert(contentsOf: "\n", at: range.lowerBound)
         }
       }
-    
+
     self = result
   }
-  
+
   mutating func trimmingCharacters(in characterSet: CharacterSet) -> AttributedString {
     let invertedSet = characterSet.inverted
-    
+
     let startIndex = self.characters.firstIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
-    
+
     let endIndex = self.characters.lastIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
 
     guard let startIndex = startIndex,
-          let endIndex = endIndex,
-          startIndex < endIndex  else {
+      let endIndex = endIndex,
+      startIndex < endIndex
+    else {
       return self
     }
-    
+
     self.removeSubrange(self.startIndex..<startIndex)
     self.removeSubrange(endIndex...)
 
     return self
   }
-  
+
   private typealias LinkAttribute = AttributeScopes.FoundationAttributes.LinkAttribute
-  private typealias PresentationAttribute = AttributeScopes.FoundationAttributes.PresentationIntentAttribute
-  private typealias InlinePresentationAttribute = AttributeScopes.FoundationAttributes.InlinePresentationIntentAttribute
-  
+  private typealias PresentationAttribute = AttributeScopes.FoundationAttributes
+    .PresentationIntentAttribute
+  private typealias InlinePresentationAttribute = AttributeScopes.FoundationAttributes
+    .InlinePresentationIntentAttribute
+
   private enum MarkdownListType {
     case none
     case unordered
@@ -186,18 +189,19 @@ extension AttributedString {
 extension AttributedSubstring {
   func trimmingCharacters(in characterSet: CharacterSet) -> AttributedSubstring {
     let invertedSet = characterSet.inverted
-    
+
     let startIndex = self.characters.firstIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
-    
+
     let endIndex = self.characters.lastIndex(where: {
       $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
     })
 
     guard let startIndex = startIndex,
-          let endIndex = endIndex,
-          startIndex < endIndex  else {
+      let endIndex = endIndex,
+      startIndex < endIndex
+    else {
       return self
     }
 

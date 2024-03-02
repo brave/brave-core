@@ -15,10 +15,10 @@ import Data
 import Playlist
 import Preferences
 import Shared
+import SpeechRecognition
 import Storage
 import SwiftUI
 import os.log
-import SpeechRecognition
 
 // MARK: - TopToolbarDelegate
 
@@ -574,7 +574,7 @@ extension BrowserViewController: TopToolbarDelegate {
       onPendingRequestUpdatedCancellable = speechRecognizer.$finalizedRecognition.sink {
         [weak self] finalizedRecognition in
         guard let self else { return }
-        
+
         if let finalizedRecognition {
           // Feedback indicating recognition is finalized
           AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -599,10 +599,14 @@ extension BrowserViewController: TopToolbarDelegate {
       {
         pipMediaPlayer.pause()
       }
-      
+
       voiceSearchViewController = PopupViewController(
-        rootView: SpeechToTextInputView(speechModel: speechRecognizer, disclaimer: Strings.VoiceSearch.screenDisclaimer))
-      
+        rootView: SpeechToTextInputView(
+          speechModel: speechRecognizer,
+          disclaimer: Strings.VoiceSearch.screenDisclaimer
+        )
+      )
+
       if let voiceSearchController = voiceSearchViewController {
         voiceSearchController.modalTransitionStyle = .crossDissolve
         voiceSearchController.modalPresentationStyle = .overFullScreen

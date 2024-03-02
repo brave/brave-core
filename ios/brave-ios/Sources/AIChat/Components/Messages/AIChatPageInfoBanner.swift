@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
 import Favicon
+import SwiftUI
 
 struct AIChatPageInfoBanner: View {
   var url: URL?
   var pageTitle: String
-  
+
   var body: some View {
     HStack {
-      FaviconImage(url: url?.absoluteString,
-                   isPrivateBrowsing: false)
+      FaviconImage(
+        url: url?.absoluteString,
+        isPrivateBrowsing: false
+      )
 
       Text(pageTitle)
         .font(.caption)
@@ -39,7 +41,9 @@ struct AIChatPageInfoBanner_Preview: PreviewProvider {
   static var previews: some View {
     AIChatPageInfoBanner(
       url: nil,
-      pageTitle: "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023")
+      pageTitle:
+        "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023"
+    )
     .previewLayout(.sizeThatFits)
   }
 }

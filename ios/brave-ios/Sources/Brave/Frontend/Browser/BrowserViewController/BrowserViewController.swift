@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
@@ -18,8 +19,21 @@ import NetworkExtension
 import Onboarding
 import Preferences
 import ScreenTime
-import AIChat
+import Shared
+import SnapKit
 import SpeechRecognition
+import Storage
+import StoreKit
+import SwiftUI
+import UIKit
+import WebKit
+import os.log
+
+import class Combine.AnyCancellable
+
+#if canImport(BraveTalk)
+import BraveTalk
+#endif
 
 #if canImport(BraveTalk)
 import BraveTalk
@@ -277,7 +291,7 @@ public class BrowserViewController: UIViewController {
 
   /// In app purchase obsever for VPN Subscription action
   let iapObserver: BraveVPNInAppPurchaseObserver
-  
+
   private let ntpP3AHelper: NewTabPageP3AHelper
 
   public init(
@@ -2855,7 +2869,7 @@ extension BrowserViewController: TabDelegate {
       Web3IPFSScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
       BraveLeoScriptHandler(tab: tab),
-      
+
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
@@ -3135,8 +3149,11 @@ extension BrowserViewController: SearchViewControllerDelegate {
     topToolbar.leaveOverlayMode()
     processAddressBar(text: query, isBraveSearchPromotion: braveSearchPromotion)
   }
-  
-  func searchViewController(_ searchViewController: SearchViewController, didSubmitAIChat query: String) {
+
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmitAIChat query: String
+  ) {
     self.popToBVC()
     self.openBraveLeo(with: query)
   }
@@ -3744,7 +3761,7 @@ extension BrowserViewController: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
     // No-op
   }
-  
+
   public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // No-op
   }
@@ -3838,18 +3855,23 @@ extension BrowserViewController {
     let forcedPrivate = self.privateBrowsingManager.isPrivateBrowsing
     self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
   }
-  
+
   func openBraveLeo(with query: String? = nil) {
     let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
-    
+
     let model = AIChatViewModel(
       braveCore: braveCore,
       webView: webView,
       script: BraveLeoScriptHandler.self,
-      querySubmited: query)
-    
-    let chatController = UIHostingController(rootView: AIChatView(model: model,
-                                                                  openURL: openAIChatURL))
+      querySubmited: query
+    )
+
+    let chatController = UIHostingController(
+      rootView: AIChatView(
+        model: model,
+        openURL: openAIChatURL
+      )
+    )
     present(chatController, animated: true)
   }
 }

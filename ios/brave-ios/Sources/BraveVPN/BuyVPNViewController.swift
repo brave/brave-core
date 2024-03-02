@@ -11,7 +11,7 @@ import UIKit
 import os.log
 
 class BuyVPNViewController: VPNSetupLoadingController {
-    
+
   let iapObserver: BraveVPNInAppPurchaseObserver
   private var iapRestoreTimer: Timer?
 
@@ -20,7 +20,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
     }
   }
-  
+
   init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
     super.init(nibName: nil, bundle: nil)
@@ -243,7 +243,7 @@ extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
     let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "time-out"])
     handleTransactionError(error: .transactionError(error: errorRestore))
   }
-  
+
   private func handleTransactionError(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false

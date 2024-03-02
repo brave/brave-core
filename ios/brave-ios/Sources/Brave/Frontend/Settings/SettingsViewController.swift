@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
@@ -19,7 +20,6 @@ import SwiftUI
 import SwiftyJSON
 import UIKit
 import WebKit
-import AIChat
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -348,7 +348,7 @@ class SettingsViewController: TableViewController {
     if !tabManager.privateBrowsingManager.isPrivateBrowsing {
       section.rows.append(leoSettingsRow)
     }
-    
+
     section.rows.append(vpnSettingsRow)
 
     section.rows.append(
@@ -415,9 +415,16 @@ class SettingsViewController: TableViewController {
                 animated: true
               )
             }
-          }, image: UIImage(braveSystemNamed: "leo.product.sync"), accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self),
-        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(braveSystemNamed: "leo.folder.open")),
+          },
+          image: UIImage(braveSystemNamed: "leo.product.sync"),
+          accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self
+        ),
+        .boolRow(
+          title: Strings.bookmarksLastVisitedFolderTitle,
+          option: Preferences.General.showLastVisitedBookmarksFolder,
+          image: UIImage(braveSystemNamed: "leo.folder.open")
+        ),
         Row(
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
@@ -751,7 +758,7 @@ class SettingsViewController: TableViewController {
       uuid: "vpnrow"
     )
   }
-  
+
   private var leoSettingsRow: Row {
     return Row(
       text: Strings.leoMenuItem,
@@ -761,24 +768,29 @@ class SettingsViewController: TableViewController {
           webView: self.tabManager.selectedTab?.webView,
           script: BraveLeoScriptHandler.self
         )
-        
-        let controller = UIHostingController(rootView:
-          AIChatAdvancedSettingsView(
-            model: model,
-            isModallyPresented: false
-          )
-            .environment(\.openURL, OpenURLAction { [weak self] url in
-              guard let self = self else { return .handled }
-              self.settingsDelegate?.settingsOpenURLInNewTab(url)
-              self.dismiss(animated: true)
-              return .handled
-            })
+
+        let controller = UIHostingController(
+          rootView:
+            AIChatAdvancedSettingsView(
+              model: model,
+              isModallyPresented: false
+            )
+            .environment(
+              \.openURL,
+              OpenURLAction { [weak self] url in
+                guard let self = self else { return .handled }
+                self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                self.dismiss(animated: true)
+                return .handled
+              }
+            )
         )
-        
+
         self.navigationController?.pushViewController(controller, animated: true)
       },
       image: UIImage(braveSystemNamed: "leo.product.brave-leo"),
-      accessory: .disclosureIndicator)
+      accessory: .disclosureIndicator
+    )
   }
 
   private lazy var securitySection: Static.Section = {

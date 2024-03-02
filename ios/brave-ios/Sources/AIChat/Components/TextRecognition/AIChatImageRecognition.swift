@@ -12,44 +12,44 @@ class AIChatImageRecognition {
     case invalidRequest
     case invalidImage
   }
-  
+
   static func parseText(image: UIImage) async throws -> [String] {
     guard let image = image.cgImage else {
       throw TextRecognitionError.invalidImage
     }
-    
+
     return try await withCheckedThrowingContinuation { continuation in
       let request = VNRecognizeTextRequest(completionHandler: { request, error in
         guard let request = request as? VNRecognizeTextRequest else {
           continuation.resume(throwing: error ?? TextRecognitionError.invalidRequest)
           return
         }
-        
+
         var recognizedText = [String]()
-        
+
         let observations = request.results ?? []
         for observation in observations {
           if let text = observation.topCandidates(1).first {
             recognizedText.append(text.string)
           }
         }
-        
+
         continuation.resume(returning: recognizedText)
       })
-      
+
       request.recognitionLevel = .accurate
       request.usesLanguageCorrection = true
       request.recognitionLanguages = [
         "en-US", "zh-Hans",
         "zh-Hant", "pt-BR",
         "fr-FR", "it-IT",
-        "de-DE", "es-ES"
+        "de-DE", "es-ES",
       ]
-      
+
       if #available(iOS 16.0, *) {
         request.automaticallyDetectsLanguage = true
       }
-      
+
       do {
         let requestHandler = VNImageRequestHandler(cgImage: image, options: [:])
         try requestHandler.perform([request])

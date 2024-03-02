@@ -3,15 +3,15 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AIChat
 import Foundation
+import Preferences
 import WebKit
 import os.log
-import Preferences
-import AIChat
 
-private extension BraveStoreProduct {
+extension BraveStoreProduct {
   /// The key to use when storing the receipt in WebKit's LocalStorage
-  var localStorageKey: String {
+  fileprivate var localStorageKey: String {
     switch self {
     case .vpnMonthly, .vpnYearly: return "braveVpn.receipt"
     case .leoMonthly, .leoYearly: return "braveLeo.receipt"
@@ -25,13 +25,13 @@ class BraveSkusAccountLink {
   private enum Environment: String, CaseIterable {
     /// The skus development environment
     case development
-    
+
     /// The skus staging environment
     case staging
-    
+
     /// The skus production environment
     case production
-    
+
     /// The host/domain for the environment
     var host: String {
       switch self {
@@ -41,21 +41,25 @@ class BraveSkusAccountLink {
       }
     }
   }
-  
+
   /// Injects Skus product order receipt information into WebKit's LocalStorage for use by the `Environment.host` page
   /// - Parameter webView: The web-view whose LocalStorage to inject the product order information
   /// - Parameter product: The product whose receipt information to inject
   @MainActor
-  @discardableResult static func injectLocalStorage(webView: WKWebView, product: BraveStoreProduct) async -> Bool {
+  @discardableResult static func injectLocalStorage(
+    webView: WKWebView,
+    product: BraveStoreProduct
+  ) async -> Bool {
     // The WebView has no URL so do nothing
     guard let url = webView.url else {
       return false
     }
-    
+
     // The URL must have a scheme and host
     guard let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
-          let scheme = components.scheme,
-          let host = components.host else {
+      let scheme = components.scheme,
+      let host = components.host
+    else {
       return false
     }
 
@@ -65,25 +69,35 @@ class BraveSkusAccountLink {
     if scheme != "https" || !Environment.allCases.map({ $0.host }).contains(host) {
       return false
     }
-    
+
     do {
       // Retrieve the LocalStorage Key and Receipt to inject
       let storageKey = product.localStorageKey
       let receipt = try BraveSkusSDK.receipt(for: product)
-      
+
       // Inject the receipt into LocalStorage
-      try await webView.evaluateSafeJavaScriptThrowing(functionName: "localStorage.setItem", args: [storageKey, receipt], contentWorld: .defaultClient)
-      
+      try await webView.evaluateSafeJavaScriptThrowing(
+        functionName: "localStorage.setItem",
+        args: [storageKey, receipt],
+        contentWorld: .defaultClient
+      )
+
       // Brave-Leo requires Order-ID to be injected into LocalStorage.
       if let orderId = Preferences.AIChat.subscriptionOrderId.value {
-        try await webView.evaluateSafeJavaScriptThrowing(functionName: "localStorage.setItem", args: ["braveLeo.orderId", orderId], contentWorld: .defaultClient)
+        try await webView.evaluateSafeJavaScriptThrowing(
+          functionName: "localStorage.setItem",
+          args: ["braveLeo.orderId", orderId],
+          contentWorld: .defaultClient
+        )
       }
-      
+
       return true
     } catch {
-      Logger.module.error("[BraveSkusAccountLink] - Error Injecting SkusSDK receipt into LocalStorage: \(error)")
+      Logger.module.error(
+        "[BraveSkusAccountLink] - Error Injecting SkusSDK receipt into LocalStorage: \(error)"
+      )
     }
-    
+
     return false
   }
 }

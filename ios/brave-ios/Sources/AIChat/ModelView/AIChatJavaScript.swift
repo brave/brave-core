@@ -9,13 +9,13 @@ import WebKit
 public protocol AIChatJavascript {
   @MainActor
   static func getPageContentType(webView: WKWebView) async -> String?
-  
+
   @MainActor
   static func getMainArticle(webView: WKWebView) async -> String?
-  
+
   @MainActor
   static func getPDFDocument(webView: WKWebView) async -> String?
-  
+
   @MainActor
-  static func getPrintViewPDF(webView: WKWebView) async -> Data;
+  static func getPrintViewPDF(webView: WKWebView) async -> Data
 }

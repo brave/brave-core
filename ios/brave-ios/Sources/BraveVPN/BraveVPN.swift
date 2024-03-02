@@ -17,7 +17,7 @@ public class BraveVPN {
   private static let helper = GRDVPNHelper.sharedInstance()
   private static let serverManager = GRDServerManager()
   private static let tunnelManager = GRDTunnelManager()
-  
+
   public static let iapObserver = BraveVPNInAppPurchaseObserver()
 
   /// List of regions the VPN can connect to.

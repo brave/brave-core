@@ -3,42 +3,42 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import SpeechRecognition
-import DesignSystem
 import BraveCore
-import Shared
-import Preferences
 import BraveUI
+import DesignSystem
+import Preferences
+import Shared
+import SpeechRecognition
+import SwiftUI
 import os.log
 
 public struct AIChatView: View {
   @ObservedObject
   var model: AIChatViewModel
-  
+
   @Environment(\.dismiss)
   private var dismiss
-  
+
   @Namespace
   private var lastMessageId
-  
-  @State 
+
+  @State
   private var customFeedbackIndex: Int?
-  
+
   @State
   private var isPremiumPaywallPresented = false
-  
+
   @State
   private var isAdvancedSettingsPresented = false
-  
+
   @State
   private var feedbackToast: AIChatFeedbackToastType = .none
-  
+
   @ObservedObject
   private var hasSeenIntro = Preferences.AIChat.hasSeenIntro
-  
+
   var openURL: ((URL) -> Void)
-  
+
   public init(model: AIChatViewModel, openURL: @escaping (URL) -> Void) {
     self.model = model
     self.openURL = openURL
@@ -51,16 +51,18 @@ public struct AIChatView: View {
         premiumStatus: model.premiumStatus,
         onClose: {
           dismiss()
-        }, onErase: {
+        },
+        onErase: {
           model.clearConversationHistory()
-        }, menuContent: {
+        },
+        menuContent: {
           menuView
         }
       )
-      
+
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
-      
+
       GeometryReader { geometry in
         ScrollViewReader { scrollViewReader in
           ScrollView {
@@ -72,7 +74,7 @@ public struct AIChatView: View {
                       upsellType: model.apiError == .rateLimitReached ? .rateLimit : .premium,
                       upgradeAction: {
                         isPremiumPaywallPresented = true
-                        
+
                       },
                       dismissAction: {
                         if model.apiError == .rateLimitReached {
@@ -92,23 +94,28 @@ public struct AIChatView: View {
                     AIChatIntroMessageView(model: model.currentModel)
                       .padding()
                       .background(Color(braveSystemName: .containerBackground))
-                    
-                    ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) { index, turn in
+
+                    ForEach(Array(model.conversationHistory.enumerated()), id: \.offset) {
+                      index,
+                      turn in
                       if turn.characterType == .human {
                         AIChatUserMessageView(prompt: turn.text)
                           .padding()
                           .background(Color(braveSystemName: .containerBackground))
-                        
+
                         if index == 0, model.shouldSendPageContents,
-                           let url = model.getLastCommittedURL() {
+                          let url = model.getLastCommittedURL()
+                        {
                           AIChatPageInfoBanner(url: url, pageTitle: model.getPageTitle() ?? "")
                             .padding([.horizontal, .bottom])
                             .background(Color(braveSystemName: .containerBackground))
                         }
-                         
+
                         // Show loader view before first part of conversation reply
-                        if model.apiError == .none, model.requestInProgress, index == model.conversationHistory.count - 1 {
-                          VStack(alignment: .leading){
+                        if model.apiError == .none, model.requestInProgress,
+                          index == model.conversationHistory.count - 1
+                        {
+                          VStack(alignment: .leading) {
                             AIChatLoaderView()
                           }
                           .padding()
@@ -121,36 +128,42 @@ public struct AIChatView: View {
                           .contextMenu {
                             responseContextMenuItems(for: index, turn: turn)
                           }
-                        
+
                         if let feedbackIndex = customFeedbackIndex, feedbackIndex == index {
                           feedbackView
                         }
                       }
                     }
-                    
+
                     apiErrorViews(for: model.apiError)
-                    
+
                     if model.shouldShowSuggestions {
-                      AIChatSuggestionsView(geometry: geometry, suggestions: model.suggestedQuestions) { suggestion in
+                      AIChatSuggestionsView(
+                        geometry: geometry,
+                        suggestions: model.suggestedQuestions
+                      ) { suggestion in
                         hasSeenIntro.value = true
                         hideKeyboard()
                         model.submitSuggestion(suggestion)
                       }
                       .padding()
-                      
+
                       if model.shouldShowGenerateSuggestionsButton {
                         AIChatSuggestionsButton(
                           title: Strings.AIChat.suggestionsGenerationButtonTitle,
-                          isLoading: model.suggestionsStatus == .isGenerating) {
-                            hideKeyboard()
-                            model.generateSuggestions()
-                          }
-                          .padding(.horizontal)
-                          .frame(maxWidth: .infinity, alignment: .leading)
-                          .disabled(model.suggestionsStatus == .isGenerating || model.requestInProgress)
+                          isLoading: model.suggestionsStatus == .isGenerating
+                        ) {
+                          hideKeyboard()
+                          model.generateSuggestions()
+                        }
+                        .padding(.horizontal)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                        .disabled(
+                          model.suggestionsStatus == .isGenerating || model.requestInProgress
+                        )
                       }
                     }
-                    
+
                     Color.clear.id(lastMessageId)
                   }
                 }
@@ -174,34 +187,40 @@ public struct AIChatView: View {
                 .frame(minHeight: geometry.size.height)
               }
             } else {
-              AIChatIntroView(onSummarizePage: model.isContentAssociationPossible && model.shouldSendPageContents ? {
-                hasSeenIntro.value = true
-                model.summarizePage()
-              } : nil)
+              AIChatIntroView(
+                onSummarizePage: model.isContentAssociationPossible && model.shouldSendPageContents
+                  ? {
+                    hasSeenIntro.value = true
+                    model.summarizePage()
+                  } : nil
+              )
               .frame(minHeight: geometry.size.height, alignment: .bottom)
             }
           }
         }
       }
-      
-      if model.apiError == .none && model.isAgreementAccepted ||
-          (!hasSeenIntro.value && !model.isAgreementAccepted) {
+
+      if model.apiError == .none && model.isAgreementAccepted
+        || (!hasSeenIntro.value && !model.isAgreementAccepted)
+      {
         if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
           AIChatPageContextView(
             isToggleOn: $model.shouldSendPageContents,
             infoContent: {
-              AIChatPageContextInfoView(url: model.getLastCommittedURL(), 
-                                        pageTitle: model.getPageTitle() ?? "")
-                .padding([.horizontal, .bottom])
-                .background(Color(braveSystemName: .containerBackground))
-                .osAvailabilityModifiers({ view in
-                  if #available(iOS 16.4, *) {
-                    view
-                      .presentationCompactAdaptation(.popover)
-                  } else {
-                    view
-                  }
-                })
+              AIChatPageContextInfoView(
+                url: model.getLastCommittedURL(),
+                pageTitle: model.getPageTitle() ?? ""
+              )
+              .padding([.horizontal, .bottom])
+              .background(Color(braveSystemName: .containerBackground))
+              .osAvailabilityModifiers({ view in
+                if #available(iOS 16.4, *) {
+                  view
+                    .presentationCompactAdaptation(.popover)
+                } else {
+                  view
+                }
+              })
             }
           )
           .padding(.horizontal, 8.0)
@@ -209,17 +228,17 @@ public struct AIChatView: View {
           .disabled(model.shouldShowPremiumPrompt || !model.isContentAssociationPossible)
         }
       }
-      
-      if model.isAgreementAccepted ||
-          (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView() { prompt in
+
+      if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
+        AIChatPromptInputView { prompt in
           hasSeenIntro.value = true
           model.submitQuery(prompt)
           hideKeyboard()
         }
-        .disabled(model.requestInProgress ||
-                  model.suggestionsStatus == .isGenerating ||
-                  model.apiError == .contextLimitReached)
+        .disabled(
+          model.requestInProgress || model.suggestionsStatus == .isGenerating
+            || model.apiError == .contextLimitReached
+        )
         .padding([.horizontal, .bottom], 8.0)
       }
     }
@@ -242,7 +261,7 @@ public struct AIChatView: View {
       Task { @MainActor in
         await model.refreshPremiumStatusOrderCredentials()
       }
-      
+
       if let query = model.querySubmited {
         model.querySubmited = nil
         hasSeenIntro.value = true
@@ -250,13 +269,16 @@ public struct AIChatView: View {
       }
     }
     .toastView($feedbackToast)
-    .environment(\.openURL, OpenURLAction { url in
-      openURL(url)
-      dismiss()
-      return .handled
-    })
+    .environment(
+      \.openURL,
+      OpenURLAction { url in
+        openURL(url)
+        dismiss()
+        return .handled
+      }
+    )
   }
-  
+
   private var menuView: some View {
     ScrollView {
       AIChatMenuView(
@@ -271,17 +293,17 @@ public struct AIChatView: View {
           case .newChat:
             model.clearConversationHistory()
             break
-            
+
           case .goPremium:
             isPremiumPaywallPresented = true
-            
+
           case .managePremium:
             // The purchase was through the AppStore
             if BraveStoreSDK.shared.leoSubscriptionStatus?.state != nil {
               guard let url = URL.apple.manageSubscriptions else {
                 return
               }
-              
+
               // Opens Apple's "manage subscription" screen
               if UIApplication.shared.canOpenURL(url) {
                 UIApplication.shared.open(url, options: [:])
@@ -295,11 +317,12 @@ public struct AIChatView: View {
               }
             }
             dismiss()
-            
+
           case .advancedSettings:
             isAdvancedSettingsPresented.toggle()
           }
-        })
+        }
+      )
       .frame(minWidth: 300)
       .osAvailabilityModifiers({ view in
         if #available(iOS 16.4, *) {
@@ -311,23 +334,28 @@ public struct AIChatView: View {
       })
     }
   }
-  
+
   @ViewBuilder
-  private func responseContextMenuItems(for turnIndex: Int, turn: AiChat.ConversationTurn) -> some View {
+  private func responseContextMenuItems(
+    for turnIndex: Int,
+    turn: AiChat.ConversationTurn
+  ) -> some View {
     AIChatResponseMessageViewContextMenuButton(
       title: Strings.AIChat.responseContextMenuRegenerateTitle,
       icon: Image(braveSystemName: "leo.refresh"),
       onSelected: {
         model.retryLastRequest()
-      })
-    
+      }
+    )
+
     AIChatResponseMessageViewContextMenuButton(
       title: Strings.AIChat.responseContextMenuCopyTitle,
       icon: Image(braveSystemName: "leo.copy"),
       onSelected: {
         UIPasteboard.general.setValue(turn.text, forPasteboardType: "public.plain-text")
-      })
-    
+      }
+    )
+
     AIChatResponseMessageViewContextMenuButton(
       title: Strings.AIChat.responseContextMenuLikeAnswerTitle,
       icon: Image(braveSystemName: "leo.thumb.up"),
@@ -340,8 +368,9 @@ public struct AIChatView: View {
             feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
           }
         }
-      })
-    
+      }
+    )
+
     AIChatResponseMessageViewContextMenuButton(
       title: Strings.AIChat.responseContextMenuDislikeAnswerTitle,
       icon: Image(braveSystemName: "leo.thumb.down"),
@@ -349,26 +378,30 @@ public struct AIChatView: View {
         Task { @MainActor in
           let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
           if ratingId != nil {
-            feedbackToast = .success(isLiked: false, onAddFeedback: {
-              customFeedbackIndex = turnIndex
-            })
+            feedbackToast = .success(
+              isLiked: false,
+              onAddFeedback: {
+                customFeedbackIndex = turnIndex
+              }
+            )
           } else {
             feedbackToast = .error(message: Strings.AIChat.rateAnswerActionErrorText)
           }
         }
-    })
+      }
+    )
   }
-  
+
   @ViewBuilder
   private func apiErrorViews(for error: AiChat.APIError) -> some View {
     switch error {
     case .connectionIssue:
-      AIChatNetworkErrorView() {
+      AIChatNetworkErrorView {
         if !model.conversationHistory.isEmpty {
           model.retryLastRequest()
         }
       }
-        .padding()
+      .padding()
     case .rateLimitReached:
       AIChatPremiumUpsellView(
         upsellType: .rateLimit,
@@ -394,7 +427,7 @@ public struct AIChatView: View {
       EmptyView()
     }
   }
-  
+
   private var feedbackView: some View {
     AIChatFeedbackView(
       onSubmit: { category, feedback in
@@ -402,16 +435,19 @@ public struct AIChatView: View {
           feedbackToast = .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
           return
         }
-        
+
         Task { @MainActor in
           let success = await model.submitFeedback(
             category: category,
             feedback: feedback,
-            ratingId: "\(feedbackIndex)")
-          
-          feedbackToast = success ? .success(isLiked: true) : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
+            ratingId: "\(feedbackIndex)"
+          )
+
+          feedbackToast =
+            success
+            ? .success(isLiked: true) : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
         }
-        
+
         customFeedbackIndex = nil
       },
       onCancel: {
@@ -420,17 +456,20 @@ public struct AIChatView: View {
       }
     )
     .padding()
-    .environment(\.openURL, OpenURLAction { url in
-      if url.host == "dismiss" {
-        //TODO: Dismiss feedback learn-more prompt
-      } else {
-        openURL(url)
-        dismiss()
+    .environment(
+      \.openURL,
+      OpenURLAction { url in
+        if url.host == "dismiss" {
+          //TODO: Dismiss feedback learn-more prompt
+        } else {
+          openURL(url)
+          dismiss()
+        }
+        return .handled
       }
-      return .handled
-    })
+    )
   }
-  
+
   private func hideKeyboard() {
     UIApplication.shared.sendAction(
       #selector(UIResponder.resignFirstResponder),
@@ -450,63 +489,73 @@ struct AIChatView_Preview: PreviewProvider {
         premiumStatus: .active,
         onClose: {
           print("Closed Chat")
-        }, onErase: {
+        },
+        onErase: {
           print("Erased Chat History")
-        }, menuContent: {
+        },
+        menuContent: {
           EmptyView()
         }
       )
-      
+
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
-      
+
       GeometryReader { geometry in
         ScrollView {
           VStack(spacing: 0.0) {
             AIChatUserMessageView(prompt: "Does it work with Apple devices?")
               .padding()
               .background(Color(braveSystemName: .pageBackground))
-            
+
             AIChatPageInfoBanner(
               url: nil,
-              pageTitle: "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023")
+              pageTitle:
+                "Sonos Era 300 and Era 100...'s Editors’Choice Awards: The Best AIs and Services for 2023"
+            )
             .padding([.horizontal, .bottom])
             .background(Color(braveSystemName: .pageBackground))
-            
+
             AIChatResponseMessageView(
-              prompt: "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio.")
+              prompt:
+                "After months of leaks and some recent coordinated teases from the company itself, Sonos is finally officially announcing the Era 300 and Era 100 speakers. Both devices go up for preorder today — the Era 300 costs $449 and the Era 100 is $249 — and they’ll be available to purchase in stores beginning March 28th.\n\nAs its unique design makes clear, the Era 300 represents a completely new type of speaker for the company; it’s designed from the ground up to make the most of spatial audio music and challenge competitors like the HomePod and Echo Studio."
+            )
             .padding()
             .background(Color(braveSystemName: .containerBackground))
-            
+
             AIChatFeedbackView(
               onSubmit: {
                 print("Submitted Feedback: \($0) -- \($1)")
-              }, 
+              },
               onCancel: {
                 print("Cancelled Feedback")
               }
             )
             .padding()
-            
+
             AIChatSuggestionsView(
               geometry: geometry,
-              suggestions: ["What Bluetooth version does it use?",
-                            "Summarize this page?",
-                            "What is Leo?",
-                            "What can the Leo assistant do for me?"])
+              suggestions: [
+                "What Bluetooth version does it use?",
+                "Summarize this page?",
+                "What is Leo?",
+                "What can the Leo assistant do for me?",
+              ]
+            )
             .padding()
           }
         }
         .frame(maxHeight: geometry.size.height)
       }
-      
+
       Spacer()
-      
+
       AIChatPageContextView(
-        isToggleOn: .constant(true)) {}
-        .padding()
-      
-      AIChatPromptInputView() {
+        isToggleOn: .constant(true)
+      ) {}
+      .padding()
+
+      AIChatPromptInputView {
         print("Prompt Submitted: \($0)")
       }
     }

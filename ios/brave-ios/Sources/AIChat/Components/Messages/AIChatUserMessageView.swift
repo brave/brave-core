@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
 import DesignSystem
+import SwiftUI
 
 struct AIChatUserMessageView: View {
   var prompt: String
-  
+
   var body: some View {
     VStack(alignment: .leading) {
       Image(braveSystemName: "leo.user.circle")
@@ -16,7 +16,7 @@ struct AIChatUserMessageView: View {
         .foregroundStyle(Color(braveSystemName: .iconDefault))
         .padding(8.0)
         .background(Color(braveSystemName: .containerHighlight), in: Circle())
-      
+
       Text(prompt)
         .font(.subheadline)
         .foregroundStyle(Color(braveSystemName: .textPrimary))
@@ -31,7 +31,8 @@ struct AIChatUserMessageView: View {
 struct AIChatUserMessageView_Previews: PreviewProvider {
   static var previews: some View {
     AIChatUserMessageView(
-      prompt: "Does it work with Apple devices?")
+      prompt: "Does it work with Apple devices?"
+    )
     .previewLayout(.sizeThatFits)
   }
 }

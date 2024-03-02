@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AIChat
 import AVFoundation
 import Brave
 import BraveCore
@@ -143,10 +144,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       await BraveVPN.updateStorePromotionOrder()
       await BraveVPN.hideActiveStorePromotion()
     }
-    
+
     // Brave Store SDK - Initialization
     BraveStoreSDK.shared.refreshAllSkusOrders()
-    
+
     // Override point for customization after application launch.
     var shouldPerformAdditionalDelegateHandling = true
     AdblockEngine.setDomainResolver()
