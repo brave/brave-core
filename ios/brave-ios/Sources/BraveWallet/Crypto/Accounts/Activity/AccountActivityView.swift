@@ -172,25 +172,27 @@ struct AccountActivityView: View {
           )
         )
       })
-      Divider()
-      NavigationLink(destination: {
-        NFTGridDetailView(
-          store: store,
-          cryptoStore: cryptoStore,
-          keyringStore: keyringStore
-        )
-      }, label: {
-        let nftCount = store.userNFTs.count
-        RowView(
-          iconBraveSystemName: "leo.grid04",
-          title: Strings.Wallet.nftsTitle,
-          description: String.localizedStringWithFormat(
-            nftCount == 1 ?
-            Strings.Wallet.nftsSingularDescription : Strings.Wallet.nftsDescription,
-            nftCount
+      if store.account.coin != .fil {
+        Divider()
+        NavigationLink(destination: {
+          NFTGridDetailView(
+            store: store,
+            cryptoStore: cryptoStore,
+            keyringStore: keyringStore
           )
-        )
-      })
+        }, label: {
+          let nftCount = store.userNFTs.count
+          RowView(
+            iconBraveSystemName: "leo.grid04",
+            title: Strings.Wallet.nftsTitle,
+            description: String.localizedStringWithFormat(
+              nftCount == 1 ?
+              Strings.Wallet.nftsSingularDescription : Strings.Wallet.nftsDescription,
+              nftCount
+            )
+          )
+        })
+      }
       Divider()
       NavigationLink(destination: {
         AccountTransactionListView(
