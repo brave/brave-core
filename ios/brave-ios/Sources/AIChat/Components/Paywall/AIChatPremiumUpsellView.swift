@@ -82,36 +82,42 @@ struct PremiumUpsellActionView: View {
   var dismissAction: (() -> Void)?
 
   var body: some View {
-    Button(action: {
-      upgradeAction?()
-    }) {
-      Text(upsellType.primaryActionTitle)
-        .font(.subheadline.weight(.medium))
-        .padding([.top, .bottom], 12.0)
-        .padding([.leading, .trailing], 16.0)
-        .frame(maxWidth: .infinity)
-        .foregroundStyle(.white)
-        .background(
-          Color(braveSystemName: .buttonBackground),
-          in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
-        )
-        .padding(16.0)
-    }
+    Button(
+      action: {
+        upgradeAction?()
+      },
+      label: {
+        Text(upsellType.primaryActionTitle)
+          .font(.subheadline.weight(.medium))
+          .padding([.top, .bottom], 12.0)
+          .padding([.leading, .trailing], 16.0)
+          .frame(maxWidth: .infinity)
+          .foregroundStyle(.white)
+          .background(
+            Color(braveSystemName: .buttonBackground),
+            in: RoundedRectangle(cornerRadius: 12.0, style: .continuous)
+          )
+          .padding(16.0)
+      }
+    )
     .buttonStyle(.plain)
 
-    Button(action: {
-      dismissAction?()
-    }) {
-      Text(upsellType.dismissActionTitle)
-        .font(.subheadline.weight(.medium))
-        .padding([.top, .bottom], 12.0)
-        .padding([.leading, .trailing], 16.0)
-        .frame(maxWidth: .infinity)
-        .background(.clear)
-        .foregroundStyle(Color(braveSystemName: .textSecondary))
-        .padding([.bottom], 12.0)
-        .padding([.leading, .trailing], 16.0)
-    }
+    Button(
+      action: {
+        dismissAction?()
+      },
+      label: {
+        Text(upsellType.dismissActionTitle)
+          .font(.subheadline.weight(.medium))
+          .padding([.top, .bottom], 12.0)
+          .padding([.leading, .trailing], 16.0)
+          .frame(maxWidth: .infinity)
+          .background(.clear)
+          .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .padding([.bottom], 12.0)
+          .padding([.leading, .trailing], 16.0)
+      }
+    )
     .buttonStyle(.plain)
   }
 }

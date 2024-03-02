@@ -725,7 +725,6 @@ extension BrowserViewController: WKNavigationDelegate {
   }
 
   @MainActor
-
   public func webView(
     _ webView: WKWebView,
     respondTo challenge: URLAuthenticationChallenge
@@ -755,7 +754,9 @@ extension BrowserViewController: WKNavigationDelegate {
         let port = challenge.protectionSpace.port
 
         let result = await BraveCertificateUtils.verifyTrust(serverTrust, host: host, port: port)
-        let certificateChain = SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
+        let certificateChain = await Task<[SecCertificate], Never>.detached {
+          return SecTrustCopyCertificateChain(serverTrust) as? [SecCertificate] ?? []
+        }.value
 
         // Cert is valid and should be pinned
         if result == 0 {

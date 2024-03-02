@@ -37,20 +37,23 @@ public struct AIChatTermsAndConditionsView: View {
       .foregroundStyle(Color(braveSystemName: .textPrimary))
       .tint(Color(braveSystemName: .primary50))
 
-      Button(action: {
-        termsAndConditionsAccepted = true
-      }) {
-        Text(Strings.AIChat.termsConditionsApprovalActionTitle)
-          .font(.subheadline.weight(.semibold))
-          .padding([.top, .bottom], 12)
-          .padding([.leading, .trailing], 16)
-          .frame(maxWidth: .infinity)
-          .foregroundStyle(.white)
-          .background(
-            Color(braveSystemName: .buttonBackground),
-            in: Capsule()
-          )
-      }
+      Button(
+        action: {
+          termsAndConditionsAccepted = true
+        },
+        label: {
+          Text(Strings.AIChat.termsConditionsApprovalActionTitle)
+            .font(.subheadline.weight(.semibold))
+            .padding([.top, .bottom], 12)
+            .padding([.leading, .trailing], 16)
+            .frame(maxWidth: .infinity)
+            .foregroundStyle(.white)
+            .background(
+              Color(braveSystemName: .buttonBackground),
+              in: Capsule()
+            )
+        }
+      )
       .buttonStyle(.plain)
       .padding(16.0)
     }

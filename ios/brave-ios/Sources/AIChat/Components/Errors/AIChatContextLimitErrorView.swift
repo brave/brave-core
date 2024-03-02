@@ -21,19 +21,22 @@ struct AIChatContextLimitErrorView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom)
 
-        Button(action: {
-          newChatStarted?()
-        }) {
-          Text(Strings.AIChat.newChatActionTitle)
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .padding()
-            .foregroundStyle(.white)
-            .background(
-              Color(braveSystemName: .buttonBackground),
-              in: Capsule()
-            )
-        }
+        Button(
+          action: {
+            newChatStarted?()
+          },
+          label: {
+            Text(Strings.AIChat.newChatActionTitle)
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
+              .foregroundStyle(.white)
+              .background(
+                Color(braveSystemName: .buttonBackground),
+                in: Capsule()
+              )
+          }
+        )
         .buttonStyle(.plain)
       }
     }

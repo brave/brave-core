@@ -207,16 +207,14 @@ public class BraveSkusSDK {
     }
 
     let receipt = try BraveSkusSDK.receipt(for: product)
-    return try await withCheckedThrowingContinuation { continuation in
-      skusService.createOrder(fromReceipt: product.group.skusDomain, receipt: receipt) { orderId in
-        if orderId.isEmpty {
-          continuation.resume(throwing: SkusError.cannotCreateOrder)
-          return
-        }
-
-        continuation.resume(returning: orderId)
-      }
+    let orderId = await skusService.createOrderFromReceipt(
+      domain: product.group.skusDomain,
+      receipt: receipt
+    )
+    if orderId.isEmpty {
+      throw SkusError.cannotCreateOrder
     }
+    return orderId
   }
 
   /// Links an existing order to an AppStore Receipt
@@ -231,12 +229,11 @@ public class BraveSkusSDK {
     }
 
     let receipt = try BraveSkusSDK.receipt(for: product)
-    return try await withCheckedThrowingContinuation { continuation in
-      skusService.submitReceipt(product.group.skusDomain, orderId: orderId, receipt: receipt) {
-        response in
-        continuation.resume(returning: response)
-      }
-    }
+    return await skusService.submitReceipt(
+      domain: product.group.skusDomain,
+      orderId: orderId,
+      receipt: receipt
+    )
   }
 
   /// Retrieves and refreshes the local cached order for the given Order-ID
@@ -262,7 +259,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.refreshOrder(group.skusDomain, orderId: orderId))
+    return try await decode(skusService.refreshOrder(domain: group.skusDomain, orderId: orderId))
   }
 
   /// Retrieves the Customer's Credentials Summary
@@ -285,7 +282,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return try await decode(skusService.credentialSummary(group.skusDomain))
+    return try await decode(skusService.credentialSummary(domain: group.skusDomain))
   }
 
   /// Retrieves the Customer's Credentials for a specified Order
@@ -298,7 +295,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    let result = await skusService.fetchOrderCredentials(group.skusDomain, orderId: orderId)
+    let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
     if !result.isEmpty {
       Logger.module.error("[BraveSkusSDK] - Failed to Fetch Credentials: \(result)")
       throw SkusError.cannotFetchCredentials
@@ -319,7 +316,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
-    return await skusService.prepareCredentialsPresentation(group.skusDomain, path: path)
+    return await skusService.prepareCredentialsPresentation(domain: group.skusDomain, path: path)
   }
 
   @MainActor

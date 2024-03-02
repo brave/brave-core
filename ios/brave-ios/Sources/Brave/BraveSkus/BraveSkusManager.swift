@@ -62,7 +62,7 @@ public class BraveSkusManager {
   @MainActor
   func refreshOrder(for orderId: String, domain: String) async -> Any? {
     Logger.module.debug("[SkusManager] - RefreshOrder")
-    let order = await sku.refreshOrder(domain, orderId: orderId)
+    let order = await sku.refreshOrder(domain: domain, orderId: orderId)
     guard !order.isEmpty,
       let data = order.data(using: .utf8),
       let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
@@ -77,7 +77,7 @@ public class BraveSkusManager {
   @MainActor
   func fetchOrderCredentials(for orderId: String, domain: String) async -> String {
     Logger.module.debug("[SkusManager] - FetchOrderCredentials")
-    return await sku.fetchOrderCredentials(domain, orderId: orderId)
+    return await sku.fetchOrderCredentials(domain: domain, orderId: orderId)
   }
 
   @MainActor
@@ -85,7 +85,7 @@ public class BraveSkusManager {
     Logger.module.debug("[SkusManager] - PrepareCredentialsPresentation")
 
     let credentialType = CredentialType.from(domain: domain)
-    let credential = await sku.prepareCredentialsPresentation(domain, path: path)
+    let credential = await sku.prepareCredentialsPresentation(domain: domain, path: path)
     if !credential.isEmpty {
       switch credentialType {
       case .vpn:
@@ -113,7 +113,7 @@ public class BraveSkusManager {
 
   @MainActor
   func credentialSummary(for domain: String) async -> Any? {
-    let summary = await sku.credentialSummary(domain)
+    let summary = await sku.credentialSummary(domain: domain)
     guard !summary.isEmpty,
       let data = summary.data(using: .utf8),
       let json = try? JSONSerialization.jsonObject(with: data, options: .fragmentsAllowed)
@@ -157,17 +157,6 @@ public class BraveSkusManager {
           Logger.module.debug(
             "[SkusManager] - The credential summary does not have any remaining credentials"
           )
-
-          // AI-Chat always has an `order` but VPN doesn't
-          // Once we move VPN over to the Skus v2 then we can use CredentialSummary.order.id
-          /*if let orderId = CredentialSummary.order.id {
-            Logger.module.debug("[SkusManager] - Refreshing Credentials")
-
-            let credentials = await sku.fetchOrderCredentials(domain, orderId: orderId)
-            if credentials.isEmpty {
-              Logger.module.debug("[SkusManager] - Successfully Refreshed Credentials")
-            }
-          }*/
         }
       case .sessionExpired:
         Logger.module.debug("[SkusManager] - This credential session has expired")

@@ -273,7 +273,7 @@ public class BraveStoreSDK: AppStoreSDK {
   @MainActor
   public func purchase(product: BraveStoreProduct) async throws {
     if let subscription = await subscription(for: product) {
-      if let transaction = try await super.purchase(subscription) {
+      if try await super.purchase(subscription) != nil {
 
         // Update Skus SDK Purchase
         try await self.updateSkusPurchaseState(for: product)
@@ -398,7 +398,7 @@ public class BraveStoreSDK: AppStoreSDK {
       let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
       expiryDate = order.expiresAt
       Preferences.AIChat.subscriptionExpirationDate.value = expiryDate
-      Preferences.AIChat.subscriptionHasCredentials.value = true  // Refreshing an order updates credentials
+      Preferences.AIChat.subscriptionHasCredentials.value = true
     }
 
     guard let expiryDate = expiryDate else {
@@ -409,7 +409,7 @@ public class BraveStoreSDK: AppStoreSDK {
     if Date() > expiryDate {
       let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
       Preferences.AIChat.subscriptionExpirationDate.value = order.expiresAt
-      Preferences.AIChat.subscriptionHasCredentials.value = true  // Refreshing an order updates credentials
+      Preferences.AIChat.subscriptionHasCredentials.value = true
       return
     }
 

@@ -70,16 +70,19 @@ struct AIChatPaywallView: View {
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
             ToolbarItemGroup(placement: .confirmationAction) {
-              Button(action: {
-                Task { await restorePurchase() }
-              }) {
-                if paymentStatus == .ongoing {
-                  ProgressView()
-                    .tint(Color.white)
-                } else {
-                  Text(Strings.AIChat.restorePaywallButtonTitle)
+              Button(
+                action: {
+                  Task { await restorePurchase() }
+                },
+                label: {
+                  if paymentStatus == .ongoing {
+                    ProgressView()
+                      .tint(Color.white)
+                  } else {
+                    Text(Strings.AIChat.restorePaywallButtonTitle)
+                  }
                 }
-              }
+              )
               .foregroundColor(.white)
               .disabled(paymentStatus == .ongoing)
               .buttonStyle(.plain)
@@ -175,18 +178,21 @@ struct AIChatPaywallView: View {
         .foregroundColor(Color(braveSystemName: .primitivePrimary70))
 
       VStack {
-        Button(action: {
-          Task { await purchaseSubscription() }
-        }) {
-          if paymentStatus == .ongoing {
-            ProgressView()
-              .tint(Color.white)
-          } else {
-            Text(Strings.AIChat.paywallPurchaseActionTitle)
-              .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
+        Button(
+          action: {
+            Task { await purchaseSubscription() }
+          },
+          label: {
+            if paymentStatus == .ongoing {
+              ProgressView()
+                .tint(Color.white)
+            } else {
+              Text(Strings.AIChat.paywallPurchaseActionTitle)
+                .font(.body.weight(.semibold))
+                .foregroundColor(Color(.white))
+            }
           }
-        }
+        )
         .frame(maxWidth: .infinity)
         .padding()
         .background(
@@ -269,65 +275,70 @@ private struct AIChatPremiumTierSelectionView: View {
   var selectedTierType: AIChatSubscriptionTier
 
   var body: some View {
-    Button(action: {
-      selectedTierType = type
-    }) {
-      HStack {
-        VStack(alignment: .leading, spacing: 8.0) {
-          Text(title)
-            .font(.title2.weight(.semibold))
-            .foregroundColor(Color(.white))
+    Button(
+      action: {
+        selectedTierType = type
+      },
+      label: {
+        HStack {
+          VStack(alignment: .leading, spacing: 8.0) {
+            Text(title)
+              .font(.title2.weight(.semibold))
+              .foregroundColor(Color(.white))
 
-          if let description = description {
-            Text(description)
-              .font(.caption2.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .green50))
-              .padding(4.0)
-              .background(Color(braveSystemName: .green20))
-              .clipShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
+            if let description = description {
+              Text(description)
+                .font(.caption2.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .green50))
+                .padding(4.0)
+                .background(Color(braveSystemName: .green20))
+                .clipShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
+            }
           }
-        }
-        Spacer()
+          Spacer()
 
-        if let product = product {
-          HStack(alignment: .center, spacing: 2) {
-            Text(
-              "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
-            )
-            .font(.subheadline)
-            .foregroundColor(Color(braveSystemName: .primitivePrimary30))
-
-            Text(
-              product.price.frontSymbolCurrencyFormatted(
-                with: product.priceFormatStyle.locale,
-                isSymbolIncluded: false
-              ) ?? product.displayPrice
-            )
-            .font(.title)
-            .foregroundColor(.white)
-
-            Text(" / " + Strings.AIChat.paywallYearlyPriceDividend)
+          if let product = product {
+            HStack(alignment: .center, spacing: 2) {
+              Text(
+                "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
+              )
               .font(.subheadline)
               .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+
+              Text(
+                product.price.frontSymbolCurrencyFormatted(
+                  with: product.priceFormatStyle.locale,
+                  isSymbolIncluded: false
+                ) ?? product.displayPrice
+              )
+              .font(.title)
+              .foregroundColor(.white)
+
+              Text(" / " + Strings.AIChat.paywallYearlyPriceDividend)
+                .font(.subheadline)
+                .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+            }
+          } else {
+            ProgressView()
+              .tint(Color.white)
           }
-        } else {
-          ProgressView()
-            .tint(Color.white)
         }
-      }
-      .padding()
-      .background(
-        Color(braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80)
-      )
-      .overlay(
-        ContainerRelativeShape()
-          .strokeBorder(
-            Color(braveSystemName: .primitivePrimary50),
-            lineWidth: selectedTierType == type ? 2.0 : 0.0
+        .padding()
+        .background(
+          Color(
+            braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80
           )
-      )
-      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-    }
+        )
+        .overlay(
+          ContainerRelativeShape()
+            .strokeBorder(
+              Color(braveSystemName: .primitivePrimary50),
+              lineWidth: selectedTierType == type ? 2.0 : 0.0
+            )
+        )
+        .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
+      }
+    )
     .frame(maxWidth: .infinity)
     .buttonStyle(.plain)
   }

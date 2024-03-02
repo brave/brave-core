@@ -49,7 +49,7 @@ class HighlightJS {
     if let language = language {
       let highlight = context.objectForKeyedSubscript("hljs").objectForKeyedSubscript("highlight")
       result = highlight?.call(withArguments: [
-        normalizeLanguage(language), code, false /* False = Do not highlight invalid syntax */,
+        normalizeLanguage(language), code, false,  // False = Do not highlight invalid syntax
       ])
     } else {
       let highlight = context.objectForKeyedSubscript("hljs").objectForKeyedSubscript(
@@ -107,12 +107,12 @@ class HighlightJS {
     // If we want more languages, we have to use the full HighlightJS package which is very tiny anyway
     // I'm only using a subset atm though:
 
-    /*let supportedLanguages = [
-      "bash", "c", "cpp", "csharp", "css", "diff", "go", "graphql",
-      "ini", "java", "javascript", "json", "kotlin", "less", "lua",
-      "makefile", "markdown", "objectivec", "perl", "php", "php-template",
-      "plaintext", "python", "python-repl", "r", "ruby", "rust", "scss",
-      "shell", "sql", "swift", "typescript", "vbnet", "wasm", "xml", "yaml"]*/
+    // let supportedLanguages = [
+    //  "bash", "c", "cpp", "csharp", "css", "diff", "go", "graphql",
+    //  "ini", "java", "javascript", "json", "kotlin", "less", "lua",
+    //  "makefile", "markdown", "objectivec", "perl", "php", "php-template",
+    //  "plaintext", "python", "python-repl", "r", "ruby", "rust", "scss",
+    //  "shell", "sql", "swift", "typescript", "vbnet", "wasm", "xml", "yaml"]
 
     if language == "c++" {
       return "cpp"

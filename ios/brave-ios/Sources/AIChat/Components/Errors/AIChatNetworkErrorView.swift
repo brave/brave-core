@@ -21,19 +21,22 @@ struct AIChatNetworkErrorView: View {
           .foregroundColor(Color(braveSystemName: .textPrimary))
           .padding(.bottom)
 
-        Button(action: {
-          onRetryRequest()
-        }) {
-          Text(Strings.AIChat.retryActionTitle)
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .padding()
-            .foregroundStyle(.white)
-            .background(
-              Color(braveSystemName: .buttonBackground),
-              in: Capsule()
-            )
-        }
+        Button(
+          action: {
+            onRetryRequest()
+          },
+          label: {
+            Text(Strings.AIChat.retryActionTitle)
+              .font(.body.weight(.semibold))
+              .foregroundColor(Color(.white))
+              .padding()
+              .foregroundStyle(.white)
+              .background(
+                Color(braveSystemName: .buttonBackground),
+                in: Capsule()
+              )
+          }
+        )
         .buttonStyle(.plain)
       }
     }

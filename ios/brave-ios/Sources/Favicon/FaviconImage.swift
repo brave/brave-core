@@ -6,7 +6,6 @@
 import BraveShared
 import BraveUI
 import Data
-import Favicon
 import Shared
 import SwiftUI
 
@@ -30,7 +29,7 @@ public struct FaviconImage: View {
   
   public init(url: String?, isPrivateBrowsing: Bool) {
     self.isPrivateBrowsing = isPrivateBrowsing
-
+    
     if let url = url {
       self.url = URL(string: url)
     } else {
@@ -49,6 +48,5 @@ public struct FaviconImage: View {
           faviconLoader.load(url: url, isPrivateBrowsing: isPrivateBrowsing)
         }
       }
-    }
   }
 }

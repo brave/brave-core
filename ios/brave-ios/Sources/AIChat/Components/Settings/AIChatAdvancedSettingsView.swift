@@ -214,56 +214,71 @@ public struct AIChatAdvancedSettingsView: View {
 
           // Check subscription is activated with in-app purchase
           if viewModel.canSubscriptionBeLinked {
-            Button(action: {
-              openURL(.brave.braveLeoLinkReceiptProd)
-            }) {
-              LabelView(
-                title: Strings.AIChat.advancedSettingsLinkPurchaseActionTitle,
-                subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
+            Button(
+              action: {
+                openURL(.brave.braveLeoLinkReceiptProd)
+              },
+              label: {
+                LabelView(
+                  title: Strings.AIChat.advancedSettingsLinkPurchaseActionTitle,
+                  subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
+                )
+              }
+            )
+
+            if viewModel.isDevReceiptLinkingAvailable {
+              Button(
+                action: {
+                  openURL(.brave.braveLeoLinkReceiptStaging)
+                },
+                label: {
+                  LabelView(
+                    title: "[Staging] Link receipt"
+                  )
+                }
+              )
+
+              Button(
+                action: {
+                  openURL(.brave.braveLeoLinkReceiptDev)
+                },
+                label: {
+                  LabelView(
+                    title: "[Dev] Link receipt"
+                  )
+                }
               )
             }
 
-            if viewModel.isDevReceiptLinkingAvailable {
-              Button(action: {
-                openURL(.brave.braveLeoLinkReceiptStaging)
-              }) {
-                LabelView(
-                  title: "[Staging] Link receipt"
-                )
-              }
+            Button(
+              action: {
+                guard let url = URL.apple.manageSubscriptions else {
+                  return
+                }
 
-              Button(action: {
-                openURL(.brave.braveLeoLinkReceiptDev)
-              }) {
-                LabelView(
-                  title: "[Dev] Link receipt"
-                )
+                // Opens Apple's 'manage subscription' screen
+                if UIApplication.shared.canOpenURL(url) {
+                  UIApplication.shared.open(url, options: [:])
+                }
+              },
+              label: {
+                premiumActionView
               }
-            }
-
-            Button(action: {
-              guard let url = URL.apple.manageSubscriptions else {
-                return
-              }
-
-              // Opens Apple's 'manage subscription' screen
-              if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:])
-              }
-            }) {
-              premiumActionView
-            }
+            )
           }
         } else {
-          Button(action: {
-            if viewModel.inAppPurchaseProductsLoaded {
-              isPaywallPresented = true
-            } else {
-              appStoreConnectionErrorPresented = true
+          Button(
+            action: {
+              if viewModel.inAppPurchaseProductsLoaded {
+                isPaywallPresented = true
+              } else {
+                appStoreConnectionErrorPresented = true
+              }
+            },
+            label: {
+              premiumActionView
             }
-          }) {
-            premiumActionView
-          }
+          )
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle)
@@ -281,12 +296,15 @@ public struct AIChatAdvancedSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
 
       Section {
-        Button(action: {
-          resetAndClearAlertErrorPresented.toggle()
-        }) {
-          Text(Strings.AIChat.resetLeoDataActionTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
-        }
+        Button(
+          action: {
+            resetAndClearAlertErrorPresented.toggle()
+          },
+          label: {
+            Text(Strings.AIChat.resetLeoDataActionTitle)
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+        )
         .frame(maxWidth: .infinity)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .buttonStyle(.plain)
