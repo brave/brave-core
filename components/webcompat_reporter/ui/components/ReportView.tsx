@@ -64,7 +64,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
 
     let infoTextKey = 'reportExplanation'
     if (!isHttpPage) {
-      infoTextKey = 'reportInternalExplanation'
+      infoTextKey = 'reportNonHttpExplanation'
     } else if (isLocalPage) {
       infoTextKey = 'reportLocalExplanation'
     } else if (isErrorPage) {
@@ -82,13 +82,6 @@ export default class ReportView extends React.PureComponent<Props, State> {
         {!isIneligiblePage &&
           <>
             <NonInteractiveURL>{siteUrl}</NonInteractiveURL>
-            <DisclaimerText>
-              {getLocale('reportDisclaimer')}
-              &nbsp;
-              <a href={WEBCOMPAT_INFO_WIKI_URL} target="_blank">
-                {getLocale('reportInfoLink')}
-              </a>
-            </DisclaimerText>
             <FieldCtr>
               <TextArea
                 placeholder={getLocale('reportDetails')}
@@ -122,6 +115,13 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 {getLocale('attachScreenshotLabel')}
               </CheckboxLabel>
             </FieldCtr>
+            <DisclaimerText>
+              {getLocale('reportDisclaimer')}
+              &nbsp;
+              <a href={WEBCOMPAT_INFO_WIKI_URL} target="_blank">
+                {getLocale('reportInfoLink')}
+              </a>
+            </DisclaimerText>
           </>
         }
         <SideBySideButtons>
