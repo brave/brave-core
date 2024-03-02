@@ -21,17 +21,6 @@ import ScreenTime
 import AIChat
 import SpeechRecognition
 
-import Shared
-import SnapKit
-import Storage
-import StoreKit
-import SwiftUI
-import UIKit
-import WebKit
-import os.log
-
-import class Combine.AnyCancellable
-
 #if canImport(BraveTalk)
 import BraveTalk
 #endif
