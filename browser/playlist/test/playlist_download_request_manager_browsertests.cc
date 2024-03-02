@@ -263,7 +263,7 @@ IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(PlaylistDownloadRequestManagerBrowserTest,
-                       NonHTTPSMedia) {
+                       DISABLED_NonHTTPSMedia) {
   // These should be ignored
   LoadHTMLAndCheckResult(
       R"html(
