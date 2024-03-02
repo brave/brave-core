@@ -16,7 +16,7 @@ struct ClearDataSectionView: View {
   var body: some View {
     Section {
       ForEach($settings.clearableSettings) { $setting in
-        ShieldToggleView(
+        ToggleView(
           title: setting.clearable.label,
           subtitle: nil,
           toggle: $setting.isEnabled

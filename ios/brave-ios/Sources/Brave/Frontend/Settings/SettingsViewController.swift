@@ -19,6 +19,7 @@ import SwiftUI
 import SwiftyJSON
 import UIKit
 import WebKit
+import AIChat
 
 extension TabBarVisibility: RepresentableOptionType {
   public var displayString: String {
@@ -53,6 +54,7 @@ class SettingsViewController: TableViewController {
   private let tabManager: TabManager
   private let rewards: BraveRewards?
   private let feedDataSource: FeedDataSource
+  private let braveCore: BraveCoreMain
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
@@ -83,6 +85,7 @@ class SettingsViewController: TableViewController {
     self.feedDataSource = feedDataSource
     self.rewards = rewards
     self.windowProtection = windowProtection
+    self.braveCore = braveCore
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
@@ -246,7 +249,7 @@ class SettingsViewController: TableViewController {
       header: .title(Strings.features),
       rows: [
         Row(
-          text: Strings.braveShieldsAndPrivacy,
+          text: Strings.braveShieldsAndPrivacySettingsTitle,
           selection: { [unowned self] in
             let controller = UIHostingController(
               rootView: AdvancedShieldsSettingsView(
@@ -298,7 +301,7 @@ class SettingsViewController: TableViewController {
     if BraveRewards.isAvailable, let rewards = rewards {
       section.rows += [
         Row(
-          text: Strings.braveRewardsTitle,
+          text: Strings.braveRewardsSettingsTitle,
           selection: { [unowned self] in
             let rewardsVC = BraveRewardsSettingsViewController(rewards)
             rewardsVC.walletTransferLearnMoreTapped = { [weak self] in
@@ -319,7 +322,7 @@ class SettingsViewController: TableViewController {
 
     section.rows.append(
       Row(
-        text: Strings.BraveNews.braveNews,
+        text: Strings.BraveNews.braveNewsTitle,
         selection: { [unowned self] in
           let controller = NewsSettingsViewController(
             dataSource: self.feedDataSource,
@@ -342,6 +345,14 @@ class SettingsViewController: TableViewController {
       )
     )
 
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
+      aiChatRow = aiChatSettingsRow()
+      
+      if let aiChatRow = aiChatRow {
+        section.rows.append(aiChatRow)
+      }
+    }
+    
     vpnRow = vpnSettingsRow()
     if let vpnRow = vpnRow {
       section.rows.append(vpnRow)
@@ -411,16 +422,9 @@ class SettingsViewController: TableViewController {
                 animated: true
               )
             }
-          },
-          image: UIImage(braveSystemNamed: "leo.sync"),
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
-        .boolRow(
-          title: Strings.bookmarksLastVisitedFolderTitle,
-          option: Preferences.General.showLastVisitedBookmarksFolder,
-          image: UIImage(braveSystemNamed: "leo.folder.open")
-        ),
+          }, image: UIImage(braveSystemNamed: "leo.product.sync"), accessory: .disclosureIndicator,
+          cellClass: MultilineValue1Cell.self),
+        .boolRow(title: Strings.bookmarksLastVisitedFolderTitle, option: Preferences.General.showLastVisitedBookmarksFolder, image: UIImage(braveSystemNamed: "leo.folder.open")),
         Row(
           text: Strings.Shortcuts.shortcutSettingsTitle,
           selection: { [unowned self] in
@@ -688,7 +692,6 @@ class SettingsViewController: TableViewController {
   private var vpnRow: Row?
 
   private func vpnSettingsRow() -> Row {
-
     let (text, color) = { () -> (String, UIColor) in
       if Preferences.VPN.vpnReceiptStatus.value
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
@@ -756,6 +759,35 @@ class SettingsViewController: TableViewController {
       context: [ColoredDetailCell.colorKey: color],
       uuid: "vpnrow"
     )
+  }
+  
+  private var aiChatRow: Row?
+  
+  private func aiChatSettingsRow() -> Row {
+    return Row(
+      text: Strings.leoMenuItem,
+      selection: { [unowned self] in
+        let model = AIChatViewModel(
+          braveCore: self.braveCore,
+          webView: self.tabManager.selectedTab?.webView,
+          script: BraveLeoScriptHandler.self
+        )
+        
+        let controller = UIHostingController(rootView:
+          AIChatAdvancedSettingsView(
+            viewModel: AIChatSubscriptionDetailModelView(model: model),
+            isModallyPresented: false,
+            openURL: { [unowned self] url in
+              self.settingsDelegate?.settingsOpenURLInNewTab(url)
+              self.dismiss(animated: true)
+            }
+          )
+        )
+        
+        self.navigationController?.pushViewController(controller, animated: true)
+      },
+      image: UIImage(braveSystemNamed: "leo.product.brave-leo"),
+      accessory: .disclosureIndicator)
   }
 
   private lazy var securitySection: Static.Section = {

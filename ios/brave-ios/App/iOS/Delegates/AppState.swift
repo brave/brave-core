@@ -16,6 +16,7 @@ import Storage
 import UIKit
 import UserAgent
 import os.log
+import AIChat
 
 private let adsRewardsLog = Logger(
   subsystem: Bundle.main.bundleIdentifier!,
@@ -188,7 +189,13 @@ public class AppState {
       }
     }
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
-
+    
+    if !AppConstants.buildChannel.isPublic {
+      switches.append(.init(key: .init(rawValue: "env-leo"), value: "staging"))
+      switches.append(.init(key: .init(rawValue: "env-ai-chat.bsg"), value: "dev"))
+      switches.append(.init(key: .init(rawValue: "env-ai-chat-premium.bsg"), value: "dev"))
+    }
+                          
     // Initialize BraveCore
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
   }

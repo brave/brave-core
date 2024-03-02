@@ -145,6 +145,14 @@ extension BrowserViewController {
       { [unowned self] in
         self.presentWallet()
       }
+      
+      // Add Brave-Leo options only in normal browsing
+      if !privateBrowsingManager.isPrivateBrowsing {
+        MenuItemFactory.button(for: .leo) { [unowned self] in
+          self.popToBVC()
+          self.openBraveLeo()
+        }
+      }
     }
     .fixedSize(horizontal: false, vertical: true)
     .padding(.top, 10)
@@ -335,10 +343,16 @@ extension BrowserViewController {
             }
             .animation(.default, value: playlistItemAdded)
           }
-          MenuItemButton(
-            icon: Image(braveSystemName: "leo.share.macos"),
-            title: Strings.shareWithMenuItem
-          ) {
+          
+          // Add Brave-Leo options only in normal browsing
+          if !browserViewController.tabManager.privateBrowsingManager.isPrivateBrowsing {
+            MenuItemButton(icon: Image(braveSystemName: "leo.product.brave-leo"), title: Strings.leoMenuItem) {
+              browserViewController.dismiss(animated: true)
+              browserViewController.openBraveLeo()
+            }
+          }
+          
+          MenuItemButton(icon: Image(braveSystemName: "leo.share.macos"), title: Strings.shareWithMenuItem) {
             browserViewController.dismiss(animated: true)
             browserViewController.tabToolbarDidPressShare()
           }

@@ -18,6 +18,9 @@ import NetworkExtension
 import Onboarding
 import Preferences
 import ScreenTime
+import AIChat
+import SpeechRecognition
+
 import Shared
 import SnapKit
 import Storage
@@ -147,7 +150,7 @@ public class BrowserViewController: UIViewController {
   var onPendingRequestUpdatedCancellable: AnyCancellable?
 
   /// Voice Search
-  var voiceSearchViewController: PopupViewController<VoiceSearchInputView>?
+  var voiceSearchViewController: PopupViewController<SpeechToTextInputView>?
   var voiceSearchCancelable: AnyCancellable?
   let speechRecognizer = SpeechRecognizer()
 
@@ -284,8 +287,8 @@ public class BrowserViewController: UIViewController {
   var topToolbarDidPressReloadTask: Task<(), Never>?
 
   /// In app purchase obsever for VPN Subscription action
-  let iapObserver: IAPObserver
-
+  let iapObserver: BraveVPNInAppPurchaseObserver
+  
   private let ntpP3AHelper: NewTabPageP3AHelper
 
   public init(
@@ -2862,7 +2865,8 @@ extension BrowserViewController: TabDelegate {
       Web3NameServiceScriptHandler(tab: tab),
       Web3IPFSScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
-
+      BraveLeoScriptHandler(tab: tab),
+      
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
     ]
@@ -3141,6 +3145,11 @@ extension BrowserViewController: SearchViewControllerDelegate {
   ) {
     topToolbar.leaveOverlayMode()
     processAddressBar(text: query, isBraveSearchPromotion: braveSearchPromotion)
+  }
+  
+  func searchViewController(_ searchViewController: SearchViewController, didSubmitAIChat query: String) {
+    self.popToBVC()
+    self.openBraveLeo(with: query)
   }
 
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
@@ -3742,12 +3751,12 @@ extension BrowserViewController {
   }
 }
 
-extension BrowserViewController: IAPObserverDelegate {
+extension BrowserViewController: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
     // No-op
   }
-
-  public func purchaseFailed(error: IAPObserver.PurchaseError) {
+  
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // No-op
   }
 
@@ -3832,5 +3841,29 @@ extension BrowserViewController {
         }
       }
     }
+  }
+}
+
+extension BrowserViewController {
+  private func openAIChatURL(_ url: URL) {
+    let forcedPrivate = self.privateBrowsingManager.isPrivateBrowsing
+    self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
+  }
+  
+  func openBraveLeo(with query: String? = nil) {
+    let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
+    
+    let model = AIChatViewModel(
+      braveCore: braveCore,
+      webView: webView,
+      script: BraveLeoScriptHandler.self,
+      querySubmited: query)
+    
+    let chatController = UIHostingController(rootView: AIChatView(
+      model: model,
+      speechRecognizer: speechRecognizer,
+      openURL: openAIChatURL))
+    
+    present(chatController, animated: true)
   }
 }

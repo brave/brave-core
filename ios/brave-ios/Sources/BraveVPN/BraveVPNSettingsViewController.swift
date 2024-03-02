@@ -15,9 +15,9 @@ import os.log
 public class BraveVPNSettingsViewController: TableViewController {
 
   public var openURL: ((URL) -> Void)?
-  let iapObserver: IAPObserver
+  let iapObserver: BraveVPNInAppPurchaseObserver
 
-  public init(iapObserver: IAPObserver) {
+  public init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
 
     super.init(style: .grouped)
@@ -442,7 +442,7 @@ public class BraveVPNSettingsViewController: TableViewController {
 
 // MARK: - IAPObserverDelegate
 
-extension BraveVPNSettingsViewController: IAPObserverDelegate {
+extension BraveVPNSettingsViewController: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
     DispatchQueue.main.async {
       self.isLoading = false
@@ -453,7 +453,7 @@ extension BraveVPNSettingsViewController: IAPObserverDelegate {
     }
   }
 
-  public func purchaseFailed(error: IAPObserver.PurchaseError) {
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // Handle Offer Code error
     guard isLoading else {
       return
@@ -465,8 +465,8 @@ extension BraveVPNSettingsViewController: IAPObserverDelegate {
   public func handlePromotedInAppPurchase() {
     // No-op
   }
-
-  private func handleOfferCodeError(error: IAPObserver.PurchaseError) {
+  
+  private func handleOfferCodeError(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false
 

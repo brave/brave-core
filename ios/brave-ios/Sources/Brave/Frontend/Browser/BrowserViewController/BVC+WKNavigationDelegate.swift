@@ -892,13 +892,12 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if let tab = tabManager[webView] {
-      // Deciding whether to inject app's IAP receipt for Brave SKUs or not
-      if let url = tab.url,
-        let braveSkusHelper = BraveSkusWebHelper(for: url),
-        let receiptData = braveSkusHelper.receiptData,
-        !tab.isPrivate
-      {
-        tab.injectLocalStorageItem(key: receiptData.key, value: receiptData.value)
+      // Inject app's IAP receipt for Brave SKUs if necessary
+      if !tab.isPrivate {
+        Task { @MainActor in
+          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .vpnMonthly)
+          await BraveSkusAccountLink.injectLocalStorage(webView: webView, product: .leoMonthly)
+        }
       }
 
       // Second attempt to inject results to the BraveSearch.

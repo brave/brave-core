@@ -115,16 +115,16 @@ public class BraveSkusManager {
 
         switch credentialSummaryJson.state {
         case .valid:
-          if Preferences.VPN.skusCredential.value == nil {
-            Logger.module.debug(
-              "The credential does NOT exists, calling prepareCredentialsPresentation"
-            )
-            self.prepareCredentialsPresentation(for: domain, path: "*") { _ in
-              // Keep the skus manager alive until preparing credential presentation finishes.
-              _ = self
+          if domain.hasPrefix("vpn.brave") {
+            if Preferences.VPN.skusCredential.value == nil {
+              Logger.module.debug("The credential does NOT exists, calling prepareCredentialsPresentation")
+              self.prepareCredentialsPresentation(for: domain, path: "*") { _ in
+                // Keep the skus manager alive until preparing credential presentation finishes.
+                _ = self
+              }
+            } else {
+              Logger.module.debug("The credential exists, NOT calling prepareCredentialsPresentation")
             }
-          } else {
-            Logger.module.debug("The credential exists, NOT calling prepareCredentialsPresentation")
           }
         case .sessionExpired:
           Logger.module.debug("This credential session has expired")

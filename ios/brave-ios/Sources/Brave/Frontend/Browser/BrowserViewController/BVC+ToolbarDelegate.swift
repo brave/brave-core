@@ -18,6 +18,7 @@ import Shared
 import Storage
 import SwiftUI
 import os.log
+import SpeechRecognition
 
 // MARK: - TopToolbarDelegate
 
@@ -598,11 +599,10 @@ extension BrowserViewController: TopToolbarDelegate {
       {
         pipMediaPlayer.pause()
       }
-
+      
       voiceSearchViewController = PopupViewController(
-        rootView: VoiceSearchInputView(speechModel: speechRecognizer)
-      )
-
+        rootView: SpeechToTextInputView(speechModel: speechRecognizer, disclaimer: Strings.VoiceSearch.screenDisclaimer))
+      
       if let voiceSearchController = voiceSearchViewController {
         voiceSearchController.modalTransitionStyle = .crossDissolve
         voiceSearchController.modalPresentationStyle = .overFullScreen

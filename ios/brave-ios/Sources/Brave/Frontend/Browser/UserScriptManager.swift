@@ -26,6 +26,7 @@ class UserScriptManager {
     .windowRenderHelper,
     .readyStateHelper,
     .youtubeQuality,
+    .braveLeoAIChat
   ]
 
   /// Scripts that are loaded after `staticScripts`
@@ -111,7 +112,8 @@ class UserScriptManager {
     case solanaProvider
     case searchResultAd
     case youtubeQuality
-
+    case braveLeoAIChat
+    
     fileprivate var script: WKUserScript? {
       switch self {
       // Conditionally enabled scripts
@@ -134,6 +136,7 @@ class UserScriptManager {
       case .windowRenderHelper: return WindowRenderScriptHandler.userScript
       case .readyStateHelper: return ReadyStateScriptHandler.userScript
       case .youtubeQuality: return YoutubeQualityScriptHandler.userScript
+      case .braveLeoAIChat: return BraveLeoScriptHandler.userScript
       }
     }
 

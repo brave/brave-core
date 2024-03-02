@@ -63,7 +63,7 @@ struct AdvancedShieldsSettingsView: View {
         NavigationLink {
           PrivacyReportSettingsView()
         } label: {
-          ShieldLabelView(
+          LabelView(
             title: Strings.PrivacyHub.privacyReportsTitle,
             subtitle: nil
           )

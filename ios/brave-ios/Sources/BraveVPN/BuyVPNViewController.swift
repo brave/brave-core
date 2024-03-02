@@ -11,8 +11,8 @@ import UIKit
 import os.log
 
 class BuyVPNViewController: VPNSetupLoadingController {
-
-  let iapObserver: IAPObserver
+    
+  let iapObserver: BraveVPNInAppPurchaseObserver
   private var iapRestoreTimer: Timer?
 
   var activeSubcriptionChoice: SubscriptionType = .yearly {
@@ -20,8 +20,8 @@ class BuyVPNViewController: VPNSetupLoadingController {
       buyVPNView.activeSubcriptionChoice = activeSubcriptionChoice
     }
   }
-
-  init(iapObserver: IAPObserver) {
+  
+  init(iapObserver: BraveVPNInAppPurchaseObserver) {
     self.iapObserver = iapObserver
     super.init(nibName: nil, bundle: nil)
   }
@@ -202,7 +202,7 @@ class BuyVPNViewController: VPNSetupLoadingController {
 
 // MARK: - IAPObserverDelegate
 
-extension BuyVPNViewController: IAPObserverDelegate {
+extension BuyVPNViewController: BraveVPNInAppPurchaseObserverDelegate {
   func purchasedOrRestoredProduct(validateReceipt: Bool) {
     DispatchQueue.main.async {
       self.isLoading = false
@@ -221,7 +221,7 @@ extension BuyVPNViewController: IAPObserverDelegate {
     }
   }
 
-  func purchaseFailed(error: IAPObserver.PurchaseError) {
+  func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // Handle Transaction or Restore error
     guard isLoading else {
       return
@@ -243,8 +243,8 @@ extension BuyVPNViewController: IAPObserverDelegate {
     let errorRestore = SKError(SKError.unknown, userInfo: ["detail": "time-out"])
     handleTransactionError(error: .transactionError(error: errorRestore))
   }
-
-  private func handleTransactionError(error: IAPObserver.PurchaseError) {
+  
+  private func handleTransactionError(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     DispatchQueue.main.async {
       self.isLoading = false
 

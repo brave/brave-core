@@ -8,6 +8,7 @@ import Foundation
 import Preferences
 import Shared
 import os.log
+import AIChat
 
 // MARK: - SearchSuggestionDataSourceDelegate
 
@@ -21,6 +22,7 @@ class SearchSuggestionDataSource {
 
   enum SearchListSection: Int, CaseIterable {
     case quickBar
+    case aiChat
     case searchSuggestionsOptIn
     case searchSuggestions
     case findInPage
@@ -68,7 +70,13 @@ class SearchSuggestionDataSource {
     var sections = [SearchListSection]()
     sections.append(.quickBar)
 
-    if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
+    if !tabType.isPrivate &&
+        Preferences.AIChat.autocompleteSuggestionsEnabled.value {
+      sections.append(.aiChat)
+    }
+        
+    if !tabType.isPrivate &&
+        searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)
     }
 

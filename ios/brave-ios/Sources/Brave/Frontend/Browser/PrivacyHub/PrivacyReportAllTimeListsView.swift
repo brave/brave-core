@@ -7,6 +7,7 @@ import BraveUI
 import Data
 import Shared
 import SwiftUI
+import Favicon
 
 struct PrivacyReportAllTimeListsView: View {
   @Environment(\.horizontalSizeClass) private var horizontalSizeClass

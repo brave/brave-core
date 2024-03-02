@@ -26,6 +26,7 @@ import Shared
 import Storage
 import StoreKit
 import UserAgent
+import AIChat
 import UserNotifications
 import os
 
@@ -143,7 +144,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       await BraveVPN.updateStorePromotionOrder()
       await BraveVPN.hideActiveStorePromotion()
     }
-
+    
+    // Brave Store SDK - Initialization
+    BraveStoreSDK.shared.refreshAllSkusOrders()
+    
     // Override point for customization after application launch.
     var shouldPerformAdditionalDelegateHandling = true
     AdblockEngine.setDomainResolver()
