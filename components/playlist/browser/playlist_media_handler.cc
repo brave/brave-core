@@ -22,13 +22,6 @@ PlaylistMediaHandler::~PlaylistMediaHandler() = default;
 void PlaylistMediaHandler::BindMediaResponderReceiver(
     content::RenderFrameHost* render_frame_host,
     mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver) {
-  // TODO(sszaloki): do we have to do a service check here?
-  // if (!PlaylistServiceFactory::GetForBrowserContext(
-  //         render_frame_host->GetBrowserContext())) {
-  //   // We don't support playlist on OTR profiles.
-  //   return;
-  // }
-
   auto* web_contents =
       content::WebContents::FromRenderFrameHost(render_frame_host);
   if (!web_contents) {
