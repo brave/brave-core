@@ -55,7 +55,8 @@ const char* SolanaWalletProvider::WalletType() const {
 void SolanaWalletProvider::AssignWalletLinks(
     mojom::ExternalWallet& external_wallet) {
   auto explorer_url =
-      GURL("https://solscan.io/account/").Resolve(external_wallet.address);
+      GURL("https://explorer.solana.com/address/")
+          .Resolve(base::StrCat({external_wallet.address, "/tokens"}));
   external_wallet.account_url = explorer_url.spec();
   external_wallet.activity_url = explorer_url.spec();
 }
