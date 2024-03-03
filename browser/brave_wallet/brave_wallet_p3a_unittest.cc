@@ -292,7 +292,7 @@ TEST_F(BraveWalletP3AUnitTest, ReportOnboardingActionRestore) {
   histogram_tester_->ExpectTotalCount(kOnboardingConversionHistogramName, 0);
 }
 
-TEST_F(BraveWalletP3AUnitTest, TransactionSent) {
+TEST_F(BraveWalletP3AUnitTest, ReportTransactionSent) {
   histogram_tester_->ExpectTotalCount(kEthTransactionSentHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kSolTransactionSentHistogramName, 0);
   histogram_tester_->ExpectTotalCount(kFilTransactionSentHistogramName, 0);

@@ -104,7 +104,6 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
                         mojom::CoinType coin_type,
                         bool allow_provider_overwrite) override;
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
-  void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
   void RecordNFTGalleryView(int nft_count) override;
 
@@ -118,6 +117,9 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void OnTxServiceReset() override {}
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletP3AUnitTest, ReportTransactionSent);
+  friend class BraveWalletP3AUnitTest;
+
   void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
@@ -126,6 +128,7 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordOnboardingHistogram();
   void MaybeRecordNewUserBalance();
   void ReportNftDiscoverySetting();
+  void ReportTransactionSent(mojom::CoinType coin, bool new_send);
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
   raw_ptr<TxService> tx_service_;
