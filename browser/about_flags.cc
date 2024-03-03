@@ -12,6 +12,7 @@
 #include "brave/browser/brave_features_internal_names.h"
 #include "brave/browser/ethereum_remote_client/buildflags/buildflags.h"
 #include "brave/browser/ethereum_remote_client/features.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_ads/browser/ad_units/notification_ad/custom_notification_ad_feature.h"
@@ -500,9 +501,13 @@
           FEATURE_VALUE_TYPE(                                                  \
               ntp_background_images::features::kBraveNTPBrandedWallpaperDemo), \
       },                                                                       \
-      {"brave-ntp-search-widget", "Brave Search Widget on the NTP",            \
-       "Enables searching directly from the New Tab Page", kOsDesktop,         \
-       FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget)},                   \
+      {                                                                        \
+          "brave-ntp-search-widget",                                           \
+          "Brave Search Widget on the NTP",                                    \
+          "Enables searching directly from the New Tab Page",                  \
+          kOsDesktop,                                                          \
+          FEATURE_VALUE_TYPE(features::kBraveNtpSearchWidget),                 \
+      },                                                                       \
       {                                                                        \
           "brave-adblock-cname-uncloaking",                                    \
           "Enable CNAME uncloaking",                                           \
