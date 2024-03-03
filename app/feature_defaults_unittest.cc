@@ -187,7 +187,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &heap_profiling::kHeapProfilerReporting,
       &history::kOrganicRepeatableQueries,
       &history::kSyncSegmentsData,
-      &history_clusters::kRenameJourneys,
       &history_clusters::kSidePanelJourneys,
       &history_clusters::features::kOnDeviceClustering,
       &history_clusters::features::kOnDeviceClusteringKeywordFiltering,
