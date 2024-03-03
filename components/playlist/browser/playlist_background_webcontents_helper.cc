@@ -87,12 +87,10 @@ void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
   frame_observer_config->AddMediaDetector(
       service_->GetMediaDetectorScript(url));
 
-  if (ShouldUseFakeUA(url) || !ShouldSuppressMediaSourceAPI(url)) {
-    return;
+  if (ShouldSuppressMediaSourceAPI(url)) {
+    frame_observer_config->AddMediaSourceAPISuppressor(
+        service_->GetMediaSourceAPISuppressorScript());
   }
-
-  frame_observer_config->AddMediaSourceAPISuppressor(
-      service_->GetMediaSourceAPISuppressorScript());
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistBackgroundWebContentsHelper);
