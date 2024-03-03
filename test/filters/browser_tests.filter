@@ -1285,6 +1285,14 @@
 # enabled for Chrome-branded builds
 -CrashReportingContextTest.OnCloudReportingLaunched
 
+# These tests fail because we disable features::kControlledFrame
+-ControlledFrameApiTest.*
+-ControlledFrameAvailableChannels/*
+-ControlledFramePermissionsPolicyTest.*
+-ControlledFrameWebSocketApiTest.*
+-ControlledFrameWebTransportApiTest.*
+-PromiseAPIs/ControlledFramePromiseApiTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*

@@ -48,6 +48,7 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kReduceUserAgentMinorVersion, base::FEATURE_ENABLED_BY_DEFAULT},
     {kSharedStorageAPI, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageAPIM118, base::FEATURE_DISABLED_BY_DEFAULT},
+    {kSharedStorageAPIM123, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageSelectURLLimit, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
      base::FEATURE_DISABLED_BY_DEFAULT},
