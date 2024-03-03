@@ -19,6 +19,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/browser/speedreader/page_distiller.h"
 #include "brave/browser/speedreader/speedreader_service_factory.h"
+#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/speedreader/speedreader_bubble_view.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/speedreader/common/features.h"
@@ -338,7 +339,8 @@ void SpeedreaderTabHelper::UpdateUI() {
           ->ShowReaderModeToolbar();
     }
 
-    browser->window()->UpdatePageActionIcon(PageActionIconType::kReaderMode);
+    browser->window()->UpdatePageActionIcon(
+        brave::kSpeedreaderPageActionIconType);
   }
 #endif
 }
