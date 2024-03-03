@@ -31,9 +31,7 @@ extension BrowserViewController {
 
       activities.append(
         BasicMenuActivity(
-          title: Strings.copyCleanLink,
-          braveSystemImage: "leo.broom",
-          activityTypeID: "cleanCopyURL",
+          type: .copyCleanLink,
           callback: {
             UIPasteboard.general.url = cleanedURL
           }
@@ -47,9 +45,7 @@ extension BrowserViewController {
     {
       activities.append(
         BasicMenuActivity(
-          title: Strings.OpenTabs.sendWebsiteShareActionTitle,
-          braveSystemImage: "leo.smartphone.laptop",
-          activityTypeID: "sendURL",
+          type: .sendURL,
           callback: { [weak self] in
             guard let self = self else { return }
 
@@ -90,9 +86,7 @@ extension BrowserViewController {
       if tab.readerModeAvailableOrActive {
         activities.append(
           BasicMenuActivity(
-            title: Strings.toggleReaderMode,
-            braveSystemImage: "leo.product.speedreader",
-            activityTypeID: "readerMode",
+            type: .toggleReaderMode,
             callback: { [weak self] in
               self?.toggleReaderMode()
             }
@@ -105,9 +99,7 @@ extension BrowserViewController {
     // Find In Page Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.findInPage,
-        braveSystemImage: "leo.search",
-        activityTypeID: "findInPage",
+        type: .findInPage,
         callback: { [weak self] in
           guard let self = self else { return }
 
@@ -126,9 +118,7 @@ extension BrowserViewController {
     // Page Zoom Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.PageZoom.settingsTitle,
-        braveSystemImage: "leo.font.size",
-        activityTypeID: "pageZoom",
+        type: .pageZoom,
         callback: { [weak self] in
           guard let self = self else { return }
 
@@ -145,9 +135,7 @@ extension BrowserViewController {
       if !FavoritesHelper.isAlreadyAdded(url) {
         activities.append(
           BasicMenuActivity(
-            title: Strings.addToFavorites,
-            braveSystemImage: "leo.widget.generic",
-            activityTypeID: "addToFavourites",
+            type: .addToFavourites,
             callback: { [weak self] in
               guard let self = self else { return }
 
@@ -161,17 +149,25 @@ extension BrowserViewController {
       }
 
       // Request Desktop Site Activity
-      activities.append(
-        BasicMenuActivity(
-          title: tab?.isDesktopSite == true
-            ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString,
-          braveSystemImage: tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor",
-          activityTypeID: "requestDesktopSite",
-          callback: {
-            tab?.switchUserAgent()
-          }
+      if tab?.isDesktopSite == true {
+        activities.append(
+          BasicMenuActivity(
+            type: .requestMobileSite,
+            callback: {
+              tab?.switchUserAgent()
+            }
+          )
         )
-      )
+      } else {
+        activities.append(
+          BasicMenuActivity(
+            type: .requestDesktopSite,
+            callback: {
+              tab?.switchUserAgent()
+            }
+          )
+        )
+      }
 
       // Add Feed To Brave News Activity
       if Preferences.BraveNews.isEnabled.value, let metadata = tab?.pageMetadata,
@@ -184,9 +180,7 @@ extension BrowserViewController {
         if !feeds.isEmpty {
           activities.append(
             BasicMenuActivity(
-              title: Strings.BraveNews.addSourceShareTitle,
-              braveSystemImage: "leo.rss",
-              activityTypeID: "addSourceShare",
+              type: .addSourceBraveNews,
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -209,9 +203,7 @@ extension BrowserViewController {
       if let webView = tab?.webView, tab?.temporaryDocument == nil {
         activities.append(
           BasicMenuActivity(
-            title: Strings.createPDF,
-            braveSystemImage: "leo.file",
-            activityTypeID: "createPDF",
+            type: .createPDF,
             callback: {
               webView.createPDF { [weak self] result in
                 dispatchPrecondition(condition: .onQueue(.main))
@@ -271,9 +263,7 @@ extension BrowserViewController {
         if case .success(let feed) = parser.parse() {
           activities.append(
             BasicMenuActivity(
-              title: Strings.BraveNews.addSourceShareTitle,
-              braveSystemImage: "leo.rss",
-              activityTypeID: "cleanCopyURL",
+              type: .addSourceBraveNews,
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -300,9 +290,7 @@ extension BrowserViewController {
     {
       activities.append(
         BasicMenuActivity(
-          title: Strings.CustomSearchEngine.customEngineNavigationTitle,
-          braveSystemImage: "leo.search.zoom-in",
-          activityTypeID: "addSearchEngine",
+          type: .addSearchEngine,
           callback: { [weak self] in
             self?.addCustomSearchEngineForFocusedElement()
           }
@@ -321,9 +309,7 @@ extension BrowserViewController {
 
       activities.append(
         BasicMenuActivity(
-          title: Strings.displayCertificate,
-          braveSystemImage: "leo.lock.plain",
-          activityTypeID: "displayCertificate"
+          type: .displayCertificate
         ) { [weak self] in
           self?.displayPageCertificateInfo()
         }
@@ -333,9 +319,7 @@ extension BrowserViewController {
     // Report Web-compat Issue Activity
     activities.append(
       BasicMenuActivity(
-        title: Strings.Shields.reportABrokenSite,
-        braveSystemImage: "leo.warning.triangle-outline",
-        activityTypeID: "reportSite"
+        type: .reportBrokenSite
       ) { [weak self] in
         self?.showSubmitReportView(for: url)
       }
