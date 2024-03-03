@@ -18,6 +18,7 @@
 #include "brave/components/brave_wallet/browser/brave_wallet_service.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
+#include "brave/components/brave_wallet/common/common_utils.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
 #include "components/prefs/pref_service.h"
@@ -413,49 +414,55 @@ void BraveWalletP3A::WalletCreated() {
 
 void BraveWalletP3A::OnTransactionStatusChanged(
     mojom::TransactionInfoPtr tx_info) {
-  auto is_eth_tx = tx_info->tx_data_union->is_eth_tx_data() ||
-                   tx_info->tx_data_union->is_eth_tx_data_1559();
-  auto is_sol_tx = tx_info->tx_data_union->is_solana_tx_data();
-  auto is_fil_tx = tx_info->tx_data_union->is_fil_tx_data();
-  if (!is_eth_tx && !is_sol_tx && !is_fil_tx) {
-    /// Currently only tracking sent Ethereum, Solana, and Filecoin transactions
+  auto tx_status = tx_info->tx_status;
+  if (tx_status != mojom::TransactionStatus::Approved) {
     return;
   }
+  auto tx_coin = GetCoinTypeFromTxDataUnion(*tx_info->tx_data_union);
+  if (tx_coin == mojom::CoinType::BTC || tx_coin == mojom::CoinType::ZEC) {
+    // BTC, ZEV transactions are not tracked yet
+    return;
+  }
+  auto tx_type = tx_info->tx_type;
+  auto count_test_networks = base::CommandLine::ForCurrentProcess()->HasSwitch(
+      brave_wallet::mojom::kP3ACountTestNetworksSwitch);
+  auto chain_id = tx_info->chain_id;
 
-  auto tx_status = tx_info->tx_status;
-  if (tx_status == mojom::TransactionStatus::Approved) {
-    auto tx_type = tx_info->tx_type;
-    if ((tx_type == mojom::TransactionType::ETHSend ||
-         tx_type == mojom::TransactionType::ERC20Transfer ||
-         tx_type == mojom::TransactionType::SolanaSystemTransfer ||
-         tx_type == mojom::TransactionType::SolanaSPLTokenTransfer ||
-         tx_type ==
-             mojom::TransactionType::
-                 SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) ||
-        (tx_type == mojom::TransactionType::Other && is_fil_tx)) {
-      auto count_test_networks =
-          base::CommandLine::ForCurrentProcess()->HasSwitch(
-              brave_wallet::mojom::kP3ACountTestNetworksSwitch);
-      auto chain_id = tx_info->chain_id;
-      auto is_test_network =
-          chain_id == mojom::kGoerliChainId ||
-          chain_id == mojom::kSepoliaChainId ||
-          chain_id == mojom::kLocalhostChainId ||
-          chain_id == mojom::kFilecoinEthereumTestnetChainId ||
-          chain_id == mojom::kSolanaTestnet ||
-          chain_id == mojom::kSolanaDevnet ||
-          chain_id == mojom::kFilecoinTestnet;
-      if (!count_test_networks && is_test_network) {
-        // Enable `--p3a-count-wallet-test-networks` flag for test network
-        // support
-        return;
-      }
-      auto tx_coin = is_eth_tx   ? mojom::CoinType::ETH
-                     : is_sol_tx ? mojom::CoinType::SOL
-                                 : mojom::CoinType::FIL;
-      ReportTransactionSent(tx_coin, true);
+  if (tx_coin == mojom::CoinType::ETH) {
+    if (tx_type != mojom::TransactionType::ETHSend &&
+        tx_type != mojom::TransactionType::ERC20Transfer) {
+      return;
+    }
+    if (!count_test_networks &&
+        (chain_id == mojom::kGoerliChainId ||
+         chain_id == mojom::kSepoliaChainId ||
+         chain_id == mojom::kLocalhostChainId ||
+         chain_id == mojom::kFilecoinEthereumTestnetChainId)) {
+      return;
+    }
+  } else if (tx_coin == mojom::CoinType::FIL) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
+    if (!count_test_networks && (chain_id == mojom::kFilecoinTestnet ||
+                                 chain_id == mojom::kLocalhostChainId)) {
+      return;
+    }
+  } else if (tx_coin == mojom::CoinType::SOL) {
+    if (tx_type != mojom::TransactionType::SolanaSystemTransfer &&
+        tx_type != mojom::TransactionType::SolanaSPLTokenTransfer &&
+        tx_type !=
+            mojom::TransactionType::
+                SolanaSPLTokenTransferWithAssociatedTokenAccountCreation) {
+      return;
+    }
+    if (!count_test_networks && (chain_id == mojom::kSolanaTestnet ||
+                                 chain_id == mojom::kSolanaDevnet ||
+                                 chain_id == mojom::kLocalhostChainId)) {
+      return;
     }
   }
+  ReportTransactionSent(tx_coin, true);
 }
 
 }  // namespace brave_wallet
