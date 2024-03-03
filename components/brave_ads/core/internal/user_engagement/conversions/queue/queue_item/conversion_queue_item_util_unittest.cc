@@ -52,7 +52,7 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 
   // Act & Assert
   EXPECT_EQ(
-      kMinimumDelayBeforeProcessingQueueItem,
+      kMinimumDelayBeforeProcessingConversionQueueItem,
       CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 
@@ -71,7 +71,7 @@ TEST_F(BraveAdsConversionQueueItemDelayTest,
 
   // Act & Assert
   EXPECT_EQ(
-      kMinimumDelayBeforeProcessingQueueItem,
+      kMinimumDelayBeforeProcessingConversionQueueItem,
       CalculateDelayBeforeProcessingConversionQueueItem(conversion_queue_item));
 }
 

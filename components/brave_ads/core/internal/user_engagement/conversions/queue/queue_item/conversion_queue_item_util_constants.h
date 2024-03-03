@@ -10,8 +10,8 @@
 
 namespace brave_ads {
 
-inline constexpr base::TimeDelta kMinimumDelayBeforeProcessingQueueItem =
-    base::Minutes(1);
+inline constexpr base::TimeDelta
+    kMinimumDelayBeforeProcessingConversionQueueItem = base::Minutes(1);
 
 }  // namespace brave_ads
 

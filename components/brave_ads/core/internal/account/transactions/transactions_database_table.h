@@ -33,8 +33,8 @@ class Transactions final : public TableInterface {
                        base::Time to_time,
                        GetTransactionsCallback callback) const;
 
-  void Update(const PaymentTokenList& payment_tokens,
-              ResultCallback callback) const;
+  void Reconcile(const PaymentTokenList& payment_tokens,
+                 ResultCallback callback) const;
 
   void Delete(ResultCallback callback) const;
 

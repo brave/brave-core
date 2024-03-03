@@ -10,7 +10,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/new_tab_page_ads/creative_new_tab_page_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers.h"
@@ -23,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 namespace brave_ads {
 
@@ -40,8 +38,7 @@ void EligibleNewTabPageAdsV1::GetForUserModel(
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible new tab page ads");
 
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kNewTabPageAd,
       base::BindOnce(
           &EligibleNewTabPageAdsV1::GetEligibleAdsForUserModelCallback,
@@ -93,8 +90,7 @@ void EligibleNewTabPageAdsV1::GetForChildSegments(
     BLOG(1, "  " << segment);
   }
 
-  const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForSegments(
+  database_table_.GetForSegments(
       segments,
       base::BindOnce(&EligibleNewTabPageAdsV1::GetForChildSegmentsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -145,8 +141,7 @@ void EligibleNewTabPageAdsV1::GetForParentSegments(
     BLOG(1, "  " << segment);
   }
 
-  const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForSegments(
+  database_table_.GetForSegments(
       segments,
       base::BindOnce(&EligibleNewTabPageAdsV1::GetForParentSegmentsCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,
@@ -186,8 +181,7 @@ void EligibleNewTabPageAdsV1::GetForUntargeted(
     EligibleAdsCallback<CreativeNewTabPageAdList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
-  const database::table::CreativeNewTabPageAds database_table;
-  database_table.GetForSegments(
+  database_table_.GetForSegments(
       {kUntargetedSegment},
       base::BindOnce(&EligibleNewTabPageAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,

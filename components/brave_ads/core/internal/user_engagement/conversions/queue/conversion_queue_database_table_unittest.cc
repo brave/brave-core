@@ -29,7 +29,7 @@ class BraveAdsConversionQueueDatabaseTableTest : public UnitTestBase {
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   // Act
-  test::SaveConversionQueue({});
+  test::SaveConversionQueueItems({});
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -38,7 +38,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveEmptyConversionQueue) {
   database_table_.GetAll(callback.Get());
 }
 
-TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueueItems) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -50,7 +50,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueue) {
       test::BuildConversionQueueItems(conversion, /*count=*/1);
 
   // Act
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -69,13 +69,13 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
                                kVerifiableConversionAdvertiserPublicKey});
   const ConversionQueueItemList conversion_queue_items =
       test::BuildConversionQueueItems(conversion, /*count=*/1);
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   const ConversionQueueItemList expected_conversion_queue_items = {
       conversion_queue_items.front(), conversion_queue_items.front()};
 
   // Act
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -97,7 +97,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, SaveConversionQueueInBatches) {
       test::BuildConversionQueueItems(conversion, /*count=*/3);
 
   // Act
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -130,7 +130,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Act & Assert
   base::MockCallback<GetConversionQueueForCreativeInstanceIdCallback> callback;
@@ -166,7 +166,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, GetNextConversionQueueItem) {
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Act & Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -210,7 +210,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       BuildConversionQueueItem(conversion_3, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_3);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   // Act & Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -245,7 +245,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, DeleteConversionQueueItem) {
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   base::MockCallback<ResultCallback> delete_callback;
   EXPECT_CALL(delete_callback, Run(/*success=*/true));
@@ -285,7 +285,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   const AdInfo ad_3 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
@@ -308,7 +308,8 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   database_table_.GetAll(callback.Get());
 }
 
-TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
+TEST_F(BraveAdsConversionQueueDatabaseTableTest,
+       MarkConversionQueueItemAsProcessed) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
@@ -336,14 +337,15 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
-  base::MockCallback<ResultCallback> update_callback;
-  EXPECT_CALL(update_callback, Run(/*success=*/true));
+  base::MockCallback<ResultCallback> mark_as_processed_callback;
+  EXPECT_CALL(mark_as_processed_callback, Run(/*success=*/true));
 
   // Act
   conversion_queue_item_1.was_processed = true;
-  database_table_.Update(conversion_queue_item_1, update_callback.Get());
+  database_table_.MarkAsProcessed(conversion_queue_item_1,
+                                  mark_as_processed_callback.Get());
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;
@@ -354,7 +356,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest, UpdateConversionQueueItem) {
 }
 
 TEST_F(BraveAdsConversionQueueDatabaseTableTest,
-       DoNotUpdateMissingConversionQueueItem) {
+       DoNotMarkMissingConversionQueueItemAsProcessed) {
   // Arrange
   ConversionQueueItemList conversion_queue_items;
 
@@ -378,7 +380,7 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
       BuildConversionQueueItem(conversion_2, /*process_at=*/Now());
   conversion_queue_items.push_back(conversion_queue_item_2);
 
-  test::SaveConversionQueue(conversion_queue_items);
+  test::SaveConversionQueueItems(conversion_queue_items);
 
   const AdInfo ad_3 = test::BuildAd(AdType::kNotificationAd,
                                     /*should_use_random_uuids=*/true);
@@ -389,11 +391,12 @@ TEST_F(BraveAdsConversionQueueDatabaseTableTest,
   const ConversionQueueItemInfo conversion_queue_item_3 =
       BuildConversionQueueItem(conversion_3, /*process_at=*/Now());
 
-  base::MockCallback<ResultCallback> update_callback;
-  EXPECT_CALL(update_callback, Run(/*success=*/true));
+  base::MockCallback<ResultCallback> mark_as_processed_callback;
+  EXPECT_CALL(mark_as_processed_callback, Run(/*success=*/true));
 
   // Act
-  database_table_.Update(conversion_queue_item_3, update_callback.Get());
+  database_table_.MarkAsProcessed(conversion_queue_item_3,
+                                  mark_as_processed_callback.Get());
 
   // Assert
   base::MockCallback<GetConversionQueueCallback> callback;

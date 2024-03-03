@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_info.h"
+#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
@@ -82,6 +83,8 @@ class UserRewards final : public AdsClientNotifierObserver,
   RedeemPaymentTokens redeem_payment_tokens_;
 
   WalletInfo wallet_;
+
+  const database::table::Transactions transactions_database_table_;
 
   raw_ptr<UserRewardsDelegate> delegate_ = nullptr;
 };

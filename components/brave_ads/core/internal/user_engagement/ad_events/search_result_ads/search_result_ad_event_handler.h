@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
@@ -104,6 +105,8 @@ class SearchResultAdEventHandler final
       mojom::SearchResultAdEventType event_type) const;
 
   raw_ptr<SearchResultAdEventHandlerDelegate> delegate_ = nullptr;
+
+  const database::table::AdEvents ad_events_database_table_;
 
   base::WeakPtrFactory<SearchResultAdEventHandler> weak_factory_{this};
 };

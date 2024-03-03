@@ -11,7 +11,9 @@
 #include "base/check_op.h"
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_handler_delegate.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
@@ -87,6 +89,10 @@ class InlineContentAdEventHandler final
       mojom::InlineContentAdEventType event_type) const;
 
   raw_ptr<InlineContentAdEventHandlerDelegate> delegate_ = nullptr;
+
+  const database::table::CreativeInlineContentAds database_table_;
+
+  const database::table::AdEvents ad_events_database_table_;
 
   base::WeakPtrFactory<InlineContentAdEventHandler> weak_factory_{this};
 };

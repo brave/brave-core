@@ -10,7 +10,6 @@
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_builder_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_util.h"
@@ -31,8 +30,7 @@ void ConversionQueue::Add(const ConversionInfo& conversion) {
       BuildConversionQueueItem(conversion, ProcessConversionAt());
   CHECK(conversion_queue_item.IsValid());
 
-  const database::table::ConversionQueue database_table;
-  database_table.Save(
+  database_table_.Save(
       {conversion_queue_item},
       base::BindOnce(&ConversionQueue::AddCallback, weak_factory_.GetWeakPtr(),
                      conversion_queue_item));
@@ -92,8 +90,7 @@ void ConversionQueue::ProcessQueueItem(
 
 void ConversionQueue::MarkQueueItemAsProcessed(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  const database::table::ConversionQueue database_table;
-  database_table.Update(
+  database_table_.Update(
       conversion_queue_item,
       base::BindOnce(&ConversionQueue::MarkQueueItemAsProcessedCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
@@ -125,8 +122,7 @@ void ConversionQueue::FailedToProcessQueueItem(
 }
 
 void ConversionQueue::ProcessNextQueueItem() {
-  const database::table::ConversionQueue database_table;
-  database_table.GetNext(
+  database_table_.GetNext(
       base::BindOnce(&ConversionQueue::ProcessNextQueueItemCallback,
                      weak_factory_.GetWeakPtr()));
 }
@@ -144,7 +140,6 @@ void ConversionQueue::ProcessNextQueueItemCallback(
 
   const ConversionQueueItemInfo& conversion_queue_item =
       conversion_queue_items.front();
-
   ProcessQueueItemAfterDelay(conversion_queue_item);
 }
 
