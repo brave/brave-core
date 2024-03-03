@@ -41,8 +41,8 @@ source_set("command_ids") {
     "//brave/components/resources:strings",
     "//chrome/app:command_ids",
     "//chrome/app:generated_resources",
-    "//components/services/screen_ai/buildflags",
     "//components/strings:components_strings",
+    "//services/screen_ai/buildflags",
     "//third_party/re2",
     "//ui/strings:ui_strings",
   ]
