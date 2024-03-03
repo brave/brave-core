@@ -18,7 +18,6 @@ BASE_FEATURE(kIdleDetection,
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
-    {kAttributionFencedFrameReportingBeacon, base::FEATURE_DISABLED_BY_DEFAULT},
     {kCookieDeprecationFacilitatedTesting, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDigitalGoodsApi, base::FEATURE_DISABLED_BY_DEFAULT},
     {kDIPS, base::FEATURE_DISABLED_BY_DEFAULT},
