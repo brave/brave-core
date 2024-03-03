@@ -8,6 +8,15 @@ import UIKit
 
 /// A helper class that aids in the creation of share sheets
 class ShareExtensionHelper {
+  /// URL and Tab to be shared
+  private let selectedURL: URL
+  private weak var selectedTab: Tab?
+
+  init(url: URL, tab: Tab?) {
+    self.selectedURL = url
+    self.selectedTab = tab
+  }
+
   /// Create a activity view controller with the given elements.
   /// - Parameters:
   ///   - selectedURL: The url or url content to share. May include an internal file or a link
@@ -15,9 +24,7 @@ class ShareExtensionHelper {
   ///   - applicationActivities: The application activities to include in this share sheet.
   ///   - completionHandler: This will be triggered once the share sheet is dismissed and can be used to cleanup any lingering data
   /// - Returns: An `UIActivityViewController` prepped and ready to present.
-  static func makeActivityViewController(
-    selectedURL: URL,
-    selectedTab: Tab? = nil,
+  func createActivityViewController(
     applicationActivities: [UIActivity] = []
   ) -> UIActivityViewController {
     let printInfo = UIPrintInfo(dictionary: nil)

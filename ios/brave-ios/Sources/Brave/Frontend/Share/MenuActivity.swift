@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Shared
 import SwiftUI
 import UIKit
 
@@ -16,31 +17,19 @@ protocol MenuActivity: UIActivity {
 class BasicMenuActivity: UIActivity, MenuActivity {
   private let title: String
   private let braveSystemImage: String
-  private let callback: () -> Bool
+  private let activityTypeID: String
+  private let callback: () -> Void
 
   init(
     title: String,
     braveSystemImage: String,
-    callback: @escaping () -> Bool
+    activityTypeID: String,
+    callback: @escaping () -> Void
   ) {
     self.title = title
     self.braveSystemImage = braveSystemImage
+    self.activityTypeID = activityTypeID
     self.callback = callback
-  }
-
-  convenience init(
-    title: String,
-    braveSystemImage: String,
-    callback: @escaping () -> Void
-  ) {
-    self.init(
-      title: title,
-      braveSystemImage: braveSystemImage,
-      callback: {
-        callback()
-        return true
-      }
-    )
   }
 
   // MARK: - UIActivity
@@ -56,11 +45,19 @@ class BasicMenuActivity: UIActivity, MenuActivity {
   }
 
   override func perform() {
-    activityDidFinish(callback())
+    callback()
+    activityDidFinish(true)
   }
 
   override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
     return true
+  }
+
+  override var activityType: UIActivity.ActivityType {
+    let bundleId =
+      AppInfo.applicationBundle.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String
+
+    return UIActivity.ActivityType(rawValue: "\(bundleId ?? "")\(".\(activityTypeID)")")
   }
 
   // MARK: - MenuActivity

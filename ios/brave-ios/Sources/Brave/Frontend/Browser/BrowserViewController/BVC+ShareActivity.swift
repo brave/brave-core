@@ -33,6 +33,7 @@ extension BrowserViewController {
         BasicMenuActivity(
           title: Strings.copyCleanLink,
           braveSystemImage: "leo.broom",
+          activityTypeID: "cleanCopyURL",
           callback: {
             UIPasteboard.general.url = cleanedURL
           }
@@ -48,6 +49,7 @@ extension BrowserViewController {
         BasicMenuActivity(
           title: Strings.OpenTabs.sendWebsiteShareActionTitle,
           braveSystemImage: "leo.smartphone.laptop",
+          activityTypeID: "sendURL",
           callback: { [weak self] in
             guard let self = self else { return }
 
@@ -90,6 +92,7 @@ extension BrowserViewController {
           BasicMenuActivity(
             title: Strings.toggleReaderMode,
             braveSystemImage: "leo.product.speedreader",
+            activityTypeID: "readerMode",
             callback: { [weak self] in
               self?.toggleReaderMode()
             }
@@ -104,6 +107,7 @@ extension BrowserViewController {
       BasicMenuActivity(
         title: Strings.findInPage,
         braveSystemImage: "leo.search",
+        activityTypeID: "findInPage",
         callback: { [weak self] in
           guard let self = self else { return }
 
@@ -124,6 +128,7 @@ extension BrowserViewController {
       BasicMenuActivity(
         title: Strings.PageZoom.settingsTitle,
         braveSystemImage: "leo.font.size",
+        activityTypeID: "pageZoom",
         callback: { [weak self] in
           guard let self = self else { return }
 
@@ -142,6 +147,7 @@ extension BrowserViewController {
           BasicMenuActivity(
             title: Strings.addToFavorites,
             braveSystemImage: "leo.widget.generic",
+            activityTypeID: "addToFavourites",
             callback: { [weak self] in
               guard let self = self else { return }
 
@@ -160,6 +166,7 @@ extension BrowserViewController {
           title: tab?.isDesktopSite == true
             ? Strings.appMenuViewMobileSiteTitleString : Strings.appMenuViewDesktopSiteTitleString,
           braveSystemImage: tab?.isDesktopSite == true ? "leo.smartphone" : "leo.monitor",
+          activityTypeID: "requestDesktopSite",
           callback: {
             tab?.switchUserAgent()
           }
@@ -179,6 +186,7 @@ extension BrowserViewController {
             BasicMenuActivity(
               title: Strings.BraveNews.addSourceShareTitle,
               braveSystemImage: "leo.rss",
+              activityTypeID: "addSourceShare",
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -203,6 +211,7 @@ extension BrowserViewController {
           BasicMenuActivity(
             title: Strings.createPDF,
             braveSystemImage: "leo.file",
+            activityTypeID: "createPDF",
             callback: {
               webView.createPDF { [weak self] result in
                 dispatchPrecondition(condition: .onQueue(.main))
@@ -264,6 +273,7 @@ extension BrowserViewController {
             BasicMenuActivity(
               title: Strings.BraveNews.addSourceShareTitle,
               braveSystemImage: "leo.rss",
+              activityTypeID: "cleanCopyURL",
               callback: { [weak self] in
                 guard let self = self else { return }
                 let controller = BraveNewsAddSourceResultsViewController(
@@ -288,11 +298,11 @@ extension BrowserViewController {
     if let webView = tabManager.selectedTab?.webView,
       evaluateWebsiteSupportOpenSearchEngine(webView)
     {
-
       activities.append(
         BasicMenuActivity(
           title: Strings.CustomSearchEngine.customEngineNavigationTitle,
           braveSystemImage: "leo.search.zoom-in",
+          activityTypeID: "addSearchEngine",
           callback: { [weak self] in
             self?.addCustomSearchEngineForFocusedElement()
           }
@@ -312,7 +322,8 @@ extension BrowserViewController {
       activities.append(
         BasicMenuActivity(
           title: Strings.displayCertificate,
-          braveSystemImage: "leo.lock.plain"
+          braveSystemImage: "leo.lock.plain",
+          activityTypeID: "displayCertificate"
         ) { [weak self] in
           self?.displayPageCertificateInfo()
         }
@@ -323,7 +334,8 @@ extension BrowserViewController {
     activities.append(
       BasicMenuActivity(
         title: Strings.Shields.reportABrokenSite,
-        braveSystemImage: "leo.warning.triangle-outline"
+        braveSystemImage: "leo.warning.triangle-outline",
+        activityTypeID: "reportSite"
       ) { [weak self] in
         self?.showSubmitReportView(for: url)
       }
@@ -339,6 +351,8 @@ extension BrowserViewController {
     sourceRect: CGRect,
     arrowDirection: UIPopoverArrowDirection
   ) {
+    let shareExtesionHelper = ShareExtensionHelper(url: url, tab: tab)
+
     let activities: [UIActivity] = makeShareActivities(
       for: url,
       tab: tab,
@@ -347,10 +361,9 @@ extension BrowserViewController {
       arrowDirection: arrowDirection
     )
 
-    let controller = ShareExtensionHelper.makeActivityViewController(
-      selectedURL: url,
-      selectedTab: tab,
-      applicationActivities: activities
+    let controller = shareExtesionHelper.createActivityViewController(
+      applicationActivities:
+        activities
     )
 
     controller.completionWithItemsHandler = { [weak self] _, _, _, _ in
