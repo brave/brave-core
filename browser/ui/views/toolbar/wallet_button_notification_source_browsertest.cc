@@ -33,6 +33,7 @@ class WalletButtonNotificationSourceTest : public InProcessBrowserTest {
             browser()->profile());
     tx_service_ = brave_wallet::TxServiceFactory::GetServiceForContext(
         browser()->profile());
+    WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
   }
 
   ~WalletButtonNotificationSourceTest() override = default;
