@@ -151,8 +151,7 @@ class PlaylistService : public KeyedService,
       const std::string& playlist_id,
       bool can_cache,
       AddMediaFilesFromActiveTabToPlaylistCallback callback) override;
-  void FindMediaFilesFromActiveTab(
-      FindMediaFilesFromActiveTabCallback callback) override;
+  void FindMediaFilesFromActiveTab() override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id,
                      bool can_cache,
