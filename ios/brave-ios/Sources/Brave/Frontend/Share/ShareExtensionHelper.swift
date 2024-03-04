@@ -90,7 +90,7 @@ extension BasicMenuActivity.ActivityType {
     braveSystemImage: "leo.font.size"
   )
   static let addFavourites: Self = .init(
-    id: "CopyCleanLink",
+    id: "AddFavourites",
     title: Strings.addToFavorites,
     braveSystemImage: "leo.widget.generic"
   )
