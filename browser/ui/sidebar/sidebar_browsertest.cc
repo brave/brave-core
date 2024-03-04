@@ -864,7 +864,6 @@ class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
 
 IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
                        SidebarShowAlwaysTest) {
-  observation_.Observe(model());
 
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
@@ -872,6 +871,8 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
             sidebar_service->GetSidebarShowOption());
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
+  observation_.Observe(model());
+
   // Check one shot Leo panel is opened or not based on test parameter.
   if (GetParam()) {
     // If Leo panel is opened, panel active index is changed.
@@ -887,28 +888,25 @@ IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
 
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
   if (GetParam()) {
-    // Check one shot panel is opened.
-    WaitUntil(base::BindLambdaForTesting(
-        [&]() { return GetSidePanel()->GetVisible(); }));
+    EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
   }
-
   testing::Mock::VerifyAndClearExpectations(&observer_);
 
-  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
   panel_ui->Close();
-  WaitUntil(base::BindLambdaForTesting(
-      [&]() { return !GetSidePanel()->GetVisible(); }));
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
 
   // Check one shot panel is not opened anymore.
   EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
-
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
       browser(), GURL("https://www.brave.com/"),
       WindowOpenDisposition::NEW_FOREGROUND_TAB,
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
-
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
   testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  observation_.Reset();
 #endif
 }
 
