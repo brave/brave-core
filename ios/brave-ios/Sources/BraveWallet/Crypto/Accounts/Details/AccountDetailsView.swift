@@ -163,7 +163,9 @@ struct AccountDetailsHeaderView: View {
             }
           }
         )
-      Button(action: { UIPasteboard.general.string = account.address }) {
+      Button {
+        UIPasteboard.general.string = account.address
+      } label: {
         HStack {
           Text(account.address)
             .foregroundColor(Color(.secondaryBraveLabel))

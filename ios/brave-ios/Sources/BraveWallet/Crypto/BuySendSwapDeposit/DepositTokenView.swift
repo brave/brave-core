@@ -84,9 +84,9 @@ struct DepositTokenView: View {
           )
           .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
-              Button(action: {
+              Button {
                 self.isPresentingNetworkFilter = true
-              }) {
+              } label: {
                 Image(braveSystemName: "leo.tune")
                   .font(.footnote.weight(.medium))
                   .foregroundColor(Color(.braveBlurpleTint))
@@ -102,9 +102,9 @@ struct DepositTokenView: View {
       .navigationBarTitleDisplayMode(.inline)
       .toolbar {
         ToolbarItemGroup(placement: .cancellationAction) {
-          Button(action: {
+          Button {
             onDismiss()
-          }) {
+          } label: {
             Text(Strings.cancelButtonTitle)
               .foregroundColor(Color(.braveBlurpleTint))
           }
@@ -155,7 +155,7 @@ struct DepositDetailsView: View {
   ) {
     self.type = type
     self.allNetworks = allNetworks
-    if case let .prefilledToken(_, availableAccounts) = type {
+    if case .prefilledToken(_, let availableAccounts) = type {
       self._selectedAccount = State(initialValue: availableAccounts.first)
     }
   }
@@ -237,7 +237,9 @@ struct DepositDetailsView: View {
         .foregroundColor(Color(.secondaryBraveLabel))
         .multilineTextAlignment(.center)
       HStack {
-        Button(action: { UIPasteboard.general.string = account.address }) {
+        Button {
+          UIPasteboard.general.string = account.address
+        } label: {
           HStack {
             Image(braveSystemName: "leo.copy")
             Text(Strings.Wallet.depositAddressCopy)
@@ -246,9 +248,9 @@ struct DepositDetailsView: View {
           .foregroundColor(Color(.braveBlurpleTint))
         }
         .buttonStyle(BraveOutlineButtonStyle(size: .normal))
-        Button(action: {
+        Button {
           addressToShare = account.address
-        }) {
+        } label: {
           HStack {
             Image(braveSystemName: "leo.share.macos")
             Text(Strings.share)
@@ -283,16 +285,16 @@ struct DepositDetailsView: View {
     ScrollView {
       VStack(spacing: 24) {
         switch type {
-        case let .prefilledAccount(account):
+        case .prefilledAccount(let account):
           depositHeader(account.coin, networks: allNetworks)
           qrCodeView(account)
           if account.coin == .eth {
             ethDisclosureView
           }
-        case let .prefilledToken(token, _):
-          Button(action: {
+        case .prefilledToken(let token, _):
+          Button {
             isPresentingAccountPicker = true
-          }) {
+          } label: {
             accountPicker
           }
           depositHeader(token.coin, networks: allNetworks)
@@ -307,7 +309,7 @@ struct DepositDetailsView: View {
       .padding(.vertical, 32)
       .padding(.horizontal, 16)
       .sheet(isPresented: $isPresentingAccountPicker) {
-        if let selectedAccount, case let .prefilledToken(_, availableAccounts) = type {
+        if let selectedAccount, case .prefilledToken(_, let availableAccounts) = type {
           NavigationView {
             AccountSelectionRootView(
               navigationTitle: Strings.Wallet.selectAccountTitle,

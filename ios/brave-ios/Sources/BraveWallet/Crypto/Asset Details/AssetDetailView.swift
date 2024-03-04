@@ -244,7 +244,7 @@ struct AssetDetailView: View {
           }
         }
       }
-      if case let .blockchainToken(token) = assetDetailStore.assetDetailType {
+      if case .blockchainToken(let token) = assetDetailStore.assetDetailType {
         if token.isAuroraSupportedToken {
           PortfolioHeaderButton(style: .more) {
             isShowingMoreActionSheet = true
