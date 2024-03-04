@@ -102,11 +102,6 @@ void PlaylistService::Shutdown() {
 #endif  // BUILDFLAG(IS_ANDROID)
 }
 
-bool PlaylistService::ShouldExtractMediaFromBackgroundWebContents(
-    const mojom::PlaylistItemPtr& item) const {
-  return item->media_source.SchemeIsBlob() && item->is_blob_from_media_source;
-}
-
 void PlaylistService::AddMediaFilesFromContentsToPlaylist(
     const std::string& playlist_id,
     content::WebContents* contents,
@@ -537,8 +532,7 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
       can_cache && prefs_->GetBoolean(playlist::kPlaylistCacheByDefault),
       std::move(callback));
 
-  if (items.size() == 1 &&
-      ShouldExtractMediaFromBackgroundWebContents(items[0])) {
+  if (items.size() == 1 && items[0]->is_blob_from_media_source) {
     background_web_contents_->Add(items[0]->page_source,
                                   std::move(add_media_files_from_items));
   } else {

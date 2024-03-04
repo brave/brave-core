@@ -249,9 +249,6 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
-  bool ShouldExtractMediaFromBackgroundWebContents(
-      const mojom::PlaylistItemPtr& item) const;
-
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(

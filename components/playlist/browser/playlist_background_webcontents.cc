@@ -5,18 +5,41 @@
 
 #include "brave/components/playlist/browser/playlist_background_webcontents.h"
 
+#include <set>
 #include <utility>
 
+#include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
 #include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
+#include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
+#include "net/base/schemeful_site.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "url/gurl.h"
+
+namespace {
+bool ShouldUseFakeUA(const GURL& url) {
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylistFakeUA)) {
+    return true;
+  }
+
+  static const std::set kSites{
+      net::SchemefulSite(GURL("https://ted.com")),
+      net::SchemefulSite(GURL("https://marthastewart.com")),
+      net::SchemefulSite(GURL("https://bbcgoodfood.com")),
+      net::SchemefulSite(GURL("https://rumble.com/")),
+      net::SchemefulSite(GURL(
+          "https://brighteon.com"))  // We only support audio for this site.
+  };
+
+  return kSites.contains(net::SchemefulSite(url));
+}
+}  // namespace
 
 namespace playlist {
 
@@ -49,7 +72,7 @@ void PlaylistBackgroundWebContents::Add(
   auto load_url_params = content::NavigationController::LoadURLParams(url);
 
   content::NavigationController& controller = web_contents->GetController();
-  if (PlaylistBackgroundWebContentsHelper::ShouldUseFakeUA(url)) {
+  if (ShouldUseFakeUA(url)) {
     DVLOG(2) << __FUNCTION__ << " Using fake UA to detect media files.";
 
     blink::UserAgentOverride user_agent_override(

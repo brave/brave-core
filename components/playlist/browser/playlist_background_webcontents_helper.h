@@ -9,8 +9,6 @@
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
-class GURL;
-
 namespace content {
 class NavigationHandle;
 class WebContents;
@@ -30,13 +28,9 @@ class PlaylistBackgroundWebContentsHelper final
       const PlaylistBackgroundWebContentsHelper&) = delete;
   ~PlaylistBackgroundWebContentsHelper() override;
 
-  static bool ShouldUseFakeUA(const GURL& url);
-
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
-
-  static bool ShouldSuppressMediaSourceAPI(const GURL& url);
 
   PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
                                       PlaylistService* service);
