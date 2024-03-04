@@ -395,7 +395,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func transactionSimulationOptInStatus(
-    completion: @escaping (BraveWallet.BlowfishOptInStatus?) -> Void
+    completion: @escaping (BraveWallet.BlowfishOptInStatus) -> Void
   ) {
     completion(.unset)
   }
