@@ -499,26 +499,24 @@ void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
       std::move(callback));
 }
 
-void PlaylistService::FindMediaFilesFromActiveTab(
-    FindMediaFilesFromActiveTabCallback callback) {
-  DCHECK(delegate_);
-
-  auto* contents = delegate_->GetActiveWebContents();
-  if (!contents) {
-    std::move(callback).Run({}, {});
+void PlaylistService::FindMediaFilesFromActiveTab() {
+  auto* web_contents = delegate_->GetActiveWebContents();
+  if (!web_contents) {
     return;
   }
 
-  // At this moment, Android calls this on every navigation, which can cause
-  // memory regression. So don't allow to create background contents.
-  // Even though we don't allow that, we'll extract media from background web
-  // contents when adding items.
-  auto* tab_helper = PlaylistTabHelper::FromWebContents(contents);
+  auto* tab_helper = PlaylistTabHelper::FromWebContents(web_contents);
   CHECK(tab_helper);
-  std::vector<mojom::PlaylistItemPtr> items;
-  base::ranges::transform(tab_helper->found_items(), std::back_inserter(items),
-                          &mojom::PlaylistItemPtr::Clone);
-  std::move(callback).Run(contents->GetLastCommittedURL(), std::move(items));
+
+  const auto url = web_contents->GetLastCommittedURL();
+
+  for (auto& observer : observers_) {
+    std::vector<mojom::PlaylistItemPtr> cloned_items;
+    base::ranges::transform(tab_helper->found_items(),
+                            std::back_inserter(cloned_items),
+                            &mojom::PlaylistItemPtr::Clone);
+    observer->OnMediaFilesUpdated(url, std::move(cloned_items));
+  }
 }
 
 void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
