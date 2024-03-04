@@ -176,14 +176,14 @@ extension AttributedString {
 
     guard let startIndex = startIndex,
       let endIndex = endIndex,
-      startIndex < endIndex
+      startIndex < self.index(afterCharacter: endIndex)
     else {
       self.removeSubrange(self.startIndex..<self.endIndex)
       return self
     }
 
+    self.removeSubrange(self.index(afterCharacter: endIndex)...)
     self.removeSubrange(self.startIndex..<startIndex)
-    self.removeSubrange(endIndex...)
 
     return self
   }

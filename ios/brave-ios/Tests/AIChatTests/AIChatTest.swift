@@ -109,18 +109,18 @@ final class AIChatTest: XCTestCase {
 
   func testMarkdown() throws {
     let response =
-    """
-    The following is ane example of hello world in c++
-    ```c++
-    #include <iostream>
+      """
+      The following is ane example of hello world in c++
+      ```c++
+      #include <iostream>
 
-    int main() {
-        std::cout<<"Hello World."
-        return 0;
-    }
-    ```
-    This code using the header `iostream` in order to print.
-    """
+      int main() {
+          std::cout<<"Hello World."
+          return 0;
+      }
+      ```
+      This code using the header `iostream` in order to print.
+      """
 
     guard
       let result = MarkdownParser.parse(
@@ -155,18 +155,18 @@ final class AIChatTest: XCTestCase {
 
   func testHighlightJS() throws {
     let response =
-    """
-    The following is ane example of hello world in c++
-    ```c++
-    #include <iostream>
+      """
+      The following is ane example of hello world in c++
+      ```c++
+      #include <iostream>
 
-    int main() {
-        std::cout<<"Hello World."
-        return 0;
-    }
-    ```
-    This code using the header `iostream` in order to print.
-    """
+      int main() {
+          std::cout<<"Hello World."
+          return 0;
+      }
+      ```
+      This code using the header `iostream` in order to print.
+      """
 
     guard
       let result = MarkdownParser.parse(
