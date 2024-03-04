@@ -244,7 +244,6 @@ class BraveWalletP3AUnitTest : public testing::Test {
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   network::TestURLLoaderFactory url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
-  std::string tx_hash1_;
 };
 
 TEST_F(BraveWalletP3AUnitTest, KeyringCreated) {
@@ -590,7 +589,7 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
       mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
       mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
 
-  tx_hash1_ =
+  std::string tx_hash1_ =
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpR"
       "zrFmBV6UjKdiSZkQUW";
   auto* latest_blockhash1_ = "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N";

@@ -420,7 +420,7 @@ void BraveWalletP3A::OnTransactionStatusChanged(
   }
   auto tx_coin = GetCoinTypeFromTxDataUnion(*tx_info->tx_data_union);
   if (tx_coin == mojom::CoinType::BTC || tx_coin == mojom::CoinType::ZEC) {
-    // BTC, ZEV transactions are not tracked yet
+    // BTC, ZEC transactions are not tracked yet
     return;
   }
   auto tx_type = tx_info->tx_type;
