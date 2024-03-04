@@ -7,7 +7,6 @@
 #include "brave/components/playlist/browser/playlist_service.h"
 
 #include <algorithm>
-#include <memory>
 #include <utility>
 
 #include "base/check_is_test.h"
@@ -19,13 +18,12 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
 #include "brave/components/playlist/browser/type_converter.h"
-#include "brave/components/playlist/common/features.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"
 #include "components/user_prefs/user_prefs.h"
@@ -70,10 +68,10 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
-  media_detector_component_manager_ = manager;
-  playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
   background_web_contents_ =
       std::make_unique<PlaylistBackgroundWebContents>(context, this);
+  playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
+  media_detector_component_manager_ = manager;
 
   enabled_pref_.Init(kPlaylistEnabledPref, prefs_.get(),
                      base::BindRepeating(&PlaylistService::OnEnabledPrefChanged,
@@ -96,7 +94,6 @@ void PlaylistService::Shutdown() {
   thumbnail_downloader_.reset();
   task_runner_.reset();
   playlist_streaming_.reset();
-
 #if BUILDFLAG(IS_ANDROID)
   receivers_.Clear();
 #endif  // BUILDFLAG(IS_ANDROID)
@@ -536,7 +533,7 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
     background_web_contents_->Add(items[0]->page_source,
                                   std::move(add_media_files_from_items));
   } else {
-    std::move(add_media_files_from_items).Run(std::move(items), {});
+    std::move(add_media_files_from_items).Run(std::move(items), GURL());
   }
 }
 
@@ -1085,7 +1082,7 @@ void PlaylistService::OnMediaFileDownloadFinished(
 
 void PlaylistService::OnEnabledPrefChanged() {
   if (!*enabled_pref_) {
-    background_web_contents_.reset();
+    background_web_contents_->Reset();
     thumbnail_downloader_->CancelAllDownloadRequests();
     media_file_download_manager_->CancelAllDownloadRequests();
   }
@@ -1113,9 +1110,6 @@ void PlaylistService::OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items,
   if (!*enabled_pref_) {
     return;
   }
-
-  DVLOG(2) << __FUNCTION__ << " Media files from " << url.spec()
-           << " were updated: count => " << items.size();
 
   for (auto& observer : observers_) {
     std::vector<mojom::PlaylistItemPtr> cloned_items;

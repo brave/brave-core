@@ -39,6 +39,8 @@ class PlaylistBackgroundWebContents final {
   void Add(const GURL& url,
            PlaylistMediaHandler::OnceCallback on_media_detected_callback);
 
+  void Reset();
+
  private:
   void Remove(content::WebContents* web_contents,
               PlaylistMediaHandler::OnceCallback on_media_detected_callback,

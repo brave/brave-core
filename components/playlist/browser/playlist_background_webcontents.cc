@@ -84,6 +84,10 @@ void PlaylistBackgroundWebContents::Add(
                      std::vector<mojom::PlaylistItemPtr>(), GURL()));
 }
 
+void PlaylistBackgroundWebContents::Reset() {
+  background_web_contents_.clear();
+}
+
 void PlaylistBackgroundWebContents::Remove(
     content::WebContents* web_contents,
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,

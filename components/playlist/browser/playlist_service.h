@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/media_detector_component_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
@@ -199,7 +198,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> media,
+  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items,
                        const GURL& url);
 
   bool HasPlaylistItem(const std::string& id) const;
@@ -261,7 +260,7 @@ class PlaylistService : public KeyedService,
                               bool cache,
                               AddMediaFilesCallback callback,
                               std::vector<mojom::PlaylistItemPtr> items,
-                              const GURL&);
+                              const GURL& url);
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
