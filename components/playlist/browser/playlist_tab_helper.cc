@@ -205,7 +205,13 @@ void PlaylistTabHelper::ReadyToCommitNavigation(
       service_->GetMediaDetectorScript(url));
 }
 
-void PlaylistTabHelper::PrimaryPageChanged(content::Page& page) {
+void PlaylistTabHelper::DidFinishNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInPrimaryMainFrame() ||
+      !navigation_handle->HasCommitted()) {
+    return;
+  }
+
   DVLOG(2) << __FUNCTION__;
 
   if (auto old_url =
