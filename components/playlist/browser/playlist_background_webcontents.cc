@@ -6,38 +6,37 @@
 #include "brave/components/playlist/browser/playlist_background_webcontents.h"
 
 #include <set>
+#include <string>
 #include <utility>
 
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "base/logging.h"
 #include "base/time/time.h"
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 #include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
-#include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/schemeful_site.h"
 #include "third_party/blink/public/common/user_agent/user_agent_metadata.h"
 #include "url/gurl.h"
 
 namespace {
-bool ShouldUseFakeUA(const GURL& url) {
+const char* GetUserAgentOverride(const GURL& url) {
+  static constexpr char kUserAgentOverride[] =
+      "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
+      "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
+      "Mobile/15E148 "
+      "Safari/604.1";
+
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylistFakeUA)) {
-    return true;
+    return kUserAgentOverride;
   }
 
-  static const std::set kSites{
-      net::SchemefulSite(GURL("https://ted.com")),
-      net::SchemefulSite(GURL("https://marthastewart.com")),
-      net::SchemefulSite(GURL("https://bbcgoodfood.com")),
-      net::SchemefulSite(GURL("https://rumble.com/")),
-      net::SchemefulSite(GURL(
-          "https://brighteon.com"))  // We only support audio for this site.
-  };
+  static const std::set kSites{net::SchemefulSite(GURL("https://ted.com"))};
 
-  return kSites.contains(net::SchemefulSite(url));
+  return kSites.contains(net::SchemefulSite(url)) ? kUserAgentOverride
+                                                  : nullptr;
 }
 }  // namespace
 
@@ -70,29 +69,14 @@ void PlaylistBackgroundWebContents::Add(
                                                             service_);
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);
-
-  content::NavigationController& controller = web_contents->GetController();
-  if (ShouldUseFakeUA(url)) {
-    DVLOG(2) << __FUNCTION__ << " Using fake UA to detect media files.";
-
-    blink::UserAgentOverride user_agent_override(
-        "Mozilla/5.0 (iPhone; CPU iPhone OS 13_2_3 like Mac OS X) "
-        "AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 "
-        "Mobile/15E148 "
-        "Safari/604.1",
-        /* user_agent_metadata */ {});
-
-    web_contents->SetUserAgentOverride(user_agent_override,
-                                       /* override_in_new_tabs = */ true);
+  if (auto* ua_override = GetUserAgentOverride(url)) {
+    web_contents->SetUserAgentOverride(
+        blink::UserAgentOverride::UserAgentOnly(ua_override),
+        /* override_in_new_tabs = */ true);
     load_url_params.override_user_agent =
         content::NavigationController::UA_OVERRIDE_TRUE;
-
-    for (int i = 0; i < controller.GetEntryCount(); ++i) {
-      controller.GetEntryAtIndex(i)->SetIsOverridingUserAgent(true);
-    }
   }
-
-  controller.LoadURLWithParams(load_url_params);
+  web_contents->GetController().LoadURLWithParams(load_url_params);
 
   background_web_contents_[std::move(web_contents)].Start(
       FROM_HERE, base::Seconds(10),

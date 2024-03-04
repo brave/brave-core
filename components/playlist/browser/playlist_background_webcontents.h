@@ -49,7 +49,7 @@ class PlaylistBackgroundWebContents final {
   raw_ptr<PlaylistService> service_;
   std::map<std::unique_ptr<content::WebContents>,
            base::OneShotTimer,
-           base::UniquePtrComparator>
+           base::UniquePtrComparator>  // for heterogeneous lookups
       background_web_contents_;
 
   base::WeakPtrFactory<PlaylistBackgroundWebContents> weak_factory_{this};
