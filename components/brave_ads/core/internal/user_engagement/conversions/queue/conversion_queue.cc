@@ -54,8 +54,9 @@ void ConversionQueue::AddCallback(
 
 bool ConversionQueue::ShouldProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
-  return !timer_.IsRunning() ||
-         ShouldProcessBeforeScheduledQueueItem(conversion_queue_item);
+  return !is_processing_ &&
+         (!timer_.IsRunning() ||
+          ShouldProcessBeforeScheduledQueueItem(conversion_queue_item));
 }
 
 bool ConversionQueue::ShouldProcessBeforeScheduledQueueItem(
@@ -85,18 +86,15 @@ void ConversionQueue::ProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
   CHECK(conversion_queue_item.IsValid());
 
-  MarkQueueItemAsProcessed(conversion_queue_item);
-}
+  is_processing_ = true;
 
-void ConversionQueue::MarkQueueItemAsProcessed(
-    const ConversionQueueItemInfo& conversion_queue_item) {
-  database_table_.Update(
+  database_table_.MarkAsProcessed(
       conversion_queue_item,
-      base::BindOnce(&ConversionQueue::MarkQueueItemAsProcessedCallback,
+      base::BindOnce(&ConversionQueue::ProcessQueueItemCallback,
                      weak_factory_.GetWeakPtr(), conversion_queue_item));
 }
 
-void ConversionQueue::MarkQueueItemAsProcessedCallback(
+void ConversionQueue::ProcessQueueItemCallback(
     const ConversionQueueItemInfo& conversion_queue_item,
     const bool success) {
   if (!success) {
@@ -109,6 +107,8 @@ void ConversionQueue::MarkQueueItemAsProcessedCallback(
 
 void ConversionQueue::SuccessfullyProcessedQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  is_processing_ = false;
+
   NotifyDidProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();
@@ -116,6 +116,8 @@ void ConversionQueue::SuccessfullyProcessedQueueItem(
 
 void ConversionQueue::FailedToProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item) {
+  is_processing_ = false;
+
   NotifyFailedToProcessConversionQueue(conversion_queue_item.conversion);
 
   ProcessNextQueueItem();

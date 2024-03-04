@@ -47,10 +47,7 @@ class ConversionQueue final : public AdsClientNotifierObserver {
   void ProcessQueueItemAfterDelay(
       const ConversionQueueItemInfo& conversion_queue_item);
   void ProcessQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
-
-  void MarkQueueItemAsProcessed(
-      const ConversionQueueItemInfo& conversion_queue_item);
-  void MarkQueueItemAsProcessedCallback(
+  void ProcessQueueItemCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
 
@@ -81,6 +78,8 @@ class ConversionQueue final : public AdsClientNotifierObserver {
   raw_ptr<ConversionQueueDelegate> delegate_ = nullptr;
 
   Timer timer_;
+
+  bool is_processing_ = false;
 
   const database::table::ConversionQueue database_table_;
 
