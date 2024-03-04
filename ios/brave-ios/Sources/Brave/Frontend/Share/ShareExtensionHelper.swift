@@ -62,3 +62,19 @@ class ShareExtensionHelper {
     return activityViewController
   }
 }
+
+extension UIActivity.ActivityType {
+  static let copyCleanLink: Self = .init("CopyCleanLink")
+  static let sendURL: Self = .init("SendURL")
+  static let toggleReaderMode: Self = .init("ToggleReaderMode")
+  static let findInPage: Self = .init("FindInPage")
+  static let pageZoom: Self = .init("PageZoom")
+  static let addFavourites: Self = .init("AddFavourites")
+  static let requestMobileSite: Self = .init("RequestMobileSite")
+  static let requestDesktopSite: Self = .init("RequestDesktopSite")
+  static let addSourceNews: Self = .init("AddSourceNews")
+  static let createPDF: Self = .init("CreatePDF")
+  static let addSearchEngine: Self = .init("AddSearchEngine")
+  static let displaySecurityCertificate: Self = .init("DisplaySecurityCertificate")
+  static let reportBrokenSite: Self = .init("ReportBrokenSite")
+}
