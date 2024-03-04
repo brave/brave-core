@@ -73,6 +73,10 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
 
   const auto url = web_contents->GetLastCommittedURL();
   auto items = ToPlaylistItems(std::move(media), url);
+  if (items.empty()) {  // ToPlaylistItems() might discard media
+    return;
+  }
+
   std::visit(
       base::Overloaded{
           [&](OnceCallback& on_media_detected_callback) {

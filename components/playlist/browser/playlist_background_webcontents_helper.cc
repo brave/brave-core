@@ -5,6 +5,8 @@
 
 #include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
 
+#include <utility>
+
 #include "base/logging.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
@@ -16,6 +18,18 @@
 
 namespace playlist {
 
+// static
+void PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+    content::WebContents* web_contents,
+    PlaylistService* service,
+    PlaylistMediaHandler::OnceCallback on_media_detected_callback) {
+  content::WebContentsUserData<
+      PlaylistBackgroundWebContentsHelper>::CreateForWebContents(web_contents,
+                                                                 service);
+  PlaylistMediaHandler::CreateForWebContents(
+      web_contents, std::move(on_media_detected_callback));
+}
+
 PlaylistBackgroundWebContentsHelper::~PlaylistBackgroundWebContentsHelper() =
     default;
 
@@ -25,7 +39,9 @@ PlaylistBackgroundWebContentsHelper::PlaylistBackgroundWebContentsHelper(
     : content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>(
           *web_contents),
       content::WebContentsObserver(web_contents),
-      service_(service) {}
+      service_(service) {
+  CHECK(service_);
+}
 
 void PlaylistBackgroundWebContentsHelper::ReadyToCommitNavigation(
     content::NavigationHandle* navigation_handle) {

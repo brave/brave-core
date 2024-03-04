@@ -63,10 +63,9 @@ void PlaylistBackgroundWebContents::Add(
           &PlaylistBackgroundWebContents::Remove, weak_factory_.GetWeakPtr(),
           web_contents.get(), std::move(on_media_detected_callback)));
 
-  PlaylistMediaHandler::CreateForWebContents(
-      web_contents.get(), std::move(callback_for_media_handler));
-  PlaylistBackgroundWebContentsHelper::CreateForWebContents(web_contents.get(),
-                                                            service_);
+  PlaylistBackgroundWebContentsHelper::CreateForWebContents(
+      web_contents.get(), service_.get(),
+      std::move(callback_for_media_handler));
 
   auto load_url_params = content::NavigationController::LoadURLParams(url);
   if (auto* ua_override = GetUserAgentOverride(url)) {

@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 #define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
 
+#include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
 
@@ -22,6 +23,11 @@ class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
  public:
+  static void CreateForWebContents(
+      content::WebContents* web_contents,
+      PlaylistService* service,
+      PlaylistMediaHandler::OnceCallback on_media_detected_callback);
+
   PlaylistBackgroundWebContentsHelper(
       const PlaylistBackgroundWebContentsHelper&) = delete;
   PlaylistBackgroundWebContentsHelper& operator=(
@@ -31,6 +37,8 @@ class PlaylistBackgroundWebContentsHelper final
  private:
   friend class content::WebContentsUserData<
       PlaylistBackgroundWebContentsHelper>;
+  using content::WebContentsUserData<
+      PlaylistBackgroundWebContentsHelper>::CreateForWebContents;
 
   PlaylistBackgroundWebContentsHelper(content::WebContents* web_contents,
                                       PlaylistService* service);
