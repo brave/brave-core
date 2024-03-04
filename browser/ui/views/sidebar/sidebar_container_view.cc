@@ -48,6 +48,7 @@
 #include "content/public/common/input/native_web_keyboard_event.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
+#include "ui/compositor/layer.h"
 #include "ui/events/event_observer.h"
 #include "ui/events/types/event_type.h"
 #include "ui/gfx/geometry/point.h"
@@ -275,6 +276,9 @@ void SidebarContainerView::AddChildViews() {
   sidebar_control_view_ =
       AddChildView(std::make_unique<SidebarControlView>(this, browser_));
   sidebar_control_view_->SetPaintToLayer();
+
+  // To prevent showing layered-children while its bounds is invisible.
+  sidebar_control_view_->layer()->SetMasksToBounds(true);
 
   // Hide by default. Visibility will be controlled by show options callback
   // later.
