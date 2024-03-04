@@ -36,7 +36,6 @@
 #include "brave/components/brave_news/browser/publishers_parsing.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
 #include "brave/components/brave_news/browser/topics_fetcher.h"
-#include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -100,12 +99,8 @@ BraveNewsController::BraveNewsController(
       url_loader_factory_(url_loader_factory),
       news_metrics_(prefs),
       direct_feed_controller_(prefs_, url_loader_factory),
-      unsupported_publisher_migrator_(prefs_,
-                                      &direct_feed_controller_,
-                                      &api_request_helper_),
       publishers_controller_(prefs_,
                              &direct_feed_controller_,
-                             &unsupported_publisher_migrator_,
                              &api_request_helper_,
                              &news_metrics_),
       channels_controller_(prefs_, &publishers_controller_, &news_metrics_),

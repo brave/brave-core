@@ -16,7 +16,6 @@
 #include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
-#include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-shared.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -65,12 +64,8 @@ class SuggestionsControllerTest : public testing::Test {
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
         direct_feed_controller_(profile_.GetPrefs(), nullptr),
-        unsupported_publisher_migrator_(profile_.GetPrefs(),
-                                        &direct_feed_controller_,
-                                        &api_request_helper_),
         publishers_controller_(profile_.GetPrefs(),
                                &direct_feed_controller_,
-                               &unsupported_publisher_migrator_,
                                &api_request_helper_,
                                nullptr),
         suggestions_controller_(profile_.GetPrefs(),
@@ -107,7 +102,6 @@ class SuggestionsControllerTest : public testing::Test {
   api_request_helper::APIRequestHelper api_request_helper_;
 
   DirectFeedController direct_feed_controller_;
-  UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
   SuggestionsController suggestions_controller_;
 };
