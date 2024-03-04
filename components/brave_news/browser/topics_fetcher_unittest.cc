@@ -203,9 +203,9 @@ constexpr char kTopicsNewsResponse[] = R"([
   }
 ])";
 
-class TopicsFetcherTest : public testing::Test {
+class BraveNewsTopicsFetcherTest : public testing::Test {
  public:
-  TopicsFetcherTest()
+  BraveNewsTopicsFetcherTest()
       : fetcher_(test_url_loader_factory_.GetSafeWeakWrapper()) {}
 
   std::vector<TopicAndArticles> GetTopics() {
@@ -234,7 +234,7 @@ class TopicsFetcherTest : public testing::Test {
   TopicsFetcher fetcher_;
 };
 
-TEST_F(TopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
+TEST_F(BraveNewsTopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, kTopicsNewsResponse,
                                    net::HTTP_OK);
@@ -286,7 +286,7 @@ TEST_F(TopicsFetcherTest, TopicsAreJoinedAndParsedCorrectly) {
   EXPECT_EQ("news", afghanistan_article.origin);
 }
 
-TEST_F(TopicsFetcherTest, NoResponseNoTopics) {
+TEST_F(BraveNewsTopicsFetcherTest, NoResponseNoTopics) {
   url_loader_factory().AddResponse(kTopicsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "",
@@ -294,7 +294,7 @@ TEST_F(TopicsFetcherTest, NoResponseNoTopics) {
   EXPECT_EQ(0u, GetTopics().size());
 }
 
-TEST_F(TopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
+TEST_F(BraveNewsTopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
   url_loader_factory().AddResponse(kTopicsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
   url_loader_factory().AddResponse(kTopicsNewsUrl, kTopicsNewsResponse,
@@ -302,14 +302,14 @@ TEST_F(TopicsFetcherTest, NoTopicsResponseButArticlesNoTopics) {
   EXPECT_EQ(0u, GetTopics().size());
 }
 
-TEST_F(TopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
+TEST_F(BraveNewsTopicsFetcherTest, NoArticlesResponseButTopicsNoTopics) {
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "",
                                    net::HTTP_INTERNAL_SERVER_ERROR);
   EXPECT_EQ(0u, GetTopics().size());
 }
 
-TEST_F(TopicsFetcherTest, TopicsWithInvalidArticles) {
+TEST_F(BraveNewsTopicsFetcherTest, TopicsWithInvalidArticles) {
   url_loader_factory().AddResponse(kTopicsUrl, kTopicsResponse, net::HTTP_OK);
   url_loader_factory().AddResponse(kTopicsNewsUrl, "foo", net::HTTP_OK);
   EXPECT_EQ(0u, GetTopics().size());

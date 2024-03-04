@@ -58,9 +58,9 @@ history::QueryResults MakeQueryResults(const std::vector<std::string>& urls) {
 }
 }  // namespace
 
-class SuggestionsControllerTest : public testing::Test {
+class BraveNewsSuggestionsControllerTest : public testing::Test {
  public:
-  SuggestionsControllerTest()
+  BraveNewsSuggestionsControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
         direct_feed_controller_(profile_.GetPrefs(), nullptr),
@@ -77,7 +77,7 @@ class SuggestionsControllerTest : public testing::Test {
                                     true);
     SetLocale("en_US");
   }
-  ~SuggestionsControllerTest() override = default;
+  ~BraveNewsSuggestionsControllerTest() override = default;
 
  protected:
   std::vector<std::string> GetSuggestedPublisherIds(
@@ -106,7 +106,7 @@ class SuggestionsControllerTest : public testing::Test {
   SuggestionsController suggestions_controller_;
 };
 
-TEST_F(SuggestionsControllerTest, VisitedSourcesAreSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest, VisitedSourcesAreSuggested) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -123,7 +123,8 @@ TEST_F(SuggestionsControllerTest, VisitedSourcesAreSuggested) {
   EXPECT_EQ("3", suggestions[1]);
 }
 
-TEST_F(SuggestionsControllerTest, SubscribedVisitedSourcesAreNotSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest,
+       SubscribedVisitedSourcesAreNotSuggested) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -140,7 +141,8 @@ TEST_F(SuggestionsControllerTest, SubscribedVisitedSourcesAreNotSuggested) {
   EXPECT_EQ("3", suggestions[0]);
 }
 
-TEST_F(SuggestionsControllerTest, DisabledVisitedSourcesAreNotSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest,
+       DisabledVisitedSourcesAreNotSuggested) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -157,7 +159,7 @@ TEST_F(SuggestionsControllerTest, DisabledVisitedSourcesAreNotSuggested) {
   EXPECT_EQ("3", suggestions[0]);
 }
 
-TEST_F(SuggestionsControllerTest, SimilarSourcesAreSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest, SimilarSourcesAreSuggested) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -179,7 +181,8 @@ TEST_F(SuggestionsControllerTest, SimilarSourcesAreSuggested) {
   EXPECT_EQ("2", suggestions[1]);
 }
 
-TEST_F(SuggestionsControllerTest, SimilarToVisitedSourcesAreSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest,
+       SimilarToVisitedSourcesAreSuggested) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -203,7 +206,8 @@ TEST_F(SuggestionsControllerTest, SimilarToVisitedSourcesAreSuggested) {
   EXPECT_EQ("2", suggestions[2]);
 }
 
-TEST_F(SuggestionsControllerTest, VisitWeightingAltersSimilarToVisitWeighting) {
+TEST_F(BraveNewsSuggestionsControllerTest,
+       VisitWeightingAltersSimilarToVisitWeighting) {
   const auto& publishers = MakePublishers({
       "https://example.com",
       "https://bar.com",
@@ -228,7 +232,7 @@ TEST_F(SuggestionsControllerTest, VisitWeightingAltersSimilarToVisitWeighting) {
   EXPECT_EQ("4", suggestions[3]);  // Similar to P2 (which was visited once)
 }
 
-TEST_F(SuggestionsControllerTest,
+TEST_F(BraveNewsSuggestionsControllerTest,
        SuggestionsCanComeFromVistSimilarOrSimilarToVisit) {
   const auto& publishers = MakePublishers({
       "https://visited.com",
@@ -255,7 +259,8 @@ TEST_F(SuggestionsControllerTest,
       base::Contains(suggestions, "4"));  // Similar to P1 (which was visited)
 }
 
-TEST_F(SuggestionsControllerTest, SourcesFromDifferentLocalesAreNotSuggested) {
+TEST_F(BraveNewsSuggestionsControllerTest,
+       SourcesFromDifferentLocalesAreNotSuggested) {
   const auto& publishers = MakePublishers({
       "https://visited.com",
       "https://similar-to-visited.com",
