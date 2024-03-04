@@ -17,6 +17,7 @@ extension Preferences {
     public static let phishingCount = Option<Int>(key: "stats.phishing", default: 0)
     public static let fingerprintingCount = Option<Int>(key: "stats.fingerprinting", default: 0)
   }
+
   public final class BlockFileVersion {
     public static let adblock = Option<String?>(key: "blockfile.adblock", default: nil)
     public static let httpse = Option<String?>(key: "blockfile.httpse", default: nil)

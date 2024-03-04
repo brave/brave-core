@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import AIChat
 import Brave
 import BraveCore
 import BraveNews
@@ -188,6 +189,12 @@ public class AppState {
       }
     }
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
+
+    if !AppConstants.buildChannel.isPublic {
+      switches.append(.init(key: .init(rawValue: "env-leo"), value: "staging"))
+      switches.append(.init(key: .init(rawValue: "env-ai-chat.bsg"), value: "dev"))
+      switches.append(.init(key: .init(rawValue: "env-ai-chat-premium.bsg"), value: "dev"))
+    }
 
     // Initialize BraveCore
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)

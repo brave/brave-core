@@ -13,6 +13,7 @@ class MenuItemFactory {
     case bookmarks
     case downloads
     case history
+    case leo
     case news
     case playlist(subtitle: String? = nil)
     case settings
@@ -27,6 +28,8 @@ class MenuItemFactory {
         return Image(braveSystemName: "leo.download")
       case .history:
         return Image(braveSystemName: "leo.history")
+      case .leo:
+        return Image(braveSystemName: "leo.product.brave-leo")
       case .news:
         return Image(braveSystemName: "leo.product.brave-news")
       case .playlist:
@@ -48,6 +51,8 @@ class MenuItemFactory {
         return Strings.downloadsMenuItem
       case .history:
         return Strings.historyMenuItem
+      case .leo:
+        return Strings.leoMenuItem
       case .news:
         return Strings.OptionsMenu.braveNewsItemTitle
       case .playlist:
@@ -71,6 +76,8 @@ class MenuItemFactory {
         return Strings.OptionsMenu.braveTalkItemDescription
       case .wallet(let subtitle):
         return subtitle
+      case .leo:
+        return Strings.OptionsMenu.braveLeoItemDescription
       default:
         return nil
       }

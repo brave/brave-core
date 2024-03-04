@@ -47,7 +47,7 @@ struct AdvancedShieldsSettingsView: View {
           NavigationLink(
             destination: { EmptyView() },
             label: {
-              ShieldLabelView(
+              LabelView(
                 title: Strings.manageWebsiteDataTitle,
                 subtitle: nil
               )
@@ -63,7 +63,7 @@ struct AdvancedShieldsSettingsView: View {
         NavigationLink {
           PrivacyReportSettingsView()
         } label: {
-          ShieldLabelView(
+          LabelView(
             title: Strings.PrivacyHub.privacyReportsTitle,
             subtitle: nil
           )

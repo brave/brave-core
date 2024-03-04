@@ -5,6 +5,7 @@
 import BraveShared
 import BraveUI
 import Data
+import Favicon
 import Shared
 import SwiftUI
 

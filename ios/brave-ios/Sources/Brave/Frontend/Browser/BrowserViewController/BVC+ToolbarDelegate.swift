@@ -15,6 +15,7 @@ import Data
 import Playlist
 import Preferences
 import Shared
+import SpeechRecognition
 import Storage
 import SwiftUI
 import os.log
@@ -574,11 +575,11 @@ extension BrowserViewController: TopToolbarDelegate {
         [weak self] finalizedRecognition in
         guard let self else { return }
 
-        if finalizedRecognition.status {
+        if let finalizedRecognition {
           // Feedback indicating recognition is finalized
           AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
           UIImpactFeedbackGenerator(style: .medium).bzzt()
-          stopVoiceSearch(searchQuery: finalizedRecognition.searchQuery)
+          stopVoiceSearch(searchQuery: finalizedRecognition)
         }
       }
 
@@ -600,7 +601,10 @@ extension BrowserViewController: TopToolbarDelegate {
       }
 
       voiceSearchViewController = PopupViewController(
-        rootView: VoiceSearchInputView(speechModel: speechRecognizer)
+        rootView: SpeechToTextInputView(
+          speechModel: speechRecognizer,
+          disclaimer: Strings.VoiceSearch.screenDisclaimer
+        )
       )
 
       if let voiceSearchController = voiceSearchViewController {

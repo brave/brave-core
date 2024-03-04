@@ -8,6 +8,7 @@ import BraveShared
 import BraveUI
 import CoreData
 import Data
+import Favicon
 import Shared
 import SwiftUI
 
