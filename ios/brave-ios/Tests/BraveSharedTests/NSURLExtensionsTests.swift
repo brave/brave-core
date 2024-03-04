@@ -697,46 +697,52 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testIsBookmarkletURL() {
-    let goodURLs = [
+    let javascriptURLs = [
       "javascript:",
+      "javascript://",
       "javascript:void(window.close(self))",
       "javascript:window.open('https://brave.com')",
     ]
 
-    let badURLs = [
-      "javascript:/",
-      "javascript://",
-      "javascript://something",
+    let nonJavascriptURLs = [
+      "https://brave",
+      "https://brave.com",
+      "https://javascript://",
+      "javascript//",
     ]
 
-    goodURLs.forEach {
-      XCTAssertNotNil($0.bookmarkletURL)
+    javascriptURLs.forEach {
+      XCTAssertNotNil(URL.bookmarkletURL(from: $0))
     }
 
-    badURLs.forEach {
-      XCTAssertNil($0.bookmarkletURL)
+    nonJavascriptURLs.forEach {
+      XCTAssertNil(URL.bookmarkletURL(from: $0))
     }
   }
 
   func testIsBookmarkletURLComponent() {
-    let goodURLs = [
+    let javascriptURLs = [
+      "javascript:/",
+      "javascript://",
+      "javascript://something",
       "javascript:void(window.close(self))",
       "javascript:window.open('https://brave.com')",
+      "javascript://%0a%0dalert('UXSS')",
     ]
 
     let badURLs = [
       "javascript:",
-      "javascript:/",
-      "javascript://",
-      "javascript://something",
+      "https://test",
+      "javascript//test",
+      "javascript/test",
     ]
 
-    goodURLs.forEach {
-      XCTAssertNotNil($0.bookmarkletCodeComponent)
+    javascriptURLs.forEach {
+      XCTAssertNotNil(URL.bookmarkletURL(from: $0)?.bookmarkletCodeComponent)
     }
 
     badURLs.forEach {
-      XCTAssertNil($0.bookmarkletCodeComponent)
+      XCTAssertNil(URL.bookmarkletURL(from: $0)?.bookmarkletCodeComponent)
     }
   }
 

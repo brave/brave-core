@@ -73,8 +73,8 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
       .forEach(contentStackView.addArrangedSubview)
 
     var url = url
-    if url?.isBookmarklet == true {
-      url = url?.removingPercentEncoding
+    if let urlString = url, URL.bookmarkletURL(from: urlString) != nil {
+      url = urlString.removingPercentEncoding
     } else if let url = url, let favUrl = URL(string: url) {
       faviconImageView.loadFavicon(siteURL: favUrl, isPrivateBrowsing: isPrivateBrowsing)
     }
@@ -94,7 +94,7 @@ class BookmarkDetailsView: AddEditHeaderView, BookmarkFormFieldsProtocol {
   // MARK: - Delegate actions
 
   @objc func textFieldDidChange(_ textField: UITextField) {
-    if textField.text?.isBookmarklet == true {
+    if let text = textField.text, URL.bookmarkletURL(from: text) != nil {
       delegate?.correctValues(validationPassed: validateCodeFields())
     } else {
       delegate?.correctValues(validationPassed: validateFields())
