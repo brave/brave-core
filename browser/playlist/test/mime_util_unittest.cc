@@ -76,14 +76,14 @@ TEST(PlaylistMimeUtilUnitTest, GetMimeTypeForFileExtension) {
           .has_value());
 }
 
-TEST(PlaylistMimeUtilUnitTest, BothMapShouldBeInSync) {
+TEST(PlaylistMimeUtilUnitTest, BothMapsShouldBeInSync) {
   const auto supported_mimetypes = playlist::mime_util::GetSupportedMimetypes();
   ASSERT_FALSE(supported_mimetypes.empty());
 
   base::flat_map<base::FilePath::StringType, std::vector<std::string>>
       extension_to_mimes;
 
-  for (auto mimetype : supported_mimetypes) {
+  for (const auto& mimetype : supported_mimetypes) {
     auto extension = playlist::mime_util::GetFileExtensionForMimetype(mimetype);
     ASSERT_TRUE(extension.has_value());
     extension_to_mimes[extension.value()].push_back(mimetype);
