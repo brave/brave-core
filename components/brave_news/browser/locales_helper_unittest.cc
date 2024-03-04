@@ -42,7 +42,7 @@ Publishers MakePublishers(
 }
 }  // namespace
 
-TEST(LocalesHelperTest, NoDuplicatesInAllLocales) {
+TEST(BraveNewsLocalesHelperTest, NoDuplicatesInAllLocales) {
   auto locales = brave_news::GetPublisherLocales(MakePublishers(
       {{"en_US", "es_MX"}, {"es_MX", "ja_JP"}, {"ja_JP", "en_US"}}));
   EXPECT_EQ(3u, locales.size());
@@ -53,14 +53,15 @@ TEST(LocalesHelperTest, NoDuplicatesInAllLocales) {
 
 // Even with no subscribed publishers, we should feeds for all locales we have
 // channels in.
-TEST(LocalesHelperTest, GetMinimalLocalesSetUsesChannelLocales) {
+TEST(BraveNewsLocalesHelperTest, GetMinimalLocalesSetUsesChannelLocales) {
   auto locales = GetMinimalLocalesSet({"en_US", "ja_JP"}, {});
   EXPECT_EQ(2u, locales.size());
   EXPECT_TRUE(base::Contains(locales, "en_US"));
   EXPECT_TRUE(base::Contains(locales, "ja_JP"));
 }
 
-TEST(LocalesHelperTest, LocaleIsNotIncludedIfChannelLocalesIncludePublisher) {
+TEST(BraveNewsLocalesHelperTest,
+     LocaleIsNotIncludedIfChannelLocalesIncludePublisher) {
   Publishers publishers = MakePublishers({{"en_US", "en_UK", "en_NZ"},
                                           {
                                               "en_US",
@@ -73,7 +74,7 @@ TEST(LocalesHelperTest, LocaleIsNotIncludedIfChannelLocalesIncludePublisher) {
   EXPECT_TRUE(base::Contains(locales, "en_NZ"));
 }
 
-TEST(LocalesHelperTest, AllRegionsAreCovered) {
+TEST(BraveNewsLocalesHelperTest, AllRegionsAreCovered) {
   Publishers publishers = MakePublishers({{
                                               "en_US",
                                           },
@@ -94,7 +95,7 @@ TEST(LocalesHelperTest, AllRegionsAreCovered) {
   EXPECT_TRUE(base::Contains(locales, "en_US"));
 }
 
-TEST(LocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
+TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
   Publishers publishers = MakePublishers({{
                                               "en_AU",
                                               "en_NZ",
@@ -118,7 +119,7 @@ TEST(LocalesHelperTest, MostCommonPublisherIsPickedFirstSingleGroup) {
   EXPECT_TRUE(base::Contains(locales, "en_NZ"));
 }
 
-TEST(LocalesHelperTest, MostCommonPublisherIsPickedFirst) {
+TEST(BraveNewsLocalesHelperTest, MostCommonPublisherIsPickedFirst) {
   Publishers publishers = MakePublishers({{
                                               "en_AU",
                                               "en_NZ",
@@ -151,7 +152,7 @@ TEST(LocalesHelperTest, MostCommonPublisherIsPickedFirst) {
   EXPECT_TRUE(base::Contains(locales, "ja_JP"));
 }
 
-TEST(LocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
+TEST(BraveNewsLocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
   Publishers publishers = MakePublishers({
       {"en_NZ"},
       {"en_AU"},
@@ -168,7 +169,7 @@ TEST(LocalesHelperTest, OnlyEnabledPublishersAreConsidered) {
   EXPECT_TRUE(base::Contains(locales, "en_UK"));
 }
 
-TEST(LocalesHelperTest, NonEnabledPublishersDontAffectInclusions) {
+TEST(BraveNewsLocalesHelperTest, NonEnabledPublishersDontAffectInclusions) {
   Publishers publishers = MakePublishers({
       {"en_NZ"},
       {"en_US"},

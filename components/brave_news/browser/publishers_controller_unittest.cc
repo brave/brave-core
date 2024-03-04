@@ -114,9 +114,9 @@ class WaitForPublishersChanged : public PublishersController::Observer {
   base::RunLoop loop_;
 };
 
-class PublishersControllerTest : public testing::Test {
+class BraveNewsPublishersControllerTest : public testing::Test {
  public:
-  PublishersControllerTest()
+  BraveNewsPublishersControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
         direct_feed_controller_(profile_.GetPrefs(), nullptr),
@@ -191,7 +191,7 @@ class PublishersControllerTest : public testing::Test {
   PublishersController publishers_controller_;
 };
 
-TEST_F(PublishersControllerTest, CanReceiveFeeds) {
+TEST_F(BraveNewsPublishersControllerTest, CanReceiveFeeds) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   LOG(ERROR) << "Sources URL: " << GetSourcesUrl();
@@ -202,7 +202,7 @@ TEST_F(PublishersControllerTest, CanReceiveFeeds) {
   EXPECT_TRUE(base::Contains(result, "555"));
 }
 
-TEST_F(PublishersControllerTest, CanGetPublisherBySiteUrl) {
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherBySiteUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
@@ -211,7 +211,8 @@ TEST_F(PublishersControllerTest, CanGetPublisherBySiteUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, CantGetNonExistingPublisherBySiteUrl) {
+TEST_F(BraveNewsPublishersControllerTest,
+       CantGetNonExistingPublisherBySiteUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
@@ -220,7 +221,7 @@ TEST_F(PublishersControllerTest, CantGetNonExistingPublisherBySiteUrl) {
                          GURL("https://not-a-site.com")));
 }
 
-TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherByFeedUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
@@ -229,7 +230,7 @@ TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
@@ -285,7 +286,7 @@ TEST_F(PublishersControllerTest,
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        PublisherInDefaultLocaleIsPreferred_PreferredLast) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
@@ -341,7 +342,7 @@ TEST_F(PublishersControllerTest,
   EXPECT_EQ("222", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
+TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -396,7 +397,8 @@ TEST_F(PublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, CantGetNonExistingPublisherByFeedUrl) {
+TEST_F(BraveNewsPublishersControllerTest,
+       CantGetNonExistingPublisherByFeedUrl) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
@@ -405,7 +407,7 @@ TEST_F(PublishersControllerTest, CantGetNonExistingPublisherByFeedUrl) {
                          GURL("https://tp5.example.com")));
 }
 
-TEST_F(PublishersControllerTest, CacheCanBeCleared) {
+TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
@@ -421,7 +423,7 @@ TEST_F(PublishersControllerTest, CacheCanBeCleared) {
                          GURL("https://tp5.example.com/feed")));
 }
 
-TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
+TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -449,7 +451,7 @@ TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
   EXPECT_EQ("en_US", locale);
 }
 
-TEST_F(PublishersControllerTest, CanGetPublishers) {
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublishers) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
@@ -457,7 +459,7 @@ TEST_F(PublishersControllerTest, CanGetPublishers) {
   EXPECT_EQ(3u, result.size());
 }
 
-TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
+TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
@@ -466,7 +468,7 @@ TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
   EXPECT_EQ(0u, result.size());
 }
 
-TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
+TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
@@ -476,7 +478,7 @@ TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
   EXPECT_EQ(0u, result.size());
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        DoesntFetchPublishersWhenNotShowingAndNotOptedIn) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);

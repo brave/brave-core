@@ -47,7 +47,7 @@ class SuggestionsController {
   void EnsureSimilarityMatrixIsUpdating();
 
  private:
-  friend class SuggestionsControllerTest;
+  friend class BraveNewsSuggestionsControllerTest;
   void GetOrFetchSimilarityMatrix(base::OnceClosure callback);
   std::vector<std::string> GetSuggestedPublisherIdsWithHistory(
       const Publishers& publishers,
