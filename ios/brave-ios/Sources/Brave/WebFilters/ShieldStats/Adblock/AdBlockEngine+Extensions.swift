@@ -13,32 +13,7 @@ extension AdblockEngine {
     case couldNotDeserializeDATFile
   }
 
-  convenience init(textFileURL fileURL: URL, resourcesFileURL: URL) throws {
-    try self.init(rules: String(contentsOf: fileURL))
-    try useResources(fromFileURL: resourcesFileURL)
-  }
-
-  /// Combine all resources of type rule lists to one single string
-  private static func combineAllRuleLists(
-    from infos: [CachedAdBlockEngine.FilterListInfo]
-  ) -> String {
-    // Combine all rule lists that need to be injected during initialization
-    let allResults = infos.compactMap { info -> String? in
-      switch info.fileType {
-      case .text:
-        guard let data = FileManager.default.contents(atPath: info.localFileURL.path) else {
-          return nil
-        }
-
-        return String(data: data, encoding: .utf8)
-      }
-    }
-
-    let combinedRules = allResults.joined(separator: "\n")
-    return combinedRules
-  }
-
-  private func useResources(fromFileURL fileURL: URL) throws {
+  public func useResources(fromFileURL fileURL: URL) throws {
     // Add scriplets if available
     if let json = try Self.validateJSON(Data(contentsOf: fileURL)) {
       useResources(json)
