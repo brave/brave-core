@@ -11,6 +11,7 @@ import { useDispatch } from 'react-redux'
 import { getLocale } from '../../../../../common/locale'
 import { WalletPageActions } from '../../../actions'
 import {
+  useDiscoverAssetsMutation,
   useReportOnboardingActionMutation //
 } from '../../../../common/slices/api.slice'
 
@@ -50,6 +51,7 @@ export const OnboardingSuccess = () => {
 
   // mutations
   const [report] = useReportOnboardingActionMutation()
+  const [discoverAssets] = useDiscoverAssetsMutation()
 
   // methods
   const onComplete = React.useCallback(() => {
@@ -69,8 +71,11 @@ export const OnboardingSuccess = () => {
 
   // effects
   React.useEffect(() => {
+    // now that the token registry is populated, discover assets
+    discoverAssets()
+
     report(BraveWallet.OnboardingAction.Complete)
-  }, [report])
+  }, [report, discoverAssets])
 
   // render
   return (

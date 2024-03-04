@@ -145,7 +145,7 @@ handler.on(
         .unwrap()
       await store.dispatch(refreshVisibleTokenInfo())
       await store.dispatch(refreshPortfolioFilterOptions())
-      await braveWalletService.discoverAssetsOnAllSupportedChains()
+      await braveWalletService.discoverAssetsOnAllSupportedChains(false)
     }
   }
 )
