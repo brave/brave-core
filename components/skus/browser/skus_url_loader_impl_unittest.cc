@@ -58,7 +58,7 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
               response = result.value_body().Clone();
             }),
         {}, {});
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     return response;
   }
   void FetchResponse(const std::string& method,
@@ -78,14 +78,15 @@ class SkusUrlLoaderImplUnitTest : public testing::Test {
     skus_url_loader()->BeginFetch(
         req, skus::SkusUrlLoaderImpl::FetchResponseCallback(),
         std::move(rt_ctx));
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     EXPECT_TRUE(callback_called);
   }
+
+  base::test::TaskEnvironment task_environment_;
 
  private:
   std::string response_text_;
   net::HttpStatusCode status_ = net::HTTP_OK;
-  base::test::TaskEnvironment task_environment_;
   std::unique_ptr<skus::SkusUrlLoaderImpl> skus_url_loader_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;

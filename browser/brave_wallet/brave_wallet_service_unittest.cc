@@ -574,7 +574,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     auto old_default_wallet = observer_->GetDefaultEthereumWallet();
     EXPECT_FALSE(observer_->DefaultEthereumWalletChangedFired());
     service_->SetDefaultEthereumWallet(default_wallet);
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     if (old_default_wallet != default_wallet) {
       EXPECT_TRUE(observer_->DefaultEthereumWalletChangedFired());
     } else {
@@ -588,7 +588,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     auto old_default_wallet = observer_->GetDefaultSolanaWallet();
     EXPECT_FALSE(observer_->DefaultSolanaWalletChangedFired());
     service_->SetDefaultSolanaWallet(default_wallet);
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     if (old_default_wallet != default_wallet) {
       EXPECT_TRUE(observer_->DefaultSolanaWalletChangedFired());
     } else {
@@ -602,7 +602,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     auto old_currency = observer_->GetDefaultBaseCurrency();
     EXPECT_FALSE(observer_->DefaultBaseCurrencyChangedFired());
     service_->SetDefaultBaseCurrency(currency);
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     if (old_currency != currency) {
       EXPECT_TRUE(observer_->DefaultBaseCurrencyChangedFired());
     } else {
@@ -616,7 +616,7 @@ class BraveWalletServiceUnitTest : public testing::Test {
     auto old_cryptocurrency = observer_->GetDefaultBaseCryptocurrency();
     EXPECT_FALSE(observer_->DefaultBaseCryptocurrencyChangedFired());
     service_->SetDefaultBaseCryptocurrency(cryptocurrency);
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     if (old_cryptocurrency != cryptocurrency) {
       EXPECT_TRUE(observer_->DefaultBaseCryptocurrencyChangedFired());
     } else {
@@ -1508,7 +1508,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
   mojom::NetworkInfo chain = GetTestNetworkInfo1("0x5566");
 
   AddCustomNetwork(GetPrefs(), chain);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(observer_->OnNetworkListChangedFired());
 
   // Remove network.
@@ -1524,7 +1524,7 @@ TEST_F(BraveWalletServiceUnitTest, NetworkListChangedEvent) {
       return *chain_id_value == "0x5566";
     });
   }
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(observer_->OnNetworkListChangedFired());
 }
 
@@ -2408,7 +2408,7 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   // discovery
   EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(1);
   service_->SetNftDiscoveryEnabled(true);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_TRUE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 
@@ -2416,7 +2416,7 @@ TEST_F(BraveWalletServiceUnitTest, SetNftDiscoveryEnabled) {
   // asset discovery
   EXPECT_CALL(*observer_, OnDiscoverAssetsCompleted(testing::_)).Times(0);
   service_->SetNftDiscoveryEnabled(false);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(testing::Mock::VerifyAndClearExpectations(&observer_));
   EXPECT_FALSE(GetPrefs()->GetBoolean(kBraveWalletNftDiscoveryEnabled));
 }
@@ -2687,13 +2687,13 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 
   bitcoin_test_rpc_server_->address_stats_map()[*expected_address] =
@@ -2706,7 +2706,7 @@ TEST_F(BraveWalletServiceUnitTest, GenerateReceiveAddress_Btc) {
   EXPECT_CALL(callback, Run(expected_address, std::optional<std::string>()));
   service_->GenerateReceiveAddress(btc_account->account_id.Clone(),
                                    callback.Get());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 

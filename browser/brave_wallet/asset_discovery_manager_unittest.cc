@@ -173,7 +173,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     } else {
-      base::RunLoop().RunUntilIdle();
+      task_environment_.RunUntilIdle();
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     }

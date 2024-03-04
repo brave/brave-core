@@ -194,9 +194,9 @@ class SimulationServiceUnitTest : public testing::Test {
   std::unique_ptr<SimulationService> simulation_service_;
   base::test::ScopedFeatureList feature_list_{
       features::kBraveWalletTransactionSimulationsFeature};
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -396,7 +396,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnsupportedNetwork) {
       GetCannedScanEVMTransactionParams(false, mojom::kOptimismMainnetChainId),
       "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -411,7 +411,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionEmptyNetwork) {
   simulation_service_->ScanEVMTransaction(
       GetCannedScanEVMTransactionParams(false, ""), "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -432,7 +432,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionValidErrorResponse) {
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
       "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -450,7 +450,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionUnexpectedErrorResponse) {
       GetCannedScanEVMTransactionParams(false, mojom::kPolygonMainnetChainId),
       "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -463,7 +463,7 @@ TEST_F(SimulationServiceUnitTest, ScanEVMTransactionNullParams) {
 
   simulation_service_->ScanEVMTransaction(nullptr, "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -702,7 +702,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionUnsupportedNetwork) {
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -721,7 +721,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionEmptyNetwork) {
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -746,7 +746,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionValidErrorResponse) {
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -769,7 +769,7 @@ TEST_F(SimulationServiceUnitTest,
   simulation_service_->ScanSolanaTransaction(std::move(request), "en-US",
                                              callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 
@@ -782,7 +782,7 @@ TEST_F(SimulationServiceUnitTest, ScanSolanaTransactionNullParams) {
 
   simulation_service_->ScanSolanaTransaction(nullptr, "en-US", callback.Get());
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   testing::Mock::VerifyAndClearExpectations(&callback);
 }
 

@@ -12,11 +12,16 @@
 #include "base/check.h"
 #include "base/check_op.h"
 #include "base/containers/cxx20_erase_vector.h"
+#include "base/debug/alias.h"
+#include "base/debug/dump_without_crashing.h"
+#include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "base/memory/raw_ptr.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/ranges/algorithm.h"
+#include "base/rust_buildflags.h"
 #include "base/strings/string_split.h"
+#include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "base/timer/elapsed_timer.h"
 #include "base/trace_event/trace_event.h"
@@ -30,6 +35,10 @@
 namespace api_request_helper {
 
 namespace {
+
+BASE_FEATURE(kUseBraveRustJSONSanitizer,
+             "UseBraveRustJSONSanitizer",
+             base::FEATURE_ENABLED_BY_DEFAULT);
 
 const unsigned int kRetriesCountOnNetworkChange = 1;
 
@@ -135,7 +144,10 @@ APIRequestHelper::APIRequestHelper(
     net::NetworkTrafficAnnotationTag annotation_tag,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : annotation_tag_(annotation_tag),
-      url_loader_factory_(url_loader_factory) {}
+      url_loader_factory_(url_loader_factory),
+      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
+          {base::TaskPriority::USER_VISIBLE,
+           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
 
 APIRequestHelper::~APIRequestHelper() = default;
 
@@ -248,7 +260,8 @@ APIRequestHelper::Ticket APIRequestHelper::CreateURLLoaderHandler(
           : network::SimpleURLLoader::RetryMode::RETRY_NEVER);
   url_loader->SetAllowHttpErrorResults(allow_http_error_result);
 
-  auto loader_wrapper_handler = std::make_unique<URLLoaderHandler>(this);
+  auto loader_wrapper_handler =
+      std::make_unique<URLLoaderHandler>(this, task_runner_);
   loader_wrapper_handler->RegisterURLLoader(std::move(url_loader));
 
   auto iter = url_loaders_.insert(url_loaders_.begin(),
@@ -281,8 +294,10 @@ APIRequestHelper::Ticket APIRequestHelper::CreateRequestURLLoaderHandler(
 }
 
 APIRequestHelper::URLLoaderHandler::URLLoaderHandler(
-    APIRequestHelper* api_request_helper)
-    : api_request_helper_(api_request_helper) {}
+    APIRequestHelper* api_request_helper,
+    scoped_refptr<base::SequencedTaskRunner> task_runner)
+    : api_request_helper_(api_request_helper),
+      task_runner_(std::move(task_runner)) {}
 APIRequestHelper::URLLoaderHandler::~URLLoaderHandler() = default;
 
 void APIRequestHelper::URLLoaderHandler::RegisterURLLoader(
@@ -317,18 +332,40 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
     std::string_view string_piece,
     bool is_sse,
     DataReceivedCallback callback) {
-  is_sse_ = true;
+  is_sse_ = is_sse;
   data_received_callback_ = std::move(callback);
   OnDataReceived(string_piece, base::BindOnce([]() {}));
 }
 
-data_decoder::DataDecoder*
-APIRequestHelper::URLLoaderHandler::GetDataDecoder() {
+void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
+    std::string json,
+    data_decoder::DataDecoder::ValueParseCallback callback) {
+#if BUILDFLAG(BUILD_RUST_JSON_READER)
+  if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
+    task_runner_->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(&base::DecodeJSONInRust, std::move(json),
+                       base::JSON_PARSE_RFC),
+        base::BindOnce(
+            [](data_decoder::DataDecoder::ValueParseCallback callback,
+               base::JSONReader::Result result) {
+              if (!result.has_value()) {
+                std::move(callback).Run(
+                    base::unexpected(result.error().message));
+              } else {
+                std::move(callback).Run(std::move(*result));
+              }
+            },
+            std::move(callback)));
+    return;
+  }
+#endif  // BUILDFLAG(BUILD_RUST_JSON_READER)
   if (!data_decoder_) {
     VLOG(1) << "Creating DataDecoder for APIRequestHelper";
     data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
   }
-  return data_decoder_.get();
+
+  data_decoder_->ParseJson(json, std::move(callback));
 }
 
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
@@ -400,7 +437,7 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
     raw_body = converted_body.value();
   }
 
-  GetDataDecoder()->ParseJson(
+  ParseJsonImpl(
       std::move(raw_body),
       base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseJsonResponse,
                      GetWeakPtr(), std::move(result)));
@@ -416,6 +453,14 @@ void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
   // response handler in ParseSSE.
   if (!result_value.has_value()) {
     VLOG(1) << "Response validation error:" << result_value.error();
+    if (result_value.error().starts_with("trailing comma")) {
+      // Rust parser returns the trailing comma error. Log the
+      // urls and send a crash dump to find where trailing commas
+      // could still be used.
+      DEBUG_ALIAS_FOR_GURL(url_alias, result.final_url());
+      DEBUG_ALIAS_FOR_CSTR(result_str, result_value.error().c_str(), 1024);
+      base::debug::DumpWithoutCrashing();
+    }
     std::move(result_callback_).Run(std::move(result));
     return;
   }
@@ -499,10 +544,10 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
           handler->MaybeSendResult();
         };
 
-    DVLOG(2) << "Going to call ParseJson";
-    GetDataDecoder()->ParseJson(std::move(std::string(json)),
-                                base::BindOnce(std::move(on_json_parsed),
-                                               weak_ptr_factory_.GetWeakPtr()));
+    DVLOG(2) << "Going to call ParseJsonImpl";
+    ParseJsonImpl(std::string(json),
+                  base::BindOnce(std::move(on_json_parsed),
+                                 weak_ptr_factory_.GetWeakPtr()));
   }
 }
 

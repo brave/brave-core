@@ -135,9 +135,9 @@ class AssetRatioServiceUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<AssetRatioService> asset_ratio_service_;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -248,7 +248,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPrice) {
       base::BindOnce(&OnGetPrice, &callback_run, true,
                      std::move(expected_prices_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -278,7 +278,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceUppercase) {
       base::BindOnce(&OnGetPrice, &callback_run, true,
                      std::move(expected_prices_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -292,7 +292,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceError) {
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -305,7 +305,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceUnexpectedResponse) {
       base::BindOnce(&OnGetPrice, &callback_run, false,
                      std::move(expected_prices_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -337,7 +337,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistory) {
       base::BindOnce(&OnGetPriceHistory, &callback_run, true,
                      std::move(expected_price_history_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -351,7 +351,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryError) {
       "bat", "usd", brave_wallet::mojom::AssetPriceTimeframe::OneDay,
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -366,7 +366,7 @@ TEST_F(AssetRatioServiceUnitTest, GetPriceHistoryUnexpectedResponse) {
       base::BindOnce(&OnGetPriceHistory, &callback_run, false,
                      std::move(expected_price_history_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -446,7 +446,7 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarkets) {
       base::BindOnce(&OnGetCoinMarkets, &callback_run, true,
                      std::move(expected_coin_markets_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 
@@ -461,7 +461,7 @@ TEST_F(AssetRatioServiceUnitTest, GetCoinMarketsUnexpectedResponse) {
       base::BindOnce(&OnGetCoinMarkets, &callback_run, false,
                      std::move(expected_coin_markets_response)));
 
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   EXPECT_TRUE(callback_run);
 }
 

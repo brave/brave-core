@@ -37,9 +37,9 @@ class RemoteCompletionClientUnitTest : public testing::Test {
 
  protected:
   std::unique_ptr<RemoteCompletionClient> ai_chat_api_ = nullptr;
+  base::test::TaskEnvironment task_environment_;
 
  private:
-  base::test::TaskEnvironment task_environment_;
   network::TestURLLoaderFactory url_loader_factory_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   data_decoder::test::InProcessDataDecoder in_process_data_decoder_;
@@ -68,16 +68,12 @@ TEST_F(RemoteCompletionClientUnitTest, ParseJson) {
   run_loop2.Run();
 
   // This test verifies that the callback is not called when the response is
-  // "[DONE]". We use a run loop to wait for the callback to be called, and we
-  // expect it to never be called. Therefore, we use RunUntilIdle() instead of
-  // Run(), since Run() would time out waiting for the callback to be called.
-  base::RunLoop run_loop3;
+  // "[DONE]". We use RunUntilIdle() to wait for the callback to be called, and
+  // we expect it to never be called.
   SendMesage(
-      base::BindRepeating([](base::RunLoop* run_loop,
-                             const std::string& response) { run_loop->Quit(); },
-                          &run_loop3),
+      base::BindRepeating([](const std::string& response) { ADD_FAILURE(); }),
       "data: [DONE]");
-  run_loop3.RunUntilIdle();
+  task_environment_.RunUntilIdle();
 }
 
 }  // namespace ai_chat

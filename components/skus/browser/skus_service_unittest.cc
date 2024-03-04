@@ -264,8 +264,9 @@ class SkusServiceTestUnitTest : public testing::Test {
   }
   PrefService* prefs() { return &prefs_; }
 
- private:
   base::test::TaskEnvironment task_environment_;
+
+ private:
   std::unique_ptr<skus::SkusServiceImpl> skus_service_;
   TestingPrefServiceSimple prefs_;
   network::TestURLLoaderFactory url_loader_factory_;
