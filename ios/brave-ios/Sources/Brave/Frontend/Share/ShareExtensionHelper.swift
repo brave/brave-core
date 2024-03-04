@@ -63,18 +63,70 @@ class ShareExtensionHelper {
   }
 }
 
-extension UIActivity.ActivityType {
-  static let copyCleanLink: Self = .init("CopyCleanLink")
-  static let sendURL: Self = .init("SendURL")
-  static let toggleReaderMode: Self = .init("ToggleReaderMode")
-  static let findInPage: Self = .init("FindInPage")
-  static let pageZoom: Self = .init("PageZoom")
-  static let addFavourites: Self = .init("AddFavourites")
-  static let requestMobileSite: Self = .init("RequestMobileSite")
-  static let requestDesktopSite: Self = .init("RequestDesktopSite")
-  static let addSourceNews: Self = .init("AddSourceNews")
-  static let createPDF: Self = .init("CreatePDF")
-  static let addSearchEngine: Self = .init("AddSearchEngine")
-  static let displaySecurityCertificate: Self = .init("DisplaySecurityCertificate")
-  static let reportBrokenSite: Self = .init("ReportBrokenSite")
+extension BasicMenuActivity.ActivityType {
+  static let copyCleanLink: Self = .init(
+    id: "CopyCleanLink",
+    title: Strings.copyCleanLink,
+    braveSystemImage: "leo.broom"
+  )
+  static let sendURL: Self = .init(
+    id: "SendURL",
+    title: Strings.OpenTabs.sendWebsiteShareActionTitle,
+    braveSystemImage: "leo.smartphone.laptop"
+  )
+  static let toggleReaderMode: Self = .init(
+    id: "ToggleReaderMode",
+    title: Strings.toggleReaderMode,
+    braveSystemImage: "leo.product.speedreader"
+  )
+  static let findInPage: Self = .init(
+    id: "FindInPage",
+    title: Strings.findInPage,
+    braveSystemImage: "leo.search"
+  )
+  static let pageZoom: Self = .init(
+    id: "PageZoom",
+    title: Strings.PageZoom.settingsTitle,
+    braveSystemImage: "leo.font.size"
+  )
+  static let addFavourites: Self = .init(
+    id: "CopyCleanLink",
+    title: Strings.addToFavorites,
+    braveSystemImage: "leo.widget.generic"
+  )
+  static let requestMobileSite: Self = .init(
+    id: "RequestMobileSite",
+    title: Strings.appMenuViewMobileSiteTitleString,
+    braveSystemImage: "leo.smartphone"
+  )
+  static let requestDesktopSite: Self = .init(
+    id: "RequestDesktopSite",
+    title: Strings.appMenuViewDesktopSiteTitleString,
+    braveSystemImage: "leo.monitor"
+  )
+  static let addSourceNews: Self = .init(
+    id: "AddSourceNews",
+    title: Strings.BraveNews.addSourceShareTitle,
+    braveSystemImage: "leo.rss"
+  )
+  static let createPDF: Self = .init(
+    id: "CreatePDF",
+    title: Strings.createPDF,
+    braveSystemImage: "leo.broom"
+  )
+  static let addSearchEngine: Self = .init(
+    id: "AddSearchEngine",
+    title: Strings.CustomSearchEngine.customEngineNavigationTitle,
+    braveSystemImage: "leo.search.zoom-in"
+  )
+  static let displaySecurityCertificate: Self = .init(
+    id: "DisplaySecurityCertificate",
+    title: Strings.displayCertificate,
+    braveSystemImage: "leo.lock.plain"
+  )
+  static let reportBrokenSite: Self = .init(
+    id: "ReportBrokenSite",
+    title: Strings.Shields.reportABrokenSite,
+    braveSystemImage: "leo.warning.triangle-outline"
+  )
 }

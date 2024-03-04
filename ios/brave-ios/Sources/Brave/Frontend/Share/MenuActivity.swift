@@ -13,42 +13,60 @@ protocol MenuActivity: UIActivity {
   var menuImage: Image { get }
 }
 
-struct MenuActivityType {
-  var title: String
-  var braveSystemImage: String
-  var activityID: UIActivity.ActivityType
-}
-
 /// A standard activity that will appear in the apps menu and executes a callback when the user selects it
 class BasicMenuActivity: UIActivity, MenuActivity {
+  struct ActivityType {
+    var id: String
+    var title: String
+    var braveSystemImage: String
+  }
 
-  private let menuActivityType: MenuActivityType
-  private let callback: () -> Void
+  private var id: String
+  private var title: String
+  private var braveSystemImage: String
+  private let callback: () -> Bool
 
   init(
-    activityType: MenuActivityType,
+    id: String,
+    title: String,
+    braveSystemImage: String,
+    callback: @escaping () -> Bool
+  ) {
+    self.id = id
+    self.title = title
+    self.braveSystemImage = braveSystemImage
+    self.callback = callback
+  }
+
+  convenience init(
+    activityType: ActivityType,
     callback: @escaping () -> Void
   ) {
-    self.menuActivityType = activityType
-    self.callback = callback
+    self.init(
+      id: activityType.id,
+      title: activityType.title,
+      braveSystemImage: activityType.braveSystemImage,
+      callback: {
+        callback()
+        return true
+      }
+    )
   }
 
   // MARK: - UIActivity
 
   override var activityTitle: String? {
-    return menuActivityType.title
+    return title
   }
 
   override var activityImage: UIImage? {
-    return UIImage(braveSystemNamed: menuActivityType.braveSystemImage)?
-      .applyingSymbolConfiguration(
-        .init(scale: .large)
-      )
+    return UIImage(braveSystemNamed: braveSystemImage)?.applyingSymbolConfiguration(
+      .init(scale: .large)
+    )
   }
 
   override func perform() {
-    callback()
-    activityDidFinish(true)
+    activityDidFinish(callback())
   }
 
   override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
@@ -56,12 +74,12 @@ class BasicMenuActivity: UIActivity, MenuActivity {
   }
 
   override var activityType: UIActivity.ActivityType {
-    return menuActivityType.activityID
+    return UIActivity.ActivityType(rawValue: id)
   }
 
   // MARK: - MenuActivity
 
   var menuImage: Image {
-    Image(braveSystemName: menuActivityType.braveSystemImage)
+    Image(braveSystemName: braveSystemImage)
   }
 }
