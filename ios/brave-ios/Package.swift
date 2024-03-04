@@ -245,6 +245,8 @@ var package = Package(
         "BraveStrings",
         "BraveUI",
         "DesignSystem",
+        "Favicon",
+        "Fuzi",
         "Preferences",
         "Strings",
         "SpeechRecognition",
@@ -258,6 +260,15 @@ var package = Package(
         .copy("Components/Markdown/Code Highlight/Scripts/highlight.min.js"),
       ],
       plugins: ["LoggerPlugin"]
+    ),
+    .testTarget(
+      name: "AIChatTests",
+      dependencies: ["AIChat"],
+      resources: [
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-dark.min.css"),
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-light.min.css"),
+        .copy("Components/Markdown/Code Highlight/Scripts/highlight.min.js"),
+      ]
     ),
     .target(name: "Preferences", dependencies: ["Shared"], plugins: ["LoggerPlugin"]),
     .target(

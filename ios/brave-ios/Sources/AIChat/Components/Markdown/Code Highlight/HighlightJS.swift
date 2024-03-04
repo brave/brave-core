@@ -298,22 +298,23 @@ private struct HLJSParser {
   }
 }
 
-struct BasicCSSParser {
-  struct CSSStyle: Hashable {
-    let selector: String
-    let declaration: Set<CSSDeclaration>
+public struct BasicCSSParser {
+  public struct CSSStyle: Hashable {
+    public let selector: String
+    public let declaration: Set<CSSDeclaration>
   }
 
-  struct CSSDeclaration: Hashable {
-    let property: String
-    let value: String
+  public struct CSSDeclaration: Hashable {
+    public let property: String
+    public let value: String
   }
 
-  static func parse(_ styleSheet: String) -> [CSSStyle] {
+  public static func parse(_ styleSheet: String) -> [CSSStyle] {
     var result = [CSSStyle]()
 
-    //(?:((?:\.[A-z0-9_-]*(?:[,\s]\.[A-z0-9_-]*)*)*))(?:\s*\{\s*(.*?)\s*\})
-    let pattern = "(?:((?:\\.[A-z0-9_-]*(?:[,\\s]\\.[A-z0-9_-]*)*)*))(?:\\s*\\{\\s*(.*?)\\s*\\})"
+    //(?:((?:\.[A-z0-9_-]*(?:[,\s]\s*\.[A-z0-9_-]*)*)*))(?:\s*\{\s*([\s\S]*?)\s*\})
+    let pattern =
+      "(?:((?:\\.[A-z0-9_-]*(?:[,\\s]\\s*\\.[A-z0-9_-]*)*)*))(?:\\s*\\{\\s*([\\s\\S]*?)\\s*\\})"
     let regex = try! NSRegularExpression(pattern: pattern, options: [])
     let matches = regex.matches(
       in: styleSheet,

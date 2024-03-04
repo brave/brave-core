@@ -6,18 +6,18 @@
 import Foundation
 import SwiftUI
 
-class MarkdownParser {
-  struct CodeBlock: Hashable {
-    let languageHint: String?
-    let backgroundColor: Color
+public class MarkdownParser {
+  public struct CodeBlock: Hashable {
+    public let languageHint: String?
+    public let backgroundColor: Color
   }
 
-  struct StringBlock: Hashable {
-    let string: AttributedString
-    let codeBlock: CodeBlock?
+  public struct StringBlock: Hashable {
+    public let string: AttributedString
+    public let codeBlock: CodeBlock?
   }
 
-  static func parse(
+  public static func parse(
     string: String,
     preferredFont: UIFont,
     useHLJS: Bool,

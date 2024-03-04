@@ -4,8 +4,6 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveShared
-import BraveUI
-import Data
 import Shared
 import SwiftUI
 

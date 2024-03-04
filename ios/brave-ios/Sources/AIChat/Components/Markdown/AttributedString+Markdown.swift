@@ -149,30 +149,6 @@ extension AttributedString {
     self = result
   }
 
-  mutating func trimmingCharacters(in characterSet: CharacterSet) -> AttributedString {
-    let invertedSet = characterSet.inverted
-
-    let startIndex = self.characters.firstIndex(where: {
-      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
-    })
-
-    let endIndex = self.characters.lastIndex(where: {
-      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
-    })
-
-    guard let startIndex = startIndex,
-      let endIndex = endIndex,
-      startIndex < endIndex
-    else {
-      return self
-    }
-
-    self.removeSubrange(self.startIndex..<startIndex)
-    self.removeSubrange(endIndex...)
-
-    return self
-  }
-
   private typealias LinkAttribute = AttributeScopes.FoundationAttributes.LinkAttribute
   private typealias PresentationAttribute = AttributeScopes.FoundationAttributes
     .PresentationIntentAttribute
@@ -186,8 +162,8 @@ extension AttributedString {
   }
 }
 
-extension AttributedSubstring {
-  func trimmingCharacters(in characterSet: CharacterSet) -> AttributedSubstring {
+extension AttributedString {
+  public mutating func trimmingCharacters(in characterSet: CharacterSet) -> AttributedString {
     let invertedSet = characterSet.inverted
 
     let startIndex = self.characters.firstIndex(where: {
@@ -202,7 +178,34 @@ extension AttributedSubstring {
       let endIndex = endIndex,
       startIndex < endIndex
     else {
+      self.removeSubrange(self.startIndex..<self.endIndex)
       return self
+    }
+
+    self.removeSubrange(self.startIndex..<startIndex)
+    self.removeSubrange(endIndex...)
+
+    return self
+  }
+}
+
+extension AttributedSubstring {
+  public func trimmingCharacters(in characterSet: CharacterSet) -> AttributedSubstring {
+    let invertedSet = characterSet.inverted
+
+    let startIndex = self.characters.firstIndex(where: {
+      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
+    })
+
+    let endIndex = self.characters.lastIndex(where: {
+      $0.unicodeScalars.allSatisfy(invertedSet.contains(_:))
+    })
+
+    guard let startIndex = startIndex,
+      let endIndex = endIndex,
+      startIndex < endIndex
+    else {
+      return self[self.startIndex..<self.startIndex]
     }
 
     return self[startIndex...endIndex]
