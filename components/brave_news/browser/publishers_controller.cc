@@ -28,7 +28,6 @@
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/locales_helper.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
-#include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/pref_names.h"
@@ -76,12 +75,10 @@ mojom::Publisher* FindMatchPreferringLocale(
 PublishersController::PublishersController(
     PrefService* prefs,
     DirectFeedController* direct_feed_controller,
-    UnsupportedPublisherMigrator* unsupported_publisher_migrator,
     api_request_helper::APIRequestHelper* api_request_helper,
     p3a::NewsMetrics* news_metrics)
     : prefs_(prefs),
       direct_feed_controller_(direct_feed_controller),
-      unsupported_publisher_migrator_(unsupported_publisher_migrator),
       api_request_helper_(api_request_helper),
       news_metrics_(news_metrics),
       on_current_update_complete_(new base::OneShotEvent()) {}
@@ -274,21 +271,6 @@ void PublishersController::EnsurePublishersIsUpdating() {
         // Observers
         for (auto& observer : controller->observers_) {
           observer.OnPublishersUpdated(controller);
-        }
-
-        if (!missing_publishers.empty()) {
-          controller->unsupported_publisher_migrator_->MigrateUnsupportedFeeds(
-              missing_publishers,
-              base::BindOnce(
-                  [](PublishersController* controller,
-                     uint64_t migrated_count) {
-                    // If any publisher was migrated, ensure we update the list
-                    // of publishers.
-                    if (migrated_count != 0) {
-                      controller->EnsurePublishersIsUpdating();
-                    }
-                  },
-                  base::Unretained(controller)));
         }
       },
       base::Unretained(this));
