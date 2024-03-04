@@ -16,15 +16,12 @@ platform :ios do
       skip_testing: skipped_tests()
     }))
 
-    # Temporarily disable iPad tests since it only tests UserAgentTests anyways
-    # which are disabled for CI stability.
-
-    # run_tests(defaultScanParams.merge!({
-    #   devices: ["iPad (10th generation)"],
-    #   ensure_devices_found: true,
-    #   output_files: "junit-ipad.xml",
-    #   xcargs: "-testPlan Brave_iPad"
-    # }))
+    run_tests(defaultScanParams.merge!({
+      devices: ["iPad (10th generation)"],
+      ensure_devices_found: true,
+      output_files: "junit-ipad.xml",
+      xcargs: "-testPlan Brave_iPad"
+    }))
   end
 
   desc "Builds the app for testing"
@@ -46,16 +43,13 @@ platform :ios do
       skip_testing: skipped_tests()
     }))
 
-    # Temporarily disable iPad tests since it only tests UserAgentTests anyways
-    # which are disabled for CI stability.
-
-    # run_tests(defaultScanParams.merge!({
-    #   test_without_building: true,
-    #   devices: ["iPad (10th generation)"],
-    #   ensure_devices_found: true,
-    #   output_files: "junit-ipad.xml",
-    #   testplan: "Brave_iPad"
-    # }))
+    run_tests(defaultScanParams.merge!({
+      test_without_building: true,
+      devices: ["iPad (10th generation)"],
+      ensure_devices_found: true,
+      output_files: "junit-ipad.xml",
+      testplan: "Brave_iPad"
+    }))
   end
 
   desc "Creates a Brave Beta build for TestFlight."
@@ -182,10 +176,7 @@ platform :ios do
       "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionFailure",
       "BraveWalletTests/SendTokenStoreTests/testUDAddressResolutionTokenChange",
       "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareERC20Approve",
-      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork",
-      # Disabled tests that spin up WKWebView's
-      "ClientTests/WKWebViewExtensionsTest/testGenerateJavascriptFunctionString",
-      "UserAgentTests/UserAgentTests"
+      "BraveWalletTests/TransactionConfirmationStoreTests/testPrepareTransactionNotOnSelectedNetwork"
     ]
   end
 
