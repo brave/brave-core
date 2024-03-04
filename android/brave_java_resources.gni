@@ -135,6 +135,7 @@ brave_java_resources = [
   "java/res/drawable-night-nodpi/widget_preview.png",
   "java/res/drawable-night/bookmark_empty_state_illustration.xml",
   "java/res/drawable-night/history_empty_state_illustration.xml",
+  "java/res/drawable-night/incognito_history_placeholder_image.xml",
   "java/res/drawable-night/new_wallet.xml",
   "java/res/drawable-night/phone_recent_tab_empty_state_illustration.xml",
   "java/res/drawable-night/reading_list_empty_state_illustration.xml",
