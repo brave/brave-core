@@ -161,7 +161,7 @@ std::optional<std::string> EncodeChainId(const std::string& value) {
 }
 
 base::Value::Dict EncodeToolDetails(
-    const mojom::LiFiToolDetailsPtr tool_details) {
+    const mojom::LiFiToolDetailsPtr& tool_details) {
   base::Value::Dict result;
   result.Set("key", tool_details->key);
   result.Set("name", tool_details->name);
@@ -169,7 +169,7 @@ base::Value::Dict EncodeToolDetails(
 }
 
 std::optional<base::Value::Dict> EncodeToken(
-    const mojom::BlockchainTokenPtr token) {
+    const mojom::BlockchainTokenPtr& token) {
   base::Value::Dict result;
   result.Set("address", token->contract_address == ""
                             ? kLiFiNativeAssetContractAddress

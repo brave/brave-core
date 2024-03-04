@@ -164,7 +164,7 @@ mojom::SwapFeesPtr GetZeroExSwapFee() {
 
 GURL AppendZeroExSwapParams(const GURL& swap_url,
                             const mojom::SwapQuoteParams& params,
-                            const std::optional<std::string> fee_param) {
+                            const std::optional<std::string>& fee_param) {
   GURL url = swap_url;
   if (!params.from_account_id->address.empty()) {
     url = net::AppendQueryParameter(url, "takerAddress",
@@ -213,7 +213,7 @@ GURL AppendZeroExSwapParams(const GURL& swap_url,
 
 GURL AppendJupiterQuoteParams(const GURL& swap_url,
                               const mojom::SwapQuoteParams& params,
-                              const std::optional<std::string> fee_param) {
+                              const std::optional<std::string>& fee_param) {
   GURL url = swap_url;
   url = net::AppendQueryParameter(url, "inputMint",
                                   params.from_token.empty()
@@ -246,7 +246,7 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
   return url;
 }
 
-const base::flat_map<std::string, std::string> GetHeaders() {
+base::flat_map<std::string, std::string> GetHeaders() {
   return {{kBraveServicesKeyHeader, BUILDFLAG(BRAVE_SERVICES_KEY)}};
 }
 
@@ -305,7 +305,7 @@ void SwapService::Bind(mojo::PendingReceiver<mojom::SwapService> receiver) {
 // static
 GURL SwapService::GetZeroExQuoteURL(
     const mojom::SwapQuoteParams& params,
-    const std::optional<std::string> fee_param) {
+    const std::optional<std::string>& fee_param) {
   const bool use_rfqt = HasRFQTLiquidity(params.from_chain_id);
 
   // If chain has RFQ-T liquidity available, use the /quote endpoint for
@@ -332,7 +332,7 @@ GURL SwapService::GetZeroExQuoteURL(
 // static
 GURL SwapService::GetZeroExTransactionURL(
     const mojom::SwapQuoteParams& params,
-    const std::optional<std::string> fee_param) {
+    const std::optional<std::string>& fee_param) {
   auto url =
       GURL(GetBaseSwapURL(params.from_chain_id)).Resolve("/swap/v1/quote");
   url = AppendZeroExSwapParams(url, params, fee_param);
@@ -347,7 +347,7 @@ GURL SwapService::GetZeroExTransactionURL(
 // static
 GURL SwapService::GetJupiterQuoteURL(
     const mojom::SwapQuoteParams& params,
-    const std::optional<std::string> fee_param) {
+    const std::optional<std::string>& fee_param) {
   auto url = GURL(GetBaseSwapURL(params.from_chain_id)).Resolve("/v6/quote");
   url = AppendJupiterQuoteParams(url, params, fee_param);
 
