@@ -57,10 +57,6 @@ class BasicMenuActivity: UIActivity, MenuActivity {
 
   override var activityType: UIActivity.ActivityType {
     return menuActivityType.activityID
-    //    let bundleId =
-    //      AppInfo.applicationBundle.object(forInfoDictionaryKey: "CFBundleIdentifier") as? String
-    //
-    //    return UIActivity.ActivityType(rawValue: "\(bundleId ?? "")\(".\(menuActivityType.activityID)")")
   }
 
   // MARK: - MenuActivity
