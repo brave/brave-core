@@ -57,4 +57,7 @@ class TabSwitcherBottomToolbarMediator implements ThemeColorObserver {
     public void onThemeColorChanged(int primaryColor, boolean shouldAnimate) {
         mModel.set(TabSwitcherBottomToolbarModel.PRIMARY_COLOR, primaryColor);
     }
+
+    @Override
+    public void onThemeColorUpdated(boolean colorChanged) {}
 }
