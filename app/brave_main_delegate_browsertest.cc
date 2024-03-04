@@ -286,6 +286,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &optimization_guide::features::kTextEmbeddingPageContentAnnotations,
       &page_image_service::kImageService,
       &page_image_service::kImageServiceSuggestPoweredImages,
+#if BUILDFLAG(IS_ANDROID)
+      &password_manager::features::
+          kUnifiedPasswordManagerLocalPasswordsMigrationWarning,
+#endif
 #if !BUILDFLAG(IS_ANDROID)
       &permissions::features::kPermissionsPromptSurvey,
 #endif
