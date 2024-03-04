@@ -955,8 +955,9 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         request.resource_type ==
         static_cast<int>(blink::mojom::ResourceType::kMainFrame);
 
-    auto bst = std::make_unique<body_sniffer::BodySnifferThrottle>(
-        base::SingleThreadTaskRunner::GetCurrentDefault());
+    auto body_sniffer_throttle =
+        std::make_unique<body_sniffer::BodySnifferThrottle>(
+            base::SingleThreadTaskRunner::GetCurrentDefault());
 
     // Speedreader
 #if BUILDFLAG(ENABLE_SPEEDREADER)
@@ -970,14 +971,14 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       auto producer = speedreader::SpeedreaderDistilledPageProducer::Create(
           tab_helper->GetWeakPtr());
       if (producer) {
-        bst->SetBodyProducer(std::move(producer));
+        body_sniffer_throttle->SetBodyProducer(std::move(producer));
       }
 
       auto handler = speedreader::SpeedreaderBodyDistiller::Create(
           g_brave_browser_process->speedreader_rewriter_service(),
           speedreader_service, tab_helper->GetWeakPtr());
       if (handler) {
-        bst->AddHandler(std::move(handler));
+        body_sniffer_throttle->AddHandler(std::move(handler));
       }
     }
 #endif  // ENABLE_SPEEDREADER
@@ -986,11 +987,11 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
       // De-AMP
       auto handler = de_amp::DeAmpBodyHandler::Create(request, wc_getter);
       if (handler) {
-        bst->AddHandler(std::move(handler));
+        body_sniffer_throttle->AddHandler(std::move(handler));
       }
     }
 
-    result.push_back(std::move(bst));
+    result.push_back(std::move(body_sniffer_throttle));
 
     if (auto google_sign_in_permission_throttle =
             google_sign_in_permission::GoogleSignInPermissionThrottle::
