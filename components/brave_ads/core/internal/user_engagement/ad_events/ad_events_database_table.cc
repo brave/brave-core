@@ -239,7 +239,7 @@ void AdEvents::GetAll(GetAdEventsCallback callback) const {
   command->sql = base::ReplaceStringPlaceholders(
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
-      "ae.segment, ae.created_at FROM $1 AS ae ORDER BY created_at DESC;",
+      "ae.segment, ae.created_at FROM $1 AS ae ORDER BY created_at ASC;",
       {GetTableName()}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
@@ -257,7 +257,7 @@ void AdEvents::GetForType(const mojom::AdType ad_type,
       "SELECT ae.placement_id, ae.type, ae.confirmation_type, ae.campaign_id, "
       "ae.creative_set_id, ae.creative_instance_id, ae.advertiser_id, "
       "ae.segment, ae.created_at FROM $1 AS ae WHERE type = '$2' ORDER BY "
-      "created_at DESC;",
+      "created_at ASC;",
       {GetTableName(), ToString(static_cast<AdType>(ad_type))}, nullptr);
   BindRecords(&*command);
   transaction->commands.push_back(std::move(command));
