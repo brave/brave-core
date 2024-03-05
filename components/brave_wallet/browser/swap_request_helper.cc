@@ -186,7 +186,7 @@ std::optional<base::Value::Dict> EncodeToken(
   return result;
 }
 
-std::optional<std::string> EncodeStepType(const mojom::LiFiStepType type) {
+std::string EncodeStepType(const mojom::LiFiStepType type) {
   if (type == mojom::LiFiStepType::kSwap) {
     return "swap";
   }
@@ -199,7 +199,7 @@ std::optional<std::string> EncodeStepType(const mojom::LiFiStepType type) {
     return "lifi";
   }
 
-  return std::nullopt;
+  NOTREACHED_NORETURN();
 }
 
 std::optional<base::Value::Dict> EncodeStepAction(mojom::LiFiActionPtr action) {
@@ -313,13 +313,7 @@ std::optional<base::Value::Dict> EncodeStepEstimate(
 std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
   base::Value::Dict result;
   result.Set("id", step->id);
-
-  if (auto type = EncodeStepType(step->type)) {
-    result.Set("type", *type);
-  } else {
-    return std::nullopt;
-  }
-
+  result.Set("type", EncodeStepType(step->type));
   result.Set("tool", step->tool);
 
   if (auto action = EncodeStepAction(std::move(step->action))) {
