@@ -36,6 +36,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
 
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
+    private boolean mButtonClicked;
     private AnimationDrawable mAnimationDrawable;
 
     public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
@@ -46,6 +47,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mButtonClicked = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Api33AndPlusBackPressHelper.create(
                     this, (FragmentActivity) requireActivity(), () -> requireActivity().finish());
@@ -72,6 +74,11 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
         newWallet.setOnClickListener(
                 v -> {
+                    if (mButtonClicked) {
+                        return;
+                    }
+                    mButtonClicked = true;
+
                     checkOnBraveActivity(true, false);
                     if (mOnNextPage != null) {
                         // Add a little delay for a smooth ripple effect animation.
@@ -83,6 +90,11 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
         CardView restoreWallet = view.findViewById(R.id.restore_wallet_card_view);
         restoreWallet.setOnClickListener(
                 v -> {
+                    if (mButtonClicked) {
+                        return;
+                    }
+                    mButtonClicked = true;
+
                     checkOnBraveActivity(false, true);
                     if (mOnNextPage != null) {
                         // Add a little delay for a smooth ripple effect animation.
@@ -108,6 +120,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onResume() {
         super.onResume();
+        mButtonClicked = false;
         mAnimationDrawable.start();
     }
 
