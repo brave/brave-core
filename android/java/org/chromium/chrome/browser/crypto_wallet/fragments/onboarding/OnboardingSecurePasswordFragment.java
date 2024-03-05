@@ -130,20 +130,6 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     }
 
     private void goToTheNextPage(String passwordInput) {
-        KeyringService keyringService = getKeyringService();
-        BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
-        if (keyringService != null) {
-            keyringService.createWallet(passwordInput, recoveryPhrases -> {
-                if (braveWalletP3A != null) {
-                    braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-                }
-                // Go to the next page after wallet creation is done
-                Utils.setCryptoOnboarding(false);
-                mOnboardingViewModel.setPassword(passwordInput);
-                if (mOnNextPage != null) {
-                    mOnNextPage.gotoNextPage();
-                }
-            });
             showCreatingWalletPage();
         }
     }
