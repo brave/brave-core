@@ -433,7 +433,8 @@ export class MockedWalletApiProxy {
               sellAmount: fromAmount || '',
               price: '1'
             },
-            jupiterTransaction: undefined
+            jupiterTransaction: undefined,
+            lifiTransaction: undefined
           },
           errorString: ''
         }
@@ -443,12 +444,21 @@ export class MockedWalletApiProxy {
         params: BraveWallet.SwapQuoteParams
       ): Promise<{
         response: BraveWallet.SwapQuoteUnion | null
+        fees: BraveWallet.SwapFees | null
         error: BraveWallet.SwapErrorUnion | null
         errorString: string
       }> => ({
         response: {
           zeroExQuote: this.mockZeroExQuote,
-          jupiterQuote: undefined
+          jupiterQuote: undefined,
+          lifiQuote: undefined
+        },
+        fees: {
+          feeParam: '0.00875',
+          feePct: '0.875',
+          discountPct: '0',
+          effectiveFeePct: '0.875',
+          discountCode: BraveWallet.SwapDiscountCode.kNone
         },
         error: null,
         errorString: ''
