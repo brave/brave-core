@@ -5,6 +5,9 @@
 
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
+
 import org.chromium.chrome.browser.crypto_wallet.fragments.BaseWalletNextPageFragment;
 
 /**
@@ -33,6 +36,16 @@ public abstract class BaseOnboardingWalletFragment extends BaseWalletNextPageFra
             mOnNextPage.showCloseButton(canBeClosed());
             // Show or hide back icon depending on the fragment configuration.
             mOnNextPage.showBackButton(canNavigateBack());
+        }
+    }
+
+    protected void enable(@NonNull final AppCompatButton button, final boolean enable) {
+        if (enable) {
+            button.setAlpha(1f);
+            button.setEnabled(true);
+        } else {
+            button.setAlpha(0.5f);
+            button.setEnabled(false);
         }
     }
 }
