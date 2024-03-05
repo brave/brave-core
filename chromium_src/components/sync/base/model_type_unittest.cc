@@ -21,7 +21,7 @@ TEST_F(ModelTypeTest, LowPriorityUserTypes) {
 
 // This test is supposed to fail when sync types are increased/decreased
 TEST_F(ModelTypeTest, ModelTypeCounts) {
-  EXPECT_EQ(static_cast<int>(ModelTypeForHistograms::kMaxValue), 63);
+  EXPECT_EQ(static_cast<int>(ModelTypeForHistograms::kMaxValue), 64);
 }
 
 }  // namespace
