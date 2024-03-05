@@ -62,7 +62,7 @@ public class AppearancePreferences extends BravePreferenceFragment
         }
 
         mBraveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.IsSupported()) {
+        if (mBraveRewardsNativeWorker == null || !mBraveRewardsNativeWorker.isSupported()) {
             removePreferenceIfPresent(PREF_SHOW_BRAVE_REWARDS_ICON);
         }
 
@@ -156,7 +156,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     @Override
     public void onStart() {
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.AddObserver(this);
+            mBraveRewardsNativeWorker.addObserver(this);
         }
         super.onStart();
     }
@@ -164,7 +164,7 @@ public class AppearancePreferences extends BravePreferenceFragment
     @Override
     public void onStop() {
         if (mBraveRewardsNativeWorker != null) {
-            mBraveRewardsNativeWorker.RemoveObserver(this);
+            mBraveRewardsNativeWorker.removeObserver(this);
         }
         super.onStop();
     }

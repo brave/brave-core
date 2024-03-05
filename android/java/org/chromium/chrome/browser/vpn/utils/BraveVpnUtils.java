@@ -288,7 +288,7 @@ public class BraveVpnUtils {
 
     private static boolean isRegionSupported() {
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported());
+        return (braveRewardsNativeWorker != null && braveRewardsNativeWorker.isSupported());
     }
 
     public static boolean isVpnFeatureSupported(Context context) {

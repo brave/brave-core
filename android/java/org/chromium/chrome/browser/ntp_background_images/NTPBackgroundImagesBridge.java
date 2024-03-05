@@ -71,7 +71,8 @@ public class NTPBackgroundImagesBridge {
 
     static public boolean enableSponsoredImages() {
         BraveRewardsNativeWorker braveRewardsNativeWorker = BraveRewardsNativeWorker.getInstance();
-        return braveRewardsNativeWorker != null && braveRewardsNativeWorker.IsSupported()
+        return braveRewardsNativeWorker != null
+                && braveRewardsNativeWorker.isSupported()
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed();
     }
 
