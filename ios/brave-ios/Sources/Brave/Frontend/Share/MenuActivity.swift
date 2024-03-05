@@ -4,8 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import UIKit
+import Shared
 import SwiftUI
+import UIKit
 
 protocol MenuActivity: UIActivity {
   /// The image to use when shown on the menu.
@@ -14,29 +15,42 @@ protocol MenuActivity: UIActivity {
 
 /// A standard activity that will appear in the apps menu and executes a callback when the user selects it
 class BasicMenuActivity: UIActivity, MenuActivity {
-  private let title: String
-  private let braveSystemImage: String
+  struct ActivityType {
+    var id: String
+    var title: String
+    var braveSystemImage: String
+  }
+
+  private var id: String
+  private var title: String
+  private var braveSystemImage: String
   private let callback: () -> Bool
   
   init(
+    id: String,
     title: String,
     braveSystemImage: String,
     callback: @escaping () -> Bool
   ) {
+    self.id = id
     self.title = title
     self.braveSystemImage = braveSystemImage
     self.callback = callback
   }
   
   convenience init(
-    title: String,
-    braveSystemImage: String,
+    activityType: ActivityType,
     callback: @escaping () -> Void
   ) {
-    self.init(title: title, braveSystemImage: braveSystemImage, callback: {
-      callback()
-      return true
-    })
+    self.init(
+      id: activityType.id,
+      title: activityType.title,
+      braveSystemImage: activityType.braveSystemImage,
+      callback: {
+        callback()
+        return true
+      }
+    )
   }
   
   // MARK: - UIActivity
@@ -56,7 +70,11 @@ class BasicMenuActivity: UIActivity, MenuActivity {
   override func canPerform(withActivityItems activityItems: [Any]) -> Bool {
     return true
   }
-  
+
+  override var activityType: UIActivity.ActivityType {
+    return UIActivity.ActivityType(rawValue: id)
+  }
+
   // MARK: - MenuActivity
   
   var menuImage: Image {
