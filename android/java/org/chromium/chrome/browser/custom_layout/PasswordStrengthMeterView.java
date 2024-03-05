@@ -25,9 +25,13 @@ import com.google.android.material.textfield.TextInputLayout;
 
 import org.chromium.chrome.R;
 
-/** Created by Simone on 3/1/24. */
+/**
+ * Custom view that shows the strength of a password depending on its length.
+ */
 public class PasswordStrengthMeterView extends RelativeLayout {
+    /** Listener used to notify the parent hosting the view. */
     public interface PasswordStrengthMeterListener {
+        /** Callback that notifies if the two password typed are matching. */
         void onMatch(final boolean match);
     }
 
