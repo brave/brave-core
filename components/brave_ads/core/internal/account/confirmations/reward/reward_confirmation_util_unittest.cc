@@ -128,7 +128,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,

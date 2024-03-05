@@ -157,7 +157,7 @@ std::optional<ConfirmationList> ParseConfirmations(
     return std::nullopt;
   }
 
-  const auto* list = dict.FindList(kConfirmationQueueListKey);
+  const auto* list = confirmations_dict->FindList(kConfirmationQueueListKey);
   if (!list) {
     return std::nullopt;
   }

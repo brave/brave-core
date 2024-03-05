@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -6,19 +6,19 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 
 #include <memory>
-#include <optional>
 
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate_mock.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/tokens/payment_tokens/payment_token_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/reward/redeem_reward_confirmation_unittest_util.h"
@@ -46,7 +46,7 @@ class BraveAdsConfirmationQueueTest : public UnitTestBase {
     confirmation_queue_->SetDelegate(&delegate_mock_);
   }
 
-  ::testing::NiceMock<TokenGeneratorMock> token_generator_mock_;
+  TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<ConfirmationQueue> confirmation_queue_;
   ::testing::StrictMock<ConfirmationQueueDelegateMock> delegate_mock_;
@@ -54,53 +54,32 @@ class BraveAdsConfirmationQueueTest : public UnitTestBase {
   const ::testing::InSequence s_;
 };
 
-TEST_F(BraveAdsConfirmationQueueTest, AddRewardConfirmationToQueue) {
+TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
   test::SetConfirmationTokens(/*count=*/1);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
-
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-  // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-  EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Seconds(7)));
-  confirmation_queue_->Add(*confirmation);
-
-  EXPECT_TRUE(HasPendingTasks());
-}
-
-TEST_F(BraveAdsConfirmationQueueTest, AddNonRewardConfirmationToQueue) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildRewardConfirmation(&token_generator_mock_,
+                                    /*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-  // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Seconds(7)));
+                                  *confirmation, Now() + base::Minutes(5)));
+
+  const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
+      scoped_delay_before_processing_confirmation_queue_item(base::Minutes(5));
+
+  // Act
   confirmation_queue_->Add(*confirmation);
 
+  // Assert
   EXPECT_TRUE(HasPendingTasks());
 }
 
-TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
+TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
   // Arrange
   test::BuildAndSetIssuers();
 
@@ -117,19 +96,17 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
 
   test::SetConfirmationTokens(/*count=*/1);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
+  const std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmation(&token_generator_mock_,
+                                    /*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Seconds(7)));
+                                  *confirmation, Now() + base::Minutes(21)));
 
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
+  const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
+      scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
   confirmation_queue_->Add(*confirmation);
 
   // Act & Assert
@@ -138,151 +115,61 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessRewardConfirmationInQueue) {
   FastForwardClockToNextPendingTask();
 }
 
-TEST_F(BraveAdsConfirmationQueueTest, ProcessNonRewardConfirmationQueue) {
+TEST_F(BraveAdsConfirmationQueueTest, ProcessMultipleConfirmations) {
   // Arrange
   test::DisableBraveRewards();
 
+  const std::optional<ConfirmationInfo> confirmation_1 =
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/true);
+  ASSERT_TRUE(confirmation_1);
+  {
+    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_1));
+    EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
+                                    *confirmation_1, Now() + base::Minutes(7)));
+
+    const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
+        scoped_delay_before_processing_confirmation_queue_item(
+            base::Minutes(7));
+    confirmation_queue_->Add(*confirmation_1);
+
+    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+  }
+
+  const ScopedDelayBeforeProcessingConfirmationQueueItemForTesting
+      scoped_delay_before_processing_confirmation_queue_item(base::Minutes(21));
+  const std::optional<ConfirmationInfo> confirmation_2 =
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/true);
+  ASSERT_TRUE(confirmation_2);
+  {
+    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation_2));
+
+    confirmation_queue_->Add(*confirmation_2);
+
+    EXPECT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
+  }
+
   const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
+      {BuildCreateNonRewardConfirmationUrlPath(confirmation_1->transaction_id),
+       {{net::kHttpImATeapot,
+         test::BuildCreateNonRewardConfirmationUrlResponseBody()}}},
+      {BuildCreateNonRewardConfirmationUrlPath(confirmation_2->transaction_id),
        {{net::kHttpImATeapot,
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction,
-                                 /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
+  // Act & Assert
+  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_1));
 
-  EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
   EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                  *confirmation, Now() + base::Seconds(7)));
+                                  *confirmation_2, Now() + base::Minutes(7) +
+                                                       base::Minutes(21)));
 
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
+  FastForwardClockToNextPendingTask();
 
-  confirmation_queue_->Add(*confirmation);
+  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue(*confirmation_2));
 
-  // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
   EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-  FastForwardClockToNextPendingTask();
-}
 
-TEST_F(BraveAdsConfirmationQueueTest,
-       ProcessMultipleRewardConfirmationsInQueue) {
-  // Arrange
-  test::BuildAndSetIssuers();
-
-  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
-
-  const URLResponseMap url_responses = {
-      {BuildCreateRewardConfirmationUrlPath(
-           kTransactionId, kCreateRewardConfirmationCredential),
-       {{net::HTTP_CREATED,
-         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
-      {BuildFetchPaymentTokenUrlPath(kTransactionId),
-       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/2);
-
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
-
-  {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-    EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                    *confirmation, Now() + base::Seconds(7)));
-
-    ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-    confirmation_queue_->Add(*confirmation);
-
-    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
-  }
-
-  {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-
-    confirmation_queue_->Add(*confirmation);
-
-    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
-  }
-
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
-  EXPECT_CALL(delegate_mock_,
-              OnWillProcessConfirmationQueue(
-                  *confirmation, Now() + base::Seconds(7) + base::Seconds(21)));
-
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(21));
-
-  FastForwardClockToNextPendingTask();
-
-  // Act & Assert
-  RemoveAllPaymentTokens();  // Force `MaybeAddPaymentToken()` to succeed.
-
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
-  FastForwardClockToNextPendingTask();
-}
-
-TEST_F(BraveAdsConfirmationQueueTest,
-       ProcessMultipleNonRewardConfirmationsInQueue) {
-  // Arrange
-  test::DisableBraveRewards();
-
-  const URLResponseMap url_responses = {
-      {BuildCreateNonRewardConfirmationUrlPath(kTransactionId),
-       {{net::kHttpImATeapot,
-         test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
-  MockUrlResponses(ads_client_mock_, url_responses);
-
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
-  ASSERT_TRUE(confirmation);
-
-  {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-    EXPECT_CALL(delegate_mock_, OnWillProcessConfirmationQueue(
-                                    *confirmation, Now() + base::Seconds(7)));
-
-    ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(7));
-
-    confirmation_queue_->Add(*confirmation);
-
-    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
-  }
-
-  {
-    EXPECT_CALL(delegate_mock_, OnDidAddConfirmationToQueue(*confirmation));
-
-    confirmation_queue_->Add(*confirmation);
-
-    ASSERT_TRUE(::testing::Mock::VerifyAndClearExpectations(&delegate_mock_));
-  }
-
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-
-  ScopedTimerDelaySetterForTesting scoped_setter(base::Seconds(21));
-  EXPECT_CALL(delegate_mock_,
-              OnWillProcessConfirmationQueue(
-                  *confirmation, Now() + base::Seconds(7) + base::Seconds(21)));
-
-  FastForwardClockToNextPendingTask();
-
-  // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnDidProcessConfirmationQueue);
-  EXPECT_CALL(delegate_mock_, OnDidExhaustConfirmationQueue);
   FastForwardClockToNextPendingTask();
 }
 

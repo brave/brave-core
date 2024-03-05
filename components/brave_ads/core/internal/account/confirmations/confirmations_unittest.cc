@@ -7,8 +7,8 @@
 
 #include <memory>
 
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_util.h"
+#include "base/test/mock_callback.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
@@ -31,6 +31,8 @@ class BraveAdsConfirmationsTest : public UnitTestBase {
   TokenGeneratorMock token_generator_mock_;
 
   std::unique_ptr<Confirmations> confirmations_;
+
+  database::table::ConfirmationQueue queue_database_table_;
 };
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
@@ -41,13 +43,16 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
+      /*should_use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction);
 
   // Assert
-  EXPECT_TRUE(MaybeGetNextConfirmationQueueItem());
+  base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*confirmation_queue_items=*/::testing::SizeIs(1)));
+  queue_database_table_.GetAll(callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
@@ -56,13 +61,16 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
+      /*should_use_random_uuids=*/false);
 
   // Act
   confirmations_->Confirm(transaction);
 
   // Assert
-  EXPECT_TRUE(MaybeGetNextConfirmationQueueItem());
+  base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
+  EXPECT_CALL(callback, Run(/*success=*/true,
+                            /*confirmation_queue_items=*/::testing::SizeIs(1)));
+  queue_database_table_.GetAll(callback.Get());
 }
 
 }  // namespace brave_ads
