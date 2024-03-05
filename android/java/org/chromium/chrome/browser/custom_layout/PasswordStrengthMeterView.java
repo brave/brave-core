@@ -15,203 +15,224 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.content.res.AppCompatResources;
 
-import org.chromium.chrome.R;
-
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 
-/**
- * Created by Simone on 3/1/24.
- */
+import org.chromium.chrome.R;
+
+/** Created by Simone on 3/1/24. */
 public class PasswordStrengthMeterView extends RelativeLayout {
-   public interface PasswordStrengthMeterListener {
-      void onMatch(final boolean match);
-   }
-   private boolean mShortPassword = true;
-   private TextInputLayout mInputRetypeLayout;
-   private TextInputEditText mRetype;
-   private TextView mMatch;
+    public interface PasswordStrengthMeterListener {
+        void onMatch(final boolean match);
+    }
 
-   @Nullable
-   private PasswordStrengthMeterListener mListener;
+    private boolean mShortPassword = true;
+    private TextInputLayout mInputRetypeLayout;
+    private TextInputEditText mRetype;
+    private TextView mMatch;
 
-   public PasswordStrengthMeterView(Context context) {
-      super(context);
-      init(context);
-   }
+    @Nullable private PasswordStrengthMeterListener mListener;
 
-   public PasswordStrengthMeterView(Context context, AttributeSet attrs) {
-      super(context, attrs);
-      init(context);
+    public PasswordStrengthMeterView(Context context) {
+        super(context);
+        init(context);
+    }
 
-   }
+    public PasswordStrengthMeterView(Context context, AttributeSet attrs) {
+        super(context, attrs);
+        init(context);
+    }
 
-   public PasswordStrengthMeterView(Context context, AttributeSet attrs, int defStyleAttr) {
-      super(context, attrs, defStyleAttr);
-      init(context);
+    public PasswordStrengthMeterView(Context context, AttributeSet attrs, int defStyleAttr) {
+        super(context, attrs, defStyleAttr);
+        init(context);
+    }
 
-   }
+    public PasswordStrengthMeterView(
+            Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+        super(context, attrs, defStyleAttr, defStyleRes);
+        init(context);
+    }
 
-   public PasswordStrengthMeterView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-      super(context, attrs, defStyleAttr, defStyleRes);
-      init(context);
+    public void setListener(@Nullable PasswordStrengthMeterListener listener) {
+        mListener = listener;
+    }
 
-   }
+    private void init(@NonNull final Context context) {
+        LayoutInflater.from(context).inflate(R.layout.password_strength_meter_layout, this, true);
 
-   public void setListener(@Nullable PasswordStrengthMeterListener listener) {
-      mListener = listener;
-   }
+        TextInputLayout inputLayout = findViewById(R.id.text_input_password_layout);
+        mInputRetypeLayout = findViewById(R.id.text_input_retype_layout);
+        TextInputEditText input = findViewById(R.id.text_input_password_edit_text);
+        mRetype = findViewById(R.id.text_input_retype_edit_text);
+        TextView weak = findViewById(R.id.password_strength_weak);
+        TextView medium = findViewById(R.id.password_strength_medium);
+        TextView strong = findViewById(R.id.password_strength_strong);
+        mMatch = findViewById(R.id.password_match);
 
-   private void init(@NonNull final Context context) {
-      LayoutInflater.from(context).inflate(R.layout.password_strength_meter_layout, this, true);
+        weak.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        int weakWidth = weak.getMeasuredWidth() + weak.getCompoundDrawablePadding();
 
-      TextInputLayout inputLayout = findViewById(R.id.text_input_password_layout);
-      mInputRetypeLayout = findViewById(R.id.text_input_retype_layout);
-      TextInputEditText input =  findViewById(R.id.text_input_password_edit_text);
-      mRetype =  findViewById(R.id.text_input_retype_edit_text);
-      TextView weak = findViewById(R.id.password_strength_weak);
-      TextView medium = findViewById(R.id.password_strength_medium);
-      TextView strong = findViewById(R.id.password_strength_strong);
-      mMatch = findViewById(R.id.password_match);
+        medium.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        int mediumWidth = medium.getMeasuredWidth() + medium.getCompoundDrawablePadding();
 
-      weak.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-      int weakWidth = weak.getMeasuredWidth() + weak.getCompoundDrawablePadding();
+        strong.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        int strongWidth = strong.getMeasuredWidth() + strong.getCompoundDrawablePadding();
 
-      medium.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-      int mediumWidth = medium.getMeasuredWidth() + medium.getCompoundDrawablePadding();
+        mMatch.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
+        int matchWidth = mMatch.getMeasuredWidth() + mMatch.getCompoundDrawablePadding();
 
-      strong.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-      int strongWidth = strong.getMeasuredWidth() + strong.getCompoundDrawablePadding();
+        int maxWidth =
+                Math.max(Math.max(weakWidth, Math.max(mediumWidth, strongWidth)), matchWidth);
 
-      mMatch.measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
-      int matchWidth = mMatch.getMeasuredWidth() + mMatch.getCompoundDrawablePadding();
+        Drawable progressBar =
+                AppCompatResources.getDrawable(context, R.drawable.progress_bar_strong);
+        final int progressBarWidth = progressBar != null ? progressBar.getMinimumWidth() : 0;
 
-      int maxWidth = Math.max(Math.max(weakWidth, Math.max(mediumWidth, strongWidth)), matchWidth);
+        // Calculate right padding.
+        input.setPadding(
+                input.getPaddingLeft(),
+                input.getPaddingTop(),
+                maxWidth + progressBarWidth,
+                input.getPaddingBottom());
+        mRetype.setPadding(
+                mRetype.getPaddingLeft(),
+                mRetype.getPaddingTop(),
+                maxWidth + progressBarWidth,
+                mRetype.getPaddingBottom());
 
-      Drawable progressBar = AppCompatResources.getDrawable(context, R.drawable.progress_bar_strong);
-      final int progressBarWidth = progressBar != null ? progressBar.getMinimumWidth() : 0;
+        // Calculate left margin for text views.
+        input.post(
+                () -> {
+                    int width = input.getWidth() - input.getPaddingEnd();
+                    setLeftMargin(weak, width);
+                    setLeftMargin(medium, width);
+                    setLeftMargin(strong, width);
+                    setLeftMargin(mMatch, width);
+                });
 
-      // Calculate right padding.
-      input.setPadding(input.getPaddingLeft(), input.getPaddingTop(), maxWidth + progressBarWidth, input.getPaddingBottom());
-      mRetype.setPadding(mRetype.getPaddingLeft(), mRetype.getPaddingTop(), maxWidth + progressBarWidth, mRetype.getPaddingBottom());
+        input.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence charSequence, int start, int count, int after) {
+                        // Unused.
+                    }
 
+                    @Override
+                    public void onTextChanged(
+                            CharSequence charSequence, int start, int before, int count) {
+                        final int length = charSequence.length();
+                        if (length < 8) {
+                            notifyListener(false);
+                            mMatch.setVisibility(View.INVISIBLE);
+                            mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                            mInputRetypeLayout.setError(null);
+                            mShortPassword = true;
+                        } else {
+                            mShortPassword = false;
+                            checkPasswords(charSequence, mRetype);
+                        }
 
-      // Calculate left margin for text views.
-      input.post(() -> {
-         int width = input.getWidth() - input.getPaddingEnd();
-         setLeftMargin(weak, width);
-         setLeftMargin(medium, width);
-         setLeftMargin(strong, width);
-         setLeftMargin(mMatch, width);
-      });
+                        if (length == 0 || length >= 8) {
+                            input.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+                            inputLayout.setError(null);
+                        } else {
+                            input.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                                    0, 0, R.drawable.warning_circle_filled, 0);
+                            inputLayout.setError(
+                                    getContext()
+                                            .getString(R.string.wallet_password_minimum_length));
+                        }
 
-      input.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-            // Unused.
-         }
+                        if (length < 12) {
+                            weak.setVisibility(View.VISIBLE);
+                            medium.setVisibility(View.INVISIBLE);
+                            strong.setVisibility(View.INVISIBLE);
+                        } else if (length < 16) {
+                            weak.setVisibility(View.INVISIBLE);
+                            medium.setVisibility(View.VISIBLE);
+                            strong.setVisibility(View.INVISIBLE);
+                        } else {
+                            weak.setVisibility(View.INVISIBLE);
+                            medium.setVisibility(View.INVISIBLE);
+                            strong.setVisibility(View.VISIBLE);
+                        }
+                    }
 
-         @Override
-         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            final int length = charSequence.length();
-            if (length < 8) {
-               notifyListener(false);
-               mMatch.setVisibility(View.INVISIBLE);
-               mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-               mInputRetypeLayout.setError(null);
-               mShortPassword = true;
-            } else {
-               mShortPassword = false;
-               checkPasswords(charSequence, mRetype);
-            }
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // Unused.
+                    }
+                });
 
-            if (length == 0 || length >= 8) {
-               input.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-               inputLayout.setError(null);
-            } else {
-               input.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.warning_circle_filled, 0);
-               inputLayout.setError(getContext().getString(R.string.wallet_password_minimum_length));
-            }
+        mRetype.addTextChangedListener(
+                new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(
+                            CharSequence charSequence, int start, int count, int after) {
+                        // Unused.
+                    }
 
-            if (length < 12) {
-               weak.setVisibility(View.VISIBLE);
-               medium.setVisibility(View.INVISIBLE);
-               strong.setVisibility(View.INVISIBLE);
-            } else if (length < 16) {
-               weak.setVisibility(View.INVISIBLE);
-               medium.setVisibility(View.VISIBLE);
-               strong.setVisibility(View.INVISIBLE);
-            } else {
-               weak.setVisibility(View.INVISIBLE);
-               medium.setVisibility(View.INVISIBLE);
-               strong.setVisibility(View.VISIBLE);
-            }
-         }
+                    @Override
+                    public void onTextChanged(
+                            CharSequence charSequence, int start, int before, int count) {
+                        // Do not check for match until password length error is fixed.
+                        if (!mShortPassword) {
+                            checkPasswords(charSequence, input);
+                        }
+                    }
 
-         @Override
-         public void afterTextChanged(Editable editable) {
-            // Unused.
-         }
-      });
+                    @Override
+                    public void afterTextChanged(Editable editable) {
+                        // Unused.
+                    }
+                });
+    }
 
-      mRetype.addTextChangedListener(new TextWatcher() {
-         @Override
-         public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-            // Unused.
-         }
+    private void notifyListener(final boolean match) {
+        if (mListener != null) {
+            mListener.onMatch(match);
+        }
+    }
 
-         @Override
-         public void onTextChanged(CharSequence charSequence, int start, int before, int count) {
-            // Do not check for match until password length error is fixed.
-            if (!mShortPassword) {
-               checkPasswords(charSequence, input);
-            }
-         }
+    private void checkPasswords(
+            @NonNull final CharSequence charSequence,
+            @NonNull final TextInputEditText inputEditText) {
+        if (passwordsMatch(charSequence, inputEditText)) {
+            notifyListener(true);
+            mMatch.setVisibility(View.VISIBLE);
+            mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+            mInputRetypeLayout.setError(null);
+        } else if (mRetype.getText() == null || mRetype.getText().length() == 0) {
+            notifyListener(false);
+            mMatch.setVisibility(View.INVISIBLE);
+            mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
+            mInputRetypeLayout.setError(null);
+        } else {
+            notifyListener(false);
+            mMatch.setVisibility(View.INVISIBLE);
+            mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    0, 0, R.drawable.warning_circle_filled, 0);
+            mInputRetypeLayout.setError(
+                    getContext().getString(R.string.wallet_password_does_not_match));
+        }
+    }
 
-         @Override
-         public void afterTextChanged(Editable editable) {
-            // Unused.
-         }
-      });
-   }
+    private boolean passwordsMatch(
+            @NonNull final CharSequence charSequence,
+            @NonNull final TextInputEditText inputEditText) {
+        if (inputEditText.getText() == null) {
+            return false;
+        }
+        return charSequence.toString().equals(inputEditText.getText().toString());
+    }
 
-   private void notifyListener(final boolean match) {
-      if (mListener != null) {
-         mListener.onMatch(match);
-      }
-   }
-
-   private void checkPasswords(@NonNull final CharSequence charSequence, @NonNull final TextInputEditText inputEditText) {
-      if (passwordsMatch(charSequence, inputEditText)) {
-         notifyListener(true);
-         mMatch.setVisibility(View.VISIBLE);
-         mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-         mInputRetypeLayout.setError(null);
-      } else if (mRetype.getText() == null || mRetype.getText().length() == 0) {
-         notifyListener(false);
-         mMatch.setVisibility(View.INVISIBLE);
-         mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, 0, 0);
-         mInputRetypeLayout.setError(null);
-      } else {
-         notifyListener(false);
-         mMatch.setVisibility(View.INVISIBLE);
-         mRetype.setCompoundDrawablesRelativeWithIntrinsicBounds(0, 0, R.drawable.warning_circle_filled, 0);
-         mInputRetypeLayout.setError(getContext().getString(R.string.wallet_password_does_not_match));
-      }
-   }
-
-   private boolean passwordsMatch(@NonNull final CharSequence charSequence, @NonNull final TextInputEditText inputEditText) {
-      if (inputEditText.getText() == null) {
-         return false;
-      }
-      return charSequence.toString().equals(inputEditText.getText().toString());
-   }
-
-   private void setLeftMargin(@NonNull final TextView textView, final int width) {
-      ViewGroup.LayoutParams layoutParams = textView.getLayoutParams();
-      if (layoutParams instanceof RelativeLayout.LayoutParams relativeLayoutParams) {
-         relativeLayoutParams.leftMargin = width;
-         textView.setLayoutParams(relativeLayoutParams);
-      }
-   }
+    private void setLeftMargin(@NonNull final TextView textView, final int width) {
+        ViewGroup.LayoutParams layoutParams = textView.getLayoutParams();
+        if (layoutParams instanceof RelativeLayout.LayoutParams relativeLayoutParams) {
+            relativeLayoutParams.leftMargin = width;
+            textView.setLayoutParams(relativeLayoutParams);
+        }
+    }
 }

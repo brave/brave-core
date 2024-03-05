@@ -35,23 +35,31 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mOnboardingViewModel = new ViewModelProvider((ViewModelStoreOwner) requireActivity())
-                .get(OnboardingViewModel.class);
+        mOnboardingViewModel =
+                new ViewModelProvider((ViewModelStoreOwner) requireActivity())
+                        .get(OnboardingViewModel.class);
 
         KeyringService keyringService = getKeyringService();
         BraveWalletP3a braveWalletP3A = getBraveWalletP3A();
         if (keyringService != null) {
-            mOnboardingViewModel.getPassword().observe(getViewLifecycleOwner(), password ->
-                    keyringService.createWallet(password, recoveryPhrases -> {
-                if (braveWalletP3A != null) {
-                    braveWalletP3A.reportOnboardingAction(OnboardingAction.RECOVERY_SETUP);
-                }
-                // Go to the next page after wallet creation is done
-                Utils.setCryptoOnboarding(false);
-                if (mOnNextPage != null) {
-                    mOnNextPage.gotoNextPage();
-                }
-            }));
+            mOnboardingViewModel
+                    .getPassword()
+                    .observe(
+                            getViewLifecycleOwner(),
+                            password ->
+                                    keyringService.createWallet(
+                                            password,
+                                            recoveryPhrases -> {
+                                                if (braveWalletP3A != null) {
+                                                    braveWalletP3A.reportOnboardingAction(
+                                                            OnboardingAction.RECOVERY_SETUP);
+                                                }
+                                                // Go to the next page after wallet creation is done
+                                                Utils.setCryptoOnboarding(false);
+                                                if (mOnNextPage != null) {
+                                                    mOnNextPage.gotoNextPage();
+                                                }
+                                            }));
         }
     }
 

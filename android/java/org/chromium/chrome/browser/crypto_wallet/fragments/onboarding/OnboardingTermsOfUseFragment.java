@@ -102,6 +102,8 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        enable(mContinueButton, mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked());
+        enable(
+                mContinueButton,
+                mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked());
     }
 }

@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.annotation.SuppressLint;
-import android.app.Application;
 import android.hardware.biometrics.BiometricPrompt;
 import android.os.Build;
 import android.os.Bundle;
@@ -27,15 +26,11 @@ import androidx.lifecycle.ViewModelStoreOwner;
 import com.google.android.material.textfield.TextInputEditText;
 
 import org.chromium.base.ContextUtils;
-import org.chromium.brave_wallet.mojom.BraveWalletP3a;
-import org.chromium.brave_wallet.mojom.KeyringService;
-import org.chromium.brave_wallet.mojom.OnboardingAction;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.crypto_wallet.model.OnboardingViewModel;
 import org.chromium.chrome.browser.crypto_wallet.util.KeystoreHelper;
 import org.chromium.chrome.browser.crypto_wallet.util.Utils;
 import org.chromium.chrome.browser.custom_layout.PasswordStrengthMeterView;
-import org.chromium.ui.UiUtils;
 import org.chromium.ui.widget.Toast;
 
 import java.util.concurrent.Executor;
@@ -63,19 +58,19 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
 
         mRetypePasswordEditText = view.findViewById(R.id.text_input_retype_edit_text);
         mContinueButton = view.findViewById(R.id.btn_secure_crypto_continue);
-        mContinueButton.setOnClickListener(v -> {
-            Editable text = mRetypePasswordEditText.getText();
-            if (mCreateWalletClicked || text == null) {
-                return;
-            }
-            mCreateWalletClicked = true;
-            proceedWithStrongPassword(text.toString());
-        });
+        mContinueButton.setOnClickListener(
+                v -> {
+                    Editable text = mRetypePasswordEditText.getText();
+                    if (mCreateWalletClicked || text == null) {
+                        return;
+                    }
+                    mCreateWalletClicked = true;
+                    proceedWithStrongPassword(text.toString());
+                });
 
         mPasswordStrengthMeterView = view.findViewById(R.id.password_strength_meter);
         mPasswordStrengthMeterView.setListener(match -> enable(mContinueButton, match));
     }
-
 
     @Override
     public void onResume() {
@@ -109,7 +104,11 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
                     public void onAuthenticationError(int errorCode, CharSequence errString) {
                         super.onAuthenticationError(errorCode, errString);
                         // Even though we have an error, we still let to proceed
-                        Toast.makeText(ContextUtils.getApplicationContext(), errString, Toast.LENGTH_SHORT).show();
+                        Toast.makeText(
+                                        ContextUtils.getApplicationContext(),
+                                        errString,
+                                        Toast.LENGTH_SHORT)
+                                .show();
                         goToTheNextPage(password);
                     }
                 };
@@ -117,10 +116,12 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
         new BiometricPrompt.Builder(requireContext())
                 .setTitle(getResources().getString(R.string.enable_fingerprint_unlock))
                 .setDescription(getResources().getString(R.string.enable_fingerprint_text))
-                .setNegativeButton(getResources().getString(android.R.string.cancel), executor,
-                        (dialog, which)
-                                -> authenticationCallback.onAuthenticationError(
-                                BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
+                .setNegativeButton(
+                        getResources().getString(android.R.string.cancel),
+                        executor,
+                        (dialog, which) ->
+                                authenticationCallback.onAuthenticationError(
+                                        BiometricPrompt.BIOMETRIC_ERROR_USER_CANCELED, ""))
                 .build()
                 .authenticate(new CancellationSignal(), executor, authenticationCallback);
     }
