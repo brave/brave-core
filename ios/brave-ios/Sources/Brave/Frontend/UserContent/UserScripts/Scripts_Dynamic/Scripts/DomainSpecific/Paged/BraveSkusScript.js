@@ -7,7 +7,11 @@
 
 window.__firefox__.includeOnce("BraveSkusScript", function($) {
   let sendMessage = $(function(method_id, data) {
-    return $.postNativeMessage('$<message_handler>', {'securityToken': SECURITY_TOKEN,'method_id': method_id, data: data});
+    return $.postNativeMessage('$<message_handler>', {
+      'securityToken': SECURITY_TOKEN,
+      'method_id': method_id,
+      'data': data
+    });
   });
 
   if (!window.chrome) {
@@ -20,19 +24,19 @@ window.__firefox__.includeOnce("BraveSkusScript", function($) {
     writable: false,
       value: {
         refresh_order(orderId) {
-          return sendMessage(1, { orderId });
+          return sendMessage($<refreshOrder>, { orderId });
         },
 
         fetch_order_credentials(orderId) {
-          return sendMessage(2, { orderId });
+          return sendMessage($<fetchOrderCredentials>, { orderId });
         },
 
         prepare_credentials_presentation(domain, path) {
-          return sendMessage(3, { domain, path });
+          return sendMessage($<prepareCredentialsPresentation>, { domain, path });
         },
 
         credential_summary(domain) {
-          return sendMessage(4, { domain });
+          return sendMessage($<credentialsSummary>, { domain });
         }
       }
   });
