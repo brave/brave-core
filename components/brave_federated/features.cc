@@ -13,8 +13,6 @@ namespace features {
 
 namespace {
 
-const char kFeatureName[] = "BraveFederated";
-
 const char kFieldTrialParameterOperationalPatternsEnabled[] =
     "operational_patterns_enabled";
 const bool kDefaultOperationalPatternsEnabled = false;
@@ -46,7 +44,7 @@ const bool kDefaultMockCollectionRequests = false;
 }  // namespace
 
 BASE_FEATURE(kFederatedLearning,
-             kFeatureName,
+             "BraveFederated",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsFederatedLearningEnabled() {
