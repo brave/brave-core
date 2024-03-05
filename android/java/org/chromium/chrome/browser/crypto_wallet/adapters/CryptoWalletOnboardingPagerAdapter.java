@@ -57,10 +57,4 @@ public class CryptoWalletOnboardingPagerAdapter extends FragmentStatePagerAdapte
     public int getCount() {
         return mNavigationItems.size();
     }
-
-    @Nullable
-    @Override
-    public CharSequence getPageTitle(int position) {
-        return mNavigationItems.get(position).getTitle();
-    }
 }
