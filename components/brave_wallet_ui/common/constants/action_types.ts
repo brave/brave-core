@@ -23,11 +23,6 @@ export type TransactionStatusChanged = {
   txInfo: SerializableTransactionInfo
 }
 
-export type SetUserAssetVisiblePayloadType = {
-  token: BraveWallet.BlockchainToken
-  isVisible: boolean
-}
-
 export type SwapParamsPayloadType = {
   fromAsset: BraveWallet.BlockchainToken
   toAsset: BraveWallet.BlockchainToken

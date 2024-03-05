@@ -5,11 +5,8 @@
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import {
-  SetUserAssetVisiblePayloadType,
-  UpdateUsetAssetType
-} from '../constants/action_types'
-import { BraveWallet, WalletState, RefreshOpts } from '../../constants/types'
+import { UpdateUsetAssetType } from '../constants/action_types'
+import { WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
@@ -151,29 +148,6 @@ handler.on(
 )
 
 handler.on(
-  WalletActions.addUserAsset.type,
-  async (store: Store, payload: BraveWallet.BlockchainToken) => {
-    const { braveWalletService } = getAPIProxy()
-
-    if (payload.isErc721 || payload.isNft) {
-      const result = await getNFTMetadata(payload)
-      if (!result?.error) {
-        const response = result?.response && JSON.parse(result.response)
-        payload.logo = response.image || payload.logo
-      }
-    }
-
-    const result = await braveWalletService.addUserAsset(payload)
-
-    // Refresh balances here for adding ERC721 tokens if result is successful
-    if ((payload.isErc721 || payload.isNft) && result.success) {
-      refreshBalancesPricesAndHistory(store)
-    }
-    store.dispatch(WalletActions.addUserAssetError(!result.success))
-  }
-)
-
-handler.on(
   WalletActions.updateUserAsset.type,
   async (store: Store, payload: UpdateUsetAssetType) => {
     const { braveWalletService } = getAPIProxy()
@@ -202,32 +176,6 @@ handler.on(
         refreshBalancesPricesAndHistory(store)
         await store.dispatch(refreshVisibleTokenInfo())
       }
-    }
-  }
-)
-
-handler.on(
-  WalletActions.removeUserAsset.type,
-  async (store: Store, payload: BraveWallet.BlockchainToken) => {
-    const { braveWalletService } = getAPIProxy()
-    await braveWalletService.removeUserAsset(payload)
-  }
-)
-
-handler.on(
-  WalletActions.setUserAssetVisible.type,
-  async (store: Store, payload: SetUserAssetVisiblePayloadType) => {
-    const { braveWalletService } = getAPIProxy()
-
-    const { success } = await braveWalletService.setUserAssetVisible(
-      payload.token,
-      payload.isVisible
-    )
-
-    if (!success) {
-      // token is probably not in the core-side assets list
-      // try adding it to the user tokens list
-      store.dispatch(WalletActions.addUserAsset(payload.token))
     }
   }
 )

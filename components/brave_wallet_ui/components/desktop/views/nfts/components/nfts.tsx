@@ -15,8 +15,7 @@ import { useNftPin } from '../../../../../common/hooks/nft-pin'
 // selectors
 import {
   useSafeUISelector,
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
+  useSafeWalletSelector
 } from '../../../../../common/hooks/use-safe-selector'
 import { UISelectors, WalletSelectors } from '../../../../../common/selectors'
 
@@ -33,6 +32,7 @@ import {
 import {
   useGetNftDiscoveryEnabledStatusQuery,
   useGetSimpleHashSpamNftsQuery,
+  useGetUserTokensRegistryQuery,
   useSetNftDiscoveryEnabledMutation
 } from '../../../../../common/slices/api.slice'
 import { getBalance } from '../../../../../utils/balance-utils'
@@ -44,6 +44,9 @@ import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
 import { useQuery } from '../../../../../common/hooks/use-query'
 import { makePortfolioAssetRoute } from '../../../../../utils/routes-utils'
+import {
+  selectHiddenNftsFromQueryResult //
+} from '../../../../../common/slices/entities/blockchain-token.entity'
 
 // components
 import SearchBar from '../../../../shared/search-bar'
@@ -104,9 +107,6 @@ export const Nfts = (props: Props) => {
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
   )
-  const hiddenNfts = useUnsafeWalletSelector(
-    WalletSelectors.removedNonFungibleTokens
-  )
   const selectedGroupAssetsByItem = useSafeWalletSelector(
     WalletSelectors.selectedGroupAssetsByItem
   )
@@ -117,9 +117,6 @@ export const Nfts = (props: Props) => {
     WalletSelectors.isRefreshingNetworksAndTokens
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
-  const deletedNonFungibleTokenIds = useUnsafeWalletSelector(
-    WalletSelectors.deletedNonFungibleTokenIds
-  )
 
   // state
   const [searchValue, setSearchValue] = React.useState<string>('')
@@ -146,6 +143,15 @@ export const Nfts = (props: Props) => {
   const { data: isNftAutoDiscoveryEnabled } =
     useGetNftDiscoveryEnabledStatusQuery()
   const { data: simpleHashSpamNfts = [] } = useGetSimpleHashSpamNftsQuery()
+  const { userTokensRegistry, hiddenNfts } = useGetUserTokensRegistryQuery(
+    undefined,
+    {
+      selectFromResult: (result) => ({
+        userTokensRegistry: result.data,
+        hiddenNfts: selectHiddenNftsFromQueryResult(result)
+      })
+    }
+  )
 
   // mutations
   const [setNftDiscovery] = useSetNftDiscoveryEnabledMutation()
@@ -230,29 +236,35 @@ export const Nfts = (props: Props) => {
   }, [nftList])
 
   // memos
-  const [userNonSpamNfts, userMarkedSpamNfts] = React.useMemo(() => {
-    return nftList.reduce(
-      (
-        result: [BraveWallet.BlockchainToken[], BraveWallet.BlockchainToken[]],
-        nft: BraveWallet.BlockchainToken
-      ) => {
-        if (!nft.isSpam) {
-          result[0].push(nft)
-        } else {
-          result[1].push(nft)
+  const { userNonSpamNfts, userMarkedSpamNfts } = React.useMemo(() => {
+    const results: {
+      userNonSpamNfts: BraveWallet.BlockchainToken[]
+      userMarkedSpamNfts: BraveWallet.BlockchainToken[]
+    } = {
+      userNonSpamNfts: [],
+      userMarkedSpamNfts: []
+    }
+    for (const nft of nftList) {
+      if (!nft.isSpam) {
+        if (nft.visible) {
+          results.userNonSpamNfts.push(nft)
         }
-        return result
-      },
-      [[], []]
-    )
-  }, [nftList])
+      } else {
+        results.userMarkedSpamNfts.push(nft)
+      }
+    }
+    return results
+  }, [userTokensRegistry, nftList])
 
   const [hiddenNftsIds, userNonSpamNftIds] = React.useMemo(() => {
+    if (!userTokensRegistry) {
+      return [[], []]
+    }
     return [
-      hiddenNfts.map((nft) => getAssetIdKey(nft)),
-      userNonSpamNfts.map((nft) => getAssetIdKey(nft))
+      userTokensRegistry.nonFungibleHiddenTokenIds,
+      userTokensRegistry.nonSpamTokenIds
     ]
-  }, [hiddenNfts, userNonSpamNfts])
+  }, [userTokensRegistry])
 
   const [allSpamNfts, allSpamNftsIds] = React.useMemo(() => {
     // filter out NFTs user has marked not spam
@@ -260,7 +272,7 @@ export const Nfts = (props: Props) => {
     // and deleted NFTs
     const excludedNftIds = userNonSpamNftIds
       .concat(hiddenNftsIds)
-      .concat(deletedNonFungibleTokenIds)
+      .concat(userTokensRegistry?.deletedTokenIds || [])
     const simpleHashList = simpleHashSpamNfts.filter(
       (nft) => !excludedNftIds.includes(getAssetIdKey(nft))
     )
@@ -280,7 +292,7 @@ export const Nfts = (props: Props) => {
     simpleHashSpamNfts,
     hiddenNftsIds,
     userNonSpamNftIds,
-    deletedNonFungibleTokenIds
+    userTokensRegistry
   ])
 
   const [sortedNfts, sortedHiddenNfts, sortedSpamNfts] = React.useMemo(() => {
@@ -358,6 +370,7 @@ export const Nfts = (props: Props) => {
   const renderGridViewItem = React.useCallback(
     (nft: BraveWallet.BlockchainToken) => {
       const assetId = getAssetIdKey(nft)
+      const isSpam = allSpamNftsIds.includes(assetId)
 
       return (
         <NFTGridViewItem
@@ -365,13 +378,14 @@ export const Nfts = (props: Props) => {
           token={nft}
           onSelectAsset={() => onSelectAsset(nft)}
           isTokenHidden={
-            hiddenNftsIds.includes(assetId) || allSpamNftsIds.includes(assetId)
+            userTokensRegistry?.nonFungibleHiddenTokenIds.includes(assetId) ||
+            isSpam
           }
-          isTokenSpam={allSpamNftsIds.includes(assetId)}
+          isTokenSpam={isSpam}
         />
       )
     },
-    [hiddenNftsIds, allSpamNftsIds, onSelectAsset]
+    [userTokensRegistry, allSpamNftsIds, onSelectAsset]
   )
 
   const listUiByAccounts = React.useMemo(() => {
@@ -513,7 +527,8 @@ export const Nfts = (props: Props) => {
         </Row>
       </ControlBarWrapper>
       <ScrollableColumn padding='0px 20px 20px 20px'>
-        {nftList.length === 0 && hiddenNfts.length === 0 ? (
+        {nftList.length === 0 &&
+        userTokensRegistry?.hiddenTokenIds.length === 0 ? (
           isNftAutoDiscoveryEnabled ? (
             <AutoDiscoveryEmptyState
               isRefreshingTokens={isRefreshingTokens}

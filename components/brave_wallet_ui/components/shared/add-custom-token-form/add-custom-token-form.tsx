@@ -4,21 +4,20 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useSelector } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { getLocale } from '$web-common/locale'
 
 // types
-import { BraveWallet, WalletState } from '../../../constants/types'
+import { BraveWallet } from '../../../constants/types'
 
 // hooks
-import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import {
   useGetCustomAssetSupportedNetworks //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
+import { useAddUserTokenMutation } from '../../../common/slices/api.slice'
 
 // components
 import { SelectNetworkDropdown } from '../../desktop/select-network-dropdown/index'
@@ -71,17 +70,13 @@ export const AddCustomTokenForm = (props: Props) => {
   const [customAssetsNetwork, setCustomAssetsNetwork] =
     React.useState<BraveWallet.NetworkInfo>()
 
-  // redux
-  const addUserAssetError = useSelector(
-    ({ wallet }: { wallet: WalletState }) => wallet.addUserAssetError
-  )
-
   // more state
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
-  // custom hooks
-  const { onAddCustomAsset } = useAssetManagement()
+  // mutations
+  const [addUserToken] = useAddUserTokenMutation()
 
+  // queries
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
@@ -209,13 +204,17 @@ export const AddCustomTokenForm = (props: Props) => {
     onChangeContractAddress('')
   }, [resetBaseInputFields, onChangeContractAddress])
 
-  const onClickAddCustomToken = React.useCallback(() => {
+  const onClickAddCustomToken = React.useCallback(async () => {
     if (!tokenInfo) {
       return
     }
-    onAddCustomAsset(tokenInfo)
-    onHideForm()
-  }, [tokenInfo, onAddCustomAsset, onHideForm])
+    try {
+      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+    } catch (error) {
+      setHasError(true)
+    }
+  }, [tokenInfo, addUserToken, onHideForm])
 
   const onToggleShowAdvancedFields = () =>
     setShowAdvancedFields((prev) => !prev)
