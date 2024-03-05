@@ -20,6 +20,7 @@
 #include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
@@ -639,6 +640,48 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   brave_sync_service_impl()->OnGotEntityCounts(counts);
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
+
+  OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitialize) {
+  OSCryptMocker::SetUp();
+
+  CreateSyncService();
+
+  brave_sync_prefs()->AddLeaveChainDetail(
+      __FILE__, __LINE__,
+      std::string(brave_sync::Prefs::GetLeaveChainDetailsMaxLenForTests(), 'a')
+          .c_str());
+
+  size_t leave_chain_pref_changed_count = 0;
+
+  PrefChangeRegistrar brave_sync_prefs_change_registrar_;
+  brave_sync_prefs_change_registrar_.Init(pref_service());
+  brave_sync_prefs_change_registrar_.Add(
+      brave_sync::Prefs::LeaveChainDetailsPathForTests(),
+      base::BindRepeating(
+          [](size_t* leave_chain_pref_changed_count) {
+            ++(*leave_chain_pref_changed_count);
+          },
+          &leave_chain_pref_changed_count));
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
+  task_environment_.RunUntilIdle();
+
+#if BUILDFLAG(IS_IOS)
+  // On iOS we expect that AddLeaveChainDetail will not be invoked at
+  // SyncServiceImpl::Initialize and details will not be cleared
+  EXPECT_EQ(leave_chain_pref_changed_count, 0u);
+  EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
+#else
+  // On Android/Desktop we expect that details will be cleared and also
+  // AddLeaveChainDetail will not be invoked at SyncServiceImpl::Initialize
+  EXPECT_EQ(leave_chain_pref_changed_count, 1u);
+  EXPECT_TRUE(brave_sync_prefs()->GetLeaveChainDetails().empty());
+#endif
 
   OSCryptMocker::TearDown();
 }

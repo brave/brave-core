@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -60,6 +61,9 @@ const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
 const char kSyncV2MigrateNoticeDismissed[] =
     "brave_sync_v2.migrate_notice_dismissed";
 // ============================================================================
+
+constexpr size_t kLeaveChainDetailsMaxLen = 500;
+
 }  // namespace
 
 Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {}
@@ -173,7 +177,15 @@ void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
   stream << base::Time::Now() << " "
          << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
          << func << std::endl;
-  pref_service_->SetString(kSyncLeaveChainDetails, details + stream.str());
+
+  std::string updated_details = details + stream.str();
+
+  if (updated_details.size() > kLeaveChainDetailsMaxLen) {
+    updated_details.assign(updated_details.end() - kLeaveChainDetailsMaxLen,
+                           updated_details.end());
+  }
+
+  pref_service_->SetString(kSyncLeaveChainDetails, updated_details);
 }
 
 std::string Prefs::GetLeaveChainDetails() const {
@@ -182,6 +194,16 @@ std::string Prefs::GetLeaveChainDetails() const {
 
 void Prefs::ClearLeaveChainDetails() {
   pref_service_->ClearPref(kSyncLeaveChainDetails);
+}
+
+// static
+size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
+  return kLeaveChainDetailsMaxLen;
+}
+
+// static
+std::string Prefs::LeaveChainDetailsPathForTests() {
+  return kSyncLeaveChainDetails;
 }
 
 void Prefs::Clear() {

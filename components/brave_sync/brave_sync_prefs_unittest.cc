@@ -111,4 +111,18 @@ TEST_F(BraveSyncPrefsDeathTest, MAYBE_GetSeedOutNullptrCHECK) {
   EXPECT_CHECK_DEATH(brave_sync_prefs()->GetSeed(nullptr));
 }
 
+TEST_F(BraveSyncPrefsTest, LeaveChainDetailsMaxLen) {
+  auto max_len = Prefs::GetLeaveChainDetailsMaxLenForTests();
+
+  std::string details("a");
+  brave_sync_prefs()->AddLeaveChainDetail("", 0, details.c_str());
+  details = brave_sync_prefs()->GetLeaveChainDetails();
+  EXPECT_LE(details.size(), max_len);
+
+  details.assign(max_len + 1, 'a');
+  brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, details.c_str());
+  details = brave_sync_prefs()->GetLeaveChainDetails();
+  EXPECT_LE(details.size(), max_len);
+}
+
 }  // namespace brave_sync
