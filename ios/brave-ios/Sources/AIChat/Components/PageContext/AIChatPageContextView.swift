@@ -3,18 +3,20 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import DesignSystem
 import SwiftUI
 
-struct AIChatPageContextView<InfoView>: View where InfoView: View {
+struct AIChatPageContextView: View {
   @State
   private var shouldShowInformationPopover = false
 
   @Binding
   var isToggleOn: Bool
 
-  @ViewBuilder
-  var infoContent: (() -> InfoView)
+  var url: URL?
+
+  var pageTitle: String
 
   var body: some View {
     Toggle(
@@ -24,6 +26,7 @@ struct AIChatPageContextView<InfoView>: View where InfoView: View {
           Text(Strings.AIChat.infoAboutPageContext)
             .font(.footnote)
             .foregroundStyle(Color(braveSystemName: .textTertiary))
+            .fixedSize(horizontal: false, vertical: true)
 
           Button(
             action: {
@@ -40,10 +43,16 @@ struct AIChatPageContextView<InfoView>: View where InfoView: View {
               .labelStyle(.iconOnly)
             }
           )
-          .popover(isPresented: $shouldShowInformationPopover) {
-            infoContent()
+          .bravePopover(isPresented: $shouldShowInformationPopover) {
+            PopoverWrapperView(
+              backgroundColor: Color(braveSystemName: .containerBackground)
+            ) {
+              AIChatPageContextInfoView(url: url, pageTitle: pageTitle)
+                .background(Color(braveSystemName: .containerBackground))
+            }
           }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
       }
     )
     .tint(Color(braveSystemName: isToggleOn ? .primary60 : .gray30))
@@ -60,8 +69,12 @@ struct AIChatPageContextView<InfoView>: View where InfoView: View {
 #if DEBUG
 struct AIChatPageContextView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatPageContextView(isToggleOn: .constant(true)) {}
-      .previewLayout(.sizeThatFits)
+    AIChatPageContextView(
+      isToggleOn: .constant(true),
+      url: URL(string: "https://brave.com"),
+      pageTitle: "Brave Private Browser"
+    )
+    .previewLayout(.sizeThatFits)
   }
 }
 #endif

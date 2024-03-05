@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveCore
+import BraveUI
 import DesignSystem
 import SwiftUI
 
@@ -94,10 +95,12 @@ struct AIChatNavigationView<Content>: View where Content: View {
               .tint(Color(braveSystemName: .textInteractive))
           }
           .padding()
-          .popover(
+          .bravePopover(
             isPresented: $showSettingsMenu,
             content: {
-              menuContent()
+              PopoverWrapperView(backgroundColor: Color(braveSystemName: .containerBackground)) {
+                menuContent()
+              }
             }
           )
         }
@@ -120,7 +123,9 @@ struct AIChatNavigationView_Preview: PreviewProvider {
         print("Erased Chat History")
       },
       menuContent: {
-        EmptyView()
+        PopoverWrapperView(backgroundColor: Color(braveSystemName: .containerBackground)) {
+          EmptyView()
+        }
       }
     )
     .previewLayout(.sizeThatFits)

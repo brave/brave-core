@@ -206,22 +206,8 @@ public struct AIChatView: View {
         if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
           AIChatPageContextView(
             isToggleOn: $model.shouldSendPageContents,
-            infoContent: {
-              AIChatPageContextInfoView(
-                url: model.getLastCommittedURL(),
-                pageTitle: model.getPageTitle() ?? ""
-              )
-              .padding([.horizontal, .bottom])
-              .background(Color(braveSystemName: .containerBackground))
-              .osAvailabilityModifiers({ view in
-                if #available(iOS 16.4, *) {
-                  view
-                    .presentationCompactAdaptation(.popover)
-                } else {
-                  view
-                }
-              })
-            }
+            url: model.getLastCommittedURL(),
+            pageTitle: model.getPageTitle() ?? ""
           )
           .padding(.horizontal, 8.0)
           .padding(.bottom, 12.0)
@@ -323,15 +309,7 @@ public struct AIChatView: View {
           }
         }
       )
-      .frame(minWidth: 300)
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 16.4, *) {
-          view
-            .presentationCompactAdaptation(.popover)
-        } else {
-          view
-        }
-      })
+      .frame(minWidth: min(300.0, UIScreen.main.bounds.width))
     }
   }
 
@@ -551,8 +529,10 @@ struct AIChatView_Preview: PreviewProvider {
       Spacer()
 
       AIChatPageContextView(
-        isToggleOn: .constant(true)
-      ) {}
+        isToggleOn: .constant(true),
+        url: URL(string: "https://brave.com"),
+        pageTitle: "Brave Private Browser"
+      )
       .padding()
 
       AIChatPromptInputView {

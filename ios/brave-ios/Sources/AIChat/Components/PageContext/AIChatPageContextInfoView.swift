@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
 import DesignSystem
 import Favicon
 import SwiftUI
@@ -17,7 +18,6 @@ struct AIChatPageContextInfoView: View {
         .font(.caption)
         .foregroundStyle(Color(braveSystemName: .textTertiary))
         .fixedSize(horizontal: false, vertical: true)
-        .frame(maxWidth: .infinity, alignment: .leading)
 
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
@@ -31,8 +31,16 @@ struct AIChatPageContextInfoView: View {
         Text(pageTitle)
           .font(.caption)
           .foregroundStyle(Color(braveSystemName: .textSecondary))
+          .fixedSize(horizontal: false, vertical: true)
       }
     }
+    .padding()
+  }
+}
+
+extension AIChatPageContextInfoView: PopoverContentComponent {
+  var popoverBackgroundColor: UIColor {
+    UIColor(braveSystemName: .containerBackground)
   }
 }
 
