@@ -744,7 +744,7 @@ TEST(SwapRequestHelperUnitTest, EncodeLiFiQuoteParams) {
   params->slippage_percentage = "3";
   params->route_priority = mojom::RoutePriority::kSafest;
 
-  auto encoded_params = lifi::EncodeQuoteParams(std::move(params));
+  auto encoded_params = lifi::EncodeQuoteParams(std::move(params), "0.2");
   ASSERT_NE(encoded_params, std::nullopt);
   std::string expected_params(R"(
     {

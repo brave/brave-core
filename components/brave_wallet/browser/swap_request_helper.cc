@@ -359,7 +359,9 @@ std::optional<base::Value::Dict> EncodeStep(mojom::LiFiStepPtr step) {
 
 }  // namespace
 
-std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
+std::optional<std::string> EncodeQuoteParams(
+    mojom::SwapQuoteParamsPtr params,
+    const std::optional<std::string>& fee_param) {
   base::Value::Dict result;
 
   if (auto chain_id = EncodeChainId(params->from_chain_id)) {
@@ -390,7 +392,13 @@ std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params) {
   options.Set("insurance", true);
   options.Set("integrator", kLiFiIntegratorID);
   options.Set("allowSwitchChain", false);
-  options.Set("fee", 0.2);  // FIXME
+
+  if (fee_param.has_value() && !fee_param->empty()) {
+    double fee = 0.0;
+    if (base::StringToDouble(fee_param.value(), &fee)) {
+      options.Set("fee", fee);
+    }
+  }
 
   double slippage_percentage = 0.0;
   if (base::StringToDouble(params->slippage_percentage, &slippage_percentage)) {

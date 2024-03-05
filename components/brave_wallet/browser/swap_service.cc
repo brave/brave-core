@@ -416,15 +416,16 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
   if (IsNetworkSupportedByLiFi(params->from_chain_id) &&
       IsNetworkSupportedByLiFi(params->to_chain_id)) {
-    auto encoded_params = lifi::EncodeQuoteParams(std::move(params));
+    auto swap_fee = GetLiFiSwapFee();
+    auto fee_param = swap_fee->fee_param;
+
+    auto encoded_params = lifi::EncodeQuoteParams(std::move(params), fee_param);
     if (!encoded_params) {
       std::move(callback).Run(
           nullptr, nullptr, nullptr,
           l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
       return;
     }
-
-    auto swap_fee = GetLiFiSwapFee();
 
     auto internal_callback = base::BindOnce(
         &SwapService::OnGetLiFiQuote, weak_ptr_factory_.GetWeakPtr(),

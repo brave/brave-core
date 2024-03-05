@@ -19,7 +19,9 @@ std::optional<std::string> EncodeTransactionParams(
 }  // namespace jupiter
 
 namespace lifi {
-std::optional<std::string> EncodeQuoteParams(mojom::SwapQuoteParamsPtr params);
+std::optional<std::string> EncodeQuoteParams(
+    mojom::SwapQuoteParamsPtr params,
+    const std::optional<std::string>& fee_param);
 
 std::optional<std::string> EncodeTransactionParams(mojom::LiFiStepPtr step);
 }  // namespace lifi
