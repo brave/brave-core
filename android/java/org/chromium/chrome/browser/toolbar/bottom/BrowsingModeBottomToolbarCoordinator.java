@@ -133,7 +133,7 @@ public class BrowsingModeBottomToolbarCoordinator {
                                 assert false;
                                 return;
                             }
-                            activity.addOrEditBookmark(tab);
+                            activity.addOrEditBookmark(tab, false);
                         } catch (BraveActivity.BraveActivityNotFoundException e) {
                             Log.e(TAG, "BookmarkButton click " + e);
                         }

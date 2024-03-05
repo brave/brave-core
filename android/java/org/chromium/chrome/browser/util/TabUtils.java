@@ -83,12 +83,15 @@ public class TabUtils {
 
         MenuCompat.setGroupDividerEnabled(popup.getMenu(), true);
 
+        MenuItem addToFavoritesMenuItem = popup.getMenu().findItem(R.id.add_bookmark_to_favorites);
         MenuItem addMenuItem = popup.getMenu().findItem(R.id.add_bookmark);
         MenuItem editMenuItem = popup.getMenu().findItem(R.id.edit_bookmark);
         MenuItem viewMenuItem = popup.getMenu().findItem(R.id.view_bookmarks);
         MenuItem deleteMenuItem = popup.getMenu().findItem(R.id.delete_bookmark);
 
         if (GlobalNightModeStateProviderHolder.getInstance().isInNightMode()) {
+            addToFavoritesMenuItem.getIcon().setTint(
+                    ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
             addMenuItem.getIcon().setTint(
                     ContextCompat.getColor(context, R.color.bookmark_menu_text_color));
             editMenuItem.getIcon().setTint(
@@ -101,12 +104,14 @@ public class TabUtils {
 
         if (editingAllowed) {
             if (isBookmarked) {
+                addToFavoritesMenuItem.setVisible(false);
                 addMenuItem.setVisible(false);
             } else {
                 editMenuItem.setVisible(false);
                 deleteMenuItem.setVisible(false);
             }
         } else {
+            addToFavoritesMenuItem.setVisible(false);
             addMenuItem.setVisible(false);
             editMenuItem.setVisible(false);
             deleteMenuItem.setVisible(false);
@@ -126,8 +131,11 @@ public class TabUtils {
                     return false;
                 }
 
-                if (id == R.id.add_bookmark || id == R.id.delete_bookmark) {
-                    activity.addOrEditBookmark(currentTab);
+                if (id == R.id.add_bookmark_to_favorites) {
+                    activity.addOrEditBookmark(currentTab, true);
+                    return true;
+                } else if (id == R.id.add_bookmark || id == R.id.delete_bookmark) {
+                    activity.addOrEditBookmark(currentTab, false);
                     return true;
                 } else if (id == R.id.edit_bookmark && bridge != null) {
                     BookmarkId bookmarkId = bridge.getUserBookmarkIdForTab(currentTab);

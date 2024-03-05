@@ -76,6 +76,8 @@ public final class BravePreferenceKeys {
     public static final String PREF_CONTINUOUS_LISTENING = "continuous_listening";
     public static final String PREF_RESET_PLAYLIST = "reset_playlist";
 
+    public static final String FAVORITES_FOLDER_ID = "favorites_folder_id";
+
     // These are dynamic keys
     public static final String BRAVE_RECYCLERVIEW_POSITION = "recyclerview_visible_position_";
     public static final String BRAVE_RECYCLERVIEW_OFFSET_POSITION = "recyclerview_offset_position_";

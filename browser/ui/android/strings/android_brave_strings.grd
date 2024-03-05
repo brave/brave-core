@@ -1254,6 +1254,9 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_RESET_BRAVE_REWARDS_OPTION_DESCRIPTION" desc="Description for preference to reset Brave Rewards.">
         This will delete your Brave Rewards and reset all of your Brave Rewards data
       </message>
+      <message name="IDS_ADD_TO_FAVORITES_MENU" desc="Add to favorites menu item text for the bookmark button.">
+        Add to favorites
+      </message>
       <message name="IDS_ADD_BOOKMARK_MENU" desc="Add Bookmark menu item text for the bookmark button.">
         Add Bookmark
       </message>
@@ -3812,6 +3815,9 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_SETTINGS_AUTOMATIC_MODE_DESCRIPTION_FALLBACK" desc="Descriptive text that appears below IDS_SETTINGS_AUTOMATIC_MODE_LABEL.">
       If your current service provider is insecure, Brave uses a secure alternative DNS provider
     </message>
+    <message name="IDS_FAVORITES" desc="Favorites folder text">
+        Favorites
+      </message>
     <!-- End of Secure DNS Settings -->
   </messages>
   </release>

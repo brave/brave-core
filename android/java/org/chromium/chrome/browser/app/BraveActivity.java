@@ -58,6 +58,7 @@ import org.chromium.base.ThreadUtils;
 import org.chromium.base.supplier.ObservableSupplier;
 import org.chromium.base.supplier.UnownedUserDataSupplier;
 import org.chromium.base.task.PostTask;
+import org.chromium.chrome.browser.bookmarks.BraveBookmarkUtils;
 import org.chromium.base.task.TaskTraits;
 import org.chromium.brave_news.mojom.BraveNewsController;
 import org.chromium.brave_wallet.mojom.AssetRatioService;
@@ -127,6 +128,7 @@ import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.permissions.NotificationPermissionController;
 import org.chromium.chrome.browser.notifications.retention.RetentionNotificationUtil;
 import org.chromium.chrome.browser.ntp.NewTabPageManager;
+import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.v2.HighlightDialogFragment;
 import org.chromium.chrome.browser.onboarding.v2.HighlightItem;
@@ -940,7 +942,6 @@ public abstract class BraveActivity extends ChromeActivity
     @Override
     public void finishNativeInitialization() {
         super.finishNativeInitialization();
-
         boolean isFirstInstall = PackageUtils.isFirstInstall(this);
 
         BraveSearchEngineUtils.initializeBraveSearchEngineStates(
@@ -1176,6 +1177,10 @@ public abstract class BraveActivity extends ChromeActivity
             calender.setTime(new Date());
             calender.add(Calendar.DATE, DAYS_7);
             BraveRewardsHelper.setRewardsOnboardingIconTiming(calender.getTimeInMillis());
+        }
+
+        if (isFirstInstall) {
+            BraveBookmarkUtils.addFavoriteFolder(BraveActivity.this, Profile.getLastUsedRegularProfile());
         }
     }
 
@@ -2138,9 +2143,13 @@ public abstract class BraveActivity extends ChromeActivity
         return layout;
     }
 
-    public void addOrEditBookmark(final Tab tabToBookmark) {
+    public void addOrEditBookmark(final Tab tabToBookmark, boolean isFavorites) {
         RateUtils.getInstance().setPrefAddedBookmarkCount();
-        ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
+        if (isFavorites) {
+            BraveBookmarkUtils.addBookmarksToFavorites(BraveActivity.this, Profile.getLastUsedRegularProfile(), tabToBookmark);
+        } else {
+            ((TabBookmarker) mTabBookmarkerSupplier.get()).addOrEditBookmark(tabToBookmark);
+        }
     }
 
     // We call that method with an interval

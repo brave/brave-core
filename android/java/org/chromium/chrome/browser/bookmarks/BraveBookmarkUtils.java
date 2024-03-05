@@ -14,13 +14,20 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import org.chromium.base.Callback;
 import org.chromium.base.ContextUtils;
+import android.text.TextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.R;
 import org.chromium.chrome.browser.IntentHandler;
 import org.chromium.chrome.browser.app.bookmarks.BraveBookmarkActivity;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.components.bookmarks.BookmarkId;
 import org.chromium.components.bookmarks.BookmarkItem;
 import org.chromium.components.bookmarks.BookmarkType;
+import org.chromium.chrome.browser.bookmarks.BookmarkModel;
+import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
+import androidx.annotation.NonNull;
+import org.chromium.base.BravePreferenceKeys;
+import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.components.browser_ui.bottomsheet.BottomSheetController;
 
 /**
@@ -90,5 +97,39 @@ public class BraveBookmarkUtils extends BookmarkUtils {
     public static boolean isSpecialFolder(BookmarkModel bookmarkModel, BookmarkItem item) {
         // This is to avoid the root folder to have different color and tint.
         return false;
+    }
+
+    public static void addBookmarksToFavorites(
+            Activity activity,
+            @NonNull Profile profile,
+            @NonNull Tab tab) {
+        BookmarkModel bookmarkModel = BookmarkModel.getForProfile(profile);
+        assert bookmarkModel != null;
+        BookmarkId favoritesBookmarkId = getFavoritesFolderId();
+        BookmarkId tabToBookmark =
+                    addBookmarkInternal(
+                            activity,
+                            bookmarkModel,
+                            tab.getTitle(),
+                            tab.getOriginalUrl(),
+                            favoritesBookmarkId,
+                            BookmarkType.NORMAL);
+    }
+
+    private static BookmarkId getFavoritesFolderId() {
+        String favoritesBookmarkId = ChromeSharedPreferences.getInstance().readString(BravePreferenceKeys.FAVORITES_FOLDER_ID, "");
+        return BookmarkId.getBookmarkIdFromString(favoritesBookmarkId);
+    }
+
+    public static void addFavoriteFolder(Activity activity, @NonNull Profile profile) {
+        String favoritesBookmarkId = ChromeSharedPreferences.getInstance().readString(BravePreferenceKeys.FAVORITES_FOLDER_ID, "");
+        if (TextUtils.isEmpty(favoritesBookmarkId)) {
+            BookmarkModel bookmarkModel = BookmarkModel.getForProfile(profile);
+            BookmarkId favoritesFolderId = bookmarkModel.addFolder(
+                bookmarkModel.getDefaultFolder(),
+                0,
+                activity.getResources().getString(R.string.favorites));
+            ChromeSharedPreferences.getInstance().writeString(BravePreferenceKeys.FAVORITES_FOLDER_ID, favoritesFolderId.toString());
+        }
     }
 }

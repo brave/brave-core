@@ -8,6 +8,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:id="@+id/bookmark">
+        <item 
+            android:id="@+id/add_bookmark_to_favorites"
+            android:icon="@drawable/ic_widget_generic"
+            android:title="@string/add_to_favorites_menu" />
+
        <item 
             android:id="@+id/add_bookmark"
             android:icon="@drawable/ic_bookmark_menu_add"
