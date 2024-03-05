@@ -412,38 +412,39 @@ extension URL {
 
 extension URL {
   public var isBookmarklet: Bool {
-    return self.absoluteString.isBookmarklet
-  }
-
-  public var bookmarkletCodeComponent: String? {
-    return self.absoluteString.bookmarkletCodeComponent
-  }
-}
-
-extension String {
-  public var isBookmarklet: Bool {
-    let url = self.lowercased()
-    return url.hasPrefix("javascript:") && !url.hasPrefix("javascript:/")
+    if let scheme = self.scheme {
+      return scheme == "javascript"
+    }
+    return self.absoluteString.hasPrefix("javascript:")
   }
 
   public var bookmarkletCodeComponent: String? {
     if self.isBookmarklet {
-      if let result = String(self.dropFirst("javascript:".count)).removingPercentEncoding {
-        return result.isEmpty ? nil : result
+      // Chrome, Safari, Desktop all treat anything after `javascript:` including `//` as the component!
+      // So `javascript:/` has a component of `/`
+      // `javascript://test` has a component of `//test`
+      if self.absoluteString.hasPrefix("javascript:") {
+        if let result = String(self.absoluteString.dropFirst("javascript:".count))
+          .removingPercentEncoding
+        {
+          return result.isEmpty ? nil : result
+        }
       }
     }
     return nil
   }
 
-  public var bookmarkletURL: URL? {
-    if self.isBookmarklet,
-      let escaped = self.addingPercentEncoding(withAllowedCharacters: .urlAllowed)
+  public static func bookmarkletURL(from string: String) -> URL? {
+    if string.hasPrefix("javascript:"),
+      let escaped = string.addingPercentEncoding(withAllowedCharacters: .urlAllowed)
     {
       return URL(string: escaped)
     }
     return nil
   }
+}
 
+extension String {
   public func removeSchemeFromURLString(_ scheme: String?) -> String {
     guard let scheme = scheme else {
       return self
