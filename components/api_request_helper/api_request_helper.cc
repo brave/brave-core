@@ -32,6 +32,9 @@
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 
+static_assert(BUILDFLAG(BUILD_RUST_JSON_READER),
+              "To use Rust sanitizer BUILD_RUST_JSON_READER should be enabled");
+
 namespace api_request_helper {
 
 namespace {
@@ -340,7 +343,6 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
 void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
     std::string json,
     data_decoder::DataDecoder::ValueParseCallback callback) {
-#if BUILDFLAG(BUILD_RUST_JSON_READER)
   if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
     task_runner_->PostTaskAndReplyWithResult(
         FROM_HERE,
@@ -359,7 +361,6 @@ void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
             std::move(callback)));
     return;
   }
-#endif  // BUILDFLAG(BUILD_RUST_JSON_READER)
   if (!data_decoder_) {
     VLOG(1) << "Creating DataDecoder for APIRequestHelper";
     data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
