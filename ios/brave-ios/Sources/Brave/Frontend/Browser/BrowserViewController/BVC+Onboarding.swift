@@ -25,8 +25,6 @@ extension BrowserViewController {
   }
 
   private func presentOnboardingWelcomeScreen(on parentController: UIViewController) {
-    if Preferences.DebugFlag.skipOnboardingIntro == true { return }
-
     // 1. Existing user.
     // 2. User already completed onboarding.
     if Preferences.Onboarding.basicOnboardingCompleted.value == OnboardingState.completed.rawValue {
@@ -46,19 +44,6 @@ extension BrowserViewController {
       onboardingController.modalPresentationStyle = .fullScreen
       parentController.present(onboardingController, animated: false)
       isOnboardingOrFullScreenCalloutPresented = true
-    }
-  }
-
-  private func addNTPTutorialPage() {
-    let basicOnboardingNotCompleted =
-      Preferences.Onboarding.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
-
-    if basicOnboardingNotCompleted, showNTPEducation().isEnabled, let url = showNTPEducation().url {
-      tabManager.addTab(
-        PrivilegedRequest(url: url) as URLRequest,
-        afterTab: self.tabManager.selectedTab,
-        isPrivate: privateBrowsingManager.isPrivateBrowsing
-      )
     }
   }
 
@@ -125,6 +110,19 @@ extension BrowserViewController {
         }
       }
     )
+  }
+
+  private func addNTPTutorialPage() {
+    let basicOnboardingNotCompleted =
+      Preferences.Onboarding.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
+
+    if basicOnboardingNotCompleted, showNTPEducation().isEnabled, let url = showNTPEducation().url {
+      tabManager.addTab(
+        PrivilegedRequest(url: url) as URLRequest,
+        afterTab: self.tabManager.selectedTab,
+        isPrivate: privateBrowsingManager.isPrivateBrowsing
+      )
+    }
   }
 
   private func triggerPromotedInAppPurchase(savedPayment: SKPayment?) {
@@ -194,6 +192,18 @@ extension BrowserViewController {
         }
       }
     )
+  }
+
+  /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
+  /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
+  func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
+    return (Locale.current.regionCode == "JP", .brave.ntpTutorialPage)
+  }
+
+  func completeOnboarding(_ controller: UIViewController) {
+    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.AppState.isOnboardingActive.value = false
+    controller.dismiss(animated: true)
   }
 
   private func presentPopoverContent(
@@ -281,49 +291,6 @@ extension BrowserViewController {
         return path
       }()
     }
-  }
-
-  func notifyTrackersBlocked(
-    domain: String,
-    displayTrackers: [AdBlockTrackerType],
-    trackerCount: Int
-  ) {
-    let controller = WelcomeBraveBlockedAdsController().then {
-      $0.setData(displayTrackers: displayTrackers.map(\.rawValue), trackerCount: trackerCount)
-    }
-
-    let popover = PopoverController(contentController: controller)
-    popover.previewForOrigin = .init(
-      view: topToolbar.shieldsButton,
-      action: { [weak self] popover in
-        popover.dismissPopover {
-          self?.presentBraveShieldsViewController()
-        }
-      }
-    )
-    popover.present(from: topToolbar.shieldsButton, on: self)
-
-    popover.popoverDidDismiss = { [weak self] _ in
-      DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-        guard let self = self else { return }
-
-        if self.shouldShowPlaylistOnboardingThisSession {
-          self.showPlaylistOnboarding(tab: self.tabManager.selectedTab)
-        }
-      }
-    }
-  }
-
-  /// New Tab Page Education screen should load after onboarding is finished and user is on locale JP
-  /// - Returns: A tuple which shows NTP Education is enabled and URL to be loaded
-  func showNTPEducation() -> (isEnabled: Bool, url: URL?) {
-    return (Locale.current.regionCode == "JP", .brave.ntpTutorialPage)
-  }
-
-  func completeOnboarding(_ controller: UIViewController) {
-    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-    Preferences.AppState.isOnboardingActive.value = false
-    controller.dismiss(animated: true)
   }
 }
 

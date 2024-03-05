@@ -56,6 +56,8 @@ public enum FullScreenCalloutType: CaseIterable {
 }
 
 public struct FullScreenCalloutManager {
+  public static let delayAmountJpOnboarding = 3.days
+
   /// It determines whether we should show show the designated callout or not and sets corresponding preferences accordingly.
   /// Returns true if the callout should be shown.
   public static func shouldShowCallout(calloutType: FullScreenCalloutType) -> Bool {

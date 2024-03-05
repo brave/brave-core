@@ -249,7 +249,7 @@ public class BrowserViewController: UIViewController {
 
   /// Boolean which is tracking If a product notification is presented
   /// in order to not to try to present another one over existing popover
-  var benchmarkNotificationPresented = false
+  var adblockProductNotificationPresented = false
   /// The string domain will be kept temporarily which is tracking site notification presented
   /// in order to not to process site list again and again
   var currentBenchmarkWebsite = ""
@@ -961,7 +961,7 @@ public class BrowserViewController: UIViewController {
       )
       $0.addObserver(
         self,
-        selector: #selector(updateShieldNotifications),
+        selector: #selector(showEducationalNotifications),
         name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
         object: nil
       )
