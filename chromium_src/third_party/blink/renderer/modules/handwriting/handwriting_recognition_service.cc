@@ -40,14 +40,15 @@ ScriptPromise HandwritingRecognitionService::createHandwritingRecognizer(
 }
 
 // static
-ScriptPromise HandwritingRecognitionService::queryHandwritingRecognizer(
+ScriptPromiseTyped<IDLNullable<HandwritingRecognizerQueryResult>>
+HandwritingRecognitionService::queryHandwritingRecognizer(
     ScriptState*,
     Navigator&,
     const HandwritingModelConstraint*,
     ExceptionState& exception_state) {
   exception_state.ThrowDOMException(DOMExceptionCode::kNotSupportedError,
                                     kHandwritingDisabledError);
-  return ScriptPromise();
+  return ScriptPromiseTyped<IDLNullable<HandwritingRecognizerQueryResult>>();
 }
 
 void HandwritingRecognitionService::Trace(Visitor* visitor) const {
