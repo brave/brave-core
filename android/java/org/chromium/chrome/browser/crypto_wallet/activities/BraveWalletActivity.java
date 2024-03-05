@@ -5,6 +5,7 @@
 
 package org.chromium.chrome.browser.crypto_wallet.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -87,7 +89,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
     private View mCryptoOnboardingLayout;
     private ImageView mOnboardingCloseButton;
     private ImageView mOnboardingBackButton;
-    private ViewPager mCryptoWalletOnboardingViewPager;
+    private ViewPager2 mCryptoWalletOnboardingViewPager;
     private ModalDialogManager mModalDialogManager;
     private CryptoWalletOnboardingPagerAdapter mCryptoWalletOnboardingPagerAdapter;
     private boolean mShowBiometricPrompt;
@@ -147,11 +149,12 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
 
         mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         mCryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
+        mCryptoWalletOnboardingViewPager.setUserInputEnabled(false);
         mCryptoWalletOnboardingPagerAdapter =
-                new CryptoWalletOnboardingPagerAdapter(getSupportFragmentManager());
+                new CryptoWalletOnboardingPagerAdapter(this);
         mCryptoWalletOnboardingViewPager.setAdapter(mCryptoWalletOnboardingPagerAdapter);
         mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(
-                mCryptoWalletOnboardingPagerAdapter.getCount() - 1);
+                mCryptoWalletOnboardingPagerAdapter.getItemCount() - 1);
 
         mOnboardingCloseButton = findViewById(R.id.onboarding_close_button);
         mOnboardingCloseButton.setOnClickListener(v -> finish());
@@ -207,6 +210,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         };
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void setNavigationFragments(@NonNull final WalletAction walletAction) {
         List<NavigationItem> navigationItems = new ArrayList<>();
         mShowBiometricPrompt = true;
@@ -240,6 +244,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         addRemoveSecureFlag(true);
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     private void replaceNavigationFragments(@NonNull final WalletAction walletAction) {
         if (mCryptoWalletOnboardingViewPager == null) return;
         if (mCryptoWalletOnboardingPagerAdapter == null) return;
@@ -340,6 +345,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
                         getResources().getString(stringId), onboardingCreatingWalletFragment));
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void showOnboardingLayout() {
         addRemoveSecureFlag(true);
         mCryptoOnboardingLayout.setVisibility(View.VISIBLE);
@@ -377,7 +383,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         if (mCryptoWalletOnboardingViewPager != null
                 && mCryptoWalletOnboardingViewPager.getAdapter() != null
                 && mCryptoWalletOnboardingViewPager.getCurrentItem()
-                        < mCryptoWalletOnboardingViewPager.getAdapter().getCount() - 1) {
+                        < mCryptoWalletOnboardingViewPager.getAdapter().getItemCount() - 1) {
             mCryptoWalletOnboardingViewPager.setCurrentItem(
                     mCryptoWalletOnboardingViewPager.getCurrentItem() + 1);
         }
