@@ -51,17 +51,17 @@ void BuildAndSaveConversionQueueItems(const AdType ad_type,
                                       const bool is_verifiable,
                                       const bool should_use_random_uuids,
                                       const int count) {
-  const AdInfo ad = BuildAd(ad_type, should_use_random_uuids);
-
   std::optional<VerifiableConversionInfo> verifiable_conversion;
   if (is_verifiable) {
     verifiable_conversion = VerifiableConversionInfo{
         kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
   }
 
+  const AdInfo ad = BuildAd(ad_type, should_use_random_uuids);
+  const AdEventInfo ad_event =
+      BuildAdEvent(ad, confirmation_type, /*created_at=*/Now());
   const ConversionInfo conversion =
-      BuildConversion(BuildAdEvent(ad, confirmation_type, /*created_at=*/Now()),
-                      verifiable_conversion);
+      BuildConversion(ad_event, verifiable_conversion);
 
   const ConversionQueueItemList conversion_queue_items =
       BuildConversionQueueItems(conversion, count);

@@ -623,6 +623,8 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_handler_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder_unittest.cc",
+    "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder_unittest_util.cc",
+    "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder_unittest_util.h",
     "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_feature_unittest.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/conversions/conversions_observer_mock.cc",
