@@ -5,15 +5,8 @@
 
 import * as mojom from 'gen/brave/components/brave_rewards/common/mojom/rewards_panel.mojom.m.js'
 
-import { Host, GrantCaptchaStatus } from './interfaces'
-import { GrantInfo } from '../../shared/lib/grant_info'
-
-import {
-  ClaimGrantAction,
-  GrantAvailableNotification,
-  OpenLinkAction
-} from '../../shared/components/notifications'
-
+import { Host } from './interfaces'
+import { OpenLinkAction } from '../../shared/components/notifications'
 import { ExternalWalletAction } from '../../shared/components/wallet_card'
 import { getInitialState } from './initial_state'
 import { createStateManager } from '../../shared/lib/state_manager'
@@ -23,7 +16,7 @@ import { RewardsPanelProxy } from './rewards_panel_proxy'
 import * as apiAdapter from './extension_api_adapter'
 import * as urls from '../../shared/lib/rewards_urls'
 
-type LocalStorageKey = 'catcha-grant-id' | 'load-adaptive-captcha'
+type LocalStorageKey = 'load-adaptive-captcha'
 
 function getCurrentTabInfo () {
   interface TabInfo {
@@ -55,7 +48,6 @@ function openTab (url: string) {
 export function createHost (): Host {
   const stateManager = createStateManager(getInitialState())
   const storage = createLocalStorageScope<LocalStorageKey>('rewards-panel')
-  const grants = new Map<string, GrantInfo>()
 
   const proxy = RewardsPanelProxy.getInstance()
 
@@ -70,47 +62,6 @@ export function createHost (): Host {
         publisherInfo: await apiAdapter.getPublisherInfo(tabInfo.id)
       })
     }
-  }
-
-  function clearGrantCaptcha () {
-    stateManager.update({ grantCaptchaInfo: null })
-    storage.writeJSON('catcha-grant-id', '')
-  }
-
-  function loadGrantCaptcha (grantId: string, status: GrantCaptchaStatus) {
-    const grantInfo = grants.get(grantId)
-    if (!grantInfo) {
-      clearGrantCaptcha()
-      return
-    }
-
-    stateManager.update({
-      grantCaptchaInfo: {
-        id: '',
-        hint: '',
-        imageURL: '',
-        status,
-        verifying: false,
-        grantInfo
-      }
-    })
-
-    // Store the grant ID so that if the user closes and reopens the panel they
-    // can attempt the same captcha.
-    storage.writeJSON('catcha-grant-id', grantId)
-
-    chrome.braveRewards.claimPromotion(grantId, (properties) => {
-      stateManager.update({
-        grantCaptchaInfo: {
-          id: properties.captchaId,
-          hint: properties.hint,
-          imageURL: properties.captchaImage,
-          status,
-          verifying: false,
-          grantInfo
-        }
-      })
-    })
   }
 
   function clearAdaptiveCaptcha () {
@@ -173,12 +124,6 @@ export function createHost (): Host {
       return true
     }
 
-    const storedGrantId = storage.readJSON('catcha-grant-id')
-    if (storedGrantId && typeof storedGrantId === 'string') {
-      loadGrantCaptcha(storedGrantId, 'pending')
-      return true
-    }
-
     return false
   }
 
@@ -187,19 +132,9 @@ export function createHost (): Host {
       case mojom.RewardsPanelView.kRewardsSetup:
         stateManager.update({ requestedView: 'rewards-setup' })
         break
-      case mojom.RewardsPanelView.kGrantCaptcha:
-        loadGrantCaptcha(args.data, 'pending')
-        break
       case mojom.RewardsPanelView.kAdaptiveCaptcha:
         loadAdaptiveCaptcha()
         break
-    }
-  }
-
-  function updateGrants (list: GrantInfo[]) {
-    grants.clear()
-    for (const grant of list) {
-      grants.set(grant.id, grant)
     }
   }
 
@@ -221,29 +156,6 @@ export function createHost (): Host {
 
   function updateNotifications () {
     apiAdapter.getNotifications().then((notifications) => {
-      const { userType } = stateManager.getState()
-
-      // We do not want to display any "grant available" notifications if there
-      // is no corresponding grant information available. (This can occur if the
-      // grant is deleted on the server.) For any "grant available" notification
-      // that does not have a matching ID in the current grant map, filter it out
-      // of the list that is displayed to the user. Note that grant data must be
-      // loaded prior to this operation.
-      notifications = notifications.filter((notification) => {
-        if (notification.type === 'grant-available') {
-          // If the user is in the limited "unconnected" state they should not
-          // receive any grant notifications. If we recieve one, clear the
-          // notification from the store and do not display it.
-          if (userType === 'unconnected') {
-            chrome.rewardsNotifications.deleteNotification(notification.id)
-            return false
-          }
-          const { id } = (notification as GrantAvailableNotification).grantInfo
-          return grants.has(id)
-        }
-        return true
-      })
-
       stateManager.update({ notifications })
     }).catch(console.error)
   }
@@ -305,12 +217,9 @@ export function createHost (): Host {
       loadPanelData().catch(console.error)
     })
 
-    apiAdapter.onGrantsUpdated(updateGrants)
-
-    // Update the balance when a grant has been processed, when tips have been
-    // processed, or when the user's wallet is logged out.
+    // Update the balance when when tips have been processed, or when the user's
+    // wallet is logged out.
     chrome.braveRewards.onReconcileComplete.addListener(updateBalance)
-    chrome.braveRewards.onUnblindedTokensReady.addListener(updateBalance)
     chrome.braveRewards.onExternalWalletLoggedOut.addListener(updateBalance)
 
     // Update user type when the user's wallet is disconnected.
@@ -327,9 +236,6 @@ export function createHost (): Host {
 
   async function loadPanelData () {
     await Promise.all([
-      apiAdapter.getGrants().then((list) => {
-        updateGrants(list)
-      }),
       apiAdapter.getRewardsEnabled().then((rewardsEnabled) => {
         stateManager.update({ rewardsEnabled })
       }),
@@ -473,9 +379,6 @@ export function createHost (): Host {
         case 'open-link':
           openTab((action as OpenLinkAction).url)
           break
-        case 'claim-grant':
-          loadGrantCaptcha((action as ClaimGrantAction).grantId, 'pending')
-          break
         case 'reconnect-external-wallet':
           handleExternalWalletAction('reconnect')
           break
@@ -505,53 +408,6 @@ export function createHost (): Host {
     resetRewards () {
       openTab(urls.resetURL)
     },
-
-    solveGrantCaptcha (solution) {
-      const { grantCaptchaInfo } = stateManager.getState()
-      if (!grantCaptchaInfo) {
-        return
-      }
-
-      stateManager.update({
-        grantCaptchaInfo: { ...grantCaptchaInfo, verifying: true }
-      })
-
-      function mapResult (result: number): GrantCaptchaStatus {
-        switch (result) {
-          case 0: return 'passed'
-          case 6: return 'failed'
-          default: return 'error'
-        }
-      }
-
-      const json = JSON.stringify({
-        captchaId: grantCaptchaInfo.id,
-        x: Math.round(solution.x),
-        y: Math.round(solution.y)
-      })
-
-      const grantId = grantCaptchaInfo.grantInfo.id
-
-      chrome.braveRewards.attestPromotion(grantId, json, (result) => {
-        const { grantCaptchaInfo } = stateManager.getState()
-        if (!grantCaptchaInfo || grantCaptchaInfo.grantInfo.id !== grantId) {
-          return
-        }
-
-        const status = mapResult(result)
-
-        stateManager.update({
-          grantCaptchaInfo: { ...grantCaptchaInfo, status }
-        })
-
-        // If the user failed the captcha, request a new captcha for the user.
-        if (status === 'failed') {
-          loadGrantCaptcha(grantId, 'failed')
-        }
-      })
-    },
-
-    clearGrantCaptcha,
 
     clearAdaptiveCaptcha,
 

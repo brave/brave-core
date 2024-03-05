@@ -25,10 +25,7 @@ namespace brave_rewards::internal {
 namespace wallet {
 
 Wallet::Wallet(RewardsEngineImpl& engine)
-    : engine_(engine),
-      create_(engine),
-      balance_(engine),
-      promotion_server_(engine) {}
+    : engine_(engine), create_(engine), balance_(engine) {}
 
 Wallet::~Wallet() = default;
 

@@ -24,10 +24,7 @@ export const localeStrings = {
   connectWalletSelfCustodyTerms: '$1Terms of Use$2 and $3Privacy Policy$4.',
   connectWalletSelfCustodyError: 'Something went wrong. Please try again',
   connectWalletLoginText: 'Log in or sign up',
-  rewardsAdGrantTitle: 'Your $1 Ad Rewards are here!',
-  rewardsGrantDaysRemaining: 'You have $1 left to claim',
   rewardsLearnMore: 'Learn more',
-  rewardsTokenGrantTitle: 'A token grant is available!',
   newBadgeText: 'NEW',
 
   braveRewards: 'Brave Rewards',

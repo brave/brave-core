@@ -1404,12 +1404,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
-
-        if (type == BraveRewardsNativeWorker.REWARDS_NOTIFICATION_GRANT) {
-            // Set flag
-            ChromeSharedPreferences.getInstance()
-                    .writeBoolean(BraveRewardsPanel.PREF_GRANTS_NOTIFICATION_RECEIVED, true);
-        }
         mBraveRewardsNativeWorker.getAllNotifications();
     }
 

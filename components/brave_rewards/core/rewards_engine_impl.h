@@ -31,10 +31,6 @@ class URLLoader;
 class LinkageChecker;
 class SolanaWalletProvider;
 
-namespace promotion {
-class Promotion;
-}
-
 namespace publisher {
 class Publisher;
 }
@@ -63,10 +59,6 @@ class State;
 
 namespace api {
 class API;
-}
-
-namespace recovery {
-class Recovery;
 }
 
 namespace bitflyer {
@@ -149,16 +141,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
                            SetPublisherExcludeCallback callback) override;
 
   void RestorePublishers(RestorePublishersCallback callback) override;
-
-  void FetchPromotions(FetchPromotionsCallback callback) override;
-
-  void ClaimPromotion(const std::string& promotion_id,
-                      const std::string& payload,
-                      ClaimPromotionCallback callback) override;
-
-  void AttestPromotion(const std::string& promotion_id,
-                       const std::string& solution,
-                       AttestPromotionCallback callback) override;
 
   void SetPublisherMinVisitTime(int duration_in_seconds) override;
 
@@ -255,10 +237,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
 
-  void GetTransactionReport(mojom::ActivityMonth month,
-                            int year,
-                            GetTransactionReportCallback callback) override;
-
   void GetContributionReport(mojom::ActivityMonth month,
                              int year,
                              GetContributionReportCallback callback) override;
@@ -270,8 +248,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
                         GetMonthlyReportCallback callback) override;
 
   void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
-
-  void GetAllPromotions(GetAllPromotionsCallback callback) override;
 
   void Shutdown(ShutdownCallback callback) override;
 
@@ -376,8 +352,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
     return *helper;
   }
 
-  promotion::Promotion* promotion() { return promotion_.get(); }
-
   publisher::Publisher* publisher() { return publisher_.get(); }
 
   Media* media() { return media_.get(); }
@@ -391,8 +365,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   state::State* state() { return state_.get(); }
 
   api::API* api() { return api_.get(); }
-
-  recovery::Recovery* recovery() { return recovery_.get(); }
 
   bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
 
@@ -435,7 +407,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
              std::unique_ptr<SolanaWalletProvider>>
       helpers_;
 
-  std::unique_ptr<promotion::Promotion> promotion_;
   std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<Media> media_;
   std::unique_ptr<contribution::Contribution> contribution_;
@@ -444,7 +415,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::unique_ptr<report::Report> report_;
   std::unique_ptr<state::State> state_;
   std::unique_ptr<api::API> api_;
-  std::unique_ptr<recovery::Recovery> recovery_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;

@@ -1052,9 +1052,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_UI_REWARDS_CONTRIBUTE" desc="A message about auto-contribute">
         Auto-Contribute
       </message>
-      <message name="IDS_BRAVE_UI_CLAIM" desc="A claim grant button text">
-        Claim Rewards
-      </message>
       <message name="IDS_BALANCE" desc="Title text for `Your Balance` section in Brave rewards panel">
         Balance
       </message>
@@ -1063,18 +1060,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       </message>
       <message name="IDS_BRAVE_UI_NOTIFICATION_DESC_CONTR_ERROR" desc="A notification about contribution processing problem">
         There was a problem processing your contribution.
-      </message>
-      <message name="IDS_BRAVE_UI_NEW_TOKEN_GRANT" desc="A notification about free token grant">
-        A token grant is available!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TITLE" desc="Brave Ads notification title">
-        Your <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Ads Rewards are here!
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_TEXT" desc='Brave Ads notification text'>
-        <ph name="MONTH_VALUE">%1$s<ex>October</ex></ph> Rewards: <ph name="TOKEN">%2$s<ex>token</ex></ph> BAT
-      </message>
-      <message name="IDS_BRAVE_ADS_NOTIFICATION_SUB_TEXT" desc='Brave Ads notification sub text'>
-        You have <ph name="TOKEN">%1$s<ex>89</ex></ph> days left to claim
       </message>
       <message name="IDS_BRAVE_UI_ON_YOUTUBE" desc="A suffix to YouTube channel creator">
         on YouTube
@@ -3571,7 +3556,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     </message>
     <message name="IDS_BRAVE_LEO_CONFIRM_TEXT" desc="Text for Leo confirm button text.">
       Confirm
-    </message>  
+    </message>
     <message name="IDS_LINK_SUBSCRIPTION_TITLE_LEO" desc="Brave Leo link subscription settings title text">
       Link purchase to your Brave account
     </message>

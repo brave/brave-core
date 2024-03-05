@@ -11,8 +11,6 @@ namespace state {
 
 const char kServerPublisherListStamp[] = "publisher_prefix_list_stamp";
 const char kUpholdAnonAddress[] = "uphold_anon_address";  // DEPRECATED
-const char kPromotionLastFetchStamp[] = "promotion_last_fetch_stamp";
-const char kPromotionCorruptedMigrated[] = "promotion_corrupted_migrated2";
 const char kVersion[] = "version";
 const char kMinVisitTime[] = "ac.min_visit_time";
 const char kMinVisits[] = "ac.min_visits";
@@ -35,7 +33,6 @@ const char kParametersWalletProviderRegions[] =
 const char kParametersVBatDeadline[] = "parameters.vbat_deadline";
 const char kParametersVBatExpired[] = "parameters.vbat_expired";
 const char kParametersTosVersion[] = "parameters.tos_version";
-const char kEmptyBalanceChecked[] = "empty_balance_checked";
 const char kExternalWalletType[] = "external_wallet_type";
 const char kSelfCustodyAvailable[] = "self_custody_available";
 const char kSelfCustodyInviteDismissed[] = "self_custody_invite_dismissed";

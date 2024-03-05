@@ -32,15 +32,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   // service.
   virtual void OnTermsOfServiceUpdateAccepted() {}
 
-  virtual void OnFetchPromotions(RewardsService* rewards_service,
-                                 const mojom::Result result,
-                                 const std::vector<mojom::PromotionPtr>& list) {
-  }
-
-  virtual void OnPromotionFinished(RewardsService* rewards_service,
-                                   const mojom::Result result,
-                                   mojom::PromotionPtr promotion) {}
-
   virtual void OnExcludedSitesChanged(
       RewardsService* rewards_service,
       std::string publisher_id,
@@ -77,8 +68,6 @@ class RewardsServiceObserver : public base::CheckedObserver {
   virtual void OnExternalWalletReconnected() {}
 
   virtual void OnExternalWalletDisconnected() {}
-
-  virtual void OnUnblindedTokensReady(RewardsService* rewards_service) {}
 
   virtual void ReconcileStampReset() {}
 

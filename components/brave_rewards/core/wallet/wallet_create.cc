@@ -134,10 +134,6 @@ void WalletCreate::OnResult(CreateRewardsWalletCallback callback,
 
   if constexpr (std::is_same_v<Result, PostWallets::Result>) {
     engine_->state()->ResetReconcileStamp();
-    if (!engine_->options().is_testing) {
-      engine_->state()->SetEmptyBalanceChecked(true);
-      engine_->state()->SetPromotionCorruptedMigrated(true);
-    }
     engine_->state()->SetCreationStamp(util::GetCurrentTimeStamp());
     engine_->Get<LinkageChecker>().Start();
   }

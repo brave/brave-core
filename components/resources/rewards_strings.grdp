@@ -85,20 +85,8 @@
   <message name="IDS_REWARDS_WIDGET_ABOUT_REWARDS" desc="">
     Using Brave Rewards helps support content creators, and lets you earn BAT.
   </message>
-  <message name="IDS_REWARDS_WIDGET_AD_GRANT_AMOUNT" desc="">
-    <ph name="MONTH">$1<ex>January</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
-  </message>
-  <message name="IDS_REWARDS_WIDGET_AD_GRANT_TITLE" desc="">
-    Your <ph name="MONTH">$1<ex>January</ex></ph> Ad Rewards are here!
-  </message>
   <message name="IDS_REWARDS_WIDGET_BRAVE_REWARDS" desc="">
     Brave Rewards
-  </message>
-  <message name="IDS_REWARDS_WIDGET_CLAIM_REWARDS" desc="">
-    Claim Rewards
-  </message>
-  <message name="IDS_REWARDS_WIDGET_CLAIM_TOKENS" desc="">
-    Claim Tokens
   </message>
   <message name="IDS_REWARDS_WIDGET_CONTINUE" desc="">
     Continue
@@ -108,9 +96,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_HOW_DOES_IT_WORK" desc="">
     How does it work?
-  </message>
-  <message name="IDS_REWARDS_WIDGET_GRANT_DAYS_REMAINING" desc="">
-    You have <ph name="DAYS">$1<ex>80 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_WIDGET_OPT_IN_HEADER" desc="">
     Earn tokens for private ads you see in Brave
@@ -132,9 +117,6 @@
   </message>
   <message name="IDS_REWARDS_WIDGET_BALANCE_TITLE" desc="">
     Balance
-  </message>
-  <message name="IDS_REWARDS_WIDGET_TOKEN_GRANT_TITLE" desc="">
-    A token grant is available!
   </message>
 
   <!-- Rewards panel -->
@@ -204,51 +186,7 @@
     Action required: Connect a custodial account or your vBAT will be lost
   </message>
 
-  <!-- Rewards grant captcha modal -->
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_TITLE" desc="">
-    Confirm you are a human being
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_FAILED_TITLE" desc="">
-    Hmm… Not Quite. Try Again.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_HINT" desc="">
-    Drag the BAT icon to the <ph name="HINT">$1<ex>triangle</ex></ph> target.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_UGP" desc="">
-    It’s your lucky day!
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_UGP" desc="">
-    Your token grant is on its way.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_UGP" desc="">
-    Free Token Grant
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TITLE_ADS" desc="">
-    You've earned an Ads Reward!
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_PASSED_TEXT_ADS" desc="">
-    Your Reward is on its way.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_AMOUNT_ADS" desc="">
-    Your Reward Amount
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_EXPIRATION" desc="">
-    Grant Expiration Date
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TITLE" desc="">
-    Oops, something is wrong. Please try again later.
-  </message>
-  <message name="IDS_REWARDS_GRANT_CAPTCHA_ERROR_TEXT" desc="">
-    Brave Rewards is having an issue. Please try again later.
-  </message>
-
   <!-- Rewards panel notifications -->
-  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_REWARDS" desc="">
-    Claim Rewards
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_CLAIM_TOKENS" desc="">
-    Claim Tokens
-  </message>
   <message name="IDS_REWARDS_NOTIFICATION_AUTO_CONTRIBUTE_COMPLETED_TITLE" desc="">
     Auto-Contribute
   </message>
@@ -275,18 +213,6 @@
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_WALLET_DISCONNECTED_ACTION" desc="">
     Log in again
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_TOKEN_GRANT_TITLE" desc="">
-    A token grant is available!
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_AMOUNT" desc="">
-    <ph name="MONTH">$1<ex>December</ex></ph> Rewards: <ph name="AMOUNT">$2<ex>1.25 BAT</ex></ph>
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_AD_GRANT_TITLE" desc="">
-    Your <ph name="MONTH">$1<ex>December</ex></ph> Ad Rewards are here!
-  </message>
-  <message name="IDS_REWARDS_NOTIFICATION_GRANT_DAYS_REMAINING" desc="">
-    You have <ph name="DAYS">$1<ex>20 days</ex></ph> left to claim
   </message>
   <message name="IDS_REWARDS_NOTIFICATION_MONTHLY_CONTRIBUTION_FAILED_TEXT" desc="">
     There was a problem processing your contribution.

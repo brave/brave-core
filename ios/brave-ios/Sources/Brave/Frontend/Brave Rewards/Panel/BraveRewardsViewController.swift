@@ -95,7 +95,6 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       } else {
         self.rewardsView.publisherView.isHidden = true
       }
-      rewardsAPI.fetchPromotions(nil)
       rewardsAPI.listAutoContributePublishers { [weak self] list in
         guard let self = self else { return }
         self.supportedListCount = list.count

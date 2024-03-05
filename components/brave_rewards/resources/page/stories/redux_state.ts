@@ -131,7 +131,6 @@ export const reduxState: Rewards.ApplicationState = {
       adsMaxEarningsLastMonth: 0
     },
     adsHistory: [],
-    promotions: [],
     excludedList: [],
     externalWalletProviderList: ['uphold'],
     balance: optional<number>(),

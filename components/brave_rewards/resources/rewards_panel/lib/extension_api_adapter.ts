@@ -4,7 +4,6 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { Notification } from '../../shared/components/notifications'
-import { GrantInfo } from '../../shared/lib/grant_info'
 import { UserType, userTypeFromString } from '../../shared/lib/user_type'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { RewardsSummaryData } from '../../shared/components/wallet_card'
@@ -180,39 +179,6 @@ export function getNotifications () {
         }
       }
       resolve(notifications)
-    })
-  })
-}
-
-function promotionToGrant (promotion: RewardsExtension.Promotion): GrantInfo {
-  return {
-    id: promotion.promotionId,
-    type: promotion.type === 1 ? 'ads' : 'ugp',
-    amount: promotion.amount,
-    createdAt: promotion.createdAt * 1000 || null,
-    claimableUntil: promotion.claimableUntil * 1000 || null,
-    expiresAt: promotion.expiresAt * 1000 || null
-  }
-}
-
-type GrantsUpdatedCallback = (grants: GrantInfo[]) => void
-let grantsUpdatedCallbacks: GrantsUpdatedCallback[] = []
-
-chrome.braveRewards.onPromotions.addListener((result, promotions) => {
-  const grants = promotions.map(promotionToGrant)
-  for (const callback of grantsUpdatedCallbacks) {
-    callback(grants)
-  }
-})
-
-export function onGrantsUpdated (callback: (grants: GrantInfo[]) => void) {
-  grantsUpdatedCallbacks.push(callback)
-}
-
-export function getGrants () {
-  return new Promise<GrantInfo[]>((resolve) => {
-    chrome.braveRewards.fetchPromotions((promotions) => {
-      resolve(promotions.map(promotionToGrant))
     })
   })
 }

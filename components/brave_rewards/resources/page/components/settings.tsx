@@ -20,7 +20,6 @@ import { TipsPanel } from './tips_panel'
 import { MonthlyTipsPanel } from './monthly_tips_panel'
 import { SettingsOptInForm } from '../../shared/components/onboarding'
 import { ProviderRedirectModal } from './provider_redirect_modal'
-import { GrantList } from './grant_list'
 import { SidebarPromotionPanel } from './sidebar_promotion_panel'
 import { UnsupportedRegionNotice } from './unsupported_region_notice'
 import { BatIcon } from '../../shared/components/icons/bat_icon'
@@ -139,7 +138,6 @@ export function Settings () {
     actions.getIsAutoContributeSupported()
     actions.getAutoContributeProperties()
     actions.getBalance()
-    actions.fetchPromotions()
     actions.getExternalWallet()
     actions.getOnboardingStatus()
 
@@ -285,7 +283,6 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          {rewardsData.userType !== 'unconnected' && <GrantList />}
           <PageWallet layout={layoutKind} />
           <SidebarPromotionPanel />
         </style.sidebar>

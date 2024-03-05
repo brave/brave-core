@@ -76,18 +76,6 @@ function rewardsParameters (properties: Rewards.RewardsParameters) {
   actions.getContributionAmount()
 }
 
-function promotions (properties: Rewards.PromotionResponse) {
-  actions.onPromotions(properties)
-}
-
-function promotionClaimStarted (promotionId: string) {
-  actions.onPromotionClaimStarted(promotionId)
-}
-
-function promotionFinish (properties: Rewards.PromotionFinish) {
-  actions.onPromotionFinish(properties)
-}
-
 function reconcileStamp (stamp: number) {
   actions.onReconcileStamp(stamp)
 }
@@ -217,10 +205,6 @@ function onExternalWalletDisconnected () {
   actions.getUserType()
 }
 
-function unblindedTokensReady () {
-  actions.getBalance()
-}
-
 function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) {
   actions.onMonthlyReport(properties)
 }
@@ -272,9 +256,6 @@ Object.defineProperty(window, 'brave_rewards', {
     userType,
     isTermsOfServiceUpdateRequired,
     rewardsParameters,
-    promotions,
-    promotionClaimStarted,
-    promotionFinish,
     reconcileStamp,
     contributeList,
     externalWalletProviderList,
@@ -304,7 +285,6 @@ Object.defineProperty(window, 'brave_rewards', {
     onConnectExternalWallet,
     onExternalWalletLoggedOut,
     onExternalWalletDisconnected,
-    unblindedTokensReady,
     monthlyReport,
     reconcileStampReset,
     monthlyReportIds,

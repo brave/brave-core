@@ -25,8 +25,6 @@
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
-#include "brave/components/brave_rewards/core/database/database_multi_tables.h"
-#include "brave/components/brave_rewards/core/database/database_promotion.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/database/database_recurring_tip.h"
@@ -197,44 +195,6 @@ class Database {
                              PublisherInfoCallback callback);
 
   /**
-   * MULTI TABLE
-   * for queries that are not limited to one table
-   */
-  void GetTransactionReport(const mojom::ActivityMonth month,
-                            const int year,
-                            GetTransactionReportCallback callback);
-
-  /**
-   * PROMOTION
-   */
-  virtual void SavePromotion(mojom::PromotionPtr info, ResultCallback callback);
-
-  void GetPromotion(const std::string& id, GetPromotionCallback callback);
-
-  virtual void GetAllPromotions(GetAllPromotionsCallback callback);
-
-  void SavePromotionClaimId(const std::string& promotion_id,
-                            const std::string& claim_id,
-                            ResultCallback callback);
-
-  void UpdatePromotionStatus(const std::string& promotion_id,
-                             mojom::PromotionStatus status,
-                             ResultCallback callback);
-
-  void UpdatePromotionsStatus(const std::vector<std::string>& promotion_ids,
-                              mojom::PromotionStatus status,
-                              ResultCallback callback);
-
-  void PromotionCredentialCompleted(const std::string& promotion_id,
-                                    ResultCallback callback);
-
-  void GetPromotionList(const std::vector<std::string>& ids,
-                        GetPromotionListCallback callback);
-
-  void UpdatePromotionsBlankPublicKey(const std::vector<std::string>& ids,
-                                      ResultCallback callback);
-
-  /**
    * PUBLISHER INFO
    */
   void SavePublisherInfo(mojom::PublisherInfoPtr publisher_info,
@@ -359,9 +319,7 @@ class Database {
   DatabaseCredsBatch creds_batch_;
   DatabaseEventLog event_log_;
   DatabaseExternalTransactions external_transactions_;
-  DatabasePromotion promotion_;
   DatabaseMediaPublisherInfo media_publisher_info_;
-  DatabaseMultiTables multi_tables_;
   DatabasePublisherInfo publisher_info_;
   DatabasePublisherPrefixList publisher_prefix_list_;
   DatabaseRecurringTip recurring_tip_;

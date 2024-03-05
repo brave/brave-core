@@ -207,16 +207,7 @@ class RewardsDebugSettingsViewController: TableViewController {
               }
             },
             accessory: .disclosureIndicator
-          ),
-          Row(
-            text: "Fetch & Claim Promotions",
-            selection: { [unowned self] in
-              Task {
-                await self.fetchAndClaimPromotions()
-              }
-            },
-            cellClass: ButtonCell.self
-          ),
+          )
         ]
       ),
       Section(
@@ -309,48 +300,6 @@ class RewardsDebugSettingsViewController: TableViewController {
         ]
       ),
     ]
-  }
-
-  private func fetchAndClaimPromotions() async {
-    guard let rewardsAPI = rewards.rewardsAPI else { return }
-    let activePromotions: [BraveCore.BraveRewards.Promotion] = await withCheckedContinuation { c in
-      rewardsAPI.fetchPromotions { promotions in
-        c.resume(returning: promotions.filter { $0.status == .active })
-      }
-    }
-    if activePromotions.isEmpty {
-      let alert = UIAlertController(
-        title: "Promotions",
-        message: "No Active Promotions Found",
-        preferredStyle: .alert
-      )
-      alert.addAction(.init(title: "OK", style: .default, handler: nil))
-      self.present(alert, animated: true)
-      return
-    }
-
-    var successCount: Int = 0
-    var claimedAmount: Double = 0
-    var failuresCount: Int = 0
-
-    for promo in activePromotions {
-      let success = await rewardsAPI.claimPromotion(promo)
-      if success {
-        successCount += 1
-        claimedAmount += promo.approximateValue
-      } else {
-        failuresCount += 1
-      }
-    }
-
-    let alert = UIAlertController(
-      title: "Promotions",
-      message:
-        "Claimed: \(claimedAmount) BAT in \(successCount) Grants. (\(failuresCount) failures)",
-      preferredStyle: .alert
-    )
-    alert.addAction(.init(title: "OK", style: .default, handler: nil))
-    self.present(alert, animated: true)
   }
 
   private func createLegacyLedger() {

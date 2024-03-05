@@ -43,30 +43,10 @@ void Report::OnBalance(mojom::ActivityMonth month,
   auto monthly_report = mojom::MonthlyReportInfo::New();
   monthly_report->balance = std::move(balance_report);
 
-  engine_->database()->GetTransactionReport(
-      month, year,
-      base::BindOnce(&Report::OnTransactions, weak_factory_.GetWeakPtr(), month,
-                     year, std::move(monthly_report), std::move(callback)));
-}
-
-void Report::OnTransactions(
-    mojom::ActivityMonth month,
-    uint32_t year,
-    mojom::MonthlyReportInfoPtr report,
-    GetMonthlyReportCallback callback,
-    std::vector<mojom::TransactionReportInfoPtr> transaction_report) {
-  if (!report) {
-    engine_->LogError(FROM_HERE) << "Could not parse monthly report";
-    std::move(callback).Run(mojom::Result::FAILED, nullptr);
-    return;
-  }
-
-  report->transactions = std::move(transaction_report);
-
   engine_->database()->GetContributionReport(
       month, year,
       base::BindOnce(&Report::OnContributions, weak_factory_.GetWeakPtr(),
-                     std::move(report), std::move(callback)));
+                     std::move(monthly_report), std::move(callback)));
 }
 
 void Report::OnContributions(

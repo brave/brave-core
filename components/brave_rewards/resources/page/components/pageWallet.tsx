@@ -286,9 +286,6 @@ class PageWallet extends React.Component<Props, State> {
       case 1: { // Rewards.ReportType.AUTO_CONTRIBUTION
         return 'contribute'
       }
-      case 3: { // Rewards.ReportType.GRANT_AD
-        return 'ads'
-      }
       case 4: { // Rewards.ReportType.TIP_RECURRING
         return 'monthly'
       }
@@ -298,19 +295,6 @@ class PageWallet extends React.Component<Props, State> {
     }
 
     return 'contribute'
-  }
-
-  getTransactionDescription = (transaction: Rewards.TransactionReport) => {
-    switch (transaction.type) {
-      case 0: { // Rewards.ReportType.GRANT_UGP
-        return getLocale('tokenGrantReceived')
-      }
-      case 3: { // Rewards.ReportType.GRANT_AD
-        return getLocale('adsGrantReceived')
-      }
-    }
-
-    return ''
   }
 
   getProcessorString = (processor: Rewards.Processor) => {
@@ -361,25 +345,11 @@ class PageWallet extends React.Component<Props, State> {
       parameters
     } = this.props.rewardsData
 
-    if (!monthlyReport.transactions && !monthlyReport.contributions) {
+    if (!monthlyReport.contributions) {
       return []
     }
 
     let transactions: TransactionRow[] = []
-
-    if (monthlyReport.transactions) {
-      transactions = monthlyReport.transactions.map((transaction: Rewards.TransactionReport) => {
-        return {
-          date: transaction.created_at,
-          type: this.getSummaryType(transaction.type),
-          description: this.getTransactionDescription(transaction),
-          amount: {
-            value: transaction.amount.toFixed(3),
-            converted: convertBalance(transaction.amount, parameters.rate)
-          }
-        }
-      })
-    }
 
     if (monthlyReport.contributions) {
       transactions = transactions.concat(

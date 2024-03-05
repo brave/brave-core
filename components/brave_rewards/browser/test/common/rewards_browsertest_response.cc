@@ -139,29 +139,6 @@ void RewardsBrowserTestResponse::LoadMocks() {
       &wallet_));
 
   ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotions_resp.json"),
-      &promotions_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotion_empty_key_resp.json"),
-      &promotion_empty_key_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("captcha_resp.json"),
-      &captcha_));
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("promotion_claim_resp.json"),
-      &promotion_claim_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("creds_tokens_resp.json"),
-      &creds_tokens_));
-
-  ASSERT_TRUE(base::ReadFileToString(
-      path.AppendASCII("creds_tokens_prod_resp.json"),
-      &creds_tokens_prod_));
-
-  ASSERT_TRUE(base::ReadFileToString(
       path.AppendASCII("creds_tokens_sku_resp.json"),
       &creds_tokens_sku_));
 
@@ -227,34 +204,6 @@ void RewardsBrowserTestResponse::Get(
   if (url.find("/v1/parameters") != std::string::npos) {
     *response = parameters_;
     return;
-  }
-
-  if (url.find("/v1/promotions?") != std::string::npos) {
-    if (empty_promotion_key_) {
-      *response = promotion_empty_key_;
-    } else {
-      *response = promotions_;
-    }
-    return;
-  }
-
-  if (url.find("/v1/promotions") != std::string::npos) {
-    if (url.find("claims") != std::string::npos) {
-      *response = creds_tokens_;
-    } else {
-      *response = promotion_claim_;
-    }
-    return;
-  }
-
-  if (url.find("/v1/promotions/report-bap") != std::string::npos) {
-    *response = "";
-    *response_status_code = net::HTTP_OK;
-    return;
-  }
-
-  if (url.find("/v1/captchas") != std::string::npos) {
-    *response = captcha_;
   }
 
   if (url.find("/publishers/prefix-list") != std::string::npos) {
@@ -341,10 +290,6 @@ void RewardsBrowserTestResponse::ClearRequests() {
 
 void RewardsBrowserTestResponse::SetSKUOrder(mojom::SKUOrderPtr order) {
   order_ = std::move(order);
-}
-
-void RewardsBrowserTestResponse::SetPromotionEmptyKey(bool empty) {
-  empty_promotion_key_ = empty;
 }
 
 void RewardsBrowserTestResponse::SetAlternativePublisherList(bool alternative) {

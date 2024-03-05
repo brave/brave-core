@@ -312,67 +312,6 @@ void RewardsNotificationServiceImpl::OnGetAllNotifications(
   TriggerOnGetAllNotifications(rewards_notifications_list);
 }
 
-bool RewardsNotificationServiceImpl::IsAds(
-    const mojom::PromotionType promotion_type) {
-  return promotion_type == mojom::PromotionType::ADS;
-}
-
-std::string RewardsNotificationServiceImpl::GetPromotionIdPrefix(
-    const mojom::PromotionType promotion_type) {
-  return IsAds(promotion_type)
-      ? "rewards_notification_grant_ads_"
-      : "rewards_notification_grant_";
-}
-
-void RewardsNotificationServiceImpl::OnFetchPromotions(
-    RewardsService* rewards_service,
-    const mojom::Result result,
-    const std::vector<mojom::PromotionPtr>& list) {
-  if (static_cast<mojom::Result>(result) != mojom::Result::OK) {
-    return;
-  }
-
-  for (const auto& item : list) {
-    if (item->status == mojom::PromotionStatus::FINISHED) {
-      continue;
-    }
-
-    const std::string prefix = GetPromotionIdPrefix(item->type);
-    auto notification_type = IsAds(item->type)
-        ? RewardsNotificationService::REWARDS_NOTIFICATION_GRANT_ADS
-        : RewardsNotificationService::REWARDS_NOTIFICATION_GRANT;
-
-    RewardsNotificationService::RewardsNotificationArgs args;
-    args.push_back(base::NumberToString(item->approximate_value));
-    args.push_back(base::NumberToString(item->created_at * 1000));
-    args.push_back(base::NumberToString(item->claimable_until * 1000));
-
-    bool only_once = true;
-#if BUILDFLAG(IS_ANDROID)
-    only_once = false;
-#endif
-
-    AddNotification(
-        notification_type,
-        args,
-        prefix + item->id,
-        only_once);
-  }
-}
-
-void RewardsNotificationServiceImpl::OnPromotionFinished(
-    RewardsService* rewards_service,
-    const mojom::Result result,
-    mojom::PromotionPtr promotion) {
-  std::string prefix = GetPromotionIdPrefix(promotion->type);
-  DeleteNotification(prefix + promotion->id);
-
-  // We keep it for back compatibility
-  if (!IsAds(promotion->type)) {
-    DeleteNotification("rewards_notification_grant");
-  }
-}
-
 void RewardsNotificationServiceImpl::OnReconcileComplete(
     RewardsService* rewards_service,
     const mojom::Result result,

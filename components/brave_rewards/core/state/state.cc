@@ -351,40 +351,12 @@ bool State::GetVBatExpired() {
   return engine_->GetState<bool>(kParametersVBatExpired);
 }
 
-void State::SetEmptyBalanceChecked(const bool checked) {
-  engine_->database()->SaveEventLog(kEmptyBalanceChecked,
-                                    std::to_string(checked));
-  engine_->SetState(kEmptyBalanceChecked, checked);
-}
-
-bool State::GetEmptyBalanceChecked() {
-  return engine_->GetState<bool>(kEmptyBalanceChecked);
-}
-
 void State::SetServerPublisherListStamp(const uint64_t stamp) {
   engine_->SetState(kServerPublisherListStamp, stamp);
 }
 
 uint64_t State::GetServerPublisherListStamp() {
   return engine_->GetState<uint64_t>(kServerPublisherListStamp);
-}
-
-void State::SetPromotionCorruptedMigrated(const bool migrated) {
-  engine_->database()->SaveEventLog(kPromotionCorruptedMigrated,
-                                    std::to_string(migrated));
-  engine_->SetState(kPromotionCorruptedMigrated, migrated);
-}
-
-bool State::GetPromotionCorruptedMigrated() {
-  return engine_->GetState<bool>(kPromotionCorruptedMigrated);
-}
-
-void State::SetPromotionLastFetchStamp(const uint64_t stamp) {
-  engine_->SetState(kPromotionLastFetchStamp, stamp);
-}
-
-uint64_t State::GetPromotionLastFetchStamp() {
-  return engine_->GetState<uint64_t>(kPromotionLastFetchStamp);
 }
 
 std::optional<std::string> State::GetEncryptedString(const std::string& key) {

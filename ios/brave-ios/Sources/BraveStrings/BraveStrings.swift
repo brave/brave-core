@@ -4439,26 +4439,6 @@ extension Strings {
   )
 }
 
-// MARK: - Ads Notifications
-extension Strings {
-  public static let monthlyAdsClaimNotificationTitle = NSLocalizedString(
-    "MonthlyAdsClaimNotificationTitle",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Brave Rewards 💵🎁",
-    comment:
-      "The title of the notification that goes out monthly to users who can claim an ads grant"
-  )
-  public static let monthlyAdsClaimNotificationBody = NSLocalizedString(
-    "MonthlyAdsClaimNotificationBody",
-    tableName: "BraveShared",
-    bundle: .module,
-    value: "Tap to claim your free tokens.",
-    comment:
-      "The body of the notification that goes out monthly to users who can claim an ads grant"
-  )
-}
-
 // MARK: - Bookmark restoration
 extension Strings {
   public static let restoredBookmarksFolderName = NSLocalizedString(
@@ -9544,13 +9524,6 @@ extension Strings {
       value: "Are you sure you wish to clear all Rewards logs?",
       comment: ""
     )
-    public static let promotionsTitle = NSLocalizedString(
-      "RewardsInternalsPromotionsTitle",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Promotions",
-      comment: ""
-    )
     public static let amount = NSLocalizedString(
       "RewardsInternalsAmount",
       tableName: "BraveShared",
@@ -9572,67 +9545,11 @@ extension Strings {
       value: "Expires At",
       comment: ""
     )
-    public static let legacyPromotion = NSLocalizedString(
-      "RewardsInternalsLegacyPromotion",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Legacy Promotion",
-      comment: ""
-    )
     public static let version = NSLocalizedString(
       "RewardsInternalsVersion",
       tableName: "BraveShared",
       bundle: .module,
       value: "Version",
-      comment: ""
-    )
-    public static let claimedAt = NSLocalizedString(
-      "RewardsInternalsClaimedAt",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Claimed at",
-      comment: ""
-    )
-    public static let claimID = NSLocalizedString(
-      "RewardsInternalsClaimID",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Claim ID",
-      comment: ""
-    )
-    public static let promotionStatusActive = NSLocalizedString(
-      "RewardsInternalsPromotionStatusActive",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Active",
-      comment: ""
-    )
-    public static let promotionStatusAttested = NSLocalizedString(
-      "RewardsInternalsPromotionStatusAttested",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Attested",
-      comment: ""
-    )
-    public static let promotionStatusCorrupted = NSLocalizedString(
-      "RewardsInternalsPromotionStatusCorrupted",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Corrupted",
-      comment: ""
-    )
-    public static let promotionStatusFinished = NSLocalizedString(
-      "RewardsInternalsPromotionStatusFinished",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Finished",
-      comment: ""
-    )
-    public static let promotionStatusOver = NSLocalizedString(
-      "RewardsInternalsPromotionStatusOver",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Over",
       comment: ""
     )
     public static let contributionsTitle = NSLocalizedString(
@@ -9857,13 +9774,6 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value: "Rewards specific logging",
-      comment: ""
-    )
-    public static let sharablePromotionsDescription = NSLocalizedString(
-      "RewardsInternalsSharablePromotionsDescription",
-      tableName: "BraveShared",
-      bundle: .module,
-      value: "Any BAT promotions you have claimed or have pending from Ads or Grants",
       comment: ""
     )
     public static let sharableContributionsDescription = NSLocalizedString(

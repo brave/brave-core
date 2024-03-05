@@ -13,7 +13,6 @@
 
 #include "base/containers/flat_map.h"
 #include "base/memory/raw_ref.h"
-#include "brave/components/brave_rewards/core/endpoint/promotion/promotion_server.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_balance.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
@@ -42,7 +41,6 @@ class Wallet {
   const raw_ref<RewardsEngineImpl> engine_;
   WalletCreate create_;
   WalletBalance balance_;
-  endpoint::PromotionServer promotion_server_;
 };
 
 }  // namespace wallet

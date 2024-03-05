@@ -23,25 +23,8 @@ WalletBalance::WalletBalance(RewardsEngineImpl& engine) : engine_(engine) {}
 WalletBalance::~WalletBalance() = default;
 
 void WalletBalance::Fetch(FetchBalanceCallback callback) {
-  engine_->database()->GetSpendableUnblindedTokensByBatchTypes(
-      {mojom::CredsBatchType::PROMOTION},
-      base::BindOnce(&WalletBalance::OnGetUnblindedTokens,
-                     base::Unretained(this), std::move(callback)));
-}
-
-void WalletBalance::OnGetUnblindedTokens(
-    FetchBalanceCallback callback,
-    std::vector<mojom::UnblindedTokenPtr> tokens) {
-  double total = 0.0;
-
-  if (!engine_->state()->GetVBatExpired()) {
-    for (const auto& token : tokens) {
-      total += token->value;
-    }
-  }
-
   auto balance = mojom::Balance::New();
-  balance->total = total;
+  balance->total = 0;
   balance->wallets.emplace(constant::kWalletUnBlinded, balance->total);
 
   const auto wallet_type =

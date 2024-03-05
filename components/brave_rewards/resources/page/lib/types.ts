@@ -51,7 +51,6 @@ export interface State {
   monthlyReport: MonthlyReport
   monthlyReportIds: string[]
   parameters: RewardsParameters
-  promotions: Promotion[]
   reconcileStamp: number
   recurringList: Publisher[]
   showOnboarding: boolean | null
@@ -96,14 +95,11 @@ export interface MonthlyReport {
   month: number
   year: number
   balance?: BalanceReport
-  transactions?: TransactionReport[]
   contributions?: ContributionReport[]
 }
 
 export enum ReportType {
-  GRANT_UGP = 0,
   AUTO_CONTRIBUTION = 1,
-  GRANT_AD = 3,
   TIP_RECURRING = 4,
   TIP = 5
 }
@@ -116,57 +112,12 @@ export enum Processor {
   GEMINI = 5
 }
 
-export interface TransactionReport {
-  amount: number
-  type: ReportType
-  processor: Processor
-  created_at: number
-}
-
 export interface ContributionReport {
   amount: number
   type: ReportType
   processor: Processor
   created_at: number
   publishers: Publisher[]
-}
-
-export type CaptchaStatus = 'start' | 'wrongPosition' | 'generalError' | 'finished' | null
-
-export enum PromotionTypes {
-  UGP = 0,
-  ADS = 1
-}
-
-export enum PromotionStatus {
-  ACTIVE = 0,
-  ATTESTED = 1,
-  FINISHED = 4,
-  OVER = 5
-}
-
-export interface Promotion {
-  promotionId: string
-  amount: number
-  createdAt: number
-  claimableUntil: number
-  expiresAt: number
-  status: PromotionStatus
-  type: PromotionTypes
-  captchaImage?: string
-  captchaId?: string
-  hint?: string
-  captchaStatus?: CaptchaStatus
-}
-
-export interface PromotionResponse {
-  result: number
-  promotions: Promotion[]
-}
-
-export interface PromotionFinish {
-  result: Result,
-  promotion?: Promotion
 }
 
 export interface Publisher {
@@ -201,15 +152,7 @@ export interface BalanceReport {
   ads: number
   contribute: number
   monthly: number
-  grant: number
   tips: number
-}
-
-export interface Captcha {
-  result: number
-  promotionId: string
-  captchaImage: string
-  hint: string
 }
 
 export interface Subdivision {

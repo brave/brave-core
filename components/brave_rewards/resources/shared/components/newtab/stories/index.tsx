@@ -27,7 +27,6 @@ function actionLogger (name: string, ...args: any[]) {
 export function Card () {
   const daysUntilPayment = knobs.number('Days Until Payment', 20)
   const nextPaymentDate = Date.now() + 1000 * 60 * 60 * 24 * daysUntilPayment
-  const showGrant = knobs.boolean('Grant Available', false)
   const disconnectedWallet = knobs.boolean('Disconnected', false)
 
   return (
@@ -44,14 +43,6 @@ export function Card () {
             exchangeCurrency='USD'
             exchangeRate={0.82}
             providerPayoutStatus={'off'}
-            grantInfo={showGrant ? {
-              id: '',
-              amount: 0.15,
-              type: 'ads',
-              createdAt: Date.now(),
-              claimableUntil: Date.now() + 1000 * 10 * 24 * 60 * 60,
-              expiresAt: Date.now() + 1000 * 10 * 24 * 60 * 60
-            } : null}
             externalWallet={disconnectedWallet ? {
               provider: 'uphold',
               status: mojom.WalletStatus.kLoggedOut,
@@ -69,7 +60,6 @@ export function Card () {
             isTermsOfServiceUpdateRequired={true}
             onEnableRewards={actionLogger('onEnableRewards')}
             onSelectCountry={actionLogger('onSelectCountry')}
-            onClaimGrant={actionLogger('onClaimGrant')}
             onSelfCustodyInviteDismissed={
               actionLogger('onSelfCustodyInviteDismissed')
             }

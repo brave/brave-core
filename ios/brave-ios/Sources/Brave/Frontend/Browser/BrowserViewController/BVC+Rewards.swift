@@ -90,24 +90,6 @@ extension BrowserViewController {
     rewards.rewardsAPI?.selectedTabId = 0
   }
 
-  func claimPendingPromotions() {
-    guard
-      let rewardsAPI = rewards.rewardsAPI,
-      case let promotions = rewardsAPI.pendingPromotions.filter({ $0.status == .active }),
-      !promotions.isEmpty
-    else {
-      return
-    }
-    Task {
-      for promo in promotions {
-        let success = await rewardsAPI.claimPromotion(promo)
-        adsRewardsLog.info(
-          "[BraveRewards] Auto-Claim Promotion - \(success) for \(promo.approximateValue)"
-        )
-      }
-    }
-  }
-
   @objc func resetNTPNotification() {
     Preferences.NewTabPage.brandedImageShowed.value = false
     Preferences.NewTabPage.atleastOneNTPNotificationWasShowed.value = false
@@ -160,9 +142,6 @@ extension BrowserViewController {
         self.updateRewardsButtonState()
       }
     }
-    rewardsObserver.promotionsAdded = { [weak self] promotions in
-      self?.claimPendingPromotions()
-    }
     rewardsObserver.fetchedPanelPublisher = { [weak self] publisher, tabId in
       DispatchQueue.main.async {
         guard let self = self, self.isViewLoaded, let tab = self.tabManager.selectedTab,
@@ -171,17 +150,6 @@ extension BrowserViewController {
         self.publisher = publisher
       }
     }
-
-    promotionFetchTimer = Timer.scheduledTimer(
-      withTimeInterval: 1.hours,
-      repeats: true,
-      block: { [weak self, weak rewardsAPI] _ in
-        guard let self = self, let rewardsAPI = rewardsAPI else { return }
-        if self.rewards.isEnabled {
-          rewardsAPI.fetchPromotions(nil)
-        }
-      }
-    )
   }
 }
 

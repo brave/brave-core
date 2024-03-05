@@ -82,21 +82,9 @@ class State {
 
   bool GetVBatExpired();
 
-  void SetEmptyBalanceChecked(const bool checked);
-
-  bool GetEmptyBalanceChecked();
-
   void SetServerPublisherListStamp(const uint64_t stamp);
 
   uint64_t GetServerPublisherListStamp();
-
-  void SetPromotionCorruptedMigrated(const bool migrated);
-
-  bool GetPromotionCorruptedMigrated();
-
-  void SetPromotionLastFetchStamp(const uint64_t stamp);
-
-  uint64_t GetPromotionLastFetchStamp();
 
   std::optional<std::string> GetEncryptedString(const std::string& key);
 

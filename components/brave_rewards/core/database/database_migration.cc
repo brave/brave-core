@@ -71,6 +71,8 @@ DatabaseMigration::DatabaseMigration(RewardsEngineImpl& engine)
 
 DatabaseMigration::~DatabaseMigration() = default;
 
+// TODO(zenparsing): Remove promotion database?
+
 void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   const uint32_t start_version = table_version + 1;
   DCHECK_GT(start_version, 0u);

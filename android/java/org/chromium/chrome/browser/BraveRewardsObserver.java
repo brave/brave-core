@@ -35,8 +35,6 @@ public interface BraveRewardsObserver {
 
     public default void onResetTheWholeState(boolean success) {}
 
-    public default void onGrantFinish(int result) {}
-
     public default void onGetExternalWallet(String externalWallet) {}
 
     public default void onGetAvailableCountries(String[] countries) {}
@@ -46,10 +44,6 @@ public interface BraveRewardsObserver {
     public default void onExternalWalletLoggedOut() {}
 
     public default void onExternalWalletReconnected() {}
-
-    public default void onClaimPromotion(int errorCode) {}
-
-    public default void onUnblindedTokensReady() {}
 
     public default void onReconcileComplete(int resultCode, int rewardsType, double amount) {}
 
