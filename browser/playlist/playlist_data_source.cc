@@ -5,20 +5,31 @@
 
 #include "brave/browser/playlist/playlist_data_source.h"
 
+#include <algorithm>
+#include <limits>
 #include <memory>
 #include <utility>
+#include <vector>
 
+#include "base/containers/heap_array.h"
+#include "base/files/file.h"
 #include "base/files/file_path.h"
 #include "base/files/file_util.h"
+#include "base/files/memory_mapped_file.h"
 #include "base/functional/bind.h"
 #include "base/location.h"
 #include "base/memory/ref_counted_memory.h"
 #include "base/memory/scoped_refptr.h"
+#include "base/notreached.h"
 #include "base/strings/escape.h"
+#include "base/strings/string_split.h"
+#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
-#include "base/task/thread_pool/thread_pool_instance.h"
+#include "brave/components/playlist/browser/mime_util.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "components/favicon_base/favicon_url_parser.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/url_data_source.h"
 #include "net/base/filename_util.h"
 #include "url/gurl.h"
 
@@ -26,20 +37,114 @@ namespace playlist {
 
 namespace {
 
-scoped_refptr<base::RefCountedMemory> ReadFileToString(
+#define CHECK_CURRENTLY_NOT_ON_UI_THREAD()                                \
+  CHECK(!content::BrowserThread::CurrentlyOn(content::BrowserThread::UI)) \
+      << "This must be called on a background thread."
+
+constexpr int64_t kMediaChunkSizeInByte = 1024 * 1024 * 1;  // 1MB
+
+class RefCountedMemMap : public base::RefCountedMemory {
+ public:
+  explicit RefCountedMemMap(const base::FilePath& path) {
+    base::File file = base::File(
+        path, base::File::Flags::FLAG_OPEN | base::File::Flags::FLAG_READ);
+    if (!file.IsValid() || file.GetLength() > 1024 * 1024 * 100) {
+      // In order to avoid OOM crash, limits the file size to 100MB.
+      return;
+    }
+    initialized_ = memory_mapped_file_.Initialize(std::move(file));
+  }
+
+  bool initialized() const { return initialized_; }
+
+  const unsigned char* front() const override {
+    return memory_mapped_file_.data();
+  }
+  size_t size() const override { return memory_mapped_file_.length(); }
+
+ private:
+  ~RefCountedMemMap() override = default;
+
+  base::MemoryMappedFile memory_mapped_file_;
+  bool initialized_ = false;
+};
+
+scoped_refptr<base::RefCountedMemory> ReadMemoryMappedFile(
     const base::FilePath& path) {
-  std::string contents;
-  if (!base::ReadFileToString(path, &contents)) {
-    VLOG(2) << __FUNCTION__ << " Failed to read " << path;
+  CHECK_CURRENTLY_NOT_ON_UI_THREAD();
+
+  auto mem_mapped_file = base::MakeRefCounted<RefCountedMemMap>(path);
+  if (!mem_mapped_file->initialized()) {
     return nullptr;
   }
 
-  return base::MakeRefCounted<base::RefCountedBytes>(
-      reinterpret_cast<const unsigned char*>(contents.c_str()),
-      contents.length());
+  return mem_mapped_file;
+}
+
+content::URLDataSource::RangeDataResult ReadFileRange(
+    const base::FilePath& file_path,
+    net::HttpByteRange range) {
+  CHECK_CURRENTLY_NOT_ON_UI_THREAD();
+
+  base::File file(file_path,
+                  base::File::Flags::FLAG_OPEN | base::File::FLAG_READ);
+  if (!file.IsValid()) {
+    return {};
+  }
+
+  // Note that HTTP range's first and last position are inclusive.
+  int64_t first_byte_position =
+      range.HasFirstBytePosition() ? range.first_byte_position() : 0;
+  int64_t last_byte_position =
+      range.HasLastBytePosition()
+          ? range.last_byte_position()
+          : first_byte_position + kMediaChunkSizeInByte - 1;
+  int64_t read_size = std::min(kMediaChunkSizeInByte,
+                               last_byte_position - first_byte_position + 1);
+  CHECK_GE(read_size, 0);
+
+  std::vector<unsigned char> buffer(read_size);
+  auto read_result = file.Read(first_byte_position, buffer);
+  if (!read_result.has_value()) {
+    return {};
+  }
+  read_size = read_result.value();
+  buffer.resize(read_size);
+
+  content::URLDataSource::RangeDataResult result;
+  result.buffer = base::RefCountedBytes::TakeVector(&buffer);
+  result.file_size = file.GetLength();
+  result.range = net::HttpByteRange::Bounded(
+      first_byte_position, first_byte_position + read_size - 1);
+  auto mime_type = playlist::mime_util::GetMimeTypeForFileExtension(
+                       file_path.FinalExtension())
+                       .value_or("video/mp4");
+  result.mime_type = mime_type;
+  return result;
 }
 
 }  // namespace
+
+PlaylistDataSource::DataRequest::DataRequest(const GURL& url) {
+  const auto full_path = content::URLDataSource::URLToRequestPath(url);
+  const auto paths = base::SplitStringPiece(
+      full_path, "/", base::TRIM_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  CHECK_EQ(paths.size(), 2u) << url.spec();
+
+  id = paths.at(0);
+  const auto& type_string = paths.at(1);
+  if (type_string == "thumbnail") {
+    type = DataRequest::Type::kThumbnail;
+  } else if (type_string == "media") {
+    type = DataRequest::Type::kMedia;
+  } else if (type_string == "favicon") {
+    type = DataRequest::Type::kFavicon;
+  } else {
+    NOTREACHED() << "type is not in {thumbnail,media,favicon}: " << type_string;
+  }
+}
+
+PlaylistDataSource::DataRequest::~DataRequest() = default;
 
 PlaylistDataSource::PlaylistDataSource(Profile* profile,
                                        PlaylistService* service)
@@ -60,113 +165,120 @@ void PlaylistDataSource::StartDataRequest(
     std::move(got_data_callback).Run(nullptr);
     return;
   }
-  std::string path = URLDataSource::URLToRequestPath(url);
-  std::string id;
-  std::string type_string;
-  if (auto pos = path.find("/"); pos != std::string::npos) {
-    id = std::string(path.begin(), path.begin() + pos);
-    type_string = std::string(path.begin() + pos, path.end());
-    type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
-                      type_string.end());
-  } else {
-    NOTREACHED()
-        << "path is not in expected form: /id/{thumbnail,media,favicon}/ vs "
-        << path;
-    std::move(got_data_callback).Run(nullptr);
-    return;
+
+  switch (DataRequest data_request(url); data_request.type) {
+    case DataRequest::Type::kThumbnail:
+      GetThumbnail(data_request, wc_getter, std::move(got_data_callback));
+      break;
+    case DataRequest::Type::kFavicon:
+      GetFavicon(data_request, wc_getter, std::move(got_data_callback));
+      break;
+    case DataRequest::Type::kMedia:
+      NOTREACHED() << "This request should call StartRangeDataRequest()";
+      std::move(got_data_callback).Run(nullptr);
+      break;
   }
-
-  base::FilePath data_path;
-  if (type_string == "thumbnail") {
-    if (!service_->GetThumbnailPath(id, &data_path)) {
-      std::move(got_data_callback).Run(nullptr);
-      return;
-    }
-  } else if (type_string == "media") {
-    if (!service_->HasPlaylistItem(id)) {
-      std::move(got_data_callback).Run(nullptr);
-      return;
-    }
-
-    auto item = service_->GetPlaylistItem(id);
-    DCHECK(item->cached);
-    if (!net::FileURLToFilePath(item->media_path, &data_path)) {
-      std::move(got_data_callback).Run(nullptr);
-    }
-  } else if (type_string == "favicon") {
-    if (!service_->HasPlaylistItem(id)) {
-      std::move(got_data_callback).Run(nullptr);
-      return;
-    }
-
-    auto item = service_->GetPlaylistItem(id);
-    GURL favicon_url(
-        "chrome://favicon2?allowGoogleServerFallback=0&size=32&pageUrl=" +
-        base::EscapeUrlEncodedData(item->page_source.spec(),
-                                   /*use_plus=*/false));
-    FaviconSource::StartDataRequest(favicon_url, wc_getter,
-                                    std::move(got_data_callback));
-    return;
-  } else {
-    NOTREACHED() << "type is not in {thumbnail,media,favicon}/ : "
-                 << type_string;
-    std::move(got_data_callback).Run(nullptr);
-    return;
-  }
-
-  GetDataFile(data_path, std::move(got_data_callback));
 }
 
-void PlaylistDataSource::GetDataFile(const base::FilePath& data_path,
-                                     GotDataCallback got_data_callback) {
+void PlaylistDataSource::StartRangeDataRequest(
+    const GURL& url,
+    const content::WebContents::Getter& wc_getter,
+    const net::HttpByteRange& range,
+    GotRangeDataCallback callback) {
+  DataRequest data_request(url);
+  CHECK_EQ(data_request.type, DataRequest::Type::kMedia);
+  CHECK(range.IsValid());
+  GetMediaFile(data_request, wc_getter, range, std::move(callback));
+}
+
+void PlaylistDataSource::GetThumbnail(
+    const DataRequest& request,
+    const content::WebContents::Getter& wc_getter,
+    GotDataCallback got_data_callback) {
+  base::FilePath thumbnail_path;
+  if (!service_->GetThumbnailPath(request.id, &thumbnail_path)) {
+    std::move(got_data_callback).Run(nullptr);
+    return;
+  }
+
   base::ThreadPool::PostTaskAndReplyWithResult(
-      FROM_HERE, base::MayBlock(), base::BindOnce(&ReadFileToString, data_path),
-      base::BindOnce(&PlaylistDataSource::OnGotDataFile,
-                     weak_factory_.GetWeakPtr(), std::move(got_data_callback)));
+      FROM_HERE, base::MayBlock(),
+      base::BindOnce(&ReadMemoryMappedFile, thumbnail_path),
+      std::move(got_data_callback));
 }
 
-void PlaylistDataSource::OnGotDataFile(
-    GotDataCallback got_data_callback,
-    scoped_refptr<base::RefCountedMemory> input) {
-  std::move(got_data_callback).Run(input);
+void PlaylistDataSource::GetMediaFile(
+    const DataRequest& request,
+    const content::WebContents::Getter& wc_getter,
+    const net::HttpByteRange& range,
+    GotRangeDataCallback got_data_callback) {
+  base::FilePath media_path;
+  if (!service_->HasPlaylistItem(request.id)) {
+    std::move(got_data_callback).Run({});
+    return;
+  }
+
+  auto item = service_->GetPlaylistItem(request.id);
+  DCHECK(item->cached);
+  if (!net::FileURLToFilePath(item->media_path, &media_path)) {
+    std::move(got_data_callback).Run({});
+    return;
+  }
+
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE, base::MayBlock(),
+      base::BindOnce(&ReadFileRange, media_path, range),
+      std::move(got_data_callback));
+}
+
+void PlaylistDataSource::GetFavicon(
+    const DataRequest& request,
+    const content::WebContents::Getter& wc_getter,
+    GotDataCallback got_data_callback) {
+  if (!service_->HasPlaylistItem(request.id)) {
+    std::move(got_data_callback).Run(nullptr);
+    return;
+  }
+
+  auto item = service_->GetPlaylistItem(request.id);
+  GURL favicon_url(
+      "chrome://favicon2?allowGoogleServerFallback=0&size=32&pageUrl=" +
+      base::EscapeUrlEncodedData(item->page_source.spec(),
+                                 /*use_plus=*/false));
+  FaviconSource::StartDataRequest(favicon_url, wc_getter,
+                                  std::move(got_data_callback));
 }
 
 std::string PlaylistDataSource::GetMimeType(const GURL& url) {
-  const std::string path = URLDataSource::URLToRequestPath(url);
-  std::string id;
-  std::string type_string;
-  if (auto pos = path.find("/"); pos != std::string::npos) {
-    id = std::string(path.begin(), path.begin() + pos);
-    type_string = std::string(path.begin() + pos, path.end());
-    type_string.erase(std::remove(type_string.begin(), type_string.end(), '/'),
-                      type_string.end());
-  } else {
-    NOTREACHED()
-        << "path is not in expected form: /id/{thumbnail,media,favicon}/ vs "
-        << path;
-    return std::string();
+  if (url.is_empty()) {
+    // This could be reached on start up.
+    return {};
   }
 
-  if (type_string == "thumbnail") {
-    return "image/png";
+  switch (DataRequest data_request(url); data_request.type) {
+    case DataRequest::Type::kThumbnail:
+      return "image/png";
+    case DataRequest::Type::kMedia:
+      return "video/mp4";  //  Note that this will be fixed up based on the
+                           //  actual file extension in WebUIUrlLoader.
+    case DataRequest::Type::kFavicon:
+      return FaviconSource::GetMimeType(url);
   }
 
-  // TODO(sko) Decide mime type based on the file extension.
-  if (type_string == "media") {
-    return "video/mp4";
-  }
-
-  if (type_string == "favicon") {
-    return FaviconSource::GetMimeType(url);
-  }
-
-  NOTREACHED() << "type is neither of {thumbnail,media,favicon}/ : "
-               << type_string;
-  return std::string();
+  NOTREACHED_NORETURN();
 }
 
 bool PlaylistDataSource::AllowCaching() {
   return false;
+}
+
+bool PlaylistDataSource::SupportsRangeRequests(const GURL& url) const {
+  if (url.is_empty()) {
+    // This could be reached on start up.
+    return false;
+  }
+
+  return DataRequest(url).type == DataRequest::Type::kMedia;
 }
 
 }  // namespace playlist

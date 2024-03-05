@@ -18,6 +18,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/playlist/browser/mime_util.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/common/download_item_impl.h"
@@ -31,44 +32,6 @@
 #include "url/gurl.h"
 
 namespace playlist {
-
-// References
-// * List of mimetypes registered to IANA
-//   * Video:
-//   https://www.iana.org/assignments/media-types/media-types.xhtml#video
-//   * Audio:
-//   https://www.iana.org/assignments/media-types/media-types.xhtml#audio
-// * Chromium media framework supports
-//   * media/base/mime_util_internal.cc
-// * Mimetype to extension
-//   * https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types/Common_types
-constexpr auto kMimeTypeToExtension =
-    base::MakeFixedFlatMap<std::string_view /*mime_type*/,
-                           std::string_view /*extension*/>({
-        {"application/ogg", "ogx"},
-        {"application/vnd.apple.mpegurl", "m3u8"},
-        {"application/x-mpegurl", "m3u8"},
-        {"audio/aac", "aac"},
-        {"audio/flac", "flac"},
-        {"audio/mp3", "mp3"},
-        {"audio/mp4", "mp4"},
-        {"audio/mpeg", "mp3"},
-        {"audio/mpegurl", "m3u8"},
-        {"audio/ogg", "oga"},
-        {"audio/wav", "wav"},
-        {"audio/webm", "weba"},
-        {"audio/x-m4a", "m4a"},
-        {"audio/x-mp3", "mp3"},
-        {"audio/x-mpegurl", "m3u8"},
-        {"audio/x-wav", "wav"},
-        {"video/3gpp", "3gp"},
-        {"video/mp2t", "ts"},
-        {"video/mp4", "mp4"},
-        {"video/mpeg", "mpeg"},
-        {"video/ogg", "ogv"},
-        {"video/webm", "webm"},
-        {"video/x-m4v", "m4v"},
-    });
 
 namespace {
 
@@ -337,9 +300,9 @@ void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
     // Try to infer proper extension from mime_type
     // TODO(sko) It's unlikely but there could be parameter or suffix delimited
     // with "+" or ";" in |mime_type|.
-    if (kMimeTypeToExtension.count(mime_type)) {
-      auto new_path =
-          path.AddExtensionASCII(kMimeTypeToExtension.at(mime_type));
+    if (auto extension = mime_util::GetFileExtensionForMimetype(mime_type);
+        extension.has_value()) {
+      auto new_path = path.AddExtension(*extension);
       delegate_->GetTaskRunner()->PostTaskAndReplyWithResult(
           FROM_HERE, base::BindOnce(&base::Move, path, new_path),
           base::BindOnce(&PlaylistMediaFileDownloader::OnRenameFile,
