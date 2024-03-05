@@ -186,8 +186,9 @@ GURL AppendZeroExSwapParams(const GURL& swap_url,
                                       ? kZeroExNativeAssetContractAddress
                                       : params.from_token);
 
-  if (!fee_param->empty()) {
-    url = net::AppendQueryParameter(url, "buyTokenPercentageFee", *fee_param);
+  if (fee_param.has_value() && !fee_param->empty()) {
+    url = net::AppendQueryParameter(url, "buyTokenPercentageFee",
+                                    fee_param.value());
     url = net::AppendQueryParameter(url, "feeRecipient", kEVMFeeRecipient);
   }
 
@@ -236,8 +237,8 @@ GURL AppendJupiterQuoteParams(const GURL& swap_url,
         base::StringPrintf("%d", static_cast<int>(slippage_percentage * 100)));
   }
 
-  if (!fee_param->empty()) {
-    url = net::AppendQueryParameter(url, "platformFeeBps", *fee_param);
+  if (fee_param.has_value() && !fee_param->empty()) {
+    url = net::AppendQueryParameter(url, "platformFeeBps", fee_param.value());
   }
 
   // TODO(onyb): append userPublicKey to get information on fees and ATA
