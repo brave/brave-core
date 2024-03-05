@@ -84,6 +84,7 @@ const char kTestCSPHackCharsetPage[] =
     "/speedreader/article/csp_hack_charset.html";
 const char kTestCSPOrderPage1[] = "/speedreader/article/csp_order_1.html";
 const char kTestCSPOrderPage2[] = "/speedreader/article/csp_order_2.html";
+const char kTestCSPInBodyPage[] = "/speedreader/article/csp_in_body.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -921,6 +922,8 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 }
 
 IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
+  ToggleSpeedreader();
+
   // base first.
   {
     content::WebContentsConsoleObserver console_observer(ActiveWebContents());
@@ -940,6 +943,20 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
                                 WindowOpenDisposition::CURRENT_TAB);
     EXPECT_TRUE(console_observer.Wait());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
+  ToggleSpeedreader();
+
+  NavigateToPageSynchronously(kTestCSPInBodyPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  constexpr const char kCheckCsp[] = R"js(
+    document.querySelectorAll('meta[content="CSP in body"]').length === 0
+  )js";
+
+  EXPECT_EQ(true, content::EvalJs(ActiveWebContents(), kCheckCsp,
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest

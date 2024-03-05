@@ -192,8 +192,15 @@ pub fn extract_metadata(dom: &Sink) -> Meta {
                     meta_tags.preserved_elements.push(node.clone());
                 } else if let Some(attr) = attribute.get(local_name!("http-equiv")) {
                     match attr.to_lowercase().as_str().trim() {
-                        "content-type" | "content-security-policy" => {
+                        "content-type" => {
                             meta_tags.preserved_elements.push(node.clone());
+                        }
+                        "content-security-policy" => {
+                            if let Some(parent) = node.parent().as_ref() {
+                                if dom::get_tag_name(&parent) == Some(&local_name!("head")) {
+                                    meta_tags.preserved_elements.push(node.clone());
+                                }
+                            }
                         }
                         _ => (),
                     }
