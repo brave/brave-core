@@ -249,6 +249,10 @@ package = "base-x"
 path = "../../../third_party/rust/chromium_crates_io/vendor/base64-0.13.1"
 package = "base64"
 
+[patch.crates-io.bech32_v0_9]
+path = "bech32/v0_9/crate"
+package = "bech32"
+
 [patch.crates-io.bigdecimal_v0_1]
 path = "bigdecimal/v0_1/crate"
 package = "bigdecimal"
