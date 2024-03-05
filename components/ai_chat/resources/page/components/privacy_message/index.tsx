@@ -20,6 +20,7 @@ const PRIVACY_URL = "https://brave.com/privacy/browser/#brave-leo"
 
 function PrivacyMessage () {
   const context = React.useContext(DataContext)
+  const buttonRef = React.useRef<HTMLButtonElement>()
 
   const handleLinkClick = (e: React.MouseEvent, url: string) => {
     e.preventDefault()
@@ -47,6 +48,12 @@ function PrivacyMessage () {
     }
   })
 
+  React.useEffect(() => {
+    const button = buttonRef.current
+    if (button === undefined) return
+    setTimeout(() => button.focus())
+  }, [])
+
   return (
     <Dialog
       isOpen={true}
@@ -62,7 +69,7 @@ function PrivacyMessage () {
         <p>{aboutDescription3}</p>
       </div>
       <div slot="actions">
-        <Button onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</Button>
+        <Button ref={buttonRef} onClick={context.handleAgreeClick}>{getLocale('acceptButtonLabel')}</Button>
       </div>
     </Dialog>
   )
