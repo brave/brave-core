@@ -170,7 +170,7 @@ base::Value::Dict EncodeToolDetails(
 std::optional<base::Value::Dict> EncodeToken(
     const mojom::BlockchainTokenPtr& token) {
   base::Value::Dict result;
-  result.Set("address", token->contract_address == ""
+  result.Set("address", token->contract_address.empty()
                             ? kLiFiNativeAssetContractAddress
                             : token->contract_address);
   result.Set("decimals", token->decimals);
@@ -365,7 +365,7 @@ std::optional<std::string> EncodeQuoteParams(
   }
 
   result.Set("fromAmount", params->from_amount);
-  result.Set("fromTokenAddress", params->from_token == ""
+  result.Set("fromTokenAddress", params->from_token.empty()
                                      ? kLiFiNativeAssetContractAddress
                                      : params->from_token);
   result.Set("fromAddress", params->from_account_id->address);
@@ -376,7 +376,7 @@ std::optional<std::string> EncodeQuoteParams(
     return std::nullopt;
   }
 
-  result.Set("toTokenAddress", params->to_token == ""
+  result.Set("toTokenAddress", params->to_token.empty()
                                    ? kLiFiNativeAssetContractAddress
                                    : params->to_token);
   result.Set("toAddress", params->to_account_id->address);

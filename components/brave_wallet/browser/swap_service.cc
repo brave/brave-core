@@ -101,7 +101,7 @@ std::string GetAffiliateAddress(const std::string& chain_id) {
 mojom::SwapFeesPtr GetJupiterSwapFee(const mojom::SwapQuoteParams& params) {
   mojom::SwapFeesPtr response = mojom::SwapFees::New();
   bool has_fees = HasJupiterFeesForTokenMint(
-      params.to_token == "" ? kWrappedSolanaMintAddress : params.to_token);
+      params.to_token.empty() ? kWrappedSolanaMintAddress : params.to_token);
 
   auto fee_pct = kSolanaBuyTokenFeePercentage;
   response->fee_pct = base::NumberToString(fee_pct);
