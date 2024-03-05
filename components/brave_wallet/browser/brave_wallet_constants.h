@@ -1244,7 +1244,6 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_SWAP_MINIMUM_RECEIVED_AFTER_SLIPPAGE},
     {"braveSwapNetworkFee", IDS_BRAVE_SWAP_NETWORK_FEE},
     {"braveSwapBraveFee", IDS_BRAVE_SWAP_BRAVE_FEE},
-    {"braveSwapProtocolFee", IDS_BRAVE_SWAP_PROTOCOL_FEE},
     {"braveSwapFree", IDS_BRAVE_SWAP_FREE},
     {"braveSwapLiquidityProvider", IDS_BRAVE_SWAP_LIQUIDITY_PROVIDER},
     {"braveSwapSwapAndSend", IDS_BRAVE_SWAP_SWAP_AND_SEND},
@@ -1394,42 +1393,57 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletPlatforms", IDS_BRAVE_WALLET_PLATFORMS}};
 
 // 0x swap constants
-inline constexpr char kGoerliSwapBaseAPIURL[] = "https://goerli.api.0x.org/";
-inline constexpr char kPolygonSwapBaseAPIURL[] = "https://polygon.api.0x.org/";
-inline constexpr char kBinanceSmartChainSwapBaseAPIURL[] =
-    "https://bsc.api.0x.org/";
-inline constexpr char kAvalancheSwapBaseAPIURL[] =
-    "https://avalanche.api.0x.org/";
-inline constexpr char kFantomSwapBaseAPIURL[] = "https://fantom.api.0x.org/";
-inline constexpr char kCeloSwapBaseAPIURL[] = "https://celo.api.0x.org/";
-inline constexpr char kOptimismSwapBaseAPIURL[] =
-    "https://optimism.api.0x.org/";
-inline constexpr char kArbitrumSwapBaseAPIURL[] =
-    "https://arbitrum.api.0x.org/";
-inline constexpr char kBaseSwapBaseAPIURL[] = "https://base.api.0x.org/";
-inline constexpr char kSwapBaseAPIURL[] = "https://api.0x.org/";
-constexpr double k0xBuyTokenFeePercentage = 0.875;
-constexpr double k0xProtocolFeePercentage = 0.15;
+inline constexpr char kZeroExGoerliBaseAPIURL[] =
+    "https://goerli.api.0x.wallet.brave.com";
+inline constexpr char kZeroExPolygonBaseAPIURL[] =
+    "https://polygon.api.0x.wallet.brave.com";
+inline constexpr char kZeroExBinanceSmartChainBaseAPIURL[] =
+    "https://bsc.api.0x.wallet.brave.com";
+inline constexpr char kZeroExAvalancheBaseAPIURL[] =
+    "https://avalanche.api.0x.wallet.brave.com";
+inline constexpr char kZeroExFantomBaseAPIURL[] =
+    "https://fantom.api.0x.wallet.brave.com";
+inline constexpr char kZeroExCeloBaseAPIURL[] =
+    "https://celo.api.0x.wallet.brave.com";
+inline constexpr char kZeroExOptimismBaseAPIURL[] =
+    "https://optimism.api.0x.wallet.brave.com";
+inline constexpr char kZeroExArbitrumBaseAPIURL[] =
+    "https://arbitrum.api.0x.wallet.brave.com";
+inline constexpr char kZeroExBaseBaseAPIURL[] =
+    "https://base.api.0x.wallet.brave.com";
+inline constexpr char kZeroExEthereumBaseAPIURL[] =
+    "https://api.0x.wallet.brave.com";
+inline constexpr double kZeroExBuyTokenFeePercentage = 0.875;
 inline constexpr char kEVMFeeRecipient[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
 inline constexpr char kAffiliateAddress[] =
     "0xbd9420A98a7Bd6B89765e5715e169481602D9c3d";
-inline constexpr char k0xAPIKeyHeader[] = "0x-api-key";
+inline constexpr char kZeroExNativeAssetContractAddress[] =
+    "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 // Jupiter swap constants
-inline constexpr char kSolanaSwapBaseAPIURL[] = "https://quote-api.jup.ag/";
-constexpr double kSolanaBuyTokenFeePercentage = 0.85;
+inline constexpr char kJupiterBaseAPIURL[] = "https://quote-api.jup.ag";
+inline constexpr double kSolanaBuyTokenFeePercentage = 0.85;
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
 inline constexpr char kJupiterReferralProgram[] =
     "REFER4ZgmyYx9c6He5XfaTMiGfdLwRnkV4RPp9t9iF3";
 inline constexpr char kJupiterReferralProgramHeader[] = "referral_ata";
+inline constexpr char kWrappedSolanaMintAddress[] =
+    "So11111111111111111111111111111111111111112";
 
 // Blowfish simulations constants
 inline constexpr char kBlowfishBaseAPIURL[] =
     "https://blowfish.wallet.brave.com";
 inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
 inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
+
+// LiFi constants
+inline constexpr char kLiFiBaseAPIURL[] = "https://li.quest";
+inline constexpr char kLiFiIntegratorID[] = "brave";
+inline constexpr char kLiFiNativeAssetContractAddress[] =
+    "0x0000000000000000000000000000000000000000";
+inline constexpr double kLiFiFeePercentage = 0.875;
 
 constexpr int64_t kBlockTrackerDefaultTimeInSeconds = 20;
 constexpr int64_t kLogTrackerDefaultTimeInSeconds = 20;

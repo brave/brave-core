@@ -100,4 +100,124 @@ namespace swap_responses {
     DOMString error;
     DOMString message;
   };
+
+  // LiFi response types
+
+  dictionary LiFiTransactionRequest {
+    // In case of SOL -> EVM transfers, only the data field is required which
+    // is a base64 encoded Solana transaction.
+    DOMString data;
+
+    // The following fields are mandatory for EVM -> any transfers.
+    DOMString? from;
+    DOMString? to;
+    DOMString? chainId;
+    DOMString? value;
+    DOMString? gasPrice;
+    DOMString? gasLimit;
+  };
+
+  dictionary LiFiToken {
+    DOMString address;
+    DOMString decimals;
+    DOMString symbol;
+    DOMString chainId;
+    DOMString coinKey;
+    DOMString name;
+    DOMString logoURI;
+  };
+
+  dictionary LiFiFeeCost {
+    DOMString name;
+    DOMString description;
+    DOMString percentage;
+    LiFiToken token;
+    DOMString amount;
+    boolean included;
+  };
+
+  dictionary LiFiGasCost {
+    DOMString type;
+    DOMString estimate;
+    DOMString limit;
+    DOMString amount;
+    LiFiToken token;
+  };
+
+  dictionary LiFiAction {
+    DOMString fromChainId;
+    DOMString fromAmount;
+    LiFiToken fromToken;
+    DOMString toChainId;
+    LiFiToken toToken;
+    DOMString slippage;
+
+    DOMString? fromAddress;
+    DOMString? toAddress;
+    DOMString? destinationCallData;
+  };
+
+  dictionary LiFiEstimate {
+    DOMString tool;
+    DOMString fromAmount;
+    DOMString toAmount;
+    DOMString toAmountMin;
+    DOMString approvalAddress;
+    LiFiFeeCost[] feeCosts;
+    LiFiGasCost[] gasCosts;
+    DOMString executionDuration;
+  };
+
+  dictionary LiFiToolDetails {
+    DOMString key;
+    DOMString name;
+    DOMString logoURI;
+  };
+
+  dictionary LiFiInsurance {
+    DOMString state;
+    DOMString feeAmountUsd;
+  };
+
+  dictionary LiFiStep {
+    DOMString id;
+    DOMString type;
+    DOMString tool;
+    LiFiToolDetails toolDetails;
+    LiFiAction action;
+    LiFiEstimate estimate;
+
+    DOMString? integrator;
+    LiFiStep[]? includedSteps;
+  };
+
+  dictionary LiFiRoute {
+    DOMString id;
+    DOMString fromChainId;
+    DOMString fromAmount;
+    LiFiToken fromToken;
+    DOMString fromAddress;
+    DOMString toChainId;
+    DOMString toAmount;
+    DOMString toAmountMin;
+    LiFiToken toToken;
+    DOMString toAddress;
+    LiFiStep[] steps;
+    LiFiInsurance insurance;
+    DOMString[] tags;
+  };
+
+  // Docs: https://apidocs.li.fi/reference/post_advanced-routes
+  dictionary LiFiQuoteResponse {
+    LiFiRoute[] routes;
+  };
+
+  // Docs: https://apidocs.li.fi/reference/post_advanced-steptransaction
+  dictionary LiFiTransactionResponse {
+    LiFiTransactionRequest transactionRequest;
+  };
+
+  dictionary LiFiErrorResponse {
+    DOMString message;
+  };
 };

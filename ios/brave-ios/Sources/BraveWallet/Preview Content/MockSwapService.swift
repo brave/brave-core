@@ -50,43 +50,11 @@ class MockSwapService: BraveWalletSwapService {
 
   func quote(
     params: BraveWallet.SwapQuoteParams,
-    completion: @escaping (BraveWallet.SwapQuoteUnion?, BraveWallet.SwapErrorUnion?, String) -> Void
+    completion: @escaping (
+      BraveWallet.SwapQuoteUnion?, BraveWallet.SwapFees?, BraveWallet.SwapErrorUnion?, String
+    ) -> Void
   ) {
-    completion(
-      .init(
-        zeroExQuote: .init(
-          price: "",
-          guaranteedPrice: "",
-          to: "",
-          data: "",
-          value: "",
-          gas: "",
-          estimatedGas: "",
-          gasPrice: "",
-          protocolFee: "",
-          minimumProtocolFee: "",
-          buyTokenAddress: "",
-          sellTokenAddress: "",
-          buyAmount: "",
-          sellAmount: "",
-          allowanceTarget: "",
-          sellTokenToEthRate: "",
-          buyTokenToEthRate: "",
-          estimatedPriceImpact: "",
-          sources: [],
-          fees: .init(zeroExFee: nil)
-        )
-      ),
-      nil,
-      ""
-    )
-  }
-
-  func braveFee(
-    params: BraveWallet.BraveSwapFeeParams,
-    completion: @escaping (BraveWallet.BraveSwapFeeResponse?, String) -> Void
-  ) {
-    completion(nil, "Error Message")
+    completion(nil, nil, nil, "Error Message")
   }
 }
 

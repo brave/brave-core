@@ -543,4 +543,27 @@ extension BraveWallet.CoinMarket {
     )
   }
 }
+
+extension BraveWallet.SwapFees {
+  static var mockJupiterFees: BraveWallet.SwapFees {
+    BraveWallet.SwapFees(
+      feeParam: "85",
+      feePct: "0.85",
+      discountPct: "0",
+      effectiveFeePct: "0.85",
+      discountCode: .none
+    )
+  }
+
+  static var mockZeroExFees: BraveWallet.SwapFees {
+    BraveWallet.SwapFees(
+      feeParam: "0.00875",
+      feePct: "0.875",
+      discountPct: "0",
+      effectiveFeePct: "0.875",
+      discountCode: .none
+    )
+  }
+}
+
 #endif
