@@ -109,7 +109,7 @@ extension BasicMenuActivity.ActivityType {
   static let createPDF: Self = .init(
     id: "CreatePDF",
     title: Strings.createPDF,
-    braveSystemImage: "leo.broom"
+    braveSystemImage: "leo.file.new"
   )
   static let addSearchEngine: Self = .init(
     id: "AddSearchEngine",
