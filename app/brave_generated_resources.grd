@@ -224,13 +224,6 @@
       <message name="IDS_OPEN_MORE_OTHER_DEVICES_SESSIONS" desc="The history sub-menu item to show sessions from other devices">
         More…
       </message>
-      <message name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
-        Leo tools
-      </message>
-      <message name="IDS_AI_CHAT_CONTEXT_SUMMARIZE_TEXT" desc="The text label of context menu item to summarize selected text">
-        Summarize
-      </message>
-
       <!-- Widevine -->
       <message name="IDS_WIDEVINE_PERMISSION_REQUEST_TEXT_FRAGMENT" desc="Text fragment for Widevine permission request. 'Widevine' is the name of a plugin and should not be translated.">
           Install and run Google Widevine

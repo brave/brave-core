@@ -15,6 +15,7 @@
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
+#include "base/no_destructor.h"
 #include "base/notreached.h"
 #include "base/one_shot_event.h"
 #include "base/ranges/algorithm.h"
@@ -48,6 +49,48 @@ static const auto kAllowedSchemes = base::MakeFixedFlatSet<std::string_view>(
 bool IsPremiumStatus(mojom::PremiumStatus status) {
   return status == mojom::PremiumStatus::Active ||
          status == mojom::PremiumStatus::ActiveDisconnected;
+}
+
+const base::flat_map<mojom::ActionType, std::string>&
+GetActionTypeQuestionMap() {
+  static const base::NoDestructor<
+      base::flat_map<mojom::ActionType, std::string>>
+      map({{mojom::ActionType::SUMMARIZE_PAGE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE)},
+           {mojom::ActionType::SUMMARIZE_VIDEO,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO)},
+           {mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT)},
+           {mojom::ActionType::EXPLAIN,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPLAIN)},
+           {mojom::ActionType::PARAPHRASE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PARAPHRASE)},
+           {mojom::ActionType::CREATE_TAGLINE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CREATE_TAGLINE)},
+           {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_SHORT)},
+           {mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG,
+            l10n_util::GetStringUTF8(
+                IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
+           {mojom::ActionType::IMPROVE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
+           {mojom::ActionType::PROFESSIONALIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
+           {mojom::ActionType::PERSUASIVE_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE)},
+           {mojom::ActionType::CASUALIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CASUALIZE)},
+           {mojom::ActionType::FUNNY_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_FUNNY_TONE)},
+           {mojom::ActionType::ACADEMICIZE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_ACADEMICIZE)},
+           {mojom::ActionType::SHORTEN,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SHORTEN)},
+           {mojom::ActionType::EXPAND,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_EXPAND)}});
+  return *map;
 }
 
 }  // namespace
@@ -607,13 +650,15 @@ void ConversationDriver::MaybeUnlinkPageContent() {
   }
 }
 
-void ConversationDriver::SummarizeSelectedText(
-    const std::string& selected_text) {
-  mojom::ConversationTurn turn = {
-      CharacterType::HUMAN, mojom::ActionType::SUMMARIZE_SELECTED_TEXT,
-      ConversationTurnVisibility::VISIBLE,
-      l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_SELECTED_TEXT),
-      selected_text};
+void ConversationDriver::SubmitSelectedText(const std::string& selected_text,
+                                            mojom::ActionType action_type) {
+  const auto& action_type_question_map = GetActionTypeQuestionMap();
+  auto iter = action_type_question_map.find(action_type);
+  DCHECK(iter != action_type_question_map.end());
+
+  mojom::ConversationTurn turn = {CharacterType::HUMAN, action_type,
+                                  ConversationTurnVisibility::VISIBLE,
+                                  iter->second, selected_text};
   SubmitHumanConversationEntry(turn);
 }
 
@@ -672,24 +717,22 @@ void ConversationDriver::SubmitHumanConversationEntry(
   // TODO(petemill): Tokenize the summary question so that we
   // don't have to do this weird substitution.
   // TODO(jocelyn): Assigning turn.type below is a workaround for now since
-  // callers of SubmitHumanConversationEntry mojo API  currently don't have
+  // callers of SubmitHumanConversationEntry mojo API currently don't have
   // action_type specified.
-  std::string question_part;
-  if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
-    turn.action_type = mojom::ActionType::SUMMARIZE_PAGE;
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
-  } else if (turn.text ==
-             l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
-    turn.action_type = mojom::ActionType::SUMMARIZE_VIDEO;
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
-  } else if (turn.action_type == mojom::ActionType::SUMMARIZE_SELECTED_TEXT) {
-    question_part =
-        l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_SELECTED_TEXT);
-  } else {
-    turn.action_type = mojom::ActionType::QUERY;
-    question_part = turn.text;
+  std::string question_part = turn.text;
+  if (turn.action_type == mojom::ActionType::UNSPECIFIED) {
+    if (turn.text == l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_PAGE)) {
+      turn.action_type = mojom::ActionType::SUMMARIZE_PAGE;
+      question_part =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_PAGE);
+    } else if (turn.text ==
+               l10n_util::GetStringUTF8(IDS_CHAT_UI_SUMMARIZE_VIDEO)) {
+      turn.action_type = mojom::ActionType::SUMMARIZE_VIDEO;
+      question_part =
+          l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SUMMARIZE_VIDEO);
+    } else {
+      turn.action_type = mojom::ActionType::QUERY;
+    }
   }
 
   auto history = chat_history_;
