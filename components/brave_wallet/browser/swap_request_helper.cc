@@ -152,8 +152,7 @@ std::optional<std::string> EncodeChainId(const std::string& value) {
     return std::nullopt;
   }
 
-  if (val > std::numeric_limits<uint64_t>::max() ||
-      val < std::numeric_limits<uint64_t>::min()) {
+  if (val > std::numeric_limits<uint64_t>::max()) {
     return std::nullopt;
   }
 
