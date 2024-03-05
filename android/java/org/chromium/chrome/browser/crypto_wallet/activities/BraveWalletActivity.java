@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
 import androidx.appcompat.view.menu.MenuBuilder;
-import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.appbar.MaterialToolbar;
@@ -150,8 +149,7 @@ public class BraveWalletActivity extends BraveWalletBaseActivity implements OnNe
         mCryptoOnboardingLayout = findViewById(R.id.crypto_onboarding_layout);
         mCryptoWalletOnboardingViewPager = findViewById(R.id.crypto_wallet_onboarding_viewpager);
         mCryptoWalletOnboardingViewPager.setUserInputEnabled(false);
-        mCryptoWalletOnboardingPagerAdapter =
-                new CryptoWalletOnboardingPagerAdapter(this);
+        mCryptoWalletOnboardingPagerAdapter = new CryptoWalletOnboardingPagerAdapter(this);
         mCryptoWalletOnboardingViewPager.setAdapter(mCryptoWalletOnboardingPagerAdapter);
         mCryptoWalletOnboardingViewPager.setOffscreenPageLimit(
                 mCryptoWalletOnboardingPagerAdapter.getItemCount() - 1);
