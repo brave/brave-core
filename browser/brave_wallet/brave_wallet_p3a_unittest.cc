@@ -589,13 +589,13 @@ TEST_F(BraveWalletP3AUnitTest, SolTransactionSentObservation) {
       mojom::TxDataUnion::NewSolanaTxData(std::move(solana_tx_data)),
       mojom::kSolanaMainnet, sol_from(), &tx_meta_id));
 
-  std::string tx_hash1_ =
+  std::string tx_hash1 =
       "5VERv8NMvzbJMEkV8xnrLkEaWRtSz9CosKDYjCJjBRnbJLgp8uirBgmQpjKhoR4tjF3ZpR"
       "zrFmBV6UjKdiSZkQUW";
   auto* latest_blockhash1_ = "EkSnNWid2cvwEVnVx9aBqawnmiCNiDgp3gUdkDPTKN1N";
   auto last_valid_block_height1_ = 3090;
 
-  SetSolInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1_,
+  SetSolInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash1,
                     last_valid_block_height1_);
 
   // Approve the SOL transaction
