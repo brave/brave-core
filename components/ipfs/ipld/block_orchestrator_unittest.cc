@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/ipld/block_orchestrator.h"
+#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
 
 #include <cstdint>
 #include <memory>
@@ -118,7 +118,7 @@ class BlockOrchestratorUnitTest : public testing::Test {
     auto req = std::make_unique<IpfsTrustlessRequest>(
         url, base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
                  url_loader_factory()));
-    auto orchestrator = std::make_unique<BlockOrchestrator>(GetPrefs());
+    auto orchestrator = std::make_unique<BlockOrchestratorService>(GetPrefs());
     url_loader_factory()->SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
           ASSERT_TRUE(request.url.is_valid());

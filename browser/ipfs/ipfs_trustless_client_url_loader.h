@@ -4,11 +4,14 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
+#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
+#include "brave/components/ipfs/ipld/trustless_client_types.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "partition_alloc/pointers/raw_ptr.h"
-#include "services/network/public/mojom/url_loader.mojom.h"
 #include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/mojom/url_loader.mojom.h"
 #include "url/gurl.h"
 
 namespace network::mojom {
@@ -16,38 +19,44 @@ class URLLoaderFactory;
 }  // namespace network::mojom
 
 namespace ipfs {
-class InterRequestState;
+namespace ipld {
+class BlockOrchestratorService;
+}
 
 class IpfsTrustlessClientIrlLoader : public network::mojom::URLLoader {
-
-public:
-  explicit IpfsTrustlessClientIrlLoader(network::mojom::URLLoaderFactory& handles_http,
-                         InterRequestState& state);
+ public:
+  explicit IpfsTrustlessClientIrlLoader(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      ipld::BlockOrchestratorService& orchestrator);
   ~IpfsTrustlessClientIrlLoader() override;
 
-void StartRequest(
+  void StartRequest(
       network::ResourceRequest const& resource_request,
       mojo::PendingReceiver<network::mojom::URLLoader> receiver,
       mojo::PendingRemote<network::mojom::URLLoaderClient> client);
 
-private:
+ private:
   void FollowRedirect(
-      std::vector<std::string> const& removed_headers,
-      net::HttpRequestHeaders const& modified_headers,
-      net::HttpRequestHeaders const& modified_cors_exempt_headers,
-      absl::optional<::GURL> const& new_url) override;
+      const std::vector<std::string>& removed_headers,
+      const ::net::HttpRequestHeaders& modified_headers,
+      const ::net::HttpRequestHeaders& modified_cors_exempt_headers,
+      const std::optional<::GURL>& new_url) override;
   void SetPriority(net::RequestPriority priority,
                    int32_t intra_priority_value) override;
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
+ void RequestOrchestrator(const GURL& url, std::unique_ptr<network::PendingSharedURLLoaderFactory> pending_factory);
+  void OnIpfsTrustlessClientResponse(std::unique_ptr<ipld::IpfsTrustlessRequest> request,
+            std::unique_ptr<ipld::IpfsTrustlessResponse> response);
 
-raw_ref<InterRequestState> state_;
-raw_ref<network::mojom::URLLoaderFactory> loader_factory_;
-mojo::Receiver<network::mojom::URLLoader> receiver_{this};
-mojo::Remote<network::mojom::URLLoaderClient> client_;
+  raw_ref<ipld::BlockOrchestratorService> orchestrator_;
+  scoped_refptr<network::SharedURLLoaderFactory> loader_factory_;
+  mojo::Receiver<network::mojom::URLLoader> receiver_{this};
+  mojo::Remote<network::mojom::URLLoaderClient> client_;
 
-GURL original_url_;
+  GURL original_url_;
+  base::WeakPtrFactory<IpfsTrustlessClientIrlLoader> weak_ptr_factory_{this};
 };
 
-}  // namespace ipfs {    
+}  // namespace ipfs

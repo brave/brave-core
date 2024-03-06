@@ -15,18 +15,19 @@
 #include "brave/components/ipfs/ipld/block_reader.h"
 #include "brave/components/ipfs/ipld/trustless_client_types.h"
 #include "partition_alloc/pointers/raw_ptr.h"
+#include "components/keyed_service/core/keyed_service.h"
 
 namespace ipfs::ipld {
 
-class BlockOrchestrator {
+class BlockOrchestratorService : public KeyedService {
  public:
-  explicit BlockOrchestrator(PrefService* pref_service);
-  ~BlockOrchestrator();
+  explicit BlockOrchestratorService(PrefService* pref_service);
+  ~BlockOrchestratorService() override;
 
-  BlockOrchestrator(const BlockOrchestrator&) = delete;
-  BlockOrchestrator(BlockOrchestrator&&) = delete;
-  BlockOrchestrator& operator=(const BlockOrchestrator&) = delete;
-  BlockOrchestrator& operator=(BlockOrchestrator&&) = delete;
+  BlockOrchestratorService(const BlockOrchestratorService&) = delete;
+  BlockOrchestratorService(BlockOrchestratorService&&) = delete;
+  BlockOrchestratorService& operator=(const BlockOrchestratorService&) = delete;
+  BlockOrchestratorService& operator=(BlockOrchestratorService&&) = delete;
 
   void BuildResponse(std::unique_ptr<IpfsTrustlessRequest> request,
                      IpfsRequestCallback callback);
@@ -58,7 +59,7 @@ class BlockOrchestrator {
   std::unique_ptr<IpfsTrustlessRequest> request_;
   std::unique_ptr<BlockReader> block_reader_;
   raw_ptr<PrefService> pref_service_;
-  base::WeakPtrFactory<BlockOrchestrator> weak_ptr_factory_{this};
+  base::WeakPtrFactory<BlockOrchestratorService> weak_ptr_factory_{this};
 };
 
 }  // namespace ipfs::ipld

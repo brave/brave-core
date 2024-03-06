@@ -17,6 +17,7 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
 #include "third_party/blink/public/mojom/loader/referrer.mojom.h"
+#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
 
 class PrefChangeRegistrar;
 
@@ -183,6 +184,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
 
   std::unique_ptr<PrefChangeRegistrar, content::BrowserThread::DeleteOnUIThread>
       pref_change_registrar_;
+//  std::unique_ptr<ipfs::ipld::BlockOrchestratorService> orchestrator_;
+
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_CONTENT_BROWSER_CLIENT_H_

@@ -8,26 +8,31 @@
 #include <thread>
 #include <utility>
 #include "base/task/current_thread.h"
-#include "components/prefs/pref_service.h"
-#include "services/network/public/cpp/resource_request.h"
-#include "brave/browser/ipfs/ipfs_trustless_client_url_loader.h"
 #include "brave/browser/ipfs/ipfs_interrequest_state.h"
+#include "brave/browser/ipfs/ipfs_trustless_client_url_loader.h"
+#include "brave/browser/ipfs/ipld/block_orchestrator_service_factory.h"
+#include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
+#include "chrome/browser/profiles/profile.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
-#include "brave/components/ipfs/ipfs_utils.h"
+#include "services/network/public/cpp/resource_request.h"
+#include "services/network/public/cpp/shared_url_loader_factory.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 
 namespace {
 
-    static std::string LogThreadId() {
-std::ostringstream ss;
-ss << std::this_thread::get_id();
-ss << " IsUI:" << base::CurrentUIThread::IsSet();
-return ss.str();
+static std::string LogThreadId() {
+  std::ostringstream ss;
+  ss << std::this_thread::get_id();
+  ss << " IsUI:" << base::CurrentUIThread::IsSet();
+  return ss.str();
 }
 
 bool IsIpfsLink(const GURL& url, PrefService* prefs) {
-return ipfs::IsIPFSScheme(url) || ipfs::HasIPFSPath(url) ||
-       ipfs::IsLocalGatewayURL(url) || ipfs::IsDefaultGatewayURL(url, prefs);
+  return ipfs::IsIPFSScheme(url) || ipfs::HasIPFSPath(url) ||
+         ipfs::IsLocalGatewayURL(url) || ipfs::IsDefaultGatewayURL(url, prefs);
 }
 }  // namespace
 
@@ -48,7 +53,8 @@ void IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoader(
     const network::ResourceRequest& tentative_resource_request,
     content::BrowserContext* browser_context,
     content::URLLoaderRequestInterceptor::LoaderCallback callback) {
-  auto* state = InterRequestState::FromBrowserContext(browser_context);
+
+  //auto* state = InterRequestState::FromBrowserContext(browser_context);
   // state.set_network_context(network_context_);
 
   LOG(INFO) << "[IPFS] MaybeCreateLoader url:"
@@ -57,10 +63,18 @@ void IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoader(
 
   if (IsIpfsLink(tentative_resource_request.url,
                  user_prefs::UserPrefs::Get(browser_context))) {
-    std::move(callback).Run(
-        base::BindOnce(&IpfsTrustlessClientUrlLoaderInterceptor::StartRequest, weak_factory_.GetWeakPtr(),
-                       std::make_unique<IpfsTrustlessClientIrlLoader>(
-                           *loader_factory_, *state)));
+
+  auto orch = std::make_unique<ipld::BlockOrchestratorService>(user_prefs::UserPrefs::Get(browser_context));
+
+  loader_ = std::make_unique<IpfsTrustlessClientIrlLoader>(
+            (static_cast<Profile*>(browser_context))->GetURLLoaderFactory(),
+            *ipld::BlockOrchestratorServiceFactory::GetServiceForContext(browser_context)
+                );
+
+    std::move(callback).Run(base::BindOnce(
+        &IpfsTrustlessClientUrlLoaderInterceptor::StartRequest,
+        weak_factory_.GetWeakPtr(),
+        loader_.get()));
   } else {
     std::move(callback).Run({});
   }
@@ -76,19 +90,22 @@ void IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoader(
 //     blink::ThrottlingURLLoader* url_loader,
 //     bool* skip_other_interceptors,
 //     bool* will_return_unsafe_redirect) {
-//     LOG(INFO) << "[IPFS] IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoaderForResponse URL:" <<   request.url;
-//     return content::URLLoaderRequestInterceptor::MaybeCreateLoaderForResponse(
-//         status, request, response_head, response_body, loader, client_receiver,
-//         url_loader, skip_other_interceptors, will_return_unsafe_redirect);
+//     LOG(INFO) << "[IPFS]
+//     IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoaderForResponse
+//     URL:" <<   request.url; return
+//     content::URLLoaderRequestInterceptor::MaybeCreateLoaderForResponse(
+//         status, request, response_head, response_body, loader,
+//         client_receiver, url_loader, skip_other_interceptors,
+//         will_return_unsafe_redirect);
 // }
 
 void IpfsTrustlessClientUrlLoaderInterceptor::StartRequest(
-      std::unique_ptr<IpfsTrustlessClientIrlLoader> loader,
-      network::ResourceRequest const& resource_request,
-      mojo::PendingReceiver<network::mojom::URLLoader> receiver,
-      mojo::PendingRemote<network::mojom::URLLoaderClient> client)
-    {
-        loader->StartRequest(resource_request, std::move(receiver), std::move(client));
-    }
+    IpfsTrustlessClientIrlLoader* loader,
+    network::ResourceRequest const& resource_request,
+    mojo::PendingReceiver<network::mojom::URLLoader> receiver,
+    mojo::PendingRemote<network::mojom::URLLoaderClient> client) {
+  loader->StartRequest(resource_request, std::move(receiver),
+                       std::move(client));  
+}
 
 }  // namespace ipfs

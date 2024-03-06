@@ -77,6 +77,7 @@
 
 #if BUILDFLAG(ENABLE_IPFS)
 #include "brave/browser/ipfs/ipfs_service_factory.h"
+#include "brave/browser/ipfs/ipld/block_orchestrator_service_factory.h"
 #endif
 
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
@@ -178,6 +179,7 @@ void EnsureBrowserContextKeyedServiceFactoriesBuilt() {
 
 #if BUILDFLAG(ENABLE_IPFS)
   ipfs::IpfsServiceFactory::GetInstance();
+  ipfs::ipld::BlockOrchestratorServiceFactory::GetInstance();
 #endif
   brave_wallet::BraveWalletIpfsServiceFactory::GetInstance();
 

@@ -54,12 +54,12 @@ class IpfsTrustlessClientUrlLoaderInterceptor
 
 private:
      void StartRequest(
-       std::unique_ptr<IpfsTrustlessClientIrlLoader> loader,
+       IpfsTrustlessClientIrlLoader* loader,
        network::ResourceRequest const& resource_request,
        mojo::PendingReceiver<network::mojom::URLLoader> receiver,
        mojo::PendingRemote<network::mojom::URLLoaderClient> client);
     
-    raw_ptr<network::mojom::URLLoaderFactory> loader_factory_;
+    std::unique_ptr<IpfsTrustlessClientIrlLoader> loader_;
     base::WeakPtrFactory<IpfsTrustlessClientUrlLoaderInterceptor> weak_factory_{this};
 };
 
