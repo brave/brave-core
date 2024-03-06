@@ -136,7 +136,6 @@ class PageContentFetcher {
     request->url = patch_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
     request->credentials_mode = network::mojom::CredentialsMode::kInclude;
-    request->request_initiator = absl::nullopt;
     request->site_for_cookies =
         net::SiteForCookies::FromOrigin(url::Origin::Create(patch_url));
     request->method = net::HttpRequestHeaders::kGetMethod;
