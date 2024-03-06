@@ -52,8 +52,8 @@ struct AIChatIntroMessageView: View {
 
   var body: some View {
     HStack(alignment: .top, spacing: 0.0) {
-      AIChatProductIcon(containerShape: Circle())
-        .font(.title2)
+      AIChatProductIcon(containerShape: Circle(), padding: 9.0)
+        .font(.body)
         .padding(.trailing, 16.0)
 
       VStack(spacing: 0.0) {

@@ -137,16 +137,33 @@ public struct AIChatView: View {
 
                     apiErrorViews(for: model.apiError)
 
-                    if model.shouldShowSuggestions {
-                      AIChatSuggestionsView(
-                        geometry: geometry,
-                        suggestions: model.suggestedQuestions
-                      ) { suggestion in
-                        hasSeenIntro.value = true
-                        hideKeyboard()
-                        model.submitSuggestion(suggestion)
+                    if model.shouldShowSuggestions && !model.requestInProgress
+                      && model.apiError == .none
+                    {
+                      if model.conversationHistory.isEmpty {
+                        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
+                          .font(.callout)
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .padding([.horizontal, .bottom])
                       }
-                      .padding()
+
+                      if model.suggestionsStatus != .isGenerating
+                        && !model.suggestedQuestions.isEmpty
+                      {
+                        AIChatSuggestionsView(
+                          geometry: geometry,
+                          suggestions: model.suggestedQuestions
+                        ) { suggestion in
+                          hasSeenIntro.value = true
+                          hideKeyboard()
+                          model.submitSuggestion(suggestion)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 8.0)
+                        .disabled(
+                          model.suggestionsStatus == .isGenerating
+                        )
+                      }
 
                       if model.shouldShowGenerateSuggestionsButton {
                         AIChatSuggestionsButton(
@@ -159,7 +176,7 @@ public struct AIChatView: View {
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .disabled(
-                          model.suggestionsStatus == .isGenerating || model.requestInProgress
+                          model.suggestionsStatus == .isGenerating
                         )
                       }
                     }

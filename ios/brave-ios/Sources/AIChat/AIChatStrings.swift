@@ -640,13 +640,6 @@ extension Strings {
       value: "Enter a prompt here",
       comment: "The text for placeholder on textfield for entering questions for AI"
     )
-    public static let suggestedFollowupListTitle = NSLocalizedString(
-      "aichat.suggestedFollowupListTitle",
-      tableName: "BraveLeo",
-      bundle: .module,
-      value: "Suggested follow-ups",
-      comment: "The title for list where the suggested follw up questions listed "
-    )
     public static let termsConditionsTitle = NSLocalizedString(
       "aichat.termsConditionsTitle",
       tableName: "BraveLeo",

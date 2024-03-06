@@ -54,27 +54,32 @@ class AIChatPDFRecognition {
       images.append(image)
     }
 
-    let text = await withTaskGroup(of: String.self) { group in
-      images.forEach { image in
+    var unsortedTexts = await withTaskGroup(of: (index: Int, text: String).self) { group in
+      for (index, image) in images.enumerated() {
         group.addTask {
           do {
-            return try await AIChatImageRecognition.parseText(image: image).map({
+            let text = try await AIChatImageRecognition.parseText(image: image).map({
               $0.trimmingCharacters(in: .whitespacesAndNewlines)
             }).joined(separator: " ")
+
+            return (index, text)
           } catch {
-            return ""
+            return (index, "")
           }
         }
       }
 
-      var texts = [String]()
-      for await text in group {
-        texts.append(text)
+      var pairs = [(index: Int, text: String)]()
+      for await pair in group {
+        pairs.append(pair)
       }
-      return texts.joined(separator: " ")
+
+      return pairs
     }
 
-    return text.trimmingCharacters(in: .whitespacesAndNewlines)
-
+    unsortedTexts.sort { $0.index < $1.index }
+    return unsortedTexts.map({ $0.text }).joined(separator: " ").trimmingCharacters(
+      in: .whitespacesAndNewlines
+    )
   }
 }
