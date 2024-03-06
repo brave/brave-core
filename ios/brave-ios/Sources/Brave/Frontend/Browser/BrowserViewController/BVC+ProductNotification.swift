@@ -51,30 +51,20 @@ extension BrowserViewController {
   }
 
   private func presentOnboardingAdblockNotifications(selectedTab: Tab) {
+    // If locale is JP, ad block product notifications should not be shown
+    // This will be the case as long as new onboarding is active for JAPAN
+    guard Locale.current.regionCode != "JP" else {
+      return
+    }
+    
     guard !Preferences.General.onboardingAdblockPopoverShown.value,
       Preferences.Onboarding.isNewRetentionUser.value == true
     else {
       return
     }
 
-    // If JP locale the ad block product notification should be shown
-    // after 3 days period
-    var showAdblockNotifications = true
-    if Locale.current.regionCode == "JP",
-      let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value
-    {
-
-      let showDate = appRetentionLaunchDate.addingTimeInterval(
-        FullScreenCalloutManager.delayAmountJpOnboarding
-      )
-
-      // Delay period should pass before showing any educational product notification
-      // This will be the case as long as new onboarding is active for JAPAN
-      showAdblockNotifications = Date() > showDate
-    }
-
     let blockedRequestURLs = selectedTab.contentBlocker.blockedRequests
-    if showAdblockNotifications, !blockedRequestURLs.isEmpty, let url = selectedTab.url {
+    if !blockedRequestURLs.isEmpty, let url = selectedTab.url {
 
       let domain = url.baseDomain ?? url.host ?? url.schemelessAbsoluteString
       guard currentBenchmarkWebsite != domain else {
@@ -137,20 +127,23 @@ extension BrowserViewController {
   private func presentEducationalProductNotifications(selectedTab: Tab) {
     // Data Saved Pop-Over only exist in JP locale
     guard Locale.current.regionCode == "JP",
-      !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value,
-      let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value
+      !Preferences.ProductNotificationBenchmarks.showingSpecificDataSavedEnabled.value
     else {
       return
     }
 
-    let rightNow = Date()
-    let showDate = appRetentionLaunchDate.addingTimeInterval(
-      FullScreenCalloutManager.delayAmountJpOnboarding
-    )
-
-    // 3 days period should pass before showing any educational product notification
+    // Delay period 3 days should pass before showing any educational product notification
     // This will be the case as long as new onboarding is active for JAPAN
-    if rightNow > showDate {
+    var showAdblockNotifications = true
+    if let appRetentionLaunchDate = Preferences.DAU.appRetentionLaunchDate.value {
+      let showDate = appRetentionLaunchDate.addingTimeInterval(
+        FullScreenCalloutManager.delayAmountJpOnboarding
+      )
+
+      showAdblockNotifications = Date() > showDate
+    }
+
+    if showAdblockNotifications {
       if !adblockProductNotificationPresented {
         guard let currentURL = selectedTab.url,
           DataSaved.get(with: currentURL.absoluteString) == nil,
