@@ -644,22 +644,23 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   OSCryptMocker::TearDown();
 }
 
-TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitialize) {
-  OSCryptMocker::SetUp();
-
+TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
   CreateSyncService();
 
-  brave_sync_prefs()->AddLeaveChainDetail(
-      __FILE__, __LINE__,
-      std::string(brave_sync::Prefs::GetLeaveChainDetailsMaxLenForTests(), 'a')
-          .c_str());
+  // Pretend for test that we are doing iOS behaviour for leave sync chain
+  // details, becuase BraveSyncServiceImplTest.NoLeaveDetailsWhenInitializeIOS
+  // is not executed on iOS
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+      brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
+
+  brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, "details");
 
   size_t leave_chain_pref_changed_count = 0;
 
   PrefChangeRegistrar brave_sync_prefs_change_registrar_;
   brave_sync_prefs_change_registrar_.Init(pref_service());
   brave_sync_prefs_change_registrar_.Add(
-      brave_sync::Prefs::LeaveChainDetailsPathForTests(),
+      brave_sync::Prefs::GetLeaveChainDetailsPathForTests(),
       base::BindRepeating(
           [](size_t* leave_chain_pref_changed_count) {
             ++(*leave_chain_pref_changed_count);
@@ -668,22 +669,11 @@ TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitialize) {
 
   brave_sync_service_impl()->Initialize();
   EXPECT_FALSE(engine());
-  brave_sync_service_impl()->SetSyncCode(kValidSyncCode);
-  task_environment_.RunUntilIdle();
 
-#if BUILDFLAG(IS_IOS)
-  // On iOS we expect that AddLeaveChainDetail will not be invoked at
+  // We expect that AddLeaveChainDetail will not be invoked at
   // SyncServiceImpl::Initialize and details will not be cleared
   EXPECT_EQ(leave_chain_pref_changed_count, 0u);
   EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
-#else
-  // On Android/Desktop we expect that details will be cleared and also
-  // AddLeaveChainDetail will not be invoked at SyncServiceImpl::Initialize
-  EXPECT_EQ(leave_chain_pref_changed_count, 1u);
-  EXPECT_TRUE(brave_sync_prefs()->GetLeaveChainDetails().empty());
-#endif
-
-  OSCryptMocker::TearDown();
 }
 
 }  // namespace syncer

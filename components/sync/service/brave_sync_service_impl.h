@@ -13,7 +13,6 @@
 #include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
-#include "build/build_config.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/sync_protocol_error.h"
 #include "components/sync/service/sync_service_impl.h"
@@ -125,9 +124,10 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   int completed_cycles_count_ = 0;
 
-#if BUILDFLAG(IS_IOS)
+  // This flag is set to true during BraveSyncServiceImpl::Initialize call. The
+  // reason is that upstream SyncServiceImpl::Initialize() can invoke
+  // StopAndClear, but we don't want to invoke AddLeaveChainDetail in that case
   bool executing_initialize_ = false;
-#endif
 
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;

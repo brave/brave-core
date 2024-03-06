@@ -48,9 +48,8 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 }
 
 void BraveSyncServiceImpl::Initialize() {
-#if BUILDFLAG(IS_IOS)
   executing_initialize_ = true;
-#endif
+
   SyncServiceImpl::Initialize();
 
   // P3A ping for those who have sync disabled
@@ -58,11 +57,7 @@ void BraveSyncServiceImpl::Initialize() {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
 
-#if BUILDFLAG(IS_IOS)
   executing_initialize_ = false;
-#else
-  brave_sync_prefs_.ClearLeaveChainDetails();
-#endif
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {
@@ -74,11 +69,9 @@ void BraveSyncServiceImpl::StopAndClear() {
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
   // is not enabled. This adds lots of useless lines into
   // `brave_sync_v2.diag.leave_chain_details`
-#if BUILDFLAG(IS_IOS)
   if (!executing_initialize_) {
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   }
-#endif
   // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
   brave_sync_prefs_.Clear();
   SyncServiceImpl::StopAndClear();
@@ -125,9 +118,7 @@ bool BraveSyncServiceImpl::SetSyncCode(const std::string& sync_code) {
 }
 
 void BraveSyncServiceImpl::OnSelfDeviceInfoDeleted(base::OnceClosure cb) {
-#if BUILDFLAG(IS_IOS)
   brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
   initiated_self_device_info_deleted_ = true;
   // This function will follow normal reset process and set SyncRequested to
   // false
@@ -179,9 +170,7 @@ void BraveSyncServiceImpl::OnBraveSyncPrefsChanged(const std::string& path) {
       brave_sync_prefs_.ClearLeaveChainDetails();
     } else {
       VLOG(1) << "Brave sync seed cleared";
-#if BUILDFLAG(IS_IOS)
       brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
       GetBraveSyncAuthManager()->ResetKeys();
       // Send updated status here, because OnDeviceInfoChange is not triggered
       // when device leaves the chain by `Leave Sync Chain` button
@@ -241,9 +230,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
     const int current_attempt,
     base::OnceCallback<void(const SyncProtocolError&)> callback,
     const SyncProtocolError& sync_protocol_error) {
-#if BUILDFLAG(IS_IOS)
   brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
   if (sync_protocol_error.error_type == SYNC_SUCCESS) {
     std::move(callback).Run(sync_protocol_error);
     // If request succeded - reset and clear all in a forced way
@@ -269,9 +256,7 @@ void BraveSyncServiceImpl::OnAccountDeleted(
 void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
     const int current_attempt,
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
-#if BUILDFLAG(IS_IOS)
   brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
   if (!engine_) {
     // We can reach here if two devices almost at the same time will initiate
     // the deletion procedure
@@ -291,9 +276,7 @@ void BraveSyncServiceImpl::PermanentlyDeleteAccountImpl(
 
 void BraveSyncServiceImpl::PermanentlyDeleteAccount(
     base::OnceCallback<void(const SyncProtocolError&)> callback) {
-#if BUILDFLAG(IS_IOS)
   brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
   initiated_delete_account_ = true;
   PermanentlyDeleteAccountImpl(1, std::move(callback));
 }
@@ -310,18 +293,14 @@ void BraveSyncServiceImpl::ResetEngine(ShutdownReason shutdown_reason,
       reset_reason == ResetEngineReason::kDisabledAccount &&
       sync_disabled_by_admin_ && !initiated_delete_account_ &&
       !initiated_join_chain_) {
-#if BUILDFLAG(IS_IOS)
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
     brave_sync_prefs_.SetSyncAccountDeletedNoticePending(true);
     // Forcing stop and clear, because sync account was deleted
     BraveSyncServiceImpl::StopAndClear();
   } else if (shutdown_reason == ShutdownReason::DISABLE_SYNC_AND_CLEAR_DATA &&
              reset_reason == ResetEngineReason::kDisabledAccount &&
              sync_disabled_by_admin_ && initiated_join_chain_) {
-#if BUILDFLAG(IS_IOS)
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
-#endif
     // Forcing stop and clear, because we are trying to join the sync chain, but
     // sync account was deleted
     BraveSyncServiceImpl::StopAndClear();

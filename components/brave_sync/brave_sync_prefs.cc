@@ -66,7 +66,13 @@ constexpr size_t kLeaveChainDetailsMaxLen = 500;
 
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {}
+Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {
+#if BUILDFLAG(IS_IOS)
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
+#else
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kIgnore;
+#endif
+}
 
 Prefs::~Prefs() = default;
 
@@ -171,6 +177,11 @@ void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
 }
 
 void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
+  if (add_leave_chain_detail_behaviour_ ==
+      AddLeaveChainDetailBehaviour::kIgnore) {
+    return;
+  }
+
   std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
 
   std::ostringstream stream;
@@ -202,8 +213,13 @@ size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
 }
 
 // static
-std::string Prefs::LeaveChainDetailsPathForTests() {
+std::string Prefs::GetLeaveChainDetailsPathForTests() {
   return kSyncLeaveChainDetails;
+}
+
+void Prefs::SetAddLeaveChainDetailBehaviourForTests(
+    AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
+  add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }
 
 void Prefs::Clear() {
@@ -241,6 +257,11 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(kSyncV1Migrated);
   prefs->ClearPref(kSyncV1MetaInfoCleared);
   prefs->ClearPref(kSyncV2MigrateNoticeDismissed);
+
+  // Added 03/2024
+#if !BUILDFLAG(IS_IOS)
+  prefs->ClearPref(kSyncLeaveChainDetails);
+#endif
 }
 
 }  // namespace brave_sync
