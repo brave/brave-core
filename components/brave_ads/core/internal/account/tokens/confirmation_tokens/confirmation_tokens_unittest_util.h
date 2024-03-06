@@ -14,8 +14,6 @@ class ConfirmationTokens;
 
 namespace test {
 
-ConfirmationTokens& GetConfirmationTokens();
-
 ConfirmationTokenList RefillConfirmationTokens(int count);
 
 ConfirmationTokenInfo BuildConfirmationToken();

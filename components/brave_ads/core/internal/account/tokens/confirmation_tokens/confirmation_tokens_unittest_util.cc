@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/public_key.h"
 #include "brave/components/brave_ads/core/internal/common/challenge_bypass_ristretto/unblinded_token.h"
 #include "brave/components/brave_ads/core/internal/common/crypto/crypto_util.h"
-#include "brave/components/brave_ads/core/internal/deprecated/confirmations/confirmation_state_manager.h"
 
 namespace brave_ads::test {
 
@@ -47,15 +46,11 @@ ConfirmationTokenInfo BuildConfirmationToken(
 
 }  // namespace
 
-ConfirmationTokens& GetConfirmationTokens() {
-  return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
-}
-
 ConfirmationTokenList RefillConfirmationTokens(const int count) {
   CHECK_GT(count, 0);
 
   ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);
-  GetConfirmationTokens().SetTokens(confirmation_tokens);
+  GetConfirmationTokens().Set(confirmation_tokens);
   return confirmation_tokens;
 }
 

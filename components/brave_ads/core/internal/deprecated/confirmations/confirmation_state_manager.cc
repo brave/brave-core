@@ -92,7 +92,7 @@ std::string ConfirmationStateManager::ToJson() {
 
   // Unblinded tokens
   dict.Set("unblinded_tokens",
-           ConfirmationTokensToValue(confirmation_tokens_.GetAllTokens()));
+           ConfirmationTokensToValue(confirmation_tokens_.GetAll()));
 
   // Payment tokens
   dict.Set("unblinded_payment_tokens",
@@ -150,7 +150,7 @@ bool ConfirmationStateManager::ParseConfirmationTokensFromDictionary(
         filtered_confirmation_tokens.cend());
   }
 
-  confirmation_tokens_.SetTokens(filtered_confirmation_tokens);
+  confirmation_tokens_.Set(filtered_confirmation_tokens);
 
   return true;
 }
