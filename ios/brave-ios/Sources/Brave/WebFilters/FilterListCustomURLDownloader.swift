@@ -71,14 +71,13 @@ actor FilterListCustomURLDownloader: ObservableObject {
     let source = await filterListCustomURL.setting.engineSource
     let version = fileVersionDateFormatter.string(from: downloadResult.date)
 
-    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: source,
-      localFileURL: downloadResult.fileURL,
-      version: version
+    let fileInfo = AdBlockEngineManager.FileInfo(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
+      localFileURL: downloadResult.fileURL
     )
 
     await AdBlockGroupsManager.shared.updated(
-      filterListInfo: filterListInfo,
+      fileInfo: fileInfo,
       engineType: .aggressive
     )
   }

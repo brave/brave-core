@@ -49,7 +49,6 @@ public actor GroupedAdBlockEngine {
 
   public struct FilterListInfo: Codable, Hashable, Equatable, CustomDebugStringConvertible {
     let source: GroupedAdBlockEngine.Source
-    let localFileURL: URL
     let version: String
 
     public var debugDescription: String {
@@ -193,6 +192,11 @@ public actor GroupedAdBlockEngine {
   func useResources(from info: ResourcesInfo) throws {
     try engine.useResources(fromFileURL: info.localFileURL)
     resourcesInfo = info
+  }
+
+  /// Serialize the engine into data to be later loaded from cache
+  public func serialize() throws -> Data {
+    return try engine.serialize()
   }
 
   /// Create an engine from the given resources

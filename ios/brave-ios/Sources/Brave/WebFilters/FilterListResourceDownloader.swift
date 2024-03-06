@@ -32,16 +32,6 @@ public actor FilterListResourceDownloader {
     self.adBlockService = nil
   }
 
-  /// This loads the filter list settings from core data.
-  /// It uses these settings and other stored properties to load the enabled general shields and filter lists.
-  ///
-  /// - Warning: This method loads filter list settings.
-  /// You need to wait for `DataController.shared.initializeOnce()` to be called first before invoking this method
-  public func loadFilterListSettingsAndCachedData() async {
-    await FilterListStorage.shared.loadFilterListSettings()
-    await AdBlockGroupsManager.shared.loadFromCache()
-  }
-
   /// Start the adblock service to get updates to the `shieldsInstallPath`
   public func start(with adBlockService: AdblockService) {
     self.adBlockService = adBlockService
@@ -105,14 +95,13 @@ public actor FilterListResourceDownloader {
       return
     }
 
-    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: source,
-      localFileURL: localFileURL,
-      version: version
+    let fileInfo = AdBlockEngineManager.FileInfo(
+      filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
+      localFileURL: localFileURL
     )
 
     await AdBlockGroupsManager.shared.updated(
-      filterListInfo: filterListInfo,
+      fileInfo: fileInfo,
       engineType: engineType
     )
   }

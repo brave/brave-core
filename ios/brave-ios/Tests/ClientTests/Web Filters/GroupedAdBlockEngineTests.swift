@@ -67,7 +67,6 @@ final class GroupedAdBlockEngineTests: XCTestCase {
 
     let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
       source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
-      localFileURL: localFileURL,
       version: "bundled"
     )
     
@@ -95,8 +94,7 @@ final class GroupedAdBlockEngineTests: XCTestCase {
       forResource: "iodkpdagapdfkphljnddpjlldadblomo", withExtension: "txt"
     )!
     let textFilterListInfo = GroupedAdBlockEngine.FilterListInfo(
-      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),
-      localFileURL: localFileURL,
+      source: .filterList(componentId: "iodkpdagapdfkphljnddpjlldadblomo", uuid: "default"),      
       version: "bundled"
     )
     let resourcesInfo = GroupedAdBlockEngine.ResourcesInfo(
@@ -174,7 +172,6 @@ final class GroupedAdBlockEngineTests: XCTestCase {
 
       let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
         source: .filterListURL(uuid: uuid),
-        localFileURL: sampleFilterListURL,
         version: "bundled"
       )
       

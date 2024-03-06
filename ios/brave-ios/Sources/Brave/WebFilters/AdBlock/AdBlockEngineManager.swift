@@ -16,10 +16,15 @@ import os
     return FileManager.SearchPathDirectory.applicationSupportDirectory
   }
 
+  public struct FileInfo: Hashable, Equatable {
+    let filterListInfo: GroupedAdBlockEngine.FilterListInfo
+    let localFileURL: URL
+  }
+
   /// The top level folder to create for caching engine data
   private static let parentCacheFolderName = "engines"
   /// All the info that is currently available
-  private var availableInfos: [GroupedAdBlockEngine.FilterListInfo]
+  private var availableFiles: [FileInfo]
   /// The subfolder that the cache data is stored.
   /// Since we can have multiple engines this folder will be unique per engine
   private var cacheFolderName: String
@@ -52,23 +57,6 @@ import os
     }
   }
 
-  /// Get the url of the cached file
-  ///
-  /// - Note: Returns nil if the file does not exist
-  private var savedCombinedListURL: URL? {
-    guard let cacheFolderURL = createdCacheFolderURL else {
-      return nil
-    }
-
-    let fileURL = cacheFolderURL.appendingPathComponent("list.txt", conformingTo: .text)
-
-    if FileManager.default.fileExists(atPath: fileURL.path) {
-      return fileURL
-    } else {
-      return nil
-    }
-  }
-
   /// Return an array of all sources that are enabled according to user's settings
   /// - Note: This does not take into account the domain or global adblock toggle
   private var enabledSources: [GroupedAdBlockEngine.Source] {
@@ -80,14 +68,14 @@ import os
   }
 
   /// All the infos that are compilable based on the enabled sources and available infos
-  var compilableInfos: [GroupedAdBlockEngine.FilterListInfo] {
+  var compilableFiles: [FileInfo] {
     return enabledSources.compactMap { source in
-      return availableInfos.first(where: { $0.source == source })
+      return availableFiles.first(where: { $0.filterListInfo.source == source })
     }
   }
 
   init(engineType: GroupedAdBlockEngine.EngineType, cacheFolderName: String) {
-    self.availableInfos = []
+    self.availableFiles = []
     self.engine = nil
     self.engineType = engineType
     self.cacheFolderName = cacheFolderName
@@ -99,48 +87,59 @@ import os
   }
 
   /// Add the info to the available list
-  func add(info: GroupedAdBlockEngine.FilterListInfo) {
-    availableInfos.removeAll { exisitingInfo in
-      return exisitingInfo.source == info.source && exisitingInfo.version <= info.version
+  func add(fileInfo: FileInfo) {
+    availableFiles.removeAll { existingFileInfo in
+      return existingFileInfo.filterListInfo == fileInfo.filterListInfo
     }
 
-    availableInfos.append(info)
+    availableFiles.append(fileInfo)
   }
 
   /// Remove any info from the available list given by the source
   /// Mostly used for custom filter lists
   func removeInfo(for source: GroupedAdBlockEngine.Source) {
-    availableInfos.removeAll { exisitingInfo in
-      return exisitingInfo.source == source
+    availableFiles.removeAll { fileInfo in
+      return fileInfo.filterListInfo.source == source
     }
   }
 
   /// Checks to see if we need to compile or recompile the engine based on the available info
   func checkNeedsCompile() -> Bool {
-    let compilableInfos = compilableInfos
+    guard let engine = engine else { return true }
+    let compilableInfos = compilableFiles.map({ $0.filterListInfo })
     guard !compilableInfos.isEmpty else { return false }
-    return compilableInfos != engine?.group.infos
+    return compilableInfos != engine.group.infos
+  }
+
+  /// Checks to see if we need to compile or recompile the engine based on the available info
+  func checkHasAllInfo() -> Bool {
+    return compilableFiles == availableFiles
   }
 
   /// Load the engine from cache so it can be ready during launch
-  func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async throws {
-    guard let localFileURL = savedCombinedListURL else { return }
-    guard let cacheInfo = loadCachedInfo() else { return }
+  func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async {
+    do {
+      guard let cachedGroupInfo = loadCachedInfo() else { return }
+      let engineType = self.engineType
+      let groupedEngine = try await Task.detached(priority: .high) {
+        let engine = try GroupedAdBlockEngine.compile(
+          group: cachedGroupInfo,
+          type: engineType
+        )
 
-    let groupedEngine = try GroupedAdBlockEngine.compile(
-      group: GroupedAdBlockEngine.FilterListGroup(
-        infos: cacheInfo.infos,
-        localFileURL: localFileURL,
-        fileType: cacheInfo.fileType
-      ),
-      type: engineType
-    )
+        if let resourcesInfo = resourcesInfo {
+          try await engine.useResources(from: resourcesInfo)
+        }
 
-    if let resourcesInfo = resourcesInfo {
-      try await groupedEngine.useResources(from: resourcesInfo)
+        return engine
+      }.value
+
+      self.set(engine: groupedEngine)
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to load engine from cache for `\(self.cacheFolderName)`: \(String(describing: error))"
+      )
     }
-
-    self.set(engine: groupedEngine)
   }
 
   /// This is a task that we use to delay a requested compile.
@@ -152,13 +151,15 @@ import os
 
   /// This will compile available data, but will wait a little bit in case something new gets downloaded.
   /// Especially needed during launch when we have a bunch of downloads coming at the same time.
-  func compileDelayed(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) {
+  func compileDelayedIfNeeded(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) {
     // Cancel the previous task
     delayTask?.cancel()
 
     // Restart the task
     delayTask = Task {
-      try await Task.sleep(seconds: 10)
+      let hasAllInfo = checkHasAllInfo()
+      try await Task.sleep(seconds: hasAllInfo ? 10 : 60)
+      guard checkNeedsCompile() else { return }
       try await compileAvailable(resourcesInfo: resourcesInfo)
     }
   }
@@ -167,38 +168,50 @@ import os
   func compileAvailable(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async throws {
     // 1. Create the group
     let group = try combineRules()
+    let engineType = self.engineType
     self.pendingGroup = group
 
     // 2. Compile the engine
-    let groupedEngine = try GroupedAdBlockEngine.compile(group: group, type: engineType)
-    if let resourcesInfo {
-      try await groupedEngine.useResources(from: resourcesInfo)
-    }
+    let groupedEngine = try await Task.detached(priority: .background) {
+      let engine = try GroupedAdBlockEngine.compile(group: group, type: engineType)
+
+      if let resourcesInfo {
+        try await engine.useResources(from: resourcesInfo)
+      }
+
+      return engine
+    }.value
 
     // 3. Ensure our file is still up to date before setting it
     // (avoid race conditiions)
     guard pendingGroup == group else { return }
     self.set(engine: groupedEngine)
-    saveCachedInfo(from: groupedEngine)
+    await cache(engine: groupedEngine)
     self.pendingGroup = nil
   }
 
   private func set(engine: GroupedAdBlockEngine) {
     let infosString = engine.group.infos.map({ " \($0.debugDescription)" }).joined(separator: "\n")
     ContentBlockerManager.log.debug(
-      "Set `\(self.cacheFolderName)` engine from \(engine.group.infos.count) sources:\n\(infosString)"
+      "Set `\(self.cacheFolderName)` (\(engine.group.fileType.debugDescription)) engine from \(engine.group.infos.count) sources:\n\(infosString)"
     )
     self.engine = engine
   }
 
   /// Add or update `resourcesInfo` if it is a newer version. This information is used for lazy loading.
-  func update(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo) async throws {
-    try await engine?.useResources(from: resourcesInfo)
+  func update(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo) async {
+    do {
+      try await engine?.useResources(from: resourcesInfo)
+    } catch {
+      ContentBlockerManager.log.error(
+        "Failed to update `\(self.cacheFolderName)` engne with resources"
+      )
+    }
   }
 
-  func ensureContentBlockers(for filterListInfo: GroupedAdBlockEngine.FilterListInfo) async {
+  func ensureContentBlockers(for fileInfo: FileInfo) async {
     guard
-      let blocklistType = filterListInfo.source.blocklistType(
+      let blocklistType = fileInfo.filterListInfo.source.blocklistType(
         isAlwaysAggressive: engineType.isAlwaysAggressive
       )
     else {
@@ -210,13 +223,13 @@ import os
 
     do {
       try await ContentBlockerManager.shared.compileRuleList(
-        at: filterListInfo.localFileURL,
+        at: fileInfo.localFileURL,
         for: blocklistType,
         modes: modes
       )
     } catch {
       ContentBlockerManager.log.error(
-        "Failed to compile rule list for \(filterListInfo.debugDescription)"
+        "Failed to compile rule list for \(fileInfo.filterListInfo.debugDescription)"
       )
     }
   }
@@ -224,23 +237,25 @@ import os
   /// Take all the filter lists and combine them into one then save them into a cache folder.
   private func combineRules() throws -> GroupedAdBlockEngine.FilterListGroup {
     // 1. Grab all the needed infos
-    let infos = compilableInfos
+    let compilableFiles = compilableFiles
 
     // 2. Create a file url
     let cachedFolder = try getOrCreateCacheFolder()
     let fileURL = cachedFolder.appendingPathComponent("list.txt", conformingTo: .text)
-
+    var compiledInfos: [GroupedAdBlockEngine.FilterListInfo] = []
+    var unifiedRules = ""
     // 3. Join all the rules together
-    let unifiedRules = infos.compactMap { info in
+    compilableFiles.forEach { fileInfo in
       do {
-        return try String(contentsOf: info.localFileURL)
+        let fileContents = try String(contentsOf: fileInfo.localFileURL)
+        compiledInfos.append(fileInfo.filterListInfo)
+        unifiedRules = [unifiedRules, fileContents].joined(separator: "\n")
       } catch {
         ContentBlockerManager.log.error(
-          "Could not load rules for `\(info.debugDescription)`: \(error)"
+          "Could not load rules for `\(fileInfo.filterListInfo.debugDescription)`: \(error)"
         )
-        return nil
       }
-    }.joined(separator: "\n")
+    }
 
     // 4. Save the files into storage
     if FileManager.default.fileExists(atPath: fileURL.path) {
@@ -250,7 +265,7 @@ import os
 
     // 4. Return a group containing info on this new file
     return GroupedAdBlockEngine.FilterListGroup(
-      infos: infos,
+      infos: compiledInfos,
       localFileURL: fileURL,
       fileType: .text
     )
@@ -272,20 +287,32 @@ import os
     return folderURL
   }
 
-  private func saveCachedInfo(from engine: GroupedAdBlockEngine) {
+  private func cache(engine: GroupedAdBlockEngine) async {
     let encoder = JSONEncoder()
-    let info = CachedEngineInfo(infos: engine.group.infos, fileType: engine.group.fileType)
 
     do {
-      let data = try encoder.encode(info)
       let folderURL = try getOrCreateCacheFolder()
-      let fileURL = folderURL.appendingPathComponent("engine_info", conformingTo: .json)
 
-      if FileManager.default.fileExists(atPath: fileURL.path) {
-        try FileManager.default.removeItem(at: fileURL)
+      // Write the serialized engine
+      let serializedEngine = try await engine.serialize()
+      let serializedEngineURL = folderURL.appendingPathComponent("list.dat", conformingTo: .data)
+
+      if FileManager.default.fileExists(atPath: serializedEngineURL.path) {
+        try FileManager.default.removeItem(at: serializedEngineURL)
       }
 
-      try data.write(to: fileURL)
+      try serializedEngine.write(to: serializedEngineURL)
+
+      // Write the info about the engine
+      let info = CachedEngineInfo(infos: engine.group.infos, fileType: .data)
+      let data = try encoder.encode(info)
+      let infoFileURL = folderURL.appendingPathComponent("engine_info.json", conformingTo: .json)
+
+      if FileManager.default.fileExists(atPath: infoFileURL.path) {
+        try FileManager.default.removeItem(at: infoFileURL)
+      }
+
+      try data.write(to: infoFileURL)
     } catch {
       ContentBlockerManager.log.error(
         "Failed to save cache info for `\(self.cacheFolderName)`: \(String(describing: error))"
@@ -293,15 +320,23 @@ import os
     }
   }
 
-  private func loadCachedInfo() -> CachedEngineInfo? {
+  private func loadCachedInfo() -> GroupedAdBlockEngine.FilterListGroup? {
+    guard let cacheFolderURL = createdCacheFolderURL else { return nil }
+    let cachedEngineURL = cacheFolderURL.appendingPathComponent("list.dat", conformingTo: .data)
+    guard FileManager.default.fileExists(atPath: cachedEngineURL.path) else { return nil }
+    let cachedInfoURL = cacheFolderURL.appendingPathComponent("engine_info", conformingTo: .json)
+    guard FileManager.default.fileExists(atPath: cachedInfoURL.path) else { return nil }
     let decoder = JSONDecoder()
 
     do {
-      let folderURL = try getOrCreateCacheFolder()
-      let fileURL = folderURL.appendingPathComponent("engine_info", conformingTo: .json)
-      guard FileManager.default.fileExists(atPath: fileURL.path) else { return nil }
-      let data = try Data(contentsOf: fileURL)
-      return try decoder.decode(CachedEngineInfo.self, from: data)
+      let data = try Data(contentsOf: cachedInfoURL)
+      let cachedInfo = try decoder.decode(CachedEngineInfo.self, from: data)
+
+      return GroupedAdBlockEngine.FilterListGroup(
+        infos: cachedInfo.infos,
+        localFileURL: cachedEngineURL,
+        fileType: cachedInfo.fileType
+      )
     } catch {
       ContentBlockerManager.log.error(
         "Failed to load cache info for `\(self.cacheFolderName)`: \(String(describing: error))"
