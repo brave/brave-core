@@ -8,11 +8,19 @@ import JitsiMeetSDK
 
 extension JitsiMeetConferenceOptions {
   /// Creates conferencing options for use in a Brave Talk room
-  static func braveTalkOptions(room: String, token: String) -> Self {
+  static func braveTalkOptions(
+    room: String,
+    token: String,
+    host: String
+  ) -> Self {
     Self.fromBuilder { builder in
       builder.room = room
       builder.token = token
-      builder.serverURL = URL(string: "https://8x8.vc")
+      if host == "talk.brave.com" {
+        builder.serverURL = URL(string: "https://8x8.vc")
+      } else {
+        builder.serverURL = URL(string: "https://stage.8x8.vc")
+      }
       builder.setFeatureFlag("calendar.enabled", withBoolean: false)
       builder.setFeatureFlag("resolution", withValue: 360)
       builder.setFeatureFlag("add-people.enabled", withBoolean: false)
