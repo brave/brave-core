@@ -103,8 +103,7 @@ class ConversationDriver {
   void DismissPremiumPrompt();
   bool HasUserOptedIn();
   void SetUserOptedIn(bool user_opted_in);
-  bool IsPageContentsTruncated();
-  float GetTruncatedContentPercentage();
+  int GetContentUsedPercentage();
   void SubmitSummarizationRequest();
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();

@@ -10,19 +10,14 @@ import DataContext from '../../state/context'
 import styles from './alerts.module.scss'
 import formatMessage from '$web-common/formatMessage'
 
-export default function WarningLongPage() {
+export default function LongPageInfo() {
   const context = React.useContext(DataContext)
 
-  let warningText:any[]|string = getLocale('pageContentTooLongWarning')
-
-  if (!context.isPremiumUser) {
-    warningText = formatMessage(getLocale('pageContentTooLongWarningPremium'), {
-      placeholders: {
-        $1: context.siteInfo.truncatedContentPercentage &&
-        context.siteInfo.truncatedContentPercentage.toFixed(2) + '%'
-      }
-    })
-  }
+  const warningText = formatMessage(getLocale('pageContentTooLongWarning'), {
+    placeholders: {
+      $1: context.siteInfo.contentUsedPercentage + '%'
+    }
+  })
 
   return (
     <div className={styles.info}>

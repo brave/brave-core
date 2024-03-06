@@ -30,9 +30,8 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
     title: undefined,
     isContentAssociationPossible: false,
-    isContentTruncated: false,
     hostname: undefined,
-    truncatedContentPercentage: undefined
+    contentUsedPercentage: 0
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
@@ -166,15 +165,16 @@ function DataContextProvider (props: DataContextProviderProps) {
 
   const shouldShowLongPageWarning = React.useMemo(() => {
     if (
+      !isGenerating &&
       !hasDismissedLongPageWarning &&
       conversationHistory.length >= 1 &&
-      siteInfo?.isContentTruncated
+      siteInfo?.contentUsedPercentage > 0
     ) {
       return true
     }
 
     return false
-  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
+  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.contentUsedPercentage, isGenerating])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     if (!currentModel) return false

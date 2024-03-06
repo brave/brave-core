@@ -20,7 +20,7 @@ import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import InfoLongConversation from '../alerts/info_long_conversation'
+import LongConversationInfo from '../alerts/long_conversation_info'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
@@ -190,7 +190,7 @@ function Main() {
         }
         {context.shouldShowLongConversationInfo &&
         <div className={styles.promptContainer}>
-            <InfoLongConversation />
+            <LongConversationInfo />
         </div>}
         {!hasAcceptedAgreement && <WelcomeGuide />}
       </div>
