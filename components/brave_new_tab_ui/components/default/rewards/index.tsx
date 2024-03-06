@@ -57,11 +57,13 @@ export interface RewardsProps {
   totalContribution: number
   publishersVisitedCount: number
   selfCustodyInviteDismissed: boolean
+  isTermsOfServiceUpdateRequired: boolean
   showContent: boolean
   stackPosition: number
   onShowContent: () => void
   onDismissNotification: (id: string) => void
   onSelfCustodyInviteDismissed: () => void
+  onTermsOfServiceUpdateAccepted: () => void
 }
 
 function getVisibleGrant (promotions: NewTab.Promotion[]): GrantInfo | null {
@@ -171,11 +173,13 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       contributionsThisMonth={props.totalContribution}
       canConnectAccount={canConnectAccount()}
       showSelfCustodyInvite={showSelfCustodyInvite()}
+      isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
       publishersVisited={props.publishersVisitedCount || 0}
       onEnableRewards={openRewardsPanel}
       onSelectCountry={openRewardsPanel}
       onClaimGrant={onClaimGrant}
       onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
+      onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
     />
   )
 })

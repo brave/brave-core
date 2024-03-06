@@ -85,7 +85,8 @@ const rewardsReducer: Reducer<NewTab.State | undefined> = (state: NewTab.State, 
           userType: preInitialRewardsDataPayload.userType,
           declaredCountry: preInitialRewardsDataPayload.declaredCountry,
           needsBrowserUpgradeToServeAds: preInitialRewardsDataPayload.needsBrowserUpgradeToServeAds,
-          selfCustodyInviteDismissed: preInitialRewardsDataPayload.selfCustodyInviteDismissed
+          selfCustodyInviteDismissed: preInitialRewardsDataPayload.selfCustodyInviteDismissed,
+          isTermsOfServiceUpdateRequired: preInitialRewardsDataPayload.isTermsOfServiceUpdateRequired
         }
       }
       break

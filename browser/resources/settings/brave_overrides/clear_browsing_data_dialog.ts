@@ -78,7 +78,7 @@ RegisterPolymerTemplateModifications({
     body.insertAdjacentHTML(
       'beforeend',
       getTrustedHTML`
-        <a id="rewards-reset-data" href="chrome://rewards/#manage-wallet"></a>
+        <a id="rewards-reset-data" href="chrome://rewards/#reset"></a>
       `)
     const rewardsResetLink =
       templateContent.getElementById('rewards-reset-data')

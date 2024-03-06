@@ -28,6 +28,7 @@ export type PreInitialRewardsData = {
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   selfCustodyInviteDismissed: boolean
+  isTermsOfServiceUpdateRequired: boolean
 }
 
 export type InitialRewardsData = {
@@ -108,6 +109,7 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     userType,
     declaredCountry,
     selfCustodyInviteDismissed,
+    isTermsOfServiceUpdateRequired,
     adsData
   ] = await Promise.all([
     new Promise<boolean>(
@@ -118,6 +120,9 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
       (resolve) => chrome.braveRewards.getDeclaredCountry(resolve)),
     new Promise<boolean>(
         (resolve) => chrome.braveRewards.selfCustodyInviteDismissed(resolve)),
+    new Promise<boolean>(
+        (resolve) => chrome.braveRewards.isTermsOfServiceUpdateRequired(resolve)
+    ),
     newTabAdsDataAPI.getNewTabAdsData()
   ])
 
@@ -128,7 +133,8 @@ export async function getRewardsPreInitialData (): Promise<PreInitialRewardsData
     userType,
     declaredCountry,
     needsBrowserUpgradeToServeAds,
-    selfCustodyInviteDismissed
+    selfCustodyInviteDismissed,
+    isTermsOfServiceUpdateRequired
   }
 }
 

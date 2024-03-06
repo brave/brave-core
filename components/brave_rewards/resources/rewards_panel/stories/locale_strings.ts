@@ -82,6 +82,10 @@ export const localeStrings = {
 
   rewardsConnectAccount: 'Connect account',
   rewardsNotNow: 'Not now',
+  rewardsTosUpdateHeading: 'Updated Terms of Service',
+  rewardsTosUpdateText: 'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
+  rewardsTosUpdateLinkText: 'See $1Brave Rewards Terms of Service$2',
+  rewardsTosUpdateButtonLabel: 'I agree',
   rewardsSelfCustodyInviteHeader: 'Receive BAT directly to a self-custody crypto address',
   rewardsSelfCustodyInviteText: 'We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.',
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',

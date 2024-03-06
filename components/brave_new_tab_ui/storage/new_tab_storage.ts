@@ -71,6 +71,7 @@ export const defaultState: NewTab.State = {
     totalContribution: 0.0,
     publishersVisitedCount: 0,
     selfCustodyInviteDismissed: false,
+    isTermsOfServiceUpdateRequired: false,
     parameters: {
       rate: 0,
       monthlyTipChoices: [],
