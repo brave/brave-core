@@ -32,6 +32,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     isContentAssociationPossible: false,
     isContentTruncated: false,
     hostname: undefined,
+    truncatedContentPercentage: undefined
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)

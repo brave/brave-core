@@ -153,7 +153,8 @@ const SITE_INFO: mojom.SiteInfo = {
   title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
   isContentTruncated: false,
   isContentAssociationPossible: true,
-  hostname: 'www.example.com'
+  hostname: 'www.example.com',
+  truncatedContentPercentage: 40.5,
 }
 
 export default {
@@ -235,7 +236,8 @@ export default {
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
-        switchToBasicModel
+        switchToBasicModel,
+        shouldShowLongPageWarning: true
       }
 
       return (

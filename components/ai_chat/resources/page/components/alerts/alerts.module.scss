@@ -6,3 +6,18 @@
     }
   }
 }
+
+.info {
+  display: flex;
+  gap: 8px;
+  color: var(--leo-color-text-secondary);
+  padding-top: 16px;
+}
+
+.infoIcon {
+  --leo-icon-size: 16px;
+}
+
+.infoText {
+  font: var(--leo-font-small-regular);
+}

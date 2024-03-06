@@ -911,6 +911,10 @@ bool ConversationDriver::IsPageContentsTruncated() {
           GetCurrentModel().max_page_content_length);
 }
 
+float ConversationDriver::GetTruncatedContentPercentage() {
+  return static_cast<float>(GetCurrentModel().max_page_content_length) / static_cast<float>(article_text_.length()) * 100.0f;
+}
+
 void ConversationDriver::SubmitSummarizationRequest() {
   DCHECK(IsContentAssociationPossible())
       << "This conversation request is not associated with content\n";
@@ -928,6 +932,7 @@ mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
   site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->truncated_content_percentage = GetTruncatedContentPercentage();
   site_info->is_content_association_possible = IsContentAssociationPossible();
   const GURL url = GetPageURL();
 

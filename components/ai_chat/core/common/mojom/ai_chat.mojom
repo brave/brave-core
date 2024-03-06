@@ -77,6 +77,9 @@ struct SiteInfo {
   bool is_content_association_possible;
   // Current tab's hostname
   string? hostname;
+  // Percentage of the content that has been truncated (0-100)
+  // Only relevant if is_content_truncated is true
+  float? truncated_content_percentage;
 };
 
 enum ActionType {

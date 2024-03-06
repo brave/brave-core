@@ -20,7 +20,6 @@ import FeatureButtonMenu from '../feature_button_menu'
 import ModelIntro from '../model_intro'
 import PremiumSuggestion from '../premium_suggestion'
 import WarningPremiumDisconnected from '../alerts/warning_premium_disconnected'
-import WarningLongPage from '../alerts/warning_long_page'
 import InfoLongConversation from '../alerts/info_long_conversation'
 import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
@@ -189,10 +188,6 @@ function Main() {
           <WarningPremiumDisconnected />
         </div>
         }
-        {context.shouldShowLongPageWarning &&
-        <div className={styles.promptContainer}>
-            <WarningLongPage />
-        </div>}
         {context.shouldShowLongConversationInfo &&
         <div className={styles.promptContainer}>
             <InfoLongConversation />

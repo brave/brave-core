@@ -128,7 +128,8 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"funnyToneLabel", IDS_AI_CHAT_CONTEXT_FUNNY_TONE},
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
-      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL}};
+      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
+      {"pageContentTooLongWarningPremium", IDS_CHAT_UI_PAGE_CONTENT_TOO_LONG_WARNING_PREMIUM}};
 
   return kLocalizedStrings;
 }
