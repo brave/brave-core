@@ -49,16 +49,14 @@
 
         </androidx.appcompat.widget.LinearLayoutCompat>
 
-        <Button
+        <TextView
             android:id="@+id/search_suggestions_action_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/turn_on"
-            android:paddingHorizontal="12dp"
-            android:paddingVertical="8dp"
+            android:padding="12dp"
             android:layout_marginEnd="8dp"
             android:textSize="12sp"
-            android:textAllCaps="false"
             android:background="@drawable/search_suggestions_button_bg"
             android:textColor="@color/search_suggestions_action_text_color" />
 

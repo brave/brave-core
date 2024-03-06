@@ -9,7 +9,6 @@ package org.chromium.chrome.browser.omnibox.suggestions.brave_search;
 
 import android.content.res.Configuration;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -32,7 +31,7 @@ public class BraveSearchBannerViewBinder {
             textViewDesc.setLayoutParams(textViewParams);
         }
 
-        final Button btnPositive = contentView.findViewById(R.id.search_suggestions_action_btn);
+        final TextView btnPositive = contentView.findViewById(R.id.search_suggestions_action_btn);
         final ImageView btnNegative = contentView.findViewById(R.id.search_suggestions_close_btn);
 
         // boolean isMaybeLaterPressed =

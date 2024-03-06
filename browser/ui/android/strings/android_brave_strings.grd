@@ -4017,7 +4017,7 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       Filter list could not be updated. Please try again
     </message>
     <message name="IDS_SEARCH_SUGGESTIONS_TITLE" desc="Search suggestion UI title">
-      "Find it faster!"
+      Find it faster!
     </message>
     <message name="IDS_SEARCH_SUGGESTIONS_TEXT" desc="Search suggestion UI text">
       Turn on search suggestions
