@@ -11,7 +11,7 @@ struct AIChatProductIcon<S: Shape>: View {
 
   var containerShape: S
   var padding: CGFloat
-  
+
   var body: some View {
     Image(braveSystemName: "leo.product.brave-leo")
       .foregroundColor(.white)

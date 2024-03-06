@@ -79,7 +79,7 @@ struct AIChatLoaderView: View {
   var body: some View {
     AIChatProductIcon(containerShape: Circle(), padding: 6.0)
       .font(.callout)
-    
+
     ProgressView()
       .progressViewStyle(DotsProgressViewStyle())
   }
