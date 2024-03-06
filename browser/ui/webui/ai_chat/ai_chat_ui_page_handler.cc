@@ -22,6 +22,7 @@
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
+#include "chrome/browser/pdf/pdf_pref_names.h"
 #include "chrome/browser/printing/print_preview_data_service.h"
 #include "chrome/browser/printing/print_view_manager_common.h"
 #include "chrome/browser/printing/printing_service.h"
@@ -532,11 +533,11 @@ void AIChatUIPageHandler::BitmapConverterDisconnected() {
   // TODO(darkdh): cleanup
 }
 
-void AIChatUIPageHandler::GotBitmap(const SkBitmap& bitmap) {
-  VLOG(3) << __func__ << ": bitmap size: " << bitmap.width() << "x"
-          << bitmap.height();
+void AIChatUIPageHandler::OnGetBitmaps(
+    const std::optional<std::vector<SkBitmap>>& bitmaps) {
+  VLOG(3) << __func__ << ": bitmap size: " << (bitmaps ? bitmaps->size() : -1);
   pdf_to_bitmap_converter_.reset();
-  active_chat_tab_helper_->OnPreviewReady(bitmap);
+  active_chat_tab_helper_->OnPreviewReady(bitmaps);
   auto preview_ui_id = owner_->GetPreviewUIId();
   CHECK(preview_ui_id);
   PrintPreviewDataService::GetInstance()->RemoveEntry(*preview_ui_id);
@@ -566,10 +567,16 @@ void AIChatUIPageHandler::OnPreviewReady() {
   pdf_to_bitmap_converter_.set_disconnect_handler(
       base::BindOnce(&AIChatUIPageHandler::BitmapConverterDisconnected,
                      base::Unretained(this)));
-  pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(true);
+  auto* prefs = profile_->GetPrefs();
+  if (prefs &&
+      prefs->IsManagedPreference(::prefs::kPdfUseSkiaRendererEnabled)) {
+    pdf_to_bitmap_converter_->SetUseSkiaRendererPolicy(
+        prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled));
+  }
   pdf_to_bitmap_converter_->GetBitmap(
       std::move(pdf_region.region),
-      base::BindOnce(&AIChatUIPageHandler::GotBitmap, base::Unretained(this)));
+      base::BindOnce(&AIChatUIPageHandler::OnGetBitmaps,
+                     base::Unretained(this)));
 }
 
 }  // namespace ai_chat

@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/barrier_callback.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
@@ -445,7 +446,7 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
 
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
-                      const SkBitmap& image,
+                      const std::optional<std::vector<SkBitmap>>& images,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory_for_test) {
@@ -490,8 +491,40 @@ void FetchPageContent(content::WebContents* web_contents,
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
   auto host = url.host();
   if (base::Contains(kScreenshotRetrievalHosts, host)) {
-    if (!image.empty()) {
-      OnScreenshot(std::move(callback), image);
+    if (images) {
+      const auto ocr_page_callback =
+          base::BarrierCallback<std::pair<size_t, std::string>>(
+              images->size(),
+              base::BindOnce(
+                  [](FetchPageContentCallback callback,
+                     std::vector<std::pair<size_t, std::string>> texts) {
+                    base::ranges::sort(texts, [](const auto& a, const auto& b) {
+                      return a.first < b.first;
+                    });
+                    std::stringstream ss;
+                    for (size_t i = 0; i < texts.size(); ++i) {
+                      ss << texts[i].second;
+                      if (i < texts.size() - 1) {
+                        ss << "\n";
+                      }
+                    }
+                    std::move(callback).Run(ss.str(), false, "");
+                  },
+                  std::move(callback)));
+      for (size_t i = 0; i < images->size(); ++i) {
+        OnScreenshot(
+            base::BindOnce(
+                [](base::OnceCallback<void(std::pair<size_t, std::string>)>
+                       ocr_page_callback,
+                   size_t index, std::string page_content, bool is_video,
+                   std::string invalidation_token) {
+                  // TODO(darkdh): Impose total lenght limit for the text
+                  std::move(ocr_page_callback)
+                      .Run(std::make_pair(index, std::move(page_content)));
+                },
+                ocr_page_callback, i),
+            images.value()[i]);
+      }
       return;
     }
     content::RenderWidgetHostView* view =

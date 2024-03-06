@@ -29,7 +29,7 @@ using FetchPageContentCallback =
                             std::string invalidation_token)>;
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
-                      const SkBitmap& image,
+                      const std::optional<std::vector<SkBitmap>>& images,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory = nullptr);

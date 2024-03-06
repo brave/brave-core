@@ -56,7 +56,7 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
-  void OnPreviewReady(const SkBitmap&);
+  void OnPreviewReady(const std::optional<std::vector<SkBitmap>>&);
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;

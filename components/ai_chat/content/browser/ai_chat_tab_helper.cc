@@ -123,7 +123,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << "PDF Loaded";
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "", SkBitmap(),
+    FetchPageContent(web_contents(), "", std::nullopt,
                      std::move(pending_get_page_content_callback_));
   }
   pdf_load_observer_.reset();
@@ -132,9 +132,10 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   }
 }
 
-void AIChatTabHelper::OnPreviewReady(const SkBitmap& bitmap) {
+void AIChatTabHelper::OnPreviewReady(
+    const std::optional<std::vector<SkBitmap>>& bitmaps) {
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "", bitmap,
+    FetchPageContent(web_contents(), "", bitmaps,
                      std::move(pending_get_page_content_callback_));
   }
 }

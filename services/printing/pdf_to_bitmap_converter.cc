@@ -5,11 +5,9 @@
 
 #include "brave/services/printing/pdf_to_bitmap_converter.h"
 
-#include <string.h>
 #include <utility>
 #include <vector>
 
-#include "base/containers/span.h"
 #include "base/logging.h"
 #include "base/memory/shared_memory_mapping.h"
 #include "pdf/pdf.h"
@@ -29,7 +27,7 @@ void PdfToBitmapConverter::GetBitmap(
   base::ReadOnlySharedMemoryMapping pdf_map = pdf_region.Map();
   if (!pdf_map.IsValid()) {
     DLOG(ERROR) << "Failed to decode memory map for PDF thumbnail";
-    std::move(callback).Run(SkBitmap());
+    std::move(callback).Run(std::nullopt);
     return;
   }
   auto pdf_buffer = pdf_map.GetMemoryAsSpan<const uint8_t>();
@@ -37,19 +35,17 @@ void PdfToBitmapConverter::GetBitmap(
   int page_count;
   if (!chrome_pdf::GetPDFDocInfo(pdf_buffer, &page_count, nullptr)) {
     DLOG(ERROR) << "Failed to get PDF document info";
-    std::move(callback).Run(SkBitmap());
+    std::move(callback).Run(std::nullopt);
     return;
   }
 
-  int32_t total_width = 0;
-  int32_t total_height = 0;
   std::vector<SkBitmap> bitmaps;
   for (int page_index = 0; page_index < page_count; page_index++) {
     std::optional<gfx::SizeF> page_size =
         chrome_pdf::GetPDFPageSizeByIndex(pdf_buffer, page_index);
     if (!page_size.has_value()) {
       DLOG(ERROR) << "Failed to get PDF page size";
-      std::move(callback).Run(SkBitmap());
+      std::move(callback).Run(std::nullopt);
       return;
     }
     gfx::Size size = gfx::ToCeiledSize(*page_size);
@@ -60,7 +56,7 @@ void PdfToBitmapConverter::GetBitmap(
                           kOpaque_SkAlphaType);
     if (!bitmap.tryAllocPixels(info, info.minRowBytes())) {
       DLOG(ERROR) << "Failed to allocate bitmap pixels";
-      std::move(callback).Run(SkBitmap());
+      std::move(callback).Run(std::nullopt);
       return;
     }
 
@@ -76,32 +72,13 @@ void PdfToBitmapConverter::GetBitmap(
                                            bitmap.getPixels(), size,
                                            gfx::Size(300, 300), options)) {
       DLOG(ERROR) << "Failed to render PDF buffer as bitmap image";
-      std::move(callback).Run(SkBitmap());
+      std::move(callback).Run(std::nullopt);
       return;
     }
-    total_width = std::max(total_width, bitmap.width());
-    total_height += bitmap.height();
     bitmaps.push_back(bitmap);
   }
 
-  SkBitmap combined_bitmap;
-  SkImageInfo image_info = bitmaps[0]
-                               .info()
-                               .makeWH(total_width, total_height)
-                               .makeAlphaType(kPremul_SkAlphaType);
-
-  if (!combined_bitmap.tryAllocPixels(image_info)) {
-    DLOG(ERROR) << "Failed to allocate bitmap pixels";
-    std::move(callback).Run(SkBitmap());
-    return;
-  }
-  int32_t next_start_pixel = 0;
-  for (auto& bitmap : bitmaps) {
-    combined_bitmap.writePixels(bitmap.pixmap(), 0, next_start_pixel);
-    next_start_pixel += bitmap.dimensions().height();
-  }
-
-  std::move(callback).Run(combined_bitmap);
+  std::move(callback).Run(bitmaps);
 }
 
 void PdfToBitmapConverter::SetUseSkiaRendererPolicy(bool use_skia) {

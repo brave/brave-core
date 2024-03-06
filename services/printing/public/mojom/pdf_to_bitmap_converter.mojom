@@ -11,7 +11,7 @@ import "ui/gfx/geometry/mojom/geometry.mojom";
 
 interface PdfToBitmapConverter {
   GetBitmap(mojo_base.mojom.ReadOnlySharedMemoryRegion pdf_region)
-      => (skia.mojom.BitmapN32? bitmap);
+      => (array<skia.mojom.BitmapN32>? bitmap);
 
   // Sets the status for enterprise policy `kPdfUseSkiaRendererEnabled`. It
   // should be called immediately once `mojom::PdfToBitmapConverter` remote
