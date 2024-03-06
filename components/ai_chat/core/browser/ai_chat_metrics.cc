@@ -9,6 +9,7 @@
 #include <limits>
 #include <utility>
 
+#include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -26,8 +27,13 @@ const int kChatCountBuckets[] = {1, 5, 10, 20, 50};
 const int kAvgPromptCountBuckets[] = {2, 5, 10, 20};
 // Value -1 is added to buckets to add padding for the "less than 1% option"
 const int kOmniboxOpenBuckets[] = {-1, 0, 3, 5, 10, 25};
+const int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
 
 constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
+
+constexpr ContextMenuCategory kAllContextMenuCategories[] = {
+    ContextMenuCategory::kQuickActions, ContextMenuCategory::kRewrite,
+    ContextMenuCategory::kCreate};
 
 }  // namespace
 
@@ -45,7 +51,17 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
           local_state,
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
           14),
-      local_state_(local_state) {}
+      local_state_(local_state) {
+  context_menu_usage_storages_[ContextMenuCategory::kQuickActions] =
+      std::make_unique<WeeklyStorage>(
+          local_state_, prefs::kBraveChatP3AContextMenuQuickUsages);
+  context_menu_usage_storages_[ContextMenuCategory::kRewrite] =
+      std::make_unique<WeeklyStorage>(
+          local_state_, prefs::kBraveChatP3AContextMenuRewriteUsages);
+  context_menu_usage_storages_[ContextMenuCategory::kCreate] =
+      std::make_unique<WeeklyStorage>(
+          local_state_, prefs::kBraveChatP3AContextMenuCreateUsages);
+}
 
 AIChatMetrics::~AIChatMetrics() = default;
 
@@ -55,12 +71,15 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(prefs::kBraveChatP3AOmniboxOpenWeeklyStorage);
   registry->RegisterListPref(
       prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage);
-  registry->RegisterTimePref(prefs::kBraveChatP3ALastPremiumCheck,
-                             base::Time());
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastPremiumCheck, {});
   registry->RegisterBooleanPref(prefs::kBraveChatP3ALastPremiumStatus, false);
-  registry->RegisterTimePref(prefs::kBraveChatP3AFirstUsageTime, base::Time());
-  registry->RegisterTimePref(prefs::kBraveChatP3ALastUsageTime, base::Time());
+  registry->RegisterTimePref(prefs::kBraveChatP3AFirstUsageTime, {});
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastUsageTime, {});
   registry->RegisterBooleanPref(prefs::kBraveChatP3AUsedSecondDay, false);
+  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuQuickUsages);
+  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuRewriteUsages);
+  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuCreateUsages);
+  registry->RegisterTimePref(prefs::kBraveChatP3ALastContextMenuUsageTime, {});
 }
 
 void AIChatMetrics::RecordEnabled(
@@ -158,6 +177,14 @@ void AIChatMetrics::RecordOmniboxSearchQuery() {
   ReportOmniboxCounts();
 }
 
+void AIChatMetrics::RecordContextMenuUsage(ContextMenuCategory category) {
+  acquisition_source_ = AcquisitionSource::kContextMenu;
+  context_menu_usage_storages_[category]->AddDelta(1);
+  local_state_->SetTime(prefs::kBraveChatP3ALastContextMenuUsageTime,
+                        base::Time::Now());
+  ReportContextMenuMetrics();
+}
+
 void AIChatMetrics::HandleOpenViaSidebar() {
   acquisition_source_ = AcquisitionSource::kSidebar;
 }
@@ -169,6 +196,7 @@ void AIChatMetrics::ReportAllMetrics() {
   ReportChatCounts();
   ReportOmniboxCounts();
   ReportFeatureUsageMetrics();
+  ReportContextMenuMetrics();
 }
 
 void AIChatMetrics::ReportFeatureUsageMetrics() {
@@ -237,6 +265,48 @@ void AIChatMetrics::ReportOmniboxCounts() {
   if (open_ratio_last_week > 0.0) {
     UMA_HISTOGRAM_BOOLEAN(kOmniboxWeekCompareHistogramName,
                           open_ratio_this_week > open_ratio_last_week);
+  }
+}
+
+void AIChatMetrics::ReportContextMenuMetrics() {
+  uint64_t total_usages = 0;
+  uint64_t category_total_max = 0;
+  std::optional<ContextMenuCategory> most_used_category;
+
+  for (auto category : kAllContextMenuCategories) {
+    uint64_t category_total =
+        context_menu_usage_storages_[category]->GetWeeklySum();
+    total_usages += category_total;
+    if (category_total > category_total_max) {
+      most_used_category = category;
+      category_total_max = category_total;
+    }
+  }
+
+  p3a_utils::RecordFeatureLastUsageTimeMetric(
+      local_state_, prefs::kBraveChatP3ALastContextMenuUsageTime,
+      kContextMenuLastUsageTimeHistogramName, true);
+
+  if (most_used_category) {
+    UMA_HISTOGRAM_ENUMERATION(kMostUsedContextMenuActionHistogramName,
+                              *most_used_category);
+  }
+
+  const char* total_usage_histogram;
+  const char* total_usage_histogram_to_remove;
+  if (is_premium_) {
+    total_usage_histogram = kContextMenuPremiumUsageCountHistogramName;
+    total_usage_histogram_to_remove = kContextMenuFreeUsageCountHistogramName;
+  } else {
+    total_usage_histogram = kContextMenuFreeUsageCountHistogramName;
+    total_usage_histogram_to_remove =
+        kContextMenuPremiumUsageCountHistogramName;
+  }
+
+  if (is_enabled_) {
+    p3a_utils::RecordToHistogramBucket(total_usage_histogram,
+                                       kContextMenuUsageBuckets, total_usages);
+    base::UmaHistogramExactLinear(total_usage_histogram_to_remove, INT_MAX - 1, 7);
   }
 }
 

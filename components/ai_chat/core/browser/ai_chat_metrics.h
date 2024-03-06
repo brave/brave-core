@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 #define BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_AI_CHAT_METRICS_H_
 
+#include <memory>
 #include <optional>
 
 #include "base/memory/weak_ptr.h"
@@ -36,11 +37,27 @@ inline constexpr char kNewUserReturningHistogramName[] =
     "Brave.AIChat.NewUserReturning";
 inline constexpr char kLastUsageTimeHistogramName[] =
     "Brave.AIChat.LastUsageTime";
+inline constexpr char kContextMenuLastUsageTimeHistogramName[] =
+    "Brave.AIChat.ContextMenu.LastUsageTime";
+inline constexpr char kMostUsedContextMenuActionHistogramName[] =
+    "Brave.AIChat.ContextMenu.MostUsedAction";
+inline constexpr char kContextMenuFreeUsageCountHistogramName[] =
+    "Brave.AIChat.ContextMenu.FreeUsages";
+inline constexpr char kContextMenuPremiumUsageCountHistogramName[] =
+    "Brave.AIChat.ContextMenu.PremiumUsages";
 
 enum class AcquisitionSource {
   kOmnibox = 0,
   kSidebar = 1,
-  kMaxValue = kSidebar
+  kContextMenu = 2,
+  kMaxValue = kContextMenu
+};
+
+enum class ContextMenuCategory {
+  kQuickActions = 0,
+  kRewrite = 1,
+  kCreate = 2,
+  kMaxValue = kCreate
 };
 
 class AIChatMetrics {
@@ -68,6 +85,8 @@ class AIChatMetrics {
   void RecordOmniboxOpen();
   void RecordOmniboxSearchQuery();
 
+  void RecordContextMenuUsage(ContextMenuCategory category);
+
   void HandleOpenViaSidebar();
 
   void OnPremiumStatusUpdated(bool is_new_user,
@@ -79,6 +98,7 @@ class AIChatMetrics {
   void ReportFeatureUsageMetrics();
   void ReportChatCounts();
   void ReportOmniboxCounts();
+  void ReportContextMenuMetrics();
 
   bool is_enabled_ = false;
   bool is_premium_ = false;
@@ -87,6 +107,8 @@ class AIChatMetrics {
 
   WeeklyStorage chat_count_storage_;
   WeeklyStorage prompt_count_storage_;
+  base::flat_map<ContextMenuCategory, std::unique_ptr<WeeklyStorage>>
+      context_menu_usage_storages_;
 
   TimePeriodStorage omnibox_open_storage_;
   TimePeriodStorage omnibox_autocomplete_storage_;
