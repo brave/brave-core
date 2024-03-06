@@ -58,6 +58,26 @@ void ShowPlaylistBubble(Browser* browser);
 void GroupTabsOnCurrentOrigin(Browser* browser);
 void MoveGroupToNewWindow(Browser* browser);
 
+bool IsInGroup(Browser* browser);
+bool HasUngroupedTabs(Browser* browser);
+
+void GroupUngroupedTabs(Browser* browser);
+void UngroupCurrentGroup(Browser* browser);
+void RemoveTabFromGroup(Browser* browser);
+void NameGroup(Browser* browser);
+void NewTabInGroup(Browser* browser);
+
+bool CanUngroupAllTabs(Browser* browser);
+void UngroupAllTabs(Browser* browser);
+
+void ToggleGroupExpanded(Browser* browser);
+void CloseUngroupedTabs(Browser* browser);
+void CloseTabsNotInCurrentGroup(Browser* browser);
+void CloseGroup(Browser* browser);
+
+bool CanBringAllTabs(Browser* browser);
+void BringAllTabs(Browser* browser);
+
 bool HasDuplicateTabs(Browser* browser);
 void CloseDuplicateTabs(Browser* browser);
 
