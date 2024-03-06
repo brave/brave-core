@@ -41,7 +41,7 @@ import os
   }
 
   /// Load any cache data so its ready right during launch
-  func loadFromCache() async {
+  func loadResourcesFromCache() async {
     if let resourcesFolderURL = FilterListSetting.makeFolderURL(
       forComponentFolderPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
     ), FileManager.default.fileExists(atPath: resourcesFolderURL.path),
@@ -50,16 +50,11 @@ import os
       // We need this for all filter lists so we can't compile anything until we download it
       self.resourcesInfo = resourcesInfo
     }
+  }
 
-    await allManagers.asyncConcurrentForEach { manager in
-      guard manager.engineType.loadFromCache else { return }
-
-      do {
-        try await manager.loadFromCache(resourcesInfo: self.resourcesInfo)
-      } catch {
-        ContentBlockerManager.log.error("Failed to load engine from cache: \(error)")
-      }
-    }
+  func loadEngineFromCache(for engineType: GroupedAdBlockEngine.EngineType) async {
+    let manager = getManager(for: engineType)
+    await manager.loadFromCache(resourcesInfo: resourcesInfo)
   }
 
   /// Inform this manager of updates to the resources so our engines can be updated
@@ -80,20 +75,17 @@ import os
 
   /// Handle updated filter list info
   func updated(
-    filterListInfo: GroupedAdBlockEngine.FilterListInfo,
+    fileInfo: AdBlockEngineManager.FileInfo,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
     let manager = getManager(for: engineType)
     // Always update the info on the manager
-    manager.add(info: filterListInfo)
-
-    if manager.checkNeedsCompile() {
-      manager.compileDelayed(resourcesInfo: resourcesInfo)
-    }
+    manager.add(fileInfo: fileInfo)
+    manager.compileDelayedIfNeeded(resourcesInfo: resourcesInfo)
 
     // Compile content blockers if this filter list is enabled
-    if manager.isEnabled(source: filterListInfo.source) {
-      await manager.ensureContentBlockers(for: filterListInfo)
+    if manager.isEnabled(source: fileInfo.filterListInfo.source) {
+      await manager.ensureContentBlockers(for: fileInfo)
     }
   }
 
@@ -112,8 +104,9 @@ import os
       }
 
       // Compile all content blockers for the given manager
-      await manager.compilableInfos.asyncForEach { filterListInfo in
-        await manager.ensureContentBlockers(for: filterListInfo)
+      await manager.compilableFiles.asyncForEach { fileInfo in
+        guard manager.isEnabled(source: fileInfo.filterListInfo.source) else { return }
+        await manager.ensureContentBlockers(for: fileInfo)
       }
     }
   }
@@ -135,11 +128,7 @@ import os
     self.resourcesInfo = resourcesInfo
 
     allManagers.forEach { manager in
-      do {
-        try manager.update(resourcesInfo: resourcesInfo)
-      } catch {
-
-      }
+      manager.update(resourcesInfo: resourcesInfo)
     }
 
     if #available(iOS 16.0, *) {
@@ -233,13 +222,6 @@ extension GroupedAdBlockEngine.EngineType {
     switch self {
     case .standard: return "standard"
     case .aggressive: return "aggressive"
-    }
-  }
-
-  fileprivate var loadFromCache: Bool {
-    switch self {
-    case .standard: return true
-    case .aggressive: return false
     }
   }
 
