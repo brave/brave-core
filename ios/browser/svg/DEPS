@@ -1,11 +1,6 @@
 include_rules = [
-  "+skia/ext/skia_utils_ios.h",
-  "+third_party/skia/include/core/SkBitmap.h",
-  "+third_party/skia/include/core/SkCanvas.h",
-  "+third_party/skia/include/core/SkRefCnt.h",
-  "+third_party/skia/include/core/SkStream.h",
-  "+third_party/skia/modules/svg/include/SkSVGDOM.h",
-  "+third_party/skia/modules/svg/include/SkSVGRenderContext.h",
-  "+third_party/skia/modules/svg/include/SkSVGSVG.h",
+  "+skia/ext/font_utils.h",
+  "+third_party/skia/include/core/SkFontMgr.h",
+  "+third_party/skia/include/core/SkSurface.h",
   "+ui/gfx",
 ]
