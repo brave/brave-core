@@ -59,7 +59,7 @@ GURL CarContentRequester::GetGatewayRequestUrl() const {
         car_request_url, kGatewayUrlEntityBytesParamName,
         kGatewayUrlEntityBytesOnlyStructParamVal);
   }
-//LOG(INFO) << "[IPFS] GetGatewayRequestUrl() car_request_url:" << car_request_url;
+LOG(INFO) << "[IPFS] GetGatewayRequestUrl() car_request_url:" << car_request_url;
   return car_request_url;
 }
 

@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
+#include "brave/components/ipfs/ipld/block_orchestrator.h"
 
 #include <memory>
 #include <utility>
@@ -85,12 +85,12 @@ void EnumerateBlocksFromCid(
 
 namespace ipfs::ipld {
 
-BlockOrchestratorService::BlockOrchestratorService(PrefService* pref_service)
+BlockOrchestrator::BlockOrchestrator(PrefService* pref_service)
     : pref_service_(pref_service) {}
 
-BlockOrchestratorService::~BlockOrchestratorService() = default;
+BlockOrchestrator::~BlockOrchestrator() = default;
 
-void BlockOrchestratorService::BuildResponse(
+void BlockOrchestrator::BuildResponse(
     std::unique_ptr<IpfsTrustlessRequest> request,
     IpfsRequestCallback callback) {
   DCHECK(request);
@@ -108,11 +108,11 @@ void BlockOrchestratorService::BuildResponse(
     return;
   }
 
-  block_reader_->Read(base::BindRepeating(&BlockOrchestratorService::OnBlockRead,
+  block_reader_->Read(base::BindRepeating(&BlockOrchestrator::OnBlockRead,
                                           weak_ptr_factory_.GetWeakPtr()));
 }
 
-void BlockOrchestratorService::OnBlockRead(std::unique_ptr<Block> block,
+void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
                                     bool is_completed) {
   LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed:"
             << is_completed << " Cid:" << (block ? block->Cid() : "n/a");
@@ -139,7 +139,7 @@ LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead Block collecting finished";
   dag_nodes_.try_emplace(block->Cid(), std::move(block));
 }
 
-void BlockOrchestratorService::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
+void BlockOrchestrator::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
   DCHECK(target);
   if (!target) {
     return;
@@ -162,7 +162,7 @@ LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget NOT found target->cid:" <<
                                       // on better check of the multiblock)
       EnumerateBlocksFromCid(
           start_block->second->Cid(), dag_nodes_,
-          base::BindRepeating(&BlockOrchestratorService::BlockChainForCid,
+          base::BindRepeating(&BlockOrchestrator::BlockChainForCid,
                               weak_ptr_factory_.GetWeakPtr()));
     }
   }
@@ -187,17 +187,17 @@ LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget NOT found target->cid:" <<
 //   }
 // }
 
-bool BlockOrchestratorService::IsActive() const {
+bool BlockOrchestrator::IsActive() const {
   return !request_callback_.is_null() || block_reader_ || !dag_nodes_.empty();
 }
 
-void BlockOrchestratorService::Reset() {
+void BlockOrchestrator::Reset() {
   request_callback_.Reset();
   block_reader_ = nullptr;  // TODO Can not reset from itself
   dag_nodes_.clear();
 }
 
-void BlockOrchestratorService::BlockChainForCid(Block* block) const {
+void BlockOrchestrator::BlockChainForCid(Block* block) const {
   // LOG(INFO) << "[IPFS] BlockOrchestrator::BlockChainForCid #10"
   //           << "\r\ncid:" << block->Cid()
   //           << "\r\nIsMetadata:" << block->IsMetadata()

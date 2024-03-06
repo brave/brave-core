@@ -73,8 +73,8 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
     url_res = ipfs::ToPublicGatewayURL(url_, prefs_);
   }
 
-  // LOG(INFO) << "[IPFS] ContentRequester::GetGatewayRequestUrl() url_res:"
-  //           << url_res;
+  LOG(INFO) << "[IPFS] ContentRequester::GetGatewayRequestUrl() url_res:"
+            << url_res;
   return url_res;
 }
 

@@ -31,8 +31,6 @@ if (enable_ipfs) {
     "//brave/browser/ipfs/ipfs_subframe_navigation_throttle.h",
     "//brave/browser/ipfs/ipfs_tab_helper.cc",
     "//brave/browser/ipfs/ipfs_tab_helper.h",
-    "//brave/browser/ipfs/ipld/block_orchestrator_service_factory.cc",
-    "//brave/browser/ipfs/ipld/block_orchestrator_service_factory.h",
     "//brave/browser/ipfs/ipfs_trustless_client_url_loader_interceptor.cc",
     "//brave/browser/ipfs/ipfs_trustless_client_url_loader_interceptor.h",
     "//brave/browser/ipfs/ipfs_trustless_client_url_loader.cc",

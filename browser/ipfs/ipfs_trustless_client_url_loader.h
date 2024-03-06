@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include <memory>
-#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
+#include "brave/components/ipfs/ipld/block_orchestrator.h"
 #include "brave/components/ipfs/ipld/trustless_client_types.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -20,14 +20,14 @@ class URLLoaderFactory;
 
 namespace ipfs {
 namespace ipld {
-class BlockOrchestratorService;
+class BlockOrchestrator;
 }
 
 class IpfsTrustlessClientIrlLoader : public network::mojom::URLLoader {
  public:
   explicit IpfsTrustlessClientIrlLoader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      ipld::BlockOrchestratorService& orchestrator);
+      std::unique_ptr<ipld::BlockOrchestrator> orchestrator);
   ~IpfsTrustlessClientIrlLoader() override;
 
   void StartRequest(
@@ -46,11 +46,10 @@ class IpfsTrustlessClientIrlLoader : public network::mojom::URLLoader {
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
- void RequestOrchestrator(const GURL& url, std::unique_ptr<network::PendingSharedURLLoaderFactory> pending_factory);
   void OnIpfsTrustlessClientResponse(std::unique_ptr<ipld::IpfsTrustlessRequest> request,
             std::unique_ptr<ipld::IpfsTrustlessResponse> response);
 
-  raw_ref<ipld::BlockOrchestratorService> orchestrator_;
+  std::unique_ptr<ipld::BlockOrchestrator> orchestrator_;
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory_;
   mojo::Receiver<network::mojom::URLLoader> receiver_{this};
   mojo::Remote<network::mojom::URLLoaderClient> client_;

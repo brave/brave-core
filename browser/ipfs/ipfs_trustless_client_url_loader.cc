@@ -17,7 +17,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
 #include "brave/components/ipfs/ipld/trustless_client_types.h"
-#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
+#include "brave/components/ipfs/ipld/block_orchestrator.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "base/task/thread_pool.h"
 
@@ -25,8 +25,8 @@ namespace ipfs {
 
 IpfsTrustlessClientIrlLoader::IpfsTrustlessClientIrlLoader(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    ipld::BlockOrchestratorService& orchestrator)
-    : orchestrator_(orchestrator),
+    std::unique_ptr<ipld::BlockOrchestrator> orchestrator)
+    : orchestrator_(std::move(orchestrator)),
       loader_factory_(url_loader_factory) {}
 
 IpfsTrustlessClientIrlLoader::~IpfsTrustlessClientIrlLoader() noexcept {
@@ -52,45 +52,15 @@ void IpfsTrustlessClientIrlLoader::StartRequest(
                                   
   LOG(INFO) << "[IPFS] StartRequest: " << original_url_;
 
-  // auto ptr = loader_factory_->Clone();
-
-  // content::GetUIThreadTaskRunner({})->PostTask(
-  //       FROM_HERE, 
-  //       base::BindOnce(&IpfsTrustlessClientIrlLoader::RequestOrchestrator,
-  //                      base::Owned(this),original_url_, std::move(ptr)));
-
-  orchestrator_->BuildResponse(
-      std::make_unique<ipld::IpfsTrustlessRequest>(
-          original_url_,
-          loader_factory_),
-      base::BindRepeating(
-          &IpfsTrustlessClientIrlLoader::OnIpfsTrustlessClientResponse,
-          weak_ptr_factory_.GetWeakPtr()
-          ));
-
-  // Working approach
-  // std::string data = "hdfjskahfdjkal";
-  // std::vector<uint8_t> data_v(data.begin(), data.end());
-  // OnIpfsTrustlessClientResponse(nullptr, std::make_unique<ipld::IpfsTrustlessResponse>("", 200, data_v, ""));
-
-}
-
-void IpfsTrustlessClientIrlLoader::RequestOrchestrator(const GURL& url, std::unique_ptr<network::PendingSharedURLLoaderFactory> pending_factory) {  
-
-if(orchestrator_->IsActive()){
-  LOG(INFO) << "[IPFS] RequestOrchestrator orchestrator_->IsActive()";
-   return;
-}
-
-  auto ptr = network::SharedURLLoaderFactory::Create(std::move(pending_factory));
-  orchestrator_->BuildResponse(
-      std::make_unique<ipld::IpfsTrustlessRequest>(
-          url,
-          ptr),
-      base::BindRepeating(
-          &IpfsTrustlessClientIrlLoader::OnIpfsTrustlessClientResponse,
-          weak_ptr_factory_.GetWeakPtr()
-          ));
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &ipld::BlockOrchestrator::BuildResponse, base::Unretained(orchestrator_.get()),
+          std::make_unique<ipld::IpfsTrustlessRequest>(original_url_,
+                                                       loader_factory_),
+          base::BindRepeating(
+              &IpfsTrustlessClientIrlLoader::OnIpfsTrustlessClientResponse,
+              weak_ptr_factory_.GetWeakPtr())));
 }
 
 void IpfsTrustlessClientIrlLoader::OnIpfsTrustlessClientResponse(

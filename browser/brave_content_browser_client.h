@@ -16,8 +16,6 @@
 #include "content/public/browser/content_browser_client.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "services/metrics/public/cpp/ukm_source_id.h"
-#include "third_party/blink/public/mojom/loader/referrer.mojom.h"
-#include "brave/components/ipfs/ipld/block_orchestrator_service.h"
 
 class PrefChangeRegistrar;
 
