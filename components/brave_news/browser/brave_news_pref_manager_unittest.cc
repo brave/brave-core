@@ -114,10 +114,6 @@ TEST_F(BraveNewsPrefManagerTest, PublishersDiffIsSane) {
   EXPECT_TRUE(base::Contains(distinct_changes, "Five"));
   EXPECT_TRUE(base::Contains(distinct_changes, direct_three));
 
-  for (const auto& change : diff.changed) {
-    LOG(ERROR) << "Changed: " << change;
-  }
-
   EXPECT_EQ(1u, diff.removed.size());
   EXPECT_TRUE(base::Contains(diff.removed, direct_one));
 }

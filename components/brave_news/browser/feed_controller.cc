@@ -149,10 +149,9 @@ void FeedController::EnsureFeedIsUpdating(
                             // Parse directly to in-memory property
                             controller->ResetFeed();
                             std::vector<mojom::FeedItemPtr> feed_items;
-                            if (BuildFeed(items, history_hosts, &publishers,
-                                          &controller->current_feed_,
-                                          subscriptions)) {
-                            } else {
+                            if (!BuildFeed(items, history_hosts, &publishers,
+                                           &controller->current_feed_,
+                                           subscriptions)) {
                               VLOG(1) << "ParseFeed reported failure.";
                             }
                             // Let any callbacks know that the data is ready

@@ -42,7 +42,7 @@ struct SubscriptionsDiff {
   ~SubscriptionsDiff();
 };
 
-class BraveNewsSubscriptions {
+struct BraveNewsSubscriptions {
  public:
   base::flat_set<std::string> enabled_publishers;
   base::flat_set<std::string> disabled_publishers;

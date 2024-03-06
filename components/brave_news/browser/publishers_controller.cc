@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_news/browser/publishers_controller.h"
 
-#include <algorithm>
 #include <iterator>
 #include <memory>
 #include <optional>
