@@ -1,3 +1,0 @@
-include_rules = [
-  "+cc/trees/task_runner_provider.h",
-]

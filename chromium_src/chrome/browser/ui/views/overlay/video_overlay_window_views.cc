@@ -6,18 +6,10 @@
 #include "brave/browser/ui/views/overlay/brave_back_to_tab_label_button.h"
 #include "brave/browser/ui/views/overlay/brave_video_overlay_window_views.h"
 
-// Also has WrapUnique.
-#include "cc/trees/task_runner_provider.h"
-#include "content/public/browser/web_contents_user_data.h"
-
 #define BRAVE_UPDATE_MAX_SIZE max_size_ = work_area.size();
-#define WrapUnique(VideoOverlayWindowViews) \
-  WrapUnique(new BraveVideoOverlayWindowViews(controller));
-
 #define BackToTabLabelButton BraveBackToTabLabelButton
 
 #include "src/chrome/browser/ui/views/overlay/video_overlay_window_views.cc"
 
 #undef BackToTabLabelButton
-#undef WrapUnique
 #undef BRAVE_UPDATE_MAX_SIZE
