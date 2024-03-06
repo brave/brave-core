@@ -11,10 +11,7 @@ import { BraveWallet } from '../../constants/types'
 
 // selectors
 import { WalletSelectors } from '../selectors'
-import {
-  useSafeWalletSelector,
-  useUnsafeWalletSelector
-} from './use-safe-selector'
+import { useSafeWalletSelector } from './use-safe-selector'
 
 // utils
 import { LOCAL_STORAGE_KEYS } from '../constants/local-storage-keys'
@@ -22,8 +19,10 @@ import { useLib } from './useLib'
 import { areSupportedForPinning } from '../../common/async/lib'
 import {
   useGetAutopinEnabledQuery,
-  useGetNftsPinningStatusQuery
+  useGetNftsPinningStatusQuery,
+  useGetUserTokensRegistryQuery
 } from '../slices/api.slice'
+import { selectAllVisibleUserAssetsFromQueryResult } from '../slices/entities/blockchain-token.entity'
 
 export enum OverallPinningStatus {
   PINNING_FINISHED,
@@ -45,11 +44,6 @@ export function useNftPin() {
   >([])
 
   // redux
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-
-  // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
   )
@@ -57,6 +51,11 @@ export function useNftPin() {
   // queries
   const { data: isAutoPinEnabled } = useGetAutopinEnabledQuery()
   const { data: nftsPinningStatus } = useGetNftsPinningStatusQuery()
+  const { userVisibleTokensInfo } = useGetUserTokensRegistryQuery(undefined, {
+    selectFromResult: (res) => ({
+      userVisibleTokensInfo: selectAllVisibleUserAssetsFromQueryResult(res)
+    })
+  })
 
   // hooks
   const { isTokenPinningSupported } = useLib()

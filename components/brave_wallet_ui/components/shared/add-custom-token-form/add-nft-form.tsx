@@ -4,14 +4,12 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import { WalletActions } from '../../../common/actions'
 import {
   networkEntityAdapter,
   emptyNetworksRegistry
@@ -21,7 +19,8 @@ import {
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
 import {
   useAddUserTokenMutation,
-  useGetNetworksRegistryQuery
+  useGetNetworksRegistryQuery,
+  useUpdateUserTokenMutation
 } from '../../../common/slices/api.slice'
 import {
   useGetCustomAssetSupportedNetworks //
@@ -62,9 +61,6 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress
   } = props
 
-  // redux
-  const dispatch = useDispatch()
-
   const { data: networksRegistry = emptyNetworksRegistry } =
     useGetNetworksRegistryQuery()
   const selectedAssetNetwork = selectedAsset
@@ -94,6 +90,7 @@ export const AddNftForm = (props: Props) => {
 
   // mutations
   const [addUserToken] = useAddUserTokenMutation()
+  const [updateUserToken] = useUpdateUserTokenMutation()
 
   // queries
   const {
@@ -201,12 +198,10 @@ export const AddNftForm = (props: Props) => {
     }
 
     if (tokenAlreadyExists && selectedAsset) {
-      dispatch(
-        WalletActions.updateUserAsset({
-          existing: selectedAsset,
-          updated: tokenInfo
-        })
-      )
+      await updateUserToken({
+        existingToken: selectedAsset,
+        updatedToken: tokenInfo
+      }).unwrap()
       onHideForm()
       return
     }

@@ -198,7 +198,6 @@ export interface WalletState {
   isZCashEnabled: boolean
   isWalletCreated: boolean
   isWalletLocked: boolean
-  userVisibleTokensInfo: BraveWallet.BlockchainToken[]
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
   selectedNetworkFilter: NetworkFilterType

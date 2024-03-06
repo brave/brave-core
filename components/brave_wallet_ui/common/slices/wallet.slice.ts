@@ -19,8 +19,7 @@ import {
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
-  DefaultBaseCurrencyChanged,
-  UpdateUsetAssetType
+  DefaultBaseCurrencyChanged
 } from '../constants/action_types'
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
@@ -43,7 +42,6 @@ const defaultState: WalletState = {
   isZCashEnabled: false,
   isWalletCreated: false,
   isWalletLocked: true,
-  userVisibleTokensInfo: [],
   addUserAssetError: false,
   activeOrigin: {
     eTldPlusOne: '',
@@ -98,7 +96,6 @@ const defaultState: WalletState = {
 export const WalletAsyncActions = {
   initialize: createAction<RefreshOpts>('initialize'),
   refreshAll: createAction<RefreshOpts>('refreshAll'),
-  updateUserAsset: createAction<UpdateUsetAssetType>('updateUserAsset'),
   selectAccount: createAction<BraveWallet.AccountId>('selectAccount'), // should use apiProxy - keyringService
   getAllNetworks: createAction('getAllNetworks'), // alias to refreshFullNetworkList
   walletCreated: createAction('walletCreated'),
@@ -232,13 +229,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.hidePortfolioNFTsTab = payload
-      },
-
-      setVisibleTokensInfo: (
-        state: WalletState,
-        { payload }: PayloadAction<BraveWallet.BlockchainToken[]>
-      ) => {
-        state.userVisibleTokensInfo = payload
       },
 
       setIsRefreshingNetworksAndTokens: (

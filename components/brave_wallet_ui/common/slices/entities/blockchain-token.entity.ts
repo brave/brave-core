@@ -561,6 +561,15 @@ export const selectAllVisibleUserAssetsFromQueryResult =
   )
 
 /**
+ * Used to select visible only fungible tokens from
+ * useGetUserTokensRegistryQuery
+ */
+export const selectAllVisibleFungibleUserAssetsFromQueryResult =
+  createDraftSafeSelector([selectTokensRegistryFromQueryResult], (assets) =>
+    getEntitiesListFromEntityState(assets, assets.fungibleVisibleTokenIds)
+  )
+
+/**
  * Used to select only hidden NFTs from useGetUserTokensRegistryQuery
  */
 export const selectHiddenNftsFromQueryResult = createDraftSafeSelector(

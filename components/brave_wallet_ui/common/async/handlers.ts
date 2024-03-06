@@ -5,16 +5,11 @@
 
 import AsyncActionHandler from '../../../common/AsyncActionHandler'
 import * as WalletActions from '../actions/wallet_actions'
-import { UpdateUsetAssetType } from '../constants/action_types'
 import { WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
-import {
-  refreshVisibleTokenInfo,
-  refreshPortfolioFilterOptions,
-  getNFTMetadata
-} from './lib'
+import { refreshPortfolioFilterOptions } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
@@ -25,10 +20,6 @@ const interactionNotifier = new InteractionNotifier()
 
 function getWalletState(store: Store): WalletState {
   return store.getState().wallet
-}
-
-async function refreshBalancesPricesAndHistory(store: Store) {
-  await store.dispatch(refreshVisibleTokenInfo())
 }
 
 async function refreshWalletInfo(store: Store, payload: RefreshOpts = {}) {
@@ -62,7 +53,9 @@ handler.on(
     await store
       .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
       .unwrap()
-    await store.dispatch(refreshVisibleTokenInfo())
+    await store
+      .dispatch(walletApi.endpoints.invalidateUserTokensRegistry.initiate())
+      .unwrap()
     await store.dispatch(refreshPortfolioFilterOptions())
     store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
   }
@@ -140,7 +133,9 @@ handler.on(
       await store
         .dispatch(walletApi.endpoints.refreshNetworkInfo.initiate())
         .unwrap()
-      await store.dispatch(refreshVisibleTokenInfo())
+      store.dispatch(
+        walletApi.endpoints.invalidateUserTokensRegistry.initiate()
+      )
       await store.dispatch(refreshPortfolioFilterOptions())
       await braveWalletService.discoverAssetsOnAllSupportedChains(false)
     }
@@ -148,42 +143,16 @@ handler.on(
 )
 
 handler.on(
-  WalletActions.updateUserAsset.type,
-  async (store: Store, payload: UpdateUsetAssetType) => {
-    const { braveWalletService } = getAPIProxy()
-    const { existing, updated } = payload
-    // fetch NFT metadata if tokenId or contract address has changed
-    if (
-      (updated.isNft || updated.isErc721) &&
-      (updated.tokenId !== existing.tokenId ||
-        updated.contractAddress !== existing.contractAddress)
-    ) {
-      const result = await getNFTMetadata(updated)
-      if (!result?.error) {
-        try {
-          const nftMetadata = result?.response && JSON.parse(result.response)
-          updated.logo = nftMetadata?.image || ''
-        } catch (error) {
-          console.error(error)
-        }
-      }
-    }
-
-    const deleteResult = await braveWalletService.removeUserAsset(existing)
-    if (deleteResult.success) {
-      const addResult = await braveWalletService.addUserAsset(updated)
-      if (addResult.success) {
-        refreshBalancesPricesAndHistory(store)
-        await store.dispatch(refreshVisibleTokenInfo())
-      }
-    }
-  }
-)
-
-handler.on(
   WalletActions.refreshBalancesAndPriceHistory.type,
   async (store: Store) => {
-    await refreshBalancesPricesAndHistory(store)
+    store.dispatch(
+      walletApi.util.invalidateTags([
+        'TokenBalances',
+        'TokenBalancesForChainId',
+        'AccountTokenCurrentBalance',
+        'HardwareAccountDiscoveryBalance'
+      ])
+    )
   }
 )
 

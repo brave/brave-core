@@ -14,12 +14,6 @@ import {
 } from '../../../../common/slices/constants'
 import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
 
-// Selectors
-import {
-  useUnsafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
-
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
@@ -50,7 +44,8 @@ import {
   useGetDefaultFiatCurrencyQuery,
   useGetVisibleNetworksQuery,
   useGetTokenSpotPricesQuery,
-  useGetRewardsInfoQuery
+  useGetRewardsInfoQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 
@@ -58,16 +53,12 @@ export const Accounts = () => {
   // routing
   const history = useHistory()
 
-  // wallet state
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
-
   // queries
   const { accounts } = useAccountsQuery()
   const {
     data: { rewardsAccount: externalRewardsAccount } = emptyRewardsInfo
   } = useGetRewardsInfoQuery()
+  const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
 
   // methods
   const onSelectAccount = React.useCallback(
@@ -117,13 +108,14 @@ export const Accounts = () => {
       networks
     })
 
-  const tokenPriceIds = React.useMemo(
-    () =>
-      userVisibleTokensInfo
-        .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
-        .map((token) => getPriceIdForToken(token)),
-    [userVisibleTokensInfo]
-  )
+  const tokenPriceIds = React.useMemo(() => {
+    if (userTokensRegistry) {
+      return userTokensRegistry.fungibleVisibleTokenIds.map((id) => {
+        return getPriceIdForToken(userTokensRegistry.entities[id]!)
+      })
+    }
+    return []
+  }, [userTokensRegistry])
 
   const { data: spotPriceRegistry, isLoading: isLoadingSpotPrices } =
     useGetTokenSpotPricesQuery(

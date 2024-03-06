@@ -85,8 +85,3 @@ export interface RetryTransactionPayload {
 
 export type SpeedupTransactionPayload = RetryTransactionPayload
 export type CancelTransactionPayload = RetryTransactionPayload
-
-export type UpdateUsetAssetType = {
-  existing: BraveWallet.BlockchainToken
-  updated: BraveWallet.BlockchainToken
-}
