@@ -6,8 +6,12 @@
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 
 #include <algorithm>
+#include <cstdint>
+#include <iterator>
 #include <vector>
 
+#include "base/containers/span.h"
+#include "base/ranges/algorithm.h"
 #include "brave/browser/ui/brave_browser_window.h"
 #include "brave/components/constants/pref_names.h"
 #include "chrome/browser/profiles/profile.h"
@@ -28,8 +32,9 @@ BraveTabStripModel::~BraveTabStripModel() = default;
 
 void BraveTabStripModel::SelectRelativeTab(TabRelativeDirection direction,
                                            TabStripUserGestureDetails detail) {
-  if (contents_data_.empty())
+  if (contents_data_.empty()) {
     return;
+  }
 
   bool is_mru_enabled = profile()->GetPrefs()->GetBoolean(kMRUCyclingEnabled);
 
@@ -46,8 +51,9 @@ void BraveTabStripModel::SelectMRUTab(TabRelativeDirection direction,
     // Start cycling
 
     Browser* browser = chrome::FindBrowserWithTab(GetWebContentsAt(0));
-    if (!browser)
+    if (!browser) {
       return;
+    }
 
     // Create a list of tab indexes sorted by time of last activation
     for (int i = 0; i < count(); ++i) {
@@ -81,4 +87,13 @@ void BraveTabStripModel::StopMRUCycling() {
 
 std::vector<int> BraveTabStripModel::GetTabIndicesForCommandAt(int tab_index) {
   return TabStripModel::GetIndicesForCommand(tab_index);
+}
+
+void BraveTabStripModel::CloseTabs(base::span<int> indices,
+                                   uint32_t close_types) {
+  std::vector<content::WebContents*> contentses;
+  for (const auto& index : indices) {
+    contentses.push_back(GetWebContentsAt(index));
+  }
+  TabStripModel::CloseTabs(contentses, close_types);
 }

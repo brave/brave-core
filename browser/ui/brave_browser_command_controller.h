@@ -13,6 +13,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/tor/buildflags/buildflags.h"
 #include "chrome/browser/ui/browser_command_controller.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -59,6 +60,7 @@ class BraveBrowserCommandController : public chrome::BrowserCommandController
       TabStripModel* tab_strip_model,
       const TabStripModelChange& change,
       const TabStripSelectionChange& selection) override;
+  void OnTabGroupChanged(const TabGroupChange& change) override;
 
  private:
   friend class ::BraveAppMenuBrowserTest;

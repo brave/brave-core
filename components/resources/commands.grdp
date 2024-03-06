@@ -146,7 +146,7 @@
     Close ungrouped tabs
   </message>
   <message name="IDS_IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP">
-    Close tabs not in  current group
+    Close tabs not in current group
   </message>
   <message name="IDS_IDC_WINDOW_GROUP_UNGROUPED_TABS">
     Group ungrouped tabs

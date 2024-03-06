@@ -6,9 +6,13 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_STRIP_MODEL_H_
 
+#include <cstdint>
 #include <vector>
 
+#include "base/containers/span.h"
+#include "chrome/browser/ui/tabs/tab_enums.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/browser/ui/tabs/tab_strip_model_observer.h"
 
 class BraveTabStripModel : public TabStripModel {
  public:
@@ -35,6 +39,11 @@ class BraveTabStripModel : public TabStripModel {
 
   // Exposes a |TabStripModel| api to |BraveTabMenuModel|.
   std::vector<int> GetTabIndicesForCommandAt(int tab_index);
+
+  // Closes the tabs at the specified indices.
+  void CloseTabs(
+      base::span<int> indices,
+      uint32_t close_flags = TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
 
  private:
   // List of tab indexes sorted by most recently used

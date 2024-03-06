@@ -127,6 +127,11 @@ void BraveBrowserCommandController::OnTabStripModelChanged(
   UpdateCommandsForPin();
 }
 
+void BraveBrowserCommandController::OnTabGroupChanged(
+    const TabGroupChange& change) {
+  UpdateCommandsForTabs();
+}
+
 bool BraveBrowserCommandController::SupportsCommand(int id) const {
   return IsBraveCommands(id) ? brave_command_updater_.SupportsCommand(id)
                              : BrowserCommandController::SupportsCommand(id);
@@ -364,6 +369,7 @@ void BraveBrowserCommandController::UpdateCommandsForTabs() {
                        brave::CanUngroupAllTabs(&*browser_));
   UpdateCommandEnabled(IDC_WINDOW_TOGGLE_GROUP_EXPANDED, is_in_group);
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_UNGROUPED_TABS, has_ungrouped_tabs);
+  UpdateCommandEnabled(IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP, is_in_group);
   UpdateCommandEnabled(IDC_WINDOW_CLOSE_GROUP, is_in_group);
 
   UpdateCommandEnabled(IDC_WINDOW_BRING_ALL_TABS,

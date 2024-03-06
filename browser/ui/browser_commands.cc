@@ -5,9 +5,11 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
-#include <cstddef>
+#include <memory>
 #include <numeric>
+#include <stack>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
@@ -17,6 +19,7 @@
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -520,8 +523,8 @@ void NewTabInGroup(Browser* browser) {
     return;
   }
 
-  auto* group = tsm->group_model()->GetTabGroup(*group_id);
-  group->AddTab();
+  const auto tabs = tsm->group_model()->GetTabGroup(*group_id)->ListTabs();
+  tsm->delegate()->AddTabAt(GURL(), tabs.end(), true, *group_id);
 }
 
 bool CanUngroupAllTabs(Browser* browser) {
@@ -568,18 +571,21 @@ void CloseUngroupedTabs(Browser* browser) {
   if (!browser) {
     return;
   }
-  auto* tsm = browser->tab_strip_model();
+  auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+  CHECK(tsm);
+
   std::vector<int> indices;
 
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
     if (!tsm->GetTabGroupForTab(i)) {
       indices.push_back(i);
     }
   }
 
-  for (int i = indices.size() - 1; i >= 0; --i) {
-    tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
-                                   TabCloseTypes::CLOSE_USER_GESTURE);
+  for (const auto& index : indices) {
+    tsm->CloseWebContentsAt(index,
+                            TabCloseTypes::CLOSE_USER_GESTURE |
+                                TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
   }
 }
 
@@ -588,23 +594,25 @@ void CloseTabsNotInCurrentGroup(Browser* browser) {
     return;
   }
 
-  auto* tsm = browser->tab_strip_model();
+  auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+  CHECK(tsm);
+
   auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
   if (!group_id) {
     return;
   }
 
   std::vector<int> indices;
-
-  for (int i = 0; i < tsm->GetTabCount(); ++i) {
-    if (tsm->GetTabGroupForTab(i) != group_id) {
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+    if (tsm->GetTabGroupForTab(i) != *group_id) {
       indices.push_back(i);
     }
   }
 
-  for (int i = indices.size() - 1; i >= 0; --i) {
-    tsm->CloseWebContentsAt(i, TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB |
-                                   TabCloseTypes::CLOSE_USER_GESTURE);
+  for (const auto& index : indices) {
+    tsm->CloseWebContentsAt(index,
+                            TabCloseTypes::CLOSE_USER_GESTURE |
+                                TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
   }
 }
 
@@ -618,7 +626,7 @@ void CloseGroup(Browser* browser) {
   if (!group_id) {
     return;
   }
-  tsm->CloseTabGroup(group_id.value());
+  tsm->CloseAllTabsInGroup(*group_id);
 }
 
 bool CanBringAllTabs(Browser* browser) {
