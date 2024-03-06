@@ -556,13 +556,6 @@ source_set("ui") {
       sources += [
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
-        "views/frame/immersive_context.cc",
-        "views/frame/immersive_context.h",
-        "views/frame/immersive_fullscreen_controller_delegate.h",
-        "views/frame/immersive_mode_controller_win.cc",
-        "views/frame/immersive_mode_controller_win.h",
-        "views/frame/immersive_revealed_lock.cc",
-        "views/frame/immersive_revealed_lock.h",
       ]
 
       deps += [ "//chrome/browser:titlebar_config" ]
@@ -570,12 +563,15 @@ source_set("ui") {
 
     if (use_aura) {
       sources += [
-        "views/frame/immersive_context_win.cc",
-        "views/frame/immersive_context_win.h",
-        "views/frame/immersive_focus_watcher_win.cc",
-        "views/frame/immersive_focus_watcher_win.h",
-        "views/frame/immersive_fullscreen_controller_win.cc",
-        "views/frame/immersive_fullscreen_controller_win.h",
+        "views/frame/immersive_focus_watcher_aura.cc",
+        "views/frame/immersive_focus_watcher_aura.h",
+        "views/frame/immersive_fullscreen_controller_aura.cc",
+        "views/frame/immersive_fullscreen_controller_aura.h",
+        "views/frame/immersive_fullscreen_controller_delegate.h",
+        "views/frame/immersive_mode_controller_aura.cc",
+        "views/frame/immersive_mode_controller_aura.h",
+        "views/frame/immersive_revealed_lock.cc",
+        "views/frame/immersive_revealed_lock.h",
       ]
       deps += [ "//ui/wm/public" ]
     }

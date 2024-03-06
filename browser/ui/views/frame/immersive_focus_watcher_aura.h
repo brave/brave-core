@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_WIN_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_WIN_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_AURA_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_AURA_H_
 
 #include <memory>
 
@@ -14,25 +14,26 @@
 #include "ui/views/focus/focus_manager.h"
 #include "ui/wm/public/activation_change_observer.h"
 
-class ImmersiveFullscreenControllerWin;
+class ImmersiveFullscreenControllerAura;
 class SimpleImmersiveRevealedLock;
 
-// ImmersiveFocusWatcherWin is responsible for grabbing a reveal lock based on
+// ImmersiveFocusWatcherAura is responsible for grabbing a reveal lock based on
 // activation and/or focus. This implementation grabs a lock if views focus is
 // in the top view, a bubble is showing that is anchored to the top view, or the
 // focused window is a transient child of the top view's widget.
-class ImmersiveFocusWatcherWin
+class ImmersiveFocusWatcherAura
     : public views::FocusChangeListener,
       public aura::client::TransientWindowClientObserver,
       public ::wm::ActivationChangeObserver {
  public:
-  explicit ImmersiveFocusWatcherWin(
-      ImmersiveFullscreenControllerWin* controller);
+  explicit ImmersiveFocusWatcherAura(
+      ImmersiveFullscreenControllerAura* controller);
 
-  ImmersiveFocusWatcherWin(const ImmersiveFocusWatcherWin&) = delete;
-  ImmersiveFocusWatcherWin& operator=(const ImmersiveFocusWatcherWin&) = delete;
+  ImmersiveFocusWatcherAura(const ImmersiveFocusWatcherAura&) = delete;
+  ImmersiveFocusWatcherAura& operator=(const ImmersiveFocusWatcherAura&) =
+      delete;
 
-  ~ImmersiveFocusWatcherWin() override;
+  ~ImmersiveFocusWatcherAura() override;
 
   // Forces updating the status of the lock. That is, this determines whether
   // a lock should be held and updates accordingly. The lock is automatically
@@ -70,7 +71,7 @@ class ImmersiveFocusWatcherWin
       aura::Window* gaining_active,
       aura::Window* losing_active) override;
 
-  raw_ptr<ImmersiveFullscreenControllerWin> immersive_fullscreen_controller_;
+  raw_ptr<ImmersiveFullscreenControllerAura> immersive_fullscreen_controller_;
 
   // Lock which keeps the top-of-window views revealed based on the focused view
   // and the active widget. Acquiring the lock never triggers a reveal because
@@ -82,4 +83,4 @@ class ImmersiveFocusWatcherWin
   std::unique_ptr<BubbleObserver> bubble_observer_;
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_WIN_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FOCUS_WATCHER_AURA_H_

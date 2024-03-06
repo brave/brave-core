@@ -5,7 +5,7 @@
 
 #include "src/chrome/browser/ui/views/find_bar_host.cc"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 views::Widget* FindBarHost::GetHostWidget() {
   return host_.get();
 }

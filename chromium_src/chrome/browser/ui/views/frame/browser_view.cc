@@ -15,17 +15,14 @@
 #include "brave/browser/ui/views/side_panel/brave_side_panel_coordinator.h"
 #include "brave/browser/ui/views/tabs/brave_browser_tab_strip_controller.h"
 #include "brave/browser/ui/views/tabs/brave_tab_strip.h"
+#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/browser/ui/views/toolbar/brave_toolbar_view.h"
 #include "build/build_config.h"
+#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/browser_commands.h"
 #include "chrome/browser/ui/views/frame/browser_view_layout.h"
 #include "chrome/browser/ui/views/side_panel/side_panel.h"
-
-#if BUILDFLAG(IS_WIN)
-#include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
-#include "chrome/browser/themes/theme_service_factory.h"
 #include "chrome/browser/ui/views/theme_copying_widget.h"
-#endif
 
 #define InfoBarContainerView BraveInfoBarContainerView
 #define BrowserViewLayout BraveBrowserViewLayout
@@ -55,7 +52,7 @@
 #undef BrowserViewLayout
 #undef InfoBarContainerView
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 namespace {
 
 // OverlayWidget is a child Widget of BrowserFrame used during immersive
@@ -118,7 +115,7 @@ class TabContainerOverlayView : public views::View {
 BEGIN_METADATA(TabContainerOverlayView)
 END_METADATA
 }  // namespace
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 
 void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   // Sets a kBrowserWindowKey to given child |widget| so that we can get
@@ -130,7 +127,7 @@ void BrowserView::SetNativeWindowPropertyForWidget(views::Widget* widget) {
   widget->SetNativeWindowProperty(kBrowserViewKey, this);
 }
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 views::View* BrowserView::CreateWinOverlayView() {
   DCHECK(UsesImmersiveFullscreenMode());
 
@@ -207,4 +204,4 @@ bool BrowserView::UsesImmersiveFullscreenTabbedMode() const {
           !GetIsWebAppType() &&
           !tabs::utils::ShouldShowVerticalTabs(browser()));
 }
-#endif  // BUILDFLAG(IS_WIN)
+#endif  // BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)

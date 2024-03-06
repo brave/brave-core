@@ -61,10 +61,8 @@ IN_PROC_BROWSER_TEST_F(CommandUtilsBrowserTest,
       IDC_FULLSCREEN,
       IDC_TOGGLE_VERTICAL_TABS,
       IDC_TOGGLE_VERTICAL_TABS_WINDOW_TITLE,
-#elif BUILDFLAG(IS_WIN)
-      IDC_FULLSCREEN,
 #endif
-
+      IDC_FULLSCREEN,
       IDC_EXIT};
 
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL("chrome://newtab")));

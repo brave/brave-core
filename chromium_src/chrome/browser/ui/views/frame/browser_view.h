@@ -33,8 +33,7 @@
   GetTabSearchBubbleHost_Unused(); \
   virtual TabSearchBubbleHost* GetTabSearchBubbleHost
 
-#if BUILDFLAG(IS_WIN)
-#define GetSupportsTitle virtual GetSupportsTitle
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #define GetWidgetForAnchoring                     \
   GetWidgetForAnchoring();                        \
   bool UsesImmersiveFullscreenMode() const;       \
@@ -57,7 +56,10 @@
   raw_ptr<views::Widget, DanglingUntriaged> overlay_widget_ = nullptr;     \
   raw_ptr<views::Widget, DanglingUntriaged> tab_overlay_widget_ = nullptr; \
   raw_ptr<views::View, DanglingUntriaged> tab_overlay_view_
+#endif
 
+#if BUILDFLAG(IS_WIN)
+#define GetSupportsTitle virtual GetSupportsTitle
 // On Windows <winuser.h> defines LoadAccelerators
 #pragma push_macro("LoadAccelerators")
 #undef LoadAccelerators
@@ -69,9 +71,12 @@
 #undef LoadAccelerators
 #if BUILDFLAG(IS_WIN)
 #pragma pop_macro("LoadAccelerators")
+#undef GetSupportsTitle
+#endif
+
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #undef contents_separator_
 #undef GetWidgetForAnchoring
-#undef GetSupportsTitle
 #endif
 
 #undef GetTabSearchBubbleHost

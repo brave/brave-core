@@ -8,7 +8,7 @@
 
 #include "build/build_config.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 namespace views {
 class Widget;
 }
@@ -20,7 +20,7 @@ class Widget;
 
 #include "src/chrome/browser/ui/find_bar/find_bar.h"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #undef UpdateFindBarForChangedWebContents
 #endif
 

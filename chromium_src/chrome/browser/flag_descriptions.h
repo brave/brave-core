@@ -8,7 +8,7 @@
 
 #include "src/chrome/browser/flag_descriptions.h"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 namespace flag_descriptions {
 extern const char kImmersiveFullscreenName[];
 extern const char kImmersiveFullscreenDescription[];

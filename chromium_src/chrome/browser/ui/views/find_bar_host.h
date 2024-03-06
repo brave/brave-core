@@ -9,7 +9,7 @@
 #include "build/build_config.h"
 #include "chrome/browser/ui/find_bar/find_bar.h"
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #define UpdateFindBarForChangedWebContents       \
   UpdateFindBarForChangedWebContents() override; \
   views::Widget* GetHostWidget
@@ -17,7 +17,7 @@
 
 #include "src/chrome/browser/ui/views/find_bar_host.h"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #undef UpdateFindBarForChangedWebContents
 #endif
 

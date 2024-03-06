@@ -15,6 +15,7 @@
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
+#include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "chrome/browser/ui/views/frame/opaque_browser_frame_view_layout.h"
 #include "ui/base/hit_test.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
@@ -149,6 +150,13 @@ bool BraveOpaqueBrowserFrameView::ShouldShowVerticalTabs() const {
   auto* browser = browser_view()->browser();
   DCHECK(browser);
   return tabs::utils::ShouldShowVerticalTabs(browser);
+}
+
+void BraveOpaqueBrowserFrameView::OnFullscreenStateChanged() {
+  if (browser_view()->UsesImmersiveFullscreenMode()) {
+    browser_view()->immersive_mode_controller()->SetEnabled(
+        browser_view()->IsFullscreen());
+  }
 }
 
 BEGIN_METADATA(BraveOpaqueBrowserFrameView)

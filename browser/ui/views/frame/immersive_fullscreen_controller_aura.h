@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_WIN_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_WIN_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_AURA_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_AURA_H_
 
 #include <memory>
 #include <vector>
@@ -41,10 +41,10 @@ class View;
 class Widget;
 }  // namespace views
 
-class ImmersiveFocusWatcherWin;
+class ImmersiveFocusWatcherAura;
 class ImmersiveFullscreenControllerDelegate;
 
-class ImmersiveFullscreenControllerWin
+class ImmersiveFullscreenControllerAura
     : public aura::WindowObserver,
       public gfx::AnimationDelegate,
       public ui::EventObserver,
@@ -63,17 +63,17 @@ class ImmersiveFullscreenControllerWin
   // (primary display above/below secondary display).
   static const int kMouseRevealBoundsHeight;
 
-  static const char kImmersiveFullscreenControllerWin[];
+  static const char kImmersiveFullscreenControllerAura[];
   static const char kImmersiveIsActive[];
 
-  ImmersiveFullscreenControllerWin();
+  ImmersiveFullscreenControllerAura();
 
-  ImmersiveFullscreenControllerWin(const ImmersiveFullscreenControllerWin&) =
+  ImmersiveFullscreenControllerAura(const ImmersiveFullscreenControllerAura&) =
       delete;
-  ImmersiveFullscreenControllerWin& operator=(
-      const ImmersiveFullscreenControllerWin&) = delete;
+  ImmersiveFullscreenControllerAura& operator=(
+      const ImmersiveFullscreenControllerAura&) = delete;
 
-  ~ImmersiveFullscreenControllerWin() override;
+  ~ImmersiveFullscreenControllerAura() override;
 
   // Initializes the controller. Must be called prior to enabling immersive
   // fullscreen via EnableForWidget(). |top_container| is used to keep the
@@ -133,7 +133,7 @@ class ImmersiveFullscreenControllerWin
 
   static void EnableForWidget(views::Widget* widget, bool enabled);
 
-  static ImmersiveFullscreenControllerWin* Get(views::Widget* widget);
+  static ImmersiveFullscreenControllerAura* Get(views::Widget* widget);
 
  private:
   enum Animate {
@@ -246,6 +246,8 @@ class ImmersiveFullscreenControllerWin
   // active.
   void EnableTouchInsets(bool enable);
 
+  bool DoesAnyWindowHaveCapture() const;
+
   // Not owned.
   raw_ptr<ImmersiveFullscreenControllerDelegate, DanglingUntriaged> delegate_ =
       nullptr;
@@ -288,7 +290,7 @@ class ImmersiveFullscreenControllerWin
   // Whether the animations are disabled for testing.
   bool animations_disabled_for_test_;
 
-  std::unique_ptr<ImmersiveFocusWatcherWin> immersive_focus_watcher_;
+  std::unique_ptr<ImmersiveFocusWatcherAura> immersive_focus_watcher_;
 
   // The window targeter that was in use before immersive fullscreen mode was
   // entered, if any. Will be re-installed on the window after leaving immersive
@@ -299,8 +301,8 @@ class ImmersiveFullscreenControllerWin
   // ImmersiveFullscreenControllerTestApi::GlobalAnimationDisabler for details.
   static bool value_for_animations_disabled_for_test_;
 
-  base::WeakPtrFactory<ImmersiveFullscreenControllerWin> weak_ptr_factory_{
+  base::WeakPtrFactory<ImmersiveFullscreenControllerAura> weak_ptr_factory_{
       this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_WIN_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_FULLSCREEN_CONTROLLER_AURA_H_

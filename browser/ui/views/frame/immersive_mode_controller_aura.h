@@ -3,16 +3,16 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_WIN_H_
-#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_WIN_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_AURA_H_
+#define BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_AURA_H_
 
 #include <memory>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "brave/browser/ui/views/frame/immersive_fullscreen_controller_aura.h"
 #include "brave/browser/ui/views/frame/immersive_fullscreen_controller_delegate.h"
-#include "brave/browser/ui/views/frame/immersive_fullscreen_controller_win.h"
 #include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/immersive_mode_controller.h"
 #include "ui/views/focus/focus_manager.h"
@@ -20,14 +20,14 @@
 #include "ui/views/widget/widget.h"
 #include "ui/views/widget/widget_observer.h"
 
-class ImmersiveModeControllerWin;
+class ImmersiveModeControllerAura;
 
 // This class notifies the browser view to refresh layout whenever the overlay
 // widget moves. This is necessary for positioning web dialogs.
 class ImmersiveModeOverlayWidgetObserver : public views::WidgetObserver {
  public:
   explicit ImmersiveModeOverlayWidgetObserver(
-      ImmersiveModeControllerWin* controller);
+      ImmersiveModeControllerAura* controller);
 
   ImmersiveModeOverlayWidgetObserver(
       const ImmersiveModeOverlayWidgetObserver&) = delete;
@@ -40,25 +40,26 @@ class ImmersiveModeOverlayWidgetObserver : public views::WidgetObserver {
                              const gfx::Rect& new_bounds) override;
 
  private:
-  raw_ptr<ImmersiveModeControllerWin> controller_;
+  raw_ptr<ImmersiveModeControllerAura> controller_ = nullptr;
 };
 
-class ImmersiveModeControllerWin : public ImmersiveModeController,
-                                   public views::FocusChangeListener,
-                                   public ImmersiveFullscreenControllerDelegate,
-                                   public views::ViewObserver,
-                                   public views::WidgetObserver,
-                                   public views::FocusTraversable {
+class ImmersiveModeControllerAura
+    : public ImmersiveModeController,
+      public views::FocusChangeListener,
+      public ImmersiveFullscreenControllerDelegate,
+      public views::ViewObserver,
+      public views::WidgetObserver,
+      public views::FocusTraversable {
  public:
-  ImmersiveModeControllerWin();
+  ImmersiveModeControllerAura();
 
-  ImmersiveModeControllerWin(const ImmersiveModeControllerWin&) = delete;
-  ImmersiveModeControllerWin& operator=(const ImmersiveModeControllerWin&) =
+  ImmersiveModeControllerAura(const ImmersiveModeControllerAura&) = delete;
+  ImmersiveModeControllerAura& operator=(const ImmersiveModeControllerAura&) =
       delete;
 
-  ~ImmersiveModeControllerWin() override;
+  ~ImmersiveModeControllerAura() override;
 
-  ImmersiveFullscreenControllerWin* controller() { return &controller_; }
+  ImmersiveFullscreenControllerAura* controller() { return &controller_; }
 
   // ImmersiveModeController overrides:
   void Init(BrowserView* browser_view) override;
@@ -113,7 +114,7 @@ class ImmersiveModeControllerWin : public ImmersiveModeController,
   void SetVisibleFraction(double visible_fraction) override;
   std::vector<gfx::Rect> GetVisibleBoundsInScreen() const override;
 
-  ImmersiveFullscreenControllerWin controller_;
+  ImmersiveFullscreenControllerAura controller_;
 
   raw_ptr<BrowserView> browser_view_ = nullptr;  // weak
   std::unique_ptr<ImmersiveRevealedLock> focus_lock_;
@@ -134,7 +135,7 @@ class ImmersiveModeControllerWin : public ImmersiveModeController,
   // the top-of-window views are not revealed.
   double visible_fraction_ = 1.0;
 
-  base::WeakPtrFactory<ImmersiveModeControllerWin> weak_ptr_factory_;
+  base::WeakPtrFactory<ImmersiveModeControllerAura> weak_ptr_factory_{this};
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_WIN_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_FRAME_IMMERSIVE_MODE_CONTROLLER_AURA_H_

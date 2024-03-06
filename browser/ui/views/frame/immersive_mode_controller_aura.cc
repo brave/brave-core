@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/browser/ui/views/frame/immersive_mode_controller_win.h"
+#include "brave/browser/ui/views/frame/immersive_mode_controller_aura.h"
 
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "chrome/browser/ui/find_bar/find_bar.h"
@@ -21,13 +21,13 @@
 
 namespace {
 
-class ImmersiveModeFocusSearchWin : public views::FocusSearch {
+class ImmersiveModeFocusSearchAura : public views::FocusSearch {
  public:
-  explicit ImmersiveModeFocusSearchWin(BrowserView* browser_view);
-  ImmersiveModeFocusSearchWin(const ImmersiveModeFocusSearchWin&) = delete;
-  ImmersiveModeFocusSearchWin& operator=(const ImmersiveModeFocusSearchWin&) =
+  explicit ImmersiveModeFocusSearchAura(BrowserView* browser_view);
+  ImmersiveModeFocusSearchAura(const ImmersiveModeFocusSearchAura&) = delete;
+  ImmersiveModeFocusSearchAura& operator=(const ImmersiveModeFocusSearchAura&) =
       delete;
-  ~ImmersiveModeFocusSearchWin() override;
+  ~ImmersiveModeFocusSearchAura() override;
 
   // views::FocusSearch:
   views::View* FindNextFocusableView(
@@ -54,42 +54,42 @@ class RevealedLock : public ImmersiveRevealedLock {
   std::unique_ptr<SimpleImmersiveRevealedLock> lock_;
 };
 
-// Converts from ImmersiveModeControllerWin::AnimateReveal to
-// ImmersiveFullscreenControllerWin::AnimateReveal.
-ImmersiveFullscreenControllerWin::AnimateReveal
+// Converts from ImmersiveModeControllerAura::AnimateReveal to
+// ImmersiveFullscreenControllerAura::AnimateReveal.
+ImmersiveFullscreenControllerAura::AnimateReveal
 ToImmersiveFullscreenControllerAnimateReveal(
-    ImmersiveModeControllerWin::AnimateReveal animate_reveal) {
+    ImmersiveModeControllerAura::AnimateReveal animate_reveal) {
   switch (animate_reveal) {
     case ImmersiveModeController::ANIMATE_REVEAL_YES:
-      return ImmersiveFullscreenControllerWin::ANIMATE_REVEAL_YES;
+      return ImmersiveFullscreenControllerAura::ANIMATE_REVEAL_YES;
     case ImmersiveModeController::ANIMATE_REVEAL_NO:
-      return ImmersiveFullscreenControllerWin::ANIMATE_REVEAL_NO;
+      return ImmersiveFullscreenControllerAura::ANIMATE_REVEAL_NO;
   }
   NOTREACHED_NORETURN();
 }
 
 }  // namespace
 
-ImmersiveModeControllerWin::ImmersiveModeControllerWin()
-    : weak_ptr_factory_(this) {}
+ImmersiveModeControllerAura::ImmersiveModeControllerAura() = default;
 
-ImmersiveModeControllerWin::~ImmersiveModeControllerWin() {
+ImmersiveModeControllerAura::~ImmersiveModeControllerAura() {
   CHECK(!views::WidgetObserver::IsInObserverList());
 }
 
-void ImmersiveModeControllerWin::Init(BrowserView* browser_view) {
+void ImmersiveModeControllerAura::Init(BrowserView* browser_view) {
   browser_view_ = browser_view;
-  focus_search_ = std::make_unique<ImmersiveModeFocusSearchWin>(browser_view);
+  focus_search_ = std::make_unique<ImmersiveModeFocusSearchAura>(browser_view);
   controller_.Init(this, browser_view_->frame(),
                    browser_view_->top_container());
 }
 
-void ImmersiveModeControllerWin::SetEnabled(bool enabled) {
+void ImmersiveModeControllerAura::SetEnabled(bool enabled) {
+  // TODO(simonhong): Toolbar should be visible in vertial tab mode.
   if (tabs::utils::ShouldShowVerticalTabs(browser_view_->browser())) {
     return;
   }
-  ImmersiveFullscreenControllerWin::EnableForWidget(browser_view_->frame(),
-                                                    enabled);
+  ImmersiveFullscreenControllerAura::EnableForWidget(browser_view_->frame(),
+                                                     enabled);
 
   if (enabled) {
     top_container_observation_.Observe(browser_view_->top_container());
@@ -161,19 +161,19 @@ void ImmersiveModeControllerWin::SetEnabled(bool enabled) {
   }
 }
 
-bool ImmersiveModeControllerWin::IsEnabled() const {
+bool ImmersiveModeControllerAura::IsEnabled() const {
   return controller_.IsEnabled();
 }
 
-bool ImmersiveModeControllerWin::ShouldHideTopViews() const {
+bool ImmersiveModeControllerAura::ShouldHideTopViews() const {
   return controller_.IsEnabled() && !controller_.IsRevealed();
 }
 
-bool ImmersiveModeControllerWin::IsRevealed() const {
+bool ImmersiveModeControllerAura::IsRevealed() const {
   return controller_.IsRevealed();
 }
 
-int ImmersiveModeControllerWin::GetTopContainerVerticalOffset(
+int ImmersiveModeControllerAura::GetTopContainerVerticalOffset(
     const gfx::Size& top_container_size) const {
   if (!IsEnabled()) {
     return 0;
@@ -184,12 +184,12 @@ int ImmersiveModeControllerWin::GetTopContainerVerticalOffset(
 }
 
 std::unique_ptr<ImmersiveRevealedLock>
-ImmersiveModeControllerWin::GetRevealedLock(AnimateReveal animate_reveal) {
+ImmersiveModeControllerAura::GetRevealedLock(AnimateReveal animate_reveal) {
   return std::make_unique<RevealedLock>(controller_.GetRevealedLock(
       ToImmersiveFullscreenControllerAnimateReveal(animate_reveal)));
 }
 
-void ImmersiveModeControllerWin::OnImmersiveRevealStarted() {
+void ImmersiveModeControllerAura::OnImmersiveRevealStarted() {
   visible_fraction_ = 0;
 
   for (Observer& observer : observers_) {
@@ -197,7 +197,7 @@ void ImmersiveModeControllerWin::OnImmersiveRevealStarted() {
   }
 }
 
-void ImmersiveModeControllerWin::OnImmersiveRevealEnded() {
+void ImmersiveModeControllerAura::OnImmersiveRevealEnded() {
   visible_fraction_ = 0;
   browser_view_->contents_web_view()->holder()->SetHitTestTopInset(0);
 
@@ -206,16 +206,16 @@ void ImmersiveModeControllerWin::OnImmersiveRevealEnded() {
   }
 }
 
-void ImmersiveModeControllerWin::OnImmersiveFullscreenEntered() {}
+void ImmersiveModeControllerAura::OnImmersiveFullscreenEntered() {}
 
-void ImmersiveModeControllerWin::OnImmersiveFullscreenExited() {
+void ImmersiveModeControllerAura::OnImmersiveFullscreenExited() {
   browser_view_->contents_web_view()->holder()->SetHitTestTopInset(0);
   for (Observer& observer : observers_) {
     observer.OnImmersiveFullscreenExited();
   }
 }
 
-void ImmersiveModeControllerWin::SetVisibleFraction(double visible_fraction) {
+void ImmersiveModeControllerAura::SetVisibleFraction(double visible_fraction) {
   if (visible_fraction_ == visible_fraction) {
     return;
   }
@@ -236,7 +236,7 @@ void ImmersiveModeControllerWin::SetVisibleFraction(double visible_fraction) {
   browser_view_->DeprecatedLayoutImmediately();
 }
 
-std::vector<gfx::Rect> ImmersiveModeControllerWin::GetVisibleBoundsInScreen()
+std::vector<gfx::Rect> ImmersiveModeControllerAura::GetVisibleBoundsInScreen()
     const {
   views::View* top_container_view = browser_view_->top_container();
   gfx::Rect top_container_view_bounds = top_container_view->GetLocalBounds();
@@ -255,32 +255,32 @@ std::vector<gfx::Rect> ImmersiveModeControllerWin::GetVisibleBoundsInScreen()
   return bounds_in_screen;
 }
 
-void ImmersiveModeControllerWin::OnFindBarVisibleBoundsChanged(
+void ImmersiveModeControllerAura::OnFindBarVisibleBoundsChanged(
     const gfx::Rect& new_visible_bounds_in_screen) {
   find_bar_visible_bounds_in_screen_ = new_visible_bounds_in_screen;
 }
 
-bool ImmersiveModeControllerWin::ShouldStayImmersiveAfterExitingFullscreen() {
+bool ImmersiveModeControllerAura::ShouldStayImmersiveAfterExitingFullscreen() {
   return false;
 }
 
-void ImmersiveModeControllerWin::OnWidgetActivationChanged(
+void ImmersiveModeControllerAura::OnWidgetActivationChanged(
     views::Widget* widget,
     bool active) {}
 
-int ImmersiveModeControllerWin::GetMinimumContentOffset() const {
+int ImmersiveModeControllerAura::GetMinimumContentOffset() const {
   return 0;
 }
 
-int ImmersiveModeControllerWin::GetExtraInfobarOffset() const {
+int ImmersiveModeControllerAura::GetExtraInfobarOffset() const {
   return 0;
 }
 
-void ImmersiveModeControllerWin::OnWillChangeFocus(views::View* focused_before,
-                                                   views::View* focused_now) {}
+void ImmersiveModeControllerAura::OnWillChangeFocus(views::View* focused_before,
+                                                    views::View* focused_now) {}
 
-void ImmersiveModeControllerWin::OnDidChangeFocus(views::View* focused_before,
-                                                  views::View* focused_now) {
+void ImmersiveModeControllerAura::OnDidChangeFocus(views::View* focused_before,
+                                                   views::View* focused_now) {
   if (browser_view_->top_container()->Contains(focused_now) ||
       browser_view_->tab_overlay_view()->Contains(focused_now)) {
     if (!focus_lock_) {
@@ -291,7 +291,7 @@ void ImmersiveModeControllerWin::OnDidChangeFocus(views::View* focused_before,
   }
 }
 
-void ImmersiveModeControllerWin::OnViewBoundsChanged(
+void ImmersiveModeControllerAura::OnViewBoundsChanged(
     views::View* observed_view) {
   gfx::Rect bounds = observed_view->bounds();
   if (bounds.IsEmpty()) {
@@ -305,12 +305,12 @@ void ImmersiveModeControllerWin::OnViewBoundsChanged(
 #endif
 }
 
-void ImmersiveModeControllerWin::OnWidgetDestroying(views::Widget* widget) {
+void ImmersiveModeControllerAura::OnWidgetDestroying(views::Widget* widget) {
   SetEnabled(false);
 }
 
-void ImmersiveModeControllerWin::MoveChildren(views::Widget* from_widget,
-                                              views::Widget* to_widget) {
+void ImmersiveModeControllerAura::MoveChildren(views::Widget* from_widget,
+                                               views::Widget* to_widget) {
   CHECK(from_widget && to_widget);
 
   // If the browser window is closing the native view is removed. Don't attempt
@@ -329,7 +329,7 @@ void ImmersiveModeControllerWin::MoveChildren(views::Widget* from_widget,
   }
 }
 
-bool ImmersiveModeControllerWin::ShouldMoveChild(views::Widget* child) {
+bool ImmersiveModeControllerAura::ShouldMoveChild(views::Widget* child) {
   // Filter out widgets that should not be reparented.
   // The browser, overlay and tab overlay widgets all stay put.
   if (child == browser_view_->GetWidget() ||
@@ -377,27 +377,27 @@ bool ImmersiveModeControllerWin::ShouldMoveChild(views::Widget* child) {
   return false;
 }
 
-views::FocusSearch* ImmersiveModeControllerWin::GetFocusSearch() {
+views::FocusSearch* ImmersiveModeControllerAura::GetFocusSearch() {
   return focus_search_.get();
 }
 
 views::FocusTraversable*
-ImmersiveModeControllerWin::GetFocusTraversableParent() {
+ImmersiveModeControllerAura::GetFocusTraversableParent() {
   return nullptr;
 }
 
-views::View* ImmersiveModeControllerWin::GetFocusTraversableParentView() {
+views::View* ImmersiveModeControllerAura::GetFocusTraversableParentView() {
   return nullptr;
 }
 
-ImmersiveModeFocusSearchWin::ImmersiveModeFocusSearchWin(
+ImmersiveModeFocusSearchAura::ImmersiveModeFocusSearchAura(
     BrowserView* browser_view)
     : views::FocusSearch(browser_view, true, true),
       browser_view_(browser_view) {}
 
-ImmersiveModeFocusSearchWin::~ImmersiveModeFocusSearchWin() = default;
+ImmersiveModeFocusSearchAura::~ImmersiveModeFocusSearchAura() = default;
 
-views::View* ImmersiveModeFocusSearchWin::FindNextFocusableView(
+views::View* ImmersiveModeFocusSearchAura::FindNextFocusableView(
     views::View* starting_view,
     SearchDirection search_direction,
     TraversalDirection traversal_direction,
@@ -451,7 +451,7 @@ views::View* ImmersiveModeFocusSearchWin::FindNextFocusableView(
 }
 
 ImmersiveModeOverlayWidgetObserver::ImmersiveModeOverlayWidgetObserver(
-    ImmersiveModeControllerWin* controller)
+    ImmersiveModeControllerAura* controller)
     : controller_(controller) {}
 
 ImmersiveModeOverlayWidgetObserver::~ImmersiveModeOverlayWidgetObserver() =

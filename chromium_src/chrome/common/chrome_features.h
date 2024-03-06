@@ -8,7 +8,7 @@
 
 #include "src/chrome/common/chrome_features.h"  // IWYU pragma: export
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 #include "base/component_export.h"
 #include "build/buildflag.h"
 

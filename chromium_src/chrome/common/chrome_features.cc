@@ -13,7 +13,7 @@
 
 namespace features {
 
-#if BUILDFLAG(IS_WIN)
+#if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_LINUX)
 // Enables immersive fullscreen. The tab strip and toolbar are placed underneath
 // the titlebar. The tab strip and toolbar can auto hide and reveal.
 BASE_FEATURE(kImmersiveFullscreen,
