@@ -42,7 +42,7 @@ struct AdvancedShieldsSettingsView: View {
         } label: {
           // Hack to show the disclosure
           NavigationLink(destination: { EmptyView() }, label: {
-            ShieldLabelView(
+            LabelView(
               title: Strings.manageWebsiteDataTitle,
               subtitle: nil
             )
@@ -57,7 +57,7 @@ struct AdvancedShieldsSettingsView: View {
         NavigationLink {
           PrivacyReportSettingsView()
         } label: {
-          ShieldLabelView(
+          LabelView(
             title: Strings.PrivacyHub.privacyReportsTitle,
             subtitle: nil
           )

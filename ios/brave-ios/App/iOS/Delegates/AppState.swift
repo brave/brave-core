@@ -16,6 +16,7 @@ import Storage
 import BraveNews
 import os.log
 import UserAgent
+import AIChat
 
 private let adsRewardsLog = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "ads-rewards")
 
@@ -179,7 +180,7 @@ public class AppState {
       }
     }
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))
-    
+                          
     // Initialize BraveCore
     return BraveCoreMain(userAgent: UserAgent.mobile, additionalSwitches: switches)
   }

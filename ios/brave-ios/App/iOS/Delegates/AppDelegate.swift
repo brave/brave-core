@@ -31,6 +31,7 @@ import BraveShields
 import PrivateCDN
 import Playlist
 import UserAgent
+import AIChat
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -119,6 +120,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
       await BraveVPN.updateStorePromotionOrder()
       await BraveVPN.hideActiveStorePromotion()
     }
+    
+    // Brave Store SDK - Initialization
+    BraveStoreSDK.shared.refreshAllSkusOrders()
     
     // Override point for customization after application launch.
     var shouldPerformAdditionalDelegateHandling = true

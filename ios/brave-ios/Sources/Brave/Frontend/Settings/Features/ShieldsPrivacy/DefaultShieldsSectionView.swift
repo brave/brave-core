@@ -31,7 +31,7 @@ struct DefaultShieldsViewView: View {
             .tag(level)
         }
       } label: {
-        ShieldLabelView(
+        LabelView(
           title: Strings.Shields.trackersAndAdsBlocking,
           subtitle: Strings.Shields.trackersAndAdsBlockingDescription
         )
@@ -103,7 +103,7 @@ struct DefaultShieldsViewView: View {
         option: ShieldPreferences.enableGPC
       )
       
-      ShieldToggleView(
+      ToggleView(
         title: Strings.blockCookieConsentNotices,
         subtitle: nil,
         toggle: $settings.cookieConsentBlocking
@@ -112,7 +112,7 @@ struct DefaultShieldsViewView: View {
       NavigationLink {
         FilterListsView()
       } label: {
-        ShieldLabelView(
+        LabelView(
           title: Strings.contentFiltering,
           subtitle: Strings.contentFilteringDescription
         )
