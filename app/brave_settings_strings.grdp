@@ -1169,7 +1169,7 @@
     Yes
   </message>
   <message name="IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC" desc="The description for the user's opt-in status of the transaction simulations service">
-    See the results of transactions before you sign
+    See the results of transactions before you sign. <ph name="BEGIN_LINK">&lt;a target="_blank" href="$1"&gt;</ph>&lt;u&gt;Learn more&lt;/u&gt;<ph name="END_LINK">&lt;/a&gt;</ph> 
   </message>
 
   <!-- Settings / Wallet / Networks -->

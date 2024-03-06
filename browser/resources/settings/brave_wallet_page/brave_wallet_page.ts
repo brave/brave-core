@@ -102,9 +102,10 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.isTransactionSimulationsFeatureEnabled().then(val => {
       this.isTransactionSimulationsFeatureEnabled = val
     });
-    this.browserProxy_.getTransactionSimulationOptInStatusOptions().then(list => {
-      this.transaction_simulation_opt_in_options_ = list
-    });
+    this.browserProxy_.getTransactionSimulationOptInStatusOptions()
+      .then(list => {
+        this.transaction_simulation_opt_in_options_ = list
+      });
 
     this.cryptocurrency_list_ = [
       { value: "BTC" },
