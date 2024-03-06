@@ -727,6 +727,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
       {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
       {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
+      {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
+      {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
+      {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -774,6 +777,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
                                                IDS_SETTINGS_IPFS_METHOD_DESC,
                                                ipfs::kIPFSLearnMorePrivacyURL));
+
+  html_source->AddString(
+      "transactionSimulationDesc",
+      l10n_util::GetStringFUTF16(IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC,
+                                 kTransactionSimulationLearnMoreURL));
 
   html_source->AddString("resolveUnstoppableDomainsSubDesc",
                          l10n_util::GetStringFUTF16(

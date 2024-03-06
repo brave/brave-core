@@ -1572,4 +1572,15 @@ void BraveWalletService::IsPrivateWindow(IsPrivateWindowCallback callback) {
   std::move(callback).Run(is_private_window_);
 }
 
+void BraveWalletService::GetTransactionSimulationOptInStatus(
+    GetTransactionSimulationOptInStatusCallback callback) {
+  std::move(callback).Run(
+      ::brave_wallet::GetTransactionSimulationOptInStatus(profile_prefs_));
+}
+
+void BraveWalletService::SetTransactionSimulationOptInStatus(
+    mojom::BlowfishOptInStatus status) {
+  ::brave_wallet::SetTransactionSimulationOptInStatus(profile_prefs_, status);
+}
+
 }  // namespace brave_wallet

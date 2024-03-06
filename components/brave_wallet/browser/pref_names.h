@@ -80,6 +80,8 @@ inline constexpr char kPinnedNFTAssets[] = "brave.wallet.user_pin_data";
 inline constexpr char kAutoPinEnabled[] = "brave.wallet.auto_pin_enabled";
 inline constexpr char kBraveWalletPrivateWindowsEnabled[] =
     "brave.wallet.private_windows_enabled";
+inline constexpr char kBraveWalletTransactionSimulationOptInStatus[] =
+    "brave.wallet.transaction_simulation_opt_in_status";
 
 // Added 02/2023 to migrate transactions to contain the
 // chain_id for each one.

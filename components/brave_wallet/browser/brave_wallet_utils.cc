@@ -2110,4 +2110,17 @@ mojom::BlockchainTokenPtr GetZcashNativeToken(const std::string& chain_id) {
   return result;
 }
 
+mojom::BlowfishOptInStatus GetTransactionSimulationOptInStatus(
+    PrefService* prefs) {
+  return static_cast<mojom::BlowfishOptInStatus>(
+      prefs->GetInteger(kBraveWalletTransactionSimulationOptInStatus));
+}
+
+void SetTransactionSimulationOptInStatus(
+    PrefService* prefs,
+    const mojom::BlowfishOptInStatus& status) {
+  prefs->SetInteger(kBraveWalletTransactionSimulationOptInStatus,
+                    static_cast<int>(status));
+}
+
 }  // namespace brave_wallet
