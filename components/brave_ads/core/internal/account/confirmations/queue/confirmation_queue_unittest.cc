@@ -58,7 +58,7 @@ TEST_F(BraveAdsConfirmationQueueTest, AddConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
@@ -85,6 +85,8 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
            kTransactionId, kCreateRewardConfirmationCredential),
@@ -93,8 +95,6 @@ TEST_F(BraveAdsConfirmationQueueTest, ProcessConfirmation) {
       {BuildFetchPaymentTokenUrlPath(kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,

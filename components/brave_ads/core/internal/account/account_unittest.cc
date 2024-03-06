@@ -263,6 +263,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const URLResponseMap url_responses = {
       {BuildCreateRewardConfirmationUrlPath(
            kTransactionId, kCreateRewardConfirmationCredential),
@@ -271,8 +273,6 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
       {BuildFetchPaymentTokenUrlPath(kTransactionId),
        {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/1);
 
   const CreativeNotificationAdInfo creative_ad =
       test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
@@ -291,7 +291,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   // Act & Assert
   EXPECT_CALL(observer_mock_, OnDidProcessDeposit);

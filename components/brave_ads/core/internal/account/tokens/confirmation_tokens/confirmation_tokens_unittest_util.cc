@@ -51,7 +51,7 @@ ConfirmationTokens& GetConfirmationTokens() {
   return ConfirmationStateManager::GetInstance().GetConfirmationTokens();
 }
 
-ConfirmationTokenList SetConfirmationTokens(const int count) {
+ConfirmationTokenList RefillConfirmationTokens(const int count) {
   CHECK_GT(count, 0);
 
   ConfirmationTokenList confirmation_tokens = BuildConfirmationTokens(count);

@@ -48,7 +48,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, SaveConfirmationQueueItems) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
@@ -71,7 +71,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
@@ -101,7 +101,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const std::optional<ConfirmationInfo> confirmation =
       test::BuildRewardConfirmation(&token_generator_mock_,
@@ -124,7 +124,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/2);
+  test::RefillConfirmationTokens(/*count=*/2);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
@@ -158,7 +158,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/3);
+  test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
@@ -203,7 +203,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/2);
+  test::RefillConfirmationTokens(/*count=*/2);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
@@ -244,7 +244,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/3);
+  test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
@@ -290,7 +290,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest, RetryConfirmationQueueItem) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
@@ -328,7 +328,7 @@ TEST_F(BraveAdsConfirmationQueueDatabaseTableTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/3);
+  test::RefillConfirmationTokens(/*count=*/3);
 
   ConfirmationQueueItemList confirmation_queue_items;
 
