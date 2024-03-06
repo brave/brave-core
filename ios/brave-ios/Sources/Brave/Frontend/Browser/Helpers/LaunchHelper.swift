@@ -48,11 +48,16 @@ public actor LaunchHelper {
 
       // Load cached data
       // This is done first because compileResources need their results
-      async let filterListCache: Void = FilterListResourceDownloader.shared
-        .loadFilterListSettingsAndCachedData()
+      await FilterListStorage.shared.loadFilterListSettings()
+      await AdBlockGroupsManager.shared.loadResourcesFromCache()
+
+      // Only load the standard engine for now, we will load the other one after launch
+      async let loadEngineFromCache: Void = AdBlockGroupsManager.shared.loadEngineFromCache(
+        for: .standard
+      )
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared
         .loadCachedAndBundledDataIfNeeded(allowedModes: launchBlockModes)
-      _ = await (filterListCache, adblockResourceCache)
+      _ = await (loadEngineFromCache, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
 
       ContentBlockerManager.log.debug("Loaded blocking launch data")
@@ -114,6 +119,7 @@ public actor LaunchHelper {
         id: signpostID,
         "Reloaded data for remaining modes"
       )
+      await AdBlockGroupsManager.shared.loadEngineFromCache(for: .aggressive)
       await AdblockResourceDownloader.shared.startFetching()
       Self.signpost.emitEvent("startFetching", id: signpostID, "Started fetching ad-block data")
 
