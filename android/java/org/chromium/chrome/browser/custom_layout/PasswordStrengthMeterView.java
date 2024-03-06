@@ -29,7 +29,7 @@ import org.chromium.chrome.R;
 public class PasswordStrengthMeterView extends RelativeLayout {
     /** Listener used to notify the parent hosting the view. */
     public interface PasswordStrengthMeterListener {
-        /** Callback that notifies if the two password typed are matching. */
+        /** Callback that notifies if the two passwords typed match. */
         void onMatch(final boolean match);
     }
 
