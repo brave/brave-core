@@ -481,8 +481,9 @@ class Generator(generator.Generator):
 
     def _GetObjCPropertyModifiers(self, kind, inside_union=False):
         modifiers = ['nonatomic']
-        if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind) or
-                mojom.IsMapKind(kind) or mojom.IsStructKind(kind)):
+        if (mojom.IsArrayKind(kind) or mojom.IsStringKind(kind)
+                or mojom.IsMapKind(kind) or mojom.IsStructKind(kind)
+                or mojom.IsUnionKind(kind)):
             modifiers.append('copy')
         if ((inside_union and mojom.IsObjectKind(kind))
                 or mojom.IsNullableKind(kind)):
