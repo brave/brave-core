@@ -1,0 +1,10 @@
+diff --git a/build/android/gyp/util/build_utils.py b/build/android/gyp/util/build_utils.py
+index 5b1473e61eb6d84d35ceb512ea2c80cccc1c08fd..162dea17bfc40d03f0a903cd7b09fbc3a62f59d2 100644
+--- a/build/android/gyp/util/build_utils.py
++++ b/build/android/gyp/util/build_utils.py
+@@ -500,3 +500,4 @@ def ReadSourcesList(sources_list_file_name):
+   """
+   with open(sources_list_file_name) as f:
+     return [file_name.strip() for file_name in f]
++from brave_chromium_utils import inline_chromium_src_override; inline_chromium_src_override(globals(), locals())
+\ No newline at end of file
