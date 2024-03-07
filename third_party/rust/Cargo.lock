@@ -1238,7 +1238,6 @@ dependencies = [
  "lazy_static",
  "lazycell",
  "memchr",
- "safemem",
  "selectors 0.22.0",
  "thiserror",
 ]
@@ -1781,10 +1780,6 @@ version = "1.0.6"
 [[package]]
 name = "ryu"
 version = "1.0.5"
-
-[[package]]
-name = "safemem"
-version = "0.3.3"
 
 [[package]]
 name = "scopeguard"

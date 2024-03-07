@@ -1029,10 +1029,6 @@ package = "rustversion"
 path = "../../../third_party/rust/ryu/v1/crate"
 package = "ryu"
 
-[patch.crates-io.safemem_v0_3]
-path = "safemem/v0_3/crate"
-package = "safemem"
-
 [patch.crates-io.scopeguard_v1]
 path = "scopeguard/v1/crate"
 package = "scopeguard"
