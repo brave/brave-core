@@ -731,6 +731,7 @@ brave_java_resources = [
   "java/res/layout-sw600dp/rewards_tipping_success_contribution_fragment.xml",
   "java/res/layout/activity_account_selector.xml",
   "java/res/layout/activity_add_account.xml",
+  "java/res/layout/rewards_tos_layout.xml",
   "java/res/layout/activity_advance_tx_setting.xml",
   "java/res/layout/activity_brave_leo_plans.xml",
   "java/res/layout/activity_brave_vpn_plan.xml",

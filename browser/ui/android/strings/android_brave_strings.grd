@@ -3813,7 +3813,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       If your current service provider is insecure, Brave uses a secure alternative DNS provider
     </message>
     <!-- End of Secure DNS Settings -->
-
     <!-- Autofill Service strings -->
     <message name="IDS_CITY" desc="Autofill field for city">
       city
@@ -3891,6 +3890,15 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       zip
     </message>
     <!-- End of Autofill Service strings -->
+    <message name="IDS_I_AGREE_ACTION" desc="CTA text for tos rewards panel">
+      I agree
+    </message>
+    <message name="IDS_TOS_TITLE" desc="CTA text for tos rewards panel">
+      Updated Terms of Service
+    </message>
+    <message name="IDS_TOS_TEXT" desc="CTA text for tos rewards panel">
+      We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you prefer not to agree, you have the option to reset Brave Rewards, and this will disable the feature.\n\nSee Brave Rewards Terms of Service
+    </message>
   </messages>
   </release>
 </grit>
