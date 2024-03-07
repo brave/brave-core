@@ -7,10 +7,10 @@
 #include <cstdint>
 #include <memory>
 
-#include "brave/components/ipfs/ipld/car_content_requester.h"
 #include "base/logging.h"
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/ipld/car_content_requester.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
 #include "url/gurl.h"
@@ -31,11 +31,14 @@ bool IsPublicGatewayLink(const GURL& ipfs_url, PrefService* prefs) {
 
 namespace ipfs::ipld {
 
-std::unique_ptr<ContentRequester> ContentRequesterFactory::CreateCarContentRequester(const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs,
-      const bool only_structure) {
-return std::make_unique<CarContentRequester>(url, url_loader_factory, prefs, only_structure);
+std::unique_ptr<ContentRequester>
+ContentRequesterFactory::CreateCarContentRequester(
+    const GURL& url,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    PrefService* prefs,
+    const bool only_structure) {
+  return std::make_unique<CarContentRequester>(url, url_loader_factory, prefs,
+                                               only_structure);
 }
 
 ContentRequester::ContentRequester(
@@ -80,16 +83,17 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
 
 void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
-  auto data = std::make_unique<std::vector<uint8_t>>(string_piece.begin(), string_piece.end());
+  auto data = std::make_unique<std::vector<uint8_t>>(string_piece.begin(),
+                                                     string_piece.end());
 
-LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
+  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
   if (buffer_ready_callback_) {
     buffer_ready_callback_.Run(std::move(data), false);
   }
 
-  if(!resume) {
-    return;    
+  if (!resume) {
+    return;
   }
 
   // Continue to read data.
@@ -97,12 +101,12 @@ LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 }
 
 void ContentRequester::OnRetry(base::OnceClosure start_retry) {
-  //TODO Decide should we use retry or no
+  // TODO Decide should we use retry or no
 }
 
 void ContentRequester::OnComplete(bool success) {
   LOG(INFO) << "[IPFS] OnComplete success:" << success;
-  
+
   if (buffer_ready_callback_) {
     buffer_ready_callback_.Run(nullptr, true);
   }

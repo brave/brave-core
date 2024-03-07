@@ -69,7 +69,8 @@ class BlockReaderFactory {
   std::unique_ptr<BlockReader> CreateCarBlockReader(
       const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-      PrefService* prefs);
+      PrefService* prefs,
+      const bool only_structure);
 
  private:
   std::unique_ptr<ContentRequesterFactory> content_reader_factory_{

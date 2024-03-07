@@ -9,15 +9,25 @@ namespace ipfs::ipld {
 
 IpfsTrustlessRequest::IpfsTrustlessRequest(
     const GURL& url,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
-    : url(url), url_loader_factory(std::move(url_loader_factory)) {}
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    bool load_only_structure)
+    : url(url),
+      url_loader_factory(std::move(url_loader_factory)),
+      only_structure(load_only_structure) {}
 IpfsTrustlessRequest::~IpfsTrustlessRequest() = default;
 
 IpfsTrustlessResponse::IpfsTrustlessResponse(const std::string& mime,
-                           const std::uint16_t& status,
-                           const std::vector<uint8_t>& body,
-                           const std::string& location)
-    : mime(mime), status(status), body(body), location(location) {}
+                                             const std::uint16_t& status,
+                                             const std::vector<uint8_t>& body,
+                                             const std::string& location,
+                                             const uint64_t& size,
+                                             bool last_chunk)
+    : mime(mime),
+      status(status),
+      body(body),
+      location(location),
+      total_size(size),
+      is_last_chunk(last_chunk) {}
 IpfsTrustlessResponse::~IpfsTrustlessResponse() = default;
 
 }  // namespace ipfs::ipld

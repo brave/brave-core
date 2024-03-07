@@ -5,6 +5,7 @@
 
 #include "brave/components/ipfs/ipld/block_orchestrator.h"
 
+#include <cstdint>
 #include <memory>
 #include <utility>
 
@@ -39,7 +40,8 @@ void EnumerateBlocksFromCid(
                              std::unique_ptr<ipfs::ipld::Block>,
                              ipfs::ipld::StringHash,
                              std::equal_to<>>& dag_nodes,
-    base::RepeatingCallback<void(ipfs::ipld::Block*)> for_each_block_callback) {
+    base::RepeatingCallback<void(ipfs::ipld::Block*, bool is_completed)>
+        for_each_block_callback) {
   std::deque<ipfs::ipld::Block*> blocks_deque;
   auto current_iter = dag_nodes.find(cid_to_start);
   DCHECK(current_iter != dag_nodes.end());
@@ -62,6 +64,7 @@ void EnumerateBlocksFromCid(
 
       base::ranges::for_each(*current->GetLinks(), [&](const auto& item) {
         auto current_link_iter = dag_nodes.find(item.hash);
+        //        LOG(INFO) << "[IPFS] try to find hash:" << item.hash;
         DCHECK(current_link_iter != dag_nodes.end());
         if (current_link_iter != dag_nodes.end()) {
           current = current_link_iter->second.get();
@@ -75,7 +78,10 @@ void EnumerateBlocksFromCid(
     blocks_deque.pop_front();
 
     if (for_each_block_callback) {
-      for_each_block_callback.Run(current);
+      LOG(INFO) << "[IPFS] for_each_block_callback cid:"
+                << (current ? current->Cid() : "n\a")
+                << " blocks_deque.empty():" << blocks_deque.empty();
+      for_each_block_callback.Run(current, !current || blocks_deque.empty());
     }
     current = nullptr;
   }
@@ -102,7 +108,8 @@ void BlockOrchestrator::BuildResponse(
   request_callback_ = std::move(callback);
   request_ = std::move(request);
   block_reader_ = BlockReaderFactory().CreateCarBlockReader(
-      request_->url, request_->url_loader_factory, pref_service_);
+      request_->url, request_->url_loader_factory, pref_service_,
+      request_->only_structure);
   DCHECK(block_reader_);
   if (!block_reader_) {
     return;
@@ -117,7 +124,8 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
   LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed:"
             << is_completed << " Cid:" << (block ? block->Cid() : "n/a");
   if (is_completed && !block && request_callback_) {
-LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead Block collecting finished";
+    LOG(INFO)
+        << "[IPFS] BlockOrchestrator::OnBlockRead Block collecting finished";
     // Here is where we finished to collect all blocks
     DCHECK(!dag_nodes_.empty());
     if (auto ipfs_target =
@@ -146,24 +154,41 @@ void BlockOrchestrator::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
   }
 
   if (target->IsCidTarget()) {
-LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget target->cid:" << target->cid;
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget target->cid:"
+              << target->cid;
     auto start_block = dag_nodes_.find(target->cid);
     if (start_block != dag_nodes_.end() && start_block->second->IsContent()) {
-LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget found target->cid:" << target->cid;
-      request_callback_.Run(std::move(request_),
-                            std::make_unique<IpfsTrustlessResponse>(
-                                "", 200, *start_block->second->GetContentData(),
-                                ""));  // TODO: Think how to prevent copying of
-                                       // the convent vector
+      LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget found target->cid:"
+                << target->cid;
+      request_callback_.Run(
+          std::move(request_),
+          std::make_unique<IpfsTrustlessResponse>(
+              "", 200, *start_block->second->GetContentData(), "",
+              start_block->second->GetContentData()->size(),
+              true));  // TODO: Think how to prevent copying of
+                       // the convent vector
     } else if (start_block != dag_nodes_.end() &&
-LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget NOT found target->cid:" << target->cid;
                start_block->second
                    ->IsMetadata()) {  // If it is multiblock file (TODO: think
                                       // on better check of the multiblock)
+
+      uint64_t size{0};
+      base::ranges::for_each(
+          *start_block->second->GetLinks(), [&size](const auto& item) {
+            LOG(INFO) << "[IPFS] Size Calculation: " << item.size;
+            size += item.size;
+          });
+
+      LOG(INFO)
+          << "[IPFS] BlockOrchestrator::ProcessTarget NOT found target->cid:"
+          << target->cid
+          << " size:" << size;  // << "\r\nMeta:\r\n" <<
+                                // start_block->second->Meta().DebugString();
+
       EnumerateBlocksFromCid(
           start_block->second->Cid(), dag_nodes_,
           base::BindRepeating(&BlockOrchestrator::BlockChainForCid,
-                              weak_ptr_factory_.GetWeakPtr()));
+                              weak_ptr_factory_.GetWeakPtr(), size));
     }
   }
 
@@ -197,14 +222,17 @@ void BlockOrchestrator::Reset() {
   dag_nodes_.clear();
 }
 
-void BlockOrchestrator::BlockChainForCid(Block* block) const {
+void BlockOrchestrator::BlockChainForCid(const uint64_t& size,
+                                         Block* block,
+                                         bool last_chunk) const {
   // LOG(INFO) << "[IPFS] BlockOrchestrator::BlockChainForCid #10"
   //           << "\r\ncid:" << block->Cid()
-  //           << "\r\nIsMetadata:" << block->IsMetadata()
-  //           << "\r\nIsContent:" << block->IsContent();
+  //           << "\r\nsize:" << size
+  //           ;
   if (request_callback_ && block->IsContent()) {
-    request_callback_.Run(nullptr, std::make_unique<IpfsTrustlessResponse>(
-                                       "", 200, *block->GetContentData(), ""));
+    request_callback_.Run(
+        nullptr, std::make_unique<IpfsTrustlessResponse>(
+                     "", 200, *block->GetContentData(), "", size, last_chunk));
   }
 }
 

@@ -55,11 +55,12 @@ constexpr char kTestDataSubDir[] = "ipfs/ipld";
 const struct {
   std::string ipfs_url;
   std::string file_content;
+  uint64_t size;
 } kOneFileExtractInputData[] = {
     {"ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
-     "subdir_multiblock.txt"},
+     "subdir_multiblock.txt", 1026},
     {"ipfs://bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4",
-     "subdir_hello.txt"}};
+     "subdir_hello.txt", 12}};
 
 bool CompareVeAndStr(const std::vector<uint8_t>& vec, const std::string& str) {
   if (vec.size() != str.size()) {
@@ -113,7 +114,7 @@ class BlockOrchestratorUnitTest : public testing::Test {
   }
 
   void TestGetCarFileByIpfsCid(const std::string& ipfs_url,
-                               const std::string& car_file_name) {
+                               const std::string& car_file_name, const uint64_t& size) {
     GURL url(ipfs_url);
     auto req = std::make_unique<IpfsTrustlessRequest>(
         url, base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -145,18 +146,25 @@ class BlockOrchestratorUnitTest : public testing::Test {
         }));
 
     std::vector<uint8_t> received_data;
+    int last_chunk_received_counter{0};
     auto orchestrator_request_callback = base::BindLambdaForTesting(
         [&](std::unique_ptr<IpfsTrustlessRequest> request,
             std::unique_ptr<IpfsTrustlessResponse> response) {
           EXPECT_TRUE(response);
           received_data.insert(received_data.end(), response->body.begin(),
                                response->body.end());
+          if(response->is_last_chunk){
+            last_chunk_received_counter++;
+          }
+          LOG(INFO) << "[IPFS] total_size: " << response->total_size;
+          EXPECT_EQ(response->total_size, size);
         });
     orchestrator->BuildResponse(std::move(req),
                                 std::move(orchestrator_request_callback));
     ASSERT_TRUE(orchestrator->IsActive());
     task_environment()->RunUntilIdle();
     EXPECT_TRUE(CompareVeAndStr(received_data, GetFileContent(car_file_name)));
+    EXPECT_EQ(last_chunk_received_counter, 1);
 
     orchestrator->Reset();
     ASSERT_FALSE(orchestrator->IsActive());
@@ -173,8 +181,13 @@ class BlockOrchestratorUnitTest : public testing::Test {
 TEST_F(BlockOrchestratorUnitTest, RequestFile) {
   base::ranges::for_each(
       kOneFileExtractInputData, [this](const auto& item_case) {
-        TestGetCarFileByIpfsCid(item_case.ipfs_url, item_case.file_content);
+        TestGetCarFileByIpfsCid(item_case.ipfs_url, item_case.file_content, item_case.size);
       });
+}
+
+TEST_F(BlockOrchestratorUnitTest, RequestMultiblockFile) {
+        TestGetCarFileByIpfsCid("ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa", "subdir_multiblock.txt", 1026);
+  
 }
 
 }  // namespace ipfs::ipld

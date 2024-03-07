@@ -61,7 +61,7 @@ void IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoader(
 
   if (IsIpfsLink(tentative_resource_request.url,
                  user_prefs::UserPrefs::Get(browser_context))) {
-    loader_ = std::make_unique<IpfsTrustlessClientIrlLoader>(
+    loader_ = std::make_unique<IpfsTrustlessClientUrlLoader>(
         (static_cast<Profile*>(browser_context))->GetURLLoaderFactory(),
         std::make_unique<ipld::BlockOrchestrator>(
             user_prefs::UserPrefs::Get(browser_context)));
@@ -94,7 +94,7 @@ void IpfsTrustlessClientUrlLoaderInterceptor::MaybeCreateLoader(
 // }
 
 void IpfsTrustlessClientUrlLoaderInterceptor::StartRequest(
-    IpfsTrustlessClientIrlLoader* loader,
+    IpfsTrustlessClientUrlLoader* loader,
     network::ResourceRequest const& resource_request,
     mojo::PendingReceiver<network::mojom::URLLoader> receiver,
     mojo::PendingRemote<network::mojom::URLLoaderClient> client) {

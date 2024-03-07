@@ -23,12 +23,12 @@ namespace ipld {
 class BlockOrchestrator;
 }
 
-class IpfsTrustlessClientIrlLoader : public network::mojom::URLLoader {
+class IpfsTrustlessClientUrlLoader : public network::mojom::URLLoader {
  public:
-  explicit IpfsTrustlessClientIrlLoader(
+  explicit IpfsTrustlessClientUrlLoader(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       std::unique_ptr<ipld::BlockOrchestrator> orchestrator);
-  ~IpfsTrustlessClientIrlLoader() override;
+  ~IpfsTrustlessClientUrlLoader() override;
 
   void StartRequest(
       network::ResourceRequest const& resource_request,
@@ -46,16 +46,22 @@ class IpfsTrustlessClientIrlLoader : public network::mojom::URLLoader {
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
-  void OnIpfsTrustlessClientResponse(std::unique_ptr<ipld::IpfsTrustlessRequest> request,
-            std::unique_ptr<ipld::IpfsTrustlessResponse> response);
+  void PrepareRespponseHead(const int64_t& total_size);
+
+  void OnIpfsTrustlessClientResponse(
+      std::unique_ptr<ipld::IpfsTrustlessRequest> request,
+      std::unique_ptr<ipld::IpfsTrustlessResponse> response);
 
   std::unique_ptr<ipld::BlockOrchestrator> orchestrator_;
   scoped_refptr<network::SharedURLLoaderFactory> loader_factory_;
   mojo::Receiver<network::mojom::URLLoader> receiver_{this};
   mojo::Remote<network::mojom::URLLoaderClient> client_;
+  network::mojom::URLResponseHeadPtr response_head_;
+  mojo::ScopedDataPipeProducerHandle producer_handle_;
+  mojo::ScopedDataPipeConsumerHandle consumer_handle_;
 
   GURL original_url_;
-  base::WeakPtrFactory<IpfsTrustlessClientIrlLoader> weak_ptr_factory_{this};
+  base::WeakPtrFactory<IpfsTrustlessClientUrlLoader> weak_ptr_factory_{this};
 };
 
 }  // namespace ipfs

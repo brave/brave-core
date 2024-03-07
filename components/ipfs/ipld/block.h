@@ -18,7 +18,7 @@ namespace ipfs::ipld {
 struct DJLink {
   std::string hash;
   std::string name;
-  uint64_t size;
+  uint64_t size{0};
 };
 
 class BlockFactory;

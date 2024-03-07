@@ -46,10 +46,11 @@ BlockReaderFactory::~BlockReaderFactory() = default;
 std::unique_ptr<BlockReader> BlockReaderFactory::CreateCarBlockReader(
     const GURL& url,
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
-    PrefService* prefs) {
+    PrefService* prefs,
+    const bool only_structure) {
   return std::make_unique<CarBlockReader>(
       content_reader_factory_->CreateCarContentRequester(
-          url, url_loader_factory, prefs));
+          url, url_loader_factory, prefs, only_structure));
 }
 
 }  // namespace ipfs::ipld

@@ -74,7 +74,7 @@ class ContentRequesterFactory {
       const GURL& url,
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       PrefService* prefs,
-      const bool only_structure = true);
+      const bool only_structure);
 };
 
 }  // namespace ipfs::ipld

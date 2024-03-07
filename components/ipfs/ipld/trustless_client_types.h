@@ -21,11 +21,13 @@ struct IpfsTrustlessRequest {
 
   IpfsTrustlessRequest(
       const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      bool load_only_structure = true);
   ~IpfsTrustlessRequest();
 
   GURL url;
   scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory;
+  bool only_structure;
 };
 
 struct IpfsTrustlessResponse {
@@ -35,31 +37,32 @@ struct IpfsTrustlessResponse {
   IpfsTrustlessResponse& operator=(IpfsTrustlessResponse&&) = delete;
 
   IpfsTrustlessResponse(const std::string& mime,
-               const std::uint16_t& status,
-               const std::vector<uint8_t>& body,
-               const std::string& location);
+                        const std::uint16_t& status,
+                        const std::vector<uint8_t>& body,
+                        const std::string& location,
+                        const uint64_t& size,
+                        bool last_chunk);
   ~IpfsTrustlessResponse();
 
   std::string mime;
   std::uint16_t status;
   std::vector<uint8_t> body;
   std::string location;
+  uint64_t total_size;
+  bool is_last_chunk;
 };
 
 using IpfsRequestCallback =
-    base::RepeatingCallback<void(std::unique_ptr<IpfsTrustlessRequest>, std::unique_ptr<IpfsTrustlessResponse>)>;
+    base::RepeatingCallback<void(std::unique_ptr<IpfsTrustlessRequest>,
+                                 std::unique_ptr<IpfsTrustlessResponse>)>;
 
 struct TrustlessTarget {
   std::string cid;
   std::string path;
 
-  bool IsCidTarget() const {
-    return !cid.empty() && path.empty();
-  }
+  bool IsCidTarget() const { return !cid.empty() && path.empty(); }
 
-  bool IsPathTarget() const {
-    return !path.empty();
-  }
+  bool IsPathTarget() const { return !path.empty(); }
 };
 
 struct StringHash {

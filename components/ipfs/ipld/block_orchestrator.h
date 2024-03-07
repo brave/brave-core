@@ -46,7 +46,7 @@ class BlockOrchestrator {
                      StringHash,
                      std::equal_to<>> dag_nodes_;
 
-  void BlockChainForCid(Block* block) const;
+  void BlockChainForCid(const uint64_t& size, Block* block, bool last_chunk) const;
 
   // void CreateDagPathIndex();
   // std::unordered_map<std::string,
