@@ -124,6 +124,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
     FetchPageContent(web_contents(), "", std::nullopt,
+                     GetCurrentModel().max_page_content_length,
                      std::move(pending_get_page_content_callback_));
   }
   pdf_load_observer_.reset();
@@ -136,6 +137,7 @@ void AIChatTabHelper::OnPreviewReady(
     const std::optional<std::vector<SkBitmap>>& bitmaps) {
   if (pending_get_page_content_callback_) {
     FetchPageContent(web_contents(), "", bitmaps,
+                     GetCurrentModel().max_page_content_length,
                      std::move(pending_get_page_content_callback_));
   }
 }

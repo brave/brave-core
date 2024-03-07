@@ -12,7 +12,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/barrier_callback.h"
 #include "base/containers/contains.h"
 #include "base/containers/fixed_flat_set.h"
 #include "base/functional/bind.h"
@@ -59,6 +58,7 @@ constexpr auto kScreenshotRetrievalHosts =
                                                  "docs.google.com",
                                                  "twitter.com",
                                              });
+constexpr size_t kMaxPreviewPages = 20;
 #endif
 
 constexpr auto kVideoPageContentTypes =
@@ -442,11 +442,68 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
   return GURL(patch_url_str);
 }
 
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+class PreviewPageTextExtractor {
+ public:
+  PreviewPageTextExtractor(const std::vector<SkBitmap>& pages,
+                           FetchPageContentCallback callback,
+                           uint32_t max_page_content_length)
+      : pages_(pages),
+        callback_(std::move(callback)),
+        max_page_content_length_(max_page_content_length) {}
+
+  void StartExtract() {
+    if (pages_.empty()) {
+      std::move(callback_).Run("", false, "");
+      delete this;
+      return;
+    }
+    OnScreenshot(base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
+                                weak_ptr_factory_.GetWeakPtr()),
+                 pages_[current_page_index_]);
+  }
+
+  void OnGetTextFromImage(std::string page_content,
+                          bool is_video,
+                          std::string invalidation_token) {
+    VLOG(4) << "Page index(" << current_page_index_ << ") content: "
+            << page_content;
+    preview_text_ << page_content;
+    // Stop processing if we have reached the maximum number of pages or the
+    // maximum length of the content
+    if (current_page_index_ + 1 >= kMaxPreviewPages ||
+        preview_text_.str().length() >= max_page_content_length_) {
+      std::move(callback_).Run(preview_text_.str(), false, "");
+      delete this;
+      return;
+    }
+    if (current_page_index_++ < pages_.size() - 1) {
+      preview_text_ << "\n";
+      OnScreenshot(base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
+                                  weak_ptr_factory_.GetWeakPtr()),
+                   pages_[current_page_index_]);
+    } else {
+      std::move(callback_).Run(preview_text_.str(), false, "");
+      delete this;
+    }
+  }
+
+ private:
+  std::stringstream preview_text_;
+  size_t current_page_index_ = 0;
+  std::vector<SkBitmap> pages_;
+  FetchPageContentCallback callback_;
+  uint32_t max_page_content_length_;
+  base::WeakPtrFactory<PreviewPageTextExtractor> weak_ptr_factory_{this};
+};
+#endif
+
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
                       const std::optional<std::vector<SkBitmap>>& images,
+                      uint32_t max_page_content_length,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory_for_test) {
@@ -492,39 +549,9 @@ void FetchPageContent(content::WebContents* web_contents,
   auto host = url.host();
   if (base::Contains(kScreenshotRetrievalHosts, host)) {
     if (images) {
-      const auto ocr_page_callback =
-          base::BarrierCallback<std::pair<size_t, std::string>>(
-              images->size(),
-              base::BindOnce(
-                  [](FetchPageContentCallback callback,
-                     std::vector<std::pair<size_t, std::string>> texts) {
-                    base::ranges::sort(texts, [](const auto& a, const auto& b) {
-                      return a.first < b.first;
-                    });
-                    std::stringstream ss;
-                    for (size_t i = 0; i < texts.size(); ++i) {
-                      ss << texts[i].second;
-                      if (i < texts.size() - 1) {
-                        ss << "\n";
-                      }
-                    }
-                    std::move(callback).Run(ss.str(), false, "");
-                  },
-                  std::move(callback)));
-      for (size_t i = 0; i < images->size(); ++i) {
-        OnScreenshot(
-            base::BindOnce(
-                [](base::OnceCallback<void(std::pair<size_t, std::string>)>
-                       ocr_page_callback,
-                   size_t index, std::string page_content, bool is_video,
-                   std::string invalidation_token) {
-                  // TODO(darkdh): Impose total lenght limit for the text
-                  std::move(ocr_page_callback)
-                      .Run(std::make_pair(index, std::move(page_content)));
-                },
-                ocr_page_callback, i),
-            images.value()[i]);
-      }
+      auto* preview_page_text_extractor = new PreviewPageTextExtractor(
+          images.value(), std::move(callback), max_page_content_length);
+      preview_page_text_extractor->StartExtract();
       return;
     }
     content::RenderWidgetHostView* view =

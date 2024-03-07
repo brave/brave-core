@@ -102,6 +102,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnPreviewReady();
   void BitmapConverterDisconnected();
   void OnGetBitmaps(const std::optional<std::vector<SkBitmap>>& bitmaps);
+  void PreviewCleanup();
 
  private:
   // AIChatTabHelper::Observer

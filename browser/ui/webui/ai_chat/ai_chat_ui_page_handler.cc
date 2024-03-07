@@ -530,7 +530,7 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
 
 void AIChatUIPageHandler::BitmapConverterDisconnected() {
   DLOG(ERROR) << __func__;
-  // TODO(darkdh): cleanup
+  PreviewCleanup();
 }
 
 void AIChatUIPageHandler::OnGetBitmaps(
@@ -538,6 +538,10 @@ void AIChatUIPageHandler::OnGetBitmaps(
   VLOG(3) << __func__ << ": bitmap size: " << (bitmaps ? bitmaps->size() : -1);
   pdf_to_bitmap_converter_.reset();
   active_chat_tab_helper_->OnPreviewReady(bitmaps);
+  PreviewCleanup();
+}
+
+void AIChatUIPageHandler::PreviewCleanup() {
   auto preview_ui_id = owner_->GetPreviewUIId();
   CHECK(preview_ui_id);
   PrintPreviewDataService::GetInstance()->RemoveEntry(*preview_ui_id);
