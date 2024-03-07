@@ -129,10 +129,13 @@ def CheckPatchFormatted(input_api, output_api):
         if input_api.PRESUBMIT_FIX:
             raise RuntimeError('--fix was passed, but format has failed')
         short_path = input_api.basename(input_api.change.RepositoryRoot())
+        git_cl_format_cmd.remove('--dry-run')
+        git_cl_format_cmd.append('--diff')
+        _, diff_output = git_cl.RunGitWithCode(git_cl_format_cmd)
         return [
             output_api.PresubmitError(
                 f'The {short_path} directory requires source formatting. '
-                'Please run: npm run presubmit -- --fix')
+                f'Please run: npm run presubmit -- --fix.\n\n{diff_output}')
         ]
     return []
 
