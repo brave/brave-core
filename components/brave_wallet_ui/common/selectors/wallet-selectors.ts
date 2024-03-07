@@ -46,8 +46,6 @@ export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem
 export const selectedNetworkFilter = ({ wallet }: State) =>
   wallet.selectedNetworkFilter
-export const userVisibleTokensInfo = ({ wallet }: State) =>
-  wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) =>
   wallet.selectedAccountFilter
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
