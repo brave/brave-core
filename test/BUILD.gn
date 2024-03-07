@@ -1248,7 +1248,6 @@ if (is_android) {
       "//base:base_shared_preferences_java",
       "//brave/components/brave_wallet/common:mojom_java",
       "//cc:cc_java",
-      "//chrome/android:chrome_apk_pak_assets",
       "//chrome/browser/android/browserservices/intents:java",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/back_press/android:java",

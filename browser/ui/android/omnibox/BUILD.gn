@@ -30,7 +30,6 @@ android_library("java") {
     "//base:base_shared_preferences_java",
     "//brave/android/java/org/chromium/chrome/browser/search_engines:java",
     "//brave/build/android:android_brave_strings_grd",
-    "//brave/components/p3a_utils",
     "//chrome/browser/commerce/merchant_viewer/android:java",
     "//chrome/browser/flags:java",
     "//chrome/browser/preferences:java",
