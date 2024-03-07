@@ -61,7 +61,7 @@ struct AIChatPageContextView: View {
     .background(
       RoundedRectangle(cornerRadius: 8.0, style: .continuous)
         .fill(Color(braveSystemName: .pageBackground))
-        .shadow(color: .black.opacity(0.15), radius: 4.0, x: 0.0, y: 1.0)
+        .shadow(color: .black.opacity(0.10), radius: 4.0, x: 0.0, y: 1.0)
     )
   }
 }
