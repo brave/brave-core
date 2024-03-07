@@ -48,8 +48,7 @@ import {
 import { TX_CACHE_TAGS } from '../../../utils/query-cache-utils'
 import {
   sortTransactionByDate,
-  toTxDataUnion,
-  shouldReportTransactionP3A
+  toTxDataUnion
 } from '../../../utils/tx-utils'
 import {
   signLedgerEthereumTransaction,
@@ -793,7 +792,7 @@ export const transactionEndpoints = ({
       queryFn: async (txInfo, { endpoint }, extraOptions, baseQuery) => {
         try {
           const api = baseQuery(undefined).data
-          const { txService, braveWalletP3A } = api
+          const { txService } = api
           const result: {
             status: boolean
             errorUnion: BraveWallet.ProviderErrorUnion
@@ -803,12 +802,6 @@ export const transactionEndpoints = ({
             txInfo.chainId,
             txInfo.id
           )
-
-          if (result.errorUnion.providerError ===
-                BraveWallet.ProviderError.kSuccess &&
-              shouldReportTransactionP3A({ txInfo })) {
-            braveWalletP3A.reportTransactionSent(txInfo.coinType, true)
-          }
 
           return {
             data: {

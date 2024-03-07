@@ -10,6 +10,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/brave_wallet/browser/keyring_service_observer_base.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "mojo/public/cpp/bindings/receiver.h"
@@ -77,10 +78,12 @@ enum class JSProviderAnswer {
 
 // Reports BraveWallet related P3A data
 class BraveWalletP3A : public KeyringServiceObserverBase,
-                       public mojom::BraveWalletP3A {
+                       public mojom::BraveWalletP3A,
+                       public mojom::TxServiceObserver {
  public:
   BraveWalletP3A(BraveWalletService* wallet_service,
                  KeyringService* keyring_service,
+                 TxService* tx_service,
                  PrefService* profile_prefs,
                  PrefService* local_state);
 
@@ -101,14 +104,22 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
                         mojom::CoinType coin_type,
                         bool allow_provider_overwrite) override;
   void ReportOnboardingAction(mojom::OnboardingAction action) override;
-  void ReportTransactionSent(mojom::CoinType coin, bool new_send) override;
   void RecordActiveWalletCount(int count, mojom::CoinType coin_type) override;
   void RecordNFTGalleryView(int nft_count) override;
 
   // KeyringServiceObserverBase:
   void WalletCreated() override;
 
+  // mojom::TxServiceObserver:
+  void OnNewUnapprovedTx(mojom::TransactionInfoPtr tx_info) override {}
+  void OnUnapprovedTxUpdated(mojom::TransactionInfoPtr tx_info) override {}
+  void OnTransactionStatusChanged(mojom::TransactionInfoPtr tx_info) override;
+  void OnTxServiceReset() override {}
+
  private:
+  FRIEND_TEST_ALL_PREFIXES(BraveWalletP3AUnitTest, ReportTransactionSent);
+  friend class BraveWalletP3AUnitTest;
+
   void MigrateUsageProfilePrefsToLocalState();
   void OnUpdateTimerFired();
   void WriteUsageStatsToHistogram();
@@ -117,13 +128,17 @@ class BraveWalletP3A : public KeyringServiceObserverBase,
   void RecordOnboardingHistogram();
   void MaybeRecordNewUserBalance();
   void ReportNftDiscoverySetting();
+  void ReportTransactionSent(mojom::CoinType coin, bool new_send);
   raw_ptr<BraveWalletService> wallet_service_;
   raw_ptr<KeyringService> keyring_service_;
+  raw_ptr<TxService> tx_service_;
   raw_ptr<PrefService> profile_prefs_;
   raw_ptr<PrefService> local_state_;
 
-  mojo::Receiver<brave_wallet::mojom::KeyringServiceObserver>
+  mojo::Receiver<mojom::KeyringServiceObserver>
       keyring_service_observer_receiver_{this};
+
+  mojo::Receiver<mojom::TxServiceObserver> tx_service_observer_receiver_{this};
 
   base::OneShotTimer onboarding_report_timer_;
 

@@ -144,6 +144,31 @@ mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id) {
   return mojom::CoinType::ETH;
 }
 
+mojom::CoinType GetCoinTypeFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union) {
+  if (tx_data_union.is_eth_tx_data_1559() || tx_data_union.is_eth_tx_data()) {
+    return mojom::CoinType::ETH;
+  }
+
+  if (tx_data_union.is_solana_tx_data()) {
+    return mojom::CoinType::SOL;
+  }
+
+  if (tx_data_union.is_fil_tx_data()) {
+    return mojom::CoinType::FIL;
+  }
+
+  if (tx_data_union.is_btc_tx_data()) {
+    return mojom::CoinType::BTC;
+  }
+
+  if (tx_data_union.is_zec_tx_data()) {
+    return mojom::CoinType::ZEC;
+  }
+
+  NOTREACHED_NORETURN();
+}
+
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain) {
   if (chain.active_rpc_endpoint_index >= 0 &&
       static_cast<size_t>(chain.active_rpc_endpoint_index) <
