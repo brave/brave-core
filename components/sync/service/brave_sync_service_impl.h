@@ -124,6 +124,11 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
 
   int completed_cycles_count_ = 0;
 
+  // This flag is set to true during BraveSyncServiceImpl::Initialize call. The
+  // reason is that upstream SyncServiceImpl::Initialize() can invoke
+  // StopAndClear, but we don't want to invoke AddLeaveChainDetail in that case
+  bool is_initializing_ = false;
+
   std::unique_ptr<SyncServiceImplDelegate> sync_service_impl_delegate_;
   base::OnceCallback<void(bool)> join_chain_result_callback_;
   base::WeakPtrFactory<BraveSyncServiceImpl> weak_ptr_factory_;

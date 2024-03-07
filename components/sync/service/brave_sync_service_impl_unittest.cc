@@ -20,6 +20,7 @@
 #include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/os_crypt/sync/os_crypt_mocker.h"
+#include "components/prefs/pref_change_registrar.h"
 #include "components/sync/engine/nigori/key_derivation_params.h"
 #include "components/sync/engine/nigori/nigori.h"
 #include "components/sync/model/type_entities_count.h"
@@ -641,6 +642,38 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
 
   OSCryptMocker::TearDown();
+}
+
+TEST_F(BraveSyncServiceImplTest, NoLeaveDetailsWhenInitializeIOS) {
+  CreateSyncService();
+
+  // Pretend for test that we are doing iOS behaviour for leave sync chain
+  // details, becuase BraveSyncServiceImplTest.NoLeaveDetailsWhenInitializeIOS
+  // is not executed on iOS
+  brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
+      brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
+
+  brave_sync_prefs()->AddLeaveChainDetail(__FILE__, __LINE__, "details");
+
+  size_t leave_chain_pref_changed_count = 0;
+
+  PrefChangeRegistrar brave_sync_prefs_change_registrar_;
+  brave_sync_prefs_change_registrar_.Init(pref_service());
+  brave_sync_prefs_change_registrar_.Add(
+      brave_sync::Prefs::GetLeaveChainDetailsPathForTests(),
+      base::BindRepeating(
+          [](size_t* leave_chain_pref_changed_count) {
+            ++(*leave_chain_pref_changed_count);
+          },
+          &leave_chain_pref_changed_count));
+
+  brave_sync_service_impl()->Initialize();
+  EXPECT_FALSE(engine());
+
+  // We expect that AddLeaveChainDetail will not be invoked at
+  // SyncServiceImpl::Initialize and details will not be cleared
+  EXPECT_EQ(leave_chain_pref_changed_count, 0u);
+  EXPECT_FALSE(brave_sync_prefs()->GetLeaveChainDetails().empty());
 }
 
 }  // namespace syncer

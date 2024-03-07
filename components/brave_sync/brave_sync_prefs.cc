@@ -10,6 +10,8 @@
 #include "base/base64.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
+#include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -60,9 +62,18 @@ const char kSyncV1MetaInfoCleared[] = "brave_sync_v2.v1_meta_info_cleared";
 const char kSyncV2MigrateNoticeDismissed[] =
     "brave_sync_v2.migrate_notice_dismissed";
 // ============================================================================
+
+constexpr size_t kLeaveChainDetailsMaxLen = 500;
+
 }  // namespace
 
-Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {}
+Prefs::Prefs(PrefService* pref_service) : pref_service_(*pref_service) {
+#if BUILDFLAG(IS_IOS)
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kAdd;
+#else
+  add_leave_chain_detail_behaviour_ = AddLeaveChainDetailBehaviour::kIgnore;
+#endif
+}
 
 Prefs::~Prefs() = default;
 
@@ -167,13 +178,26 @@ void Prefs::SetSyncAccountDeletedNoticePending(bool is_pending) {
 }
 
 void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
+  if (add_leave_chain_detail_behaviour_ ==
+      AddLeaveChainDetailBehaviour::kIgnore) {
+    return;
+  }
+
   std::string details = pref_service_->GetString(kSyncLeaveChainDetails);
 
   std::ostringstream stream;
   stream << base::Time::Now() << " "
          << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
          << func << std::endl;
-  pref_service_->SetString(kSyncLeaveChainDetails, details + stream.str());
+
+  std::string updated_details = base::StrCat({details, stream.str()});
+
+  if (updated_details.size() > kLeaveChainDetailsMaxLen) {
+    updated_details.assign(updated_details.end() - kLeaveChainDetailsMaxLen,
+                           updated_details.end());
+  }
+
+  pref_service_->SetString(kSyncLeaveChainDetails, updated_details);
 }
 
 std::string Prefs::GetLeaveChainDetails() const {
@@ -182,6 +206,21 @@ std::string Prefs::GetLeaveChainDetails() const {
 
 void Prefs::ClearLeaveChainDetails() {
   pref_service_->ClearPref(kSyncLeaveChainDetails);
+}
+
+// static
+size_t Prefs::GetLeaveChainDetailsMaxLenForTests() {
+  return kLeaveChainDetailsMaxLen;
+}
+
+// static
+std::string Prefs::GetLeaveChainDetailsPathForTests() {
+  return kSyncLeaveChainDetails;
+}
+
+void Prefs::SetAddLeaveChainDetailBehaviourForTests(
+    AddLeaveChainDetailBehaviour add_leave_chain_detail_behaviour) {
+  add_leave_chain_detail_behaviour_ = add_leave_chain_detail_behaviour;
 }
 
 void Prefs::Clear() {
@@ -219,6 +258,11 @@ void MigrateBraveSyncPrefs(PrefService* prefs) {
   prefs->ClearPref(kSyncV1Migrated);
   prefs->ClearPref(kSyncV1MetaInfoCleared);
   prefs->ClearPref(kSyncV2MigrateNoticeDismissed);
+
+  // Added 03/2024
+#if !BUILDFLAG(IS_IOS)
+  prefs->ClearPref(kSyncLeaveChainDetails);
+#endif
 }
 
 }  // namespace brave_sync
