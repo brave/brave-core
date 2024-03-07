@@ -24,7 +24,6 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "url/origin.h"
 
 class HostContentSettingsMap;
@@ -225,11 +224,12 @@ class EthereumProviderImpl final : public mojom::EthereumProvider,
   void OnUpdateKnownAccounts(const std::vector<std::string>& allowed_accounts,
                              mojom::ProviderError error,
                              const std::string& error_message);
-  void ContinueDecryptWithSanitizedJson(RequestCallback callback,
-                                        base::Value id,
-                                        const mojom::AccountIdPtr& account_id,
-                                        const url::Origin& origin,
-                                        data_decoder::JsonSanitizer::Result);
+  void ContinueDecryptWithSanitizedJson(
+      RequestCallback callback,
+      base::Value id,
+      const mojom::AccountIdPtr& account_id,
+      const url::Origin& origin,
+      base::expected<base::Value, std::string> result);
   void SendOrSignTransactionInternal(RequestCallback callback,
                                      base::Value id,
                                      const std::string& normalized_json_request,

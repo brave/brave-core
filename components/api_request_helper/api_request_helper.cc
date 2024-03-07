@@ -39,11 +39,48 @@ namespace api_request_helper {
 
 namespace {
 
+const unsigned int kRetriesCountOnNetworkChange = 1;
+
 BASE_FEATURE(kUseBraveRustJSONSanitizer,
              "UseBraveRustJSONSanitizer",
              base::FEATURE_ENABLED_BY_DEFAULT);
 
-const unsigned int kRetriesCountOnNetworkChange = 1;
+void ParseJsonImpl(std::string json,
+                   data_decoder::DataDecoder::ValueParseCallback callback,
+                   const scoped_refptr<base::SequencedTaskRunner>& task_runner,
+                   std::unique_ptr<data_decoder::DataDecoder>& data_decoder) {
+  if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
+    task_runner->PostTaskAndReplyWithResult(
+        FROM_HERE,
+        base::BindOnce(&base::DecodeJSONInRust, std::move(json),
+                       base::JSON_PARSE_RFC),
+        base::BindOnce(
+            [](data_decoder::DataDecoder::ValueParseCallback callback,
+               base::JSONReader::Result result) {
+              if (!result.has_value()) {
+                std::move(callback).Run(
+                    base::unexpected(result.error().message));
+              } else {
+                std::move(callback).Run(std::move(*result));
+              }
+            },
+            std::move(callback)));
+    return;
+  }
+
+  if (!data_decoder) {
+    VLOG(1) << "Creating DataDecoder for APIRequestHelper";
+    data_decoder = std::make_unique<data_decoder::DataDecoder>();
+  }
+
+  data_decoder->ParseJson(json, std::move(callback));
+}
+
+scoped_refptr<base::SequencedTaskRunner> MakeDecoderTaskRunner() {
+  return base::ThreadPool::CreateSequencedTaskRunner(
+      {base::TaskPriority::USER_VISIBLE,
+       base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN});
+}
 
 APIRequestResult ToAPIRequestResult(
     std::unique_ptr<network::SimpleURLLoader> loader) {
@@ -148,9 +185,7 @@ APIRequestHelper::APIRequestHelper(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : annotation_tag_(annotation_tag),
       url_loader_factory_(url_loader_factory),
-      task_runner_(base::ThreadPool::CreateSequencedTaskRunner(
-          {base::TaskPriority::USER_VISIBLE,
-           base::TaskShutdownBehavior::SKIP_ON_SHUTDOWN})) {}
+      task_runner_(MakeDecoderTaskRunner()) {}
 
 APIRequestHelper::~APIRequestHelper() = default;
 
@@ -340,34 +375,6 @@ void APIRequestHelper::URLLoaderHandler::send_sse_data_for_testing(
   OnDataReceived(string_piece, base::BindOnce([]() {}));
 }
 
-void APIRequestHelper::URLLoaderHandler::ParseJsonImpl(
-    std::string json,
-    data_decoder::DataDecoder::ValueParseCallback callback) {
-  if (base::FeatureList::IsEnabled(kUseBraveRustJSONSanitizer)) {
-    task_runner_->PostTaskAndReplyWithResult(
-        FROM_HERE,
-        base::BindOnce(&base::DecodeJSONInRust, std::move(json),
-                       base::JSON_PARSE_RFC),
-        base::BindOnce(
-            [](data_decoder::DataDecoder::ValueParseCallback callback,
-               base::JSONReader::Result result) {
-              if (!result.has_value()) {
-                std::move(callback).Run(
-                    base::unexpected(result.error().message));
-              } else {
-                std::move(callback).Run(std::move(*result));
-              }
-            },
-            std::move(callback)));
-    return;
-  }
-  if (!data_decoder_) {
-    VLOG(1) << "Creating DataDecoder for APIRequestHelper";
-    data_decoder_ = std::make_unique<data_decoder::DataDecoder>();
-  }
-
-  data_decoder_->ParseJson(json, std::move(callback));
-}
 
 void APIRequestHelper::URLLoaderHandler::OnDataReceived(
     std::string_view string_piece,
@@ -441,12 +448,13 @@ void APIRequestHelper::URLLoaderHandler::OnResponse(
   ParseJsonImpl(
       std::move(raw_body),
       base::BindOnce(&APIRequestHelper::URLLoaderHandler::OnParseJsonResponse,
-                     GetWeakPtr(), std::move(result)));
+                     GetWeakPtr(), std::move(result)),
+      task_runner_, data_decoder_);
 }
 
 void APIRequestHelper::URLLoaderHandler::OnParseJsonResponse(
     APIRequestResult result,
-    data_decoder::DataDecoder::ValueOrError result_value) {
+    ValueOrError result_value) {
   TRACE_EVENT1("brave", "APIRequestHelper_ProcessResultOnUI", "url",
                result.final_url().spec());
   ScopedPerfTracker tracker("Brave.APIRequestHelper.ProcessResultOnUI");
@@ -531,7 +539,7 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
     auto json = data.substr(strlen(kDataPrefix) - 1);
     auto on_json_parsed =
         [](base::WeakPtr<APIRequestHelper::URLLoaderHandler> handler,
-           data_decoder::DataDecoder::ValueOrError result) {
+           ValueOrError result) {
           DVLOG(2) << "Chunk parsed";
           if (!handler) {
             return;
@@ -548,13 +556,21 @@ void APIRequestHelper::URLLoaderHandler::ParseSSE(
     DVLOG(2) << "Going to call ParseJsonImpl";
     ParseJsonImpl(std::string(json),
                   base::BindOnce(std::move(on_json_parsed),
-                                 weak_ptr_factory_.GetWeakPtr()));
+                                 weak_ptr_factory_.GetWeakPtr()),
+                  task_runner_, data_decoder_);
   }
 }
 
 void APIRequestHelper::SetUrlLoaderFactoryForTesting(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory) {
   url_loader_factory_ = std::move(url_loader_factory);
+}
+
+void SanitizeAndParseJson(std::string json,
+                          base::OnceCallback<void(ValueOrError)> callback) {
+  std::unique_ptr<data_decoder::DataDecoder> decoder;
+  ParseJsonImpl(std::move(json), std::move(callback), MakeDecoderTaskRunner(),
+                decoder);
 }
 
 }  // namespace api_request_helper

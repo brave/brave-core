@@ -229,7 +229,7 @@ class PlaylistService : public KeyedService,
   void ClearAllQueries() override;
   void CancelQuery(const std::string& query_id) override;
   void OnResponseStarted(const std::string& url, const int64_t content_length);
-  void OnDataReceived(data_decoder::DataDecoder::ValueOrError result);
+  void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
   // Returns true when any of items contains blob: scheme, which we can't cache
