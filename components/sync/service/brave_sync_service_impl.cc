@@ -49,8 +49,7 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 }
 
 void BraveSyncServiceImpl::Initialize() {
-  base::AutoReset<bool> executing_initialize_resetter(&executing_initialize_,
-                                                      true);
+  base::AutoReset<bool> is_initializing_resetter(&is_initializing_, true);
 
   SyncServiceImpl::Initialize();
 
@@ -69,7 +68,7 @@ void BraveSyncServiceImpl::StopAndClear() {
   // StopAndClear is invoked during |SyncServiceImpl::Initialize| even if sync
   // is not enabled. This adds lots of useless lines into
   // `brave_sync_v2.diag.leave_chain_details`
-  if (!executing_initialize_) {
+  if (!is_initializing_) {
     brave_sync_prefs_.AddLeaveChainDetail(__FILE__, __LINE__, __func__);
   }
   // Clear prefs before StopAndClear() to make NotifyObservers() be invoked
