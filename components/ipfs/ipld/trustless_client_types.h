@@ -73,6 +73,34 @@ struct StringHash {
   }
 };
 
+enum class DjDataType {
+  kRaw = 0,
+  kDirectory = 1,
+  kFile = 2,
+  kMetadata = 3,
+  kSymlink = 4,
+  kHAMTShard = 5
+};
+
+struct DjData {
+  DjData(DjDataType type,
+         std::vector<uint8_t> data,
+         uint64_t filesize,
+         std::vector<uint64_t> blocksizes,
+         uint64_t hash_type,
+         uint64_t fanout,
+         uint64_t mode);
+  ~DjData();
+
+  const DjDataType type;
+  const std::vector<uint8_t> data;
+  const uint64_t filesize;
+  const std::vector<uint64_t> blocksizes;
+  const uint64_t hash_type;
+  const uint64_t fanout;
+  const uint64_t mode;
+};
+
 }  // namespace ipfs::ipld
 
 #endif  // BRAVE_COMPONENTS_IPFS_IPLD_TRUSTLESS_CLIENT_TYPES_H_

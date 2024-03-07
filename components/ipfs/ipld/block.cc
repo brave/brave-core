@@ -5,14 +5,24 @@
 
 #include "brave/components/ipfs/ipld/block.h"
 
+#include <cstddef>
 #include <cstdint>
 #include <memory>
+#include <numeric>
 #include <utility>
 
 #include "absl/types/optional.h"
+#include "base/base64.h"
+#include "base/logging.h"
 #include "base/strings/string_number_conversions.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
+#include "brave/components/ipfs/ipld/protos/unixfsv1_data.pb.h"
+#include "brave/components/ipfs/ipld/trustless_client_types.h"
 
 namespace {
+using base::Base64Decode;
+
 constexpr char kRootBlocks[] = "roots";
 constexpr char kDjLinks[] = "Links";
 constexpr char kDjLinkName[] = "Name";
@@ -92,10 +102,16 @@ std::unique_ptr<std::vector<uint8_t>> ParseDataFromMeta(
   if (!bytes_str) {
     return nullptr;
   }
-  auto result = std::make_unique<std::vector<uint8_t>>();
-  base::HexStringToBytes(*bytes_str, &(*result));
-  return result;
+  if (std::string base_to_bytes_result;
+      Base64Decode(*bytes_str, &base_to_bytes_result,
+                   base::Base64DecodePolicy::kForgiving)) {
+    return std::make_unique<std::vector<uint8_t>>(base_to_bytes_result.begin(),
+                                                  base_to_bytes_result.end());
+  }
+
+  return nullptr;
 }
+
 }  // namespace
 
 namespace ipfs::ipld {
@@ -103,7 +119,7 @@ Block::Block(const std::string& cid,
              base::Value::Dict metadata,
              std::unique_ptr<std::vector<uint8_t>> data,
              std::unique_ptr<std::vector<DJLink>> djlinks,
-             std::unique_ptr<std::vector<uint8_t>> djdata,
+             std::unique_ptr<DjData> djdata,
              const absl::optional<bool>& verified)
     : cid_(cid),
       metadata_(std::move(metadata)),
@@ -147,7 +163,7 @@ const std::vector<DJLink>* Block::GetLinks() const {
   return djlinks_.get();
 }
 
-const std::vector<uint8_t>* Block::GetData() const {
+const DjData* Block::GetData() const {
   return djdata_.get();
 }
 
@@ -157,16 +173,30 @@ std::unique_ptr<Block> BlockFactory::CreateCarBlock(
     std::unique_ptr<std::vector<uint8_t>> data,
     const absl::optional<bool>& verified) {
   if (!metadata.has_value() || !metadata->is_dict()) {
-    return std::unique_ptr<Block>(new Block(cid, base::Value::Dict(), std::move(data),
-                                   nullptr, nullptr, verified));
+    return std::unique_ptr<Block>(new Block(
+        cid, base::Value::Dict(), std::move(data), nullptr, nullptr, verified));
   }
 
   auto dj_links = ParseLinksFromMeta(metadata->GetDict());
-  auto dj_data = ParseDataFromMeta(metadata->GetDict());
+  auto dj_data_bytes = ParseDataFromMeta(metadata->GetDict());
 
-  return std::unique_ptr<Block>(new Block(cid, std::move(metadata->GetDict()),
-                                 std::move(data), std::move(dj_links),
-                                 std::move(dj_data), verified));
+  std::unique_ptr<DjData> dj_data;
+  if (dj_data_bytes) {
+    unixfs::pb::Data dj_data_pb;
+    dj_data_pb.ParseFromArray(&(*dj_data_bytes)[0], dj_data_bytes->size());
+    dj_data = std::make_unique<DjData>(
+        static_cast<DjDataType>(dj_data_pb.type()),
+        std::vector<uint8_t>(dj_data_pb.data().begin(),
+                             dj_data_pb.data().end()),
+        dj_data_pb.filesize(),
+        std::vector<uint64_t>(dj_data_pb.blocksizes().begin(),
+                              dj_data_pb.blocksizes().end()),
+        dj_data_pb.hashtype(), dj_data_pb.fanout(), dj_data_pb.mode());
+  }
+
+  return std::unique_ptr<Block>(new Block(
+      cid, std::move(metadata->GetDict()), std::move(data), std::move(dj_links),
+      dj_data ? std::move(dj_data) : nullptr, verified));
 }
 
 }  // namespace ipfs::ipld

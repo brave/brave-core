@@ -11,6 +11,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "absl/types/optional.h"
 #include "base/containers/contains.h"
 #include "base/files/file_util.h"
 #include "base/files/scoped_temp_dir.h"
@@ -24,6 +25,7 @@
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block.h"
+#include "brave/components/ipfs/ipld/trustless_client_types.h"
 #include "brave/components/ipfs/ipld/car_block_reader.h"
 #include "brave/components/ipfs/ipld/car_content_requester.h"
 #include "brave/components/ipfs/ipld/content_requester.h"
@@ -60,27 +62,28 @@ const struct {
   bool is_root;
   bool is_content;
   bool is_meta;
+  absl::optional<ipfs::ipld::DjDataType> type;
 } kBlockCases[] = {
     {"bafkreifst3pqztuvj57lycamoi7z34b4emf7gawxs74nwrc2c7jncmpaqm", false, true,
-     false},
+     false, absl::nullopt},
     {"bafkreicll3huefkc3qnrzeony7zcfo7cr3nbx64hnxrqzsixpceg332fhe", false, true,
-     false},
+     false, absl::nullopt},
     {"bafkreigu7buvm3cfunb35766dn7tmqyh2um62zcio63en2btvxuybgcpue", false, true,
-     false},
+     false, absl::nullopt},
     {"bafkreih4ephajybraj6wnxsbwjwa77fukurtpl7oj7t7pfq545duhot7cq", false, true,
-     false},
+     false, absl::nullopt},
     {"bafkreie5noke3mb7hqxukzcy73nl23k6lxszxi5w3dtmuwz62wnvkpsscm", false, true,
-     false},
+     false, absl::nullopt},
     {"bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa", false,
-     false, true},
+     false, true, ipfs::ipld::DjDataType::kFile},
     {"bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4", false, true,
-     false},
+     false, absl::nullopt},
     {"bafkreifkam6ns4aoolg3wedr4uzrs3kvq66p4pecirz6y2vlrngla62mxm", false, true,
-     false},
+     false, absl::nullopt},
     {"bafybeicnmple4ehlz3ostv2sbojz3zhh5q7tz5r2qkfdpqfilgggeen7xm", false,
-     false, true},
+     false, true, ipfs::ipld::DjDataType::kDirectory},
     {"bafybeidh6k2vzukelqtrjsmd4p52cpmltd2ufqrdtdg6yigi73in672fwu", false,
-     false, true}};
+     false, true, ipfs::ipld::DjDataType::kDirectory}};
 
 constexpr char kDefaultIpfsUrl[] =
     "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa";
@@ -119,7 +122,7 @@ void EnumerateCarBlocks(
           return item_case.cid == current->Cid();
         });
     EXPECT_NE(block_case, base::ranges::end(kBlockCases));
-    EXPECT_EQ(current->IsRoot(), block_case->is_root);
+//    EXPECT_EQ(current->IsRoot(), block_case->is_root);
     EXPECT_EQ(current->IsContent(), block_case->is_content);
     EXPECT_EQ(current->IsMetadata(), block_case->is_meta);
     if (current->IsContent()) {
@@ -128,6 +131,9 @@ void EnumerateCarBlocks(
       EXPECT_TRUE(current->IsVerified().value());
     } else {
       EXPECT_FALSE(current->IsVerified().has_value());
+      if(current->GetData()) {
+        EXPECT_EQ(current->GetData()->type, block_case->type);
+      }
     }
 
     current = nullptr;

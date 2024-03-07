@@ -22,7 +22,7 @@ struct DJLink {
 };
 
 class BlockFactory;
-
+struct DjData;
 class Block {
  public:
   Block() = delete;
@@ -39,22 +39,23 @@ class Block {
   const std::vector<uint8_t>* GetContentData() const;
 
   const std::vector<DJLink>* GetLinks() const;
-  const std::vector<uint8_t>* GetData() const;
+  const DjData* GetData() const;
 
  private:
- friend class BlockFactory;
+  friend class BlockFactory;
   explicit Block(const std::string& cid,
                  base::Value::Dict metadata,
                  std::unique_ptr<std::vector<uint8_t>> data,
                  std::unique_ptr<std::vector<DJLink>> djlinks,
-                 std::unique_ptr<std::vector<uint8_t>> djdata,
+                 std::unique_ptr<DjData> djdata,
                  const absl::optional<bool>& verified);
 
-  std::string cid_;  
+  std::string cid_;
   base::Value::Dict metadata_;
   std::unique_ptr<std::vector<uint8_t>> data_;
   std::unique_ptr<std::vector<DJLink>> djlinks_;
-  std::unique_ptr<std::vector<uint8_t>> djdata_;
+  std::unique_ptr<DjData> djdata_;
+
   absl::optional<bool> verified_;
 };
 

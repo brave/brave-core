@@ -30,4 +30,20 @@ IpfsTrustlessResponse::IpfsTrustlessResponse(const std::string& mime,
       is_last_chunk(last_chunk) {}
 IpfsTrustlessResponse::~IpfsTrustlessResponse() = default;
 
+DjData::DjData(DjDataType type,
+               std::vector<uint8_t> data,
+               uint64_t filesize,
+               std::vector<uint64_t> blocksizes,
+               uint64_t hash_type,
+               uint64_t fanout,
+               uint64_t mode)
+    : type(type),
+      data(std::move(data)),
+      filesize(filesize),
+      blocksizes(std::move(blocksizes)),
+      hash_type(hash_type),
+      fanout(fanout),
+      mode(mode) {}
+DjData::~DjData() = default;
+
 }  // namespace ipfs::ipld
