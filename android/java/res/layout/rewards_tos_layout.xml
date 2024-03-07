@@ -11,6 +11,7 @@
     android:padding="24dp"
     android:layout_margin="8dp"
     android:layout_gravity="bottom"
+    android:visibility="gone"
     app:cardBackgroundColor="@color/rewards_panel_notification_bg_color"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
@@ -31,8 +32,7 @@
             android:drawablePadding="4dp"
             android:layout_marginBottom="24dp"
             android:fontFamily="sans-serif-medium"
-            android:textAlignment="textStart"
-            android:layout_gravity="center" />
+            android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/tos_subtitle_text"
@@ -43,8 +43,7 @@
             android:textColor="@color/rewards_panel_notification_secondary_text_color"
             android:layout_marginBottom="16dp"
             android:fontFamily="sans-serif"
-            android:textAlignment="textStart"
-            android:layout_gravity="center_horizontal" />
+            android:textAlignment="textStart"/>
 
         <TextView
                 android:id="@+id/btn_action_tos"

@@ -39,4 +39,6 @@ public interface BraveRewardsObserver {
     default public void onGetPublishersVisitedCount(int count){};
     default public void onGetUserType(int userType){};
     default public void onCompleteReset(boolean success) {}
+
+    public default void onTermsOfServiceUpdateAccepted() {}
 }

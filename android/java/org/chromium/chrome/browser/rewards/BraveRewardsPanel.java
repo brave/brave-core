@@ -212,6 +212,7 @@ public class BraveRewardsPanel
     private View mRewardsResponseModal;
     private View mConnectAccountModal;
     private View mRewardsVbatExpireNoticeModal;
+    private View mRewardsTosModal;
 
     private View mRewardsSolanaEligibleLayout;
 
@@ -364,6 +365,8 @@ public class BraveRewardsPanel
 
         mRewardsVbatExpireNoticeModal =
                 mPopupView.findViewById(R.id.brave_rewards_vbat_expire_notice_modal_id);
+
+        mRewardsTosModal = mPopupView.findViewById(R.id.rewards_tos_layout_id);
 
         mRewardsSolanaEligibleLayout =
                 mPopupView.findViewById(R.id.brave_rewards_solana_eligible_ui_layout_id);
@@ -1239,7 +1242,31 @@ public class BraveRewardsPanel
                 mBraveRewardsNativeWorker.getUserType();
             }
             showViewsBasedOnExternalWallet();
+            if (mBraveRewardsNativeWorker.isTermsOfServiceUpdateRequired()) {
+                showTermsOfServiceUi();
+            }
         }
+    }
+
+    @Override
+    public void onTermsOfServiceUpdateAccepted() {
+        panelShadow(false);
+        enableControls(true, mRewardsMainLayout);
+        mRewardsTosModal.setVisibility(View.GONE);
+    }
+
+    private void showTermsOfServiceUi() {
+        panelShadow(true);
+        enableControls(false, mRewardsMainLayout);
+        mRewardsTosModal.setVisibility(View.VISIBLE);
+        TextView btnActionTos = mRewardsTosModal.findViewById(R.id.btn_action_tos);
+        btnActionTos.setOnClickListener(
+                (new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mBraveRewardsNativeWorker.acceptTermsOfServiceUpdate();
+                    }
+                }));
     }
 
     @Override

@@ -164,6 +164,10 @@ class BraveRewardsNativeWorker
 
   void GetExternalWallet(JNIEnv* env);
 
+  bool IsTermsOfServiceUpdateRequired(JNIEnv* env);
+
+  void AcceptTermsOfServiceUpdate(JNIEnv* env);
+
   base::android::ScopedJavaLocalRef<jstring> GetCountryCode(JNIEnv* env);
 
   void GetAvailableCountries(JNIEnv* env);
@@ -211,6 +215,8 @@ class BraveRewardsNativeWorker
   void OnGetRewardsParameters(
       brave_rewards::RewardsService* rewards_service,
       brave_rewards::mojom::RewardsParametersPtr parameters);
+
+  void OnTermsOfServiceUpdateAccepted() override;
 
   void OnUnblindedTokensReady(
       brave_rewards::RewardsService* rewards_service) override;
