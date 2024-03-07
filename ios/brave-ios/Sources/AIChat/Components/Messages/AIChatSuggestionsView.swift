@@ -202,30 +202,19 @@ struct AIChatSuggestionsView: View {
   }
 
   var body: some View {
-    VStack(alignment: .leading) {
-      AIChatProductIcon(containerShape: Capsule())
-
-      Text(Strings.AIChat.suggestedFollowupListTitle)
-        .font(.caption)
-        .foregroundStyle(Color(braveSystemName: .textTertiary))
-        .multilineTextAlignment(.leading)
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .fixedSize(horizontal: false, vertical: true)
-
-      if #available(iOS 16, *) {
-        WrappingHStack(hSpacing: 8.0, vSpacing: 8.0) {
-          ForEach(suggestions, id: \.self) { title in
-            AIChatSuggestionsButton(title: title, isLoading: false) {
-              onSuggestionPressed?(title)
-            }
-          }
-        }
-      } else {
-        WrappingHStackOld(geometry: proxy, models: suggestions, hSpacing: 8.0, vSpacing: 8.0) {
-          title in
+    if #available(iOS 16, *) {
+      WrappingHStack(hSpacing: 8.0, vSpacing: 8.0) {
+        ForEach(suggestions, id: \.self) { title in
           AIChatSuggestionsButton(title: title, isLoading: false) {
             onSuggestionPressed?(title)
           }
+        }
+      }
+    } else {
+      WrappingHStackOld(geometry: proxy, models: suggestions, hSpacing: 8.0, vSpacing: 8.0) {
+        title in
+        AIChatSuggestionsButton(title: title, isLoading: false) {
+          onSuggestionPressed?(title)
         }
       }
     }

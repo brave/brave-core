@@ -137,6 +137,10 @@ class HighlightJS {
     _ string: NSMutableAttributedString,
     preferredFont: UIFont
   ) -> (backgroundColor: Color?, string: AttributedString)? {
+    if string.length == 0 {
+      return (nil, AttributedString(string))
+    }
+
     let maxRange = NSRange(location: 0, length: string.length)
     let backgroundColor =
       string.attribute(.backgroundColor, at: 0, longestEffectiveRange: nil, in: maxRange)
@@ -235,6 +239,10 @@ private struct HLJSParser {
     preferredFont: UIFont
   ) -> NSAttributedString {
     let result = NSMutableAttributedString(string: string)
+    if string.isEmpty {
+      return result
+    }
+
     result.addAttribute(
       .font,
       value: preferredFont,

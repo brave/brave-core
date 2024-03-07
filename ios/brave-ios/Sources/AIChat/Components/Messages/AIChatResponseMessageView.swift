@@ -50,7 +50,8 @@ struct AIChatResponseMessageView: View {
 
   var body: some View {
     VStack(alignment: .leading) {
-      AIChatProductIcon(containerShape: Circle())
+      AIChatProductIcon(containerShape: Circle(), padding: 6.0)
+        .font(.callout)
 
       if let textBlocks = MarkdownParser.parse(
         string: prompt,

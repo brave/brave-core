@@ -217,6 +217,7 @@ struct AIChatMenuView: View {
 
       menuActionItems(for: .advancedSettings)
     }
+    .background(Color(braveSystemName: .containerBackground))
     .alert(isPresented: $appStoreConnectionErrorPresented) {
       Alert(
         title: Text(Strings.AIChat.appStoreErrorTitle),

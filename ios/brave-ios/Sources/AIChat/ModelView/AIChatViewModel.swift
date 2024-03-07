@@ -143,7 +143,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
   }
 
   func retryLastRequest() {
-    if !conversationHistory.isEmpty {
+    if !api.conversationHistory.isEmpty {
       api.retryAPIRequest()
     }
   }

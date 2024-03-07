@@ -137,16 +137,33 @@ public struct AIChatView: View {
 
                     apiErrorViews(for: model.apiError)
 
-                    if model.shouldShowSuggestions {
-                      AIChatSuggestionsView(
-                        geometry: geometry,
-                        suggestions: model.suggestedQuestions
-                      ) { suggestion in
-                        hasSeenIntro.value = true
-                        hideKeyboard()
-                        model.submitSuggestion(suggestion)
+                    if model.shouldShowSuggestions && !model.requestInProgress
+                      && model.apiError == .none
+                    {
+                      if model.conversationHistory.isEmpty {
+                        AIChatProductIcon(containerShape: Circle(), padding: 6.0)
+                          .font(.callout)
+                          .frame(maxWidth: .infinity, alignment: .leading)
+                          .padding([.horizontal, .bottom])
                       }
-                      .padding()
+
+                      if model.suggestionsStatus != .isGenerating
+                        && !model.suggestedQuestions.isEmpty
+                      {
+                        AIChatSuggestionsView(
+                          geometry: geometry,
+                          suggestions: model.suggestedQuestions
+                        ) { suggestion in
+                          hasSeenIntro.value = true
+                          hideKeyboard()
+                          model.submitSuggestion(suggestion)
+                        }
+                        .padding(.horizontal)
+                        .padding(.bottom, 8.0)
+                        .disabled(
+                          model.suggestionsStatus == .isGenerating
+                        )
+                      }
 
                       if model.shouldShowGenerateSuggestionsButton {
                         AIChatSuggestionsButton(
@@ -159,7 +176,7 @@ public struct AIChatView: View {
                         .padding(.horizontal)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .disabled(
-                          model.suggestionsStatus == .isGenerating || model.requestInProgress
+                          model.suggestionsStatus == .isGenerating
                         )
                       }
                     }
@@ -206,22 +223,8 @@ public struct AIChatView: View {
         if model.conversationHistory.isEmpty && model.isContentAssociationPossible {
           AIChatPageContextView(
             isToggleOn: $model.shouldSendPageContents,
-            infoContent: {
-              AIChatPageContextInfoView(
-                url: model.getLastCommittedURL(),
-                pageTitle: model.getPageTitle() ?? ""
-              )
-              .padding([.horizontal, .bottom])
-              .background(Color(braveSystemName: .containerBackground))
-              .osAvailabilityModifiers({ view in
-                if #available(iOS 16.4, *) {
-                  view
-                    .presentationCompactAdaptation(.popover)
-                } else {
-                  view
-                }
-              })
-            }
+            url: model.getLastCommittedURL(),
+            pageTitle: model.getPageTitle() ?? ""
           )
           .padding(.horizontal, 8.0)
           .padding(.bottom, 12.0)
@@ -323,15 +326,7 @@ public struct AIChatView: View {
           }
         }
       )
-      .frame(minWidth: 300)
-      .osAvailabilityModifiers({ view in
-        if #available(iOS 16.4, *) {
-          view
-            .presentationCompactAdaptation(.popover)
-        } else {
-          view
-        }
-      })
+      .frame(minWidth: min(300.0, UIScreen.main.bounds.width))
     }
   }
 
@@ -551,8 +546,10 @@ struct AIChatView_Preview: PreviewProvider {
       Spacer()
 
       AIChatPageContextView(
-        isToggleOn: .constant(true)
-      ) {}
+        isToggleOn: .constant(true),
+        url: URL(string: "https://brave.com"),
+        pageTitle: "Brave Private Browser"
+      )
       .padding()
 
       AIChatPromptInputView {

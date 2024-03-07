@@ -10,11 +10,12 @@ import SwiftUI
 struct AIChatProductIcon<S: Shape>: View {
 
   var containerShape: S
+  var padding: CGFloat
 
   var body: some View {
     Image(braveSystemName: "leo.product.brave-leo")
       .foregroundColor(.white)
-      .padding(8.0)
+      .padding(padding)
       .background(
         LinearGradient(braveSystemName: .iconsActive),
         in: containerShape
