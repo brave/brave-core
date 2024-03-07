@@ -8,11 +8,11 @@ import SwiftUI
 import BraveUI
 
 struct PopoverWrapperView<Content>: View & PopoverContentComponent where Content: View {
-  
-  var backgroundColor: Color
+
+  var backgroundColor: UIColor
   var content: Content
-  
-  init(backgroundColor: Color, @ViewBuilder content: () -> Content) {
+
+  init(backgroundColor: UIColor, @ViewBuilder content: () -> Content) {
     self.backgroundColor = backgroundColor
     self.content = content()
   }
@@ -22,6 +22,6 @@ struct PopoverWrapperView<Content>: View & PopoverContentComponent where Content
   }
   
   var popoverBackgroundColor: UIColor {
-    UIColor(backgroundColor)
+    backgroundColor
   }
 }

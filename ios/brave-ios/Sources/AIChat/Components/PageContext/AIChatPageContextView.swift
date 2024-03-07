@@ -19,28 +19,34 @@ struct AIChatPageContextView: View {
   var pageTitle: String
   
   var body: some View {
-    Toggle(isOn: $isToggleOn, label: {
-      HStack {
-        Text(Strings.AIChat.infoAboutPageContext)
-          .font(.footnote)
-          .foregroundStyle(Color(braveSystemName: .textTertiary))
-          .fixedSize(horizontal: false, vertical: true)
-        
-        Button(action: {
-          shouldShowInformationPopover = true
-        }, label: {
-          Label {
-            Text(Strings.AIChat.leoPageContextInfoDescriptionTitle)
-          } icon: {
-            Image(braveSystemName: "leo.info.outline")
-              .foregroundStyle(Color(braveSystemName: .iconDefault))
-              .font(.footnote)
-          }
-          .labelStyle(.iconOnly)
-        })
-        .bravePopover(isPresented: $shouldShowInformationPopover) {
-          PopoverWrapperView(
-            backgroundColor: Color(braveSystemName: .containerBackground)) {
+    Toggle(
+      isOn: $isToggleOn,
+      label: {
+        HStack {
+          Text(Strings.AIChat.infoAboutPageContext)
+            .font(.footnote)
+            .foregroundStyle(Color(braveSystemName: .textTertiary))
+            .fixedSize(horizontal: false, vertical: true)
+
+          Button(
+            action: {
+              shouldShowInformationPopover = true
+            },
+            label: {
+              Label {
+                Text(Strings.AIChat.leoPageContextInfoDescriptionTitle)
+              } icon: {
+                Image(braveSystemName: "leo.info.outline")
+                  .foregroundStyle(Color(braveSystemName: .iconDefault))
+                  .font(.footnote)
+              }
+              .labelStyle(.iconOnly)
+            }
+          )
+          .bravePopover(isPresented: $shouldShowInformationPopover) {
+            PopoverWrapperView(
+              backgroundColor: UIColor(braveSystemName: .containerBackground)
+            ) {
               AIChatPageContextInfoView(url: url, pageTitle: pageTitle)
                 .background(Color(braveSystemName: .containerBackground))
             }
