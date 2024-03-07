@@ -82,7 +82,11 @@ PlaylistMediaFileDownloader::~PlaylistMediaFileDownloader() {
 void PlaylistMediaFileDownloader::NotifyFail(const std::string& id) {
   CHECK(!id.empty());
   delegate_->OnMediaFileGenerationFailed(id);
-  ResetDownloadStatus();
+  if (current_item_ && current_item_->id == id) {
+    // As this callback could be called from the async callbacks from
+    // DownloadManager, the new item can be already in progress.
+    ResetDownloadStatus();
+  }
 }
 
 void PlaylistMediaFileDownloader::NotifySucceed(
@@ -92,7 +96,11 @@ void PlaylistMediaFileDownloader::NotifySucceed(
   DCHECK(!id.empty());
   DCHECK(!media_file_path.empty());
   delegate_->OnMediaFileReady(id, media_file_path, received_bytes);
-  ResetDownloadStatus();
+  if (current_item_ && current_item_->id == id) {
+    // As this callback could be called from the async callbacks from
+    // DownloadManager, the new item can be already in progress.
+    ResetDownloadStatus();
+  }
 }
 
 void PlaylistMediaFileDownloader::ScheduleToCancelDownloadItem(
@@ -194,7 +202,8 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 
 void PlaylistMediaFileDownloader::OnDownloadCreated(
     download::DownloadItem* item) {
-  DVLOG(2) << __func__;
+  DVLOG(2) << __func__ << " " << item->GetGuid();
+
   if (current_download_item_guid_ != item->GetGuid()) {
     // This can happen when a user canceled it. But we should
     // observe the item anyway to handle the lifecycle of
@@ -220,15 +229,17 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
                << download::DownloadInterruptReasonToString(
                       item->GetLastReason());
     ScheduleToDetachCachedFile(item);
-    OnMediaFileDownloaded({}, {}, {});
+    OnMediaFileDownloaded(item->GetGuid(), {}, {}, {});
     return;
   }
 
-  base::TimeDelta time_remaining;
-  item->TimeRemaining(&time_remaining);
-  delegate_->OnMediaFileDownloadProgressed(
-      current_item_->id, item->GetTotalBytes(), item->GetReceivedBytes(),
-      item->PercentComplete(), time_remaining);
+  if (current_download_item_guid_ == item->GetGuid()) {
+    base::TimeDelta time_remaining;
+    item->TimeRemaining(&time_remaining);
+    delegate_->OnMediaFileDownloadProgressed(
+        current_item_->id, item->GetTotalBytes(), item->GetReceivedBytes(),
+        item->PercentComplete(), time_remaining);
+  }
 
   if (item->IsDone()) {
     ScheduleToDetachCachedFile(item);
@@ -238,7 +249,7 @@ void PlaylistMediaFileDownloader::OnDownloadUpdated(
     std::string mime_type;
     header->GetMimeType(&mime_type);
     DVLOG(2) << "mime_type from response header: " << mime_type;
-    OnMediaFileDownloaded(mime_type, destination_path_,
+    OnMediaFileDownloaded(item->GetGuid(), mime_type, destination_path_,
                           item->GetReceivedBytes());
     return;
   }
@@ -278,12 +289,14 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
 }
 
 void PlaylistMediaFileDownloader::OnMediaFileDownloaded(
+    const std::string& download_item_guid,
     const std::string& mime_type,
     base::FilePath path,
     int64_t received_bytes) {
   DVLOG(2) << __func__ << ": downloaded media file at " << path;
-
-  DCHECK(current_item_);
+  if (download_item_guid != current_download_item_guid_) {
+    return;
+  }
 
   if (path.empty()) {
     // This fail is handled during the generation.
