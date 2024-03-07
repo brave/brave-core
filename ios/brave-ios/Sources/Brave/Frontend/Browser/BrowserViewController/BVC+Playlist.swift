@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import BraveShared
 import BraveUI
 import Data
@@ -10,6 +11,7 @@ import Foundation
 import Growth
 import Onboarding
 import Playlist
+import PlaylistPrototype
 import Preferences
 import Shared
 import UIKit
@@ -305,6 +307,15 @@ extension BrowserViewController: PlaylistScriptHandlerDelegate,
     playbackOffset: Double,
     folderSharingPageUrl: String? = nil
   ) {
+    if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
+      // FIXME: P3A
+      // FIXME: Pass in current time
+      let controller = PlaylistHostingController()
+      dismiss(animated: true) {
+        self.present(controller, animated: true)
+      }
+      return
+    }
     let playlistController = PlaylistCarplayManager.shared.getPlaylistController(
       tab: tab,
       initialItem: item,

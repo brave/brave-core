@@ -72,6 +72,7 @@ OBJC_EXPORT
 @property(class, nonatomic, readonly) Feature* kTypicalJSONDeprecation;
 @property(class, nonatomic, readonly) Feature* kUseDevUpdaterUrl;
 @property(class, nonatomic, readonly) Feature* kVerboseLoggingFeature;
+@property(class, nonatomic, readonly) Feature* kNewPlaylistUI;
 @end
 
 NS_ASSUME_NONNULL_END

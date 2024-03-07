@@ -11,7 +11,6 @@ import Foundation
 import MobileCoreServices
 import Preferences
 import Shared
-import Storage
 import WebKit
 import os.log
 

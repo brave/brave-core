@@ -9,6 +9,7 @@ import BraveVPN
 import BraveWallet
 import Data
 import Foundation
+import PlaylistPrototype
 import Preferences
 import Shared
 import SwiftUI
@@ -268,6 +269,15 @@ extension BrowserViewController {
   }
 
   public func presentPlaylistController() {
+    if #available(iOS 16.0, *), FeatureList.kNewPlaylistUI.enabled {
+      // FIXME: P3A
+      // FIXME: Pass in current time
+      let controller = PlaylistHostingController()
+      dismiss(animated: true) {
+        self.present(controller, animated: true)
+      }
+      return
+    }
     if PlaylistCarplayManager.shared.isPlaylistControllerPresented {
       let alert = UIAlertController(
         title: Strings.PlayList.playlistAlreadyShowingTitle,
