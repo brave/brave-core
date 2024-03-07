@@ -24,14 +24,14 @@ base::TimeDelta DelayBeforeProcessingQueueItem(
   return conversion_queue_item.process_at - time;
 }
 
-bool ShouldHaveProcessedConversionQueueItemInThePast(
+bool ShouldHaveProcessedQueueItemInThePast(
     const ConversionQueueItemInfo& conversion_queue_item,
     const base::Time time) {
   return DelayBeforeProcessingQueueItem(conversion_queue_item, time)
       .is_negative();
 }
 
-bool ShouldProcessConversionQueueItem(
+bool ShouldProcessQueueItem(
     const ConversionQueueItemInfo& conversion_queue_item,
     const base::Time time) {
   return time >= conversion_queue_item.process_at;
@@ -47,16 +47,15 @@ base::TimeDelta CalculateDelayBeforeProcessingConversionQueueItem(
 
   const base::Time now = base::Time::Now();
 
-  if (ShouldHaveProcessedConversionQueueItemInThePast(conversion_queue_item,
-                                                      now) ||
-      ShouldProcessConversionQueueItem(conversion_queue_item, now)) {
-    return kMinimumDelayBeforeProcessingQueueItem;
+  if (ShouldHaveProcessedQueueItemInThePast(conversion_queue_item, now) ||
+      ShouldProcessQueueItem(conversion_queue_item, now)) {
+    return kMinimumDelayBeforeProcessingConversionQueueItem;
   }
 
   const base::TimeDelta delay =
       DelayBeforeProcessingQueueItem(conversion_queue_item, now);
-  if (delay < kMinimumDelayBeforeProcessingQueueItem) {
-    return kMinimumDelayBeforeProcessingQueueItem;
+  if (delay < kMinimumDelayBeforeProcessingConversionQueueItem) {
+    return kMinimumDelayBeforeProcessingConversionQueueItem;
   }
 
   return delay;

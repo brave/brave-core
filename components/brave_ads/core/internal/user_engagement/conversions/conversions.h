@@ -13,9 +13,11 @@
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
+#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_info.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource.h"
@@ -105,6 +107,11 @@ class Conversions final : public ConversionQueueDelegate,
   ConversionResource resource_;
 
   ConversionQueue queue_;
+
+  const database::table::CreativeSetConversions
+      creative_set_conversions_database_table_;
+
+  const database::table::AdEvents ad_events_database_table_;
 
   base::WeakPtrFactory<Conversions> weak_factory_{this};
 };

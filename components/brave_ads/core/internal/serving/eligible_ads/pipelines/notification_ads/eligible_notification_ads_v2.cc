@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_alias.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
@@ -22,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 
 namespace brave_ads {
 
@@ -39,8 +37,7 @@ void EligibleNotificationAdsV2::GetForUserModel(
     EligibleAdsCallback<CreativeNotificationAdList> callback) {
   BLOG(1, "Get eligible notification ads");
 
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kNotificationAd,
       base::BindOnce(
           &EligibleNotificationAdsV2::GetEligibleAdsForUserModelCallback,
@@ -72,8 +69,7 @@ void EligibleNotificationAdsV2::GetEligibleAds(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  const database::table::CreativeNotificationAds database_table;
-  database_table.GetForActiveCampaigns(
+  database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV2::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
                      ad_events, browsing_history, std::move(callback)));

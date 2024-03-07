@@ -9,7 +9,7 @@
 #include "base/test/mock_callback.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_unittest_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/confirmation_user_data_builder_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
@@ -47,13 +47,11 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardCredential) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
+  const std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmation(&token_generator_mock_,
+                                    /*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -66,7 +64,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest, BuildRewardConfirmation) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
@@ -130,7 +128,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
 
   const TransactionInfo transaction = test::BuildUnreconciledTransaction(
       /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/true);
+      /*should_use_random_uuids=*/false);
 
   // Act & Assert
   EXPECT_FALSE(BuildRewardConfirmation(&token_generator_mock_, transaction,
@@ -147,8 +145,7 @@ TEST_F(BraveAdsRewardConfirmationUtilTest,
   // Act & Assert
   EXPECT_DEATH_IF_SUPPORTED(
       BuildRewardConfirmation(/*token_generator=*/nullptr, transaction,
-                              /*user_data=*/
-                              {}),
+                              /*user_data=*/{}),
       "Check failed: token_generator");
 }
 

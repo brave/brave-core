@@ -9,9 +9,9 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_unittest_constants.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/redeem_non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/non_reward/url_request_builders/create_non_reward_confirmation_url_request_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_confirmation/redeem_confirmation_delegate_mock.h"
@@ -46,11 +46,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, Redeem) {
          test::BuildCreateNonRewardConfirmationUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -71,11 +68,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_BAD_REQUEST)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -97,11 +91,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CONFLICT)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -123,11 +114,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest,
          /*response_body=*/net::GetHttpReasonPhrase(net::HTTP_CREATED)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert
@@ -149,11 +137,8 @@ TEST_F(BraveAdsRedeemNonRewardConfirmationTest, RetryRedeeming) {
              net::HTTP_INTERNAL_SERVER_ERROR)}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction, /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act & Assert

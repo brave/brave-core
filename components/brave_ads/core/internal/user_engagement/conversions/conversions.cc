@@ -10,13 +10,11 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_info.h"
 #include "brave/components/brave_ads/core/internal/creatives/conversions/creative_set_conversion_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/actions/conversion_action_types_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
@@ -66,8 +64,7 @@ void Conversions::MaybeConvert(const std::vector<GURL>& redirect_chain,
 void Conversions::GetCreativeSetConversions(
     const std::vector<GURL>& redirect_chain,
     const std::string& html) {
-  const database::table::CreativeSetConversions database_table;
-  database_table.GetUnexpired(
+  creative_set_conversions_database_table_.GetUnexpired(
       base::BindOnce(&Conversions::GetCreativeSetConversionsCallback,
                      weak_factory_.GetWeakPtr(), redirect_chain, html));
 }
@@ -92,8 +89,7 @@ void Conversions::GetAdEvents(
     const std::vector<GURL>& redirect_chain,
     const std::string& html,
     const CreativeSetConversionList& creative_set_conversions) {
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpired(base::BindOnce(
+  ad_events_database_table_.GetUnexpired(base::BindOnce(
       &Conversions::GetAdEventsCallback, weak_factory_.GetWeakPtr(),
       redirect_chain, html, creative_set_conversions));
 }

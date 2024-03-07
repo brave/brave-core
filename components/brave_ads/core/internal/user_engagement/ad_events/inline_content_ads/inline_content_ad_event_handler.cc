@@ -10,10 +10,8 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ad_info.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/inline_content_ad_builder.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
@@ -47,8 +45,7 @@ void InlineContentAdEventHandler::FireEvent(
                              std::move(callback));
   }
 
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForCreativeInstanceId(
+  database_table_.GetForCreativeInstanceId(
       creative_instance_id,
       base::BindOnce(
           &InlineContentAdEventHandler::GetForCreativeInstanceIdCallback,
@@ -77,8 +74,7 @@ void InlineContentAdEventHandler::GetForCreativeInstanceIdCallback(
   const InlineContentAdInfo ad =
       BuildInlineContentAd(creative_ad, placement_id);
 
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kInlineContentAd,
       base::BindOnce(&InlineContentAdEventHandler::GetForTypeCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,

@@ -9,12 +9,13 @@
 
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/confirmation_tokens/confirmation_tokens_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_mock.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_unittest_util.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/settings/settings_unittest_util.h"
 
@@ -32,13 +33,11 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
 
-  test::SetConfirmationTokens(/*count=*/1);
+  test::RefillConfirmationTokens(/*count=*/1);
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
-  const std::optional<ConfirmationInfo> confirmation = BuildRewardConfirmation(
-      &token_generator_mock_, transaction, /*user_data=*/{});
+  const std::optional<ConfirmationInfo> confirmation =
+      test::BuildRewardConfirmation(&token_generator_mock_,
+                                    /*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act
@@ -65,12 +64,8 @@ TEST_F(BraveAdsConfirmationPayloadJsonWriterTest,
   // Arrange
   test::DisableBraveRewards();
 
-  const TransactionInfo transaction = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
-      /*should_use_random_uuids=*/false);
   const std::optional<ConfirmationInfo> confirmation =
-      BuildNonRewardConfirmation(transaction,
-                                 /*user_data=*/{});
+      test::BuildNonRewardConfirmation(/*should_use_random_uuids=*/false);
   ASSERT_TRUE(confirmation);
 
   // Act

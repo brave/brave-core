@@ -13,7 +13,6 @@
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_url_request.h"
 #include "brave/components/brave_ads/core/internal/account/issuers/issuers_util.h"
 #include "brave/components/brave_ads/core/internal/account/tokens/token_generator_interface.h"
-#include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/user_rewards/user_rewards_util.h"
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens.h"
 #include "brave/components/brave_ads/core/internal/account/utility/refill_confirmation_tokens/refill_confirmation_tokens.h"
@@ -101,14 +100,14 @@ void UserRewards::OnDidFetchIssuers(const IssuersInfo& issuers) {
 
 void UserRewards::OnDidRedeemPaymentTokens(
     const PaymentTokenList& payment_tokens) {
-  const database::table::Transactions database_table;
-  database_table.Update(payment_tokens, base::BindOnce([](const bool success) {
-                          if (!success) {
-                            return BLOG(0, "Failed to update transactions");
-                          }
+  transactions_database_table_.Reconcile(
+      payment_tokens, base::BindOnce([](const bool success) {
+        if (!success) {
+          return BLOG(0, "Failed to reconcile transactions");
+        }
 
-                          BLOG(3, "Successfully updated transactions");
-                        }));
+        BLOG(3, "Successfully reconciled transactions");
+      }));
 }
 
 void UserRewards::OnWillRefillConfirmationTokens() {

@@ -20,7 +20,7 @@ class BraveAdsConfirmationTokensPermissionRuleTest : public UnitTestBase {
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldAllowIfDoesNotExceedCap) {
   // Arrange
-  test::SetConfirmationTokens(/*count=*/10);
+  test::RefillConfirmationTokens(/*count=*/10);
 
   // Act & Assert
   EXPECT_TRUE(HasConfirmationTokensPermission());
@@ -44,7 +44,7 @@ TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
 TEST_F(BraveAdsConfirmationTokensPermissionRuleTest,
        ShouldNotAllowIfExceedsCap) {
   // Arrange
-  test::SetConfirmationTokens(/*count=*/9);
+  test::RefillConfirmationTokens(/*count=*/9);
 
   // Act & Assert
   EXPECT_FALSE(HasConfirmationTokensPermission());

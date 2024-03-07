@@ -17,8 +17,9 @@ namespace brave_ads {
 
 BASE_DECLARE_FEATURE(kConfirmationsFeature);
 
-inline constexpr base::FeatureParam<base::TimeDelta> kProcessConfirmationAfter{
-    &kConfirmationsFeature, "process_after", base::Seconds(15)};
+inline constexpr base::FeatureParam<base::TimeDelta>
+    kRetryProcessingConfirmationAfter{
+        &kConfirmationsFeature, "retry_processing_after", base::Seconds(15)};
 
 }  // namespace brave_ads
 

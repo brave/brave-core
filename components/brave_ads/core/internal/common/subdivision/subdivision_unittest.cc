@@ -216,7 +216,7 @@ TEST_F(BraveAdsSubdivisionTest, EmptyCountryCode) {
 TEST_F(BraveAdsSubdivisionTest, NotValidSubdivisionResonse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, "{}"}}}};
+      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   EXPECT_CALL(observer_mock_, OnDidUpdateSubdivision).Times(0);

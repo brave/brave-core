@@ -116,12 +116,12 @@ TEST_F(BraveAdsUserRewardsTest, MigrateVerifiedRewardsUser) {
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/50);
 
+  test::RefillConfirmationTokens(/*count=*/1);
+
   const URLResponseMap url_responses = {
       {BuildIssuersUrlPath(),
        {{net::HTTP_OK, test::BuildIssuersUrlResponseBody()}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/1);
 
   test::SetPaymentTokens(/*count=*/1);
 

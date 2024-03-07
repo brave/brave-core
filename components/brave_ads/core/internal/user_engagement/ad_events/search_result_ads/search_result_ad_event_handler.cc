@@ -21,7 +21,6 @@
 #include "brave/components/brave_ads/core/internal/creatives/search_result_ads/search_result_ad_info.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/search_result_ads/search_result_ad_permission_rules.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/search_result_ads/search_result_ad_event_factory.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 
@@ -185,8 +184,7 @@ void SearchResultAdEventHandler::MaybeFireEvent(
     const SearchResultAdInfo& ad,
     const mojom::SearchResultAdEventType event_type,
     FireSearchResultAdEventHandlerCallback callback) const {
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kSearchResultAd,
       base::BindOnce(&SearchResultAdEventHandler::MaybeFireEventCallback,
                      weak_factory_.GetWeakPtr(), ad, event_type,

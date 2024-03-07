@@ -179,7 +179,7 @@ TEST_F(BraveAdsCountryCodeTest, EmptyCountryCode) {
 TEST_F(BraveAdsCountryCodeTest, NotValidSubdivisionResonse) {
   // Arrange
   const URLResponseMap url_responses = {
-      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, "{}"}}}};
+      {BuildSubdivisionUrlPath(), {{net::HTTP_OK, /*response_body=*/"{}"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
 
   // Act

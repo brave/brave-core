@@ -84,7 +84,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -133,7 +133,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildVerifiableConversionConfirmationUserDataForRewardsUser) {
   // Arrange
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -184,7 +184,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kViewed,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
@@ -214,7 +214,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Arrange
   test::DisableBraveRewards();
 
-  test::BuildAndSaveConversionQueue(
+  test::BuildAndSaveConversionQueueItems(
       AdType::kNotificationAd, ConfirmationType::kClicked,
       /*is_verifiable=*/true, /*should_use_random_uuids=*/false, /*count=*/1);
 
