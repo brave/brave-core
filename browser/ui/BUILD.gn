@@ -992,10 +992,7 @@ source_set("ui") {
   }
 
   if (is_win && is_official_build) {
-    sources += [
-      "//chrome/browser/ui/webui/help/version_updater_win.cc",
-      "//chrome/browser/ui/webui/help/version_updater_win.h",
-    ]
+    sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
     deps += [ "//google_update" ]
   }
 
