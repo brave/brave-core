@@ -126,7 +126,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/encoding_rs/v0_8:lib",
     "//brave/third_party/rust/hashbrown/v0_12:lib",
     "//brave/third_party/rust/lazycell/v1:lib",
-    "//brave/third_party/rust/safemem/v0_3:lib",
     "//brave/third_party/rust/selectors/v0_22:lib",
     "//brave/third_party/rust/thiserror/v1:lib",
     "//third_party/rust/bitflags/v1:lib",

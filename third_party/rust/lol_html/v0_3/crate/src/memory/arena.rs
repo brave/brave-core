@@ -1,5 +1,4 @@
 use super::{MemoryLimitExceededError, SharedMemoryLimiter};
-use safemem::copy_over;
 
 /// Preallocated region of memory that can grow and never deallocates during the lifetime of
 /// the limiter.
@@ -48,10 +47,8 @@ impl Arena {
     }
 
     pub fn shift(&mut self, byte_count: usize) {
-        let remainder_len = self.data.len() - byte_count;
-
-        copy_over(&mut self.data, byte_count, 0, remainder_len);
-        self.data.truncate(remainder_len);
+        self.data.copy_within(byte_count.., 0);
+        self.data.truncate(self.data.len() - byte_count);
     }
 
     pub fn bytes(&self) -> &[u8] {
