@@ -4,8 +4,8 @@ pipeline {
     agent none
     options {
         ansiColor('xterm')
-        timestamps()
         skipDefaultCheckout(true)
+        timestamps()
     }
     parameters {
         choice(name: 'CHANNEL', choices: ['nightly', 'beta', 'release'])
