@@ -107,7 +107,7 @@ void PlaylistMediaFileDownloader::CancelDownloadItem(const std::string& guid) {
   if (auto* download_item = download_manager_->GetDownloadByGuid(guid);
       download_item &&
       download_item->GetState() == download::DownloadItem::IN_PROGRESS) {
-    download_item->Cancel(/*user_canceled=*/true);
+    download_item->Cancel(/*user_cancel=*/true);
   }
 }
 
@@ -163,6 +163,8 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 
   in_progress_ = true;
   current_item_ = item->Clone();
+  current_download_item_guid_ =
+      base::Uuid::GenerateRandomV4().AsLowercaseString();
   if (!download_manager_) {
     // Creates our own manager. The arguments below are what's used by
     // AwBrowserContext::RetrieveInProgressDownloadManager().
@@ -193,15 +195,12 @@ void PlaylistMediaFileDownloader::DownloadMediaFileForPlaylistItem(
 void PlaylistMediaFileDownloader::OnDownloadCreated(
     download::DownloadItem* item) {
   DVLOG(2) << __func__;
-  if (current_item_) {
-    DCHECK_EQ(item->GetGuid(), current_item_->id);
-    DCHECK(current_download_item_guid_.empty());
-    current_download_item_guid_ = item->GetGuid();
-  } else {
+  if (current_download_item_guid_ != item->GetGuid()) {
     // This can happen when a user canceled it. But we should
     // observe the item anyway to handle the lifecycle of
     // download item.
     ScheduleToCancelDownloadItem(item->GetGuid());
+    return;
   }
 
   DCHECK(!download_item_observation_.IsObservingSource(item));
@@ -270,7 +269,8 @@ void PlaylistMediaFileDownloader::DownloadMediaFile(const GURL& url) {
   auto params = std::make_unique<download::DownloadUrlParameters>(
       url, GetNetworkTrafficAnnotationTagForURLLoad());
   params->set_file_path(destination_path_);
-  params->set_guid(current_item_->id);
+  params->set_guid(current_download_item_guid_);
+
   params->set_transient(true);
   params->set_require_safety_checks(false);
   DCHECK(download_manager_->CanDownload(params.get()));

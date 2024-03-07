@@ -84,7 +84,7 @@ class PlaylistMediaFileDownloader
   void RequestCancelCurrentPlaylistGeneration();
 
   bool in_progress() const { return in_progress_; }
-  const std::string& current_playlist_id() const { return current_item_->id; }
+  const std::string& current_item_id() const { return current_item_->id; }
 
   // download::SimpleDownloadManager::Observer:
   void OnDownloadCreated(download::DownloadItem* item) override;

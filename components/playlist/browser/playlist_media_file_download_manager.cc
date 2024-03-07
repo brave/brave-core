@@ -115,7 +115,7 @@ PlaylistMediaFileDownloadManager::PopNextJob() {
 std::string
 PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
   if (IsCurrentDownloadingInProgress()) {
-    return media_file_downloader_->current_playlist_id();
+    return media_file_downloader_->current_item_id();
   }
 
   return {};
