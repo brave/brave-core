@@ -38,10 +38,14 @@ class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
  private:
   void InitAdditionalParameters(Profile* profile);
 
-  void CaptureScreenshot();
-  void HandleCapturedScreenshotBitmap(SkBitmap bitmap);
+  void HandleCaptureScreenshot(const base::Value::List& args);
+  void HandleCapturedScreenshotBitmap(SkBitmap bitmap, base::Value callback_id);
   void HandleEncodedScreenshotPNG(
+      base::Value callback_id,
       std::optional<std::vector<unsigned char>> encoded_png);
+
+  void HandleGetCapturedScreenshot(const base::Value::List& args);
+  void HandleClearScreenshot(const base::Value::List& args);
 
   void HandleSubmitReport(const base::Value::List& args);
 

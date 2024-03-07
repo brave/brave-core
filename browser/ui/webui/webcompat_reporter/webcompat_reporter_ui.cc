@@ -9,6 +9,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
@@ -114,10 +115,27 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
       "webcompat_reporter.submitReport",
       base::BindRepeating(&WebcompatReporterDOMHandler::HandleSubmitReport,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.captureScreenshot",
+      base::BindRepeating(&WebcompatReporterDOMHandler::HandleCaptureScreenshot,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.getCapturedScreenshot",
+      base::BindRepeating(
+          &WebcompatReporterDOMHandler::HandleGetCapturedScreenshot,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.clearScreenshot",
+      base::BindRepeating(&WebcompatReporterDOMHandler::HandleClearScreenshot,
+                          base::Unretained(this)));
 }
 
-void WebcompatReporterDOMHandler::CaptureScreenshot() {
+void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
+    const base::Value::List& args) {
   CHECK(render_widget_host_view_);
+  CHECK_EQ(args.size(), 1u);
+
+  AllowJavascript();
 
   auto output_size = render_widget_host_view_->GetVisibleViewportSize();
   auto original_area = output_size.GetArea();
@@ -134,19 +152,24 @@ void WebcompatReporterDOMHandler::CaptureScreenshot() {
       base::BindOnce(
           [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
              scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
-             const SkBitmap& bitmap) {
+             base::Value callback_id, const SkBitmap& bitmap) {
             ui_task_runner->PostTask(
-                FROM_HERE, base::BindOnce(&WebcompatReporterDOMHandler::
-                                              HandleCapturedScreenshotBitmap,
-                                          handler, bitmap));
+                FROM_HERE,
+                base::BindOnce(&WebcompatReporterDOMHandler::
+                                   HandleCapturedScreenshotBitmap,
+                               handler, bitmap, std::move(callback_id)));
           },
-          weak_ptr_factory_.GetWeakPtr(), ui_task_runner_));
+          weak_ptr_factory_.GetWeakPtr(), ui_task_runner_, args[0].Clone()));
 }
 
 void WebcompatReporterDOMHandler::HandleCapturedScreenshotBitmap(
-    SkBitmap bitmap) {
+    SkBitmap bitmap,
+    base::Value callback_id) {
   if (bitmap.drawsNothing()) {
-    uploader_->SubmitReport(pending_report_);
+    LOG(ERROR) << "Failed to capture screenshot for webcompat report via "
+                  "CopyFromSurface";
+    RejectJavascriptCallback(callback_id, {});
+    return;
   }
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE,
@@ -159,13 +182,39 @@ void WebcompatReporterDOMHandler::HandleCapturedScreenshotBitmap(
           },
           bitmap),
       base::BindOnce(&WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG,
-                     weak_ptr_factory_.GetWeakPtr()));
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback_id)));
 }
 
 void WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG(
+    base::Value callback_id,
     std::optional<std::vector<unsigned char>> encoded_png) {
+  if (!encoded_png) {
+    LOG(ERROR) << "Failed to encode screenshot to PNG for webcompat report";
+    RejectJavascriptCallback(callback_id, {});
+    return;
+  }
   pending_report_.screenshot_png = encoded_png;
-  uploader_->SubmitReport(pending_report_);
+  ResolveJavascriptCallback(callback_id, {});
+}
+
+void WebcompatReporterDOMHandler::HandleGetCapturedScreenshot(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1u);
+
+  AllowJavascript();
+
+  if (!pending_report_.screenshot_png) {
+    RejectJavascriptCallback(args[0], {});
+    return;
+  }
+
+  auto screenshot_b64 = base::Base64Encode(*pending_report_.screenshot_png);
+  ResolveJavascriptCallback(args[0], screenshot_b64);
+}
+
+void WebcompatReporterDOMHandler::HandleClearScreenshot(
+    const base::Value::List& args) {
+  pending_report_.screenshot_png = std::nullopt;
 }
 
 void WebcompatReporterDOMHandler::HandleSubmitReport(
@@ -177,8 +226,6 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
 
   const base::Value::Dict& submission_args = args[0].GetDict();
 
-  const auto attach_screenshot =
-      submission_args.FindBool(kAttachScreenshotField);
   const std::string* url_arg = submission_args.FindString(kSiteURLField);
   const std::string* ad_block_setting_arg =
       submission_args.FindString(kAdBlockSettingField);
@@ -209,12 +256,6 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
   }
   if (contact_arg != nullptr) {
     pending_report_.contact = contact_arg->Clone();
-  }
-
-  if (attach_screenshot && *attach_screenshot && render_widget_host_view_) {
-    CaptureScreenshot();
-    // Screenshot callbacks will handle upload.
-    return;
   }
 
   uploader_->SubmitReport(pending_report_);

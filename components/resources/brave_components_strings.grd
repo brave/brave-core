@@ -442,6 +442,7 @@
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL" desc="Label for the optional contact information field in the broken website report">Contact me at: (optional)</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_PLACEHOLDER" desc="Placeholder text for the optional contact information field in the broken website report">Email, Twitter, etc.</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL" desc="Label for the checkbox for attaching a screenshot with the broken website report">Include screenshot of the current page</message>
+        <message name="IDS_BRAVE_WEBCOMPATREPORTER_VIEW_SCREENSHOT_LABEL" desc="Link text for viewing a screenshot for a broken website report">View screenshot</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_CANCEL" desc="Text for button to cancel sending a broken website report">Cancel</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_CLOSE" desc="Text for button to close a broken website report dialog">Close</message>
         <message name="IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT" desc="Text for button to submit a broken website report">Submit</message>

@@ -1059,6 +1059,8 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                    IDS_BRAVE_WEBCOMPATREPORTER_REPORT_CONTACT_LABEL},
                   {"attachScreenshotLabel",
                    IDS_BRAVE_WEBCOMPATREPORTER_ATTACH_SCREENSHOT_LABEL},
+                  {"viewScreenshotLabel",
+                   IDS_BRAVE_WEBCOMPATREPORTER_VIEW_SCREENSHOT_LABEL},
                   {"cancel", IDS_BRAVE_WEBCOMPATREPORTER_CANCEL},
                   {"close", IDS_BRAVE_WEBCOMPATREPORTER_CLOSE},
                   {"submit", IDS_BRAVE_WEBCOMPATREPORTER_SUBMIT},

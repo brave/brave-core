@@ -20,11 +20,13 @@ import {
   CheckboxLabel,
   TextArea,
   FieldCtr,
-  InputLabel
+  InputLabel,
+  ScreenshotLink
 } from './basic'
 
 // Localization data
 import { getLocale } from '../../../common/locale'
+import { captureScreenshot, clearScreenshot, getCapturedScreenshot } from '../browser_proxy'
 
 interface Props {
   siteUrl: string
@@ -39,6 +41,7 @@ interface State {
   details: string
   contact: string
   attachScreenshot: boolean
+  screenshotObjectUrl: string | null
 }
 
 const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web-compatibility-reports'
@@ -46,7 +49,38 @@ const WEBCOMPAT_INFO_WIKI_URL = 'https://github.com/brave/brave-browser/wiki/Web
 export default class ReportView extends React.PureComponent<Props, State> {
   constructor (props: Props) {
     super(props)
-    this.state = { details: '', contact: '', attachScreenshot: false }
+    this.state = { details: '', contact: '', attachScreenshot: false, screenshotObjectUrl: null }
+  }
+
+  handleScreenshotChange = async (ev: React.ChangeEvent<HTMLInputElement>) => {
+    if (this.state.screenshotObjectUrl) {
+      URL.revokeObjectURL(this.state.screenshotObjectUrl)
+    }
+    if (!ev.target.checked) {
+      this.setState({ attachScreenshot: false, screenshotObjectUrl: null })
+      clearScreenshot()
+      return
+    }
+
+    await captureScreenshot()
+    this.setState({ attachScreenshot: true, screenshotObjectUrl: null })
+  }
+
+  // the element for the onClick is an <a>. generate an ev typescript react type for ev
+  handleViewScreenshot = async (ev: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    ev.preventDefault()
+    if (this.state.screenshotObjectUrl) {
+      window.open(this.state.screenshotObjectUrl, '_blank', 'noopener')
+      return
+    }
+    const encodedScreenshot = await getCapturedScreenshot()
+    const decodedScreenshot = Buffer.from(encodedScreenshot, 'base64')
+    const blob = new Blob([decodedScreenshot], { type: 'image/png' })
+    const screenshotObjectUrl = URL.createObjectURL(blob)
+
+    this.setState({ screenshotObjectUrl })
+
+    window.open(screenshotObjectUrl, '_blank', 'noopener')
   }
 
   render () {
@@ -106,7 +140,7 @@ export default class ReportView extends React.PureComponent<Props, State> {
             </FieldCtr>
             <FieldCtr>
               <Checkbox
-                onChange={(ev) => this.setState({ attachScreenshot: ev.target.checked })}
+                onChange={this.handleScreenshotChange}
                 type='checkbox'
                 checked={attachScreenshot}
                 id='attach-screenshot'
@@ -115,6 +149,11 @@ export default class ReportView extends React.PureComponent<Props, State> {
                 {getLocale('attachScreenshotLabel')}
               </CheckboxLabel>
             </FieldCtr>
+            {!!this.state.attachScreenshot &&
+              <ScreenshotLink onClick={this.handleViewScreenshot}>
+                {getLocale('viewScreenshotLabel')}
+              </ScreenshotLink>
+            }
             <DisclaimerText>
               {getLocale('reportDisclaimer')}
               &nbsp;

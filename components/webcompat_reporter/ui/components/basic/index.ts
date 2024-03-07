@@ -23,5 +23,6 @@ export {
   Checkbox,
   CheckboxLabel,
   TextArea,
-  InputLabel
+  InputLabel,
+  ScreenshotLink
 } from './display'

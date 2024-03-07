@@ -131,3 +131,16 @@ export const TextArea = styled.textarea`
       outline: none;
   }
 `
+
+export const ScreenshotLink = styled.a`
+  margin-top: 4px;
+  margin-bottom: -4px;
+  color: ${p => p.theme.color.text};
+  cursor: pointer;
+  text-decoration: underline;
+  :visited, :hover, :active {
+    color: ${p => p.theme.color.text};
+    cursor: pointer;
+    text-decoration: underline;
+  }
+`
