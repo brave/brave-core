@@ -19,9 +19,6 @@ import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 // Utils
 import { getLocale } from '$web-common/locale'
 
-// Options
-import { AllNetworksOption } from '../../../options/network-filter-options'
-
 // Components
 import {
   StandardButton //
@@ -80,30 +77,6 @@ export const Swap = () => {
   // State
   const [showSwapSettings, setShowSwapSettings] = React.useState<boolean>(false)
   const [showPrivacyModal, setShowPrivacyModal] = React.useState<boolean>(false)
-  const [selectedNetworkFilter, setSelectedNetworkFilter] = React.useState<
-    BraveWallet.NetworkInfo | undefined
-  >(AllNetworksOption)
-
-  const selectedNetwork = React.useMemo(() => {
-    if (selectedNetworkFilter) {
-      return selectedNetworkFilter
-    }
-
-    if (selectingFromOrTo === 'to' && toNetwork) {
-      return toNetwork
-    }
-
-    if (selectingFromOrTo === 'from' && fromNetwork) {
-      return fromNetwork
-    }
-
-    return AllNetworksOption
-  }, [selectedNetworkFilter, selectingFromOrTo, fromNetwork, toNetwork])
-
-  const onSelectTokenModalClose = React.useCallback(() => {
-    setSelectingFromOrTo(undefined)
-    setSelectedNetworkFilter(undefined)
-  }, [setSelectingFromOrTo, setSelectedNetworkFilter])
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -123,7 +96,7 @@ export const Swap = () => {
   // Hooks
   useOnClickOutside(
     selectTokenModalRef,
-    onSelectTokenModalClose,
+    () => setSelectingFromOrTo(undefined),
     selectingFromOrTo !== undefined
   )
   useOnClickOutside(
@@ -171,6 +144,7 @@ export const Swap = () => {
         <ComposerControls
           onFlipAssets={onClickFlipSwapTokens}
           onOpenSettings={onToggleShowSwapSettings}
+          flipAssetsDisabled={!fromToken || !toToken}
         />
         <ToAsset
           onInputChange={handleOnSetToAmount}
@@ -178,13 +152,15 @@ export const Swap = () => {
           onClickSelectToken={() => setSelectingFromOrTo('to')}
           token={toToken}
           inputDisabled={
-            fromNetwork?.coin === BraveWallet.CoinType.SOL &&
-            toNetwork?.coin === BraveWallet.CoinType.SOL
+            (fromNetwork?.coin === BraveWallet.CoinType.SOL &&
+              toNetwork?.coin === BraveWallet.CoinType.SOL) ||
+            !fromToken
           }
           hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
           network={toNetwork}
           selectedSendOption='#token'
           isFetchingQuote={isFetchingQuote}
+          buttonDisabled={!fromToken}
         >
           {/* TODO: QuoteOptions is currently unused
           selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
@@ -252,16 +228,15 @@ export const Swap = () => {
       {selectingFromOrTo && (
         <SelectTokenModal
           ref={selectTokenModalRef}
-          onClose={onSelectTokenModalClose}
+          onClose={() => setSelectingFromOrTo(undefined)}
           onSelectAsset={
             selectingFromOrTo === 'from' ? onSelectFromToken : onSelectToToken
           }
           selectedToken={selectingFromOrTo === 'from' ? toToken : fromToken}
           selectedSendOption='#token'
+          selectedNetwork={selectingFromOrTo === 'to' ? fromNetwork : undefined}
           showFullFlatTokenList={selectingFromOrTo === 'to'}
           modalType='swap'
-          selectedNetwork={selectedNetwork}
-          setSelectedNetwork={setSelectedNetworkFilter}
         />
       )}
       {showPrivacyModal && (

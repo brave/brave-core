@@ -32,11 +32,12 @@ import { Row } from '../../../../components/shared/style'
 
 interface Props {
   onFlipAssets?: () => void
+  flipAssetsDisabled?: boolean
   onOpenSettings?: () => void
 }
 
 export const ComposerControls = (props: Props) => {
-  const { onFlipAssets, onOpenSettings } = props
+  const { onFlipAssets, onOpenSettings, flipAssetsDisabled } = props
 
   // Routing
   const history = useHistory()
@@ -83,7 +84,10 @@ export const ComposerControls = (props: Props) => {
   return (
     <Row>
       {onFlipAssets && (
-        <FlipButton onClick={onFlipAssets}>
+        <FlipButton
+          onClick={onFlipAssets}
+          disabled={flipAssetsDisabled}
+        >
           <FlipIcon />
         </FlipButton>
       )}

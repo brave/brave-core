@@ -5,6 +5,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import { skipToken } from '@reduxjs/toolkit/query/react'
+import { useHistory } from 'react-router'
 
 // Options
 import { SwapAndSendOptions } from '../../../../options/swap-and-send-options'
@@ -17,6 +18,7 @@ import { useDebouncedCallback } from './useDebouncedCallback'
 import {
   useBalancesFetcher //
 } from '../../../../common/hooks/use-balances-fetcher'
+import { useQuery } from '../../../../common/hooks/use-query'
 
 // Types and constants
 import {
@@ -24,7 +26,11 @@ import {
   SwapValidationErrorType,
   SwapParamsOverrides
 } from '../constants/types'
-import { BraveWallet, GasFeeOption } from '../../../../constants/types'
+import {
+  BraveWallet,
+  GasFeeOption,
+  WalletRoutes
+} from '../../../../constants/types'
 
 // Utils
 import { getLocale } from '$web-common/locale'
@@ -43,6 +49,7 @@ import {
   getJupiterFromAmount,
   getJupiterToAmount
 } from '../swap.utils'
+import { makeSwapRoute } from '../../../../utils/routes-utils'
 
 // Queries
 import {
@@ -53,6 +60,10 @@ import {
 } from '../../../../common/slices/api.slice'
 import { querySubscriptionOptions60s } from '../../../../common/slices/constants'
 import { AccountInfoEntity } from '../../../../common/slices/entities/account-info.entity'
+import {
+  useAccountFromAddressQuery,
+  useGetCombinedTokensListQuery
+} from '../../../../common/slices/api.slice.extra'
 
 const hasDecimalsOverflow = (
   amount: string,
@@ -73,20 +84,43 @@ const hasDecimalsOverflow = (
   return decimalPlaces !== null && decimalPlaces > 0
 }
 
+const getTokenFromParam = (
+  contractOrSymbol: string,
+  network: BraveWallet.NetworkInfo,
+  tokenList: BraveWallet.BlockchainToken[]
+) => {
+  return tokenList.find(
+    (token) =>
+      (token.chainId === network.chainId &&
+        token.coin === network.coin &&
+        token.contractAddress.toLowerCase() ===
+          contractOrSymbol.toLowerCase()) ||
+      (token.chainId === network.chainId &&
+        token.coin === network.coin &&
+        token.contractAddress === '' &&
+        token.symbol.toLowerCase() === contractOrSymbol.toLowerCase())
+  )
+}
+
 export const useSwap = () => {
-  // State
-  const [fromAccount, setFromAccount] = useState<
-    BraveWallet.AccountInfo | undefined
-  >(undefined)
-  const [fromToken, setFromToken] = useState<
-    BraveWallet.BlockchainToken | undefined
-  >(undefined)
-  const [toAccountId, setToAccountId] = useState<
-    BraveWallet.AccountId | undefined
-  >(undefined)
-  const [toToken, setToToken] = useState<
-    BraveWallet.BlockchainToken | undefined
-  >(undefined)
+  // routing
+  const query = useQuery()
+  const history = useHistory()
+
+  // Queries
+  // FIXME(onyb): what happens when defaultFiatCurrency is empty
+  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
+  const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
+  const { data: fullTokenList } = useGetCombinedTokensListQuery()
+  const { account: fromAccount } = useAccountFromAddressQuery(
+    query.get('fromAccountId') ?? undefined
+  )
+  // TODO: deprecate toAccountId in favour of toAddress + toCoin
+  const toAccountId = fromAccount?.accountId
+  const toCoinFromParams = query.get('toCoin') ?? undefined
+  const toCoin = toCoinFromParams ? Number(toCoinFromParams) : undefined
+  const toAddress = query.get('toAddress') ?? undefined
+
   const [fromAmount, setFromAmount] = useState<string>('')
   const [toAmount, setToAmount] = useState<string>('')
   const [selectingFromOrTo, setSelectingFromOrTo] = useState<
@@ -122,33 +156,45 @@ export const useSwap = () => {
   // Mutations
   const [generateSwapQuote] = useGenerateSwapQuoteMutation()
 
-  // Queries
-  const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
-  const { data: supportedNetworks } = useGetSwapSupportedNetworksQuery()
-
   // Memos
   const fromNetwork = useMemo(() => {
-    if (fromToken && supportedNetworks?.length) {
-      return supportedNetworks.find(
-        (network) =>
-          network.chainId === fromToken.chainId &&
-          network.coin === fromToken.coin
-      )
+    if (!supportedNetworks?.length) {
+      return
     }
-
-    return undefined
-  }, [fromToken, supportedNetworks])
+    return supportedNetworks.find(
+      (network) =>
+        network.chainId === query.get('fromChainId') &&
+        network.coin === fromAccount?.accountId.coin
+    )
+  }, [supportedNetworks, fromAccount?.accountId.coin])
 
   const toNetwork = useMemo(() => {
-    if (toToken && supportedNetworks?.length) {
-      return supportedNetworks.find(
-        (network) =>
-          network.chainId === toToken.chainId && network.coin === toToken.coin
-      )
+    if (!supportedNetworks?.length || !toCoin) {
+      return
+    }
+    return supportedNetworks.find(
+      (network) =>
+        network.chainId === query.get('toChainId') && network.coin === toCoin
+    )
+  }, [supportedNetworks, toCoin])
+
+  const fromToken = useMemo(() => {
+    const contractOrSymbol = query.get('fromToken')
+    if (!contractOrSymbol || !fromNetwork) {
+      return
     }
 
-    return fromNetwork
-  }, [toToken, supportedNetworks, fromNetwork])
+    return getTokenFromParam(contractOrSymbol, fromNetwork, fullTokenList)
+  }, [fullTokenList, query, fromNetwork])
+
+  const toToken = useMemo(() => {
+    const contractOrSymbol = query.get('toToken')
+    if (!contractOrSymbol || !toNetwork) {
+      return
+    }
+
+    return getTokenFromParam(contractOrSymbol, toNetwork, fullTokenList)
+  }, [fullTokenList, query, toNetwork])
 
   const [selectedSwapSendAccount, setSelectedSwapSendAccount] = useState<
     AccountInfoEntity | undefined
@@ -191,7 +237,7 @@ export const useSwap = () => {
     fromAccount,
     fromToken,
     fromAmount: editingFromOrToAmount === 'from' ? fromAmount : '',
-    toAccountId,
+    toAccountId: toAccountId,
     toToken,
     toAmount: editingFromOrToAmount === 'to' ? toAmount : '',
     slippageTolerance
@@ -201,7 +247,7 @@ export const useSwap = () => {
     fromAccount,
     fromToken,
     fromAmount: editingFromOrToAmount === 'from' ? fromAmount : '',
-    toAccountId,
+    toAccountId: toAccountId,
     toToken,
     toAmount: editingFromOrToAmount === 'to' ? toAmount : '',
     slippageTolerance
@@ -337,7 +383,7 @@ export const useSwap = () => {
                   .format()
               : '',
           fromToken: params.fromToken.contractAddress,
-          toAccountId,
+          toAccountId: toAccountId,
           toChainId: params.toToken.chainId,
           toAmount:
             params.editingFromOrToAmount === 'to' && params.toAmount
@@ -417,6 +463,7 @@ export const useSwap = () => {
       fromAccount,
       fromAmount,
       fromToken,
+      toAccountId,
       toAmount,
       toToken,
       generateSwapQuote,
@@ -488,10 +535,34 @@ export const useSwap = () => {
   const nativeAssetBalance = nativeAsset && getAssetBalance(nativeAsset)
 
   const onClickFlipSwapTokens = useCallback(async () => {
-    setFromToken(toToken)
-    setToToken(fromToken)
+    if (!fromAccount || !fromToken || !toToken) {
+      return
+    }
+    if (
+      fromAccount.accountId.coin !== toToken.coin ||
+      toCoin !== fromToken.coin
+    ) {
+      history.push(WalletRoutes.Swap)
+    } else {
+      history.push(
+        makeSwapRoute({
+          fromToken: toToken,
+          fromAccount,
+          toToken: fromToken,
+          toAddress,
+          toCoin
+        })
+      )
+    }
     await handleOnSetFromAmount('')
-  }, [toToken, fromToken, handleOnSetFromAmount])
+  }, [
+    toToken,
+    fromToken,
+    handleOnSetFromAmount,
+    fromAccount,
+    toAddress,
+    toCoin
+  ])
 
   // Changing the To asset does the following:
   //  1. Update toToken right away.
@@ -502,8 +573,19 @@ export const useSwap = () => {
   //  5. Fetch spot price.
   const onSelectToToken = useCallback(
     async (token: BraveWallet.BlockchainToken) => {
+      if (!fromToken || !fromAccount) {
+        return
+      }
       setEditingFromOrToAmount('from')
-      setToToken(token)
+      history.push(
+        makeSwapRoute({
+          fromToken,
+          fromAccount,
+          toToken: token,
+          toAddress,
+          toCoin
+        })
+      )
       setSelectingFromOrTo(undefined)
       setToAmount('')
 
@@ -513,7 +595,14 @@ export const useSwap = () => {
         toAmount: ''
       })
     },
-    [handleQuoteRefreshInternal]
+    [
+      reset,
+      handleQuoteRefreshInternal,
+      fromToken,
+      fromAccount,
+      toAddress,
+      toCoin
+    ]
   )
 
   // Changing the From asset does the following:
@@ -526,24 +615,33 @@ export const useSwap = () => {
       token: BraveWallet.BlockchainToken,
       account?: BraveWallet.AccountInfo
     ) => {
-      setEditingFromOrToAmount('from')
-      setFromToken(token)
-      setFromAccount(account)
-
-      // TODO(onyb): remove this when we support cross-chain swaps
-      if (token.coin !== toToken?.coin || token.chainId !== toToken?.chainId) {
-        setToToken(undefined)
+      if (!account) {
+        return
       }
-
-      // TODO(onyb): change this when we support swapping to different address
-      setToAccountId(account?.accountId)
-
+      setEditingFromOrToAmount('from')
+      // ToDo: Until cross-chain swaps is supported,
+      // we have this check to make sure that the toToken
+      // and the incoming fromToken are on the same network.
+      // If not we clear the toToken from params.
+      if (toToken && toToken.chainId === token.chainId) {
+        history.push(
+          makeSwapRoute({
+            fromToken: token,
+            fromAccount: account,
+            toToken,
+            toAddress,
+            toCoin
+          })
+        )
+      } else {
+        history.push(makeSwapRoute({ fromToken: token, fromAccount: account }))
+      }
       setSelectingFromOrTo(undefined)
       setFromAmount('')
       setToAmount('')
       reset()
     },
-    [toToken, reset]
+    [toToken, toAddress, toCoin, reset]
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {

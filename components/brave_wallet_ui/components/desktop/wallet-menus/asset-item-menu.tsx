@@ -23,7 +23,8 @@ import Amount from '../../../utils/amount'
 import {
   makeDepositFundsRoute,
   makeFundWalletRoute,
-  makeSendRoute
+  makeSendRoute,
+  makeSwapRoute
 } from '../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../utils/asset-utils'
 
@@ -89,7 +90,7 @@ export const AssetItemMenu = (props: Props) => {
     )
   }, [asset.symbol, allBuyAssetOptions, isAssetsBalanceZero])
 
-  const isSwapSupported = coinSupportsSwap(asset.coin)
+  const isSwapSupported = coinSupportsSwap(asset.coin) && account !== undefined
 
   const isSellSupported = React.useMemo(() => {
     return account !== undefined && checkIsAssetSellSupported(asset)
@@ -109,8 +110,10 @@ export const AssetItemMenu = (props: Props) => {
   }, [asset.chainId, asset.contractAddress, account?.address])
 
   const onClickSwap = React.useCallback(() => {
-    history.push(WalletRoutes.Swap)
-  }, [])
+    if (account) {
+      history.push(makeSwapRoute({ fromToken: asset, fromAccount: account }))
+    }
+  }, [asset, account])
 
   const onClickDeposit = React.useCallback(() => {
     history.push(makeDepositFundsRoute(getAssetIdKey(asset)))

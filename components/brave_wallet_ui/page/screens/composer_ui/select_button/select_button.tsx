@@ -41,6 +41,7 @@ interface Props {
   token: BraveWallet.BlockchainToken | undefined
   selectedSendOption: SendPageTabHashes
   placeholderText: string
+  disabled?: boolean
 }
 
 const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
@@ -48,7 +49,8 @@ const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
 export const SelectButton = (props: Props) => {
-  const { onClick, token, selectedSendOption, placeholderText } = props
+  const { onClick, token, selectedSendOption, placeholderText, disabled } =
+    props
 
   // Queries
   const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
@@ -69,6 +71,7 @@ export const SelectButton = (props: Props) => {
       onClick={onClick}
       morePadding={token !== undefined}
       isNFT={selectedSendOption === SendPageTabHashes.nft}
+      disabled={disabled}
     >
       <Row>
         {token && (

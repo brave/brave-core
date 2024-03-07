@@ -218,6 +218,41 @@ export const makeSendRoute = (
   return `${WalletRoutes.Send}?${params.toString()}${SendPageTabHashes.token}`
 }
 
+export const makeSwapRoute = ({
+  fromToken,
+  fromAccount,
+  toToken,
+  toAddress,
+  toCoin
+}: {
+  fromToken: BraveWallet.BlockchainToken
+  fromAccount: BraveWallet.AccountInfo
+  toToken?: BraveWallet.BlockchainToken
+  toAddress?: string
+  toCoin?: BraveWallet.CoinType
+}) => {
+  const baseQueryParams = {
+    fromChainId: fromToken.chainId,
+    fromToken: fromToken.contractAddress || fromToken.symbol.toUpperCase(),
+    fromAccountId: fromAccount.accountId.uniqueKey,
+    toChainId: toToken ? toToken.chainId : fromToken.chainId,
+    toAddress: toAddress ?? fromAccount.accountId.address,
+    toCoin: toCoin ? toCoin.toString() : fromAccount.accountId.coin.toString()
+  }
+
+  const toTokenParam = toToken
+    ? toToken.contractAddress || toToken.symbol.toUpperCase()
+    : undefined
+
+  const params = new URLSearchParams(
+    toTokenParam
+      ? { ...baseQueryParams, toToken: toTokenParam }
+      : baseQueryParams
+  )
+
+  return `${WalletRoutes.Swap}?${params.toString()}`
+}
+
 export const makePortfolioAssetRoute = (isNft: boolean, assetId: string) => {
   return (
     isNft ? WalletRoutes.PortfolioNFTAsset : WalletRoutes.PortfolioAsset
