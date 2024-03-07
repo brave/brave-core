@@ -93,7 +93,7 @@ class RefillConfirmationTokens final {
   std::optional<std::vector<cbr::Token>> tokens_;
   std::optional<std::vector<cbr::BlindedToken>> blinded_tokens_;
 
-  bool is_processing_ = false;
+  bool is_refilling_ = false;
 
   BackoffTimer retry_timer_;
 

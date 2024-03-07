@@ -26,6 +26,8 @@ class Reminder : public HistoryManagerObserver {
   ~Reminder() override;
 
  private:
+  void MaybeShowReminderAfterDelay(const HistoryItemInfo& history_item);
+
   // HistoryManagerObserver:
   void OnDidAddHistory(const HistoryItemInfo& history_item) override;
 

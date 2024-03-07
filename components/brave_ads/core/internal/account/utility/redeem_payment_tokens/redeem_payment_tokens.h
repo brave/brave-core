@@ -18,7 +18,6 @@
 #include "brave/components/brave_ads/core/internal/account/utility/redeem_payment_tokens/redeem_payment_tokens_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/wallet/wallet_info.h"
 #include "brave/components/brave_ads/core/internal/common/timer/backoff_timer.h"
-#include "brave/components/brave_ads/core/internal/common/timer/timer.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-forward.h"
 
 namespace brave_ads {
@@ -43,8 +42,9 @@ class RedeemPaymentTokens final {
   void MaybeRedeemAfterDelay(const WalletInfo& wallet);
 
  private:
+  void RedeemAfterDelay();
   void Redeem();
-  void BuildRedeemPaymentTokensUserDataCallback(base::Value::Dict user_data);
+  void BuildUserDataCallback(base::Value::Dict user_data);
   void RedeemCallback(const PaymentTokenList& payment_tokens,
                       const mojom::UrlResponseInfo& url_response);
 
@@ -71,10 +71,9 @@ class RedeemPaymentTokens final {
 
   WalletInfo wallet_;
 
-  bool is_processing_ = false;
+  bool is_redeeming_ = false;
 
-  Timer timer_;
-  BackoffTimer retry_timer_;
+  BackoffTimer timer_;
 
   base::WeakPtrFactory<RedeemPaymentTokens> weak_factory_{this};
 };
