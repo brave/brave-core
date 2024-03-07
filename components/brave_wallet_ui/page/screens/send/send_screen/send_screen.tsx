@@ -707,6 +707,18 @@ export const SendScreen = React.memo((props: Props) => {
     setDomainPosition(position ? position + 28 : 0)
   }, [toAddressOrUrl])
 
+  React.useEffect(() => {
+    if (
+      tokenFromParams &&
+      (tokenFromParams.isNft ||
+        tokenFromParams.isErc721 ||
+        tokenFromParams.isErc1155) &&
+      sendAssetBalance === '1'
+    ) {
+      setSendAmount('1')
+    }
+  }, [tokenFromParams, sendAssetBalance])
+
   // render
   return (
     <>
