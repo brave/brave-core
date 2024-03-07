@@ -61,9 +61,13 @@ def CheckPatchFormatted(input_api, output_api):
         'cl',
         'format',
         '--presubmit',
+    ]
+
+    # Keep in sync with `npm run format` command.
+    git_cl_format_cmd.extend([
         '--python',
         '--no-rust-fmt',
-    ]
+    ])
 
     # Make sure the passed --upstream branch is applied to git cl format.
     if input_api.change.UpstreamBranch():

@@ -360,11 +360,6 @@ program
   .command('format')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--full', 'format all lines in changed files instead of only the changed lines')
-  .option('--js', 'format javascript code with clang-format')
-  .option('--python', 'enable formating of Python file types using yapf')
-  .option('--rust', 'enables formatting of Rust file types using rustfmt')
-  .option('--swift',
-    'enables formatting of Swift file types using swift-format')
   .action(util.format)
 
 program
