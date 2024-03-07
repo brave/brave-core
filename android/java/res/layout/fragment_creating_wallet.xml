@@ -2,13 +2,11 @@
 <androidx.core.widget.NestedScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/creating_wallet_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:scrollbars="vertical"
-    android:fadeScrollbars="false"
-    android:background="@color/wallet_bg"
-    android:fillViewport="true"
-    android:theme="@style/BraveWalletOnboarding">
+    android:scrollbars="none"
+    android:fillViewport="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -18,23 +16,33 @@
 
         <ProgressBar
             android:id="@+id/btn_loading"
-            style="?android:progressBarStyleLarge"
+            style="Widget.ProgressBar.Large"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="24dp"
             android:indeterminateTint="@color/brave_action_color"
             android:layout_gravity="center_horizontal" />
+
+        <TextView
+            style="@style/BraveWalletTextViewTitle"
+            android:layout_width="match_parent"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="32dp"
+            android:layout_marginBottom="8dp"
+            android:text="@string/creating_wallet_onboarding_text"
+            android:textColor="@color/wallet_text_color"
+            android:lineSpacingExtra="2sp"
+            android:textSize="22sp"/>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
-            android:layout_marginStart="32dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginHorizontal="32dp"
             android:layout_marginBottom="16dp"
-            android:text="@string/creating_wallet_onboarding_text"
-            android:textColor="@color/wallet_text_color"
-            android:textSize="32sp"/>
+            android:text="@string/creating_wallet_subtitle_text"
+            android:textColor="@color/wallet_onboarding_secondary_text_color"
+            android:lineSpacingExtra="4sp"
+            android:textSize="14sp"/>
     </LinearLayout>
-
 </androidx.core.widget.NestedScrollView>
