@@ -45,7 +45,7 @@ struct AIChatPageContextView: View {
           )
           .bravePopover(isPresented: $shouldShowInformationPopover) {
             PopoverWrapperView(
-              backgroundColor: Color(braveSystemName: .containerBackground)
+              backgroundColor: UIColor(braveSystemName: .containerBackground)
             ) {
               AIChatPageContextInfoView(url: url, pageTitle: pageTitle)
                 .background(Color(braveSystemName: .containerBackground))

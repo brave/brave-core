@@ -56,8 +56,8 @@ struct AIChatNavigationView<Content>: View where Content: View {
       } label: {
         Text(Strings.close)
           .foregroundStyle(Color(braveSystemName: .textInteractive))
+          .padding()
       }
-      .padding()
     } center: {
       HStack(spacing: 0.0) {
         Text(Strings.AIChat.leoNavigationTitle)
@@ -86,6 +86,8 @@ struct AIChatNavigationView<Content>: View where Content: View {
           } label: {
             Image(braveSystemName: "leo.erase")
               .tint(Color(braveSystemName: .textInteractive))
+              .padding([.leading, .top, .bottom])
+              .padding(.trailing, 8.0)
           }
 
           Button {
@@ -93,12 +95,13 @@ struct AIChatNavigationView<Content>: View where Content: View {
           } label: {
             Image(braveSystemName: "leo.settings")
               .tint(Color(braveSystemName: .textInteractive))
+              .padding([.trailing, .top, .bottom])
+              .padding(.leading, 8.0)
           }
-          .padding()
           .bravePopover(
             isPresented: $showSettingsMenu,
             content: {
-              PopoverWrapperView(backgroundColor: Color(braveSystemName: .containerBackground)) {
+              PopoverWrapperView(backgroundColor: UIColor(braveSystemName: .pageBackground)) {
                 menuContent()
               }
             }
@@ -123,7 +126,7 @@ struct AIChatNavigationView_Preview: PreviewProvider {
         print("Erased Chat History")
       },
       menuContent: {
-        PopoverWrapperView(backgroundColor: Color(braveSystemName: .containerBackground)) {
+        PopoverWrapperView(backgroundColor: UIColor(braveSystemName: .pageBackground)) {
           EmptyView()
         }
       }
