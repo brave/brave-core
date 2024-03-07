@@ -4,6 +4,7 @@ pipeline {
     agent none
     options {
         ansiColor('xterm')
+        skipDefaultCheckout(true)
         timestamps()
     }
     parameters {
