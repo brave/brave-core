@@ -77,7 +77,7 @@ struct AIChatPromptInputView: View {
     .background(
       ContainerRelativeShape()
         .fill(Color(braveSystemName: .containerBackground))
-        .shadow(color: .black.opacity(0.15), radius: 4.0, x: 0.0, y: 1.0)
+        .shadow(color: .black.opacity(0.10), radius: 4.0, x: 0.0, y: 1.0)
     )
     .overlay(
       ContainerRelativeShape()
