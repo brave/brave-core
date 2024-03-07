@@ -159,8 +159,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
       &features::kOmniboxTriggerForPrerender2,
-      &features::kPrivacyGuide3,
-      &features::kPrivacyGuidePreload,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuidePreloadAndroid,
 #endif
