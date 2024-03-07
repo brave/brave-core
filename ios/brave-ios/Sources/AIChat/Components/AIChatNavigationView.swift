@@ -101,7 +101,7 @@ struct AIChatNavigationView<Content>: View where Content: View {
                 menuContent()
               }
             }
-          })
+          )
         }
       }
     }
