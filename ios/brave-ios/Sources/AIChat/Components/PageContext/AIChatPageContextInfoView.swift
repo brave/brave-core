@@ -13,7 +13,7 @@ struct AIChatPageContextInfoView: View {
   var pageTitle: String
   
   var body: some View {
-    VStack(alignment: .leading) {
+    VStack(alignment: .leading, spacing: 16.0) {
       Text(Strings.AIChat.leoPageContextInfoDescriptionTitle)
         .font(.caption)
         .foregroundStyle(Color(braveSystemName: .textTertiary))
