@@ -10,6 +10,7 @@
 #include "base/base64.h"
 #include "base/files/file_path.h"
 #include "base/logging.h"
+#include "base/strings/strcat.h"
 #include "build/build_config.h"
 #include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -189,7 +190,7 @@ void Prefs::AddLeaveChainDetail(const char* file, int line, const char* func) {
          << base::FilePath::FromASCII(file).BaseName() << "(" << line << ") "
          << func << std::endl;
 
-  std::string updated_details = details + stream.str();
+  std::string updated_details = base::StrCat({details, stream.str()});
 
   if (updated_details.size() > kLeaveChainDetailsMaxLen) {
     updated_details.assign(updated_details.end() - kLeaveChainDetailsMaxLen,

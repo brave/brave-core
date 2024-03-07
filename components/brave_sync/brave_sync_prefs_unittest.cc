@@ -113,7 +113,7 @@ TEST_F(BraveSyncPrefsDeathTest, MAYBE_GetSeedOutNullptrCHECK) {
 
 TEST_F(BraveSyncPrefsTest, LeaveChainDetailsMaxLenIOS) {
   brave_sync_prefs()->SetAddLeaveChainDetailBehaviourForTests(
-    brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
+      brave_sync::Prefs::AddLeaveChainDetailBehaviour::kAdd);
 
   auto max_len = Prefs::GetLeaveChainDetailsMaxLenForTests();
 

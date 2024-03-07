@@ -8,6 +8,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/auto_reset.h"
 #include "base/logging.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/strings/string_util.h"
@@ -48,7 +49,8 @@ BraveSyncServiceImpl::~BraveSyncServiceImpl() {
 }
 
 void BraveSyncServiceImpl::Initialize() {
-  executing_initialize_ = true;
+  base::AutoReset<bool> executing_initialize_resetter(&executing_initialize_,
+                                                      true);
 
   SyncServiceImpl::Initialize();
 
@@ -56,8 +58,6 @@ void BraveSyncServiceImpl::Initialize() {
   if (!user_settings_->IsInitialSyncFeatureSetupComplete()) {
     base::UmaHistogramExactLinear("Brave.Sync.Status.2", 0, 3);
   }
-
-  executing_initialize_ = false;
 }
 
 bool BraveSyncServiceImpl::IsSetupInProgress() const {
