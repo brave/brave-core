@@ -211,8 +211,8 @@ extension Preferences {
 
     /// A cached value for indicating if onboarding is actively going on
     ///
-    /// This is used to determine if a  promoted purchase from store can be triggered and shown user
-    public static let isOnboardingActive = Option<Bool>(
+    /// This is used to determine if a promoted purchase from store can be triggered and shown user
+    public static let shouldDeferPromotedPurchase = Option<Bool>(
       key: "appstate.onboarding-active",
       default: false
     )

@@ -181,8 +181,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     let isFirstLaunch = Preferences.General.isFirstLaunch.value
 
-    Preferences.AppState.isOnboardingActive.value = isFirstLaunch
     Preferences.AppState.dailyUserPingAwaitingUserConsent.value = isFirstLaunch
+
+    Preferences.AppState.shouldDeferPromotedPurchase.value = isFirstLaunch
 
     if Preferences.Onboarding.basicOnboardingCompleted.value
       == OnboardingState.undetermined.rawValue

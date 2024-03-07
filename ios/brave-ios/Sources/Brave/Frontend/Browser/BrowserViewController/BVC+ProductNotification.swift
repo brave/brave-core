@@ -56,7 +56,7 @@ extension BrowserViewController {
     guard Locale.current.regionCode != "JP" else {
       return
     }
-    
+
     guard !Preferences.General.onboardingAdblockPopoverShown.value,
       Preferences.Onboarding.isNewRetentionUser.value == true
     else {

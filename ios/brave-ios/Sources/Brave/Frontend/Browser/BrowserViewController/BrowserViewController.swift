@@ -1301,7 +1301,6 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func viewDidAppear(_ animated: Bool) {
-
     // Present Onboarding to new users, existing users will not see the onboarding
     presentOnboardingIntro()
 

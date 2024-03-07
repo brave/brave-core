@@ -71,13 +71,13 @@ public struct FullScreenCalloutManager {
 
     let rightNow = Date()
     var calloutDelayInterval = calloutType.period.days
-    
+
     // Delay period 3 days that will be added to full screen callouts
     // This will be the case as long as new onboarding is active for JAPAN
     if Locale.current.regionCode == "JP" {
       calloutDelayInterval += delayAmountJpOnboarding
     }
-    
+
     let nextShowDate = appRetentionLaunchDate.addingTimeInterval(calloutDelayInterval)
 
     if rightNow > nextShowDate {

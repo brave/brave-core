@@ -134,7 +134,7 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
     }
 
     // Check if there is an active onboarding happening
-    let shouldDeferPayment = Preferences.AppState.isOnboardingActive.value
+    let shouldDeferPayment = Preferences.AppState.shouldDeferPromotedPurchase.value
 
     // If you need to defer until onboarding is complete, save the payment and return false.
     if shouldDeferPayment {
