@@ -9,17 +9,11 @@
 #include <string_view>
 #include <utility>
 
-#include "base/containers/fixed_flat_map.h"
-#include "base/files/file.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
-#include "base/json/json_reader.h"
-#include "base/json/json_writer.h"
-#include "base/strings/string_number_conversions.h"
-#include "base/strings/utf_string_conversions.h"
 #include "base/task/thread_pool.h"
+#include "base/uuid.h"
 #include "brave/components/playlist/browser/mime_util.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
 #include "build/build_config.h"
 #include "components/download/public/common/download_item_impl.h"
 #include "components/download/public/common/download_task_runner.h"
@@ -27,7 +21,6 @@
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/download_request_utils.h"
 #include "content/public/browser/storage_partition.h"
-#include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "url/gurl.h"
 
