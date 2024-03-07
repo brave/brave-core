@@ -919,11 +919,12 @@ class SettingsViewController: TableViewController {
               let versionController = ChromeWebViewController(privateBrowsing: false).then {
                 $0.loadURL("brave://version/?show-variations-cmd")
               }
+              versionController.title = version
 
               actionSheet?.dismiss(
                 animated: true,
                 completion: {
-                  self.present(versionController, animated: true)
+                  self.navigationController?.pushViewController(versionController, animated: true)
                 }
               )
             }
