@@ -298,8 +298,11 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       histogram_name = kFilActiveAccountHistogramName;
       break;
     case mojom::CoinType::BTC:
-      // TODO(apaymyshev): https://github.com/brave/brave-browser/issues/28464
-      return;
+      histogram_name = kBtcActiveAccountHistogramName;
+      break;
+    case mojom::CoinType::ZEC:
+      histogram_name = kZecActiveAccountHistogramName;
+      break;
     default:
       return;
   }
