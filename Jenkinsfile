@@ -5,6 +5,7 @@ pipeline {
     options {
         ansiColor('xterm')
         timestamps()
+        skipDefaultCheckout(true)
     }
     parameters {
         choice(name: 'CHANNEL', choices: ['nightly', 'beta', 'release'])
