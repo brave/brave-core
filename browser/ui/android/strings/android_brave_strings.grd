@@ -2031,7 +2031,7 @@ Are you sure you want to do this?
       Verified password did not match
     </message>
     <message name="IDS_CREATING_WALLET_ONBOARDING_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
-      Creating Wallet
+      Creating your wallet…
     </message>
     <message name="IDS_CREATING_WALLET_SUBTITLE_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
       It may take a few seconds…
