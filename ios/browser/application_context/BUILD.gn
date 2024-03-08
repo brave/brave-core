@@ -16,9 +16,11 @@ source_set("application_context") {
     "//brave/components/brave_component_updater/browser",
     "//brave/components/brave_wallet/browser",
     "//brave/components/debounce/core/browser",
+    "//brave/components/https_upgrade_exceptions/browser",
     "//brave/components/url_sanitizer/browser",
     "//brave/ios/browser/brave_wallet",
     "//ios/chrome/browser/application_context/model",
     "//ios/chrome/browser/shared/model/application_context",
+    "//net",
   ]
 }

@@ -26,6 +26,7 @@
 @class NTPBackgroundImagesService;
 @class DeAmpPrefs;
 @class AIChat;
+@class HTTPSUpgradeExceptionsService;
 @protocol AIChatDelegate;
 @protocol IpfsAPI;
 
@@ -64,6 +65,9 @@ OBJC_EXPORT
 @property(nonatomic, readonly) BraveTabGeneratorAPI* tabGeneratorAPI;
 
 @property(nonatomic, readonly) WebImageDownloader* webImageDownloader;
+
+@property(nonatomic, readonly)
+    HTTPSUpgradeExceptionsService* httpsUpgradeExceptionsService;
 
 /// Sets the global log handler for Chromium & BraveCore logs.
 ///

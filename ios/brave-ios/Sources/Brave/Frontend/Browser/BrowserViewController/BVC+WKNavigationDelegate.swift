@@ -606,6 +606,26 @@ extension BrowserViewController: WKNavigationDelegate {
     let response = navigationResponse.response
     let responseURL = response.url
     let tab = tab(for: webView)
+    let isInvalid: Bool
+    if let httpResponse = response as? HTTPURLResponse {
+      isInvalid = httpResponse.statusCode >= 400
+    } else {
+      isInvalid = true
+    }
+
+    // Handle invalid upgrade to https
+    if isInvalid,
+      navigationResponse.isForMainFrame,
+      let upgradedRequest = tab?.upgradedHTTPSRequest,
+      let url = upgradedRequest.url,
+      responseURL?.baseDomain == url.baseDomain,
+      responseURL?.scheme == "https"
+    {
+      tab?.upgradedHTTPSRequest = nil
+      braveCore.httpsUpgradeExceptionsService.addException(for: url)
+      tab?.loadRequest(upgradedRequest)
+      return .cancel
+    }
 
     // Store the response in the tab
     if let responseURL = responseURL {
@@ -926,6 +946,9 @@ extension BrowserViewController: WKNavigationDelegate {
 
   public func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
     if let tab = tabManager[webView] {
+      /// Clear the upgraded request as we have a successful navigation
+      tab.upgradedHTTPSRequest = nil
+
       // Inject app's IAP receipt for Brave SKUs if necessary
       if !tab.isPrivate {
         Task { @MainActor in
@@ -1713,11 +1736,25 @@ extension BrowserViewController: WKUIDelegate {
     }
 
     // Handle query param stripping
-    return navigationAction.request.stripQueryParams(
+    if let request = navigationAction.request.stripQueryParams(
       initiatorURL: tab.committedURL,
       redirectSourceURL: tab.redirectSourceURL,
       isInternalRedirect: tab.isInternalRedirect
-    )
+    ) {
+      return request
+    }
+
+    // Attempt to upgrade to HTTPS
+    if Preferences.Shields.httpsEverywhere.value,
+      let upgradedURL = braveCore.httpsUpgradeExceptionsService.upgradeToHTTPS(for: requestURL)
+    {
+      tab.upgradedHTTPSRequest = navigationAction.request
+      var request = navigationAction.request
+      request.url = upgradedURL
+      return request
+    }
+
+    return nil
   }
 }
 

@@ -302,6 +302,10 @@ class Tab: NSObject {
   var playlistItem: PlaylistInfo?
   var playlistItemState: PlaylistItemAddedState = .none
 
+  /// This is the request that was upgraded to HTTPS
+  /// This allows us to rollback the upgrade when we encounter a 4xx+
+  var upgradedHTTPSRequest: URLRequest?
+
   /// The tabs new tab page controller.
   ///
   /// Should be setup in BVC then assigned here for future use.
