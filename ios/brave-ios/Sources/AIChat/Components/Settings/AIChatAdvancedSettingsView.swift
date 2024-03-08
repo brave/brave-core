@@ -293,7 +293,8 @@ public struct AIChatAdvancedSettingsView: View {
         AIChatPaywallView(
           premiumUpgrageSuccessful: { _ in
             Task { @MainActor in
-              await model.refreshPremiumStatus()
+              await model.refreshPremiumStatusOrderCredentials()
+              await viewModel.fetchOrder()
             }
           })
       }
