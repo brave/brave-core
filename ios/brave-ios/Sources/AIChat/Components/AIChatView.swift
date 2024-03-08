@@ -299,7 +299,7 @@ public struct AIChatView: View {
               }
             } else {
               // The purchase was through the Brave Account Website
-              if BraveStoreSDK.shared.enviroment != .production {
+              if BraveStoreSDK.shared.environment != .production {
                 openURL(.brave.braveLeoManageSubscriptionStaging)
               } else {
                 openURL(.brave.braveLeoManageSubscriptionProd)
@@ -321,9 +321,14 @@ public struct AIChatView: View {
       title: Strings.AIChat.responseContextMenuRegenerateTitle,
       icon: Image(braveSystemName: "leo.refresh"),
       onSelected: {
-        model.retryLastRequest()
-      })
-    
+        if turnIndex == model.conversationHistory.count - 1 {
+          model.retryLastRequest()
+        } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
+          model.submitQuery(query)
+        }
+      }
+    )
+
     AIChatResponseMessageViewContextMenuButton(
       title: Strings.AIChat.responseContextMenuCopyTitle,
       icon: Image(braveSystemName: "leo.copy"),

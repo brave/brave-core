@@ -64,8 +64,24 @@ open class KeyboardHelper: NSObject {
      * Starts monitoring the keyboard state.
      */
   open func startObserving() {
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-    NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillShow),
+      name: UIResponder.keyboardWillShowNotification,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardWillHide),
+      name: UIResponder.keyboardWillHideNotification,
+      object: nil
+    )
+    NotificationCenter.default.addObserver(
+      self,
+      selector: #selector(keyboardDidHide),
+      name: UIResponder.keyboardDidHideNotification,
+      object: nil
+    )
   }
 
   deinit {
@@ -102,6 +118,10 @@ open class KeyboardHelper: NSObject {
         weakDelegate.delegate?.keyboardHelper(self, keyboardWillHideWithState: currentState!)
       }
     }
+  }
+
+  @objc func keyboardDidHide(_ notification: Notification) {
+    currentState = nil
   }
 }
 

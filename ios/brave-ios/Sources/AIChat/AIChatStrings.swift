@@ -47,7 +47,7 @@ extension Strings {
       "aichat.feedbackSuccessAnswerDisLikedTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Answer DisLiked",
+      value: "Answer Disliked",
       comment: "The title for feedback view when response is sucessfull but disliked"
     )
     public static let feedbackSubmittedTitle = NSLocalizedString(
@@ -495,7 +495,7 @@ extension Strings {
       "aichat.advancedSettingsSubscriptionHeaderTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "SUBSCRIPTION",
+      value: "Subscription",
       comment: "The title for the header for subscription details"
     )
     public static let appStoreErrorTitle = NSLocalizedString(
@@ -551,21 +551,21 @@ extension Strings {
       "wallet.defaultModelChatSectionTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "CHAT",
+      value: "Chat",
       comment: "The title of the section where chat models are displayed as a list."
     )
     public static let unlimitedModelStatusTitle = NSLocalizedString(
       "wallet.unlimitedModelStatusTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "UNLIMITED",
+      value: "Unlimited",
       comment: "The title of the badge where a model which can be used unlimited"
     )
     public static let limitedModelStatusTitle = NSLocalizedString(
       "wallet.limitedModelStatusTitle",
       tableName: "BraveWallet",
       bundle: .module,
-      value: "LIMITED",
+      value: "Limited",
       comment: "The title of the badge where a model which can be used limited"
     )
     public static let defaultModelLanguageSectionTitle = NSLocalizedString(
@@ -607,7 +607,7 @@ extension Strings {
       "aichat.premiumNavigationBarBadgeTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "PREMIUM",
+      value: "Premium",
       comment: "Title shown next to Leo in navigation bar when user has premium subcription"
     )
     public static let infoAboutPageContext = NSLocalizedString(
@@ -726,7 +726,7 @@ extension Strings {
       "aichat.chatMenuSectionTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "CHAT",
+      value: "Chat",
       comment: "The title for the chat section in the menu"
     )
     public static let askLeoSearchSuggestionTitle = NSLocalizedString(

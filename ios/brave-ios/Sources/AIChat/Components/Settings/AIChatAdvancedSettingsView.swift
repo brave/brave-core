@@ -75,6 +75,10 @@ public struct AIChatAdvancedSettingsView: View {
   }
   
   private var subscriptionMenuTitle: String {
+    if model.premiumStatus != .active && model.premiumStatus != .activeDisconnected {
+      return Strings.AIChat.goPremiumButtonTitle
+    }
+
     // Display the info from the AppStore
     if let state = viewModel.inAppPurchaseSubscriptionState {
       switch state {
@@ -187,7 +191,9 @@ public struct AIChatAdvancedSettingsView: View {
       }
       
       Section {
-        if viewModel.canDisplaySubscriptionStatus {
+        if viewModel.canDisplaySubscriptionStatus
+          && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
+        {
           if viewModel.isSubscriptionStatusLoading {
             AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
                             detail: subscriptionStatusTitle)
@@ -257,10 +263,16 @@ public struct AIChatAdvancedSettingsView: View {
           }
         }
       } header: {
-        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle)
+        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
       }
       .sheet(isPresented: $isPaywallPresented) {
-        AIChatPaywallView()
+        AIChatPaywallView(
+          premiumUpgrageSuccessful: { _ in
+            Task { @MainActor in
+              await model.refreshPremiumStatusOrderCredentials()
+              await viewModel.fetchOrder()
+            }
+          })
       }
       .alert(isPresented: $appStoreConnectionErrorPresented) {
         Alert(title: Text(Strings.AIChat.appStoreErrorTitle),
@@ -270,12 +282,15 @@ public struct AIChatAdvancedSettingsView: View {
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
       
       Section {
-        Button(action: {
-          resetAndClearAlertErrorPresented.toggle()
-        }) {
-          Text(Strings.AIChat.resetLeoDataActionTitle)
-            .foregroundColor(Color(.braveBlurpleTint))
-        }
+        Button(
+          action: {
+            resetAndClearAlertErrorPresented = true
+          },
+          label: {
+            Text(Strings.AIChat.resetLeoDataActionTitle)
+              .foregroundColor(Color(.braveBlurpleTint))
+          }
+        )
         .frame(maxWidth: .infinity)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .buttonStyle(.plain)
