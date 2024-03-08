@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 
-#include "base/containers/cxx20_erase.h"
 #include "base/functional/bind.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/common/time_util.h"
