@@ -10,6 +10,7 @@ import static org.chromium.ui.base.ViewUtils.dpToPx;
 import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PictureInPictureParams;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -83,6 +84,7 @@ import org.chromium.brave_wallet.mojom.SwapService;
 import org.chromium.brave_wallet.mojom.TxService;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.ApplicationLifetime;
+import org.chromium.chrome.browser.BackgroundVideoPlaybackTabHelper;
 import org.chromium.chrome.browser.BraveAdFreeCalloutDialogFragment;
 import org.chromium.chrome.browser.BraveFeatureUtil;
 import org.chromium.chrome.browser.BraveHelper;
@@ -217,18 +219,21 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-/**
- * Brave's extension for ChromeActivity
- */
+/** Brave's extension for ChromeActivity */
 @JNINamespace("chrome::android")
 public abstract class BraveActivity extends ChromeActivity
-        implements BrowsingDataBridge.OnClearBrowsingDataListener, BraveVpnObserver,
-                   OnBraveSetDefaultBrowserListener, ConnectionErrorHandler, PrefObserver,
-                   BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
-                   BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
-                   MiscAndroidMetricsConnectionErrorHandler
-                           .MiscAndroidMetricsConnectionErrorHandlerDelegate {
+        implements BrowsingDataBridge.OnClearBrowsingDataListener,
+                BraveVpnObserver,
+                OnBraveSetDefaultBrowserListener,
+                ConnectionErrorHandler,
+                PrefObserver,
+                BraveSafeBrowsingApiHandler.BraveSafeBrowsingApiHandlerDelegate,
+                BraveNewsConnectionErrorHandler.BraveNewsConnectionErrorHandlerDelegate,
+                MiscAndroidMetricsConnectionErrorHandler
+                        .MiscAndroidMetricsConnectionErrorHandlerDelegate {
     public static final String BRAVE_WALLET_HOST = "wallet";
     public static final String BRAVE_WALLET_URL = "brave://wallet/crypto/portfolio/assets";
     public static final String BRAVE_BUY_URL = "brave://wallet/crypto/fund-wallet";
@@ -260,6 +265,8 @@ public abstract class BraveActivity extends ChromeActivity
     public static final int MAX_FAILED_CAPTCHA_ATTEMPTS = 10;
 
     public static final int APP_OPEN_COUNT_FOR_WIDGET_PROMO = 25;
+
+    private static final String TAG = "BraveActivity";
 
     private static final boolean ENABLE_IN_APP_UPDATE =
             Build.VERSION.SDK_INT < Build.VERSION_CODES.UPSIDE_DOWN_CAKE;
@@ -366,7 +373,29 @@ public abstract class BraveActivity extends ChromeActivity
         if (BraveVpnUtils.isVpnFeatureSupported(BraveActivity.this)) {
             BraveVpnNativeWorker.getInstance().removeObserver(this);
         }
+
         super.onPauseWithNative();
+    }
+
+    @Override
+    public void onUserLeaveHint() {
+        super.onUserLeaveHint();
+        if (isActivityFinishingOrDestroyed()) return;
+        Tab currentTab = getActivityTab();
+        if (currentTab != null
+                && currentTab.getUrl().getSpec() != null
+                && isYTVideoUrl(currentTab.getUrl().getSpec())
+                && !isInPictureInPictureMode()
+                && BackgroundVideoPlaybackTabHelper.isPlayingMedia(currentTab.getWebContents())) {
+            BackgroundVideoPlaybackTabHelper.sendOrientationChangeEvent(
+                    currentTab.getWebContents(), true);
+            try {
+                enterPictureInPictureMode(new PictureInPictureParams.Builder().build());
+            } catch (IllegalStateException | IllegalArgumentException e) {
+                Log.e(TAG, "Error entering PiP: " + e);
+                return;
+            }
+        }
     }
 
     @Override
@@ -1376,6 +1405,30 @@ public abstract class BraveActivity extends ChromeActivity
 
             BraveNewsUtils.getBraveNewsSettingsData(mBraveNewsController, null);
         }
+    }
+
+    @Override
+    public void performOnConfigurationChanged(Configuration newConfig) {
+        super.performOnConfigurationChanged(newConfig);
+
+        Tab currentTab = getActivityTab();
+        if (currentTab != null
+                && currentTab.getUrl().getSpec() != null
+                && isYTVideoUrl(currentTab.getUrl().getSpec())
+                && !isInPictureInPictureMode()) {
+            BackgroundVideoPlaybackTabHelper.sendOrientationChangeEvent(
+                    currentTab.getWebContents(),
+                    newConfig.orientation == Configuration.ORIENTATION_LANDSCAPE);
+        }
+    }
+
+    private boolean isYTVideoUrl(String url) {
+
+        String pattern =
+                "^(?:https?:)?(?:\\/\\/)?(?:youtu\\.be\\/|(?:www\\.|m\\.)?youtube\\.com\\/(?:watch|v|embed)(?:\\.php)?(?:\\?.*v=|\\/))([a-zA-Z0-9\\_-]{7,15})(?:[\\?&][a-zA-Z0-9\\_-]+=[a-zA-Z0-9\\_-]+)*(?:[&\\/\\#].*)?$";
+        Pattern compiledPattern = Pattern.compile(pattern);
+        Matcher matcher = compiledPattern.matcher(url);
+        return matcher.find();
     }
 
     private void migrateBgPlaybackToFeature() {

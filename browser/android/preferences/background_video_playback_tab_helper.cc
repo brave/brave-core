@@ -9,11 +9,15 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "brave/browser/android/preferences/features.h"
+#include "brave/build/android/jni_headers/BackgroundVideoPlaybackTabHelper_jni.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/pref_names.h"
+#include "brave/components/script_injector/common/mojom/script_injector.mojom.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
+#include "chrome/common/chrome_isolated_world_ids.h"
 #include "components/prefs/pref_service.h"
+#include "content/browser/media/session/media_session_impl.h"
 #include "content/browser/web_contents/web_contents_impl.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/navigation_entry.h"
@@ -28,10 +32,10 @@ const char16_t k_youtube_background_playback_script[] =
     "    if (document._addEventListener === undefined) {"
     "        document._addEventListener = document.addEventListener;"
     "        document.addEventListener = function(a,b,c) {"
-    "            if(a != 'visibilitychange') {"
-    "                document._addEventListener(a,b,c);"
-    "            }"
-    "        };"
+    "           if(a != 'visibilitychange') {"
+    "               document._addEventListener(a,b,c);"
+    "           }"
+    "         };"
     "    }"
     "}());";
 
@@ -80,4 +84,72 @@ void BackgroundVideoPlaybackTabHelper::DidFinishNavigation(
   }
 }
 
+namespace chrome {
+namespace android {
+
+mojo::AssociatedRemote<script_injector::mojom::ScriptInjector> GetRemote(
+    content::RenderFrameHost* rfh) {
+  mojo::AssociatedRemote<script_injector::mojom::ScriptInjector>
+      script_injector_remote;
+  rfh->GetRemoteAssociatedInterfaces()->GetInterface(&script_injector_remote);
+  return script_injector_remote;
+}
+void JNI_BackgroundVideoPlaybackTabHelper_SendOrientationChangeEvent(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents,
+    jboolean is_full_screen) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  std::string script;
+  if (is_full_screen) {
+    script =
+        "if(!document.fullscreenElement) {"
+        "   var fullscreenBtn = "
+        "     document.getElementsByClassName('fullscreen-icon');"
+        "   if(fullscreenBtn && fullscreenBtn.length > 0) {"
+        "      fullscreenBtn[0].click();"
+        "   } else {"
+        "     var moviePlayer = document.getElementById('movie_player');"
+        "     if (moviePlayer) {"
+        "         moviePlayer.click();"
+        "     }"
+        "     setTimeout(() => {"
+        "         var fullscreenBtn = "
+        "           document.getElementsByClassName('fullscreen-icon');"
+        "         if(fullscreenBtn && fullscreenBtn.length > 0) {"
+        "            fullscreenBtn[0].click();"
+        "         }"
+        "     }, 50);"
+        "   }"
+        "}";
+  } else {
+    script =
+        "if(document.fullscreenElement) {"
+        "   document.exitFullscreen();"
+        "}";
+  }
+  GetRemote(web_contents->GetPrimaryMainFrame())
+      ->RequestAsyncExecuteScript(
+          ISOLATED_WORLD_ID_BRAVE_INTERNAL, base::UTF8ToUTF16(script),
+          blink::mojom::UserActivationOption::kActivate,
+          blink::mojom::PromiseResultOption::kAwait, base::NullCallback());
+}
+
+jboolean JNI_BackgroundVideoPlaybackTabHelper_IsPlayingMedia(
+    JNIEnv* env,
+    const base::android::JavaParamRef<jobject>& jweb_contents) {
+  content::WebContents* web_contents =
+      content::WebContents::FromJavaWebContents(jweb_contents);
+  content::MediaSessionImpl* media_session_impl =
+      content::MediaSessionImpl::Get(web_contents);
+  if (!media_session_impl) {
+    return false;
+  }
+  media_session::mojom::MediaSessionInfoPtr current_info =
+      media_session_impl->GetMediaSessionInfoSync();
+  return current_info->playback_state ==
+         media_session::mojom::MediaPlaybackState::kPlaying;
+}
+}  // namespace android
+}  // namespace chrome
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BackgroundVideoPlaybackTabHelper);

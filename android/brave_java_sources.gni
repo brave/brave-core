@@ -20,6 +20,7 @@ import("//brave/components/signin/public/android/java_sources.gni")
 import("//components/feed/features.gni")
 
 brave_java_sources = [
+  "../../brave/android/java/org/chromium/chrome/browser/BackgroundVideoPlaybackTabHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAdFreeCalloutDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveAppHooks.java",
   "../../brave/android/java/org/chromium/chrome/browser/BraveApplicationImplBase.java",
