@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -711,9 +710,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getParentIds",
+                        "shouldUseParentIds",
                         true,
-                        Pair.class,
+                        boolean.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
