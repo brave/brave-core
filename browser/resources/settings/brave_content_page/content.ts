@@ -25,7 +25,7 @@ import {getTemplate} from './content.html.js'
  */
 const SIZE_DIFFERENCE_FIXED_STANDARD: number = 3;
 
-export interface SettingsBraveAppearanceContentElement {
+export interface SettingsBraveContentContentElement {
   $: {
     defaultFontSize: SettingsDropdownMenuElement,
     zoomLevel: HTMLSelectElement,
@@ -35,9 +35,9 @@ export interface SettingsBraveAppearanceContentElement {
 const SettingsBraveAppearanceContentElementBase =
     I18nMixin(PrefsMixin(BaseMixin(PolymerElement)));
 
-export class SettingsBraveAppearanceContentElement extends SettingsBraveAppearanceContentElementBase {
+export class SettingsBraveContentContentElement extends SettingsBraveAppearanceContentElementBase {
   static get is() {
-    return 'settings-brave-appearance-content'
+    return 'settings-brave-content-content'
   }
 
   static get template() {
@@ -126,10 +126,6 @@ export class SettingsBraveAppearanceContentElement extends SettingsBraveAppearan
   private formatZoom_(zoom: number): number {
     return Math.round(zoom * 100);
   }
-
-  private showSpeedreaderOption_() {
-    return loadTimeData.getBoolean('isSpeedreaderFeatureEnabled')
-  }
 }
 
-customElements.define(SettingsBraveAppearanceContentElement.is, SettingsBraveAppearanceContentElement)
+customElements.define(SettingsBraveContentContentElement.is, SettingsBraveContentContentElement)

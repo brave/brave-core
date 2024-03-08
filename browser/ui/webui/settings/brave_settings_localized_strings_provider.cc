@@ -164,8 +164,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if defined(TOOLKIT_VIEWS)
       {"appearanceSettingsToolbarSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TOOLBAR_SECTION},
-      {"appearanceSettingsContentSection",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
       {"appearanceSettingsTabsSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SECTION},
       {"appearanceSettingsTabsUseVerticalTabs",
@@ -203,6 +201,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC},
       {"appearanceSettingsSidebarDisabledDesc",
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
+      {"contentSettingsContentSection",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},

@@ -7,18 +7,18 @@ import { PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_
 import { WebUiListenerMixin } from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import { PrefsMixin } from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js'
 import { I18nMixin } from 'chrome://resources/cr_elements/i18n_mixin.js'
-import { getTemplate } from './brave_playlist_page.html.js'
+import { getTemplate } from './playlist.html.js'
 
 const BravePlaylistPageBase = WebUiListenerMixin(
   I18nMixin(PrefsMixin(PolymerElement))
 )
 
 /**
- * 'settings-brave-playlist-page' is the settings page containing settings for Playlist
+ * 'setting-brave-content-playlist' is the settings page containing settings for Playlist
  */
-class BravePlaylistPageElement extends BravePlaylistPageBase {
+class SettingsBraveContentPlaylistElement extends BravePlaylistPageBase {
   static get is () {
-    return 'settings-brave-playlist-page'
+    return 'settings-brave-content-playlist'
   }
 
   static get template () {
@@ -26,4 +26,4 @@ class BravePlaylistPageElement extends BravePlaylistPageBase {
   }
 }
 
-customElements.define(BravePlaylistPageElement.is, BravePlaylistPageElement)
+customElements.define(SettingsBraveContentPlaylistElement.is, SettingsBraveContentPlaylistElement)
