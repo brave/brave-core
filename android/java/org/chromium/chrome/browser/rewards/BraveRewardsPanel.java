@@ -22,6 +22,7 @@ import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.UnderlineSpan;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -86,6 +87,8 @@ import org.chromium.chrome.browser.util.TabUtils;
 import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 import org.chromium.ui.text.NoUnderlineClickableSpan;
+import org.chromium.ui.text.SpanApplier;
+import org.chromium.ui.text.SpanApplier.SpanInfo;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -977,7 +980,7 @@ public class BraveRewardsPanel
 
     // Rewards data callbacks
     @Override
-    public void OnClaimPromotion(int responseCode) {
+    public void onClaimPromotion(int responseCode) {
         if (responseCode != BraveRewardsNativeWorker.OK) {
             String args[] = {};
             showNotification(
@@ -996,7 +999,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetCurrentBalanceReport(double[] report) {
+    public void onGetCurrentBalanceReport(double[] report) {
         if (report == null) {
             return;
         }
@@ -1064,9 +1067,14 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
-            int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
-            double minEarningsLastMonth, double maxEarningsLastMonth) {
+    public void onGetAdsAccountStatement(
+            boolean success,
+            double nextPaymentDate,
+            int adsReceivedThisMonth,
+            double minEarningsThisMonth,
+            double maxEarningsThisMonth,
+            double minEarningsLastMonth,
+            double maxEarningsLastMonth) {
         if (mExternalWallet != null && mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
                 && !PackageUtils.isFirstInstall(mActivity)) {
             mPopupView.findViewById(R.id.estimated_earnings_range_group).setVisibility(View.GONE);
@@ -1233,7 +1241,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnRewardsParameters() {
+    public void onRewardsParameters() {
         if (mShouldShowOnboardingForConnectAccount) {
             mShouldShowOnboardingForConnectAccount = false;
             showBraveRewardsOnboarding(true);
@@ -1259,6 +1267,34 @@ public class BraveRewardsPanel
         panelShadow(true);
         enableControls(false, mRewardsMainLayout);
         mRewardsTosModal.setVisibility(View.VISIBLE);
+
+        NoUnderlineClickableSpan resetClickableSpan =
+                new NoUnderlineClickableSpan(
+                        mActivity,
+                        R.color.brave_blue_tint_color,
+                        (textView) -> {
+                            mBraveRewardsNativeWorker.resetTheWholeState();
+                        });
+        NoUnderlineClickableSpan tosClickableSpan =
+                new NoUnderlineClickableSpan(
+                        mActivity,
+                        R.color.brave_blue_tint_color,
+                        (textView) -> {
+                            TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_TERMS_PAGE);
+                            dismiss();
+                        });
+
+        SpannableString tosSpannableString =
+                SpanApplier.applySpans(
+                        mActivity.getResources().getString(R.string.rewards_tos_text),
+                        new SpanInfo(
+                                "<reset>", "</reset>", resetClickableSpan, new UnderlineSpan()),
+                        new SpanInfo("<tos>", "</tos>", tosClickableSpan, new UnderlineSpan()));
+
+        TextView tosSubtitleText = mRewardsTosModal.findViewById(R.id.tos_subtitle_text);
+        tosSubtitleText.setMovementMethod(LinkMovementMethod.getInstance());
+        tosSubtitleText.setText(tosSpannableString);
+
         TextView btnActionTos = mRewardsTosModal.findViewById(R.id.btn_action_tos);
         btnActionTos.setOnClickListener(
                 (new View.OnClickListener() {
@@ -1270,19 +1306,19 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetLatestNotification(String id, int type, long timestamp, String[] args) {
+    public void onGetLatestNotification(String id, int type, long timestamp, String[] args) {
         if (!mCurrentNotificationId.equals(REWARDS_PROMOTION_CLAIM_ERROR_ID)) {
             showNotification(id, type, timestamp, args);
         }
     }
 
     @Override
-    public void OnNotificationDeleted(String id) {
+    public void onNotificationDeleted(String id) {
         dismissNotification(id);
     }
 
     @Override
-    public void OnGetExternalWallet(String externalWallet) {
+    public void onGetExternalWallet(String externalWallet) {
         if (!TextUtils.isEmpty(externalWallet)) {
             try {
                 mExternalWallet = new BraveRewardsExternalWallet(externalWallet);
@@ -2108,7 +2144,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnPublisherInfo(int tabId) {
+    public void onPublisherInfo(int tabId) {
         mPublisherExist = true;
         mCurrentTabId = tabId;
 
@@ -2146,7 +2182,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetAutoContributeProperties() {
+    public void onGetAutoContributeProperties() {
         if (mBraveRewardsNativeWorker != null) {
             int shouldShow =
                     mBraveRewardsNativeWorker.isAutoContributeEnabled() ? View.VISIBLE : View.GONE;
@@ -2160,7 +2196,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnRecurringDonationUpdated() {
+    public void onRecurringDonationUpdated() {
         updateMonthlyContributionUI();
     }
 
@@ -2244,7 +2280,7 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnRefreshPublisher(int status, String publisherKey) {
+    public void onRefreshPublisher(int status, String publisherKey) {
         String pubName = mBraveRewardsNativeWorker.getPublisherName(mCurrentTabId);
         if (pubName.equals(publisherKey)) {
             updatePublisherStatus(status);

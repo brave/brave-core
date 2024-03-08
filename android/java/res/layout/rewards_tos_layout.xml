@@ -12,54 +12,60 @@
     android:layout_margin="8dp"
     android:layout_gravity="bottom"
     android:visibility="gone"
-    app:cardBackgroundColor="@color/rewards_panel_notification_bg_color"
     app:cardCornerRadius="16dp"
-    app:cardElevation="2dp">
+    app:cardElevation="10dp">
 
-    <LinearLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:orientation="vertical">
+        android:fadeScrollbars="false"
+        android:scrollbars="vertical">
 
-        <TextView
-            android:id="@+id/tos_title_text"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="22sp"
-            android:textColor="@color/rewards_panel_notification_text_color"
-            android:text="@string/tos_title"
-            android:drawablePadding="4dp"
-            android:layout_marginBottom="24dp"
-            android:fontFamily="sans-serif-medium"
-            android:textAlignment="textStart" />
+            android:layout_margin="16dp"
+            android:orientation="vertical">
 
-        <TextView
-            android:id="@+id/tos_subtitle_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:text="@string/tos_text"
-            android:textColor="@color/rewards_panel_notification_secondary_text_color"
-            android:layout_marginBottom="16dp"
-            android:fontFamily="sans-serif"
-            android:textAlignment="textStart"/>
-
-        <TextView
-                android:id="@+id/btn_action_tos"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/blue_48_rounded_bg"
-                android:clickable="true"
-                android:focusable="true"
-                android:text="@string/i_agree_action"
-                android:foreground="?android:attr/selectableItemBackground"
-                android:paddingHorizontal="16dp"
-                android:paddingVertical="12dp"
-                android:gravity="center"
+            <TextView
+                android:id="@+id/tos_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="22sp"
+                android:textColor="@color/rewards_panel_notification_text_color"
+                android:text="@string/rewards_tos_title"
+                android:drawablePadding="4dp"
+                android:layout_marginBottom="24dp"
                 android:fontFamily="sans-serif-medium"
-                android:textColor="@color/rewards_panel_notification_action_color" />
-           
-    </LinearLayout>
+                android:textAlignment="textStart" />
+
+            <TextView
+                android:id="@+id/tos_subtitle_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:textColor="@color/rewards_panel_notification_secondary_text_color"
+                android:layout_marginBottom="16dp"
+                android:fontFamily="sans-serif"
+                android:textAlignment="textStart"/>
+
+            <TextView
+                    android:id="@+id/btn_action_tos"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/blue_48_rounded_bg"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:text="@string/i_agree_action"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:paddingHorizontal="16dp"
+                    android:paddingVertical="12dp"
+                    android:gravity="center"
+                    android:fontFamily="sans-serif-medium"
+                    android:textColor="@color/rewards_panel_notification_action_color" />
+               
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
 </androidx.cardview.widget.CardView>

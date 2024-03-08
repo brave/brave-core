@@ -605,9 +605,7 @@ bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {
     return false;
   }
   int params_version = prefs->GetInteger(prefs::kParametersTosVersion);
-  LOG(ERROR) << "deep_rewards : kParametersTosVersion : " << params_version;
   int user_version = prefs->GetInteger(prefs::kTosVersion);
-  LOG(ERROR) << "deep_rewards : kTosVersion : " << user_version;
   return user_version < params_version;
 }
 

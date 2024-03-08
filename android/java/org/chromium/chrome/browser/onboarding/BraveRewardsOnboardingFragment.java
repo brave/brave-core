@@ -26,6 +26,7 @@ import androidx.fragment.app.Fragment;
 
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.BraveRewardsHelper;
+import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.util.BraveTouchUtils;
 
@@ -38,9 +39,6 @@ public class BraveRewardsOnboardingFragment extends Fragment {
 
     private Button btnSkip;
     private Button btnNext;
-
-    private static final String BRAVE_TERMS_PAGE =
-        "https://basicattentiontoken.org/user-terms-of-service/";
 
     private boolean isAdsAvailable;
 
@@ -92,17 +90,20 @@ public class BraveRewardsOnboardingFragment extends Fragment {
         Spanned textToAgree = BraveRewardsHelper.spannedFromHtmlString(termsText);
         SpannableString ss = new SpannableString(textToAgree.toString());
 
-        ClickableSpan clickableSpan = new ClickableSpan() {
-            @Override
-            public void onClick(@NonNull View textView) {
-                CustomTabActivity.showInfoPage(getActivity(), BRAVE_TERMS_PAGE);
-            }
-            @Override
-            public void updateDrawState(@NonNull TextPaint ds) {
-                super.updateDrawState(ds);
-                ds.setUnderlineText(false);
-            }
-        };
+        ClickableSpan clickableSpan =
+                new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View textView) {
+                        CustomTabActivity.showInfoPage(
+                                getActivity(), BraveActivity.BRAVE_TERMS_PAGE);
+                    }
+
+                    @Override
+                    public void updateDrawState(@NonNull TextPaint ds) {
+                        super.updateDrawState(ds);
+                        ds.setUnderlineText(false);
+                    }
+                };
 
         ss.setSpan(clickableSpan, getResources().getString(R.string.terms_text).length(),
                    ss.length() - 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);

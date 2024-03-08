@@ -32,6 +32,10 @@
                         layout="@layout/rewards_panel_vbat_expire_notice"/>
 
                     <include
+                        android:id="@+id/rewards_tos_layout_id"
+                        layout="@layout/rewards_tos_layout" />
+
+                    <include
                         android:id="@+id/rewards_response_modal_id"
                         layout="@layout/rewards_response_modal" />
 
@@ -77,10 +81,6 @@
                             layout="@layout/brave_rewards_panel_settings_layout" />
 
                     </LinearLayout>
-
-                    <include
-                        android:id="@+id/rewards_tos_layout_id"
-                        layout="@layout/rewards_tos_layout" />
 
                 </FrameLayout>
 

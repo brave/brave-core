@@ -1400,7 +1400,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void OnNotificationAdded(String id, int type, long timestamp, String[] args) {
+    public void onNotificationAdded(String id, int type, long timestamp, String[] args) {
         if (mBraveRewardsNativeWorker == null) {
             return;
         }
@@ -1431,7 +1431,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     @Override
-    public void OnNotificationsCount(int count) {
+    public void onNotificationsCount(int count) {
         if (mBraveRewardsNotificationsCount != null) {
             if (count != 0) {
                 String value = Integer.toString(count);

@@ -45,9 +45,6 @@ import org.chromium.ui.base.DeviceFormFactor;
 
 public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment {
     private static final String TAG = "RewardsBottomSheet";
-
-    private static final String BRAVE_TERMS_PAGE =
-            "https://basicattentiontoken.org/user-terms-of-service/";
     private static final String BRAVE_REWARDS_LEARN_MORE = "https://brave.com/faq-rewards";
 
     private int ntpType;
@@ -170,17 +167,20 @@ public class RewardsBottomSheetDialogFragment extends BottomSheetDialogFragment 
             Spanned tosTextSpanned = BraveRewardsHelper.spannedFromHtmlString(tosText);
             SpannableString tosTextSS = new SpannableString(tosTextSpanned.toString());
 
-            ClickableSpan tosClickableSpan = new ClickableSpan() {
-                @Override
-                public void onClick(@NonNull View textView) {
-                    CustomTabActivity.showInfoPage(getActivity(), BRAVE_TERMS_PAGE);
-                }
-                @Override
-                public void updateDrawState(@NonNull TextPaint ds) {
-                    super.updateDrawState(ds);
-                    ds.setUnderlineText(false);
-                }
-            };
+                ClickableSpan tosClickableSpan =
+                        new ClickableSpan() {
+                            @Override
+                            public void onClick(@NonNull View textView) {
+                                CustomTabActivity.showInfoPage(
+                                        getActivity(), BraveActivity.BRAVE_TERMS_PAGE);
+                            }
+
+                            @Override
+                            public void updateDrawState(@NonNull TextPaint ds) {
+                                super.updateDrawState(ds);
+                                ds.setUnderlineText(false);
+                            }
+                        };
 
             tosTextSS.setSpan(tosClickableSpan, termsOfServiceIndex, termsOfServiceIndex + getResources().getString(R.string.terms_of_service).length(), Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
                 ForegroundColorSpan brOffForegroundSpan =

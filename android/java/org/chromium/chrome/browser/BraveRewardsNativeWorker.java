@@ -601,14 +601,14 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void onRefreshPublisher(int status, String publisherKey) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnRefreshPublisher(status, publisherKey);
+            observer.onRefreshPublisher(status, publisherKey);
         }
     }
 
     @CalledByNative
     public void onRewardsParameters() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnRewardsParameters();
+            observer.onRewardsParameters();
         }
     }
 
@@ -629,7 +629,7 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void onGetCurrentBalanceReport(double[] report) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetCurrentBalanceReport(report);
+            observer.onGetCurrentBalanceReport(report);
         }
     }
 
@@ -647,42 +647,42 @@ public class BraveRewardsNativeWorker {
 
         // Notify BraveRewardsObserver (panel).
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnPublisherInfo(tabId);
+            observer.onPublisherInfo(tabId);
         }
     }
 
     @CalledByNative
     public void onNotificationAdded(String id, int type, long timestamp, String[] args) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnNotificationAdded(id, type, timestamp, args);
+            observer.onNotificationAdded(id, type, timestamp, args);
         }
     }
 
     @CalledByNative
     public void onNotificationsCount(int count) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnNotificationsCount(count);
+            observer.onNotificationsCount(count);
         }
     }
 
     @CalledByNative
     public void onGetLatestNotification(String id, int type, long timestamp, String[] args) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetLatestNotification(id, type, timestamp, args);
+            observer.onGetLatestNotification(id, type, timestamp, args);
         }
     }
 
     @CalledByNative
     public void onNotificationDeleted(String id) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnNotificationDeleted(id);
+            observer.onNotificationDeleted(id);
         }
     }
 
     @CalledByNative
     public void onGetAutoContributeProperties() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetAutoContributeProperties();
+            observer.onGetAutoContributeProperties();
         }
     }
 
@@ -696,14 +696,14 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void onGetReconcileStamp(long timestamp) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetReconcileStamp(timestamp);
+            observer.onGetReconcileStamp(timestamp);
         }
     }
 
     @CalledByNative
     public void onRecurringDonationUpdated() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnRecurringDonationUpdated();
+            observer.onRecurringDonationUpdated();
         }
     }
 
@@ -711,7 +711,7 @@ public class BraveRewardsNativeWorker {
     public void onGrantFinish(int result) {
         mGrantClaimInProcess = false;
         for(BraveRewardsObserver observer : mObservers) {
-            observer.OnGrantFinish(result);
+            observer.onGrantFinish(result);
         }
     }
 
@@ -725,14 +725,14 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void onResetTheWholeState(boolean success) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnResetTheWholeState(success);
+            observer.onResetTheWholeState(success);
         }
     }
 
     @CalledByNative
     public void onGetExternalWallet(String externalWallet) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetExternalWallet(externalWallet);
+            observer.onGetExternalWallet(externalWallet);
         }
     }
 
@@ -753,8 +753,13 @@ public class BraveRewardsNativeWorker {
             double minEarningsLastMonth,
             double maxEarningsLastMonth) {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnGetAdsAccountStatement(success, nextPaymentDate, adsReceivedThisMonth,
-                    minEarningsThisMonth, maxEarningsThisMonth, minEarningsLastMonth,
+            observer.onGetAdsAccountStatement(
+                    success,
+                    nextPaymentDate,
+                    adsReceivedThisMonth,
+                    minEarningsThisMonth,
+                    maxEarningsThisMonth,
+                    minEarningsLastMonth,
                     maxEarningsLastMonth);
         }
     }
@@ -762,21 +767,21 @@ public class BraveRewardsNativeWorker {
     @CalledByNative
     public void onExternalWalletConnected() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnExternalWalletConnected();
+            observer.onExternalWalletConnected();
         }
     }
 
     @CalledByNative
     public void onExternalWalletLoggedOut() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnExternalWalletLoggedOut();
+            observer.onExternalWalletLoggedOut();
         }
     }
 
     @CalledByNative
     public void onExternalWalletReconnected() {
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnExternalWalletReconnected();
+            observer.onExternalWalletReconnected();
         }
     }
 
@@ -784,7 +789,7 @@ public class BraveRewardsNativeWorker {
     public void onClaimPromotion(int errorCode) {
         mGrantClaimInProcess = false;
         for (BraveRewardsObserver observer : mObservers) {
-            observer.OnClaimPromotion(errorCode);
+            observer.onClaimPromotion(errorCode);
         }
     }
 
