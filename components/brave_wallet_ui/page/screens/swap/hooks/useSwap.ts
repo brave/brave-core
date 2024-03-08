@@ -166,7 +166,7 @@ export const useSwap = () => {
         network.chainId === query.get('fromChainId') &&
         network.coin === fromAccount?.accountId.coin
     )
-  }, [supportedNetworks, fromAccount?.accountId.coin])
+  }, [supportedNetworks, fromAccount?.accountId.coin, query])
 
   const toNetwork = useMemo(() => {
     if (!supportedNetworks?.length || !toCoin) {
@@ -176,7 +176,7 @@ export const useSwap = () => {
       (network) =>
         network.chainId === query.get('toChainId') && network.coin === toCoin
     )
-  }, [supportedNetworks, toCoin])
+  }, [supportedNetworks, toCoin, query])
 
   const fromToken = useMemo(() => {
     const contractOrSymbol = query.get('fromToken')
