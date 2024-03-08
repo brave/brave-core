@@ -466,6 +466,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
       prefilledAccount: prefilledAccount,
       userAssetManager: userAssetManager
     )
+    depositTokenStore = store
     return store
   }
 
