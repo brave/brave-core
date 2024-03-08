@@ -33,10 +33,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "adler"
-version = "1.0.2"
-
-[[package]]
 name = "adss"
 version = "0.2.2"
 dependencies = [
@@ -51,14 +47,14 @@ dependencies = [
 name = "ahash"
 version = "0.7.6"
 dependencies = [
- "getrandom 0.2.9",
+ "getrandom 0.2.11",
  "once_cell",
  "version_check",
 ]
 
 [[package]]
 name = "aho-corasick"
-version = "0.7.18"
+version = "1.1.2"
 dependencies = [
  "memchr",
 ]
@@ -78,8 +74,14 @@ dependencies = [
 ]
 
 [[package]]
+name = "anstyle"
+version = "1.0.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8901269c6307e8d93993578286ac0edf7f195079ffff5ebdeea6a59ffb7e36bc"
+
+[[package]]
 name = "anyhow"
-version = "1.0.70"
+version = "1.0.75"
 
 [[package]]
 name = "arrayref"
@@ -95,16 +97,7 @@ version = "0.1.64"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
-]
-
-[[package]]
-name = "atty"
-version = "0.2.14"
-dependencies = [
- "hermit-abi",
- "libc",
- "winapi",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -118,6 +111,10 @@ version = "0.2.11"
 [[package]]
 name = "base64"
 version = "0.13.1"
+
+[[package]]
+name = "bech32"
+version = "0.9.1"
 
 [[package]]
 name = "bigdecimal"
@@ -216,14 +213,18 @@ version = "1.5.0"
 
 [[package]]
 name = "camino"
-version = "1.0.9"
+version = "1.1.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "c59e92b5a388f549b863a7bea62612c09f24c8393560709a54558a9abdfb3b9c"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "cargo-platform"
-version = "0.1.2"
+version = "0.1.7"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "694c8807f2ae16faecc43dc17d74b3eb042482789fd0eb64b39a2e04e087053f"
 dependencies = [
  "serde",
 ]
@@ -231,6 +232,8 @@ dependencies = [
 [[package]]
 name = "cargo_metadata"
 version = "0.14.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4acbb09d9ee8e23699b9634375c72795d095bf268439da88562cf9b501f181fa"
 dependencies = [
  "camino",
  "cargo-platform",
@@ -281,6 +284,7 @@ dependencies = [
  "anyhow",
  "async-trait",
  "base64",
+ "bech32",
  "bigdecimal",
  "bitflags",
  "blake2b_simd",
@@ -290,20 +294,15 @@ dependencies = [
  "cfg-if",
  "challenge-bypass-ristretto",
  "chrono",
- "clap",
  "cpufeatures",
  "crunchy",
  "cssparser 0.28.1",
- "curve25519-dalek 3.2.1",
- "curve25519-dalek 4.1.1",
- "curve25519-dalek-derive",
  "cxx",
  "cxxbridge-cmd",
  "data-encoding",
  "ed25519-dalek-bip32",
  "env_logger",
  "feed-rs",
- "font-types",
  "forest_bigint",
  "futures",
  "futures-retry",
@@ -333,7 +332,6 @@ dependencies = [
  "quote",
  "rand 0.8.5",
  "rand_pcg 0.3.1",
- "read-fonts",
  "regex",
  "rstest",
  "rstest_reuse",
@@ -344,12 +342,10 @@ dependencies = [
  "serde_json",
  "serde_json_lenient",
  "sha2 0.9.9",
- "skrifa",
  "small_ctor",
  "star-constellation",
  "static_assertions",
- "syn 1.0.99",
- "tempfile",
+ "syn 1.0.109",
  "thiserror",
  "time",
  "toml",
@@ -388,21 +384,23 @@ dependencies = [
 
 [[package]]
 name = "clap"
-version = "4.0.26"
+version = "4.4.8"
 dependencies = [
- "atty",
- "bitflags",
+ "clap_builder",
+]
+
+[[package]]
+name = "clap_builder"
+version = "4.4.8"
+dependencies = [
+ "anstyle",
  "clap_lex",
  "strsim",
- "termcolor",
 ]
 
 [[package]]
 name = "clap_lex"
-version = "0.3.0"
-dependencies = [
- "os_str_bytes",
-]
+version = "0.6.0"
 
 [[package]]
 name = "codespan-reporting"
@@ -436,13 +434,6 @@ name = "cpufeatures"
 version = "0.2.11"
 dependencies = [
  "libc",
-]
-
-[[package]]
-name = "crc32fast"
-version = "1.3.2"
-dependencies = [
- "cfg-if",
 ]
 
 [[package]]
@@ -493,7 +484,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "smallvec",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -508,7 +499,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "smallvec",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -516,7 +507,7 @@ name = "cssparser-macros"
 version = "0.6.0"
 dependencies = [
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -526,7 +517,6 @@ dependencies = [
  "byteorder",
  "digest 0.9.0",
  "rand_core 0.5.1",
- "serde",
  "subtle",
  "zeroize",
 ]
@@ -538,6 +528,7 @@ dependencies = [
  "cfg-if",
  "cpufeatures",
  "curve25519-dalek-derive",
+ "fiat-crypto",
  "platforms",
  "rand_core 0.6.4",
  "rustc_version",
@@ -552,35 +543,41 @@ version = "0.1.1"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.29",
+ "syn 2.0.43",
 ]
 
 [[package]]
 name = "cxx"
-version = "1.0.82"
+version = "1.0.110"
 dependencies = [
+ "cc",
+ "cxxbridge-flags",
  "cxxbridge-macro",
  "link-cplusplus",
 ]
 
 [[package]]
 name = "cxxbridge-cmd"
-version = "1.0.82"
+version = "1.0.110"
 dependencies = [
  "clap",
  "codespan-reporting",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 2.0.43",
 ]
 
 [[package]]
+name = "cxxbridge-flags"
+version = "1.0.110"
+
+[[package]]
 name = "cxxbridge-macro"
-version = "1.0.82"
+version = "1.0.110"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 2.0.43",
 ]
 
 [[package]]
@@ -600,7 +597,7 @@ name = "data-encoding-macro-internal"
 version = "0.1.10"
 dependencies = [
  "data-encoding",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -615,7 +612,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "rustc_version",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -687,18 +684,13 @@ dependencies = [
 
 [[package]]
 name = "env_logger"
-version = "0.10.0"
+version = "0.10.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "4cd405aab171cb85d6735e5c8d9db038c17d3ca007a4d2c25f337935c3d90580"
 dependencies = [
  "log",
  "regex",
  "termcolor",
-]
-
-[[package]]
-name = "fastrand"
-version = "1.7.0"
-dependencies = [
- "instant",
 ]
 
 [[package]]
@@ -748,16 +740,18 @@ dependencies = [
  "num-traits",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
+
+[[package]]
+name = "fiat-crypto"
+version = "0.2.6"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1676f435fc1dadde4d03e43f5d62b259e1ce5f40bd4ffb21db2b42ebe59c1382"
 
 [[package]]
 name = "fnv"
 version = "1.0.7"
-
-[[package]]
-name = "font-types"
-version = "0.3.0"
 
 [[package]]
 name = "forest_bigint"
@@ -832,7 +826,7 @@ version = "0.3.27"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -945,7 +939,7 @@ dependencies = [
 
 [[package]]
 name = "getrandom"
-version = "0.2.9"
+version = "0.2.11"
 dependencies = [
  "cfg-if",
  "libc",
@@ -966,15 +960,6 @@ name = "hashbrown"
 version = "0.12.3"
 dependencies = [
  "ahash",
-]
-
-[[package]]
-name = "hermit-abi"
-version = "0.1.19"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "62b467343b94ba476dcb2500d242dadbb39557df889310ac77c5d99100aaac33"
-dependencies = [
- "libc",
 ]
 
 [[package]]
@@ -1042,7 +1027,7 @@ dependencies = [
  "markup5ever",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1051,7 +1036,7 @@ version = "1.0.0"
 dependencies = [
  "bytes",
  "fnv",
- "itoa",
+ "itoa 1.0.9",
 ]
 
 [[package]]
@@ -1101,15 +1086,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "instant"
-version = "0.1.12"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "7a5bbe824c507c5da5956355e86a746d82e0e1464f65d862cc5e71da70e94b2c"
-dependencies = [
- "cfg-if",
-]
-
-[[package]]
 name = "itertools"
 version = "0.10.5"
 dependencies = [
@@ -1122,7 +1098,7 @@ version = "0.4.8"
 
 [[package]]
 name = "itoa"
-version = "1.0.1"
+version = "1.0.9"
 
 [[package]]
 name = "js-sys"
@@ -1161,7 +1137,7 @@ version = "1.3.0"
 
 [[package]]
 name = "libc"
-version = "0.2.144"
+version = "0.2.150"
 
 [[package]]
 name = "libsecp256k1"
@@ -1209,7 +1185,10 @@ version = "0.6.1"
 
 [[package]]
 name = "link-cplusplus"
-version = "1.0.5"
+version = "1.0.9"
+dependencies = [
+ "cc",
+]
 
 [[package]]
 name = "lock_api"
@@ -1221,10 +1200,7 @@ dependencies = [
 
 [[package]]
 name = "log"
-version = "0.4.17"
-dependencies = [
- "cfg-if",
-]
+version = "0.4.20"
 
 [[package]]
 name = "lol_html"
@@ -1234,7 +1210,7 @@ dependencies = [
  "cfg-if",
  "cssparser 0.27.2",
  "encoding_rs",
- "hashbrown 0.12.3",
+ "hashbrown",
  "lazy_static",
  "lazycell",
  "memchr",
@@ -1265,7 +1241,7 @@ version = "0.1.10"
 
 [[package]]
 name = "memchr"
-version = "2.4.1"
+version = "2.6.4"
 
 [[package]]
 name = "memoffset"
@@ -1277,13 +1253,6 @@ dependencies = [
 [[package]]
 name = "mime"
 version = "0.3.17"
-
-[[package]]
-name = "miniz_oxide"
-version = "0.6.2"
-dependencies = [
- "adler",
-]
 
 [[package]]
 name = "multibase"
@@ -1318,7 +1287,7 @@ dependencies = [
  "proc-macro-error",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
  "synstructure",
 ]
 
@@ -1363,7 +1332,7 @@ version = "0.3.3"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1388,10 +1357,6 @@ version = "1.16.0"
 [[package]]
 name = "opaque-debug"
 version = "0.3.0"
-
-[[package]]
-name = "os_str_bytes"
-version = "6.0.0"
 
 [[package]]
 name = "pairing"
@@ -1469,7 +1434,7 @@ dependencies = [
  "proc-macro-hack",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1499,7 +1464,7 @@ version = "0.4.30"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1517,8 +1482,6 @@ version = "3.2.0"
 [[package]]
 name = "ppoprf"
 version = "0.3.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d97a7a93423a5988e153e29de494b2625528196476213a4401e91140487faf1a"
 dependencies = [
  "base64",
  "bincode",
@@ -1526,7 +1489,7 @@ dependencies = [
  "curve25519-dalek 4.1.1",
  "derive_more",
  "rand 0.8.5",
- "rand_core 0.5.1",
+ "rand_core 0.6.4",
  "serde",
  "strobe-rs",
  "zeroize",
@@ -1555,7 +1518,7 @@ dependencies = [
  "proc-macro-error-attr",
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
  "version_check",
 ]
 
@@ -1574,7 +1537,7 @@ version = "0.5.20+deprecated"
 
 [[package]]
 name = "proc-macro2"
-version = "1.0.56"
+version = "1.0.69"
 dependencies = [
  "unicode-ident",
 ]
@@ -1593,7 +1556,7 @@ dependencies = [
 
 [[package]]
 name = "quote"
-version = "1.0.27"
+version = "1.0.33"
 dependencies = [
  "proc-macro2",
 ]
@@ -1650,7 +1613,7 @@ dependencies = [
 name = "rand_core"
 version = "0.6.4"
 dependencies = [
- "getrandom 0.2.9",
+ "getrandom 0.2.11",
 ]
 
 [[package]]
@@ -1677,13 +1640,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "read-fonts"
-version = "0.5.0"
-dependencies = [
- "font-types",
-]
-
-[[package]]
 name = "redox_syscall"
 version = "0.2.16"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1694,7 +1650,19 @@ dependencies = [
 
 [[package]]
 name = "regex"
-version = "1.6.0"
+version = "1.10.2"
+dependencies = [
+ "aho-corasick",
+ "memchr",
+ "regex-automata",
+ "regex-syntax",
+]
+
+[[package]]
+name = "regex-automata"
+version = "0.4.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "5bb987efffd3c6d0d8f5f89510bb458559eab11e4f869acb20bf845e016259cd"
 dependencies = [
  "aho-corasick",
  "memchr",
@@ -1703,14 +1671,7 @@ dependencies = [
 
 [[package]]
 name = "regex-syntax"
-version = "0.6.27"
-
-[[package]]
-name = "remove_dir_all"
-version = "0.5.3"
-dependencies = [
- "winapi",
-]
+version = "0.8.2"
 
 [[package]]
 name = "ripemd"
@@ -1753,7 +1714,7 @@ dependencies = [
  "proc-macro2",
  "quote",
  "rustc_version",
- "syn 1.0.99",
+ "syn 1.0.109",
  "unicode-ident",
 ]
 
@@ -1764,7 +1725,7 @@ dependencies = [
  "quote",
  "rand 0.8.5",
  "rustc_version",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1776,11 +1737,11 @@ dependencies = [
 
 [[package]]
 name = "rustversion"
-version = "1.0.6"
+version = "1.0.14"
 
 [[package]]
 name = "ryu"
-version = "1.0.5"
+version = "1.0.15"
 
 [[package]]
 name = "safemem"
@@ -1830,14 +1791,14 @@ dependencies = [
 
 [[package]]
 name = "semver"
-version = "1.0.4"
+version = "1.0.20"
 dependencies = [
  "serde",
 ]
 
 [[package]]
 name = "serde"
-version = "1.0.147"
+version = "1.0.193"
 dependencies = [
  "serde_derive",
 ]
@@ -1858,11 +1819,11 @@ dependencies = [
 
 [[package]]
 name = "serde_derive"
-version = "1.0.147"
+version = "1.0.193"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 2.0.43",
 ]
 
 [[package]]
@@ -1877,18 +1838,18 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.78"
+version = "1.0.108"
 dependencies = [
- "itoa 1.0.1",
+ "itoa 1.0.9",
  "ryu",
  "serde",
 ]
 
 [[package]]
 name = "serde_json_lenient"
-version = "0.1.4"
+version = "0.1.8"
 dependencies = [
- "itoa 0.4.8",
+ "itoa 1.0.9",
  "ryu",
  "serde",
 ]
@@ -1899,7 +1860,7 @@ version = "0.1.7"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1916,7 +1877,7 @@ version = "0.5.0"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -1963,30 +1924,12 @@ dependencies = [
 ]
 
 [[package]]
-name = "star-sharks"
-version = "0.6.1"
-dependencies = [
- "bitvec",
- "byteorder",
- "ff 0.13.0",
- "rand 0.8.5",
- "zeroize",
-]
-
-[[package]]
 name = "signature"
 version = "1.6.4"
 
 [[package]]
 name = "siphasher"
 version = "0.3.10"
-
-[[package]]
-name = "skrifa"
-version = "0.4.0"
-dependencies = [
- "read-fonts",
-]
 
 [[package]]
 name = "slab"
@@ -1997,7 +1940,7 @@ dependencies = [
 
 [[package]]
 name = "small_ctor"
-version = "0.1.0"
+version = "0.1.1"
 
 [[package]]
 name = "smallvec"
@@ -2027,10 +1970,20 @@ dependencies = [
  "lazy_static",
  "ppoprf",
  "rand 0.8.5",
- "rand_core 0.6.4",
  "serde",
  "serde_json",
  "sta-rs",
+]
+
+[[package]]
+name = "star-sharks"
+version = "0.6.1"
+dependencies = [
+ "bitvec",
+ "byteorder",
+ "ff 0.13.0",
+ "rand 0.8.5",
+ "zeroize",
 ]
 
 [[package]]
@@ -2080,7 +2033,7 @@ version = "2.4.1"
 
 [[package]]
 name = "syn"
-version = "1.0.99"
+version = "1.0.109"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2089,9 +2042,9 @@ dependencies = [
 
 [[package]]
 name = "syn"
-version = "2.0.16"
+version = "2.0.43"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "a6f671d4b5ffdb8eadec19c0ae67fe2639df8684bd7bc4b83d986b8db549cf01"
+checksum = "ee659fb5f3d355364e1f3e5bc10fb82068efbf824a1e9d1c9504244a6469ad53"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -2104,25 +2057,13 @@ version = "0.12.6"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
  "unicode-xid",
 ]
 
 [[package]]
 name = "tap"
 version = "1.0.1"
-
-[[package]]
-name = "tempfile"
-version = "3.3.0"
-dependencies = [
- "cfg-if",
- "fastrand",
- "libc",
- "redox_syscall",
- "remove_dir_all",
- "winapi",
-]
 
 [[package]]
 name = "tendril"
@@ -2135,7 +2076,7 @@ dependencies = [
 
 [[package]]
 name = "termcolor"
-version = "1.1.2"
+version = "1.4.0"
 dependencies = [
  "winapi-util",
 ]
@@ -2157,7 +2098,7 @@ version = "1.0.38"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
 ]
 
 [[package]]
@@ -2172,7 +2113,7 @@ dependencies = [
 name = "time"
 version = "0.3.20"
 dependencies = [
- "itoa 1.0.1",
+ "itoa 1.0.9",
  "serde",
  "time-core",
  "time-macros",
@@ -2223,7 +2164,7 @@ version = "0.1.27"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.29",
+ "syn 2.0.43",
 ]
 
 [[package]]
@@ -2254,14 +2195,11 @@ version = "0.3.13"
 
 [[package]]
 name = "unicode-ident"
-version = "1.0.8"
+version = "1.0.12"
 
 [[package]]
 name = "unicode-linebreak"
-version = "0.1.2"
-dependencies = [
- "regex",
-]
+version = "0.1.5"
 
 [[package]]
 name = "unicode-normalization"
@@ -2272,7 +2210,7 @@ dependencies = [
 
 [[package]]
 name = "unicode-width"
-version = "0.1.9"
+version = "0.1.11"
 
 [[package]]
 name = "unicode-xid"
@@ -2303,7 +2241,7 @@ version = "0.7.6"
 name = "uuid"
 version = "1.3.0"
 dependencies = [
- "getrandom 0.2.9",
+ "getrandom 0.2.11",
 ]
 
 [[package]]
@@ -2349,7 +2287,7 @@ dependencies = [
  "once_cell",
  "proc-macro2",
  "quote",
- "syn 2.0.16",
+ "syn 2.0.43",
  "wasm-bindgen-shared",
 ]
 
@@ -2371,7 +2309,7 @@ checksum = "54681b18a46765f095758388f2d0cf16eb8d4169b639ab575a8f5693af210c7b"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 2.0.16",
+ "syn 2.0.43",
  "wasm-bindgen-backend",
  "wasm-bindgen-shared",
 ]
@@ -2398,7 +2336,7 @@ checksum = "ac3b87c63620426dd9b991e5ce0329eff545bccbbb34f3be09ff6fb6ab51b7b6"
 
 [[package]]
 name = "winapi-util"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "winapi",
 ]
@@ -2504,6 +2442,6 @@ version = "1.3.3"
 dependencies = [
  "proc-macro2",
  "quote",
- "syn 1.0.99",
+ "syn 1.0.109",
  "synstructure",
 ]

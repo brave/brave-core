@@ -12,7 +12,7 @@
 [package]
 edition = "2021"
 name = "ppoprf"
-version = "0.3.0"
+version = "0.3.1"
 authors = [
     "Alex Davidson <coela@alxdavids.xyz>",
     "Ralph Ankele <rankele@brave.com>",

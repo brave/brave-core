@@ -37,6 +37,8 @@ pub enum PPRFError {
   Bincode(bincode::Error),
   #[display(fmt = "Serialized data exceeds size limit")]
   SerializedDataTooBig,
+  #[display(fmt = "Bad compressed ristretto point encoding")]
+  BadPointEncoding,
 }
 
 pub trait PPRF {

@@ -337,7 +337,7 @@ impl Server {
     verifiable: bool,
   ) -> Result<Evaluation, PPRFError> {
     let p = p.0;
-    let point = p.decompress().unwrap();
+    let point = p.decompress().ok_or(PPRFError::BadPointEncoding)?;
     if self.public_key.get(md).is_none() {
       return Err(PPRFError::BadTag { md });
     }
