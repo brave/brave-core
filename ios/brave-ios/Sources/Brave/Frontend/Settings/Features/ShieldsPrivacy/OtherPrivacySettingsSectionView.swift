@@ -9,6 +9,7 @@ import Strings
 import BraveShared
 import Data
 import Growth
+import BraveUI
 
 struct OtherPrivacySettingsSectionView: View {
   @State private var showPrivateBrowsingConfirmation = false
@@ -54,7 +55,7 @@ struct OtherPrivacySettingsSectionView: View {
           })
         )
       })
-      ShieldToggleView(
+      ToggleView(
         title: Strings.blockMobileAnnoyances,
         subtitle: nil,
         toggle: $settings.blockMobileAnnoyances
@@ -74,7 +75,7 @@ struct OtherPrivacySettingsSectionView: View {
         subtitle: String.localizedStringWithFormat(Strings.screenTimeSettingDescription, URL.brave.screenTimeHelp.absoluteString),
         option: Preferences.Privacy.screenTimeEnabled
       )
-      ShieldToggleView(
+      ToggleView(
         title: Strings.P3A.settingTitle,
         subtitle: Strings.P3A.settingSubtitle,
         toggle: $settings.isP3AEnabled
