@@ -31,15 +31,18 @@ source_set("browser_tests") {
     testonly = true
     defines = [ "HAS_OUT_OF_PROC_TEST_RUNNER" ]
     sources = [
+      "ai_chat_metrics_browsertest.cc",
       "ai_chat_policy_browsertest.cc",
       "ai_chat_profile_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
     deps = [
+      "//brave/app:generate_command_metadata",
       "//brave/browser/ui/sidebar",
       "//brave/components/ai_chat/content/browser",
       "//brave/components/ai_chat/core/browser",
       "//brave/components/ai_chat/core/common",
+      "//brave/components/ai_chat/core/common/mojom",
       "//brave/components/constants",
       "//brave/components/l10n/common:test_support",
       "//brave/components/sidebar",
