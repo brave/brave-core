@@ -863,7 +863,6 @@ class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
 
 IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
                        SidebarShowAlwaysTest) {
-
   auto* sidebar_service =
       SidebarServiceFactory::GetForProfile(browser()->profile());
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
