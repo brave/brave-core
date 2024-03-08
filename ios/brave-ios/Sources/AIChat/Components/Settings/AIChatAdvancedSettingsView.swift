@@ -75,6 +75,10 @@ public struct AIChatAdvancedSettingsView: View {
   }
 
   private var subscriptionMenuTitle: String {
+    if model.premiumStatus != .active && model.premiumStatus != .activeDisconnected {
+      return Strings.AIChat.goPremiumButtonTitle
+    }
+
     // Display the info from the AppStore
     if let state = viewModel.inAppPurchaseSubscriptionState {
       switch state {
@@ -188,7 +192,9 @@ public struct AIChatAdvancedSettingsView: View {
       }
 
       Section {
-        if viewModel.canDisplaySubscriptionStatus {
+        if viewModel.canDisplaySubscriptionStatus
+          && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
+        {
           if viewModel.isSubscriptionStatusLoading {
             AIChatAdvancedSettingsLabelDetailView(
               title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
@@ -281,10 +287,15 @@ public struct AIChatAdvancedSettingsView: View {
           )
         }
       } header: {
-        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle)
+        Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
       }
       .sheet(isPresented: $isPaywallPresented) {
-        AIChatPaywallView()
+        AIChatPaywallView(
+          premiumUpgrageSuccessful: { _ in
+            Task { @MainActor in
+              await model.refreshPremiumStatus()
+            }
+          })
       }
       .alert(isPresented: $appStoreConnectionErrorPresented) {
         Alert(
@@ -298,7 +309,7 @@ public struct AIChatAdvancedSettingsView: View {
       Section {
         Button(
           action: {
-            resetAndClearAlertErrorPresented.toggle()
+            resetAndClearAlertErrorPresented = true
           },
           label: {
             Text(Strings.AIChat.resetLeoDataActionTitle)

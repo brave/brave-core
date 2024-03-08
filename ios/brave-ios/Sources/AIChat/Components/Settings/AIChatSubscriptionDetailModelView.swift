@@ -134,7 +134,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var inAppPurchaseSubscriptionEnviroment: BraveStoreEnvironment {
-    storeSDK.enviroment
+    storeSDK.environment
   }
 
   var inAppPurchaseProductsLoaded: Bool {
@@ -164,6 +164,6 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   var isDevReceiptLinkingAvailable: Bool {
-    storeSDK.enviroment != .production
+    storeSDK.environment != .production
   }
 }

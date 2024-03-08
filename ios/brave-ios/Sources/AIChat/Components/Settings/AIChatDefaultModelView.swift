@@ -21,9 +21,9 @@ struct AIChatDefaultModelView: View {
   var premiumStatus: String {
     switch aiModel.premiumStatus {
     case .active, .activeDisconnected:
-      return Strings.AIChat.unlimitedModelStatusTitle
+      return Strings.AIChat.unlimitedModelStatusTitle.uppercased()
     default:
-      return Strings.AIChat.limitedModelStatusTitle
+      return Strings.AIChat.limitedModelStatusTitle.uppercased()
     }
   }
 
@@ -79,7 +79,7 @@ struct AIChatDefaultModelView: View {
           )
         }
       } header: {
-        Text(Strings.AIChat.defaultModelChatSectionTitle)
+        Text(Strings.AIChat.defaultModelChatSectionTitle.uppercased())
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
