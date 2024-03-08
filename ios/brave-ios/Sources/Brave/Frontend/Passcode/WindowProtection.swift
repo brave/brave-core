@@ -86,7 +86,6 @@ public class WindowProtection {
   private let lockedViewController = LockedViewController()
 
   private var cancellables: Set<AnyCancellable> = []
-  private var protectedWindow: UIWindow
   private var passcodeWindow: UIWindow
   private var context = LAContext()
   private var viewType: AuthViewType = .general
@@ -94,10 +93,9 @@ public class WindowProtection {
   private var isVisible: Bool = false {
     didSet {
       passcodeWindow.isHidden = !isVisible
+      // Prior window will be made key automatically after passcode window is dismissed
       if isVisible {
         passcodeWindow.makeKeyAndVisible()
-      } else {
-        protectedWindow.makeKeyAndVisible()
       }
     }
   }
@@ -138,11 +136,8 @@ public class WindowProtection {
     didFinalizeAuthentication.eraseToAnyPublisher()
   }
     
-  public init?(window: UIWindow) {
-    guard let scene = window.windowScene else { return nil }
-    protectedWindow = window
-
-    passcodeWindow = UIWindow(windowScene: scene)
+  public init(windowScene: UIWindowScene) {
+    passcodeWindow = UIWindow(windowScene: windowScene)
     passcodeWindow.windowLevel = .init(UIWindow.Level.statusBar.rawValue + 1)
     passcodeWindow.rootViewController = lockedViewController
 
