@@ -136,67 +136,7 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
-  // TODO(darkdh): support pdf preview printing
-  content::RenderFrameHost* rfh =
-      printing::GetFrameToPrint(active_chat_tab_helper_->web_contents());
-  if (rfh) {
-    if (!print_render_frame_.is_bound()) {
-      rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
-    }
-    if (!owner_->IsBound()) {
-      print_render_frame_->SetPrintPreviewUI(owner_->BindPrintPreviewUI());
-    }
-    auto preview_ui_id = owner_->GetPreviewUIId();
-    if (!preview_ui_id) {
-      owner_->SetPreviewUIId();
-      preview_ui_id = owner_->GetPreviewUIId();
-    }
-    CHECK(preview_ui_id);
-
-    print_render_frame_->InitiatePrintPreview(false);
-
-    auto settings = base::JSONReader::Read(R"({
-   "collate": true,
-   "color": 2,
-   "copies": 1,
-   "deviceName": "Save as PDF",
-   "dpiHorizontal": 300,
-   "dpiVertical": 300,
-   "duplex": 0,
-   "headerFooterEnabled": true,
-   "isFirstRequest": true,
-   "landscape": false,
-   "marginsType": 0,
-   "mediaSize": {
-      "custom_display_name": "Letter",
-      "height_microns": 279400,
-      "imageable_area_bottom_microns": 0,
-      "imageable_area_left_microns": 0,
-      "imageable_area_right_microns": 215900,
-      "imageable_area_top_microns": 279400,
-      "is_default": true,
-      "name": "NA_LETTER",
-      "width_microns": 215900
-   },
-   "pageRange": [  ],
-   "pagesPerSheet": 1,
-   "previewModifiable": true,
-   "printerType": 2,
-   "rasterizePDF": false,
-   "scaleFactor": 100,
-   "scalingType": 0,
-   "shouldPrintBackgrounds": false,
-   "shouldPrintSelectionOnly": false,
-   "title": "test - Google Docs",
-   "url": "https://docs.google.com/document/d/1OhFiLobEhBthcoaEbPIe_oNNmIq19lCYIuA_YEnmJAQ/edit"
-  })");
-    CHECK(settings);
-    auto dict = std::move(*settings).TakeDict();
-    dict.Set(printing::kPreviewUIID, preview_ui_id.value());
-    dict.Set(printing::kPreviewRequestID, ++preview_request_id_);
-    owner_->OnPrintPreviewRequest(preview_request_id_);
-    print_render_frame_->PrintPreview(std::move(dict));
-  }
+  MaybeCreatePrintPreview();
 
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
@@ -581,6 +521,76 @@ void AIChatUIPageHandler::OnPreviewReady() {
       std::move(pdf_region.region),
       base::BindOnce(&AIChatUIPageHandler::OnGetBitmaps,
                      base::Unretained(this)));
+}
+
+void AIChatUIPageHandler::MaybeCreatePrintPreview() {
+  auto url = active_chat_tab_helper_->web_contents()->GetLastCommittedURL();
+  if (!base::Contains(kPrintPreviewRetrievalHosts, url.host_piece())) {
+    return;
+  }
+  // TODO(darkdh): support pdf preview printing
+  content::RenderFrameHost* rfh =
+      printing::GetFrameToPrint(active_chat_tab_helper_->web_contents());
+  if (rfh) {
+    if (!print_render_frame_.is_bound()) {
+      rfh->GetRemoteAssociatedInterfaces()->GetInterface(&print_render_frame_);
+    }
+    if (!owner_->IsBound()) {
+      print_render_frame_->SetPrintPreviewUI(owner_->BindPrintPreviewUI());
+    }
+    auto preview_ui_id = owner_->GetPreviewUIId();
+    if (!preview_ui_id) {
+      owner_->SetPreviewUIId();
+      preview_ui_id = owner_->GetPreviewUIId();
+    }
+    CHECK(preview_ui_id);
+
+    print_render_frame_->InitiatePrintPreview(false);
+
+    // A mininum print setting to avoid PrinterSettingsInvalid
+    auto settings = base::JSONReader::Read(R"({
+   "collate": true,
+   "color": 2,
+   "copies": 1,
+   "deviceName": "Save as PDF",
+   "dpiHorizontal": 300,
+   "dpiVertical": 300,
+   "duplex": 0,
+   "headerFooterEnabled": false,
+   "isFirstRequest": true,
+   "landscape": false,
+   "marginsType": 0,
+   "mediaSize": {
+      "custom_display_name": "Letter",
+      "height_microns": 279400,
+      "imageable_area_bottom_microns": 0,
+      "imageable_area_left_microns": 0,
+      "imageable_area_right_microns": 215900,
+      "imageable_area_top_microns": 279400,
+      "is_default": true,
+      "name": "NA_LETTER",
+      "width_microns": 215900
+   },
+   "pageRange": [  ],
+   "pagesPerSheet": 1,
+   "previewModifiable": true,
+   "printerType": 2,
+   "rasterizePDF": false,
+   "scaleFactor": 100,
+   "scalingType": 0,
+   "shouldPrintBackgrounds": false,
+   "shouldPrintSelectionOnly": false
+  })");
+    CHECK(settings);
+    auto dict = std::move(*settings).TakeDict();
+    dict.Set(printing::kPreviewUIID, preview_ui_id.value());
+    dict.Set(printing::kPreviewRequestID, ++preview_request_id_);
+    dict.Set(printing::kSettingHeaderFooterTitle,
+             active_chat_tab_helper_->web_contents()->GetTitle());
+    dict.Set(printing::kSettingHeaderFooterURL, url.spec());
+    owner_->OnPrintPreviewRequest(preview_request_id_);
+    print_render_frame_->PrintPreview(std::move(dict));
+  }
 }
 
 }  // namespace ai_chat

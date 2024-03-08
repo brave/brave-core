@@ -55,7 +55,6 @@ namespace {
 constexpr auto kScreenshotRetrievalHosts =
     base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
                                              {
-                                                 "docs.google.com",
                                                  "twitter.com",
                                              });
 constexpr size_t kMaxPreviewPages = 20;
@@ -466,8 +465,8 @@ class PreviewPageTextExtractor {
   void OnGetTextFromImage(std::string page_content,
                           bool is_video,
                           std::string invalidation_token) {
-    VLOG(4) << "Page index(" << current_page_index_ << ") content: "
-            << page_content;
+    VLOG(4) << "Page index(" << current_page_index_
+            << ") content: " << page_content;
     preview_text_ << page_content;
     // Stop processing if we have reached the maximum number of pages or the
     // maximum length of the content
@@ -546,14 +545,13 @@ void FetchPageContent(content::WebContents* web_contents,
 
   auto url = web_contents->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
-  auto host = url.host();
-  if (base::Contains(kScreenshotRetrievalHosts, host)) {
-    if (images) {
-      auto* preview_page_text_extractor = new PreviewPageTextExtractor(
-          images.value(), std::move(callback), max_page_content_length);
-      preview_page_text_extractor->StartExtract();
-      return;
-    }
+  if (images) {
+    auto* preview_page_text_extractor = new PreviewPageTextExtractor(
+        images.value(), std::move(callback), max_page_content_length);
+    preview_page_text_extractor->StartExtract();
+    return;
+  }
+  if (base::Contains(kScreenshotRetrievalHosts, url.host_piece())) {
     content::RenderWidgetHostView* view =
         web_contents->GetRenderWidgetHostView();
     if (view) {

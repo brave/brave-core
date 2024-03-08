@@ -122,6 +122,8 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                           ai_chat::mojom::PremiumStatus status,
                           ai_chat::mojom::PremiumInfoPtr info);
 
+  void MaybeCreatePrintPreview();
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   // Used to transmit mojo interface method calls to the associated receiver.

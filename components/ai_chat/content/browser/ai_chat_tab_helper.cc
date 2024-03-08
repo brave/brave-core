@@ -19,6 +19,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
@@ -262,9 +263,14 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     // invalidation_token doesn't matter for PDF extraction.
     pending_get_page_content_callback_ = std::move(callback);
   } else {
-    // FetchPageContent(web_contents(), invalidation_token,
-    // std::move(callback));
-    pending_get_page_content_callback_ = std::move(callback);
+    if (base::Contains(kPrintPreviewRetrievalHosts,
+                       GetPageURL().host_piece())) {
+      pending_get_page_content_callback_ = std::move(callback);
+    } else {
+      FetchPageContent(web_contents(), invalidation_token, std::nullopt,
+                       GetCurrentModel().max_page_content_length,
+                       std::move(callback));
+    }
   }
 }
 
