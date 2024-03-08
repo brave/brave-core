@@ -299,8 +299,16 @@ void BraveVpnService::ResetConnectionState() {
 
 void BraveVpnService::EnableOnDemand(bool enable) {
 #if BUILDFLAG(IS_MAC)
-  VLOG(2) << __func__ << ": enabled" << enable;
   local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
+
+  // If not connected, do nothing because on-demand bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply on-demand config(" << enable
+            << "> to current connection";
+    Connect();
+  }
 #endif
 }
 
