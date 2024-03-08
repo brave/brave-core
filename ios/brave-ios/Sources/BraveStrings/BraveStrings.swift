@@ -2247,7 +2247,7 @@ extension Strings {
         "settings.sendUsagePingDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This anonymous private ping lets Brave estimate active users.",
+        value: "This private ping lets Brave estimate active users.",
         comment: "Description to explain the daily usage ping toggle"
       )
   }
@@ -10814,7 +10814,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Anonymised P3A info helps Brave estimate overall usage and ensure we're improving popular features.",
+        "These private responses help Brave estimate the overall usage of certain features and make them better for you.",
       comment: "A subtitle shown on the setting that toggles analytics on Brave."
     )
 
