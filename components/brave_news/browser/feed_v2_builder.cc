@@ -49,7 +49,7 @@ namespace {
 /* publisher_or_channel_id, is_channel */
 using ContentGroup = std::pair<std::string, bool>;
 constexpr char kAllContentGroup[] = "all";
-constexpr float kSampleContentGroupAllRatio = 0.2f;
+constexpr float kSampleContentGroupAllRatio = 0.05f;
 
 // Returns a tuple of the feed hash and the number of subscribed publishers.
 std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
@@ -165,7 +165,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
 
   return {
       .pop_recency = pop_recency,
-      .weighting = source_visits_projected + subscribed_weight + pop_recency,
+      .weighting = (source_visits_projected + subscribed_weight) * pop_recency,
       // Note: GetArticleWeight returns the Signal for the Publisher first, and
       // we use that to determine whether this Publisher has ever been visited.
       .visited = signals.at(0)->visit_weight != 0,
@@ -494,6 +494,10 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                 if (!image_url.is_valid()) {
                   return 0.0;
                 }
+              }
+
+              if (metadata->publish_time < base::Time::Now() - base::Days(14)) {
+                return 0.0;
               }
 
               if (/*is_channel*/ content_group.second &&
