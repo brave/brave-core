@@ -80,7 +80,7 @@ private let channelGlyphMap: [String: String] = [
   "Fashion": "leo.news.fashion",
   "Food": "leo.news.food",
   "Weather": "leo.news.weather",
-  "Top Sources": "leo.news.default",
+  "Top Sources": "leo.product.brave-news",
   "Brave": "leo.news.brave",
   "Politics": "leo.news.politics",
   "Fun": "leo.news.fun",

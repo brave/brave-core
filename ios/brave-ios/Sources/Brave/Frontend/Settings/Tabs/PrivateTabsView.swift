@@ -87,7 +87,7 @@ struct PrivateTabsView: View {
           
         switch localAuthenticationType {
         case .faceID, .touchID, .pinCode:
-          ShieldToggleView(
+          ToggleView(
             title: browsingLockTitle,
             subtitle: nil,
             toggle: .init(get: {
