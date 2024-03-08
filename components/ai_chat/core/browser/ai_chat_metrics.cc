@@ -31,9 +31,38 @@ const int kContextMenuUsageBuckets[] = {0, 1, 2, 5, 10, 20, 50};
 
 constexpr base::TimeDelta kPremiumCheckInterval = base::Days(1);
 
-constexpr ContextMenuCategory kAllContextMenuCategories[] = {
-    ContextMenuCategory::kQuickActions, ContextMenuCategory::kRewrite,
-    ContextMenuCategory::kCreate};
+constexpr char kSummarizeActionKey[] = "summarize";
+constexpr char kExplainActionKey[] = "explain";
+constexpr char kParaphraseActionKey[] = "paraphrase";
+constexpr char kCreateTaglineActionKey[] = "tagline";
+constexpr char kCreateSocialMediaActionKey[] = "social";
+constexpr char kImproveActionKey[] = "improve";
+constexpr char kChangeToneActionKey[] = "tone";
+constexpr char kChangeLengthActionKey[] = "length";
+
+const char* GetContextMenuActionKey(ContextMenuAction action) {
+  switch (action) {
+    case ContextMenuAction::kSummarize:
+      return kSummarizeActionKey;
+    case ContextMenuAction::kExplain:
+      return kExplainActionKey;
+    case ContextMenuAction::kParaphrase:
+      return kParaphraseActionKey;
+    case ContextMenuAction::kCreateTagline:
+      return kCreateTaglineActionKey;
+    case ContextMenuAction::kCreateSocialMedia:
+      return kCreateSocialMediaActionKey;
+    case ContextMenuAction::kImprove:
+      return kImproveActionKey;
+    case ContextMenuAction::kChangeTone:
+      return kChangeToneActionKey;
+    case ContextMenuAction::kChangeLength:
+      return kChangeLengthActionKey;
+    default:
+      NOTREACHED();
+      return nullptr;
+  }
+}
 
 }  // namespace
 
@@ -52,15 +81,13 @@ AIChatMetrics::AIChatMetrics(PrefService* local_state)
           prefs::kBraveChatP3AOmniboxAutocompleteWeeklyStorage,
           14),
       local_state_(local_state) {
-  context_menu_usage_storages_[ContextMenuCategory::kQuickActions] =
-      std::make_unique<WeeklyStorage>(
-          local_state_, prefs::kBraveChatP3AContextMenuQuickUsages);
-  context_menu_usage_storages_[ContextMenuCategory::kRewrite] =
-      std::make_unique<WeeklyStorage>(
-          local_state_, prefs::kBraveChatP3AContextMenuRewriteUsages);
-  context_menu_usage_storages_[ContextMenuCategory::kCreate] =
-      std::make_unique<WeeklyStorage>(
-          local_state_, prefs::kBraveChatP3AContextMenuCreateUsages);
+  for (int i = static_cast<int>(ContextMenuAction::kSummarize);
+       i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
+    ContextMenuAction action = static_cast<ContextMenuAction>(i);
+    context_menu_usage_storages_[action] = std::make_unique<WeeklyStorage>(
+        local_state_, prefs::kBraveChatP3AContextMenuUsages,
+        GetContextMenuActionKey(action));
+  }
 }
 
 AIChatMetrics::~AIChatMetrics() = default;
@@ -76,9 +103,7 @@ void AIChatMetrics::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kBraveChatP3AFirstUsageTime, {});
   registry->RegisterTimePref(prefs::kBraveChatP3ALastUsageTime, {});
   registry->RegisterBooleanPref(prefs::kBraveChatP3AUsedSecondDay, false);
-  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuQuickUsages);
-  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuRewriteUsages);
-  registry->RegisterListPref(prefs::kBraveChatP3AContextMenuCreateUsages);
+  registry->RegisterDictionaryPref(prefs::kBraveChatP3AContextMenuUsages);
   registry->RegisterTimePref(prefs::kBraveChatP3ALastContextMenuUsageTime, {});
 }
 
@@ -177,9 +202,9 @@ void AIChatMetrics::RecordOmniboxSearchQuery() {
   ReportOmniboxCounts();
 }
 
-void AIChatMetrics::RecordContextMenuUsage(ContextMenuCategory category) {
+void AIChatMetrics::RecordContextMenuUsage(ContextMenuAction action) {
   acquisition_source_ = AcquisitionSource::kContextMenu;
-  context_menu_usage_storages_[category]->AddDelta(1);
+  context_menu_usage_storages_[action]->AddDelta(1);
   local_state_->SetTime(prefs::kBraveChatP3ALastContextMenuUsageTime,
                         base::Time::Now());
   ReportContextMenuMetrics();
@@ -270,16 +295,18 @@ void AIChatMetrics::ReportOmniboxCounts() {
 
 void AIChatMetrics::ReportContextMenuMetrics() {
   uint64_t total_usages = 0;
-  uint64_t category_total_max = 0;
-  std::optional<ContextMenuCategory> most_used_category;
+  uint64_t action_total_max = 0;
+  std::optional<ContextMenuAction> most_used_action;
 
-  for (auto category : kAllContextMenuCategories) {
-    uint64_t category_total =
-        context_menu_usage_storages_[category]->GetWeeklySum();
-    total_usages += category_total;
-    if (category_total > category_total_max) {
-      most_used_category = category;
-      category_total_max = category_total;
+  for (int i = static_cast<int>(ContextMenuAction::kSummarize);
+       i <= static_cast<int>(ContextMenuAction::kMaxValue); i++) {
+    ContextMenuAction action = static_cast<ContextMenuAction>(i);
+    uint64_t action_total =
+        context_menu_usage_storages_[action]->GetWeeklySum();
+    total_usages += action_total;
+    if (action_total > action_total_max) {
+      most_used_action = action;
+      action_total_max = action_total;
     }
   }
 
@@ -287,9 +314,9 @@ void AIChatMetrics::ReportContextMenuMetrics() {
       local_state_, prefs::kBraveChatP3ALastContextMenuUsageTime,
       kContextMenuLastUsageTimeHistogramName, true);
 
-  if (most_used_category) {
+  if (most_used_action) {
     UMA_HISTOGRAM_ENUMERATION(kMostUsedContextMenuActionHistogramName,
-                              *most_used_category);
+                              *most_used_action);
   }
 
   const char* total_usage_histogram;

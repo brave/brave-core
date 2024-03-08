@@ -53,11 +53,16 @@ enum class AcquisitionSource {
   kMaxValue = kContextMenu
 };
 
-enum class ContextMenuCategory {
-  kQuickActions = 0,
-  kRewrite = 1,
-  kCreate = 2,
-  kMaxValue = kCreate
+enum class ContextMenuAction {
+  kSummarize = 0,
+  kExplain = 1,
+  kParaphrase = 2,
+  kCreateTagline = 3,
+  kCreateSocialMedia = 4,
+  kImprove = 5,
+  kChangeTone = 6,
+  kChangeLength = 7,
+  kMaxValue = kChangeLength
 };
 
 class AIChatMetrics {
@@ -85,7 +90,7 @@ class AIChatMetrics {
   void RecordOmniboxOpen();
   void RecordOmniboxSearchQuery();
 
-  void RecordContextMenuUsage(ContextMenuCategory category);
+  void RecordContextMenuUsage(ContextMenuAction action);
 
   void HandleOpenViaSidebar();
 
@@ -107,7 +112,7 @@ class AIChatMetrics {
 
   WeeklyStorage chat_count_storage_;
   WeeklyStorage prompt_count_storage_;
-  base::flat_map<ContextMenuCategory, std::unique_ptr<WeeklyStorage>>
+  base::flat_map<ContextMenuAction, std::unique_ptr<WeeklyStorage>>
       context_menu_usage_storages_;
 
   TimePeriodStorage omnibox_open_storage_;

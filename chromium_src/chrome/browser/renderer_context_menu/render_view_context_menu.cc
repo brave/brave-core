@@ -244,12 +244,10 @@ bool BraveRenderViewContextMenu::IsCommandIdEnabled(int id) const {
     case IDC_AI_CHAT_CONTEXT_LEO_TOOLS:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
     case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
-    case IDC_AI_CHAT_CONTEXT_QUICK_PARAPHRASE:
     case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
-    case IDC_AI_CHAT_CONTEXT_QUICK_IMPROVE:
     case IDC_AI_CHAT_CONTEXT_CHANGE_TONE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
@@ -355,12 +353,10 @@ void BraveRenderViewContextMenu::ExecuteCommand(int id, int event_flags) {
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
     case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
-    case IDC_AI_CHAT_CONTEXT_QUICK_PARAPHRASE:
     case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
-    case IDC_AI_CHAT_CONTEXT_QUICK_IMPROVE:
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
     case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
@@ -422,84 +418,79 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   sidebar_controller->ActivatePanelItem(
       sidebar::SidebarItem::BuiltInItemType::kChatUI);
 
-  std::optional<ai_chat::ContextMenuCategory> p3a_category;
+  std::optional<ai_chat::ContextMenuAction> p3a_action;
 
   switch (command) {
     case IDC_AI_CHAT_CONTEXT_SUMMARIZE_TEXT:
-      p3a_category = ai_chat::ContextMenuCategory::kQuickActions;
+      p3a_action = ai_chat::ContextMenuAction::kSummarize;
       helper->SubmitSelectedText(
           base::UTF16ToUTF8(params_.selection_text),
           ai_chat::mojom::ActionType::SUMMARIZE_SELECTED_TEXT);
       break;
     case IDC_AI_CHAT_CONTEXT_EXPLAIN:
-      p3a_category = ai_chat::ContextMenuCategory::kQuickActions;
+      p3a_action = ai_chat::ContextMenuAction::kExplain;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::EXPLAIN);
       break;
-    case IDC_AI_CHAT_CONTEXT_QUICK_PARAPHRASE:
-      p3a_category = ai_chat::ContextMenuCategory::kQuickActions;
-      PERFETTO_FALLTHROUGH;
     case IDC_AI_CHAT_CONTEXT_PARAPHRASE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kParaphrase;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::PARAPHRASE);
       break;
     case IDC_AI_CHAT_CONTEXT_CREATE_TAGLINE:
-      p3a_category = ai_chat::ContextMenuCategory::kCreate;
+      p3a_action = ai_chat::ContextMenuAction::kCreateTagline;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::CREATE_TAGLINE);
       break;
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT:
-      p3a_category = ai_chat::ContextMenuCategory::kCreate;
+      p3a_action = ai_chat::ContextMenuAction::kCreateSocialMedia;
       helper->SubmitSelectedText(
           base::UTF16ToUTF8(params_.selection_text),
           ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_SHORT);
       break;
     case IDC_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG:
-      p3a_category = ai_chat::ContextMenuCategory::kCreate;
+      p3a_action = ai_chat::ContextMenuAction::kCreateSocialMedia;
       helper->SubmitSelectedText(
           base::UTF16ToUTF8(params_.selection_text),
           ai_chat::mojom::ActionType::CREATE_SOCIAL_MEDIA_COMMENT_LONG);
       break;
-    case IDC_AI_CHAT_CONTEXT_QUICK_IMPROVE:
-      p3a_category = ai_chat::ContextMenuCategory::kQuickActions;
-      PERFETTO_FALLTHROUGH;
     case IDC_AI_CHAT_CONTEXT_IMPROVE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kImprove;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::IMPROVE);
       break;
     case IDC_AI_CHAT_CONTEXT_ACADEMICIZE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::ACADEMICIZE);
       break;
     case IDC_AI_CHAT_CONTEXT_PROFESSIONALIZE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::PROFESSIONALIZE);
       break;
     case IDC_AI_CHAT_CONTEXT_PERSUASIVE_TONE:
+      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::PERSUASIVE_TONE);
       break;
     case IDC_AI_CHAT_CONTEXT_CASUALIZE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::CASUALIZE);
       break;
     case IDC_AI_CHAT_CONTEXT_FUNNY_TONE:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeTone;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::FUNNY_TONE);
       break;
     case IDC_AI_CHAT_CONTEXT_SHORTEN:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeLength;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::SHORTEN);
       break;
     case IDC_AI_CHAT_CONTEXT_EXPAND:
-      p3a_category = ai_chat::ContextMenuCategory::kRewrite;
+      p3a_action = ai_chat::ContextMenuAction::kChangeLength;
       helper->SubmitSelectedText(base::UTF16ToUTF8(params_.selection_text),
                                  ai_chat::mojom::ActionType::EXPAND);
       break;
@@ -507,10 +498,10 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
       NOTREACHED_NORETURN();
   }
 
-  if (p3a_category) {
+  if (p3a_action) {
     g_brave_browser_process->process_misc_metrics()
         ->ai_chat_metrics()
-        ->RecordContextMenuUsage(*p3a_category);
+        ->RecordContextMenuUsage(*p3a_action);
   }
 }
 
