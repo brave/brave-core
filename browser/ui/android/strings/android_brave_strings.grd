@@ -2015,9 +2015,6 @@ Are you sure you want to do this?
     <message name="IDS_WALLET_COPY" desc="Brave Wallet onboarding bottom menu text">
       Copy
     </message>
-    <message name="IDS_SECURE_YOUR_CRYPTO" desc="Brave Wallet onboarding text">
-      Secure your crypto with a password
-    </message>
     <message name="IDS_ENTER_PASSWORD" desc="Brave wallet password hint text">
       Enter Password
     </message>
@@ -2035,12 +2032,6 @@ Are you sure you want to do this?
     </message>
     <message name="IDS_CREATING_WALLET_SUBTITLE_TEXT" desc="Text displayed along with a spinner during Brave Wallet creation or restoring.">
       It may take a few seconds…
-    </message>
-    <message name="IDS_YOUR_WALLET_IS_RESTORING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet restoring. It is not displayed anywhere" translateable="false">
-      Your wallet is restoring...
-    </message>
-    <message name="IDS_YOUR_WALLET_IS_CREATING_PAGE_TITLE" desc="Text for a spinner page title during Brave Wallet creating. It is not displayed anywhere" translateable="false">
-      Your wallet is being created...
     </message>
     <message name="IDS_NEW_ACCOUNT_PREFIX" desc="Brave Wallet new account default name prefix">
       <ph name="ACCOUNT_NAME">%1$s<ex>Ethereum</ex></ph> Account <ph name="ACCOUNT_NUMBER">%2$s<ex>2</ex></ph>
