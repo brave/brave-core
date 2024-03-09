@@ -1,0 +1,12 @@
+diff --git a/tools/crates/gnrt/gen.rs b/tools/crates/gnrt/gen.rs
+index c056a69e03a96a762718f4dd5cd8e23accf5e455..8229e46a96c8581e35e9b5e44c699f73031c94e9 100644
+--- a/tools/crates/gnrt/gen.rs
++++ b/tools/crates/gnrt/gen.rs
+@@ -266,6 +266,7 @@ fn generate_for_third_party(args: GenCommandArgs, paths: &paths::ChromiumPaths)
+     // Remove any excluded dep entries.
+     dependencies
+         .retain(|dep| !config.resolve.remove_crates.iter().any(|r| **r == dep.package_name));
++    dependencies.retain(|dep| !dep.is_local );
+ 
+     // Remove dev dependencies since tests aren't run.
+     dependencies.retain(|dep| {

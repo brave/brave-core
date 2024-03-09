@@ -2,6 +2,8 @@ Name: serde_tuple
 URL: https://crates.io/crates/serde_tuple
 Description: De/serialize structs with named fields as array of values
 Version: 0.5.0
-Security Critical: no
+Security Critical: yes
+Shipped: yes
 License: MIT
+License File:
 Revision: 2db5ce518b8b8116708b851036363afae849f320

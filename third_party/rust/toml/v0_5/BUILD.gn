@@ -1,8 +1,10 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
 # Do not edit!
 
 import("//build/rust/cargo_crate.gni")
@@ -11,29 +13,21 @@ cargo_crate("lib") {
   crate_name = "toml"
   epoch = "0.5"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root =
+      "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/toml/v0_5/crate/examples/decode.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/examples/enum_external.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/examples/toml2json.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/datetime.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/de.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/lib.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/macros.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/map.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/ser.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/spanned.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/tokens.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/src/value.rs",
-    "//brave/third_party/rust/toml/v0_5/crate/tests/enum_external_deserialize.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/datetime.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/de.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/map.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/ser.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/spanned.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/tokens.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/toml-0.5.9/src/value.rs",
   ]
-  inputs = [ "//brave/third_party/rust/toml/v0_5/crate/README.md" ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
   cargo_pkg_version = "0.5.9"
@@ -44,16 +38,7 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
-  deps = [
-    "//brave/third_party/rust/indexmap/v1:lib",
-    "//third_party/rust/serde/v1:lib",
-  ]
-  features = [
-    "indexmap",
-    "preserve_order",
-  ]
-}
-group("test_support") {
-  public_deps = [ ":lib" ]
-  testonly = true
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+  deps = [ "//brave/third_party/rust/serde/v1:lib" ]
 }

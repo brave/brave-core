@@ -5,5 +5,7 @@ Description:     Procedural macros for the time crate.
 
 Version: 0.2.8
 Security Critical: yes
+Shipped: yes
 License: Apache 2.0
+License File:
 Revision: d7c725c422e6cb551302601464042d434a91b6da

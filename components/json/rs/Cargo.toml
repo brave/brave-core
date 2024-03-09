@@ -1,9 +1,9 @@
 [package]
 name = "json-cxx"
 description = "FFI Interface to Rust Json"
-version = "0.0.1"
+version = "1.0.0"
 edition = "2018"
-publish = false
+license = "MPL-2.0"
 
 [dependencies]
 cxx = { version = "1.0", features = [ "alloc", "std" ] }

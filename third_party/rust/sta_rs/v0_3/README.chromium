@@ -1,0 +1,9 @@
+Name: sta-rs
+URL: https://crates.io/crates/sta-rs
+Description: Distributed Secret-Sharing for Threshold Aggregation Reporting
+Version: 0.3.0
+Security Critical: yes
+Shipped: yes
+License: Mozilla Public License 2.0
+License File:
+Revision: ad8d60678e43ee1f7836614dc33f6697d556bbe0

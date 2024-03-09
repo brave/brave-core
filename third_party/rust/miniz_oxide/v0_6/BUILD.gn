@@ -12,24 +12,24 @@ cargo_crate("lib") {
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/deflate/buffer.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/deflate/core.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/deflate/mod.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/deflate/stream.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/inflate/core.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/inflate/mod.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/inflate/output_buffer.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/inflate/stream.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/lib.rs",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/src/shared.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/deflate/buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/deflate/core.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/deflate/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/deflate/stream.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/inflate/core.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/inflate/mod.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/inflate/output_buffer.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/inflate/stream.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/src/shared.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/LICENSE-APACHE.md",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/LICENSE-MIT.md",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/LICENSE-ZLIB.md",
-    "//brave/third_party/rust/miniz_oxide/v0_6/crate/Readme.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/LICENSE-APACHE.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/LICENSE-MIT.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/LICENSE-ZLIB.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/miniz_oxide-0.6.2/Readme.md",
   ]
 
   # Unit tests skipped. Generate with --with-tests to include them.

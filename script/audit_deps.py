@@ -34,7 +34,7 @@ IGNORED_NPM_ADVISORIES = [
 NPM_EXCLUDE_PATHS = ['build', os.path.join('node_modules')]
 
 # Only check Cargo.lock for this path.
-CARGO_INCLUDE_PATH = os.path.join('third_party', 'rust')
+CARGO_INCLUDE_PATH = os.path.join('third_party', 'rust', 'chromium_crates_io')
 
 
 def main():

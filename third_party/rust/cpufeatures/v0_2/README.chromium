@@ -7,5 +7,5 @@ Version: 0.2.11
 Security Critical: yes
 Shipped: yes
 License: Apache 2.0
-License File: 
+License File: //brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/LICENSE-APACHE
 Revision: b1a613ba5a6da797ca8e63d1a8f41e793ba39b7b

@@ -1,0 +1,13 @@
+diff --git a/tools/crates/gnrt/lib/platforms.rs b/tools/crates/gnrt/lib/platforms.rs
+index 2e710ad94da6053174d1fbb464c808d8d0862e40..dfec666b5d60d0290bb14b303c22663520c96d3f 100644
+--- a/tools/crates/gnrt/lib/platforms.rs
++++ b/tools/crates/gnrt/lib/platforms.rs
+@@ -234,7 +234,7 @@ fn supported_os_cfgs() -> &'static [Cfg] {
+     CFG_SET.get_or_init(|| {
+         [
+             // Set of supported OSes for `cfg(target_os = ...)`.
+-            "android", "darwin", "fuchsia", "ios", "linux", "windows",
++            "android", "macos", "darwin", "fuchsia", "ios", "linux", "windows",
+         ]
+         .into_iter()
+         .map(|os| Cfg::KeyPair("target_os".to_string(), os.to_string()))

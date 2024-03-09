@@ -12,20 +12,20 @@ cargo_crate("lib") {
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/aarch64.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/lib.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/loongarch64.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/miri.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/src/x86.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/aarch64.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/loongarch64.rs",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/tests/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/loongarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/miri.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/src/x86.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/tests/aarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/tests/loongarch64.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/tests/x86.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/CHANGELOG.md",
-    "//brave/third_party/rust/cpufeatures/v0_2/crate/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/CHANGELOG.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/cpufeatures-0.2.11/README.md",
   ]
 
   # Unit tests skipped. Generate with --with-tests to include them.
