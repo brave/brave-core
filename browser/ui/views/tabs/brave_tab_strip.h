@@ -14,8 +14,8 @@
 
 class Tab;
 class BraveTabStrip : public TabStrip {
+  METADATA_HEADER(BraveTabStrip, TabStrip)
  public:
-  METADATA_HEADER(BraveTabStrip);
 
   explicit BraveTabStrip(std::unique_ptr<TabStripController> controller);
   ~BraveTabStrip() override;
@@ -45,7 +45,7 @@ class BraveTabStrip : public TabStrip {
   // TabStrip overrides:
   SkColor GetTabSeparatorColor() const override;
   bool ShouldDrawStrokes() const override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
   // Exposed for testing.
   static constexpr float kBraveMinimumContrastRatioForOutlines = 1.0816f;

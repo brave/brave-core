@@ -17,8 +17,8 @@ class Checkbox;
 }  // namespace views
 
 class BraveFirstRunDialog : public views::DialogDelegateView {
+  METADATA_HEADER(BraveFirstRunDialog, views::DialogDelegateView)
  public:
-  METADATA_HEADER(BraveFirstRunDialog);
 
   BraveFirstRunDialog(const BraveFirstRunDialog&) = delete;
   BraveFirstRunDialog& operator=(const BraveFirstRunDialog&) = delete;

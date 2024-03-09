@@ -138,14 +138,8 @@
   <message name="IDS_SETTINGS_HTTPS_FIRST_MODE_ENABLED_INCOGNITO_LABEL" desc="Label for radio button to enable HTTPS-First Mode in Private">
     See warnings before going to insecure sites in Private mode
   </message>
-  <message name="IDS_SETTINGS_SECURE_DNS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
-    Use secure Domain Name System (DNS) to prevent profiles with access to your internet traffic from seeing which sites you visit
-  </message>
   <if expr="chromeos_ash">
-    <message name="IDS_SETTINGS_SECURE_DNS_WITH_IDENTIFIERS_DESCRIPTION" desc="Secondary, continued explanation of secure DNS in Privacy options">
-      Use secure Domain Name System (DNS) to prevent profiles with access to your internet traffic from seeing which sites you visit. This uses a managed service provider at <ph name="DNS_SERVER_TEMPLATE_WITH_IDENTIFIER">$1<ex>https://dns.example.net/dns-query{?dns}</ex></ph>
-    </message>
-  </if>
+    </if>
   <if expr="is_win and _google_chrome">
     </if>
 

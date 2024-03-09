@@ -14,7 +14,7 @@
 
 namespace commander {
 
-// See chrome/browser/ui/commander/commander_view_model.h for details on these
+// See brave/browser/ui/commander/commander_view_model.h for details on these
 // structs. They exist to get around some deps violations.
 struct COMPONENT_EXPORT(COMMANDER_BROWSER) CommandItemModel {
  public:

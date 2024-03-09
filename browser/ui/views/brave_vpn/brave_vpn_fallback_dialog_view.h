@@ -18,8 +18,8 @@ class Checkbox;
 namespace brave_vpn {
 
 class BraveVpnFallbackDialogView : public views::DialogDelegateView {
+  METADATA_HEADER(BraveVpnFallbackDialogView, views::DialogDelegateView)
  public:
-  METADATA_HEADER(BraveVpnFallbackDialogView);
 
   static void Show(Browser* browser);
 

@@ -153,5 +153,5 @@ void BraveNewsBubbleView::OnThemeChanged() {
                                            : kSubtitleColorLight);
 }
 
-BEGIN_METADATA(BraveNewsBubbleView, views::BubbleDialogDelegateView)
+BEGIN_METADATA(BraveNewsBubbleView)
 END_METADATA

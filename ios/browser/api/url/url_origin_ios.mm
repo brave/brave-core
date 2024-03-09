@@ -6,7 +6,7 @@
 #include "brave/ios/browser/api/url/url_origin_ios.h"
 
 #include "base/strings/sys_string_conversions.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 

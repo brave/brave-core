@@ -35,7 +35,6 @@ cargo_crate("lib") {
     "//brave/third_party/rust/new_debug_unreachable/v1:lib",
   ]
   aliased_deps = {
-    debug_unreachable =
-        "//brave/third_party/rust/new_debug_unreachable/v1:lib__rlib"
+    debug_unreachable = "//brave/third_party/rust/new_debug_unreachable/v1:lib"
   }
 }

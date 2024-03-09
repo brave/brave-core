@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/net/model/ios_chrome_network_delegate.h b/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
-index 8d54610bf58648bc9b7586b8e575e7911f4ee5c5..6dfa142f96a2936a8caf31ffbc32f32ec33dbed2 100644
+index 9828889a46b0be2bbfd409543e0d369188868a2c..de25f646596d9617379926fc7450098201e871db 100644
 --- a/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
 +++ b/ios/chrome/browser/net/model/ios_chrome_network_delegate.h
-@@ -50,6 +50,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
+@@ -51,6 +51,7 @@ class IOSChromeNetworkDelegate : public net::NetworkDelegateImpl {
                                          PrefService* pref_service);
  
   private:

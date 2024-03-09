@@ -11,8 +11,8 @@
 #include "ui/views/window/dialog_delegate.h"
 
 class ObsoleteSystemConfirmDialogView : public views::DialogDelegateView {
+  METADATA_HEADER(ObsoleteSystemConfirmDialogView, views::DialogDelegateView)
  public:
-  METADATA_HEADER(ObsoleteSystemConfirmDialogView);
 
   explicit ObsoleteSystemConfirmDialogView(
       base::OnceCallback<void(bool)> closing_callback);

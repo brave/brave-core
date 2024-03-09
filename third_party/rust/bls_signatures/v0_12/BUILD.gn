@@ -44,7 +44,7 @@ cargo_crate("lib") {
     "//third_party/rust/rand_core/v0_6:lib",
   ]
   aliased_deps = {
-    pairing_lib = "//brave/third_party/rust/pairing/v0_22:lib__rlib"
+    pairing_lib = "//brave/third_party/rust/pairing/v0_22:lib"
   }
   features = [
     "bls12_381",

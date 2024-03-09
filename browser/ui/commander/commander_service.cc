@@ -5,7 +5,6 @@
 
 #include "brave/browser/ui/commander/commander_service.h"
 
-#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <iterator>
@@ -22,23 +21,21 @@
 #include "base/strings/strcat.h"
 #include "base/strings/string_util.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/browser/ui/commander/brave_simple_command_source.h"
+#include "brave/browser/ui/commander/bookmark_command_source.h"
+#include "brave/browser/ui/commander/command_source.h"
 #include "brave/browser/ui/commander/ranker.h"
+#include "brave/browser/ui/commander/simple_command_source.h"
+#include "brave/browser/ui/commander/tab_command_source.h"
+#include "brave/browser/ui/commander/window_command_source.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/browser/commander_item_model.h"
 #include "brave/components/commander/common/constants.h"
+#include "brave/components/commander/common/features.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_window.h"
-#include "chrome/browser/ui/commander/bookmark_command_source.h"
-#include "chrome/browser/ui/commander/command_source.h"
-#include "chrome/browser/ui/commander/commander.h"
-#include "chrome/browser/ui/commander/commander_view_model.h"
-#include "chrome/browser/ui/commander/tab_command_source.h"
-#include "chrome/browser/ui/commander/window_command_source.h"
 #include "chrome/browser/ui/location_bar/location_bar.h"
-#include "components/omnibox/browser/omnibox_edit_model.h"
 #include "components/omnibox/browser/omnibox_view.h"
 
 namespace commander {
@@ -49,12 +46,16 @@ CommandItemModel FromCommand(const std::unique_ptr<CommandItem>& item) {
 }
 }  // namespace
 
+bool IsEnabled() {
+  return base::FeatureList::IsEnabled(features::kBraveCommander);
+}
+
 CommanderService::CommanderService(Profile* profile)
     : profile_(profile), ranker_(profile->GetPrefs()) {
-  command_sources_.push_back(std::make_unique<BraveSimpleCommandSource>());
-  command_sources_.push_back(std::make_unique<BraveBookmarkCommandSource>());
-  command_sources_.push_back(std::make_unique<BraveWindowCommandSource>());
-  command_sources_.push_back(std::make_unique<BraveTabCommandSource>());
+  command_sources_.push_back(std::make_unique<SimpleCommandSource>());
+  command_sources_.push_back(std::make_unique<BookmarkCommandSource>());
+  command_sources_.push_back(std::make_unique<WindowCommandSource>());
+  command_sources_.push_back(std::make_unique<TabCommandSource>());
 }
 
 CommanderService::~CommanderService() = default;

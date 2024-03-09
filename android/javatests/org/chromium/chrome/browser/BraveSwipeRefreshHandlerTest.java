@@ -16,8 +16,10 @@ import org.junit.runner.RunWith;
 
 import org.chromium.base.jank_tracker.PlaceholderJankTracker;
 import org.chromium.base.supplier.ObservableSupplierImpl;
+import org.chromium.base.supplier.OneshotSupplierImpl;
 import org.chromium.base.test.util.Batch;
 import org.chromium.cc.input.BrowserControlsState;
+import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabBuilder;
@@ -75,7 +77,8 @@ public class BraveSwipeRefreshHandlerTest {
                 rootUiCoordinator.getToolbarManager()::getToolbar,
                 null,
                 null,
-                rootUiCoordinator.getToolbarManager().getTabStripHeightSupplier());
+                rootUiCoordinator.getToolbarManager().getTabStripHeightSupplier(),
+                new OneshotSupplierImpl<ModuleRegistry>());
     }
 
     @Test

@@ -20,8 +20,8 @@ namespace brave_ads {
 // beyond their image areas without the need to create and maintain
 // corresponding resource images with alpha padding
 class PaddedImageButton : public views::ImageButton {
+  METADATA_HEADER(PaddedImageButton, views::ImageButton)
  public:
-  METADATA_HEADER(PaddedImageButton);
 
   explicit PaddedImageButton(PressedCallback callback);
 

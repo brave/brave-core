@@ -12,8 +12,8 @@
 namespace brave_ads {
 
 class PaddedImageView : public views::ImageView {
+  METADATA_HEADER(PaddedImageView, views::ImageView)
  public:
-  METADATA_HEADER(PaddedImageView);
 
   PaddedImageView();
 

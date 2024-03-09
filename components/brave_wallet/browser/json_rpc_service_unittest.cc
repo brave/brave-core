@@ -4497,8 +4497,7 @@ TEST_F(JsonRpcServiceUnitTest, GetSolanaFeeForMessage) {
   auto expected_network_url =
       GetNetwork(mojom::kLocalhostChainId, mojom::CoinType::SOL);
   SetInterceptor(expected_network_url, "getFeeForMessage", "", json);
-  std::string base64_encoded_string;
-  base::Base64Encode("test", &base64_encoded_string);
+  std::string base64_encoded_string = base::Base64Encode("test");
 
   TestGetSolanaFeeForMessage(mojom::kLocalhostChainId, base64_encoded_string,
                              UINT64_MAX, mojom::SolanaProviderError::kSuccess,

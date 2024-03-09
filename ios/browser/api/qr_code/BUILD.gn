@@ -13,6 +13,7 @@ source_set("qr_code") {
     "//base",
     "//brave/ios/browser/qr_code_generator",
     "//components/qr_code_generator",
+    "//components/qr_code_generator:bitmap_generator",
     "//ui/gfx",
   ]
 

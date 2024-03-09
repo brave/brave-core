@@ -163,8 +163,9 @@ std::string SubscriptionRenderFrameObserver::ExtractParam(
     const std::string& name) const {
   url::Component query(0, static_cast<int>(url.query_piece().length())), key,
       value;
-  while (url::ExtractQueryKeyValue(url.query_piece().data(), &query, &key,
-                                   &value)) {
+  std::string_view data =
+      url.query_piece().data() ? url.query_piece().data() : "";
+  while (url::ExtractQueryKeyValue(data, &query, &key, &value)) {
     std::string_view key_str = url.query_piece().substr(key.begin, key.len);
     if (key_str != name) {
       continue;

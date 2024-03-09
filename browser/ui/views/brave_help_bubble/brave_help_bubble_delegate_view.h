@@ -13,8 +13,8 @@
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
 class BraveHelpBubbleDelegateView : public views::BubbleDialogDelegateView {
+  METADATA_HEADER(BraveHelpBubbleDelegateView, views::BubbleDialogDelegateView)
  public:
-  METADATA_HEADER(BraveHelpBubbleDelegateView);
 
   explicit BraveHelpBubbleDelegateView(View* anchor_view,
                                        const std::string& text);

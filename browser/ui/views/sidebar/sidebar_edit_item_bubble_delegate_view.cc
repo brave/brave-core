@@ -177,6 +177,5 @@ void SidebarEditItemBubbleDelegateView::UpdateOKButtonEnabledState() {
   SetButtonEnabled(ui::DialogButton::DIALOG_BUTTON_OK, ok_button_enabled);
 }
 
-BEGIN_METADATA(SidebarEditItemBubbleDelegateView,
-               views::BubbleDialogDelegateView)
+BEGIN_METADATA(SidebarEditItemBubbleDelegateView)
 END_METADATA

@@ -52,7 +52,6 @@ PlaylistDownloadRequestManager::~PlaylistDownloadRequestManager() = default;
 
 void PlaylistDownloadRequestManager::CreateWebContents(const Request& request) {
   content::WebContents::CreateParams create_params(context_, nullptr);
-  create_params.is_never_visible = true;
   web_contents_ = content::WebContents::Create(create_params);
   web_contents_->SetAudioMuted(true);
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(

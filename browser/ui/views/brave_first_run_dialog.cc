@@ -41,8 +41,8 @@ void ShowBraveFirstRunDialogViews() {
 
 #if BUILDFLAG(ENABLE_PIN_SHORTCUT)
 class PinShortcutCheckbox : public views::Checkbox {
+  METADATA_HEADER(PinShortcutCheckbox, views::Checkbox)
  public:
-  METADATA_HEADER(PinShortcutCheckbox);
 
   PinShortcutCheckbox() {
     SetFontList();
@@ -63,7 +63,7 @@ class PinShortcutCheckbox : public views::Checkbox {
   }
 };
 
-BEGIN_METADATA(PinShortcutCheckbox, views::Checkbox)
+BEGIN_METADATA(PinShortcutCheckbox)
 END_METADATA
 #endif  // BUILDFLAG(IS_WIN)
 
@@ -186,5 +186,5 @@ void BraveFirstRunDialog::WindowClosing() {
   Done();
 }
 
-BEGIN_METADATA(BraveFirstRunDialog, views::DialogDelegateView)
+BEGIN_METADATA(BraveFirstRunDialog)
 END_METADATA

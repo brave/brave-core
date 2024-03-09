@@ -1,5 +1,5 @@
 diff --git a/net/socket/socks_connect_job.cc b/net/socket/socks_connect_job.cc
-index 92c2a710c0344f578a7d7540273e56309ff38bd3..1b543894fa9e8b542d7798ee3466511d9edbac6c 100644
+index b920c28af2fbb9aa21d8d03369d803d623f6d877..b040d5807d67fc07916f33f6b580a798059ab503 100644
 --- a/net/socket/socks_connect_job.cc
 +++ b/net/socket/socks_connect_job.cc
 @@ -178,9 +178,11 @@ int SOCKSConnectJob::DoSOCKSConnect() {

@@ -18,8 +18,8 @@ class BraveBrowser;
 
 class SidebarItemAddButton : public SidebarButtonView,
                              public views::WidgetObserver {
+  METADATA_HEADER(SidebarItemAddButton, SidebarButtonView)
  public:
-  METADATA_HEADER(SidebarItemAddButton);
   explicit SidebarItemAddButton(BraveBrowser* browser,
                                 const std::u16string& accessible_name);
   ~SidebarItemAddButton() override;

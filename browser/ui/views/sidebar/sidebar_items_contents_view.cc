@@ -592,5 +592,5 @@ bool SidebarItemsContentsView::IsBubbleVisible() const {
   return false;
 }
 
-BEGIN_METADATA(SidebarItemsContentsView, views::View)
+BEGIN_METADATA(SidebarItemsContentsView)
 END_METADATA

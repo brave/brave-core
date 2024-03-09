@@ -22,8 +22,8 @@ class MdTextButton;
 
 class BraveNewsFeedItemView : public views::View,
                               public BraveNewsTabHelper::PageFeedsObserver {
+  METADATA_HEADER(BraveNewsFeedItemView, views::View)
  public:
-  METADATA_HEADER(BraveNewsFeedItemView);
 
   BraveNewsFeedItemView(const GURL& feed_url, content::WebContents* contents);
   BraveNewsFeedItemView(const BraveNewsFeedItemView&) = delete;

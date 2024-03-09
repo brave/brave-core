@@ -20,7 +20,7 @@ class BraveTabStripRegionView : public TabStripRegionView {
   BraveTabStripRegionView& operator=(const BraveTabStripRegionView&) = delete;
   ~BraveTabStripRegionView() override;
 
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   void UpdateBraveTabStripMargins();

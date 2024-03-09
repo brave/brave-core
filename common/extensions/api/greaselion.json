@@ -19,18 +19,18 @@
             "name": "id",
             "type": "string",
             "description": "The extension id to validate"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "valid",
-                "type": "boolean"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "valid",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }
     ]
   }

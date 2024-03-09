@@ -13,8 +13,8 @@
 // mouse event callbacks and bypass the `BrowserRootView`'s implementation. e.g.
 // OnMouseWheel()
 class VerticalTabStripRootView : public BrowserRootView {
+  METADATA_HEADER(VerticalTabStripRootView, BrowserRootView)
  public:
-  METADATA_HEADER(VerticalTabStripRootView);
 
   VerticalTabStripRootView(BrowserView* browser_view, views::Widget* widget);
 

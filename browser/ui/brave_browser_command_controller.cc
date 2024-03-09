@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/brave_browser_command_controller.h"
 
+#include <memory>
 #include <optional>
 #include <utility>
 #include <vector>
@@ -21,6 +22,7 @@
 #include "brave/components/brave_rewards/common/rewards_util.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ipfs/buildflags/buildflags.h"
@@ -54,6 +56,10 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
 #include "brave/components/playlist/common/features.h"
+#endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+#include "brave/browser/ui/commander/commander_service.h"
 #endif
 
 namespace {
@@ -228,6 +234,11 @@ void BraveBrowserCommandController::InitBraveCommandState() {
 #if BUILDFLAG(ENABLE_IPFS_LOCAL_NODE)
   UpdateCommandEnabled(IDC_APP_MENU_IPFS_OPEN_FILES, true);
 #endif
+
+#if BUILDFLAG(ENABLE_COMMANDER)
+  UpdateCommandEnabled(IDC_COMMANDER, commander::IsEnabled());
+#endif
+
   UpdateCommandEnabled(IDC_BRAVE_BOOKMARK_BAR_SUBMENU, true);
 
   UpdateCommandEnabled(IDC_TOGGLE_VERTICAL_TABS, true);
@@ -522,6 +533,11 @@ bool BraveBrowserCommandController::ExecuteBraveCommandWithDisposition(
       break;
     case IDC_TOGGLE_ALL_BOOKMARKS_BUTTON_VISIBILITY:
       brave::ToggleAllBookmarksButtonVisibility(std::to_address(browser_));
+      break;
+    case IDC_COMMANDER:
+#if BUILDFLAG(ENABLE_COMMANDER)
+      brave::ToggleCommander(std::to_address(browser_));
+#endif
       break;
     default:
       LOG(WARNING) << "Received Unimplemented Command: " << id;

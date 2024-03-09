@@ -28,5 +28,5 @@ gfx::Rect BraveOmniboxPopupViewViews::GetTargetBounds() const {
   return bounds;
 }
 
-BEGIN_METADATA(BraveOmniboxPopupViewViews, OmniboxPopupViewViews)
+BEGIN_METADATA(BraveOmniboxPopupViewViews)
 END_METADATA

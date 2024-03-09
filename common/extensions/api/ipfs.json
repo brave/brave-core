@@ -16,39 +16,35 @@
         "name": "getIpnsKeysList",
         "type": "function",
         "description": "Get list of available p2p keys",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when keys list are fetched",
-            "parameters": [
-              {
-                "name": "keys",
-                "type": "string",
-                "description": "json stringified avalable keys list"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "keys",
+              "type": "string",
+              "description": "json stringified avalable keys list"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "getIpfsPeersList",
         "type": "function",
         "description": "Get list of peers",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when the peers list is fetched",
-            "parameters": [
-              {
-                "name": "peers",
-                "type": "string",
-                "description": "json stringified avalable peers list"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "peers",
+              "type": "string",
+              "description": "json stringified avalable peers list"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "removeIpfsPeer",
@@ -64,20 +60,19 @@
             "name": "address",
             "type": "string",
             "description": "The address of a peer"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when the peer is removed",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean",
-                "description": "result of operation"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean",
+              "description": "result of operation"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "addIpfsPeer",
@@ -88,20 +83,19 @@
             "name": "value",
             "type": "string",
             "description": "The name of new peer"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when peer is created",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean",
-                "description": "result of config update operation"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean",
+              "description": "result of config update operation"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "addIpnsKey",
@@ -112,20 +106,19 @@
             "name": "name",
             "type": "string",
             "description": "The name of new key"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when key is created",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "string",
-                "description": "json stringified created key information"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "string",
+              "description": "json stringified created key information"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "rotateKey",
@@ -136,20 +129,19 @@
             "name": "name",
             "type": "string",
             "description": "The name of oldkey key"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when key is rotated",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "boolean",
-                "description": "json stringified created key information"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "boolean",
+              "description": "json stringified created key information"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "removeIpnsKey",
@@ -160,140 +152,130 @@
             "name": "name",
             "type": "string",
             "description": "The name of removed key"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when key is removed",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "string",
-                "description": "removed key name"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "string",
+              "description": "removed key name"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "getResolveMethodList",
         "type": "function",
         "description": "Get methods for resolving IPFS URIs",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when IPFS resolve methods list are fetched",
-            "parameters": [
-              {
-                "name": "types",
-                "type": "string",
-                "description": "json stringified avalable IPFS resolve methods list"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "types",
+              "type": "string",
+              "description": "json stringified avalable IPFS resolve methods list"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "getIPFSEnabled",
         "type": "function",
         "description": "Get to see if the IPFS feature flag is enabled",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with enabled status",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "getResolveMethodType",
         "type": "function",
         "description": "Obtains the gateway setting for IPFS",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with enabled status",
-            "parameters": [
-              {
-                "name": "type",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "type",
+              "type": "string"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "launch",
         "type": "function",
         "description": "Called to launch the IPFS daemon",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "shutdown",
         "type": "function",
         "description": "Called to shutdown the IPFS daemon",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "getConfig",
         "type": "function",
         "description": "Called to get the IPFS config path",
-        "parameters": [
-        {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              }, {
-                "name": "path",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean"
+            },
+            {
+              "name": "path",
+              "type": "string"
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       }, {
         "name": "getExecutableAvailable",
         "type": "function",
         "description": "Called to determine if a local node is installed",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "available",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "available",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "resolveIPFSURI",
         "type": "function",
@@ -302,17 +284,18 @@
           {
             "type": "string",
             "name": "uri"
-          }, {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "gateway",
-                "type": "string"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "gateway",
+              "type": "string"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       },
       {
         "name": "validateGatewayUrl",
@@ -323,37 +306,34 @@
             "name": "url",
             "type": "string",
             "description": "The url to validate"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when url is validated",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "boolean",
-                "description": "True if gateway is valid otherwise false"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "boolean",
+              "description": "True if gateway is valid otherwise false"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "getSettings",
         "type": "function",
         "description": "Returns list of ipfs settings",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with settings list",
-            "parameters": [
-              {
-                "name": "settings",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "settings",
+              "type": "string"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "setResolveMethod",
         "type": "function",
@@ -363,19 +343,18 @@
             "name": "resolve_method",
             "type": "string",
             "description": "ask/disabled/gateway/local"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with status",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "boolean"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "setPublicGateway",
         "type": "function",
@@ -385,42 +364,40 @@
             "name": "url",
             "type": "string",
             "description": "Public gateway url"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with status",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "boolean"
-              }
-            ]
           }
-        ]
-      }, {
-      "name": "setPublicNFTGateway",
-      "type": "function",
-      "description": "Sets public NFT gateway value",
-      "parameters": [
-        {
-          "name": "url",
-          "type": "string",
-          "description": "Public NFT gateway url"
-        },
-        {
+        ],
+        "returns_async": {
           "name": "callback",
-          "type": "function",
-          "description": "Function called with status",
           "parameters": [
             {
               "name": "status",
               "type": "boolean"
             }
-          ]
+          ],
+          "does_not_support_promises": "Requires refactoring"
         }
-      ]
-    }, {
+      }, {
+        "name": "setPublicNFTGateway",
+        "type": "function",
+        "description": "Sets public NFT gateway value",
+        "parameters": [
+          {
+            "name": "url",
+            "type": "string",
+            "description": "Public NFT gateway url"
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
+      }, {
         "name": "setAutoRedirectToConfiguredGatewayEnabled",
         "type": "function",
         "description": "Sets whether IPFS resouceces should be forwarded to the configured gateway",
@@ -429,19 +406,18 @@
             "name": "value",
             "type": "boolean",
             "description": "value"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with status",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "boolean"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }, {
         "name": "setGatewayFallbackEnabled",
         "type": "function",
@@ -451,19 +427,18 @@
             "name": "value",
             "type": "boolean",
             "description": "value"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called with status",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "boolean"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "boolean"
+            }
+          ],
+          "does_not_support_promises": "Requires refactoring"
+        }
       }
     ],
     "types": [

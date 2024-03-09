@@ -27,7 +27,7 @@ class BraveSyncAccountDeletedInfoBar : public ConfirmInfoBar {
   ~BraveSyncAccountDeletedInfoBar() override;
 
   // InfoBarView:
-  void Layout() override;
+  void Layout(PassKey) override;
 };
 
 #endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_SYNC_ACCOUNT_DELETED_INFOBAR_H_

@@ -78,6 +78,7 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
+import java.util.function.BooleanSupplier;
 
 public class BraveToolbarManager extends ToolbarManager {
     private static final String TAG = "BraveToolbarManager";
@@ -125,55 +126,100 @@ public class BraveToolbarManager extends ToolbarManager {
     private boolean mBottomControlsEnabled;
     private BraveScrollingBottomViewResourceFrameLayout mBottomControls;
 
-    public BraveToolbarManager(AppCompatActivity activity, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, ToolbarControlContainer controlContainer,
-            CompositorViewHolder compositorViewHolder, Callback<Boolean> urlFocusChangedCallback,
+    public BraveToolbarManager(
+            AppCompatActivity activity,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            ToolbarControlContainer controlContainer,
+            CompositorViewHolder compositorViewHolder,
+            Callback<Boolean> urlFocusChangedCallback,
             TopUiThemeColorProvider topUiThemeColorProvider,
             TabObscuringHandler tabObscuringHandler,
             ObservableSupplier<ShareDelegate> shareDelegateSupplier,
             IdentityDiscController identityDiscController,
-            List<ButtonDataProvider> buttonDataProviders, ActivityTabProvider tabProvider,
-            ScrimCoordinator scrimCoordinator, ToolbarActionModeCallback toolbarActionModeCallback,
-            FindToolbarManager findToolbarManager, ObservableSupplier<Profile> profileSupplier,
+            List<ButtonDataProvider> buttonDataProviders,
+            ActivityTabProvider tabProvider,
+            ScrimCoordinator scrimCoordinator,
+            ToolbarActionModeCallback toolbarActionModeCallback,
+            FindToolbarManager findToolbarManager,
+            ObservableSupplier<Profile> profileSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
             @Nullable Supplier<Boolean> canAnimateNativeBrowserControls,
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
             OneshotSupplier<AppMenuCoordinator> appMenuCoordinatorSupplier,
-            boolean shouldShowUpdateBadge,
-            ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
+            boolean canShowUpdateBadge,
+            @NonNull ObservableSupplier<TabModelSelector> tabModelSelectorSupplier,
             OneshotSupplier<StartSurface> startSurfaceSupplier,
             ObservableSupplier<Boolean> omniboxFocusStateSupplier,
-            OneshotSupplier<Boolean> promoShownOneshotSupplier, WindowAndroid windowAndroid,
+            OneshotSupplier<Boolean> promoShownOneshotSupplier,
+            WindowAndroid windowAndroid,
             Supplier<Boolean> isInOverviewModeSupplier,
             Supplier<ModalDialogManager> modalDialogManagerSupplier,
-            StatusBarColorController statusBarColorController, AppMenuDelegate appMenuDelegate,
+            StatusBarColorController statusBarColorController,
+            AppMenuDelegate appMenuDelegate,
             ActivityLifecycleDispatcher activityLifecycleDispatcher,
             @NonNull Supplier<Tab> startSurfaceParentTabSupplier,
             @NonNull BottomSheetController bottomSheetController,
             @NonNull Supplier<Boolean> isWarmOnResumeSupplier,
             @NonNull TabContentManager tabContentManager,
-            @NonNull TabCreatorManager tabCreatorManager, @NonNull SnackbarManager snackbarManager,
-            @NonNull Supplier<MerchantTrustSignalsCoordinator>
-                    merchantTrustSignalsCoordinatorSupplier,
+            @NonNull TabCreatorManager tabCreatorManager,
+            @NonNull SnackbarManager snackbarManager,
+            @NonNull
+                    Supplier<MerchantTrustSignalsCoordinator>
+                            merchantTrustSignalsCoordinatorSupplier,
             OneshotSupplier<TabReparentingController> tabReparentingControllerSupplier,
             @NonNull OmniboxActionDelegate omniboxActionDelegate,
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
-            boolean initializeWithIncognitoColors, @Nullable BackPressManager backPressManager,
-            @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate) {
-        super(activity, controlsSizer, fullscreenManager, controlContainer, compositorViewHolder,
-                urlFocusChangedCallback, topUiThemeColorProvider, tabObscuringHandler,
-                shareDelegateSupplier, identityDiscController, buttonDataProviders, tabProvider,
-                scrimCoordinator, toolbarActionModeCallback, findToolbarManager, profileSupplier,
-                bookmarkModelSupplier, canAnimateNativeBrowserControls, layoutStateProviderSupplier,
-                appMenuCoordinatorSupplier, shouldShowUpdateBadge, tabModelSelectorSupplier,
-                startSurfaceSupplier, omniboxFocusStateSupplier, promoShownOneshotSupplier,
-                windowAndroid, isInOverviewModeSupplier, modalDialogManagerSupplier,
-                statusBarColorController, appMenuDelegate, activityLifecycleDispatcher,
-                startSurfaceParentTabSupplier, bottomSheetController, isWarmOnResumeSupplier,
-                tabContentManager, tabCreatorManager, snackbarManager,
-                merchantTrustSignalsCoordinatorSupplier, tabReparentingControllerSupplier,
-                omniboxActionDelegate, ephemeralTabCoordinatorSupplier,
-                initializeWithIncognitoColors, backPressManager, openHistoryClustersDelegate);
+            boolean initializeWithIncognitoColors,
+            @Nullable BackPressManager backPressManager,
+            @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate,
+            @Nullable BooleanSupplier overviewIncognitoSupplier) {
+        super(
+                activity,
+                controlsSizer,
+                fullscreenManager,
+                controlContainer,
+                compositorViewHolder,
+                urlFocusChangedCallback,
+                topUiThemeColorProvider,
+                tabObscuringHandler,
+                shareDelegateSupplier,
+                identityDiscController,
+                buttonDataProviders,
+                tabProvider,
+                scrimCoordinator,
+                toolbarActionModeCallback,
+                findToolbarManager,
+                profileSupplier,
+                bookmarkModelSupplier,
+                canAnimateNativeBrowserControls,
+                layoutStateProviderSupplier,
+                appMenuCoordinatorSupplier,
+                canShowUpdateBadge,
+                tabModelSelectorSupplier,
+                startSurfaceSupplier,
+                omniboxFocusStateSupplier,
+                promoShownOneshotSupplier,
+                windowAndroid,
+                isInOverviewModeSupplier,
+                modalDialogManagerSupplier,
+                statusBarColorController,
+                appMenuDelegate,
+                activityLifecycleDispatcher,
+                startSurfaceParentTabSupplier,
+                bottomSheetController,
+                isWarmOnResumeSupplier,
+                tabContentManager,
+                tabCreatorManager,
+                snackbarManager,
+                merchantTrustSignalsCoordinatorSupplier,
+                tabReparentingControllerSupplier,
+                omniboxActionDelegate,
+                ephemeralTabCoordinatorSupplier,
+                initializeWithIncognitoColors,
+                backPressManager,
+                openHistoryClustersDelegate,
+                overviewIncognitoSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
@@ -185,14 +231,15 @@ public class BraveToolbarManager extends ToolbarManager {
             updateBottomToolbarVisibility();
         }
 
-        mBraveHomepageStateListener = () -> {
-            if (mBottomControlsCoordinatorSupplier != null
-                    && mBottomControlsCoordinatorSupplier.get()
+        mBraveHomepageStateListener =
+                () -> {
+                    if (mBottomControlsCoordinatorSupplier != null
+                            && mBottomControlsCoordinatorSupplier.get()
                                     instanceof BraveBottomControlsCoordinator) {
-                ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
-                        .updateHomeButtonState();
-            }
-        };
+                        ((BraveBottomControlsCoordinator) mBottomControlsCoordinatorSupplier.get())
+                                .updateHomeButtonState();
+                    }
+                };
         HomepageManager.getInstance().addListener(mBraveHomepageStateListener);
     }
 
