@@ -1,7 +1,6 @@
 #![deny(
     anonymous_parameters,
     clippy::all,
-    illegal_floating_point_literal_pattern,
     late_bound_lifetime_arguments,
     path_statements,
     patterns_in_fns_without_body,
@@ -31,6 +30,7 @@
     clippy::missing_const_for_fn, // useless in proc macro
     clippy::redundant_pub_crate, // suggests bad style
     clippy::option_if_let_else, // suggests terrible code
+    dead_code,
 )]
 
 macro_rules! bug {

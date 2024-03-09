@@ -14,6 +14,7 @@
 namespace features {
 
 OVERRIDE_FEATURE_DEFAULT_STATES({{
+    {kControlledFrame, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityService, base::FEATURE_DISABLED_BY_DEFAULT},
     {kKAnonymityServiceOHTTPRequests, base::FEATURE_DISABLED_BY_DEFAULT},
     {kPrivacyGuide3, base::FEATURE_DISABLED_BY_DEFAULT},

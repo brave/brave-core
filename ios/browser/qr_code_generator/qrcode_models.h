@@ -8,6 +8,9 @@
 
 #include <string>
 #include <vector>
+
+#include "components/qr_code_generator/bitmap_generator.h"
+#include "components/qr_code_generator/error.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/gfx/geometry/size.h"
 
@@ -15,33 +18,9 @@
 // `chrome/services/qrcode_generator/public/mojom/qrcode_generator.mojom` but
 // adapted for iOS since it cannot be used directly.
 
-namespace qrcode_generator {
-enum QRCodeGeneratorError {
-  /// No error.
-  NONE,
-
-  /// Input string was too long.
-  INPUT_TOO_LONG,
-
-  /// Unknown error.
-  UNKNOWN_ERROR,
-};
-
-/// How to render qr code pixels.
-/// This does not affect the main locators.
-enum ModuleStyle {
-  DEFAULT_SQUARES,
-  CIRCLES,
-};
-
-/// Style for the corner locators.
-enum LocatorStyle {
-  DEFAULT_SQUARE,
-  ROUNDED,
-};
-
+namespace qr_code_generator {
 /// Structure for requesting QR Code data or image.
-struct GenerateQRCodeRequest {
+struct GenerateQRCodeOptions {
   /// Data to generate the QR code.
   std::string data;
 
@@ -57,19 +36,19 @@ struct GenerateQRCodeRequest {
   /// Whether the renderer should include rounded corners.
   LocatorStyle render_locator_style;
 
-  GenerateQRCodeRequest();
-  GenerateQRCodeRequest(const std::string& data,
+  GenerateQRCodeOptions();
+  GenerateQRCodeOptions(const std::string& data,
                         bool should_render,
                         bool render_dino,
                         ModuleStyle render_module_style,
                         LocatorStyle render_locator_style);
-  ~GenerateQRCodeRequest();
+  ~GenerateQRCodeOptions();
 };
 
 /// Structure for returning QR Code image data.
-struct GenerateQRCodeResponse {
+struct GenerateQRCodeResult {
   /// Return code stating success or failure.
-  QRCodeGeneratorError error_code;
+  Error error_code;
 
   /// Image data for generated QR code. May be null on error, or if rendering
   /// was not requested.
@@ -82,14 +61,14 @@ struct GenerateQRCodeResponse {
   /// does not represent the returned image size.
   gfx::Size data_size;
 
-  GenerateQRCodeResponse();
-  GenerateQRCodeResponse(QRCodeGeneratorError error_code,
-                         const SkBitmap& bitmap,
-                         const std::vector<std::uint8_t>& data,
-                         const gfx::Size& data_size);
-  ~GenerateQRCodeResponse();
+  GenerateQRCodeResult();
+  GenerateQRCodeResult(Error error_code,
+                       const SkBitmap& bitmap,
+                       const std::vector<std::uint8_t>& data,
+                       const gfx::Size& data_size);
+  ~GenerateQRCodeResult();
 };
 
-}  // namespace qrcode_generator
+}  // namespace qr_code_generator
 
 #endif  // BRAVE_IOS_BROWSER_QR_CODE_GENERATOR_QRCODE_MODELS_H_

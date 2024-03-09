@@ -74,7 +74,7 @@ class BraveBrowserView : public BrowserView,
   views::View* GetWalletButtonAnchorView();
 
   // BrowserView overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   void StartTabCycling() override;
   views::View* GetAnchorViewForBraveVPNPanel();
   gfx::Rect GetShieldsBubbleRect() override;

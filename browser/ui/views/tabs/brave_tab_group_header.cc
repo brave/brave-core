@@ -85,8 +85,8 @@ int BraveTabGroupHeader::GetDesiredWidth() const {
   return brave_tabs::kHorizontalTabInset * 2 + title_chip_->width();
 }
 
-void BraveTabGroupHeader::Layout() {
-  TabGroupHeader::Layout();
+void BraveTabGroupHeader::Layout(PassKey) {
+  LayoutSuperclass<TabGroupHeader>(this);
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
   }
@@ -147,5 +147,5 @@ std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
   return color_utils::AlphaBlend(GetGroupColor(), blend_background, alpha);
 }
 
-BEGIN_METADATA(BraveTabGroupHeader, TabGroupHeader)
+BEGIN_METADATA(BraveTabGroupHeader)
 END_METADATA

@@ -60,5 +60,5 @@ BravePageActionIconContainerView::BravePageActionIconContainerView(
 
 BravePageActionIconContainerView::~BravePageActionIconContainerView() = default;
 
-BEGIN_METADATA(BravePageActionIconContainerView, PageActionIconContainerView)
+BEGIN_METADATA(BravePageActionIconContainerView)
 END_METADATA

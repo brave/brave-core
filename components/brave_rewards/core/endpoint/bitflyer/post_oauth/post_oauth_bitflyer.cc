@@ -111,11 +111,8 @@ void PostOauth::Request(const std::string& external_account_id,
                         PostOauthCallback callback) {
   auto get_auth_user = [&]() {
     auto& config = engine_->Get<EnvironmentConfig>();
-    std::string user;
-    base::Base64Encode(base::StrCat({config.bitflyer_client_id(), ":",
-                                     config.bitflyer_client_secret()}),
-                       &user);
-    return user;
+    return base::Base64Encode(base::StrCat(
+        {config.bitflyer_client_id(), ":", config.bitflyer_client_secret()}));
   };
 
   auto request = mojom::UrlRequest::New();

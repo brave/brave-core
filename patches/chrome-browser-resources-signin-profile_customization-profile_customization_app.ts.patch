@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts b/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
-index f22a0f67449244189d88bcfeffd28207c3b03030..4771a3449e9699c332b8ea16a569453c0560d864 100644
+index 8f7b2271a719d0123f29bec83e3a000cad855631..38e77f34a244735bcc59216477748a734d7e5fa2 100644
 --- a/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
 +++ b/chrome/browser/resources/signin/profile_customization/profile_customization_app.ts
 @@ -2,6 +2,7 @@

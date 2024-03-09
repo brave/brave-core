@@ -11,8 +11,8 @@
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
 
 class SidebarItemView : public SidebarButtonView {
+  METADATA_HEADER(SidebarItemView, SidebarButtonView)
  public:
-  METADATA_HEADER(SidebarItemView);
   explicit SidebarItemView(const std::u16string& accessible_name);
   ~SidebarItemView() override;
 

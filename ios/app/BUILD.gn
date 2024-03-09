@@ -89,7 +89,7 @@ source_set("app") {
     "//ios/chrome/browser/shared/model/web_state_list",
     "//ios/chrome/browser/shared/public/commands",
     "//ios/chrome/browser/sync/model",
-    "//ios/chrome/browser/ui/webui:webui_internal",
+    "//ios/chrome/browser/webui/ui_bundled:webui_internal",
     "//ios/chrome/common",
     "//ios/public/provider/chrome/browser/font:font_api",
     "//ios/public/provider/chrome/browser/overrides:overrides_api",

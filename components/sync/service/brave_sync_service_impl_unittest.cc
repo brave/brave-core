@@ -247,10 +247,8 @@ TEST_F(BraveSyncServiceImplDeathTest, MAYBE_EmulateGetOrCreateSyncCodeCHECK) {
   std::string encrypted_wrong_seed;
   EXPECT_TRUE(OSCrypt::EncryptString(wrong_seed, &encrypted_wrong_seed));
 
-  std::string encoded_wrong_seed;
-  base::Base64Encode(encrypted_wrong_seed, &encoded_wrong_seed);
   pref_service()->SetString(brave_sync::Prefs::GetSeedPath(),
-                            encoded_wrong_seed);
+                            base::Base64Encode(encrypted_wrong_seed));
 
   EXPECT_CHECK_DEATH(brave_sync_service_impl()->GetOrCreateSyncCode());
 

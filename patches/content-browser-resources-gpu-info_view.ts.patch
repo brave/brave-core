@@ -1,5 +1,5 @@
 diff --git a/content/browser/resources/gpu/info_view.ts b/content/browser/resources/gpu/info_view.ts
-index d9837713e9782100e3088685ad5fc1a4de29528a..7343479e988ce491662189275328e7ba55c2e952 100644
+index a29834d3e1624f8ebae9a8bbcfa5a15d14bfa367..a31b26894d98dd817eca7100844ea1de4c5139ed 100644
 --- a/content/browser/resources/gpu/info_view.ts
 +++ b/content/browser/resources/gpu/info_view.ts
 @@ -537,6 +537,7 @@ export class InfoViewElement extends CustomElement {

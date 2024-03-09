@@ -52,7 +52,7 @@ class PlaylistSidePanelCoordinator
 
   void CreateAndRegisterEntry(SidePanelRegistry* global_registry);
 
-  BubbleContentsWrapperT<playlist::PlaylistUI>* contents_wrapper() {
+  WebUIContentsWrapperT<playlist::PlaylistUI>* contents_wrapper() {
     return contents_wrapper_.get();
   }
 

@@ -14,8 +14,9 @@ class Browser;
 
 // Gives reading list specific header view with web view.
 class BraveReadLaterSidePanelView : public BraveSidePanelViewBase {
+  METADATA_HEADER(BraveReadLaterSidePanelView, BraveSidePanelViewBase)
+
  public:
-  METADATA_HEADER(BraveReadLaterSidePanelView);
   BraveReadLaterSidePanelView(Browser* browser,
                               base::RepeatingClosure close_cb);
   ~BraveReadLaterSidePanelView() override;

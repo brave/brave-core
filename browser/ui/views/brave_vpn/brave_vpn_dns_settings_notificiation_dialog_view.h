@@ -19,8 +19,9 @@ namespace brave_vpn {
 
 class BraveVpnDnsSettingsNotificiationDialogView
     : public views::DialogDelegateView {
+  METADATA_HEADER(BraveVpnDnsSettingsNotificiationDialogView,
+                  views::DialogDelegateView)
  public:
-  METADATA_HEADER(BraveVpnDnsSettingsNotificiationDialogView);
 
   static void Show(Browser* browser);
 

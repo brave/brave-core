@@ -113,5 +113,5 @@ void BraveNewsFeedItemView::OnAvailableFeedsChanged(
   Update();
 }
 
-BEGIN_METADATA(BraveNewsFeedItemView, views::View)
+BEGIN_METADATA(BraveNewsFeedItemView)
 END_METADATA

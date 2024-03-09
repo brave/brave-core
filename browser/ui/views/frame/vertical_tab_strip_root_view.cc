@@ -67,5 +67,5 @@ void VerticalTabStripRootView::PaintChildren(
   views::internal::RootView::PaintChildren(paint_info);
 }
 
-BEGIN_METADATA(VerticalTabStripRootView, BrowserRootView)
+BEGIN_METADATA(VerticalTabStripRootView)
 END_METADATA

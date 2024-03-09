@@ -6,12 +6,12 @@
 #ifndef BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_
 #define BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_
 
-#define BRAVE_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_ \
- private:                                           \
-  friend class BraveLocationBarModelDelegate;       \
-                                                    \
- public:
+#define GetNavigationEntry                    \
+  GetNavigationEntryUnused();                 \
+  friend class BraveLocationBarModelDelegate; \
+  content::NavigationEntry* GetNavigationEntry
+
 #include "src/chrome/browser/ui/toolbar/chrome_location_bar_model_delegate.h"  // IWYU pragma: export
-#undef BRAVE_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_
+#undef GetNavigationEntry
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_TOOLBAR_CHROME_LOCATION_BAR_MODEL_DELEGATE_H_

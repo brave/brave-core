@@ -7,6 +7,7 @@
 #define BRAVE_CHROMIUM_SRC_COMPONENTS_SYNC_SERVICE_SYNC_SERVICE_IMPL_H_
 
 #include "base/gtest_prod_util.h"
+#include "components/signin/public/identity_manager/identity_manager.h"
 
 #define BRAVE_SYNC_SERVICE_IMPL_H_                                             \
  private:                                                                      \

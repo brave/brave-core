@@ -162,5 +162,5 @@ void BraveOmniboxResultView::OnPaintBackground(gfx::Canvas* canvas) {
   OmniboxResultView::OnPaintBackground(canvas);
 }
 
-BEGIN_METADATA(BraveOmniboxResultView, OmniboxResultView)
+BEGIN_METADATA(BraveOmniboxResultView)
 END_METADATA

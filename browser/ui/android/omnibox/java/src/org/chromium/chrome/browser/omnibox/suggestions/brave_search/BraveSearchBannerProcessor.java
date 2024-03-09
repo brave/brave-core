@@ -15,6 +15,7 @@ import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveOmniboxSuggestionUiType;
 import org.chromium.chrome.browser.omnibox.suggestions.BraveSuggestionHost;
 import org.chromium.chrome.browser.omnibox.suggestions.DropdownItemProcessor;
+import org.chromium.chrome.browser.omnibox.suggestions.OmniboxLoadUrlParams;
 import org.chromium.ui.base.PageTransition;
 import org.chromium.ui.modelutil.PropertyModel;
 
@@ -39,20 +40,28 @@ public class BraveSearchBannerProcessor implements DropdownItemProcessor {
     }
 
     public void populateModel(final PropertyModel model) {
-        model.set(BraveSearchBannerProperties.DELEGATE, new BraveSearchBannerProperties.Delegate() {
-            @Override
-            public void onPositiveClicked() {
-                mUrlBarDelegate.loadUrl("https://search.brave.com/search?q="
-                                + mUrlBarEditingTextProvider.getTextWithoutAutocomplete()
-                                + "&action=makeDefault",
-                        PageTransition.LINK, System.currentTimeMillis(), /*openInNewTab=*/false);
-            }
+        model.set(
+                BraveSearchBannerProperties.DELEGATE,
+                new BraveSearchBannerProperties.Delegate() {
+                    @Override
+                    public void onPositiveClicked() {
+                        mUrlBarDelegate.loadUrl(
+                                new OmniboxLoadUrlParams.Builder(
+                                                "https://search.brave.com/search?q="
+                                                        + mUrlBarEditingTextProvider
+                                                                .getTextWithoutAutocomplete()
+                                                        + "&action=makeDefault",
+                                                PageTransition.LINK)
+                                        .setInputStartTimestamp(System.currentTimeMillis())
+                                        .setOpenInNewTab(false)
+                                        .build());
+                    }
 
-            @Override
-            public void onNegativeClicked() {
-                mSuggestionHost.removeBraveSearchSuggestion();
-            }
-        });
+                    @Override
+                    public void onNegativeClicked() {
+                        mSuggestionHost.removeBraveSearchSuggestion();
+                    }
+                });
     }
 
     @Override

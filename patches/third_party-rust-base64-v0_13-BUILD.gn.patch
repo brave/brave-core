@@ -1,10 +1,10 @@
 diff --git a/third_party/rust/base64/v0_13/BUILD.gn b/third_party/rust/base64/v0_13/BUILD.gn
-index 7189b89008da2e2db99e8e871a88ded76033f72f..7464f16650e4aee455c46658e6ce7a28fe3d806b 100644
+index 53c2ce8edf62c2fa4d7e5a15ed31ec7bb4fdb898..9f0b9bcc0b4e927ff89c91519d92e26949458397 100644
 --- a/third_party/rust/base64/v0_13/BUILD.gn
 +++ b/third_party/rust/base64/v0_13/BUILD.gn
-@@ -51,5 +51,4 @@ cargo_crate("lib") {
-   # //third_party/rust/chromium_crates_io/Cargo.toml to use
-   # it from first-party code.
-   visibility = [ "//third_party/rust/*" ]
+@@ -46,5 +46,4 @@ cargo_crate("lib") {
+   proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+   proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
+   features = [ "std" ]
 -  testonly = true
  }

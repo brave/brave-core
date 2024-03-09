@@ -97,26 +97,26 @@ bool IsUnsupportedCommand(int command_id, Browser* browser) {
 // A control separator that is displayed when the sidebar is displayed adjacent
 // to the tabstrip in vertical tabs mode.
 class SidebarSeparator : public views::View {
+  METADATA_HEADER(SidebarSeparator, views::View)
  public:
-  METADATA_HEADER(SidebarSeparator);
   SidebarSeparator() {
     SetBackground(
         views::CreateThemedSolidBackground(kColorBraveVerticalTabSeparator));
   }
 };
-BEGIN_METADATA(SidebarSeparator, views::View)
+BEGIN_METADATA(SidebarSeparator)
 END_METADATA
 
 // A view that paints a background under the content area of the browser view so
 // that the web content area can be displayed with rounded corners and a shadow.
 class ContentsBackground : public views::View {
+  METADATA_HEADER(ContentsBackground, views::View)
  public:
-  METADATA_HEADER(ContentsBackground);
   ContentsBackground() {
     SetBackground(views::CreateThemedSolidBackground(kColorToolbar));
   }
 };
-BEGIN_METADATA(ContentsBackground, views::View)
+BEGIN_METADATA(ContentsBackground)
 END_METADATA
 
 }  // namespace
@@ -307,7 +307,7 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
 
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -398,7 +398,7 @@ bool BraveBrowserView::GetSupportsTitle() const {
 #endif
 
 void BraveBrowserView::SetStarredState(bool is_starred) {
-  BookmarkButton* button =
+  BraveBookmarkButton* button =
       static_cast<BraveToolbarView*>(toolbar())->bookmark_button();
   if (button) {
     button->SetToggled(is_starred);
@@ -450,13 +450,13 @@ void BraveBrowserView::ShowReaderModeToolbar() {
     reader_mode_toolbar_view_->SetVisible(true);
   }
 
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::HideReaderModeToolbar() {
   if (reader_mode_toolbar_view_ && reader_mode_toolbar_view_->GetVisible()) {
     reader_mode_toolbar_view_->SetVisible(false);
-    Layout();
+    DeprecatedLayoutImmediately();
   }
 }
 #endif  // BUILDFLAG(ENABLE_SPEEDREADER)
@@ -819,8 +819,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   }
 }
 
-void BraveBrowserView::Layout() {
-  BrowserView::Layout();
+void BraveBrowserView::Layout(PassKey) {
+  LayoutSuperclass<BrowserView>(this);
   UpdateWebViewRoundedCorners();
 }
 

@@ -47,8 +47,6 @@ NS_SWIFT_NAME(QRCodeGenerator.Result)
 // Image data for generated QR code. May be null on error, or if rendering
 // was not requested.
 @property(nullable, nonatomic, readonly) UIImage* image;
-// QR Code data.
-@property(nonatomic, readonly) NSData* data;
 // 2-D size of |data| in elements. Note |image| will be upscaled, so this
 // does not represent the returned image size.
 @property(nonatomic, readonly) CGSize dataSize;
@@ -60,7 +58,7 @@ OBJC_EXPORT
 NS_SWIFT_NAME(QRCodeGenerator)
 @interface BraveQRCodeGenerator : NSObject
 - (BraveQRCodeGeneratorResult*)generateQRCode:
-    (BraveQRCodeGeneratorOptions*)request;
+    (BraveQRCodeGeneratorOptions*)options;
 @end
 
 NS_ASSUME_NONNULL_END

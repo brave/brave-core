@@ -12,8 +12,8 @@
 class Browser;
 
 class BravePlayerActionIconView : public PageActionIconView {
+  METADATA_HEADER(BravePlayerActionIconView, PageActionIconView)
  public:
-  METADATA_HEADER(BravePlayerActionIconView);
 
   BravePlayerActionIconView(
       CommandUpdater* command_updater,

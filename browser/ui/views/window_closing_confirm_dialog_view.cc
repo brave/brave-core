@@ -54,8 +54,8 @@ gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
 
 // Subclass for custom font.
 class DontAskAgainCheckbox : public views::Checkbox {
+  METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-  METADATA_HEADER(DontAskAgainCheckbox);
 
   using views::Checkbox::Checkbox;
   ~DontAskAgainCheckbox() override = default;
@@ -67,7 +67,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
   }
 };
 
-BEGIN_METADATA(DontAskAgainCheckbox, views::Checkbox)
+BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 
 // static
@@ -207,5 +207,5 @@ void WindowClosingConfirmDialogView::OnClosing() {
   std::move(response_callback_).Run(close_window_);
 }
 
-BEGIN_METADATA(WindowClosingConfirmDialogView, views::DialogDelegateView)
+BEGIN_METADATA(WindowClosingConfirmDialogView)
 END_METADATA

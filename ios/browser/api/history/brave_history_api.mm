@@ -22,7 +22,7 @@
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
 #include "ios/web/public/thread/web_task_traits.h"
 #include "ios/web/public/thread/web_thread.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -225,7 +225,8 @@ DomainMetricTypeIOS const DomainMetricTypeIOSLast28DayMetric =
 
     historyAPI->history_service_->DeleteLocalAndRemoteHistoryBetween(
         historyAPI->web_history_service_, base::Time::Min(), base::Time::Max(),
-        base::BindOnce(callback), &historyAPI->tracker_);
+        /*app_id*/ std::nullopt, base::BindOnce(callback),
+        &historyAPI->tracker_);
   };
 
   web::GetUIThreadTaskRunner({})->PostTask(

@@ -9,7 +9,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "brave/components/url_sanitizer/browser/url_sanitizer_service.h"
-#import "net/base/mac/url_conversions.h"
+#import "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 
 @interface URLSanitizerService () {

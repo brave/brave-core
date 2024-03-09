@@ -32,7 +32,7 @@ class AIChatUI : public ui::UntrustedWebUIController {
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
 
-  // Set by BubbleContentsWrapperT. MojoBubbleWebUIController provides default
+  // Set by WebUIContentsWrapperT. MojoBubbleWebUIController provides default
   // implementation for this but we don't use it.
   void set_embedder(
       base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder) {

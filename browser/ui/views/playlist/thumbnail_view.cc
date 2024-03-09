@@ -103,5 +103,5 @@ void ThumbnailView::SetThumbnail(const gfx::Image& thumbnail) {
   UpdateImageSize();
 }
 
-BEGIN_METADATA(ThumbnailView, views::ImageView)
+BEGIN_METADATA(ThumbnailView)
 END_METADATA

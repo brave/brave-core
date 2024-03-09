@@ -87,5 +87,5 @@ void SidebarItemView::OnThemeChanged() {
   SetHighlighted(active_);
 }
 
-BEGIN_METADATA(SidebarItemView, SidebarButtonView)
+BEGIN_METADATA(SidebarItemView)
 END_METADATA

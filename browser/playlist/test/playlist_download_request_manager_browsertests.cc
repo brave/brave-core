@@ -19,6 +19,7 @@
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/test/base/chrome_test_utils.h"
 #include "content/public/test/browser_test.h"
+#include "content/public/test/browser_test_utils.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "net/base/schemeful_site.h"

@@ -16,8 +16,8 @@ class ScrollView;
 }  // namespace views
 
 class BraveCompoundTabContainer : public CompoundTabContainer {
+  METADATA_HEADER(BraveCompoundTabContainer, CompoundTabContainer)
  public:
-  METADATA_HEADER(BraveCompoundTabContainer);
 
   BraveCompoundTabContainer(TabContainerController& controller,
                             TabHoverCardController* hover_card_controller,
@@ -37,7 +37,7 @@ class BraveCompoundTabContainer : public CompoundTabContainer {
       base::RepeatingCallback<int()> available_width_callback) override;
   void TransferTabBetweenContainers(int from_model_index,
                                     int to_model_index) override;
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
   gfx::Size GetMinimumSize() const override;
   views::SizeBounds GetAvailableSize(const views::View* child) const override;

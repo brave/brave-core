@@ -12,7 +12,7 @@
 #include "components/send_tab_to_self/send_tab_to_self_model.h"
 #include "components/send_tab_to_self/send_tab_to_self_model_observer.h"
 
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 
 #include "brave/ios/browser/api/opentabs/brave_opentabs_api.h"
 #include "brave/ios/browser/api/opentabs/brave_sendtab_api.h"

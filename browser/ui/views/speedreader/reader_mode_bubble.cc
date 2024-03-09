@@ -187,7 +187,7 @@ void ReaderModeBubble::OnAllSitesToggled(const ui::Event& event) {
   GetSpeedreaderService()->EnableForAllSites(on);
 }
 
-BEGIN_METADATA(ReaderModeBubble, LocationBarBubbleDelegateView)
+BEGIN_METADATA(ReaderModeBubble)
 END_METADATA
 
 }  // namespace speedreader

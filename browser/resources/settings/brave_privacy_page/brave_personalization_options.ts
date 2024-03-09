@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import {SettingsToggleButtonElement} from '/shared/settings/controls/settings_toggle_button.js';
+import {SettingsToggleButtonElement} from '../controls/settings_toggle_button.js';
 import {MetricsReporting} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js';
 import {WebUiListenerMixin, WebUiListenerMixinInterface} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';

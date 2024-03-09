@@ -107,7 +107,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
             boolean initializeUiWithIncognitoColors,
             @NonNull BackPressManager backPressManager,
             @Nullable Bundle savedInstanceState,
-            @Nullable MultiInstanceManager multiInstanceManager) {
+            @Nullable MultiInstanceManager multiInstanceManager,
+            @Nullable BooleanSupplier overviewIncognitoSupplier) {
         super(
                 activity,
                 onOmniboxFocusChangedListener,
@@ -155,7 +156,8 @@ public class BraveTabbedRootUiCoordinator extends TabbedRootUiCoordinator {
                 initializeUiWithIncognitoColors,
                 backPressManager,
                 savedInstanceState,
-                multiInstanceManager);
+                multiInstanceManager,
+                overviewIncognitoSupplier);
 
         mActivity = activity;
     }

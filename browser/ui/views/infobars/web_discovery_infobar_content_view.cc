@@ -71,7 +71,8 @@ class InfoBarStyledLabel : public CustomStyledLabel {
     return gfx::Size(pref_size.width() * 0.55, pref_size.height());
   }
 
-  gfx::Size CalculatePreferredSize() const override {
+  gfx::Size CalculatePreferredSize(
+      const views::SizeBounds& available_size) const override {
     // Reset message label's width so that it can calculate preferred size
     // ignoring the current size. This will allow the label to grow bigger than
     // it is.
@@ -92,8 +93,8 @@ END_METADATA
 
 // TODO(simonhong): Use leo MdTextButton when it's stabilized.
 class OkButton : public views::LabelButton {
+  METADATA_HEADER(OkButton, views::LabelButton)
  public:
-  METADATA_HEADER(OkButton);
   explicit OkButton(PressedCallback callback, const std::u16string& text)
       : LabelButton(std::move(callback), text) {
     SetHorizontalAlignment(gfx::ALIGN_CENTER);
@@ -134,13 +135,13 @@ class OkButton : public views::LabelButton {
   }
 };
 
-BEGIN_METADATA(OkButton, views::LabelButton)
+BEGIN_METADATA(OkButton)
 END_METADATA
 
 // Subclassed for font setting.
 class NoThanksButton : public views::LabelButton {
+  METADATA_HEADER(NoThanksButton, views::LabelButton)
  public:
-  METADATA_HEADER(NoThanksButton);
   using views::LabelButton::LabelButton;
   NoThanksButton(const NoThanksButton&) = delete;
   NoThanksButton& operator=(const NoThanksButton&) = delete;
@@ -151,7 +152,7 @@ class NoThanksButton : public views::LabelButton {
   }
 };
 
-BEGIN_METADATA(NoThanksButton, views::LabelButton)
+BEGIN_METADATA(NoThanksButton)
 END_METADATA
 
 // Use image as background.
@@ -498,5 +499,5 @@ void WebDiscoveryInfoBarContentView::CloseInfoBar() {
   delegate_->Close(false);
 }
 
-BEGIN_METADATA(WebDiscoveryInfoBarContentView, views::View)
+BEGIN_METADATA(WebDiscoveryInfoBarContentView)
 END_METADATA

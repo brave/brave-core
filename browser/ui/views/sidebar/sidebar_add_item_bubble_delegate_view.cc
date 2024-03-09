@@ -5,6 +5,7 @@
 
 #include "brave/browser/ui/views/sidebar/sidebar_add_item_bubble_delegate_view.h"
 
+#include <memory>
 #include <utility>
 
 #include "base/memory/raw_ptr.h"
@@ -42,8 +43,8 @@ sidebar::SidebarService* GetSidebarService(Browser* browser) {
 }
 
 class SidebarAddItemButton : public views::LabelButton {
+  METADATA_HEADER(SidebarAddItemButton, views::LabelButton)
  public:
-  METADATA_HEADER(SidebarAddItemButton);
   // Get theme provider to use browser's theme color in this dialog.
   SidebarAddItemButton(bool bold, const ui::ColorProvider* color_provider)
       : color_provider_(color_provider) {
@@ -93,7 +94,7 @@ class SidebarAddItemButton : public views::LabelButton {
   const raw_ptr<const ui::ColorProvider> color_provider_;
 };
 
-BEGIN_METADATA(SidebarAddItemButton, views::LabelButton)
+BEGIN_METADATA(SidebarAddItemButton)
 END_METADATA
 
 }  // namespace
@@ -236,6 +237,5 @@ void SidebarAddItemBubbleDelegateView::CloseOrReLayoutAfterAddingItem() {
   GetWidget()->SetSize(GetWidget()->non_client_view()->GetPreferredSize());
 }
 
-BEGIN_METADATA(SidebarAddItemBubbleDelegateView,
-               views::BubbleDialogDelegateView)
+BEGIN_METADATA(SidebarAddItemBubbleDelegateView)
 END_METADATA

@@ -15,8 +15,8 @@ class TabGroupId;
 }  // namespace tab_groups
 
 class BraveTabGroupHeader : public TabGroupHeader {
+  METADATA_HEADER(BraveTabGroupHeader, TabGroupHeader)
  public:
-  METADATA_HEADER(BraveTabGroupHeader);
 
   constexpr static int kPaddingForGroup = 4;
 
@@ -27,7 +27,7 @@ class BraveTabGroupHeader : public TabGroupHeader {
   void AddedToWidget() override;
   void VisualsChanged() override;
   int GetDesiredWidth() const override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   bool ShouldShowVerticalTabs() const;

@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 
 import org.chromium.base.jank_tracker.JankTracker;
 import org.chromium.base.supplier.ObservableSupplier;
+import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.browser_controls.BrowserControlsStateProvider;
@@ -21,6 +22,7 @@ import org.chromium.chrome.browser.feed.FeedSurfaceProvider;
 import org.chromium.chrome.browser.feed.FeedSwipeRefreshLayout;
 import org.chromium.chrome.browser.feedback.HelpAndFeedbackLauncherImpl;
 import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
+import org.chromium.chrome.browser.magic_stack.ModuleRegistry;
 import org.chromium.chrome.browser.privacy.settings.PrivacyPreferencesManagerImpl;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
@@ -68,7 +70,8 @@ public class BraveNewTabPage extends NewTabPage {
             Supplier<Toolbar> toolbarSupplier,
             HomeSurfaceTracker homeSurfaceTracker,
             ObservableSupplier<TabContentManager> tabContentManagerSupplier,
-            ObservableSupplier<Integer> tabStripHeightSupplier) {
+            ObservableSupplier<Integer> tabStripHeightSupplier,
+            OneshotSupplier<ModuleRegistry> moduleRegistrySupplier) {
         super(
                 activity,
                 browserControlsStateProvider,
@@ -89,7 +92,8 @@ public class BraveNewTabPage extends NewTabPage {
                 toolbarSupplier,
                 homeSurfaceTracker,
                 tabContentManagerSupplier,
-                tabStripHeightSupplier);
+                tabStripHeightSupplier,
+                moduleRegistrySupplier);
 
         mJankTracker = jankTracker;
 

@@ -121,8 +121,8 @@ class HorizontalGradientBackground : public views::Background {
 
 // For customizing label's font size.
 class CustomMdTextButton : public views::MdTextButton {
+  METADATA_HEADER(CustomMdTextButton, views::MdTextButton)
  public:
-  METADATA_HEADER(CustomMdTextButton);
   using MdTextButton::MdTextButton;
   CustomMdTextButton(const CustomMdTextButton&) = delete;
   CustomMdTextButton& operator=(const CustomMdTextButton&) = delete;
@@ -132,12 +132,12 @@ class CustomMdTextButton : public views::MdTextButton {
   }
 };
 
-BEGIN_METADATA(CustomMdTextButton, views::MdTextButton)
+BEGIN_METADATA(CustomMdTextButton)
 END_METADATA
 
 class CloseButton : public views::ImageButton {
+  METADATA_HEADER(CloseButton, views::ImageButton)
  public:
-  METADATA_HEADER(CloseButton);
   explicit CloseButton(PressedCallback callback = PressedCallback())
       : ImageButton(std::move(callback)) {
     views::ConfigureVectorImageButton(this);
@@ -154,13 +154,13 @@ class CloseButton : public views::ImageButton {
   }
 };
 
-BEGIN_METADATA(CloseButton, views::ImageButton)
+BEGIN_METADATA(CloseButton)
 END_METADATA
 
 // For rounded.
 class BannerTypeContainer : public views::View {
+  METADATA_HEADER(BannerTypeContainer, views::View)
  public:
-  METADATA_HEADER(BannerTypeContainer);
   using View::View;
   BannerTypeContainer(const BannerTypeContainer&) = delete;
   BannerTypeContainer& operator=(const BannerTypeContainer&) = delete;
@@ -176,15 +176,15 @@ class BannerTypeContainer : public views::View {
   }
 };
 
-BEGIN_METADATA(BannerTypeContainer, views::View)
+BEGIN_METADATA(BannerTypeContainer)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
 // OmniboxResultSelectionIndicator
 
 class BraveOmniboxResultSelectionIndicator : public views::View {
+  METADATA_HEADER(BraveOmniboxResultSelectionIndicator, views::View)
  public:
-  METADATA_HEADER(BraveOmniboxResultSelectionIndicator);
 
   static constexpr int kStrokeThickness = 3;
 
@@ -236,7 +236,7 @@ class BraveOmniboxResultSelectionIndicator : public views::View {
   }
 };
 
-BEGIN_METADATA(BraveOmniboxResultSelectionIndicator, views::View)
+BEGIN_METADATA(BraveOmniboxResultSelectionIndicator)
 END_METADATA
 
 }  // namespace
@@ -679,5 +679,5 @@ int BraveSearchConversionPromotionView::GetBannerTypeDescStringResourceId() {
   NOTREACHED_NORETURN();
 }
 
-BEGIN_METADATA(BraveSearchConversionPromotionView, views::View)
+BEGIN_METADATA(BraveSearchConversionPromotionView)
 END_METADATA
