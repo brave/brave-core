@@ -51,7 +51,7 @@
 
 @interface IOSBookmarkNode () {
   const bookmarks::BookmarkNode* node_;
-  LegacyBookmarkModel* model_;  // UNOWNED
+  bookmarks::BookmarkModel* model_;  // UNOWNED
   bool owned_;
 }
 @end
@@ -59,7 +59,7 @@
 @implementation IOSBookmarkNode
 
 - (instancetype)initWithNode:(const bookmarks::BookmarkNode*)node
-                       model:(LegacyBookmarkModel*)model {
+                       model:(bookmarks::BookmarkModel*)model {
   if ((self = [super init])) {
     node_ = node;
     model_ = model;
@@ -466,14 +466,14 @@
 @end
 
 @interface BraveBookmarksAPI () {
-  LegacyBookmarkModel* bookmark_model_;         // NOT OWNED
+  bookmarks::BookmarkModel* bookmark_model_;    // NOT OWNED
   BookmarkUndoService* bookmark_undo_service_;  // NOT OWNED
 }
 @end
 
 @implementation BraveBookmarksAPI
 
-- (instancetype)initWithBookmarkModel:(LegacyBookmarkModel*)bookmarkModel
+- (instancetype)initWithBookmarkModel:(bookmarks::BookmarkModel*)bookmarkModel
                   bookmarkUndoService:
                       (BookmarkUndoService*)bookmarkUndoService {
   if ((self = [super init])) {
@@ -662,7 +662,7 @@
   bookmark_undo_service_->undo_manager()->Undo();
 }
 
-- (LegacyBookmarkModel*)getModel {
+- (bookmarks::BookmarkModel*)getModel {
   return bookmark_model_;
 }
 @end

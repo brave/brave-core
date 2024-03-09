@@ -82,9 +82,8 @@ void BookmarksImporter::AddBookmarks(
       GetApplicationContext()->GetChromeBrowserStateManager();
   ChromeBrowserState* browser_state =
       browser_state_manager->GetLastUsedBrowserState();
-  LegacyBookmarkModel* model =
-      ios::LocalOrSyncableBookmarkModelFactory::GetForBrowserState(
-          browser_state);
+  bookmarks::BookmarkModel* model = ios::LocalOrSyncableBookmarkModelFactory::
+      GetDedicatedUnderlyingModelForBrowserState(browser_state);
   DCHECK(model->loaded());
 
   // If the bookmark bar is currently empty, we should import directly to it.
