@@ -46,7 +46,7 @@ void MigrateConfirmationState(InitializeCallback callback) {
            [](InitializeCallback callback,
               const std::optional<std::string>& json) {
              if (!json) {
-               // Confirmation state does not exist
+               // Confirmation state does not exist.
                return SuccessfullyMigrated(std::move(callback));
              }
 
@@ -63,7 +63,11 @@ void MigrateConfirmationState(InitializeCallback callback) {
 
              const absl::optional<ConfirmationList> confirmations =
                  json::reader::ReadConfirmations(*json);
-             CHECK(confirmations);
+             if (!confirmations) {
+               // Confirmation queue state does not exist.
+               return SuccessfullyMigrated(std::move(callback));
+             }
+
              ConfirmationQueueItemList confirmation_queue_items;
              for (const auto& confirmation : *confirmations) {
                const ConfirmationQueueItemInfo confirmation_queue_item =

@@ -136,6 +136,8 @@ std::optional<ConfirmationInfo> ParseConfirmation(
   // User data
   if (const auto* const value = dict.FindDict(kConfirmationUserDataKey)) {
     confirmation.user_data.fixed = value->Clone();
+  } else {
+    return std::nullopt;
   }
 
   // Reward
