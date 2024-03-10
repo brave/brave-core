@@ -50,14 +50,14 @@ NewsMetrics::NewsMetrics(PrefService* prefs, BraveNewsPrefManager& pref_manager)
       pref_manager_(pref_manager),
       was_enabled_(pref_manager_->IsEnabled()),
       direct_feed_count_(
-          pref_manager_->GetSubscriptions().direct_feeds.size()) {
+          pref_manager_->GetSubscriptions().direct_feeds().size()) {
   observation_.Observe(&*pref_manager_);
 }
 
 NewsMetrics::~NewsMetrics() = default;
 
 void NewsMetrics::RecordAtSessionStart() {
-  VLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__;
   p3a_utils::RecordFeatureUsage(prefs_, prefs::kBraveNewsFirstSessionTime,
                                 prefs::kBraveNewsLastSessionTime);
 
@@ -74,7 +74,7 @@ void NewsMetrics::RecordAtSessionStart() {
 }
 
 void NewsMetrics::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
-  VLOG(1) << __FUNCTION__ << " is_add: " << is_add;
+  DVLOG(1) << __FUNCTION__ << " is_add: " << is_add;
   // Store current weekly total in p3a, ready to send on the next upload
   constexpr int kBuckets[] = {0, 1, 4, 8, 14, 30, 60, 120};
   uint64_t total = AddToWeeklyStorageAndGetSum(
@@ -84,7 +84,7 @@ void NewsMetrics::RecordWeeklyDisplayAdsViewedCount(bool is_add) {
 }
 
 void NewsMetrics::RecordDirectFeedsTotal() {
-  VLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__;
   if (!IsMonthlyActiveUser()) {
     VLOG(1) << "Not recording direct feed total (not monthly active user)";
     // Only report for active users in the past month.
@@ -93,14 +93,14 @@ void NewsMetrics::RecordDirectFeedsTotal() {
 
   constexpr int kBuckets[] = {0, 1, 2, 3, 4, 5, 10};
   std::size_t feed_count =
-      pref_manager_->GetSubscriptions().direct_feeds.size();
-  VLOG(1) << "DirectFeedTotal: " << feed_count;
+      pref_manager_->GetSubscriptions().direct_feeds().size();
+  DVLOG(1) << "DirectFeedTotal: " << feed_count;
   p3a_utils::RecordToHistogramBucket(kDirectFeedsTotalHistogramName, kBuckets,
                                      feed_count);
 }
 
 void NewsMetrics::RecordWeeklyAddedDirectFeedsCount(int change) {
-  VLOG(1) << __FUNCTION__ << " change: " << change;
+  DVLOG(1) << __FUNCTION__ << " change: " << change;
   constexpr int kBuckets[] = {0, 1, 2, 3, 4, 5, 10};
   uint64_t weekly_total = AddToWeeklyStorageAndGetSum(
       prefs::kBraveNewsWeeklyAddedDirectFeedsCount, change);
@@ -111,8 +111,8 @@ void NewsMetrics::RecordWeeklyAddedDirectFeedsCount(int change) {
 
 void NewsMetrics::RecordTotalActionCount(ActionType action,
                                          uint64_t count_delta) {
-  VLOG(1) << __FUNCTION__ << " action: " << static_cast<int>(action)
-          << ", count_delta: " << count_delta;
+  DVLOG(1) << __FUNCTION__ << " action: " << static_cast<int>(action)
+           << ", count_delta: " << count_delta;
   const char* pref_name;
   switch (action) {
     case ActionType::kCardView:
@@ -190,9 +190,9 @@ void NewsMetrics::RecordVisitCardDepth(uint32_t new_visit_card_depth) {
 
 void NewsMetrics::RecordTotalSubscribedCount(SubscribeType subscribe_type,
                                              std::optional<size_t> total) {
-  VLOG(1) << __FUNCTION__
-          << " subscribe_type: " << static_cast<int>(subscribe_type)
-          << ", total: " << total.value_or(0);
+  DVLOG(1) << __FUNCTION__
+           << " subscribe_type: " << static_cast<int>(subscribe_type)
+           << ", total: " << total.value_or(0);
   if (total) {
     subscription_counts_[subscribe_type] = *total;
   }
@@ -230,14 +230,14 @@ void NewsMetrics::RecordFeatureEnabledChange() {
     // this as an opt-out, since they were never opted in.
     return;
   }
-  VLOG(1) << __FUNCTION__ << " is_enabled: " << enabled;
+  DVLOG(1) << __FUNCTION__ << " is_enabled: " << enabled;
 
   prefs_->SetBoolean(prefs::kBraveNewsWasEverEnabled, true);
   UMA_HISTOGRAM_BOOLEAN(kIsEnabledHistogramName, enabled);
 }
 
 void NewsMetrics::RecordAtInit() {
-  VLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__;
 
   RecordLastUsageTime();
   RecordNewUserReturning();
@@ -278,13 +278,13 @@ uint64_t NewsMetrics::AddToWeeklyStorageAndGetSum(const char* pref_name,
 }
 
 void NewsMetrics::RecordLastUsageTime() {
-  VLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__;
   p3a_utils::RecordFeatureLastUsageTimeMetric(
       prefs_, prefs::kBraveNewsLastSessionTime, kLastUsageTimeHistogramName);
 }
 
 void NewsMetrics::RecordNewUserReturning() {
-  VLOG(1) << __FUNCTION__;
+  DVLOG(1) << __FUNCTION__;
   p3a_utils::RecordFeatureNewUserReturning(
       prefs_, prefs::kBraveNewsFirstSessionTime,
       prefs::kBraveNewsLastSessionTime, prefs::kBraveNewsUsedSecondDay,
@@ -292,7 +292,7 @@ void NewsMetrics::RecordNewUserReturning() {
 }
 
 void NewsMetrics::RecordWeeklySessionCount(bool is_add) {
-  VLOG(1) << __FUNCTION__ << " is_add: " << is_add;
+  DVLOG(1) << __FUNCTION__ << " is_add: " << is_add;
   // Track how many times in the past week
   // user has scrolled to Brave News.
   constexpr int kBuckets[] = {0, 1, 3, 7, 12, 18, 25, 1000};
@@ -339,12 +339,12 @@ void NewsMetrics::OnPublishersChanged() {
   DVLOG(1) << __FUNCTION__;
   auto subscriptions = pref_manager_->GetSubscriptions();
   RecordTotalSubscribedCount(SubscribeType::kPublishers,
-                             subscriptions.enabled_publishers.size());
+                             subscriptions.enabled_publishers().size());
 
   // If the number of direct publishers has changed, record the total and the
   // delta.
   auto direct_publishers_delta =
-      subscriptions.direct_feeds.size() - direct_feed_count_;
+      subscriptions.direct_feeds().size() - direct_feed_count_;
   if (direct_publishers_delta != 0) {
     RecordDirectFeedsTotal();
     RecordWeeklyAddedDirectFeedsCount(direct_publishers_delta);
@@ -356,7 +356,7 @@ void NewsMetrics::OnChannelsChanged() {
   DVLOG(1) << __FUNCTION__;
   std::vector<std::string> subscribed_channels;
   for (const auto& [locale, channels] :
-       pref_manager_->GetSubscriptions().channels) {
+       pref_manager_->GetSubscriptions().channels()) {
     for (const auto& channel : channels) {
       subscribed_channels.push_back(channel);
     }

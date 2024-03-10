@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_WAIT_FOR_CALLBACK_H_
-#define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_WAIT_FOR_CALLBACK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TEST_WAIT_FOR_CALLBACK_H_
+#define BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TEST_WAIT_FOR_CALLBACK_H_
 
 #include <optional>
 #include <tuple>
@@ -34,4 +34,4 @@ std::tuple<std::decay_t<CallbackArgs>...> WaitForCallback(
   return std::move(result).value();
 }
 
-#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_WAIT_FOR_CALLBACK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_NEWS_BROWSER_TEST_WAIT_FOR_CALLBACK_H_

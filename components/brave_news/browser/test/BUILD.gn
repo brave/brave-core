@@ -49,7 +49,7 @@ source_set("brave_news_unit_tests") {
 source_set("brave_news_unit_tests_support") {
   testonly = true
 
-  sources = [ "//brave/components/brave_news/browser/wait_for_callback.h" ]
+  sources = [ "wait_for_callback.h" ]
 
   deps = [
     "//base",

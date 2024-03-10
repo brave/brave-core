@@ -63,8 +63,8 @@ constexpr uint32_t kDesiredFaviconSizePixels = 48;
 // Creates a ChangeEvent from a lookup of all possible items and a diff.
 template <class MojomType, class EventType>
 mojo::StructPtr<EventType> CreateChangeEvent(
-    const base::flat_map<std::string, MojomType>& lookup,
-    SubscriptionsDiff& diff) {
+    SubscriptionsDiff diff,
+    base::flat_map<std::string, MojomType> lookup) {
   auto event = EventType::New();
   for (const auto& changed_id : diff.changed) {
     auto it = lookup.find(changed_id);
@@ -342,7 +342,7 @@ void BraveNewsController::SubscribeToNewDirectFeed(
             controller->pref_manager_.AddDirectPublisher(feed_url, feed_title);
 
             auto direct_feed_config =
-                controller->pref_manager_.GetSubscriptions().direct_feeds;
+                controller->pref_manager_.GetSubscriptions().direct_feeds();
             std::vector<mojom::PublisherPtr> direct_feeds;
 
             ParseDirectPublisherList(direct_feed_config, &direct_feeds);
@@ -746,7 +746,7 @@ void BraveNewsController::ConditionallyStartOrStopTimer() {
 
 void BraveNewsController::MaybeInitPrefs() {
   if (pref_manager_.IsEnabled()) {
-    const auto& channels = pref_manager_.GetSubscriptions().channels;
+    const auto& channels = pref_manager_.GetSubscriptions().channels();
     if (channels.empty()) {
       publishers_controller_.GetLocale(
           pref_manager_.GetSubscriptions(),
@@ -801,10 +801,7 @@ void BraveNewsController::OnPublishersChanged() {
 
   GetPublishers(
       base::BindOnce(
-          [](SubscriptionsDiff diff, Publishers publishers) {
-            return CreateChangeEvent<mojom::PublisherPtr,
-                                     mojom::PublishersEvent>(publishers, diff);
-          },
+          &CreateChangeEvent<mojom::PublisherPtr, mojom::PublishersEvent>,
           std::move(diff))
           .Then(base::BindOnce(&BraveNewsController::NotifyPublishersChanged,
                                weak_ptr_factory_.GetWeakPtr())));
@@ -832,10 +829,7 @@ void BraveNewsController::OnChannelsChanged() {
     feed_controller_.EnsureFeedIsUpdating(last_subscriptions_);
     GetChannels(
         base::BindOnce(
-            [](SubscriptionsDiff diff, Channels channels) {
-              return CreateChangeEvent<mojom::ChannelPtr, mojom::ChannelsEvent>(
-                  channels, diff);
-            },
+            &CreateChangeEvent<mojom::ChannelPtr, mojom::ChannelsEvent>,
             std::move(diff))
             .Then(base::BindOnce(&BraveNewsController::NotifyChannelsChanged,
                                  weak_ptr_factory_.GetWeakPtr())));

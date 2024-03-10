@@ -65,7 +65,7 @@ mojom::Publisher* FindMatchPreferringLocale(
   return match;
 }
 
-// Apart from fetching, we need to make sure the
+// Apart from fetching, we need to make sure the subscriptions are up to date.
 void ApplySubscriptions(Publishers& publishers,
                         const BraveNewsSubscriptions& subscriptions) {
   // Remove all direct feeds - they'll get re-added.
@@ -79,9 +79,9 @@ void ApplySubscriptions(Publishers& publishers,
 
   // Update the user subscription status.
   for (auto& [id, publisher] : publishers) {
-    if (subscriptions.enabled_publishers.contains(id)) {
+    if (subscriptions.enabled_publishers().contains(id)) {
       publisher->user_enabled_status = mojom::UserEnabled::ENABLED;
-    } else if (subscriptions.disabled_publishers.contains(id)) {
+    } else if (subscriptions.disabled_publishers().contains(id)) {
       publisher->user_enabled_status = mojom::UserEnabled::DISABLED;
     } else {
       publisher->user_enabled_status = mojom::UserEnabled::NOT_MODIFIED;
@@ -90,7 +90,7 @@ void ApplySubscriptions(Publishers& publishers,
 
   // Add direct feeds
   std::vector<mojom::PublisherPtr> direct_publishers;
-  ParseDirectPublisherList(subscriptions.direct_feeds, &direct_publishers);
+  ParseDirectPublisherList(subscriptions.direct_feeds(), &direct_publishers);
   for (auto it = direct_publishers.begin(); it != direct_publishers.end();
        it++) {
     auto move_it = std::make_move_iterator(it);

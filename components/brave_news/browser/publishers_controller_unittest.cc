@@ -18,8 +18,8 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
+#include "brave/components/brave_news/browser/test/wait_for_callback.h"
 #include "brave/components/brave_news/browser/urls.h"
-#include "brave/components/brave_news/browser/wait_for_callback.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "chrome/test/base/testing_profile.h"
 #include "components/prefs/scoped_user_pref_update.h"
@@ -110,9 +110,8 @@ class BraveNewsPublishersControllerTest : public testing::Test {
   }
 
   bool DirectSourceExists(const std::string& publisher_id) {
-    return base::Contains(pref_manager_.GetSubscriptions().direct_feeds,
-                          publisher_id,
-                          [](const auto& feed) { return feed.id; });
+    return base::Contains(pref_manager_.GetSubscriptions().direct_feeds(),
+                          publisher_id, &DirectFeed::id);
   }
 
   Publishers GetPublishers() {

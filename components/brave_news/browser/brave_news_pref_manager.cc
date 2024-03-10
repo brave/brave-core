@@ -31,9 +31,8 @@
 namespace brave_news {
 
 bool GetIsEnabled(PrefService* prefs) {
-  bool should_show = prefs->GetBoolean(prefs::kNewTabPageShowToday);
-  bool opted_in = prefs->GetBoolean(prefs::kBraveNewsOptedIn);
-  return should_show && opted_in;
+  return prefs->GetBoolean(prefs::kNewTabPageShowToday) &&
+         prefs->GetBoolean(prefs::kBraveNewsOptedIn);
 }
 
 SubscriptionsDiff::SubscriptionsDiff() = default;
@@ -48,10 +47,10 @@ BraveNewsSubscriptions::BraveNewsSubscriptions(
     base::flat_set<std::string> disabled_publishers,
     std::vector<DirectFeed> direct_feeds,
     base::flat_map<std::string, std::vector<std::string>> channels)
-    : enabled_publishers(std::move(enabled_publishers)),
-      disabled_publishers(std::move(disabled_publishers)),
-      direct_feeds(std::move(direct_feeds)),
-      channels(std::move(channels)) {}
+    : enabled_publishers_(std::move(enabled_publishers)),
+      disabled_publishers_(std::move(disabled_publishers)),
+      direct_feeds_(std::move(direct_feeds)),
+      channels_(std::move(channels)) {}
 
 BraveNewsSubscriptions::BraveNewsSubscriptions(const BraveNewsSubscriptions&) =
     default;
@@ -67,7 +66,7 @@ BraveNewsSubscriptions::~BraveNewsSubscriptions() = default;
 
 std::vector<std::string> BraveNewsSubscriptions::GetChannelLocales() const {
   std::vector<std::string> locales;
-  for (const auto& [key, value] : channels) {
+  for (const auto& [key, value] : channels_) {
     locales.push_back(key);
   }
   return locales;
@@ -77,9 +76,9 @@ std::vector<std::string> BraveNewsSubscriptions::GetChannelLocales(
     const std::string& channel) const {
   std::vector<std::string> locales;
 
-  for (const auto& [key, value] : channels) {
-    if (base::Contains(value, channel)) {
-      locales.push_back(key);
+  for (const auto& [locale, locale_channels] : channels_) {
+    if (base::Contains(locale_channels, channel)) {
+      locales.push_back(locale);
     }
   }
 
@@ -89,7 +88,7 @@ std::vector<std::string> BraveNewsSubscriptions::GetChannelLocales(
 bool BraveNewsSubscriptions::GetChannelSubscribed(
     const std::string& locale,
     const std::string& channel) const {
-  for (const auto& [key, value] : channels) {
+  for (const auto& [key, value] : channels_) {
     if (key != locale) {
       continue;
     }
@@ -102,32 +101,32 @@ bool BraveNewsSubscriptions::GetChannelSubscribed(
 SubscriptionsDiff BraveNewsSubscriptions::DiffPublishers(
     const BraveNewsSubscriptions& old) const {
   SubscriptionsDiff result;
-  std::ranges::set_symmetric_difference(enabled_publishers,
-                                        old.enabled_publishers,
-                                        std::back_inserter(result.changed));
-  std::ranges::set_symmetric_difference(disabled_publishers,
-                                        old.disabled_publishers,
-                                        std::back_inserter(result.changed));
+  base::ranges::set_symmetric_difference(enabled_publishers_,
+                                         old.enabled_publishers_,
+                                         std::back_inserter(result.changed));
+  base::ranges::set_symmetric_difference(disabled_publishers_,
+                                         old.disabled_publishers_,
+                                         std::back_inserter(result.changed));
 
   std::vector<std::string> direct_feeds_ids;
-  base::ranges::transform(direct_feeds, std::back_inserter(direct_feeds_ids),
-                          [](const auto& feed) { return feed.id; });
+  base::ranges::transform(direct_feeds_, std::back_inserter(direct_feeds_ids),
+                          &DirectFeed::id);
   std::vector<std::string> old_direct_feed_ids;
-  base::ranges::transform(old.direct_feeds,
+  base::ranges::transform(old.direct_feeds_,
                           std::back_inserter(old_direct_feed_ids),
-                          [](const auto& feed) { return feed.id; });
+                          &DirectFeed::id);
 
   base::flat_set<std::string> direct_feed_set(std::move(direct_feeds_ids));
   base::flat_set<std::string> old_direct_feed_set(
       std::move(old_direct_feed_ids));
 
   // New direct feeds should be added to the changed set.
-  std::ranges::set_difference(direct_feed_set, old_direct_feed_set,
-                              std::back_inserter(result.changed));
+  base::ranges::set_difference(direct_feed_set, old_direct_feed_set,
+                               std::back_inserter(result.changed));
 
   // Removed direct feeds should be marked as removed.
-  std::ranges::set_difference(old_direct_feed_set, direct_feed_set,
-                              std::back_inserter(result.removed));
+  base::ranges::set_difference(old_direct_feed_set, direct_feed_set,
+                               std::back_inserter(result.removed));
   return result;
 }
 
@@ -135,14 +134,14 @@ SubscriptionsDiff BraveNewsSubscriptions::DiffChannels(
     const BraveNewsSubscriptions& other) const {
   SubscriptionsDiff result;
   std::vector<std::string> channel_ids;
-  for (const auto& [locale, subscriptions] : channels) {
+  for (const auto& [locale, subscriptions] : channels_) {
     for (const auto& channel : subscriptions) {
       channel_ids.push_back(channel);
     }
   }
 
   std::vector<std::string> other_channel_ids;
-  for (const auto& [locale, subscriptions] : other.channels) {
+  for (const auto& [locale, subscriptions] : other.channels_) {
     for (const auto& channel : subscriptions) {
       other_channel_ids.push_back(channel);
     }
@@ -150,8 +149,8 @@ SubscriptionsDiff BraveNewsSubscriptions::DiffChannels(
   base::flat_set<std::string> channels_set(std::move(channel_ids));
   base::flat_set<std::string> other_channels_set(std::move(other_channel_ids));
 
-  std::ranges::set_symmetric_difference(channels_set, other_channels_set,
-                                        std::back_inserter(result.changed));
+  base::ranges::set_symmetric_difference(channels_set, other_channels_set,
+                                         std::back_inserter(result.changed));
   return result;
 }
 

@@ -3,12 +3,10 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-#include <vector>
-
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "base/containers/contains.h"
 #include "base/containers/flat_set.h"
-#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
-#include "brave/components/brave_news/common/brave_news.mojom-shared.h"
+#include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "chrome/test/base/testing_profile.h"
 #include "content/public/test/browser_task_environment.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -44,7 +42,7 @@ TEST_F(BraveNewsPrefManagerTest, CantAddDuplicateFeed) {
 TEST_F(BraveNewsPrefManagerTest, EmptyTitleFallsBackToFeedSource) {
   constexpr char kFeedSource[] = "https://example.com/";
   auto id = pref_manager_.AddDirectPublisher(GURL(kFeedSource), "");
-  auto subscriptions = pref_manager_.GetSubscriptions().direct_feeds;
+  auto subscriptions = pref_manager_.GetSubscriptions().direct_feeds();
   ASSERT_EQ(1u, subscriptions.size());
 
   for (const auto& subscription : subscriptions) {
@@ -122,14 +120,14 @@ TEST_F(BraveNewsPrefManagerTest, DirectFeedCanBeInspectedAndRemoved) {
   auto id =
       pref_manager_.AddDirectPublisher(GURL("https://example.com"), "Example");
 
-  auto parsed = pref_manager_.GetSubscriptions().direct_feeds;
+  auto parsed = pref_manager_.GetSubscriptions().direct_feeds();
   EXPECT_EQ(parsed.size(), 1u);
   EXPECT_EQ(id, parsed[0].id);
   EXPECT_EQ("Example", parsed[0].title);
   EXPECT_EQ(GURL("https://example.com"), parsed[0].url);
 
   pref_manager_.SetPublisherSubscribed(id, mojom::UserEnabled::DISABLED);
-  parsed = pref_manager_.GetSubscriptions().direct_feeds;
+  parsed = pref_manager_.GetSubscriptions().direct_feeds();
   EXPECT_EQ(0u, parsed.size());
 }
 

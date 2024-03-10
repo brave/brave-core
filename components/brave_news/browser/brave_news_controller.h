@@ -83,7 +83,7 @@ class BraveNewsController
     return &publishers_controller_;
   }
 
-  BraveNewsPrefManager* prefs() { return &pref_manager_; }
+  BraveNewsPrefManager& prefs() { return pref_manager_; }
 
   bool MaybeInitFeedV2();
 

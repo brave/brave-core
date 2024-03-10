@@ -42,13 +42,8 @@ struct SubscriptionsDiff {
   ~SubscriptionsDiff();
 };
 
-struct BraveNewsSubscriptions {
+class BraveNewsSubscriptions {
  public:
-  base::flat_set<std::string> enabled_publishers;
-  base::flat_set<std::string> disabled_publishers;
-  std::vector<DirectFeed> direct_feeds;
-  base::flat_map<std::string, std::vector<std::string>> channels;
-
   BraveNewsSubscriptions();
   BraveNewsSubscriptions(
       base::flat_set<std::string> enabled_publishers,
@@ -68,6 +63,23 @@ struct BraveNewsSubscriptions {
 
   SubscriptionsDiff DiffPublishers(const BraveNewsSubscriptions& old) const;
   SubscriptionsDiff DiffChannels(const BraveNewsSubscriptions& old) const;
+
+  const base::flat_set<std::string>& enabled_publishers() const {
+    return enabled_publishers_;
+  }
+  const base::flat_set<std::string>& disabled_publishers() const {
+    return disabled_publishers_;
+  }
+  const std::vector<DirectFeed>& direct_feeds() const { return direct_feeds_; }
+  const base::flat_map<std::string, std::vector<std::string>> channels() const {
+    return channels_;
+  }
+
+ private:
+  base::flat_set<std::string> enabled_publishers_;
+  base::flat_set<std::string> disabled_publishers_;
+  std::vector<DirectFeed> direct_feeds_;
+  base::flat_map<std::string, std::vector<std::string>> channels_;
 };
 
 class BraveNewsPrefManager {

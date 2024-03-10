@@ -49,7 +49,7 @@ BraveNewsTabHelper::BraveNewsTabHelper(content::WebContents* contents)
               contents->GetBrowserContext())) {
   CHECK(!contents->GetBrowserContext()->IsOffTheRecord());
 
-  pref_observation_.Observe(controller_->prefs());
+  pref_observation_.Observe(&controller_->prefs());
   controller_->GetPublishers(base::DoNothing());
 }
 
