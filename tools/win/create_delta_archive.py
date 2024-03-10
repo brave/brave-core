@@ -73,11 +73,9 @@ def write_rc_file(chrome_7z_patch, setup_exe_patch, rc_file,
     output_dir = dirname(chrome_7z_patch)
     assert dirname(setup_exe_patch) == output_dir
     # pylint: disable=no-member
-    upstream_impl.CreateResourceInputFile(output_dir, 'DIFF',
-                                          basename(chrome_7z_patch),
-                                          basename(setup_exe_patch), rc_file,
-                                          False, None, None)
-
+    upstream_impl.CreateResourceInputFile(output_dir, basename(setup_exe_patch),
+                                          'B7', basename(chrome_7z_patch), 'B7',
+                                          rc_file, False, None, None)
 
 def compress_with_7z(src_file, dst_file):
     # Use upstream's implementation because it heavily optimizes for size.
