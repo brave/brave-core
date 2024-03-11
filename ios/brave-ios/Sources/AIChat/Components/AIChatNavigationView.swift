@@ -67,7 +67,7 @@ struct AIChatNavigationView<Content>: View where Content: View {
           .padding(.vertical)
 
         if premiumStatus == .active || premiumStatus == .activeDisconnected {
-          Text(Strings.AIChat.premiumNavigationBarBadgeTitle)
+          Text(Strings.AIChat.premiumNavigationBarBadgeTitle.uppercased())
             .font(.caption2.weight(.bold))
             .foregroundStyle(Color(braveSystemName: .blue50))
             .padding(.horizontal, 6.0)

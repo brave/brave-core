@@ -50,7 +50,7 @@ extension Strings {
       "aichat.feedbackSuccessAnswerDisLikedTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "Answer DisLiked",
+      value: "Answer Disliked",
       comment: "The title for feedback view when response is sucessfull but disliked"
     )
     public static let feedbackSubmittedTitle = NSLocalizedString(
@@ -511,7 +511,7 @@ extension Strings {
       "aichat.advancedSettingsSubscriptionHeaderTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "SUBSCRIPTION",
+      value: "Subscription",
       comment: "The title for the header for subscription details"
     )
     public static let appStoreErrorTitle = NSLocalizedString(
@@ -551,70 +551,70 @@ extension Strings {
     )
     public static let resetLeoDataAlertButtonTitle = NSLocalizedString(
       "wallet.resetLeoDataAlertButtonTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "Reset",
       comment: "The title of a button that will reset data for leo"
     )
     public static let defaultModelViewTitle = NSLocalizedString(
       "wallet.defaultModelViewTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "Default Model",
       comment: "The title of the menu where user can change the default model"
     )
     public static let defaultModelChatSectionTitle = NSLocalizedString(
       "wallet.defaultModelChatSectionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
-      value: "CHAT",
+      value: "Chat",
       comment: "The title of the section where chat models are displayed as a list."
     )
     public static let unlimitedModelStatusTitle = NSLocalizedString(
       "wallet.unlimitedModelStatusTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
-      value: "UNLIMITED",
+      value: "Unlimited",
       comment: "The title of the badge where a model which can be used unlimited"
     )
     public static let limitedModelStatusTitle = NSLocalizedString(
       "wallet.limitedModelStatusTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
-      value: "LIMITED",
+      value: "Limited",
       comment: "The title of the badge where a model which can be used limited"
     )
     public static let defaultModelLanguageSectionTitle = NSLocalizedString(
       "wallet.defaultModelLanguageSectionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "LANGUAGE MODELS",
       comment: "The title of the section where language models are displayed as a list."
     )
     public static let quickMenuNewChatActionTitle = NSLocalizedString(
       "wallet.quickMenuNewChatActionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "New Chat",
       comment: "The title of action for quick menu which starts a new chat"
     )
     public static let quickMenuGoPremiumActionTitle = NSLocalizedString(
       "wallet.quickMenuGoPremiumActionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "Go Premium",
       comment: "The title of action for quick menu which presents payment screen for premium"
     )
     public static let quickMenuManageSubscriptionActionTitle = NSLocalizedString(
       "wallet.quickMenuManageSubscriptionActionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "Manage Subscriptions",
       comment: "The title of action for quick menu which display subscription management view"
     )
     public static let quickMenuAdvancedSettingsActionTitle = NSLocalizedString(
       "wallet.quickMenuAdvancedSettingsActionTitle",
-      tableName: "BraveWallet",
+      tableName: "BraveLeo",
       bundle: .module,
       value: "Advanced Settings",
       comment: "The title of action for quick menu which displaying advanced settings"
@@ -623,7 +623,7 @@ extension Strings {
       "aichat.premiumNavigationBarBadgeTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "PREMIUM",
+      value: "Premium",
       comment: "Title shown next to Leo in navigation bar when user has premium subcription"
     )
     public static let infoAboutPageContext = NSLocalizedString(
@@ -749,7 +749,7 @@ extension Strings {
       "aichat.chatMenuSectionTitle",
       tableName: "BraveLeo",
       bundle: .module,
-      value: "CHAT",
+      value: "Chat",
       comment: "The title for the chat section in the menu"
     )
     public static let askLeoSearchSuggestionTitle = NSLocalizedString(

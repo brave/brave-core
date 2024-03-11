@@ -28,23 +28,22 @@ struct AIChatPromptInputView: View {
 
   var body: some View {
     HStack(spacing: 0.0) {
-      TextField(
+      AIChatPaddedTextField(
         Strings.AIChat.promptPlaceHolderDescription,
         text: $prompt,
-        prompt: Text(Strings.AIChat.promptPlaceHolderDescription)
-          .font(.subheadline)
-          .foregroundColor(Color(braveSystemName: .textTertiary))
+        textColor: UIColor(braveSystemName: .textPrimary),
+        prompt: Strings.AIChat.promptPlaceHolderDescription,
+        promptColor: UIColor(braveSystemName: .textTertiary),
+        font: .preferredFont(forTextStyle: .subheadline),
+        submitLabel: .send,
+        onSubmit: {
+          if !prompt.isEmpty {
+            onSubmit(prompt)
+            prompt = ""
+          }
+        },
+        insets: .init(width: 16.0, height: 16.0)
       )
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .submitLabel(.send)
-      .onSubmit {
-        if !prompt.isEmpty {
-          onSubmit(prompt)
-          prompt = ""
-        }
-      }
-      .padding(.leading)
 
       if prompt.isEmpty {
         Button {
@@ -63,6 +62,8 @@ struct AIChatPromptInputView: View {
           .labelStyle(.iconOnly)
         }
         .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
+        .disabled(!speechRecognizer.isVoiceSearchAvailable)
+        .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
       } else {
         Button {
           onSubmit(prompt)
