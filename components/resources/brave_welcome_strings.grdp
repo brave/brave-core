@@ -99,4 +99,28 @@
 <message name="IDS_BRAVE_WELCOME_SELECT_THEME_DARK_LABEL" desc="A label for dark theme setting">
   Dark mode
 </message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_TITLE" desc="A title in 'help wdp' page">
+  Want better search results?
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_SUBTITLE" desc="A subtitle in 'help wdp' page">
+  Join the movement, contribute to Brave Search.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_DESCRIPTION" desc="A description in 'help wdp' page">
+  Help us fix the web by participating in Brave’s Web Discovery Project. By sharing completely anonymous search signals, you can help Brave grow the search index.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_LEARN_MORE" desc="Text for 'Learn More' link in 'help wdp' page">
+  Learn More.
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_ACCEPT" desc="A label for Accept button in 'help wdp' page">
+  Sure, I'll help
+</message>
+
+<message name="IDS_BRAVE_WELCOME_HELP_WDP_REJECT" desc="A label 'help wdp' page">
+  Maybe later
+</message>
 </grit-part>

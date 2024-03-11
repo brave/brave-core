@@ -8,15 +8,24 @@ import { addWebUiListener } from 'chrome://resources/js/cr.js'
 
 import DataContext from '../state/context'
 import { ViewType, Scenes } from '../state/component_types'
-import { useInitializeImportData, useProfileCount } from '../state/hooks'
+import {
+  useInitializeImportData,
+  useProfileCount,
+  useViewTypeTransition
+} from '../state/hooks'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 interface DataContextProviderProps {
   children: React.ReactNode
 }
 
 function DataContextProvider (props: DataContextProviderProps) {
-  const [viewType, setViewType] = React.useState<ViewType | undefined>(undefined)
-  const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<string | undefined>(undefined)
+  const [viewType, setViewType] = React.useState<ViewType | undefined>(
+    undefined
+  )
+  const [currentSelectedBrowser, setCurrentSelectedBrowser] = React.useState<
+    string | undefined
+  >(undefined)
   const { browserProfiles } = useInitializeImportData()
   const { profileCountRef, incrementCount, decrementCount } = useProfileCount()
   const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
@@ -29,32 +38,37 @@ function DataContextProvider (props: DataContextProviderProps) {
     browserProfiles,
     currentSelectedBrowser,
     viewType,
-    scenes
+    scenes,
+    countryString: loadTimeData.getString('countryString')
   }
+
+  const importInProgress = useViewTypeTransition(
+    ViewType.ImportSelectProfile
+  ).forward
+  const importSucceeded = useViewTypeTransition(
+    ViewType.ImportInProgress
+  ).forward
 
   React.useEffect(() => {
     addWebUiListener('brave-import-data-status-changed', (status: any) => {
       // TODO(tali): Handle item based events
 
-      if (status.event === 'ImportStarted' && (profileCountRef.current > 0)) {
-        setViewType(ViewType.ImportInProgress)
+      if (status.event === 'ImportStarted' && profileCountRef.current > 0) {
+        setViewType(importInProgress)
       }
 
       if (status.event === 'ImportEnded') {
+        console.log('BYE')
         decrementCount()
         if (profileCountRef.current === 0) {
-          setViewType(ViewType.ImportSucceeded)
+          setViewType(importSucceeded)
         }
       }
     })
-  }, [])
+  }, [importSucceeded, importInProgress])
 
   return (
-    <DataContext.Provider
-      value={store}
-    >
-      {props.children}
-    </DataContext.Provider>
+    <DataContext.Provider value={store}>{props.children}</DataContext.Provider>
   )
 }
 

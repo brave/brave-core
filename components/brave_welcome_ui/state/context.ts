@@ -16,6 +16,7 @@ interface Store {
   browserProfiles: BrowserProfile[] | undefined
   viewType: ViewType | undefined
   scenes: Scenes | undefined
+  countryString: string | undefined
 }
 
 const defaultStore = {
@@ -26,7 +27,8 @@ const defaultStore = {
   currentSelectedBrowser: undefined,
   browserProfiles: undefined,
   viewType: undefined,
-  scenes: undefined
+  scenes: undefined,
+  countryString: undefined,
 }
 
 const DataContext = React.createContext<Store>(defaultStore)

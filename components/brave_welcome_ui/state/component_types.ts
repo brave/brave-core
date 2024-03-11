@@ -14,6 +14,7 @@ export enum ViewType {
   ImportSucceeded,
   ImportFailed,
   HelpImprove,
+  HelpWDP,
 }
 
 export enum BrowserType {
