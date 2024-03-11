@@ -7,11 +7,6 @@ module ai_chat.mojom;
 
 import "brave/components/ai_chat/core/common/mojom/ai_chat.mojom";
 
-struct ModelWithSubtitle {
-  Model model;
-  string subtitle;
-};
-
 interface AIChatSettingsHelper {
   GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
   GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);

@@ -4,7 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
  import {sendWithPromise} from 'chrome://resources/js/cr.js';
- import { AIChatSettingsHelper, AIChatSettingsHelperRemote, ModelWithSubtitle } from '../settings_helper.mojom-webui.js'
+ import { AIChatSettingsHelper, AIChatSettingsHelperRemote } from '../settings_helper.mojom-webui.js'
  export * from '../ai_chat.mojom-webui.js'
  export * from '../settings_helper.mojom-webui.js'
 

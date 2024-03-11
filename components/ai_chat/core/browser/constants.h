@@ -13,9 +13,6 @@ namespace ai_chat {
 
 base::span<const webui::LocalizedString> GetLocalizedStrings();
 
-inline constexpr char kManageUrlProd[] = "https://account.brave.com/account/";
-inline constexpr char kManageUrlStaging[] =
-    "https://account.bravesoftware.com/account/";
 }  // namespace ai_chat
 
 #endif  // BRAVE_COMPONENTS_AI_CHAT_CORE_BROWSER_CONSTANTS_H_

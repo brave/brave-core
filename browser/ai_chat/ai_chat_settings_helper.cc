@@ -7,6 +7,7 @@
 
 #include <utility>
 #include <vector>
+#include "base/strings/strcat.h"
 
 #include "brave/browser/skus/skus_service_factory.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
@@ -19,6 +20,7 @@
 #include "content/public/browser/browser_context.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "ui/base/l10n/l10n_util.h"
+#include "brave/brave_domains/service_domains.h"
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/build/android/jni_headers/BraveLeoMojomHelper_jni.h"
@@ -26,6 +28,10 @@
 #endif
 
 namespace ai_chat {
+
+namespace {
+  constexpr char kAccountHostnamePart[] = "account";
+}
 
 AIChatSettingsHelper::AIChatSettingsHelper(content::BrowserContext* context) {
   auto skus_service_getter = base::BindRepeating(
@@ -60,27 +66,39 @@ void AIChatSettingsHelper::GetModelsWithSubtitles(
   for (size_t i = 0; i < all_models.size(); i++) {
     mojom::ModelWithSubtitle modelWithSubtitle;
     modelWithSubtitle.model = all_models[i].Clone();
+
+    bool is_key_handled = false; // Flag to track if the key is recognized.
+
     if (modelWithSubtitle.model->key == "chat-basic") {
       modelWithSubtitle.subtitle =
           l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_BASIC_SUBTITLE);
+      is_key_handled = true;
     } else if (modelWithSubtitle.model->key == "chat-leo-expanded") {
       modelWithSubtitle.subtitle =
           l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE);
+      is_key_handled = true;
     } else if (modelWithSubtitle.model->key == "chat-claude-instant") {
       modelWithSubtitle.subtitle =
           l10n_util::GetStringUTF8(IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE);
+      is_key_handled = true;
     }
+
+    DCHECK(is_key_handled) << "Unhandled model key: " << modelWithSubtitle.model->key;
+
     models[i] = modelWithSubtitle.Clone();
   }
+
   std::move(callback).Run(std::move(models));
 }
 
 void AIChatSettingsHelper::GetManageUrl(GetManageUrlCallback callback) {
 #if defined(OFFICIAL_BUILD)
-  std::move(callback).Run(ai_chat::kManageUrlProd);
+  std::string domain = brave_domains::GetServicesDomain(kAccountHostnamePart);
 #else
-  std::move(callback).Run(ai_chat::kManageUrlStaging);
+  std::string domain = brave_domains::GetServicesDomain(kAccountHostnamePart, brave_domains::STAGING);
 #endif
+
+  std::move(callback).Run(base::StrCat({url::kHttpsScheme, url::kStandardSchemeSeparator, domain}));
 }
 
 void AIChatSettingsHelper::BindInterface(

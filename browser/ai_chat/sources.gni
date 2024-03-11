@@ -9,6 +9,7 @@ brave_browser_ai_chat_sources = [
 ]
 
 brave_browser_ai_chat_deps = [
+  "//brave/brave_domains",
   "//brave/components/ai_chat/core/browser",
   "//brave/components/ai_chat/core/common/mojom",
 ]

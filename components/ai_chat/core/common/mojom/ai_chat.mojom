@@ -143,6 +143,11 @@ struct Model {
   uint32 long_conversation_warning_character_limit;
 };
 
+struct ModelWithSubtitle {
+  Model model;
+  string subtitle;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
