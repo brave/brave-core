@@ -67,7 +67,6 @@ inline constexpr char kWidevineGoogleDlPrefixWinArm64[] =
 #endif
 
 inline constexpr char kUserAgentHeader[] = "User-Agent";
-inline constexpr char kBravePartnerHeader[] = "X-Brave-Partner";
 inline constexpr char kBraveServicesKeyHeader[] = "BraveServiceKey";
 
 inline constexpr char kBittorrentMimeType[] = "application/x-bittorrent";

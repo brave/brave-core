@@ -112,7 +112,6 @@ test("brave_unit_tests") {
     "//brave/chromium_src/components/autofill/core/browser/autofill_experiments_unittest.cc",
     "//brave/chromium_src/components/variations/service/field_trial_unittest.cc",
     "//brave/chromium_src/net/cookies/brave_canonical_cookie_unittest.cc",
-    "//brave/chromium_src/services/network/public/cpp/cors/cors_unittest.cc",
     "//brave/common/brave_content_client_unittest.cc",
     "//brave/common/profiler/thread_profile_configuration_unittest.cc",
     "//brave/components/assist_ranker/ranker_model_loader_impl_unittest.cc",
