@@ -15,7 +15,7 @@ export const List = styled.ul`
   list-style-type: none;
   padding: 0;
   margin: 8px;
-  text-align: left;
+  text-align: start;
 
   li {
     margin-bottom: 28px;
