@@ -9,6 +9,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_ads/core/internal/common/timer/timer.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/conversion_queue_delegate.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/queue/queue_item/conversion_queue_item_info.h"
 #include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
@@ -32,7 +33,7 @@ class ConversionQueue final : public AdsClientNotifierObserver {
     delegate_ = delegate;
   }
 
-  // Add conversions to a queue that are processed in ascending order.
+  // Add conversions to a queue that are processed in chronological order.
   void Add(const ConversionInfo& conversion);
 
  private:
@@ -43,12 +44,10 @@ class ConversionQueue final : public AdsClientNotifierObserver {
       const ConversionQueueItemInfo& conversion_queue_item);
   bool ShouldProcessBeforeScheduledQueueItem(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void ProcessQueueItemAfterDelay(const ConversionQueueItemInfo& queue_item);
-  void ProcessQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
-
-  void MarkQueueItemAsProcessed(
+  void ProcessQueueItemAfterDelay(
       const ConversionQueueItemInfo& conversion_queue_item);
-  void MarkQueueItemAsProcessedCallback(
+  void ProcessQueueItem(const ConversionQueueItemInfo& conversion_queue_item);
+  void ProcessQueueItemCallback(
       const ConversionQueueItemInfo& conversion_queue_item,
       bool success);
 
@@ -79,6 +78,10 @@ class ConversionQueue final : public AdsClientNotifierObserver {
   raw_ptr<ConversionQueueDelegate> delegate_ = nullptr;
 
   Timer timer_;
+
+  bool is_processing_ = false;
+
+  const database::table::ConversionQueue database_table_;
 
   base::WeakPtrFactory<ConversionQueue> weak_factory_{this};
 };

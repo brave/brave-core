@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
@@ -20,6 +21,7 @@ import Preferences
 import ScreenTime
 import Shared
 import SnapKit
+import SpeechRecognition
 import Storage
 import StoreKit
 import SwiftUI
@@ -28,6 +30,10 @@ import WebKit
 import os.log
 
 import class Combine.AnyCancellable
+
+#if canImport(BraveTalk)
+import BraveTalk
+#endif
 
 #if canImport(BraveTalk)
 import BraveTalk
@@ -147,7 +153,7 @@ public class BrowserViewController: UIViewController {
   var onPendingRequestUpdatedCancellable: AnyCancellable?
 
   /// Voice Search
-  var voiceSearchViewController: PopupViewController<VoiceSearchInputView>?
+  var voiceSearchViewController: PopupViewController<SpeechToTextInputView>?
   var voiceSearchCancelable: AnyCancellable?
   let speechRecognizer = SpeechRecognizer()
 
@@ -284,7 +290,7 @@ public class BrowserViewController: UIViewController {
   var topToolbarDidPressReloadTask: Task<(), Never>?
 
   /// In app purchase obsever for VPN Subscription action
-  let iapObserver: IAPObserver
+  let iapObserver: BraveVPNInAppPurchaseObserver
 
   private let ntpP3AHelper: NewTabPageP3AHelper
 
@@ -1682,7 +1688,7 @@ public class BrowserViewController: UIViewController {
       } else if !url.absoluteString.hasPrefix(
         "\(InternalURL.baseUrl)/\(SessionRestoreHandler.path)"
       ) {
-        hideActiveNewTabPageController(url.isReaderModeURL)
+        hideActiveNewTabPageController(url.isInternalURL(for: .readermode))
       }
     } else if isAboutHomeURL {
       showNewTabPageController()
@@ -2010,7 +2016,7 @@ public class BrowserViewController: UIViewController {
       if tab.secureContentState == .secure, !webView.hasOnlySecureContent,
         tab.url?.origin == tab.webView?.url?.origin
       {
-        if let url = tab.webView?.url, url.isReaderModeURL {
+        if let url = tab.webView?.url, url.isInternalURL(for: .readermode) {
           break
         }
 
@@ -2054,7 +2060,7 @@ public class BrowserViewController: UIViewController {
               details: "Certificate is missing (no serverTrust)"
             )
           }
-        } else if url.isReaderModeURL || InternalURL.isValid(url: url) {
+        } else if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
           tab.secureContentState = .localhost
           logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
         }
@@ -2071,8 +2077,10 @@ public class BrowserViewController: UIViewController {
       tab.secureContentState = .unknown
       logSecureContentState(tab: tab, path: path)
 
-      guard let serverTrust = tab.webView?.serverTrust else {
-        if let url = tab.webView?.url ?? tab.url {
+      guard let url = webView.url,
+        let serverTrust = webView.serverTrust
+      else {
+        if let url = webView.url {
           if InternalURL.isValid(url: url),
             let internalUrl = InternalURL(url),
             internalUrl.isAboutURL || internalUrl.isAboutHomeURL
@@ -2133,7 +2141,7 @@ public class BrowserViewController: UIViewController {
             break
           }
 
-          if url.isReaderModeURL || InternalURL.isValid(url: url) {
+          if url.isInternalURL(for: .readermode) || InternalURL.isValid(url: url) {
             tab.secureContentState = .localhost
             logSecureContentState(tab: tab, path: path, details: "Reader Mode or Internal URL")
 
@@ -2166,8 +2174,8 @@ public class BrowserViewController: UIViewController {
         break
       }
 
-      guard let scheme = tab.webView?.url?.scheme,
-        let host = tab.webView?.url?.host
+      guard let scheme = url.scheme,
+        let host = url.host
       else {
         tab.secureContentState = .unknown
         logSecureContentState(tab: tab, path: path, details: "No webview URL host scheme)")
@@ -2177,7 +2185,7 @@ public class BrowserViewController: UIViewController {
       }
 
       let port: Int
-      if let urlPort = tab.webView?.url?.port {
+      if let urlPort = url.port {
         port = urlPort
       } else if scheme == "https" {
         port = 443
@@ -2241,7 +2249,7 @@ public class BrowserViewController: UIViewController {
 
   func updateForwardStatusIfNeeded(webView: WKWebView) {
     if let forwardListItem = webView.backForwardList.forwardList.first,
-      forwardListItem.url.isReaderModeURL
+      forwardListItem.url.isInternalURL(for: .readermode)
     {
       navigationToolbar.updateForwardStatus(false)
     } else {
@@ -2254,7 +2262,7 @@ public class BrowserViewController: UIViewController {
     toolbarVisibilityViewModel.toolbarState = .expanded
 
     if let url = tab.url {
-      if url.isReaderModeURL {
+      if url.isInternalURL(for: .readermode) {
         showReaderModeBar(animated: false)
         NotificationCenter.default.addObserver(
           self,
@@ -2315,15 +2323,8 @@ public class BrowserViewController: UIViewController {
     browser.tabManager.addTabsForURLs([url], zombie: false, isPrivate: isPrivate)
   }
 
-  public func switchToTabForURLOrOpen(
-    _ url: URL,
-    isPrivate: Bool = false,
-    isPrivileged: Bool,
-    isExternal: Bool = false
-  ) {
-    if !isExternal {
-      popToBVC()
-    }
+  public func switchToTabForURLOrOpen(_ url: URL, isPrivate: Bool = false, isPrivileged: Bool) {
+    popToBVC(isAnimated: false)
 
     if let tab = tabManager.getTabForURL(url, isPrivate: isPrivate) {
       tabManager.selectTab(tab)
@@ -2461,11 +2462,11 @@ public class BrowserViewController: UIViewController {
     present(settingsNavigationController, animated: true)
   }
 
-  func popToBVC(completion: (() -> Void)? = nil) {
+  func popToBVC(isAnimated: Bool = true, completion: (() -> Void)? = nil) {
     guard let currentViewController = navigationController?.topViewController else {
       return
     }
-    currentViewController.dismiss(animated: true, completion: completion)
+    currentViewController.dismiss(animated: isAnimated, completion: completion)
 
     if currentViewController != self {
       _ = self.navigationController?.popViewController(animated: true)
@@ -2567,7 +2568,7 @@ public class BrowserViewController: UIViewController {
       // Whether to show search icon or + icon
       toolbar?.setSearchButtonState(url: url)
 
-      if !InternalURL.isValid(url: url) || url.isReaderModeURL, !url.isFileURL {
+      if !InternalURL.isValid(url: url) || url.isInternalURL(for: .readermode), !url.isFileURL {
         // Fire the readability check. This is here and not in the pageShow event handler in ReaderMode.js anymore
         // because that event will not always fire due to unreliable page caching. This will either let us know that
         // the currently loaded page can be turned into reading mode or if the page already is in reading mode. We
@@ -2578,7 +2579,7 @@ public class BrowserViewController: UIViewController {
         )
 
         // Only add history of a url which is not a localhost url
-        if !url.isReaderModeURL {
+        if !url.isInternalURL(for: .readermode) {
           if !tab.isPrivate {
             braveCore.historyAPI.add(url: url, title: tab.title, dateAdded: Date())
           }
@@ -2867,6 +2868,7 @@ extension BrowserViewController: TabDelegate {
       Web3NameServiceScriptHandler(tab: tab),
       Web3IPFSScriptHandler(tab: tab),
       YoutubeQualityScriptHandler(tab: tab),
+      BraveLeoScriptHandler(tab: tab),
 
       tab.contentBlocker,
       tab.requestBlockingContentHelper,
@@ -3146,6 +3148,14 @@ extension BrowserViewController: SearchViewControllerDelegate {
   ) {
     topToolbar.leaveOverlayMode()
     processAddressBar(text: query, isBraveSearchPromotion: braveSearchPromotion)
+  }
+
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmitAIChat query: String
+  ) {
+    self.popToBVC()
+    self.openBraveLeo(with: query)
   }
 
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL) {
@@ -3747,12 +3757,12 @@ extension BrowserViewController {
   }
 }
 
-extension BrowserViewController: IAPObserverDelegate {
+extension BrowserViewController: BraveVPNInAppPurchaseObserverDelegate {
   public func purchasedOrRestoredProduct(validateReceipt: Bool) {
     // No-op
   }
 
-  public func purchaseFailed(error: IAPObserver.PurchaseError) {
+  public func purchaseFailed(error: BraveVPNInAppPurchaseObserver.PurchaseError) {
     // No-op
   }
 
@@ -3837,5 +3847,31 @@ extension BrowserViewController {
         }
       }
     }
+  }
+}
+
+extension BrowserViewController {
+  private func openAIChatURL(_ url: URL) {
+    let forcedPrivate = self.privateBrowsingManager.isPrivateBrowsing
+    self.openURLInNewTab(url, isPrivate: forcedPrivate, isPrivileged: false)
+  }
+
+  func openBraveLeo(with query: String? = nil) {
+    let webView = (query == nil) ? tabManager.selectedTab?.webView : nil
+
+    let model = AIChatViewModel(
+      braveCore: braveCore,
+      webView: webView,
+      script: BraveLeoScriptHandler.self,
+      querySubmited: query
+    )
+
+    let chatController = UIHostingController(
+      rootView: AIChatView(
+        model: model,
+        openURL: openAIChatURL
+      )
+    )
+    present(chatController, animated: true)
   }
 }

@@ -207,5 +207,5 @@ void BraveHelpBubbleDelegateView::SetUpLabel(views::Label* label,
   label->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
 
-BEGIN_METADATA(BraveHelpBubbleDelegateView, BubbleDialogDelegateView)
+BEGIN_METADATA(BraveHelpBubbleDelegateView)
 END_METADATA

@@ -7,8 +7,7 @@
 import {
   BraveWallet,
   CoinTypes,
-  SerializableTransactionInfo,
-  TxSimulationOptInStatus
+  SerializableTransactionInfo
 } from '../../../constants/types'
 import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 
@@ -16,39 +15,41 @@ import { WalletApiEndpointBuilderParams } from '../api-base.slice'
 import { toMojoUnion } from '../../../utils/mojo-utils'
 import { handleEndpointError } from '../../../utils/api-utils'
 
-/**
- * Will be `undefined` until a preference is set
- */
-let txSimulationOptInStatus: TxSimulationOptInStatus = 'unset'
-
-export const getIsTxSimulationOptInStatus = () => txSimulationOptInStatus
-
-export const setTxSimulationOptInStatus = (
-  enabled: TxSimulationOptInStatus
-) => {
-  txSimulationOptInStatus = enabled
-}
-
 export const transactionSimulationEndpoints = ({
   mutation,
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    getIsTxSimulationOptInStatus: query<TxSimulationOptInStatus, void>({
-      queryFn: async (arg, api, extraOptions, baseQuery) => {
+    getIsTxSimulationOptInStatus: query<BraveWallet.BlowfishOptInStatus, void>({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api, cache } = baseQuery(undefined)
+
+        const { isTransactionSimulationsFeatureEnabled } =
+          await cache.getWalletInfo()
+
+        if (!isTransactionSimulationsFeatureEnabled) {
+          return {
+            data: BraveWallet.BlowfishOptInStatus.kDenied
+          }
+        }
+
+        const { status } =
+          await api.braveWalletService.getTransactionSimulationOptInStatus()
+
         return {
-          data: getIsTxSimulationOptInStatus()
+          data: status
         }
       },
       providesTags: ['TransactionSimulationsEnabled']
     }),
 
     setIsTxSimulationOptInStatus: mutation<
-      TxSimulationOptInStatus,
-      TxSimulationOptInStatus
+      BraveWallet.BlowfishOptInStatus,
+      BraveWallet.BlowfishOptInStatus
     >({
-      queryFn: async (status, api, extraOptions, baseQuery) => {
-        setTxSimulationOptInStatus(status)
+      queryFn: async (status, { endpoint }, extraOptions, baseQuery) => {
+        const { data: api } = baseQuery(undefined)
+        api.braveWalletService.setTransactionSimulationOptInStatus(status)
         return {
           data: status
         }
@@ -64,12 +65,22 @@ export const transactionSimulationEndpoints = ({
     >({
       queryFn: async (txArg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          if (getIsTxSimulationOptInStatus() !== 'allowed') {
-            throw new Error('Transaction simulation is not enabled')
+          const { data: api, cache } = baseQuery(undefined)
+          const { simulationService, txService } = api
+
+          const { isTransactionSimulationsFeatureEnabled } =
+            await cache.getWalletInfo()
+
+          if (!isTransactionSimulationsFeatureEnabled) {
+            throw new Error('Transaction simulation feature is not enabled')
           }
 
-          const api = baseQuery(undefined).data
-          const { simulationService, txService } = api
+          const { status } =
+            await api.braveWalletService.getTransactionSimulationOptInStatus()
+
+          if (status !== BraveWallet.BlowfishOptInStatus.kAllowed) {
+            throw new Error('Transaction simulation is not allowed')
+          }
 
           if (txArg.coinType !== BraveWallet.CoinType.ETH) {
             throw new Error(
@@ -155,12 +166,22 @@ export const transactionSimulationEndpoints = ({
     >({
       queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
         try {
-          if (getIsTxSimulationOptInStatus() !== 'allowed') {
-            throw new Error('Transaction simulation is not enabled')
+          const { data: api, cache } = baseQuery(undefined)
+          const { simulationService, braveWalletService, txService } = api
+
+          const { isTransactionSimulationsFeatureEnabled } =
+            await cache.getWalletInfo()
+
+          if (!isTransactionSimulationsFeatureEnabled) {
+            throw new Error('Transaction simulation feature is not enabled')
           }
 
-          const api = baseQuery(undefined).data
-          const { simulationService, braveWalletService, txService } = api
+          const { status } =
+            await api.braveWalletService.getTransactionSimulationOptInStatus()
+
+          if (status !== BraveWallet.BlowfishOptInStatus.kAllowed) {
+            throw new Error('Transaction simulation is not allowed')
+          }
 
           const params: Parameters<
             BraveWallet.SimulationServiceRemote['scanSolanaTransaction']

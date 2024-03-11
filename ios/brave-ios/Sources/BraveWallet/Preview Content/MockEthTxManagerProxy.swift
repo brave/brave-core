@@ -10,7 +10,7 @@ import Foundation
 
 class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   func setGasPriceAndLimitForUnapprovedTransaction(
-    _ chainId: String,
+    chainId: String,
     txMetaId: String,
     gasPrice: String,
     gasLimit: String,
@@ -20,7 +20,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func setGasFeeAndLimitForUnapprovedTransaction(
-    _ chainId: String,
+    chainId: String,
     txMetaId: String,
     maxPriorityFeePerGas: String,
     maxFeePerGas: String,
@@ -31,7 +31,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func setDataForUnapprovedTransaction(
-    _ chainId: String,
+    chainId: String,
     txMetaId: String,
     data: [NSNumber],
     completion: @escaping (Bool) -> Void
@@ -40,7 +40,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func setNonceForUnapprovedTransaction(
-    _ chainId: String,
+    chainId: String,
     txMetaId: String,
     nonce: String,
     completion: @escaping (Bool) -> Void
@@ -49,7 +49,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func makeErc20TransferData(
-    _ toAddress: String,
+    toAddress: String,
     amount: String,
     completion: @escaping (Bool, [NSNumber]) -> Void
   ) {
@@ -57,15 +57,15 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func makeErc20ApproveData(
-    _ spenderAddress: String,
+    spenderAddress: String,
     amount: String,
     completion: @escaping (Bool, [NSNumber]) -> Void
   ) {
     completion(false, .init())
   }
 
-  func makeErc721Transfer(
-    fromData from: String,
+  func makeErc721TransferFromData(
+    from: String,
     to: String,
     tokenId: String,
     contractAddress: String,
@@ -75,14 +75,14 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func gasEstimation1559(
-    _ chainId: String,
+    chainId: String,
     completion: @escaping (BraveWallet.GasEstimation1559?) -> Void
   ) {
     completion(nil)
   }
 
-  func nonce(
-    forHardwareTransaction chainId: String,
+  func nonceForHardwareTransaction(
+    chainId: String,
     txMetaId: String,
     completion: @escaping (String?) -> Void
   ) {
@@ -90,7 +90,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func processHardwareSignature(
-    _ chainId: String,
+    chainId: String,
     txMetaId: String,
     v: String,
     r: String,
@@ -100,8 +100,8 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
     completion(false, .internalError, "Error Message")
   }
 
-  func makeErc1155Transfer(
-    fromData from: String,
+  func makeErc1155TransferFromData(
+    from: String,
     to: String,
     tokenId: String,
     value: String,
@@ -112,7 +112,7 @@ class MockEthTxManagerProxy: BraveWalletEthTxManagerProxy {
   }
 
   func makeFilForwarderTransferData(
-    _ toAddressFil: String,
+    toAddressFil: String,
     completion: @escaping (Bool, [NSNumber]) -> Void
   ) {
     completion(false, [])

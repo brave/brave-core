@@ -124,17 +124,17 @@ class EthereumProviderScriptHandler: TabContentScript {
         replyHandler(nil, "Invalid args")
         return
       }
-      provider.request(requestPayload, completion: handleResponse)
+      provider.request(input: requestPayload, completion: handleResponse)
     case .isConnected:
       replyHandler(nil, nil)
     case .enable:
-      provider.enable(handleResponse)
+      provider.enable(completion: handleResponse)
     case .sendAsync:
       guard let requestPayload = MojoBase.Value(jsonString: body.args) else {
         replyHandler(nil, "Invalid args")
         return
       }
-      provider.sendAsync(requestPayload, completion: handleResponse)
+      provider.sendAsync(input: requestPayload, completion: handleResponse)
     case .send:
       struct SendPayload {
         var method: String
@@ -154,7 +154,7 @@ class EthereumProviderScriptHandler: TabContentScript {
 
       if sendPayload.method.isEmpty {
         if let params = sendPayload.params, params.tag != .null {
-          provider.sendAsync(params, completion: handleResponse)
+          provider.sendAsync(input: params, completion: handleResponse)
         } else {
           // Empty method with no params is not valid
           replyHandler(nil, "Invalid args")
@@ -172,7 +172,7 @@ class EthereumProviderScriptHandler: TabContentScript {
       }
 
       provider.send(
-        sendPayload.method,
+        method: sendPayload.method,
         params: sendPayload.params ?? .init(listValue: []),
         completion: handleResponse
       )

@@ -42,10 +42,13 @@ export const Swap = () => {
   // Hooks
   const swap = useSwap()
   const {
-    fromAmount,
-    toAmount,
+    fromNetwork,
     fromToken,
+    fromAccount,
+    fromAmount,
+    toNetwork,
     toToken,
+    toAmount,
     isFetchingQuote,
     quoteOptions,
     selectedQuoteOptionIndex,
@@ -66,11 +69,9 @@ export const Swap = () => {
     isSubmitButtonDisabled,
     swapValidationError,
     spotPrices,
-    selectedNetwork,
-    setSelectedNetwork,
-    selectedAccount,
     tokenBalancesRegistry,
-    isLoadingBalances
+    isLoadingBalances,
+    swapFees
   } = swap
 
   // State
@@ -137,23 +138,29 @@ export const Swap = () => {
             swapValidationError === 'insufficientBalance' ||
             swapValidationError === 'fromAmountDecimalsOverflow'
           }
-          network={selectedNetwork}
-          account={selectedAccount}
+          network={fromNetwork}
+          account={fromAccount}
         />
         <ComposerControls
           onFlipAssets={onClickFlipSwapTokens}
           onOpenSettings={onToggleShowSwapSettings}
+          flipAssetsDisabled={!fromToken || !toToken}
         />
         <ToAsset
           onInputChange={handleOnSetToAmount}
           inputValue={toAmount}
           onClickSelectToken={() => setSelectingFromOrTo('to')}
           token={toToken}
-          inputDisabled={selectedNetwork?.coin === BraveWallet.CoinType.SOL}
+          inputDisabled={
+            (fromNetwork?.coin === BraveWallet.CoinType.SOL &&
+              toNetwork?.coin === BraveWallet.CoinType.SOL) ||
+            !fromToken
+          }
           hasInputError={swapValidationError === 'toAmountDecimalsOverflow'}
-          network={selectedNetwork}
+          network={toNetwork}
           selectedSendOption='#token'
           isFetchingQuote={isFetchingQuote}
+          buttonDisabled={!fromToken}
         >
           {/* TODO: QuoteOptions is currently unused
           selectedNetwork?.coin === BraveWallet.CoinType.SOL &&
@@ -173,6 +180,7 @@ export const Swap = () => {
                 toToken={toToken}
                 toAmount={toAmount}
                 spotPrices={spotPrices}
+                swapFees={swapFees}
               />
 
               {/* TODO: Swap and Send  is currently unavailable
@@ -212,7 +220,7 @@ export const Swap = () => {
             setSlippageTolerance={setSlippageTolerance}
             gasEstimates={gasEstimates}
             onClose={() => setShowSwapSettings(false)}
-            selectedNetwork={selectedNetwork}
+            selectedNetwork={fromNetwork}
             ref={swapSettingsModalRef}
           />
         )}
@@ -226,8 +234,7 @@ export const Swap = () => {
           }
           selectedToken={selectingFromOrTo === 'from' ? toToken : fromToken}
           selectedSendOption='#token'
-          selectedNetwork={selectedNetwork}
-          setSelectedNetwork={setSelectedNetwork}
+          selectedNetwork={selectingFromOrTo === 'to' ? fromNetwork : undefined}
           showFullFlatTokenList={selectingFromOrTo === 'to'}
           modalType='swap'
         />

@@ -256,7 +256,11 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kBraveWalletAutoLockMinutes] =
       settings_api::PrefType::kNumber;
+  (*s_brave_allowlist)[kBraveWalletTransactionSimulationOptInStatus] =
+      settings_api::PrefType::kNumber;
   (*s_brave_allowlist)[kBraveWalletNftDiscoveryEnabled] =
+      settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[kBraveWalletPrivateWindowsEnabled] =
       settings_api::PrefType::kBoolean;
 
   // IPFS pref

@@ -19,8 +19,8 @@
 #undef GetCornerRadius
 
 class OmniboxChipButton : public OmniboxChipButton_ChromiumImpl {
+  METADATA_HEADER(OmniboxChipButton, OmniboxChipButton_ChromiumImpl)
  public:
-  METADATA_HEADER(OmniboxChipButton);
   explicit OmniboxChipButton(PressedCallback callback);
 
   // OmniboxChipButton_ChromiumImpl overrides:

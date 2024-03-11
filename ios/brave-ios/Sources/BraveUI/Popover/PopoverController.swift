@@ -72,6 +72,11 @@ public class PopoverController: UIViewController {
         preferredHeight: min(750, UIScreen.main.bounds.height)
       )
     }
+
+    public init(preferredWidth: CGFloat? = nil, preferredHeight: CGFloat? = nil) {
+      self.preferredWidth = preferredWidth
+      self.preferredHeight = preferredHeight
+    }
   }
 
   /// Outer margins around the presented popover to the edge of the screen (or safe area)

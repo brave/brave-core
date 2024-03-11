@@ -38,8 +38,8 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/widget_more_option"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
+            android:layout_width="16dp"
+            android:layout_height="16dp"
             android:contentDescription="@string/visibility"
             app:srcCompat="@drawable/ic_visibility_off"/>
 

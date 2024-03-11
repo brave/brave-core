@@ -96,5 +96,5 @@ void SelectableView::UpdateBackground() {
   }
 }
 
-BEGIN_METADATA(SelectableView, views::Button)
+BEGIN_METADATA(SelectableView)
 END_METADATA

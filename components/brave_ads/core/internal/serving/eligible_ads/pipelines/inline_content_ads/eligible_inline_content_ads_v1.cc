@@ -10,7 +10,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/inline_content_ads/creative_inline_content_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/segments/segment_constants.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_ads.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/allocation/seen_advertisers.h"
@@ -23,7 +22,6 @@
 #include "brave/components/brave_ads/core/internal/serving/targeting/user_model/user_model_info.h"
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
-#include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events_database_table.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
 
 namespace brave_ads {
@@ -42,8 +40,7 @@ void EligibleInlineContentAdsV1::GetForUserModel(
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible inline content ads");
 
-  const database::table::AdEvents database_table;
-  database_table.GetUnexpiredForType(
+  ad_events_database_table_.GetUnexpiredForType(
       mojom::AdType::kInlineContentAd,
       base::BindOnce(
           &EligibleInlineContentAdsV1::GetEligibleAdsForUserModelCallback,
@@ -98,8 +95,7 @@ void EligibleInlineContentAdsV1::GetForChildSegments(
     BLOG(1, "  " << segment);
   }
 
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForSegmentsAndDimensions(
+  database_table_.GetForSegmentsAndDimensions(
       segments, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForChildSegmentsCallback,
                      weak_factory_.GetWeakPtr(), std::move(user_model),
@@ -154,8 +150,7 @@ void EligibleInlineContentAdsV1::GetForParentSegments(
     BLOG(1, "  " << segment);
   }
 
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForSegmentsAndDimensions(
+  database_table_.GetForSegmentsAndDimensions(
       segments, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForParentSegmentsCallback,
                      weak_factory_.GetWeakPtr(), dimensions, ad_events,
@@ -198,8 +193,7 @@ void EligibleInlineContentAdsV1::GetForUntargeted(
     EligibleAdsCallback<CreativeInlineContentAdList> callback) {
   BLOG(1, "Get eligible ads for untargeted segment");
 
-  const database::table::CreativeInlineContentAds database_table;
-  database_table.GetForSegmentsAndDimensions(
+  database_table_.GetForSegmentsAndDimensions(
       {kUntargetedSegment}, dimensions,
       base::BindOnce(&EligibleInlineContentAdsV1::GetForUntargetedCallback,
                      weak_factory_.GetWeakPtr(), ad_events, browsing_history,

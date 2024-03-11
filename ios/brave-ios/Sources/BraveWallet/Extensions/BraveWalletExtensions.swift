@@ -589,3 +589,16 @@ extension URL {
     return WalletConstants.supportedIPFSSchemes.contains(scheme)
   }
 }
+
+extension BraveWallet.SwapFees {
+  /// If swap has a Brave Fee that is not free.
+  var hasBraveFee: Bool {
+    guard let effectiveFeePct = Double(effectiveFeePct),
+      !effectiveFeePct.isZero
+    else {
+      // no fees / zero fees
+      return false
+    }
+    return true
+  }
+}

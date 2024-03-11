@@ -186,6 +186,16 @@ declare namespace chrome.braveRewards {
     addListener: (callback: () => void) => void
   }
 
+  const isTermsOfServiceUpdateRequired: (
+    callback: (updateRequired: boolean) => void
+  ) => void
+
+  const acceptTermsOfServiceUpdate: () => void
+
+  const onTermsOfServiceUpdateAccepted: {
+    addListener: (callback: () => void) => void
+  }
+
   const getScheduledCaptchaInfo: (
     callback: (scheduledCaptcha: RewardsExtension.ScheduledCaptcha) => void
   ) => void

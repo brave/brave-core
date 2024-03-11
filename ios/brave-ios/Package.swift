@@ -28,8 +28,10 @@ var package = Package(
     .library(name: "BraveStrings", targets: ["BraveStrings"]),
     .library(name: "BraveVPN", targets: ["BraveVPN"]),
     .library(name: "BraveNews", targets: ["BraveNews"]),
+    .library(name: "AIChat", targets: ["AIChat"]),
     .library(name: "Favicon", targets: ["Favicon"]),
     .library(name: "FaviconModels", targets: ["FaviconModels"]),
+    .library(name: "SpeechRecognition", targets: ["SpeechRecognition"]),
     .library(name: "Onboarding", targets: ["Onboarding"]),
     .library(name: "Growth", targets: ["Growth"]),
     .library(name: "RuntimeWarnings", targets: ["RuntimeWarnings"]),
@@ -105,6 +107,11 @@ var package = Package(
       dependencies: [
         "BraveVPN", "Shared", "BraveShared", "Strings", "SnapKit", "CertificateUtilities",
       ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "SpeechRecognition",
+      dependencies: ["BraveUI", "Shared", "BraveShared", "Preferences", "Data"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -229,6 +236,39 @@ var package = Package(
         .copy("Lottie Assets/brave-today-welcome-graphic.json")
       ],
       plugins: ["LoggerPlugin"]
+    ),
+    .target(
+      name: "AIChat",
+      dependencies: [
+        "BraveCore",
+        "BraveShared",
+        "BraveStrings",
+        "BraveUI",
+        "DesignSystem",
+        "Favicon",
+        "Fuzi",
+        "Preferences",
+        "Strings",
+        "SpeechRecognition",
+        .product(name: "Collections", package: "swift-collections"),
+        .product(name: "Introspect", package: "SwiftUI-Introspect"),
+        .product(name: "Lottie", package: "lottie-ios"),
+      ],
+      resources: [
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-dark.min.css"),
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-light.min.css"),
+        .copy("Components/Markdown/Code Highlight/Scripts/highlight.min.js"),
+      ],
+      plugins: ["LoggerPlugin"]
+    ),
+    .testTarget(
+      name: "AIChatTests",
+      dependencies: ["AIChat"],
+      resources: [
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-dark.min.css"),
+        .copy("Components/Markdown/Code Highlight/Themes/atom-one-light.min.css"),
+        .copy("Components/Markdown/Code Highlight/Scripts/highlight.min.js"),
+      ]
     ),
     .target(name: "Preferences", dependencies: ["Shared"], plugins: ["LoggerPlugin"]),
     .target(
@@ -373,8 +413,10 @@ var braveTarget: PackageDescription.Target = .target(
     "BraveWidgetsModels",
     "BraveVPN",
     "BraveNews",
+    "AIChat",
     "Onboarding",
     "Growth",
+    "SpeechRecognition",
     "CodableHelpers",
     "Preferences",
     "Favicon",
@@ -489,6 +531,7 @@ var braveTarget: PackageDescription.Target = .target(
       "Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/WalletSolanaProviderScript.js"
     ),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Paged/YoutubeQualityScript.js"),
+    .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/BraveLeoScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/DeAmpScript.js"),
     .copy("Frontend/UserContent/UserScripts/Scripts_Dynamic/Scripts/Sandboxed/FaviconScript.js"),
     .copy(

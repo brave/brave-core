@@ -15,9 +15,14 @@ from lib.util import execute
 
 cert = os.environ.get('CERT')
 cert_hash = os.environ.get('AUTHENTICODE_HASH')
-signtool_args = (os.environ.get('SIGNTOOL_ARGS') or
-                 'sign /t http://timestamp.digicert.com /sm '
-                 '/fd sha256')
+signtool_args = (
+    os.environ.get('SIGNTOOL_ARGS') or
+    # We use a http:// URL because at least our current version of signtool
+    # (10.0.22621.0, March 2024) does not support https://. See
+    # https://github.com/brave/brave-browser/issues/165#issuecomment-1983445659
+    # for more information.
+    'sign /t http://timestamp.digicert.com /sm '
+    '/fd sha256')
 
 
 assert cert or cert_hash or signtool_args, \

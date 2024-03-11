@@ -59,6 +59,9 @@ export const FlipButton = styled(Button)`
   padding: 10px;
   border-radius: 100%;
   left: 48px;
+  :disabled {
+    cursor: not-allowed;
+  }
   @media screen and (max-width: ${layoutSmallWidth}px) {
     left: 16px;
   }

@@ -4,25 +4,24 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 
 // utils
 import { BraveWallet } from '../../../constants/types'
 import Amount from '../../../utils/amount'
 import { getLocale } from '$web-common/locale'
-import { WalletActions } from '../../../common/actions'
 import {
   networkEntityAdapter,
   emptyNetworksRegistry
 } from '../../../common/slices/entities/network.entity'
 
 // hooks
-import useAssetManagement from '../../../common/hooks/assets-management'
 import useGetTokenInfo from '../../../common/hooks/use-get-token-info'
-import { useGetNetworksRegistryQuery } from '../../../common/slices/api.slice'
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
+import {
+  useAddUserTokenMutation,
+  useGetNetworksRegistryQuery,
+  useUpdateUserTokenMutation
+} from '../../../common/slices/api.slice'
 import {
   useGetCustomAssetSupportedNetworks //
 } from '../../../common/hooks/use_get_custom_asset_supported_networks'
@@ -62,12 +61,6 @@ export const AddNftForm = (props: Props) => {
     onChangeContractAddress
   } = props
 
-  // redux
-  const addUserAssetError = useSafeWalletSelector(
-    WalletSelectors.addUserAssetError
-  )
-  const dispatch = useDispatch()
-
   const { data: networksRegistry = emptyNetworksRegistry } =
     useGetNetworksRegistryQuery()
   const selectedAssetNetwork = selectedAsset
@@ -79,7 +72,7 @@ export const AddNftForm = (props: Props) => {
     React.useState<boolean>(false)
   const [showNetworkDropDown, setShowNetworkDropDown] =
     React.useState<boolean>(false)
-  const [hasError, setHasError] = React.useState<boolean>(addUserAssetError)
+  const [hasError, setHasError] = React.useState<boolean>(false)
 
   // Form States
   const [customTokenName, setCustomTokenName] = React.useState<
@@ -95,9 +88,11 @@ export const AddNftForm = (props: Props) => {
     BraveWallet.NetworkInfo | undefined
   >(selectedAssetNetwork)
 
-  // custom hooks
-  const { onAddCustomAsset } = useAssetManagement()
+  // mutations
+  const [addUserToken] = useAddUserTokenMutation()
+  const [updateUserToken] = useUpdateUserTokenMutation()
 
+  // queries
   const {
     tokenInfo: matchedTokenInfo,
     isVisible: tokenAlreadyExists,
@@ -203,24 +198,21 @@ export const AddNftForm = (props: Props) => {
     }
 
     if (tokenAlreadyExists && selectedAsset) {
-      dispatch(
-        WalletActions.updateUserAsset({
-          existing: selectedAsset,
-          updated: tokenInfo
-        })
-      )
-    } else {
-      onAddCustomAsset(tokenInfo)
+      await updateUserToken({
+        existingToken: selectedAsset,
+        updatedToken: tokenInfo
+      }).unwrap()
+      onHideForm()
+      return
     }
 
-    onHideForm()
-  }, [
-    tokenInfo,
-    selectedAsset,
-    tokenAlreadyExists,
-    onAddCustomAsset,
-    onHideForm
-  ])
+    try {
+      await addUserToken(tokenInfo).unwrap()
+      onHideForm()
+    } catch (error) {
+      setHasError(true)
+    }
+  }, [tokenInfo, selectedAsset, tokenAlreadyExists, addUserToken, onHideForm])
 
   const onHideNetworkDropDown = React.useCallback(() => {
     if (showNetworkDropDown) {

@@ -164,8 +164,6 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
 #if defined(TOOLKIT_VIEWS)
       {"appearanceSettingsToolbarSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TOOLBAR_SECTION},
-      {"appearanceSettingsContentSection",
-       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
       {"appearanceSettingsTabsSection",
        IDS_SETTINGS_APPEARANCE_SETTINGS_TABS_SECTION},
       {"appearanceSettingsTabsUseVerticalTabs",
@@ -203,6 +201,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_ENABLED_DESC},
       {"appearanceSettingsSidebarDisabledDesc",
        IDS_SETTINGS_APPEARANCE_SETTINGS_SIDEBAR_DISABLED_DESC},
+      {"contentSettingsContentSection",
+       IDS_SETTINGS_APPEARANCE_SETTINGS_CONTENT_SECTION},
 #endif  // defined(TOOLKIT_VIEWS)
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
       {"showBraveVPNButton", IDS_SETTINGS_SHOW_VPN_BUTTON},
@@ -458,6 +458,10 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SETTINGS_SHOW_BRAVE_WALLET_ICON_ON_TOOLBAR},
       {"enableNftDiscoveryLabel", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_LABEL},
       {"enableNftDiscoveryDesc", IDS_SETTINGS_ENABLE_NFT_DISCOVERY_DESC},
+      {"enablePrivateWindowsLabel",
+       IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_LABEL},
+      {"enablePrivateWindowsDesc",
+       IDS_SETTINGS_ENABLE_BRAVE_WALLET_IN_PRIVATE_WINDOWS_DESC},
       {"showBravewalletTestNetworks",
        IDS_SETTINGS_SHOW_BRAVE_WALLET_TEST_NETWORKS},
       {"autoLockMinutes", IDS_SETTINGS_AUTO_LOCK_MINUTES},
@@ -723,6 +727,9 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_SHORTCUTS_PAGE_CANCEL_ADD_SHORTCUT},
       {"shortcutsPageSaveAddShortcut", IDS_SHORTCUTS_PAGE_SAVE_ADD_SHORTCUT},
       {"shortcutsPageAddShortcut", IDS_SHORTCUTS_PAGE_ADD_SHORTCUT},
+      {"settingsSelectValueYes", IDS_SETTINGS_SELECT_VALUE_YES},
+      {"settingsSelectValueNo", IDS_SETTINGS_SELECT_VALUE_NO},
+      {"settingsSelectValueAsk", IDS_SETTINGS_SELECT_VALUE_ASK},
   };
 
   html_source->AddLocalizedStrings(localized_strings);
@@ -770,6 +777,11 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
   html_source->AddString("ipfsMethodDesc", l10n_util::GetStringFUTF16(
                                                IDS_SETTINGS_IPFS_METHOD_DESC,
                                                ipfs::kIPFSLearnMorePrivacyURL));
+
+  html_source->AddString(
+      "transactionSimulationDesc",
+      l10n_util::GetStringFUTF16(IDS_BRAVE_WALLET_TRANSACTION_SIMULATIONS_DESC,
+                                 kTransactionSimulationLearnMoreURL));
 
   html_source->AddString("resolveUnstoppableDomainsSubDesc",
                          l10n_util::GetStringFUTF16(

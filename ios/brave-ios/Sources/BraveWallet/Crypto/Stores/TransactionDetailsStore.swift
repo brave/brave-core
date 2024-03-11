@@ -8,7 +8,7 @@ import SwiftUI
 
 class TransactionDetailsStore: ObservableObject, WalletObserverStore {
 
-  let transaction: BraveWallet.TransactionInfo
+  var transaction: BraveWallet.TransactionInfo
   @Published private(set) var parsedTransaction: ParsedTransaction?
   @Published private(set) var network: BraveWallet.NetworkInfo?
 
@@ -16,6 +16,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     didSet {
       currencyFormatter.currencyCode = currencyCode
       guard currencyCode != oldValue else { return }
+      // prices are fetched against currency code
+      assetRatiosCache.removeAll()
       update()
     }
   }
@@ -38,6 +40,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
   /// This could occur with a dapp creating a transaction.
   private var tokenInfoCache: [BraveWallet.BlockchainToken] = []
   private var nftMetadataCache: [String: NFTMetadata] = [:]
+  private var solEstimatedTxFeesCache: [String: UInt64] = [:]
+  private var assetRatiosCache: [String: Double] = [:]
 
   var isObserving: Bool {
     txServiceObserver != nil
@@ -81,14 +85,14 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     guard !isObserving else { return }
     self.txServiceObserver = TxServiceObserver(
       txService: txService,
-      _onNewUnapprovedTx: { [weak self] _ in
-        self?.update()
+      _onNewUnapprovedTx: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
-      _onUnapprovedTxUpdated: { [weak self] _ in
-        self?.update()
+      _onUnapprovedTxUpdated: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
-      _onTransactionStatusChanged: { [weak self] _ in
-        self?.update()
+      _onTransactionStatusChanged: { [weak self] transaction in
+        self?.updateTransaction(transaction)
       },
       _onTxServiceReset: { [weak self] in
         self?.update()
@@ -100,10 +104,19 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
     txServiceObserver = nil
   }
 
+  func updateTransaction(_ transaction: BraveWallet.TransactionInfo) {
+    guard transaction.id == self.transaction.id else {
+      // not the transaction currently open
+      return
+    }
+    self.transaction = transaction
+    self.update()
+  }
+
   func update() {
     Task { @MainActor in
       let coin = transaction.coin
-      let networksForCoin = await rpcService.allNetworks(coin)
+      let networksForCoin = await rpcService.allNetworks(coin: coin)
       guard let network = networksForCoin.first(where: { $0.chainId == transaction.chainId }) else {
         // Transactions should be removed if their network is removed
         // https://github.com/brave/brave-browser/issues/30234
@@ -113,8 +126,8 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         return
       }
       self.network = network
-      var allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
-        network.chainId,
+      let allTokens: [BraveWallet.BlockchainToken] = await blockchainRegistry.allTokens(
+        chainId: network.chainId,
         coin: network.coin
       )
       let userAssets: [BraveWallet.BlockchainToken] = assetManager.getAllUserAssetsInNetworkAssets(
@@ -134,21 +147,6 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
         }
       }
 
-      let priceResult = await assetRatioService.priceWithIndividualRetry(
-        userAssets.map { $0.assetRatioId.lowercased() },
-        toAssets: [currencyFormatter.currencyCode],
-        timeframe: .oneDay
-      )
-      let assetRatios = priceResult.assetPrices.reduce(into: [String: Double]()) {
-        $0[$1.fromAsset] = Double($1.price)
-      }
-      var solEstimatedTxFee: UInt64?
-      if transaction.coin == .sol {
-        (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
-          network.chainId,
-          txMetaId: transaction.id
-        )
-      }
       let allAccounts = await keyringService.allAccounts().accounts
       guard
         let parsedTransaction = transaction.parsedTransaction(
@@ -156,9 +154,46 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens + tokenInfoCache,
-          assetRatios: assetRatios,
+          assetRatios: assetRatiosCache,
           nftMetadata: nftMetadataCache,
-          solEstimatedTxFee: solEstimatedTxFee,
+          solEstimatedTxFee: solEstimatedTxFeesCache[transaction.id],
+          currencyFormatter: currencyFormatter
+        )
+      else {
+        return
+      }
+      self.parsedTransaction = parsedTransaction
+
+      let txTokensWithoutPrice = (parsedTransaction.tokens + [network.nativeToken])
+        .filter { self.assetRatiosCache[$0.assetRatioId] == nil }
+      if !txTokensWithoutPrice.isEmpty {
+        let priceResult = await assetRatioService.priceWithIndividualRetry(
+          userAssets.map { $0.assetRatioId.lowercased() },
+          toAssets: [currencyFormatter.currencyCode],
+          timeframe: .oneDay
+        )
+        let assetRatios = priceResult.assetPrices.reduce(into: [String: Double]()) {
+          $0[$1.fromAsset] = Double($1.price)
+        }
+        self.assetRatiosCache.merge(with: assetRatios)
+      }
+
+      if transaction.coin == .sol, solEstimatedTxFeesCache[transaction.id] == nil {
+        let (solEstimatedTxFee, _, _) = await solanaTxManagerProxy.estimatedTxFee(
+          chainId: network.chainId,
+          txMetaId: transaction.id
+        )
+        self.solEstimatedTxFeesCache[transaction.id] = solEstimatedTxFee
+      }
+      guard
+        let parsedTransaction = transaction.parsedTransaction(
+          network: network,
+          accountInfos: allAccounts,
+          userAssets: userAssets,
+          allTokens: allTokens + tokenInfoCache,
+          assetRatios: assetRatiosCache,
+          nftMetadata: nftMetadataCache,
+          solEstimatedTxFee: solEstimatedTxFeesCache[transaction.id],
           currencyFormatter: currencyFormatter
         )
       else {
@@ -187,7 +222,9 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
       default:
         nftToken = nil
       }
-      guard let nftToken else { return }
+      guard let nftToken,
+        nftMetadataCache[nftToken.id] == nil
+      else { return }
       self.nftMetadataCache[nftToken.id] = await rpcService.fetchNFTMetadata(
         for: nftToken,
         ipfsApi: ipfsApi
@@ -198,9 +235,9 @@ class TransactionDetailsStore: ObservableObject, WalletObserverStore {
           accountInfos: allAccounts,
           userAssets: userAssets,
           allTokens: allTokens,
-          assetRatios: assetRatios,
+          assetRatios: assetRatiosCache,
           nftMetadata: nftMetadataCache,
-          solEstimatedTxFee: solEstimatedTxFee,
+          solEstimatedTxFee: solEstimatedTxFeesCache[transaction.id],
           currencyFormatter: currencyFormatter
         )
       else {

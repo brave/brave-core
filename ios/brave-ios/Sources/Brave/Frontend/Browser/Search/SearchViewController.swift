@@ -7,6 +7,7 @@ import Favicon
 import Preferences
 import Shared
 import Storage
+import Then
 import UIKit
 
 // MARK: - SearchViewControllerDelegate
@@ -16,6 +17,10 @@ protocol SearchViewControllerDelegate: AnyObject {
     _ searchViewController: SearchViewController,
     didSubmit query: String,
     braveSearchPromotion: Bool
+  )
+  func searchViewController(
+    _ searchViewController: SearchViewController,
+    didSubmitAIChat query: String
   )
   func searchViewController(_ searchViewController: SearchViewController, didSelectURL url: URL)
   func searchViewController(
@@ -403,6 +408,13 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     )
   }
 
+  private func submitSearchQueryToAIChat() {
+    searchDelegate?.searchViewController(
+      self,
+      didSubmitAIChat: dataSource.searchQuery
+    )
+  }
+
   // MARK: Actions
 
   @objc func didSelectEngine(_ sender: UIButton) {
@@ -438,6 +450,8 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     switch section {
     case .quickBar:
       submitSeachTemplateQuery(isBraveSearchPromotion: false)
+    case .aiChat:
+      submitSearchQueryToAIChat()
     case .searchSuggestionsOptIn: return
     case .searchSuggestions:
       if !isBraveSearchPrompt(for: indexPath) {
@@ -484,16 +498,12 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
   ) -> CGFloat {
     if let currentSection = dataSource.availableSections[safe: indexPath.section] {
       switch currentSection {
-      case .quickBar:
+      case .quickBar, .aiChat, .openTabsAndHistoryAndBookmarks, .findInPage:
         return super.tableView(tableView, heightForRowAt: indexPath)
       case .searchSuggestionsOptIn:
         return isBraveSearchPrompt(for: indexPath) ? UITableView.automaticDimension : 100.0
       case .searchSuggestions:
         return isBraveSearchPrompt(for: indexPath) ? UITableView.automaticDimension : 44.0
-      case .openTabsAndHistoryAndBookmarks:
-        return super.tableView(tableView, heightForRowAt: indexPath)
-      case .findInPage:
-        return super.tableView(tableView, heightForRowAt: indexPath)
       }
     }
 
@@ -504,7 +514,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     guard let searchSection = dataSource.availableSections[safe: section] else { return nil }
 
     switch searchSection {
-    case .quickBar: return nil
+    case .quickBar, .aiChat: return nil
     case .searchSuggestionsOptIn: return nil
     case .searchSuggestions:
       if let defaultSearchEngine = dataSource.searchEngines?.defaultEngine(
@@ -544,9 +554,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     let headerHeight: CGFloat = 22
 
     switch searchSection {
-    case .quickBar:
-      return 0.0
-    case .searchSuggestionsOptIn:
+    case .quickBar, .aiChat, .searchSuggestionsOptIn:
       return 0.0
     case .searchSuggestions:
       return dataSource.suggestions.isEmpty ? 0 : headerHeight * 2.0
@@ -583,7 +591,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     let footerHeight: CGFloat = 10.0
 
     switch searchSection {
-    case .quickBar, .searchSuggestions, .findInPage:
+    case .quickBar, .aiChat, .searchSuggestions, .findInPage:
       return CGFloat.leastNormalMagnitude
     case .searchSuggestionsOptIn:
       return footerHeight
@@ -621,17 +629,30 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
 
     switch section {
     case .quickBar:
-      let cell = TwoLineTableViewCell()
-      cell.textLabel?.text = dataSource.searchQuery
-      cell.textLabel?.textColor = .bravePrimary
-      cell.imageView?.image = UIImage(
-        named: "search_bar_find_in_page_icon",
-        in: .module,
-        compatibleWith: nil
-      )?.withRenderingMode(.alwaysTemplate)
-      cell.imageView?.tintColor = browserColors.iconDefault
-      cell.imageView?.contentMode = .center
-      cell.backgroundColor = .clear
+      let cell = TwoLineTableViewCell().then {
+        $0.textLabel?.text = dataSource.searchQuery
+        $0.textLabel?.textColor = .bravePrimary
+        $0.imageView?.image = UIImage(
+          named: "search_bar_find_in_page_icon",
+          in: .module,
+          compatibleWith: nil
+        )?.withRenderingMode(.alwaysTemplate)
+        $0.imageView?.tintColor = browserColors.iconDefault
+        $0.imageView?.contentMode = .center
+        $0.backgroundColor = .clear
+      }
+
+      return cell
+    case .aiChat:
+      let cell = TwoLineTableViewCell().then {
+        $0.textLabel?.text =
+          "\(dataSource.searchQuery) - \(Strings.AIChat.askLeoSearchSuggestionTitle)"
+        $0.textLabel?.textColor = .bravePrimary
+        $0.imageView?.image = UIImage(named: "aichat-avatar", in: .module, compatibleWith: nil)
+        $0.imageView?.tintColor = browserColors.iconDefault
+        $0.imageView?.contentMode = .center
+        $0.backgroundColor = .clear
+      }
 
       return cell
     case .searchSuggestionsOptIn:
@@ -773,7 +794,7 @@ public class SearchViewController: SiteTableViewController, LoaderListener {
     }
 
     switch section {
-    case .quickBar:
+    case .quickBar, .aiChat:
       return 1
     case .searchSuggestionsOptIn:
       return dataSource.braveSearchPromotionAvailable ? 2 : 1

@@ -215,6 +215,10 @@ class SidebarServiceTest : public testing::Test {
 
   ~SidebarServiceTest() override = default;
 
+  void SetUp() override {
+    SidebarService::RegisterProfilePrefs(
+        prefs_.registry(), SidebarService::ShowSidebarOption::kShowAlways);
+  }
   void TearDown() override { ResetService(); }
 
   void InitService() {
@@ -256,7 +260,6 @@ class SidebarServiceTest : public testing::Test {
 };
 
 TEST_F(SidebarServiceTest, AddRemoveItems) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::CANARY);
   InitService();
 
   // Check the default items count.
@@ -298,7 +301,6 @@ TEST_F(SidebarServiceTest, AddRemoveItems) {
 }
 
 TEST_F(SidebarServiceTest, MoveItem) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Add one more item to test with 5 items.
@@ -361,7 +363,6 @@ TEST(SidebarItemTest, SidebarItemValidation) {
 }
 
 TEST_F(SidebarServiceTest, UpdateItem) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Added webtype item at last.
@@ -414,7 +415,6 @@ TEST_F(SidebarServiceTest, UpdateItem) {
 }
 
 TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   InitService();
 
   // Add one more item to test.
@@ -439,7 +439,6 @@ TEST_F(SidebarServiceTest, MoveItemSavedToPrefs) {
 }
 
 TEST_F(SidebarServiceTest, HideBuiltInItem) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   // Have prefs which contain a custom item and hides 1 built-in item
   {
     base::Value::List list;
@@ -473,7 +472,6 @@ TEST_F(SidebarServiceTest, HideBuiltInItem) {
 }
 
 TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::DEV);
   std::vector<SidebarItem::BuiltInItemType> hidden_builtin_types{
       SidebarItem::BuiltInItemType::kBookmarks};
   // Have prefs which contain a custom item and hides 1 built-in item
@@ -566,7 +564,6 @@ TEST_F(SidebarServiceTest, NewDefaultItemAdded) {
 }
 
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have old-style builtin items before service
   // initialization.
   {
@@ -613,7 +610,6 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsSomeHidden) {
 }
 
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have ALL old-style builtin items before service
   // initialization. This tests that when not adding anything to the new pref
   // that re-migration will not break anything.
@@ -706,7 +702,6 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoneHidden) {
 // Verify service has migrated the previous pref format where built-in items
 // had url stored and not built-in-item-type.
 TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have old-style builtin items before service
   // initialization.
   {
@@ -761,7 +756,6 @@ TEST_F(SidebarServiceTest, MigratePrefSidebarBuiltInItemsNoType) {
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Verify default state
   InitService();
   auto items = service_->items();
@@ -785,7 +779,6 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaPref) {
 }
 
 TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Verify default state
   InitService();
   auto items = service_->items();
@@ -812,7 +805,6 @@ TEST_F(SidebarServiceTest, HidesBuiltInItemsViaService) {
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have builtin items before service initialization.
   // And it has old url in old pref format (storing built-in items).
   {
@@ -860,7 +852,6 @@ TEST_F(SidebarServiceTest, BuiltInItemUpdateTestWithBuiltInItemTypeKey) {
 }
 
 TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   // Make prefs already have builtin items before service initialization.
   // And it has history item.
   {
@@ -891,7 +882,6 @@ TEST_F(SidebarServiceTest, BuiltInItemDoesntHaveHistoryItem) {
 }
 
 TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::STABLE);
   // Show on click is deprecated.
   // Treat it as a show on mouse over.
   prefs_.SetInteger(
@@ -903,22 +893,13 @@ TEST_F(SidebarServiceTest, SidebarShowOptionsDeprecationTest) {
             service_->GetSidebarShowOption());
 }
 
-TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestStable) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::STABLE);
-  InitService();
-  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowNever,
-            service_->GetSidebarShowOption());
-}
-
 TEST_F(SidebarServiceTest, SidebarShowOptionsDefaultTestNonStable) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   InitService();
   EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
             service_->GetSidebarShowOption());
 }
 
 TEST_F(SidebarServiceTest, SidebarEnabledHistogram) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   InitService();
   histogram_tester_.ExpectUniqueSample(p3a::kSidebarEnabledHistogramName, 1, 1);
 
@@ -972,7 +953,6 @@ class SidebarServiceTestWithPlaylist : public SidebarServiceTest {
 
 // Check GetDefaultPanelItem() returns valid panel item.
 TEST_F(SidebarServiceTestWithPlaylist, GetDefaultPanelItem) {
-  SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::BETA);
   InitService();
 
   while (SidebarHasDefaultPanelItem()) {
@@ -996,10 +976,10 @@ class SidebarServiceOrderingTest : public SidebarServiceTest {
   ~SidebarServiceOrderingTest() override = default;
 
   void SetUp() override {
+    SidebarServiceTest::SetUp();
 #if BUILDFLAG(ENABLE_AI_CHAT)
     scoped_feature_list_.InitAndEnableFeature(ai_chat::features::kAIChat);
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
-    SidebarService::RegisterProfilePrefs(prefs_.registry(), Channel::CANARY);
   }
 
   bool ValidateBuiltInTypesOrdering(

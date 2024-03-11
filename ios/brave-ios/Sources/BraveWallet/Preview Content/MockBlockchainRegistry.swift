@@ -11,6 +11,7 @@ import Foundation
 ///
 /// - note: Do not use this directly, use ``TokenRegistryStore.previewStore``
 class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
+
   static let testTokens: [BraveWallet.BlockchainToken] = [
     .init(
       contractAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
@@ -116,8 +117,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
     ),
   ]
 
-  func token(
-    byAddress chainId: String,
+  func tokenByAddress(
+    chainId: String,
     coin: BraveWallet.CoinType,
     address: String,
     completion: @escaping (BraveWallet.BlockchainToken?) -> Void
@@ -129,8 +130,8 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
     completion(.init())
   }
 
-  func token(
-    bySymbol chainId: String,
+  func tokenBySymbol(
+    chainId: String,
     coin: BraveWallet.CoinType,
     symbol: String,
     completion: @escaping (BraveWallet.BlockchainToken?) -> Void
@@ -143,7 +144,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func allTokens(
-    _ chainId: String,
+    chainId: String,
     coin: BraveWallet.CoinType,
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
@@ -151,7 +152,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func buyTokens(
-    _ provider: BraveWallet.OnRampProvider,
+    provider: BraveWallet.OnRampProvider,
     chainId: String,
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
@@ -159,7 +160,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func sellTokens(
-    _ provider: BraveWallet.OffRampProvider,
+    provider: BraveWallet.OffRampProvider,
     chainId: String,
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
@@ -167,7 +168,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func providersBuyTokens(
-    _ providers: [NSNumber],
+    providers: [NSNumber],
     chainId: String,
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
@@ -193,16 +194,16 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
     completion([])
   }
 
-  func prepopulatedNetworks(_ completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
+  func prepopulatedNetworks(completion: @escaping ([BraveWallet.NetworkInfo]) -> Void) {
     completion([])
   }
 
-  func onRampCurrencies(_ completion: @escaping ([BraveWallet.OnRampCurrency]) -> Void) {
+  func onRampCurrencies(completion: @escaping ([BraveWallet.OnRampCurrency]) -> Void) {
     completion([])
   }
 
   func topDapps(
-    _ chainId: String,
+    chainId: String,
     coin: BraveWallet.CoinType,
     completion: @escaping ([BraveWallet.Dapp]) -> Void
   ) {
@@ -210,7 +211,7 @@ class MockBlockchainRegistry: BraveWalletBlockchainRegistry {
   }
 
   func coingeckoId(
-    _ chainId: String,
+    chainId: String,
     contractAddress: String,
     completion: @escaping (String?) -> Void
   ) {

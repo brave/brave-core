@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveShared
 import BraveVPN
 import Foundation
 import Shared
@@ -75,7 +76,7 @@ class BrowserNavigationHelper {
     open(vc, doneButton: DoneButton(style: .done, position: .right))
   }
 
-  func openVPNBuyScreen(iapObserver: IAPObserver) {
+  func openVPNBuyScreen(iapObserver: BraveVPNInAppPurchaseObserver) {
     guard let vc = BraveVPN.vpnState.enableVPNDestinationVC else { return }
 
     open(vc, doneButton: DoneButton(style: .done, position: .left))
@@ -110,7 +111,7 @@ class BrowserNavigationHelper {
         } else {
           share(url: url)
         }
-      } else if url.isReaderModeURL, let readerSourceURL = url.decodeReaderModeURL {
+      } else if let readerSourceURL = url.self.decodeEmbeddedInternalURL(for: .readermode) {
         // We want to decode the underlying url that generated the reader mode file and share that instead
         // This way we avoid sharing a url of a local file
         share(url: readerSourceURL)

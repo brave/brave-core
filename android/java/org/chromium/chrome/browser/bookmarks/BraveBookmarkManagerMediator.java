@@ -73,7 +73,8 @@ class BraveBookmarkManagerMediator
             BookmarkImageFetcher bookmarkImageFetcher,
             ShoppingService shoppingService,
             SnackbarManager snackbarManager,
-            Consumer<OnScrollListener> onScrollListenerConsumer) {
+            Consumer<OnScrollListener> onScrollListenerConsumer,
+            BookmarkMoveSnackbarManager bookmarkMoveSnackbarManager) {
         super(
                 context,
                 bookmarkModel,
@@ -93,7 +94,8 @@ class BraveBookmarkManagerMediator
                 bookmarkImageFetcher,
                 shoppingService,
                 snackbarManager,
-                onScrollListenerConsumer);
+                onScrollListenerConsumer,
+                bookmarkMoveSnackbarManager);
     }
 
     public void setWindow(ActivityWindowAndroid window) {

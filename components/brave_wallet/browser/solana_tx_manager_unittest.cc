@@ -514,7 +514,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
 
   ApproveTransaction(meta_id1);
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   tx->message()->set_recent_blockhash(latest_blockhash1_);
   tx->message()->set_last_valid_block_height(last_valid_block_height1_);
@@ -532,7 +532,7 @@ TEST_F(SolanaTxManagerUnitTest, AddAndApproveTransaction) {
   SetInterceptor(latest_blockhash1_, last_valid_block_height1_, tx_hash2_, "",
                  false, last_valid_block_height1_);
   ApproveTransaction(meta_id2);
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   tx_meta2 = solana_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
@@ -1027,7 +1027,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
   ApproveTransaction(meta_id2);
 
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Check two submitted tx.
   auto pending_transactions =
@@ -1057,7 +1057,7 @@ TEST_F(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash) {
   task_environment_.FastForwardBy(
       base::Seconds(kBlockTrackerDefaultTimeInSeconds));
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   // Check blockhash1 should be dropped, blockhash2 stay as submitted.
   auto dropped_transactions =

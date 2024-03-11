@@ -28,39 +28,35 @@
         "name": "getBraveThemeList",
         "type": "function",
         "description": "Get available brave theme list",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when brave theme list is fetched",
-            "parameters": [
-              {
-                "name": "types",
-                "type": "string",
-                "description": "json stringified avalable theme list"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "types",
+              "type": "string",
+              "description": "json stringified available theme list"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getBraveThemeType",
         "type": "function",
         "description": "Get current brave theme",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "description": "Function called when current brave theme is fetched",
-            "parameters": [
-              {
-                "name": "type",
-                "type": "string",
-                "description": "current theme type (Dark or Light)"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "types",
+              "type": "string",
+              "description": "current theme type (Dark or Light)"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "setBraveThemeType",

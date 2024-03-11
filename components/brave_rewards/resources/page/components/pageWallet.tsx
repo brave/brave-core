@@ -7,10 +7,7 @@ import * as React from 'react'
 import { bindActionCreators, Dispatch } from 'redux'
 import { connect } from 'react-redux'
 // Components
-import {
-  ModalActivity,
-  ModalReset
-} from '../../ui/components'
+import { ModalActivity } from '../../ui/components'
 import { WalletCard, ExternalWalletAction } from '../../shared/components/wallet_card'
 import { LayoutKind } from '../lib/layout_context'
 
@@ -30,6 +27,8 @@ import { convertBalance } from './utils'
 import { ExtendedActivityRow, SummaryItem, SummaryType } from '../../ui/components/modalActivity'
 import { DetailRow as TransactionRow } from '../../ui/components/tableTransactions'
 import { ConnectWalletModal } from './connect_wallet_modal'
+import { TosUpdateModal } from './tos_update_modal'
+import { ResetModal } from './reset_modal'
 
 import * as mojom from '../../shared/lib/mojom'
 import { isPublisherVerified } from '../../shared/lib/publisher_status'
@@ -68,7 +67,7 @@ class PageWallet extends React.Component<Props, State> {
 
   onModalResetClose = () => {
     // Used by the settings page to clear browsing data.
-    if (this.urlHashIs('#manage-wallet')) {
+    if (this.urlHashIs('#reset')) {
       window.location.hash = ''
     }
     this.actions.onModalResetClose()
@@ -107,7 +106,7 @@ class PageWallet extends React.Component<Props, State> {
   }
 
   isBackupUrl = () => {
-    if (this.urlHashIs('#manage-wallet')) {
+    if (this.urlHashIs('#reset')) {
       this.onModalResetOpen()
     }
   }
@@ -503,7 +502,8 @@ class PageWallet extends React.Component<Props, State> {
       ui,
       externalWallet,
       parameters,
-      userType
+      userType,
+      isUserTermsOfServiceUpdateRequired
     } = this.props.rewardsData
     const { modalReset, modalConnect } = ui
 
@@ -558,12 +558,13 @@ class PageWallet extends React.Component<Props, State> {
             />
         }
         {
-          modalReset
-            ? <ModalReset
+          modalReset ?
+            <ResetModal
               onClose={this.onModalResetClose}
               onReset={this.onModalResetOnReset}
-            />
-            : null
+            /> :
+          isUserTermsOfServiceUpdateRequired ?
+            <TosUpdateModal /> : null
         }
         {
           modalConnect

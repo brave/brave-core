@@ -56,11 +56,7 @@ mojom::Result GetCaptcha::CheckStatusCode(const int status_code) {
 mojom::Result GetCaptcha::ParseBody(const std::string& body,
                                     std::string* image) {
   DCHECK(image);
-
-  std::string encoded_image;
-  base::Base64Encode(body, &encoded_image);
-  *image = "data:image/jpeg;base64," + encoded_image;
-
+  *image = "data:image/jpeg;base64," + base::Base64Encode(body);
   return mojom::Result::OK;
 }
 

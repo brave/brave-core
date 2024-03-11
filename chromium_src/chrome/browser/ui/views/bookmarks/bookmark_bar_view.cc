@@ -61,18 +61,10 @@ void LayoutBookmarkBarInstructionsView(views::View* bookmark_bar_view,
 
 }  // namespace
 
-namespace views {
-void InstallNoHighlightPathGenerator(View* view) {
-  // Do nothing: the default highlight path is what we want.
-}
-}  // namespace views
-
 #define BRAVE_LAYOUT                                                  \
   LayoutBookmarkBarInstructionsView(this, bookmark_model_, browser(), \
                                     button_height, x, max_x, y);
 #define BookmarkContextMenu BraveBookmarkContextMenu
-#define InstallPillHighlightPathGenerator InstallNoHighlightPathGenerator
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_bar_view.cc"
-#undef InstallPillHighlightPathGenerator
 #undef BookmarkContextMenu
 #undef BRAVE_LAYOUT

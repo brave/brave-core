@@ -22,8 +22,10 @@
 // About/Help page.
 class VersionUpdaterMac : public VersionUpdater {
  public:
+  VersionUpdaterMac();
   VersionUpdaterMac(const VersionUpdaterMac&) = delete;
   VersionUpdaterMac& operator=(const VersionUpdaterMac&) = delete;
+  ~VersionUpdaterMac() override;
 
   // VersionUpdater implementation.
   void CheckForUpdate(StatusCallback status_callback,
@@ -35,13 +37,6 @@ class VersionUpdaterMac : public VersionUpdater {
   // a version is available (see AutoupdateStatus), it will be present at key
   // kAutoupdateStatusVersion.
   void UpdateStatus(NSDictionary* status);
-
- protected:
-  friend class VersionUpdater;
-
-  // Clients must use VersionUpdater::Create().
-  VersionUpdaterMac();
-  ~VersionUpdaterMac() override;
 
  private:
   // Update the visibility state of promote button.

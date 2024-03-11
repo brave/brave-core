@@ -63,6 +63,12 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
         type: Number,
         value: 0,
       },
+
+      isTransactionSimulationsFeatureEnabled: {
+        type: Boolean,
+        value: false,
+      },
+
     }
   }
 
@@ -93,6 +99,13 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.isNftPinningEnabled().then(val => {
       this.isNftPinningEnabled_ = val
     });
+    this.browserProxy_.isTransactionSimulationsFeatureEnabled().then(val => {
+      this.isTransactionSimulationsFeatureEnabled = val
+    });
+    this.browserProxy_.getTransactionSimulationOptInStatusOptions()
+      .then(list => {
+        this.transaction_simulation_opt_in_options_ = list
+      });
 
     this.cryptocurrency_list_ = [
       { value: "BTC" },
@@ -228,10 +241,6 @@ class SettingsBraveWalletPage extends SettingsBraveWalletPageBase {
     this.browserProxy_.clearPinnedNft().then(val => {
       this.onShowOptionChanged_()
     })
-  }
-
-  onNftDiscoveryEnabledChange_() {
-    this.browserProxy_.setNftDiscoveryEnabled(this.$.enableNftDiscovery.checked)
   }
 }
 

@@ -6,6 +6,9 @@
 import * as React from 'react'
 import Icon from '@brave/leo/react/icon'
 
+// types
+import { BraveWallet } from '../../../constants/types'
+
 // utils
 import { getLocale, getLocaleWithTag } from '../../../../common/locale'
 
@@ -107,7 +110,9 @@ export const EnableTransactionSimulations: React.FC = () => {
               <LeoSquaredButton
                 kind='plain-faint'
                 onClick={async () => {
-                  await optInOrOut('denied').unwrap()
+                  await optInOrOut(
+                    BraveWallet.BlowfishOptInStatus.kDenied
+                  ).unwrap()
                 }}
               >
                 {getLocale('braveWalletButtonNoThanks')}
@@ -115,7 +120,9 @@ export const EnableTransactionSimulations: React.FC = () => {
               <LeoSquaredButton
                 kind='filled'
                 onClick={async () => {
-                  await optInOrOut('allowed').unwrap()
+                  await optInOrOut(
+                    BraveWallet.BlowfishOptInStatus.kAllowed
+                  ).unwrap()
                 }}
               >
                 {getLocale('braveWalletButtonEnable')}

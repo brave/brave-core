@@ -10,7 +10,7 @@ import { Modal, ModalCloseButton } from '../../shared/components/modal'
 import * as style from './page_modal.style'
 
 interface Props {
-  title: string
+  title?: string
   children: React.ReactNode
   onClose: () => void
 }

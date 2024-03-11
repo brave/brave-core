@@ -22,7 +22,7 @@ export const reduxState: Rewards.ApplicationState = {
       modalConnectState: '',
       modalRedirect: 'hide',
       modalRedirectProvider: '',
-      modalReset: false,
+      modalReset: true,
       modalAdsHistory: false,
       adsSettings: false,
       autoContributeSettings: false,
@@ -156,6 +156,7 @@ export const reduxState: Rewards.ApplicationState = {
     },
     initializing: false,
     showOnboarding: false,
-    userType: 'unconnected'
+    userType: 'unconnected',
+    isUserTermsOfServiceUpdateRequired: true
   }
 }

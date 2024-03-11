@@ -522,7 +522,7 @@ TEST_F(BraveAdsRefillConfirmationTokensTest,
   // Arrange
   test::BuildAndSetIssuers();
 
-  test::SetConfirmationTokens(/*count=*/50);
+  test::RefillConfirmationTokens(/*count=*/50);
 
   const WalletInfo wallet = test::GetWallet();
 
@@ -541,6 +541,8 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
   test::BuildAndSetIssuers();
 
   test::MockTokenGenerator(token_generator_mock_, /*count=*/31);
+
+  test::RefillConfirmationTokens(/*count=*/19);
 
   const URLResponseMap url_responses = {
       {BuildRequestSignedTokensUrlPath(kWalletPaymentId),
@@ -585,8 +587,6 @@ TEST_F(BraveAdsRefillConfirmationTokensTest, RefillIfBelowTheMinimumThreshold) {
               "publicKey": "bCKwI6tx5LWrZKxWbW5CxaVIGe2N0qGYLfFE+38urCg="
             })"}}}};
   MockUrlResponses(ads_client_mock_, url_responses);
-
-  test::SetConfirmationTokens(/*count=*/19);
 
   const WalletInfo wallet = test::GetWallet();
 

@@ -82,6 +82,9 @@ const char kTestCSPHttpPage[] = "/speedreader/article/csp_http.html";
 const char kTestCSPHackEquivPage[] = "/speedreader/article/csp_hack_equiv.html";
 const char kTestCSPHackCharsetPage[] =
     "/speedreader/article/csp_hack_charset.html";
+const char kTestCSPOrderPage1[] = "/speedreader/article/csp_order_1.html";
+const char kTestCSPOrderPage2[] = "/speedreader/article/csp_order_2.html";
+const char kTestCSPInBodyPage[] = "/speedreader/article/csp_in_body.html";
 
 class SpeedReaderBrowserTest : public InProcessBrowserTest {
  public:
@@ -902,18 +905,12 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
         "Refused to load the image 'https://a.test/should_fail.png' because it "
         "violates the following Content Security Policy directive: \"img-src "
         "'none'\".*");
+
     NavigateToPageSynchronously(page, WindowOpenDisposition::CURRENT_TAB);
 
-    constexpr const char kCheckBaseTag[] = R"js(
-      document.head.getElementsByTagName('base')[0].outerHTML +
-      document.head.getElementsByTagName('base')[1].outerHTML
-    )js";
-    EXPECT_EQ(R"(<base href="https://a.test/"><base target="_blank">)",
-              content::EvalJs(ActiveWebContents(), kCheckBaseTag,
-                              content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
-                              ISOLATED_WORLD_ID_BRAVE_INTERNAL));
     constexpr const char kCheckNoMaliciousContent[] = R"js(
-      !document.getElementById('malicious1')
+      !document.getElementById('malicious1') &&
+      !document.querySelector('meta[http-equiv="undefinedHttpEquiv"]')
     )js";
     EXPECT_EQ(true,
               content::EvalJs(ActiveWebContents(), kCheckNoMaliciousContent,
@@ -922,6 +919,44 @@ IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, Csp) {
 
     EXPECT_TRUE(console_observer.Wait());
   }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspOrder) {
+  ToggleSpeedreader();
+
+  // base first.
+  {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    NavigateToPageSynchronously(kTestCSPOrderPage1,
+                                WindowOpenDisposition::CURRENT_TAB);
+    EXPECT_TRUE(console_observer.messages().empty());
+  }
+
+  // CSP first.
+  {
+    content::WebContentsConsoleObserver console_observer(ActiveWebContents());
+    console_observer.SetPattern(
+        "Refused to set the document's base URI to 'https://a.test/' because "
+        "it violates the following Content Security Policy directive: "
+        "\"base-uri 'none'\".*");
+    NavigateToPageSynchronously(kTestCSPOrderPage2,
+                                WindowOpenDisposition::CURRENT_TAB);
+    EXPECT_TRUE(console_observer.Wait());
+  }
+}
+
+IN_PROC_BROWSER_TEST_F(SpeedReaderBrowserTest, CspInBody) {
+  ToggleSpeedreader();
+
+  NavigateToPageSynchronously(kTestCSPInBodyPage,
+                              WindowOpenDisposition::CURRENT_TAB);
+  constexpr const char kCheckCsp[] = R"js(
+    document.querySelectorAll('meta[content="CSP in body"]').length === 0
+  )js";
+
+  EXPECT_EQ(true, content::EvalJs(ActiveWebContents(), kCheckCsp,
+                                  content::EXECUTE_SCRIPT_DEFAULT_OPTIONS,
+                                  ISOLATED_WORLD_ID_BRAVE_INTERNAL));
 }
 
 class SpeedReaderWithDistillationServiceBrowserTest

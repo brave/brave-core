@@ -492,6 +492,29 @@ class BraveRewardsDismissSelfCustodyInviteFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
+class BraveRewardsIsTermsOfServiceUpdateRequiredFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.isTermsOfServiceUpdateRequired",
+                             UNKNOWN)
+
+ protected:
+  ~BraveRewardsIsTermsOfServiceUpdateRequiredFunction() override;
+
+  ResponseAction Run() override;
+};
+
+class BraveRewardsAcceptTermsOfServiceUpdateFunction
+    : public ExtensionFunction {
+ public:
+  DECLARE_EXTENSION_FUNCTION("braveRewards.acceptTermsOfServiceUpdate", UNKNOWN)
+
+ protected:
+  ~BraveRewardsAcceptTermsOfServiceUpdateFunction() override;
+
+  ResponseAction Run() override;
+};
+
 class BraveRewardsGetScheduledCaptchaInfoFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.getScheduledCaptchaInfo", UNKNOWN)

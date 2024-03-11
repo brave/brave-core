@@ -2,6 +2,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveCore
 import BraveNews
 import BraveShared
@@ -53,6 +54,7 @@ class SettingsViewController: TableViewController {
   private let tabManager: TabManager
   private let rewards: BraveRewards?
   private let feedDataSource: FeedDataSource
+  private let braveCore: BraveCoreMain
   private let historyAPI: BraveHistoryAPI
   private let passwordAPI: BravePasswordAPI
   private let syncAPI: BraveSyncAPI
@@ -83,6 +85,7 @@ class SettingsViewController: TableViewController {
     self.feedDataSource = feedDataSource
     self.rewards = rewards
     self.windowProtection = windowProtection
+    self.braveCore = braveCore
     self.historyAPI = braveCore.historyAPI
     self.passwordAPI = braveCore.passwordAPI
     self.syncAPI = braveCore.syncAPI
@@ -246,7 +249,7 @@ class SettingsViewController: TableViewController {
       header: .title(Strings.features),
       rows: [
         Row(
-          text: Strings.braveShieldsAndPrivacy,
+          text: Strings.braveShieldsAndPrivacySettingsTitle,
           selection: { [unowned self] in
             let controller = UIHostingController(
               rootView: AdvancedShieldsSettingsView(
@@ -298,7 +301,7 @@ class SettingsViewController: TableViewController {
     if BraveRewards.isAvailable, let rewards = rewards {
       section.rows += [
         Row(
-          text: Strings.braveRewardsTitle,
+          text: Strings.braveRewardsSettingsTitle,
           selection: { [unowned self] in
             let rewardsVC = BraveRewardsSettingsViewController(rewards)
             rewardsVC.walletTransferLearnMoreTapped = { [weak self] in
@@ -319,7 +322,7 @@ class SettingsViewController: TableViewController {
 
     section.rows.append(
       Row(
-        text: Strings.BraveNews.braveNews,
+        text: Strings.BraveNews.braveNewsTitle,
         selection: { [unowned self] in
           let controller = NewsSettingsViewController(
             dataSource: self.feedDataSource,
@@ -342,10 +345,11 @@ class SettingsViewController: TableViewController {
       )
     )
 
-    vpnRow = vpnSettingsRow()
-    if let vpnRow = vpnRow {
-      section.rows.append(vpnRow)
+    if !tabManager.privateBrowsingManager.isPrivateBrowsing {
+      section.rows.append(leoSettingsRow)
     }
+
+    section.rows.append(vpnSettingsRow)
 
     section.rows.append(
       Row(
@@ -412,7 +416,7 @@ class SettingsViewController: TableViewController {
               )
             }
           },
-          image: UIImage(braveSystemNamed: "leo.sync"),
+          image: UIImage(braveSystemNamed: "leo.product.sync"),
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
         ),
@@ -685,10 +689,7 @@ class SettingsViewController: TableViewController {
     return display
   }()
 
-  private var vpnRow: Row?
-
-  private func vpnSettingsRow() -> Row {
-
+  private var vpnSettingsRow: Row {
     let (text, color) = { () -> (String, UIColor) in
       if Preferences.VPN.vpnReceiptStatus.value
         == BraveVPN.ReceiptResponse.Status.retryPeriod.rawValue
@@ -755,6 +756,40 @@ class SettingsViewController: TableViewController {
       cellClass: ColoredDetailCell.self,
       context: [ColoredDetailCell.colorKey: color],
       uuid: "vpnrow"
+    )
+  }
+
+  private var leoSettingsRow: Row {
+    return Row(
+      text: Strings.leoMenuItem,
+      selection: { [unowned self] in
+        let model = AIChatViewModel(
+          braveCore: self.braveCore,
+          webView: self.tabManager.selectedTab?.webView,
+          script: BraveLeoScriptHandler.self
+        )
+
+        let controller = UIHostingController(
+          rootView:
+            AIChatAdvancedSettingsView(
+              model: model,
+              isModallyPresented: false
+            )
+            .environment(
+              \.openURL,
+              OpenURLAction { [weak self] url in
+                guard let self = self else { return .handled }
+                self.settingsDelegate?.settingsOpenURLInNewTab(url)
+                self.dismiss(animated: true)
+                return .handled
+              }
+            )
+        )
+
+        self.navigationController?.pushViewController(controller, animated: true)
+      },
+      image: UIImage(braveSystemNamed: "leo.product.brave-leo"),
+      accessory: .disclosureIndicator
     )
   }
 
@@ -884,11 +919,12 @@ class SettingsViewController: TableViewController {
               let versionController = ChromeWebViewController(privateBrowsing: false).then {
                 $0.loadURL("brave://version/?show-variations-cmd")
               }
+              versionController.title = version
 
               actionSheet?.dismiss(
                 animated: true,
                 completion: {
-                  self.present(versionController, animated: true)
+                  self.navigationController?.pushViewController(versionController, animated: true)
                 }
               )
             }

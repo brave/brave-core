@@ -33,7 +33,6 @@ rust_static_library("rust_lib") {
   ]
 
   aliased_deps = {
-    num_bigint_chainsafe =
-        "//brave/third_party/rust/forest_bigint/v0_1:lib__rlib"
+    num_bigint_chainsafe = "//brave/third_party/rust/forest_bigint/v0_1:lib"
   }
 }

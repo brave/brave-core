@@ -107,6 +107,7 @@ import Shared
   public func launchNativeBraveTalk(
     for room: String,
     token: String,
+    host: String,
     onEnterCall: @escaping () -> Void,
     onExitCall: @escaping () -> Void
   ) {
@@ -165,7 +166,7 @@ import Shared
     pipViewCoordinator?.delegate = delegate
     pipViewCoordinator?.configureAsStickyView()
 
-    jitsiMeetView?.join(.braveTalkOptions(room: room, token: token))
+    jitsiMeetView?.join(.braveTalkOptions(room: room, token: token, host: host))
     jitsiMeetView?.alpha = 0
 
     pipViewCoordinator?.show()

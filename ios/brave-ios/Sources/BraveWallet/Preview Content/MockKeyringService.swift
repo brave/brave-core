@@ -23,7 +23,7 @@ class MockKeyringService: BraveWalletKeyringService {
   private var observers: NSHashTable<BraveWalletKeyringServiceObserver> = .weakObjects()
   private var selectedAccount: BraveWallet.AccountInfo?
 
-  func add(_ observer: BraveWalletKeyringServiceObserver) {
+  func addObserver(_ observer: BraveWalletKeyringServiceObserver) {
     observers.add(observer)
   }
 
@@ -61,7 +61,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func addAccount(
-    _ coin: BraveWallet.CoinType,
+    coin: BraveWallet.CoinType,
     keyringId: BraveWallet.KeyringId,
     accountName: String,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
@@ -87,11 +87,11 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
-  func createWallet(_ password: String, completion: @escaping (String) -> Void) {
+  func createWallet(password: String, completion: @escaping (String) -> Void) {
     isLocked = false
     self.password = password
     addAccount(
-      .eth,
+      coin: .eth,
       keyringId: BraveWallet.KeyringId.default,
       accountName: "Account 1"
     ) { [self] accountInfo in
@@ -103,7 +103,7 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
-  func isLocked(_ completion: @escaping (Bool) -> Void) {
+  func isLocked(completion: @escaping (Bool) -> Void) {
     completion(isLocked)
   }
 
@@ -114,15 +114,15 @@ class MockKeyringService: BraveWalletKeyringService {
     }
   }
 
-  func isWalletBackedUp(_ completion: @escaping (Bool) -> Void) {
+  func isWalletBackedUp(completion: @escaping (Bool) -> Void) {
     completion(isBackedUp)
   }
 
-  func mnemonic(forDefaultKeyring password: String, completion: @escaping (String) -> Void) {
+  func mnemonicForDefaultKeyring(password: String, completion: @escaping (String) -> Void) {
     completion(mnemonic)
   }
 
-  func unlock(_ password: String, completion: @escaping (Bool) -> Void) {
+  func unlock(password: String, completion: @escaping (Bool) -> Void) {
     if !isWalletCreated {
       completion(false)
       return
@@ -145,7 +145,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func restoreWallet(
-    _ mnemonic: String,
+    mnemonic: String,
     password: String,
     isLegacyBraveWallet: Bool,
     completion: @escaping (Bool) -> Void
@@ -195,8 +195,8 @@ class MockKeyringService: BraveWalletKeyringService {
     return address
   }
 
-  func importAccount(
-    _ accountName: String,
+  func importAccountFromJson(
+    accountName: String,
     privateKey: String,
     coin: BraveWallet.CoinType,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
@@ -223,8 +223,17 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(info)
   }
 
+  func importAccountFromJson(
+    accountName: String,
+    password: String,
+    json: String,
+    completion: @escaping (BraveWallet.AccountInfo?) -> Void
+  ) {
+    completion(nil)
+  }
+
   func importFilecoinAccount(
-    _ accountName: String,
+    accountName: String,
     privateKey: String,
     network: String,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
@@ -233,16 +242,16 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func importAccount(
-    fromJson accountName: String,
-    password: String,
-    json: String,
+    accountName: String,
+    privateKey: String,
+    coin: BraveWallet.CoinType,
     completion: @escaping (BraveWallet.AccountInfo?) -> Void
   ) {
     completion(nil)
   }
 
   func importAccount(
-    _ accountName: String,
+    accountName: String,
     privateKey: String,
     coin: BraveWallet.CoinType,
     completion: @escaping (Bool, String) -> Void
@@ -259,8 +268,8 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(false, "")
   }
 
-  func encodePrivateKey(
-    forExport accountId: BraveWallet.AccountId,
+  func encodePrivateKeyForExport(
+    accountId: BraveWallet.AccountId,
     password: String,
     completion: @escaping (String) -> Void
   ) {
@@ -280,7 +289,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func removeAccount(
-    _ accountId: BraveWallet.AccountId,
+    accountId: BraveWallet.AccountId,
     password: String,
     completion: @escaping (Bool) -> Void
   ) {
@@ -313,8 +322,7 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(selectedAccount?.address)
   }
 
-  func setSelectedAccount(_ accountId: BraveWallet.AccountId, completion: @escaping (Bool) -> Void)
-  {
+  func setSelectedAccount(accountId: BraveWallet.AccountId, completion: @escaping (Bool) -> Void) {
     guard let account = allAccounts.first(where: { $0.address == accountId.address }) else {
       completion(false)
       return
@@ -325,7 +333,7 @@ class MockKeyringService: BraveWalletKeyringService {
 
   private var autoLockMinutes: Int32 = 5
 
-  func autoLockMinutes(_ completion: @escaping (Int32) -> Void) {
+  func autoLockMinutes(completion: @escaping (Int32) -> Void) {
     completion(autoLockMinutes)
   }
 
@@ -342,12 +350,12 @@ class MockKeyringService: BraveWalletKeyringService {
     completion("")
   }
 
-  func hasPendingUnlockRequest(_ completion: @escaping (Bool) -> Void) {
+  func hasPendingUnlockRequest(completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
   func setAccountName(
-    _ accountId: BraveWallet.AccountId,
+    accountId: BraveWallet.AccountId,
     name: String,
     completion: @escaping (Bool) -> Void
   ) {
@@ -360,7 +368,7 @@ class MockKeyringService: BraveWalletKeyringService {
   }
 
   func addHardwareAccounts(
-    _ info: [BraveWallet.HardwareWalletAccount]
+    info: [BraveWallet.HardwareWalletAccount]
   ) async -> [BraveWallet.AccountInfo]? {
     nil
   }
@@ -421,11 +429,11 @@ class MockKeyringService: BraveWalletKeyringService {
     completion(bitcoinAccount)
   }
 
-  func allAccounts(_ completion: @escaping (BraveWallet.AllAccountsInfo) -> Void) {
+  func allAccounts(completion: @escaping (BraveWallet.AllAccountsInfo) -> Void) {
 
   }
 
-  func isWalletCreated(_ completion: @escaping (Bool) -> Void) {
+  func isWalletCreated(completion: @escaping (Bool) -> Void) {
     completion(isWalletCreated)
   }
 }

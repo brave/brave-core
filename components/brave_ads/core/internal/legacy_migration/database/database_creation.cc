@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "base/check.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/deposits/deposits_database_table.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transactions_database_table.h"
 #include "brave/components/brave_ads/core/internal/common/database/database_transaction_util.h"
@@ -38,6 +39,9 @@ void Create(mojom::DBTransactionInfo* transaction) {
 
   table::ConversionQueue conversion_queue_database_table;
   conversion_queue_database_table.Create(transaction);
+
+  table::ConfirmationQueue confirmation_queue_database_table;
+  confirmation_queue_database_table.Create(transaction);
 
   table::AdEvents ad_events_database_table;
   ad_events_database_table.Create(transaction);

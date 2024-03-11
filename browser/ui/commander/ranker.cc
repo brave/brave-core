@@ -14,8 +14,8 @@
 
 #include "base/strings/utf_string_conversions.h"
 #include "base/time/time.h"
+#include "brave/browser/ui/commander/command_source.h"
 #include "brave/components/commander/common/pref_names.h"
-#include "chrome/browser/ui/commander/command_source.h"
 #include "components/history/core/browser/keyword_search_term_util.h"
 #include "components/prefs/pref_service.h"
 #include "components/prefs/scoped_user_pref_update.h"

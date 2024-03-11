@@ -6,8 +6,6 @@
 #ifndef BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ADD_ITEM_BUBBLE_DELEGATE_VIEW_H_
 #define BRAVE_BROWSER_UI_VIEWS_SIDEBAR_SIDEBAR_ADD_ITEM_BUBBLE_DELEGATE_VIEW_H_
 
-#include <memory>
-
 #include "base/memory/raw_ptr.h"
 #include "ui/views/bubble/bubble_dialog_delegate_view.h"
 
@@ -20,8 +18,9 @@ struct SidebarItem;
 // TODO(simonhong): Need to apply UI design spec. Currently, this just works.
 class SidebarAddItemBubbleDelegateView
     : public views::BubbleDialogDelegateView {
+  METADATA_HEADER(SidebarAddItemBubbleDelegateView,
+                  views::BubbleDialogDelegateView)
  public:
-  METADATA_HEADER(SidebarAddItemBubbleDelegateView);
 
   static views::Widget* Create(BraveBrowser* browser, views::View* anchor_view);
 

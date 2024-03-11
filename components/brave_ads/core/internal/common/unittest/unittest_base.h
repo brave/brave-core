@@ -84,6 +84,11 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   // information about pending tasks. See `TaskEnvironment` for more detail.
   void FastForwardClockBy(base::TimeDelta time_delta);
 
+  // Similar to `FastForwardClockBy` but doesn't advance `base::LiveTicks`,
+  // behaving as if the system was suspended for `time_delta` and immediately
+  // woken up. See `TaskEnvironment` for more detail.
+  void SuspendedFastForwardClockBy(base::TimeDelta time_delta);
+
   // Fast-forwards virtual time to `time`, causing all tasks on the main thread
   // and thread pool with a remaining delay less than or equal to `time` to be
   // executed in their natural order before this returns. For debugging purposes
@@ -112,12 +117,13 @@ class UnitTestBase : public AdsClientNotifier, public ::testing::Test {
   // those are. See `TaskEnvironment` for more detail.
   bool HasPendingTasks() const;
 
-  // Unlike `FastForwardClockToNextPendingTask()`, `FastForwardClockTo()` and
-  // `FastForwardClockBy()`, AdvanceClock does not run tasks. See
-  // `TaskEnvironment` for more detail.
+  // Unlike `FastForwardClockToNextPendingTask()`, `FastForwardClockTo()`,
+  // `FastForwardClockBy()` and `SuspendedFastForwardClockBy()`, `AdvanceClock*`
+  // does not run tasks. See `TaskEnvironment` for more detail.
   void AdvanceClockBy(base::TimeDelta time_delta);
   void AdvanceClockTo(base::Time time);
-  void AdvanceClockToMidnight(bool is_local);
+  void AdvanceClockToLocalMidnight();
+  void AdvanceClockToUTCMidnight();
 
   base::test::TaskEnvironment task_environment_;
 

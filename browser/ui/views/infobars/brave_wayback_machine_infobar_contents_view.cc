@@ -51,8 +51,8 @@ constexpr int kInfoBarLabelTextColor = kColorBookmarkBarForeground;
 
 // Subclass for custom font.
 class DontAskAgainCheckbox : public views::Checkbox {
+  METADATA_HEADER(DontAskAgainCheckbox, views::Checkbox)
  public:
-  METADATA_HEADER(DontAskAgainCheckbox);
 
   using views::Checkbox::Checkbox;
   ~DontAskAgainCheckbox() override = default;
@@ -62,7 +62,7 @@ class DontAskAgainCheckbox : public views::Checkbox {
   }
 };
 
-BEGIN_METADATA(DontAskAgainCheckbox, views::Checkbox)
+BEGIN_METADATA(DontAskAgainCheckbox)
 END_METADATA
 }  // namespace
 
@@ -106,7 +106,7 @@ void BraveWaybackMachineInfoBarContentsView::OnWaybackURLFetched(
   wayback_url_fetch_requested_ = false;
 
   fetch_url_button_->StopThrobber();
-  Layout();
+  DeprecatedLayoutImmediately();
 
   if (latest_wayback_url.is_empty()) {
     UpdateChildrenVisibility(false);
@@ -262,7 +262,7 @@ SkColor BraveWaybackMachineInfoBarContentsView::GetColor(int id) const {
 void BraveWaybackMachineInfoBarContentsView::FetchWaybackURL() {
   fetch_url_button_->StartThrobber();
   wayback_machine_url_fetcher_.Fetch(contents_->GetVisibleURL());
-  Layout();
+  DeprecatedLayoutImmediately();
 }
 
 void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {
@@ -272,5 +272,5 @@ void BraveWaybackMachineInfoBarContentsView::LoadURL(const GURL& url) {
                                      std::string());
 }
 
-BEGIN_METADATA(BraveWaybackMachineInfoBarContentsView, views::View)
+BEGIN_METADATA(BraveWaybackMachineInfoBarContentsView)
 END_METADATA

@@ -214,6 +214,10 @@ inline constexpr char kGoogleAccountActivityControlsURL[] =
 inline constexpr char kGoogleAccountActivityControlsURLInPrivacyGuide[] =
     "https://support.brave.com/";
 
+// URL of the 'Linked services' section of the privacy settings page.
+inline constexpr char kGoogleAccountLinkedServicesURL[] =
+    "https://support.brave.com/";
+
 // URL of the Google Account.
 inline constexpr char kGoogleAccountURL[] = "https://support.brave.com/";
 
@@ -239,6 +243,10 @@ inline constexpr char16_t kMemorySaverModeTabDiscardingHelpUrl[] =
 // The URL to the help center article of Incognito mode.
 inline constexpr char16_t kIncognitoHelpCenterURL[] =
     u"https://support.brave.com";
+
+// The URL for the Help Center page about IP Protection.
+inline constexpr char kIpProtectionHelpCenterURL[] =
+    "https://support.google.com/chrome?p=ip_protection";
 
 // The URL for the "Learn more" page for the usage/crash reporting option in the
 // first run dialog.

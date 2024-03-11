@@ -47,6 +47,16 @@ void ExtensionRewardsServiceObserver::OnRewardsWalletCreated() {
   }
 }
 
+void ExtensionRewardsServiceObserver::OnTermsOfServiceUpdateAccepted() {
+  if (auto* event_router = extensions::EventRouter::Get(profile_)) {
+    event_router->BroadcastEvent(std::make_unique<extensions::Event>(
+        extensions::events::BRAVE_START,
+        extensions::api::brave_rewards::OnTermsOfServiceUpdateAccepted::
+            kEventName,
+        base::Value::List()));
+  }
+}
+
 void ExtensionRewardsServiceObserver::OnPanelPublisherInfo(
     RewardsService* rewards_service,
     const brave_rewards::mojom::Result result,

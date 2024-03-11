@@ -24,6 +24,10 @@
 
 class PrefService;
 
+namespace content {
+class ScopedAccessibilityMode;
+}
+
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -97,6 +101,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   std::unique_ptr<PDFA11yInfoLoadObserver> pdf_load_observer_;
   base::OnceClosure on_pdf_a11y_info_loaded_cb_;
+
+  // A scoper only used for PDF viewing.
+  std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();

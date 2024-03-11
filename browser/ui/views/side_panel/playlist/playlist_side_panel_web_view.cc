@@ -8,7 +8,7 @@
 PlaylistSidePanelWebView::PlaylistSidePanelWebView(
     Browser* browser,
     base::RepeatingClosure close_cb,
-    BubbleContentsWrapper* contents_wrapper)
+    WebUIContentsWrapper* contents_wrapper)
     : SidePanelWebUIView(
           /* on_show_cb = */ base::RepeatingClosure(),
           close_cb,

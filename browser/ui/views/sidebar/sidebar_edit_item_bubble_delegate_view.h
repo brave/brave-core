@@ -23,8 +23,9 @@ class BraveBrowser;
 class SidebarEditItemBubbleDelegateView
     : public views::BubbleDialogDelegateView,
       public views::TextfieldController {
+  METADATA_HEADER(SidebarEditItemBubbleDelegateView,
+                  views::BubbleDialogDelegateView)
  public:
-  METADATA_HEADER(SidebarEditItemBubbleDelegateView);
 
   static views::Widget* Create(BraveBrowser* browser,
                                const sidebar::SidebarItem& item,

@@ -61,7 +61,7 @@ public class MarketStore: ObservableObject, WalletObserverStore {
       // update market coins
       guard !Task.isCancelled else { return }
       let (success, assets) = await assetRatioService.coinMarkets(
-        priceFormatter.currencyCode,
+        vsAsset: priceFormatter.currencyCode,
         limit: UInt8(assetsRequestLimit)
       )
       if success {

@@ -26,7 +26,6 @@
 #include "brave/components/brave_news/browser/feed_v2_builder.h"
 #include "brave/components/brave_news/browser/publishers_controller.h"
 #include "brave/components/brave_news/browser/suggestions_controller.h"
-#include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_private_cdn/private_cdn_request_helper.h"
@@ -183,7 +182,6 @@ class BraveNewsController
   p3a::NewsMetrics news_metrics_;
 
   DirectFeedController direct_feed_controller_;
-  UnsupportedPublisherMigrator unsupported_publisher_migrator_;
   PublishersController publishers_controller_;
   ChannelsController channels_controller_;
   FeedController feed_controller_;

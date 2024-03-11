@@ -21,7 +21,6 @@
 #include "brave/components/brave_news/browser/brave_news_controller.h"
 #include "brave/components/brave_news/browser/direct_feed_controller.h"
 #include "brave/components/brave_news/browser/publishers_parsing.h"
-#include "brave/components/brave_news/browser/unsupported_publisher_migrator.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/l10n/common/locale_util.h"
@@ -38,34 +37,7 @@
 
 namespace brave_news {
 
-constexpr char kV1PublishersResponse[] = R"([
-    {
-        "publisher_id": "111",
-        "publisher_name": "Test Publisher 1",
-        "feed_url": "https://tp1.example.com/feed",
-        "site_url": "https://tp1.example.com",
-        "category": "Tech",
-        "enabled": false
-    },
-    {
-        "publisher_id": "222",
-        "publisher_name": "Test Publisher 2",
-        "feed_url": "https://tp2.example.com/feed",
-        "site_url": "https://tp2.example.com",
-        "category": "Sports",
-        "enabled": true
-    },
-    {
-        "publisher_id": "333",
-        "publisher_name": "Test Publisher 3",
-        "feed_url": "https://tp3.example.com/feed",
-        "site_url": "https://tp3.example.com",
-        "category": "Design",
-        "enabled": true
-    }
-])";
-
-constexpr char kV2PublishersResponse[] = R"([
+constexpr char kPublishersResponse[] = R"([
     {
         "publisher_id": "111",
         "publisher_name": "Test Publisher 1",
@@ -142,18 +114,14 @@ class WaitForPublishersChanged : public PublishersController::Observer {
   base::RunLoop loop_;
 };
 
-class PublishersControllerTest : public testing::Test {
+class BraveNewsPublishersControllerTest : public testing::Test {
  public:
-  PublishersControllerTest()
+  BraveNewsPublishersControllerTest()
       : api_request_helper_(TRAFFIC_ANNOTATION_FOR_TESTS,
                             test_url_loader_factory_.GetSafeWeakWrapper()),
         direct_feed_controller_(profile_.GetPrefs(), nullptr),
-        unsupported_publishers_migrator_(profile_.GetPrefs(),
-                                         &direct_feed_controller_,
-                                         &api_request_helper_),
         publishers_controller_(profile_.GetPrefs(),
                                &direct_feed_controller_,
-                               &unsupported_publishers_migrator_,
                                &api_request_helper_,
                                nullptr) {
     profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, true);
@@ -220,12 +188,11 @@ class PublishersControllerTest : public testing::Test {
   api_request_helper::APIRequestHelper api_request_helper_;
   TestingProfile profile_;
   DirectFeedController direct_feed_controller_;
-  UnsupportedPublisherMigrator unsupported_publishers_migrator_;
   PublishersController publishers_controller_;
 };
 
-TEST_F(PublishersControllerTest, CanRecieveFeeds) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, CanReceiveFeeds) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   LOG(ERROR) << "Sources URL: " << GetSourcesUrl();
   auto result = GetPublishers();
@@ -235,28 +202,8 @@ TEST_F(PublishersControllerTest, CanRecieveFeeds) {
   EXPECT_TRUE(base::Contains(result, "555"));
 }
 
-TEST_F(PublishersControllerTest,
-       UnseenFeedsAreMigratedToDirectFeedsIfSubscribed) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
-                                       net::HTTP_OK);
-  test_url_loader_factory_.AddResponse(GetV1SourcesUrl(), kV1PublishersResponse,
-                                       net::HTTP_OK);
-  SetSubscribedSources({"111", "222", "333"});
-
-  GetPublishers();
-
-  // Direct feed migration happens after the initial update. It should trigger
-  // another when completed.
-  WaitForUpdate();
-  LOG(ERROR) << "Direct: "
-             << profile_.GetPrefs()->GetDict(prefs::kBraveNewsDirectFeeds);
-  EXPECT_TRUE(CombinedSourceExists("111"));
-  EXPECT_TRUE(DirectSourceExists("222"));
-  EXPECT_TRUE(CombinedSourceExists("333"));
-}
-
-TEST_F(PublishersControllerTest, CanGetPublisherBySiteUrl) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherBySiteUrl) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
   auto* publisher = publishers_controller_.GetPublisherForSite(
@@ -264,8 +211,9 @@ TEST_F(PublishersControllerTest, CanGetPublisherBySiteUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, CantGetNonExistingPublisherBySiteUrl) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest,
+       CantGetNonExistingPublisherBySiteUrl) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
 
@@ -273,8 +221,8 @@ TEST_F(PublishersControllerTest, CantGetNonExistingPublisherBySiteUrl) {
                          GURL("https://not-a-site.com")));
 }
 
-TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublisherByFeedUrl) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
   auto* publisher = publishers_controller_.GetPublisherForFeed(
@@ -282,7 +230,7 @@ TEST_F(PublishersControllerTest, CanGetPublisherByFeedUrl) {
   EXPECT_EQ("555", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        PublisherInDefaultLocaleIsPreferred_PreferredFirst) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
@@ -338,7 +286,7 @@ TEST_F(PublishersControllerTest,
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        PublisherInDefaultLocaleIsPreferred_PreferredLast) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
@@ -394,7 +342,7 @@ TEST_F(PublishersControllerTest,
   EXPECT_EQ("222", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
+TEST_F(BraveNewsPublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -449,8 +397,9 @@ TEST_F(PublishersControllerTest, NoPreferredLocale_ReturnsFirstMatch) {
   EXPECT_EQ("111", publisher->publisher_id);
 }
 
-TEST_F(PublishersControllerTest, CantGetNonExistingPublisherByFeedUrl) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest,
+       CantGetNonExistingPublisherByFeedUrl) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
 
@@ -458,8 +407,8 @@ TEST_F(PublishersControllerTest, CantGetNonExistingPublisherByFeedUrl) {
                          GURL("https://tp5.example.com")));
 }
 
-TEST_F(PublishersControllerTest, CacheCanBeCleared) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, CacheCanBeCleared) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
   GetPublishers();
 
@@ -474,7 +423,7 @@ TEST_F(PublishersControllerTest, CacheCanBeCleared) {
                          GURL("https://tp5.example.com/feed")));
 }
 
-TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
+TEST_F(BraveNewsPublishersControllerTest, LocaleDefaultsToENUS) {
   test_url_loader_factory_.AddResponse(GetSourcesUrl(), R"([
     {
         "publisher_id": "111",
@@ -502,16 +451,16 @@ TEST_F(PublishersControllerTest, LocaleDefaultsToENUS) {
   EXPECT_EQ("en_US", locale);
 }
 
-TEST_F(PublishersControllerTest, CanGetPublishers) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, CanGetPublishers) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
   auto result = GetPublishers();
   EXPECT_EQ(3u, result.size());
 }
 
-TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
   profile_.GetPrefs()->SetBoolean(brave_news::prefs::kBraveNewsOptedIn, false);
@@ -519,8 +468,8 @@ TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotOptedIn) {
   EXPECT_EQ(0u, result.size());
 }
 
-TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+TEST_F(BraveNewsPublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
   profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,
@@ -529,9 +478,9 @@ TEST_F(PublishersControllerTest, DoesntFetchPublishersWhenNotShowing) {
   EXPECT_EQ(0u, result.size());
 }
 
-TEST_F(PublishersControllerTest,
+TEST_F(BraveNewsPublishersControllerTest,
        DoesntFetchPublishersWhenNotShowingAndNotOptedIn) {
-  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kV2PublishersResponse,
+  test_url_loader_factory_.AddResponse(GetSourcesUrl(), kPublishersResponse,
                                        net::HTTP_OK);
 
   profile_.GetPrefs()->SetBoolean(brave_news::prefs::kNewTabPageShowToday,

@@ -305,10 +305,8 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11ValidWallet) {
 
 IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11CorruptedWallet) {
   profile_->GetPrefs()->SetInteger("brave.rewards.version", 10);
-
-  std::string base64_wallet;
-  base::Base64Encode("foobar", &base64_wallet);
-  profile_->GetPrefs()->SetString("brave.rewards.wallets.brave", base64_wallet);
+  profile_->GetPrefs()->SetString("brave.rewards.wallets.brave",
+                                  base::Base64Encode("foobar"));
 
   test_util::StartProcess(rewards_service_);
 

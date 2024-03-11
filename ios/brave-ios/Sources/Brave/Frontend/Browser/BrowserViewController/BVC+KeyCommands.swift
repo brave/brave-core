@@ -134,7 +134,7 @@ extension BrowserViewController {
   @objc private func addToFavouritesCommand() {
     guard let selectedTab = tabManager.selectedTab,
       let selectedUrl = selectedTab.url,
-      !(selectedUrl.isLocal || selectedUrl.isReaderModeURL)
+      !(selectedUrl.isLocal || selectedUrl.isInternalURL(for: .readermode))
     else {
       return
     }

@@ -41,21 +41,23 @@ constexpr char kLlama2BIns[] = "[INST]";
 constexpr char kLlama2EIns[] = "[/INST]";
 constexpr char kLlama2BSys[] = "<<SYS>>\n";
 constexpr char kLlama2ESys[] = "\n<</SYS>>\n\n";
+constexpr char kMixtralUserTag[] = "\n\nUser: ";
 constexpr char kSelectedTextPromptPlaceholder[] = "\nSelected text: ";
 
 static constexpr auto kStopSequences =
     base::MakeFixedFlatSet<std::string_view>({kLlama2Eos});
 
-std::string BuildLlama2InstructionPrompt(const std::string& instruction) {
+std::string BuildLlamaInstructionPrompt(const std::string& instruction) {
   return base::ReplaceStringPlaceholders(
       R"($1 $2 $3 )", {kLlama2BIns, instruction, kLlama2EIns}, nullptr);
 }
 
-std::string BuildLlama2FirstSequence(
+std::string BuildLlamaFirstSequence(
     const std::string& system_message,
     const std::string& user_message,
     std::optional<std::string> assistant_response,
-    std::optional<std::string> assistant_response_seed) {
+    std::optional<std::string> assistant_response_seed,
+    const bool& is_mixtral) {
   // Generates a partial sequence if there is no assistant_response:
 
   // <s> [INST] <<SYS>>
@@ -89,11 +91,16 @@ std::string BuildLlama2FirstSequence(
   // anything! What's up?</s>
 
   // Create the system prompt through the first user message.
-  std::string system_prompt =
-      base::StrCat({kLlama2BSys, system_message, kLlama2ESys, user_message});
+  std::string system_msg = system_message;
+  if (!is_mixtral) {
+    system_msg = base::StrCat({kLlama2BSys, system_msg, kLlama2ESys});
+  }
+
+  std::string system_prompt = base::StrCat(
+      {system_msg, is_mixtral ? kMixtralUserTag : "", user_message});
 
   // Wrap in [INST] [/INST] tags.
-  std::string instruction_prompt = BuildLlama2InstructionPrompt(system_prompt);
+  std::string instruction_prompt = BuildLlamaInstructionPrompt(system_prompt);
 
   if (!assistant_response) {
     // Prepend just <s> if there's no assistant_response ( it will be completed
@@ -110,7 +117,7 @@ std::string BuildLlama2FirstSequence(
       {kLlama2Bos, instruction_prompt, *assistant_response, kLlama2Eos});
 }
 
-std::string BuildLlama2SubsequentSequence(
+std::string BuildLlamaSubsequentSequence(
     std::string user_message,
     std::optional<std::string> assistant_response,
     std::optional<std::string> assistant_response_seed) {
@@ -123,7 +130,7 @@ std::string BuildLlama2SubsequentSequence(
   // Hey there! Sure thing! The first few numbers in the Fibonacci sequence are:
   // 1, 1, 2, 3, 5, 8, 13, and so on. </s>
 
-  user_message = BuildLlama2InstructionPrompt(user_message);
+  user_message = BuildLlamaInstructionPrompt(user_message);
 
   if (assistant_response_seed) {
     return base::StrCat({kLlama2Bos, user_message, *assistant_response_seed});
@@ -137,8 +144,9 @@ std::string BuildLlama2SubsequentSequence(
       {kLlama2Bos, user_message, *assistant_response, kLlama2Eos});
 }
 
-std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
-                                               const std::string content) {
+std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
+                                              const std::string content,
+                                              bool is_mixtral) {
   std::string content_template;
   if (is_video) {
     content_template =
@@ -151,20 +159,21 @@ std::string BuildLlama2GenerateQuestionsPrompt(bool is_video,
   const std::string& user_message =
       base::ReplaceStringPlaceholders(content_template, {content}, nullptr);
 
-  return BuildLlama2FirstSequence(
+  return BuildLlamaFirstSequence(
       l10n_util::GetStringUTF8(
           IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS),
       user_message, std::nullopt,
       l10n_util::GetStringUTF8(
-          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED));
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_QUESTIONS_RESPONSE_SEED),
+      is_mixtral);
 }
 
-std::string BuildLlama2Prompt(
+std::string BuildLlamaPrompt(
     const std::vector<ConversationTurn>& conversation_history,
     std::string page_content,
     const std::optional<std::string>& selected_text,
     const bool& is_video,
-    const bool& needs_general_seed,
+    const bool& is_mixtral,
     const std::string user_message) {
   // Always use a generic system message
   std::string system_message =
@@ -220,18 +229,19 @@ std::string BuildLlama2Prompt(
   // If there's no conversation history, then we just send a (partial)
   // first sequence.
   if (conversation_history.empty() || conversation_history.size() <= 1) {
-    return BuildLlama2FirstSequence(
+    return BuildLlamaFirstSequence(
         today_system_message, first_user_message, std::nullopt,
-        (needs_general_seed) ? std::optional(l10n_util::GetStringUTF8(
-                                   IDS_AI_CHAT_LLAMA2_GENERAL_SEED))
-                             : std::nullopt);
+        (is_mixtral) ? std::nullopt
+                     : std::optional(l10n_util::GetStringUTF8(
+                           IDS_AI_CHAT_LLAMA2_GENERAL_SEED)),
+        is_mixtral);
   }
 
   // Use the first two messages to build the first sequence,
   // which includes the system prompt.
-  std::string prompt =
-      BuildLlama2FirstSequence(today_system_message, first_user_message,
-                               conversation_history[1].text, std::nullopt);
+  std::string prompt = BuildLlamaFirstSequence(
+      today_system_message, first_user_message, conversation_history[1].text,
+      std::nullopt, is_mixtral);
 
   // Loop through the rest of the history two at a time building subsequent
   // sequences.
@@ -243,8 +253,8 @@ std::string BuildLlama2Prompt(
                             *conversation_history[i].selected_text})
             : conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
-    prompt += BuildLlama2SubsequentSequence(prev_user_message,
-                                            assistant_message, std::nullopt);
+    prompt += BuildLlamaSubsequentSequence(prev_user_message, assistant_message,
+                                           std::nullopt);
   }
 
   // Build the final subsequent exchange using the current turn.
@@ -257,11 +267,11 @@ std::string BuildLlama2Prompt(
                      {*selected_text}, nullptr),
                  "\n\n", user_message})
           : user_message;
-  prompt += BuildLlama2SubsequentSequence(
+  prompt += BuildLlamaSubsequentSequence(
       cur_user_message, std::nullopt,
-      (needs_general_seed) ? std::optional(l10n_util::GetStringUTF8(
-                                 IDS_AI_CHAT_LLAMA2_GENERAL_SEED))
-                           : std::nullopt);
+      (is_mixtral) ? std::nullopt
+                   : std::optional(l10n_util::GetStringUTF8(
+                         IDS_AI_CHAT_LLAMA2_GENERAL_SEED)));
 
   // Trimming recommended by Meta
   // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
@@ -283,7 +293,7 @@ EngineConsumerLlamaRemote::EngineConsumerLlamaRemote(
   api_ = std::make_unique<RemoteCompletionClient>(
       model.name, stop_sequences, url_loader_factory, credential_manager);
 
-  needs_general_seed_ = base::StartsWith(model.name, "llama-2");
+  is_mixtral_ = base::StartsWith(model.name, "mixtral");
 
   max_page_content_length_ = model.max_page_content_length;
 }
@@ -302,7 +312,8 @@ void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(
       page_content.substr(0, max_page_content_length_);
   std::string prompt;
   std::vector<std::string> stop_sequences;
-  prompt = BuildLlama2GenerateQuestionsPrompt(is_video, truncated_page_content);
+  prompt = BuildLlamaGenerateQuestionsPrompt(is_video, truncated_page_content,
+                                             is_mixtral_);
   stop_sequences.push_back(kLlama2Eos);
   stop_sequences.push_back("</ul>");
   DCHECK(api_);
@@ -319,6 +330,7 @@ void EngineConsumerLlamaRemote::OnGenerateQuestionSuggestionsResponse(
   if (!result.has_value() || result->empty()) {
     // Query resulted in error
     LOG(ERROR) << "Error getting question suggestions.";
+    std::move(callback).Run(base::unexpected(std::move(result.error())));
     return;
   }
 
@@ -373,9 +385,9 @@ void EngineConsumerLlamaRemote::GenerateAssistantResponse(
   const std::string& truncated_page_content = page_content.substr(
       0, selected_text ? max_page_content_length_ - selected_text->size()
                        : max_page_content_length_);
-  std::string prompt = BuildLlama2Prompt(
-      conversation_history, truncated_page_content, selected_text, is_video,
-      needs_general_seed_, human_input);
+  std::string prompt =
+      BuildLlamaPrompt(conversation_history, truncated_page_content,
+                       selected_text, is_video, is_mixtral_, human_input);
   DCHECK(api_);
   api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
                     std::move(data_received_callback));

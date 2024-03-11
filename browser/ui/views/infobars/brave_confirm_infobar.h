@@ -23,8 +23,8 @@ class MdTextButton;
 // right-aligned link.  This is commonly used to do things like:
 // "Would you like to do X?  [Yes]  [No]  [<custom button>]    _Learn More_ [x]"
 class BraveConfirmInfoBar : public InfoBarView {
+  METADATA_HEADER(BraveConfirmInfoBar, InfoBarView)
  public:
-  METADATA_HEADER(BraveConfirmInfoBar);
   explicit BraveConfirmInfoBar(
       std::unique_ptr<BraveConfirmInfoBarDelegate> delegate);
 
@@ -34,7 +34,7 @@ class BraveConfirmInfoBar : public InfoBarView {
   ~BraveConfirmInfoBar() override;
 
   // InfoBarView:
-  void Layout() override;
+  void Layout(PassKey) override;
 
   BraveConfirmInfoBarDelegate* GetDelegate() const;
 

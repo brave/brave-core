@@ -5,8 +5,8 @@
 
 #include "brave/components/brave_ads/core/internal/common/calendar/calendar_util.h"
 
-#include "base/time/time.h"
-#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
+#include "base/time/time.h"  // IWYU pragma: keep
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -15,13 +15,13 @@ namespace brave_ads {
 
 TEST(BraveAdsCalendarUtilTest, GetDayOfWeekForYearMonthAndDay) {
   // Act & Assert
-  EXPECT_EQ(6, DayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
+  EXPECT_EQ(/*friday*/ 6, DayOfWeek(/*year=*/2020, /*month=*/2, /*day=*/29));
 }
 
 TEST(BraveAdsCalendarUtilTest, DayOfWeek) {
   // Act & Assert
-  EXPECT_EQ(3, DayOfWeek(TimeFromString("November 18 1970", /*is_local=*/false),
-                         /*is_local=*/false));
+  EXPECT_EQ(/*wednesday*/ 3, DayOfWeek(TimeFromString("November 18 1970"),
+                                       /*is_local=*/true));
 }
 
 TEST(BraveAdsCalendarUtilTest, IsLeapYear) {

@@ -79,7 +79,8 @@ import {
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetRewardsInfoQuery,
-  useGetUserTokensRegistryQuery
+  useGetUserTokensRegistryQuery,
+  useUpdateUserAssetVisibleMutation
 } from '../../../../common/slices/api.slice'
 import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
@@ -150,6 +151,9 @@ export const PortfolioFungibleAsset = () => {
     return assetId ? userTokensRegistry?.entities[assetId] : undefined
   }, [isRewardsToken, rewardsToken, assetId, userTokensRegistry])
 
+  // mutations
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
+
   // queries
   const { accounts } = useAccountsQuery()
 
@@ -177,15 +181,16 @@ export const PortfolioFungibleAsset = () => {
     )
   }, [selectedAssetsNetwork, accounts])
 
-  const { data: tokenBalancesRegistry } = useScopedBalanceUpdater(
-    selectedAssetFromParams && candidateAccounts && selectedAssetsNetwork
-      ? {
-          network: selectedAssetsNetwork,
-          accounts: candidateAccounts,
-          tokens: [selectedAssetFromParams]
-        }
-      : skipToken
-  )
+  const { data: tokenBalancesRegistry, isLoading: isLoadingBalances } =
+    useScopedBalanceUpdater(
+      selectedAssetFromParams && candidateAccounts && selectedAssetsNetwork
+        ? {
+            network: selectedAssetsNetwork,
+            accounts: candidateAccounts,
+            tokens: [selectedAssetFromParams]
+          }
+        : skipToken
+    )
 
   const tokenPriceIds = React.useMemo(
     () =>
@@ -375,19 +380,17 @@ export const PortfolioFungibleAsset = () => {
     []
   )
 
-  const onHideAsset = React.useCallback(() => {
+  const onHideAsset = React.useCallback(async () => {
     if (!selectedAssetFromParams) return
-    dispatch(
-      WalletActions.setUserAssetVisible({
-        token: selectedAssetFromParams,
-        isVisible: false
-      })
-    )
+    await updateUserAssetVisible({
+      token: selectedAssetFromParams,
+      isVisible: false
+    }).unwrap()
     dispatch(WalletActions.refreshBalancesAndPriceHistory())
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams, showTokenDetailsModal])
+  }, [selectedAssetFromParams, showTokenDetailsModal, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -534,6 +537,7 @@ export const PortfolioFungibleAsset = () => {
             selectedAsset={selectedAssetFromParams}
             selectedAssetTransactions={selectedAssetTransactions}
             tokenBalancesRegistry={tokenBalancesRegistry}
+            isLoadingBalances={isLoadingBalances}
             accounts={candidateAccounts}
             spotPriceRegistry={spotPriceRegistry}
           />

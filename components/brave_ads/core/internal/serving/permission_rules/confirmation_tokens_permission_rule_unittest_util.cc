@@ -10,7 +10,7 @@
 namespace brave_ads::test {
 
 void ForceConfirmationTokensPermissionRule() {
-  SetConfirmationTokens(/*count=*/50);
+  RefillConfirmationTokens(/*count=*/50);
 }
 
 }  // namespace brave_ads::test

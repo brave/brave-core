@@ -88,7 +88,7 @@ class FilTxManagerUnitTest : public testing::Test {
 
     keyring_service_->CreateWallet(kMnemonicDivideCruise, "brave",
                                    base::DoNothing());
-    base::RunLoop().RunUntilIdle();
+    task_environment_.RunUntilIdle();
     keyring_service_->AddAccountSync(
         mojom::CoinType::FIL, mojom::kFilecoinTestnetKeyringId, "Account 1");
   }
@@ -290,7 +290,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
                      std::string());
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_FALSE(tx_meta1->tx_hash().empty());
@@ -300,7 +300,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactions) {
   // Send another tx.
   ApproveTransaction(meta_id2, false, mojom::FilecoinProviderError::kSuccess,
                      std::string());
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
 
   tx_meta2 = fil_tx_manager()->GetTxForTesting(meta_id2);
   ASSERT_TRUE(tx_meta2);
@@ -351,7 +351,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionError) {
                      mojom::FilecoinProviderError::kParsingError,
                      l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_TRUE(tx_meta1->tx_hash().empty());
@@ -410,7 +410,7 @@ TEST_F(FilTxManagerUnitTest, SubmitTransactionConfirmed) {
   ApproveTransaction(meta_id1, false, mojom::FilecoinProviderError::kSuccess,
                      std::string());
   // Wait for tx to be updated.
-  base::RunLoop().RunUntilIdle();
+  task_environment_.RunUntilIdle();
   tx_meta1 = fil_tx_manager()->GetTxForTesting(meta_id1);
   ASSERT_TRUE(tx_meta1);
   EXPECT_FALSE(tx_meta1->tx_hash().empty());

@@ -103,7 +103,8 @@ const getIsTokenSelected = (
   }
   return (
     selectedToken.contractAddress === token.contractAddress &&
-    selectedToken.coin === token.coin
+    selectedToken.coin === token.coin &&
+    selectedToken.chainId === token.chainId
   )
 }
 
@@ -117,7 +118,6 @@ interface Props {
   ) => void
   onSelectSendOption?: (sendOption: SendPageTabHashes) => void
   selectedNetwork?: BraveWallet.NetworkInfo
-  setSelectedNetwork: (network: BraveWallet.NetworkInfo) => void
   showFullFlatTokenList?: boolean
   modalType: 'send' | 'swap' | 'bridge'
 }
@@ -131,7 +131,6 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
       onSelectAsset,
       onSelectSendOption,
       selectedNetwork,
-      setSelectedNetwork,
       showFullFlatTokenList,
       modalType
     } = props
@@ -140,6 +139,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
     const [searchValue, setSearchValue] = React.useState<string>('')
     const [showNetworkDropDown, setShowNetworkDropDown] =
       React.useState<boolean>(false)
+    const [selectedNetworkFilter, setSelectedNetworkFilter] =
+      React.useState<BraveWallet.NetworkInfo>(
+        selectedNetwork || AllNetworksOption
+      )
 
     // Queries & Mutations
     const { data: defaultFiatCurrency } = useGetDefaultFiatCurrencyQuery()
@@ -273,31 +276,31 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const getTokensByNetwork = React.useCallback(
       (account?: BraveWallet.AccountInfo) => {
-        if (!selectedNetwork) {
+        if (!selectedNetworkFilter) {
           return []
         }
         if (!account || showFullFlatTokenList) {
           return fullTokenList.filter(
             (token) =>
-              token.chainId === selectedNetwork.chainId &&
-              token.coin === selectedNetwork.coin &&
+              token.chainId === selectedNetworkFilter.chainId &&
+              token.coin === selectedNetworkFilter.coin &&
               !token.isNft &&
               !token.isErc1155 &&
               !token.isErc721
           )
         }
-        if (selectedNetwork.chainId === AllNetworksOption.chainId) {
+        if (selectedNetworkFilter.chainId === AllNetworksOption.chainId) {
           return getTokensBySelectedSendOption(account)
         }
         return getTokensBySelectedSendOption(account).filter(
           (token) =>
-            token.chainId === selectedNetwork.chainId &&
-            token.coin === selectedNetwork.coin
+            token.chainId === selectedNetworkFilter.chainId &&
+            token.coin === selectedNetworkFilter.coin
         )
       },
       [
         getTokensBySelectedSendOption,
-        selectedNetwork,
+        selectedNetworkFilter,
         fullTokenList,
         showFullFlatTokenList
       ]
@@ -374,10 +377,10 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
 
     const onSelectAssetsNetwork = React.useCallback(
       (network: BraveWallet.NetworkInfo) => {
-        setSelectedNetwork(network)
+        setSelectedNetworkFilter(network)
         setShowNetworkDropDown(false)
       },
-      [setSelectedNetwork]
+      []
     )
 
     // Memos
@@ -552,7 +555,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
             />
           </SendOptionsRow>
         )}
-        {selectedNetwork && (
+        {selectedNetworkFilter && (
           <SearchBarRow>
             <NetworkFilterWithSearch
               searchValue={searchValue}
@@ -563,7 +566,7 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
               }
               searchAction={onSearch}
               searchAutoFocus={true}
-              selectedNetwork={selectedNetwork}
+              selectedNetwork={selectedNetworkFilter}
               onClick={onToggleShowNetworkDropdown}
               showNetworkDropDown={showNetworkDropDown}
               onSelectNetwork={onSelectAssetsNetwork}

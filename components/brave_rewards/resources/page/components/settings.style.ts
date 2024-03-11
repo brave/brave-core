@@ -34,6 +34,9 @@ export const root = styled.div`
   & :where(a) {
     color: #4C54D2;
   }
+
+  --modal-background: rgba(0, 0, 0, 0.15);
+  --modal-backdrop-filter: blur(10px);
 `
 
 export const onboarding = styled.div`

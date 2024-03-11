@@ -88,10 +88,12 @@ void BraveContentRendererClient::
   ChromeContentRendererClient::
       SetRuntimeFeaturesDefaultsBeforeBlinkInitialization();
 
+  blink::WebRuntimeFeatures::EnableFledge(false);
+  blink::WebRuntimeFeatures::EnableWebGPUExperimentalFeatures(false);
   blink::WebRuntimeFeatures::EnableWebNFC(false);
-  blink::WebRuntimeFeatures::EnableAnonymousIframe(false);
 
   // These features don't have dedicated WebRuntimeFeatures wrappers.
+  blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
   blink::WebRuntimeFeatures::EnableFeatureFromString("DigitalGoods", false);
   if (!base::FeatureList::IsEnabled(blink::features::kFileSystemAccessAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("FileSystemAccessLocal",
@@ -99,10 +101,10 @@ void BraveContentRendererClient::
     blink::WebRuntimeFeatures::EnableFeatureFromString(
         "FileSystemAccessAPIExperimental", false);
   }
+  blink::WebRuntimeFeatures::EnableFeatureFromString("FledgeMultiBid", false);
   if (!base::FeatureList::IsEnabled(blink::features::kBraveWebSerialAPI)) {
     blink::WebRuntimeFeatures::EnableFeatureFromString("Serial", false);
   }
-  blink::WebRuntimeFeatures::EnableFeatureFromString("AdTagging", false);
 
 #if BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
   if (base::FeatureList::IsEnabled(
@@ -213,6 +215,20 @@ void BraveContentRendererClient::RunScriptsAtDocumentStart(
 #endif
 
   ChromeContentRendererClient::RunScriptsAtDocumentStart(render_frame);
+}
+
+void BraveContentRendererClient::RunScriptsAtDocumentEnd(
+    content::RenderFrame* render_frame) {
+#if BUILDFLAG(ENABLE_PLAYLIST)
+  if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
+    if (auto* playlist_observer =
+            playlist::PlaylistRenderFrameObserver::Get(render_frame)) {
+      playlist_observer->RunScriptsAtDocumentEnd();
+    }
+  }
+#endif
+
+  ChromeContentRendererClient::RunScriptsAtDocumentEnd(render_frame);
 }
 
 void BraveContentRendererClient::WillEvaluateServiceWorkerOnWorkerThread(

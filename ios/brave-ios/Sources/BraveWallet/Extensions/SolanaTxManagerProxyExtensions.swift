@@ -16,7 +16,7 @@ extension BraveWalletSolanaTxManagerProxy {
       body: { @MainActor group in
         for tx in transactions {
           group.addTask { @MainActor in
-            let (fee, _, _) = await self.estimatedTxFee(tx.chainId, txMetaId: tx.id)
+            let (fee, _, _) = await self.estimatedTxFee(chainId: tx.chainId, txMetaId: tx.id)
             return [tx.id: fee]
           }
         }

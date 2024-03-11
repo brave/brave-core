@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import AIChat
 import BraveUI
 import Foundation
 import Preferences
@@ -21,6 +22,7 @@ class SearchSuggestionDataSource {
 
   enum SearchListSection: Int, CaseIterable {
     case quickBar
+    case aiChat
     case searchSuggestionsOptIn
     case searchSuggestions
     case findInPage
@@ -67,6 +69,10 @@ class SearchSuggestionDataSource {
   var availableSections: [SearchListSection] {
     var sections = [SearchListSection]()
     sections.append(.quickBar)
+
+    if !tabType.isPrivate && Preferences.AIChat.autocompleteSuggestionsEnabled.value {
+      sections.append(.aiChat)
+    }
 
     if !tabType.isPrivate && searchEngines?.shouldShowSearchSuggestionsOptIn == true {
       sections.append(.searchSuggestionsOptIn)

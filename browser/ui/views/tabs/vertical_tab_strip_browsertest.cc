@@ -135,7 +135,7 @@ class VerticalTabStripBrowserTest : public InProcessBrowserTest {
 
   void ToggleVerticalTabStrip() {
     brave::ToggleVerticalTabStrip(browser());
-    browser_non_client_frame_view()->Layout();
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   }
 
   TabStrip* GetTabStrip(Browser* browser) {
@@ -254,7 +254,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
   auto check_if_window_title_gets_visible = [&]() {
     // Show window title bar
     brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-    browser_non_client_frame_view()->Layout();
+    browser_non_client_frame_view()->DeprecatedLayoutImmediately();
     EXPECT_TRUE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
     EXPECT_TRUE(browser_view()->ShouldShowWindowTitle());
     EXPECT_GE(browser_non_client_frame_view()->GetTopInset(/*restored=*/false),
@@ -268,7 +268,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripBrowserTest, WindowTitle) {
 
   // Hide window title bar
   brave::ToggleWindowTitleVisibilityForVerticalTabs(browser());
-  browser_non_client_frame_view()->Layout();
+  browser_non_client_frame_view()->DeprecatedLayoutImmediately();
   EXPECT_FALSE(tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser()));
   EXPECT_FALSE(browser_view()->ShouldShowWindowTitle());
 #if !BUILDFLAG(IS_LINUX)

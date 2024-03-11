@@ -280,6 +280,7 @@ void State::SetRewardsParameters(const mojom::RewardsParameters& parameters) {
       WalletProviderRegionsToValue(parameters.wallet_provider_regions));
   engine_->SetState(kParametersVBatDeadline, parameters.vbat_deadline);
   engine_->SetState(kParametersVBatExpired, parameters.vbat_expired);
+  engine_->SetState(kParametersTosVersion, parameters.tos_version);
 }
 
 mojom::RewardsParametersPtr State::GetRewardsParameters() {
@@ -293,6 +294,7 @@ mojom::RewardsParametersPtr State::GetRewardsParameters() {
   parameters->wallet_provider_regions = GetWalletProviderRegions();
   parameters->vbat_deadline = GetVBatDeadline();
   parameters->vbat_expired = GetVBatExpired();
+  parameters->tos_version = engine_->GetState<int32_t>(kParametersTosVersion);
 
   return parameters;
 }
@@ -416,10 +418,7 @@ bool State::SetEncryptedString(const std::string& key,
     return false;
   }
 
-  std::string base64_string;
-  base::Base64Encode(*encrypted, &base64_string);
-
-  engine_->SetState(key, std::move(base64_string));
+  engine_->SetState(key, base::Base64Encode(*encrypted));
   return true;
 }
 

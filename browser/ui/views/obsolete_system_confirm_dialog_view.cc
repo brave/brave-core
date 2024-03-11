@@ -65,5 +65,5 @@ void ObsoleteSystemConfirmDialogView::OnButtonPressed(bool accept) {
   std::move(closing_callback_).Run(accept);
 }
 
-BEGIN_METADATA(ObsoleteSystemConfirmDialogView, views::DialogDelegateView)
+BEGIN_METADATA(ObsoleteSystemConfirmDialogView)
 END_METADATA

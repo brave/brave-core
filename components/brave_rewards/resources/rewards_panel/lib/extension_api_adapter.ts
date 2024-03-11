@@ -108,6 +108,12 @@ export function getSelfCustodyInviteDismissed () {
   })
 }
 
+export function isTermsOfServiceUpdateRequired () {
+  return new Promise<boolean>((resolve) => {
+    chrome.braveRewards.isTermsOfServiceUpdateRequired(resolve)
+  })
+}
+
 export function getExternalWalletProviders () {
   return new Promise<ExternalWalletProvider[]>((resolve) => {
     chrome.braveRewards.getExternalWalletProviders((providers) => {

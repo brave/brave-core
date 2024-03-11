@@ -74,11 +74,6 @@ BraveAvatarToolbarButton::BraveAvatarToolbarButton(BrowserView* browser_view)
 
 BraveAvatarToolbarButton::~BraveAvatarToolbarButton() = default;
 
-AvatarToolbarButton::State BraveAvatarToolbarButton::GetAvatarButtonState()
-    const {
-  return delegate_->GetState();
-}
-
 void BraveAvatarToolbarButton::SetHighlight(
     const std::u16string& highlight_text,
     std::optional<SkColor> highlight_color) {
@@ -87,16 +82,17 @@ void BraveAvatarToolbarButton::SetHighlight(
     revised_highlight_text = brave_l10n::GetLocalizedResourceUTF16String(
         IDS_TOR_AVATAR_BUTTON_LABEL);
 
-    if (GetWindowCount() > 1) {
-      revised_highlight_text =
-          l10n_util::GetStringFUTF16(IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
-                                     base::NumberToString16(GetWindowCount()));
+    if (delegate_->GetWindowCount() > 1) {
+      revised_highlight_text = l10n_util::GetStringFUTF16(
+          IDS_TOR_AVATAR_BUTTON_LABEL_COUNT,
+          base::NumberToString16(delegate_->GetWindowCount()));
     }
   } else if (browser_->profile()->IsIncognitoProfile()) {
     // We only want the icon and count for Incognito profiles.
     revised_highlight_text = std::u16string();
-    if (GetWindowCount() > 1) {
-      revised_highlight_text = base::NumberToString16(GetWindowCount());
+    if (delegate_->GetWindowCount() > 1) {
+      revised_highlight_text =
+          base::NumberToString16(delegate_->GetWindowCount());
     }
   } else if (browser_->profile()->IsGuestSession()) {
     // We only want the icon for Guest profiles.
@@ -113,8 +109,9 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
 
   constexpr int kNormalProfileHighlightRadius = 36;
   int radius = kNormalProfileHighlightRadius;
-  if (delegate_->GetState() == State::kIncognitoProfile ||
-      delegate_->GetState() == State::kGuestSession) {
+  bool is_private = browser_->profile()->IsOffTheRecord() ||
+                    browser_->profile()->IsGuestSession();
+  if (is_private) {
     radius = ChromeLayoutProvider::Get()->GetCornerRadiusMetric(
         views::Emphasis::kMaximum, {});
   }
@@ -125,13 +122,9 @@ void BraveAvatarToolbarButton::OnThemeChanged() {
                 weak_ptr_factory_.GetWeakPtr(), radius));
 }
 
-int BraveAvatarToolbarButton::GetWindowCount() const {
-  return delegate_->GetWindowCount();
-}
-
 void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
   // Use custom bg/border for private/tor window.
-  if (delegate_->GetState() == State::kIncognitoProfile) {
+  if (browser_->profile()->IsOffTheRecord()) {
     const bool is_tor = browser_->profile()->IsTor();
     const auto text_color = is_tor ? SkColorSetRGB(0xE3, 0xB3, 0xFF)
                                    : SkColorSetRGB(0xcc, 0xBE, 0xFE);
@@ -172,43 +165,13 @@ void BraveAvatarToolbarButton::UpdateColorsAndInsets() {
     return;
   }
 
-  if (delegate_->GetState() == State::kGuestSession) {
+  if (browser_->profile()->IsGuestSession()) {
     gfx::Insets target_insets = ::GetLayoutInsets(TOOLBAR_BUTTON);
     SetBorder(views::CreateEmptyBorder(target_insets));
     return;
   }
 
   AvatarToolbarButton::UpdateColorsAndInsets();
-}
-
-ui::ImageModel BraveAvatarToolbarButton::GetAvatarIcon(
-    ButtonState state,
-    const gfx::Image& gaia_account_image) const {
-  const auto icon_size = GetLayoutConstant(LOCATION_BAR_ICON_SIZE);
-  if (browser_->profile()->IsTor()) {
-    return ui::ImageModel::FromVectorIcon(
-        kLeoProductTorIcon, SkColorSetRGB(0x3C, 0x82, 0x3C), icon_size);
-  }
-
-  if (browser_->profile()->IsIncognitoProfile()) {
-    return ui::ImageModel::FromVectorIcon(
-        kIncognitoIcon, SkColorSetRGB(0xFF, 0xFF, 0xFF), GetIconSize());
-  }
-
-  if (browser_->profile()->IsGuestSession()) {
-    return ui::ImageModel::FromVectorIcon(kUserMenuGuestIcon,
-                                          GetForegroundColor(state), icon_size);
-  }
-
-  return AvatarToolbarButton::GetAvatarIcon(state, gaia_account_image);
-}
-
-std::u16string BraveAvatarToolbarButton::GetAvatarTooltipText() const {
-  if (browser_->profile()->IsTor())
-    return brave_l10n::GetLocalizedResourceUTF16String(
-        IDS_TOR_AVATAR_BUTTON_TOOLTIP_TEXT);
-
-  return AvatarToolbarButton::GetAvatarTooltipText();
 }
 
 BEGIN_METADATA(BraveAvatarToolbarButton)

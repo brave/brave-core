@@ -115,7 +115,8 @@ export const ErrorBox = styled.div`
   padding: 16px 25px;
   background-color: ${leo.color.systemfeedback.errorBackground};
   border-radius: 12px;
-  margin-bottom: 32px;
+  margin-bottom: 16px;
+  overflow-wrap: anywhere;
 `
 
 export const ErrorDescriptionText = styled(Text)`

@@ -22,13 +22,14 @@ ConversionQueueItemList BuildConversionQueueItems(
     const ConversionInfo& conversion,
     size_t count);
 
-void SaveConversionQueue(const ConversionQueueItemList& conversion_queue_items);
+void SaveConversionQueueItems(
+    const ConversionQueueItemList& conversion_queue_items);
 
-void BuildAndSaveConversionQueue(AdType ad_type,
-                                 ConfirmationType confirmation_type,
-                                 bool is_verifiable,
-                                 bool should_use_random_uuids,
-                                 int count);
+void BuildAndSaveConversionQueueItems(AdType ad_type,
+                                      ConfirmationType confirmation_type,
+                                      bool is_verifiable,
+                                      bool should_use_random_uuids,
+                                      int count);
 
 }  // namespace test
 

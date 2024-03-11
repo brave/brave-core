@@ -14,28 +14,30 @@ struct ConversionInfo;
 
 class ConversionQueueDelegate {
  public:
-  // Invoked to tell the delegate when we add a conversion to the queue.
+  // Invoked to tell the delegate that we added a conversion to the queue.
   virtual void OnDidAddConversionToQueue(const ConversionInfo& conversion) {}
 
-  // Invoked to tell the delegate when we fail to add a conversion to the queue.
+  // Invoked to tell the delegate that we failed to add a conversion to the
+  // queue.
   virtual void OnFailedToAddConversionToQueue(
       const ConversionInfo& conversion) {}
 
-  // Invoked to tell the delegate when we will process the conversion queue.
+  // Invoked to tell the delegate that we will process the conversion queue.
   virtual void OnWillProcessConversionQueue(const ConversionInfo& conversion,
                                             base::Time process_at) {}
 
-  // Invoked to tell the delegate when we process the conversion queue.
+  // Invoked to tell the delegate that we processed the conversion queue.
   virtual void OnDidProcessConversionQueue(const ConversionInfo& conversion) {}
 
-  // Invoked to tell the delegate when we fail to process the conversion queue.
+  // Invoked to tell the delegate that we failed to process the conversion
+  // queue.
   virtual void OnFailedToProcessConversionQueue(
       const ConversionInfo& conversion) {}
 
-  // Invoked to tell the delegate when we fail to process the next conversion.
+  // Invoked to tell the delegate that we failed to process the next conversion.
   virtual void OnFailedToProcessNextConversionInQueue() {}
 
-  // Invoked to tell the delegate when the conversion queue has been exhausted.
+  // Invoked to tell the delegate that the conversion queue has been exhausted.
   virtual void OnDidExhaustConversionQueue() {}
 
  protected:

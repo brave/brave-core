@@ -21,8 +21,8 @@ class PlaylistTabHelper;
 }  // namespace playlist
 
 class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
+  METADATA_HEADER(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
  public:
-  METADATA_HEADER(PlaylistActionBubbleView);
 
   static void ShowBubble(Browser* browser,
                          PlaylistActionIconView* anchor,
@@ -55,8 +55,8 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 //  * Shows when users try adding items found from the current contents.
 //  * Shows a list of found items and users can select which one to add.
 class PlaylistActionAddBubble : public PlaylistActionBubbleView {
+  METADATA_HEADER(PlaylistActionAddBubble, PlaylistActionBubbleView)
  public:
-  METADATA_HEADER(PlaylistActionAddBubble);
 
   static constexpr int kWidth = 288;
 

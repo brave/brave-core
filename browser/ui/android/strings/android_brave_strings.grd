@@ -287,9 +287,6 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_REWARDS_MAY_NOT_WORK_WHILE_NOTIFICATIONS_ARE_DISABLED"  desc="Text for Brave Rewards may not work while notifications are disabled.">
         Brave Rewards may not work while notifications are disabled.
       </message>
-      <message name="IDS_TURN_ON"  desc="Text for Turn On">
-        TURN ON
-      </message>
       <message name="IDS_BLOCK_SWITCH_TO_APP_NOTICES"  desc="Text for Block 'Switch to App' Notices">
         Block 'Switch to App' Notices
       </message>
@@ -461,8 +458,14 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_ACCESSIBILITY_TOOLBAR_BTN_BRAVE_REWARDS" desc="Content description for the button that is enable, disable Brave Rewards.">
         Manage Brave Rewards
       </message>
-      <message name="IDS_PREFS_SECTION_ONLINE_CHECKOUT" desc="Title for online checkout section">
-        Online checkout
+      <message name="IDS_PREFS_SECTION_AUTOFILL" desc="Title for Autofill section">
+        Autofill
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_TITLE" desc="Title for Autofill in private window option in settings">
+        Autofill in private tabs
+      </message>
+      <message name="IDS_PREFS_AUTOFILL_PRIVATE_WINDOW_SUMMARY" desc="Summary for Autofill in private window option in settings">
+        Saved information can be auto-filled in private tabs
       </message>
       <message name="IDS_PREFS_SUPPORT_SECTION" desc="Title for the support section ">
         Support
@@ -3389,9 +3392,6 @@ If you don't accept this request, VPN will not reconnect and your internet conne
     <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled">
       Connect or create an account with one of our partners.
     </message>
-    <message name="IDS_REWARDS_PANEL_UNVERIFIED_ON_SECTION_UNSUPPORTED_REGION_TEXT" desc="Rewards panel unverified state section text when rewards is enabled but region is not supported">
-      To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
-    </message>
     <message name="IDS_LEARN_MORE_ABOUT_BAT" desc="Rewards panel unverified state section learn more text">
       Learn more about earning BAT
     </message>
@@ -3813,6 +3813,84 @@ If you don't accept this request, VPN will not reconnect and your internet conne
       If your current service provider is insecure, Brave uses a secure alternative DNS provider
     </message>
     <!-- End of Secure DNS Settings -->
+
+    <!-- Autofill Service strings -->
+    <message name="IDS_CITY" desc="Autofill field for city">
+      city
+    </message>
+    <message name="IDS_TOWN" desc="Autofill field for town">
+      town
+    </message>
+    <message name="IDS_PREFECTURE" desc="Autofill field for prefecture">
+      prefecture
+    </message>
+    <message name="IDS_REGION" desc="Autofill field for region">
+      region
+    </message>
+    <message name="IDS_STATE" desc="Autofill field for state">
+      state
+    </message>
+    <message name="IDS_ORGANIZATION" desc="Autofill field for organization">
+      organization
+    </message>
+    <message name="IDS_COMPANY" desc="Autofill field for company">
+      company
+    </message>
+    <message name="IDS_COUNTRY" desc="Autofill field for country">
+      country
+    </message>
+    <message name="IDS_LABEL" desc="Autofill field for label">
+      label
+    </message>
+    <message name="IDS_CONTAINER" desc="Autofill field for container">
+      container
+    </message>
+    <message name="IDS_USERNAME" desc="Autofill field for username">
+      username
+    </message>
+    <message name="IDS_LOGIN" desc="Autofill field for login">
+      login
+    </message>
+    <message name="IDS_ID" desc="Autofill field for id">
+      id
+    </message>
+    <message name="IDS_EMAIL" desc="Autofill field for email">
+      email
+    </message>
+    <message name="IDS_NAME" desc="Autofill field for name">
+      name
+    </message>
+    <message name="IDS_FIRST" desc="Autofill field for first name">
+      first
+    </message>
+    <message name="IDS_LAST" desc="Autofill field for last name">
+      last
+    </message>
+    <message name="IDS_FULL" desc="Autofill field for full name">
+      full
+    </message>
+    <message name="IDS_PHONE" desc="Autofill field for phone">
+      phone
+    </message>
+    <message name="IDS_MOBILE" desc="Autofill field for mobile">
+      mobile
+    </message>
+    <message name="IDS_ADDRESS" desc="Autofill field for address">
+      address
+    </message>
+    <message name="IDS_APARTMENT" desc="Autofill field for apartment">
+      apartment
+    </message>
+    <message name="IDS_PINCODE" desc="Autofill field for pincode">
+      pin code
+    </message>
+    <message name="IDS_POSTALCODE" desc="Autofill field for postal code">
+      postal code
+    </message>
+    <message name="IDS_ZIP" desc="Autofill field for zip code">
+      zip
+    </message>
+    <!-- End of Autofill Service strings -->
   </messages>
   </release>
 </grit>

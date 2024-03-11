@@ -5,7 +5,6 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_builder.h"
 
-#include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_constants.h"
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
@@ -26,6 +25,8 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
+  const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kViewed,
+                                            /*created_at=*/Now());
 
   // Act & Assert
   ConversionInfo expected_conversion;
@@ -37,15 +38,15 @@ TEST(BraveAdsConversionBuilderTest, BuildConversion) {
   expected_conversion.segment = kSegment;
   expected_conversion.action_type = ConversionActionType::kViewThrough;
   EXPECT_EQ(expected_conversion,
-            BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                         /*created_at=*/Now()),
-                            /*verifiable_conversion=*/std::nullopt));
+            BuildConversion(ad_event, /*verifiable_conversion=*/std::nullopt));
 }
 
 TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   // Arrange
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/false);
+  const AdEventInfo ad_event = BuildAdEvent(ad, ConfirmationType::kViewed,
+                                            /*created_at=*/Now());
 
   // Act & Assert
   ConversionInfo expected_conversion;
@@ -58,12 +59,11 @@ TEST(BraveAdsConversionBuilderTest, BuildVerifiableConversion) {
   expected_conversion.action_type = ConversionActionType::kViewThrough;
   expected_conversion.verifiable = VerifiableConversionInfo{
       kVerifiableConversionId, kVerifiableConversionAdvertiserPublicKey};
-  EXPECT_EQ(expected_conversion,
-            BuildConversion(BuildAdEvent(ad, ConfirmationType::kViewed,
-                                         /*created_at=*/Now()),
-                            VerifiableConversionInfo{
-                                kVerifiableConversionId,
-                                kVerifiableConversionAdvertiserPublicKey}));
+  EXPECT_EQ(
+      expected_conversion,
+      BuildConversion(ad_event, VerifiableConversionInfo{
+                                    kVerifiableConversionId,
+                                    kVerifiableConversionAdvertiserPublicKey}));
 }
 
 }  // namespace brave_ads

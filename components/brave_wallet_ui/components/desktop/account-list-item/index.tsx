@@ -26,16 +26,14 @@ import {
   getRewardsTokenDescription
 } from '../../../utils/rewards_utils'
 import { getLocale } from '../../../../common/locale'
+import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 
 // hooks
 import { useOnClickOutside } from '../../../common/hooks/useOnClickOutside'
 
 // Selectors
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
-import {
-  useSafeUISelector,
-  useUnsafeWalletSelector
-} from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 
 // Queries
 import {
@@ -43,7 +41,8 @@ import {
 } from '../../../common/slices/entities/token-balance.entity'
 import {
   useGetDefaultFiatCurrencyQuery,
-  useGetRewardsInfoQuery
+  useGetRewardsInfoQuery,
+  useGetUserTokensRegistryQuery
 } from '../../../common/slices/api.slice'
 
 // types
@@ -120,13 +119,11 @@ export const AccountListItem = ({
   const dispatch = useDispatch()
 
   // selectors
-  const userVisibleTokensInfo = useUnsafeWalletSelector(
-    WalletSelectors.userVisibleTokensInfo
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+  const { data: userTokensRegistry } = useGetUserTokensRegistryQuery()
 
   const {
     data: {
@@ -200,11 +197,18 @@ export const AccountListItem = ({
     if (isRewardsAccount && rewardsToken) {
       return [rewardsToken]
     }
-    return userVisibleTokensInfo
-      .filter((asset) => asset.visible)
-      .filter((token) => token.coin === account.accountId.coin)
-      .filter((token) => !token.isErc721 && !token.isErc1155 && !token.isNft)
-  }, [userVisibleTokensInfo, account, isRewardsAccount, rewardsToken])
+
+    if (!userTokensRegistry) {
+      return []
+    }
+
+    return getEntitiesListFromEntityState(
+      userTokensRegistry,
+      userTokensRegistry.fungibleVisibleTokenIdsByCoinType[
+        account.accountId.coin
+      ]
+    )
+  }, [userTokensRegistry, account, isRewardsAccount, rewardsToken])
 
   const tokensWithBalances = React.useMemo(() => {
     if (isRewardsAccount && rewardsToken && rewardsBalance) {
@@ -227,7 +231,7 @@ export const AccountListItem = ({
   const accountsFiatValue = React.useMemo(() => {
     // Return an empty string to display a loading
     // skeleton while assets are populated.
-    if (userVisibleTokensInfo.length === 0) {
+    if (!userTokensRegistry) {
       return Amount.empty()
     }
 
@@ -268,7 +272,7 @@ export const AccountListItem = ({
     return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
   }, [
     account,
-    userVisibleTokensInfo,
+    userTokensRegistry,
     accountsFungibleTokens,
     tokenBalancesRegistry,
     spotPriceRegistry,

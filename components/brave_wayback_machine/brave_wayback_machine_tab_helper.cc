@@ -60,26 +60,28 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   if (const net::HttpResponseHeaders* header =
           navigation_handle->GetResponseHeaders()) {
-    if (!ShouldAttachWaybackMachineInfoBar(header->response_code()))
+    if (!ShouldShowWaybackMachineDialog(header->response_code())) {
       return;
+    }
 
     // Create infobar in the next loop for not blocking navigation.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE, base::BindOnce(&BraveWaybackMachineTabHelper::CreateInfoBar,
-                                  weak_factory_.GetWeakPtr()));
+        FROM_HERE,
+        base::BindOnce(&BraveWaybackMachineTabHelper::ShowWaybackMachineDialog,
+                       weak_factory_.GetWeakPtr()));
   }
 }
 
-void BraveWaybackMachineTabHelper::CreateInfoBar() {
+void BraveWaybackMachineTabHelper::ShowWaybackMachineDialog() {
   DCHECK(delegate_);
-  delegate_->CreateInfoBar(web_contents());
+  delegate_->ShowWaybackMachineDialog(web_contents());
 }
 
 bool BraveWaybackMachineTabHelper::IsWaybackMachineEnabled() const {
   return pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
 }
 
-bool BraveWaybackMachineTabHelper::ShouldAttachWaybackMachineInfoBar(
+bool BraveWaybackMachineTabHelper::ShouldShowWaybackMachineDialog(
     int response_code) const {
   static base::flat_set<int> responses = {
       net::HTTP_NOT_FOUND,              // 404

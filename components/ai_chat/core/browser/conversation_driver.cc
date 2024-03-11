@@ -76,10 +76,10 @@ GetActionTypeQuestionMap() {
                 IDS_AI_CHAT_QUESTION_CREATE_SOCIAL_MEDIA_COMMENT_LONG)},
            {mojom::ActionType::IMPROVE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_IMPROVE)},
-           {mojom::ActionType::SIMPLIFY,
-            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_SIMPLIFY)},
            {mojom::ActionType::PROFESSIONALIZE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PROFESSIONALIZE)},
+           {mojom::ActionType::PERSUASIVE_TONE,
+            l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_PERSUASIVE_TONE)},
            {mojom::ActionType::CASUALIZE,
             l10n_util::GetStringUTF8(IDS_AI_CHAT_QUESTION_CASUALIZE)},
            {mojom::ActionType::FUNNY_TONE,
@@ -626,7 +626,7 @@ void ConversationDriver::GenerateQuestions() {
 
 void ConversationDriver::OnSuggestedQuestionsResponse(
     int64_t navigation_id,
-    std::vector<std::string> result) {
+    EngineConsumer::SuggestedQuestionResult result) {
   // We might have navigated away whilst this async operation is in
   // progress, so check if we're the same navigation.
   if (navigation_id != current_navigation_id_) {
@@ -634,9 +634,16 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     return;
   }
 
-  suggestions_.insert(suggestions_.end(), result.begin(), result.end());
-  suggestion_generation_status_ =
-      mojom::SuggestionGenerationStatus::HasGenerated;
+  if (result.has_value()) {
+    suggestions_.insert(suggestions_.end(), result->begin(), result->end());
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::HasGenerated;
+  } else {
+    // TODO(nullhook): Set a specialized error state generated questions
+    suggestion_generation_status_ =
+        mojom::SuggestionGenerationStatus::CanGenerate;
+  }
+
   // Notify observers
   OnSuggestedQuestionsChanged();
   DVLOG(2) << "Got questions:" << base::JoinString(suggestions_, "\n");

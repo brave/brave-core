@@ -28,6 +28,7 @@ import { GrantOverlay } from './grant_overlay'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
 import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
+import { TosUpdateNotice } from '../tos_update_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
 
@@ -74,10 +75,12 @@ interface Props {
   publishersVisited: number
   canConnectAccount: boolean
   showSelfCustodyInvite: boolean
+  isTermsOfServiceUpdateRequired: boolean
   onEnableRewards: () => void
   onSelectCountry: () => void
   onClaimGrant: () => void
   onSelfCustodyInviteDismissed: () => void
+  onTermsOfServiceUpdateAccepted: () => void
 }
 
 export function RewardsCard (props: Props) {
@@ -236,6 +239,24 @@ export function RewardsCard (props: Props) {
         <style.selectCountry>
           <SelectCountryCard onContinue={props.onSelectCountry} />
         </style.selectCountry>
+      </style.root>
+    )
+  }
+
+  function renderTosUpdateNotice () {
+    const onReset = () => {
+      window.open(urls.resetURL, '_blank', 'noreferrer')
+    }
+
+    return (
+      <style.root>
+        <RewardsCardHeader />
+        <style.tosUpdateNotice>
+          <TosUpdateNotice
+            onAccept={props.onTermsOfServiceUpdateAccepted}
+            onResetRewards={onReset}
+          />
+        </style.tosUpdateNotice>
       </style.root>
     )
   }
@@ -401,6 +422,10 @@ export function RewardsCard (props: Props) {
 
   if (!props.declaredCountry) {
     return renderCountrySelect()
+  }
+
+  if (props.isTermsOfServiceUpdateRequired) {
+    return renderTosUpdateNotice()
   }
 
   if (!hideVBATNotice) {

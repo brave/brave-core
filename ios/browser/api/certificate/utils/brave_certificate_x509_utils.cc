@@ -24,7 +24,6 @@
 #include "third_party/boringssl/src/pki/parse_values.h"
 #include "third_party/boringssl/src/pki/parser.h"
 #include "third_party/boringssl/src/pki/signature_algorithm.h"
-#include "third_party/boringssl/src/pki/tag.h"
 
 namespace certificate {
 namespace x509_utils {
@@ -100,7 +99,7 @@ bool ParseAlgorithmIdentifier(const bssl::der::Input& input,
     return false;
   }
 
-  if (!algorithm_identifier_parser.ReadTag(bssl::der::kOid, algorithm_oid)) {
+  if (!algorithm_identifier_parser.ReadTag(CBS_ASN1_OBJECT, algorithm_oid)) {
     return false;
   }
 
@@ -125,7 +124,7 @@ bool ParseAlgorithmSequence(const bssl::der::Input& input,
   bssl::der::Parser parser(input);
 
   // Extract object identifier field
-  if (!parser.ReadTag(bssl::der::kOid, algorithm_oid)) {
+  if (!parser.ReadTag(CBS_ASN1_OBJECT, algorithm_oid)) {
     return false;
   }
 
@@ -168,7 +167,7 @@ bool ParseSubjectPublicKeyInfo(const bssl::der::Input& input,
 
   // Extract algorithm field.
   // ReadSequenceTLV then maybe ParseAlgorithmIdentifier instead.
-  if (!spki_parser.ReadTag(bssl::der::kSequence, algorithm_sequence)) {
+  if (!spki_parser.ReadTag(CBS_ASN1_SEQUENCE, algorithm_sequence)) {
     return false;
   }
 
@@ -177,7 +176,7 @@ bool ParseSubjectPublicKeyInfo(const bssl::der::Input& input,
   }
 
   // Extract the subjectPublicKey field.
-  if (!spki_parser.ReadTag(bssl::der::kBitString, spk)) {
+  if (!spki_parser.ReadTag(CBS_ASN1_BITSTRING, spk)) {
     return false;
   }
   return true;
@@ -206,7 +205,7 @@ bool ParseRSAPublicKeyInfo(const bssl::der::Input& input,
   }
 
   // Extract the modulus field.
-  if (!rsa_parser.ReadTag(bssl::der::kInteger, modulus)) {
+  if (!rsa_parser.ReadTag(CBS_ASN1_INTEGER, modulus)) {
     return false;
   }
 
@@ -215,7 +214,7 @@ bool ParseRSAPublicKeyInfo(const bssl::der::Input& input,
   }
 
   // Extract the publicExponent field.
-  if (!rsa_parser.ReadTag(bssl::der::kInteger, public_exponent)) {
+  if (!rsa_parser.ReadTag(CBS_ASN1_INTEGER, public_exponent)) {
     return false;
   }
   return true;
@@ -228,7 +227,7 @@ bool IsNull(const bssl::der::Input& input) {
 
   bssl::der::Parser parser(input);
   bssl::der::Input null_value;
-  if (!parser.ReadTag(bssl::der::kNull, &null_value)) {
+  if (!parser.ReadTag(CBS_ASN1_NULL, &null_value)) {
     return false;
   }
 

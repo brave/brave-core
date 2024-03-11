@@ -427,53 +427,6 @@ class NSURLExtensionsTests: XCTestCase {
     }
   }
 
-  func testisReaderModeURL() {
-    let goodurls = [
-      "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fbrave%2Ecom"
-    ]
-    let badurls = [
-      "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
-      "http://localhost:1234/about/home/#panel=0",
-      "http://localhost:6571/reader-mode/page?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage",
-    ]
-
-    goodurls.forEach { XCTAssertTrue(URL(string: $0)!.isReaderModeURL, $0) }
-    badurls.forEach { XCTAssertFalse(URL(string: $0)!.isReaderModeURL, $0) }
-  }
-
-  func testdecodeReaderModeURL() {
-    let goodurls = [
-      (
-        "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage",
-        URL(string: "https://en.m.wikipedia.org/wiki/Main_Page")
-      )
-    ]
-    let badurls = [
-      "http://google.com",
-      "http://localhost:6571/sessionrestore.html",
-      "http://localhost:1234/about/home/#panel=0",
-      "http://localhost:6571/reader-mode/page",
-    ]
-
-    goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.decodeReaderModeURL, $0.1) }
-    badurls.forEach { XCTAssertNil(URL(string: $0)!.decodeReaderModeURL, $0) }
-  }
-
-  func testencodeReaderModeURL() {
-    let readerURL = "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)"
-    let goodurls = [
-      (
-        "https://en.m.wikipedia.org/wiki/Main_Page",
-        URL(
-          string:
-            "\(InternalURL.baseUrl)/\(InternalURL.Path.readermode.rawValue)?url=https%3A%2F%2Fen%2Em%2Ewikipedia%2Eorg%2Fwiki%2FMain%5FPage"
-        )
-      )
-    ]
-    goodurls.forEach { XCTAssertEqual(URL(string: $0.0)!.encodeReaderModeURL(readerURL), $0.1) }
-  }
-
   func testhavingRemovedAuthorisationComponents() {
     let goodurls = [
       (
@@ -744,46 +697,52 @@ class NSURLExtensionsTests: XCTestCase {
   }
 
   func testIsBookmarkletURL() {
-    let goodURLs = [
+    let javascriptURLs = [
       "javascript:",
+      "javascript://",
       "javascript:void(window.close(self))",
       "javascript:window.open('https://brave.com')",
     ]
 
-    let badURLs = [
-      "javascript:/",
-      "javascript://",
-      "javascript://something",
+    let nonJavascriptURLs = [
+      "https://brave",
+      "https://brave.com",
+      "https://javascript://",
+      "javascript//",
     ]
 
-    goodURLs.forEach {
-      XCTAssertNotNil($0.bookmarkletURL)
+    javascriptURLs.forEach {
+      XCTAssertNotNil(URL.bookmarkletURL(from: $0))
     }
 
-    badURLs.forEach {
-      XCTAssertNil($0.bookmarkletURL)
+    nonJavascriptURLs.forEach {
+      XCTAssertNil(URL.bookmarkletURL(from: $0))
     }
   }
 
   func testIsBookmarkletURLComponent() {
-    let goodURLs = [
+    let javascriptURLs = [
+      "javascript:/",
+      "javascript://",
+      "javascript://something",
       "javascript:void(window.close(self))",
       "javascript:window.open('https://brave.com')",
+      "javascript://%0a%0dalert('UXSS')",
     ]
 
     let badURLs = [
       "javascript:",
-      "javascript:/",
-      "javascript://",
-      "javascript://something",
+      "https://test",
+      "javascript//test",
+      "javascript/test",
     ]
 
-    goodURLs.forEach {
-      XCTAssertNotNil($0.bookmarkletCodeComponent)
+    javascriptURLs.forEach {
+      XCTAssertNotNil(URL.bookmarkletURL(from: $0)?.bookmarkletCodeComponent)
     }
 
     badURLs.forEach {
-      XCTAssertNil($0.bookmarkletCodeComponent)
+      XCTAssertNil(URL.bookmarkletURL(from: $0)?.bookmarkletCodeComponent)
     }
   }
 

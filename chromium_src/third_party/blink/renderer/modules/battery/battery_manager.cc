@@ -19,10 +19,11 @@ namespace blink {
 const char BatteryManager::kSupplementName[] = "BatteryManager";
 
 // static
-ScriptPromise BatteryManager::getBattery(ScriptState* script_state,
-                                         Navigator& navigator) {
+ScriptPromiseTyped<BatteryManager> BatteryManager::getBattery(
+    ScriptState* script_state,
+    Navigator& navigator) {
   if (!navigator.DomWindow())
-    return ScriptPromise();
+    return ScriptPromiseTyped<BatteryManager>();
 
   auto* supplement = Supplement<Navigator>::From<BatteryManager>(navigator);
   if (!supplement) {
@@ -44,7 +45,8 @@ BatteryManager::BatteryManager(Navigator& navigator)
   UpdateStateIfNeeded();
 }
 
-ScriptPromise BatteryManager::StartRequest(ScriptState* script_state) {
+ScriptPromiseTyped<BatteryManager> BatteryManager::StartRequest(
+    ScriptState* script_state) {
   if (!battery_property_) {
     battery_property_ = MakeGarbageCollected<BatteryProperty>(
         ExecutionContext::From(script_state));

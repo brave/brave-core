@@ -58,10 +58,10 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
 const getNPMConfig = (key, default_value = undefined) => {
   if (!NpmConfig) {
     const list = run(npmCommand, ['config', 'list', '--json', '--userconfig=' + path.join(rootDir, '.npmrc')])
-    NpmConfig = JSON.parse(list.stdout.toString())
+    const unusedNpmConfig = JSON.parse(list.stdout.toString())
 
     // Show deprecation warning if any brave-related variable is found in .npmrc.
-    for (const key in NpmConfig) {
+    for (const key in unusedNpmConfig) {
       if (typeof key !== 'string') {
         continue;
       }
@@ -77,7 +77,7 @@ const getNPMConfig = (key, default_value = undefined) => {
           key.startsWith('uphold') ||
           key.startsWith('zebpay')) {
         Log.warn(
-          `Warning: found ${key.replace(/-/g, '_')} in .npmrc. Continued use of .npmrc for Brave-core configuration is highly discouraged and will soon be unsupported. Migrate all Brave-core configuration to src/brave/.env immediately to avoid potential issues.\n` +
+          `Warning: ${key.replace(/-/g, '_')} and all other Brave-core related variables in .npmrc are ignored. Please migrate to src/brave/.env.\n` +
           'Internal wiki: https://github.com/brave/devops/wiki/%60.env%60-config-for-Brave-Developers\n' +
           'Public wiki: https://github.com/brave/brave-browser/wiki/Build-configuration\n' +
           'If the found variable is not related to Brave-core, please ignore this warning.'
@@ -86,8 +86,8 @@ const getNPMConfig = (key, default_value = undefined) => {
       }
     }
 
-    // Merge in config from `.env` file
-    dotenv.config({ processEnv: NpmConfig, override: true })
+    NpmConfig = {}
+    dotenv.config({ processEnv: NpmConfig })
     for (const [key, value] of Object.entries(NpmConfig)) {
       if (value === 'true' || value === 'false') {
         NpmConfig[key] = value === 'true'
@@ -95,17 +95,9 @@ const getNPMConfig = (key, default_value = undefined) => {
     }
   }
 
-  // NpmConfig has the multiple copy of the same variable: one from .npmrc
-  // (that we want to) and one from the environment.
-  // https://docs.npmjs.com/cli/v7/using-npm/config#environment-variables
   const npmConfigValue = NpmConfig[key.join('_')]
   if (npmConfigValue !== undefined)
     return npmConfigValue
-
-  // Shouldn't be used in general but added for backward compatibilty.
-  const npmConfigDeprecatedValue = NpmConfig[key.join('-').replace(/_/g, '-')]
-  if (npmConfigDeprecatedValue !== undefined)
-    return npmConfigDeprecatedValue
 
   const packageConfigValue = packageConfig(key)
   if (packageConfigValue !== undefined)
@@ -174,7 +166,6 @@ const Config = function () {
   this.googleDefaultClientId = getNPMConfig(['google_default_client_id']) || ''
   this.googleDefaultClientSecret = getNPMConfig(['google_default_client_secret']) || ''
   this.infuraProjectId = getNPMConfig(['brave_infura_project_id']) || ''
-  this.braveZeroExApiKey = getNPMConfig(['brave_zero_ex_api_key']) || ''
   this.sardineClientId = getNPMConfig(['sardine_client_id']) || ''
   this.sardineClientSecret = getNPMConfig(['sardine_client_secret']) || ''
   this.bitFlyerProductionClientId = getNPMConfig(['bitflyer_production_client_id']) || ''
@@ -349,6 +340,7 @@ Config.prototype.buildArgs = function () {
     sardine_client_secret: this.sardineClientSecret,
     is_asan: this.isAsan(),
     enable_rust: true,
+    enable_rust_json: true,
     enable_full_stack_frames_for_profiling: this.isAsan(),
     v8_enable_verify_heap: this.isAsan(),
     disable_fieldtrial_testing_config: true,
@@ -378,7 +370,6 @@ Config.prototype.buildArgs = function () {
     google_default_client_id: this.googleDefaultClientId,
     google_default_client_secret: this.googleDefaultClientSecret,
     brave_infura_project_id: this.infuraProjectId,
-    brave_zero_ex_api_key: this.braveZeroExApiKey,
     bitflyer_production_client_id: this.bitFlyerProductionClientId,
     bitflyer_production_client_secret: this.bitFlyerProductionClientSecret,
     bitflyer_production_fee_address: this.bitFlyerProductionFeeAddress,
@@ -625,8 +616,17 @@ Config.prototype.buildArgs = function () {
 
     args.android_aab_to_apk = this.androidAabToApk
 
-    // This optimization causes crash on Android 8 and Android 8.1 arm64 devices.
-    args.use_relr_relocations = false
+    if (this.targetArch == "arm64") {
+      // Flag use_relr_relocations is incompatible with Android 8 arm64, but
+      // makes huge optimizations on Android 9 and above.
+      // Decision is to specify android:minSdkVersion=28 for arm64 and keep
+      // 26(default) for arm32.
+      // Then:
+      //   - for Android 8 and 8.1 GP will supply arm32 bundle;
+      //   - for Android 9 and above GP will supply arm64 and we can enable all
+      //     optimizations.
+      args.default_min_sdk_version = 28
+    }
 
     // These do not exist on android
     // TODO - recheck
@@ -901,10 +901,6 @@ Config.prototype.update = function (options) {
 
   if (options.brave_infura_project_id) {
     this.infuraProjectId = options.brave_infura_project_id
-  }
-
-  if (options.brave_zero_ex_api_key) {
-    this.braveZeroExApiKey = options.brave_zero_ex_api_key
   }
 
   if (options.bitflyer_production_client_id) {

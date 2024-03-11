@@ -37,11 +37,19 @@ RedeemPaymentTokens::~RedeemPaymentTokens() {
 void RedeemPaymentTokens::MaybeRedeemAfterDelay(const WalletInfo& wallet) {
   CHECK(wallet.IsValid());
 
-  if (is_processing_ || timer_.IsRunning() || retry_timer_.IsRunning()) {
+  if (is_redeeming_ || timer_.IsRunning()) {
     return;
   }
 
   wallet_ = wallet;
+
+  RedeemAfterDelay();
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+void RedeemPaymentTokens::RedeemAfterDelay() {
+  CHECK(!timer_.IsRunning());
 
   const base::Time redeem_at = timer_.Start(
       FROM_HERE, CalculateDelayBeforeRedeemingTokens(),
@@ -51,10 +59,8 @@ void RedeemPaymentTokens::MaybeRedeemAfterDelay(const WalletInfo& wallet) {
   BLOG(1, "Redeem payment tokens " << FriendlyDateAndTime(redeem_at));
 }
 
-///////////////////////////////////////////////////////////////////////////////
-
 void RedeemPaymentTokens::Redeem() {
-  CHECK(!is_processing_);
+  CHECK(!is_redeeming_);
 
   BLOG(1, "Redeem payment tokens");
 
@@ -63,17 +69,15 @@ void RedeemPaymentTokens::Redeem() {
     return ScheduleNextRedemption();
   }
 
-  is_processing_ = true;
+  is_redeeming_ = true;
 
   BuildRedeemPaymentTokensUserData(
       GetAllPaymentTokens(),
-      base::BindOnce(
-          &RedeemPaymentTokens::BuildRedeemPaymentTokensUserDataCallback,
-          weak_factory_.GetWeakPtr()));
+      base::BindOnce(&RedeemPaymentTokens::BuildUserDataCallback,
+                     weak_factory_.GetWeakPtr()));
 }
 
-void RedeemPaymentTokens::BuildRedeemPaymentTokensUserDataCallback(
-    base::Value::Dict user_data) {
+void RedeemPaymentTokens::BuildUserDataCallback(base::Value::Dict user_data) {
   const PaymentTokenList& payment_tokens = GetAllPaymentTokens();
 
   RedeemPaymentTokensUrlRequestBuilder url_request_builder(
@@ -121,7 +125,7 @@ void RedeemPaymentTokens::SuccessfullyRedeemed(
     const PaymentTokenList& payment_tokens) {
   BLOG(1, "Successfully redeemed payment tokens");
 
-  is_processing_ = false;
+  is_redeeming_ = false;
 
   StopRetrying();
 
@@ -150,7 +154,9 @@ void RedeemPaymentTokens::ScheduleNextRedemption() {
 }
 
 void RedeemPaymentTokens::Retry() {
-  const base::Time retry_at = retry_timer_.StartWithPrivacy(
+  CHECK(!timer_.IsRunning());
+
+  const base::Time retry_at = timer_.StartWithPrivacy(
       FROM_HERE, kRetryAfter,
       base::BindOnce(&RedeemPaymentTokens::RetryCallback,
                      weak_factory_.GetWeakPtr()));
@@ -163,7 +169,7 @@ void RedeemPaymentTokens::Retry() {
 void RedeemPaymentTokens::RetryCallback() {
   BLOG(1, "Retry redeeming payment tokens");
 
-  is_processing_ = false;
+  is_redeeming_ = false;
 
   NotifyDidRetryRedeemingPaymentTokens();
 
@@ -171,7 +177,7 @@ void RedeemPaymentTokens::RetryCallback() {
 }
 
 void RedeemPaymentTokens::StopRetrying() {
-  retry_timer_.Stop();
+  timer_.Stop();
 }
 
 void RedeemPaymentTokens::NotifyDidRedeemPaymentTokens(

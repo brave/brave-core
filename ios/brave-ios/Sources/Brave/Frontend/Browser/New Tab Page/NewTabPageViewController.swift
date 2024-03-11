@@ -381,15 +381,8 @@ class NewTabPageViewController: UIViewController {
   override func viewDidAppear(_ animated: Bool) {
     super.viewDidAppear(animated)
 
-    reportSponsoredImageBackgroundEvent(.served)
-
-    DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-      // As a temporary fix until 1.53.x, we trigger the .viewed event after 1 second to
-      // give time for the .served event to be triggered; otherwise, the sponsored image
-      // viewed event will fail because it needs a corresponding served event. In 1.53.x
-      // and above we should trigger the .served event and in the completion block if
-      // successful we should trigger a .viewed event.
-      self.reportSponsoredImageBackgroundEvent(.viewed)
+    reportSponsoredImageBackgroundEvent(.served) { [weak self] _ in
+      self?.reportSponsoredImageBackgroundEvent(.viewed)
     }
 
     presentNotification()
@@ -511,7 +504,10 @@ class NewTabPageViewController: UIViewController {
     backgroundView.updateImageXOffset(by: realisticXOffset)
   }
 
-  private func reportSponsoredImageBackgroundEvent(_ event: BraveAds.NewTabPageAdEventType) {
+  private func reportSponsoredImageBackgroundEvent(
+    _ event: BraveAds.NewTabPageAdEventType,
+    completion: ((_ success: Bool) -> Void)? = nil
+  ) {
     if case .sponsoredImage(let sponsoredBackground) = background.currentBackground {
       let eventType: NewTabPageP3AHelper.EventType? = {
         switch event {
@@ -527,7 +523,9 @@ class NewTabPageViewController: UIViewController {
         background.wallpaperId.uuidString,
         creativeInstanceId: sponsoredBackground.creativeInstanceId,
         eventType: event,
-        completion: { _ in }
+        completion: { success in
+          completion?(success)
+        }
       )
     }
   }
@@ -1199,15 +1197,16 @@ extension NewTabPageViewController {
     }
 
     UmaHistogramRecordValueToBucket(
-      "Brave.NTP.NewTabsCreated",
+      "Brave.NTP.NewTabsCreated.2",
       buckets: [
         0,
-        .r(1...3),
-        .r(4...8),
-        .r(9...20),
-        .r(21...50),
-        .r(51...100),
-        .r(101...),
+        1,
+        2,
+        3,
+        4,
+        .r(5...8),
+        .r(9...15),
+        .r(16...),
       ],
       value: newTabsCreatedAnswer
     )

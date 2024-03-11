@@ -23,11 +23,6 @@ export type TransactionStatusChanged = {
   txInfo: SerializableTransactionInfo
 }
 
-export type SetUserAssetVisiblePayloadType = {
-  token: BraveWallet.BlockchainToken
-  isVisible: boolean
-}
-
 export type SwapParamsPayloadType = {
   fromAsset: BraveWallet.BlockchainToken
   toAsset: BraveWallet.BlockchainToken
@@ -90,8 +85,3 @@ export interface RetryTransactionPayload {
 
 export type SpeedupTransactionPayload = RetryTransactionPayload
 export type CancelTransactionPayload = RetryTransactionPayload
-
-export type UpdateUsetAssetType = {
-  existing: BraveWallet.BlockchainToken
-  updated: BraveWallet.BlockchainToken
-}

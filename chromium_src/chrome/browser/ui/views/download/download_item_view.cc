@@ -21,8 +21,8 @@ namespace {
 // and relays them to BraveDownloadItemView to make decisions on when to hide
 // the download item's URL (i.e. default) and when to show it (i.e. on hover).
 class BraveDownloadItemViewButton : public Button {
- public:
   METADATA_HEADER(BraveDownloadItemViewButton, Button)
+ public:
   using Button::Button;
 
   // Button overrides.

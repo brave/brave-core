@@ -38,9 +38,6 @@ import {
 
 // actions
 import { WalletPageActions } from '../../../../page/actions'
-import {
-  WalletActions //
-} from '../../../../common/actions'
 
 // selectors
 import { WalletSelectors } from '../../../../common/selectors'
@@ -70,7 +67,8 @@ import {
   useGetPriceHistoryQuery,
   useGetDefaultFiatCurrencyQuery,
   useGetCoinMarketQuery,
-  useGetTokenSpotPricesQuery
+  useGetTokenSpotPricesQuery,
+  useUpdateUserAssetVisibleMutation
 } from '../../../../common/slices/api.slice'
 import {
   useAccountsQuery,
@@ -120,6 +118,9 @@ export const MarketAsset = () => {
     limit: 250,
     vsAsset: defaultFiat
   })
+
+  // Mutations
+  const [updateUserAssetVisible] = useUpdateUserAssetVisibleMutation()
 
   // Params
   const selectedCoinMarket = React.useMemo(() => {
@@ -285,19 +286,16 @@ export const MarketAsset = () => {
     []
   )
 
-  const onHideAsset = React.useCallback(() => {
+  const onHideAsset = React.useCallback(async () => {
     if (!selectedAssetFromParams) return
-    dispatch(
-      WalletActions.setUserAssetVisible({
-        token: selectedAssetFromParams,
-        isVisible: false
-      })
-    )
-    dispatch(WalletActions.refreshBalancesAndPriceHistory())
+    await updateUserAssetVisible({
+      token: selectedAssetFromParams,
+      isVisible: false
+    }).unwrap()
     setShowHideTokenModal(false)
     setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams])
+  }, [selectedAssetFromParams, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
     if (foundTokens.length === 1) {

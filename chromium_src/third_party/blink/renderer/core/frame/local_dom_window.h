@@ -8,6 +8,8 @@
 
 #include <optional>
 
+#include "third_party/blink/renderer/core/frame/local_frame.h"
+
 #define SetStorageKey                                                        \
   SetEphemeralStorageOrigin(const SecurityOrigin* ephemeral_storage_origin); \
   const SecurityOrigin* GetEphemeralStorageOrigin() const;                   \

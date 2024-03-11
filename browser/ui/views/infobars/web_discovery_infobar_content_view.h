@@ -17,8 +17,8 @@ class WebDiscoveryInfoBarDelegate;
 
 // Occupy whole infobar area.
 class WebDiscoveryInfoBarContentView : public views::View {
+  METADATA_HEADER(WebDiscoveryInfoBarContentView, views::View)
  public:
-  METADATA_HEADER(WebDiscoveryInfoBarContentView);
 
   explicit WebDiscoveryInfoBarContentView(
       WebDiscoveryInfoBarDelegate* delegate);

@@ -53,7 +53,8 @@ import {
   Flex,
   LoadingIcon,
   Row,
-  VerticalSpace
+  VerticalSpace,
+  LeoSquaredButton
 } from '../../../components/shared/style'
 import { NextButtonRow } from '../onboarding/onboarding.style'
 import {
@@ -77,7 +78,6 @@ import SearchBar from '../../../components/shared/search-bar'
 import SelectAccountItem from '../../../components/shared/select-account-item'
 import SelectAccount from '../../../components/shared/select-account'
 import { BuyAssetOptionItem } from '../../../components/shared/buy-option/buy-asset-option'
-import { NavButton } from '../../../components/extension/buttons/nav-button/index'
 import CreateAccountTab from '../../../components/buy-send-swap/create-account'
 import {
   BuyAmountInput //
@@ -402,14 +402,8 @@ function AssetSelection({ isAndroid }: Props) {
         </SelectAssetWrapper>
 
         <NextButtonRow>
-          <NavButton
-            buttonType='primary'
-            text={
-              selectedAsset
-                ? getLocale('braveWalletBuyContinueButton')
-                : getLocale('braveWalletBuySelectAsset')
-            }
-            onSubmit={() => {
+          <LeoSquaredButton
+            onClick={() => {
               if (!selectedOnRampAssetId) {
                 return
               }
@@ -455,9 +449,12 @@ function AssetSelection({ isAndroid }: Props) {
                 })
               )
             }}
-            disabled={!isNextStepEnabled}
-            minWidth='360px'
-          />
+            isDisabled={!isNextStepEnabled}
+          >
+            {selectedAsset
+              ? getLocale('braveWalletBuyContinueButton')
+              : getLocale('braveWalletBuySelectAsset')}
+          </LeoSquaredButton>
         </NextButtonRow>
       </Column>
     </WalletPageWrapper>

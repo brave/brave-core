@@ -1,0 +1,41 @@
+<style include="cr-shared-style settings-shared md-select iron-flex"></style>
+
+<div class="cr-row">
+    <div class="flex cr-padded-text" aria-hidden="true">
+        $i18n{fontSize}
+    </div>
+    <settings-dropdown-menu id="defaultFontSize" label="$i18n{fontSize}"
+        pref="{{prefs.webkit.webprefs.default_font_size}}"
+        menu-options="[[fontSizeOptions_]]">
+    </settings-dropdown-menu>
+</div>
+<cr-link-row class="hr" id="customize-fonts-subpage-trigger"
+    label="$i18n{customizeFonts}" on-click="onCustomizeFontsClick_"
+    role-description="$i18n{subpageArrowRoleDescription}">
+</cr-link-row>
+<div class="cr-row" hidden="[[!pageVisibility.pageZoom]]">
+    <div id="pageZoom" class="flex cr-padded-text" aria-hidden="true">
+        $i18n{pageZoom}
+    </div>
+    <select id="zoomLevel" class="md-select" aria-labelledby="pageZoom"
+        on-change="onZoomLevelChange_">
+        <template is="dom-repeat" items="[[pageZoomLevels_]]">
+            <option value="[[item]]"
+                selected="[[zoomValuesEqual_(item, defaultZoom_)]]">
+                [[formatZoom_(item)]]%
+            </option>
+        </template>
+    </select>
+</div>
+<settings-toggle-button
+    class="hr"
+    id="mru-cycling"
+    pref="{{prefs.brave.mru_cycling_enabled}}"
+    label="$i18n{mruCyclingSettingLabel}">
+</settings-toggle-button>
+<if expr="is_macosx">
+    <settings-toggle-button class="hr"
+        pref="{{prefs.webkit.webprefs.tabs_to_links}}"
+        label="$i18n{tabsToLinks}">
+    </settings-toggle-button>
+</if>

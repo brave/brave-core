@@ -78,7 +78,8 @@ class BraveWalletService : public KeyedService,
       BitcoinWalletService* bitcoin_wallet_service,
       ZCashWalletService* zcash_wallet_service,
       PrefService* profile_prefs,
-      PrefService* local_state);
+      PrefService* local_state,
+      bool is_private_window_);
 
   ~BraveWalletService() override;
 
@@ -211,11 +212,16 @@ class BraveWalletService : public KeyedService,
   void Base58Encode(const std::vector<std::vector<std::uint8_t>>& addresses,
                     Base58EncodeCallback callback) override;
 
-  void DiscoverAssetsOnAllSupportedChains() override;
+  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit) override;
 
   void GetNftDiscoveryEnabled(GetNftDiscoveryEnabledCallback callback) override;
 
   void SetNftDiscoveryEnabled(bool enabled) override;
+
+  void GetPrivateWindowsEnabled(
+      GetPrivateWindowsEnabledCallback callback) override;
+
+  void SetPrivateWindowsEnabled(bool enabled) override;
 
   void GetBalanceScannerSupportedChains(
       GetBalanceScannerSupportedChainsCallback callback) override;
@@ -236,6 +242,14 @@ class BraveWalletService : public KeyedService,
 
   void GetAnkrSupportedChainIds(
       GetAnkrSupportedChainIdsCallback callback) override;
+
+  void IsPrivateWindow(IsPrivateWindowCallback callback) override;
+
+  void GetTransactionSimulationOptInStatus(
+      GetTransactionSimulationOptInStatusCallback callback) override;
+
+  void SetTransactionSimulationOptInStatus(
+      mojom::BlowfishOptInStatus status) override;
 
   // BraveWalletServiceDelegate::Observer:
   void OnActiveOriginChanged(const mojom::OriginInfoPtr& origin_info) override;
@@ -346,7 +360,6 @@ class BraveWalletService : public KeyedService,
   void CancelAllSignAllTransactionsCallbacks();
   void CancelAllGetEncryptionPublicKeyCallbacks();
   void CancelAllDecryptCallbacks();
-  void DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   base::OnceClosure sign_tx_request_added_cb_for_testing_;
   base::OnceClosure sign_all_txs_request_added_cb_for_testing_;
@@ -354,6 +367,7 @@ class BraveWalletService : public KeyedService,
   int sign_message_id_ = 0;
   int sign_transaction_id_ = 0;
   int sign_all_transactions_id_ = 0;
+  bool is_private_window_;
   base::circular_deque<mojom::SignMessageRequestPtr> sign_message_requests_;
   base::circular_deque<SignMessageRequestCallback> sign_message_callbacks_;
   base::circular_deque<mojom::SignMessageErrorPtr> sign_message_errors_;

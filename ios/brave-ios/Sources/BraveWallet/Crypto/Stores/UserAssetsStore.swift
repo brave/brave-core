@@ -248,7 +248,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
           guard let self = self else { return }
           self.isSearchingToken = true
           self.rpcService.ethTokenInfo(
-            address,
+            contractAddress: address,
             chainId: chainId,
             completion: { token, status, error in
               self.isSearchingToken = false
@@ -264,7 +264,7 @@ public class UserAssetsStore: ObservableObject, WalletObserverStore {
     by chainId: String,
     coin: BraveWallet.CoinType
   ) async -> BraveWallet.NetworkInfo? {
-    let allNetworks = await rpcService.allNetworks(coin)
+    let allNetworks = await rpcService.allNetworks(coin: coin)
     return allNetworks.first { $0.chainId.caseInsensitiveCompare(chainId) == .orderedSame }
   }
 

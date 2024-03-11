@@ -122,6 +122,10 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
     parameters->vbat_expired = *vbat_expired;
   }
 
+  if (const auto tos_version = dict.FindInt("tosVersion")) {
+    parameters->tos_version = *tos_version;
+  }
+
   return parameters;
 }
 

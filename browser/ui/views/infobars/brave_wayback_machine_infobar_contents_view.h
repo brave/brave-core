@@ -31,8 +31,8 @@ class PrefService;
 class BraveWaybackMachineInfoBarContentsView
     : public views::View,
       public WaybackMachineURLFetcher::Client {
+  METADATA_HEADER(BraveWaybackMachineInfoBarContentsView, views::View)
  public:
-  METADATA_HEADER(BraveWaybackMachineInfoBarContentsView);
 
   explicit BraveWaybackMachineInfoBarContentsView(
       content::WebContents* contents);

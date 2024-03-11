@@ -279,20 +279,32 @@ source_set("ui") {
 
   if (enable_commander) {
     sources += [
-      "commander/brave_simple_command_source.cc",
-      "commander/brave_simple_command_source.h",
+      "commander/bookmark_command_source.cc",
+      "commander/bookmark_command_source.h",
+      "commander/command_source.cc",
+      "commander/command_source.h",
       "commander/commander_service.cc",
       "commander/commander_service.h",
       "commander/commander_service_factory.cc",
       "commander/commander_service_factory.h",
       "commander/commander_service_factory.h",
+      "commander/entity_match.cc",
+      "commander/entity_match.h",
+      "commander/open_url_command_source.cc",
+      "commander/open_url_command_source.h",
       "commander/ranker.cc",
       "commander/ranker.h",
+      "commander/simple_command_source.cc",
+      "commander/simple_command_source.h",
+      "commander/tab_command_source.cc",
+      "commander/tab_command_source.h",
+      "commander/window_command_source.cc",
+      "commander/window_command_source.h",
     ]
 
     deps += [
+      "//brave/browser/ui/commander:fuzzy_finder",
       "//brave/components/commander/browser",
-      "//chrome/browser/ui/commander:fuzzy_finder",
     ]
   }
 
@@ -304,6 +316,8 @@ source_set("ui") {
       "views/bookmarks/brave_bookmark_bar_view.h",
       "views/bookmarks/brave_bookmark_context_menu.cc",
       "views/bookmarks/brave_bookmark_context_menu.h",
+      "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.cc",
+      "views/bookmarks/saved_tab_groups/brave_saved_tab_group_button.h",
       "views/brave_first_run_dialog.cc",
       "views/brave_first_run_dialog.h",
       "views/brave_layout_provider.cc",
@@ -606,8 +620,6 @@ source_set("ui") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/common",
-    "//chrome/services/qrcode_generator",
-    "//chrome/services/qrcode_generator/public/cpp",
     "//components/bookmarks/common",
     "//components/content_settings/browser",
     "//components/country_codes",
@@ -622,6 +634,7 @@ source_set("ui") {
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
     "//components/prefs",
+    "//components/qr_code_generator:bitmap_generator",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
     "//components/sessions",
@@ -724,7 +737,14 @@ source_set("ui") {
     deps += [ "//brave/components/brave_wayback_machine" ]
 
     if (toolkit_views) {
-      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
+      sources += [
+        "views/wayback_machine_dialog_view.cc",
+        "views/wayback_machine_dialog_view.h",
+        "views/wayback_machine_fetch_button.cc",
+        "views/wayback_machine_fetch_button.h",
+        "views/wayback_machine_throbber.cc",
+        "views/wayback_machine_throbber.h",
+      ]
     }
   }
 
@@ -979,10 +999,7 @@ source_set("ui") {
   }
 
   if (is_win && is_official_build) {
-    sources += [
-      "//chrome/browser/ui/webui/help/version_updater_win.cc",
-      "//chrome/browser/ui/webui/help/version_updater_win.h",
-    ]
+    sources += [ "//chrome/browser/ui/webui/help/version_updater_win.cc" ]
     deps += [ "//google_update" ]
   }
 

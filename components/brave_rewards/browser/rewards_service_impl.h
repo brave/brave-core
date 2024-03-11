@@ -124,6 +124,10 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetUserType(base::OnceCallback<void(mojom::UserType)> callback) override;
 
+  bool IsTermsOfServiceUpdateRequired() override;
+
+  void AcceptTermsOfServiceUpdate() override;
+
   std::string GetCountryCode() const override;
 
   void GetAvailableCountries(

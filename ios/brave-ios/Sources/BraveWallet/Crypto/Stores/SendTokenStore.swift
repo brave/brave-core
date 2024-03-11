@@ -258,12 +258,12 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         return
       }
       if selectedAccount.accountId.uniqueKey != account.accountId.uniqueKey {
-        _ = await self.keyringService.setSelectedAccount(account.accountId)
+        _ = await self.keyringService.setSelectedAccount(accountId: account.accountId)
       }
 
-      let selectedChain = await rpcService.network(selectedAccount.coin, origin: nil)
+      let selectedChain = await rpcService.network(coin: selectedAccount.coin, origin: nil)
       if self.selectedSendToken != token || selectedChain.chainId != token.chainId {
-        _ = await self.rpcService.setNetwork(token.chainId, coin: token.coin, origin: nil)
+        _ = await self.rpcService.setNetwork(chainId: token.chainId, coin: token.coin, origin: nil)
         self.prefilledToken = token
       }
 
@@ -280,7 +280,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.selectedSendToken = prefilledToken
     } else {
       // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks(prefilledToken.coin)
+      let allNetworksForTokenCoin = await rpcService.allNetworks(coin: prefilledToken.coin)
       guard
         let networkForToken = allNetworksForTokenCoin.first(where: {
           $0.chainId == prefilledToken.chainId
@@ -290,13 +290,13 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         return
       }
       let success = await rpcService.setNetwork(
-        networkForToken.chainId,
+        chainId: networkForToken.chainId,
         coin: networkForToken.coin,
         origin: nil
       )
       if success {
-        let accountId = await walletService.ensureSelectedAccount(
-          forChain: networkForToken.coin,
+        let accountId = await walletService.ensureSelectedAccountForChain(
+          coin: networkForToken.coin,
           chainId: networkForToken.chainId
         )
         if accountId == nil {
@@ -322,14 +322,17 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         assertionFailure("selectedAccount should never be nil.")
         return
       }
-      var network = await rpcService.network(selectedAccount.coin, origin: nil)
+      var network = await rpcService.network(coin: selectedAccount.coin, origin: nil)
       await validatePrefilledToken(on: &network)  // network may change
       // fetch user visible assets
       let userVisibleAssets = assetManager.getAllUserAssetsInNetworkAssetsByVisibility(
         networks: [network],
         visible: true
       ).flatMap { $0.tokens }
-      let allTokens = await self.blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+      let allTokens = await self.blockchainRegistry.allTokens(
+        chainId: network.chainId,
+        coin: network.coin
+      )
       guard !Task.isCancelled else { return }
       if selectedSendToken == nil {
         self.selectedSendToken =
@@ -383,7 +386,11 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       gasEstimation: nil
     )
     let txDataUnion = BraveWallet.TxDataUnion(ethTxData1559: eip1559Data)
-    self.txService.addUnapprovedTransaction(txDataUnion, chainId: chainId, from: accountId) {
+    self.txService.addUnapprovedTransaction(
+      txDataUnion: txDataUnion,
+      chainId: chainId,
+      from: accountId
+    ) {
       success,
       txMetaId,
       errorMessage in
@@ -426,7 +433,9 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
       let domain = sendAddress
-      let (address, isOffchainConsentRequired, status, _) = await rpcService.ensGetEthAddr(domain)
+      let (address, isOffchainConsentRequired, status, _) = await rpcService.ensGetEthAddr(
+        domain: domain
+      )
       guard !Task.isCancelled else { return }
       if isOffchainConsentRequired {
         self.isOffchainResolveRequired = true
@@ -496,7 +505,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     defer { self.isResolvingAddress = false }
     let token = selectedSendToken
     let (address, status, _) = await rpcService.unstoppableDomainsGetWalletAddr(
-      domain,
+      domain: domain,
       token: token
     )
     guard !Task.isCancelled else { return }
@@ -535,7 +544,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
       self.isResolvingAddress = true
       defer { self.isResolvingAddress = false }
       let domain = sendAddress
-      let (address, status, _) = await rpcService.snsGetSolAddr(domain)
+      let (address, status, _) = await rpcService.snsGetSolAddr(domain: domain)
       guard !Task.isCancelled else { return }
       if status != .success || address.isEmpty {
         addressError = .snsError(domain: sendAddress)
@@ -644,7 +653,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     let sendToAddress = resolvedAddress ?? sendAddress
 
     isMakingTx = true
-    rpcService.network(.eth, origin: nil) { [weak self] network in
+    rpcService.network(coin: .eth, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         let baseData = BraveWallet.TxData(
@@ -667,7 +676,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         } else {
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(
-            txDataUnion,
+            txDataUnion: txDataUnion,
             chainId: network.chainId,
             from: fromAccountId
           ) { success, txMetaId, errorMessage in
@@ -676,8 +685,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
         }
       } else if token.isErc721 {
-        self.ethTxManagerProxy.makeErc721Transfer(
-          fromData: fromAccountId.address,
+        self.ethTxManagerProxy.makeErc721TransferFromData(
+          from: fromAccountId.address,
           to: sendToAddress,
           tokenId: token.tokenId,
           contractAddress: token.contractAddress
@@ -698,7 +707,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           )
           let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
           self.txService.addUnapprovedTransaction(
-            txDataUnion,
+            txDataUnion: txDataUnion,
             chainId: network.chainId,
             from: fromAccountId
           ) { success, txMetaId, errorMessage in
@@ -707,7 +716,10 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
         }
       } else {
-        self.ethTxManagerProxy.makeErc20TransferData(sendToAddress, amount: "0x\(weiHexString)") {
+        self.ethTxManagerProxy.makeErc20TransferData(
+          toAddress: sendToAddress,
+          amount: "0x\(weiHexString)"
+        ) {
           success,
           data in
           guard success else {
@@ -734,7 +746,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           } else {
             let txDataUnion = BraveWallet.TxDataUnion(ethTxData: baseData)
             self.txService.addUnapprovedTransaction(
-              txDataUnion,
+              txDataUnion: txDataUnion,
               chainId: network.chainId,
               from: fromAccountId
             ) { success, txMetaId, errorMessage in
@@ -765,11 +777,11 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
 
     let sendToAddress = resolvedAddress ?? sendAddress
 
-    rpcService.network(.sol, origin: nil) { [weak self] network in
+    rpcService.network(coin: .sol, origin: nil) { [weak self] network in
       guard let self = self else { return }
       if network.isNativeAsset(token) {
         self.solTxManagerProxy.makeSystemProgramTransferTxData(
-          fromAccountId.address,
+          from: fromAccountId.address,
           to: sendToAddress,
           lamports: amount
         ) { solTxData, error, errMsg in
@@ -779,7 +791,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
           let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
           self.txService.addUnapprovedTransaction(
-            txDataUnion,
+            txDataUnion: txDataUnion,
             chainId: network.chainId,
             from: fromAccountId
           ) { success, txMetaId, errMsg in
@@ -788,7 +800,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         }
       } else {
         self.solTxManagerProxy.makeTokenProgramTransferTxData(
-          network.chainId,
+          chainId: network.chainId,
           splTokenMintAddress: token.contractAddress,
           fromWalletAddress: fromAccountId.address,
           toWalletAddress: sendToAddress,
@@ -800,7 +812,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
           }
           let txDataUnion = BraveWallet.TxDataUnion(solanaTxData: solanaTxData)
           self.txService.addUnapprovedTransaction(
-            txDataUnion,
+            txDataUnion: txDataUnion,
             chainId: network.chainId,
             from: fromAccountId
           ) { success, txMetaId, errorMessage in
@@ -829,7 +841,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
     }
 
     isMakingTx = true
-    rpcService.network(.fil, origin: nil) { [weak self] network in
+    rpcService.network(coin: .fil, origin: nil) { [weak self] network in
       guard let self = self else { return }
       let filTxData = BraveWallet.FilTxData(
         nonce: "",
@@ -841,7 +853,7 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         value: weiString
       )
       self.txService.addUnapprovedTransaction(
-        BraveWallet.TxDataUnion(filTxData: filTxData),
+        txDataUnion: BraveWallet.TxDataUnion(filTxData: filTxData),
         chainId: network.chainId,
         from: fromAccountId
       ) { success, txMetaId, errorMessage in

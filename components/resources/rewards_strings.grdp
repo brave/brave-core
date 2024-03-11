@@ -434,6 +434,20 @@
     We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.
   </message>
 
+  <!-- Terms of Service update notification -->
+  <message name="IDS_REWARDS_TOS_UPDATE_HEADING" desc="">
+    Updated Terms of Service
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_TEXT" desc="">
+    We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can <ph name="LINK_BEGIN">$1</ph>reset<ph name="LINK_END">$2</ph> Brave Rewards, which will disable the feature.
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_LINK_TEXT" desc="">
+    See <ph name="LINK_BEGIN">$1</ph>Brave Rewards Terms of Service<ph name="LINK_END">$2</ph>
+  </message>
+  <message name="IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL" desc="">
+    I agree
+  </message>
+
   <!-- Tip panel -->
   <message name="IDS_REWARDS_TIP_BALANCE_LABEL" desc="">
     Rewards balance

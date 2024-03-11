@@ -13,10 +13,6 @@
 
 class PrefRegistrySimple;
 
-namespace user_prefs {
-class PrefRegistrySyncable;
-}  // namespace user_prefs
-
 namespace dark_mode {
 
 enum class BraveDarkModeType {

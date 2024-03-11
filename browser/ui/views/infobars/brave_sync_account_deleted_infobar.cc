@@ -25,8 +25,8 @@ BraveSyncAccountDeletedInfoBar::BraveSyncAccountDeletedInfoBar(
 
 BraveSyncAccountDeletedInfoBar::~BraveSyncAccountDeletedInfoBar() {}
 
-void BraveSyncAccountDeletedInfoBar::Layout() {
-  InfoBarView::Layout();
+void BraveSyncAccountDeletedInfoBar::Layout(PassKey) {
+  LayoutSuperclass<InfoBarView>(this);
 
   if (ok_button_) {
     ok_button_->SizeToPreferredSize();

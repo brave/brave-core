@@ -4,7 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { useHistory } from 'react-router'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query'
 
 // types
@@ -37,15 +36,13 @@ import { areSupportedForPinning } from '../../../common/async/lib'
 import { getLocale } from '../../../../common/locale'
 import { makeAccountRoute } from '../../../utils/routes-utils'
 
-// actions
-import { WalletActions } from '../../../common/actions'
-
-// queries
+// queries & mutations
 import {
   useGetAutopinEnabledQuery,
   useGetIPFSUrlFromGatewayLikeUrlQuery,
   useGetNftMetadataQuery,
-  useGetNftPinningStatusQuery
+  useGetNftPinningStatusQuery,
+  useUpdateUserTokenMutation
 } from '../../../common/slices/api.slice'
 
 // components
@@ -139,9 +136,11 @@ export const NftScreen = (props: Props) => {
     nftMetadata?.imageURL || skipToken
   )
 
+  // mutations
+  const [updateUserToken] = useUpdateUserTokenMutation()
+
   // hooks
   const history = useHistory()
-  const dispatch = useDispatch()
   const onClickViewOnBlockExplorer = useExplorer(
     tokenNetwork || new BraveWallet.NetworkInfo()
   )
@@ -257,22 +256,6 @@ export const NftScreen = (props: Props) => {
       sendMessageToNftUiFrame(nftDetailsRef.current.contentWindow, command)
     }
 
-    // check if selectedAsset has an icon
-    if (
-      selectedAsset &&
-      nftMetadata?.imageURL &&
-      stripERC20TokenImageURL(selectedAsset.logo) === ''
-    ) {
-      // update asset logo
-      const updated = { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
-      dispatch(
-        WalletActions.updateUserAsset({
-          existing: selectedAsset,
-          updated
-        })
-      )
-    }
-
     let ignore = false
     if (nftMetadata?.imageURL) {
       areSupportedForPinning([nftMetadata?.imageURL])
@@ -292,6 +275,21 @@ export const NftScreen = (props: Props) => {
     selectedAsset,
     tokenNetwork
   ])
+
+  React.useEffect(() => {
+    // update the asset logo if it doesn't currently have one + one was found
+    // in the metadata
+    if (
+      selectedAsset &&
+      nftMetadata?.imageURL &&
+      stripERC20TokenImageURL(selectedAsset.logo) === ''
+    ) {
+      updateUserToken({
+        existingToken: selectedAsset,
+        updatedToken: { ...selectedAsset, logo: nftMetadata?.imageURL || '' }
+      })
+    }
+  }, [selectedAsset, nftMetadata?.imageURL, updateUserToken])
 
   // Receive postMessage from chrome-untrusted://nft-display
   React.useEffect(() => {

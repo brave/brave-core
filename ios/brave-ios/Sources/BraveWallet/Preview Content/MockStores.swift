@@ -216,7 +216,7 @@ extension TransactionConfirmationStore {
       ethTxManagerProxy: MockEthTxManagerProxy(),
       keyringService: {
         let service = MockKeyringService()
-        service.createWallet("password") { _ in }
+        service.createWallet(password: "password") { _ in }
         return service
       }(),
       solTxManagerProxy: BraveWallet.TestSolanaTxManagerProxy.previewProxy,

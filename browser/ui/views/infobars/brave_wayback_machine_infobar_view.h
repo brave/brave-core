@@ -33,7 +33,7 @@ class BraveWaybackMachineInfoBarView : public InfoBarView {
 
  private:
   // InfoBarView overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
 
   const raw_ref<views::View> sub_views_;
 };

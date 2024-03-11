@@ -5,10 +5,12 @@
 
 // @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
 
-import '../brave_appearance_page/content.js'
 import '../brave_appearance_page/sidebar.js'
 import '../brave_appearance_page/tabs.js'
 import '../brave_appearance_page/toolbar.js'
+import '../brave_content_page/content.js'
+import '../brave_content_page/playlist.js'
+import '../brave_content_page/speedreader.js'
 import '../brave_default_extensions_page/brave_default_extensions_page.js'
 import '../brave_help_tips_page/brave_help_tips_page.js'
 import '../brave_ipfs_page/brave_ipfs_page.js'
@@ -23,7 +25,6 @@ import '../default_brave_shields_page/default_brave_shields_page.js'
 import '../getting_started_page/getting_started.js'
 import '../social_blocking_page/social_blocking_page.js'
 import '../brave_leo_assistant_page/brave_leo_assistant_page.js'
-import '../brave_playlist_page/brave_playlist_page.js'
 
 import {html, RegisterPolymerTemplateModifications, RegisterStyleOverride} from 'chrome://resources/brave/polymer_overriding.js'
 
@@ -164,20 +165,6 @@ RegisterPolymerTemplateModifications({
           prefs: '{{prefs}}'
         }
       ))
-      const sectionContent = document.createElement('template')
-      sectionContent.setAttribute('is', 'dom-if')
-      sectionContent.setAttribute('restamp', true)
-      sectionContent.setAttribute('if', '[[showPage_(pageVisibility.appearance)]]')
-      sectionContent.content.appendChild(createNestedSectionElement(
-        'content',
-        'appearance',
-        'appearanceSettingsContentSection',
-        'settings-brave-appearance-content',
-        {
-          prefs: '{{prefs}}',
-          'page-visibility': '[[pageVisibility]]'
-        }
-      ))
       const sectionExtensions = document.createElement('template')
       sectionExtensions.setAttribute('is', 'dom-if')
       sectionExtensions.setAttribute('restamp', true)
@@ -308,16 +295,48 @@ RegisterPolymerTemplateModifications({
         }
       ))
 
+      const sectionContent = document.createElement('template')
+      sectionContent.setAttribute('is', 'dom-if')
+      sectionContent.setAttribute('restamp', true)
+      sectionContent.setAttribute('if', '[[showPage_(pageVisibility.content)]]')
+      sectionContent.content.appendChild(createNestedSectionElement(
+        'content',
+        'content',
+        'contentSettingsContentSection',
+        'settings-brave-content-content',
+        {
+          prefs: '{{prefs}}',
+          'page-visibility': '[[pageVisibility]]'
+        }
+      ))
+
       const sectionPlaylist = document.createElement('template')
       sectionPlaylist.setAttribute('is', 'dom-if')
       sectionPlaylist.setAttribute('restamp', true)
       sectionPlaylist.setAttribute('if', '[[showPage_(pageVisibility.playlist)]]')
-      sectionPlaylist.content.appendChild(
-        createSectionElement('playlist', 'playlist', 'settings-brave-playlist-page', {
+      sectionPlaylist.content.appendChild(createNestedSectionElement(
+        'playlist',
+        'content',
+        'playlist',
+        'settings-brave-content-playlist',
+        {
           prefs: '{{prefs}}'
-        })
-      )
+        }
+      ))
 
+      const sectionSpeedreader = document.createElement('template')
+      sectionSpeedreader.setAttribute('is', 'dom-if')
+      sectionSpeedreader.setAttribute('restamp', true)
+      sectionSpeedreader.setAttribute('if', '[[showPage_(pageVisibility.speedreader)]]')
+      sectionSpeedreader.content.appendChild(createNestedSectionElement(
+        'speedreader',
+        'content',
+        'speedreaderSettingLabel',
+        'settings-brave-content-speedreader',
+        {
+          prefs: '{{prefs}}'
+        }
+      ))
 
       const sectionNewTab = document.createElement('template')
       sectionNewTab.setAttribute('is', 'dom-if')
@@ -334,7 +353,7 @@ RegisterPolymerTemplateModifications({
       ))
 
       // Remove all hidden performance options from basic page.
-      // We moved performance elements in system settings.
+      // We moved performance elements into system settings.
       const performanceTemplate = actualTemplate.content.querySelector(
         'template[if="[[showPerformancePage_(pageVisibility.performance)]]"]')
       if (performanceTemplate) {
@@ -362,11 +381,14 @@ RegisterPolymerTemplateModifications({
       const sectionAppearance = getSectionElement(actualTemplate.content,
         'appearance')
       last = last.insertAdjacentElement('afterend', sectionAppearance)
-      // Insert nested tabs under appearance
+      // Insert nested Toolbar, Tabs, Sidebar under 'Appearance' menu
       last = last.insertAdjacentElement('afterend', sectionToolbar)
       last = last.insertAdjacentElement('afterend', sectionTabs)
       last = last.insertAdjacentElement('afterend', sectionSidebar)
+      // Insert nested Content, Playlist, Speedreader under 'Content' menu
       last = last.insertAdjacentElement('afterend', sectionContent)
+      last = last.insertAdjacentElement('afterend', sectionPlaylist)
+      last = last.insertAdjacentElement('afterend', sectionSpeedreader)
       // Insert shields
       last = last.insertAdjacentElement('afterend', sectionShields)
       // Insert nested Social Blocking under shields
@@ -393,8 +415,6 @@ RegisterPolymerTemplateModifications({
       last = last.insertAdjacentElement('afterend', sectionTor)
       // Insert Leo Assistant
       last = last.insertAdjacentElement('afterend', sectionLeoAssist)
-      // Insert Playlist
-      last = last.insertAdjacentElement('afterend', sectionPlaylist)
 
       // Advanced
       const advancedTemplate = templateContent.querySelector('template[if="[[showAdvancedSettings_(pageVisibility.advancedSettings)]]"]')

@@ -6,9 +6,12 @@
 #include <memory>
 #include "brave/browser/ipfs/ipfs_tab_helper.h"
 
+#include "base/files/file_util.h"
+#include "base/path_service.h"
 #include "base/ranges/algorithm.h"
 #include "brave/browser/ipfs/ipfs_host_resolver.h"
 #include "brave/browser/ui/views/infobars/brave_confirm_infobar.h"
+#include "brave/components/constants/brave_paths.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/infobars/core/brave_confirm_infobar_delegate.h"
 #include "brave/components/ipfs/ipfs_utils.h"
@@ -43,6 +46,8 @@ using content::WebContents;
 namespace {
 constexpr char kCid1[] =
     "bafybeigdyrzt5sfp7udm7hu76uh7y26nf3efuylqabf3oclgtqy55fbzdi";
+constexpr char kClientSideRedirectResponsePath[] = "/client_side_redirect.html";
+constexpr char kClientSideRedirectHostName[] = "en.wikipedia-on-ipfs.org";
 }  // namespace
 
 namespace ipfs {
@@ -64,6 +69,10 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
       : https_server_(net::EmbeddedTestServer::TYPE_HTTPS) {}
   void SetUpOnMainThread() override {
     InProcessBrowserTest::SetUpOnMainThread();
+
+    base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir_);
+    test_data_dir_ = test_data_dir_.AppendASCII("brave/test/data");
+
     host_resolver()->AddRule("*", "127.0.0.1");
 
     embedded_test_server()->ServeFilesFromSourceDirectory("content/test/data");
@@ -93,8 +102,13 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
         new net::test_server::BasicHttpResponse);
 
     http_response->set_code(code_);
-    if (code_ == net::HTTP_OK && !x_ipfs_path_.empty())
+    if (base::StartsWith(request.relative_url,
+                         kClientSideRedirectResponsePath)) {
+      http_response->set_content(GetFileContent("client_side_redirect.html"));
+    }
+    if (code_ == net::HTTP_OK && !x_ipfs_path_.empty()) {
       http_response->AddCustomHeader("x-ipfs-path", x_ipfs_path_);
+    }
     return std::move(http_response);
   }
 
@@ -112,9 +126,21 @@ class IpfsTabHelperBrowserTest : public InProcessBrowserTest {
     return helper;
   }
 
+  const base::FilePath& test_data_dir() const { return test_data_dir_; }
+  std::string GetFileContent(const std::string& filename) const {
+    std::string result;
+
+    const auto full_path = test_data_dir_.AppendASCII(filename);
+    [&]() { ASSERT_TRUE(base::ReadFileToString(full_path, &result)); }();
+    return result;
+  }
+
   net::HttpStatusCode code_ = net::HTTP_OK;
   std::string x_ipfs_path_;
   net::EmbeddedTestServer https_server_;
+
+ private:
+  base::FilePath test_data_dir_;
 };
 
 class FakeIPFSHostResolver : public ipfs::IPFSHostResolver {
@@ -681,6 +707,47 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
 }
 
 #if !BUILDFLAG(IS_ANDROID)
+IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest,
+                       IPFSPromoInfobarShowIfRedirect) {
+  ASSERT_TRUE(
+      ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));
+  ipfs::IPFSTabHelper* helper =
+      ipfs::IPFSTabHelper::FromWebContents(active_contents());
+  ASSERT_TRUE(helper);
+  auto* prefs =
+      user_prefs::UserPrefs::Get(active_contents()->GetBrowserContext());
+
+  prefs->SetBoolean(kIPFSAutoRedirectToConfiguredGateway, false);
+  prefs->SetInteger(kIPFSResolveMethod,
+                    static_cast<int>(ipfs::IPFSResolveMethodTypes::IPFS_ASK));
+  GURL gateway_url = embedded_test_server()->GetURL("a.com", "/");
+  prefs->SetString(kIPFSPublicGatewayAddress, gateway_url.spec());
+
+  const GURL test_url = embedded_test_server()->GetURL(
+      kClientSideRedirectHostName, kClientSideRedirectResponsePath);
+  SetXIpfsPathHeader(
+      base::StringPrintf("/ipns/%s/", kClientSideRedirectHostName));
+
+  auto find_infobar =
+      [](infobars::ContentInfoBarManager* content_infobar_manager)
+      -> infobars::InfoBar* {
+    const auto it = base::ranges::find(
+        content_infobar_manager->infobars(),
+        BraveConfirmInfoBarDelegate::BRAVE_IPFS_INFOBAR_DELEGATE,
+        &infobars::InfoBar::GetIdentifier);
+    return it != content_infobar_manager->infobars().cend() ? *it : nullptr;
+  };
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), test_url, WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  ASSERT_TRUE(WaitForLoadStop(active_contents()));
+
+  auto* infobar = find_infobar(
+      infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+  ASSERT_TRUE(infobar);
+}
+
 IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSPromoInfobar) {
   ASSERT_TRUE(
       ipfs::IPFSTabHelper::MaybeCreateForWebContents(active_contents()));

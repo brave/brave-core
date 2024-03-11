@@ -25,7 +25,8 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
   TestFiltersProvider(const std::string& rules,
                       const std::string& resources,
                       bool engine_is_default,
-                      uint8_t permission_mask = 0);
+                      uint8_t permission_mask = 0,
+                      bool is_initialized = true);
   ~TestFiltersProvider() override;
 
   void LoadFilterSet(
@@ -35,12 +36,16 @@ class TestFiltersProvider : public AdBlockFiltersProvider,
   void LoadResources(
       base::OnceCallback<void(const std::string& resources_json)> cb) override;
 
+  void Initialize();
+  bool IsInitialized() const override;
+
   std::string GetNameForDebugging() override;
 
  private:
   std::string rules_;
   std::string resources_;
   uint8_t permission_mask_;
+  bool is_initialized_;
 };
 
 }  // namespace brave_shields

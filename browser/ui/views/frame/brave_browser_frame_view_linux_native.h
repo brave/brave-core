@@ -12,8 +12,8 @@
 #include "chrome/browser/ui/views/frame/browser_frame_view_linux_native.h"
 
 class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
+  METADATA_HEADER(BraveBrowserFrameViewLinuxNative, BrowserFrameViewLinuxNative)
  public:
-  METADATA_HEADER(BraveBrowserFrameViewLinuxNative);
 
   BraveBrowserFrameViewLinuxNative(
       BrowserFrame* frame,
@@ -29,7 +29,7 @@ class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
 
   // BrowserFrameViewLinuxNative:
   void MaybeUpdateCachedFrameButtonImages() override;
-  void Layout() override;
+  void Layout(PassKey) override;
 
  private:
   views::Button* FrameButtonToButton(views::FrameButton frame_button);

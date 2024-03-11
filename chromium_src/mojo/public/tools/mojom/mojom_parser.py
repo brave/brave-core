@@ -42,9 +42,9 @@ def _GetBraveDefinitionAction(brave_definition):
 
     if brave_definition.attribute_list:
         for attribute in brave_definition.attribute_list:
-            if attribute.key == 'BraveAdd':
+            if attribute.key.name == 'BraveAdd':
                 return _DEFINITION_ADD
-            if attribute.key == 'BraveExtend':
+            if attribute.key.name == 'BraveExtend':
                 return _DEFINITION_EXTEND
 
     raise ValueError(

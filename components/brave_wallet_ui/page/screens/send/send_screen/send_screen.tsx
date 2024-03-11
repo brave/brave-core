@@ -30,9 +30,6 @@ import {
   AmountValidationErrorType
 } from '../../../../constants/types'
 
-// Options
-import { AllNetworksOption } from '../../../../options/network-filter-options'
-
 // Utils
 import { getLocale } from '../../../../../common/locale'
 import Amount from '../../../../utils/amount'
@@ -174,8 +171,6 @@ export const SendScreen = React.memo((props: Props) => {
   const [isOffChainEnsWarningDismissed, dismissOffchainEnsWarning] =
     React.useState<boolean>(false)
   const [domainPosition, setDomainPosition] = React.useState<number>(0)
-  const [selectedNetworkFilter, setSelectedNetworkFilter] =
-    React.useState<BraveWallet.NetworkInfo>(AllNetworksOption)
   const [isWarningAcknowledged, setIsWarningAcknowledged] =
     React.useState<boolean>(false)
 
@@ -712,6 +707,18 @@ export const SendScreen = React.memo((props: Props) => {
     setDomainPosition(position ? position + 28 : 0)
   }, [toAddressOrUrl])
 
+  React.useEffect(() => {
+    if (
+      tokenFromParams &&
+      (tokenFromParams.isNft ||
+        tokenFromParams.isErc721 ||
+        tokenFromParams.isErc1155) &&
+      sendAssetBalance === '1'
+    ) {
+      setSendAmount('1')
+    }
+  }, [tokenFromParams, sendAssetBalance])
+
   // render
   return (
     <>
@@ -874,8 +881,6 @@ export const SendScreen = React.memo((props: Props) => {
           ref={selectTokenModalRef}
           onSelectAsset={selectSendAsset}
           onSelectSendOption={onSelectSendOption}
-          selectedNetwork={selectedNetworkFilter}
-          setSelectedNetwork={setSelectedNetworkFilter}
           modalType='send'
         />
       ) : null}

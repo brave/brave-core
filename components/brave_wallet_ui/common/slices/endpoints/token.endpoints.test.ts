@@ -5,13 +5,16 @@
 
 import { act, renderHook } from '@testing-library/react-hooks'
 
+// types
+import { BraveWallet } from '../../../constants/types'
+
 // utils
-import { mockWalletState } from '../../../stories/mock-data/mock-wallet-state'
 import {
   createMockStore,
   renderHookOptionsWithMockStore
 } from '../../../utils/test-utils'
 import { selectAllVisibleUserAssetsFromQueryResult } from '../entities/blockchain-token.entity'
+import { getAssetIdKey } from '../../../utils/asset-utils'
 
 // hooks
 import {
@@ -20,11 +23,17 @@ import {
   useRemoveUserTokenMutation
 } from '../api.slice'
 
+// mocks
+import {
+  mockMoonCatNFT,
+  mockNewAssetOptions
+} from '../../../stories/mock-data/mock-asset-options'
+
 const fetchTokensAndSetupStore = async () => {
   const store = createMockStore(
     {},
     {
-      userAssets: mockWalletState.userVisibleTokensInfo
+      userAssets: mockNewAssetOptions
     }
   )
 
@@ -45,20 +54,16 @@ const fetchTokensAndSetupStore = async () => {
 
   expect(isLoading).toBe(false)
   expect(error).not.toBeDefined()
-  expect(visibleTokens).toHaveLength(
-    mockWalletState.userVisibleTokensInfo.length
-  )
+  expect(visibleTokens.length).toBeTruthy()
 
-  return { result, rerender, store }
+  return { result, rerender, store, waitForValueToChange }
 }
 
 describe('token endpoints', () => {
   it('it should fetch tokens', async () => {
     const { result } = await fetchTokensAndSetupStore()
     const visibleTokens = result.current.visibleTokens
-    expect(visibleTokens).toHaveLength(
-      mockWalletState.userVisibleTokensInfo.length
-    )
+    expect(visibleTokens).toHaveLength(mockNewAssetOptions.length)
   })
 
   it('it should delete tokens', async () => {
@@ -72,8 +77,11 @@ describe('token endpoints', () => {
 
     const [removeToken] = mutationHook.current
 
+    const tokenToRemove = visibleTokens.find((t) => t.contractAddress !== '')!
+    expect(tokenToRemove).toBeTruthy()
+
     await act(async () => {
-      await removeToken(visibleTokens[0]).unwrap()
+      await removeToken(getAssetIdKey(tokenToRemove)).unwrap()
     })
     act(rerender)
 
@@ -82,7 +90,7 @@ describe('token endpoints', () => {
     expect(newTokens).toHaveLength(visibleTokens.length - 1)
   })
 
-  it('it should add tokens', async () => {
+  it('it should add tokens to the registry', async () => {
     const { result, store, rerender } = await fetchTokensAndSetupStore()
     const visibleTokens = result.current.visibleTokens
 
@@ -93,13 +101,28 @@ describe('token endpoints', () => {
 
     const [addToken] = mutationHook.current
 
-    await act(async () => {
-      await addToken(visibleTokens[0]).unwrap()
-    })
-    act(rerender)
+    const tokenToAdd: BraveWallet.BlockchainToken = {
+      ...mockMoonCatNFT,
+      isNft: false,
+      tokenId: '2'
+    }
+    const tokenToAddId = getAssetIdKey(tokenToAdd)
 
+    // add token
+    let res
+    await act(async () => {
+      res = await addToken(tokenToAdd).unwrap()
+    })
+    expect(res).toEqual({ id: tokenToAddId })
+
+    // get updated list
+    act(rerender)
     const { visibleTokens: newTokens } = result.current
 
+    // check new list
+    expect(
+      newTokens.find((t) => getAssetIdKey(t) === tokenToAddId)
+    ).toBeTruthy()
     expect(newTokens).toHaveLength(visibleTokens.length + 1)
   })
 })

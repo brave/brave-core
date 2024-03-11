@@ -76,5 +76,5 @@ int BraveTabSearchButton::GetCornerRadius() const {
       views::Emphasis::kMaximum, GetContentsBounds().size());
 }
 
-BEGIN_METADATA(BraveTabSearchButton, TabSearchButton)
+BEGIN_METADATA(BraveTabSearchButton)
 END_METADATA

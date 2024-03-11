@@ -195,6 +195,7 @@ fn error_code_duplicates(hashes: &[Hash]) {
 
 /// An error that contains a span in order to produce nice error messages.
 #[derive(Debug)]
+#[allow(dead_code)]
 struct ParseError(Span);
 
 pub fn multihash(s: Structure) -> TokenStream {

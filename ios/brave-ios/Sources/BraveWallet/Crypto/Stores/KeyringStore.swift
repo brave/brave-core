@@ -331,7 +331,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         // account is already selected
         return
       }
-      let success = await keyringService.setSelectedAccount(account.accountId)
+      let success = await keyringService.setSelectedAccount(accountId: account.accountId)
       if success {
         self.selectedAccount = account
       }
@@ -346,7 +346,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func reportP3AOnboarding(action: BraveWallet.OnboardingAction) {
-    walletP3A.report(action)
+    walletP3A.reportOnboardingAction(action)
   }
 
   func notifyWalletBackupComplete() {
@@ -364,7 +364,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       completion(false)
       return
     }
-    keyringService.unlock(password) { [weak self] unlocked in
+    keyringService.unlock(password: password) { [weak self] unlocked in
       completion(unlocked)
       if unlocked {
         // Reset this state for next unlock
@@ -422,7 +422,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
         self.isOnboardingVisible = false
         return
       }
-      keyringService.createWallet(password) { mnemonic in
+      keyringService.createWallet(password: password) { mnemonic in
         self.isCreatingWallet = false
         self.updateInfo()
         if !mnemonic.isEmpty {
@@ -434,7 +434,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   }
 
   func recoveryPhrase(password: String, completion: @escaping ([RecoveryWord]) -> Void) {
-    keyringService.mnemonic(forDefaultKeyring: password) { phrase in
+    keyringService.mnemonicForDefaultKeyring(password: password) { phrase in
       let words =
         phrase
         .split(separator: " ")
@@ -471,7 +471,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     isOnboarding = true
     isRestoringWallet = true
     keyringService.restoreWallet(
-      phrase,
+      mnemonic: phrase,
       password: password,
       isLegacyBraveWallet: isLegacyBraveWallet
     ) { [weak self] isMnemonicValid in
@@ -507,7 +507,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     completion: ((Bool) -> Void)? = nil
   ) {
     keyringService.addAccount(
-      coin,
+      coin: coin,
       keyringId: BraveWallet.KeyringId.keyringId(for: coin, on: chainId),
       accountName: name
     ) { accountInfo in
@@ -525,12 +525,17 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
   ) {
     if coin == .fil {
-      keyringService.importFilecoinAccount(name, privateKey: privateKey, network: chainId) {
+      keyringService.importFilecoinAccount(
+        accountName: name,
+        privateKey: privateKey,
+        network: chainId
+      ) {
         accountInfo in
         completion?(accountInfo)
       }
     } else {
-      keyringService.importAccount(name, privateKey: privateKey, coin: coin) { accountInfo in
+      keyringService.importAccount(accountName: name, privateKey: privateKey, coin: coin) {
+        accountInfo in
         self.updateInfo()
         completion?(accountInfo)
       }
@@ -543,7 +548,8 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     password: String,
     completion: ((BraveWallet.AccountInfo?) -> Void)? = nil
   ) {
-    keyringService.importAccount(fromJson: name, password: password, json: json) { accountInfo in
+    keyringService.importAccountFromJson(accountName: name, password: password, json: json) {
+      accountInfo in
       completion?(accountInfo)
     }
   }
@@ -554,7 +560,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     completion: ((Bool) -> Void)? = nil
   ) {
     keyringService.removeAccount(
-      account.accountId,
+      accountId: account.accountId,
       password: password
     ) { success in
       completion?(success)
@@ -573,7 +579,7 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
       self.updateInfo()
       completion?(success)
     }
-    keyringService.setAccountName(account.accountId, name: name, completion: handler)
+    keyringService.setAccountName(accountId: account.accountId, name: name, completion: handler)
   }
 
   func privateKey(
@@ -581,8 +587,8 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
     password: String,
     completion: @escaping (String?) -> Void
   ) {
-    keyringService.encodePrivateKey(
-      forExport: account.accountId,
+    keyringService.encodePrivateKeyForExport(
+      accountId: account.accountId,
       password: password,
       completion: { key in
         completion(key.isEmpty ? nil : key)

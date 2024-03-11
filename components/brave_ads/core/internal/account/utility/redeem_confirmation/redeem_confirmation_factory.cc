@@ -22,8 +22,7 @@ void RedeemConfirmationFactory::BuildAndRedeemConfirmation(
                                                         confirmation);
   }
 
-  return RedeemRewardConfirmation::CreateAndRedeem(std::move(delegate),
-                                                   confirmation);
+  RedeemRewardConfirmation::CreateAndRedeem(std::move(delegate), confirmation);
 }
 
 }  // namespace brave_ads

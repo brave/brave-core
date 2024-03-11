@@ -128,5 +128,5 @@ speedreader::DistillState SpeedreaderIconView::GetDistillState() const {
   return {};
 }
 
-BEGIN_METADATA(SpeedreaderIconView, PageActionIconView)
+BEGIN_METADATA(SpeedreaderIconView)
 END_METADATA

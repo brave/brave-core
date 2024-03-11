@@ -11,13 +11,11 @@ namespace content {
 class WebContents;
 }  // namespace content
 
-class BraveWaybackMachineInfoBarDelegate;
-
 class BraveWaybackMachineDelegate {
  public:
   virtual ~BraveWaybackMachineDelegate() = default;
 
-  virtual void CreateInfoBar(content::WebContents* web_contents) = 0;
+  virtual void ShowWaybackMachineDialog(content::WebContents* web_contents) = 0;
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_DELEGATE_H_

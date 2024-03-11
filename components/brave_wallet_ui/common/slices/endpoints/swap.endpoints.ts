@@ -15,33 +15,10 @@ export const swapEndpoints = ({
   query
 }: WalletApiEndpointBuilderParams) => {
   return {
-    generateBraveSwapFee: mutation<
-      {
-        response: BraveWallet.BraveSwapFeeResponse | null
-        errorString: string
-      },
-      BraveWallet.BraveSwapFeeParams
-    >({
-      queryFn: async (params, { endpoint }, extraOptions, baseQuery) => {
-        const { swapService } = baseQuery(undefined).data
-        try {
-          const result = await swapService.getBraveFee(params)
-          return {
-            data: result
-          }
-        } catch (error) {
-          return handleEndpointError(
-            endpoint,
-            'Unable to fetch Brave Swap fee',
-            error
-          )
-        }
-      }
-    }),
-
     generateSwapQuote: mutation<
       {
         response: BraveWallet.SwapQuoteUnion | null
+        fees: BraveWallet.SwapFees | null
         error: BraveWallet.SwapErrorUnion | null
         errorString: string
       },

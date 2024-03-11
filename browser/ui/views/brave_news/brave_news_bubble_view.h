@@ -18,11 +18,11 @@
 class BraveNewsFeedsContainerView;
 
 class BraveNewsBubbleView : public views::BubbleDialogDelegateView {
+  METADATA_HEADER(BraveNewsBubbleView, views::BubbleDialogDelegateView)
  public:
   static base::WeakPtr<views::Widget> Show(views::View* anchor,
                                            content::WebContents* contents);
 
-  METADATA_HEADER(BraveNewsBubbleView);
   explicit BraveNewsBubbleView(views::View* action_view,
                                content::WebContents* contents);
   BraveNewsBubbleView(const BraveNewsBubbleView&) = delete;

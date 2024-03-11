@@ -581,7 +581,9 @@ async function fetchAccountCurrentNativeBalance({
     // LOCALHOST will error until a local instance is detected
     // return a '0' balance until it's detected.
     if (error !== 0) {
-      console.log(`getBalance error: ${errorMessage}`)
+      console.log(
+        `getBalance (LOCALHOST - ${accountId.coin}) error: ${errorMessage}`
+      )
       return Amount.zero().format()
     }
 
@@ -612,7 +614,11 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (error && errorMessage) {
-        throw new Error(`getBalance error: ${errorMessage}`)
+        throw new Error(
+          `getBalance (${
+            accountId.coin === BraveWallet.CoinType.FIL ? 'FIL' : 'ETH'
+          } - ${token.chainId}) error: ${errorMessage}`
+        )
       }
 
       return Amount.normalize(balance)
@@ -624,7 +630,9 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+        throw new Error(
+          `getBalance (BTC) error: ${errorMessage || 'Unknown error'}`
+        )
       }
 
       return Amount.normalize(balance.totalBalance.toString())
@@ -637,7 +645,9 @@ async function fetchAccountCurrentNativeBalance({
       )
 
       if (errorMessage || balance === null) {
-        throw new Error(`getBalance error: ${errorMessage || 'Unknown error'}`)
+        throw new Error(
+          `getBalance (ZEC) error: ${errorMessage || 'Unknown error'}`
+        )
       }
 
       return Amount.normalize(balance.totalBalance.toString())
@@ -688,7 +698,17 @@ async function fetchAccountTokenCurrentBalance({
           )
 
       if (error && errorMessage) {
-        throw new Error(errorMessage || 'Unknown error')
+        throw new Error(
+          errorMessage +
+            `-- ERC${token.isErc721 ? '721' : '20'} -- ${token.chainId} -- ${
+              token.contractAddress
+            }` ||
+            `Unknown ERC${
+              token.isErc721 ? '721' : '20'
+            } Balance error for chain: ${token.chainId} and contract: ${
+              token.contractAddress
+            }`
+        )
       }
 
       return Amount.normalize(balance)
@@ -703,7 +723,12 @@ async function fetchAccountTokenCurrentBalance({
         )
 
       if (error && errorMessage) {
-        throw new Error(errorMessage || 'Unknown error')
+        throw new Error(
+          errorMessage + `-- SPL (${token.chainId})` ||
+            `Unknown SPL balance error on chain: ${
+              token.chainId //
+            } and contract: ${token.contractAddress}`
+        )
       }
 
       return token.isNft ? uiAmountString : amount

@@ -265,7 +265,7 @@
     Share the hostname of the page you are on (<ph name="HOST_NAME">$1<ex>www.example.com</ex></ph>) to help us make Leo better.
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_LEO_TOOLS" desc="The text label of Leo tools submenu in the context menu">
-    Leo tools
+    Leo AI tools
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_QUICK_ACTIONS" desc="The title of the context menu section for AI quick actions">
     Quick actions
@@ -280,10 +280,10 @@
     Summarize
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_SHORT" desc="The text label of context menu item to create a short social media post using selected text">
-    Short
+    Short post
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_COMMENT_LONG" desc="The text label of context menu item to create a long social media post using selected text">
-    Long
+    Long post
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_BLOG_POST" desc="The text label of context menu item to create a blog post using selected text">
     Blog post
@@ -300,14 +300,14 @@
   <message name="IDS_AI_CHAT_CONTEXT_IMPROVE" desc="The text label of context menu item to improve selected text">
     Improve
   </message>
-  <message name="IDS_AI_CHAT_CONTEXT_SIMPLIFY" desc="The text label of context menu item to simplify selected text">
-    Simplify
-  </message>
   <message name="IDS_AI_CHAT_CONTEXT_CHANGE_TONE" desc="The text label of submenu for changing the tone of selected text">
     Change tone
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_PROFESSIONALIZE" desc="The text label of context menu item to professionalize selected text">
     Professional
+  </message>
+  <message name="IDS_AI_CHAT_CONTEXT_PERSUASIVE_TONE" desc="The text label of context menu item to rewrite the selected text in a persuasive tone">
+    Persuasive
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_ACADEMICIZE" desc="The text label of context menu item to academicize selected text">
     Academic
@@ -328,6 +328,6 @@
     Change length
   </message>
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
-    Social media post
+    Social media
   </message>
 </grit-part>

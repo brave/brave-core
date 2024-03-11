@@ -12,6 +12,7 @@
 #include "brave/components/brave_ads/core/internal/catalog/catalog_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_mock_util.h"
+#include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_converter_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_time_util.h"
 #include "brave/components/brave_ads/core/internal/diagnostics/entries/last_unidle_time_diagnostic_util.h"
 #include "brave/components/brave_ads/core/public/ads_callback.h"
@@ -29,14 +30,13 @@ TEST_F(BraveAdsDiagnosticManagerTest, DiagnosticManager) {
 
   const brave_l10n::test::ScopedDefaultLocale scoped_default_locale{"en_KY"};
 
-  AdvanceClockTo(
-      TimeFromString("Wed, 18 Nov 1970 12:34:56", /*is_local=*/true));
+  AdvanceClockTo(TimeFromString("Wed, 18 Nov 1970 12:34:56"));
 
   SetCatalogId(kCatalogId);
   SetCatalogLastUpdated(Now());
 
-  AdvanceClockTo(TimeFromString("Fri, 16 Mar 2012 06:23:00",
-                                /*is_local=*/true));  // Hello Phoebe!!!
+  AdvanceClockTo(
+      TimeFromString("Fri, 16 Mar 2012 06:23:00"));  // Hello Phoebe!!!
 
   SetLastUnIdleTimeDiagnosticEntry(Now());
 

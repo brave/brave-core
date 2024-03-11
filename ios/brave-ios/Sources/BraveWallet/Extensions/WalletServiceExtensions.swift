@@ -23,7 +23,7 @@ extension BraveWalletBraveWalletService {
       body: { @MainActor group in
         for (index, network) in networks.enumerated() {
           group.addTask { @MainActor in
-            let assets = await self.userAssets(network.chainId, coin: network.coin)
+            let assets = await self.userAssets(chainId: network.chainId, coin: network.coin)
             return [NetworkAssets(network: network, tokens: assets, sortOrder: index)]
           }
         }
@@ -47,7 +47,7 @@ extension BraveWalletBraveWalletService {
             .map(\.chainId)
           group.addTask { @MainActor in
             let (spamNFTs, _) = await self.simpleHashSpamNfTs(
-              account.address,
+              walletAddress: account.address,
               chainIds: networks,
               coin: account.coin,
               cursor: nil

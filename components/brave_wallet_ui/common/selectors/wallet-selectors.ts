@@ -8,7 +8,6 @@ import { WalletPageState } from '../../constants/types'
 type State = Omit<WalletPageState, 'page'>
 
 // safe selectors (primitive return types only)
-export const addUserAssetError = ({ wallet }: State) => wallet.addUserAssetError
 export const hasInitialized = ({ wallet }: State) => wallet.hasInitialized
 export const isBitcoinEnabled = ({ wallet }: State) => wallet.isBitcoinEnabled
 export const isZCashEnabled = ({ wallet }: State) => wallet.isZCashEnabled
@@ -25,8 +24,6 @@ export const hidePortfolioBalances = ({ wallet }: State) =>
   wallet.hidePortfolioBalances
 export const hidePortfolioNFTsTab = ({ wallet }: State) =>
   wallet.hidePortfolioNFTsTab
-export const removedNonFungibleTokens = ({ wallet }: State) =>
-  wallet.removedNonFungibleTokens
 export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
   wallet.filteredOutPortfolioNetworkKeys
 export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
@@ -49,15 +46,7 @@ export const selectedGroupAssetsByItem = ({ wallet }: State) =>
   wallet.selectedGroupAssetsByItem
 export const selectedNetworkFilter = ({ wallet }: State) =>
   wallet.selectedNetworkFilter
-export const userVisibleTokensInfo = ({ wallet }: State) =>
-  wallet.userVisibleTokensInfo
 export const selectedAccountFilter = ({ wallet }: State) =>
   wallet.selectedAccountFilter
-export const removedFungibleTokenIds = ({ wallet }: State) =>
-  wallet.removedFungibleTokenIds
-export const removedNonFungibleTokenIds = ({ wallet }: State) =>
-  wallet.removedNonFungibleTokenIds
-export const deletedNonFungibleTokenIds = ({ wallet }: State) =>
-  wallet.deletedNonFungibleTokenIds
 export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
   wallet.isRefreshingNetworksAndTokens

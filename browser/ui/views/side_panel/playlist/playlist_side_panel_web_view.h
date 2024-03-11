@@ -7,7 +7,7 @@
 #define BRAVE_BROWSER_UI_VIEWS_SIDE_PANEL_PLAYLIST_PLAYLIST_SIDE_PANEL_WEB_VIEW_H_
 
 class Browser;
-class BubbleContentsWrapper;
+class WebUIContentsWrapper;
 
 #include "base/functional/callback_forward.h"
 #include "brave/browser/ui/webui/playlist_ui.h"
@@ -17,7 +17,7 @@ class PlaylistSidePanelWebView : public SidePanelWebUIView {
  public:
   PlaylistSidePanelWebView(Browser* browser,
                            base::RepeatingClosure close_cb,
-                           BubbleContentsWrapper* contents_wrapper);
+                           WebUIContentsWrapper* contents_wrapper);
   PlaylistSidePanelWebView(const PlaylistSidePanelWebView&) = delete;
   PlaylistSidePanelWebView& operator=(const PlaylistSidePanelWebView&) = delete;
   ~PlaylistSidePanelWebView() override;

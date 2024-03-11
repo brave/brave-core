@@ -12,11 +12,8 @@ import { BraveWallet } from '../../constants/types'
 import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
-import { getAssetIdKey, isNativeAsset } from '../../utils/asset-utils'
-import {
-  makeNativeAssetLogo,
-  makeNetworkAsset
-} from '../../options/asset-options'
+import { isNativeAsset } from '../../utils/asset-utils'
+import { makeNativeAssetLogo } from '../../options/asset-options'
 import { getVisibleNetworksList } from '../../utils/api-utils'
 
 import getAPIProxy from './bridge'
@@ -123,62 +120,6 @@ export const onConnectHardwareWallet = (
 export async function isStrongPassword(value: string) {
   const apiProxy = getAPIProxy()
   return (await apiProxy.keyringService.isStrongPassword(value)).result
-}
-
-export function refreshVisibleTokenInfo(
-  targetNetwork?: BraveWallet.NetworkInfo
-) {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const api = getAPIProxy()
-    const { braveWalletService } = api
-    const networkList = await getVisibleNetworksList(api)
-
-    async function inner(network: BraveWallet.NetworkInfo) {
-      // Get a list of user tokens for each coinType and network.
-      const getTokenList = await braveWalletService.getUserAssets(
-        network.chainId,
-        network.coin
-      )
-
-      // Adds a logo and chainId to each token object
-      const tokenList = getTokenList.tokens.map((token) => ({
-        ...token,
-        logo: `chrome://erc-token-images/${token.logo}`
-      })) as BraveWallet.BlockchainToken[]
-
-      if (tokenList.length === 0) {
-        // user has hidden all tokens for the network
-        // we should still include the native asset, but as hidden
-        const nativeAsset = makeNetworkAsset(network)
-        nativeAsset.visible = false
-        return [nativeAsset]
-      }
-
-      return tokenList
-    }
-
-    const visibleAssets = targetNetwork
-      ? await inner(targetNetwork)
-      : await mapLimit(
-          networkList,
-          10,
-          async (item: BraveWallet.NetworkInfo) => await inner(item)
-        )
-
-    const removedAssetIds = [
-      ...getState().wallet.removedFungibleTokenIds,
-      ...getState().wallet.removedNonFungibleTokenIds,
-      ...getState().wallet.deletedNonFungibleTokenIds
-    ]
-    const userVisibleTokensInfo = visibleAssets
-      .flat(1)
-      .filter((token) => !removedAssetIds.includes(getAssetIdKey(token)))
-    const removedNfts = visibleAssets
-      .flat(1)
-      .filter((token) => removedAssetIds.includes(getAssetIdKey(token)))
-    await dispatch(WalletActions.setVisibleTokensInfo(userVisibleTokensInfo))
-    await dispatch(WalletActions.setRemovedNonFungibleTokens(removedNfts))
-  }
 }
 
 export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {

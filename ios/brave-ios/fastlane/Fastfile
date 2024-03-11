@@ -20,9 +20,6 @@ platform :ios do
       devices: ["iPad (10th generation)"],
       ensure_devices_found: true,
       output_files: "junit-ipad.xml",
-      skip_testing: [
-        "ClientTests/UserAgentTests"
-      ],
       xcargs: "-testPlan Brave_iPad"
     }))
   end
@@ -51,10 +48,7 @@ platform :ios do
       devices: ["iPad (10th generation)"],
       ensure_devices_found: true,
       output_files: "junit-ipad.xml",
-      testplan: "Brave_iPad",
-      skip_testing: [
-        "ClientTests/UserAgentTests"
-      ]
+      testplan: "Brave_iPad"
     }))
   end
 

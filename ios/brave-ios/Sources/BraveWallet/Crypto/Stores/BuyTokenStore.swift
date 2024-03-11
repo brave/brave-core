@@ -146,7 +146,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
       self.selectedBuyToken = prefilledToken
     } else {
       // need to try and select correct network.
-      let allNetworksForTokenCoin = await rpcService.allNetworks(prefilledToken.coin)
+      let allNetworksForTokenCoin = await rpcService.allNetworks(coin: prefilledToken.coin)
       guard
         let networkForToken = allNetworksForTokenCoin.first(where: {
           $0.chainId == prefilledToken.chainId
@@ -156,7 +156,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
         return
       }
       let success = await rpcService.setNetwork(
-        networkForToken.chainId,
+        chainId: networkForToken.chainId,
         coin: networkForToken.coin,
         origin: nil
       )
@@ -190,7 +190,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
     }
 
     let (urlString, error) = await assetRatioService.buyUrlV1(
-      provider,
+      provider: provider,
       chainId: selectedNetwork.chainId,
       address: account.address,
       symbol: symbol,
@@ -209,7 +209,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
   private func fetchBuyTokens(network: BraveWallet.NetworkInfo) async {
     allTokens = []
     for provider in buyTokens.keys {
-      let tokens = await blockchainRegistry.buyTokens(provider, chainId: network.chainId)
+      let tokens = await blockchainRegistry.buyTokens(provider: provider, chainId: network.chainId)
       let sortedTokenList = tokens.sorted(by: {
         if $0.isGasToken, !$1.isGasToken {
           return true
@@ -247,7 +247,7 @@ public class BuyTokenStore: ObservableObject, WalletObserverStore {
       assertionFailure("selectedAccount should never be nil.")
       return
     }
-    selectedNetwork = await rpcService.network(selectedAccount.coin, origin: nil)
+    selectedNetwork = await rpcService.network(coin: selectedAccount.coin, origin: nil)
     await validatePrefilledToken(on: selectedNetwork)  // selectedNetwork may change
     await fetchBuyTokens(network: selectedNetwork)
 

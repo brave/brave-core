@@ -52,8 +52,8 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
 
 // LoadingSpinner represents the loading animation for the 'Add bubble'
 class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
+  METADATA_HEADER(LoadingSpinner, views::View)
  public:
-  METADATA_HEADER(LoadingSpinner);
 
   LoadingSpinner() {
     animation_.SetSlideDuration(base::Milliseconds(2500));
@@ -98,7 +98,7 @@ class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
   gfx::SlideAnimation animation_{this};
 };
 
-BEGIN_METADATA(LoadingSpinner, views::View)
+BEGIN_METADATA(LoadingSpinner)
 END_METADATA
 
 ////////////////////////////////////////////////////////////////////////////////
@@ -107,8 +107,8 @@ END_METADATA
 //  * Contains actions to manipulate items.
 class ConfirmBubble : public PlaylistActionBubbleView,
                       public playlist::PlaylistTabHelperObserver {
+  METADATA_HEADER(ConfirmBubble, PlaylistActionBubbleView)
  public:
-  METADATA_HEADER(ConfirmBubble);
 
   ConfirmBubble(Browser* browser,
                 PlaylistActionIconView* anchor,
@@ -146,7 +146,7 @@ class Row : public views::LabelButton {
   ~Row() override = default;
 
   // views::LabelButton:
-  void Layout() override;
+  void Layout(PassKey) override;
 };
 
 BEGIN_METADATA(Row)
@@ -164,8 +164,8 @@ Row::Row(const std::u16string& text,
   label()->SetHorizontalAlignment(gfx::HorizontalAlignment::ALIGN_LEFT);
 }
 
-void Row::Layout() {
-  LabelButton::Layout();
+void Row::Layout(PassKey) {
+  LayoutSuperclass<LabelButton>(this);
   // Extend |label|'s width so the this button's sub controls are justified.
   const auto contents_x = GetContentsBounds().x();
   label()->SetX(contents_x);
@@ -352,7 +352,7 @@ void ConfirmBubble::MoreMediaInContents() {
   GetWidget()->Close();
 }
 
-BEGIN_METADATA(ConfirmBubble, PlaylistActionBubbleView)
+BEGIN_METADATA(ConfirmBubble)
 END_METADATA
 
 }  // namespace
@@ -481,7 +481,7 @@ void PlaylistActionAddBubble::OnSelectionChanged() {
   }
 }
 
-BEGIN_METADATA(PlaylistActionAddBubble, PlaylistActionBubbleView)
+BEGIN_METADATA(PlaylistActionAddBubble)
 END_METADATA
 
 // static
@@ -542,5 +542,5 @@ void PlaylistActionBubbleView::WindowClosingImpl() {
   }
 }
 
-BEGIN_METADATA(PlaylistActionBubbleView, views::BubbleDialogDelegateView)
+BEGIN_METADATA(PlaylistActionBubbleView)
 END_METADATA

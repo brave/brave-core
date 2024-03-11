@@ -11,6 +11,7 @@
 #include "brave/browser/ui/tabs/brave_tab_layout_constants.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_group_model.h"
 #include "chrome/browser/ui/tabs/tab_style.h"
@@ -75,6 +76,12 @@ void BraveTabGroupHeader::VisualsChanged() {
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
   }
+
+  if (ShouldShowSyncIcon()) {
+    sync_icon_->SetImage(ui::ImageModel::FromVectorIcon(
+        kLeoProductSyncIcon, SkColorSetA(GetGroupColor(), 0.6 * 255),
+        group_style_->GetSyncIconWidth()));
+  }
 }
 
 int BraveTabGroupHeader::GetDesiredWidth() const {
@@ -85,8 +92,8 @@ int BraveTabGroupHeader::GetDesiredWidth() const {
   return brave_tabs::kHorizontalTabInset * 2 + title_chip_->width();
 }
 
-void BraveTabGroupHeader::Layout() {
-  TabGroupHeader::Layout();
+void BraveTabGroupHeader::Layout(PassKey) {
+  LayoutSuperclass<TabGroupHeader>(this);
   if (ShouldShowVerticalTabs()) {
     LayoutTitleChipForVerticalTabs();
   }
@@ -147,5 +154,5 @@ std::optional<SkColor> BraveTabGroupHeader::GetChipBackgroundColor() const {
   return color_utils::AlphaBlend(GetGroupColor(), blend_background, alpha);
 }
 
-BEGIN_METADATA(BraveTabGroupHeader, TabGroupHeader)
+BEGIN_METADATA(BraveTabGroupHeader)
 END_METADATA

@@ -104,6 +104,16 @@ export const localeStrings = {
   newsAdInfo: 'Brave News contains ads that cannot be independently disabled.',
   newsAdInfoDisabled: 'Brave News is currently disabled.',
 
+  resetWallet: 'Reset Brave Rewards',
+  rewardsResetText: 'By resetting, your current Brave Rewards profile will be deleted, and Brave Rewards will no longer be enabled. If you enable Brave Rewards again later, you will start with a new profile. Read our $1support article about resetting$2 for more details.',
+  rewardsResetConsent: 'I understand that my current Brave Rewards profile and Brave Rewards data will be deleted from my device, and I\'ve read the $1support article about resetting$2.',
+  reset: 'Reset',
+
+  rewardsTosUpdateHeading: 'Updated Terms of Service',
+  rewardsTosUpdateText: 'We’ve updated the Terms of Service for Brave Rewards. We’ve made these updates to clarify our terms and ensure they cover new features. If you continue to use Brave Rewards, you are agreeing to the updated Terms of Service. If you do not agree, you can $1reset$2 Brave Rewards, which will disable the feature.',
+  rewardsTosUpdateLinkText: 'See $1Brave Rewards Terms of Service$2',
+  rewardsTosUpdateButtonLabel: 'I agree',
+
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
   rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
   rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',

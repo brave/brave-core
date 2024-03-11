@@ -13,6 +13,7 @@
 #include "base/memory/weak_ptr.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "ui/gfx/native_widget_types.h"
 
 class BraveWaybackMachineDelegate;
 class PrefService;
@@ -29,25 +30,30 @@ class BraveWaybackMachineTabHelper
       const BraveWaybackMachineTabHelper&) = delete;
 
   void set_delegate(std::unique_ptr<BraveWaybackMachineDelegate> delegate);
+  void set_active_dialog(gfx::NativeWindow dialog) { active_dialog_ = dialog; }
+  gfx::NativeWindow active_dialog() const { return active_dialog_; }
 
-  WEB_CONTENTS_USER_DATA_KEY_DECL();
  private:
-  FRIEND_TEST_ALL_PREFIXES(BraveWaybackMachineTest, InfobarAddTest);
+  FRIEND_TEST_ALL_PREFIXES(BraveWaybackMachineTest, DialogLaunchTest);
 
   // content::WebContentsObserver overrides:
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
 
-  void CreateInfoBar();
+  void ShowWaybackMachineDialog();
   bool IsWaybackMachineEnabled() const;
 
-  // virtual for test.
-  virtual bool ShouldAttachWaybackMachineInfoBar(int response_code) const;
+  bool ShouldShowWaybackMachineDialog(int response_code) const;
 
+  // If |active_dialog_| exists, close it before launching another one.
+  gfx::NativeWindow active_dialog_ = nullptr;
   raw_ref<PrefService> pref_service_;
   std::unique_ptr<BraveWaybackMachineDelegate> delegate_;
 
   base::WeakPtrFactory<BraveWaybackMachineTabHelper> weak_factory_;
+
+  friend WebContentsUserData;
+  WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
 #endif  // BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_BRAVE_WAYBACK_MACHINE_TAB_HELPER_H_

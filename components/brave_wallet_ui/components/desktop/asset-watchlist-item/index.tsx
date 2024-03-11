@@ -35,7 +35,7 @@ import {
 import { HorizontalSpace } from '../../shared/style'
 
 export interface Props {
-  onSelectAsset: (selected: boolean, token: BraveWallet.BlockchainToken) => void
+  onSelectAsset: (token: BraveWallet.BlockchainToken) => void
   onRemoveAsset: (token: BraveWallet.BlockchainToken) => void
   isRemovable: boolean
   isSelected: boolean
@@ -58,27 +58,22 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
     const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
 
     // callbacks
-    const onCheck = React.useCallback(() => {
-      onSelectAsset(!isSelected, token)
-    }, [onSelectAsset, token, isSelected])
-
     const onClickAsset = React.useCallback(() => {
-      onSelectAsset(!isSelected, token)
-    }, [onSelectAsset, token, isSelected])
+      onSelectAsset(token)
+    }, [onSelectAsset, token])
 
     const onClickRemoveAsset = React.useCallback(() => {
       onRemoveAsset(token)
     }, [token, onRemoveAsset])
 
-    const networkDescription = React.useMemo(() => {
-      return getLocale('braveWalletPortfolioAssetNetworkDescription')
-        .replace('$1', token.symbol)
-        .replace('$2', tokensNetwork?.chainName ?? '')
-    }, [tokensNetwork, token])
+    // computed
+    const isVisible = isSelected
+      ? !token.visible // pending visibility change
+      : token.visible
 
     return (
       <StyledWrapper ref={forwardedRef}>
-        <NameAndIcon onClick={onClickAsset}>
+        <NameAndIcon>
           {token.isNft ? (
             <NftIconWithPlaceholder
               asset={token}
@@ -97,7 +92,11 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
                 ? '#' + new Amount(token.tokenId).toNumber()
                 : ''}
             </AssetName>
-            <AssetSymbol>{networkDescription}</AssetSymbol>
+            <AssetSymbol>
+              {getLocale('braveWalletPortfolioAssetNetworkDescription')
+                .replace('$1', token.symbol)
+                .replace('$2', tokensNetwork?.chainName ?? '')}
+            </AssetSymbol>
           </NameAndSymbol>
         </NameAndIcon>
         <RightSide>
@@ -109,12 +108,12 @@ const AssetWatchlistItem = React.forwardRef<HTMLDivElement, Props>(
               <HorizontalSpace space='8px' />
             </>
           )}
-          <Button onClick={onCheck}>
+          <Button onClick={onClickAsset}>
             <Icon
               name={
                 hash === WalletRoutes.AvailableAssetsHash
                   ? 'plus-add'
-                  : isSelected
+                  : isVisible
                   ? 'eye-on'
                   : 'eye-off'
               }

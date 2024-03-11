@@ -3,9 +3,6 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// asset
-import { USDCIconUrl } from './asset-icons'
-
 // types
 import { BraveWallet, WalletState } from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
@@ -14,7 +11,6 @@ import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options
 import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
-import { mockMoonCatNFT } from './mock-asset-options'
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
 
 export const mockWalletState: WalletState = {
@@ -63,77 +59,6 @@ export const mockWalletState: WalletState = {
   ],
   isWalletCreated: false,
   isWalletLocked: false,
-  userVisibleTokensInfo: [
-    {
-      coingeckoId: '',
-      contractAddress: '',
-      decimals: 18,
-      isErc20: false,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      isSpam: false,
-      logo: 'chrome://erc-token-images/',
-      name: 'Ethereum',
-      symbol: 'ETH',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID
-    },
-    {
-      coingeckoId: 'usd-coin',
-      contractAddress: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
-      decimals: 6,
-      isErc20: true,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      isSpam: false,
-      logo: USDCIconUrl,
-      name: 'USD Coin',
-      symbol: 'USDC',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.MAINNET_CHAIN_ID
-    },
-    {
-      coingeckoId: '',
-      contractAddress: '',
-      decimals: 18,
-      isErc20: false,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      isSpam: false,
-      logo: 'chrome://erc-token-images/',
-      name: 'Ethereum',
-      symbol: 'ETH',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.GOERLI_CHAIN_ID
-    },
-    {
-      coingeckoId: 'usd-coin',
-      contractAddress: '0x07865c6E87B9F70255377e024ace6630C1Eaa37F',
-      decimals: 6,
-      isErc20: true,
-      isErc721: false,
-      isErc1155: false,
-      isNft: false,
-      isSpam: false,
-      logo: USDCIconUrl,
-      name: 'USD Coin',
-      symbol: 'USDC',
-      tokenId: '',
-      visible: true,
-      coin: BraveWallet.CoinType.ETH,
-      chainId: BraveWallet.GOERLI_CHAIN_ID
-    },
-    mockMoonCatNFT
-  ],
   selectedNetworkFilter: AllNetworksOptionDefault,
   selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
@@ -142,11 +67,6 @@ export const mockWalletState: WalletState = {
   isNftPinningFeatureEnabled: false,
   hidePortfolioBalances: false,
   hidePortfolioGraph: false,
-  removedFungibleTokenIds: [],
-  removedNonFungibleTokenIds: [],
-  removedNonFungibleTokens: [],
-  deletedNonFungibleTokenIds: [],
-  deletedNonFungibleTokens: [],
   hidePortfolioNFTsTab: false,
   filteredOutPortfolioNetworkKeys: [],
   filteredOutPortfolioAccountIds: [],

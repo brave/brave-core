@@ -10,6 +10,7 @@ import { AdaptiveCaptchaView } from '../../rewards_panel/components/adaptive_cap
 import { GrantCaptchaModal } from './grant_captcha_modal'
 import { NotificationOverlay } from './notification_overlay'
 import { VBATNoticeModal } from './vbat_notice_modal'
+import { TosUpdateModal } from './tos_update_modal'
 import { shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 
 export function PanelOverlays() {
@@ -23,6 +24,8 @@ export function PanelOverlays() {
   const [notifications, setNotifications] =
     React.useState(host.state.notifications)
   const [userType, setUserType] = React.useState(host.state.userType)
+  const [tosUpdateRequired, setTosUpdateRequired] =
+    React.useState(host.state.isTermsOfServiceUpdateRequired)
   const [notificationsHidden, setNotificationsHidden] = React.useState(false)
   const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
 
@@ -32,7 +35,12 @@ export function PanelOverlays() {
     setNotifications(state.notifications)
     setAdaptiveCaptchaInfo(state.adaptiveCaptchaInfo)
     setUserType(state.userType)
+    setTosUpdateRequired(state.isTermsOfServiceUpdateRequired)
   })
+
+  if (tosUpdateRequired) {
+    return <TosUpdateModal />
+  }
 
   if (adaptiveCaptchaInfo) {
     const onContactSupport = () => {

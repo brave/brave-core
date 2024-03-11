@@ -9,7 +9,7 @@ import Data
 import Foundation
 import Preferences
 import Shared
-@preconcurrency import WebKit
+import WebKit
 import os.log
 
 /// A class that aids in the managment of rule lists on the rule store.

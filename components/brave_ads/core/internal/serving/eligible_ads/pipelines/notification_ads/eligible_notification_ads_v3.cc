@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_util.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/creatives/notification_ads/creative_notification_ads_database_table.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/eligible_ads_feature.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/exclusion_rules_util.h"
 #include "brave/components/brave_ads/core/internal/serving/eligible_ads/exclusion_rules/notification_ads/notification_ad_exclusion_rules.h"
@@ -71,8 +70,7 @@ void EligibleNotificationAdsV3::GetEligibleAds(
     const AdEventList& ad_events,
     EligibleAdsCallback<CreativeNotificationAdList> callback,
     const BrowsingHistoryList& browsing_history) {
-  const database::table::CreativeNotificationAds database_table;
-  database_table.GetForActiveCampaigns(
+  database_table_.GetForActiveCampaigns(
       base::BindOnce(&EligibleNotificationAdsV3::GetEligibleAdsCallback,
                      weak_factory_.GetWeakPtr(), user_model, ad_events,
                      browsing_history, std::move(callback)));

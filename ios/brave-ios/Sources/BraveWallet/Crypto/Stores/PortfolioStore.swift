@@ -790,7 +790,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
         let priceId = priceId.lowercased()
         group.addTask { @MainActor in
           let (success, history) = await self.assetRatioService.priceHistory(
-            priceId,
+            asset: priceId,
             vsAsset: self.currencyFormatter.currencyCode,
             timeframe: self.timeframe
           )

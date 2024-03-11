@@ -1,9 +1,10 @@
 // Copyright 2023 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this
-// file, You can obtain one at https://mozilla.org/MPL/2.0/.
+// file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import BraveShared
+import BraveUI
 import Data
 import Growth
 import Preferences
@@ -63,7 +64,7 @@ struct OtherPrivacySettingsSectionView: View {
           )
         }
       )
-      ShieldToggleView(
+      ToggleView(
         title: Strings.blockMobileAnnoyances,
         subtitle: nil,
         toggle: $settings.blockMobileAnnoyances
@@ -89,7 +90,7 @@ struct OtherPrivacySettingsSectionView: View {
         ),
         option: Preferences.Privacy.screenTimeEnabled
       )
-      ShieldToggleView(
+      ToggleView(
         title: Strings.P3A.settingTitle,
         subtitle: Strings.P3A.settingSubtitle,
         toggle: $settings.isP3AEnabled

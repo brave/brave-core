@@ -5,14 +5,18 @@
 
 #import "brave/ios/browser/svg/svg_image.h"
 
+#include "skia/ext/font_utils.h"
 #include "third_party/skia/include/core/SkBitmap.h"
 #include "third_party/skia/include/core/SkCanvas.h"
+#include "third_party/skia/include/core/SkFontMgr.h"
 #include "third_party/skia/include/core/SkRefCnt.h"
 #include "third_party/skia/include/core/SkStream.h"
 #include "third_party/skia/modules/svg/include/SkSVGDOM.h"
 #include "third_party/skia/modules/svg/include/SkSVGRenderContext.h"
 #include "third_party/skia/modules/svg/include/SkSVGSVG.h"
 #include "ui/gfx/image/image.h"
+
+#include "third_party/skia/include/core/SkSurface.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."
@@ -68,7 +72,8 @@ SkBitmap MakeFromData(const NSData* data,
     return SkBitmap();
   }
 
-  sk_sp<SkSVGDOM> document = SkSVGDOM::MakeFromStream(*stream);
+  sk_sp<SkSVGDOM> document =
+      SkSVGDOM::Builder().setFontManager(skia::DefaultFontMgr()).make(*stream);
   if (!document || !document->getRoot()) {
     return SkBitmap();
   }

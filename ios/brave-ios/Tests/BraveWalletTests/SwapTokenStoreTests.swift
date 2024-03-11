@@ -191,7 +191,8 @@ class SwapStoreTests: XCTestCase {
     XCTAssertNil(store.selectedFromToken)
     XCTAssertNil(store.selectedToToken)
 
-    rpcService.setNetwork(BraveWallet.PolygonMainnetChainId, coin: .eth, origin: nil) { success in
+    rpcService.setNetwork(chainId: BraveWallet.PolygonMainnetChainId, coin: .eth, origin: nil) {
+      success in
       XCTAssertTrue(success)
       let testAccountInfo: BraveWallet.AccountInfo = .init()
       store.prepare(with: testAccountInfo) {
@@ -316,9 +317,9 @@ class SwapStoreTests: XCTestCase {
     let swapService = BraveWallet.TestSwapService()
     swapService._quote = { _, completion in
       if coin == .eth {
-        completion(.init(zeroExQuote: .init()), nil, "")
+        completion(.init(zeroExQuote: .init()), nil, nil, "")
       } else if coin == .sol {
-        completion(.init(jupiterQuote: .init()), nil, "")
+        completion(.init(jupiterQuote: .init()), nil, nil, "")
       } else {
         XCTFail("Coin type is not supported for swap")
       }
@@ -331,9 +332,6 @@ class SwapStoreTests: XCTestCase {
       } else {
         XCTFail("Coin type is not supported for swap")
       }
-    }
-    swapService._braveFee = { params, completion in
-      completion(nil, "")
     }
     let txService = BraveWallet.TestTxService()
     txService._addUnapprovedTransaction = { $3(true, "tx-meta-id", "") }
@@ -398,19 +396,7 @@ class SwapStoreTests: XCTestCase {
       )
     )
     swapService._quote = { _, completion in
-      completion(.init(zeroExQuote: zeroExQuote), nil, "")
-    }
-    swapService._braveFee = { params, completion in
-      let feeResponse = BraveWallet.BraveSwapFeeResponse(
-        feeParam: "0.00875",
-        protocolFeePct: "0.15",
-        braveFeePct: "0.875",
-        discountOnBraveFeePct: "0",
-        effectiveFeePct: "0.875",
-        discountCode: .none,
-        hasBraveFee: true
-      )
-      completion(feeResponse, "")
+      completion(.init(zeroExQuote: zeroExQuote), .mockZeroExFees, nil, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -443,11 +429,10 @@ class SwapStoreTests: XCTestCase {
     XCTAssertTrue(store.buyAmount.isEmpty)
     // non-empty assignment to `sellAmount` calls fetchPriceQuote
     store.setUpTest(sellAmount: "0.01")
-    waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 2) { error in
       XCTAssertNil(error)
       // Verify fees
       XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
-      XCTAssertEqual(store.protocolFeeForDisplay, "0.15%")
     }
   }
 
@@ -460,19 +445,7 @@ class SwapStoreTests: XCTestCase {
     let zeroExQuote: BraveWallet.ZeroExQuote = .init()
     zeroExQuote.sellAmount = "3000000000000000000"
     swapService._quote = { _, completion in
-      completion(.init(zeroExQuote: zeroExQuote), nil, "")
-    }
-    swapService._braveFee = { params, completion in
-      let feeResponse = BraveWallet.BraveSwapFeeResponse(
-        feeParam: "0.00875",
-        protocolFeePct: "0.15",
-        braveFeePct: "0.875",
-        discountOnBraveFeePct: "0",
-        effectiveFeePct: "0.875",
-        discountCode: .none,
-        hasBraveFee: true
-      )
-      completion(feeResponse, "")
+      completion(.init(zeroExQuote: zeroExQuote), .mockZeroExFees, nil, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -502,23 +475,30 @@ class SwapStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    let braveFeeExpectation = expectation(description: "braveFeeExpectation")
-    store.$braveFee
-      .dropFirst()
-      .collect(3)
-      .sink { _ in
-        braveFeeExpectation.fulfill()
+    let currentSwapQuoteInfoExpectation = expectation(
+      description: "currentSwapQuoteInfoExpectation"
+    )
+    store.$currentSwapQuoteInfo
+      .dropFirst()  // initial state
+      .collect(2)  // fetchPriceQuote (nil), fetchEthPriceQuote (populated)
+      .sink { currentSwapQuoteInfos in
+        guard let currentSwapQuoteInfo = currentSwapQuoteInfos.last else {
+          XCTFail("Expected multiple assignments.")
+          return
+        }
+        XCTAssertNotNil(currentSwapQuoteInfo?.swapQuote)
+        XCTAssertNotNil(currentSwapQuoteInfo?.swapFees)
+        currentSwapQuoteInfoExpectation.fulfill()
       }
       .store(in: &cancellables)
 
     XCTAssertTrue(store.sellAmount.isEmpty)
     // calls fetchPriceQuote
     store.setUpTest(sellAmount: nil, buyAmount: "0.01")
-    waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 2) { error in
       XCTAssertNil(error)
       // Verify fees
       XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
-      XCTAssertNil(store.protocolFeeForDisplay)
     }
   }
 
@@ -546,19 +526,7 @@ class SwapStoreTests: XCTestCase {
         priceImpactPct: "0",
         routePlan: []
       )
-      completion(.init(jupiterQuote: jupiterQuote), nil, "")
-    }
-    swapService._braveFee = { params, completion in
-      let feeResponse = BraveWallet.BraveSwapFeeResponse(
-        feeParam: "85",
-        protocolFeePct: "0",
-        braveFeePct: "0.85",
-        discountOnBraveFeePct: "0",
-        effectiveFeePct: "0.85",
-        discountCode: .none,
-        hasBraveFee: true
-      )
-      completion(feeResponse, "")
+      completion(.init(jupiterQuote: jupiterQuote), .mockJupiterFees, nil, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -588,12 +556,20 @@ class SwapStoreTests: XCTestCase {
       }
       .store(in: &cancellables)
 
-    let braveFeeExpectation = expectation(description: "braveFeeExpectation")
-    store.$braveFee
-      .dropFirst()
-      .collect(3)
-      .sink { _ in
-        braveFeeExpectation.fulfill()
+    let currentSwapQuoteInfoExpectation = expectation(
+      description: "currentSwapQuoteInfoExpectation"
+    )
+    store.$currentSwapQuoteInfo
+      .dropFirst()  // initial state
+      .collect(2)  // fetchPriceQuote (nil), fetchSolPriceQuote (populated)
+      .sink { currentSwapQuoteInfos in
+        guard let currentSwapQuoteInfo = currentSwapQuoteInfos.last else {
+          XCTFail("Expected multiple assignments.")
+          return
+        }
+        XCTAssertNotNil(currentSwapQuoteInfo?.swapQuote)
+        XCTAssertNotNil(currentSwapQuoteInfo?.swapFees)
+        currentSwapQuoteInfoExpectation.fulfill()
       }
       .store(in: &cancellables)
 
@@ -605,11 +581,10 @@ class SwapStoreTests: XCTestCase {
       selectedToToken: .mockSpdToken,
       sellAmount: "0.01"
     )
-    waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 2) { error in
       XCTAssertNil(error)
       // Verify fees
       XCTAssertEqual(store.braveFeeForDisplay, "0.85%")
-      XCTAssertNil(store.protocolFeeForDisplay)
     }
   }
 
@@ -631,7 +606,7 @@ class SwapStoreTests: XCTestCase {
           isInsufficientLiquidity: true
         )
       )
-      completion(nil, errorUnion, "")
+      completion(nil, nil, errorUnion, "")
     }
     let store = SwapTokenStore(
       keyringService: keyringService,
@@ -668,7 +643,7 @@ class SwapStoreTests: XCTestCase {
       selectedToToken: .mockSpdToken,
       sellAmount: "0.01"
     )
-    waitForExpectations(timeout: 1) { error in
+    waitForExpectations(timeout: 2) { error in
       XCTAssertNil(error)
     }
   }
@@ -762,7 +737,13 @@ class SwapStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       prefilledToken: nil
     )
-    store.setUpTest()
+    store.setUpTest(
+      currentSwapQuoteInfo: .init(
+        base: .perSellAsset,
+        swapQuote: nil,
+        swapFees: nil
+      )
+    )
     store.state = .swap
 
     let success = await store.createSwapTransaction()
@@ -796,7 +777,13 @@ class SwapStoreTests: XCTestCase {
       userAssetManager: mockAssetManager,
       prefilledToken: nil
     )
-    store.setUpTest()
+    store.setUpTest(
+      currentSwapQuoteInfo: .init(
+        base: .perSellAsset,
+        swapQuote: nil,
+        swapFees: nil
+      )
+    )
     store.state = .swap
 
     let success = await store.createSwapTransaction()
@@ -855,7 +842,17 @@ class SwapStoreTests: XCTestCase {
       selectedFromToken: .mockSolToken,
       selectedToToken: .mockSpdToken,
       sellAmount: "0.01",
-      jupiterQuote: jupiterQuote
+      currentSwapQuoteInfo: .init(
+        base: .perSellAsset,
+        swapQuote: .init(jupiterQuote: jupiterQuote),
+        swapFees: .init(
+          feeParam: "",
+          feePct: "",
+          discountPct: "",
+          effectiveFeePct: "",
+          discountCode: .none
+        )
+      )
     )
     store.state = .swap
 

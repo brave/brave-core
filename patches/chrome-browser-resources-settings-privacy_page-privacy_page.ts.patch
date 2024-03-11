@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/settings/privacy_page/privacy_page.ts b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
-index 81fe28f0de386bdd24821fbae40d0b5f9c48d6ec..7c46667b31d1a35f891d41d5b0f6b3c7c7ca7650 100644
+index 776b5e8305f0d0f11c91485b26630fed22c61773..2a5f6262aa70d7fe36e6d672c40613d2bd857153 100644
 --- a/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 +++ b/chrome/browser/resources/settings/privacy_page/privacy_page.ts
 @@ -21,6 +21,7 @@ import '../settings_page/settings_animated_pages.js';
@@ -9,4 +9,4 @@ index 81fe28f0de386bdd24821fbae40d0b5f9c48d6ec..7c46667b31d1a35f891d41d5b0f6b3c7
 +import './personalization_options.js';
  import './privacy_guide/privacy_guide_dialog.js';
  
- import {SettingsToggleButtonElement} from '/shared/settings/controls/settings_toggle_button.js';
+ import type {PrivacyPageBrowserProxy} from '/shared/settings/privacy_page/privacy_page_browser_proxy.js';

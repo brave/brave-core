@@ -29,6 +29,7 @@ import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBrid
 import org.chromium.chrome.browser.ntp_background_images.util.NTPUtil;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.partnercustomizations.CloseBraveManager;
+import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.rate.BraveRateDialogFragment;
@@ -42,6 +43,7 @@ import org.chromium.components.browser_ui.accessibility.BraveAccessibilitySettin
 import org.chromium.components.browser_ui.settings.ChromeBasePreference;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
+import org.chromium.components.user_prefs.UserPrefs;
 import org.chromium.ui.base.DeviceFormFactor;
 
 import java.util.HashMap;
@@ -77,6 +79,7 @@ public class BraveMainPreferencesBase
     private static final String PREF_NOTIFICATIONS = "notifications";
     private static final String PREF_PAYMENT_METHODS = "autofill_payment_methods";
     private static final String PREF_ADDRESSES = "autofill_addresses";
+    private static final String PREF_AUTOFILL_PRIVATE_WINDOW = "autofill_private_window";
     private static final String PREF_MEDIA = "media";
     private static final String PREF_APPEARANCE = "appearance";
     private static final String PREF_NEW_TAB_PAGE = "background_images";
@@ -208,6 +211,17 @@ public class BraveMainPreferencesBase
             removePreferenceIfPresent(PREF_BACKGROUND_IMAGES);
         }
         setCustomTabPreference();
+        setAutofillPrivateWindowPreference();
+    }
+
+    private void setAutofillPrivateWindowPreference() {
+        boolean isAutofillPrivateWindow =
+                UserPrefs.get(getProfile()).getBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS);
+        Preference preference = findPreference(PREF_AUTOFILL_PRIVATE_WINDOW);
+        preference.setOnPreferenceChangeListener(this);
+        if (preference instanceof ChromeSwitchPreference) {
+            ((ChromeSwitchPreference) preference).setChecked(isAutofillPrivateWindow);
+        }
     }
 
     private void setCustomTabPreference() {
@@ -327,6 +341,7 @@ public class BraveMainPreferencesBase
 
         findPreference(PREF_PAYMENT_METHODS).setOrder(++onlineCheckoutSectionOrder);
         findPreference(PREF_ADDRESSES).setOrder(++onlineCheckoutSectionOrder);
+        findPreference(PREF_AUTOFILL_PRIVATE_WINDOW).setOrder(++onlineCheckoutSectionOrder);
 
         int supportSectionOrder = onlineCheckoutSectionOrder;
         findPreference(PREF_SUPPORT_SECTION).setOrder(++supportSectionOrder);
@@ -380,6 +395,7 @@ public class BraveMainPreferencesBase
         updatePreferenceIcon(PREF_ACCESSIBILITY, R.drawable.ic_accessibility);
         updatePreferenceIcon(PREF_PRIVACY, R.drawable.ic_privacy_reports);
         updatePreferenceIcon(PREF_ADDRESSES, R.drawable.ic_addresses);
+        updatePreferenceIcon(PREF_AUTOFILL_PRIVATE_WINDOW, R.drawable.ic_autofill);
         updatePreferenceIcon(PREF_NOTIFICATIONS, R.drawable.ic_notification);
         updatePreferenceIcon(MainSettings.PREF_DEVELOPER, R.drawable.ic_info);
         updatePreferenceIcon(MainSettings.PREF_HOMEPAGE, R.drawable.ic_homepage);
@@ -456,6 +472,9 @@ public class BraveMainPreferencesBase
         String key = preference.getKey();
         if (PREF_CLOSING_ALL_TABS_CLOSES_BRAVE.equals(key)) {
             CloseBraveManager.setClosingAllTabsClosesBraveEnabled((boolean) newValue);
+        } else if (PREF_AUTOFILL_PRIVATE_WINDOW.equals(key)) {
+            UserPrefs.get(getProfile())
+                    .setBoolean(BravePref.BRAVE_AUTOFILL_PRIVATE_WINDOWS, (boolean) newValue);
         }
 
         return true;

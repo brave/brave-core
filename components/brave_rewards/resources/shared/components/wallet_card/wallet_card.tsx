@@ -19,6 +19,7 @@ import { ProviderPayoutStatus } from '../../lib/provider_payout_status'
 import { UserType } from '../../lib/user_type'
 import { Optional } from '../../../shared/lib/optional'
 
+import { useCounterAnimation } from './counter_animation'
 import { TokenAmount } from '../token_amount'
 import { ExchangeAmount } from '../exchange_amount'
 import { EarningsRange } from '../earnings_range'
@@ -42,6 +43,10 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
   month: 'short'
 })
 
+function getIntegerDigits (num: number) {
+  return num <= 0 ? 1 : Math.floor(Math.log10(num)) + 1
+}
+
 interface Props {
   userType: UserType
   balance: Optional<number>
@@ -64,6 +69,8 @@ interface Props {
 
 export function WalletCard (props: Props) {
   const { getString } = React.useContext(LocaleContext)
+  const balanceCounterValue =
+    useCounterAnimation(props.balance.valueOr(0), 450)
   const { externalWallet } = props
 
   const walletDisconnected =
@@ -101,14 +108,19 @@ export function WalletCard (props: Props) {
         <style.balanceHeader>
           {getString('walletBalanceTitle')}
         </style.balanceHeader>
-        <style.batAmount data-test-id='rewards-balance-text'>
+        <style.batAmountForTesting data-test-id='rewards-balance-text'>
+          <TokenAmount amount={props.balance.valueOr(0)} />
+        </style.batAmountForTesting>
+        <style.batAmount>
           {
             !props.balance.hasValue()
               ? <style.balanceSpinner>
-                  <LoadingIcon />
-                  <style.loading>{getString('loading')}</style.loading>
+                  <LoadingIcon /> {getString('loading')}
                 </style.balanceSpinner>
-              : <TokenAmount amount={props.balance.value()} />
+              : <TokenAmount
+                  minimumIntegerDigits={getIntegerDigits(props.balance.value())}
+                  amount={balanceCounterValue}
+                />
           }
         </style.batAmount>
         <style.exchangeAmount>
@@ -117,7 +129,7 @@ export function WalletCard (props: Props) {
             <>
               ≈&nbsp;
               <ExchangeAmount
-                amount={props.balance.value()}
+                amount={balanceCounterValue}
                 rate={props.exchangeRate}
               />
             </>

@@ -202,6 +202,7 @@ void EngineConsumerClaudeRemote::OnGenerateQuestionSuggestionsResponse(
   if (!result.has_value() || result->empty()) {
     // Query resulted in error
     LOG(ERROR) << "Error getting question suggestions.";
+    std::move(callback).Run(base::unexpected(std::move(result.error())));
     return;
   }
 

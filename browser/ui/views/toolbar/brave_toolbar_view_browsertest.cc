@@ -100,7 +100,7 @@ class BraveToolbarViewTest : public InProcessBrowserTest {
   }
 
   bool is_bookmark_button_shown() {
-    BookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
+    BraveBookmarkButton* bookmark_button = toolbar_view_->bookmark_button();
     DCHECK(bookmark_button);
     return bookmark_button->GetVisible();
   }

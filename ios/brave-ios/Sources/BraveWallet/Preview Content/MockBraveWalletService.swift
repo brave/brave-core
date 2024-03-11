@@ -19,33 +19,33 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   private var defaultCryptocurrency = "eth"
   private var coin: BraveWallet.CoinType = .eth
 
-  func ankrSupportedChainIds(_ completion: @escaping ([String]) -> Void) {
+  func ankrSupportedChainIds(completion: @escaping ([String]) -> Void) {
     completion([])
   }
 
   func userAssets(
-    _ chainId: String,
+    chainId: String,
     coin: BraveWallet.CoinType,
     completion: @escaping ([BraveWallet.BlockchainToken]) -> Void
   ) {
     completion(assets[chainId] ?? [])
   }
 
-  func allUserAssets(_ completion: @escaping ([BraveWallet.BlockchainToken]) -> Void) {
+  func allUserAssets(completion: @escaping ([BraveWallet.BlockchainToken]) -> Void) {
     let allAssets = assets.values.flatMap { $0 }
     completion(Array(allAssets))
   }
 
-  func addUserAsset(_ token: BraveWallet.BlockchainToken, completion: @escaping (Bool) -> Void) {
+  func addUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (Bool) -> Void) {
     assets[token.chainId]?.append(token)
   }
 
-  func removeUserAsset(_ token: BraveWallet.BlockchainToken, completion: @escaping (Bool) -> Void) {
+  func removeUserAsset(token: BraveWallet.BlockchainToken, completion: @escaping (Bool) -> Void) {
     assets[token.chainId]?.removeAll(where: { $0.contractAddress == token.contractAddress })
   }
 
   func setUserAssetVisible(
-    _ token: BraveWallet.BlockchainToken,
+    token: BraveWallet.BlockchainToken,
     visible: Bool,
     completion: @escaping (Bool) -> Void
   ) {
@@ -55,8 +55,8 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     }
   }
 
-  func `import`(
-    from type: BraveWallet.ExternalWalletType,
+  func importFromExternalWallet(
+    type: BraveWallet.ExternalWalletType,
     password: String,
     newPassword: String,
     completion: @escaping (Bool, String?) -> Void
@@ -84,23 +84,23 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
 
-  func activeOrigin(_ completion: @escaping (BraveWallet.OriginInfo) -> Void) {
+  func activeOrigin(completion: @escaping (BraveWallet.OriginInfo) -> Void) {
     completion(.init())
   }
 
   func pendingSignMessageRequests(
-    _ completion: @escaping ([BraveWallet.SignMessageRequest]) -> Void
+    completion: @escaping ([BraveWallet.SignMessageRequest]) -> Void
   ) {
     completion([])
   }
 
   func pendingAddSuggestTokenRequests(
-    _ completion: @escaping ([BraveWallet.AddSuggestTokenRequest]) -> Void
+    completion: @escaping ([BraveWallet.AddSuggestTokenRequest]) -> Void
   ) {
     completion([])
   }
 
-  func defaultBaseCurrency(_ completion: @escaping (String) -> Void) {
+  func defaultBaseCurrency(completion: @escaping (String) -> Void) {
     completion(defaultCurrency.code)
   }
 
@@ -108,7 +108,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     defaultCurrency = CurrencyCode(code: currency)
   }
 
-  func defaultBaseCryptocurrency(_ completion: @escaping (String) -> Void) {
+  func defaultBaseCryptocurrency(completion: @escaping (String) -> Void) {
     completion(defaultCryptocurrency)
   }
 
@@ -117,14 +117,14 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func isExternalWalletInstalled(
-    _ type: BraveWallet.ExternalWalletType,
+    type: BraveWallet.ExternalWalletType,
     completion: @escaping (Bool) -> Void
   ) {
     completion(false)
   }
 
   func isExternalWalletInitialized(
-    _ type: BraveWallet.ExternalWalletType,
+    type: BraveWallet.ExternalWalletType,
     completion: @escaping (Bool) -> Void
   ) {
     completion(false)
@@ -138,17 +138,17 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
 
-  func add(_ observer: BraveWalletBraveWalletServiceObserver) {
+  func addObserver(_ observer: BraveWalletBraveWalletServiceObserver) {
   }
 
-  func add(_ observer: BraveWalletBraveWalletServiceTokenObserver) {
+  func addTokenObserver(_ observer: BraveWalletBraveWalletServiceTokenObserver) {
   }
 
   func setDefaultWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
   }
 
   func notifySignMessageRequestProcessed(
-    _ approved: Bool,
+    approved: Bool,
     id: Int32,
     signature: BraveWallet.ByteArrayStringUnion?,
     error: String?
@@ -163,7 +163,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   ) {
   }
 
-  func notifyAddSuggestTokenRequestsProcessed(_ approved: Bool, contractAddresses: [String]) {
+  func notifyAddSuggestTokenRequestsProcessed(approved: Bool, contractAddresses: [String]) {
   }
 
   func reset() {
@@ -173,7 +173,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion("", "")
   }
 
-  func notifyGetPublicKeyRequestProcessed(_ requestId: String, approved: Bool) {
+  func notifyGetPublicKeyRequestProcessed(requestId: String, approved: Bool) {
   }
 
   func pendingGetEncryptionPublicKeyRequests() async -> [BraveWallet.GetEncryptionPublicKeyRequest]
@@ -181,7 +181,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     return []
   }
 
-  func notifyDecryptRequestProcessed(_ requestId: String, approved: Bool) {
+  func notifyDecryptRequestProcessed(requestId: String, approved: Bool) {
   }
 
   func pendingDecryptRequests() async -> [BraveWallet.DecryptRequest] {
@@ -205,13 +205,13 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func hasPermission(
-    _ accounts: [BraveWallet.AccountId],
+    accounts: [BraveWallet.AccountId],
     completion: @escaping (Bool, [BraveWallet.AccountId]) -> Void
   ) {
     completion(false, [])
   }
 
-  func resetPermission(_ accountId: BraveWallet.AccountId, completion: @escaping (Bool) -> Void) {
+  func resetPermission(accountId: BraveWallet.AccountId, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
@@ -226,13 +226,13 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(.init())
   }
 
-  func webSites(withPermission coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void)
+  func webSitesWithPermission(coin: BraveWallet.CoinType, completion: @escaping ([String]) -> Void)
   {
     completion([])
   }
 
   func resetWebSitePermission(
-    _ coin: BraveWallet.CoinType,
+    coin: BraveWallet.CoinType,
     formedWebsite: String,
     completion: @escaping (Bool) -> Void
   ) {
@@ -240,19 +240,19 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func pendingSignTransactionRequests(
-    _ completion: @escaping ([BraveWallet.SignTransactionRequest]) -> Void
+    completion: @escaping ([BraveWallet.SignTransactionRequest]) -> Void
   ) {
     completion([])
   }
 
   func pendingSignAllTransactionsRequests(
-    _ completion: @escaping ([BraveWallet.SignAllTransactionsRequest]) -> Void
+    completion: @escaping ([BraveWallet.SignAllTransactionsRequest]) -> Void
   ) {
     completion([])
   }
 
   func notifySignTransactionRequestProcessed(
-    _ approved: Bool,
+    approved: Bool,
     id: Int32,
     signature: BraveWallet.ByteArrayStringUnion?,
     error: String?
@@ -260,46 +260,53 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func notifySignAllTransactionsRequestProcessed(
-    _ approved: Bool,
+    approved: Bool,
     id: Int32,
     signatures: [BraveWallet.ByteArrayStringUnion]?,
     error: String?
   ) {
   }
 
-  func base58Encode(_ addresses: [[NSNumber]], completion: @escaping ([String]) -> Void) {
+  func base58Encode(addresses: [[NSNumber]], completion: @escaping ([String]) -> Void) {
     completion([])
   }
 
-  func isPermissionDenied(_ coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
+  func isPermissionDenied(coin: BraveWallet.CoinType, completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
   func onOnboardingShown() {
   }
 
-  func defaultEthereumWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+  func defaultEthereumWallet(completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
     completion(.braveWallet)
   }
 
-  func defaultSolanaWallet(_ completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
+  func defaultSolanaWallet(completion: @escaping (BraveWallet.DefaultWallet) -> Void) {
     completion(.braveWallet)
   }
 
-  func setDefaultEthereumWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
+  func setDefaultEthereumWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
-  func setDefaultSolanaWallet(_ defaultEthWallet: BraveWallet.DefaultWallet) {
+  func setDefaultSolanaWallet(defaultWallet: BraveWallet.DefaultWallet) {
   }
 
-  func discoverAssetsOnAllSupportedChains() {
-  }
-
-  func nftDiscoveryEnabled(_ completion: @escaping (Bool) -> Void) {
+  func nftDiscoveryEnabled(completion: @escaping (Bool) -> Void) {
     completion(false)
   }
 
   func setNftDiscoveryEnabled(_ enabled: Bool) {
+  }
+
+  func privateWindowsEnabled(completion: @escaping (Bool) -> Void) {
+    completion(false)
+  }
+
+  func isPrivateWindow(completion: @escaping (Bool) -> Void) {
+  }
+
+  func setPrivateWindowsEnabled(_ enabled: Bool) {
   }
 
   func chainId(forActiveOrigin coin: BraveWallet.CoinType, completion: @escaping (String) -> Void) {
@@ -314,16 +321,16 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion(false)
   }
 
-  func balanceScannerSupportedChains(_ completion: @escaping ([String]) -> Void) {
+  func balanceScannerSupportedChains(completion: @escaping ([String]) -> Void) {
     completion([])
   }
 
-  func discoverEthAllowances(_ completion: @escaping ([BraveWallet.AllowanceInfo]) -> Void) {
+  func discoverEthAllowances(completion: @escaping ([BraveWallet.AllowanceInfo]) -> Void) {
     completion([])
   }
 
   func setAssetSpamStatus(
-    _ token: BraveWallet.BlockchainToken,
+    token: BraveWallet.BlockchainToken,
     status: Bool,
     completion: @escaping (Bool) -> Void
   ) {
@@ -331,7 +338,7 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
   }
 
   func simpleHashSpamNfTs(
-    _ walletAddress: String,
+    walletAddress: String,
     chainIds: [String],
     coin: BraveWallet.CoinType,
     cursor: String?,
@@ -340,48 +347,60 @@ class MockBraveWalletService: BraveWalletBraveWalletService {
     completion([], nil)
   }
 
-  func ensureSelectedAccount(
-    forChain coin: BraveWallet.CoinType,
+  func ensureSelectedAccountForChain(
+    coin: BraveWallet.CoinType,
     chainId: String,
     completion: @escaping (BraveWallet.AccountId?) -> Void
   ) {
     completion(nil)
   }
 
-  func networkForSelectedAccount(
-    onActiveOrigin completion: @escaping (BraveWallet.NetworkInfo?) -> Void
+  func networkForSelectedAccountOnActiveOrigin(
+    completion: @escaping (BraveWallet.NetworkInfo?) -> Void
   ) {
     completion(nil)
   }
 
   func setNetworkForSelectedAccountOnActiveOrigin(
-    _ chainId: String,
+    chainId: String,
     completion: @escaping (Bool) -> Void
   ) {
     completion(false)
   }
 
-  func convertFevm(
-    toFvmAddress isMainnet: Bool,
+  func convertFevmToFvmAddress(
+    isMainnet: Bool,
     fevmAddresses: [String],
     completion: @escaping ([String: String]) -> Void
   ) {
     completion([:])
   }
 
-  func pendingSignMessageErrors(_ completion: @escaping ([BraveWallet.SignMessageError]) -> Void) {
+  func pendingSignMessageErrors(completion: @escaping ([BraveWallet.SignMessageError]) -> Void) {
     completion([])
   }
 
-  func notifySignMessageErrorProcessed(_ errorId: String) {
+  func notifySignMessageErrorProcessed(errorId: String) {
 
   }
 
   func generateReceiveAddress(
-    _ accountId: BraveWallet.AccountId,
+    accountId: BraveWallet.AccountId,
     completion: @escaping (String?, String?) -> Void
   ) {
     completion(nil, "Error Message")
+  }
+
+  func discoverAssetsOnAllSupportedChains(bypassRateLimit: Bool) {
+  }
+
+  func transactionSimulationOptInStatus(
+    completion: @escaping (BraveWallet.BlowfishOptInStatus) -> Void
+  ) {
+    completion(.unset)
+  }
+
+  func setTransactionSimulationOptInStatus(_ status: BraveWallet.BlowfishOptInStatus) {
   }
 }
 #endif

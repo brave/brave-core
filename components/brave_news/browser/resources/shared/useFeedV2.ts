@@ -20,6 +20,8 @@ const feedTypeToFeedView = (type: FeedV2Type | undefined): FeedView => {
 }
 
 const FEED_KEY = 'feedV2'
+const FEED_TYPE_KEY = `${FEED_KEY}-type`
+
 const localCache: { [feedView: string]: FeedV2 } = {}
 const saveFeed = (feed?: FeedV2) => {
   if (!feed || !feed.items.length) {
@@ -28,7 +30,8 @@ const saveFeed = (feed?: FeedV2) => {
     return
   }
 
-  localCache[feedTypeToFeedView(feed.type)] = feed
+  const type = feedTypeToFeedView(feed.type)
+  localCache[type] = feed
 
   // Note: We have to provide a replacer, because BigInt can't be serialized to JSON
   const data = JSON.stringify(feed, (_, value) => typeof value === "bigint"
@@ -43,6 +46,7 @@ const saveFeed = (feed?: FeedV2) => {
 
   try {
     localStorage.setItem(FEED_KEY, data)
+    localStorage.setItem(FEED_TYPE_KEY, type)
   } catch (err) {
     console.log(err)
   }
@@ -86,6 +90,13 @@ const maybeLoadFeed = (view?: FeedView) => {
     : undefined
 }
 
+const maybeLoadFeedView = (feed?: FeedV2): FeedView => {
+  if (feed) {
+    return feedTypeToFeedView(feed.type)
+  }
+  return localStorage.getItem(FEED_TYPE_KEY) as FeedView ?? 'all'
+}
+
 const fetchFeed = (feedView: FeedView) => {
   let promise: Promise<{ feed: FeedV2 }> | undefined
   if (feedView.startsWith('publishers/')) {
@@ -126,7 +137,7 @@ addFeedListener(latestHash => {
 
 export const useFeedV2 = (enabled: boolean) => {
   const [feedV2, setFeedV2] = useState<FeedV2 | undefined>(maybeLoadFeed())
-  const [feedView, setFeedView] = useState<FeedView>(feedTypeToFeedView(feedV2?.type))
+  const [feedView, setFeedView] = useState<FeedView>(maybeLoadFeedView(feedV2))
   const [hash, setHash] = useState<string>()
 
   // Add a listener for the latest hash if Brave News is enabled. Note: We need

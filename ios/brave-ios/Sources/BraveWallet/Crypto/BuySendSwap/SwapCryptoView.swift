@@ -241,6 +241,9 @@ struct SwapCryptoView: View {
 
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
+    // TODO(stephenheaps): Once LiFiQuote is supported, we need to
+    // update this disclaimer to include LiFi description & privacy
+    // policy https://github.com/brave/brave-browser/issues/36436
     networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
   }
 
@@ -537,7 +540,7 @@ struct SwapCryptoView: View {
   }
 
   @ViewBuilder private var feesFooter: some View {
-    if swapTokensStore.braveFeeForDisplay != nil || swapTokensStore.protocolFeeForDisplay != nil {
+    if swapTokensStore.braveFeeForDisplay != nil {
       VStack(spacing: 4) {
         if let braveFeeForDisplay = swapTokensStore.braveFeeForDisplay {
           if swapTokensStore.isBraveFeeVoided {
@@ -550,9 +553,6 @@ struct SwapCryptoView: View {
           } else {
             Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, braveFeeForDisplay))
           }
-        }
-        if let protocolFee = swapTokensStore.protocolFeeForDisplay {
-          Text(String.localizedStringWithFormat(Strings.Wallet.protocolFeeLabel, protocolFee))
         }
       }
       .font(.footnote)

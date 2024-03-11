@@ -1780,6 +1780,14 @@ extension Strings {
       value: "Private video calls, right in your browser",
       comment: "The subtitle description of menu item Brave Talk"
     )
+    public static let braveLeoItemDescription = NSLocalizedString(
+      "optionsMenu.braveLeoItemDescription",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "Leo is an AI-powered smart assistant, built right into the browser",
+      comment:
+        "The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated."
+    )
     public static let braveNewsItemTitle = NSLocalizedString(
       "optionsMenu.braveNewsItemTitle",
       tableName: "BraveShared",
@@ -2024,7 +2032,14 @@ extension Strings {
     tableName: "BraveShared",
     bundle: .module,
     value: "Brave Rewards",
-    comment: "Brave Rewards settings title"
+    comment: "Brave Rewards title"
+  )
+  public static let braveRewardsSettingsTitle = NSLocalizedString(
+    "BraveRewardsSettingsTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Rewards",
+    comment: "Brave Rewards title in settings"
   )
   public static let hideRewardsIcon = NSLocalizedString(
     "HideRewardsIcon",
@@ -2232,7 +2247,7 @@ extension Strings {
         "settings.sendUsagePingDescription",
         tableName: "BraveShared",
         bundle: .module,
-        value: "This anonymous private ping lets Brave estimate active users.",
+        value: "This private ping lets Brave estimate active users.",
         comment: "Description to explain the daily usage ping toggle"
       )
   }
@@ -3300,6 +3315,13 @@ extension Strings {
     value: "Brave Shields & Privacy",
     comment: ""
   )
+  public static let braveShieldsAndPrivacySettingsTitle = NSLocalizedString(
+    "BraveShieldsAndPrivacyTitle",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Shields & Privacy",
+    comment: ""
+  )
   public static let bookmarksImportAction = NSLocalizedString(
     "bookmarksImportAction",
     tableName: "BraveShared",
@@ -3944,6 +3966,14 @@ extension Strings {
     bundle: .module,
     value: "Settings",
     comment: "Title for settings menu item"
+  )
+  public static let leoMenuItem = NSLocalizedString(
+    "LeoMenuItem",
+    tableName: "BraveShared",
+    bundle: .module,
+    value: "Leo",
+    comment:
+      "Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated"
   )
   public static let passwordsMenuItem = NSLocalizedString(
     "PasswordsMenuItem",
@@ -8945,6 +8975,13 @@ extension Strings {
       value: "Brave News",
       comment: "The name of the feature"
     )
+    public static let braveNewsTitle = NSLocalizedString(
+      "today.braveToday.title",
+      tableName: "BraveShared",
+      bundle: .module,
+      value: "News",
+      comment: "The name of the feature in settings"
+    )
     public static let sourcesAndSettings = NSLocalizedString(
       "today.sourcesAndSettings",
       tableName: "BraveShared",
@@ -10777,7 +10814,7 @@ extension Strings {
       tableName: "BraveShared",
       bundle: .module,
       value:
-        "Anonymised P3A info helps Brave estimate overall usage and ensure we're improving popular features.",
+        "These private responses help Brave estimate the overall usage of certain features and make them better for you.",
       comment: "A subtitle shown on the setting that toggles analytics on Brave."
     )
 
@@ -10950,15 +10987,6 @@ extension Strings {
 
 extension Strings {
   public struct VoiceSearch {
-    public static let screenTitle =
-      NSLocalizedString(
-        "voice.search.screenn.title",
-        tableName: "BraveShared",
-        bundle: .module,
-        value: "Voice Search",
-        comment: "Title for screen to search using voice."
-      )
-
     public static let screenDisclaimer =
       NSLocalizedString(
         "voice.search.screen.disclaimer",

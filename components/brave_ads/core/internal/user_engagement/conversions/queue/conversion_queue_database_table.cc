@@ -517,7 +517,7 @@ void ConversionQueue::Delete(
   RunTransaction(std::move(transaction), std::move(callback));
 }
 
-void ConversionQueue::Update(
+void ConversionQueue::MarkAsProcessed(
     const ConversionQueueItemInfo& conversion_queue_item,
     ResultCallback callback) const {
   mojom::DBTransactionInfoPtr transaction = mojom::DBTransactionInfo::New();
@@ -530,8 +530,8 @@ void ConversionQueue::Update(
           SET
             was_processed = 1
           WHERE
-            was_processed == 0
-            AND creative_instance_id == '$2';)",
+            was_processed = 0
+            AND creative_instance_id = '$2';)",
       {GetTableName(), conversion_queue_item.conversion.creative_instance_id},
       nullptr);
   transaction->commands.push_back(std::move(command));
@@ -590,7 +590,7 @@ void ConversionQueue::GetNext(GetConversionQueueCallback callback) const {
           FROM
             $1
           WHERE
-            was_processed == 0
+            was_processed = 0
           ORDER BY
             process_at ASC
           LIMIT
@@ -631,7 +631,7 @@ void ConversionQueue::GetForCreativeInstanceId(
           FROM
             $1
           WHERE
-            creative_instance_id == '$2'
+            creative_instance_id = '$2'
           ORDER BY
             process_at ASC;)",
       {GetTableName(), creative_instance_id}, nullptr);

@@ -14,6 +14,7 @@ public class BraveCachedFlag extends CachedFlag {
     private static final String START_SURFACE_ANDROID = "StartSurfaceAndroid";
     private static final String INCOGNITO_REAUTHENTICATION_FOR_ANDROID =
             "IncognitoReauthenticationForAndroid";
+    private static final String SURFACE_POLISH = "SurfacePolish";
 
     // Set of flags to override.
     private static final HashMap<String, Boolean> sFlags;
@@ -21,6 +22,7 @@ public class BraveCachedFlag extends CachedFlag {
     static {
         sFlags = new HashMap<String, Boolean>();
         sFlags.put(START_SURFACE_ANDROID, false);
+        sFlags.put(SURFACE_POLISH, false);
         sFlags.put(INCOGNITO_REAUTHENTICATION_FOR_ANDROID, true);
     }
 

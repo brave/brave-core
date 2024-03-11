@@ -511,16 +511,19 @@ struct SwapQuoteParams {
 union SwapTransactionParamsUnion {
   JupiterTransactionParams jupiter_transaction_params;
   SwapQuoteParams zero_ex_transaction_params;
+  LiFiStep lifi_transaction_params;
 };
 
 union SwapQuoteUnion {
   JupiterQuote jupiter_quote;
   ZeroExQuote zero_ex_quote;
+  LiFiQuote lifi_quote;
 };
 
 union SwapTransactionUnion {
   string jupiter_transaction;
   ZeroExQuote zero_ex_transaction;
+  LiFiTransactionUnion lifi_transaction;
 };
 
 struct ZeroExSource {
@@ -578,6 +581,7 @@ struct ZeroExError {
 union SwapErrorUnion {
   JupiterError jupiter_error;
   ZeroExError zero_ex_error;
+  LiFiError lifi_error;
 };
 
 // Structs to model Jupiter (swap) HTTP API interactions
@@ -632,7 +636,113 @@ struct JupiterError {
   bool is_insufficient_liquidity;
 };
 
-enum DiscountCode {
+enum LiFiStepType {
+  kSwap,
+  kCross,
+  kNative
+};
+
+struct LiFiToolDetails {
+  string key;
+  string name;
+  string logo;
+};
+
+struct LiFiInsurance {
+  string state;
+  string fee_amount_usd;
+};
+
+struct LiFiAction {
+  BlockchainToken from_token;
+  string from_amount;
+  BlockchainToken to_token;
+  string slippage;
+
+  string? from_address;
+  string? to_address;
+  string? destination_call_data;
+};
+
+struct LiFiFeeCost {
+  string name;
+  string description;
+  string percentage;
+  BlockchainToken token;
+  string amount;
+  bool included;
+};
+
+struct LiFiGasCost {
+  string type;
+  string estimate;
+  string limit;
+  string amount;
+  BlockchainToken token;
+};
+
+struct LiFiStepEstimate {
+  string tool;
+  string from_amount;
+  string to_amount;
+  string to_amount_min;
+  string approval_address;
+  string execution_duration;
+  array<LiFiFeeCost> fee_costs;
+  array<LiFiGasCost> gas_costs;
+};
+
+struct LiFiStep {
+  string id;
+  LiFiStepType type;
+  string tool;
+  LiFiToolDetails tool_details;
+  LiFiAction action;
+  LiFiStepEstimate estimate;
+
+  // Not defined in included steps
+  string? integrator;
+  array<LiFiStep>? included_steps;
+};
+
+struct LiFiRoute {
+  string id;
+  BlockchainToken from_token;
+  string from_amount;
+  string from_address;
+  BlockchainToken to_token;
+  string to_amount;
+  string to_amount_min;
+  string to_address;
+  array<LiFiStep> steps;
+  LiFiInsurance insurance;
+  array<string> tags;
+};
+
+struct LiFiQuote {
+  array<LiFiRoute> routes;
+};
+
+union LiFiTransactionUnion {
+  string solana_transaction;
+  LiFiEVMTransaction evm_transaction;
+};
+
+struct LiFiEVMTransaction {
+  string data;
+  string from;
+  string to;
+  string chain_id;
+  string value;
+  string gas_price;
+  string gas_limit;
+};
+
+struct LiFiError {
+  string message;
+};
+
+enum SwapDiscountCode {
   // No discount
   kNone = 0,
 
@@ -643,21 +753,17 @@ enum DiscountCode {
   kUnknownJupiterOutputMint = 1,
 };
 
-struct BraveSwapFeeParams {
-  string chain_id;
-  string input_token;
-  string output_token;
-  string taker;
-};
-
-struct BraveSwapFeeResponse {
+struct SwapFees {
+  // The fee value to use for fetching quotes. The representation of this value
+  // is contextual to the underlying API being used.
+  //
+  // An empty value indicates that no fee value should be supplied to the
+  // API.
   string fee_param;
-  string protocol_fee_pct;
-  string brave_fee_pct;
-  string discount_on_brave_fee_pct;
+  string fee_pct;
+  string discount_pct;
   string effective_fee_pct;
-  DiscountCode discount_code;
-  bool has_brave_fee;
+  SwapDiscountCode discount_code;
 };
 
 const string kLedgerHardwareVendor = "Ledger";
@@ -744,6 +850,7 @@ struct WalletInfo {
   bool is_z_cash_enabled;
   bool is_nft_pinning_feature_enabled;
   bool is_ankr_balances_feature_enabled;
+  bool is_transaction_simulations_feature_enabled;
 };
 
 // Browser-side handler for common panel / page things
@@ -995,19 +1102,21 @@ interface AssetRatioService {
   GetCoinMarkets(string vs_asset, uint8 limit) => (bool success, array<CoinMarket> values);
 };
 
-// Implements swapping related functionality through the 0x API.
+// Implements cross-chain swap functionality using 0x, Jupiter, and LiFi APIs
 interface SwapService {
   GetQuote(SwapQuoteParams params) =>
-      (SwapQuoteUnion? response, SwapErrorUnion? error, string error_string);
+    (SwapQuoteUnion? response,
+     SwapFees? fees,
+     SwapErrorUnion? error,
+     string error_string);
 
   GetTransaction(SwapTransactionParamsUnion params) =>
-      (SwapTransactionUnion? response, SwapErrorUnion? error, string error_string);
+    (SwapTransactionUnion? response,
+     SwapErrorUnion? error,
+     string error_string);
 
   // Obtains whether the given chain id supports swap
   IsSwapSupported(string chain_id) => (bool result);
-
-  GetBraveFee(BraveSwapFeeParams params) =>
-      (BraveSwapFeeResponse? response, string error_string);
 };
 
 interface IpfsService {
@@ -2032,12 +2141,16 @@ interface BraveWalletService {
 
   Base58Encode(array<array<uint8>> addresses) => (array<string> addresses);
 
-  DiscoverAssetsOnAllSupportedChains();
+  DiscoverAssetsOnAllSupportedChains(bool bypass_rate_limit);
 
   GetNftDiscoveryEnabled() => (bool enabled);
 
   // Calling this setter should be approved by privacy review.
   SetNftDiscoveryEnabled(bool enabled);
+
+  GetPrivateWindowsEnabled() => (bool enabled);
+
+  SetPrivateWindowsEnabled(bool enabled);
 
   // Returns a list of chain_ids for which GetERC20TokenBalances
   // is supported
@@ -2066,6 +2179,12 @@ interface BraveWalletService {
     => (string? address, string? error_message);
 
   GetAnkrSupportedChainIds() => (array<string> chain_ids);
+
+  IsPrivateWindow() => (bool is_private_window);
+
+  GetTransactionSimulationOptInStatus() => (BlowfishOptInStatus status);
+
+  SetTransactionSimulationOptInStatus(BlowfishOptInStatus status);
 };
 
 // For reporting wallet related P3A metrics.
@@ -2075,9 +2194,6 @@ interface BraveWalletP3A {
 
   // Called when a Wallet onboarding action is performed.
   ReportOnboardingAction(OnboardingAction onboarding_action);
-
-  // Called when a mainnet transaction is sent.
-  ReportTransactionSent(CoinType coin, bool new_send);
 
   // Called to report an active wallet count for P3A
   RecordActiveWalletCount(int32 count, CoinType coin_type);
@@ -2457,6 +2573,12 @@ enum BlowfishSolanaErrorKind {
 enum BlowfishSuggestedColor {
   kCredit,
   kDebit
+};
+
+enum BlowfishOptInStatus {
+  kUnset = 1,
+  kAllowed = 2,
+  kDenied = 3,
 };
 
 struct BlowfishPrice {

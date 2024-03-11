@@ -17,8 +17,8 @@ class Browser;
 
 class PlaylistActionIconView : public PageActionIconView,
                                public playlist::PlaylistTabHelperObserver {
+  METADATA_HEADER(PlaylistActionIconView, PageActionIconView)
  public:
-  METADATA_HEADER(PlaylistActionIconView);
 
   PlaylistActionIconView(
       CommandUpdater* command_updater,

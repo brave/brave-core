@@ -17,7 +17,7 @@
 #include "components/url_formatter/spoof_checks/top_domains/domains-trie-inc.cc"
 #include "components/url_formatter/spoof_checks/top_domains/top_domain_util.h"
 #include "components/url_formatter/url_formatter.h"
-#include "net/base/mac/url_conversions.h"
+#include "net/base/apple/url_conversions.h"
 #include "url/gurl.h"
 #include "url/origin.h"
 

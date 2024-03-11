@@ -205,13 +205,13 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
       switch assetDetailType {
       case .blockchainToken(let token):
         // not come from Market tab
-        let allNetworks = await rpcService.allNetworks(token.coin)
-        let selectedNetwork = await rpcService.network(token.coin, origin: nil)
+        let allNetworks = await rpcService.allNetworks(coin: token.coin)
+        let selectedNetwork = await rpcService.network(coin: token.coin, origin: nil)
         let network = allNetworks.first(where: { $0.chainId == token.chainId }) ?? selectedNetwork
         self.network = network
         self.isBuySupported = await self.isBuyButtonSupported(in: network, for: token.symbol)
         self.isSendSupported = true
-        self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
+        self.isSwapSupported = await swapService.isSwapSupported(chainId: token.chainId)
 
         // fetch accounts
         self.allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter {
@@ -256,7 +256,10 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
           networks: [network],
           includingUserDeleted: true
         ).flatMap { $0.tokens }
-        let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
+        let allTokens = await blockchainRegistry.allTokens(
+          chainId: network.chainId,
+          coin: network.coin
+        )
         let allTransactions = await txService.allTransactions(
           networksForCoin: [network.coin: [network]],
           for: allAccountsForTokenCoin
@@ -335,7 +338,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
 
         let selectedCoin = await keyringService.allAccounts().selectedAccount?.coin ?? .eth
         // selected network used because we don't have `chainId` on CoinMarket
-        let selectedNetwork = await self.rpcService.network(selectedCoin, origin: nil)
+        let selectedNetwork = await self.rpcService.network(coin: selectedCoin, origin: nil)
         self.isBuySupported = await self.isBuyButtonSupported(
           in: selectedNetwork,
           for: coinMarket.symbol
@@ -375,7 +378,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     var assetPrices: [BraveWallet.AssetPrice] = []
     var btcRatio = "0.0000 BTC"
     let (_, prices) = await assetRatioService.price(
-      [tokenId],
+      fromAssets: [tokenId],
       toAssets: [currencyFormatter.currencyCode, "btc"],
       timeframe: timeframe
     )
@@ -387,7 +390,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     }
     // fetch price history for the asset
     let (_, priceHistory) = await assetRatioService.priceHistory(
-      tokenId,
+      asset: tokenId,
       vsAsset: currencyFormatter.currencyCode,
       timeframe: timeframe
     )
@@ -582,22 +585,22 @@ extension AssetDetailStore: BraveWalletKeyringServiceObserver {
   func autoLockMinutesChanged() {
   }
 
-  func selectedWalletAccountChanged(_ account: BraveWallet.AccountInfo) {
+  func selectedWalletAccountChanged(account: BraveWallet.AccountInfo) {
   }
 
-  func selectedDappAccountChanged(_ coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
+  func selectedDappAccountChanged(coin: BraveWallet.CoinType, account: BraveWallet.AccountInfo?) {
   }
 
-  func accountsAdded(_ addedAccounts: [BraveWallet.AccountInfo]) {
+  func accountsAdded(addedAccounts: [BraveWallet.AccountInfo]) {
   }
 }
 
 extension AssetDetailStore: BraveWalletTxServiceObserver {
-  func onNewUnapprovedTx(_ txInfo: BraveWallet.TransactionInfo) {
+  func onNewUnapprovedTx(txInfo: BraveWallet.TransactionInfo) {
   }
-  func onUnapprovedTxUpdated(_ txInfo: BraveWallet.TransactionInfo) {
+  func onUnapprovedTxUpdated(txInfo: BraveWallet.TransactionInfo) {
   }
-  func onTransactionStatusChanged(_ txInfo: BraveWallet.TransactionInfo) {
+  func onTransactionStatusChanged(txInfo: BraveWallet.TransactionInfo) {
     update()
   }
   func onTxServiceReset() {
@@ -605,32 +608,32 @@ extension AssetDetailStore: BraveWalletTxServiceObserver {
 }
 
 extension AssetDetailStore: BraveWalletBraveWalletServiceObserver {
-  public func onActiveOriginChanged(_ originInfo: BraveWallet.OriginInfo) {
+  public func onActiveOriginChanged(originInfo: BraveWallet.OriginInfo) {
   }
 
   public func onDefaultWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
   }
 
-  public func onDefaultBaseCurrencyChanged(_ currency: String) {
+  public func onDefaultBaseCurrencyChanged(currency: String) {
     currencyCode = currency
   }
 
-  public func onDefaultBaseCryptocurrencyChanged(_ cryptocurrency: String) {
+  public func onDefaultBaseCryptocurrencyChanged(cryptocurrency: String) {
   }
 
   public func onNetworkListChanged() {
   }
 
-  func onDefaultEthereumWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  func onDefaultEthereumWalletChanged(wallet: BraveWallet.DefaultWallet) {
   }
 
-  func onDefaultSolanaWalletChanged(_ wallet: BraveWallet.DefaultWallet) {
+  func onDefaultSolanaWalletChanged(wallet: BraveWallet.DefaultWallet) {
   }
 
   func onDiscoverAssetsStarted() {
   }
 
-  func onDiscoverAssetsCompleted(_ discoveredAssets: [BraveWallet.BlockchainToken]) {
+  func onDiscoverAssetsCompleted(discoveredAssets: [BraveWallet.BlockchainToken]) {
   }
 
   func onResetWallet() {

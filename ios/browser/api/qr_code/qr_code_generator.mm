@@ -4,9 +4,11 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/ios/browser/api/qr_code/qr_code_generator.h"
+
 #include "base/strings/sys_string_conversions.h"
-#include "brave/ios/browser/qr_code_generator/qrcode_generator_service.h"
+#include "base/types/expected.h"
 #include "brave/ios/browser/qr_code_generator/qrcode_models.h"
+#include "components/qr_code_generator/bitmap_generator.h"
 
 #include "ui/gfx/image/image.h"
 #include "ui/gfx/image/image_skia.h"
@@ -19,7 +21,7 @@
 
 // MARK: - BraveQRCodeGeneratorOptions
 @interface BraveQRCodeGeneratorOptions () {
-  std::unique_ptr<qrcode_generator::GenerateQRCodeRequest> request_;
+  std::unique_ptr<qr_code_generator::GenerateQRCodeOptions> options_;
 }
 @end
 
@@ -31,40 +33,43 @@
           renderLocatorStyle:
               (BraveQRCodeGeneratorLocatorStyle)renderLocatorStyle {
   if ((self = [super init])) {
-    request_ = std::make_unique<qrcode_generator::GenerateQRCodeRequest>(
+    options_ = std::make_unique<qr_code_generator::GenerateQRCodeOptions>(
         base::SysNSStringToUTF8(data), shouldRender, renderLogoInCenter,
-        static_cast<qrcode_generator::ModuleStyle>(renderModuleStyle),
-        static_cast<qrcode_generator::LocatorStyle>(renderLocatorStyle));
+        static_cast<qr_code_generator::ModuleStyle>(renderModuleStyle),
+        static_cast<qr_code_generator::LocatorStyle>(renderLocatorStyle));
   }
   return self;
 }
 
 - (void)dealloc {
-  request_.reset();
+  options_.reset();
 }
 
-- (qrcode_generator::GenerateQRCodeRequest*)nativeRequest {
-  return request_.get();
+- (qr_code_generator::GenerateQRCodeOptions*)nativeOptions {
+  return options_.get();
 }
 @end
 
 // MARK: - BraveQRCodeGeneratorResult
 
 @implementation BraveQRCodeGeneratorResult
-- (instancetype)initWithResponse:
-    (qrcode_generator::GenerateQRCodeResponse*)response {
+- (instancetype)initWithOptions:
+    (base::expected<qr_code_generator::QRImage, qr_code_generator::Error>)
+        options {
   if ((self = [super init])) {
-    _errorCode = static_cast<BraveQRCodeGeneratorError>(response->error_code);
+    if (options.has_value()) {
+      auto qr_image = options.value();
 
-    gfx::Image image = gfx::Image(gfx::ImageSkia::CreateFromBitmap(
-        response->bitmap, [[UIScreen mainScreen] scale]));
-    _image = image.IsEmpty() ? [[UIImage alloc] init] : image.ToUIImage();
+      gfx::Image image = gfx::Image(gfx::ImageSkia::CreateFromBitmap(
+          qr_image.bitmap, [[UIScreen mainScreen] scale]));
+      _image = image.IsEmpty() ? [[UIImage alloc] init] : image.ToUIImage();
+      _dataSize =
+          CGSizeMake(qr_image.data_size.width(), qr_image.data_size.height());
 
-    _data = [NSData dataWithBytes:response->data.data()
-                           length:response->data.size()];
-
-    _dataSize =
-        CGSizeMake(response->data_size.width(), response->data_size.height());
+      _errorCode = BraveQRCodeGeneratorErrorNone;
+    } else {
+      _errorCode = static_cast<BraveQRCodeGeneratorError>(options.error());
+    }
   }
   return self;
 }
@@ -74,9 +79,14 @@
 
 @implementation BraveQRCodeGenerator
 - (BraveQRCodeGeneratorResult*)generateQRCode:
-    (BraveQRCodeGeneratorOptions*)request {
-  auto response = qrcode_generator::QRCodeGeneratorService().generateQRCode(
-      [request nativeRequest]);
-  return [[BraveQRCodeGeneratorResult alloc] initWithResponse:response.get()];
+    (BraveQRCodeGeneratorOptions*)options {
+  auto* native_options = [options nativeOptions];
+  auto qr_image = qr_code_generator::GenerateBitmap(
+      base::as_byte_span(native_options->data),
+      native_options->render_module_style, native_options->render_locator_style,
+      native_options->render_dino
+          ? qr_code_generator::CenterImage::kDino
+          : qr_code_generator::CenterImage::kNoCenterImage);
+  return [[BraveQRCodeGeneratorResult alloc] initWithOptions:qr_image];
 }
 @end

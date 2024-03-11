@@ -41,7 +41,8 @@ import {
   AddAcountIcon,
   IconCircle,
   WhiteSpace,
-  NavButton
+  NavButton,
+  DurationLabel
 } from './connect-with-site-panel.style'
 import {
   ConnectPanelButton,
@@ -62,6 +63,7 @@ import { useBalancesFetcher } from '../../../common/hooks/use-balances-fetcher'
 import {
   useCancelConnectToSiteMutation,
   useConnectToSiteMutation,
+  useGetIsPrivateWindowQuery,
   useGetVisibleNetworksQuery
 } from '../../../common/slices/api.slice'
 
@@ -95,6 +97,9 @@ export const ConnectWithSite = (props: Props) => {
 
   // Refs
   let scrollRef = React.useRef<HTMLDivElement | null>(null)
+
+  // Queries
+  const { data: isPrivateWindow } = useGetIsPrivateWindowQuery()
 
   // Mutations
   const [connectToSite] = useConnectToSiteMutation()
@@ -227,10 +232,16 @@ export const ConnectWithSite = (props: Props) => {
               <SectionLabel>
                 {getLocale('braveWalletPermissionDuration')}
               </SectionLabel>
-              <PermissionDurationDropdown
-                selectedDuration={selectedDuration}
-                setSelectedDuration={setSelectedDuration}
-              />
+              {isPrivateWindow ? (
+                <DurationLabel>
+                  {getLocale('braveWalletPermissionUntilClose')}
+                </DurationLabel>
+              ) : (
+                <PermissionDurationDropdown
+                  selectedDuration={selectedDuration}
+                  setSelectedDuration={setSelectedDuration}
+                />
+              )}
               <VerticalDivider />
               <VerticalSpace space='8px' />
               <SectionLabel>

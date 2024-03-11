@@ -18,8 +18,8 @@ public struct BookmarkValidation {
 
   public static func validateBookmarklet(title: String?, url: String?) -> Bool {
     guard let url = url else { return validateTitle(title) }
-    if !url.isBookmarklet { return false }
-    guard let javascriptCode = url.bookmarkletCodeComponent else {
+    guard let bookmarklet = URL.bookmarkletURL(from: url) else { return false }
+    guard let javascriptCode = bookmarklet.bookmarkletCodeComponent else {
       return false
     }
 

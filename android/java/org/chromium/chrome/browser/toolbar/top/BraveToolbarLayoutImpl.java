@@ -73,9 +73,6 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.local_database.BraveStatsTable;
 import org.chromium.chrome.browser.local_database.DatabaseHelper;
 import org.chromium.chrome.browser.local_database.SavedBandwidthTable;
-import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
-import org.chromium.chrome.browser.notifications.BravePermissionUtils;
-import org.chromium.chrome.browser.notifications.RewardsYouAreNotEarningDialog;
 import org.chromium.chrome.browser.omnibox.LocationBarCoordinator;
 import org.chromium.chrome.browser.onboarding.OnboardingPrefManager;
 import org.chromium.chrome.browser.onboarding.SearchActivity;
@@ -373,11 +370,19 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void initPlaylistService() {
-        if (mPlaylistService != null) {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (mPlaylistService != null || currentTab == null) {
             return;
         }
 
-        mPlaylistService = PlaylistServiceFactoryAndroid.getInstance().getPlaylistService(this);
+        if (currentTab.isIncognito()) {
+            return;
+        }
+
+        mPlaylistService =
+                PlaylistServiceFactoryAndroid.getInstance()
+                        .getPlaylistService(
+                                Profile.fromWebContents(currentTab.getWebContents()), this);
     }
 
     @Override
@@ -471,17 +476,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                             }
                         }
 
-                        if (mBraveShieldsButton != null
-                                && mBraveShieldsButton.isShown()
-                                && mBraveShieldsHandler != null
-                                && !mBraveShieldsHandler.isShowing()
-                                && url.getSpec().contains("rewards")
-                                && ((!BravePermissionUtils.hasNotificationPermission(getContext()))
-                                        || BraveNotificationWarningDialog
-                                                .shouldShowRewardWarningDialog(getContext()))) {
-                            showNotificationNotEarningDialog();
-                        }
-
                         String countryCode = Locale.getDefault().getCountry();
                         if (countryCode.equals(BraveConstants.INDIA_COUNTRY_CODE)
                                 && url.domainIs(BraveConstants.YOUTUBE_DOMAIN)
@@ -491,21 +485,6 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
                                                 true)) {
                             ChromeSharedPreferences.getInstance()
                                     .writeBoolean(BravePreferenceKeys.BRAVE_OPENED_YOUTUBE, true);
-                        }
-                    }
-
-                    private void showNotificationNotEarningDialog() {
-                        try {
-                            RewardsYouAreNotEarningDialog rewardsYouAreNotEarningDialog =
-                                    RewardsYouAreNotEarningDialog.newInstance();
-                            rewardsYouAreNotEarningDialog.setCancelable(false);
-                            rewardsYouAreNotEarningDialog.show(
-                                    BraveActivity.getBraveActivity().getSupportFragmentManager(),
-                                    RewardsYouAreNotEarningDialog.RewardsYouAreNotEarningDialogTAG);
-
-                        } catch (BraveActivity.BraveActivityNotFoundException
-                                | IllegalStateException e) {
-                            Log.e(TAG, "showNotificationNotEarningDialog " + e);
                         }
                     }
 
@@ -582,10 +561,15 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
         }
     }
 
-    private static boolean isPlaylistEnabledByPrefsAndFlags() {
+    private boolean isPlaylistEnabledByPrefsAndFlags() {
+        Tab currentTab = getToolbarDataProvider().getTab();
+        if (currentTab == null) {
+            return false;
+        }
         return ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_PLAYLIST)
                 && ChromeSharedPreferences.getInstance()
-                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true);
+                        .readBoolean(BravePreferenceKeys.PREF_ENABLE_PLAYLIST, true)
+                && !currentTab.isIncognito();
     }
 
     private void hidePlaylistButton() {
@@ -617,7 +601,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
     }
 
     private void findMediaFiles(Tab tab) {
-        if (isPlaylistEnabledByPrefsAndFlags() && mPlaylistService != null) {
+        if (mPlaylistService != null && isPlaylistEnabledByPrefsAndFlags()) {
             hidePlaylistButton();
             mPlaylistService.findMediaFilesFromActiveTab((url, playlistItems) -> {});
         }
@@ -1638,6 +1622,7 @@ public abstract class BraveToolbarLayoutImpl extends ToolbarLayout
 
     @Override
     public void onMediaFilesUpdated(Url pageUrl, PlaylistItem[] items) {
+        if (items.length == 0) return;
         Tab currentTab = getToolbarDataProvider().getTab();
         if (currentTab == null || !pageUrl.url.equals(currentTab.getUrl().getSpec())) {
             return;

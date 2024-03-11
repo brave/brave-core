@@ -126,7 +126,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
         shared_url_loader_factory_,
         BraveWalletServiceDelegate::Create(profile_.get()), keyring_service_,
         json_rpc_service_, tx_service_, nullptr, nullptr, GetPrefs(),
-        GetLocalState());
+        GetLocalState(), false);
     simple_hash_client_ =
         std::make_unique<SimpleHashClient>(shared_url_loader_factory_);
     asset_discovery_manager_ = std::make_unique<AssetDiscoveryManager>(
@@ -173,7 +173,7 @@ class AssetDiscoveryManagerUnitTest : public testing::Test {
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_TRUE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     } else {
-      base::RunLoop().RunUntilIdle();
+      task_environment_.RunUntilIdle();
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsStartedFired());
       EXPECT_FALSE(wallet_service_observer_->OnDiscoverAssetsCompletedFired());
     }
