@@ -1,0 +1,7 @@
+Name: fpe
+URL: https://crates.io/crates/fpe
+Description: Traits for describing block ciphers and stream ciphers
+Version: 0.4.4
+Security Critical: yes
+License: Apache 2.0/MIT
+Revision: 913e533c9345d5c8e11aac42318fc5743d6f58e9

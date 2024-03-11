@@ -1,0 +1,7 @@
+Name: zcash_note_encryption
+URL: https://crates.io/crates/zcash_note_encryption
+Description: Note encryption for Zcash transactions
+Version: 0.4.0
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 80adb54e264eb5de362c6b1c3bae76737fc27252

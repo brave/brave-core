@@ -1,0 +1,7 @@
+Name: zcash_spec
+URL: https://crates.io/crates/zcash_spec
+Description: Low-level types for implementing Zcash specifications
+Version: 0.1.0
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 717ec1070e669caf4de97e1466aed45f5d9b46cd

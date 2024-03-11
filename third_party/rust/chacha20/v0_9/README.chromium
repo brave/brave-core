@@ -1,0 +1,7 @@
+Name: chacha20
+URL: https://crates.io/crates/chacha20
+Description: Apache2/MIT licensed
+Version: 0.9.1
+Security Critical: yes
+License: Apache 2.0/MIT
+Revision: b5d39c45c45df97335f4b6effb853cde97810de1

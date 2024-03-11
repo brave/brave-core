@@ -1,0 +1,7 @@
+Name: uint
+URL: https://crates.io/crates/uint
+Description: Large fixed-size integer arithmetic
+Version: 0.9
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: c41d51df8a314150c46cbbff31f8140a35dfb02c

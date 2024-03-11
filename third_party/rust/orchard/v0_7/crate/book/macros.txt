@@ -1,0 +1,36 @@
+# Conventions
+
+\bconcat:{\mathop{\kern 0.1em||\kern 0.1em}}
+\Repr:{\star}
+
+# Conversions
+
+\ItoLEBSP:{\mathsf{I2LEBSP}_{#1}}
+
+# Fields and curves
+
+\BaseLength:{\ell^\mathsf{#1\vphantom{p}}_{\mathsf{base}}}
+
+# Key components
+
+\AuthSignPublic:{\mathsf{ak}}
+\NullifierKey:{\mathsf{nk}}
+\InViewingKey:{\mathsf{ivk}}
+\DiversifiedTransmitBase:{\mathsf{g_d}}
+\DiversifiedTransmitBaseRepr:{\mathsf{g\Repr_d}}
+\DiversifiedTransmitPublic:{\mathsf{pk_d}}
+\DiversifiedTransmitPublicRepr:{\mathsf{pk\Repr_d}}
+
+# Commitments and hashes
+
+\SinsemillaHash:{\mathsf{SinsemillaHash}}
+\SinsemillaCommit:{\mathsf{SinsemillaCommit}}
+\SinsemillaShortCommit:{\mathsf{SinsemillaShortCommit}}
+\CommitIvk:{\mathsf{Commit}^{\InViewingKey}}
+\NoteCommit:{\mathsf{NoteCommit}}
+
+# Circuit constraint helper methods
+
+\BoolCheck:{\texttt{bool\_check}({#1})}
+\RangeCheck:{\texttt{range\_check}({#1, #2})}
+\ShortLookupRangeCheck:{\texttt{short\_lookup\_range\_check}({#1})}

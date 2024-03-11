@@ -1,0 +1,7 @@
+Name: orchard
+URL: https://crates.io/crates/orchard
+Description: The Orchard shielded transaction protocol
+Version: 0.7.0
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 23ce4687158acac1c52f30c7040069d4baa13056

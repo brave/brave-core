@@ -1,0 +1,7 @@
+Name: cipher
+URL: https://crates.io/crates/cipher
+Description: Format-preserving encryption
+Version: 0.6.1
+Security Critical: yes
+License: Apache 2.0/MIT
+Revision: 0af93f6076a76757c65cb2ef6f6abd9756440478

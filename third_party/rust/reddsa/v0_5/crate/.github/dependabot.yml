@@ -1,0 +1,22 @@
+version: 2
+updates:
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: daily
+    timezone: America/New_York
+  open-pull-requests-limit: 10
+  reviewers:
+  - dconnolly
+  assignees:
+  - dconnolly
+- package-ecosystem: cargo
+  directory: "/"
+  schedule:
+    interval: daily
+    timezone: America/New_York
+  open-pull-requests-limit: 10
+  reviewers:
+  - dconnolly
+  assignees:
+  - dconnolly

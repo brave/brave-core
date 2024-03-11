@@ -1,0 +1,27 @@
+[package]
+name = "poly1305"
+version = "0.8.0"
+authors = ["RustCrypto Developers"]
+license = "Apache-2.0 OR MIT"
+description = "The Poly1305 universal hash function and message authentication code"
+documentation = "https://docs.rs/poly1305"
+repository = "https://github.com/RustCrypto/universal-hashes"
+keywords = ["crypto", "chacha20", "mac", "salsa20", "universal-hashing"]
+categories = ["cryptography", "no-std"]
+readme = "README.md"
+rust-version = "1.56"
+edition = "2021"
+
+[dependencies]
+opaque-debug = "0.3"
+universal-hash = { version = "0.5", default-features = false }
+zeroize = { version = "1", optional = true, default-features = false }
+
+[target.'cfg(any(target_arch = "x86_64", target_arch = "x86"))'.dependencies]
+cpufeatures = "0.2"
+
+[dev-dependencies]
+hex-literal = "0.3"
+
+[features]
+std = ["universal-hash/std"]

@@ -1,0 +1,7 @@
+Name: maybe_rayon
+URL: https://crates.io/crates/maybe-rayon
+Description: Either acts as rayon or creates a single-threaded facade
+Version: 0.1.1
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 73128cfb26624d9ceef7d0796e868904841f611d

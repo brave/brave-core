@@ -1,0 +1,7 @@
+Name: aead
+URL: https://crates.io/crates/aead
+Description: Traits for Authenticated Encryption with Associated Data (AEAD) algorithms, such as AES-GCM as ChaCha20Poly1305, which provide a high-level API
+Version: 0.5
+Security Critical: no
+License: Apache2/MIT licensed
+Revision: 1ae238c527c204dd9590e3abc406cfbb342d46ea
