@@ -12,10 +12,8 @@ export const localeStrings = {
 
   connectAccount: 'Connect account',
   connectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
-  connectAccountNoProviders: 'To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there\'s no custodian available in your region, so earning isn\'t available. For now, turning on Brave Rewards will automatically support creators.',
   connectContributeHeader: 'Send contributions with Brave Rewards',
   connectContributeText: 'You\'ll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.',
-  connectContributeNoProviders: 'To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.',
   learnMore: 'Learn more',
   publisherCountText: 'This month, you\'ve visited $1 creators supported by Brave Rewards',
   headerTitle: 'Brave Rewards',
@@ -89,7 +87,5 @@ export const localeStrings = {
   rewardsSelfCustodyInviteHeader: 'Receive BAT directly to a self-custody crypto address',
   rewardsSelfCustodyInviteText: 'We’ve added a new way for you to receive your monthly BAT rewards. Connect an account from one of our partners or use the new self-custody option to start earning now.',
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
-  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
-  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
-  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.'
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.'
 }

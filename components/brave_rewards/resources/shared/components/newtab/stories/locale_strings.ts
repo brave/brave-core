@@ -11,7 +11,6 @@ export const localeStrings = {
   rewardsClaimRewards: 'Claim Rewards',
   rewardsClaimTokens: 'Claim Tokens',
   rewardsConnectAccount: 'Connect account',
-  rewardsConnectAccountNoProviders: 'To start earning BAT, you need to connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so earning isn’t available at this time. However, you’ll still be automatically supporting creators by using Rewards.',
   rewardsConnectAccountText: '$1Ready to start earning?$2 Connect or create an account with one of our partners.',
   rewardsContinue: 'Continue',
   rewardsEarningsTitle: 'Earnings so far',
@@ -43,7 +42,5 @@ export const localeStrings = {
   rewardsTosUpdateLinkText: 'See $1Brave Rewards Terms of Service$2',
   rewardsTosUpdateButtonLabel: 'I agree',
   rewardsVBATNoticeTitle1: 'Action required: Connect a custodial account or your vBAT will be lost',
-  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.',
-  rewardsVBATNoticeTitle2: 'You still have time to contribute your vBAT to your favorite creators',
-  rewardsVBATNoticeText2: 'On $1, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region ($2) to withdraw your earnings. Until then, you can still contribute to your favorite creators.'
+  rewardsVBATNoticeText1: 'On $1, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.'
 }

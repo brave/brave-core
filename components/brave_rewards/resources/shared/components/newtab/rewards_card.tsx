@@ -73,7 +73,6 @@ interface Props {
   grantInfo: GrantInfo | null
   externalWallet: ExternalWallet | null
   publishersVisited: number
-  canConnectAccount: boolean
   showSelfCustodyInvite: boolean
   isTermsOfServiceUpdateRequired: boolean
   onEnableRewards: () => void
@@ -327,8 +326,6 @@ export function RewardsCard (props: Props) {
         <style.vbatNotice>
           <VBATNotice
             vbatDeadline={props.vbatDeadline}
-            canConnectAccount={props.canConnectAccount}
-            declaredCountry={props.declaredCountry}
             onConnectAccount={onConnect}
             onClose={onClose}
           />
@@ -378,30 +375,17 @@ export function RewardsCard (props: Props) {
         <RewardsCardHeader />
         <style.connect>
           {
-            props.canConnectAccount
-              ? <>
-                  {
-                    formatMessage(getString('rewardsConnectAccountText'), {
-                      tags: {
-                        $1: (content) => <strong key='bold'>{content}</strong>
-                      }
-                    })
-                  }
-                  <style.connectAction>
-                    <button onClick={onConnect}>
-                      {getString('rewardsConnectAccount')}<ArrowNextIcon />
-                    </button>
-                  </style.connectAction>
-                </>
-              : <>
-                  {getString('rewardsConnectAccountNoProviders')}
-                  <style.connectLearnMore>
-                    <NewTabLink href={urls.supportedWalletRegionsURL}>
-                      {getString('rewardsLearnMore')}
-                    </NewTabLink>
-                  </style.connectLearnMore>
-                </>
+            formatMessage(getString('rewardsConnectAccountText'), {
+              tags: {
+                $1: (content) => <strong key='bold'>{content}</strong>
+              }
+            })
           }
+          <style.connectAction>
+            <button onClick={onConnect}>
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
+            </button>
+          </style.connectAction>
         </style.connect>
         {
           <style.publisherSupport>

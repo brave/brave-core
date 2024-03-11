@@ -68,17 +68,11 @@
   <message name="IDS_REWARDS_CONNECT_ACCOUNT_TEXT" desc="">
     <ph name="BOLD_BEGIN">$1</ph>Ready to start earning?<ph name="BOLD_END">$2</ph> Connect or create an account with one of our partners.
   </message>
-  <message name="IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS" desc="">
-    To earn BAT, users must connect a custodial account to Brave Rewards. Unfortunately, there's no custodian available in your region, so earning isn't available. For now, turning on Brave Rewards will automatically support creators.
-  </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_HEADER" desc="">
     Send contributions with Brave Rewards
   </message>
   <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_TEXT" desc="">
     You'll be able to send on-demand contributions to your favorite creators with your Brave Rewards balance once you have a custodial account connected.
-  </message>
-  <message name="IDS_REWARDS_CONNECT_CONTRIBUTE_NO_PROVIDERS" desc="">
-    To send on-demand contributions, users must connect a custodial account to Brave Rewards. Unfortunately, there’s no custodian available in your region, so sending isn’t available. In the meantime, you’re still automatically supporting creators.
   </message>
   <message name="IDS_REWARDS_PUBLISHER_COUNT_TEXT" desc="">
     {PUBLISHER_COUNT, plural,
@@ -206,14 +200,8 @@
   <message name="IDS_REWARDS_VBAT_NOTICE_TEXT1" desc="">
     On <ph name="DATE">$1</ph>, we will be discontinuing support for existing virtual BAT balances. Connect a custodial account before this date so we can transfer your earned balance to your custodial account, otherwise your balance will be lost.
   </message>
-  <message name="IDS_REWARDS_VBAT_NOTICE_TEXT2" desc="">
-    On <ph name="DATE">$1</ph>, we will be discontinuing support for existing virtual BAT balances. Unfortunately, there are no available custodians in your region (<ph name="REGION">$2<ex>US</ex></ph>) to withdraw your earnings. Until then, you can still contribute to your favorite creators.
-  </message>
   <message name="IDS_REWARDS_VBAT_NOTICE_TITLE1" desc="">
     Action required: Connect a custodial account or your vBAT will be lost
-  </message>
-  <message name="IDS_REWARDS_VBAT_NOTICE_TITLE2" desc="">
-    You still have time to contribute your vBAT to your favorite creators
   </message>
 
   <!-- Rewards grant captcha modal -->

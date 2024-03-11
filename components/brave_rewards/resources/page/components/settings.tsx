@@ -9,7 +9,7 @@ import { useActions, useRewardsData } from '../lib/redux_hooks'
 import { PlatformContext } from '../lib/platform_context'
 import { LocaleContext } from '../../shared/lib/locale_context'
 import { LayoutContext } from '../lib/layout_context'
-import { isExternalWalletProviderAllowed, isSelfCustodyProvider } from '../../shared/lib/external_wallet'
+import { isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
@@ -160,19 +160,6 @@ export function Settings () {
     actions.getReconcileStamp()
   }, [rewardsData.enabledContribute])
 
-  const canConnectAccount = () => {
-    const {
-      currentCountryCode,
-      externalWalletProviderList,
-      parameters
-    } = rewardsData
-
-    return externalWalletProviderList.some((provider) => {
-      const regionInfo = parameters.walletProviderRegions[provider] || null
-      return isExternalWalletProviderAllowed(currentCountryCode, regionInfo)
-    })
-  }
-
   const shouldShowAutoContribute = () => {
     if (rewardsData.userType === 'unconnected') {
       return false
@@ -239,12 +226,7 @@ export function Settings () {
 
     return (
       <style.vbatNotice>
-        <VBATNotice
-          vbatDeadline={vbatDeadline}
-          canConnectAccount={canConnectAccount()}
-          declaredCountry={rewardsData.currentCountryCode}
-          onConnectAccount={onConnect}
-        />
+        <VBATNotice vbatDeadline={vbatDeadline} onConnectAccount={onConnect} />
       </style.vbatNotice>
     )
   }

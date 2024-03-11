@@ -359,8 +359,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"rewardsClaimRewards", IDS_REWARDS_WIDGET_CLAIM_REWARDS},
                {"rewardsClaimTokens", IDS_REWARDS_WIDGET_CLAIM_TOKENS},
                {"rewardsConnectAccount", IDS_REWARDS_CONNECT_ACCOUNT},
-               {"rewardsConnectAccountNoProviders",
-                IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS},
                {"rewardsConnectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
                {"rewardsContinue", IDS_REWARDS_WIDGET_CONTINUE},
                {"rewardsEarningsTitle", IDS_REWARDS_ESTIMATED_EARNINGS_TITLE},
@@ -404,9 +402,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"rewardsBrowserNeedsUpdateToSeeAds",
                 IDS_REWARDS_BROWSER_NEEDS_UPDATE_TO_SEE_ADS},
                {"rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1},
-               {"rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2},
                {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
-               {"rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2},
 
                {"loading", IDS_BRAVE_REWARDS_LOADING_LABEL},
 
@@ -689,9 +685,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"rewardsTosUpdateButtonLabel",
                 IDS_REWARDS_TOS_UPDATE_BUTTON_LABEL},
                {"rewardsVBATNoticeText1", IDS_REWARDS_VBAT_NOTICE_TEXT1},
-               {"rewardsVBATNoticeText2", IDS_REWARDS_VBAT_NOTICE_TEXT2},
                {"rewardsVBATNoticeTitle1", IDS_REWARDS_VBAT_NOTICE_TITLE1},
-               {"rewardsVBATNoticeTitle2", IDS_REWARDS_VBAT_NOTICE_TITLE2},
                {"saved", IDS_BRAVE_UI_ADS_SAVED},
                {"saveAd", IDS_BRAVE_UI_ADS_SAVE_AD},
                {"seeAllItems", IDS_BRAVE_UI_SEE_ALL_ITEMS},
@@ -751,8 +745,6 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"upholdPromoTitle", IDS_BRAVE_UI_UPHOLD_PROMO_TITLE},
                {"upholdPromoInfo", IDS_BRAVE_UI_UPHOLD_PROMO_INFO},
 
-               {"connectAccountNoProviders",
-                IDS_REWARDS_CONNECT_ACCOUNT_NO_PROVIDERS},
                {"connectAccountText", IDS_REWARDS_CONNECT_ACCOUNT_TEXT},
                {"learnMore", IDS_REWARDS_LEARN_MORE},
                {"connectWalletCustodialHeader",

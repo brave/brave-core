@@ -36,8 +36,6 @@ export function shouldShowVBATNotice (
 
 interface Props {
   vbatDeadline: number | undefined
-  canConnectAccount: boolean
-  declaredCountry: string
   onConnectAccount: () => void
   onClose?: () => void
 }
@@ -51,16 +49,6 @@ export function VBATNotice (props: Props) {
     }
 
     const deadline = new Date(props.vbatDeadline)
-
-    if (!props.canConnectAccount) {
-      return {
-        title: getString('rewardsVBATNoticeTitle2'),
-        text: formatMessage(getString('rewardsVBATNoticeText2'), [
-          dateFormatter.format(deadline),
-          props.declaredCountry
-        ])
-      }
-    }
 
     return {
       title: getString('rewardsVBATNoticeTitle1'),
@@ -90,14 +78,11 @@ export function VBATNotice (props: Props) {
       <style.content className='vbat-notice-content'>
         {messages.text}
         <style.actions className='vbat-notice-actions'>
-          {
-            props.canConnectAccount &&
-              <style.connectAction className='vbat-notice-connect'>
-                <button onClick={props.onConnectAccount}>
-                  {getString('rewardsConnectAccount')}<ArrowNextIcon />
-                </button>
-              </style.connectAction>
-          }
+          <style.connectAction className='vbat-notice-connect'>
+            <button onClick={props.onConnectAccount}>
+              {getString('rewardsConnectAccount')}<ArrowNextIcon />
+            </button>
+          </style.connectAction>
           <style.learnMoreAction>
             <NewTabLink href={urls.rewardsChangesURL}>
               {getString('rewardsLearnMore')}

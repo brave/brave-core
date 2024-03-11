@@ -65,7 +65,6 @@ export function Card () {
             maxEarningsLastMonth={1.25}
             contributionsThisMonth={10}
             publishersVisited={4}
-            canConnectAccount={true}
             showSelfCustodyInvite={true}
             isTermsOfServiceUpdateRequired={true}
             onEnableRewards={actionLogger('onEnableRewards')}
