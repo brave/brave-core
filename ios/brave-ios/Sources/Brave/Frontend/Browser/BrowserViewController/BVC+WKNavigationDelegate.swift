@@ -832,10 +832,6 @@ extension BrowserViewController: WKNavigationDelegate {
     // original web page in the tab instead of replacing it with an error page.
     var error = error as NSError
     if error.domain == "WebKitErrorDomain" && error.code == 102 {
-      if tab === tabManager.selectedTab {
-        updateToolbarCurrentURL(tab.url?.displayURL)
-        updateWebViewPageZoom(tab: tab)
-      }
       return
     }
 
@@ -856,7 +852,10 @@ extension BrowserViewController: WKNavigationDelegate {
     }
 
     if let url = error.userInfo[NSURLErrorFailingURLErrorKey] as? URL {
+      ErrorPageHelper(certStore: profile.certStore).loadPage(error, forUrl: url, inWebView: webView)
 
+      // Submitting same erroneous URL using toolbar will cause progress bar get stuck
+      // Reseting the progress bar in case there is an error is necessary
       if tab == self.tabManager.selectedTab {
         self.topToolbar.hideProgressBar()
       }
