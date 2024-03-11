@@ -50,10 +50,23 @@ class PlaylistBackgroundWebContents final {
   void Reset();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBackgroundWebContentsTest,
+                           ExtractPlaylistItemsInTheBackground);
+  FRIEND_TEST_ALL_PREFIXES(PlaylistBackgroundWebContentsTest,
+                           UserAgentOverride);
+
   void Remove(content::WebContents* web_contents,
               PlaylistMediaHandler::OnceCallback on_media_detected_callback,
               GURL url,
               std::vector<mojom::PlaylistItemPtr> items);
+
+  // used by
+  // PlaylistBackgroundWebContentsTest.ExtractPlaylistItemsInTheBackground, and
+  // PlaylistBackgroundWebContentsTest.UserAgentOverride
+  content::WebContents& web_contents() const {
+    CHECK(background_web_contents_.size() == 1);
+    return *background_web_contents_.cbegin()->first;
+  }
 
   raw_ptr<content::BrowserContext> context_;
   raw_ptr<PlaylistService> service_;
