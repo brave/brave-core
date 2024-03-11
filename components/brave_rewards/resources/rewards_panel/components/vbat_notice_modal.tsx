@@ -9,7 +9,6 @@ import { HostContext, useHostListener } from '../lib/host_context'
 import { Modal } from '../../shared/components/modal'
 import { VBATNotice } from '../../shared/components/vbat_notice'
 
-import * as derivedState from '../lib/derived_state'
 import * as style from './vbat_notice_modal.style'
 
 interface Props {
@@ -22,15 +21,9 @@ export function VBATNoticeModal (props: Props) {
 
   const [vbatDeadline, setVBATDeadline] =
     React.useState(host.state.options.vbatDeadline)
-  const [canConnect, setCanConnect] =
-    React.useState(derivedState.canConnectAccount(host.state))
-  const [declaredCountry, setDeclaredCountry] =
-    React.useState(host.state.declaredCountry)
 
   useHostListener(host, (state) => {
     setVBATDeadline(state.options.vbatDeadline)
-    setCanConnect(derivedState.canConnectAccount(state))
-    setDeclaredCountry(state.declaredCountry)
   })
 
   return (
@@ -38,8 +31,6 @@ export function VBATNoticeModal (props: Props) {
       <style.root>
         <VBATNotice
           vbatDeadline={vbatDeadline}
-          canConnectAccount={canConnect}
-          declaredCountry={declaredCountry}
           onClose={props.onClose}
           onConnectAccount={props.onConnectAccount}
         />

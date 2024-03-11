@@ -102,17 +102,6 @@ export const connectAction = styled.div`
   }
 `
 
-export const connectLearnMore = styled.div`
-  margin-top: -2px;
-
-  a {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    color: #fff;
-  }
-`
-
 export const publisherSupport = styled.div`
   ${shadowBox}
   display: flex;

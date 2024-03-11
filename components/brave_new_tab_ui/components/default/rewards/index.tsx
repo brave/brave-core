@@ -106,21 +106,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     return getProviderPayoutStatus(payoutStatus, walletProvider)
   }
 
-  const canConnectAccount = () => {
-    const providers = props.externalWalletProviders || []
-    const { walletProviderRegions } = props.parameters
-    if (providers.length === 0 || !walletProviderRegions) {
-      return true
-    }
-    for (const provider of providers) {
-      const regions = walletProviderRegions[provider] || null
-      if (isExternalWalletProviderAllowed(props.declaredCountry, regions)) {
-        return true
-      }
-    }
-    return false
-  }
-
   const showSelfCustodyInvite = () => {
     if (props.userType !== 'unconnected') {
       return false
@@ -171,7 +156,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       minEarningsLastMonth={adsInfo ? adsInfo.minEarningsLastMonth : 0}
       maxEarningsLastMonth={adsInfo ? adsInfo.maxEarningsLastMonth : 0}
       contributionsThisMonth={props.totalContribution}
-      canConnectAccount={canConnectAccount()}
       showSelfCustodyInvite={showSelfCustodyInvite()}
       isTermsOfServiceUpdateRequired={props.isTermsOfServiceUpdateRequired}
       publishersVisited={props.publishersVisitedCount || 0}

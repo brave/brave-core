@@ -216,23 +216,3 @@ export const connectAction = styled.div`
     }
   }
 `
-
-export const connectUnavailable = styled.div`
-  margin-bottom: 8px;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-  background: #FFFCF0;
-  border-radius: 8px;
-  padding: 16px;
-  font-size: 14px;
-  line-height: 20px;
-
-  a {
-    font-weight: 600;
-    font-size: 13px;
-    line-height: 20px;
-    color: #4C54D2;
-    text-decoration: none;
-  }
-`
