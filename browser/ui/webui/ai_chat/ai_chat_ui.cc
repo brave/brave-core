@@ -17,21 +17,16 @@
 #include "brave/components/ai_chat/resources/page/grit/ai_chat_ui_generated_map.h"
 #include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "chrome/browser/printing/print_preview_data_service.h"
-#include "chrome/browser/printing/print_view_manager_common.h"
 #include "chrome/browser/profiles/profile.h"
-#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
 #include "chrome/browser/ui/webui/webui_util.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/prefs/pref_service.h"
-#include "components/printing/browser/print_composite_client.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_data_source.h"
 #include "content/public/common/url_constants.h"
 #include "mojo/public/cpp/bindings/callback_helpers.h"
-#include "printing/print_job_constants.h"
 
 #if !BUILDFLAG(IS_ANDROID)
 #include "chrome/browser/ui/browser.h"
@@ -40,7 +35,15 @@
 #include "chrome/browser/ui/android/tab_model/tab_model_list.h"
 #endif
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "chrome/browser/printing/print_preview_data_service.h"
+#include "chrome/browser/printing/print_view_manager_common.h"
+#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
+#include "components/printing/browser/print_composite_client.h"
+#include "printing/print_job_constants.h"
+
 using printing::PrintCompositeClient;
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
 namespace {
@@ -123,7 +126,9 @@ AIChatUI::AIChatUI(content::WebUI* web_ui)
 }
 
 AIChatUI::~AIChatUI() {
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   ClearPreviewUIId();
+#endif
 }
 
 void AIChatUI::BindInterface(
@@ -153,6 +158,7 @@ void AIChatUI::BindInterface(
       std::move(receiver));
 }
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 mojo::PendingAssociatedRemote<PrintPreviewUI> AIChatUI::BindPrintPreviewUI() {
   return receiver_.BindNewEndpointAndPassRemote();
 }
@@ -339,6 +345,7 @@ void AIChatUI::OnCompositeToPdfDone(
       base::RefCountedSharedMemoryMapping::CreateFromWholeRegion(region));
   page_handler_->OnPreviewReady();
 }
+#endif
 
 std::unique_ptr<content::WebUIController>
 UntrustedChatUIConfig::CreateWebUIController(content::WebUI* web_ui,

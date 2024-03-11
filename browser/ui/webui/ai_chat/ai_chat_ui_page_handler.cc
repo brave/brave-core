@@ -23,13 +23,9 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "chrome/browser/favicon/favicon_service_factory.h"
 #include "chrome/browser/pdf/pdf_pref_names.h"
-#include "chrome/browser/printing/print_preview_data_service.h"
-#include "chrome/browser/printing/print_view_manager_common.h"
-#include "chrome/browser/printing/printing_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/singleton_tabs.h"
-#include "chrome/services/printing/public/mojom/printing_service.mojom.h"
 #include "components/favicon/core/favicon_service.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/browser/browser_context.h"
@@ -38,10 +34,17 @@
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/common/url_constants.h"
+#include "ui/base/l10n/l10n_util.h"
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "chrome/browser/printing/print_preview_data_service.h"
+#include "chrome/browser/printing/print_view_manager_common.h"
+#include "chrome/browser/printing/printing_service.h"
+#include "chrome/services/printing/public/mojom/printing_service.mojom.h"
 #include "printing/print_job_constants.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/skia/include/core/SkBitmap.h"
-#include "ui/base/l10n/l10n_util.h"
+#endif
 
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/browser/ui/android/ai_chat/brave_leo_settings_launcher_helper.h"
@@ -136,7 +139,9 @@ void AIChatUIPageHandler::SubmitHumanConversationEntry(
       << "Should not be able to submit more"
       << "than a single human conversation turn at a time.";
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   MaybeCreatePrintPreview();
+#endif
 
   mojom::ConversationTurn turn = {
       CharacterType::HUMAN, mojom::ActionType::UNSPECIFIED,
@@ -468,6 +473,7 @@ void AIChatUIPageHandler::OnGetPremiumStatus(
   }
 }
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 void AIChatUIPageHandler::BitmapConverterDisconnected() {
   DLOG(ERROR) << __func__;
   PreviewCleanup();
@@ -593,5 +599,6 @@ void AIChatUIPageHandler::MaybeCreatePrintPreview() {
     print_render_frame_->PrintPreview(std::move(dict));
   }
 }
+#endif
 
 }  // namespace ai_chat

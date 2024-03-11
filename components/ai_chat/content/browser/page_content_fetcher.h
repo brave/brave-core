@@ -8,10 +8,11 @@
 
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include "base/functional/callback_forward.h"
 #include "base/memory/scoped_refptr.h"
-#include "include/core/SkBitmap.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 
 namespace content {
 class WebContents;

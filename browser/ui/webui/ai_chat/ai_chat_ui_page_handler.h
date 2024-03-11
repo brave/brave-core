@@ -25,12 +25,14 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "printing/buildflags/buildflags.h"
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
 #include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
-#include "chrome/browser/printing/print_view_manager_base.h"
 #include "components/printing/common/print.mojom.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
-#include "mojo/public/cpp/bindings/remote.h"
+#endif
+
 namespace content {
 class WebContents;
 }
@@ -99,10 +101,12 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void OnPreviewReady();
   void BitmapConverterDisconnected();
   void OnGetBitmaps(const std::optional<std::vector<SkBitmap>>& bitmaps);
   void PreviewCleanup();
+#endif
 
  private:
   // AIChatTabHelper::Observer
@@ -122,12 +126,11 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                           ai_chat::mojom::PremiumStatus status,
                           ai_chat::mojom::PremiumInfoPtr info);
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   void MaybeCreatePrintPreview();
+#endif
 
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
-
-  // Used to transmit mojo interface method calls to the associated receiver.
-  mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
   raw_ptr<AIChatUI> owner_ = nullptr;
@@ -139,8 +142,11 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   int preview_request_id_ = -1;
   mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
+  mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
+#endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};

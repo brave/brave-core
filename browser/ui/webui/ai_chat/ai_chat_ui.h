@@ -12,17 +12,22 @@
 
 #include "base/memory/ref_counted_memory.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
-#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
-#include "components/printing/common/print.mojom.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
-#include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "printing/buildflags/buildflags.h"
 #include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "chrome/browser/ui/webui/print_preview/print_preview_ui.h"
+#include "components/printing/common/print.mojom.h"
 #include "components/services/print_compositor/public/mojom/print_compositor.mojom.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
+
+using printing::mojom::PrintPreviewUI;
+#endif
 
 namespace content {
 class BrowserContext;
@@ -30,13 +35,18 @@ class BrowserContext;
 
 class Profile;
 
-using printing::mojom::PrintPreviewUI;
-
 namespace ai_chat {
 class AIChatUIPageHandler;
 }  // namespace ai_chat
 
-class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
+class AIChatUI : public ui::UntrustedWebUIController
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+    ,
+                 public PrintPreviewUI {
+#else
+{
+#endif
+
  public:
   explicit AIChatUI(content::WebUI* web_ui);
   AIChatUI(const AIChatUI&) = delete;
@@ -46,6 +56,7 @@ class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   mojo::PendingAssociatedRemote<PrintPreviewUI> BindPrintPreviewUI();
   void DisconnectPrintPrieviewUI();
   bool IsBound() const;
@@ -53,6 +64,7 @@ class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
   std::optional<int32_t> GetPreviewUIId();
   void ClearPreviewUIId();
   void OnPrintPreviewRequest(int request_id);
+#endif
 
   // Set by WebUIContentsWrapperT. MojoBubbleWebUIController provides default
   // implementation for this but we don't use it.
@@ -64,6 +76,7 @@ class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
  private:
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   // printing::mojo::PrintPreviewUI:
   void SetOptionsFromDocument(
       const printing::mojom::OptionsFromDocumentParamsPtr params,
@@ -101,6 +114,7 @@ class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
                             int32_t request_id,
                             printing::mojom::PrintCompositor::Status status,
                             base::ReadOnlySharedMemoryRegion region);
+#endif
 
   std::unique_ptr<ai_chat::AIChatUIPageHandler> page_handler_;
 
@@ -108,9 +122,11 @@ class AIChatUI : public ui::UntrustedWebUIController, public PrintPreviewUI {
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<content::WebContents> web_contents_ = nullptr;
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   // unique id to avoid conflicts with other print preview UIs
   std::optional<int32_t> print_preview_ui_id_;
   mojo::AssociatedReceiver<PrintPreviewUI> receiver_{this};
+#endif
 
   base::WeakPtrFactory<AIChatUI> weak_ptr_factory_{this};
   WEB_UI_CONTROLLER_TYPE_DECL();

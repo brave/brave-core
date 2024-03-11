@@ -56,6 +56,8 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // mojom::PageContentExtractorHost
   void OnInterceptedPageContentChanged() override;
+  // This will be called when print preview has been composited into image per
+  // page.
   void OnPreviewReady(const std::optional<std::vector<SkBitmap>>&);
 
  private:

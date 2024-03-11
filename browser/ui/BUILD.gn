@@ -22,6 +22,7 @@ import("//build/config/features.gni")
 import("//chrome/common/features.gni")
 import("//components/gcm_driver/config.gni")
 import("//mojo/public/tools/bindings/mojom.gni")
+import("//printing/buildflags/buildflags.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 source_set("ui") {
@@ -84,6 +85,13 @@ source_set("ui") {
       "webui/ai_chat/ai_chat_ui_page_handler.cc",
       "webui/ai_chat/ai_chat_ui_page_handler.h",
     ]
+
+    if (enable_print_preview) {
+      deps += [
+        "//chrome/browser/pdf:pdf_pref_names",
+        "//chrome/services/printing/public/mojom",
+      ]
+    }
 
     if (is_android) {
       sources += [
@@ -714,9 +722,12 @@ source_set("ui") {
     "//components/optimization_guide/core:features",
     "//components/optimization_guide/optimization_guide_internals/webui:url_constants",
     "//components/prefs",
+    "//components/printing/browser",
+    "//components/printing/common:mojo_interfaces",
     "//components/qr_code_generator:bitmap_generator",
     "//components/resources:components_resources_grit",
     "//components/search_engines",
+    "//components/services/print_compositor/public/mojom",
     "//components/sessions",
     "//components/strings:components_strings",
     "//components/tab_groups",

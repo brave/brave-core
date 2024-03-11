@@ -36,8 +36,8 @@
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "mojo/public/cpp/bindings/self_owned_receiver.h"
-#include "include/core/SkBitmap.h"
 #include "pdf/buildflags.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/base/l10n/l10n_util.h"
 
