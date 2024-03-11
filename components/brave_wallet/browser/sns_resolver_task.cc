@@ -85,6 +85,7 @@ SolanaAddress GetEmptyNameClass() {
 }
 
 SolanaAddress GetCentalStateSnsRecordsNameClass() {
+  // https://github.com/Bonfida/sns-sdk/blob/e930b83/rust-crates/sns-sdk/src/record/mod.rs#L10
   auto result =
       SolanaAddress::FromBase58("2pMnqHvei2N5oDcVGCRdZx48gqti199wr5CsyTTafsbo");
   CHECK(result);
