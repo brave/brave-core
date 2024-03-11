@@ -91,9 +91,6 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
       dict.Set("token_info", std::move(unblinded_token));
 
-      // User data
-      dict.Set("user_data", confirmation.user_data.fixed.Clone());
-
       // Credential
       if (confirmation.reward->credential_base64url.empty()) {
         continue;
@@ -112,6 +109,9 @@ base::Value::Dict GetConfirmationsAsDictionary(
 
       dict.Set("credential", *reward_credential_base64url);
     }
+
+    // User data
+    dict.Set("user_data", confirmation.user_data.fixed.Clone());
 
     list.Append(std::move(dict));
   }
