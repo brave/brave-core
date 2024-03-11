@@ -339,7 +339,11 @@ public struct AIChatView: View {
       title: Strings.AIChat.responseContextMenuRegenerateTitle,
       icon: Image(braveSystemName: "leo.refresh"),
       onSelected: {
-        model.retryLastRequest()
+        if turnIndex == model.conversationHistory.count - 1 {
+          model.retryLastRequest()
+        } else if let query = model.conversationHistory[safe: turnIndex - 1]?.text {
+          model.submitQuery(query)
+        }
       }
     )
 
