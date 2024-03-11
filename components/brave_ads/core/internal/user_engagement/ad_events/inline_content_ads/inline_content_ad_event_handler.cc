@@ -14,6 +14,7 @@
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_event_handler_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/inline_content_ads/inline_content_ad_event_factory.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom-shared.h"
+#include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
 
 namespace brave_ads {
@@ -109,11 +110,41 @@ void InlineContentAdEventHandler::GetForTypeCallback(
                              event_type, std::move(callback));
   }
 
+  if (event_type == mojom::InlineContentAdEventType::kClicked &&
+      !HasFiredAdEvent(ad, ad_events, ConfirmationType::kViewed)) {
+    // If an ad event doesn't have a corresponding viewed event when a click
+    // event is fired, trigger the viewed event first. This can happen if the ad
+    // is outside of the viewport and the viewed event hasn't been fired yet.
+    const auto ad_event = InlineContentAdEventFactory::Build(
+        mojom::InlineContentAdEventType::kViewed);
+    return ad_event->FireEvent(
+        ad, base::BindOnce(
+                &InlineContentAdEventHandler::FireViewedEventCallback,
+                weak_factory_.GetWeakPtr(), ad,
+                mojom::InlineContentAdEventType::kViewed, std::move(callback)));
+  }
+
   const auto ad_event = InlineContentAdEventFactory::Build(event_type);
   ad_event->FireEvent(
       ad, base::BindOnce(&InlineContentAdEventHandler::FireEventCallback,
                          weak_factory_.GetWeakPtr(), ad, event_type,
                          std::move(callback)));
+}
+
+void InlineContentAdEventHandler::FireViewedEventCallback(
+    const InlineContentAdInfo& ad,
+    const mojom::InlineContentAdEventType event_type,
+    FireInlineContentAdEventHandlerCallback callback,
+    const bool success) {
+  if (!success) {
+    return FailedToFireEvent(ad.placement_id, ad.creative_instance_id,
+                             event_type, std::move(callback));
+  }
+
+  NotifyDidFireInlineContentAdEvent(ad, event_type);
+
+  FireEvent(ad.placement_id, ad.creative_instance_id,
+            mojom::InlineContentAdEventType::kClicked, std::move(callback));
 }
 
 void InlineContentAdEventHandler::FireEventCallback(
