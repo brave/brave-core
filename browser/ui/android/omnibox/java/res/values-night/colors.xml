@@ -10,4 +10,10 @@
     <color name="brave_search_promo_secondary_button_color">#ECEFF2</color>
     <color name="brave_search_promo_bg_color">#2E3039</color>
     <color name="brave_search_promo_bg_stroke_color">#00000000</color>
+
+    <color name="search_suggestions_primary_text_color">#F6F7F8</color>
+    <color name="search_suggestions_secondary_text_color">#DBDEE2</color>
+    <color name="search_suggestions_action_text_color">#F6F7F8</color>
+    <color name="search_suggestions_close_color">#A1ABBA</color>
+    <color name="search_suggestions_bg_color">#21168F</color>
 </resources>
