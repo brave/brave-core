@@ -30,7 +30,7 @@ struct BiometricsPasscodeEntryView: View {
               // Failed to store password in keychain
               completion(.failedToEnableBiometrics)
             } else {
-              // Successfully stored password stored in keychain
+              // Successfully stored password in keychain
               completion(nil)
             }
           } else {  // incorrect/invalid password
