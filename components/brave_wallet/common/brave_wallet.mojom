@@ -1557,6 +1557,9 @@ struct ZCashAddress {
 struct ZCashAccountInfo {
   ZCashAddress next_transparent_receive_address;
   ZCashAddress next_transparent_change_address;
+
+  ZCashAddress? shielded_external_address;
+  ZCashAddress? shielded_internal_address;
 };
 
 enum ZCashAddressValidationResult {

@@ -1,0 +1,9 @@
+[book]
+authors = ["Jack Grigg"]
+language = "en"
+multilingual = false
+src = "src"
+title = "The Orchard Book"
+
+[preprocessor.katex]
+macros = "macros.txt"

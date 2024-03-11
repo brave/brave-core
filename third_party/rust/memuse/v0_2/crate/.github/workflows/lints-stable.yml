@@ -1,0 +1,24 @@
+name: Stable lints
+
+# We only run these lints on trial-merges of PRs to reduce noise.
+on: pull_request
+
+jobs:
+  clippy:
+    name: Clippy (1.51.0)
+    timeout-minutes: 30
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions-rs/toolchain@v1
+        with:
+          toolchain: 1.51.0
+          components: clippy
+          override: true
+      - name: Run clippy
+        uses: actions-rs/clippy-check@v1
+        with:
+          name: Clippy (1.51.0)
+          token: ${{ secrets.GITHUB_TOKEN }}
+          args: --all-features --all-targets -- -D warnings

@@ -1,0 +1,15 @@
+[package]
+name = "zcash_spec"
+version = "0.1.0"
+authors = [
+    "Jack Grigg <jack@electriccoin.co>",
+]
+edition = "2021"
+rust-version = "1.56"
+description = "Low-level types for implementing Zcash specifications"
+homepage = "https://github.com/zcash/zcash_spec"
+repository = "https://github.com/zcash/zcash_spec"
+license = "MIT OR Apache-2.0"
+
+[dependencies]
+blake2b_simd = "1"

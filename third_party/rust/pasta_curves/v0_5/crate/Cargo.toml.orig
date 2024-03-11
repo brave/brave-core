@@ -1,0 +1,75 @@
+[package]
+name = "pasta_curves"
+description = "Implementation of the Pallas and Vesta (Pasta) curve cycle"
+version = "0.5.1"
+authors = [
+    "Sean Bowe <sean@electriccoin.co>",
+    "Ying Tong Lai <yingtong@electriccoin.co>",
+    "Daira Hopwood <daira@electriccoin.co>",
+    "Jack Grigg <jack@electriccoin.co>",
+]
+edition = "2021"
+rust-version = "1.56"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/zcash/pasta_curves"
+documentation = "https://docs.rs/pasta_curves"
+readme = "README.md"
+
+[package.metadata.docs.rs]
+all-features = true
+rustdoc-args = ["--cfg", "docsrs", "--html-in-header", "katex-header.html"]
+
+[dev-dependencies]
+bincode = "1.3"
+criterion = "0.3"
+csv = ">= 1.0, < 1.2" # csv 1.2 has MSRV 1.60
+rand_xorshift = "0.3"
+serde_json = "1.0"
+
+[[bench]]
+name = "hashtocurve"
+harness = false
+required-features = ["alloc"]
+
+[[bench]]
+name = "fp"
+harness = false
+
+[[bench]]
+name = "fq"
+harness = false
+
+[[bench]]
+name = "point"
+harness = false
+required-features = ["alloc"]
+
+[dependencies]
+ff = { version = "0.13", default-features = false }
+group = { version = "0.13", default-features = false }
+rand = { version = "0.8", default-features = false }
+static_assertions = "1.1.0"
+subtle = { version = "2.3", default-features = false }
+
+# alloc dependencies
+blake2b_simd = { version = "1", optional = true, default-features = false }
+
+# sqrt-table dependencies
+lazy_static = { version = "1.4.0", optional = true, features = ["spin_no_std"] }
+
+# gpu dependencies
+ec-gpu = { version = "0.2.0", optional = true }
+
+# serde dependencies
+serde_crate = { version = "1.0.16", optional = true, default-features = false, features = ["alloc"], package = "serde" }
+hex = { version = "0.4", optional = true, default-features = false, features = ["alloc", "serde"] }
+
+[features]
+default = ["bits", "sqrt-table"]
+alloc = ["group/alloc", "blake2b_simd"]
+bits = ["ff/bits"]
+gpu = ["alloc", "ec-gpu"]
+sqrt-table = ["alloc", "lazy_static"]
+repr-c = []
+uninline-portable = []
+serde = ["hex", "serde_crate"]
