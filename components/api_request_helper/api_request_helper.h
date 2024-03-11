@@ -134,6 +134,9 @@ class APIRequestHelper {
    private:
     friend class APIRequestHelper;
 
+    void ParseJsonImpl(std::string json,
+                       base::OnceCallback<void(ValueOrError)> callback);
+
     // Run completion callback if there are no operations in progress.
     // If Cancel is needed even if url or data operations are in progress,
     // then call |APIRequestHelper::Cancel|.
