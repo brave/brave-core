@@ -740,12 +740,15 @@ const util = {
     cmd_options = mergeWithDefault(cmd_options)
     cmd = 'git'
     args = ['cl', 'format', '--upstream=' + options.base]
-    if (options.full)
-      args.push('--full')
 
     // Keep in sync with CheckPatchFormatted presubmit check.
     args.push('--python')
     args.push('--no-rust-fmt')
+
+    if (options.full)
+      args.push('--full')
+    if (options.diff)
+      args.push('--diff')
 
     util.run(cmd, args, cmd_options)
   },

@@ -360,6 +360,7 @@ program
   .command('format')
   .option('--base <base branch>', 'set the destination branch for the PR')
   .option('--full', 'format all lines in changed files instead of only the changed lines')
+  .option('--diff', 'print diff to stdout rather than modifying files')
   .action(util.format)
 
 program
