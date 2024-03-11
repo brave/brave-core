@@ -7,11 +7,11 @@
 
 #include <iterator>
 #include <string>
-#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "base/containers/flat_map.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/feed_fetcher.h"
 #include "brave/components/brave_news/common/brave_news.mojom.h"
 #include "brave/components/brave_news/common/features.h"
@@ -34,16 +34,15 @@ std::vector<mojom::FeedItemMetadataPtr> GetArticles(const FeedItems& feed) {
 
 SignalCalculator::SignalCalculator(PublishersController& publishers_controller,
                                    ChannelsController& channels_controller,
-                                   PrefService& prefs,
                                    history::HistoryService& history_service)
     : publishers_controller_(publishers_controller),
       channels_controller_(channels_controller),
-      prefs_(prefs),
       history_service_(history_service) {}
 
 SignalCalculator::~SignalCalculator() = default;
 
-void SignalCalculator::GetSignals(const FeedItems& feed,
+void SignalCalculator::GetSignals(const BraveNewsSubscriptions& subscriptions,
+                                  const FeedItems& feed,
                                   SignalsCallback callback) {
   auto articles = GetArticles(feed);
   history::QueryOptions options;
@@ -52,12 +51,13 @@ void SignalCalculator::GetSignals(const FeedItems& feed,
   history_service_->QueryHistory(
       u"", options,
       base::BindOnce(&SignalCalculator::OnGotHistory,
-                     weak_ptr_factory_.GetWeakPtr(), std::move(articles),
-                     std::move(callback)),
+                     weak_ptr_factory_.GetWeakPtr(), subscriptions,
+                     std::move(articles), std::move(callback)),
       &task_tracker_);
 }
 
 void SignalCalculator::OnGotHistory(
+    const BraveNewsSubscriptions& subscriptions,
     std::vector<mojom::FeedItemMetadataPtr> articles,
     SignalsCallback callback,
     history::QueryResults results) {
@@ -65,7 +65,7 @@ void SignalCalculator::OnGotHistory(
 
   const auto& publishers = publishers_controller_->GetLastPublishers();
   const auto& channels = channels_controller_->GetChannelsFromPublishers(
-      publishers, &prefs_.get());
+      publishers, subscriptions);
 
   // Work out how many articles we have in each publisher/channel. We'll use
   // these values to normalize the boost we apply to articles within those
@@ -154,7 +154,7 @@ void SignalCalculator::OnGotHistory(
     auto visit_count = it == channel_visits.end() ? 0 : it->second.size();
     signals[channel.first] = mojom::Signal::New(
         /*disabled=*/false,
-        channels_controller_->GetChannelSubscribed(locale, channel.first)
+        subscriptions.GetChannelSubscribed(locale, channel.first)
             ? features::kBraveNewsChannelSubscribedBoost.Get()
             : 0,
         visit_count / static_cast<double>(total_channel_visits),

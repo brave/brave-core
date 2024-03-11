@@ -24,6 +24,7 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/stringprintf.h"
 #include "base/time/time.h"
+#include "brave/components/brave_news/browser/brave_news_pref_manager.h"
 #include "brave/components/brave_news/browser/channels_controller.h"
 #include "brave/components/brave_news/browser/urls.h"
 #include "brave/components/brave_news/common/brave_news.mojom-forward.h"
@@ -312,9 +313,9 @@ bool BuildFeed(const std::vector<mojom::FeedItemPtr>& feed_items,
                const std::unordered_set<std::string>& history_hosts,
                Publishers* publishers,
                mojom::Feed* feed,
-               PrefService* prefs) {
+               const BraveNewsSubscriptions& subscriptions) {
   Channels channels =
-      ChannelsController::GetChannelsFromPublishers(*publishers, prefs);
+      ChannelsController::GetChannelsFromPublishers(*publishers, subscriptions);
 
   std::list<mojom::ArticlePtr> articles;
   std::list<mojom::PromotedArticlePtr> promoted_articles;
