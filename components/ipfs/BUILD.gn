@@ -60,6 +60,8 @@ static_library("ipfs") {
     "ipld/block_orchestrator.h",
     "ipld/trustless_client_types.cc",
     "ipld/trustless_client_types.h",
+    "ipld/block_mime_sniffer.cc",
+    "ipld/block_mime_sniffer.h",
   ]
 
   deps = [

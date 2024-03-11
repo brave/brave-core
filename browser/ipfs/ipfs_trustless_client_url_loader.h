@@ -46,7 +46,7 @@ class IpfsTrustlessClientUrlLoader : public network::mojom::URLLoader {
   void PauseReadingBodyFromNet() override;
   void ResumeReadingBodyFromNet() override;
 
-  void PrepareRespponseHead(const int64_t& total_size);
+  void PrepareRespponseHead(ipld::IpfsTrustlessResponse* response);
 
   void OnIpfsTrustlessClientResponse(
       std::unique_ptr<ipld::IpfsTrustlessRequest> request,

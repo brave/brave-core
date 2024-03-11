@@ -12,6 +12,7 @@
 
 #include "base/functional/callback.h"
 #include "brave/components/ipfs/ipld/block.h"
+#include "brave/components/ipfs/ipld/block_mime_sniffer.h"
 #include "brave/components/ipfs/ipld/block_reader.h"
 #include "brave/components/ipfs/ipld/trustless_client_types.h"
 #include "partition_alloc/pointers/raw_ptr.h"
@@ -39,14 +40,17 @@ class BlockOrchestrator {
   void OnBlockRead(std::unique_ptr<Block> block, bool is_completed);
   void Reset();
 
-  void ProcessTarget(std::unique_ptr<TrustlessTarget> target) ;
+  void ProcessTarget(std::unique_ptr<TrustlessTarget> target);
 
   std::unordered_map<std::string,
                      std::unique_ptr<Block>,
                      StringHash,
-                     std::equal_to<>> dag_nodes_;
+                     std::equal_to<>>
+      dag_nodes_;
 
-  void BlockChainForCid(const uint64_t& size, Block* block, bool last_chunk) const;
+  void BlockChainForCid(const uint64_t& size,
+                        Block const* block,
+                        bool last_chunk) const;
 
   // void CreateDagPathIndex();
   // std::unordered_map<std::string,
@@ -58,6 +62,8 @@ class BlockOrchestrator {
   std::unique_ptr<IpfsTrustlessRequest> request_;
   std::unique_ptr<BlockReader> block_reader_;
   raw_ptr<PrefService> pref_service_;
+  std::unique_ptr<BlockMimeSniffer> mime_sniffer_{
+      std::make_unique<BlockMimeSniffer>()};
   base::WeakPtrFactory<BlockOrchestrator> weak_ptr_factory_{this};
 };
 

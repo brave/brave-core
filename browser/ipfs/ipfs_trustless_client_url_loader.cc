@@ -78,11 +78,11 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
   //                                return a + (char)b;
   //                              });
 
-  PrepareRespponseHead(response->total_size);
+  PrepareRespponseHead(response.get());
 
-  uint32_t write_size = response->body.size();
+  auto write_size = static_cast<uint32_t>(response->body->size());
   MojoResult result = producer_handle_->WriteData(
-      &response->body[0], &write_size, MOJO_WRITE_DATA_FLAG_NONE);
+      &(*response->body)[0], &write_size, MOJO_WRITE_DATA_FLAG_NONE);
   LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse result:" << result;
 
   if (response->is_last_chunk) {
@@ -98,17 +98,17 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
 }
 
 void IpfsTrustlessClientUrlLoader::PrepareRespponseHead(
-    const int64_t& total_size) {
+    ipld::IpfsTrustlessResponse* response) {
   if (!response_head_) {
     response_head_ = network::mojom::URLResponseHead::New();
 
     response_head_->request_start = base::TimeTicks::Now();
     response_head_->response_start = base::TimeTicks::Now();
-    response_head_->content_length = total_size;
-    response_head_->mime_type = "text/plain";
+    response_head_->content_length = response->total_size;
+    response_head_->mime_type = response->mime;
 
     //    LOG(INFO) << "[IPFS] PrepareRespponseHead total_size:" << total_size;
-    if (mojo::CreateDataPipe(total_size, producer_handle_, consumer_handle_) !=
+    if (mojo::CreateDataPipe(response->total_size, producer_handle_, consumer_handle_) !=
         MOJO_RESULT_OK) {
       //      LOG(INFO) << "[IPFS] PrepareRespponseHead error";
       client_->OnComplete(network::URLLoaderCompletionStatus(net::ERR_FAILED));

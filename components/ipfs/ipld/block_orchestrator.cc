@@ -7,6 +7,7 @@
 
 #include <cstdint>
 #include <memory>
+#include <string_view>
 #include <utility>
 
 #include "base/functional/bind.h"
@@ -17,6 +18,8 @@
 #include "brave/components/ipfs/ipld/block_reader.h"
 
 namespace {
+
+constexpr char kDefaultMimeType[] = "text/plain";
 
 // TODO may be move next function to separate object
 std::unique_ptr<ipfs::ipld::TrustlessTarget> GetIpfsTarget(const GURL& url) {
@@ -40,7 +43,7 @@ void EnumerateBlocksFromCid(
                              std::unique_ptr<ipfs::ipld::Block>,
                              ipfs::ipld::StringHash,
                              std::equal_to<>>& dag_nodes,
-    base::RepeatingCallback<void(ipfs::ipld::Block*, bool is_completed)>
+    base::RepeatingCallback<void(ipfs::ipld::Block const*, bool is_completed)>
         for_each_block_callback) {
   std::deque<ipfs::ipld::Block*> blocks_deque;
   auto current_iter = dag_nodes.find(cid_to_start);
@@ -160,13 +163,17 @@ void BlockOrchestrator::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
     if (start_block != dag_nodes_.end() && start_block->second->IsContent()) {
       LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget found target->cid:"
                 << target->cid;
-      request_callback_.Run(
-          std::move(request_),
-          std::make_unique<IpfsTrustlessResponse>(
-              "", 200, *start_block->second->GetContentData(), "",
-              start_block->second->GetContentData()->size(),
-              true));  // TODO: Think how to prevent copying of
-                       // the convent vector
+      std::string_view vontent_view(
+          (const char*)start_block->second->GetContentData()->data(),
+          start_block->second->GetContentData()->size());
+      auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
+LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
+      request_callback_.Run(std::move(request_),
+                            std::make_unique<IpfsTrustlessResponse>(
+                                mime_type.value_or(kDefaultMimeType), 200,
+                                start_block->second->GetContentData(), "",
+                                start_block->second->GetContentData()->size(),
+                                true));
     } else if (start_block != dag_nodes_.end() &&
                start_block->second
                    ->IsMetadata()) {  // If it is multiblock file (TODO: think
@@ -223,16 +230,21 @@ void BlockOrchestrator::Reset() {
 }
 
 void BlockOrchestrator::BlockChainForCid(const uint64_t& size,
-                                         Block* block,
+                                         Block const* block,
                                          bool last_chunk) const {
   // LOG(INFO) << "[IPFS] BlockOrchestrator::BlockChainForCid #10"
   //           << "\r\ncid:" << block->Cid()
   //           << "\r\nsize:" << size
   //           ;
   if (request_callback_ && block->IsContent()) {
+      std::string_view vontent_view(
+          (const char*)block->GetContentData()->data(),
+          block->GetContentData()->size());
+      auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
+LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
     request_callback_.Run(
         nullptr, std::make_unique<IpfsTrustlessResponse>(
-                     "", 200, *block->GetContentData(), "", size, last_chunk));
+                     mime_type.value_or(kDefaultMimeType), 200, block->GetContentData(), "", size, last_chunk));
   }
 }
 

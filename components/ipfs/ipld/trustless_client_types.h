@@ -38,18 +38,18 @@ struct IpfsTrustlessResponse {
 
   IpfsTrustlessResponse(const std::string& mime,
                         const std::uint16_t& status,
-                        const std::vector<uint8_t>& body,
+                        const std::vector<uint8_t>* body_ptr,
                         const std::string& location,
                         const uint64_t& size,
                         bool last_chunk);
   ~IpfsTrustlessResponse();
 
-  std::string mime;
-  std::uint16_t status;
-  std::vector<uint8_t> body;
-  std::string location;
-  uint64_t total_size;
-  bool is_last_chunk;
+  const std::string mime;
+  const std::uint16_t status;
+  raw_ptr<const std::vector<uint8_t>> body;
+  const std::string location;
+  const uint64_t total_size;
+  const bool is_last_chunk;
 };
 
 using IpfsRequestCallback =

@@ -18,13 +18,13 @@ IpfsTrustlessRequest::~IpfsTrustlessRequest() = default;
 
 IpfsTrustlessResponse::IpfsTrustlessResponse(const std::string& mime,
                                              const std::uint16_t& status,
-                                             const std::vector<uint8_t>& body,
+                                             const std::vector<uint8_t>* body_ptr,
                                              const std::string& location,
                                              const uint64_t& size,
-                                             bool last_chunk)
+                                             const bool last_chunk)
     : mime(mime),
       status(status),
-      body(body),
+      body(body_ptr),
       location(location),
       total_size(size),
       is_last_chunk(last_chunk) {}
