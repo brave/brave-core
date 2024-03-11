@@ -48,7 +48,7 @@ BraveVPN.setPanelBrowserApiForTesting({
       response: 'OK'
     }),
     getOnDemandState: () => Promise.resolve({
-      available: false,
+      available: true,
       enabled: false
     }),
     enableOnDemand: (enable: boolean) => {}

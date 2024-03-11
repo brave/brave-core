@@ -19,7 +19,9 @@ function SettingsPanel (props: Props) {
   const [onDemand, setOnDemand] =
     React.useState({ available: false, enabled: false})
 
-  getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+  React.useEffect(() => {
+    getPanelBrowserAPI().serviceHandler.getOnDemandState().then(setOnDemand)
+  }, [])
 
   const handleClick = (entry: string) => {
     getPanelBrowserAPI().panelHandler.openVpnUI(entry)

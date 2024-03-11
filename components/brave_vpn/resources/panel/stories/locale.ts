@@ -20,6 +20,7 @@ provideStrings({
   braveVpnPurchased: 'Already purchased VPN?',
   braveVpnPoweredBy: 'Powered by',
   braveVpnSettings: 'Settings',
+  braveVpnSettingsPanelHeader: 'Settings',
   braveVpnStatus: 'Status',
   braveVpnExpires: 'Expires',
   braveVpnManageSubscription: 'Manage subscription',
