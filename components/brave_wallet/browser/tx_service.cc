@@ -141,6 +141,14 @@ FilTxManager* TxService::GetFilTxManager() {
   return static_cast<FilTxManager*>(GetTxManager(mojom::CoinType::FIL));
 }
 
+BitcoinTxManager* TxService::GetBitcoinTxManager() {
+  return static_cast<BitcoinTxManager*>(GetTxManager(mojom::CoinType::BTC));
+}
+
+ZCashTxManager* TxService::GetZCashTxManager() {
+  return static_cast<ZCashTxManager*>(GetTxManager(mojom::CoinType::ZEC));
+}
+
 mojo::PendingRemote<mojom::TxService> TxService::MakeRemote() {
   mojo::PendingRemote<mojom::TxService> remote;
   tx_service_receivers_.Add(this, remote.InitWithNewPipeAndPassReceiver());

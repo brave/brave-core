@@ -25,6 +25,29 @@ namespace brave_wallet {
 
 namespace {
 
+bool IsTxPostRequest(const network::ResourceRequest& request) {
+  if (request.method != net::HttpRequestHeaders::kPostMethod) {
+    return false;
+  }
+
+  auto parts =
+      base::SplitStringPiece(request.url.path_piece(), "/",
+                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  return parts.size() == 1 && parts[0] == "tx";
+}
+
+std::optional<std::string> IsTxStatusRequest(
+    const network::ResourceRequest& request) {
+  auto parts =
+      base::SplitStringPiece(request.url.path_piece(), "/",
+                             base::KEEP_WHITESPACE, base::SPLIT_WANT_NONEMPTY);
+  if (parts.size() == 2 && parts[0] == "tx") {
+    return std::string(parts[1]);
+  }
+
+  return std::nullopt;
+}
+
 std::optional<std::string> IsAddressStatsRequest(
     const network::ResourceRequest& request) {
   auto parts =
@@ -103,14 +126,35 @@ void BitcoinTestRpcServer::RequestInterceptor(
     const network::ResourceRequest& request) {
   url_loader_factory_.ClearResponses();
 
-  if (request.method == net::HttpRequestHeaders::kPostMethod &&
-      request.url.path_piece() == "/tx") {
+  if (IsTxPostRequest(request)) {
     auto request_string(request.request_body->elements()
                             ->at(0)
                             .As<network::DataElementBytes>()
                             .AsStringPiece());
     captured_raw_tx_ = request_string;
+
+    if (fail_next_transaction_broadcast_) {
+      fail_next_transaction_broadcast_ = false;
+      url_loader_factory_.AddResponse(request.url.spec(), "Bad request",
+                                      net::HTTP_BAD_REQUEST);
+      return;
+    }
+
     url_loader_factory_.AddResponse(request.url.spec(), kMockBtcTxid3);
+    broadcasted_transactions_.emplace_back().txid = kMockBtcTxid3;
+    return;
+  }
+
+  if (auto txid = IsTxStatusRequest(request)) {
+    for (auto& tx : broadcasted_transactions_) {
+      if (tx.txid == *txid) {
+        url_loader_factory_.AddResponse(request.url.spec(),
+                                        base::ToString(tx.ToValue()));
+        return;
+      }
+    }
+    url_loader_factory_.AddResponse(request.url.spec(), "Transaction not found",
+                                    net::HTTP_NOT_FOUND);
     return;
   }
 
@@ -281,6 +325,16 @@ void BitcoinTestRpcServer::AddMempoolBalance(const std::string& address,
                                              uint64_t funded,
                                              uint64_t spent) {
   address_stats_map()[address] = MempoolAddressStats(address, funded, spent);
+}
+
+void BitcoinTestRpcServer::FailNextTransactionBroadcast() {
+  fail_next_transaction_broadcast_ = true;
+}
+
+void BitcoinTestRpcServer::ConfirmAllTransactions() {
+  for (auto& tx : broadcasted_transactions_) {
+    tx.status.confirmed = true;
+  }
 }
 
 }  // namespace brave_wallet
