@@ -31,7 +31,9 @@ function getPageVisibility () {
       braveWallet: false,
       braveWeb3: false,
       leoAssistant: false,
+      content: false,
       playlist: false,
+      speedreader: false,
     }
   }
   // We need to specify values for every attribute in pageVisibility instead of
@@ -56,7 +58,9 @@ function getPageVisibility () {
     braveSync: !loadTimeData.getBoolean('isSyncDisabled'),
     braveWallet: loadTimeData.getBoolean('isBraveWalletAllowed'),
     leoAssistant: loadTimeData.getBoolean('isLeoAssistantAllowed'),
+    content: alwaysTrueProxy,
     playlist: loadTimeData.getBoolean('isPlaylistAllowed'),
+    speedreader: loadTimeData.getBoolean('isSpeedreaderFeatureEnabled'),
   }
   // Proxy so we can respond to any other property
   return new Proxy(staticProps, {
