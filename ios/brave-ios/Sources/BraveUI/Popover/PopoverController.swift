@@ -629,6 +629,7 @@ extension PopoverController: BasicAnimationControllerDelegate {
     }
 
     context.containerView.addSubview(view)
+    view.frame = context.finalFrame(for: context.viewController(forKey: .to)!)
 
     let originViewFrame = view.convert(
       popoverContext.originView.frame,
