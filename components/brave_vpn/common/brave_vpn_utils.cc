@@ -44,6 +44,9 @@ void RegisterVPNLocalStatePrefs(PrefRegistrySimple* registry) {
 #if BUILDFLAG(ENABLE_BRAVE_VPN_WIREGUARD)
   registry->RegisterBooleanPref(prefs::kBraveVPNWireguardEnabled, false);
 #endif
+#if BUILDFLAG(IS_MAC)
+  registry->RegisterBooleanPref(prefs::kBraveVPNOnDemandEnabled, false);
+#endif
 }
 
 }  // namespace

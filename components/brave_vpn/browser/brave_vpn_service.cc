@@ -297,6 +297,31 @@ void BraveVpnService::ResetConnectionState() {
   connection_manager_->ResetConnectionState();
 }
 
+void BraveVpnService::EnableOnDemand(bool enable) {
+#if BUILDFLAG(IS_MAC)
+  local_prefs_->SetBoolean(prefs::kBraveVPNOnDemandEnabled, enable);
+
+  // If not connected, do nothing because on-demand bit will
+  // be applied when new connection starts. Whenever new connection starts,
+  // we create os vpn entry.
+  if (IsConnected()) {
+    VLOG(2) << __func__ << " : reconnect to apply on-demand config(" << enable
+            << "> to current connection";
+    Connect();
+  }
+#endif
+}
+
+void BraveVpnService::GetOnDemandState(GetOnDemandStateCallback callback) {
+#if BUILDFLAG(IS_MAC)
+  std::move(callback).Run(
+      /*available*/ true,
+      /*enabled*/ local_prefs_->GetBoolean(prefs::kBraveVPNOnDemandEnabled));
+#else
+  std::move(callback).Run(false, false);
+#endif
+}
+
 // NOTE(bsclifton): Desktop uses API to create a ticket.
 // Android and iOS directly send an email.
 void BraveVpnService::OnCreateSupportTicket(
