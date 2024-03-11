@@ -130,6 +130,27 @@
   <message name="IDS_IDC_WINDOW_GROUP_TAB">
     Group tab
   </message>
+  <message name="IDS_IDC_WINDOW_TOGGLE_GROUP_EXPANDED">
+    Toggle group expanded
+  </message>
+  <message name="IDS_IDC_WINDOW_REMOVE_TAB_FROM_GROUP">
+    Remove tab from current group
+  </message>
+  <message name="IDS_IDC_WINDOW_UNGROUP_GROUP">
+    Ungroup current tab group
+  </message>
+  <message name="IDS_IDC_WINDOW_UNGROUP_ALL_TABS">
+    Ungroup all tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_UNGROUPED_TABS">
+    Close ungrouped tabs
+  </message>
+  <message name="IDS_IDC_WINDOW_CLOSE_TABS_NOT_IN_CURRENT_GROUP">
+    Close tabs not in current group
+  </message>
+  <message name="IDS_IDC_WINDOW_GROUP_UNGROUPED_TABS">
+    Group ungrouped tabs
+  </message>
   <message name="IDS_IDC_SCROLL_TAB_TO_TOP">
     Scroll tab to top
   </message>

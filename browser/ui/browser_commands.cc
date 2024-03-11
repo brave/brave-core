@@ -5,8 +5,11 @@
 
 #include "brave/browser/ui/browser_commands.h"
 
+#include <memory>
 #include <numeric>
+#include <stack>
 #include <string>
+#include <utility>
 #include <vector>
 
 #include "base/strings/utf_string_conversions.h"
@@ -16,6 +19,7 @@
 #include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
+#include "brave/browser/ui/tabs/brave_tab_strip_model.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -33,6 +37,8 @@
 #include "chrome/browser/profiles/profile_window.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
+#include "chrome/browser/ui/browser_list.h"
+#include "chrome/browser/ui/browser_navigator_params.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
 #include "chrome/browser/ui/profiles/profile_picker.h"
 #include "chrome/browser/ui/tabs/tab_enums.h"
@@ -91,6 +97,17 @@
 using content::WebContents;
 
 namespace brave {
+
+namespace {
+
+bool CanTakeTabs(const Browser* from, const Browser* to) {
+  return from != to && !from->IsAttemptingToCloseBrowser() &&
+         !from->IsBrowserClosing() && !from->is_delete_scheduled() &&
+         to->profile() == from->profile();
+}
+
+}  // namespace
+
 void NewOffTheRecordWindowTor(Browser* browser) {
   CHECK(browser);
   if (browser->profile()->IsTor()) {
@@ -409,6 +426,265 @@ void MoveGroupToNewWindow(Browser* browser) {
   }
 
   tsm->delegate()->MoveGroupToNewWindow(current_group_id.value());
+}
+
+bool IsInGroup(Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  auto current_group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  return current_group_id.has_value();
+}
+
+bool HasUngroupedTabs(Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    if (!tsm->GetTabGroupForTab(i)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void GroupUngroupedTabs(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* tsm = browser->tab_strip_model();
+  std::vector<int> group_indices;
+
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    if (tsm->GetTabGroupForTab(i)) {
+      continue;
+    }
+    group_indices.push_back(i);
+  }
+
+  if (group_indices.empty()) {
+    return;
+  }
+
+  tsm->AddToNewGroup(group_indices);
+}
+
+void UngroupCurrentGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* tsm = browser->tab_strip_model();
+
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+
+  auto* group = tsm->group_model()->GetTabGroup(group_id.value());
+  std::vector<int> indices(group->tab_count());
+  std::iota(indices.begin(), indices.end(), group->GetFirstTab().value());
+  tsm->RemoveFromGroup(indices);
+}
+
+void RemoveTabFromGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* tsm = browser->tab_strip_model();
+  tsm->RemoveFromGroup({tsm->active_index()});
+}
+
+void NameGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+
+  tsm->OpenTabGroupEditor(*group_id);
+}
+
+void NewTabInGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+
+  const auto tabs = tsm->group_model()->GetTabGroup(*group_id)->ListTabs();
+  tsm->delegate()->AddTabAt(GURL(), tabs.end(), true, *group_id);
+}
+
+bool CanUngroupAllTabs(Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+  auto* tsm = browser->tab_strip_model();
+  for (int i = 0; i < tsm->GetTabCount(); ++i) {
+    if (tsm->GetTabGroupForTab(i)) {
+      return true;
+    }
+  }
+  return false;
+}
+
+void UngroupAllTabs(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  std::vector<int> indices(browser->tab_strip_model()->GetTabCount());
+  std::iota(indices.begin(), indices.end(), 0);
+  browser->tab_strip_model()->RemoveFromGroup(indices);
+}
+
+void ToggleGroupExpanded(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* tsm = browser->tab_strip_model();
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+
+  auto* group = tsm->group_model()->GetTabGroup(*group_id);
+  auto* vd = group->visual_data();
+  tab_groups::TabGroupVisualData vd_update(vd->title(), vd->color(),
+                                           !vd->is_collapsed());
+  group->SetVisualData(vd_update);
+}
+
+void CloseUngroupedTabs(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+  auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+  CHECK(tsm);
+
+  std::vector<int> indices;
+
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+    if (!tsm->GetTabGroupForTab(i)) {
+      indices.push_back(i);
+    }
+  }
+
+  for (const auto& index : indices) {
+    tsm->CloseWebContentsAt(index,
+                            TabCloseTypes::CLOSE_USER_GESTURE |
+                                TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  }
+}
+
+void CloseTabsNotInCurrentGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* tsm = static_cast<BraveTabStripModel*>(browser->tab_strip_model());
+  CHECK(tsm);
+
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+
+  std::vector<int> indices;
+  for (int i = tsm->GetTabCount() - 1; i >= 0; --i) {
+    if (tsm->GetTabGroupForTab(i) != *group_id) {
+      indices.push_back(i);
+    }
+  }
+
+  for (const auto& index : indices) {
+    tsm->CloseWebContentsAt(index,
+                            TabCloseTypes::CLOSE_USER_GESTURE |
+                                TabCloseTypes::CLOSE_CREATE_HISTORICAL_TAB);
+  }
+}
+
+void CloseGroup(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  auto* tsm = browser->tab_strip_model();
+  auto group_id = tsm->GetTabGroupForTab(tsm->active_index());
+  if (!group_id) {
+    return;
+  }
+  tsm->CloseAllTabsInGroup(*group_id);
+}
+
+bool CanBringAllTabs(Browser* browser) {
+  if (!browser) {
+    return false;
+  }
+
+  return base::ranges::any_of(
+      *BrowserList::GetInstance(),
+      [&](const Browser* from) { return CanTakeTabs(from, browser); });
+}
+
+void BringAllTabs(Browser* browser) {
+  if (!browser) {
+    return;
+  }
+
+  // Find all browsers with the same profile
+  std::vector<Browser*> browsers;
+  base::ranges::copy_if(
+      *BrowserList::GetInstance(), std::back_inserter(browsers),
+      [&](const Browser* from) { return CanTakeTabs(from, browser); });
+
+  // Detach all tabs from other browsers
+  std::stack<std::unique_ptr<content::WebContents>> detached_pinned_tabs;
+  std::stack<std::unique_ptr<content::WebContents>> detached_unpinned_tabs;
+
+  base::ranges::for_each(browsers, [&detached_pinned_tabs,
+                                    &detached_unpinned_tabs](auto* other) {
+    auto* tab_strip_model = other->tab_strip_model();
+    const int pinned_tab_count = tab_strip_model->IndexOfFirstNonPinnedTab();
+    for (int i = tab_strip_model->count() - 1; i >= 0; --i) {
+      auto contents = tab_strip_model->DetachWebContentsAtForInsertion(i);
+      const bool is_pinned = i < pinned_tab_count;
+      if (is_pinned) {
+        detached_pinned_tabs.push(std::move(contents));
+      } else {
+        detached_unpinned_tabs.push(std::move(contents));
+      }
+    }
+  });
+
+  // Insert pinned tabs
+  auto* tab_strip_model = browser->tab_strip_model();
+  while (!detached_pinned_tabs.empty()) {
+    tab_strip_model->InsertWebContentsAt(
+        tab_strip_model->IndexOfFirstNonPinnedTab(),
+        std::move(detached_pinned_tabs.top()), AddTabTypes::ADD_PINNED);
+    detached_pinned_tabs.pop();
+  }
+
+  // Insert unpinned tabs
+  while (!detached_unpinned_tabs.empty()) {
+    tab_strip_model->InsertWebContentsAt(
+        tab_strip_model->count(), std::move(detached_unpinned_tabs.top()),
+        AddTabTypes::ADD_NONE);
+    detached_unpinned_tabs.pop();
+  }
 }
 
 bool HasDuplicateTabs(Browser* browser) {
