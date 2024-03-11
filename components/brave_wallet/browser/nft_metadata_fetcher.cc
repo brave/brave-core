@@ -234,6 +234,8 @@ void NftMetadataFetcher::OnSanitizeTokenMetadata(
         l10n_util::GetStringUTF8(IDS_WALLET_PARSING_ERROR));
     return;
   }
+
+  // TODO(apaymyshev): parse metadata in wallet's backend
   std::string json;
   base::JSONWriter::Write(std::move(result).value(), &json);
   std::move(callback).Run(std::move(json), 0, "");  // 0 is kSuccess
