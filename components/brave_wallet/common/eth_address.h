@@ -14,6 +14,8 @@
 
 namespace brave_wallet {
 
+inline constexpr size_t kEthAddressLength = 20u;
+
 class EthAddress {
  public:
   // public key must be uncompressed and no header byte so its length is 64

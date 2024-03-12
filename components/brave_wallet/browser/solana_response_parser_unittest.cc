@@ -600,7 +600,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetAccountInfo) {
   EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 }
 
-TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
+TEST(SolanaResponseParserUnitTest, ConverterForGetProgramAccounts) {
   std::string json = R"(
     {
       "jsonrpc": "2.0",
@@ -638,7 +638,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-  auto json_converted = ConverterForGetProrgamAccounts().Run(json);
+  auto json_converted = ConverterForGetProgramAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 
@@ -699,7 +699,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-  json_converted = ConverterForGetProrgamAccounts().Run(json);
+  json_converted = ConverterForGetProgramAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 
@@ -720,7 +720,7 @@ TEST(SolanaResponseParserUnitTest, ConverterForGetProrgamAccounts) {
       "id": 1
     }
   )";
-  json_converted = ConverterForGetProrgamAccounts().Run(json);
+  json_converted = ConverterForGetProgramAccounts().Run(json);
   ASSERT_TRUE(json_converted);
   EXPECT_EQ(ParseJson(*json_converted), ParseJson(json_expected));
 }
