@@ -466,7 +466,7 @@ extension Strings {
       comment: "The title for the settings to show search suggestions from Leo in url-address bar"
     )
     public static let advancedSettingsDefaultModelTitle = NSLocalizedString(
-      "aichat.advancedSettingsAutocompleteTitle",
+      "aichat.advancedSettingsDefaultModelTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Default model for new conversations",
@@ -648,7 +648,7 @@ extension Strings {
       comment: "The title terms and conditions for AI chat usage"
     )
     public static let termsConditionsDescription = NSLocalizedString(
-      "aichat.termsConditionsTitle",
+      "aichat.termsConditionsDescription",
       tableName: "BraveLeo",
       bundle: .module,
       value:
@@ -673,7 +673,7 @@ extension Strings {
         "The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated"
     )
     public static let speechRecognizerDisclaimer = NSLocalizedString(
-      "aichat.feedbackPremiumAdTitle",
+      "aichat.speechRecognizerDisclaimer",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Brave does not store or share your voice inputs.",
