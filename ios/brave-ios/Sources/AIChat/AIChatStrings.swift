@@ -450,7 +450,7 @@ extension Strings {
       comment: "The title for the settings to show search suggestions from Leo in url-address bar"
     )
     public static let advancedSettingsDefaultModelTitle = NSLocalizedString(
-      "aichat.advancedSettingsAutocompleteTitle",
+      "aichat.advancedSettingsDefaultModelTitle",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Default model for new conversations",
@@ -632,7 +632,7 @@ extension Strings {
       comment: "The title terms and conditions for AI chat usage"
     )
     public static let termsConditionsDescription = NSLocalizedString(
-      "aichat.termsConditionsTitle",
+      "aichat.termsConditionsDescription",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Brave Leo is a private AI smart assistant that enhances your use of the Internet. Leo is free to use with limited access. Brave Leo Premium offers more models, higher limits and gives subscribers early access to new features. The default model for all users is currently Mixtral 8x7B. See the **[Brave wiki](%@)** for more details.\n\nWhen you ask Leo a question it may use the context of the web page you are viewing or text you highlight to provide a response. The accuracy of responses is not guaranteed, and may include inaccurate, misleading, or false information. Leo uses data from Brave Search to improve response quality. Don't submit sensitive or private info, and use caution with any answers related to health, finance, personal safety, or similar. You can adjust Leo’s options in Settings any time.\n\nLeo does not collect identifiers such as your IP address that can be linked to you. No personal data is retained by the AI model or any 3rd-party model providers. See the **[privacy policy](%@)** for more information.",
@@ -653,7 +653,7 @@ extension Strings {
       comment: "The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated"
     )
     public static let speechRecognizerDisclaimer = NSLocalizedString(
-      "aichat.feedbackPremiumAdTitle",
+      "aichat.speechRecognizerDisclaimer",
       tableName: "BraveLeo",
       bundle: .module,
       value: "Brave does not store or share your voice inputs.",
