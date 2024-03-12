@@ -53,6 +53,9 @@ std::string GetFilecoinChainId(mojom::KeyringId keyring_id);
 
 mojom::CoinType GetCoinForKeyring(mojom::KeyringId keyring_id);
 
+mojom::CoinType GetCoinTypeFromTxDataUnion(
+    const mojom::TxDataUnion& tx_data_union);
+
 GURL GetActiveEndpointUrl(const mojom::NetworkInfo& chain);
 
 std::vector<mojom::KeyringId> GetSupportedKeyrings();

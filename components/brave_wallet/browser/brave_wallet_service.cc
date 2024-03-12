@@ -238,7 +238,11 @@ BraveWalletService::BraveWalletService(
       bitcoin_wallet_service_(bitcoin_wallet_service),
       zcash_wallet_service_(zcash_wallet_service),
       profile_prefs_(profile_prefs),
-      brave_wallet_p3a_(this, keyring_service, profile_prefs, local_state),
+      brave_wallet_p3a_(this,
+                        keyring_service,
+                        tx_service,
+                        profile_prefs,
+                        local_state),
       eth_allowance_manager_(
           std::make_unique<EthAllowanceManager>(json_rpc_service,
                                                 keyring_service,
