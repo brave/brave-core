@@ -7,6 +7,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
@@ -19,6 +20,7 @@
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "components/content_settings/core/browser/cookie_settings.h"
+#include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
 #include "content/public/test/browser_test.h"
@@ -209,6 +211,13 @@ class EphemeralStorageTest : public InProcessBrowserTest,
   void SetCookiePref(ContentSetting setting) {
     browser()->profile()->GetPrefs()->SetInteger(
         "profile.default_content_setting_values.cookies", setting);
+  }
+
+  void SetCookieControlType(brave_shields::ControlType control_type) {
+    brave_shields::SetCookieControlType(
+        content_settings(), browser()->profile()->GetPrefs(), control_type,
+        embedded_test_server()->GetURL("dev-pages.brave.software",
+                                       kEphemeralStorageTestPage));
   }
 
   // Starts the JS test code on the QA page to populate storage values so that
@@ -798,6 +807,23 @@ IN_PROC_BROWSER_TEST_P(EphemeralStorageTest,
                        CookiesAllowedNewPageResetSession) {
   SetCookiePref(CONTENT_SETTING_ALLOW);
   SetThirdPartyCookiePref(false);
+
+  SetupTestPage();
+
+  const StorageResult expected[4][4] = {
+      {kSuccess, kSuccess, kSuccess, kNA},
+      {kSuccess, kSuccess, kSuccess, kNA},
+      {kEmpty, kEmpty, kEmpty, kNA},
+      {kSuccess, kSuccess, kSuccess, kNA},
+  };
+  TestNewPageResetSession(expected);
+}
+
+IN_PROC_BROWSER_TEST_P(EphemeralStorageTest,
+                       CookiesAllowedNewPageResetSessionSetPerDomain) {
+  // Set the cookie control type to allow for the test page's domain (not
+  // browser-wide!).
+  SetCookieControlType(brave_shields::ControlType::ALLOW);
 
   SetupTestPage();
 
