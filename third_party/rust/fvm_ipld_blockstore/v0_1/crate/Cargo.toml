@@ -23,7 +23,7 @@ license = "MIT OR Apache-2.0"
 repository = "https://github.com/filecoin-project/ref-fvm"
 
 [dependencies.anyhow]
-version = "1.0.51"
+version = "1.0.81"
 
 [dependencies.cid]
 version = "0.8.2"

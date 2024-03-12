@@ -34,7 +34,7 @@ targets = ["x86_64-unknown-linux-gnu"]
 version = "=1.0.38"
 
 [dev-dependencies.anyhow]
-version = "1.0.65"
+version = "1.0.81"
 
 [dev-dependencies.ref-cast]
 version = "1.0"
