@@ -23,9 +23,9 @@ interface Props {
   onClick: () => void
 }
 
-export const AccountType = ({ title, description, icons }: Props) => {
+export const AccountType = ({ title, description, icons, onClick }: Props) => {
   return (
-    <Container>
+    <Container onClick={onClick}>
       <Row width='100%'>
         <Column
           alignItems='flex-start'

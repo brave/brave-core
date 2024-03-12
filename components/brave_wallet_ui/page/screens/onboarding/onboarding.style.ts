@@ -139,6 +139,8 @@ export const PhraseCardBottomRow = styled(PhraseCardTopRow)<{
 `
 
 export const ContinueButton = styled(Button)`
+  display: flex;
+  flex-grow: 0;
   --leo-button-radius: 12px;
   min-height: 44px;
 `

@@ -4,115 +4,13 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import styled from 'styled-components'
 import { LoaderIcon } from 'brave-ui/components/icons'
-import LedgerLogo from '../../../../../assets/svg-icons/ledger-logo.svg'
-import TrezorLogo from '../../../../../assets/svg-icons/trezor-logo.svg'
-import { DisclaimerWrapper as DisclaimerWrapperBase } from '../style'
-import { WalletButton } from '../../../../shared/style'
+import * as leo from '@brave/leo/tokens/css'
+import Checkbox from '@brave/leo/react/checkbox'
 
 interface StyleProps {
   isSelected: boolean
   size: 'big' | 'small'
 }
-
-export const HardwareTitle = styled.span`
-  font-family: Poppins;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  color: ${(p) => p.theme.color.text02};
-  margin-bottom: 25px;
-`
-
-export const HardwareButtonRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  width: 260px;
-  margin-bottom: 35px;
-`
-
-export const HardwareButton = styled(WalletButton)<Partial<StyleProps>>`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: row;
-  cursor: ${(p) => (p.disabled ? 'not-allowed' : 'pointer')};
-  outline: none;
-  background: none;
-  border: ${(p) =>
-    p.isSelected
-      ? `2px solid ${p.theme.color.infoBorder}`
-      : `1px solid ${p.theme.color.disabled}`};
-  background-color: ${(p) =>
-    p.isSelected ? p.theme.color.infoBackground : p.theme.color.background02};
-  border-radius: 10px;
-  width: 125px;
-  height: 55px;
-`
-
-export const LedgerIcon = styled.div`
-  width: 93px;
-  height: 23px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${LedgerLogo});
-  mask-image: url(${LedgerLogo});
-`
-
-export const TrezorIcon = styled.div`
-  width: 105px;
-  height: 33px;
-  background-color: ${(p) => p.theme.color.interactive07};
-  -webkit-mask-image: url(${TrezorLogo});
-  mask-image: url(${TrezorLogo});
-`
-
-export const HardwareInfoRow = styled.div`
-  display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-bottom: 35px;
-`
-
-export const HardwareInfoColumn = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-start;
-  margin-left: 10px;
-`
-
-export const ConnectingButton = styled(WalletButton)`
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-  padding: 10px 22px;
-  border: 1px solid ${(p) => p.theme.color.interactive08};
-  box-sizing: border-box;
-  border-radius: 48px;
-  background-color: transparent;
-`
-
-export const ConnectingButtonText = styled.span`
-  font-family: Poppins;
-  font-style: normal;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 20px;
-  text-align: center;
-
-  /* Light Theme/Brand/interactive07 */
-  color: ${(p) => p.theme.color.interactive07};
-
-  /* Inside Auto Layout */
-  flex: none;
-  order: 1;
-  flex-grow: 0;
-  margin: 0px 8px;
-`
 
 interface AccountCircleStyleProps {
   orb: string
@@ -146,27 +44,25 @@ export const HardwareWalletAccountListItem = styled.div`
   flex-direction: row;
   margin: 16px 0px;
   width: 100%;
+  padding: 0 16px;
+  gap: 16px;
 `
 
 export const HardwareWalletAccountListItemRow = styled.div`
   flex: 1;
   flex-direction: row;
-  /* Body Light Theme/14pt Poppins Regular 400 */
   font-family: Poppins;
   font-style: normal;
-  font-weight: normal;
+  font-weight: 400;
   font-size: 14px;
   line-height: 20px;
   display: flex;
   align-items: center;
   letter-spacing: 0.01em;
 
-  /* Light Theme/Text/text01 */
-  color: ${(p) => p.theme.color.text01};
+  color: ${leo.color.text.primary};
 
   justify-content: space-between;
-  padding-left: 10px;
-  padding-right: 10px;
 `
 
 export const AddressBalanceWrapper = styled.div`
@@ -181,11 +77,13 @@ export const AddressBalanceWrapper = styled.div`
 export const ButtonsContainer = styled.div`
   display: flex;
   flex-direction: row;
+  justify-content: center;
+  width: 100%;
   gap: 10px;
-`
 
-export const DisclaimerWrapper = styled(DisclaimerWrapperBase)`
-  margin-bottom: 10px;
+  & leo-button {
+    flex-grow: 0;
+  }
 `
 
 export const SelectRow = styled.div`
@@ -199,7 +97,14 @@ export const SelectRow = styled.div`
 `
 
 export const SelectWrapper = styled.div`
-  width: 300px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  & leo-dropdown {
+    width: 100%;
+  }
 `
 
 export const ErrorText = styled.span`
@@ -233,7 +138,88 @@ export const NoSearchResultText = styled.div`
   letter-spacing: 0.01em;
   width: 100%;
   margin-top: 16px;
-
-  /* Light Theme/Text/text02 */
   color: ${(p) => p.theme.color.text02};
+`
+
+export const Instructions = styled.div<{ mode: 'info' | 'success' | 'error' }>`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: ${(p) =>
+    p.mode === 'info'
+      ? leo.color.text.primary
+      : p.mode === 'success'
+      ? leo.color.systemfeedback.successText
+      : leo.color.systemfeedback.errorText};
+  text-align: center;
+  font-family: Poppins;
+  font-size: 16px;
+  font-style: noddrmal;
+  font-weight: 400;
+  line-height: 26px;
+  gap: 8px;
+`
+
+export const Bold = styled.span`
+  font-weight: 600;
+`
+
+export const AccountCheckbox = styled(Checkbox)`
+  --checkbox-box-size: 24px;
+`
+
+export const AccountListContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 100%;
+  border-radius: 16px;
+  border: 1px solid ${leo.color.divider.subtle};
+  margin-top: 8px;
+`
+
+export const AccountListHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+
+  color: ${leo.color.text.tertiary};
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  border-bottom: 1px solid ${leo.color.divider.subtle};
+  padding: 16px;
+`
+
+export const AccountListContent = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0px;
+  width: 100%;
+  height: 185px;
+  overflow-y: auto;
+`
+
+export const DropdownLabel = styled.div`
+  font-family: 'Poppins';
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${leo.color.text.primary};
+`
+
+export const HelpLink = styled.a`
+  font-family: Poppins;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 20px;
+  color: ${leo.color.text.interactive};
+  text-decoration: none;
 `

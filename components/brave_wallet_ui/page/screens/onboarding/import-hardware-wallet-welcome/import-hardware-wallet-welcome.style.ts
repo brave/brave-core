@@ -6,10 +6,13 @@
 import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
-import HardwareGraphicSvg from './images/hardware-graphic.svg'
+import HardwareGraphicLightSvg from './images/hardware-graphic-light.svg'
+import HardwareGraphicDarkSvg from './images/hardware-graphic-dark.svg'
 
 export const HardwareGraphic = styled.img.attrs({
-  src: HardwareGraphicSvg
+  src: window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? HardwareGraphicDarkSvg
+    : HardwareGraphicLightSvg
 })`
   width: 100%;
   height: auto;

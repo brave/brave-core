@@ -12,22 +12,22 @@ import { onConnectHardwareWallet } from '../../../../../common/async/hardware'
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
-import { NavButton } from '../../../../extension/buttons/nav-button/index'
 
 // Styled Components
-import { DisclaimerText, InfoIcon } from '../style'
 import {
-  ConnectingButton,
-  ConnectingButtonText,
-  HardwareButton,
-  HardwareButtonRow,
-  HardwareInfoColumn,
-  HardwareInfoRow,
-  HardwareTitle,
-  LedgerIcon,
-  TrezorIcon,
-  ErrorText,
-  LoadIcon
+  // ConnectingButton,
+  // ConnectingButtonText,
+  // HardwareButton,
+  // HardwareButtonRow,
+  // HardwareInfoColumn,
+  // HardwareInfoRow,
+  // HardwareTitle,
+  // LedgerIcon,
+  // TrezorIcon,
+  // ErrorText,
+  // LoadIcon,
+  Instructions
+  // Bold
 } from './style'
 
 // Custom types
@@ -51,9 +51,15 @@ import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useImportHardwareAccountsMutation //
 } from '../../../../../common/slices/api.slice'
+import { Column, VerticalSpace } from '../../../../shared/style'
+import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
+import { Divider } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button.style'
+import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
+import { HardwareWalletGraphic } from '../../../../../page/screens/onboarding/select-wallet-device/onboarding-select-wallet-device.style'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
+  onSelectVendor?: (vendor: HardwareVendor) => void
   onSuccess: () => void
 }
 
@@ -103,8 +109,9 @@ const getErrorMessage = (
 }
 
 export const HardwareWalletConnect = ({
+  selectedAccountType,
   onSuccess,
-  selectedAccountType
+  onSelectVendor
 }: Props) => {
   // queries
   const { accounts: savedAccounts } = useAccountsQuery()
@@ -114,7 +121,7 @@ export const HardwareWalletConnect = ({
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] =
-    React.useState<HardwareVendor>(BraveWallet.LEDGER_HARDWARE_VENDOR)
+    React.useState<HardwareVendor>()
   const [isConnecting, setIsConnecting] = React.useState<boolean>(false)
   const [accounts, setAccounts] = React.useState<
     BraveWallet.HardwareWalletAccount[]
@@ -178,6 +185,7 @@ export const HardwareWalletConnect = ({
 
   const onChangeDerivationScheme = React.useCallback(
     (scheme: HardwareDerivationScheme) => {
+      if (!selectedHardwareWallet) return
       setSelectedDerivationScheme(scheme)
       setAccounts([])
       onConnectHardwareWallet({
@@ -250,6 +258,7 @@ export const HardwareWalletConnect = ({
     }
 
     selectVendor(BraveWallet.LEDGER_HARDWARE_VENDOR)
+    onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
   }, [selectedHardwareWallet, selectVendor])
 
   const onSelectTrezor = React.useCallback(() => {
@@ -258,9 +267,11 @@ export const HardwareWalletConnect = ({
     }
 
     selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
+    onSelectVendor?.(BraveWallet.TREZOR_HARDWARE_VENDOR)
   }, [selectedHardwareWallet, selectVendor])
 
   const onSubmit = React.useCallback(() => {
+    if (!selectedHardwareWallet) return
     setConnectionError(undefined)
     setIsConnecting(true)
     onConnectHardwareWallet({
@@ -302,115 +313,85 @@ export const HardwareWalletConnect = ({
   }, [savedAccounts])
 
   // render
-  if (showAuthorizeDevice) {
+  if (showAccountsList && selectedHardwareWallet) {
     return (
       <>
-        <HardwareInfoRow>
-          <InfoIcon />
-          <HardwareInfoColumn>
-            <DisclaimerText>
-              {getLocale('braveWalletConnectHardwareAuthorizationNeeded')}
-            </DisclaimerText>
-          </HardwareInfoColumn>
-        </HardwareInfoRow>
-        <AuthorizeHardwareDeviceIFrame coinType={selectedAccountType.coin} />
+        <VerticalSpace space='77px' />
+        <HardwareWalletAccountsList
+          hardwareWallet={selectedHardwareWallet}
+          accounts={accounts}
+          preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
+          onLoadMore={onSubmit}
+          selectedDerivationPaths={selectedDerivationPaths}
+          setSelectedDerivationPaths={setSelectedDerivationPaths}
+          selectedDerivationScheme={selectedDerivationScheme}
+          setSelectedDerivationScheme={onChangeDerivationScheme}
+          onAddAccounts={onAddAccounts}
+          filecoinNetwork={filecoinNetwork}
+          onChangeFilecoinNetwork={onFilecoinNetworkChanged}
+          coin={selectedAccountType.coin}
+        />
       </>
     )
   }
 
-  if (showAccountsList) {
+  if (
+    selectedAccountType.coin !== BraveWallet.CoinType.FIL &&
+    selectedAccountType.coin !== BraveWallet.CoinType.SOL &&
+    !selectedHardwareWallet
+  ) {
     return (
-      <HardwareWalletAccountsList
-        hardwareWallet={selectedHardwareWallet}
-        accounts={accounts}
-        preAddedHardwareWalletAccounts={preAddedHardwareWalletAccounts}
-        onLoadMore={onSubmit}
-        selectedDerivationPaths={selectedDerivationPaths}
-        setSelectedDerivationPaths={setSelectedDerivationPaths}
-        selectedDerivationScheme={selectedDerivationScheme}
-        setSelectedDerivationScheme={onChangeDerivationScheme}
-        onAddAccounts={onAddAccounts}
-        filecoinNetwork={filecoinNetwork}
-        onChangeFilecoinNetwork={onFilecoinNetworkChanged}
-        coin={selectedAccountType.coin}
-      />
+      <>
+        <VerticalSpace space='98px' />
+        <HardwareButton
+          title={getLocale('braveWalletConnectHardwareLedger')}
+          description={getLocale(
+            'braveWalletConnectHardwareDeviceDescription'
+          ).replace('$1', getLocale('braveWalletConnectHardwareLedger'))}
+          onClick={onSelectLedger}
+        />
+        <Divider />
+        <HardwareButton
+          title={getLocale('braveWalletConnectHardwareTrezor')}
+          description={getLocale(
+            'braveWalletConnectHardwareDeviceDescription'
+          ).replace('$1', getLocale('braveWalletConnectHardwareTrezor'))}
+          onClick={onSelectTrezor}
+        />{' '}
+      </>
     )
   }
-
   return (
     <>
-      {selectedAccountType.coin !== BraveWallet.CoinType.FIL &&
-        selectedAccountType.coin !== BraveWallet.CoinType.SOL && (
-          <>
-            <HardwareTitle>
-              {getLocale('braveWalletConnectHardwareTitle')}
-            </HardwareTitle>
-            <HardwareButtonRow>
-              <HardwareButton
-                onClick={onSelectLedger}
-                isSelected={
-                  selectedHardwareWallet === BraveWallet.LEDGER_HARDWARE_VENDOR
-                }
-                disabled={
-                  isConnecting &&
-                  selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR
-                }
-              >
-                <LedgerIcon />
-              </HardwareButton>
-
-              <HardwareButton
-                onClick={onSelectTrezor}
-                isSelected={
-                  selectedHardwareWallet === BraveWallet.TREZOR_HARDWARE_VENDOR
-                }
-                disabled={
-                  isConnecting &&
-                  selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR
-                }
-              >
-                <TrezorIcon />
-              </HardwareButton>
-            </HardwareButtonRow>
-          </>
-        )}
-      <HardwareInfoRow>
-        <InfoIcon />
-        <HardwareInfoColumn>
-          <DisclaimerText>
-            {getLocale('braveWalletConnectHardwareInfo1').replace(
-              '$1',
-              selectedHardwareWallet
-            )}
-          </DisclaimerText>
-          <DisclaimerText>
-            {getLocale('braveWalletConnectHardwareInfo2').replace(
-              '$1',
-              selectedAccountType.name
-            )}
-          </DisclaimerText>
-        </HardwareInfoColumn>
-      </HardwareInfoRow>
-      {connectionError && (
-        <>
-          <ErrorText>{connectionError.error}</ErrorText>
-          <ErrorText>{connectionError.userHint}</ErrorText>
-        </>
-      )}
-
-      {isConnecting ? (
-        <ConnectingButton>
-          <LoadIcon size='small' />
-          <ConnectingButtonText>
-            {getLocale('braveWalletConnectingHardwareWallet')}
-          </ConnectingButtonText>
-        </ConnectingButton>
-      ) : (
-        <NavButton
-          onSubmit={onSubmit}
-          text={getLocale('braveWalletAddAccountConnect')}
-          buttonType='primary'
-        />
+      {selectedHardwareWallet && (
+        <Column>
+          <VerticalSpace space='135px' />
+          <HardwareWalletGraphic hardwareVendor={selectedHardwareWallet} />
+          <VerticalSpace space='32px' />
+          <Instructions mode={connectionError ? 'error' : 'info'}>
+            {connectionError
+              ? `${connectionError.error}. ${connectionError?.userHint}`
+              : getLocale(
+                  'braveWalletConnectHardwareAuthorizationNeeded'
+                ).replace('$1', selectedHardwareWallet)}
+          </Instructions>
+          <VerticalSpace space='100px' />
+          {showAuthorizeDevice ? (
+            <AuthorizeHardwareDeviceIFrame
+              coinType={selectedAccountType.coin}
+            />
+          ) : (
+            <ContinueButton
+              onClick={onSubmit}
+              isLoading={isConnecting}
+            >
+              <div slot='loading'>
+                {getLocale('braveWalletConnectingHardwareWallet')}
+              </div>
+              {!isConnecting && getLocale('braveWalletAddAccountConnect')}
+            </ContinueButton>
+          )}
+        </Column>
       )}
     </>
   )

@@ -4,14 +4,33 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
-import ConnectWalletGraphicLight from './images/connect-wallet-graphic.svg'
+import * as leo from '@brave/leo/tokens/css'
 
-export const ConnectWalletContainer = styled.div`
+import TrezorLight from './images/trezor-light.svg'
+import TrezorDark from './images/trezor-dark.svg'
+import LedgerLight from './images/ledger-light.svg'
+import LedgerDark from './images/ledger-dark.svg'
+
+import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
+
+export const HardwareWalletGraphic = styled.div<{
+  hardwareVendor: HardwareVendor
+}>`
   display: flex;
   flex-direction: column;
-  width: 100%;
-  height: 221px;
+  justify-content: flex-end;
+  width: 321px;
+  height: 179px;
 
-  background-image: url(${ConnectWalletGraphicLight});
-  background-size: cover;
+  background-image: ${(p) =>
+    `url(${p.hardwareVendor === 'Trezor' ? TrezorLight : LedgerLight})`};
+
+  @media (prefers-color-scheme: dark) {
+    background-image: ${(p) =>
+      `url(${p.hardwareVendor === 'Trezor' ? TrezorDark : LedgerDark})`};
+  }
+  background-color: ${leo.color.container.background};
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: relative;
 `

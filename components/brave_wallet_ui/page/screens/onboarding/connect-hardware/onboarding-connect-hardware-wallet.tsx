@@ -38,7 +38,7 @@ export const OnboardingConnectHardwareWallet = () => {
   const onSelectAccountType = React.useCallback(
     (accountType: CreateAccountOptionsType) => () => {
       history.push(
-        WalletRoutes.OnboardingHardwareWalletConnect.replace(
+        WalletRoutes.OnboardingHardwareWalletConnectSelectDevice.replace(
           ':accountTypeName?',
           accountType.name.toLowerCase()
         )
@@ -46,8 +46,6 @@ export const OnboardingConnectHardwareWallet = () => {
     },
     [history]
   )
-
-  console.log(onSelectAccountType)
 
   return (
     <OnboardingContentLayout title='Select a blockchain to import your hardware wallet'>

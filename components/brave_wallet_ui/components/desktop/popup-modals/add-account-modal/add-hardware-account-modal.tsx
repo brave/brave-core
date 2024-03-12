@@ -73,7 +73,7 @@ export const AddHardwareAccountModal = ({ onSelectAccountType }: Props) => {
           <HardwareWalletConnect
             selectedAccountType={selectedAccountType}
             onSuccess={closeModal}
-          />
+           />
         </StyledWrapper>
       )}
 

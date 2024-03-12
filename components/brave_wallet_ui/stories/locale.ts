@@ -410,8 +410,9 @@ provideStrings({
   braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
+  braveWalletConnectHardwareDeviceDescription: 'Connect your $1 device to Brave Wallet',
   braveWalletConnectHardwareAuthorizationNeeded:
-    'Grant Brave access to your Ledger device.',
+    'Grant Brave access to your $1 device.',
   braveWalletConnectingHardwareWallet: 'Connecting...',
   braveWalletAddCheckedAccountsHardwareWallet: 'Add checked accounts',
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',
@@ -425,6 +426,7 @@ provideStrings({
   braveWalletUnknownInternalError:
     'Unknown error, please reconnect your hardware wallet and try again.',
   braveWalletConnectHardwareSearchNothingFound: 'No results found.',
+  braveWalletAuthorizeHardwareWallet: 'Authorize your wallet',
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',

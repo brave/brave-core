@@ -16,7 +16,7 @@ export const Container = styled.button`
   outline: none;
   border: none;
   background-color: transparent;
-  cursor: pointer;
+  cursor: pointer;  
 `
 
 export const Title = styled.p`

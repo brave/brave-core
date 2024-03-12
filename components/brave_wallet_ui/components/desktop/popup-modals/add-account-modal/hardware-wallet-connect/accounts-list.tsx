@@ -4,7 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 import * as React from 'react'
 import { EntityId } from '@reduxjs/toolkit'
-import { Checkbox, Select } from 'brave-ui/components'
+import Dropdown from '@brave/leo/react/dropdown'
 
 // Types
 import {
@@ -24,11 +24,7 @@ import { HardwareVendor } from '../../../../../common/api/hardware_keyrings'
 // Utils
 import { getLocale } from '../../../../../../common/locale'
 import { reduceAddress } from '../../../../../utils/reduce-address'
-import Amount from '../../../../../utils/amount'
-import {
-  useGetHardwareAccountDiscoveryBalanceQuery,
-  useGetNetworksRegistryQuery
-} from '../../../../../common/slices/api.slice'
+import { useGetNetworksRegistryQuery } from '../../../../../common/slices/api.slice'
 import { useAddressOrb } from '../../../../../common/hooks/use-orb'
 import { makeNetworkAsset } from '../../../../../options/asset-options'
 import {
@@ -41,16 +37,13 @@ import {
 } from '../../../../../utils/derivation_path_utils'
 
 // Components
-import { NavButton } from '../../../../extension/buttons/nav-button/index'
 import { SearchBar } from '../../../../shared/search-bar/index'
 import { NetworkFilterSelector } from '../../../network-filter-selector'
-import { Skeleton } from '../../../../shared/loading-skeleton/styles'
 
 // Styles
-import { DisclaimerText } from '../style'
+import { DisclaimerText, DisclaimerWrapper } from '../style'
 import {
   ButtonsContainer,
-  DisclaimerWrapper,
   HardwareWalletAccountCircle,
   HardwareWalletAccountListItem,
   HardwareWalletAccountListItemRow,
@@ -60,8 +53,16 @@ import {
   LoadingWrapper,
   LoadIcon,
   AddressBalanceWrapper,
-  NoSearchResultText
+  NoSearchResultText,
+  AccountCheckbox,
+  AccountListContainer,
+  AccountListHeader,
+  AccountListContent,
+  DropdownLabel,
+  HelpLink
 } from './style'
+import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
+import { Row } from '../../../../shared/style'
 
 interface Props {
   hardwareWallet: HardwareVendor
@@ -208,13 +209,27 @@ export const HardwareWalletAccountsList = ({
             selectedNetwork={networksRegistry?.entities[selectedNetworkId]}
             onSelectNetwork={onSelectNetwork}
             disableAllAccountsOption
+            isV2
           />
           {coin === BraveWallet.CoinType.ETH ? (
-            <Select
+            <Dropdown
               value={selectedDerivationScheme}
-              onChange={setSelectedDerivationScheme}
-              showAllContents
+              onChange={(e) => setSelectedDerivationScheme(e.detail.value)}
             >
+              <Row
+                width='100%'
+                justifyContent='space-between'
+                slot='label'
+              >
+                <DropdownLabel>HD Path</DropdownLabel>
+                <HelpLink
+                  href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
+                  target='_blank'
+                >
+                  Need help?
+                </HelpLink>
+              </Row>
+              <div slot='value'>{selectedDerivationScheme}</div>
               {Object.keys(ethDerivationPathsEnum).map((path) => {
                 const pathValue: LedgerDerivationPath | TrezorDerivationPath =
                   ethDerivationPathsEnum[path]
@@ -225,8 +240,8 @@ export const HardwareWalletAccountsList = ({
                 const isTrezorPath = pathValue === TrezorDerivationPaths.Default
 
                 return (
-                  <div
-                    data-value={pathValue}
+                  <leo-option
+                    value={pathValue}
                     key={pathValue}
                   >
                     {pathLocale}{' '}
@@ -235,21 +250,21 @@ export const HardwareWalletAccountsList = ({
                         ? getPathForTrezorIndex(undefined, pathValue)
                         : getPathForEthLedgerIndex(undefined, pathValue)
                     }"`}
-                  </div>
+                  </leo-option>
                 )
               })}
-            </Select>
+            </Dropdown>
           ) : null}
           {coin === BraveWallet.CoinType.SOL ? (
-            <Select
+            <Dropdown
               value={selectedDerivationScheme}
-              onChange={setSelectedDerivationScheme}
-              showAllContents
+              onChange={(e) => setSelectedDerivationScheme(e.detail.value)}
             >
+              <div slot='value'>{selectedDerivationScheme}</div>
               {Object.keys(solDerivationPathsEnum).map((path) => {
                 const pathLocale = solDerivationPathsEnum[path]
                 return (
-                  <div
+                  <leo-option
                     data-value={path}
                     key={path}
                   >
@@ -258,10 +273,10 @@ export const HardwareWalletAccountsList = ({
                       undefined,
                       path as SolDerivationPaths
                     )}"`}
-                  </div>
+                  </leo-option>
                 )
               })}
-            </Select>
+            </Dropdown>
           ) : null}
         </SelectWrapper>
       </SelectRow>
@@ -275,6 +290,7 @@ export const HardwareWalletAccountsList = ({
       <SearchBar
         placeholder={getLocale('braveWalletSearchScannedAccounts')}
         action={filterAccountList}
+        isV2
       />
       <HardwareWalletAccountsListContainer>
         {accounts.length === 0 && (
@@ -292,49 +308,54 @@ export const HardwareWalletAccountsList = ({
         {accountNativeAsset &&
           accounts.length > 0 &&
           filteredAccountList.length > 0 && (
-            <>
-              {filteredAccountList.map((account) => {
-                return (
-                  <AccountListItem
-                    key={account.derivationPath}
-                    balanceAsset={accountNativeAsset}
-                    account={account}
-                    selected={
-                      selectedDerivationPaths.includes(
-                        account.derivationPath
-                      ) || isPreAddedAccount(account)
-                    }
-                    disabled={isPreAddedAccount(account)}
-                    onSelect={onSelectAccountCheckbox(account)}
-                  />
-                )
-              })}
-            </>
+            <AccountListContainer>
+              <AccountListHeader>
+                <div>Account</div>
+                <div>Connect</div>
+              </AccountListHeader>
+              <AccountListContent>
+                {filteredAccountList.map((account) => {
+                  return (
+                    <AccountListItem
+                      key={account.derivationPath}
+                      balanceAsset={accountNativeAsset}
+                      account={account}
+                      selected={
+                        selectedDerivationPaths.includes(
+                          account.derivationPath
+                        ) || isPreAddedAccount(account)
+                      }
+                      disabled={isPreAddedAccount(account)}
+                      onSelect={onSelectAccountCheckbox(account)}
+                    />
+                  )
+                })}
+              </AccountListContent>
+            </AccountListContainer>
           )}
       </HardwareWalletAccountsListContainer>
       <ButtonsContainer>
-        <NavButton
-          onSubmit={onClickLoadMore}
-          text={
-            isLoadingMore
-              ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
-              : getLocale('braveWalletLoadMoreAccountsHardwareWallet')
-          }
-          buttonType='primary'
-          disabled={
+        <ContinueButton
+          onClick={onClickLoadMore}
+          isLoading={isLoadingMore}
+          isDisabled={
             isLoadingMore ||
             accounts.length === 0 ||
             selectedDerivationScheme === SolDerivationPaths.Bip44Root
           }
-        />
-        <NavButton
-          onSubmit={onAddAccounts}
-          text={getLocale('braveWalletAddCheckedAccountsHardwareWallet')}
-          buttonType='primary'
-          disabled={
+        >
+          {isLoadingMore
+            ? getLocale('braveWalletLoadingMoreAccountsHardwareWallet')
+            : getLocale('braveWalletLoadMoreAccountsHardwareWallet')}
+        </ContinueButton>
+        <ContinueButton
+          onClick={onAddAccounts}
+          isDisabled={
             accounts.length === 0 || selectedDerivationPaths.length === 0
           }
-        />
+        >
+          {getLocale('braveWalletButtonContinue')}
+        </ContinueButton>
       </ButtonsContainer>
     </>
   )
@@ -365,35 +386,8 @@ function AccountListItem({
   disabled,
   balanceAsset
 }: AccountListItemProps) {
-  // queries
-  const { data: balanceResult, isFetching: isLoadingBalance } =
-    useGetHardwareAccountDiscoveryBalanceQuery({
-      coin: balanceAsset.coin,
-      chainId: balanceAsset.chainId,
-      address: account.address
-    })
-
   // memos
   const orb = useAddressOrb(account.address)
-
-  const balance = React.useMemo(() => {
-    if (
-      isLoadingBalance ||
-      !balanceResult ||
-      balanceAsset.decimals === undefined
-    ) {
-      return undefined
-    }
-
-    return new Amount(balanceResult)
-      .divideByDecimals(balanceAsset.decimals)
-      .formatAsAsset(undefined, balanceAsset.symbol)
-  }, [
-    isLoadingBalance,
-    balanceResult,
-    balanceAsset.decimals,
-    balanceAsset.symbol
-  ])
 
   // render
   return (
@@ -403,21 +397,13 @@ function AccountListItem({
         <AddressBalanceWrapper>
           <div>{reduceAddress(account.address)}</div>
         </AddressBalanceWrapper>
-        {isLoadingBalance ? (
-          <Skeleton
-            width={'140px'}
-            height={'100%'}
-          />
-        ) : (
-          <AddressBalanceWrapper>{balance}</AddressBalanceWrapper>
-        )}
-        <Checkbox
-          value={{ selected }}
+        <AccountCheckbox
+          checked={selected}
           onChange={onSelect}
-          disabled={disabled}
+          isDisabled={disabled}
         >
           <div data-key={'selected'} />
-        </Checkbox>
+        </AccountCheckbox>
       </HardwareWalletAccountListItemRow>
     </HardwareWalletAccountListItem>
   )

@@ -4,30 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useParams } from 'react-router'
+import { useHistory, useParams } from 'react-router'
 
 // utils
 import {
-  BraveWallet,
-  CreateAccountOptionsType
+  CreateAccountOptionsType,
+  WalletRoutes
 } from '../../../../constants/types'
 import { CreateAccountOptions } from '../../../../options/create-account-options'
+import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
 
 // components
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { HardwareButton } from './components/hardware-button'
-
-// styles
-import { VerticalSpace } from '../../../../components/shared/style'
-import { Divider } from './components/hardware-button.style'
-import { HardwareVendor } from '../../../../common/api/hardware_keyrings'
-import {
-  HardwareDerivationScheme,
-  LedgerDerivationPaths,
-  SolDerivationPaths
-} from '../../../../common/hardware/types'
-import { HardwareWalletDerivationPathsMapping } from '../../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import HardwareWalletConnect from '../../../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect'
+import { getLocale } from '../../../../../common/locale'
 
 interface Params {
   accountTypeName: string
@@ -35,8 +25,8 @@ interface Params {
 
 export const OnboardingSelectWalletDevice = () => {
   // routing
-  // const history = useHistory()
   const { accountTypeName } = useParams<Params>()
+  const history = useHistory()
 
   // state
   const [selectedHardwareWallet, setSelectedHardwareWallet] =
@@ -57,62 +47,20 @@ export const OnboardingSelectWalletDevice = () => {
       })
     }, [accountOptions, accountTypeName])
 
-  const [selectedDerivationScheme, setSelectedDerivationScheme] =
-    React.useState<HardwareDerivationScheme>(
-      selectedAccountType?.coin === BraveWallet.CoinType.SOL
-        ? SolDerivationPaths.Default
-        : LedgerDerivationPaths.LedgerLive
-    )
-
-  // methods
-  const selectVendor = React.useCallback((vendor: HardwareVendor) => {
-    const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
-    setSelectedDerivationScheme(
-      Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
-    )
-    setSelectedHardwareWallet(vendor)
-  }, [])
-
-  const onSelectLedger = React.useCallback(() => {
-    if (selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR) {
-      // setConnectionError(undefined)
-    }
-
-    selectVendor(BraveWallet.LEDGER_HARDWARE_VENDOR)
-  }, [selectedHardwareWallet, selectVendor])
-
-  const onSelectTrezor = React.useCallback(() => {
-    if (selectedHardwareWallet !== BraveWallet.TREZOR_HARDWARE_VENDOR) {
-      // setConnectionError(undefined)
-    }
-
-    selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
-  }, [selectedHardwareWallet, selectVendor])
+  const pageTitle = React.useMemo(() => {
+    return selectedHardwareWallet
+      ? getLocale('braveWalletAuthorizeHardwareWallet')
+      : getLocale('braveWalletConnectHardwareTitle')
+  }, [selectedHardwareWallet])
 
   return (
-    <OnboardingContentLayout title='Select your hardware wallet device'>
-      {selectedHardwareWallet && selectedAccountType ? (
+    <OnboardingContentLayout title={pageTitle}>
+      {selectedAccountType && (
         <HardwareWalletConnect
           selectedAccountType={selectedAccountType}
-          selectedHardwareWallet={selectedHardwareWallet}
-          derivationScheme={selectedDerivationScheme}
-          onSuccess={() => {}}
+          onSelectVendor={setSelectedHardwareWallet}
+          onSuccess={() => history.push(WalletRoutes.OnboardingComplete)}
         />
-      ) : (
-        <>
-          <VerticalSpace space='98px' />
-          <HardwareButton
-            title='Ledger'
-            description='Connect your Ledger device to Brave Wallet'
-            onClick={onSelectLedger}
-          />
-          <Divider />
-          <HardwareButton
-            title='Trezor'
-            description='Connect your Trezor device to Brave Wallet'
-            onClick={onSelectTrezor}
-          />
-        </>
       )}
     </OnboardingContentLayout>
   )

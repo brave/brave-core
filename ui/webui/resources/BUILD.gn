@@ -373,6 +373,12 @@ leo_icons = [
   "trezor-color.svg",
   "wallet-ledger.svg",
   "close-circle.svg",
+  "eth-color.svg",
+  "matic-color.svg",
+  "op-color.svg",
+  "aurora-color.svg",
+  "sol-color.svg",
+  "filecoin-color.svg"
 ]
 
 if (enable_brave_vpn_panel) {

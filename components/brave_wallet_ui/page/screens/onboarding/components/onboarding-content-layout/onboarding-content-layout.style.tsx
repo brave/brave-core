@@ -35,6 +35,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+
   border-radius: ${leo.spacing['2Xl']};
   opacity: 1;
   background: ${leo.color.container.background};
@@ -53,6 +54,7 @@ export const ContentWrapper = styled.div`
 
   @media (min-width: 768px) {
     width: 754px;
+    min-height: 652px;
   }
 `
 
