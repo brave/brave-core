@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "開く";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "リワード";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Braveリワード";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields & プライバシー";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields & プライバシー";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "ブロック済みの広告やトラッカー";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "アプリ情報をクリップボードにコピーします。";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "アプリのサイズ情報をクリップボードにコピーします。";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "詳しく";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "保存されたログイン情報が永久に削除されます。";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "ウェブサイトを開く";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "プライバシーが保護されたニュースフィードで今日のトップニュースを。";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Braveニュース";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "ニュース";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "興味のあるトピックをフォローする";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Braveが音声検索結果を保存または共有することはありません。";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "音声検索";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "有効にする";

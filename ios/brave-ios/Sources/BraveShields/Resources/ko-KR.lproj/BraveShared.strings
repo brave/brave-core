@@ -46,6 +46,24 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "대신 Brave 플레이어에서 시청";
 
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "뒤로 가기";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "공격적인 트래커 및 광고 차단을 요청하셨기 때문에 첫 네트워크 연결 전 Brave가 이 사이트를 차단했습니다.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave는 다음 사이트의 로드를 차단했습니다:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "이 사이트는 다른 사이트에서도 귀하의 추적을 시도할 수 있음";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "계속";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "도메인 차단";
+
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "글로벌 프라이버시 컨트롤 JS API 활성화";
 
