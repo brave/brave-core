@@ -8,6 +8,7 @@
 #include "base/functional/bind.h"
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
+#include "base/scoped_observation.h"
 #include "base/strings/strcat.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/test/bind.h"
@@ -29,8 +30,10 @@
 #include "brave/browser/ui/views/sidebar/sidebar_items_scroll_view.h"
 #include "brave/browser/ui/views/tabs/vertical_tab_utils.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
+#include "brave/components/constants/brave_switches.h"
 #include "brave/components/playlist/common/features.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "brave/components/sidebar/sidebar_service.h"
@@ -41,6 +44,7 @@
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
+#include "chrome/common/chrome_switches.h"
 #include "chrome/common/pref_names.h"
 #include "chrome/test/base/in_process_browser_test.h"
 #include "chrome/test/base/ui_test_utils.h"
@@ -247,6 +251,20 @@ class SidebarBrowserTest : public InProcessBrowserTest {
     return item_count;
   }
 
+  int GetFirstPanelItemIndex() {
+    auto const items = model()->GetAllSidebarItems();
+    auto const iter =
+        base::ranges::find(items, true, &SidebarItem::open_in_panel);
+    return std::distance(items.cbegin(), iter);
+  }
+
+  int GetFirstWebItemIndex() {
+    const auto items = model()->GetAllSidebarItems();
+    auto const iter =
+        base::ranges::find(items, false, &SidebarItem::open_in_panel);
+    return std::distance(items.cbegin(), iter);
+  }
+
   raw_ptr<views::View> item_added_bubble_anchor_ = nullptr;
   std::unique_ptr<base::RunLoop> run_loop_;
   base::WeakPtrFactory<SidebarBrowserTest> weak_factory_{this};
@@ -274,28 +292,42 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, BasicTest) {
   auto expected_count = GetDefaultItemCount();
   EXPECT_EQ(expected_count, model()->GetAllSidebarItems().size());
   // Activate item that opens in panel.
-  controller()->ActivateItemAt(2);
-  EXPECT_THAT(model()->active_index(), Optional(2u));
-  EXPECT_TRUE(controller()->IsActiveIndex(2));
+  const size_t first_panel_item_index = GetFirstPanelItemIndex();
+  controller()->ActivateItemAt(first_panel_item_index);
+  EXPECT_THAT(model()->active_index(), Optional(first_panel_item_index));
+  EXPECT_TRUE(controller()->IsActiveIndex(first_panel_item_index));
 
   // Try to activate item at index 1.
   // Default item at index 1 opens in new tab. So, sidebar active index is not
   // changed. Still active index is 2.
-  const auto item = model()->GetAllSidebarItems()[1];
+
+  // Get first index of item that opens in panel.
+  const size_t first_web_item_index = GetFirstWebItemIndex();
+  const auto item = model()->GetAllSidebarItems()[first_web_item_index];
   EXPECT_FALSE(item.open_in_panel);
-  controller()->ActivateItemAt(1);
-  EXPECT_THAT(model()->active_index(), Optional(2u));
+  controller()->ActivateItemAt(first_web_item_index);
+  int active_item_index = first_panel_item_index;
+  EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // Setting std::nullopt means deactivate current active tab.
   controller()->ActivateItemAt(std::nullopt);
   EXPECT_THAT(model()->active_index(), Eq(std::nullopt));
 
-  controller()->ActivateItemAt(2);
+  controller()->ActivateItemAt(active_item_index);
 
-  // Remove Item at index 0 change active index from 3 to 2.
-  SidebarServiceFactory::GetForProfile(browser()->profile())->RemoveItemAt(0);
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+
+  // Move active item to the next index to make sure it's not the first item.
+  sidebar_service->MoveItem(first_panel_item_index, first_panel_item_index + 1);
+  active_item_index++;
+  EXPECT_THAT(model()->active_index(), Eq(active_item_index));
+
+  // Remove Item at index 0 to change active index.
+  sidebar_service->RemoveItemAt(0);
+  active_item_index--;
   EXPECT_EQ(--expected_count, model()->GetAllSidebarItems().size());
-  EXPECT_THAT(model()->active_index(), Optional(1u));
+  EXPECT_THAT(model()->active_index(), Optional(active_item_index));
 
   // If current active tab is not NTP, we can add current url to sidebar.
   EXPECT_TRUE(CanAddCurrentActiveTabToSidebar(browser()));
@@ -358,13 +390,19 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, WebTypePanelTest) {
 
 IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
   // Click builtin wallet item and it's loaded at current active tab.
-  auto item = model()->GetAllSidebarItems()[1];
-  EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(item));
-  SimulateSidebarItemClickAt(1);
-  EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(item));
+  const auto items = model()->GetAllSidebarItems();
+  const auto wallet_item_iter =
+      base::ranges::find(items, SidebarItem::BuiltInItemType::kWallet,
+                         &SidebarItem::built_in_item_type);
+  ASSERT_NE(wallet_item_iter, items.cend());
+  const int wallet_item_index = std::distance(items.cbegin(), wallet_item_iter);
+  auto wallet_item = model()->GetAllSidebarItems()[wallet_item_index];
+  EXPECT_FALSE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
+  SimulateSidebarItemClickAt(wallet_item_index);
+  EXPECT_TRUE(controller()->DoesBrowserHaveOpenedTabForItem(wallet_item));
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
-            item.url.host());
+            wallet_item.url.host());
 
   // Create NTP and click wallet item. Then wallet tab(index 0) is activated.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
@@ -373,11 +411,11 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   // NTP is active tab.
   EXPECT_EQ(1, tab_model()->active_index());
-  SimulateSidebarItemClickAt(1);
+  SimulateSidebarItemClickAt(wallet_item_index);
   // Wallet tab is active tab.
   EXPECT_EQ(0, tab_model()->active_index());
   EXPECT_EQ(tab_model()->GetWebContentsAt(0)->GetVisibleURL().host(),
-            item.url.host());
+            wallet_item.url.host());
 
   // Create NTP.
   ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
@@ -386,18 +424,18 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
       ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
   // NTP is active tab and load wallet on it.
   EXPECT_EQ(2, tab_model()->active_index());
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), item.url));
+  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), wallet_item.url));
 
   // Click wallet item and then first wallet tab(tab index 0) is activated.
-  SimulateSidebarItemClickAt(1);
+  SimulateSidebarItemClickAt(wallet_item_index);
   EXPECT_EQ(0, tab_model()->active_index());
 
   // Click wallet item and then second wallet tab(index 2) is activated.
-  SimulateSidebarItemClickAt(1);
+  SimulateSidebarItemClickAt(wallet_item_index);
   EXPECT_EQ(2, tab_model()->active_index());
 
   // Click wallet item and then first wallet tab(index 0) is activated.
-  SimulateSidebarItemClickAt(1);
+  SimulateSidebarItemClickAt(wallet_item_index);
   EXPECT_EQ(0, tab_model()->active_index());
 
   // Checking windows' activation state is flaky in browser tests.
@@ -408,7 +446,8 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, IterateBuiltInWebTypeTest) {
 
   // |browser2| doesn't have any wallet tab. So, clicking wallet sidebar item
   // activates other browser's first wallet tab.
-  static_cast<BraveBrowser*>(browser2)->sidebar_controller()->ActivateItemAt(1);
+  static_cast<BraveBrowser*>(browser2)->sidebar_controller()->ActivateItemAt(
+      wallet_item_index);
 
   // Wait till browser() is activated.
   WaitUntil(base::BindLambdaForTesting(
@@ -754,6 +793,125 @@ IN_PROC_BROWSER_TEST_F(SidebarBrowserTest, DisabledItemsTest) {
     }
   }
 }
+
+class MockSidebarModelObserver : public SidebarModel::Observer {
+ public:
+  MockSidebarModelObserver() = default;
+  ~MockSidebarModelObserver() override = default;
+
+  MOCK_METHOD(void,
+              OnItemAdded,
+              (const SidebarItem& item, size_t index, bool user_gesture),
+              (override));
+  MOCK_METHOD(void,
+              OnItemMoved,
+              (const SidebarItem& item, size_t from, size_t to),
+              (override));
+  MOCK_METHOD(void, OnItemRemoved, (size_t index), (override));
+  MOCK_METHOD(void,
+              OnActiveIndexChanged,
+              (std::optional<size_t> old_index,
+               std::optional<size_t> new_index),
+              (override));
+  MOCK_METHOD(void,
+              OnItemUpdated,
+              (const SidebarItem& item, const SidebarItemUpdate& update),
+              (override));
+  MOCK_METHOD(void,
+              OnFaviconUpdatedForItem,
+              (const SidebarItem& item, const gfx::ImageSkia& image),
+              (override));
+};
+
+class SidebarBrowserTestWithkSidebarShowAlwaysOnStable
+    : public testing::WithParamInterface<bool>,
+      public SidebarBrowserTest {
+ public:
+  SidebarBrowserTestWithkSidebarShowAlwaysOnStable() {
+    if (GetParam()) {
+      feature_list_.InitAndEnableFeatureWithParameters(
+          sidebar::features::kSidebarShowAlwaysOnStable,
+          {{"open_one_shot_leo_panel", "true"}});
+    } else {
+      feature_list_.InitAndEnableFeature(
+          sidebar::features::kSidebarShowAlwaysOnStable);
+    }
+  }
+  ~SidebarBrowserTestWithkSidebarShowAlwaysOnStable() override = default;
+
+  void SetUp() override { SidebarBrowserTest::SetUp(); }
+
+  void TearDown() override { SidebarBrowserTest::TearDown(); }
+
+  // For skipping SidebarBrowserTest's PreRunTestOnMainThread
+  // as show option is set explicitely there.
+  void PreRunTestOnMainThread() override {
+    InProcessBrowserTest::PreRunTestOnMainThread();
+  }
+
+  void SetUpCommandLine(base::CommandLine* command_line) override {
+    SidebarBrowserTest::SetUpCommandLine(command_line);
+    command_line->AppendSwitch(switches::kDontShowSidebarOnNonStable);
+    command_line->AppendSwitch(switches::kForceFirstRun);
+  }
+
+  base::test::ScopedFeatureList feature_list_;
+  testing::NiceMock<MockSidebarModelObserver> observer_;
+  base::ScopedObservation<SidebarModel, SidebarModel::Observer> observation_{
+      &observer_};
+};
+
+IN_PROC_BROWSER_TEST_P(SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
+                       SidebarShowAlwaysTest) {
+  auto* sidebar_service =
+      SidebarServiceFactory::GetForProfile(browser()->profile());
+  EXPECT_EQ(SidebarService::ShowSidebarOption::kShowAlways,
+            sidebar_service->GetSidebarShowOption());
+
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  observation_.Observe(model());
+
+  // Check one shot Leo panel is opened or not based on test parameter.
+  if (GetParam()) {
+    // If Leo panel is opened, panel active index is changed.
+    EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
+        .Times(1);
+  } else {
+    EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_))
+        .Times(0);
+  }
+
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.brave.com/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+
+  auto* panel_ui = SidePanelUI::GetSidePanelUIForBrowser(browser());
+  if (GetParam()) {
+    EXPECT_EQ(SidePanelEntryId::kChatUI, panel_ui->GetCurrentEntryId());
+  }
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  panel_ui->Close();
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+
+  // Check one shot panel is not opened anymore.
+  EXPECT_CALL(observer_, OnActiveIndexChanged(testing::_, testing::_)).Times(0);
+  ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+      browser(), GURL("https://www.brave.com/"),
+      WindowOpenDisposition::NEW_FOREGROUND_TAB,
+      ui_test_utils::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+  EXPECT_FALSE(panel_ui->IsSidePanelShowing());
+  testing::Mock::VerifyAndClearExpectations(&observer_);
+
+  observation_.Reset();
+#endif
+}
+
+INSTANTIATE_TEST_SUITE_P(
+    /* no prefix */,
+    SidebarBrowserTestWithkSidebarShowAlwaysOnStable,
+    ::testing::Bool());
 
 class SidebarBrowserTestWithPlaylist : public SidebarBrowserTest {
  public:

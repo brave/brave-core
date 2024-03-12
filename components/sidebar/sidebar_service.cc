@@ -27,6 +27,7 @@
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/sidebar/constants.h"
+#include "brave/components/sidebar/features.h"
 #include "brave/components/sidebar/pref_names.h"
 #include "brave/components/sidebar/sidebar_item.h"
 #include "components/grit/brave_components_strings.h"
@@ -43,8 +44,6 @@
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/components/playlist/common/features.h"
 #endif  // BUILDFLAG(ENABLE_PLAYLIST)
-
-using version_info::Channel;
 
 namespace sidebar {
 
@@ -80,15 +79,14 @@ bool SidebarItemUpdate::operator==(const SidebarItemUpdate& update) const {
 }
 
 // static
-void SidebarService::RegisterProfilePrefs(PrefRegistrySimple* registry,
-                                          version_info::Channel channel) {
+void SidebarService::RegisterProfilePrefs(
+    PrefRegistrySimple* registry,
+    ShowSidebarOption default_show_option) {
   registry->RegisterListPref(kSidebarItems);
   registry->RegisterListPref(kSidebarHiddenBuiltInItems);
-  registry->RegisterIntegerPref(
-      kSidebarShowOption,
-      channel == Channel::STABLE
-          ? static_cast<int>(ShowSidebarOption::kShowNever)
-          : static_cast<int>(ShowSidebarOption::kShowAlways));
+  registry->RegisterBooleanPref(kLeoPanelOneShotOpen, false);
+  registry->RegisterIntegerPref(kSidebarShowOption,
+                                static_cast<int>(default_show_option));
   registry->RegisterIntegerPref(kSidebarItemAddedFeedbackBubbleShowCount, 0);
   registry->RegisterIntegerPref(kSidePanelWidth, kDefaultSidePanelWidth);
   registry->RegisterIntegerPref(
@@ -103,6 +101,12 @@ SidebarService::SidebarService(
       sidebar_p3a_(prefs),
       default_builtin_items_(default_builtin_items) {
   DCHECK(prefs_);
+  // Some non-sidebar unittest could not register the prefs.
+  if (!prefs_->FindPreference(kSidebarShowOption)) {
+    CHECK_IS_TEST();
+    return;
+  }
+
   MigratePrefSidebarBuiltInItemsToHidden();
 
   LoadSidebarItems();
@@ -436,10 +440,10 @@ std::optional<SidebarItem> SidebarService::GetDefaultPanelItem() const {
   // Use this order for picking active panel when panel is opened as
   // we don't cache previous active panel.
   constexpr SidebarItem::BuiltInItemType kPreferredPanelOrder[] = {
+      SidebarItem::BuiltInItemType::kChatUI,
       SidebarItem::BuiltInItemType::kReadingList,
       SidebarItem::BuiltInItemType::kBookmarks,
-      SidebarItem::BuiltInItemType::kPlaylist,
-      SidebarItem::BuiltInItemType::kChatUI};
+      SidebarItem::BuiltInItemType::kPlaylist};
 
   std::optional<SidebarItem> default_item;
   for (const auto& type : kPreferredPanelOrder) {

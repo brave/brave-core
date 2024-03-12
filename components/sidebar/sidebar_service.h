@@ -18,7 +18,6 @@
 #include "brave/components/sidebar/sidebar_p3a.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
-#include "components/version_info/channel.h"
 
 class PrefRegistrySimple;
 class PrefService;
@@ -58,7 +57,7 @@ class SidebarService : public KeyedService {
   };
 
   static void RegisterProfilePrefs(PrefRegistrySimple* registry,
-                                   version_info::Channel channel);
+                                   ShowSidebarOption default_show_option);
 
   SidebarService(
       PrefService* prefs,

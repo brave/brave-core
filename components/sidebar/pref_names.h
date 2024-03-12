@@ -19,6 +19,16 @@ inline constexpr char kSidePanelWidth[] = "brave.sidebar.side_panel_width";
 inline constexpr char kLastUsedBuiltInItemType[] =
     "brave.sidebar.last_used_built_in_item_type";
 
+// Indicates that the Leo side panel is opened once for Sidebar Enabled-by
+// -default test via griffin.
+inline constexpr char kLeoPanelOneShotOpen[] =
+    "brave.sidebar.leo_panel_one_shot_shot";
+
+// Indicates that it's target user for Sidebar Enabled-by-default test via
+// griffin. local state pref.
+inline constexpr char kTargetUserForSidebarEnabledTest[] =
+    "brave.sidebar.target_user_for_sidebar_enabled_test";
+
 // Indicates that sidebar alignment was changed by the browser itself, not by
 // users.
 inline constexpr char kSidebarAlignmentChangedTemporarily[] =

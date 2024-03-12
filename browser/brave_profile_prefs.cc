@@ -52,7 +52,6 @@
 #include "chrome/browser/prefs/session_startup_pref.h"
 #include "chrome/browser/preloading/preloading_prefs.h"
 #include "chrome/browser/ui/webui/new_tab_page/ntp_pref_names.h"
-#include "chrome/common/channel_info.h"
 #include "chrome/common/pref_names.h"
 #include "components/content_settings/core/common/pref_names.h"
 #include "components/embedder_support/pref_names.h"
@@ -124,7 +123,6 @@
 
 #if defined(TOOLKIT_VIEWS)
 #include "brave/components/sidebar/pref_names.h"
-#include "brave/components/sidebar/sidebar_service.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)
@@ -504,10 +502,6 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
 #if BUILDFLAG(ENABLE_TOR)
   tor::TorProfileService::RegisterProfilePrefs(registry);
-#endif
-
-#if defined(TOOLKIT_VIEWS)
-  sidebar::SidebarService::RegisterProfilePrefs(registry, chrome::GetChannel());
 #endif
 
 #if !BUILDFLAG(IS_ANDROID)
