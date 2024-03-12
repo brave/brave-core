@@ -1447,7 +1447,10 @@ extension BrowserViewController: WKUIDelegate {
     let actionProvider: UIContextMenuActionProvider = { _ -> UIMenu? in
       var actions = [UIAction]()
 
-      if let currentTab = self.tabManager.selectedTab {
+      if let currentTab = self.tabManager.selectedTab,
+        let contextHelper = currentTab.getContentScript(name: ContextMenuHandler.scriptName)
+          as? ContextMenuHandler
+      {
         let tabType = currentTab.type
 
         if !tabType.isPrivate {
@@ -1534,6 +1537,22 @@ extension BrowserViewController: WKUIDelegate {
         copyCleanLinkAction.accessibilityLabel = "linkContextMenu.copyCleanLink"
         actions.append(copyCleanLinkAction)
 
+        if let url = contextHelper.elements?.image {
+          let saveImageAction = UIAction(
+            title: Strings.saveImageActionTitle,
+            image: UIImage(braveSystemNamed: "leo.download")
+          ) { _ in
+            Task {
+              let (data, _) = try await URLSession(configuration: .ephemeral).data(from: url)
+              guard let image = UIImage(data: data) else { return }
+              UIImageWriteToSavedPhotosAlbum(image, self, #selector(self.saveImageCompletion), nil)
+            }
+          }
+
+          saveImageAction.accessibilityLabel = "linkContextMenu.saveImage"
+          actions.append(saveImageAction)
+        }
+
         if let braveWebView = webView as? BraveWebView {
           let shareAction = UIAction(
             title: Strings.shareLinkActionTitle,
@@ -1598,6 +1617,31 @@ extension BrowserViewController: WKUIDelegate {
     )
 
     completionHandler(config)
+  }
+
+  @objc func saveImageCompletion(
+    _ image: UIImage,
+    didFinishSavingWithError error: Error?,
+    contextInfo: UnsafeRawPointer
+  ) {
+    guard error != nil else { return }
+    DispatchQueue.main.async {
+      let accessDenied = UIAlertController(
+        title: Strings.accessPhotoDeniedAlertTitle,
+        message: Strings.accessPhotoDeniedAlertMessage,
+        preferredStyle: .alert
+      )
+      let dismissAction = UIAlertAction(title: Strings.CancelString, style: .default, handler: nil)
+      accessDenied.addAction(dismissAction)
+      let settingsAction = UIAlertAction(
+        title: Strings.openPhoneSettingsActionTitle,
+        style: .default
+      ) { _ in
+        UIApplication.shared.open(URL(string: UIApplication.openSettingsURLString)!, options: [:])
+      }
+      accessDenied.addAction(settingsAction)
+      self.present(accessDenied, animated: true, completion: nil)
+    }
   }
 
   public func webView(
