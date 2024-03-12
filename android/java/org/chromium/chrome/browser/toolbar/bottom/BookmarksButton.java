@@ -72,7 +72,4 @@ public class BookmarksButton extends ChromeImageButton implements ThemeColorObse
     }
 
     public void updateButtonEnabledState(Tab tab) {}
-
-    @Override
-    public void onThemeColorUpdated(boolean colorChanged) {}
 }
