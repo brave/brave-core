@@ -8,12 +8,14 @@
 
 class PrefService;
 
-namespace brave_search_conversion {
-namespace prefs {
+namespace brave_search_conversion::prefs {
 
 inline constexpr char kDismissed[] = "brave.brave_search_conversion.dismissed";
 inline constexpr char kMaybeLaterClickedTime[] =
     "brave.brave_search_conversion.maybe_later_clicked_time";
+
+inline constexpr char kShowNTPSearchBox[] =
+    "brave.brave_search.show-ntp-search";
 
 inline constexpr char kP3AActionStatuses[] =
     "brave.brave_search_conversion.action_statuses";
@@ -38,7 +40,6 @@ inline constexpr char kP3AButtonTriggered[] =
 inline constexpr char kP3ANTPTriggered[] =
     "brave.brave_search_conversion.ntp_triggered";  // DEPRECATED
 
-}  // namespace prefs
-}  // namespace brave_search_conversion
+}  // namespace brave_search_conversion::prefs
 
 #endif  // BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_PREF_NAMES_H_

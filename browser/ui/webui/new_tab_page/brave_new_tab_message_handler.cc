@@ -27,6 +27,7 @@
 #include "brave/components/brave_ads/core/public/ads_util.h"
 #include "brave/components/brave_news/common/pref_names.h"
 #include "brave/components/brave_perf_predictor/common/pref_names.h"
+#include "brave/components/brave_search_conversion/pref_names.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/ntp_background_images/browser/url_constants.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -91,6 +92,9 @@ base::Value::Dict GetPreferencesDictionary(PrefService* prefs) {
                 prefs->GetBoolean(brave_news::prefs::kBraveNewsOptedIn));
   pref_data.Set("hideAllWidgets", prefs->GetBoolean(kNewTabPageHideAllWidgets));
   pref_data.Set("showBraveTalk", prefs->GetBoolean(kNewTabPageShowBraveTalk));
+  pref_data.Set(
+      "showSearchBox",
+      prefs->GetBoolean(brave_search_conversion::prefs::kShowNTPSearchBox));
   return pref_data;
 }
 
@@ -280,6 +284,10 @@ void BraveNewTabMessageHandler::OnJavascriptAllowed() {
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
   pref_change_registrar_.Add(
+      brave_search_conversion::prefs::kShowNTPSearchBox,
+      base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
+                          base::Unretained(this)));
+  pref_change_registrar_.Add(
       kNewTabPageShowClock,
       base::BindRepeating(&BraveNewTabMessageHandler::OnPreferencesChanged,
                           base::Unretained(this)));
@@ -428,6 +436,8 @@ void BraveNewTabMessageHandler::HandleSaveNewTabPagePref(
     settingsKey = kNewTabPageHideAllWidgets;
   } else if (settingsKeyInput == "showBraveTalk") {
     settingsKey = kNewTabPageShowBraveTalk;
+  } else if (settingsKeyInput == "showSearchBox") {
+    settingsKey = brave_search_conversion::prefs::kShowNTPSearchBox;
   } else {
     LOG(ERROR) << "Invalid setting key";
     return;
@@ -452,8 +462,9 @@ void BraveNewTabMessageHandler::HandleRegisterNewTabPageView(
     return;
   }
 
-  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_))
+  if (auto* service = ViewCounterServiceFactory::GetForProfile(profile_)) {
     service->RegisterPageView();
+  }
 }
 
 void BraveNewTabMessageHandler::HandleBrandedWallpaperLogoClicked(

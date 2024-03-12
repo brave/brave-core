@@ -28,6 +28,7 @@ const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
 const CardsSettings = React.lazy(() => import('./settings/cards'))
+const SearchSettings = React.lazy(() => import('./settings/search'))
 
 export interface Props {
   newTabData: NewTab.State
@@ -67,7 +68,8 @@ export enum TabType {
   TopSites = 'topSites',
   BraveNews = 'braveNews',
   Clock = 'clock',
-  Cards = 'cards'
+  Cards = 'cards',
+  Search = 'search'
 }
 
 const tabTypes = Object.values(TabType)
@@ -80,6 +82,7 @@ const tabIcons: TabMap<string> = {
   [TabType.Clock]: 'clock',
   [TabType.TopSites]: 'window-content',
   [TabType.Cards]: 'browser-ntp-widget',
+  [TabType.Search]: 'search'
 }
 
 const tabTranslationKeys: TabMap<string> = {
@@ -89,6 +92,7 @@ const tabTranslationKeys: TabMap<string> = {
   [TabType.Clock]: 'clockTitle',
   [TabType.TopSites]: 'topSitesTitle',
   [TabType.Cards]: 'cards',
+  [TabType.Search]: 'searchTitle'
 }
 
 export default function Settings(props: Props) {
@@ -219,6 +223,7 @@ export default function Settings(props: Props) {
               braveRewardsSupported={props.braveRewardsSupported}
               showRewards={props.showRewards}
             />}
+            {activeTab === TabType.Search && <SearchSettings />}
           </React.Suspense>
         </SettingsFeatureBody>
       </SettingsContent>
