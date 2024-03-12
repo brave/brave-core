@@ -49,6 +49,7 @@ struct AIChatPageContextView: View {
             ) {
               AIChatPageContextInfoView(url: url, pageTitle: pageTitle)
                 .background(Color(braveSystemName: .containerBackground))
+                .frame(maxWidth: 400.0)
             }
         }
       }
