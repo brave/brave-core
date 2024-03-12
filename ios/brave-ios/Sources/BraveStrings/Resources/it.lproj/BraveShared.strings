@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Apri";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Ricompense";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Ricompense Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields e privacy";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Protezioni e privacy";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Pubblicità e altre scocciature bloccate";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Copia informazioni app negli appunti.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Copia negli appunti le informazioni sulle dimensioni dell’app.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Scopri di più";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "L’accesso salvato verrà rimosso in modo definitivo.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Apri sito web";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo è un assistente smart costruito con l’intelligenza artificiale e integrato direttamente nel browser";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Le migliori storie di oggi in un feed di notizie privato";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "News di Brave";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Notizie";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Segui gli argomenti che ti interessano";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave non memorizza né condivide le tue ricerche vocali.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Ricerca vocale";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "attiva";

@@ -25,6 +25,9 @@
 /* A button title to trigger deleting a secondary account */
 "wallet.accountRemoveButtonTitle" = "계정 제거";
 
+/* The description used below Security title in the row opening DApp settings in Account Details. */
+"wallet.accountSecurityDescription" = "연결된 사이트 및 허용한도";
+
 /* The title of the accounts page in the Crypto tab */
 "wallet.accountsPageTitle" = "계정";
 
@@ -121,8 +124,14 @@
 /* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
 "wallet.assetDetailSubtitle" = "%1$@ 가격(%2$@)";
 
+/* The description of the assets row in Account Details when user has zero or multiple Assets. */
+"wallet.assetsDescription" = "자산 %d개";
+
 /* The text displayed when a user uses a query to search for assets that yields no results */
 "wallet.assetSearchEmpty" = "자산을 찾을 수 없음";
+
+/* The description of the assets row in Account Details when user has 1 Asset. */
+"wallet.assetsSingularDescription" = "자산 %d개";
 
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "자산";
@@ -550,6 +559,9 @@
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "세부정보";
 
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
+"wallet.editButtonTitle" = "편집";
+
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "네트워크 편집";
 
@@ -682,6 +694,12 @@
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "토큰 기호 입력";
 
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "이더리움 + EVM 체인";
+
+/* A button title displayed in a menu to export an account's private key. */
+"wallet.exportButtonTitle" = "내보내기";
+
 /* The title of an alert when the custom network the user attempted to add fails for some reason */
 "wallet.failedToAddCustomNetworkErrorTitle" = "이 네트워크를 추가하지 못했습니다.";
 
@@ -708,6 +726,9 @@
 
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "오류 보기";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "파일코인";
 
 /* The title of the modal for filtering Portfolio and NFT views. */
 "wallet.filtersAndDisplaySettings" = "필터 및 디스플레이 설정";
@@ -804,6 +825,9 @@
 
 /* A button title that when tapped will display a file import dialog */
 "wallet.importButtonTitle" = "가져오기…";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.importedCryptoAccountsTitle" = "가져온 계정";
 
 /* A placeholder on a text box for entering the users private key to import accounts */
 "wallet.importNonEthAccountPlaceholder" = "비공개 키를 입력하거나 붙여넣으세요.";
@@ -1057,8 +1081,14 @@
 /* The title of the alert when user attempts to remove an NFT from wallet. */
 "wallet.nftRemoveFromWalletAlertTitle" = "Brave 월렛에서 제거하시겠습니까?";
 
+/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
+"wallet.nftsDescription" = "NFT %d개";
+
 /* The title of an overlay on top left of the junk NFT grid. */
 "wallet.nftSpam" = "정크";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "NFT %d개";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
 "wallet.nftsTab" = "NFT 탭";
@@ -1263,6 +1293,9 @@
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "보안 위험 감지됨";
+
+/* The title used in the row opening DApp settings in Account Details. */
+"wallet.securityTitle" = "보안";
 
 /* The title of the button to show details. */
 "wallet.seeDetailsButtonTitle" = "세부정보 보기";
@@ -1533,6 +1566,9 @@
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?";
+
+/* A description of an Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "Solana + SVM 체인";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "논스 계정 진행";
@@ -1837,8 +1873,14 @@
 /* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
 "wallet.transactionFromToAccessibilityLabel" = "출발지: %1$@. 도착지: %2$@";
 
+/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
+"wallet.transactionsDescription" = "트랜잭션 %d개";
+
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
 "wallet.transactionSendTitle" = "%1$@ %2$@ 보냄(%3$@)";
+
+/* The description of the transactions row in Account Details when user has 1 Transaction. */
+"wallet.transactionsSingularDescription" = "트랜잭션 %d개";
 
 /* A status that explains that the transaction has been approved by the user */
 "wallet.transactionStatusApproved" = "승인됨";

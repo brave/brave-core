@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Buka";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Rewards";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Imbalan Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields & Privasi";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Perisai & Privasi";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Iklan dan hal mengerikan lainnya diblokir";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Salin informasi aplikasi ke clipboard.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Salin info ukuran aplikasi ke clipboard.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Pelajari Lebih Lanjut";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Login yang Disimpan akan dihapus permanen.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Buka Situs Web";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo adalah asisten pintar yang didukung AI, dan dibangun tepat di dalam peramban";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Berita utama hari ini dalam umpan berita pribadi";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Berita Brave";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Berita";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Ikuti topik yang menarik bagi Anda";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave tidak menyimpan atau membagikan pencarian suara Anda.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Pencarian Suara";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "aktifkan";
