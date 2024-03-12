@@ -17,11 +17,11 @@ import {
   SettingsWrapper
 } from '../../components/default'
 
-import { BraveNewsContext } from '../../../brave_news/browser/resources/shared/Context'
-import { Publishers } from '../../../brave_news/browser/resources/shared/api'
 import { getLocale } from '$web-common/locale'
-import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
+import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
+import { Publishers } from '../../../brave_news/browser/resources/shared/api'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -78,10 +78,6 @@ export enum TabType {
   Cards = 'cards'
 }
 
-interface State {
-  activeTab: TabType
-}
-
 const tabTypes = Object.values(TabType)
 
 type TabMap<T> = { [P in TabType]: T }
@@ -103,207 +99,139 @@ const tabTranslationKeys: TabMap<string> = {
   [TabType.Cards]: 'cards',
 }
 
-export default class Settings extends React.PureComponent<Props, State> {
-  static contextType: typeof BraveNewsContext = BraveNewsContext
-  settingsMenuRef: React.RefObject<any>
+export default function Settings(props: Props) {
+  const settingsMenuRef = React.createRef<any>()
+  const allowedTabTypes = React.useMemo(() => props.allowBackgroundCustomization ? tabTypes : tabTypes.filter(t => t !== TabType.BackgroundImage), [props.allowBackgroundCustomization])
+  const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
+    ? TabType.BackgroundImage
+    : TabType.BraveStats)
+  const { customizePage, setCustomizePage } = useBraveNews()
 
-  constructor(props: Props) {
-    super(props)
-    // Cache allowed tabs array on instance.
-    // Feature flags won't change during page lifecycle, so we don't need to
-    // change this when props change.
-    this.settingsMenuRef = React.createRef()
-    this.state = {
-      activeTab: this.getInitialTab()
-    }
-  }
-
-  handleClickOutside = (event: Event) => {
-    if (
-      this.settingsMenuRef &&
-      this.settingsMenuRef.current &&
-      !this.settingsMenuRef.current.contains(event.target) &&
-      // Don't close the settings dialog for a click outside if we're in the
-      // Brave News modal - the user expects closing that one to bring them back
-      // to this one.
-      !this.context.customizePage
-    ) {
-      this.props.onClose()
-    }
-  }
-
-  componentDidMount() {
-    document.addEventListener('mousedown', this.handleClickOutside)
-    document.addEventListener('keydown', this.onKeyPressSettings)
-  }
-
-  componentWillUnmount() {
-    document.removeEventListener('mousedown', this.handleClickOutside)
-    document.removeEventListener('keydown', this.onKeyPressSettings)
-  }
-
-  componentDidUpdate(prevProps: Props) {
-    if (prevProps.setActiveTab !== this.props.setActiveTab && this.props.setActiveTab) {
-      this.setActiveTab(this.props.setActiveTab)
-    }
-    const isNewlyShown = (!prevProps.showSettingsMenu && this.props.showSettingsMenu)
-    if (isNewlyShown) {
-      this.setActiveTab(this.getInitialTab())
-    }
-  }
-
-  onKeyPressSettings = (event: KeyboardEvent) => {
-    if (event.key === 'Escape') {
-      this.props.onClose()
-    }
-  }
-
-  getInitialTab() {
-    let tab = this.props.allowBackgroundCustomization
-      ? TabType.BackgroundImage
-      : TabType.BraveStats
-    if (this.props.setActiveTab) {
-      if (this.getActiveTabTypes().includes(this.props.setActiveTab)) {
-        tab = this.props.setActiveTab
-      }
-    }
-    return tab
-  }
-
-  toggleShowBackgroundImage = () => {
-    this.props.toggleShowBackgroundImage()
-  }
-
-  setBraveBackground = (selectedBackground: string) => {
-    this.props.setBraveBackground(selectedBackground)
-  }
-
-  setColorBackground = (color: string, useRandomColor: boolean) => {
-    this.props.setColorBackground(color, useRandomColor)
-  }
-
-  setActiveTab(activeTab: TabType) {
-    if (activeTab === TabType.BraveNews) {
-      this.context.setCustomizePage('news')
+  const changeTab = React.useCallback((tab: TabType) => {
+    if (tab === TabType.BraveNews) {
+      setCustomizePage('news')
       return
     }
 
-    this.setState({ activeTab })
-  }
+    setActiveTab(tab)
+  }, [])
 
-  getActiveTabTypes = () => this.props.allowBackgroundCustomization
-    ? tabTypes
-    : tabTypes.filter(t => t !== TabType.BackgroundImage)
+  // When the outside world tells us to update the active tab, do so.
+  React.useEffect(() => {
+    if (!props.setActiveTab || !allowedTabTypes.includes(props.setActiveTab)) return
+    setActiveTab(props.setActiveTab)
+  }, [props.setActiveTab])
 
-  render() {
-    const {
-      textDirection,
-      showSettingsMenu,
-      toggleShowTopSites,
-      setMostVisitedSettings,
-      toggleShowRewards,
-      toggleShowBraveTalk,
-      toggleBrandedWallpaperOptIn,
-      showBackgroundImage,
-      featureCustomBackgroundEnabled,
-      showTopSites,
-      customLinksEnabled,
-      showRewards,
-      showBraveTalk,
-      brandedWallpaperOptIn,
-      braveRewardsSupported,
-      braveTalkSupported,
-      toggleCards,
-      cardsHidden,
-      onEnableRewards
-    } = this.props
-    const { activeTab } = this.state
-
-    if (!showSettingsMenu) {
-      return null
+  // Set the global listeners
+  React.useEffect(() => {
+    const handleClickOutside = (event: Event) => {
+      if (
+        this.settingsMenuRef &&
+        this.settingsMenuRef.current &&
+        !this.settingsMenuRef.current.contains(event.target) &&
+        // Don't close the settings dialog for a click outside if we're in the
+        // Brave News modal - the user expects closing that one to bring them back
+        // to this one.
+        !this.context.customizePage
+      ) {
+        this.props.onClose()
+      }
     }
 
-    const tabTypes = this.getActiveTabTypes()
-    return (
-      <SettingsWrapper textDirection={textDirection}>
-        <SettingsMenu
-          ref={this.settingsMenuRef}
-          textDirection={textDirection}
-          title={getLocale('dashboardSettingsTitle')}
-        >
-          <SettingsTitle id='settingsTitle'>
-            <h1>{getLocale('dashboardSettingsTitle')}</h1>
-            <Button fab kind='plain-faint' onClick={this.props.onClose}>
-              <Icon name='close' />
-            </Button>
-          </SettingsTitle>
-          <SettingsContent id='settingsBody'>
-            <SettingsSidebar id='sidebar'>
-              <SettingsSidebarActiveButtonSlider
-                translateTo={tabTypes.indexOf(activeTab)}
-              />
-              {
-                tabTypes.map((tabType) => {
-                  const titleKey = tabTranslationKeys[tabType]
-                  const isActive = activeTab === tabType
-                  return (
-                    <SettingsSidebarButton
-                      tabIndex={0}
-                      key={tabType}
-                      data-active={isActive ? '' : null}
-                      onClick={() => this.setActiveTab(tabType)}
-                    >
-                      <Icon name={tabIcons[tabType]} />
-                      <SettingsSidebarButtonText
-                        data-text={getLocale(titleKey)}>
-                        {getLocale(titleKey)}
-                      </SettingsSidebarButtonText>
-                    </SettingsSidebarButton>
-                  )
-                })
-              }
-            </SettingsSidebar>
-            <SettingsFeatureBody id='content'>
-              {/* Empty loading fallback is ok here since we are loading from local disk. */}
-              <React.Suspense fallback={(<div />)}>
-                {activeTab === TabType.BackgroundImage && <BackgroundImageSettings
-                  newTabData={this.props.newTabData}
-                  toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
-                  toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                  chooseNewCustomImageBackground={this.props.chooseNewCustomImageBackground}
-                  setCustomImageBackground={this.props.setCustomImageBackground}
-                  removeCustomImageBackground={this.props.removeCustomImageBackground}
-                  setBraveBackground={this.setBraveBackground}
-                  setColorBackground={this.setColorBackground}
-                  brandedWallpaperOptIn={brandedWallpaperOptIn}
-                  showBackgroundImage={showBackgroundImage}
-                  featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
-                  onEnableRewards={onEnableRewards}
-                  braveRewardsSupported={braveRewardsSupported}
-                />}
-                {activeTab === TabType.BraveStats && <BraveStatsSettings />}
-                {activeTab === TabType.TopSites && <TopSitesSettings
-                  toggleShowTopSites={toggleShowTopSites}
-                  showTopSites={showTopSites}
-                  customLinksEnabled={customLinksEnabled}
-                  setMostVisitedSettings={setMostVisitedSettings}
-                />}
-                {activeTab === TabType.Clock && <ClockSettings />}
-                {activeTab === TabType.Cards && <CardsSettings
-                  toggleCards={toggleCards}
-                  cardsHidden={cardsHidden}
-                  toggleShowBraveTalk={toggleShowBraveTalk}
-                  showBraveTalk={showBraveTalk}
-                  braveTalkSupported={braveTalkSupported}
-                  toggleShowRewards={toggleShowRewards}
-                  braveRewardsSupported={braveRewardsSupported}
-                  showRewards={showRewards}
-                />}
-              </React.Suspense>
-            </SettingsFeatureBody>
-          </SettingsContent>
-        </SettingsMenu>
-      </SettingsWrapper>
-    )
-  }
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        this.props.onClose()
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    document.addEventListener('keydown', handleKeyPress)
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+      document.removeEventListener('keydown', handleKeyPress)
+    }
+  }, [props.onClose, customizePage])
+
+  if (!props.showSettingsMenu) return null
+
+  return <SettingsWrapper textDirection={props.textDirection}>
+    <SettingsMenu
+      ref={settingsMenuRef}
+      textDirection={props.textDirection}
+      title={getLocale('dashboardSettingsTitle')}
+    >
+      <SettingsTitle id='settingsTitle'>
+        <h1>{getLocale('dashboardSettingsTitle')}</h1>
+        <Button fab kind='plain-faint' onClick={props.onClose}>
+          <Icon name='close' />
+        </Button>
+      </SettingsTitle>
+      <SettingsContent id='settingsBody'>
+        <SettingsSidebar id='sidebar'>
+          <SettingsSidebarActiveButtonSlider
+            translateTo={allowedTabTypes.indexOf(activeTab)}
+          />
+          {
+            allowedTabTypes.map((tabType) => {
+              const titleKey = tabTranslationKeys[tabType]
+              const isActive = activeTab === tabType
+              return (
+                <SettingsSidebarButton
+                  tabIndex={0}
+                  key={tabType}
+                  data-active={isActive ? '' : null}
+                  onClick={() => changeTab(tabType)}
+                >
+                  <Icon name={tabIcons[tabType]} />
+                  <SettingsSidebarButtonText
+                    data-text={getLocale(titleKey)}>
+                    {getLocale(titleKey)}
+                  </SettingsSidebarButtonText>
+                </SettingsSidebarButton>
+              )
+            })
+          }
+        </SettingsSidebar>
+        <SettingsFeatureBody id='content'>
+          {/* Empty loading fallback is ok here since we are loading from local disk. */}
+          <React.Suspense fallback={(<div />)}>
+            {activeTab === TabType.BackgroundImage && <BackgroundImageSettings
+              newTabData={props.newTabData}
+              toggleBrandedWallpaperOptIn={props.toggleBrandedWallpaperOptIn}
+              toggleShowBackgroundImage={props.toggleShowBackgroundImage}
+              chooseNewCustomImageBackground={props.chooseNewCustomImageBackground}
+              setCustomImageBackground={props.setCustomImageBackground}
+              removeCustomImageBackground={props.removeCustomImageBackground}
+              setBraveBackground={props.setBraveBackground}
+              setColorBackground={props.setColorBackground}
+              brandedWallpaperOptIn={props.brandedWallpaperOptIn}
+              showBackgroundImage={props.showBackgroundImage}
+              featureCustomBackgroundEnabled={props.featureCustomBackgroundEnabled}
+              onEnableRewards={props.onEnableRewards}
+              braveRewardsSupported={props.braveRewardsSupported}
+            />}
+            {activeTab === TabType.BraveStats && <BraveStatsSettings />}
+            {activeTab === TabType.TopSites && <TopSitesSettings
+              toggleShowTopSites={props.toggleShowTopSites}
+              showTopSites={props.showTopSites}
+              customLinksEnabled={props.customLinksEnabled}
+              setMostVisitedSettings={props.setMostVisitedSettings}
+            />}
+            {activeTab === TabType.Clock && <ClockSettings />}
+            {activeTab === TabType.Cards && <CardsSettings
+              toggleCards={props.toggleCards}
+              cardsHidden={props.cardsHidden}
+              toggleShowBraveTalk={props.toggleShowBraveTalk}
+              showBraveTalk={props.showBraveTalk}
+              braveTalkSupported={props.braveTalkSupported}
+              toggleShowRewards={props.toggleShowRewards}
+              braveRewardsSupported={props.braveRewardsSupported}
+              showRewards={props.showRewards}
+            />}
+          </React.Suspense>
+        </SettingsFeatureBody>
+      </SettingsContent>
+    </SettingsMenu>
+  </SettingsWrapper>
 }
