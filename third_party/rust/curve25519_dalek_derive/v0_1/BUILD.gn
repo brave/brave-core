@@ -15,14 +15,14 @@ cargo_crate("lib") {
   # Only for usage from third-party crates. Add the crate to
   # third_party.toml to use it from first-party code.
   visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/curve25519_dalek_derive/v0_1/crate/src/lib.rs",
-    "//brave/third_party/rust/curve25519_dalek_derive/v0_1/crate/tests/tests.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/tests/tests.rs",
   ]
   inputs = [
-    "//brave/third_party/rust/curve25519_dalek_derive/v0_1/crate/CHANGELOG.md",
-    "//brave/third_party/rust/curve25519_dalek_derive/v0_1/crate/README.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/CHANGELOG.md",
+    "//brave/third_party/rust/chromium_crates_io/vendor/curve25519-dalek-derive-0.1.1/README.md",
   ]
 
   # Unit tests skipped. Generate with --with-tests to include them.

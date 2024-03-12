@@ -1,0 +1,48 @@
+From e0e337fe7456a3b77f21f14e107b54deecbc04ab Mon Sep 17 00:00:00 2001
+From: bridiver <34129+bridiver@users.noreply.github.com>
+Date: Thu, 7 Mar 2024 14:07:36 -0700
+Subject: [PATCH] disable autocfg probe
+
+---
+ .../vendor/num-bigint-0.3.3/build.rs                | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
+
+diff --git a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
+index 3daed5e8d33..300d71643ad 100644
+--- a/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
++++ b/third_party/rust/chromium_crates_io/vendor/num-bigint-0.3.3/build.rs
+@@ -11,23 +11,26 @@ fn main() {
+         autocfg::emit("u64_digit");
+     }
+     let ac = autocfg::new();
++/*
+     let std = if ac.probe_sysroot_crate("std") {
+         "std"
+     } else {
+         "core"
+     };
+     if ac.probe_path(&format!("{}::convert::TryFrom", std)) {
++*/
+         autocfg::emit("has_try_from");
+-    }
++//  }
+ 
+     if let Ok(target_arch) = env::var("CARGO_CFG_TARGET_ARCH") {
+         if target_arch == "x86_64" || target_arch == "x86" {
+             let digit = if u64_digit { "u64" } else { "u32" };
+-
+-            let addcarry = format!("{}::arch::{}::_addcarry_{}", std, target_arch, digit);
+-            if ac.probe_path(&addcarry) {
++/*
++          let addcarry = format!("{}::arch::{}::_addcarry_{}", std, target_arch, digit);
++          if ac.probe_path(&addcarry) {
++*/
+                 autocfg::emit("use_addcarry");
+-            }
++//          }
+         }
+     }
+ 
+-- 
+2.38.1
+

@@ -1,6 +1,11 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
+# Do not edit!
 
 import("//build/rust/cargo_crate.gni")
 
@@ -8,52 +13,20 @@ cargo_crate("lib") {
   crate_name = "tracing"
   epoch = "0.1"
   crate_type = "rlib"
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/baseline.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/dispatch_get_clone.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/dispatch_get_ref.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/empty_span.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/enter_span.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/event.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/shared.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_fields.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_no_fields.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/benches/span_repeated.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/dispatcher.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/field.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/instrument.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/level_filters.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/lib.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/macros.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/span.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/stdlib.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/src/subscriber.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/enabled.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/event.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/filter_caching_is_lexically_scoped.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_are_not_reevaluated_for_the_same_span.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_are_reevaluated_for_different_call_sites.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/filters_dont_leak.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/future_send.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/instrument.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/macro_imports.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/macros_incompatible_concat.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/max_level_hint.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/multiple_max_level_hints.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/no_subscriber.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/register_callsite_deadlock.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/scoped_clobbers_default.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/span.rs",
-    "//brave/third_party/rust/tracing/v0_1/crate/tests/subscriber.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/dispatcher.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/field.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/instrument.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/level_filters.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/macros.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/span.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/stdlib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/tracing-0.1.40/src/subscriber.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/tracing/v0_1/crate/CHANGELOG.md",
-    "//brave/third_party/rust/tracing/v0_1/crate/README.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2018"
   cargo_pkg_version = "0.1.40"
@@ -65,6 +38,8 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   deps = [
     "//brave/third_party/rust/pin_project_lite/v0_2:lib",
     "//brave/third_party/rust/tracing_attributes/v0_1:lib",
@@ -72,6 +47,7 @@ cargo_crate("lib") {
   ]
   features = [
     "attributes",
+    "release_max_level_debug",
     "std",
     "tracing-attributes",
   ]

@@ -1,14 +1,14 @@
 [package]
 name = "filecoin-cxx"
 description = "FFI Interface to Filecoin"
-version = "0.0.1"
+version = "1.0.0"
 edition = "2018"
-publish = false
+license = "MPL-2.0"
 
 [dependencies]
 base64 = "0.13.0"
 bls-signatures = { version = "0.12", default-features = false, features = ["pairing"] }
-cxx = { version = "1.0", features = [ "alloc", "std" ] }
+cxx = "1"
 fvm_shared = { version = "3.3.0" }
 libsecp256k1 = "0.7"
 num_bigint_chainsafe = { package = "forest_bigint", version = "0.1.2"}

@@ -3,5 +3,7 @@ URL: https://crates.io/crates/ed25519-dalek-bip32
 Description: Simplified ed25519 BIP32 derivations
 Version: 0.2.0
 Security Critical: yes
+Shipped: yes
 License: Apache 2.0
+License File:
 Revision: 1f005ab4e8d22077187bad8dd13d843f48b94d62

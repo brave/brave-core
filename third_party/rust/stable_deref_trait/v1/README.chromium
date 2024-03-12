@@ -4,5 +4,7 @@ Description: An unsafe marker trait for types like Box and Rc that dereference t
 
 Version: 1.2.0
 Security Critical: yes
+Shipped: yes
 License: Apache 2.0
+License File: //brave/third_party/rust/chromium_crates_io/vendor/stable_deref_trait-1.2.0/LICENSE-APACHE
 Revision: 66f9d8a15b7209c45f58edee6c1b6bb497b7bd31

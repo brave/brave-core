@@ -1,8 +1,10 @@
-# Copyright 2023 The Chromium Authors
-# Use of this source code is governed by a BSD-style license that can be
-# found in the LICENSE file.
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
-# @generated from third_party/rust/BUILD.gn.hbs by tools/crates/gnrt.
+# @generated from third_party/rust/chromium_crates_io/BUILD.gn.hbs by
+# tools/crates/gnrt.
 # Do not edit!
 
 import("//build/rust/cargo_crate.gni")
@@ -11,32 +13,16 @@ cargo_crate("lib") {
   crate_name = "once_cell"
   epoch = "1"
   crate_type = "rlib"
-
-  # Only for usage from third-party crates. Add the crate to
-  # third_party.toml to use it from first-party code.
-  visibility = [ "//brave/third_party/rust/*" ]
-  crate_root = "crate/src/lib.rs"
+  crate_root = "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/lib.rs"
   sources = [
-    "//brave/third_party/rust/once_cell/v1/crate/examples/bench.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/bench_acquire.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/bench_vs_lazy_static.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/lazy_static.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/reentrant_init_deadlocks.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/regex.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/examples/test_synchronization.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/src/imp_cs.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/src/imp_pl.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/src/imp_std.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/src/lib.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/src/race.rs",
-    "//brave/third_party/rust/once_cell/v1/crate/tests/it.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/imp_cs.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/imp_pl.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/imp_std.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/lib.rs",
+    "//brave/third_party/rust/chromium_crates_io/vendor/once_cell-1.16.0/src/race.rs",
   ]
-  inputs = [
-    "//brave/third_party/rust/once_cell/v1/crate/CHANGELOG.md",
-    "//brave/third_party/rust/once_cell/v1/crate/README.md",
-  ]
+  inputs = []
 
-  # Unit tests skipped. Generate with --with-tests to include them.
   build_native_rust_unit_tests = false
   edition = "2021"
   cargo_pkg_version = "1.16.0"
@@ -47,13 +33,11 @@ cargo_crate("lib") {
   library_configs += [ "//build/config/compiler:no_chromium_code" ]
   executable_configs -= [ "//build/config/compiler:chromium_code" ]
   executable_configs += [ "//build/config/compiler:no_chromium_code" ]
+  proc_macro_configs -= [ "//build/config/compiler:chromium_code" ]
+  proc_macro_configs += [ "//build/config/compiler:no_chromium_code" ]
   features = [
     "alloc",
     "race",
     "std",
   ]
-}
-group("test_support") {
-  public_deps = [ ":lib" ]
-  testonly = true
 }

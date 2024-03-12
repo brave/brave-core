@@ -1,0 +1,9 @@
+Name: rand_core
+URL: https://crates.io/crates/rand_core
+Description: Core random number generator traits and tools for implementation.
+
+Version: 0.6.4
+Security Critical: yes
+Shipped: yes
+License: Apache 2.0
+License File:

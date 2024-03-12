@@ -3,5 +3,7 @@ URL: https://crates.io/crates/phf
 Description: Runtime support for perfect hash function data structures
 Version: 0.8.0
 Security Critical: yes
+Shipped: yes
 License: MIT
+License File:
 Revision: 81c7cc5b48649108428671d3b8ad151f6fbdb359
