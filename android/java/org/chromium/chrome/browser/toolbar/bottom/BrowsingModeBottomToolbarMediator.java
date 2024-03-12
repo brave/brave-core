@@ -69,7 +69,4 @@ class BrowsingModeBottomToolbarMediator implements ThemeColorObserver {
     private @ColorInt int applyCustomAlphaToColor(@ColorInt int baseColor, float alpha) {
         return (baseColor & 0x00FFFFFF) | ((int) (alpha * 255) << 24);
     }
-
-    @Override
-    public void onThemeColorUpdated(boolean colorChanged) {}
 }

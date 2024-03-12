@@ -102,7 +102,4 @@ class SearchAccelerator extends ChromeImageButton
                                            mIncognitoStateProvider.isIncognitoSelected()),
                 PorterDuff.Mode.SRC_IN);
     }
-
-    @Override
-    public void onThemeColorUpdated(boolean colorChanged) {}
 }
