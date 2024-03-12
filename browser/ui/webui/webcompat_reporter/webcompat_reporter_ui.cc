@@ -9,29 +9,33 @@
 #include <utility>
 #include <vector>
 
+#include "base/base64.h"
 #include "base/metrics/histogram_macros.h"
 #include "base/strings/string_util.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/task/thread_pool.h"
 #include "brave/browser/brave_browser_process.h"
-#include "brave/browser/ui/brave_shields_data_controller.h"
 #include "brave/browser/ui/webui/brave_webui_source.h"
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
+#include "brave/common/brave_channel_info.h"
 #include "brave/components/brave_shields/content/browser/ad_block_service.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_service_manager.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
-#include "brave/components/constants/webui_url_constants.h"
 #include "brave/components/webcompat_reporter/browser/fields.h"
-#include "brave/components/webcompat_reporter/browser/webcompat_report_uploader.h"
 #include "brave/components/webcompat_reporter/resources/grit/webcompat_reporter_generated_map.h"
-#include "chrome/browser/profiles/profile.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/browser_finder.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/language/core/browser/pref_names.h"
 #include "components/prefs/pref_service.h"
+#include "content/public/browser/browser_thread.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/render_widget_host_view.h"
 #include "content/public/browser/web_ui_data_source.h"
-#include "content/public/browser/web_ui_message_handler.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
-#include "ui/web_dialogs/web_dialog_delegate.h"
+#include "ui/gfx/codec/png_codec.h"
 #include "url/gurl.h"
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
@@ -43,34 +47,28 @@ namespace webcompat_reporter {
 
 namespace {
 
-constexpr const char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
+constexpr char kUISourceHistogramName[] = "Brave.Webcompat.UISource";
+constexpr int kMaxScreenshotPixelCount = 1280 * 720;
 
-class WebcompatReporterDOMHandler : public content::WebUIMessageHandler {
- public:
-  explicit WebcompatReporterDOMHandler(Profile* profile);
-  WebcompatReporterDOMHandler(const WebcompatReporterDOMHandler&) = delete;
-  WebcompatReporterDOMHandler& operator=(const WebcompatReporterDOMHandler&) =
-      delete;
-  ~WebcompatReporterDOMHandler() override;
-
-  // WebUIMessageHandler implementation.
-  void RegisterMessages() override;
-
- private:
-  void InitAdditionalParameters(Profile* profile);
-  void HandleSubmitReport(const base::Value::List& args);
-
-  std::unique_ptr<webcompat_reporter::WebcompatReportUploader> uploader_;
-  std::string ad_block_list_names_;
-  std::string languages_;
-  bool language_farbling_enabled_ = true;
-  bool brave_vpn_connected_ = false;
-};
+}  // namespace
 
 WebcompatReporterDOMHandler::WebcompatReporterDOMHandler(Profile* profile)
-    : uploader_(std::make_unique<webcompat_reporter::WebcompatReportUploader>(
+    : ui_task_runner_(base::SequencedTaskRunner::GetCurrentDefault()),
+      uploader_(std::make_unique<webcompat_reporter::WebcompatReportUploader>(
           profile->GetURLLoaderFactory())) {
+  DCHECK_CURRENTLY_ON(content::BrowserThread::UI);
+
   InitAdditionalParameters(profile);
+
+  auto* browser = chrome::FindLastActiveWithProfile(profile);
+  if (!browser) {
+    return;
+  }
+  auto* web_contents = browser->tab_strip_model()->GetActiveWebContents();
+  if (!web_contents) {
+    return;
+  }
+  render_widget_host_view_ = web_contents->GetTopLevelRenderWidgetHostView();
 }
 
 void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
@@ -91,20 +89,23 @@ void WebcompatReporterDOMHandler::InitAdditionalParameters(Profile* profile) {
     }
   }
 
-  ad_block_list_names_ = base::JoinString(ad_block_list_names, ",");
+  pending_report_.ad_block_list_names =
+      base::JoinString(ad_block_list_names, ",");
 
 #if BUILDFLAG(ENABLE_BRAVE_VPN)
   brave_vpn::BraveVpnService* vpn_service =
       brave_vpn::BraveVpnServiceFactory::GetForProfile(profile);
   if (vpn_service != nullptr) {
-    brave_vpn_connected_ = vpn_service->IsConnected();
+    pending_report_.brave_vpn_connected = vpn_service->IsConnected();
   }
 #endif
 
   PrefService* profile_prefs = profile->GetPrefs();
-  languages_ = profile_prefs->GetString(language::prefs::kAcceptLanguages);
-  language_farbling_enabled_ =
+  pending_report_.languages =
+      profile_prefs->GetString(language::prefs::kAcceptLanguages);
+  pending_report_.language_farbling =
       profile_prefs->GetBoolean(brave_shields::prefs::kReduceLanguageEnabled);
+  pending_report_.channel = brave::GetChannelName();
 }
 
 WebcompatReporterDOMHandler::~WebcompatReporterDOMHandler() = default;
@@ -114,6 +115,106 @@ void WebcompatReporterDOMHandler::RegisterMessages() {
       "webcompat_reporter.submitReport",
       base::BindRepeating(&WebcompatReporterDOMHandler::HandleSubmitReport,
                           base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.captureScreenshot",
+      base::BindRepeating(&WebcompatReporterDOMHandler::HandleCaptureScreenshot,
+                          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.getCapturedScreenshot",
+      base::BindRepeating(
+          &WebcompatReporterDOMHandler::HandleGetCapturedScreenshot,
+          base::Unretained(this)));
+  web_ui()->RegisterMessageCallback(
+      "webcompat_reporter.clearScreenshot",
+      base::BindRepeating(&WebcompatReporterDOMHandler::HandleClearScreenshot,
+                          base::Unretained(this)));
+}
+
+void WebcompatReporterDOMHandler::HandleCaptureScreenshot(
+    const base::Value::List& args) {
+  CHECK(render_widget_host_view_);
+  CHECK_EQ(args.size(), 1u);
+
+  AllowJavascript();
+
+  auto output_size = render_widget_host_view_->GetVisibleViewportSize();
+  auto original_area = output_size.GetArea();
+
+  if (original_area > kMaxScreenshotPixelCount) {
+    // Scale image down if it's too big
+    float output_scale =
+        std::sqrt(static_cast<float>(kMaxScreenshotPixelCount) / original_area);
+    output_size = gfx::ScaleToRoundedSize(output_size, output_scale);
+  }
+
+  render_widget_host_view_->CopyFromSurface(
+      {}, output_size,
+      base::BindOnce(
+          [](base::WeakPtr<WebcompatReporterDOMHandler> handler,
+             scoped_refptr<base::SequencedTaskRunner> ui_task_runner,
+             base::Value callback_id, const SkBitmap& bitmap) {
+            ui_task_runner->PostTask(
+                FROM_HERE,
+                base::BindOnce(&WebcompatReporterDOMHandler::
+                                   HandleCapturedScreenshotBitmap,
+                               handler, bitmap, std::move(callback_id)));
+          },
+          weak_ptr_factory_.GetWeakPtr(), ui_task_runner_, args[0].Clone()));
+}
+
+void WebcompatReporterDOMHandler::HandleCapturedScreenshotBitmap(
+    SkBitmap bitmap,
+    base::Value callback_id) {
+  if (bitmap.drawsNothing()) {
+    LOG(ERROR) << "Failed to capture screenshot for webcompat report via "
+                  "CopyFromSurface";
+    RejectJavascriptCallback(callback_id, {});
+    return;
+  }
+  base::ThreadPool::PostTaskAndReplyWithResult(
+      FROM_HERE,
+      base::BindOnce(
+          [](SkBitmap bitmap) {
+            std::vector<unsigned char> png_output;
+            return gfx::PNGCodec::EncodeBGRASkBitmap(bitmap, true, &png_output)
+                       ? std::optional(png_output)
+                       : std::nullopt;
+          },
+          bitmap),
+      base::BindOnce(&WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG,
+                     weak_ptr_factory_.GetWeakPtr(), std::move(callback_id)));
+}
+
+void WebcompatReporterDOMHandler::HandleEncodedScreenshotPNG(
+    base::Value callback_id,
+    std::optional<std::vector<unsigned char>> encoded_png) {
+  if (!encoded_png) {
+    LOG(ERROR) << "Failed to encode screenshot to PNG for webcompat report";
+    RejectJavascriptCallback(callback_id, {});
+    return;
+  }
+  pending_report_.screenshot_png = encoded_png;
+  ResolveJavascriptCallback(callback_id, {});
+}
+
+void WebcompatReporterDOMHandler::HandleGetCapturedScreenshot(
+    const base::Value::List& args) {
+  CHECK_EQ(args.size(), 1u);
+
+  AllowJavascript();
+
+  if (!pending_report_.screenshot_png) {
+    RejectJavascriptCallback(args[0], {});
+    return;
+  }
+
+  auto screenshot_b64 = base::Base64Encode(*pending_report_.screenshot_png);
+  ResolveJavascriptCallback(args[0], screenshot_b64);
+}
+
+void WebcompatReporterDOMHandler::HandleClearScreenshot(
+    const base::Value::List& args) {
+  pending_report_.screenshot_png = std::nullopt;
 }
 
 void WebcompatReporterDOMHandler::HandleSubmitReport(
@@ -132,44 +233,33 @@ void WebcompatReporterDOMHandler::HandleSubmitReport(
       submission_args.FindString(kFPBlockSettingField);
   const base::Value* details_arg = submission_args.Find(kDetailsField);
   const base::Value* contact_arg = submission_args.Find(kContactField);
-  bool shields_enabled =
+  pending_report_.shields_enabled =
       submission_args.FindBool(kShieldsEnabledField).value_or(false);
 
-  auto ui_source_int = submission_args.FindInt(kUISourceField);
+  const auto ui_source_int = submission_args.FindInt(kUISourceField);
   if (ui_source_int) {
     UISource ui_source = static_cast<UISource>(*ui_source_int);
     UMA_HISTOGRAM_ENUMERATION(kUISourceHistogramName, ui_source);
   }
 
-  std::string url;
-  std::string ad_block_setting;
-  std::string fp_block_setting;
-  base::Value details;
-  base::Value contact;
-
   if (url_arg != nullptr) {
-    url = *url_arg;
+    pending_report_.report_url = GURL(*url_arg);
   }
   if (ad_block_setting_arg != nullptr) {
-    ad_block_setting = *ad_block_setting_arg;
+    pending_report_.ad_block_setting = *ad_block_setting_arg;
   }
   if (fp_block_setting_arg != nullptr) {
-    fp_block_setting = *fp_block_setting_arg;
+    pending_report_.fp_block_setting = *fp_block_setting_arg;
   }
   if (details_arg != nullptr) {
-    details = details_arg->Clone();
+    pending_report_.details = details_arg->Clone();
   }
   if (contact_arg != nullptr) {
-    contact = contact_arg->Clone();
+    pending_report_.contact = contact_arg->Clone();
   }
 
-  uploader_->SubmitReport(GURL(url), shields_enabled, ad_block_setting,
-                          fp_block_setting, ad_block_list_names_, languages_,
-                          language_farbling_enabled_, brave_vpn_connected_,
-                          details, contact);
+  uploader_->SubmitReport(pending_report_);
 }
-
-}  // namespace
 
 WebcompatReporterUI::WebcompatReporterUI(content::WebUI* web_ui,
                                          const std::string& name)

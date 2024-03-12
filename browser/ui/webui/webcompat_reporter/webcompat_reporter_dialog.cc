@@ -57,7 +57,6 @@ class WebcompatReporterDialogDelegate : public ui::WebDialogDelegate {
   void OnDialogClosed(const std::string& json_retval) override;
   void OnCloseContents(WebContents* source, bool* out_close_dialog) override;
   bool ShouldShowDialogTitle() const override;
-
  private:
   base::Value::Dict params_;
 };
@@ -125,6 +124,13 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
     ad_block_mode = shields_data_controller->GetAdBlockMode();
   }
 
+  bool is_error_page = false;
+  auto* visible_navigation_entry = initiator->GetController().GetVisibleEntry();
+  if (visible_navigation_entry) {
+    is_error_page = visible_navigation_entry->GetPageType() ==
+                    content::PageType::PAGE_TYPE_ERROR;
+  }
+
   // Remove query and fragments from reported URL.
   GURL::Replacements replacements;
   replacements.ClearQuery();
@@ -139,6 +145,7 @@ void OpenReporterDialog(content::WebContents* initiator, UISource source) {
   params_dict.Set(kFPBlockSettingField,
                   GetFingerprintModeString(fp_block_mode));
   params_dict.Set(kUISourceField, static_cast<int>(source));
+  params_dict.Set(kIsErrorPage, static_cast<int>(is_error_page));
 
   gfx::Size min_size(kDialogWidth, kDialogMinHeight);
   gfx::Size max_size(kDialogWidth, kDialogMaxHeight);

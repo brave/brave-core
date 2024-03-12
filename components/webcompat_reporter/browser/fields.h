@@ -17,6 +17,7 @@ inline constexpr char kShieldsEnabledField[] = "shieldsEnabled";
 inline constexpr char kLanguagesField[] = "languages";
 inline constexpr char kLanguageFarblingField[] = "languageFarblingEnabled";
 inline constexpr char kBraveVPNEnabledField[] = "braveVPNEnabled";
+inline constexpr char kChannelField[] = "channel";
 
 inline constexpr char kSiteURLField[] = "url";
 inline constexpr char kDomainField[] = "domain";
@@ -25,6 +26,7 @@ inline constexpr char kContactField[] = "contactInfo";
 inline constexpr char kApiKeyField[] = "api_key";
 
 inline constexpr char kUISourceField[] = "ui_source";
+inline constexpr char kIsErrorPage[] = "isErrorPage";
 
 const char* GetAdBlockModeString(
     brave_shields::mojom::AdBlockMode ad_block_mode);

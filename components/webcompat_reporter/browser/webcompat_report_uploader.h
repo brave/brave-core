@@ -8,6 +8,7 @@
 
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/ref_counted.h"
 #include "base/values.h"
@@ -21,6 +22,25 @@ class SimpleURLLoader;
 
 namespace webcompat_reporter {
 
+struct Report {
+  Report();
+  ~Report();
+
+  std::string channel;
+  GURL report_url;
+  bool shields_enabled;
+  std::string ad_block_setting;
+  std::string fp_block_setting;
+  std::string ad_block_list_names;
+  std::string languages;
+  bool language_farbling;
+  bool brave_vpn_connected;
+  base::Value details;
+  base::Value contact;
+
+  std::optional<std::vector<unsigned char>> screenshot_png;
+};
+
 class WebcompatReportUploader {
  public:
   explicit WebcompatReportUploader(
@@ -29,21 +49,13 @@ class WebcompatReportUploader {
   WebcompatReportUploader& operator=(const WebcompatReportUploader&) = delete;
   ~WebcompatReportUploader();
 
-  void SubmitReport(const GURL& report_url,
-                    const bool shields_enabled,
-                    const std::string& ad_block_setting,
-                    const std::string& fp_block_setting,
-                    const std::string& ad_block_list_names,
-                    const std::string& languages,
-                    const bool language_farbling,
-                    const bool brave_vpn_connected,
-                    const base::Value& details,
-                    const base::Value& contact);
+  void SubmitReport(const Report& report);
 
  private:
   std::unique_ptr<network::SimpleURLLoader> simple_url_loader_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
   void CreateAndStartURLLoader(const GURL& upload_url,
+                               const std::string& content_type,
                                const std::string& post_data);
   void OnSimpleURLLoaderComplete(std::unique_ptr<std::string> response_body);
 };
