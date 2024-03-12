@@ -33,3 +33,7 @@ void BraveConfirmInfoBarDelegate::SetCheckboxChecked(bool checked) {}
 bool BraveConfirmInfoBarDelegate::InterceptClosing() {
   return false;
 }
+
+bool BraveConfirmInfoBarDelegate::ExtraButtonPressed() {
+  return true;
+}
