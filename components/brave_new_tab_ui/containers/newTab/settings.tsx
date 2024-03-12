@@ -6,7 +6,6 @@
 import * as React from 'react'
 
 import {
-  SettingsCloseIcon,
   SettingsContent,
   SettingsFeatureBody,
   SettingsMenu,
@@ -14,23 +13,15 @@ import {
   SettingsSidebarActiveButtonSlider,
   SettingsSidebarButton,
   SettingsSidebarButtonText,
-  SettingsSidebarSVGContent,
   SettingsTitle,
   SettingsWrapper
 } from '../../components/default'
 
 import { BraveNewsContext } from '../../../brave_news/browser/resources/shared/Context'
 import { Publishers } from '../../../brave_news/browser/resources/shared/api'
-import { getLocale } from '../../../common/locale'
-
-// Icons
-import { CloseStrokeIcon } from 'brave-ui/components/icons'
-import BackgroundImageIcon from './settings/icons/backgroundImage.svg'
-import TodayIcon from './settings/icons/braveNews.svg'
-import BraveStatsIcon from './settings/icons/braveStats.svg'
-import CardsIcon from './settings/icons/cards.svg'
-import ClockIcon from './settings/icons/clock.svg'
-import TopSitesIcon from './settings/icons/topSites.svg'
+import { getLocale } from '$web-common/locale'
+import Icon from '@brave/leo/react/icon'
+import Button from '@brave/leo/react/button'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -91,22 +82,36 @@ interface State {
   activeTab: TabType
 }
 
+const tabTypes = Object.values(TabType)
+
+type TabMap<T> = { [P in TabType]: T }
+const tabIcons: TabMap<string> = {
+  [TabType.BackgroundImage]: 'image',
+  [TabType.BraveNews]: 'product-brave-news',
+  [TabType.BraveStats]: 'bar-chart',
+  [TabType.Clock]: 'clock',
+  [TabType.TopSites]: 'window-content',
+  [TabType.Cards]: 'browser-ntp-widget',
+}
+
+const tabTranslationKeys: TabMap<string> = {
+  [TabType.BackgroundImage]: 'backgroundImageTitle',
+  [TabType.BraveNews]: 'braveNewsTitle',
+  [TabType.BraveStats]: 'statsTitle',
+  [TabType.Clock]: 'clockTitle',
+  [TabType.TopSites]: 'topSitesTitle',
+  [TabType.Cards]: 'cards',
+}
+
 export default class Settings extends React.PureComponent<Props, State> {
   static contextType: typeof BraveNewsContext = BraveNewsContext
   settingsMenuRef: React.RefObject<any>
-  allTabTypes: TabType[]
-  allTabTypesWithoutBackground: TabType[]
 
-  constructor (props: Props) {
+  constructor(props: Props) {
     super(props)
     // Cache allowed tabs array on instance.
     // Feature flags won't change during page lifecycle, so we don't need to
     // change this when props change.
-    this.allTabTypes = [...Object.values(TabType)]
-    this.allTabTypesWithoutBackground = [...this.allTabTypes]
-    this.allTabTypesWithoutBackground.splice(
-      this.allTabTypesWithoutBackground.indexOf(TabType.BackgroundImage), 1
-    )
     this.settingsMenuRef = React.createRef()
     this.state = {
       activeTab: this.getInitialTab()
@@ -127,16 +132,17 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  componentDidMount () {
+  componentDidMount() {
     document.addEventListener('mousedown', this.handleClickOutside)
     document.addEventListener('keydown', this.onKeyPressSettings)
   }
 
-  componentWillUnmount () {
+  componentWillUnmount() {
     document.removeEventListener('mousedown', this.handleClickOutside)
+    document.removeEventListener('keydown', this.onKeyPressSettings)
   }
 
-  componentDidUpdate (prevProps: Props) {
+  componentDidUpdate(prevProps: Props) {
     if (prevProps.setActiveTab !== this.props.setActiveTab && this.props.setActiveTab) {
       this.setActiveTab(this.props.setActiveTab)
     }
@@ -152,7 +158,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     }
   }
 
-  getInitialTab () {
+  getInitialTab() {
     let tab = this.props.allowBackgroundCustomization
       ? TabType.BackgroundImage
       : TabType.BraveStats
@@ -176,7 +182,7 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.props.setColorBackground(color, useRandomColor)
   }
 
-  setActiveTab (activeTab: TabType) {
+  setActiveTab(activeTab: TabType) {
     if (activeTab === TabType.BraveNews) {
       this.context.setCustomizePage('news')
       return
@@ -185,62 +191,11 @@ export default class Settings extends React.PureComponent<Props, State> {
     this.setState({ activeTab })
   }
 
-  getActiveTabTypes (): TabType[] {
-    if (this.props.allowBackgroundCustomization) {
-      return this.allTabTypes
-    } else {
-      return this.allTabTypesWithoutBackground
-    }
-  }
+  getActiveTabTypes = () => this.props.allowBackgroundCustomization
+    ? tabTypes
+    : tabTypes.filter(t => t !== TabType.BackgroundImage)
 
-  getTabIcon (tab: TabType, isActiveTab: boolean) {
-    let srcUrl
-    switch (tab) {
-      case TabType.BackgroundImage:
-        srcUrl = BackgroundImageIcon
-        break
-      case TabType.BraveStats:
-        srcUrl = BraveStatsIcon
-        break
-      case TabType.TopSites:
-        srcUrl = TopSitesIcon
-        break
-      case TabType.BraveNews:
-        srcUrl = TodayIcon
-        break
-      case TabType.Clock:
-        srcUrl = ClockIcon
-        break
-      case TabType.Cards:
-        srcUrl = CardsIcon
-        break
-      default:
-        srcUrl = BackgroundImageIcon
-        break
-    }
-    return <SettingsSidebarSVGContent isActive={isActiveTab} src={srcUrl} />
-  }
-
-  getTabTitleKey = (tab: TabType) => {
-    switch (tab) {
-      case TabType.BackgroundImage:
-        return 'backgroundImageTitle'
-      case TabType.BraveStats:
-        return 'statsTitle'
-      case TabType.TopSites:
-        return 'topSitesTitle'
-      case TabType.BraveNews:
-        return 'braveNewsTitle'
-      case TabType.Clock:
-        return 'clockTitle'
-      case TabType.Cards:
-        return 'cards'
-      default:
-        return ''
-    }
-  }
-
-  render () {
+  render() {
     const {
       textDirection,
       showSettingsMenu,
@@ -278,9 +233,9 @@ export default class Settings extends React.PureComponent<Props, State> {
         >
           <SettingsTitle id='settingsTitle'>
             <h1>{getLocale('dashboardSettingsTitle')}</h1>
-            <SettingsCloseIcon onClick={this.props.onClose}>
-              <CloseStrokeIcon />
-            </SettingsCloseIcon>
+            <Button fab kind='plain-faint' onClick={this.props.onClose}>
+              <Icon name='close' />
+            </Button>
           </SettingsTitle>
           <SettingsContent id='settingsBody'>
             <SettingsSidebar id='sidebar'>
@@ -288,21 +243,19 @@ export default class Settings extends React.PureComponent<Props, State> {
                 translateTo={tabTypes.indexOf(activeTab)}
               />
               {
-                tabTypes.map((tabType, index) => {
-                  const titleKey = this.getTabTitleKey(tabType)
-                  const isActive = (activeTab === tabType)
+                tabTypes.map((tabType) => {
+                  const titleKey = tabTranslationKeys[tabType]
+                  const isActive = activeTab === tabType
                   return (
                     <SettingsSidebarButton
                       tabIndex={0}
-                      key={`sidebar-button-${index}`}
-                      activeTab={isActive}
-                      onClick={this.setActiveTab.bind(this, tabType)}
+                      key={tabType}
+                      data-active={isActive ? '' : null}
+                      onClick={() => this.setActiveTab(tabType)}
                     >
-                      {this.getTabIcon(tabType, isActive)}
+                      <Icon name={tabIcons[tabType]} />
                       <SettingsSidebarButtonText
-                        isActive={isActive}
-                        data-text={getLocale(titleKey)}
-                      >
+                        data-text={getLocale(titleKey)}>
                         {getLocale(titleKey)}
                       </SettingsSidebarButtonText>
                     </SettingsSidebarButton>
@@ -312,55 +265,40 @@ export default class Settings extends React.PureComponent<Props, State> {
             </SettingsSidebar>
             <SettingsFeatureBody id='content'>
               {/* Empty loading fallback is ok here since we are loading from local disk. */}
-              <React.Suspense fallback={(<div/>)}>
-              {
-                activeTab === TabType.BackgroundImage
-                  ? (
-                  <BackgroundImageSettings
-                    newTabData={this.props.newTabData}
-                    toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
-                    toggleShowBackgroundImage={this.toggleShowBackgroundImage}
-                    chooseNewCustomImageBackground={this.props.chooseNewCustomImageBackground}
-                    setCustomImageBackground={this.props.setCustomImageBackground}
-                    removeCustomImageBackground={this.props.removeCustomImageBackground}
-                    setBraveBackground={this.setBraveBackground}
-                    setColorBackground={this.setColorBackground}
-                    brandedWallpaperOptIn={brandedWallpaperOptIn}
-                    showBackgroundImage={showBackgroundImage}
-                    featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
-                    onEnableRewards={onEnableRewards}
-                    braveRewardsSupported={braveRewardsSupported}
-                  />
-                ) : null
-              }
-              {activeTab === TabType.BraveStats && <BraveStatsSettings />}
-              {
-                activeTab === TabType.TopSites
-                  ? (
-                    <TopSitesSettings
-                      toggleShowTopSites={toggleShowTopSites}
-                      showTopSites={showTopSites}
-                      customLinksEnabled={customLinksEnabled}
-                      setMostVisitedSettings={setMostVisitedSettings}
-                    />
-                  ) : null
-              }
-              {activeTab === TabType.Clock && <ClockSettings />}
-              {
-                activeTab === TabType.Cards
-                  ? (
-                    <CardsSettings
-                      toggleCards={toggleCards}
-                      cardsHidden={cardsHidden}
-                      toggleShowBraveTalk={toggleShowBraveTalk}
-                      showBraveTalk={showBraveTalk}
-                      braveTalkSupported={braveTalkSupported}
-                      toggleShowRewards={toggleShowRewards}
-                      braveRewardsSupported={braveRewardsSupported}
-                      showRewards={showRewards}
-                    />
-                  ) : null
-              }
+              <React.Suspense fallback={(<div />)}>
+                {activeTab === TabType.BackgroundImage && <BackgroundImageSettings
+                  newTabData={this.props.newTabData}
+                  toggleBrandedWallpaperOptIn={toggleBrandedWallpaperOptIn}
+                  toggleShowBackgroundImage={this.toggleShowBackgroundImage}
+                  chooseNewCustomImageBackground={this.props.chooseNewCustomImageBackground}
+                  setCustomImageBackground={this.props.setCustomImageBackground}
+                  removeCustomImageBackground={this.props.removeCustomImageBackground}
+                  setBraveBackground={this.setBraveBackground}
+                  setColorBackground={this.setColorBackground}
+                  brandedWallpaperOptIn={brandedWallpaperOptIn}
+                  showBackgroundImage={showBackgroundImage}
+                  featureCustomBackgroundEnabled={featureCustomBackgroundEnabled}
+                  onEnableRewards={onEnableRewards}
+                  braveRewardsSupported={braveRewardsSupported}
+                />}
+                {activeTab === TabType.BraveStats && <BraveStatsSettings />}
+                {activeTab === TabType.TopSites && <TopSitesSettings
+                  toggleShowTopSites={toggleShowTopSites}
+                  showTopSites={showTopSites}
+                  customLinksEnabled={customLinksEnabled}
+                  setMostVisitedSettings={setMostVisitedSettings}
+                />}
+                {activeTab === TabType.Clock && <ClockSettings />}
+                {activeTab === TabType.Cards && <CardsSettings
+                  toggleCards={toggleCards}
+                  cardsHidden={cardsHidden}
+                  toggleShowBraveTalk={toggleShowBraveTalk}
+                  showBraveTalk={showBraveTalk}
+                  braveTalkSupported={braveTalkSupported}
+                  toggleShowRewards={toggleShowRewards}
+                  braveRewardsSupported={braveRewardsSupported}
+                  showRewards={showRewards}
+                />}
               </React.Suspense>
             </SettingsFeatureBody>
           </SettingsContent>
