@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Відкрити";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Винагороди";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Нагороди Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields і конфіденційність";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields і конфіденційність";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Рекламу й інші підозрілі елементи заблоковано";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Скопіювати дані програми до буферу обміну.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Скопіювати дані про розмір програми до буферу обміну.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Докладніше";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Збережене ім’я для входу буде видалено назавжди.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Відкрити вебсайт";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo — це помічник на базі ШІ, вбудований просто в браузер";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Найпопулярніші історії за сьогодні в приватній стрічці новин";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave News";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Новини";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Слідкуйте за темами, які вас цікавлять";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Голосовий пошук";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "активувати";
