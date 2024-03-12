@@ -35,6 +35,8 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
 
     private AppCompatButton mContinueButton;
 
+    private boolean mContinueButtonClicked;
+
     @NonNull
     public static OnboardingTermsOfUseFragment newInstance() {
         return new OnboardingTermsOfUseFragment();
@@ -43,6 +45,7 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContinueButtonClicked = false;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             Api33AndPlusBackPressHelper.create(
@@ -80,6 +83,11 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
         mContinueButton = view.findViewById(R.id.continue_button);
         mContinueButton.setOnClickListener(
                 v -> {
+                    if (mContinueButtonClicked) {
+                        return;
+                    }
+                    mContinueButtonClicked = true;
+
                     if (mOnNextPage != null) {
                         mOnNextPage.gotoNextPage();
                     }
@@ -87,13 +95,15 @@ public class OnboardingTermsOfUseFragment extends BaseOnboardingWalletFragment
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+        mContinueButtonClicked = false;
+    }
+
+    @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked()) {
-            mContinueButton.setAlpha(1f);
-            mContinueButton.setEnabled(true);
-        } else {
-            mContinueButton.setAlpha(0.5f);
-            mContinueButton.setEnabled(false);
-        }
+        enable(
+                mContinueButton,
+                mSelfCustodyCheckBox.isChecked() && mTermsOfUseCheckBox.isChecked());
     }
 }

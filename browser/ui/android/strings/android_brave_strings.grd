@@ -2105,6 +2105,36 @@ Are you sure you want to do this?
     <message name="IDS_BEFORE_WE_BEGIN" desc="Brave Wallet term of use screen title">
       Before we begin
     </message>
+    <message name="IDS_CREATE_PASSWORD" desc="Brave Wallet password creation description">
+      Create a password
+    </message>
+    <message name="IDS_CREATE_PASSWORD_SUBTITLE" desc="Brave Wallet password creation screen subtitle">
+      You'll use this password to access your wallet.
+    </message>
+    <message name="IDS_WALLET_PASSWORD" desc="Wallet password creation screen title">
+      Enter new password
+    </message>
+    <message name="IDS_WALLET_RETYPE_PASSWORD" desc="Wallet password creation screen subtitle">
+      Re-enter password
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MINIMUM_LENGTH" desc="Wallet password minimum lenght">
+      Password must be at least 8 characters.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_DOES_NOT_MATCH" desc="Wallet password not matching error">
+      Password doesn’t match.
+    </message>
+    <message name="IDS_WALLET_PASSWORD_STRONG" desc="Wallet password lenght strong strength">
+      Strong
+    </message>
+    <message name="IDS_WALLET_PASSWORD_WEAK" desc="Wallet password length weak strength">
+      Weak
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MEDIUM" desc="Wallet password length medium strength">
+      Medium
+    </message>
+    <message name="IDS_WALLET_PASSWORD_MATCH" desc="Wallet password match message">
+      Match!
+    </message>
     <message name="IDS_ALREADY_HAVE_A_WALLET_DESCRIPTION" desc="Brave Wallet onboarding restore description">
       Import your existing wallet
     </message>
