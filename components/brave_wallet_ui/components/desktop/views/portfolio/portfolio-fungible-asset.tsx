@@ -61,6 +61,9 @@ import {
 import {
   BridgeToAuroraModal //
 } from '../../popup-modals/bridge-to-aurora-modal/bridge-to-aurora-modal'
+import {
+  EditTokenModal //
+} from '../../popup-modals/edit_token_modal/edit_token_modal'
 
 // Hooks
 import {
@@ -120,6 +123,8 @@ export const PortfolioFungibleAsset = () => {
   const [selectedTimeline, setSelectedTimeline] = React.useState<number>(
     getStoredPortfolioTimeframe
   )
+  const [showEditTokenModal, setShowEditTokenModal] =
+    React.useState<boolean>(false)
 
   // routing
   const history = useHistory()
@@ -446,6 +451,11 @@ export const PortfolioFungibleAsset = () => {
           onBack={goBack}
           onClickTokenDetails={() => setShowTokenDetailsModal(true)}
           onClickHideToken={() => setShowHideTokenModal(true)}
+          onClickEditToken={
+            selectedAssetFromParams?.contractAddress !== ''
+              ? () => setShowEditTokenModal(true)
+              : undefined
+          }
         />
       }
     >
@@ -526,6 +536,13 @@ export const PortfolioFungibleAsset = () => {
               onHideAsset={onHideAsset}
             />
           )}
+
+        {showEditTokenModal && selectedAssetFromParams && (
+          <EditTokenModal
+            onClose={() => setShowEditTokenModal(false)}
+            token={selectedAssetFromParams}
+          />
+        )}
 
         <Column
           padding='0px 24px 24px 24px'
