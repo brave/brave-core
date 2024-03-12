@@ -624,7 +624,20 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
 
   /// Stores the users wallet password in the keychain so that they may unlock using biometrics/passcode
   func storePasswordInKeychain(_ password: String) -> OSStatus {
-    keychain.storePasswordInKeychain(key: Self.passwordKeychainKey, password: password)
+    var osStatus = keychain.storePasswordInKeychain(
+      key: Self.passwordKeychainKey,
+      password: password
+    )
+    if osStatus == errSecDuplicateItem {
+      // Duplicate item is possible if brave-browser#36669 occurs again.
+      // Remove existing stored password & store updated password.
+      resetKeychainStoredPassword()
+      osStatus = keychain.storePasswordInKeychain(
+        key: Self.passwordKeychainKey,
+        password: password
+      )
+    }
+    return osStatus
   }
 
   @discardableResult
