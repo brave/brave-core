@@ -735,14 +735,11 @@ class NewTabPage extends React.Component<Props, State> {
         />
         }
         <Settings
-          actions={actions}
           textDirection={newTabData.textDirection}
           showSettingsMenu={showSettingsMenu}
           featureCustomBackgroundEnabled={newTabData.featureCustomBackgroundEnabled}
           onClose={this.closeSettings}
           setActiveTab={this.state.activeSettingsTab || undefined}
-          onDisplayTodaySection={this.props.actions.today.ensureSettingsData}
-          onClearTodayPrefs={this.props.actions.today.resetTodayPrefsToDefault}
           toggleShowBackgroundImage={this.toggleShowBackgroundImage}
           toggleShowTopSites={this.toggleShowTopSites}
           setMostVisitedSettings={this.setMostVisitedSettings}
@@ -763,7 +760,6 @@ class NewTabPage extends React.Component<Props, State> {
           braveTalkSupported={newTabData.braveTalkSupported}
           toggleShowBraveTalk={this.toggleShowBraveTalk}
           showBraveTalk={newTabData.showBraveTalk}
-          todayPublishers={this.props.todayData.publishers}
           cardsHidden={this.allWidgetsHidden()}
           toggleCards={this.props.saveSetAllStackWidgets}
           newTabData={this.props.newTabData}

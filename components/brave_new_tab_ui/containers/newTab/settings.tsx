@@ -21,7 +21,6 @@ import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
-import { Publishers } from '../../../brave_news/browser/resources/shared/api'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -30,18 +29,12 @@ const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
 const CardsSettings = React.lazy(() => import('./settings/cards'))
 
-// Types
-import { NewTabActions } from '../../constants/new_tab_types'
-
 export interface Props {
   newTabData: NewTab.State
-  actions: NewTabActions
   textDirection: string
   showSettingsMenu: boolean
   featureCustomBackgroundEnabled: boolean
   onClose: () => void
-  onDisplayTodaySection: () => any
-  onClearTodayPrefs: () => any
   toggleShowBackgroundImage: () => void
   toggleShowTopSites: () => void
   setMostVisitedSettings: (show: boolean, customize: boolean) => void
@@ -64,7 +57,6 @@ export interface Props {
   showBraveTalk: boolean
   braveRewardsSupported: boolean
   braveTalkSupported: boolean
-  todayPublishers?: Publishers
   setActiveTab?: TabType
   cardsHidden: boolean
 }
@@ -125,22 +117,20 @@ export default function Settings(props: Props) {
   // Set the global listeners
   React.useEffect(() => {
     const handleClickOutside = (event: Event) => {
-      if (
-        this.settingsMenuRef &&
-        this.settingsMenuRef.current &&
-        !this.settingsMenuRef.current.contains(event.target) &&
+      if (settingsMenuRef.current &&
+        !settingsMenuRef.current.contains(event.target) &&
         // Don't close the settings dialog for a click outside if we're in the
         // Brave News modal - the user expects closing that one to bring them back
         // to this one.
-        !this.context.customizePage
+        !customizePage
       ) {
-        this.props.onClose()
+        props.onClose()
       }
     }
 
     const handleKeyPress = (event: KeyboardEvent) => {
       if (event.key === 'Escape') {
-        this.props.onClose()
+        props.onClose()
       }
     }
 
