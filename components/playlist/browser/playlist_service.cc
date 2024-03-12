@@ -482,6 +482,10 @@ std::string PlaylistService::GetMediaDetectorScript(const GURL& url) const {
   return media_detector_component_manager_->GetMediaDetectorScript(url);
 }
 
+void PlaylistService::SetUpForTesting() const {
+  media_detector_component_manager_->SetUseLocalScript();
+}
+
 void PlaylistService::AddMediaFilesFromActiveTabToPlaylist(
     const std::string& playlist_id,
     bool can_cache,

@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/functional/callback_helpers.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -54,6 +55,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
+#include "brave/components/playlist/browser/playlist_background_webcontents.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #endif
@@ -1994,14 +1996,6 @@ class CosmeticFilteringPlaylistFlagEnabledTest : public AdBlockServiceTest {
     feature_list_.InitAndEnableFeature(playlist::features::kPlaylist);
   }
 
-  content::WebContents* GetBackgroundWebContents() {
-    auto* playlist_service =
-        playlist::PlaylistServiceFactory::GetForBrowserContext(
-            browser()->profile());
-
-    return playlist_service->GetBackgroundWebContentsForTesting();
-  }
-
  private:
   base::test::ScopedFeatureList feature_list_;
 };
@@ -2019,10 +2013,13 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
       content_settings(), brave_shields::ControlType::ALLOW, url);
   UpdateAdBlockInstanceWithRules("b.com###ad-banner");
 
-  auto* web_contents = GetBackgroundWebContents();
+  playlist::PlaylistBackgroundWebContents background_web_contents(
+      browser()->profile(),
+      playlist::PlaylistServiceFactory::GetForBrowserContext(
+          browser()->profile()));
+  background_web_contents.Add(url, base::DoNothing());
 
-  web_contents->GetController().LoadURLWithParams(
-      content::NavigationController::LoadURLParams(url));
+  auto* web_contents = &background_web_contents.web_contents();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
   // Check filter is applied properly.

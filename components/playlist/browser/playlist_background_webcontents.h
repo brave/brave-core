@@ -11,12 +11,16 @@
 #include <vector>
 
 #include "base/containers/unique_ptr_adapters.h"
+#include "base/gtest_prod_util.h"
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/timer/timer.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "url/gurl.h"
+
+FORWARD_DECLARE_TEST(CosmeticFilteringPlaylistFlagEnabledTest,
+                     AllowCosmeticFiltering);
 
 namespace content {
 class BrowserContext;
@@ -50,6 +54,8 @@ class PlaylistBackgroundWebContents final {
   void Reset();
 
  private:
+  FRIEND_TEST_ALL_PREFIXES(::CosmeticFilteringPlaylistFlagEnabledTest,
+                           AllowCosmeticFiltering);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBackgroundWebContentsTest,
                            ExtractPlaylistItemsInTheBackground);
   FRIEND_TEST_ALL_PREFIXES(PlaylistBackgroundWebContentsTest,
