@@ -3,9 +3,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import("//brave/ios/browser/svg/svg.gni")
+import("//third_party/skia/modules/skottie/skottie.gni")
+import("//third_party/skia/modules/skresources/skresources.gni")
+import("//third_party/skia/modules/sksg/sksg.gni")
+import("//third_party/skia/modules/skshaper/skshaper.gni")
 import("//third_party/skia/modules/svg/svg.gni")
 
 source_set("svg") {
+  # //skia:skia does the same thing
+  # There is no other way to include the skia/module files
+  check_includes = false
+
+  defines = [
+    "SK_SHAPER_CORETEXT_AVAILABLE",
+    "SK_SHAPER_PRIMITIVE_AVAILABLE",
+  ]
+
   cflags_cc = [
     "-Wno-extra-semi",
     "-Wno-unreachable-code-aggressive",
@@ -17,32 +31,6 @@ source_set("svg") {
   ]
 
   sources += [
-    "//third_party/skia/src/codec/SkBmpBaseCodec.cpp",
-    "//third_party/skia/src/codec/SkBmpCodec.cpp",
-    "//third_party/skia/src/codec/SkBmpMaskCodec.cpp",
-    "//third_party/skia/src/codec/SkBmpRLECodec.cpp",
-    "//third_party/skia/src/codec/SkBmpStandardCodec.cpp",
-    "//third_party/skia/src/codec/SkCodec.cpp",
-    "//third_party/skia/src/codec/SkCodecImageGenerator.cpp",
-    "//third_party/skia/src/codec/SkCodecImageGenerator.h",
-    "//third_party/skia/src/codec/SkCodecPriv.h",
-    "//third_party/skia/src/codec/SkColorPalette.cpp",
-    "//third_party/skia/src/codec/SkColorPalette.h",
-    "//third_party/skia/src/codec/SkEncodedInfo.cpp",
-    "//third_party/skia/src/codec/SkFrameHolder.h",
-    "//third_party/skia/src/codec/SkIcoCodec.cpp",
-    "//third_party/skia/src/codec/SkMaskSwizzler.cpp",
-    "//third_party/skia/src/codec/SkMaskSwizzler.h",
-    "//third_party/skia/src/codec/SkParseEncodedOrigin.cpp",
-    "//third_party/skia/src/codec/SkPixmapUtils.cpp",
-    "//third_party/skia/src/codec/SkPixmapUtilsPriv.h",
-    "//third_party/skia/src/codec/SkPngCodec.cpp",
-    "//third_party/skia/src/codec/SkSampler.cpp",
-    "//third_party/skia/src/codec/SkSampler.h",
-    "//third_party/skia/src/codec/SkSwizzler.cpp",
-    "//third_party/skia/src/codec/SkSwizzler.h",
-    "//third_party/skia/src/codec/SkWbmpCodec.cpp",
-    "//third_party/skia/src/codec/SkWebpCodec.cpp",
     "//third_party/skia/src/ports/SkImageGenerator_skia.cpp",
     "//third_party/skia/src/utils/SkOSPath.h",
     "//third_party/skia/src/utils/SkParsePath.cpp",
@@ -56,6 +44,16 @@ source_set("svg") {
 
   sources += skia_svg_public
   sources += skia_svg_sources
+  sources += skia_skottie_sources
+  sources += skia_skresources_sources
+  sources += skia_sksg_sources
+  sources += skia_shaper_primitive_sources
+  sources += skia_shaper_coretext_sources
+
+  include_dirs = [
+    "//third_party/skia",
+    "$root_gen_dir/third_party/skia",
+  ]
 
   deps = [
     "//base",
@@ -65,5 +63,10 @@ source_set("svg") {
     "//third_party/libwebp",
     "//third_party/libwebp:libwebp_webp",
     "//ui/gfx",
+  ]
+
+  frameworks = [
+    "CoreFoundation.framework",
+    "CoreText.framework",
   ]
 }
