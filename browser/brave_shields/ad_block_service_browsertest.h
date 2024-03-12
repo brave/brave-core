@@ -76,6 +76,7 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   content::WebContents* web_contents();
   base::FilePath MakeFileInTempDir(const std::string& name,
                                    const std::string& contents);
+  base::FilePath MakeTestDataCopy(const base::FilePath& source_location);
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;

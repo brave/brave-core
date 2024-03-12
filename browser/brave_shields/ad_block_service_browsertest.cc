@@ -13,6 +13,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/files/file_util.h"
 #include "base/memory/raw_ptr.h"
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
@@ -203,6 +204,27 @@ base::FilePath AdBlockServiceTest::MakeFileInTempDir(
   return path;
 }
 
+// `AdBlockComponentFiltersProvider` deletes outdated component data when a new
+// version is installed. This method allows files from the test data directory
+// to be used without removing the on-disk source.
+//
+// Returns the path of the new directory, not the file.
+// Intended for use with `OnComponentReady`.
+base::FilePath AdBlockServiceTest::MakeTestDataCopy(
+    const base::FilePath& source_location) {
+  base::ScopedAllowBlockingForTesting allow_blocking;
+
+  auto dir = std::make_unique<base::ScopedTempDir>();
+  EXPECT_TRUE(dir->CreateUniqueTempDir());
+  auto temp_path = dir->GetPath();
+
+  EXPECT_TRUE(base::CopyDirectoryExcl(source_location, temp_path, true));
+
+  temp_dirs_.push_back(std::move(dir));
+
+  return temp_path.Append(source_location.BaseName());
+}
+
 void AdBlockServiceTest::UpdateAdBlockResources(const std::string& resources) {
   auto component_path = MakeFileInTempDir("resources.json", resources);
 
@@ -291,8 +313,9 @@ void AdBlockServiceTest::InstallComponent(
   if (catalog_entry.default_enabled) {
     base::FilePath test_data_dir;
     GetTestDataDir(&test_data_dir);
-    auto component_path = test_data_dir.AppendASCII("adblock-components")
-                              .AppendASCII(catalog_entry.uuid);
+    auto original_path = test_data_dir.AppendASCII("adblock-components")
+                             .AppendASCII(catalog_entry.uuid);
+    auto component_path = MakeTestDataCopy(original_path);
 
     auto& component_providers =
         service->component_service_manager()->component_filters_providers();
