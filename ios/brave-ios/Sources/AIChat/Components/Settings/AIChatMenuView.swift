@@ -117,25 +117,36 @@ struct AIChatMenuView: View {
         .padding(.horizontal, 24.0)
         .padding(.vertical)
         .background(Color(braveSystemName: .pageBackground))
-      
+
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
-      
-      AIChatMenuHeaderView(icon: "leo.message.bubble-comments", title: Strings.AIChat.chatMenuSectionTitle)
-      
+
+      AIChatMenuHeaderView(
+        icon: "leo.message.bubble-comments",
+        title: Strings.AIChat.chatMenuSectionTitle.uppercased()
+      )
+
       Color(braveSystemName: .dividerSubtle)
         .frame(height: 1.0)
-      
+
       ForEach(modelOptions, id: \.key) { model in
-        Button(action: {
-          onModelChanged(model.key)
-          dismiss()
-        }, label: {
-          AIChatMenuItemView(title: model.displayName, subtitle: model.displayMaker, isSelected: model.key == currentModel.key) {
-            if model.access == .basicAndPremium {
-              Text(premiumStatus == .active || premiumStatus == .activeDisconnected
-                   ? Strings.AIChat.unlimitedModelStatusTitle
-                   : Strings.AIChat.limitedModelStatusTitle)
+        Button(
+          action: {
+            onModelChanged(model.key)
+            dismiss()
+          },
+          label: {
+            AIChatMenuItemView(
+              title: model.displayName,
+              subtitle: model.displayMaker,
+              isSelected: model.key == currentModel.key
+            ) {
+              if model.access == .basicAndPremium {
+                Text(
+                  premiumStatus == .active || premiumStatus == .activeDisconnected
+                    ? Strings.AIChat.unlimitedModelStatusTitle.uppercased()
+                    : Strings.AIChat.limitedModelStatusTitle.uppercased()
+                )
                 .font(.caption2)
                 .foregroundStyle(Color(braveSystemName: .blue50))
                 .padding(.horizontal, 4.0)
@@ -168,21 +179,17 @@ struct AIChatMenuView: View {
     
       // Check if leo in-app purchase is activated before or not
       if let state = BraveStoreSDK.shared.leoSubscriptionStatus?.state {
-        // There is prior in-app purchase
-        switch state {
-        case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
-          menuActionItems(for: .managePremium)
-        case .expired, .revoked:
-          if premiumStatus != .active && premiumStatus != .activeDisconnected {
-            menuActionItems(for: .goPremium)
-          } else {
+        if premiumStatus != .active && premiumStatus != .activeDisconnected {
+          menuActionItems(for: .goPremium)
+        } else {
+          // There is prior in-app purchase
+          switch state {
+          case .subscribed, .inGracePeriod, .inBillingRetryPeriod:
             menuActionItems(for: .managePremium)
-          }
-        default:
-          if premiumStatus != .active && premiumStatus != .activeDisconnected {
+          case .expired, .revoked:
             menuActionItems(for: .goPremium)
-          } else {
-            menuActionItems(for: .managePremium)
+          default:
+            menuActionItems(for: .goPremium)
           }
         }
       } else {

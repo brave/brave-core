@@ -4,6 +4,8 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
+import Preferences
+import Shared
 import StoreKit
 import Combine
 import Preferences
@@ -158,19 +160,18 @@ public class BraveStoreSDK: AppStoreSDK {
   }
   
   /// The current store environment
-  public var enviroment: BraveStoreEnvironment {
+  public var environment: BraveStoreEnvironment {
+    if AppConstants.buildChannel == .release {
+      return .production
+    }
+
     // Retrieve the subscription renewal information
     guard let renewalInfo = [vpnSubscriptionStatus, leoSubscriptionStatus].compactMap({ $0 }).first?.renewalInfo else {
       // There is currently no subscription so check if there was a restored receipt
       if Bundle.main.appStoreReceiptURL?.lastPathComponent == "sandboxReceipt" {
         return .sandbox
       }
-      
-      // If the application has a Parent Process-ID then it is being debugged
-      if getppid() != 1 {
-        return .xcode
-      }
-      
+
       return .production
     }
     

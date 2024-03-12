@@ -3,49 +3,48 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import AVFoundation
 import DesignSystem
 import SpeechRecognition
-import AVFoundation
+import SwiftUI
 
 struct AIChatPromptInputView: View {
   private var speechRecognizer = SpeechRecognizer()
-  
+
   @State
   private var isVoiceEntryPresented = false
-  
+
   @State
   private var isNoMicrophonePermissionPresented = false
-  
+
   @State
   private var prompt: String = ""
-  
+
   var onSubmit: (String) -> Void
-  
+
   init(onSubmit: @escaping (String) -> Void) {
     self.onSubmit = onSubmit
   }
 
   var body: some View {
     HStack(spacing: 0.0) {
-      TextField(
+      AIChatPaddedTextField(
         Strings.AIChat.promptPlaceHolderDescription,
         text: $prompt,
-        prompt: Text(Strings.AIChat.promptPlaceHolderDescription)
-          .font(.subheadline)
-          .foregroundColor(Color(braveSystemName: .textTertiary))
+        textColor: UIColor(braveSystemName: .textPrimary),
+        prompt: Strings.AIChat.promptPlaceHolderDescription,
+        promptColor: UIColor(braveSystemName: .textTertiary),
+        font: .preferredFont(forTextStyle: .subheadline),
+        submitLabel: .send,
+        onSubmit: {
+          if !prompt.isEmpty {
+            onSubmit(prompt)
+            prompt = ""
+          }
+        },
+        insets: .init(width: 16.0, height: 16.0)
       )
-      .font(.subheadline)
-      .foregroundColor(Color(braveSystemName: .textPrimary))
-      .submitLabel(.send)
-      .onSubmit {
-        if !prompt.isEmpty {
-          onSubmit(prompt)
-          prompt = ""
-        }
-      }
-      .padding(.leading)
-      
+
       if prompt.isEmpty {
         Button {
           Task { @MainActor in
@@ -63,6 +62,8 @@ struct AIChatPromptInputView: View {
           .labelStyle(.iconOnly)
         }
         .opacity(speechRecognizer.isVoiceSearchAvailable ? 1.0 : 0.0)
+        .disabled(!speechRecognizer.isVoiceSearchAvailable)
+        .frame(width: speechRecognizer.isVoiceSearchAvailable ? nil : 0.0)
       } else {
         Button {
           onSubmit(prompt)
@@ -93,7 +94,7 @@ struct AIChatPromptInputView: View {
       )
     }
   }
-  
+
   @MainActor
   private func activateSpeechRecognition() async {
     let permissionStatus = await speechRecognizer.askForUserPermission()
@@ -108,7 +109,7 @@ struct AIChatPromptInputView: View {
 #if DEBUG
 struct AIChatPromptInputView_Preview: PreviewProvider {
   static var previews: some View {
-    AIChatPromptInputView() {
+    AIChatPromptInputView {
       print("Prompt Submitted: \($0)")
     }
     .previewLayout(.sizeThatFits)

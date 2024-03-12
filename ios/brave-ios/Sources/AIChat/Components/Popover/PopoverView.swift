@@ -53,17 +53,43 @@ struct BravePopoverView<Content: View & PopoverContentComponent>: UIViewControll
   
   func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     if isPresented {
-      guard uiViewController.presentedViewController == nil, let parent = uiViewController.parent else {
+      guard uiViewController.presentedViewController == nil
+      else {
+        // The system dismissed our popover automatically, but never updated our presentation state
+        // It usually does this if you present another popover or sheet
+        // Manually update it
+        if context.coordinator.presentedViewController != nil {
+          DispatchQueue.main.async {
+            isPresented = false
+          }
+        }
         return
       }
-      
-      let controller = PopoverController(content: content)
-      context.coordinator.presentedViewController = .init(controller)
-      controller.popoverDidDismiss = { _ in
-        self.isPresented = false
+
+      if let parent = uiViewController.parent, !parent.isBeingDismissed {
+        let controller = PopoverController(content: content)
+        context.coordinator.presentedViewController = .init(controller)
+        controller.popoverDidDismiss = { _ in
+          self.isPresented = false
+        }
+
+        DispatchQueue.main.async {
+          if KeyboardHelper.defaultHelper.currentState != nil {
+            UIApplication.shared.sendAction(
+              #selector(UIResponder.resignFirstResponder),
+              to: nil,
+              from: nil,
+              for: nil
+            )
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+              controller.present(from: uiViewController.view, on: parent)
+            }
+          } else {
+            controller.present(from: uiViewController.view, on: parent)
+          }
+        }
       }
-      
-      controller.present(from: uiViewController.view, on: parent)
     } else {
       if let presentedViewController = context.coordinator.presentedViewController?.value,
          presentedViewController == uiViewController.presentedViewController {
