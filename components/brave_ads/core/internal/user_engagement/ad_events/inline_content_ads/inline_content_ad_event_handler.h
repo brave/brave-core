@@ -65,6 +65,10 @@ class InlineContentAdEventHandler final
                           FireInlineContentAdEventHandlerCallback callback,
                           bool success,
                           const AdEventList& ad_events);
+  void FireViewedEventCallback(const InlineContentAdInfo& ad,
+                               mojom::InlineContentAdEventType event_type,
+                               FireInlineContentAdEventHandlerCallback callback,
+                               bool success);
   void FireEventCallback(const InlineContentAdInfo& ad,
                          mojom::InlineContentAdEventType event_type,
                          FireInlineContentAdEventHandlerCallback callback,
