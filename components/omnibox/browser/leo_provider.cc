@@ -7,12 +7,14 @@
 
 #include <utility>
 
+#include "base/strings/string_split.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/omnibox/browser/leo_action.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/omnibox/browser/autocomplete_input.h"
 #include "components/omnibox/browser/autocomplete_match.h"
 #include "components/omnibox/browser/autocomplete_provider_client.h"
+#include "components/omnibox/browser/keyword_provider.h"
 #include "third_party/metrics_proto/omnibox_input_type.pb.h"
 #include "third_party/omnibox_proto/types.pb.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -73,9 +75,15 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
 
   AutocompleteMatch match(/*provider*/ this, kRelevance, /*deletable*/ false,
                           kMatchType);
-  match.keyword = input.text();
-  match.contents = input.text();
-  match.fill_into_edit = input.text();
+
+  auto text = input.text();
+  if (input.InKeywordMode()) {
+    KeywordProvider::SplitKeywordFromInput(
+        text, /*trim_leading_whitespace=*/true, &text);
+  }
+  match.keyword = text;
+  match.contents = text;
+  match.fill_into_edit = text;
   match.contents_class = {
       ACMatchClassification(0, ACMatchClassification::MATCH)};
   match.description =
@@ -85,7 +93,7 @@ void LeoProvider::Start(const AutocompleteInput& input, bool minimal_changes) {
   // This must be matched with the |kMatchType|
   match.suggest_type = omnibox::SuggestType::TYPE_ENTITY;
   match.RecordAdditionalInfo(kIsMatchFromLeoProviderKey, true);
-  match.takeover_action = base::MakeRefCounted<LeoAction>(input.text());
+  match.takeover_action = base::MakeRefCounted<LeoAction>(text);
 
   matches_.push_back(std::move(match));
 
