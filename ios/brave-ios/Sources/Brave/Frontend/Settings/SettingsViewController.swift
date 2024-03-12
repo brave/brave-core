@@ -779,10 +779,14 @@ class SettingsViewController: TableViewController {
               let versionController = ChromeWebViewController(privateBrowsing: false).then {
                 $0.loadURL("brave://version/?show-variations-cmd")
               }
-              
-              actionSheet?.dismiss(animated: true, completion: {
-                self.present(versionController, animated: true)
-              })
+              versionController.title = version
+
+              actionSheet?.dismiss(
+                animated: true,
+                completion: {
+                  self.navigationController?.pushViewController(versionController, animated: true)
+                }
+              )
             }
 
             actionSheet.addAction(copyDebugInfoAction)
