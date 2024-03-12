@@ -42,8 +42,7 @@ class WebContents;
 
 class CosmeticFilteringPlaylistFlagEnabledTest;
 class PlaylistBrowserTest;
-class PlaylistRenderFrameObserverBrowserTest;
-class PlaylistDownloadRequestManagerBrowserTest;
+class PlaylistMediaDiscoveryBrowserTest;
 class PrefService;
 
 namespace gfx {
@@ -222,8 +221,7 @@ class PlaylistService : public KeyedService,
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
-  friend class ::PlaylistRenderFrameObserverBrowserTest;
-  friend class ::PlaylistDownloadRequestManagerBrowserTest;
+  friend class ::PlaylistMediaDiscoveryBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylistItem);
@@ -247,6 +245,8 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, MediaFileExtension);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
+
+  void SetUpForTesting() const;
 
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
