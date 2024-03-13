@@ -140,6 +140,10 @@ public class BraveTabbedAppMenuPropertiesDelegate extends TabbedAppMenuPropertie
             menu.findItem(R.id.request_vpn_location_row_menu_id).setVisible(false);
         }
 
+        // Brave donesn't show `Clear browsing data` menu.
+        menu.findItem(R.id.quick_delete_menu_id).setVisible(false).setEnabled(false);
+        menu.findItem(R.id.quick_delete_divider_line_id).setVisible(false).setEnabled(false);
+
         // Brave's items are only visible for page menu.
         // To make logic simple, below three items are added whenever menu gets visible
         // and removed when menu is dismissed.
