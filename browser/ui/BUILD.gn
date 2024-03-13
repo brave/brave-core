@@ -36,6 +36,8 @@ source_set("ui") {
 
   public_deps = []
   sources = [
+    "brave_ui_features.cc",
+    "brave_ui_features.h",
     "webui/brave_adblock_internals_ui.cc",
     "webui/brave_adblock_internals_ui.h",
     "webui/brave_adblock_ui.cc",

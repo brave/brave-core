@@ -10,3 +10,11 @@ index feb42d8d0a7f231d162085f0076092f0a022157a..c38fe2e842f9606aa0216651334ee6a7
  
    configs += [ "//build/config/compiler:wexit_time_destructors" ]
  
+@@ -929,6 +930,7 @@ fuzzer_test("search_suggestion_parser_fuzzer") {
+ 
+ mojom("mojo_bindings") {
+   sources = [ "omnibox.mojom" ]
++  generate_legacy_js_bindings = true
+   webui_module_path = "/"
+ 
+   public_deps = [

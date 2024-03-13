@@ -36,6 +36,7 @@
 #include "brave/browser/profiles/brave_renderer_updater_factory.h"
 #include "brave/browser/profiles/profile_util.h"
 #include "brave/browser/skus/skus_service_factory.h"
+#include "brave/browser/ui/brave_ui_features.h"
 #include "brave/browser/ui/webui/skus_internals_ui.h"
 #include "brave/components/ai_chat/core/common/buildflags/buildflags.h"
 #include "brave/components/brave_federated/features.h"
@@ -236,6 +237,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
+#include "components/omnibox/browser/omnibox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -627,6 +629,15 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
   }
 
 #if !BUILDFLAG(IS_ANDROID)
+  auto ntp_registration =
+      registry.ForWebUI<BraveNewTabUI>()
+          .Add<brave_new_tab_page::mojom::PageHandlerFactory>()
+          .Add<brave_news::mojom::BraveNewsController>();
+
+  if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
+    ntp_registration.Add<omnibox::mojom::PageHandler>();
+  }
+
   if (base::FeatureList::IsEnabled(
           brave_news::features::kBraveNewsFeedUpdate)) {
     registry.ForWebUI<BraveNewsInternalsUI>()
@@ -825,20 +836,9 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
 #endif
 #endif
 
-// Brave News
-#if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_news::mojom::BraveNewsController, BraveNewTabUI>(map);
-#endif
-
 #if BUILDFLAG(ENABLE_SPEEDREADER) && !BUILDFLAG(IS_ANDROID)
   content::RegisterWebUIControllerInterfaceBinder<
       speedreader::mojom::ToolbarFactory, SpeedreaderToolbarUI>(map);
-#endif
-
-#if !BUILDFLAG(IS_ANDROID)
-  content::RegisterWebUIControllerInterfaceBinder<
-      brave_new_tab_page::mojom::PageHandlerFactory, BraveNewTabUI>(map);
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
