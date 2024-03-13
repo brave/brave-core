@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "開啟";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "獎勵";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields 和隱私";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields 與隱私權";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "封鎖廣告和其他討人厭的追蹤程式";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "将应用信息复制到剪切板中。";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "將應用程式大小資訊複製到剪貼簿。";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "了解更多";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "已儲存的登入資訊將永久移除。";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "開啟網站";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo 是採用 AI 技術的智慧助理，內建於瀏覽器中。";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "以私密新聞摘要提供今日熱門報導";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave News";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "News";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "關注您感興趣的主題";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave 不會儲存或分享您的語音搜尋。";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "語音搜尋";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "啟用";
