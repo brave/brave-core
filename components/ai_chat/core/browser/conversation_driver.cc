@@ -668,6 +668,7 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     // TODO(nullhook): Set a specialized error state generated questions
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
+    SetAPIError(mojom::APIError::GeneratedQuestionsRateLimitReached);
   }
 
   // Notify observers

@@ -22,7 +22,8 @@ enum APIError {
   None,
   ConnectionIssue,
   RateLimitReached,
-  ContextLimitReached
+  ContextLimitReached,
+  GeneratedQuestionsRateLimitReached
 };
 
 enum ModelEngineType {

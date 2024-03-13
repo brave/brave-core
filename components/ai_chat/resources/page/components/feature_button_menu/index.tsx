@@ -26,7 +26,9 @@ export default function FeatureMenu() {
   }
 
   return (
-    <ButtonMenu>
+    <ButtonMenu
+      isOpen={context.isFeatureMenuButtonOpen}
+    >
       <Button
         slot='anchor-content'
         title={getLocale('leoSettingsTooltipLabel')}

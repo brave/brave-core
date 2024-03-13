@@ -26,6 +26,7 @@ import ErrorConversationEnd from '../alerts/error_conversation_end'
 import WelcomeGuide from '../welcome_guide'
 import PageContextToggle from '../page_context_toggle'
 import styles from './style.module.scss'
+import ErrorGeneratedQuestionsRateLimit from '../alerts/error_generated_questions_rate_limit'
 
 const SCROLL_BOTTOM_THRESHOLD = 10.0
 
@@ -83,6 +84,12 @@ function Main() {
     if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
       currentErrorElement = (
         <ErrorConversationEnd />
+      )
+    }
+
+    if (apiHasError && currentError === mojom.APIError.GeneratedQuestionsRateLimitReached) {
+      currentErrorElement = (
+        <ErrorGeneratedQuestionsRateLimit />
       )
     }
   }
