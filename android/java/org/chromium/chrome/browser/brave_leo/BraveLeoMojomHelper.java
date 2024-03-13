@@ -20,8 +20,8 @@ import org.chromium.mojo.system.MojoException;
 import org.chromium.mojo.system.impl.CoreImpl;
 
 /**
- * Helper to interact with native AIChatSettingsHelper. Check ai_chat_settings_helper.{h|cc},
- * for native parts
+ * Helper to interact with native AIChatSettingsHelper. Check ai_chat_settings_helper.{h|cc}, for
+ * native parts
  */
 @JNINamespace("ai_chat")
 public class BraveLeoMojomHelper implements ConnectionErrorHandler {
