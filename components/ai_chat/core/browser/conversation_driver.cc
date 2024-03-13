@@ -910,7 +910,7 @@ int ConversationDriver::GetContentUsedPercentage() {
 
   if (GetCurrentModel().max_page_content_length >
       static_cast<uint32_t>(article_text_.length())) {
-    return 0;
+    return 100;
   }
 
   // Convert to float to avoid integer division, which truncates towards zero

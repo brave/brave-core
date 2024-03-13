@@ -124,11 +124,7 @@ function ConversationList(props: ConversationListProps) {
           const isHuman = turn.characterType === mojom.CharacterType.HUMAN
           const isAIAssistant = turn.characterType === mojom.CharacterType.ASSISTANT
           const showSiteTitle = id === 0 && isHuman && shouldSendPageContents
-
-          // It's assumed that previousTurn represents the user's last input,
-          // and an actionType that should summarize the page.
-          const previousTurn = conversationHistory[id-1]
-          const showLongPageContentInfo = previousTurn?.actionType === mojom.ActionType.SUMMARIZE_PAGE && isAIAssistant && context.shouldShowLongPageWarning
+          const showLongPageContentInfo = id === 1 && isAIAssistant && context.shouldShowLongPageWarning
 
           const turnContainer = classnames({
             [styles.turnContainerMobile]: context.isMobile,

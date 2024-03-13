@@ -27,7 +27,6 @@ export default function LongConversationInfo() {
       </div>
       <div className={styles.infoText}>
         {getLocale('errorContextLimitReaching')}
-        {' '}
         <Button kind="plain-faint" className={styles.link} onClick={handleClearChat}>
           <span>{getLocale('clearChatButtonLabel')}</span>
         </Button>
