@@ -8,6 +8,7 @@
 #include "base/check.h"
 #include "base/functional/bind.h"
 #include "base/time/time.h"
+#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_builder_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/queue_item/confirmation_queue_item_util.h"
@@ -27,6 +28,8 @@ ConfirmationQueue::~ConfirmationQueue() {
 }
 
 void ConfirmationQueue::Add(const ConfirmationInfo& confirmation) {
+  CHECK(IsValid(confirmation));
+
   const ConfirmationQueueItemInfo confirmation_queue_item =
       BuildConfirmationQueueItem(confirmation, ProcessConfirmationAt());
   CHECK(confirmation_queue_item.IsValid());
