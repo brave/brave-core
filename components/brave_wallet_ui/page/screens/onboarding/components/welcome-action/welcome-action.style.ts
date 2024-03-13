@@ -14,7 +14,7 @@ export const WelcomeActionWrapper = styled(WalletButton)`
   padding: ${leo.spacing['3Xl']};
   flex-direction: column;
   width: 100%;
-  height: 167px;
+  min-height: 167px;
   justify-content: flex-start;
   align-items: flex-start;
   background: ${leo.color.container.background};
@@ -50,8 +50,13 @@ export const Description = styled.p`
 `
 
 export const TitleIcon = styled(Icon)`
+  display: flex;
+  align-items: center;
+  justify-content: center;
   --leo-icon-size: 24px;
   color: ${leo.color.icon.interactive};
+  flex-shrink: 0;
+  flex: 1;
 `
 
 export const IconWrapper = styled.div`

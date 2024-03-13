@@ -35,7 +35,6 @@ import {
   Heading,
   SubHeading,
   ActionsContainer,
-  WatchOnlyWalletButton,
   Footer
 } from './onboarding-welcome.style'
 
@@ -109,9 +108,6 @@ export const OnboardingWelcome = () => {
             />
           </ActionsContainer>
           <VerticalSpace space={leo.spacing['2Xl']} />
-          <WatchOnlyWalletButton>
-            {getLocale('braveWalletWelcomeWatchOnlyTitle')}
-          </WatchOnlyWalletButton>
           <VerticalSpace space='72px' />
           <Footer>{getLocale('braveWalletWelcomeCopyright')}</Footer>
         </Content>

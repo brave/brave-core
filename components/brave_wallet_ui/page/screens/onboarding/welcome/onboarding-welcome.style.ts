@@ -12,6 +12,7 @@ import backgroundImageLight from '../../../../assets/svg-icons/onboarding/welcom
 import backgroundImageDark from '../../../../assets/svg-icons/onboarding/welcome-background-dark.svg'
 // styles
 import { Column, WalletButton } from '../../../../components/shared/style'
+import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const WelcomePageBackground = styled.div`
   display: flex;
@@ -51,7 +52,11 @@ export const Content = styled(Column)`
   justify-content: flex-start;
   z-index: 3;
 
-  @media (min-width: 768px) and (max-width: 1024px) {
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    padding: 0 24px;
+  }
+
+  @media screen and (min-width: 768px) and (max-width: 1024px) {
     width: 100%;
     padding-left: 24px;
     padding-right: 24px;
@@ -76,6 +81,10 @@ export const Title = styled.h4`
   line-height: 26px;
   color: ${leo.color.text.primary};
   margin: 0;
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font-size: 18px;
+  }
 `
 
 export const Heading = styled.h1`
@@ -86,6 +95,11 @@ export const Heading = styled.h1`
   line-height: 68px;
   color: ${leo.color.text.primary};
   margin: 0;
+
+  @media screen and (max-width: ${layoutPanelWidth}px) {
+    font-size: 36px;
+    line-height: 48px;
+  }
 `
 
 export const SubHeading = styled.h4`
@@ -133,4 +147,5 @@ export const Footer = styled.footer`
   font-weight: 400;
   line-height: 22px;
   margin: 0;
+  padding-bottom: 72px;
 `
