@@ -14,15 +14,23 @@ namespace {
 constexpr int kPasteMacResourceId = IDS_PASTE_MAC;
 constexpr int kMuteSiteResourceId = IDS_MUTE_SITE_MAC;
 constexpr int kCloseOtherTabsResourceId = IDS_TAB_CXMENU_CLOSEOTHERTABS;
+constexpr int kReopenCloseTabsMacResourceId = IDS_REOPEN_CLOSED_TABS_MAC;
+constexpr int kHelpMacResourceId = IDS_HELP_MAC;
 }  // namespace
 
-#define BRAVE_BUILD_FILE_MENU           \
-  Item(IDS_NEW_OFFTHERECORD_WINDOW_TOR) \
-      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR),
+// Insert "New Private Window with Tor" in "File" menu
+#undef IDS_REOPEN_CLOSED_TABS_MAC
+#define IDS_REOPEN_CLOSED_TABS_MAC                  \
+  IDS_NEW_OFFTHERECORD_WINDOW_TOR)                  \
+      .command_id(IDC_NEW_OFFTHERECORD_WINDOW_TOR), \
+  Item(kReopenCloseTabsMacResourceId
 
-#define BRAVE_BUILD_HELP_MENU      \
-  Item(IDS_REPORT_BROKEN_SITE_MAC) \
-      .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER),
+// Insert "Report Broken Site" in "Help" menu
+#undef IDS_HELP_MAC
+#define IDS_HELP_MAC                                    \
+  IDS_REPORT_BROKEN_SITE_MAC)                           \
+        .command_id(IDC_SHOW_BRAVE_WEBCOMPAT_REPORTER), \
+  Item(kHelpMacResourceId
 
 #undef IDS_PASTE_MAC
 #define IDS_PASTE_MAC IDS_COPY_CLEAN_LINK) \
@@ -54,5 +62,7 @@ IDS_TAB_CXMENU_CLOSE_DUPLICATE_TABS).command_id(IDC_CLOSE_DUPLICATE_TABS), \
 #define IDS_PASTE_MAC kPasteMacResourceId
 #undef IDS_TAB_CXMENU_CLOSEOTHERTABS
 #define IDS_TAB_CXMENU_CLOSEOTHERTABS kCloseOtherTabsResourceId
-#undef BRAVE_BUILD_HELP_MENU
-#undef BRAVE_BUILD_FILE_MENU
+#undef IDS_HELP_MAC
+#define IDS_HELP_MAC kHelpMacResourceId
+#undef IDS_REOPEN_CLOSED_TABS_MAC
+#define IDS_REOPEN_CLOSED_TABS_MAC kReopenCloseTabsMacResourceId
