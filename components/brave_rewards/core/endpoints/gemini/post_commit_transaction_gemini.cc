@@ -84,11 +84,9 @@ std::optional<std::vector<std::string>> PostCommitTransactionGemini::Headers(
     return std::nullopt;
   }
 
-  std::string base64;
-  base::Base64Encode(json, &base64);
-
-  return std::vector<std::string>{"Authorization: Bearer " + token_,
-                                  "X-GEMINI-PAYLOAD: " + base64};
+  return std::vector<std::string>{
+      "Authorization: Bearer " + token_,
+      "X-GEMINI-PAYLOAD: " + base::Base64Encode(json)};
 }
 
 std::string PostCommitTransactionGemini::ContentType() const {

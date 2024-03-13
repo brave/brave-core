@@ -100,8 +100,8 @@ class IPFSLocationButtonView : public views::LabelButton {
 
  private:
   // views::View
-  void Layout() override {
-    views::LabelButton::Layout();
+  void Layout(PassKey) override {
+    LayoutSuperclass<views::LabelButton>(this);
     UpdateBorder();
   }
 

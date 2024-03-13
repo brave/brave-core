@@ -22,8 +22,6 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
   BraveAvatarToolbarButton& operator=(const BraveAvatarToolbarButton&) = delete;
   ~BraveAvatarToolbarButton() override;
 
-  AvatarToolbarButton::State GetAvatarButtonState() const;
-
   // ToolbarButton:
   void SetHighlight(const std::u16string& highlight_text,
                     std::optional<SkColor> highlight_color) override;
@@ -32,12 +30,6 @@ class BraveAvatarToolbarButton : public AvatarToolbarButton {
 
  private:
   // AvatarToolbarButton:
-  ui::ImageModel GetAvatarIcon(
-      ButtonState state,
-      const gfx::Image& profile_identity_image) const override;
-  std::u16string GetAvatarTooltipText() const override;
-  int GetWindowCount() const;
-
   base::WeakPtrFactory<BraveAvatarToolbarButton> weak_ptr_factory_{this};
 };
 

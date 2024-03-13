@@ -31,12 +31,11 @@
 namespace brave_wallet {
 
 class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
+  METADATA_HEADER(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
  public:
-  METADATA_HEADER(WalletWebUIBubbleDialogView);
-
   WalletWebUIBubbleDialogView(
       views::View* anchor_view,
-      BubbleContentsWrapper* contents_wrapper,
+      WebUIContentsWrapper* contents_wrapper,
       const std::optional<gfx::Rect>& anchor_rect = std::nullopt,
       views::BubbleBorder::Arrow arrow = views::BubbleBorder::TOP_RIGHT)
       : WebUIBubbleDialogView(anchor_view,
@@ -56,7 +55,7 @@ class WalletWebUIBubbleDialogView : public WebUIBubbleDialogView {
   }
 };
 
-BEGIN_METADATA(WalletWebUIBubbleDialogView, WebUIBubbleDialogView)
+BEGIN_METADATA(WalletWebUIBubbleDialogView)
 END_METADATA
 
 class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
@@ -98,7 +97,7 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
         WalletBubbleFocusObserver::CreateForView(bubble_view_, browser_);
     web_ui_contents_for_testing_ = bubble_view_->web_view()->GetWebContents();
     // Checking if we create WalletPanelUI instance of WebUI and
-    // extracting BubbleContentsWrapper class to pass real browser delegate
+    // extracting WebUIContentsWrapper class to pass real browser delegate
     // into it to redirect popups to be opened as separate windows.
     // Set a callback to be possible to activate/deactivate wallet panel from
     // typescript side

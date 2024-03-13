@@ -25,11 +25,11 @@ PlaylistContentsWrapper::PlaylistContentsWrapper(
     bool esc_closes_ui,
     BrowserView* browser_view,
     PlaylistSidePanelCoordinator* coordinator)
-    : BubbleContentsWrapperT(webui_url,
-                             browser_context,
-                             task_manager_string_id,
-                             webui_resizes_host,
-                             esc_closes_ui),
+    : WebUIContentsWrapperT(webui_url,
+                            browser_context,
+                            task_manager_string_id,
+                            webui_resizes_host,
+                            esc_closes_ui),
       browser_view_(browser_view),
       coordinator_(coordinator) {}
 

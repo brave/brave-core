@@ -63,10 +63,7 @@ std::string PostRecipientId::GeneratePayload() {
 
   std::string json;
   base::JSONWriter::Write(payload, &json);
-
-  std::string base64;
-  base::Base64Encode(json, &base64);
-  return base64;
+  return base::Base64Encode(json);
 }
 
 void PostRecipientId::Request(const std::string& token,

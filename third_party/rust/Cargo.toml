@@ -278,7 +278,7 @@ path = "bincode/v1/crate"
 package = "bincode"
 
 [patch.crates-io.bitflags_v1]
-path = "../../../third_party/rust/bitflags/v1/crate"
+path = "third_party/rust/bitflags/v1/crate"
 package = "bitflags"
 
 [patch.crates-io.bitvec_v1]

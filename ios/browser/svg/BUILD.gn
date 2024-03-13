@@ -55,6 +55,9 @@ source_set("svg") {
     "$root_gen_dir/third_party/skia",
   ]
 
+  sources -=
+      [ "//third_party/skia/modules/svg/src/SkSVGOpenTypeSVGDecoder.cpp" ]
+
   deps = [
     "//base",
     "//skia",

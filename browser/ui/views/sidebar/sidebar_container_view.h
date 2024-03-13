@@ -59,8 +59,8 @@ class SidebarContainerView
       public SidePanelEntryObserver,
       public SidePanelRegistryObserver,
       public TabStripModelObserver {
+  METADATA_HEADER(SidebarContainerView, views::View)
  public:
-  METADATA_HEADER(SidebarContainerView);
   SidebarContainerView(BraveBrowser* browser,
                        SidePanelCoordinator* side_panel_coordinator,
                        std::unique_ptr<BraveSidePanel> side_panel);
@@ -93,7 +93,7 @@ class SidebarContainerView
   void MenuClosed() override;
 
   // views::View overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   gfx::Size CalculatePreferredSize() const override;
   void OnThemeChanged() override;
   void OnMouseEntered(const ui::MouseEvent& event) override;

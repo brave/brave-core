@@ -311,35 +311,33 @@
         "name": "isSupported",
         "type": "function",
         "description": "Fetches whether or not Brave Rewards is supported",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "supported",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "supported",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "isUnsupportedRegion",
         "type": "function",
         "description": "Whether the locale is unsupported for Brave Rewards",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "unsupportedRegion",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "unsupportedRegion",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "recordNTPPanelTrigger",
@@ -401,49 +399,49 @@
           {
             "name": "publisherKey",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "integer"
-              },
-              {
-                "name": "properties",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "publisherKey": {
-                    "type": "string"
-                  },
-                  "name": {
-                    "type": "string"
-                  },
-                  "percentage": {
-                    "type": "number"
-                  },
-                  "status": {
-                    "type": "number"
-                  },
-                  "excluded": {
-                    "type": "boolean"
-                  },
-                  "url": {
-                    "type": "string"
-                  },
-                  "provider": {
-                    "type": "string"
-                  },
-                  "favIconUrl": {
-                    "type": "string"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "integer"
+            },
+            {
+              "name": "properties",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "publisherKey": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "percentage": {
+                  "type": "number"
+                },
+                "status": {
+                  "type": "number"
+                },
+                "excluded": {
+                  "type": "boolean"
+                },
+                "url": {
+                  "type": "string"
+                },
+                "provider": {
+                  "type": "string"
+                },
+                "favIconUrl": {
+                  "type": "string"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       },
       {
         "name": "setPublisherIdForTab",
@@ -468,53 +466,53 @@
           {
             "name": "tabId",
             "type": "integer"
-          },
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "publisher",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "percentage": {
-                    "type": "integer",
-                    "description": "publisher attention score"
-                  },
-                  "excluded": {
-                    "type": "boolean",
-                    "description": "is site excluded from auto contribute"
-                  },
-                  "provider": {
-                    "type": "string",
-                    "description": "provider (if media publisher) for this publisher"
-                  },
-                  "favIconUrl": {
-                    "type": "string",
-                    "description": "publisher image url"
-                  },
-                  "publisherKey": {
-                    "type": "string",
-                    "description": "publisher key, unique identifier"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "publisher name"
-                  },
-                  "url": {
-                    "type": "string",
-                    "description": "url of the current tab"
-                  },
-                  "status": {
-                    "type": "integer",
-                    "description": "publisher status"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "publisher",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "percentage": {
+                  "type": "integer",
+                  "description": "publisher attention score"
+                },
+                "excluded": {
+                  "type": "boolean",
+                  "description": "is site excluded from auto contribute"
+                },
+                "provider": {
+                  "type": "string",
+                  "description": "provider (if media publisher) for this publisher"
+                },
+                "favIconUrl": {
+                  "type": "string",
+                  "description": "publisher image url"
+                },
+                "publisherKey": {
+                  "type": "string",
+                  "description": "publisher key, unique identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "publisher name"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "url of the current tab"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "publisher status"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getPublisherPanelInfo",
@@ -524,57 +522,57 @@
           {
             "name": "publisherKey",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "integer"
-              },
-              {
-                "name": "publisher",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "percentage": {
-                    "type": "integer",
-                    "description": "publisher attention score"
-                  },
-                  "excluded": {
-                    "type": "boolean",
-                    "description": "is site excluded from auto contribute"
-                  },
-                  "provider": {
-                    "type": "string",
-                    "description": "provider (if media publisher) for this publisher"
-                  },
-                  "favIconUrl": {
-                    "type": "string",
-                    "description": "publisher image url"
-                  },
-                  "publisherKey": {
-                    "type": "string",
-                    "description": "publisher key, unique identifier"
-                  },
-                  "name": {
-                    "type": "string",
-                    "description": "publisher name"
-                  },
-                  "url": {
-                    "type": "string",
-                    "description": "url of the current tab"
-                  },
-                  "status": {
-                    "type": "integer",
-                    "description": "publisher status"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "integer"
+            },
+            {
+              "name": "publisher",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "percentage": {
+                  "type": "integer",
+                  "description": "publisher attention score"
+                },
+                "excluded": {
+                  "type": "boolean",
+                  "description": "is site excluded from auto contribute"
+                },
+                "provider": {
+                  "type": "string",
+                  "description": "provider (if media publisher) for this publisher"
+                },
+                "favIconUrl": {
+                  "type": "string",
+                  "description": "publisher image url"
+                },
+                "publisherKey": {
+                  "type": "string",
+                  "description": "publisher key, unique identifier"
+                },
+                "name": {
+                  "type": "string",
+                  "description": "publisher name"
+                },
+                "url": {
+                  "type": "string",
+                  "description": "url of the current tab"
+                },
+                "status": {
+                  "type": "integer",
+                  "description": "publisher status"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       },
       {
         "name": "savePublisherInfo",
@@ -604,18 +602,18 @@
           {
             "name": "favIconUrl",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "integer"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "integer"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "tipSite",
@@ -663,59 +661,58 @@
         "name": "getRewardsParameters",
         "type": "function",
         "description": "Get default Rewards parameters",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "properties",
-                "type": "object",
-                "properties": {
-                  "rate": {
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "properties",
+              "type": "object",
+              "properties": {
+                "rate": {
+                  "type": "number",
+                  "description": "conversion rate for BAT"
+                },
+                "monthlyTipChoices": {
+                  "type": "array",
+                  "description": "default tip choices for monthly tips",
+                  "items": {
                     "type": "number",
-                    "description": "conversion rate for BAT"
-                  },
-                  "monthlyTipChoices": {
-                    "type": "array",
-                    "description": "default tip choices for monthly tips",
-                    "items": {
-                      "type": "number",
-                      "minimum": 0
-                    }
-                  },
-                  "autoContributeChoices": {
-                    "type": "array",
-                    "description": "A list of auto-contribute amount options",
-                    "items": {
-                      "type": "number",
-                      "minimum": 0
-                    }
-                  },
-                  "payoutStatus": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "string"
-                    }
-                  },
-                  "walletProviderRegions": {
-                    "type": "object",
-                    "additionalProperties": {
-                      "type": "any"
-                    }
-                  },
-                  "vbatDeadline": {
-                    "type": "number",
-                    "optional": true
-                  },
-                  "vbatExpired": {
-                    "type": "boolean"
+                    "minimum": 0
                   }
+                },
+                "autoContributeChoices": {
+                  "type": "array",
+                  "description": "A list of auto-contribute amount options",
+                  "items": {
+                    "type": "number",
+                    "minimum": 0
+                  }
+                },
+                "payoutStatus": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "string"
+                  }
+                },
+                "walletProviderRegions": {
+                  "type": "object",
+                  "additionalProperties": {
+                    "type": "any"
+                  }
+                },
+                "vbatDeadline": {
+                  "type": "number",
+                  "optional": true
+                },
+                "vbatExpired": {
+                  "type": "boolean"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "createRewardsWallet",
@@ -725,106 +722,101 @@
           {
             "type": "string",
             "name": "country"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "type": "string",
-                "name": "result"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "type": "string",
+              "name": "result"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getAvailableCountries",
         "type": "function",
         "description": "",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "countries",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "countries",
+              "type": "array",
+              "items": {
+                "type": "string"
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getDefaultCountry",
         "type": "function",
         "description": "",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "defaultCountry",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "defaultCountry",
+              "type": "string"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getDeclaredCountry",
         "type": "function",
         "description": "",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "country",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "country",
+              "type": "string"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getUserType",
         "type": "function",
         "description": "Returns the Rewards user type for the current user",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "userType",
-                "type": "string"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "userType",
+              "type": "string"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getPublishersVisitedCount",
         "type": "function",
         "description": "Returns the number of publisher sites that a user has visited",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "count",
-                "type": "number"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "count",
+              "type": "number"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getBalanceReport",
@@ -838,35 +830,35 @@
           {
             "name": "year",
             "type": "number"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "properties",
-                "type": "object",
-                "properties": {
-                  "ads": {
-                    "type": "number"
-                  },
-                  "contribute": {
-                    "type": "number"
-                  },
-                  "monthly": {
-                    "type": "number"
-                  },
-                  "grant": {
-                    "type": "number"
-                  },
-                  "tips": {
-                    "type": "number"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "properties",
+              "type": "object",
+              "properties": {
+                "ads": {
+                  "type": "number"
+                },
+                "contribute": {
+                  "type": "number"
+                },
+                "monthly": {
+                  "type": "number"
+                },
+                "grant": {
+                  "type": "number"
+                },
+                "tips": {
+                  "type": "number"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "includeInAutoContribution",
@@ -887,21 +879,20 @@
         "name": "fetchPromotions",
         "type": "function",
         "description": "Retrieves promotions (Rewards grants)",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "promotions",
-                "type": "array",
-                "items": {
-                  "$ref": "Promotion"
-                }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "promotions",
+              "type": "array",
+              "items": {
+                "$ref": "Promotion"
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "claimPromotion",
@@ -911,35 +902,35 @@
           {
             "name": "promotionId",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "properties",
-                "type": "object",
-                "properties": {
-                  "result": {
-                    "type": "integer"
-                  },
-                  "promotionId": {
-                    "type": "string"
-                  },
-                  "captchaId": {
-                    "type": "string"
-                  },
-                  "captchaImage": {
-                    "type": "string"
-                  },
-                  "hint": {
-                    "type": "string"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "properties",
+              "type": "object",
+              "properties": {
+                "result": {
+                  "type": "integer"
+                },
+                "promotionId": {
+                  "type": "string"
+                },
+                "captchaId": {
+                  "type": "string"
+                },
+                "captchaImage": {
+                  "type": "string"
+                },
+                "hint": {
+                  "type": "string"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "attestPromotion",
@@ -953,73 +944,71 @@
           {
             "name": "solution",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "integer"
-              },
-              {
-                "name": "promotion",
-                "type": "object",
-                "properties": {
-                  "promotionId": {
-                    "type": "string"
-                  },
-                  "expiresAt": {
-                    "optional": true,
-                    "type": "number"
-                  },
-                  "amount": {
-                    "optional": true,
-                    "type": "number"
-                  },
-                  "type": {
-                    "optional": true,
-                    "type": "integer"
-                  }
+          }
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "integer"
+            },
+            {
+              "name": "promotion",
+              "type": "object",
+              "properties": {
+                "promotionId": {
+                  "type": "string"
+                },
+                "expiresAt": {
+                  "optional": true,
+                  "type": "number"
+                },
+                "amount": {
+                  "optional": true,
+                  "type": "number"
+                },
+                "type": {
+                  "optional": true,
+                  "type": "integer"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       },
       {
         "name": "getRewardsEnabled",
         "type": "function",
         "description": "Gets a value indicating whether the user has opted-in to Rewards",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getACEnabled",
         "type": "function",
         "description": "Gets whether auto contribute is enabled",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "enabled",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "enabled",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "setAutoContributeEnabled",
@@ -1062,18 +1051,17 @@
         "name": "getRecurringTips",
         "type": "function",
         "description": "Gets list of sites with recurring tip data",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "tips",
-                "type": "any"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "tips",
+              "type": "any"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "refreshPublisher",
@@ -1083,215 +1071,208 @@
           {
             "name": "publisherKey",
             "type": "string"
-          },
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "status",
-                "type": "integer"
-              },
-              {
-                "name": "publisherKey",
-                "type": "string"
-              }
-            ]
           }
-        ]
+        ],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "status",
+              "type": "integer"
+            },
+            {
+              "name": "publisherKey",
+              "type": "string"
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       },
       {
         "name": "getAllNotifications",
         "type": "function",
         "description": "Gets all notifications",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "list",
-                "type": "array",
-                "items": {
-                  "type": "object",
-                  "properties": {
-                    "id": {
-                      "type": "string",
-                      "description": "notification id"
-                    },
-                    "type": {
-                      "type": "integer",
-                      "description": "notification type"
-                    },
-                    "timestamp": {
-                      "type": "number",
-                      "description": "timestamp when notification was created"
-                    },
-                    "args": {
-                      "type": "array",
-                      "description": "notification arguments, additional data",
-                      "items": {
-                        "type": "string"
-                      }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "list",
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "description": "notification id"
+                  },
+                  "type": {
+                    "type": "integer",
+                    "description": "notification type"
+                  },
+                  "timestamp": {
+                    "type": "number",
+                    "description": "timestamp when notification was created"
+                  },
+                  "args": {
+                    "type": "array",
+                    "description": "notification arguments, additional data",
+                    "items": {
+                      "type": "string"
                     }
                   }
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "fetchBalance",
         "type": "function",
         "description": "Fetch balance",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "balance",
-                "type": "number",
-                "optional": true
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "balance",
+              "type": "number",
+              "optional": true
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getExternalWalletProviders",
         "type": "function",
         "description": "Returns the supported external wallet providers for the current profile",
-        "parameters": [
-          {
-            "name": "callback",
-            "type": "function",
-            "parameters": [
-              {
-                "name": "providers",
-                "type": "array",
-                "items": {
-                  "type": "string"
-                }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "providers",
+              "type": "array",
+              "items": {
+                "type": "string"
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getExternalWallet",
         "type": "function",
         "description": "Get external wallet for provided wallet type",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "wallet",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "type": {
-                    "type": "string"
-                  },
-                  "address": {
-                    "type": "any"
-                  },
-                  "status": {
-                    "type": "any"
-                  },
-                  "userName": {
-                    "type": "any"
-                  },
-                  "accountUrl": {
-                    "type": "any"
-                  },
-                  "activityUrl": {
-                    "type": "string"
-                  }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "wallet",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "type": {
+                  "type": "string"
+                },
+                "address": {
+                  "type": "any"
+                },
+                "status": {
+                  "type": "any"
+                },
+                "userName": {
+                  "type": "any"
+                },
+                "accountUrl": {
+                  "type": "any"
+                },
+                "activityUrl": {
+                  "type": "string"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "getAdsAccountStatement",
         "type": "function",
         "description": "Get ads account statement",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "success",
-                "type": "boolean"
-              },
-              {
-                "name": "adsAccountStatement",
-                "type": "object",
-                "optional": true,
-                "properties": {
-                  "nextPaymentDate": {
-                    "type": "number"
-                  },
-                  "adsReceivedThisMonth": {
-                    "type": "integer"
-                  },
-                  "minEarningsThisMonth": {
-                    "type": "number"
-                  },
-                  "maxEarningsThisMonth": {
-                    "type": "number"
-                  },
-                  "minEarningsLastMonth": {
-                    "type": "number"
-                  },
-                  "maxEarningsLastMonth": {
-                    "type": "number"
-                  }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "success",
+              "type": "boolean"
+            },
+            {
+              "name": "adsAccountStatement",
+              "type": "object",
+              "optional": true,
+              "properties": {
+                "nextPaymentDate": {
+                  "type": "number"
+                },
+                "adsReceivedThisMonth": {
+                  "type": "integer"
+                },
+                "minEarningsThisMonth": {
+                  "type": "number"
+                },
+                "maxEarningsThisMonth": {
+                  "type": "number"
+                },
+                "minEarningsLastMonth": {
+                  "type": "number"
+                },
+                "maxEarningsLastMonth": {
+                  "type": "number"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ],
+          "does_not_support_promises": "Multi-parameter callback"
+        }
       },
       {
         "name": "isInitialized",
         "type": "function",
         "description": "Is rewards engine initialized",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "initialized",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "initialized",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "selfCustodyInviteDismissed",
         "type": "function",
         "description": "Returns a value indicating whether the self-custody invitation has been dismissed.",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "dismissed",
-                "type": "boolean"
-              }
-            ]
-          }
-        ]
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "dismissed",
+              "type": "boolean"
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "dismissSelfCustodyInvite",
@@ -1303,26 +1284,25 @@
         "name": "getScheduledCaptchaInfo",
         "type": "function",
         "description": "Gets all info required to retrieve a scheduled captcha (if any) for the user.",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "name": "result",
-                "type": "object",
-                "properties": {
-                  "url": {
-                    "type": "string"
-                  },
-                  "maxAttemptsExceeded": {
-                    "type": "boolean"
-                  }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "name": "result",
+              "type": "object",
+              "properties": {
+                "url": {
+                  "type": "string"
+                },
+                "maxAttemptsExceeded": {
+                  "type": "boolean"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       },
       {
         "name": "updateScheduledCaptchaResult",
@@ -1339,26 +1319,25 @@
         "name": "getPrefs",
         "type": "function",
         "description": "Gets rewards preferences for the current profile",
-        "parameters": [
-          {
-            "type": "function",
-            "name": "callback",
-            "parameters": [
-              {
-                "type": "object",
-                "name": "prefs",
-                "properties": {
-                  "autoContributeEnabled": {
-                    "type": "boolean"
-                  },
-                  "autoContributeAmount": {
-                    "type": "number"
-                  }
+        "parameters": [],
+        "returns_async": {
+          "name": "callback",
+          "parameters": [
+            {
+              "type": "object",
+              "name": "prefs",
+              "properties": {
+                "autoContributeEnabled": {
+                  "type": "boolean"
+                },
+                "autoContributeAmount": {
+                  "type": "number"
                 }
               }
-            ]
-          }
-        ]
+            }
+          ]
+        },
+        "does_not_support_promises": "Requires refactoring"
       }
     ]
   }

@@ -16,8 +16,8 @@ class WebContents;
 }
 
 class BraveNewsFeedsContainerView : public views::View {
+  METADATA_HEADER(BraveNewsFeedsContainerView, views::View)
  public:
-  METADATA_HEADER(BraveNewsFeedsContainerView);
 
   explicit BraveNewsFeedsContainerView(content::WebContents* contents);
   BraveNewsFeedsContainerView(const BraveNewsFeedsContainerView&) = delete;

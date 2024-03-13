@@ -5,6 +5,8 @@
 
 #include "chrome/browser/ui/views/accelerator_table.h"
 
+#include "brave/app/brave_command_ids.h"
+#include "brave/components/commander/common/buildflags/buildflags.h"
 #include "build/build_config.h"
 
 #define GetAcceleratorList GetAcceleratorList_ChromiumImpl
@@ -25,6 +27,10 @@ const AcceleratorMapping kBraveAcceleratorMap[] = {
     // Alt-Shift-N
     {ui::VKEY_N, ui::EF_ALT_DOWN | ui::EF_SHIFT_DOWN,
      IDC_NEW_OFFTHERECORD_WINDOW_TOR},
+#if BUILDFLAG(ENABLE_COMMANDER)
+    // Open Command with Ctrl+Space
+    {ui::VKEY_SPACE, ui::EF_CONTROL_DOWN, IDC_COMMANDER}
+#endif
 #endif
 };
 

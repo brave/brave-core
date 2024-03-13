@@ -31,8 +31,8 @@ namespace brave_tooltips {
 class BraveTooltipPopup;
 
 class BraveTooltipView : public views::View {
+  METADATA_HEADER(BraveTooltipView, views::View)
  public:
-  METADATA_HEADER(BraveTooltipView);
 
   BraveTooltipView(BraveTooltipPopup* tooltip_popup,
                    const BraveTooltipAttributes& tooltip_attributes);

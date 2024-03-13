@@ -14,12 +14,14 @@
 // the same time. Instead, we leverage OnUpdateError() void method to inject
 // the declarations of Register_ChromiumImpl that are defined in the override
 // for component_installer.cc, so that we can still compile and link.
-#define OnUpdateError                                                  \
-  Register_ChromiumImpl(ComponentUpdateService* cus,                   \
-                        base::OnceClosure callback);                   \
-  void Register_ChromiumImpl(RegisterCallback register_callback,       \
-                             base::OnceClosure callback,               \
-                             const base::Version& registered_version); \
+#define OnUpdateError                                                        \
+  Register_ChromiumImpl(ComponentUpdateService* cus,                         \
+                        base::OnceClosure callback);                         \
+  void Register_ChromiumImpl(                                                \
+      RegisterCallback register_callback, base::OnceClosure callback,        \
+      const base::Version& registered_version = base::Version(kNullVersion), \
+      const base::Version& max_previous_product_version =                    \
+          base::Version(kNullVersion));                                      \
   void OnUpdateError
 
 #include "src/components/component_updater/component_installer.h"  // IWYU pragma: export

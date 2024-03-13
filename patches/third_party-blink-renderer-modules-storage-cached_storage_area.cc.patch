@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/modules/storage/cached_storage_area.cc b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
-index cb7bf9e97a0138904c0d9f9522e335f4e493d79a..557cf4c91f832d56d13f3a7b7cb635cc8cd029fe 100644
+index fe9fcc529e1d7d93ed9f5f146b19ae4f69b89478..11719761b4c6e288988bc43716594b7220076d59 100644
 --- a/third_party/blink/renderer/modules/storage/cached_storage_area.cc
 +++ b/third_party/blink/renderer/modules/storage/cached_storage_area.cc
 @@ -244,7 +244,7 @@ void CachedStorageArea::BindStorageArea(

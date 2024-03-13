@@ -58,7 +58,7 @@ void DoPostUninstallOperations(const base::Version& version,
                            base::ASCIIToWide(version.GetString()), L"&os=",
                            os_version});
   if (os_info->version() < base::win::Version::WIN10 ||
-      !NavigateToUrlWithEdge(url)) {
+      !NavigateToUrlWithHttps(url)) {
     NavigateToUrlWithIExplore(url);
   }
 }

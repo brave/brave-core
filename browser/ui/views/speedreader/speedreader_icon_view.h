@@ -13,8 +13,8 @@
 class PrefService;
 
 class SpeedreaderIconView : public PageActionIconView {
+  METADATA_HEADER(SpeedreaderIconView, PageActionIconView)
  public:
-  METADATA_HEADER(SpeedreaderIconView);
   SpeedreaderIconView(CommandUpdater* command_updater,
                       IconLabelBubbleView::Delegate* icon_label_bubble_delegate,
                       PageActionIconView::Delegate* page_action_icon_delegate,

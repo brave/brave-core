@@ -77,6 +77,7 @@ void BraveIncognitoMenuView::AddedToWidget() {
       /*profile_background_color=*/SK_ColorTRANSPARENT,
       /*edit_button_params=*/std::nullopt,
       ui::ImageModel::FromVectorIcon(kIncognitoProfileIcon, icon_color),
+      ui::ImageModel(),
       brave_l10n::GetLocalizedResourceUTF16String(
           GetProfileMenuTitleId(browser()->profile())),
       window_count > 1 ? l10n_util::GetPluralStringFUTF16(

@@ -23,5 +23,5 @@ int OmniboxChipButton::GetCornerRadius() const {
   return 4;
 }
 
-BEGIN_METADATA(OmniboxChipButton, OmniboxChipButton_ChromiumImpl)
+BEGIN_METADATA(OmniboxChipButton)
 END_METADATA

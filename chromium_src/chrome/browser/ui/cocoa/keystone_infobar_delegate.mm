@@ -87,7 +87,7 @@ KeystonePromotionInfoBar* g_currentPromotionInfoBar;
 
   if (status != kAutoupdateRegisterFailed &&
       [[KeystoneGlue defaultKeystoneGlue] needsPromotion]) {
-    Browser* browser = chrome::GetLastActiveBrowser();
+    Browser* browser = chrome::FindLastActive();
     if (browser) {
       content::WebContents* webContents =
           browser->tab_strip_model()->GetActiveWebContents();

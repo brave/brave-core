@@ -29,7 +29,8 @@ Browser* OpenNewBrowser(Profile* profile) {
   base::CommandLine dummy(base::CommandLine::NO_PROGRAM);
   StartupBrowserCreatorImpl creator(base::FilePath(), dummy,
                                     chrome::startup::IsFirstRun::kYes);
-  creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr);
+  creator.Launch(profile, chrome::startup::IsProcessStartup::kNo, nullptr,
+                 /*restore_tabbed_browser=*/true);
   return chrome::FindBrowserWithProfile(profile);
 }
 }  // namespace

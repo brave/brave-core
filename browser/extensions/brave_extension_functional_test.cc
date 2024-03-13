@@ -7,6 +7,7 @@
 
 #include "base/path_service.h"
 #include "brave/components/constants/brave_paths.h"
+#include "chrome/browser/extensions/chrome_extension_test_notification_observer.h"
 #include "chrome/browser/extensions/crx_installer.h"
 #include "chrome/test/base/ui_test_utils.h"
 #include "extensions/browser/extension_registry.h"

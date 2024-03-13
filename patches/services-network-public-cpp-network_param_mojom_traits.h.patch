@@ -1,5 +1,5 @@
 diff --git a/services/network/public/cpp/network_param_mojom_traits.h b/services/network/public/cpp/network_param_mojom_traits.h
-index a1b1b77824a95607c06ec96f5b8a5a9ac05c5423..90505dfa7e2f611abaaa0b8c276133fc8df08486 100644
+index 5f2c42fee1ec3906f40710158b1f6e1f8e55971a..19b6207397258ce6a94dab78b7d7d80c556e27fc 100644
 --- a/services/network/public/cpp/network_param_mojom_traits.h
 +++ b/services/network/public/cpp/network_param_mojom_traits.h
 @@ -99,6 +99,7 @@ class COMPONENT_EXPORT(NETWORK_CPP_NETWORK_PARAM)

@@ -141,8 +141,7 @@ void BraveVpnDnsSettingsNotificiationDialogView::OnClosing() {
                      !dont_ask_again_checkbox_->GetChecked());
 }
 
-BEGIN_METADATA(BraveVpnDnsSettingsNotificiationDialogView,
-               views::DialogDelegateView)
+BEGIN_METADATA(BraveVpnDnsSettingsNotificiationDialogView)
 END_METADATA
 
 }  // namespace brave_vpn

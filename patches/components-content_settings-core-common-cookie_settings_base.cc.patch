@@ -1,16 +1,16 @@
 diff --git a/components/content_settings/core/common/cookie_settings_base.cc b/components/content_settings/core/common/cookie_settings_base.cc
-index da726de47a3132cb6b8cba7cce468fc4fbaa98e4..a5fb4bcd451b5ced306840c042d99d138ab23f1c 100644
+index bae54a890e6bfdda88fe76b970f9f94d671a57c4..461a38212fc16471a60714e2e733834e153dfd86 100644
 --- a/components/content_settings/core/common/cookie_settings_base.cc
 +++ b/components/content_settings/core/common/cookie_settings_base.cc
-@@ -357,6 +357,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
+@@ -462,6 +462,7 @@ CookieSettingsBase::DecideAccess(const GURL& url,
    if (!IsAllowed(setting)) {
      return BlockAllCookies{};
    }
 +  BRAVE_COOKIE_SETTINGS_BASE_DECIDE_ACCESS
    if (is_explicit_setting) {
-     return AllowAllCookies{
-         ThirdPartyCookieAllowMechanism::kAllowByExplicitSetting};
-@@ -462,6 +463,7 @@ CookieSettingsBase::GetCookieSettingInternal(
+     if (setting_source == SettingSource::SETTING_SOURCE_POLICY) {
+       return AllowAllCookies{ThirdPartyCookieAllowMechanism::
+@@ -552,6 +553,7 @@ CookieSettingsBase::GetCookieSettingInternal(
    const ContentSetting cookie_setting = GetContentSetting(
        url, first_party_url, ContentSettingsType::COOKIES, &setting_info);
  

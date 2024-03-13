@@ -1,5 +1,5 @@
 diff --git a/build/android/gyp/proguard.py b/build/android/gyp/proguard.py
-index fbe02087c10977da81be7f5ffeb16f7fb9e037ce..f659425044441715e6dab1dffec083d437be1fd0 100755
+index f5f4e8e11e25fd35054ebcbc23870bff82608e21..faf0ee2b6797eb3efc7718f17600c8064b93def8 100755
 --- a/build/android/gyp/proguard.py
 +++ b/build/android/gyp/proguard.py
 @@ -334,6 +334,7 @@ def _OptimizeWithR8(options, config_paths, libraries, dynamic_config_data):
@@ -9,4 +9,4 @@ index fbe02087c10977da81be7f5ffeb16f7fb9e037ce..f659425044441715e6dab1dffec083d4
 +    cmd.remove('--map-id-template'); cmd.remove(f'{options.source_file} ({options.package_name})') # required to omit package check for mapping file
  
      if options.uses_split:
-       # Provided by our CustomR8.java wrapper.
+       cmd += ['--isolated-splits']

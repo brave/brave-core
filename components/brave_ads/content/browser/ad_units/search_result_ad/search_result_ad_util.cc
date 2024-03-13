@@ -24,7 +24,8 @@ constexpr char kPlacementIdQueryKey[] = "placement_id";
 std::optional<std::string> GetPlacementIdFromSearchResultAdClickedUrl(
     const GURL& url) {
   if (!url.is_valid() || !url.SchemeIs(url::kHttpsScheme) ||
-      url.path_piece() != kSearchResultAdClickedPath || !url.has_query() ||
+      url.path_piece() != kSearchResultAdClickedPath ||
+      url.query_piece().length() == 0 || !url.has_query() ||
       !brave_search::IsAllowedHost(url)) {
     return {};
   }

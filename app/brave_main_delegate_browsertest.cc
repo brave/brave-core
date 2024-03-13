@@ -118,7 +118,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &android_webview::features::kWebViewServerSideSampling,
       &android_webview::features::kWebViewMeasureScreenCoverage,
 #endif
-      &attribution_reporting::features::kAttributionReportingTriggerConfig,
       &attribution_reporting::features::kAttributionReportingTriggerContextId,
       &attribution_reporting::features::kConversionMeasurement,
       &autofill::features::kAutofillEnableRemadeDownstreamMetrics,
@@ -136,7 +135,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kClientHintsFormFactor,
       &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
-      &blink::features::kEventTimingReportAllEarlyEntriesOnPaintedPresentation,
       &blink::features::kFencedFrames,
       &blink::features::kFencedFramesM120FeaturesPart2,
       &blink::features::kFledge,
@@ -149,8 +147,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &blink::features::kPrivacySandboxAdsAPIs,
       &blink::features::kPrivateAggregationApi,
       &blink::features::kPrivateAggregationApiMultipleCloudProviders,
+      &blink::features::kReduceCookieIPCs,
       &blink::features::kSharedStorageAPI,
       &blink::features::kSharedStorageAPIM118,
+      &blink::features::kSharedStorageAPIM123,
       &blink::features::kSharedStorageSelectURLLimit,
       &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
       &blink::features::kSpeculationRulesPrefetchFuture,
@@ -169,7 +169,6 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &companion::visual_query::features::kVisualQuerySuggestions,
       &content_settings::features::kTrackingProtection3pcd,
       &content_settings::features::kUserBypassUI,
-      &enterprise_connectors::kLocalContentAnalysisEnabled,
 #if BUILDFLAG(IS_LINUX) || BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC)
       &enterprise_signals::features::kDeviceSignalsConsentDialog,
 #endif
@@ -180,9 +179,14 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kAppBoundEncryptionMetrics,
 #endif
       &features::kAttributionFencedFrameReportingBeacon,
+      &features::kAttributionReportingCrossAppWebOverride,
       &features::kBookmarkTriggerForPrerender2,
       &features::kChromeLabs,
       &features::kChromeRefresh2023,
+      &features::kChromeRefresh2023NTB,
+      &features::kChromeRefreshSecondary2023,
+      &features::kChromeWebuiRefresh2023,
+      &features::kControlledFrame,
       &features::kCookieDeprecationFacilitatedTesting,
 #if BUILDFLAG(IS_WIN) || BUILDFLAG(IS_MAC) || BUILDFLAG(IS_LINUX)
       &features::kDesktopPWAsLinkCapturing,
@@ -199,10 +203,10 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kLegacyTechReportEnableCookieIssueReports,
       &features::kLegacyTechReportTopLevelUrl,
+      &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
       &features::kOmniboxTriggerForPrerender2,
-      &features::kPerformanceSettingsPreloadingSubpage,
       &features::kPrivacyGuide3,
 #if BUILDFLAG(IS_ANDROID)
       &features::kPrivacyGuideAndroidPostMVP,
@@ -229,6 +233,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
 #if BUILDFLAG(IS_MAC)
       &features::kUseChromiumUpdater,
 #endif
+      &features::kWebIdentityDigitalCredentials,
       &features::kWebOTP,
       &history::kOrganicRepeatableQueries,
       &history::kSyncSegmentsData,
@@ -276,9 +281,13 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &omnibox::kDocumentProviderNoSyncRequirement,
       &omnibox::kExpandedStateHeight,
       &omnibox::kExpandedStateShape,
+      &omnibox::kMlUrlScoring,
       &omnibox::kOmniboxSteadyStateHeight,
       &omnibox::kRichAutocompletion,
+      &omnibox::kStarterPackExpansion,
+      &omnibox::kZeroSuggestPrefetching,
       &optimization_guide::features::kOptimizationGuideFetchingForSRP,
+      &optimization_guide::features::kOptimizationGuidePersonalizedFetching,
       &optimization_guide::features::kOptimizationHints,
       &optimization_guide::features::kRemoteOptimizationGuideFetching,
       &optimization_guide::features::
@@ -292,6 +301,7 @@ IN_PROC_BROWSER_TEST_F(BraveMainDelegateBrowserTest, DisabledFeatures) {
       &permissions::features::kPermissionOnDeviceNotificationPredictions,
       &permissions::features::kPermissionStorageAccessAPI,
       &permissions::features::kShowRelatedWebsiteSetsPermissionGrants,
+      &privacy_sandbox::kCookieSettingsUiAlignment,
       &privacy_sandbox::kEnforcePrivacySandboxAttestations,
       &privacy_sandbox::kOverridePrivacySandboxSettingsLocalTesting,
       &privacy_sandbox::kPrivacySandboxFirstPartySetsUI,

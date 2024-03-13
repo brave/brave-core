@@ -420,7 +420,7 @@ void BraveTooltipView::OnCancelButtonPressed() {
   }
 }
 
-BEGIN_METADATA(BraveTooltipView, views::View)
+BEGIN_METADATA(BraveTooltipView)
 END_METADATA
 
 }  // namespace brave_tooltips

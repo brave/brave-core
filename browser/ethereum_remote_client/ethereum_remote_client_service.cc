@@ -131,14 +131,8 @@ void EthereumRemoteClientService::SaveToPrefs(PrefService* prefs,
                                               const std::string& nonce) {
   // Store the seed in preferences, binary pref strings need to be
   // base64 encoded.  Base64 encoding is fail safe.
-  std::string base64_nonce;
-  std::string base64_cipher_seed;
-  base::Base64Encode(nonce, &base64_nonce);
-  base::Base64Encode(
-      base::MakeStringPiece(cipher_seed.begin(), cipher_seed.end()),
-      &base64_cipher_seed);
-  prefs->SetString(kERCAES256GCMSivNonce, base64_nonce);
-  prefs->SetString(kERCEncryptedSeed, base64_cipher_seed);
+  prefs->SetString(kERCAES256GCMSivNonce, base::Base64Encode(nonce));
+  prefs->SetString(kERCEncryptedSeed, base::Base64Encode(cipher_seed));
 }
 
 void EthereumRemoteClientService::ResetCryptoWallets() {

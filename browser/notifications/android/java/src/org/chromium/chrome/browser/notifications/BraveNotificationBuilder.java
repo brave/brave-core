@@ -210,7 +210,10 @@ public class BraveNotificationBuilder extends StandardNotificationBuilder {
 
     @Override
     public NotificationBuilderBase addSettingsAction(
-            int iconId, @Nullable CharSequence title, PendingIntentProvider intent) {
+            int iconId,
+            @Nullable CharSequence title,
+            PendingIntentProvider intent,
+            @NotificationUmaTracker.ActionType int umaActionType) {
         return this;
     }
 

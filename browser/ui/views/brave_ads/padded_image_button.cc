@@ -70,7 +70,7 @@ void PaddedImageButton::OnThemeChanged() {
       color_utils::GetColorWithMaxContrast(background_color));
 }
 
-BEGIN_METADATA(PaddedImageButton, views::ImageButton)
+BEGIN_METADATA(PaddedImageButton)
 END_METADATA
 
 }  // namespace brave_ads

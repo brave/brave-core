@@ -60,8 +60,8 @@ class BraveTooltipPopup : public views::WidgetDelegateView,
                           public views::WidgetObserver,
                           public gfx::AnimationDelegate,
                           public display::DisplayObserver {
+  METADATA_HEADER(BraveTooltipPopup, views::WidgetDelegateView)
  public:
-  METADATA_HEADER(BraveTooltipPopup);
 
   BraveTooltipPopup(Profile* profile, std::unique_ptr<BraveTooltip> tooltip);
   ~BraveTooltipPopup() override;

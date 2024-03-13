@@ -17,8 +17,8 @@
 // StyledLabel doesn't allow using custom font for link style.
 // Use for setting custom font for link.
 class CustomStyledLabel : public views::StyledLabel {
+  METADATA_HEADER(CustomStyledLabel, views::StyledLabel)
  public:
-  METADATA_HEADER(CustomStyledLabel);
   using StyledLabel::StyledLabel;
   CustomStyledLabel(const CustomStyledLabel&) = delete;
   CustomStyledLabel& operator=(const CustomStyledLabel&) = delete;
@@ -26,7 +26,7 @@ class CustomStyledLabel : public views::StyledLabel {
 
  private:
   // views::StyledLabel overrides:
-  void Layout() override;
+  void Layout(PassKey) override;
   std::unique_ptr<views::Label> CreateLabel(
       const std::u16string& text,
       const RangeStyleInfo& style_info,

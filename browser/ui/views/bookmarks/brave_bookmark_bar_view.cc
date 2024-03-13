@@ -45,5 +45,5 @@ void BraveBookmarkBarView::OnShowAllBookmarksButtonPrefChanged() {
   }
 }
 
-BEGIN_METADATA(BraveBookmarkBarView, BookmarkBarView)
+BEGIN_METADATA(BraveBookmarkBarView)
 END_METADATA

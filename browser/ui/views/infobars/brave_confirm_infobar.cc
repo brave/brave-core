@@ -124,8 +124,8 @@ views::MdTextButton* BraveConfirmInfoBar::GetButtonById(int id) {
   }
 }
 
-void BraveConfirmInfoBar::Layout() {
-  InfoBarView::Layout();
+void BraveConfirmInfoBar::Layout(PassKey) {
+  LayoutSuperclass<InfoBarView>(this);
 
   if (ok_button_) {
     ok_button_->SizeToPreferredSize();
@@ -251,5 +251,5 @@ int BraveConfirmInfoBar::NonLabelWidth() const {
   return width + ((link_->GetText().empty() || !width) ? 0 : label_spacing);
 }
 
-BEGIN_METADATA(BraveConfirmInfoBar, InfoBarView)
+BEGIN_METADATA(BraveConfirmInfoBar)
 END_METADATA

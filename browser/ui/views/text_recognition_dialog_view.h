@@ -33,8 +33,8 @@ class ScrollView;
 }  // namespace views
 
 class TextRecognitionDialogView : public views::DialogDelegateView {
+  METADATA_HEADER(TextRecognitionDialogView, views::DialogDelegateView)
  public:
-  METADATA_HEADER(TextRecognitionDialogView);
 
   explicit TextRecognitionDialogView(const SkBitmap& image);
   TextRecognitionDialogView(const TextRecognitionDialogView&) = delete;

@@ -78,7 +78,7 @@ void NotificationAdHeaderView::GetAccessibleNodeData(
 void NotificationAdHeaderView::UpdateContent() {
   UpdateTitleLabel();
 
-  Layout();
+  DeprecatedLayoutImmediately();
   SchedulePaint();
 }
 
@@ -149,7 +149,7 @@ void NotificationAdHeaderView::UpdateTitleLabel() {
                                                        : kLightModeTitleColor);
 }
 
-BEGIN_METADATA(NotificationAdHeaderView, views::View)
+BEGIN_METADATA(NotificationAdHeaderView)
 END_METADATA
 
 }  // namespace brave_ads
