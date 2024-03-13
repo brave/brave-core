@@ -6,7 +6,6 @@
 package org.chromium.chrome.browser.crypto_wallet.fragments.onboarding;
 
 import android.content.Intent;
-import android.graphics.drawable.AnimationDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,7 +15,6 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.cardview.widget.CardView;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.FragmentActivity;
 
 import org.chromium.base.Log;
@@ -37,7 +35,6 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     private boolean mRestartSetupAction;
     private boolean mRestartRestoreAction;
     private boolean mButtonClicked;
-    private AnimationDrawable mAnimationDrawable;
 
     public OnboardingInitWalletFragment(boolean restartSetupAction, boolean restartRestoreAction) {
         mRestartSetupAction = restartSetupAction;
@@ -63,13 +60,7 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        mAnimationDrawable =
-                (AnimationDrawable)
-                        ContextCompat.getDrawable(
-                                requireContext(), R.drawable.onboarding_gradient_animation);
-        view.findViewById(R.id.setup_wallet_root).setBackground(mAnimationDrawable);
-        mAnimationDrawable.setEnterFadeDuration(10);
-        mAnimationDrawable.setExitFadeDuration(5000);
+        setAnimatedBackground(view.findViewById(R.id.setup_wallet_root));
 
         CardView newWallet = view.findViewById(R.id.new_wallet_card_view);
         newWallet.setOnClickListener(
@@ -121,13 +112,6 @@ public class OnboardingInitWalletFragment extends BaseOnboardingWalletFragment {
     public void onResume() {
         super.onResume();
         mButtonClicked = false;
-        mAnimationDrawable.start();
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        mAnimationDrawable.stop();
     }
 
     @Override

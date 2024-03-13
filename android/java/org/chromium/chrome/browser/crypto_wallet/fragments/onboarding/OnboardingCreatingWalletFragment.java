@@ -35,6 +35,7 @@ public class OnboardingCreatingWalletFragment extends BaseOnboardingWalletFragme
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setAnimatedBackground(view.findViewById(R.id.creating_wallet_root));
         mOnboardingViewModel =
                 new ViewModelProvider((ViewModelStoreOwner) requireActivity())
                         .get(OnboardingViewModel.class);
