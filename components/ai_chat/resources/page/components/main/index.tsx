@@ -54,7 +54,7 @@ function Main() {
     !shouldShowPremiumSuggestionForModel && // Don't show 2 premium prompts
     !apiHasError && // Don't show premium prompt and errors (rate limit error has its own premium prompt suggestion)
     context.canShowPremiumPrompt &&
-    siteInfo === null && // SiteInfo request has finished and this is a standalone conversation
+    !siteInfo?.isContentAssociationPossible && // This indicates a standalone conversation with no content association possible
     !context.isPremiumUser
 
   const shouldDisplayEraseAction = context.conversationHistory.length >= 1
