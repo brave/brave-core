@@ -59,7 +59,6 @@ if (include_polymer) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
-        "overrides/cr_button_override.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }

@@ -15,11 +15,10 @@
     See https://polymer-library.polymer-project.org/1.0/docs/devguide/styling
 */
 html {
-  --interactive-color: var(--cr-link-color) !important;
+  --cr-link-color-rgb: 63, 57, 232;
+  --cr-link-color: var(--leo-color-text-interactive, rgb(var(--cr-link-color-rgb))) !important;
   --brave-focus-outline: auto 3px var(--flat-focus-shadow-color);
   --disabled-color: rgb(241, 243, 244);
-  --cr-link-color: rgb(255, 69, 48) !important;
-  --cr-link-color-rgb: 255, 69, 48;
   --flat-focus-shadow-color: rgba(255, 69, 48, .4) !important;
   --cr-selectable-focus_-_outline: var(--brave-focus-outline) !important;
   --cr-primary-text-color: #343546 !important;
@@ -28,6 +27,7 @@ html {
   --cr-card-elevation_-_box-shadow: 0 !important;
   --cr-card-border-radius: 4px !important;
 }
+
 @media (prefers-color-scheme: dark) {
   html {
     --cr-primary-text-color: #F4F4F4 !important;
