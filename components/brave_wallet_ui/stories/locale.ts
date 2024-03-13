@@ -1135,6 +1135,7 @@ provideStrings({
   braveWalletAddAssetNftTabTitle: 'NFT',
   braveWalletNftFetchingError:
     'Something went wrong when fetching NFT details. Please try again later.',
+  braveWalletEditToken: 'Edit Token',
 
   // Add Custom Asset Form
   braveWalletNetworkIsRequiredError: 'Network is required',

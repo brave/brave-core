@@ -47,6 +47,9 @@ import { RewardsMenu } from '../wallet-menus/rewards_menu'
 import {
   BalanceDetailsModal //
 } from '../popup-modals/balance_details_modal/balance_details_modal'
+import {
+  EditTokenModal //
+} from '../popup-modals/edit_token_modal/edit_token_modal'
 
 // Styled Components
 import {
@@ -112,6 +115,8 @@ export const PortfolioAssetItem = ({
     React.useState(0)
   const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
   const [showBalanceDetailsModal, setShowBalanceDetailsModal] =
+    React.useState<boolean>(false)
+  const [showEditTokenModal, setShowEditTokenModal] =
     React.useState<boolean>(false)
 
   // refs
@@ -329,6 +334,11 @@ export const PortfolioAssetItem = ({
                       assetBalance={assetBalance}
                       asset={token}
                       account={account}
+                      onClickEditToken={
+                        token.contractAddress !== ''
+                          ? () => setShowEditTokenModal(true)
+                          : undefined
+                      }
                     />
                   )}
                 </>
@@ -372,6 +382,12 @@ export const PortfolioAssetItem = ({
           token={token}
           isLoadingBalances={isLoadingBitcoinBalances}
           balances={bitcoinBalances}
+        />
+      )}
+      {showEditTokenModal && (
+        <EditTokenModal
+          token={token}
+          onClose={() => setShowEditTokenModal(false)}
         />
       )}
     </>

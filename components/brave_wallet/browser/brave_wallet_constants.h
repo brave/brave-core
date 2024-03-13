@@ -1211,6 +1211,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
     {"braveWalletAddAssetNftTabTitle",
      IDS_BRAVE_WALLET_ADD_ASSET_NFT_TAB_TITLE},
     {"braveWalletNftFetchingError", IDS_BRAVE_WALLET_NFT_FETCHING_ERROR},
+    {"braveWalletEditToken", IDS_BRAVE_WALLET_EDIT_TOKEN},
     {"braveWalletFEVMAddressTranslationTitle",
      IDS_BRAVE_WALLET_FEVM_ADDRESS_TRANSLATION_TITLE},
     {"braveWalletFEVMAddressTranslationDescription",

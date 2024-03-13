@@ -49,10 +49,11 @@ interface Props {
   asset: BraveWallet.BlockchainToken
   assetBalance: string
   account?: BraveWallet.AccountInfo
+  onClickEditToken?: () => void
 }
 
 export const AssetItemMenu = (props: Props) => {
-  const { asset, assetBalance, account } = props
+  const { asset, assetBalance, account, onClickEditToken } = props
 
   // routing
   const history = useHistory()
@@ -160,6 +161,14 @@ export const AssetItemMenu = (props: Props) => {
         <PopupButton onClick={onClickSell}>
           <ButtonIcon name='usd-circle' />
           <PopupButtonText>{getLocale('braveWalletSell')}</PopupButtonText>
+        </PopupButton>
+      )}
+      {onClickEditToken && (
+        <PopupButton onClick={onClickEditToken}>
+          <ButtonIcon name='edit-pencil' />
+          <PopupButtonText>
+            {getLocale('braveWalletAllowSpendEditButton')}
+          </PopupButtonText>
         </PopupButton>
       )}
       {showSellModal && selectedSellAsset && (

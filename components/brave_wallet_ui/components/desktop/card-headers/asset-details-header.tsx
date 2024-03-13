@@ -69,6 +69,7 @@ interface Props {
   onBack: () => void
   onClickTokenDetails: () => void
   onClickHideToken: () => void
+  onClickEditToken?: () => void
   isShowingMarketData?: boolean
   selectedTimeline: BraveWallet.AssetPriceTimeframe
 }
@@ -79,6 +80,7 @@ export const AssetDetailsHeader = (props: Props) => {
     onBack,
     onClickHideToken,
     onClickTokenDetails,
+    onClickEditToken,
     isShowingMarketData,
     selectedTimeline
   } = props
@@ -117,6 +119,13 @@ export const AssetDetailsHeader = (props: Props) => {
     setShowAssetDetailsMenu(false)
     onClickTokenDetails()
   }, [onClickTokenDetails])
+
+  const handleOnClickEditToken = React.useCallback(() => {
+    if (onClickEditToken) {
+      setShowAssetDetailsMenu(false)
+      onClickEditToken()
+    }
+  }, [onClickEditToken])
 
   const onClickViewOnExplorer = React.useCallback(() => {
     if (selectedAsset) {
@@ -270,6 +279,7 @@ export const AssetDetailsHeader = (props: Props) => {
                     onClickHideToken={handleOnClickHideToken}
                     onClickTokenDetails={handleOnClickTokenDetails}
                     onClickViewOnExplorer={onClickViewOnExplorer}
+                    onClickEditToken={handleOnClickEditToken}
                   />
                 )}
               </MenuWrapper>
