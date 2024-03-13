@@ -1256,6 +1256,8 @@ static_library("internal") {
     "user_engagement/site_visit/site_visit.h",
     "user_engagement/site_visit/site_visit_feature.cc",
     "user_engagement/site_visit/site_visit_observer.h",
+    "user_engagement/site_visit/site_visit_util.cc",
+    "user_engagement/site_visit/site_visit_util.h",
   ]
 
   if (is_android) {

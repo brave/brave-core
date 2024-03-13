@@ -16,6 +16,8 @@
 #include "content/public/browser/navigation_handle.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
+#include "net/http/http_response_headers.h"
+#include "net/http/http_status_code.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -76,7 +78,8 @@ void AdsTabHelper::TabUpdated() {
 
   const bool is_visible = is_active_ && is_browser_active_;
 
-  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_, is_visible);
+  ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
+                                   http_response_status_code_, is_visible);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -154,6 +157,12 @@ void AdsTabHelper::DidFinishNavigation(
   }
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
+
+  const net::HttpResponseHeaders* response_headers =
+      navigation_handle->GetResponseHeaders();
+  if (!response_headers) {
+    return;
+  }
 
   if (!navigation_handle->IsSameDocument()) {
     should_process_ = tab_not_restored;

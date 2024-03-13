@@ -6,6 +6,7 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations.h"
 
 #include <optional>
+#include <utility>
 
 #include "base/functional/bind.h"
 #include "base/time/time.h"
@@ -35,7 +36,8 @@ Confirmations::~Confirmations() {
   delegate_ = nullptr;
 }
 
-void Confirmations::Confirm(const TransactionInfo& transaction) {
+void Confirmations::Confirm(const TransactionInfo& transaction,
+                            base::Value::Dict user_data) {
   CHECK(transaction.IsValid());
 
   BLOG(1, "Confirming " << transaction.confirmation_type << " for "
@@ -44,8 +46,9 @@ void Confirmations::Confirm(const TransactionInfo& transaction) {
                         << transaction.creative_instance_id);
 
   BuildConfirmationUserData(
-      transaction, base::BindOnce(&Confirmations::ConfirmCallback,
-                                  weak_factory_.GetWeakPtr(), transaction));
+      transaction, std::move(user_data),
+      base::BindOnce(&Confirmations::ConfirmCallback,
+                     weak_factory_.GetWeakPtr(), transaction));
 }
 
 ///////////////////////////////////////////////////////////////////////////////

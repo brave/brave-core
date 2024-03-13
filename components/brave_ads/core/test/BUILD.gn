@@ -663,6 +663,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h",
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_unittest.cc",
+    "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util_unittest.cc",
   ]
 
   deps = [

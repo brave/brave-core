@@ -13,9 +13,9 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/ad_events/ad_events.h"
+#include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util.h"
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
-#include "url/gurl.h"
 
 namespace brave_ads {
 
@@ -37,95 +37,84 @@ void SiteVisit::RemoveObserver(SiteVisitObserver* observer) {
   observers_.RemoveObserver(observer);
 }
 
-void SiteVisit::MaybeLandOnPage(const int32_t tab_id,
-                                const std::vector<GURL>& redirect_chain) {
+void SiteVisit::MaybeLandOnPage(const TabInfo& tab) {
   if (!last_clicked_ad_) {
+    // No ad interactions have occurred in the current browsing session.
     return;
   }
 
-  if (landed_page_tab_id_ == tab_id) {
+  if (tab_id_ == tab.id) {
+    // This tab is being processed.
     return;
   }
+  tab_id_ = tab.id;
 
-  if (!DomainOrHostExists(redirect_chain, last_clicked_ad_->target_url)) {
+  if (!DomainOrHostExists(tab.redirect_chain, last_clicked_ad_->target_url)) {
     return BLOG(1, "Visited URL does not match the last clicked ad");
   }
 
-  CheckIfLandedOnPage(tab_id, redirect_chain);
+  CheckIfLandedOnPage(tab);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-void SiteVisit::CheckIfLandedOnPage(const int32_t tab_id,
-                                    const std::vector<GURL>& redirect_chain) {
+void SiteVisit::CheckIfLandedOnPage(const TabInfo& tab) {
   CHECK(last_clicked_ad_);
 
-  landed_page_tab_id_ = tab_id;
+  const base::Time maybe_land_on_page_at =
+      timer_.Start(FROM_HERE, kPageLandAfter.Get(),
+                   base::BindOnce(&SiteVisit::CheckIfLandedOnPageCallback,
+                                  base::Unretained(this), tab));
 
-  const base::Time record_page_land_at = timer_.Start(
-      FROM_HERE, kPageLandAfter.Get(),
-      base::BindOnce(&SiteVisit::CheckIfLandedOnPageCallback,
-                     base::Unretained(this), tab_id, redirect_chain));
-
-  NotifyMaybeLandOnPage(*last_clicked_ad_, record_page_land_at);
+  NotifyMaybeLandOnPage(*last_clicked_ad_, maybe_land_on_page_at);
 }
 
-void SiteVisit::CheckIfLandedOnPageCallback(
-    const int32_t tab_id,
-    const std::vector<GURL>& redirect_chain) {
+void SiteVisit::CheckIfLandedOnPageCallback(const TabInfo& tab) {
   CHECK(last_clicked_ad_);
 
-  const AdInfo ad = *last_clicked_ad_;
+  const AdInfo last_clicked_ad = *last_clicked_ad_;
   last_clicked_ad_.reset();
 
-  landed_page_tab_id_ = 0;
+  tab_id_ = -1;
 
-  if (!TabManager::GetInstance().IsVisible(tab_id)) {
-    return NotifyDidNotLandOnPage(ad);
-  }
-
-  const std::optional<TabInfo> tab =
-      TabManager::GetInstance().MaybeGetForId(tab_id);
-  if (!tab) {
-    return NotifyDidNotLandOnPage(ad);
-  }
-
-  if (tab->redirect_chain.empty()) {
-    return NotifyDidNotLandOnPage(ad);
-  }
-
-  if (!DomainOrHostExists(redirect_chain, tab->redirect_chain.back())) {
-    return NotifyDidNotLandOnPage(ad);
-  }
-
-  LandOnPage(ad);
+  DidLandOnPage(tab.id, last_clicked_ad) ? LandOnPage(tab, last_clicked_ad)
+                                         : DidNotLandOnPage(last_clicked_ad);
 }
 
-void SiteVisit::LandOnPage(const AdInfo& ad) {
+void SiteVisit::LandOnPage(const TabInfo& tab, const AdInfo& ad) {
   RecordAdEvent(ad, ConfirmationType::kLanded,
                 base::BindOnce(&SiteVisit::LandOnPageCallback,
-                               weak_factory_.GetWeakPtr(), ad));
+                               weak_factory_.GetWeakPtr(), tab, ad));
 }
 
-void SiteVisit::LandOnPageCallback(const AdInfo& ad, const bool success) {
+void SiteVisit::LandOnPageCallback(const TabInfo& tab,
+                                   const AdInfo& ad,
+                                   const bool success) const {
   if (!success) {
     BLOG(1, "Failed to record landed ad event");
     return NotifyDidNotLandOnPage(ad);
   }
 
-  NotifyDidLandOnPage(ad);
+  NotifyDidLandOnPage(tab, ad);
+}
+
+void SiteVisit::DidNotLandOnPage(const AdInfo& ad) const {
+  NotifyDidNotLandOnPage(ad);
 }
 
 void SiteVisit::CancelPageLand(const int32_t tab_id) {
-  if (!last_clicked_ad_) {
+  if (tab_id_ != tab_id) {
+    // The closed tab differs from the landing page tab.
     return;
   }
 
-  if (landed_page_tab_id_ != tab_id) {
+  if (!last_clicked_ad_) {
+    // No ad interactions have occurred in the current browsing session.
     return;
   }
 
   if (!timer_.Stop()) {
+    // The timer was inactive since we had already check for a page landing.
     return;
   }
 
@@ -139,9 +128,10 @@ void SiteVisit::NotifyMaybeLandOnPage(const AdInfo& ad,
   }
 }
 
-void SiteVisit::NotifyDidLandOnPage(const AdInfo& ad) const {
+void SiteVisit::NotifyDidLandOnPage(const TabInfo& tab,
+                                    const AdInfo& ad) const {
   for (SiteVisitObserver& observer : observers_) {
-    observer.OnDidLandOnPage(ad);
+    observer.OnDidLandOnPage(tab, ad);
   }
 }
 
@@ -159,7 +149,7 @@ void SiteVisit::NotifyCanceledPageLand(const AdInfo& ad,
 }
 
 void SiteVisit::OnTabDidChange(const TabInfo& tab) {
-  MaybeLandOnPage(tab.id, tab.redirect_chain);
+  MaybeLandOnPage(tab);
 }
 
 void SiteVisit::OnDidCloseTab(const int32_t tab_id) {

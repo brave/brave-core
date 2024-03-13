@@ -198,6 +198,7 @@ public class BraveRewards: NSObject {
         tabId,
         url: url,
         redirectChain: tab.redirectURLs,
+        httpResponseStatusCode: 200,  // iOS for now can pass `HTTP_OK`.
         isSelected: isSelected
       )
     }

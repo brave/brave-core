@@ -14,17 +14,19 @@
 namespace brave_ads {
 
 struct AdInfo;
+struct TabInfo;
 
 class SiteVisitObserver : public base::CheckedObserver {
  public:
-  // Invoked if the user could land on a page for the given `ad` at `maybe_at`
-  // time.
+  // Invoked if the user may land on the landing page for the given `ad` at
+  // `maybe_at` time.
   virtual void OnMaybeLandOnPage(const AdInfo& ad, const base::Time maybe_at) {}
 
-  // Invoked when the landed on a page for the given `ad`.
-  virtual void OnDidLandOnPage(const AdInfo& ad) {}
+  // Invoked when the user landed on the landing page for the given `tab` and
+  // `ad`.
+  virtual void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {}
 
-  // Invoked when the user did not land on the page for the given `ad`.
+  // Invoked when the user did not land on the landing page for the given `ad`.
   virtual void OnDidNotLandOnPage(const AdInfo& ad) {}
 
   // Invoked when canceling a page land for the given `ad` and `tab_id`.

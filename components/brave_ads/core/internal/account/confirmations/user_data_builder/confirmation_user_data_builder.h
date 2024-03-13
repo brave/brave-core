@@ -7,6 +7,7 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_ACCOUNT_CONFIRMATIONS_USER_DATA_BUILDER_CONFIRMATION_USER_DATA_BUILDER_H_
 
 #include "base/functional/callback.h"
+#include "base/values.h"
 
 namespace brave_ads {
 
@@ -17,6 +18,7 @@ using BuildConfirmationUserDataCallback =
     base::OnceCallback<void(const UserDataInfo& user_data)>;
 
 void BuildConfirmationUserData(const TransactionInfo& transaction,
+                               base::Value::Dict user_data,
                                BuildConfirmationUserDataCallback callback);
 
 }  // namespace brave_ads
