@@ -923,6 +923,7 @@ brave_java_resources = [
   "java/res/layout/rewards_solana_eligible_layout.xml",
   "java/res/layout/rewards_tipping_banner_fragment.xml",
   "java/res/layout/rewards_tipping_success_contribution_fragment.xml",
+  "java/res/layout/rewards_tos_layout.xml",
   "java/res/layout/search_preference.xml",
   "java/res/layout/selected_network_item.xml",
   "java/res/layout/tipping_banner_tipping_panel_inside_layout.xml",

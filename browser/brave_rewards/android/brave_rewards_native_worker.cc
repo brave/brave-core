@@ -185,6 +185,12 @@ void BraveRewardsNativeWorker::OnGetRewardsParameters(
       env, weak_java_brave_rewards_native_worker_.get(env));
 }
 
+void BraveRewardsNativeWorker::OnTermsOfServiceUpdateAccepted() {
+  JNIEnv* env = base::android::AttachCurrentThread();
+  Java_BraveRewardsNativeWorker_onTermsOfServiceUpdateAccepted(
+      env, weak_java_brave_rewards_native_worker_.get(env));
+}
+
 double BraveRewardsNativeWorker::GetVbatDeadline(JNIEnv* env) {
   if (parameters_) {
     if (!parameters_->vbat_deadline.is_null()) {
@@ -882,6 +888,19 @@ void BraveRewardsNativeWorker::GetExternalWallet(JNIEnv* env) {
     brave_rewards_service_->GetExternalWallet(
         base::BindOnce(&BraveRewardsNativeWorker::OnGetExternalWallet,
                        weak_factory_.GetWeakPtr()));
+  }
+}
+
+bool BraveRewardsNativeWorker::IsTermsOfServiceUpdateRequired(JNIEnv* env) {
+  if (!brave_rewards_service_) {
+    return false;
+  }
+  return brave_rewards_service_->IsTermsOfServiceUpdateRequired();
+}
+
+void BraveRewardsNativeWorker::AcceptTermsOfServiceUpdate(JNIEnv* env) {
+  if (brave_rewards_service_) {
+    brave_rewards_service_->AcceptTermsOfServiceUpdate();
   }
 }
 

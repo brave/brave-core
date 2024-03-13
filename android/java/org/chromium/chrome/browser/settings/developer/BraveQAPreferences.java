@@ -380,7 +380,7 @@ public class BraveQAPreferences extends BravePreferenceFragment
     }
 
     @Override
-    public void OnResetTheWholeState(boolean success) {
+    public void onResetTheWholeState(boolean success) {
         if (success) {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();
