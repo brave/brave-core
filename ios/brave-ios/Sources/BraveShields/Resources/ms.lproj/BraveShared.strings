@@ -46,6 +46,24 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Tonton Dalam Pemain Brave";
 
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Kembali";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Disebabkan anda telah membuat permintaan untuk menyekat penjejak dan iklan secara tegas, Brave menyekat laman ini sebelum sambungan rangkaian yang pertama.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave telah menghalang laman web berikut daripada pemuatan:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Laman Ini Mungkin Cuba Menjejaki Anda Merentas Laman Lain";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Teruskan";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Domain Disekat";
+
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Dayakan API JS Kawalan Privasi Global";
 

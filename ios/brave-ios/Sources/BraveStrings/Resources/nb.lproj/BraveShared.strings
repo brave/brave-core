@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Åpne";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Rewards";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Belønninger";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields og -personvern";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields og personvern";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Annonser og andre ekle ting blokkert";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "Kopier informasjon om appen til utklippstavlen.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Kopier informasjon om appstørrelse til utklippstavlen.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Lær mer";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Den lagrede påloggingsinformasjonen slettes permanent.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Åpne nettsted";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo er en AI-basert smart assistent – bygget inn i nettleseren";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Dagens toppsaker i en privat nyhetsfeed";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave News";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Nyheter";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Følg emner som interesserer deg";
 
@@ -3566,16 +3582,13 @@
 "ViewOn" = "Vis på %@";
 
 /* Explanation for warning alert why the microphone access required. */
-"voice.search.microphone.description.required" = "Gi mikrofontilgang i iOS-systeminnstillingene for Brave for å bruke anpónyme talesøk.";
+"voice.search.microphone.description.required" = "Gi mikrofontilgang i iOS-systeminnstillingene for Brave for å bruke anonyme talesøk.";
 
 /* Title for warning alert microphone access is required. */
 "voice.search.microphone.title.required" = "Mikrofontilgang kreves";
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave verken lagrer eller deler talesøkene dine.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Talesøk";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "aktiver";
