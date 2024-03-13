@@ -12,6 +12,8 @@
 #undef ParseJSON
 
 namespace {
+// NOTE: Do not add any host which has TLS terminated by Cloudflare.
+// Hosts backed by Universal SSL do not have stable CAs.
 constexpr std::string_view kBravePinsJson = R"brave_pins_json({
   "pinsets": [
     {
