@@ -11,13 +11,13 @@
 "wallet.limitedModelStatusTitle" = "限制";
 
 /* The title of action for quick menu which displaying advanced settings */
-"wallet.quickMenuAdvancedSettingsActionTitle" = "進階設定";
+"wallet.quickMenuAdvancedSettingsActionTitle" = "进阶设定";
 
 /* The title of action for quick menu which presents payment screen for premium */
-"wallet.quickMenuGoPremiumActionTitle" = "訂閱 Premium";
+"wallet.quickMenuGoPremiumActionTitle" = "订阅 Premium";
 
 /* The title of action for quick menu which display subscription management view */
-"wallet.quickMenuManageSubscriptionActionTitle" = "管理訂閱";
+"wallet.quickMenuManageSubscriptionActionTitle" = "管理订阅";
 
 /* The title of action for quick menu which starts a new chat */
 "wallet.quickMenuNewChatActionTitle" = "新会话";
