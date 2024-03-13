@@ -8,6 +8,7 @@
 #include "base/test/scoped_feature_list.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/serving/permission_rules/permission_rule_feature.h"
+#include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -27,7 +28,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -42,7 +43,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -59,7 +60,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -75,7 +76,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -94,7 +95,7 @@ TEST_F(
 
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
 
@@ -107,7 +108,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);
@@ -121,7 +122,7 @@ TEST_F(BraveAdsMediaPermissionRuleTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*is_visible=*/true);
+      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
 
   NotifyTabDidStartPlayingMedia(/*tab_id=*/1);
   NotifyTabDidStartPlayingMedia(/*tab_id=*/2);

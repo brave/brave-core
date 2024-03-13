@@ -187,7 +187,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdViewedEvent(
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewed, /*user_data=*/{});
 }
 
 void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
@@ -201,7 +201,7 @@ void NewTabPageAdHandler::OnDidFireNewTabPageAdClickedEvent(
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+                    ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 }  // namespace brave_ads

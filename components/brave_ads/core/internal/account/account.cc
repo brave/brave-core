@@ -77,7 +77,8 @@ void Account::GetStatement(GetStatementOfAccountsCallback callback) {
 void Account::Deposit(const std::string& creative_instance_id,
                       const std::string& segment,
                       const AdType ad_type,
-                      const ConfirmationType confirmation_type) const {
+                      const ConfirmationType confirmation_type,
+                      base::Value::Dict user_data) const {
   CHECK(!creative_instance_id.empty());
   CHECK_NE(AdType::kUndefined, ad_type);
   CHECK_NE(ConfirmationType::kUndefined, confirmation_type);
@@ -91,8 +92,8 @@ void Account::Deposit(const std::string& creative_instance_id,
   deposit->GetValue(
       creative_instance_id,
       base::BindOnce(&Account::DepositCallback, weak_factory_.GetWeakPtr(),
-                     creative_instance_id, segment, ad_type,
-                     confirmation_type));
+                     creative_instance_id, segment, ad_type, confirmation_type,
+                     std::move(user_data)));
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -101,6 +102,7 @@ void Account::DepositCallback(const std::string& creative_instance_id,
                               const std::string& segment,
                               const AdType ad_type,
                               const ConfirmationType confirmation_type,
+                              base::Value::Dict user_data,
                               const bool success,
                               const double value) const {
   if (!success) {
@@ -109,29 +111,33 @@ void Account::DepositCallback(const std::string& creative_instance_id,
   }
 
   ProcessDeposit(creative_instance_id, segment, value, ad_type,
-                 confirmation_type);
+                 confirmation_type, std::move(user_data));
 }
 
 void Account::ProcessDeposit(const std::string& creative_instance_id,
                              const std::string& segment,
                              const double value,
                              const AdType ad_type,
-                             const ConfirmationType confirmation_type) const {
+                             const ConfirmationType confirmation_type,
+                             base::Value::Dict user_data) const {
   if (!UserHasJoinedBraveRewards()) {
-    return SuccessfullyProcessedDeposit(BuildTransaction(
-        creative_instance_id, segment, value, ad_type, confirmation_type));
+    return SuccessfullyProcessedDeposit(
+        BuildTransaction(creative_instance_id, segment, value, ad_type,
+                         confirmation_type),
+        std::move(user_data));
   }
 
   AddTransaction(
       creative_instance_id, segment, value, ad_type, confirmation_type,
       base::BindOnce(&Account::ProcessDepositCallback,
                      weak_factory_.GetWeakPtr(), creative_instance_id, ad_type,
-                     confirmation_type));
+                     confirmation_type, std::move(user_data)));
 }
 
 void Account::ProcessDepositCallback(const std::string& creative_instance_id,
                                      const AdType ad_type,
                                      const ConfirmationType confirmation_type,
+                                     base::Value::Dict user_data,
                                      const bool success,
                                      const TransactionInfo& transaction) const {
   if (!success) {
@@ -139,18 +145,18 @@ void Account::ProcessDepositCallback(const std::string& creative_instance_id,
                                   confirmation_type);
   }
 
-  SuccessfullyProcessedDeposit(transaction);
+  SuccessfullyProcessedDeposit(transaction, std::move(user_data));
 }
 
-void Account::SuccessfullyProcessedDeposit(
-    const TransactionInfo& transaction) const {
+void Account::SuccessfullyProcessedDeposit(const TransactionInfo& transaction,
+                                           base::Value::Dict user_data) const {
   BLOG(3, "Successfully processed deposit for "
               << transaction.ad_type << " with creative instance id "
               << transaction.creative_instance_id << " and "
               << transaction.confirmation_type << " valued at "
               << transaction.value);
 
-  confirmations_->Confirm(transaction);
+  confirmations_->Confirm(transaction, std::move(user_data));
 
   NotifyDidProcessDeposit(transaction);
 

@@ -8,6 +8,7 @@
 
 #include <cstdint>
 
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
@@ -29,7 +30,7 @@ class SiteVisitObserverMock : public SiteVisitObserver {
               OnMaybeLandOnPage,
               (const AdInfo& ad, const base::Time maybe_at));
 
-  MOCK_METHOD(void, OnDidLandOnPage, (const AdInfo& ad));
+  MOCK_METHOD(void, OnDidLandOnPage, (const TabInfo& tab, const AdInfo& ad));
 
   MOCK_METHOD(void, OnDidNotLandOnPage, (const AdInfo& ad));
 

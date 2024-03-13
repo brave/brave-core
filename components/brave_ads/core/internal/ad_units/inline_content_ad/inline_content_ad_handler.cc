@@ -201,7 +201,7 @@ void InlineContentAdHandler::OnDidFireInlineContentAdViewedEvent(
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewed, /*user_data=*/{});
 }
 
 void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
@@ -215,7 +215,7 @@ void InlineContentAdHandler::OnDidFireInlineContentAdClickedEvent(
   HistoryManager::GetInstance().Add(ad, ConfirmationType::kClicked);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kClicked);
+                    ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 void InlineContentAdHandler::OnTabDidChange(const TabInfo& tab) {

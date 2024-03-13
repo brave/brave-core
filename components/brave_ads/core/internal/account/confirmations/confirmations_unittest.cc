@@ -46,7 +46,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForRewardsUser) {
       /*should_use_random_uuids=*/false);
 
   // Act
-  confirmations_->Confirm(transaction);
+  confirmations_->Confirm(transaction, /*user_data=*/{});
 
   // Assert
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;
@@ -64,7 +64,7 @@ TEST_F(BraveAdsConfirmationsTest, ConfirmForNonRewardsUser) {
       /*should_use_random_uuids=*/false);
 
   // Act
-  confirmations_->Confirm(transaction);
+  confirmations_->Confirm(transaction, /*user_data=*/{});
 
   // Assert
   base::MockCallback<database::table::GetConfirmationQueueCallback> callback;

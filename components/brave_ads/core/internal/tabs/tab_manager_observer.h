@@ -22,7 +22,7 @@ class TabManagerObserver : public base::CheckedObserver {
   // Invoked when the tab specfied by `id` changes focus.
   virtual void OnTabDidChangeFocus(const int32_t tab_id) {}
 
-  // Invoked when the tab specified by `id` is updated.
+  // Invoked when the `tab` is updated.
   virtual void OnTabDidChange(const TabInfo& tab) {}
 
   // Invoked when a new tab is opened for the specified `id`.

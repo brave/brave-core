@@ -189,6 +189,7 @@ void TabManager::OnNotifyTabDidStopPlayingMedia(const int32_t tab_id) {
 
 void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
                                       const std::vector<GURL>& redirect_chain,
+                                      const int32_t http_response_status_code,
                                       const bool is_visible) {
   const bool is_existing_tab = !!MaybeGetForId(tab_id);
 
@@ -198,6 +199,8 @@ void TabManager::OnNotifyTabDidChange(const int32_t tab_id,
   if (redirect_chain_did_change) {
     tab.redirect_chain = redirect_chain;
   }
+
+  tab.http_response_status_code = http_response_status_code;
 
   if (!is_visible) {
     BLOG(7, "Tab id " << tab_id << " is occluded");

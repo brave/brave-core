@@ -8,7 +8,6 @@
 
 #include <cstdint>
 #include <optional>
-#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/observer_list.h"
@@ -44,21 +43,19 @@ class SiteVisit final : public TabManagerObserver {
 
   void SetLastClickedAd(const AdInfo& ad) { last_clicked_ad_ = ad; }
 
-  void MaybeLandOnPage(int32_t tab_id, const std::vector<GURL>& redirect_chain);
+  void MaybeLandOnPage(const TabInfo& tab);
 
  private:
-  void CheckIfLandedOnPage(int32_t tab_id,
-                           const std::vector<GURL>& redirect_chain);
-  void CheckIfLandedOnPageCallback(int32_t tab_id,
-                                   const std::vector<GURL>& redirect_chain);
+  void CheckIfLandedOnPage(const TabInfo& tab);
+  void CheckIfLandedOnPageCallback(const TabInfo& tab);
 
-  void LandOnPage(const AdInfo& ad);
-  void LandOnPageCallback(const AdInfo& ad, bool success);
+  void LandOnPage(const TabInfo& tab, const AdInfo& ad);
+  void LandOnPageCallback(const TabInfo& tab, const AdInfo& ad, bool success);
 
   void CancelPageLand(int32_t tab_id);
 
   void NotifyMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) const;
-  void NotifyDidLandOnPage(const AdInfo& ad) const;
+  void NotifyDidLandOnPage(const TabInfo& tab, const AdInfo& ad) const;
   void NotifyDidNotLandOnPage(const AdInfo& ad) const;
   void NotifyCanceledPageLand(const AdInfo& ad, int32_t tab_id) const;
 

@@ -284,7 +284,8 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(creative_ad.creative_instance_id, creative_ad.segment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd, ConfirmationType::kViewed,
+                    /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
@@ -299,7 +300,7 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
 
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
-                    ConfirmationType::kClicked);
+                    ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
@@ -316,7 +317,8 @@ TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {
   EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange).Times(0);
 
   account_->Deposit(kMissingCreativeInstanceId, kSegment,
-                    AdType::kNotificationAd, ConfirmationType::kViewed);
+                    AdType::kNotificationAd, ConfirmationType::kViewed,
+                    /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, GetStatement) {
