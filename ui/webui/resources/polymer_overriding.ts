@@ -9,7 +9,6 @@
 import 'chrome://resources/brave/br_elements/br_toolbar/br_toolbar.js'
 import 'chrome://resources/brave/br_elements/br_shared_style.css.js'
 import './overrides/cr_button_override.css.js'
-import './overrides/cr_toggle_override.css.js'
 
 import { html as polymerHtml, mixinBehaviors, Polymer, PolymerElement } from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 
@@ -370,5 +369,5 @@ export function html(strings, ...values) {
 }
 
 // Overrides for all pages
-RegisterStyleOverrideName('cr-toggle', 'cr-toggle-override')
+// RegisterStyleOverrideName('cr-toggle', 'cr-toggle-override')
 RegisterStyleOverrideName('cr-button', 'cr-button-override')
