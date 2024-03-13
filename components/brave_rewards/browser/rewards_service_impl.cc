@@ -39,6 +39,7 @@
 #include "base/task/thread_pool.h"
 #include "base/time/time.h"
 #include "brave/browser/ui/webui/brave_rewards_source.h"
+#include "brave/components/api_request_helper/api_request_helper.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_names.h"
 #include "brave/components/brave_rewards/browser/android_util.h"
 #include "brave/components/brave_rewards/browser/diagnostic_log.h"
@@ -76,7 +77,6 @@
 #include "net/cookies/canonical_cookie.h"
 #include "net/cookies/cookie_util.h"
 #include "net/http/http_status_code.h"
-#include "services/data_decoder/public/cpp/json_sanitizer.h"
 #include "services/network/public/cpp/resource_request.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
@@ -1075,16 +1075,19 @@ void RewardsServiceImpl::OnURLLoaderComplete(
             [](std::unique_ptr<std::string> response_body,
                LoadURLCallback callback, mojom::UrlResponsePtr response,
                scoped_refptr<base::SequencedTaskRunner> post_response_runner) {
-              data_decoder::JsonSanitizer::Sanitize(
+              api_request_helper::SanitizeAndParseJson(
                   *response_body,
                   base::BindOnce(
                       [](LoadURLCallback callback,
                          mojom::UrlResponsePtr response,
                          const scoped_refptr<base::SequencedTaskRunner>&
                              post_response_runner,
-                         data_decoder::JsonSanitizer::Result result) {
+                         api_request_helper::ValueOrError result) {
                         if (result.has_value()) {
-                          response->body = std::move(result).value();
+                          std::string json;
+                          base::JSONWriter::Write(std::move(result).value(),
+                                                  &json);
+                          response->body = std::move(json);
                         } else {
                           response->body = {};
                           VLOG(0) << "Response sanitization error: "

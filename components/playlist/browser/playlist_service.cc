@@ -1381,8 +1381,7 @@ void PlaylistService::OnResponseStarted(const std::string& url,
   streaming_observer_->OnResponseStarted(url, content_length);
 }
 
-void PlaylistService::OnDataReceived(
-    data_decoder::DataDecoder::ValueOrError result) {
+void PlaylistService::OnDataReceived(api_request_helper::ValueOrError result) {
   if (!result.has_value()) {
     return;
   }

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/base64.h"
+#include "base/json/json_writer.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
 #include "brave/components/brave_wallet/browser/eth_data_builder.h"
@@ -198,7 +199,7 @@ void NftMetadataFetcher::FetchMetadata(
     }
 
     // Sanitize JSON
-    data_decoder::JsonSanitizer::Sanitize(
+    api_request_helper::SanitizeAndParseJson(
         std::move(metadata_json),
         base::BindOnce(&NftMetadataFetcher::OnSanitizeTokenMetadata,
                        weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
@@ -226,7 +227,7 @@ void NftMetadataFetcher::FetchMetadata(
 
 void NftMetadataFetcher::OnSanitizeTokenMetadata(
     GetTokenMetadataIntermediateCallback callback,
-    data_decoder::JsonSanitizer::Result result) {
+    api_request_helper::ValueOrError result) {
   if (!result.has_value()) {
     VLOG(1) << "Data URI JSON validation error:" << result.error();
     std::move(callback).Run(
@@ -235,7 +236,10 @@ void NftMetadataFetcher::OnSanitizeTokenMetadata(
     return;
   }
 
-  std::move(callback).Run(*result, 0, "");  // 0 is kSuccess
+  // TODO(apaymyshev): parse metadata in wallet's backend
+  std::string json;
+  base::JSONWriter::Write(std::move(result).value(), &json);
+  std::move(callback).Run(std::move(json), 0, "");  // 0 is kSuccess
 }
 
 void NftMetadataFetcher::OnGetTokenMetadataPayload(
