@@ -77,9 +77,11 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
               })",
           {GetBrowserVersionNumber()}, nullptr));
 
+  auto user_data = base::Value::Dict().Set("foo", "bar");
+
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -174,10 +176,12 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
       /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
 
+  auto user_data = base::Value::Dict().Set("foo", "bar");
+
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(UserDataInfo{}));
-  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
+  BuildConfirmationUserData(transaction, std::move(user_data), callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,

@@ -16,8 +16,25 @@
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
 #include "brave/components/brave_ads/core/public/account/confirmations/confirmation_type.h"
 #include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "net/http/http_status_code.h"
 
 namespace brave_ads {
+
+namespace {
+
+constexpr char kHttpResponseStatusCodeKey[] = "httpStatusResponseCode";
+
+base::Value::Dict BuildTransferedAdEventUserData(const TabInfo& tab) {
+  base::Value::Dict user_data;
+
+  if (tab.http_response_status_code != net::HTTP_OK) {
+    user_data.Set(kHttpResponseStatusCodeKey, tab.http_response_status_code);
+  }
+
+  return user_data;
+}
+
+}  // namespace
 
 AdHandler::AdHandler(Account& account)
     : account_(account),
@@ -142,7 +159,8 @@ void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
   BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab.id);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kLanded, /*user_data=*/{});
+                    ConfirmationType::kLanded,
+                    BuildTransferedAdEventUserData(tab));
 }
 
 void AdHandler::OnDidNotLandOnPage(const AdInfo& ad) {
