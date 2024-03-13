@@ -131,6 +131,7 @@ const Config = function () {
   this.braveCoreDir = braveCoreDir
   this.buildToolsDir = path.join(this.srcDir, 'build')
   this.resourcesDir = path.join(this.rootDir, 'resources')
+  this.depotToolsRepo = getEnvConfig(['projects', 'depot_tools', 'repository', 'url'])
   this.depotToolsDir = path.join(this.braveCoreDir, 'vendor', 'depot_tools')
   this.defaultGClientFile = path.join(this.rootDir, '.gclient')
   this.gClientFile = process.env.BRAVE_GCLIENT_FILE || this.defaultGClientFile
@@ -776,10 +777,19 @@ Config.prototype.addPythonPathToEnv = function (env, addPath) {
 }
 
 Config.prototype.getProjectVersion = function (projectName) {
-  return getEnvConfig(['projects', projectName, 'tag']) || getEnvConfig(['projects', projectName, 'branch'])
+  return (
+    getEnvConfig(['projects', projectName, 'revision']) ||
+    getEnvConfig(['projects', projectName, 'tag']) ||
+    getEnvConfig(['projects', projectName, 'branch'])
+  )
 }
 
-Config.prototype.getProjectRef = function (projectName) {
+Config.prototype.getProjectRef = function (projectName, defaultValue = 'origin/master') {
+  const revision = getEnvConfig(['projects', projectName, 'revision'])
+  if (revision) {
+    return revision
+  }
+
   const tag = getEnvConfig(['projects', projectName, 'tag'])
   if (tag) {
     return `refs/tags/${tag}`
@@ -790,7 +800,7 @@ Config.prototype.getProjectRef = function (projectName) {
     return `origin/${branch}`
   }
 
-  return 'origin/master'
+  return defaultValue
 }
 
 Config.prototype.update = function (options) {
