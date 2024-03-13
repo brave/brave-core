@@ -16,6 +16,7 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block_reader.h"
+#include "net/http/http_status_code.h"
 
 namespace {
 
@@ -123,9 +124,24 @@ void BlockOrchestrator::BuildResponse(
 }
 
 void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
-                                    bool is_completed) {
+                                    const bool is_completed,
+                                    const int& error_code) {
   LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed:"
-            << is_completed << " Cid:" << (block ? block->Cid() : "n/a");
+            << is_completed << " Cid:" << (block ? block->Cid() : "n/a")
+            << " error_code:" << error_code;
+
+  if (is_completed && error_code != net::HTTP_OK) {
+    LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed && error_code != net::HTTP_OK";
+    request_callback_.Run(
+              std::move(request_),
+              std::make_unique<IpfsTrustlessResponse>(
+                  kDefaultMimeType, error_code,
+                  nullptr, "",
+                  0, true));
+    return;
+  }
+LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead #10";
+
   if (is_completed && !block && request_callback_) {
     LOG(INFO)
         << "[IPFS] BlockOrchestrator::OnBlockRead Block collecting finished";
@@ -145,7 +161,7 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
 
     // May be?????    Reset();
     return;
-  }
+  } 
 
   dag_nodes_.try_emplace(block->Cid(), std::move(block));
 }
@@ -167,13 +183,13 @@ void BlockOrchestrator::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
           (const char*)start_block->second->GetContentData()->data(),
           start_block->second->GetContentData()->size());
       auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
-LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
-      request_callback_.Run(std::move(request_),
-                            std::make_unique<IpfsTrustlessResponse>(
-                                mime_type.value_or(kDefaultMimeType), 200,
-                                start_block->second->GetContentData(), "",
-                                start_block->second->GetContentData()->size(),
-                                true));
+      LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
+      request_callback_.Run(
+          std::move(request_),
+          std::make_unique<IpfsTrustlessResponse>(
+              mime_type.value_or(kDefaultMimeType), net::HTTP_OK,
+              start_block->second->GetContentData(), "",
+              start_block->second->GetContentData()->size(), true));
     } else if (start_block != dag_nodes_.end() &&
                start_block->second
                    ->IsMetadata()) {  // If it is multiblock file (TODO: think
@@ -237,14 +253,14 @@ void BlockOrchestrator::BlockChainForCid(const uint64_t& size,
   //           << "\r\nsize:" << size
   //           ;
   if (request_callback_ && block->IsContent()) {
-      std::string_view vontent_view(
-          (const char*)block->GetContentData()->data(),
-          block->GetContentData()->size());
-      auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
-LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
-    request_callback_.Run(
-        nullptr, std::make_unique<IpfsTrustlessResponse>(
-                     mime_type.value_or(kDefaultMimeType), 200, block->GetContentData(), "", size, last_chunk));
+    std::string_view vontent_view((const char*)block->GetContentData()->data(),
+                                  block->GetContentData()->size());
+    auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
+    LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
+    request_callback_.Run(nullptr,
+                          std::make_unique<IpfsTrustlessResponse>(
+                              mime_type.value_or(kDefaultMimeType), 200,
+                              block->GetContentData(), "", size, last_chunk));
   }
 }
 

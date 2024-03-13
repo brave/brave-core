@@ -37,7 +37,7 @@ class BlockOrchestrator {
   FRIEND_TEST_ALL_PREFIXES(BlockOrchestratorUnitTest, RequestFile);
   friend class BlockOrchestratorUnitTest;
 
-  void OnBlockRead(std::unique_ptr<Block> block, bool is_completed);
+  void OnBlockRead(std::unique_ptr<Block> block, const bool is_completed, const int& error_code);
   void Reset();
 
   void ProcessTarget(std::unique_ptr<TrustlessTarget> target);

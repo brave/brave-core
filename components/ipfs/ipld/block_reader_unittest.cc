@@ -233,7 +233,7 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
   int32_t complete_counter{0};
   auto request_callback = base::BindLambdaForTesting(
       [&all_blocks, &complete_counter](std::unique_ptr<ipfs::ipld::Block> block,
-                                       bool is_completed) {
+                                       const bool is_completed, const int& error_code) {
         if (is_completed && !block) {
           complete_counter++;
           return;
@@ -284,7 +284,7 @@ TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
   int32_t complete_counter{0};
   auto request_callback = base::BindLambdaForTesting(
       [&all_blocks, &complete_counter](std::unique_ptr<ipfs::ipld::Block> block,
-                                       bool is_completed) {
+                                       const bool is_completed, const int& error_code) {
         if (is_completed && !block) {
           complete_counter++;
           return;

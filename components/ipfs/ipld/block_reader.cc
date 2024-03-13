@@ -33,7 +33,7 @@ base::raw_ptr<BlockFactory> BlockReader::GetBlockFactory() {
   return block_factory_.get();
 }
 
-base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool)>
+base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool, const int&)>
 BlockReader::GetReadCallbackForTests(BlockReaderCallback callback) {
   return base::BindRepeating(&BlockReader::OnRequestDataReceived,
                              weak_ptr_factory_.GetWeakPtr(),

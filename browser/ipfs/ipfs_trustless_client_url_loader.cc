@@ -4,6 +4,7 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/browser/ipfs/ipfs_trustless_client_url_loader.h"
+#include <cstddef>
 #include <cstdint>
 #include <memory>
 #include <utility>
@@ -20,6 +21,7 @@
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
+#include "net/http/http_status_code.h"
 
 namespace ipfs {
 
@@ -71,19 +73,17 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
     return;
   }
 
-  // LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse "
-  //           << std::accumulate(response->body.begin(), response->body.end(),
-  //                              std::string(""),
-  //                              [](const std::string& a, const uint8_t& b) {
-  //                                return a + (char)b;
-  //                              });
-
   PrepareRespponseHead(response.get());
 
-  auto write_size = static_cast<uint32_t>(response->body->size());
+LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse #10 response->status:" << response->status << " response->body->size():" << (response->status  == net::HTTP_OK ? response->body->size() : 0);
+  auto write_size = static_cast<uint32_t>(response->status == net::HTTP_OK ? response->body->size() : 0);
+  const std::vector<uint8_t> empty_data{' '};
+
   MojoResult result = producer_handle_->WriteData(
-      &(*response->body)[0], &write_size, MOJO_WRITE_DATA_FLAG_NONE);
-  LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse result:" << result;
+      response->status  == net::HTTP_OK ? &(*response->body)[0] : nullptr,
+      &write_size,
+       MOJO_WRITE_DATA_FLAG_NONE);
+  LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse result:" << result << " response->is_last_chunk:" << response->is_last_chunk;
 
   if (response->is_last_chunk) {
     client_->OnReceiveResponse(std::move(response_head_),
@@ -99,6 +99,7 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
 
 void IpfsTrustlessClientUrlLoader::PrepareRespponseHead(
     ipld::IpfsTrustlessResponse* response) {
+LOG(INFO) << "[IPFS] PrepareRespponseHead #10 response:" << (response!=nullptr);
   if (!response_head_) {
     response_head_ = network::mojom::URLResponseHead::New();
 
@@ -107,17 +108,19 @@ void IpfsTrustlessClientUrlLoader::PrepareRespponseHead(
     response_head_->content_length = response->total_size;
     response_head_->mime_type = response->mime;
 
+LOG(INFO) << "[IPFS] PrepareRespponseHead #20 response->total_size:" << response->total_size << " response->status:" << response->status;
     //    LOG(INFO) << "[IPFS] PrepareRespponseHead total_size:" << total_size;
     if (mojo::CreateDataPipe(response->total_size, producer_handle_, consumer_handle_) !=
         MOJO_RESULT_OK) {
-      //      LOG(INFO) << "[IPFS] PrepareRespponseHead error";
+      LOG(INFO) << "[IPFS] PrepareRespponseHead error";
       client_->OnComplete(network::URLLoaderCompletionStatus(net::ERR_FAILED));
       client_.reset();
       //  MaybeDeleteSelf();
       return;
     }
 
-    std::string headers("HTTP/1.0 200 OK");
+    std::string headers("HTTP/1.1 " + base::NumberToString(response->status));
+LOG(INFO) << "[IPFS] PrepareRespponseHead #30 headers:" << headers;
     response_head_->headers = base::MakeRefCounted<net::HttpResponseHeaders>(
         net::HttpUtil::AssembleRawHeaders(headers));
     response_head_->headers->AddHeader(

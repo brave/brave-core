@@ -11,8 +11,10 @@
 #include "brave/components/ipfs/ipfs_network_utils.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/car_content_requester.h"
+#include "net/http/http_status_code.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 #include "services/network/public/cpp/simple_url_loader.h"
+#include "services/network/public/mojom/url_response_head.mojom.h"
 #include "url/gurl.h"
 
 namespace {
@@ -89,7 +91,7 @@ void ContentRequester::OnDataReceived(base::StringPiece string_piece,
   LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(std::move(data), false);
+    buffer_ready_callback_.Run(std::move(data), false, net::HTTP_OK);
   }
 
   if (!resume) {
@@ -107,8 +109,15 @@ void ContentRequester::OnRetry(base::OnceClosure start_retry) {
 void ContentRequester::OnComplete(bool success) {
   LOG(INFO) << "[IPFS] OnComplete success:" << success;
 
+  int response_code = -1;
+  if (url_loader_ && url_loader_->ResponseInfo() && url_loader_->ResponseInfo()->headers) {
+    response_code = url_loader_->ResponseInfo()->headers->response_code();
+
+    LOG(INFO) << "[IPFS] OnComplete response_code:" << response_code;
+  }
+
   if (buffer_ready_callback_) {
-    buffer_ready_callback_.Run(nullptr, true);
+    buffer_ready_callback_.Run(nullptr, true, response_code);
   }
 
   is_started_ = false;

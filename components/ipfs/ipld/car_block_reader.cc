@@ -51,7 +51,8 @@ absl::optional<base::Value> ParseJsonHelper(
 bool ProcessHeader(const std::vector<uint8_t>& block_data,
                    bool& is_header_retrieved,
                    ipfs::ipld::BlockReader::BlockReaderCallback const& callback,
-                   ipfs::ipld::BlockFactory* block_factory) {
+                   ipfs::ipld::BlockFactory* block_factory,
+                   const int& error_code) {
   auto carv1_header_result = ipfs::ipld::DecodeCarv1Header(block_data);
   DCHECK(carv1_header_result.error.error_code == 0)
       << carv1_header_result.error.error.c_str();
@@ -68,7 +69,7 @@ bool ProcessHeader(const std::vector<uint8_t>& block_data,
   roots_dict.Set("roots", std::move(roots_items));
 
   callback.Run(block_factory->CreateCarBlock(
-      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt), false);
+      "", base::Value(std::move(roots_dict)), nullptr, absl::nullopt), false, error_code);
   return true;
 }
 }  // namespace
@@ -83,11 +84,12 @@ CarBlockReader::~CarBlockReader() = default;
 void CarBlockReader::OnRequestDataReceived(
     BlockReaderCallback callback,
     std::unique_ptr<std::vector<uint8_t>> data,
-    const bool is_completed) {
+    const bool is_completed,
+    const int& error_code) {
   if (is_completed && !data) {
     is_header_retrieved_ = false;
     buffer_.clear();
-    callback.Run(nullptr, true);
+    callback.Run(nullptr, true, error_code);
     return;
   }
 
@@ -120,7 +122,7 @@ void CarBlockReader::OnRequestDataReceived(
 
     if (!is_header_retrieved_) {
       if (!ProcessHeader(block_data, is_header_retrieved_, callback,
-                         GetBlockFactory())) {
+                         GetBlockFactory(), error_code)) {
         return;
       }
       continue;
@@ -137,7 +139,7 @@ void CarBlockReader::OnRequestDataReceived(
                                         base::Value::Type::DICT);
       callback.Run(GetBlockFactory()->CreateCarBlock(
           block_info_result.cid.c_str(), std::move(json_value), nullptr,
-          absl::nullopt), false);
+          absl::nullopt), false, error_code);
       continue;
     }
 
@@ -151,7 +153,7 @@ void CarBlockReader::OnRequestDataReceived(
         block_content.cid.c_str(), base::Value(),
         std::make_unique<std::vector<uint8_t>>(block_content.data.begin(),
                                                block_content.data.end()),
-        verified), false);
+        verified), false, error_code);
   }
 }
 

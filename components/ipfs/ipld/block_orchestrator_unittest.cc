@@ -114,7 +114,8 @@ class BlockOrchestratorUnitTest : public testing::Test {
   }
 
   void TestGetCarFileByIpfsCid(const std::string& ipfs_url,
-                               const std::string& car_file_name, const uint64_t& size) {
+                               const std::string& car_file_name,
+                               const uint64_t& size) {
     GURL url(ipfs_url);
     auto req = std::make_unique<IpfsTrustlessRequest>(
         url, base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
@@ -151,9 +152,10 @@ class BlockOrchestratorUnitTest : public testing::Test {
         [&](std::unique_ptr<IpfsTrustlessRequest> request,
             std::unique_ptr<IpfsTrustlessResponse> response) {
           EXPECT_TRUE(response);
-          received_data.insert(received_data.end(), response->body.begin(),
-                               response->body.end());
-          if(response->is_last_chunk){
+          EXPECT_TRUE(response->body);
+          received_data.insert(received_data.end(), response->body->begin(),
+                               response->body->end());
+          if (response->is_last_chunk) {
             last_chunk_received_counter++;
           }
           LOG(INFO) << "[IPFS] total_size: " << response->total_size;
@@ -181,13 +183,15 @@ class BlockOrchestratorUnitTest : public testing::Test {
 TEST_F(BlockOrchestratorUnitTest, RequestFile) {
   base::ranges::for_each(
       kOneFileExtractInputData, [this](const auto& item_case) {
-        TestGetCarFileByIpfsCid(item_case.ipfs_url, item_case.file_content, item_case.size);
+        TestGetCarFileByIpfsCid(item_case.ipfs_url, item_case.file_content,
+                                item_case.size);
       });
 }
 
 TEST_F(BlockOrchestratorUnitTest, RequestMultiblockFile) {
-        TestGetCarFileByIpfsCid("ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa", "subdir_multiblock.txt", 1026);
-  
+  TestGetCarFileByIpfsCid(
+      "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
+      "subdir_multiblock.txt", 1026);
 }
 
 }  // namespace ipfs::ipld

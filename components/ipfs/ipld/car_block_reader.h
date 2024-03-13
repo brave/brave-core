@@ -19,7 +19,8 @@ class CarBlockReader : public BlockReader {
  protected:
   void OnRequestDataReceived(BlockReaderCallback callback,
                              std::unique_ptr<std::vector<uint8_t>> data,
-                             const bool is_completed) override;
+                             const bool is_completed,
+                             const int& error_code) override;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(BlockReaderUnitTest, ReceiveBlocksByChunks);

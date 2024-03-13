@@ -65,7 +65,7 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
   {
     auto request_callback = base::BindLambdaForTesting(
         [&](std::unique_ptr<std::vector<uint8_t>> buffer,
-            const bool is_complete) {
+            const bool is_complete, const int& error_code) {
           EXPECT_TRUE(false) << "request_callback must not be called";
         });
     auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(
@@ -87,13 +87,14 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
     auto complete_callback_counter = 0;
     auto request_callback = base::BindLambdaForTesting(
         [&](std::unique_ptr<std::vector<uint8_t>> buffer,
-            const bool is_complete) {
+            const bool is_complete, const int& error_code) {
           if (!is_complete && buffer) {
             data_received_callback_counter++;
             for (char ch : *buffer) {
               EXPECT_EQ(ch, '%');
             }
           }
+          EXPECT_EQ(error_code, net::HTTP_OK);
           if (is_complete && !buffer) {
             complete_callback_counter++;
           }
@@ -143,7 +144,7 @@ TEST_F(CarContentRequesterUnitTest, ResponseByChunks) {
   auto request_callback = base::BindLambdaForTesting(
       [&data_received_callback_counter, &complete_callback_counter](
           std::unique_ptr<std::vector<uint8_t>> buffer,
-          const bool is_complete) {
+          const bool is_complete, const int& error_code) {
         if (!is_complete && buffer) {
           data_received_callback_counter++;
           for (char ch : *buffer) {
