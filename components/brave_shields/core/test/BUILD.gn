@@ -8,8 +8,12 @@ import("//testing/test.gni")
 source_set("unit_tests") {
   testonly = true
 
-  sources = [ "ad_block_component_service_unittest.cc" ]
+  sources = [
+    "ad_block_component_service_unittest.cc",
+    "ad_block_filters_provider_manager_unittest.cc",
+  ]
   deps = [
+    "//brave/components/brave_shields/content/test:test_support",
     "//brave/components/brave_shields/core/browser",
     "//testing/gtest",
   ]

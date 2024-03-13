@@ -61,6 +61,8 @@ class AdBlockComponentFiltersProvider : public AdBlockFiltersProvider {
 
   std::string GetNameForDebugging() override;
 
+  bool IsInitialized() const override;
+
  private:
   friend class ::AdBlockServiceTest;
   friend class ::DebounceBrowserTest;
