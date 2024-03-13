@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager_observer_mock.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -31,7 +30,7 @@ class BraveAdsTabManagerTest : public UnitTestBase {
                const std::vector<GURL>& redirect_chain,
                const bool is_visible) {
     const TabInfo tab(tab_id, redirect_chain,
-                      /*http_response_status_code=*/net::HTTP_OK,
+                      /*is_error_page=*/false,
                       /*is_playing_media=*/false);
 
     if (!is_visible) {
@@ -41,7 +40,7 @@ class BraveAdsTabManagerTest : public UnitTestBase {
     }
 
     NotifyTabDidChange(tab_id, redirect_chain,
-                       /*http_response_status_code=*/net::HTTP_OK, is_visible);
+                       /*is_error_page=*/false, is_visible);
   }
 
   void PlayMedia(const int32_t tab_id) {
@@ -96,12 +95,12 @@ TEST_F(BraveAdsTabManagerTest, OpenNewTab) {
       observer_mock_,
       OnDidOpenNewTab(TabInfo{/*id=*/1,
                               /*redirect_chain=*/{GURL("https://brave.com")},
-                              /*http_response_status_code=*/net::HTTP_OK,
+                              /*is_error_page=*/false,
                               /*is_playing_media=*/false}));
 
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/true);
 }
 
@@ -115,13 +114,13 @@ TEST_F(BraveAdsTabManagerTest, ChangeTab) {
               OnTabDidChange(TabInfo{
                   /*id=*/1,
                   /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-                  /*http_response_status_code=*/net::HTTP_OK,
+                  /*is_error_page=*/false,
                   /*is_playing_media=*/false}));
 
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/true);
 }
 
@@ -135,7 +134,7 @@ TEST_F(BraveAdsTabManagerTest, ChangeTabFocus) {
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/true);
 }
 
@@ -147,7 +146,7 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingOccludedTabIfSameUrl) {
   // Act & Assert
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/false);
 }
 
@@ -161,13 +160,13 @@ TEST_F(BraveAdsTabManagerTest, UpdateExistingOccludedTabIfDifferentUrl) {
               OnTabDidChange(TabInfo{
                   /*id=*/1,
                   /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-                  /*http_response_status_code=*/net::HTTP_OK,
+                  /*is_error_page=*/false,
                   /*is_playing_media=*/false}));
 
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/false);
 }
 
@@ -180,12 +179,12 @@ TEST_F(BraveAdsTabManagerTest, UpdateExistingVisibleTabIfSameUrl) {
   EXPECT_CALL(observer_mock_,
               OnTabDidChange(TabInfo{
                   /*id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-                  /*http_response_status_code=*/net::HTTP_OK,
+                  /*is_error_page=*/false,
                   /*is_playing_media=*/false}));
 
   NotifyTabDidChange(/*tab_id=*/1,
                      /*redirect_chain=*/{GURL("https://brave.com")},
-                     /*http_response_status_code=*/net::HTTP_OK,
+                     /*is_error_page=*/false,
                      /*is_visible=*/true);
 }
 
@@ -199,13 +198,13 @@ TEST_F(BraveAdsTabManagerTest, DoNotUpdateExistingVisibleTabIfDifferentUrl) {
               OnTabDidChange(TabInfo{
                   /*id=*/1,
                   /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-                  /*http_response_status_code=*/net::HTTP_OK,
+                  /*is_error_page=*/false,
                   /*is_playing_media=*/false}));
 
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_visible=*/true);
 }
 
@@ -219,13 +218,13 @@ TEST_F(BraveAdsTabManagerTest, UpdatedExistingVisibleTabIfDifferentUrl) {
               OnTabDidChange(TabInfo{
                   /*id=*/1,
                   /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-                  /*http_response_status_code=*/net::HTTP_OK,
+                  /*is_error_page=*/false,
                   /*is_playing_media=*/false}));
 
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 }
 
 TEST_F(BraveAdsTabManagerTest, CloseTab) {
@@ -283,7 +282,7 @@ TEST_F(BraveAdsTabManagerTest, GetVisible) {
   // Act & Assert
   const TabInfo tab{
       /*id=*/2, /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_playing_media=*/false};
   EXPECT_EQ(tab, TabManager::GetInstance().GetVisible());
 }
@@ -293,14 +292,14 @@ TEST_F(BraveAdsTabManagerTest, GetForId) {
   OpenTab(/*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
           /*is_visible=*/true);
 
-  OpenTab(/*id=*/2,
+  OpenTab(/*tab_id=*/2,
           /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
           /*is_visible=*/true);
 
   // Act & Assert
   const TabInfo tab{
       /*id=*/2, /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK,
+      /*is_error_page=*/false,
       /*is_playing_media=*/false};
   EXPECT_EQ(tab, TabManager::GetInstance().MaybeGetForId(2));
 }

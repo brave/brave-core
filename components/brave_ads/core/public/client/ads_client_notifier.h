@@ -97,12 +97,13 @@ class AdsClientNotifier {
   // Invoked when a browser tab is updated with the specified `redirect_chain`
   // containing a list of redirect URLs that occurred on the way to the current
   // page. The current page is the last one in the list (so even when there's no
-  // redirect, there should be one entry in the list). `is_visible` should be
-  // set to `true` if `tab_id` refers to the currently visible tab otherwise
-  // should be set to `false`.
+  // redirect, there should be one entry in the list). `is_error_page` should be
+  // set to `true` if an error occurred otherwise should be set to `false`.
+  // `is_visible` should be set to `true` if `tab_id` refers to the currently
+  // visible tab otherwise should be set to `false`.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
-                          int32_t http_response_status_code,
+                          bool is_error_page,
                           bool is_visible) const;
 
   // Invoked when a browser tab with the specified `tab_id` is closed.

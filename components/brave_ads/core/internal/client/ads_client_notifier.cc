@@ -179,18 +179,18 @@ void AdsClientNotifier::NotifyTabDidStopPlayingMedia(
 void AdsClientNotifier::NotifyTabDidChange(
     const int32_t tab_id,
     const std::vector<GURL>& redirect_chain,
-    const int32_t http_response_status_code,
+    const bool is_error_page,
     const bool is_visible) const {
   if (should_queue_notifications_) {
     pending_notifier_queue_->Add(base::BindOnce(
         &AdsClientNotifier::NotifyTabDidChange, weak_factory_.GetWeakPtr(),
-        tab_id, redirect_chain, http_response_status_code, is_visible));
+        tab_id, redirect_chain, is_error_page, is_visible));
     return;
   }
 
   for (auto& observer : observers_) {
-    observer.OnNotifyTabDidChange(tab_id, redirect_chain,
-                                  http_response_status_code, is_visible);
+    observer.OnNotifyTabDidChange(tab_id, redirect_chain, is_error_page,
+                                  is_visible);
   }
 }
 

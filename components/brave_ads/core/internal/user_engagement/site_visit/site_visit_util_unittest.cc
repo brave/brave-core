@@ -7,7 +7,6 @@
 
 #include "brave/components/brave_ads/core/internal/ad_units/ad_unittest_util.h"
 #include "brave/components/brave_ads/core/internal/common/unittest/unittest_base.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -19,11 +18,11 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnOccludedTab) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyTabDidChange(
       /*tab_id=*/2, /*redirect_chain=*/{GURL("https://bar.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(
@@ -35,7 +34,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnClosedTab) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   NotifyDidCloseTab(/*tab_id=*/1);
 
@@ -49,7 +48,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabWithNoTabRedirectChain) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(
@@ -61,7 +60,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabForMismatchingDomainOrHost) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://foo.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
   EXPECT_FALSE(DidLandOnPage(
@@ -73,7 +72,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPageWithoutUrlPath) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
   EXPECT_TRUE(DidLandOnPage(
@@ -85,7 +84,7 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidLandOnPageWithUrlPath) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/bar")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   // Act & Assert
   EXPECT_TRUE(DidLandOnPage(
