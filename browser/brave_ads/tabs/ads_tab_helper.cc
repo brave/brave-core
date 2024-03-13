@@ -164,6 +164,11 @@ void AdsTabHelper::DidFinishNavigation(
     return;
   }
 
+  http_response_status_code_ = response_headers->response_code();
+  if (http_response_status_code_ != net::HTTP_OK) {
+    return;
+  }
+
   if (!navigation_handle->IsSameDocument()) {
     should_process_ = tab_not_restored;
     return;
