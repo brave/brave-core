@@ -1283,10 +1283,14 @@ public class BraveRewardsPanel
                             TabUtils.openUrlInNewTab(false, BraveActivity.BRAVE_TERMS_PAGE);
                             dismiss();
                         });
+        String tosText =
+                mActivity.getResources().getString(R.string.rewards_tos_update_text)
+                        + "\n\n"
+                        + mActivity.getResources().getString(R.string.rewards_tos_update_link_text);
 
         SpannableString tosSpannableString =
                 SpanApplier.applySpans(
-                        mActivity.getResources().getString(R.string.rewards_tos_text),
+                        tosText,
                         new SpanInfo(
                                 "<reset>", "</reset>", resetClickableSpan, new UnderlineSpan()),
                         new SpanInfo("<tos>", "</tos>", tosClickableSpan, new UnderlineSpan()));
