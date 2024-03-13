@@ -23,7 +23,7 @@ public struct AIChatView: View {
   private var lastMessageId
 
   @State
-  private var customFeedbackIndex: Int?
+  private var customFeedbackInfo: AIChatFeedbackModelToast?
 
   @State
   private var isPremiumPaywallPresented = false
@@ -36,6 +36,9 @@ public struct AIChatView: View {
 
   @ObservedObject
   private var hasSeenIntro = Preferences.AIChat.hasSeenIntro
+
+  @ObservedObject
+  private var shouldShowFeedbackPremiumAd = Preferences.AIChat.showPremiumFeedbackAd
 
   var openURL: ((URL) -> Void)
 
@@ -129,7 +132,7 @@ public struct AIChatView: View {
                             responseContextMenuItems(for: index, turn: turn)
                           }
 
-                        if let feedbackIndex = customFeedbackIndex, feedbackIndex == index {
+                        if let feedbackInfo = customFeedbackInfo, feedbackInfo.turnId == index {
                           feedbackView
                         }
                       }
@@ -190,7 +193,7 @@ public struct AIChatView: View {
                 .onChange(of: model.conversationHistory) { _ in
                   scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
                 }
-                .onChange(of: customFeedbackIndex) { _ in
+                .onChange(of: customFeedbackInfo) { _ in
                   hideKeyboard()
                   withAnimation {
                     scrollViewReader.scrollTo(lastMessageId, anchor: .bottom)
@@ -376,11 +379,11 @@ public struct AIChatView: View {
       onSelected: {
         Task { @MainActor in
           let ratingId = await model.rateConversation(isLiked: false, turnId: UInt(turnIndex))
-          if ratingId != nil {
+          if let ratingId = ratingId {
             feedbackToast = .success(
               isLiked: false,
               onAddFeedback: {
-                customFeedbackIndex = turnIndex
+                customFeedbackInfo = AIChatFeedbackModelToast(turnId: turnIndex, ratingId: ratingId)
               }
             )
           } else {
@@ -429,8 +432,10 @@ public struct AIChatView: View {
 
   private var feedbackView: some View {
     AIChatFeedbackView(
+      premiumStatus: model.premiumStatus,
+      shouldShowPremiumAd: $shouldShowFeedbackPremiumAd.value,
       onSubmit: { category, feedback in
-        guard let feedbackIndex = customFeedbackIndex else {
+        guard let feedbackInfo = customFeedbackInfo else {
           feedbackToast = .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
           return
         }
@@ -439,18 +444,18 @@ public struct AIChatView: View {
           let success = await model.submitFeedback(
             category: category,
             feedback: feedback,
-            ratingId: "\(feedbackIndex)"
+            ratingId: feedbackInfo.ratingId
           )
 
           feedbackToast =
             success
-            ? .success(isLiked: true) : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
+            ? .submitted : .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
         }
 
-        customFeedbackIndex = nil
+        customFeedbackInfo = nil
       },
       onCancel: {
-        customFeedbackIndex = nil
+        customFeedbackInfo = nil
         feedbackToast = .none
       }
     )
@@ -459,7 +464,7 @@ public struct AIChatView: View {
       \.openURL,
       OpenURLAction { url in
         if url.host == "dismiss" {
-          //TODO: Dismiss feedback learn-more prompt
+          shouldShowFeedbackPremiumAd.value = false
         } else {
           openURL(url)
           dismiss()
@@ -523,6 +528,8 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .containerBackground))
 
             AIChatFeedbackView(
+              premiumStatus: .inactive,
+              shouldShowPremiumAd: .constant(true),
               onSubmit: {
                 print("Submitted Feedback: \($0) -- \($1)")
               },
