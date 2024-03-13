@@ -226,10 +226,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     getShouldSendPageContents()
   }
 
-  const switchModel = () => {
-    setIsFeatureMenuButtonOpen(true)
-  }
-
   const isMobile = React.useMemo(() => loadTimeData.getBoolean('isMobile'), [])
 
   React.useEffect(() => {
@@ -312,7 +308,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissLongPageWarning,
     dismissLongConversationInfo,
     updateShouldSendPageContents,
-    switchModel,
+    setIsFeatureMenuButtonOpen,
   }
 
   return (

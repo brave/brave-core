@@ -273,6 +273,10 @@ void AIChatUIPageHandler::GetAPIResponseError(
   std::move(callback).Run(active_chat_tab_helper_->GetCurrentAPIError());
 }
 
+void AIChatUIPageHandler::ResetAPIResponseError() {
+  active_chat_tab_helper_->ResetCurrentAPIError();
+}
+
 void AIChatUIPageHandler::GetCanShowPremiumPrompt(
     GetCanShowPremiumPromptCallback callback) {
   std::move(callback).Run(active_chat_tab_helper_->GetCanShowPremium());

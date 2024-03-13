@@ -28,6 +28,7 @@ export default function FeatureMenu() {
   return (
     <ButtonMenu
       isOpen={context.isFeatureMenuButtonOpen}
+      onClose={() => context.setIsFeatureMenuButtonOpen(false)}
     >
       <Button
         slot='anchor-content'

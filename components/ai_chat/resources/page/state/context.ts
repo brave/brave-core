@@ -41,7 +41,7 @@ export interface AIChatContext {
   dismissLongPageWarning: () => void
   dismissLongConversationInfo: () => void
   updateShouldSendPageContents: (shouldSend: boolean) => void
-  switchModel: () => void
+  setIsFeatureMenuButtonOpen: (shouldOpen: boolean) => void
 }
 
 export const defaultContext: AIChatContext = {
@@ -78,7 +78,7 @@ export const defaultContext: AIChatContext = {
   dismissLongPageWarning: () => {},
   dismissLongConversationInfo: () => {},
   updateShouldSendPageContents: () => {},
-  switchModel: () => {}
+  setIsFeatureMenuButtonOpen: () => {}
 }
 
 export default React.createContext<AIChatContext>(defaultContext)

@@ -601,6 +601,10 @@ mojom::APIError ConversationDriver::GetCurrentAPIError() {
   return current_error_;
 }
 
+void ConversationDriver::ResetCurrentAPIError() {
+  SetAPIError(mojom::APIError::None);
+}
+
 void ConversationDriver::GenerateQuestions() {
   DVLOG(1) << __func__;
   // This function should not be presented in the UI if the user has not

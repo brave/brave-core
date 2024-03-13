@@ -330,4 +330,16 @@
   <message name="IDS_AI_CHAT_CONTEXT_CREATE_SOCIAL_MEDIA_POST" desc="The text label of submenu for creating social media posts using selected text">
     Social media
   </message>
+  <message name="IDS_AI_CHAT_GO_PREMIUM_LABEL" desc="A label for button to convert users to premium">
+    Go premium
+  </message>
+  <message name="IDS_AI_CHAT_RATE_LIMIT_ERROR_FOR_GENERATED_QUESTIONS_LABEL" desc="Rate limit error message when user clicks on generate questions">
+    Couldn't generate suggested questions because you've reached the response limit. Switch to Premium to get a higher response limit and more advanced models, or try again.
+  </message>
+  <message name="IDS_AI_CHAT_PREMIUM_RATE_LIMIT_ERROR_FOR_GENERATED_QUESTIONS_LABEL" desc="Rate limit error message when user clicks on generate questions for premium users only">
+    Couldn't generate suggested questions because you've reached the response limit. In the meantime, you can switch to another model model to continue.
+  </message>
+  <message name="IDS_AI_CHAT_SWITCH_MODEL_LABEL" desc="A label for button for users to switch to a different AI model">
+    Switch model
+  </message>
 </grit-part>

@@ -14,6 +14,15 @@ import styles from './alerts.module.scss'
 function ErrorGeneratedQuestionsRateLimit() {
   const context = React.useContext(DataContext)
 
+  const handleDismiss = () => {
+    getPageHandlerInstance().pageHandler.resetAPIResponseError()
+  }
+
+  const switchModel = () => {
+    context.setIsFeatureMenuButtonOpen(true)
+    getPageHandlerInstance().pageHandler.resetAPIResponseError()
+  }
+
   return (
     <div className={styles.alert}>
       <Alert
@@ -28,7 +37,7 @@ function ErrorGeneratedQuestionsRateLimit() {
           kind='filled'
           onClick={() =>
             context.isPremiumUser
-              ? context.switchModel()
+              ? switchModel()
               : getPageHandlerInstance().pageHandler.goPremium()
           }
         >
@@ -39,7 +48,7 @@ function ErrorGeneratedQuestionsRateLimit() {
         <Button
           slot='actions'
           kind='plain-faint'
-          onClick={() => {}}
+          onClick={handleDismiss}
         >
           {getLocale('dismissButtonLabel')}
         </Button>
