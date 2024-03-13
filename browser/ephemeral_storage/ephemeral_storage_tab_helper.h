@@ -12,6 +12,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/unguessable_token.h"
 #include "brave/browser/ephemeral_storage/tld_ephemeral_lifetime.h"
+#include "components/content_settings/core/browser/cookie_settings.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/session_storage_namespace.h"
@@ -54,6 +55,7 @@ class EphemeralStorageTabHelper
   void UpdateShieldsState(const GURL& url);
 
   const base::raw_ptr<HostContentSettingsMap> host_content_settings_map_;
+  scoped_refptr<content_settings::CookieSettings> cookie_settings_;
   scoped_refptr<content::SessionStorageNamespace> session_storage_namespace_;
   scoped_refptr<TLDEphemeralLifetime> tld_ephemeral_lifetime_;
 

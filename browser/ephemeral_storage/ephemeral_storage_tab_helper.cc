@@ -10,6 +10,7 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
+#include "chrome/browser/content_settings/cookie_settings_factory.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
@@ -53,7 +54,9 @@ EphemeralStorageTabHelper::EphemeralStorageTabHelper(WebContents* web_contents)
     : WebContentsObserver(web_contents),
       content::WebContentsUserData<EphemeralStorageTabHelper>(*web_contents),
       host_content_settings_map_(HostContentSettingsMapFactory::GetForProfile(
-          web_contents->GetBrowserContext())) {
+          web_contents->GetBrowserContext())),
+      cookie_settings_(CookieSettingsFactory::GetForProfile(
+          Profile::FromBrowserContext(web_contents->GetBrowserContext()))) {
   DCHECK(base::FeatureList::IsEnabled(net::features::kBraveEphemeralStorage));
 
   // The URL might not be empty if this is a restored WebContents, for instance.
@@ -146,9 +149,14 @@ void EphemeralStorageTabHelper::UpdateShieldsState(const GURL& url) {
   if (!host_content_settings_map_ || !tld_ephemeral_lifetime_) {
     return;
   }
-  const bool shields_state =
+  const bool shields_enabled =
       brave_shields::GetBraveShieldsEnabled(host_content_settings_map_, url);
-  tld_ephemeral_lifetime_->SetShieldsStateOnHost(url.host(), shields_state);
+  const bool cookies_restricted =
+      brave_shields::GetCookieControlType(host_content_settings_map_,
+                                          cookie_settings_.get(), url) !=
+      brave_shields::ControlType::ALLOW;
+  tld_ephemeral_lifetime_->SetShieldsStateOnHost(
+      url.host(), shields_enabled && cookies_restricted);
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(EphemeralStorageTabHelper);
