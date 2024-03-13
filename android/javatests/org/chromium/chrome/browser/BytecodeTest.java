@@ -819,7 +819,8 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         OpenHistoryClustersDelegate.class,
-                        BooleanSupplier.class));
+                        BooleanSupplier.class,
+                        View.class));
         Assert.assertTrue(constructorsMatch(
                 "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
                 "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
@@ -1045,7 +1046,8 @@ public class BytecodeTest {
                         OmniboxSuggestionsDropdownScrollListener.class,
                         OpenHistoryClustersDelegate.class,
                         ObservableSupplier.class,
-                        boolean.class));
+                        boolean.class,
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/LocationBarMediator",
@@ -1159,7 +1161,8 @@ public class BytecodeTest {
                         BackPressManager.class,
                         Bundle.class,
                         MultiInstanceManager.class,
-                        BooleanSupplier.class));
+                        BooleanSupplier.class,
+                        View.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/bookmarks/BookmarkToolbar",
