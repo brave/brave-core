@@ -28,7 +28,6 @@ void BraveWaybackMachineDelegateImpl::AttachTabHelperIfNeeded(
 BraveWaybackMachineDelegateImpl::BraveWaybackMachineDelegateImpl() = default;
 BraveWaybackMachineDelegateImpl::~BraveWaybackMachineDelegateImpl() = default;
 
-
 void BraveWaybackMachineDelegateImpl::CreateInfoBar(
     content::WebContents* web_contents) {
   infobars::ContentInfoBarManager::FromWebContents(web_contents)

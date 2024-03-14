@@ -60,8 +60,9 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
 
   if (const net::HttpResponseHeaders* header =
           navigation_handle->GetResponseHeaders()) {
-    if (!ShouldAttachWaybackMachineInfoBar(header->response_code()))
+    if (!ShouldAttachWaybackMachineInfoBar(header->response_code())) {
       return;
+    }
 
     // Create infobar in the next loop for not blocking navigation.
     base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
