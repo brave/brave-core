@@ -21,6 +21,7 @@ import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -95,9 +96,12 @@ const tabTranslationKeys: TabMap<string> = {
   [TabType.Search]: 'searchTitle'
 }
 
+const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget')
 export default function Settings(props: Props) {
   const settingsMenuRef = React.createRef<any>()
-  const allowedTabTypes = React.useMemo(() => props.allowBackgroundCustomization ? tabTypes : tabTypes.filter(t => t !== TabType.BackgroundImage), [props.allowBackgroundCustomization])
+  const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
+    (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
+    (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
     ? TabType.BackgroundImage
     : TabType.BraveStats)

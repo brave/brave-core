@@ -8,7 +8,6 @@ import { useUnpaddedImageUrl } from "../../../brave_news/browser/resources/share
 import { icon } from "@brave/leo/tokens/css";
 import styled from "styled-components";
 
-// You can obtain one at https://mozilla.org/MPL/2.0/.
 const hide = { opacity: 0 }
 function SearchEngineIcon(props: React.DetailedHTMLProps<React.ImgHTMLAttributes<HTMLImageElement>, HTMLImageElement>) {
   const { src: oldSrc, ...rest } = props
