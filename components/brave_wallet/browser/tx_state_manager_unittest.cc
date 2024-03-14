@@ -425,6 +425,12 @@ TEST_F(TxStateManagerUnitTest, GetTransactionsByStatus) {
 }
 
 TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
+// Disable some logic unnecessary for DB init for this test. Otherwise this
+// causes timeouts on ASAN builds.
+#if defined(ADDRESS_SANITIZER)
+  tx_state_manager_->SetNoRetireForTesting(true);
+  delegate_->DisableWritesForTesting(true);
+#endif  // defined(ADDRESS_SANITIZER)
   for (size_t i = 0; i < 1000; ++i) {
     EthTxMeta meta(eth_account_id_, std::make_unique<EthTransaction>());
     meta.set_id(base::NumberToString(i));
@@ -439,6 +445,10 @@ TEST_F(TxStateManagerUnitTest, RetireOldTxMeta) {
     }
     ASSERT_TRUE(tx_state_manager_->AddOrUpdateTx(meta));
   }
+#if defined(ADDRESS_SANITIZER)
+  tx_state_manager_->SetNoRetireForTesting(false);
+  delegate_->DisableWritesForTesting(false);
+#endif  // defined(ADDRESS_SANITIZER)
 
   EXPECT_TRUE(tx_state_manager_->GetTx("0"));
   EthTxMeta meta1000(eth_account_id_, std::make_unique<EthTransaction>());
