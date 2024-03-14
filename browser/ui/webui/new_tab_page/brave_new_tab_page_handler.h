@@ -13,6 +13,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
+#include "brave/browser/ui/webui/new_tab_page/brave_new_tab_ui.h"
 #include "brave/components/brave_new_tab_ui/brave_new_tab_page.mojom.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "components/search_engines/template_url_service.h"
@@ -66,6 +67,7 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
       IsSearchPromotionEnabledCallback callback) override;
   void UseColorBackground(const std::string& color,
                           bool use_random_color) override;
+  void GetSearchEngines(GetSearchEnginesCallback callback) override;
 
   // Observe BraveNTPCustomBackgroundService.
   void OnBackgroundUpdated();

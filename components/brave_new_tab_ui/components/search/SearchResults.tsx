@@ -29,6 +29,12 @@ export default function SearchResults() {
 
   React.useEffect(() => {
     const listener = (result?: AutocompleteResult) => {
+      // The autocomplete provider generates a 'search-what-you-typed' result which includes
+      // the keyword (and is always for the default search engine). We filter it out, as it
+      // makes the results neater.
+      if (result) {
+        result.matches = result.matches.filter(r => r.type !== 'search-what-you-typed')
+      }
       setResult(result)
       setSelectedMatch(prev => {
         if (!result) return undefined
@@ -37,7 +43,8 @@ export default function SearchResults() {
           const defaultMatchIndex = result.matches.findIndex(r => r.allowedToBeDefaultMatch)
           if (defaultMatchIndex !== -1) return defaultMatchIndex
 
-          return undefined
+          // Fall back to setting the first item as the selected match.
+          return 0
         }
 
         if (prev >= result.matches.length) {
@@ -52,10 +59,7 @@ export default function SearchResults() {
   }, [])
 
   React.useEffect(() => {
-    const listener = (selection: OmniboxPopupSelection) => {
-      console.log("Set selection:", selection)
-      setSelectedMatch(selection.line)
-    }
+    const listener = (selection: OmniboxPopupSelection) => setSelectedMatch(selection.line)
     search.addSelectionListener(listener)
     return () => {
       search.removeSelectionListener(listener)
