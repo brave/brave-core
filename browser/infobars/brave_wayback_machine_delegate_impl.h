@@ -6,13 +6,18 @@
 #ifndef BRAVE_BROWSER_INFOBARS_BRAVE_WAYBACK_MACHINE_DELEGATE_IMPL_H_
 #define BRAVE_BROWSER_INFOBARS_BRAVE_WAYBACK_MACHINE_DELEGATE_IMPL_H_
 
+#include <memory>
+
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
 
 namespace content {
 class WebContents;
 }  // namespace content
 
-// TODO(simonhong): Move this to //brave/browser/wayback_machine.
+namespace infobars {
+class InfoBar;
+}  // namespace infobars
+
 class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
  public:
   static void AttachTabHelperIfNeeded(content::WebContents* web_contents);
@@ -27,7 +32,11 @@ class BraveWaybackMachineDelegateImpl : public BraveWaybackMachineDelegate {
 
  private:
   // BraveWaybackMachineDelegate overrides:
-  void ShowWaybackMachineDialog(content::WebContents* web_contents) override;
+  void CreateInfoBar(content::WebContents* web_contents) override;
+
+  std::unique_ptr<infobars::InfoBar> CreateInfoBarView(
+      std::unique_ptr<BraveWaybackMachineInfoBarDelegate> delegate,
+      content::WebContents* contents);
 };
 
 #endif  // BRAVE_BROWSER_INFOBARS_BRAVE_WAYBACK_MACHINE_DELEGATE_IMPL_H_
