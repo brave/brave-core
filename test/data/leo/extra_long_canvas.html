@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Leo test</title>
+</head>
+<body>
+    <script>
+      // Here we create 21 pages to test kMaxPreviewPages which is 20.
+      for (let i = 0; i < 21; i++) {
+        const div = document.createElement('div');
+        div.style.width = '559px';
+        div.style.height = '794px';
+
+        const canvas = document.createElement('canvas');
+        const context = canvas.getContext('2d');
+        canvas.width = 559
+        canvas.height = 794
+        context.font = '30px Arial';
+        if (i == 19) {
+          // This should be the last page because of the truncation.
+          context.fillText('This is the way.', 50, 100);
+        } else if (i == 20) {
+          // This will be truncated.
+          context.fillText('There is no way.', 50, 100);
+        }
+
+        div.appendChild(canvas);
+        document.body.appendChild(div);
+      }
+    </script>
+</body>
+</html>
+

@@ -75,6 +75,10 @@ class AIChatUI : public ui::UntrustedWebUIController
 
   static constexpr std::string GetWebUIName() { return "AIChatPanel"; }
 
+  ai_chat::AIChatUIPageHandler* GetPageHandlerForTesting() {
+    return page_handler_.get();
+  }
+
  private:
 #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
   // printing::mojo::PrintPreviewUI:

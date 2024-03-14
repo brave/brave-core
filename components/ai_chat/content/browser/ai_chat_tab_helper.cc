@@ -43,6 +43,10 @@
 
 namespace ai_chat {
 
+namespace {
+std::optional<uint32_t> g_max_page_content_length_for_testing;
+}  // namespace
+
 AIChatTabHelper::PDFA11yInfoLoadObserver::PDFA11yInfoLoadObserver(
     content::WebContents* web_contents,
     AIChatTabHelper* helper)
@@ -89,6 +93,12 @@ void AIChatTabHelper::BindPageContentExtractorHost(
   tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
 }
 
+// static
+void AIChatTabHelper::SetMaxContentLengthForTesting(
+    std::optional<uint32_t> max_length) {
+  g_max_page_content_length_for_testing = max_length;
+}
+
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
     AIChatMetrics* ai_chat_metrics,
@@ -125,7 +135,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
     FetchPageContent(web_contents(), "", std::nullopt,
-                     GetCurrentModel().max_page_content_length,
+                     GetMaxPageContentLength(),
                      std::move(pending_get_page_content_callback_));
   }
   pdf_load_observer_.reset();
@@ -137,8 +147,7 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
 void AIChatTabHelper::OnPreviewReady(
     const std::optional<std::vector<SkBitmap>>& bitmaps) {
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "", bitmaps,
-                     GetCurrentModel().max_page_content_length,
+    FetchPageContent(web_contents(), "", bitmaps, GetMaxPageContentLength(),
                      std::move(pending_get_page_content_callback_));
   }
 }
@@ -268,8 +277,7 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
       pending_get_page_content_callback_ = std::move(callback);
     } else {
       FetchPageContent(web_contents(), invalidation_token, std::nullopt,
-                       GetCurrentModel().max_page_content_length,
-                       std::move(callback));
+                       GetMaxPageContentLength(), std::move(callback));
     }
   }
 }
@@ -282,6 +290,13 @@ void AIChatTabHelper::BindPageContentExtractorReceiver(
     mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
   page_content_extractor_receiver_.reset();
   page_content_extractor_receiver_.Bind(std::move(receiver));
+}
+
+uint32_t AIChatTabHelper::GetMaxPageContentLength() {
+  if (g_max_page_content_length_for_testing) {
+    return *g_max_page_content_length_for_testing;
+  }
+  return GetCurrentModel().max_page_content_length;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

@@ -42,6 +42,7 @@ class FaviconService;
 }  // namespace favicon
 
 class AIChatUI;
+class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public AIChatTabHelper::Observer,
@@ -109,6 +110,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
 #endif
 
  private:
+  friend class ::AIChatUIBrowserTest;
   // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
