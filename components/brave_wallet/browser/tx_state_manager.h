@@ -66,6 +66,8 @@ class TxStateManager {
   void AddObserver(Observer* observer);
   void RemoveObserver(Observer* observer);
 
+  void SetNoRetireForTesting(bool no_retire);
+
  protected:
   // For derived classes to call to fill TxMeta properties.
   bool ValueToBaseTxMeta(const base::Value::Dict& value, TxMeta* tx_meta);
@@ -89,6 +91,7 @@ class TxStateManager {
   virtual std::unique_ptr<TxMeta> ValueToTxMeta(
       const base::Value::Dict& value) = 0;
 
+  bool no_retire_for_testing_ = false;
   raw_ptr<TxStorageDelegate> delegate_ = nullptr;
   raw_ptr<AccountResolverDelegate> account_resolver_delegate_ = nullptr;
   base::ObserverList<Observer> observers_;

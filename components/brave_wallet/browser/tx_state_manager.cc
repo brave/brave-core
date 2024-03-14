@@ -239,6 +239,10 @@ std::vector<std::unique_ptr<TxMeta>> TxStateManager::GetTransactionsByStatus(
 void TxStateManager::RetireTxByStatus(const std::string& chain_id,
                                       mojom::TransactionStatus status,
                                       size_t max_num) {
+  if (no_retire_for_testing_) {
+    return;
+  }
+
   if (status != mojom::TransactionStatus::Confirmed &&
       status != mojom::TransactionStatus::Rejected) {
     return;
@@ -270,6 +274,10 @@ void TxStateManager::AddObserver(TxStateManager::Observer* observer) {
 
 void TxStateManager::RemoveObserver(TxStateManager::Observer* observer) {
   observers_.RemoveObserver(observer);
+}
+
+void TxStateManager::SetNoRetireForTesting(bool no_retire) {
+  no_retire_for_testing_ = no_retire;
 }
 
 void TxStateManager::MigrateAddChainIdToTransactionInfo(PrefService* prefs) {
