@@ -320,11 +320,15 @@ void IKEv2ConnectionAPIImplMac::CheckConnectionImpl(const std::string& name) {
     NEVPNStatus current_status = [[vpn_manager connection] status];
     VLOG(2) << "CheckConnection: " << NEVPNStatusToString(current_status);
     switch (current_status) {
+      case NEVPNStatusReasserting:
+        // See this link for more details about why this status is ingored.
+        // https://github.com/brave/brave-browser/issues/29500#issuecomment-1989762108
+        VLOG(2) << "Ignore NEVPNStatusReasserting";
+        break;
       case NEVPNStatusConnected:
         OnConnected();
         break;
       case NEVPNStatusConnecting:
-      case NEVPNStatusReasserting:
         OnIsConnecting();
         break;
       case NEVPNStatusDisconnected:
