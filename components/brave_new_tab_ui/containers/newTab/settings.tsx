@@ -21,6 +21,7 @@ import { getLocale } from '$web-common/locale'
 import Button from '@brave/leo/react/button'
 import Icon from '@brave/leo/react/icon'
 import { useBraveNews } from '../../../brave_news/browser/resources/shared/Context'
+import { loadTimeData } from '$web-common/loadTimeData'
 
 // Tabs
 const BackgroundImageSettings = React.lazy(() => import('./settings/backgroundImage'))
@@ -28,6 +29,7 @@ const BraveStatsSettings = React.lazy(() => import('./settings/braveStats'))
 const TopSitesSettings = React.lazy(() => import('./settings/topSites'))
 const ClockSettings = React.lazy(() => import('./settings/clock'))
 const CardsSettings = React.lazy(() => import('./settings/cards'))
+const SearchSettings = React.lazy(() => import('./settings/search'))
 
 export interface Props {
   newTabData: NewTab.State
@@ -67,7 +69,8 @@ export enum TabType {
   TopSites = 'topSites',
   BraveNews = 'braveNews',
   Clock = 'clock',
-  Cards = 'cards'
+  Cards = 'cards',
+  Search = 'search'
 }
 
 const tabTypes = Object.values(TabType)
@@ -80,6 +83,7 @@ const tabIcons: TabMap<string> = {
   [TabType.Clock]: 'clock',
   [TabType.TopSites]: 'window-content',
   [TabType.Cards]: 'browser-ntp-widget',
+  [TabType.Search]: 'search'
 }
 
 const tabTranslationKeys: TabMap<string> = {
@@ -89,11 +93,15 @@ const tabTranslationKeys: TabMap<string> = {
   [TabType.Clock]: 'clockTitle',
   [TabType.TopSites]: 'topSitesTitle',
   [TabType.Cards]: 'cards',
+  [TabType.Search]: 'searchTitle'
 }
 
+const featureFlagSearchWidget = loadTimeData.getBoolean('featureFlagSearchWidget')
 export default function Settings(props: Props) {
   const settingsMenuRef = React.createRef<any>()
-  const allowedTabTypes = React.useMemo(() => props.allowBackgroundCustomization ? tabTypes : tabTypes.filter(t => t !== TabType.BackgroundImage), [props.allowBackgroundCustomization])
+  const allowedTabTypes = React.useMemo(() => tabTypes.filter(t =>
+    (props.allowBackgroundCustomization || t !== TabType.BackgroundImage) &&
+    (featureFlagSearchWidget || t !== TabType.Search)), [props.allowBackgroundCustomization])
   const [activeTab, setActiveTab] = React.useState(props.allowBackgroundCustomization
     ? TabType.BackgroundImage
     : TabType.BraveStats)
@@ -219,6 +227,7 @@ export default function Settings(props: Props) {
               braveRewardsSupported={props.braveRewardsSupported}
               showRewards={props.showRewards}
             />}
+            {activeTab === TabType.Search && <SearchSettings />}
           </React.Suspense>
         </SettingsFeatureBody>
       </SettingsContent>

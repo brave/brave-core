@@ -163,6 +163,7 @@ base::span<const webui::LocalizedString> GetWebUILocalizedStrings(
                {"topSitesTitle", IDS_BRAVE_NEW_TAB_TOP_SITES},
                {"statsTitle", IDS_BRAVE_NEW_TAB_STATS},
                {"clockTitle", IDS_BRAVE_NEW_TAB_CLOCK},
+               {"searchTitle", IDS_BRAVE_NEW_TAB_SEARCH},
                {"backgroundImageTitle", IDS_BRAVE_NEW_TAB_BACKGROUND_IMAGE},
                {"settingsNavigateBack", IDS_BRAVE_NEW_TAB_SETTINGS_BACK},
                {"braveBackgroundsTitle", IDS_BRAVE_NEW_TAB_BRAVE_BACKGROUND},
