@@ -173,7 +173,8 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
             @NonNull OpenHistoryClustersDelegate openHistoryClustersDelegate,
-            @Nullable BooleanSupplier overviewIncognitoSupplier) {
+            @Nullable BooleanSupplier overviewIncognitoSupplier,
+            @Nullable View baseChromeLayout) {
         super(
                 activity,
                 controlsSizer,
@@ -219,7 +220,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 initializeWithIncognitoColors,
                 backPressManager,
                 openHistoryClustersDelegate,
-                overviewIncognitoSupplier);
+                overviewIncognitoSupplier,
+                baseChromeLayout);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;
