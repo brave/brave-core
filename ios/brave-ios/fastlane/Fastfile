@@ -156,7 +156,7 @@ platform :ios do
   private_lane :scan_params do
     {
       project: "App/Client.xcodeproj",
-      scheme: "Debug",
+      scheme: "Debug (No Core)",
       code_coverage: true,
       output_types: "junit",
       output_files: "junit.xml",
