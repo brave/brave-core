@@ -102,6 +102,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
 
   func setupObservers() {
     guard !isObserving else { return }
+    self.assetManager.addUserAssetDataObserver(self)
     self.keyringServiceObserver = KeyringServiceObserver(
       keyringService: keyringService,
       _accountsChanged: {
@@ -308,7 +309,7 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
     var updatedUserAssets: [AssetViewModel] = []
     var updatedUserNFTs: [NFTAssetViewModel] = []
     for networkAssets in userNetworkAssets {
-      for token in networkAssets.tokens {
+      for token in networkAssets.tokens where token.visible {
         if token.isErc721 || token.isNft {
           guard Int(tokenBalances[token.id] ?? 0) > 0 else {
             // only show NFTs belonging to this account
@@ -429,5 +430,16 @@ class AccountActivityStore: ObservableObject, WalletObserverStore {
   func closeTransactionDetailsStore() {
     self.transactionDetailsStore?.tearDown()
     self.transactionDetailsStore = nil
+  }
+}
+
+extension AccountActivityStore: WalletUserAssetDataObserver {
+  public func cachedBalanceRefreshed() {
+  }
+
+  public func userAssetUpdated() {
+    // auto-discovery found new asset, user changed
+    // visibility status, or added new custom asset
+    update()
   }
 }
