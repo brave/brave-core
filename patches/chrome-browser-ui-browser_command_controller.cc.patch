@@ -1,0 +1,13 @@
+diff --git a/chrome/browser/ui/browser_command_controller.cc b/chrome/browser/ui/browser_command_controller.cc
+index 81a995b02dd7b752b1b1a0db371dd5627c5cbd84..32a02c83a0ad9e5a2aec3024384d4446b70f3c12 100644
+--- a/chrome/browser/ui/browser_command_controller.cc
++++ b/chrome/browser/ui/browser_command_controller.cc
+@@ -228,7 +228,7 @@ BrowserCommandController::BrowserCommandController(Browser* browser)
+       prefs::kDownloadRestrictions,
+       base::BindRepeating(&BrowserCommandController::UpdateSaveAsState,
+                           base::Unretained(this)));
+-#if !BUILDFLAG(IS_MAC)
++#if !BUILDFLAG(IS_MAC) && !BUILDFLAG(IS_WIN) && !BUILDFLAG(IS_LINUX)
+   profile_pref_registrar_.Add(
+       prefs::kFullscreenAllowed,
+       base::BindRepeating(

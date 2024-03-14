@@ -29,6 +29,9 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
 
+  // BrowserNonClientFrameView overrides:
+  void OnFullscreenStateChanged() override;
+
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
   BooleanPrefMember using_vertical_tabs_;

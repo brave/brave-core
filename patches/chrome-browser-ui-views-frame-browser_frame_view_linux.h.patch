@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/ui/views/frame/browser_frame_view_linux.h b/chrome/browser/ui/views/frame/browser_frame_view_linux.h
-index 46f1a23a093e2e26f30a2b0f0e9f939b28162378..7e7d4800351eb07a014eab4935e73f219835b4ef 100644
+index 46f1a23a093e2e26f30a2b0f0e9f939b28162378..bca1ead3844d197c3a873034aa76e9b2b1e8b711 100644
 --- a/chrome/browser/ui/views/frame/browser_frame_view_linux.h
 +++ b/chrome/browser/ui/views/frame/browser_frame_view_linux.h
 @@ -8,6 +8,7 @@
@@ -18,3 +18,14 @@ index 46f1a23a093e2e26f30a2b0f0e9f939b28162378..7e7d4800351eb07a014eab4935e73f21
   public:
    BrowserFrameViewLinux(BrowserFrame* frame,
                          BrowserView* browser_view,
+@@ -36,6 +38,10 @@ class BrowserFrameViewLinux : public OpaqueBrowserFrameView,
+   SkRRect GetRestoredClipRegion() const override;
+   int GetTranslucentTopAreaHeight() const override;
+ 
++  // TODO(simonhong): Remove patch
++  // BrowserNonClientFrameView overrides:
++  void OnFullscreenStateChanged() override;
++
+   // Gets the shadow metrics (radius, offset, and number of shadows).  This will
+   // always return shadow values, even if shadows are not actually drawn.
+   // `active` indicates if the shadow will be drawn on a focused browser window.
