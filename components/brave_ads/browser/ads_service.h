@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -230,6 +231,7 @@ class AdsService : public KeyedService {
   // should be set to `false`.
   virtual void NotifyTabDidChange(int32_t tab_id,
                                   const std::vector<GURL>& redirect_chain,
+                                  int32_t http_response_status_code,
                                   bool is_visible) = 0;
 
   // Invoked when a browser tab with the specified `tab_id` is closed.

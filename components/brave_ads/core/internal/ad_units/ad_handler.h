@@ -39,6 +39,7 @@ class Account;
 class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
+struct TabInfo;
 
 class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:
@@ -85,7 +86,7 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
 
   // SiteVisitObserver:
   void OnMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) override;
-  void OnDidLandOnPage(const AdInfo& ad) override;
+  void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
   void OnDidNotLandOnPage(const AdInfo& ad) override;
   void OnCanceledPageLand(const AdInfo& ad, int32_t tab_id) override;
 

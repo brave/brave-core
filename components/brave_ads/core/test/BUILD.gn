@@ -89,6 +89,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/account/user_data/dynamic/system_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/build_channel_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/catalog_user_data_unittest.cc",
+    "//brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/conversion_user_data_util_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/created_at_timestamp_user_data_unittest.cc",
     "//brave/components/brave_ads/core/internal/account/user_data/fixed/locale_user_data_unittest.cc",
@@ -663,6 +664,7 @@ source_set("brave_ads_unit_tests") {
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.cc",
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h",
     "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_unittest.cc",
+    "//brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_util_unittest.cc",
   ]
 
   deps = [

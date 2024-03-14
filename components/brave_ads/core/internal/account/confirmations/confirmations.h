@@ -8,6 +8,7 @@
 
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
+#include "base/values.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_delegate.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue_delegate.h"
@@ -37,7 +38,7 @@ class Confirmations final : public ConfirmationQueueDelegate,
     delegate_ = delegate;
   }
 
-  void Confirm(const TransactionInfo& transaction);
+  void Confirm(const TransactionInfo& transaction, base::Value::Dict user_data);
 
  private:
   void ConfirmCallback(const TransactionInfo& transaction,

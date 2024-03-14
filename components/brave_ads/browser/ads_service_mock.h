@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_ADS_SERVICE_MOCK_H_
 
+#include <cstdint>
 #include <optional>
 #include <string>
 #include <vector>
@@ -123,6 +124,7 @@ class AdsServiceMock : public AdsService {
               NotifyTabDidChange,
               (int32_t tab_id,
                const std::vector<GURL>& redirect_chain,
+               int32_t http_response_status_code,
                bool is_visible));
   MOCK_METHOD(void, NotifyDidCloseTab, (int32_t tab_id));
   MOCK_METHOD(void, NotifyUserGestureEventTriggered, (int32_t tab_id));

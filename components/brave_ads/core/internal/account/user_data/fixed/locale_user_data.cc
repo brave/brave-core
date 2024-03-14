@@ -38,10 +38,8 @@ base::Value::Dict BuildLocaleUserData() {
 
   if (IsCountryCodeMemberOfAnonymitySet(country_code)) {
     user_data.Set(kCountryCodeKey, country_code);
-  } else {
-    if (ShouldClassifyCountryCodeAsOther(country_code)) {
-      user_data.Set(kCountryCodeKey, kOtherCountryCode);
-    }
+  } else if (ShouldClassifyCountryCodeAsOther(country_code)) {
+    user_data.Set(kCountryCodeKey, kOtherCountryCode);
   }
 
   return user_data;

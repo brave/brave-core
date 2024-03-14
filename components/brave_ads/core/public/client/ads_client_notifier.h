@@ -102,6 +102,7 @@ class AdsClientNotifier {
   // should be set to `false`.
   void NotifyTabDidChange(int32_t tab_id,
                           const std::vector<GURL>& redirect_chain,
+                          int32_t http_response_status_code,
                           bool is_visible) const;
 
   // Invoked when a browser tab with the specified `tab_id` is closed.

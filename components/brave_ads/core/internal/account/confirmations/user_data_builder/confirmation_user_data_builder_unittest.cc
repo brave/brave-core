@@ -78,7 +78,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -127,7 +127,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(::testing::Eq(std::ref(expected_user_data))));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -161,7 +161,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -176,7 +176,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   // Act & Assert
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(UserDataInfo{}));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -206,7 +206,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
 
   base::MockCallback<BuildConfirmationUserDataCallback> callback;
   EXPECT_CALL(callback, Run(expected_user_data));
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 TEST_F(BraveAdsConfirmationUserDataBuilderTest,
@@ -234,7 +234,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
     EXPECT_TRUE(RE2::FullMatch(json, pattern));
   });
 
-  BuildConfirmationUserData(transaction, callback.Get());
+  BuildConfirmationUserData(transaction, /*user_data=*/{}, callback.Get());
 }
 
 }  // namespace brave_ads

@@ -10,6 +10,7 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
+#include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
 #include "brave/components/brave_ads/core/mojom/brave_ads.mojom.h"  // IWYU pragma: keep
@@ -134,10 +135,10 @@ void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, const base::Time maybe_at) {
                                  << FriendlyDateAndTime(maybe_at));
 }
 
-void AdHandler::OnDidLandOnPage(const AdInfo& ad) {
+void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
-  BLOG(1, "Landed on page for " << ad.target_url);
+  BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab.id);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
                     ConfirmationType::kLanded);

@@ -7,6 +7,7 @@
 
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/client/ads_client_notifier_observer_mock.h"
+#include "net/http/http_status_code.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -49,6 +50,7 @@ void Notify(const AdsClientNotifier& queued_notifier) {
   queued_notifier.NotifyTabDidStartPlayingMedia(kTabId);
   queued_notifier.NotifyTabDidStopPlayingMedia(kTabId);
   queued_notifier.NotifyTabDidChange(kTabId, {GURL(kRedirectChainUrl)},
+                                     /*http_response_status_code=*/net::HTTP_OK,
                                      kIsVisible);
   queued_notifier.NotifyDidCloseTab(kTabId);
   queued_notifier.NotifyUserGestureEventTriggered(kPageTransitionType);
@@ -90,10 +92,10 @@ void ExpectNotifierCalls(AdsClientNotifierObserverMock& observer,
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyTabDidStopPlayingMedia(kTabId))
       .Times(expected_calls_count);
-  EXPECT_CALL(
-      observer,
-      OnNotifyTabDidChange(
-          kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)), kIsVisible))
+  EXPECT_CALL(observer,
+              OnNotifyTabDidChange(
+                  kTabId, ::testing::ElementsAre(GURL(kRedirectChainUrl)),
+                  /*http_response_status_code=*/net::HTTP_OK, kIsVisible))
       .Times(expected_calls_count);
   EXPECT_CALL(observer, OnNotifyDidCloseTab(kTabId))
       .Times(expected_calls_count);

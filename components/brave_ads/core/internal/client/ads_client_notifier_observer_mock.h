@@ -6,10 +6,12 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_NOTIFIER_OBSERVER_MOCK_H_
 #define BRAVE_COMPONENTS_BRAVE_ADS_CORE_INTERNAL_CLIENT_ADS_CLIENT_NOTIFIER_OBSERVER_MOCK_H_
 
+#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
+
+#include <cstdint>
 #include <string>
 #include <vector>
 
-#include "brave/components/brave_ads/core/public/client/ads_client_notifier_observer.h"
 #include "testing/gmock/include/gmock/gmock.h"  // IWYU pragma: keep
 
 namespace brave_ads {
@@ -51,7 +53,7 @@ class AdsClientNotifierObserverMock : public AdsClientNotifierObserver {
   MOCK_METHOD(void, OnNotifyTabDidStopPlayingMedia, (int32_t));
   MOCK_METHOD(void,
               OnNotifyTabDidChange,
-              (int32_t, const std::vector<GURL>&, bool));
+              (int32_t, const std::vector<GURL>&, int32_t, bool));
   MOCK_METHOD(void, OnNotifyDidCloseTab, (int32_t));
   MOCK_METHOD(void, OnNotifyUserGestureEventTriggered, (int32_t));
   MOCK_METHOD(void, OnNotifyUserDidBecomeIdle, ());

@@ -161,6 +161,7 @@ OBJC_EXPORT
 - (void)notifyTabDidChange:(NSInteger)tabId
                        url:(NSURL*)url
              redirectChain:(NSArray<NSURL*>*)redirectChain
+    httpResponseStatusCode:(NSInteger)httpResponseStatusCode
                 isSelected:(BOOL)isSelected;
 
 - (void)notifyDidCloseTab:(NSInteger)tabId;

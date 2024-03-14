@@ -6,6 +6,7 @@
 #ifndef BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 #define BRAVE_BROWSER_BRAVE_ADS_TABS_ADS_TAB_HELPER_H_
 
+#include <cstdint>
 #include <vector>
 
 #include "base/memory/raw_ptr.h"
@@ -76,6 +77,7 @@ class AdsTabHelper : public content::WebContentsObserver,
   bool is_active_ = false;
   bool is_browser_active_ = true;
   std::vector<GURL> redirect_chain_;
+  int32_t http_response_status_code_ = -1;
   bool should_process_ = false;
 
   base::WeakPtrFactory<AdsTabHelper> weak_factory_;

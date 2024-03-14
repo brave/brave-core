@@ -10,13 +10,9 @@
 
 namespace brave_ads {
 
-namespace {
-constexpr char kTypeKey[] = "type";
-}  // namespace
-
 base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
   return base::Value::Dict()
-      .Set(kTypeKey, ToString(ad.type))
+      .Set(kInlineContentAdTypeKey, ToString(ad.type))
       .Set(kInlineContentAdPlacementIdKey, ad.placement_id)
       .Set(kInlineContentAdCreativeInstanceIdKey, ad.creative_instance_id)
       .Set(kInlineContentAdCreativeSetIdKey, ad.creative_set_id)
@@ -34,7 +30,7 @@ base::Value::Dict InlineContentAdToValue(const InlineContentAdInfo& ad) {
 InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {
   InlineContentAdInfo ad;
 
-  if (const auto* const value = dict.FindString(kTypeKey)) {
+  if (const auto* const value = dict.FindString(kInlineContentAdTypeKey)) {
     ad.type = ToAdType(*value);
   }
 
@@ -70,6 +66,7 @@ InlineContentAdInfo InlineContentAdFromValue(const base::Value::Dict& dict) {
   if (const auto* const value = dict.FindString(kInlineContentAdTitleKey)) {
     ad.title = *value;
   }
+
   if (const auto* const value =
           dict.FindString(kInlineContentAdDescriptionKey)) {
     ad.description = *value;
