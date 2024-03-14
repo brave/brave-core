@@ -239,6 +239,10 @@ public class BraveSkusSDK {
   @discardableResult
   public func refreshOrder(orderId: String, for group: BraveStoreProductGroup) async throws -> SkusOrder {
     func decode(_ response: String) throws -> SkusOrder {
+      if response == "{}" {
+        throw SkusError.decodingError
+      }
+
       guard let data = response.data(using: .utf8) else {
         throw SkusError.decodingError
       }
@@ -260,6 +264,10 @@ public class BraveSkusSDK {
   @MainActor
   public func credentialsSummary(for group: BraveStoreProductGroup) async throws -> SkusCredentialSummary {
     func decode(_ response: String) throws -> SkusCredentialSummary {
+      if response == "{}" {
+        throw SkusError.decodingError
+      }
+
       guard let data = response.data(using: .utf8) else {
         throw SkusError.decodingError
       }
