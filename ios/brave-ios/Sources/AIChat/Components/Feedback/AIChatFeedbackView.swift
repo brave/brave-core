@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveCore
 import DesignSystem
 import Introspect
 import SpeechRecognition
@@ -324,12 +325,21 @@ enum AIChatFeedbackOption: String, CaseIterable, Identifiable {
   }
 }
 
+struct AIChatFeedbackModelToast: Equatable {
+  let turnId: Int
+  let ratingId: String
+}
+
 struct AIChatFeedbackView: View {
   @State
   private var category: AIChatFeedbackOption = .notHelpful
 
   @State
   private var feedbackText: String = ""
+
+  var premiumStatus: AiChat.PremiumStatus
+
+  var shouldShowPremiumAd: Bool
 
   let onSubmit: (String, String) -> Void
   let onCancel: () -> Void
@@ -353,8 +363,10 @@ struct AIChatFeedbackView: View {
       AIChatFeedbackInputView(text: $feedbackText)
         .padding([.horizontal, .bottom])
 
-      AIChatFeedbackLeoPremiumAdView()
-        .padding(.horizontal)
+      if premiumStatus != .active && premiumStatus != .activeDisconnected && shouldShowPremiumAd {
+        AIChatFeedbackLeoPremiumAdView()
+          .padding(.horizontal)
+      }
 
       HStack {
         Button {
@@ -385,6 +397,8 @@ struct AIChatFeedbackView: View {
 struct AIChatFeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     AIChatFeedbackView(
+      premiumStatus: .inactive,
+      shouldShowPremiumAd: true,
       onSubmit: {
         print("Submitted Feedback: \($0) -- \($1)")
       },

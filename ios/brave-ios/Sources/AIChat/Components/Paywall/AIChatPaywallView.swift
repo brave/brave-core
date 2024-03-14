@@ -177,38 +177,41 @@ struct AIChatPaywallView: View {
         .frame(height: 1.0)
         .foregroundColor(Color(braveSystemName: .primitivePrimary70))
 
-      VStack {
-        Button(
-          action: {
-            Task { await purchaseSubscription() }
-          },
-          label: {
+      Button(
+        action: {
+          Task { await purchaseSubscription() }
+        },
+        label: {
+          HStack {
             if paymentStatus == .ongoing {
               ProgressView()
                 .tint(Color.white)
+                .padding()
             } else {
               Text(Strings.AIChat.paywallPurchaseActionTitle)
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
+                .padding()
             }
           }
-        )
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(
-          LinearGradient(
-            gradient:
-              Gradient(colors: [
-                Color(UIColor(rgb: 0xFF5500)),
-                Color(UIColor(rgb: 0xFF006B)),
-              ]),
-            startPoint: .init(x: 0.0, y: 0.0),
-            endPoint: .init(x: 0.0, y: 1.0)
+          .frame(maxWidth: .infinity)
+          .contentShape(ContainerRelativeShape())
+          .background(
+            LinearGradient(
+              gradient:
+                Gradient(colors: [
+                  Color(UIColor(rgb: 0xFF5500)),
+                  Color(UIColor(rgb: 0xFF006B)),
+                ]),
+              startPoint: .init(x: 0.0, y: 0.0),
+              endPoint: .init(x: 0.0, y: 1.0)
+            )
           )
-        )
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .disabled(paymentStatus == .ongoing)
-      }
+        }
+      )
+      .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+      .disabled(paymentStatus == .ongoing)
+      .buttonStyle(.plain)
       .padding([.horizontal], 16.0)
     }
   }
@@ -226,13 +229,10 @@ struct AIChatPaywallView: View {
       }
 
       paymentStatus = .success
-
-      Task.delayed(bySeconds: 2.0) { @MainActor in
-        shouldDismiss = true
-      }
+      shouldDismiss = true
     } catch {
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
 
@@ -243,11 +243,11 @@ struct AIChatPaywallView: View {
     if await storeSDK.restorePurchases() {
       iapRestoreTimer?.cancel()
       paymentStatus = .success
-      shouldDismiss.toggle()
+      shouldDismiss = true
     } else {
       iapRestoreTimer?.cancel()
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
 
     if iapRestoreTimer != nil {
@@ -255,12 +255,12 @@ struct AIChatPaywallView: View {
       iapRestoreTimer = nil
     }
 
-    // Adding 1 minute time-out for restore
-    iapRestoreTimer = Task.delayed(bySeconds: 60.0) { @MainActor in
+    // Adding 30 seconds time-out for restore
+    iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
       paymentStatus = .failure
 
       // Show Alert for failure of restore
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
 }
