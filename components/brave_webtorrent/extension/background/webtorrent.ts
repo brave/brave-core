@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as WebTorrent from 'webtorrent'
+import WebTorrent from 'webtorrent/dist/webtorrent.min.js'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
@@ -11,7 +11,7 @@ import { basename, extname } from 'path'
 import * as JSZip from 'jszip'
 
 let webTorrent: WebTorrent.Instance | undefined
-let servers: { [key: string]: any } = { }
+let servers: { [key: string]: any } = {}
 
 export const getWebTorrent = () => {
   if (!webTorrent) {
@@ -22,7 +22,10 @@ export const getWebTorrent = () => {
   return webTorrent
 }
 
-export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
+export const createServer = (
+  torrent: WebTorrent.Torrent,
+  cb: (serverURL: string) => void
+) => {
   if (!torrent.infoHash) return // torrent is not ready
 
   const opts = {
@@ -58,7 +61,9 @@ export const addTorrent = (torrentId: string | Instance) => {
 }
 
 export const findTorrent = (infoHash: string) => {
-  return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
+  return getWebTorrent().torrents.find(
+    (torrent) => torrent.infoHash === infoHash
+  )
 }
 
 const maybeDestroyWebTorrent = () => {
@@ -109,17 +114,16 @@ export const saveAllFiles = (infoHash: string) => {
       zip = zip.folder(torrent.name)
     }
 
-    zip.generateAsync({ type: 'blob' })
-      .then(
-        (blob: Blob) => downloadBlob(blob),
-        (err: Error) => console.error(err)
-      )
+    zip.generateAsync({ type: 'blob' }).then(
+      (blob: Blob) => downloadBlob(blob),
+      (err: Error) => console.error(err)
+    )
   }
 
   const addFilesToZip = () => {
     let addedFiles = 0
 
-    files.forEach(file => {
+    files.forEach((file) => {
       file.getBlob((err, blob) => {
         if (err) {
           console.error(err)
