@@ -126,12 +126,21 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
   return needsUpdate
 }
 
-function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
+function syncChromium(program) {
+  const syncWithForce = program.init || program.force
+  const syncChromiumValue = program.sync_chromium
+  const deleteUnusedDeps = program.delete_unused_deps
+
   const requiredChromiumRef = config.getProjectRef('chrome')
   let args = [
     'sync', '--nohooks', '--revision', 'src@' + requiredChromiumRef, '--reset',
     '--upstream'
   ];
+
+  if (program.fetch_all) {
+    args.push('--with_tags')
+    args.push('--with_branch_heads')
+  }
 
   if (syncWithForce) {
     args.push('--force')
@@ -148,8 +157,8 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   const chromiumNeedsUpdate =
       shouldUpdateChromium(latestSyncInfo, expectedSyncInfo)
   const shouldSyncChromium = chromiumNeedsUpdate || syncWithForce
-  if (!shouldSyncChromium && !sync_chromium) {
-    if (delete_unused_deps && !config.isCI) {
+  if (!shouldSyncChromium && !syncChromiumValue) {
+    if (deleteUnusedDeps && !config.isCI) {
       Log.warn(
         '--delete_unused_deps is ignored for src/ dir because Chromium sync ' +
         'is required. Pass --sync_chromium to force it.')
@@ -157,7 +166,7 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
     return false
   }
 
-  if (delete_unused_deps) {
+  if (deleteUnusedDeps) {
     if (util.isGitExclusionExists(config.srcDir, 'brave/')) {
       args.push('-D')
     } else if (!config.isCI) {
@@ -168,8 +177,8 @@ function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
     }
   }
 
-  if (sync_chromium !== undefined) {
-    if (!sync_chromium) {
+  if (syncChromiumValue !== undefined) {
+    if (!syncChromiumValue) {
       Log.warn(
           'Chromium needed sync but received the flag to skip performing the ' +
           'update. Working directory may not compile correctly.')
