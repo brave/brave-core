@@ -928,12 +928,6 @@ Or change later at <ph name="SETTINGS_EXTENIONS_LINK">$2<ex>brave://settings/ext
       <message name="IDS_BRAVE_WAYBACK_MACHINE_DONT_ASK_AGAIN_TEXT" desc="Text to show for the don't ask again button.">
         Don't ask me again
       </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_NO_THANKS_BUTTON_TEXT" desc="Text to show for the no thanks button.">
-        No thanks
-      </message>
-      <message name="IDS_BRAVE_WAYBACK_MACHINE_CLOSE_BUTTON_TEXT" desc="Text to show for the close button.">
-        Close
-      </message>
 
       <!-- Brave's copyright statement -->
       <message name="IDS_BRAVE_VERSION_UI_LICENSE" desc="The label below the copyright message, containing the URLs.">
