@@ -337,10 +337,8 @@ struct AIChatFeedbackView: View {
   @State
   private var feedbackText: String = ""
 
-  @State
   var premiumStatus: AiChat.PremiumStatus
 
-  @Binding
   var shouldShowPremiumAd: Bool
 
   let onSubmit: (String, String) -> Void
@@ -400,7 +398,7 @@ struct AIChatFeedbackView_Previews: PreviewProvider {
   static var previews: some View {
     AIChatFeedbackView(
       premiumStatus: .inactive,
-      shouldShowPremiumAd: .constant(true),
+      shouldShowPremiumAd: true,
       onSubmit: {
         print("Submitted Feedback: \($0) -- \($1)")
       },

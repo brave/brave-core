@@ -362,7 +362,6 @@ public struct AIChatAdvancedSettingsView: View {
 
       Image(braveSystemName: "leo.launch")
         .foregroundStyle(Color(braveSystemName: .iconDefault))
-        .frame(alignment: .trailing)
     }
   }
 }

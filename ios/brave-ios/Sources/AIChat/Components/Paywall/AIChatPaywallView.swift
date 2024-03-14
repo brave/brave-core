@@ -229,13 +229,10 @@ struct AIChatPaywallView: View {
       }
 
       paymentStatus = .success
-
-      Task.delayed(bySeconds: 2.0) { @MainActor in
-        shouldDismiss = true
-      }
+      shouldDismiss = true
     } catch {
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
 
@@ -246,11 +243,11 @@ struct AIChatPaywallView: View {
     if await storeSDK.restorePurchases() {
       iapRestoreTimer?.cancel()
       paymentStatus = .success
-      shouldDismiss.toggle()
+      shouldDismiss = true
     } else {
       iapRestoreTimer?.cancel()
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
 
     if iapRestoreTimer != nil {
@@ -258,12 +255,12 @@ struct AIChatPaywallView: View {
       iapRestoreTimer = nil
     }
 
-    // Adding 1 minute time-out for restore
-    iapRestoreTimer = Task.delayed(bySeconds: 60.0) { @MainActor in
+    // Adding 30 seconds time-out for restore
+    iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
       paymentStatus = .failure
 
       // Show Alert for failure of restore
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
 }

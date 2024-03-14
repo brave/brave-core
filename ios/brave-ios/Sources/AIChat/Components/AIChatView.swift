@@ -433,7 +433,7 @@ public struct AIChatView: View {
   private var feedbackView: some View {
     AIChatFeedbackView(
       premiumStatus: model.premiumStatus,
-      shouldShowPremiumAd: $shouldShowFeedbackPremiumAd.value,
+      shouldShowPremiumAd: shouldShowFeedbackPremiumAd.value,
       onSubmit: { category, feedback in
         guard let feedbackInfo = customFeedbackInfo else {
           feedbackToast = .error(message: Strings.AIChat.feedbackSubmittedErrorTitle)
@@ -529,7 +529,7 @@ struct AIChatView_Preview: PreviewProvider {
 
             AIChatFeedbackView(
               premiumStatus: .inactive,
-              shouldShowPremiumAd: .constant(true),
+              shouldShowPremiumAd: true,
               onSubmit: {
                 print("Submitted Feedback: \($0) -- \($1)")
               },
