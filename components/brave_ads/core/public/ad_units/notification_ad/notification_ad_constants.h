@@ -12,6 +12,7 @@
 
 namespace brave_ads {
 
+inline constexpr char kNotificationAdTypeKey[] = "type";
 inline constexpr char kNotificationAdPlacementIdKey[] = "uuid";
 inline constexpr char kNotificationAdCreativeInstanceIdKey[] =
     "creative_instance_id";

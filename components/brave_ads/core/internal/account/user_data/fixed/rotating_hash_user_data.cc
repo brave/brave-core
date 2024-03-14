@@ -26,9 +26,8 @@ base::Value::Dict BuildRotatingHashUserData(
     return user_data;
   }
 
-  const std::optional<std::string> rotating_hash =
-      BuildRotatingHash(transaction);
-  if (rotating_hash) {
+  if (const std::optional<std::string> rotating_hash =
+          BuildRotatingHash(transaction)) {
     user_data.Set(kRotatingHashKey, *rotating_hash);
   }
 

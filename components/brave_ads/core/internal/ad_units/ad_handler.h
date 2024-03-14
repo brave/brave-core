@@ -39,6 +39,7 @@ class Account;
 class SiteVisit;
 struct AdInfo;
 struct ConversionInfo;
+struct TabInfo;
 
 class AdHandler final : public ConversionsObserver, SiteVisitObserver {
  public:

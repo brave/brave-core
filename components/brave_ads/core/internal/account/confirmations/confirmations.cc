@@ -11,7 +11,6 @@
 #include "base/functional/bind.h"
 #include "base/time/time.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/confirmation_info.h"
-#include "brave/components/brave_ads/core/internal/account/confirmations/confirmations_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/non_reward/non_reward_confirmation_util.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/queue/confirmation_queue.h"
 #include "brave/components/brave_ads/core/internal/account/confirmations/reward/reward_confirmation_util.h"
@@ -64,8 +63,6 @@ void Confirmations::ConfirmCallback(const TransactionInfo& transaction,
   if (!confirmation) {
     return BLOG(0, "Failed to create confirmation");
   }
-
-  CHECK(IsValid(*confirmation));
 
   queue_.Add(*confirmation);
 }
