@@ -8,48 +8,15 @@
 #include "ui/compositor/layer.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
-namespace views {
-void InstallNoHighlightPathGenerator(View* view) {
-  // Do nothing: the default highlight path is what we want.
-}
-}  // namespace views
+// Skips highlightPath. The default highlight path is what we want.
+// And in order to render label clearly over the ink drop, it should have its
+// own layer. Otherwise, the ink drop will be rendered over the label.
+#define InstallPillHighlightPathGenerator(view)       \
+  Label* bookmark_label = label();                    \
+  bookmark_label->SetPaintToLayer();                  \
+  bookmark_label->SetSubpixelRenderingEnabled(false); \
+  bookmark_label->layer()->SetFillsBoundsOpaquely(false);
 
-#define InstallPillHighlightPathGenerator InstallNoHighlightPathGenerator
-#define BookmarkButtonBase BookmarkButtonBase_ChromiumImpl
-#define BookmarkButton BookmarkButton_ChromiumImpl
 #include "src/chrome/browser/ui/views/bookmarks/bookmark_button.cc"
-#undef BookmarkButton
-#undef BookmarkButtonBase
+
 #undef InstallPillHighlightPathGenerator
-
-BookmarkButtonBase::BookmarkButtonBase(PressedCallback callback,
-                                       const std::u16string& title)
-    : BookmarkButtonBase_ChromiumImpl(std::move(callback), title) {
-  // To render label clearly over the ink drop, it should have its own layer.
-  // Otherwise, the ink drop will be rendered over the label.
-  label()->SetPaintToLayer();
-  label()->SetSubpixelRenderingEnabled(false);
-  label()->layer()->SetFillsBoundsOpaquely(false);
-}
-
-BookmarkButtonBase::~BookmarkButtonBase() = default;
-
-BEGIN_METADATA(BookmarkButtonBase)
-END_METADATA
-
-BookmarkButton::BookmarkButton(PressedCallback callback,
-                               const GURL& url,
-                               const std::u16string& title,
-                               const raw_ptr<Browser> browser)
-    : BookmarkButton_ChromiumImpl(std::move(callback), url, title, browser) {
-  // To render label clearly over the ink drop, it should have its own layer.
-  // Otherwise, the ink drop will be rendered over the label.
-  label()->SetPaintToLayer();
-  label()->SetSubpixelRenderingEnabled(false);
-  label()->layer()->SetFillsBoundsOpaquely(false);
-}
-
-BookmarkButton::~BookmarkButton() = default;
-
-BEGIN_METADATA(BookmarkButton)
-END_METADATA

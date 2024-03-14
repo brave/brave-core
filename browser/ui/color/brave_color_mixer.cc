@@ -294,13 +294,19 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
 
   // Use same ink drop effect for all themes including custome themes.
   // Toolbar button's inkdrop highlight/visible colors depends on toolbar color.
-  const bool is_dark = color_utils::IsDark(mixer.GetResultColor(kColorToolbar));
-  const float visible_opacity = is_dark ? 0.4f : 0.1f;
-  const float highlight_opacity = is_dark ? 0.25f : 0.05f;
+  auto get_toolbar_ink_drop_color = [](float dark_opacity, float light_opacity,
+                                       SkColor input,
+                                       const ui::ColorMixer& mixer) {
+    const float highlight_opacity =
+        color_utils::IsDark(mixer.GetResultColor(kColorToolbar))
+            ? dark_opacity
+            : light_opacity;
+    return SkColorSetA(SK_ColorBLACK, 0xFF * highlight_opacity);
+  };
   mixer[kColorToolbarInkDropHover] = {
-      SkColorSetA(SK_ColorBLACK, 0xFF * visible_opacity)};
+      base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
   mixer[kColorToolbarInkDropRipple] = {
-      SkColorSetA(SK_ColorBLACK, 0xFF * highlight_opacity)};
+      base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
