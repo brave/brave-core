@@ -43,6 +43,8 @@ class BraveContentBrowserClient : public ChromeContentBrowserClient {
   // Overridden from ChromeContentBrowserClient:
   std::unique_ptr<content::BrowserMainParts> CreateBrowserMainParts(
       bool is_integration_test) override;
+  bool AreIsolatedWebAppsEnabled(
+      content::BrowserContext* browser_context) override;
   void BrowserURLHandlerCreated(content::BrowserURLHandler* handler) override;
   void RenderProcessWillLaunch(content::RenderProcessHost* host) override;
   void RegisterAssociatedInterfaceBindersForRenderFrameHost(

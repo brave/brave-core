@@ -536,6 +536,11 @@ BraveContentBrowserClient::CreateBrowserMainParts(bool is_integration_test) {
   return main_parts;
 }
 
+bool BraveContentBrowserClient::AreIsolatedWebAppsEnabled(
+    content::BrowserContext* browser_context) {
+  return false;
+}
+
 void BraveContentBrowserClient::BrowserURLHandlerCreated(
     content::BrowserURLHandler* handler) {
 #if BUILDFLAG(ENABLE_BRAVE_WEBTORRENT)
@@ -894,6 +899,10 @@ void BraveContentBrowserClient::AppendExtraCommandLineSwitches(
       session_token =
           g_brave_browser_process->brave_farbling_service()->session_token(
               profile && !profile->IsOffTheRecord());
+
+      if (command_line->HasSwitch(switches::kEnableIsolatedWebAppsInRenderer)) {
+        command_line->RemoveSwitch(switches::kEnableIsolatedWebAppsInRenderer);
+      }
     }
     command_line->AppendSwitchASCII("brave_session_token",
                                     base::NumberToString(session_token));
