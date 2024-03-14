@@ -81,7 +81,7 @@
     "@storybook/react-webpack5": "7.5.3",
     "@testing-library/react-hooks": "7.0.2",
     "@types/array-move": "2.0.0",
-    "@types/async": "^3.2.20",
+    "@types/async": "3.2.20",
     "@types/chrome": "0.0.241",
     "@types/enzyme": "3.10.13",
     "@types/enzyme-adapter-react-16": "1.0.6",
