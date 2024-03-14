@@ -6,7 +6,8 @@
 #include <string>
 #include <utility>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/get_publisher/get_publisher.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
@@ -52,7 +53,8 @@ class GetPublisherTest : public RewardsEngineTest {
     // Add padding header
     uint32_t length = out.length();
     out.insert(0, 4, ' ');
-    base::WriteBigEndian(&out[0], length);
+    base::as_writable_byte_span(out).first<4u>().copy_from(
+        base::numerics::U32ToBigEndian(length));
 
     return out;
   }

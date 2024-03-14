@@ -10,7 +10,8 @@
 #include <utility>
 #include <vector>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_wallet/common/btc_like_serializer_stream.h"
 #include "brave/components/brave_wallet/common/encoding_utils.h"
@@ -48,19 +49,13 @@ std::optional<uint64_t> ReadCompactSize(base::span<const uint8_t>& data) {
     value = type;
     data = data.subspan(1);
   } else if (type == 253 && data.size() >= 3) {
-    uint16_t val = 0;
-    base::ReadBigEndian(&data[1], &val);
-    value = val;
+    value = base::numerics::U16FromBigEndian(data.subspan<1, 2u>());
     data = data.subspan(1 + 2);
   } else if (type <= 254 && data.size() >= 5) {
-    uint32_t val = 0;
-    base::ReadBigEndian(&data[1], &val);
-    value = val;
+    value = base::numerics::U32FromBigEndian(data.subspan<1, 4u>());
     data = data.subspan(1 + 4);
   } else if (data.size() >= 9) {
-    uint64_t val = 0;
-    base::ReadBigEndian(&data[1], &val);
-    value = val;
+    value = base::numerics::U64FromBigEndian(data.subspan<1, 8u>());
     data = data.subspan(1 + 8);
   } else {
     return std::nullopt;
