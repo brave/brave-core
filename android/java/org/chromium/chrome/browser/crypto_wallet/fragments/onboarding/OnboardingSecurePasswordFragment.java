@@ -42,7 +42,6 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     private AppCompatButton mContinueButton;
     private TextInputEditText mRetypePasswordEditText;
 
-    @SuppressLint("ClickableViewAccessibility")
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -79,8 +78,8 @@ public class OnboardingSecurePasswordFragment extends BaseOnboardingWalletFragme
     }
 
     private void proceedWithStrongPassword(@NonNull final String password) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P
-                && Utils.isBiometricAvailable(requireContext())) {
+        if (Utils.isBiometricAvailable(requireContext())) {
+            // noinspection NewApi
             setUpBiometric(password);
         } else {
             goToTheNextPage(password);
