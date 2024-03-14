@@ -18,7 +18,6 @@
 #include "base/path_service.h"
 #include "base/strings/stringprintf.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/test/metrics/histogram_tester.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/thread_test_helper.h"
 #include "base/threading/thread_restrictions.h"
@@ -137,7 +136,11 @@ void AdBlockServiceTest::SetUp() {
 void AdBlockServiceTest::PreRunTestOnMainThread() {
   PlatformBrowserTest::PreRunTestOnMainThread();
   WaitForAdBlockServiceThreads();
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Default", 1);
   InstallDefaultAdBlockComponent();
+  histogram_tester_.ExpectTotalCount(
+      "Brave.Adblock.MakeEngineWithRules.Default", 2);
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
@@ -473,21 +476,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
-class AdBlockServiceEngineUpdateCountTest : public AdBlockServiceTest {
- protected:
-  const base::HistogramTester histogram_tester_;
-};
-
 // The test verifies the number of expected engine updating during normal
 // startup.
 // Warning: each engine updating is a CPU-heavy thing and degrades startup
 // performance.
-IN_PROC_BROWSER_TEST_F(AdBlockServiceEngineUpdateCountTest,
-                       DefaultStartupWithCookieList) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, DefaultStartupWithCookieList) {
   // The empty ruleset building until the components are loaded.
   // TODO(matuchin): remove that excessive work.
   histogram_tester_.ExpectTotalCount(
-      "Brave.Adblock.MakeEngineWithRules.Default", 1);
+      "Brave.Adblock.MakeEngineWithRules.Default", 2);
   histogram_tester_.ExpectTotalCount(
       "Brave.Adblock.MakeEngineWithRules.Additional", 1);
 

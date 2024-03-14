@@ -12,6 +12,7 @@
 
 #include "base/files/scoped_temp_dir.h"
 #include "base/task/sequenced_task_runner.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/spawned_test_server/spawned_test_server.h"
@@ -86,6 +87,8 @@ class AdBlockServiceTest : public PlatformBrowserTest {
   net::SpawnedTestServer ws_server_;
   net::EmbeddedTestServer dynamic_server_;
   net::EmbeddedTestServer https_server_;
+
+  const base::HistogramTester histogram_tester_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_
