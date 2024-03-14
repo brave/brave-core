@@ -46,6 +46,24 @@
 /* Title for the brave player info popup which appears when clicking on the brave player icon on the navigation bar. */
 "BravePlayerInfoTitle" = "Краще дивіться у програвачі Brave";
 
+/* Text for a button in a blocked page info screen that takes you back where you came from */
+"DomainBlockedGoBackAction" = "Повернутися";
+
+/* A description in the warning page that appears when a page was blocked */
+"DomainBlockedPageDescription" = "Оскільки ви попросили агресивно блокувати стеження і рекламу, Brave блокує цей сайт перед його першим з’єднанням з мережею.";
+
+/* A message in the warning page that appears when a page was blocked */
+"DomainBlockedPageMessage" = "Brave запобіг завантаженню наступного сайту:";
+
+/* A title in the warning page that appears when a page was blocked */
+"DomainBlockedPageTitle" = "Цей вебсайт може спробувати відстежити вас на інших вебсайтах";
+
+/* Text for a button in a blocked page info screen that allows you to proceed regardless of the privacy warning */
+"DomainBlockedProceedAction" = "Продовжити";
+
+/* A tab title for the warning page that appears when a page was blocked */
+"DomainBlockedTitle" = "Домен заблоковано";
+
 /* A description of what the Enable GPC toggle does */
 "EnableGPCDescription" = "Увімкнути глобальні налаштування конфіденційності JS API";
 
