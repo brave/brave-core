@@ -122,15 +122,6 @@ export const EyeOffIcon = styled(Icon).attrs({
   --leo-icon-color: ${leo.color.icon.default};
 `
 
-export const Number = styled.span`
-  color: ${leo.color.text.tertiary};
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 16px;
-`
-
 export const IconWrapper = styled.div`
   display: flex;
   align-items: center;
