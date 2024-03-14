@@ -22,12 +22,16 @@ const extraArchitectures = ['arm64', 'x86']
 // 1. Default for local builds for the actual platform / architecture
 // 2. platform / architecture overriden by environment variables
 // 3. most recently built - this caters to the common scenario when a
-// non-standard target has been built but no arguments are provided to storybook
+// non-standard target has been built but no arguments are provided to storybook.
+
+// This uses environment variables as there is currently no way to pass custom
+// arguments to the |storybook build| cli.
 config.update({
   target_arch: process.env.TARGET_ARCH,
   target_os: process.env.TARGET_OS,
   target_environment: process.env.TARGET_ENVIRONMENT,
-  target: process.env.TARGET
+  target: process.env.TARGET,
+  build_config: process.env.BUILD_CONFIG
 })
 
 let outputPath = config.outputDir
