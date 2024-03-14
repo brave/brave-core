@@ -7,8 +7,9 @@
 
 #include <utility>
 
-#include "base/big_endian.h"
+#include "base/containers/span.h"
 #include "base/functional/callback.h"
+#include "base/numerics/byte_conversions.h"
 
 namespace brave_wallet {
 
@@ -20,7 +21,8 @@ constexpr char kNoCompression = 0;
 std::string GetPrefixedProtobuf(const std::string& serialized_proto) {
   std::string result(kGrpcHeaderSize, 0);
   result[0] = kNoCompression;
-  base::WriteBigEndian<uint32_t>(&result[1], serialized_proto.size());
+  base::as_writable_byte_span(result).subspan<1u, 4u>().copy_from(
+      base::numerics::U32ToBigEndian(serialized_proto.size()));
   result.append(serialized_proto);
   return result;
 }
@@ -34,9 +36,8 @@ std::optional<std::string> ResolveSerializedMessage(
     // Compression is not supported yet
     return std::nullopt;
   }
-  uint32_t size = 0;
-  base::ReadBigEndian(
-      reinterpret_cast<const uint8_t*>(&(grpc_response_body[1])), &size);
+  uint32_t size = base::numerics::U32FromBigEndian(
+      base::as_byte_span(grpc_response_body).subspan<1, 4u>());
 
   if (grpc_response_body.size() != size + kGrpcHeaderSize) {
     return std::nullopt;
