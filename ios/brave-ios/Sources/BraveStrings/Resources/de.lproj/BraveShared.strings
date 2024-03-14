@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Öffnen";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Belohnungen";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Brave-Belohnungen";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields und Datenschutz";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Schutz und Datenschutz";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Anzahl der Anzeigen und andere unerwünschte Dinge, die blockiert wurden";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "App-Infos in Zwischenablage kopieren.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "Kopieren Sie die App-Größeninformationen in die Zwischenablage.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "Mehr erfahren";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "Die gespeicherten Anmeldedaten werden dauerhaft entfernt.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Website öffnen";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo ist ein intelligenter KI-Assistent, der direkt in den Browser integriert ist";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Die Top-Meldungen von heute in einem privaten Nachrichten-Feed";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave-Nachrichten";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Nachrichten";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Folgen Sie Themen, die Sie interessieren";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave speichert oder teilt Ihre Sprachsuchen nicht.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Sprachsuche";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "aktivieren";

@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "열기";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "리워드";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Brave Rewards";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Brave Shields 및 프라이버시";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Shields 및 프라이버시";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "광고 등 유쾌하지 않은 콘텐츠 차단 완료";
@@ -496,7 +502,8 @@
 /* Copy app info to clipboard action sheet action. */
 "CopyAppInfoToClipboard" = "앱 정보를 클립보드에 복사합니다.";
 
-/* Copy app info to clipboard action sheet action. */
+/* Copy app info to clipboard action sheet action.
+   View all version info action sheet action. */
 "copyAppSizeInfoToClipboard" = "앱 크기 정보를 클립보드에 복사합니다.";
 
 /* A menu option available when long pressing on a link which allows you to copy a clean version of the url which strips out some query parameters. */
@@ -942,6 +949,9 @@
 
 /* No comment provided by engineer. */
 "learnMore" = "자세히 알아보기";
+
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "레오";
 
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "저장된 로그인 정보가 영구적으로 제거됩니다.";
@@ -1407,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "웹사이트 열기";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "브라우저에 바로 통합된 AI 기반 스마트 어시스턴트, 레오";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "비공개 뉴스 피드에 오늘의 인기 스토리 제공";
@@ -3370,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Brave News";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "뉴스";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "관심 있는 주제 팔로우";
 
@@ -3573,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave는 음성 검색 내역을 저장하거나 공유하지 않습니다.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "음성 검색";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "활성화";
