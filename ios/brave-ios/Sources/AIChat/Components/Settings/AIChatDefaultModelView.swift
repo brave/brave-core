@@ -75,16 +75,19 @@ struct AIChatDefaultModelView: View {
                   }
                 }
               }
+              .contentShape(Rectangle())
             }
           )
+          .buttonStyle(.plain)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       } header: {
         Text(Strings.AIChat.defaultModelChatSectionTitle.uppercased())
       }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
     }
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .listStyle(.insetGrouped)
+    .navigationTitle(Strings.AIChat.defaultModelViewTitle)
     .sheet(isPresented: $isPresentingPaywallPremium) {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
@@ -93,6 +96,5 @@ struct AIChatDefaultModelView: View {
           }
         })
     }
-    .navigationTitle(Strings.AIChat.defaultModelViewTitle)
   }
 }
