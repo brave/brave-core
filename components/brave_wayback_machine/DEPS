@@ -2,5 +2,4 @@ include_rules = [
   "+content/public/browser",
   "+content/public/common",
   "+services/network/public",
-  "+ui/gfx/native_widget_types.h",
 ]

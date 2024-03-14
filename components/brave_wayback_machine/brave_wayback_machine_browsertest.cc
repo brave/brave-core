@@ -4,24 +4,40 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
+#include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
 #include "chrome/test/base/in_process_browser_test.h"
+#include "components/infobars/content/content_infobar_manager.h"
+#include "components/infobars/core/infobar_manager.h"
 #include "content/public/browser/web_contents.h"
 #include "content/public/test/browser_test.h"
-#include "net/http/http_status_code.h"
+#include "testing/gmock/include/gmock/gmock.h"
 
 using BraveWaybackMachineTest = InProcessBrowserTest;
+using ::testing::_;
 
-IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, DialogLaunchTest) {
+namespace {
+
+class TestObserver : public infobars::InfoBarManager::Observer {
+ public:
+  TestObserver() = default;
+  ~TestObserver() override = default;
+  MOCK_METHOD1(OnInfoBarAdded, void(infobars::InfoBar* infobar));
+};
+
+}  // namespace
+
+IN_PROC_BROWSER_TEST_F(BraveWaybackMachineTest, InfobarAddTest) {
   auto* model = browser()->tab_strip_model();
   auto* contents = model->GetActiveWebContents();
-  BraveWaybackMachineTabHelper* tab_helper =
-      BraveWaybackMachineTabHelper::FromWebContents(contents);
-  EXPECT_FALSE(tab_helper->ShouldShowWaybackMachineDialog(net::HTTP_OK));
-  EXPECT_TRUE(tab_helper->ShouldShowWaybackMachineDialog(net::HTTP_NOT_FOUND));
-  tab_helper->ShowWaybackMachineDialog();
+  auto* tab_helper = BraveWaybackMachineTabHelper::FromWebContents(contents);
+  auto* infobar_manager =
+      infobars::ContentInfoBarManager::FromWebContents(contents);
 
-  // Check dialog is launched.
-  EXPECT_TRUE(!!tab_helper->active_dialog());
+  TestObserver observer;
+  EXPECT_CALL(observer, OnInfoBarAdded(_)).Times(1);
+  infobar_manager->AddObserver(&observer);
+  tab_helper->CreateInfoBar();
+  infobar_manager->RemoveObserver(&observer);
 }
