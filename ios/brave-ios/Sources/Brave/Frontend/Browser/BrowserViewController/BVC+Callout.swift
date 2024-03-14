@@ -350,4 +350,14 @@ extension BrowserViewController {
       }
     }
   }
+
+  func presentBraveLeoDeepLink() {
+    // If the onboarding has not completed we do not show any promo screens.
+    // This will most likely be the case for users who have not installed the app yet.
+    if Preferences.Onboarding.basicOnboardingCompleted.value != OnboardingState.completed.rawValue {
+      return
+    }
+
+    openBraveLeo()
+  }
 }
