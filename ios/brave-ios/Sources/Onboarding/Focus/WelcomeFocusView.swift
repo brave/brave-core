@@ -9,8 +9,32 @@ import Introspect
 import Strings
 import SwiftUI
 
-struct WelcomeFocusView: View {
-  @State private var isAnimating = false
+public struct WelcomeFocusView: View {
+  @State private var splash = true
+  @Namespace var namespace
+
+  public init() {}
+
+  public var body: some View {
+    VStack {
+      if splash {
+        SplashScreen(namespace: namespace)
+      } else {
+        Steps(namespace: namespace)
+          .padding(.horizontal, 20)
+      }
+    }
+    .onAppear {
+      withAnimation(.easeInOut(duration: 1.5).delay(1.5)) {
+        splash = false
+      }
+    }
+  }
+}
+
+struct SplashScreen: View {
+  var namespace: Namespace.ID
+
   @State private var isShimmering = false
 
   var body: some View {
@@ -21,30 +45,35 @@ struct WelcomeFocusView: View {
           .overlay(
             self.linearGradientView
               .frame(width: geometry.size.width, height: 2 * geometry.size.height)
-              .position(x: geometry.size.width / 2, y: isShimmering ? 2 * geometry.size.height : -geometry.size.height)
+              .position(
+                x: geometry.size.width / 2,
+                y: isShimmering ? 2 * geometry.size.height : -geometry.size.height
+              )
               .scaleEffect(isShimmering ? 1.015 : 1.0)
               .mask(
                 braveLogo
               )
           )
-          .hidden(isHidden: self.isAnimating)
-
         Image("focus-icon-brave", bundle: .module)
-          .scaleEffect(isAnimating ? 0.6 : 1.0)
-          .position(x: geometry.size.width / 2, y: isAnimating ? 50 : geometry.size.height / 2)
+          .resizable()
+          .matchedGeometryEffect(id: "icon", in: namespace)
+          .frame(width: 146, height: 146)
       }
       .background(Color(braveSystemName: .pageBackground))
       .onAppear {
         withAnimation(.linear(duration: 1.5)) {
           self.isShimmering = true
         }
-        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { timer in
-          withAnimation(.easeInOut(duration: 1.5)) {
-            self.isAnimating = true
-          }
-        }
       }
     }
+  }
+
+  private var braveLogo: some View {
+    Image("focus-logo-brave", bundle: .module)
+      .resizable()
+      .aspectRatio(contentMode: .fit)
+      .frame(maxWidth: .infinity, maxHeight: .infinity)
+      .padding(.leading, 42)
   }
 
   private var linearGradientView: some View {
@@ -63,34 +92,95 @@ struct WelcomeFocusView: View {
         )
       )
   }
+}
 
-  private var braveLogo: some View {
-    Image("focus-logo-brave", bundle: .module)
-      .resizable()
-      .aspectRatio(contentMode: .fit)
-      .frame(maxWidth: .infinity)
-      .padding(.leading, 42)
+struct Steps: View {
+  var namespace: Namespace.ID
+
+  @State var tabSelection = 0
+
+  var body: some View {
+    VStack {
+      Image("focus-icon-brave", bundle: .module)
+        .resizable()
+        .matchedGeometryEffect(id: "icon", in: namespace)
+        .frame(width: 78, height: 78)
+
+      Text("Fewer ads & trackers.")
+        .font(Font.largeTitle)
+
+      Text("Browse faster and use less data.")
+        .font(.body.weight(.medium))
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+        .padding(.bottom, 28)
+
+      TabView(selection: $tabSelection) {
+        AdTrackerSliderContentView()
+          .tag(0)
+        Text("A - Tab 1")
+          .tag(1)
+        AdTrackerSliderContentView()
+          .tag(2)
+        Text("A - Tab 1")
+          .tag(3)
+      }
+      .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+      .frame(height: 420)
+      .background(Color(braveSystemName: .pageBackground))
+      .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+      .animation(.easeInOut, value: tabSelection)
+      .transition(.slide)
+      .padding(.bottom, 28)
+
+      Button(
+        action: {
+          tabSelection += 1
+        },
+        label: {
+          Text("Continue")
+            .font(.body.weight(.semibold))
+            .foregroundColor(Color(.white))
+            .padding()
+            .foregroundStyle(.white)
+            .frame(maxWidth: .infinity)
+            .background(Color(braveSystemName: .buttonBackground))
+        }
+      )
+      .clipShape(RoundedRectangle(cornerRadius: 12.0))
+      .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+
+      PaginIndicator(totalPages: 4, activeIndex: $tabSelection)
+
+      Spacer()
+
+    }
+    .background(Color(braveSystemName: .pageBackground))
   }
 }
 
 struct WelcomeFocusView_Previews: PreviewProvider {
   static var previews: some View {
-    NavigationView {
-      WelcomeFocusView()
-    }
-    .previewLayout(.sizeThatFits)
-    .previewColorSchemes()
+    WelcomeFocusView()
   }
 }
 
+struct PaginIndicator: View {
+  var activeTint: Color = .red
+  var inActiveTint: Color = .blue
+  var clipEdges: Bool = false
 
-extension View {
-  /// Helper for `hidden()` modifier that accepts a boolean determining if we should hide the view or not.
-  @ViewBuilder public func hidden(isHidden: Bool) -> some View {
-    if isHidden {
-      self.hidden()
-    } else {
-      self
+  var totalPages = 4
+
+  @Binding var activeIndex: Int
+
+  var body: some View {
+    HStack(spacing: 10) {
+      ForEach(0..<totalPages, id: \.self) { index in
+        Capsule()
+          .fill(index == activeIndex ? activeTint : inActiveTint)
+          .frame(width: index == activeIndex ? 18 : 8, height: 8)
+      }
     }
+    .frame(maxWidth: .infinity)
   }
 }

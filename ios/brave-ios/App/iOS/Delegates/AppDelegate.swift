@@ -80,6 +80,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     KeyboardHelper.defaultHelper.startObserving()
     DynamicFontHelper.defaultHelper.startObserving()
     ReaderModeFonts.registerCustomFonts()
+    OnboardingFonts.registerCustomFonts()
 
     MenuHelper.defaultHelper.setItems()
 

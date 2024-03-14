@@ -292,6 +292,8 @@ var package = Package(
         .copy("LottieAssets/onboarding-rewards.json"),
         .copy("LottieAssets/onboarding-shields.json"),
         .copy("LottieAssets/playlist-confetti.json"),
+        .copy("Assets/Fonts/FlechaM-Medium.ttf"),
+        .copy("Assets/Fonts/Poppins-Medium.ttf"),
         .copy("Welcome/Resources/disconnect-entitylist.json"),
         .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],

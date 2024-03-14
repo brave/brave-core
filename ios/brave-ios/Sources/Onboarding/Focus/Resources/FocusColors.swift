@@ -8,9 +8,9 @@ import Foundation
 import UIKit
 
 enum FocusOnboarding {
-  static let backgroundColor = UIColor(dynamicProvider: { traits in
+  static let sliderBackground = UIColor(dynamicProvider: { traits in
     if traits.userInterfaceStyle == .light {
-      return UIColor(rgb: 0xF3F5F7)
+      return .white
     } else {
       return UIColor(rgb: 0x0D1214)
     }

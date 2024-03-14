@@ -11,6 +11,7 @@ import Onboarding
 import Preferences
 import Shared
 import StoreKit
+import SwiftUI
 import UIKit
 
 // MARK: - Onboarding
@@ -315,5 +316,11 @@ extension BrowserViewController {
       return
     }
 
+    let welcomeView = WelcomeFocusView()
+    let onboardingController = UIHostingController(rootView: welcomeView).then {
+      $0.modalPresentationStyle = .fullScreen
+    }
+
+    present(onboardingController, animated: false)
   }
 }
