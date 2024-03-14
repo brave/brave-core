@@ -281,9 +281,7 @@ void AdBlockServiceTest::AssertTagExists(const std::string& tag,
 }
 
 void AdBlockServiceTest::InitEmbeddedTestServer() {
-  brave::RegisterPathProvider();
-  base::FilePath test_data_dir;
-  base::PathService::Get(brave::DIR_TEST_DATA, &test_data_dir);
+  base::FilePath test_data_dir = GetTestDataDir();
 
   https_server_.ServeFilesFromDirectory(test_data_dir);
   content::SetupCrossSiteRedirector(&https_server_);
@@ -294,9 +292,10 @@ void AdBlockServiceTest::InitEmbeddedTestServer() {
   ASSERT_TRUE(embedded_test_server()->Start());
 }
 
-void AdBlockServiceTest::GetTestDataDir(base::FilePath* test_data_dir) {
+base::FilePath AdBlockServiceTest::GetTestDataDir() {
   base::ScopedAllowBlockingForTesting allow_blocking;
-  base::PathService::Get(brave::DIR_TEST_DATA, test_data_dir);
+  brave::RegisterPathProvider();
+  return base::PathService::CheckedGet(brave::DIR_TEST_DATA);
 }
 
 void AdBlockServiceTest::NavigateToURL(GURL url) {
@@ -314,8 +313,7 @@ void AdBlockServiceTest::InstallComponent(
       filter_list_catalog);
 
   if (catalog_entry.default_enabled) {
-    base::FilePath test_data_dir;
-    GetTestDataDir(&test_data_dir);
+    base::FilePath test_data_dir = GetTestDataDir();
     auto original_path = test_data_dir.AppendASCII("adblock-components")
                              .AppendASCII(catalog_entry.uuid);
     auto component_path = MakeTestDataCopy(original_path);
