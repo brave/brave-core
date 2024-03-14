@@ -13,10 +13,12 @@ struct DepositTokenView: View {
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var depositTokenStore: DepositTokenStore
 
+  var prefilledQuery: String?
   var onDismiss: () -> Void
 
   @State private var isPresentingNetworkFilter = false
   @State private var selectedAccount: BraveWallet.AccountInfo?
+  @State private var selectedToken: BraveWallet.BlockchainToken?
 
   private var availableAccounts: [BraveWallet.AccountInfo] {
     guard let token = depositTokenStore.prefilledToken else { return [] }
@@ -38,50 +40,45 @@ struct DepositTokenView: View {
             allNetworks: depositTokenStore.allNetworks
           )
         } else {
-          List {
-            ForEach(depositTokenStore.assetViewModels) { assetViewModel in
-              NavigationLink(
-                destination:
-                  DepositDetailsView(
-                    type: .prefilledToken(
-                      token: assetViewModel.token,
-                      availableAccounts: depositTokenStore.allAccounts.filter {
-                        $0.coin == assetViewModel.token.coin
-                      }
-                    ),
-                    allNetworks: depositTokenStore.allNetworks
-                  )
-              ) {
-                HStack {
-                  AssetIconView(
-                    token: assetViewModel.token,
-                    network: assetViewModel.network,
-                    shouldShowNetworkIcon: true
-                  )
-                  VStack(alignment: .leading) {
-                    Text(assetViewModel.token.name)
-                      .font(.footnote)
-                      .fontWeight(.semibold)
-                      .foregroundColor(Color(.bravePrimary))
-                    Text(
-                      String.localizedStringWithFormat(
-                        Strings.Wallet.userAssetSymbolNetworkDesc,
-                        assetViewModel.token.symbol,
-                        assetViewModel.network.chainName
-                      )
+          TokenList(
+            tokens: depositTokenStore.assetViewModels,
+            prefilledQuery: prefilledQuery
+          ) { query, viewModel in
+            let symbolMatch = viewModel.token.symbol.localizedCaseInsensitiveContains(query)
+            let nameMatch = viewModel.token.name.localizedCaseInsensitiveContains(query)
+            return symbolMatch || nameMatch
+          } header: {
+            WalletListHeaderView(
+              title: Text(Strings.Wallet.assetsTitle)
+            )
+          } content: { viewModel in
+            Button {
+              selectedToken = viewModel.token
+            } label: {
+              HStack {
+                AssetIconView(
+                  token: viewModel.token,
+                  network: viewModel.network,
+                  shouldShowNetworkIcon: true
+                )
+                VStack(alignment: .leading) {
+                  Text(viewModel.token.name)
+                    .font(.footnote)
+                    .fontWeight(.semibold)
+                    .foregroundColor(Color(.bravePrimary))
+                  Text(
+                    String.localizedStringWithFormat(
+                      Strings.Wallet.userAssetSymbolNetworkDesc,
+                      viewModel.token.symbol,
+                      viewModel.network.chainName
                     )
-                    .font(.caption)
-                    .foregroundColor(Color(.braveLabel))
-                  }
+                  )
+                  .font(.caption)
+                  .foregroundColor(Color(.braveLabel))
                 }
               }
             }
           }
-          .listBackgroundColor(Color(UIColor.braveGroupedBackground))
-          .searchable(
-            text: $depositTokenStore.query,
-            placement: .navigationBarDrawer(displayMode: .always)
-          )
           .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
               Button {
@@ -125,6 +122,30 @@ struct DepositTokenView: View {
           networkStore.closeNetworkSelectionStore()
         }
       }
+      .background(
+        NavigationLink(
+          isActive: Binding(
+            get: { selectedToken != nil },
+            set: { if !$0 { selectedToken = nil } }
+          ),
+          destination: {
+            if let selectedToken {
+              DepositDetailsView(
+                type: .prefilledToken(
+                  token: selectedToken,
+                  availableAccounts: depositTokenStore.allAccounts.filter {
+                    $0.coin == selectedToken.coin
+                  }
+                ),
+                allNetworks: depositTokenStore.allNetworks
+              )
+            }
+          },
+          label: {
+            EmptyView()
+          }
+        )
+      )
     }
     .task {
       depositTokenStore.setup()
@@ -132,7 +153,7 @@ struct DepositTokenView: View {
   }
 }
 
-struct DepositDetailsView: View {
+private struct DepositDetailsView: View {
   var type: DepositType
   var allNetworks: [BraveWallet.NetworkInfo]
 
@@ -182,8 +203,8 @@ struct DepositDetailsView: View {
     }
   }
 
-  @ViewBuilder func depositHeader(
-    _ coin: BraveWallet.CoinType,
+  @ViewBuilder private func depositHeader(
+    coin: BraveWallet.CoinType,
     networks: [BraveWallet.NetworkInfo]
   ) -> some View {
     VStack(spacing: 8) {
@@ -211,7 +232,7 @@ struct DepositDetailsView: View {
     }
   }
 
-  @ViewBuilder func qrCodeView(_ account: BraveWallet.AccountInfo) -> some View {
+  @ViewBuilder private func qrCodeView(_ account: BraveWallet.AccountInfo) -> some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 20, style: .continuous)
         .stroke(Color(.secondaryButtonTint).opacity(0.5), lineWidth: 1)
@@ -264,7 +285,7 @@ struct DepositDetailsView: View {
     }
   }
 
-  var ethNetworksCombined: String {
+  private var ethNetworksCombined: String {
     let networks =
       allNetworks
       .filter {
@@ -274,7 +295,7 @@ struct DepositDetailsView: View {
     return networks.joined(separator: ",")
   }
 
-  @ViewBuilder var ethDisclosureView: some View {
+  @ViewBuilder private var ethDisclosureView: some View {
     Text(String.localizedStringWithFormat(Strings.Wallet.depositEthDisclosure, ethNetworksCombined))
       .font(.caption2)
       .foregroundColor(Color(.secondaryBraveLabel))
@@ -286,7 +307,10 @@ struct DepositDetailsView: View {
       VStack(spacing: 24) {
         switch type {
         case .prefilledAccount(let account):
-          depositHeader(account.coin, networks: allNetworks)
+          depositHeader(
+            coin: account.coin,
+            networks: allNetworks
+          )
           qrCodeView(account)
           if account.coin == .eth {
             ethDisclosureView
@@ -297,7 +321,10 @@ struct DepositDetailsView: View {
           } label: {
             accountPicker
           }
-          depositHeader(token.coin, networks: allNetworks)
+          depositHeader(
+            coin: token.coin,
+            networks: allNetworks
+          )
           if let selectedAccount {
             qrCodeView(selectedAccount)
           }
@@ -335,32 +362,6 @@ struct DepositDetailsView: View {
         }
       }
     }
-  }
-}
-
-struct ShareSheetView: UIViewControllerRepresentable {
-  typealias Callback = (
-    _ activityType: UIActivity.ActivityType?, _ completed: Bool, _ returnedItems: [Any]?,
-    _ error: Error?
-  ) -> Void
-
-  let activityItems: [Any]
-  let applicationActivities: [UIActivity]? = nil
-  let excludedActivityTypes: [UIActivity.ActivityType]? = nil
-  let callback: Callback? = nil
-
-  func makeUIViewController(context: Context) -> UIActivityViewController {
-    let controller = UIActivityViewController(
-      activityItems: activityItems,
-      applicationActivities: applicationActivities
-    )
-    controller.excludedActivityTypes = excludedActivityTypes
-    controller.completionWithItemsHandler = callback
-    return controller
-  }
-
-  func updateUIViewController(_ uiViewController: UIActivityViewController, context: Context) {
-    // nothing to do here
   }
 }
 

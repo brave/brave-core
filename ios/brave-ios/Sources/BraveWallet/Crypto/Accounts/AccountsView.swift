@@ -162,7 +162,7 @@ struct AccountsView: View {
       selectedAccountForExport = account
     case .depositToAccount:
       walletActionDestination = WalletActionDestination(
-        kind: .deposit,
+        kind: .deposit(query: nil),
         initialToken: nil,
         initialAccount: account
       )

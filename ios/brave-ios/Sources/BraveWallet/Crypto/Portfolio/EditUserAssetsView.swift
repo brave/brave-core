@@ -122,41 +122,31 @@ struct EditUserAssetsView: View {
 
   var body: some View {
     NavigationView {
-      List {
-        Section(
-          header: HStack {
-            WalletListHeaderView(
-              title: Text(Strings.Wallet.assetsTitle)
-            )
-            Spacer()
-          }
-        ) {
-          Group {
-            let tokens = tokenStores
-            if tokens.isEmpty {
-              Text(Strings.Wallet.assetSearchEmpty)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-            } else {
-              ForEach(tokens, id: \.token.id) { store in
-                if store.isCustomToken {
-                  EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
-                    .swipeActions(edge: .trailing) {
-                      Button(role: .destructive) {
-                        removeCustomToken(store.token)
-                      } label: {
-                        Label(Strings.Wallet.delete, systemImage: "trash")
-                      }
-                    }
-                } else {
-                  EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
-                }
+      TokenList(tokens: tokenStores) { query, store in
+        store.token.symbol.lowercased().contains(query)
+          || store.token.name.lowercased().contains(query)
+      } header: {
+        WalletListHeaderView(
+          title: Text(Strings.Wallet.assetsTitle)
+        )
+      } emptyStateView: {
+        Text(Strings.Wallet.assetSearchEmpty)
+          .font(.footnote)
+          .foregroundColor(Color(.secondaryBraveLabel))
+          .multilineTextAlignment(.center)
+          .frame(maxWidth: .infinity)
+      } content: { store in
+        if store.isCustomToken {
+          EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
+            .swipeActions(edge: .trailing) {
+              Button(role: .destructive) {
+                removeCustomToken(store.token)
+              } label: {
+                Label(Strings.Wallet.delete, systemImage: "trash")
               }
             }
-          }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+        } else {
+          EditTokenView(assetStore: store, tokenNeedsTokenId: $tokenNeedsTokenId)
         }
       }
       .listBackgroundColor(Color(UIColor.braveGroupedBackground))

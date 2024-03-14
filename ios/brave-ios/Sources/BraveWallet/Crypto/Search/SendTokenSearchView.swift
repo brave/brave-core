@@ -17,7 +17,17 @@ struct SendTokenSearchView: View {
   var network: BraveWallet.NetworkInfo
 
   var body: some View {
-    TokenList(tokens: sendTokenStore.userVisibleAssets) { token in
+    TokenList(
+      tokens: sendTokenStore.userVisibleAssets
+    ) { query, token in
+      let symbolMatch = token.symbol.localizedCaseInsensitiveContains(query)
+      let nameMatch = token.name.localizedCaseInsensitiveContains(query)
+      return symbolMatch || nameMatch
+    } header: {
+      WalletListHeaderView(
+        title: Text(Strings.Wallet.assetsTitle)
+      )
+    } content: { token in
       Button {
         sendTokenStore.selectedSendNFTMetadata = allNFTMetadata[token.id]
         sendTokenStore.selectedSendToken = token

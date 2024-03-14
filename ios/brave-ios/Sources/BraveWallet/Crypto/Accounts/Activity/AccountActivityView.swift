@@ -148,8 +148,7 @@ struct AccountActivityView: View {
           walletActionDestination = .init(kind: .swap)
         }
         PortfolioHeaderButton(style: .deposit) {
-          let action = WalletActionDestination(kind: .deposit, initialAccount: store.account)
-          walletActionDestination = action
+          walletActionDestination = .init(kind: .deposit(query: nil), initialAccount: store.account)
         }
       }
     }

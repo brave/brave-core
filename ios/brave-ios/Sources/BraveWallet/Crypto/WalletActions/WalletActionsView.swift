@@ -21,7 +21,7 @@ struct WalletActionsView: View {
     self.destinations.append(WalletActionDestination(kind: .buy))
     self.destinations.append(WalletActionDestination(kind: .send))
     self.destinations.append(WalletActionDestination(kind: .swap))
-    self.destinations.append(WalletActionDestination(kind: .deposit))
+    self.destinations.append(WalletActionDestination(kind: .deposit(query: nil)))
   }
 
   var body: some View {

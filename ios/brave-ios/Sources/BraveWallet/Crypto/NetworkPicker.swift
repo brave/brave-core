@@ -54,7 +54,7 @@ struct NetworkPicker: View {
         }
       }
       if let destination = walletActionDestination {
-        if destination.kind != .send {
+        if destination.kind.id != WalletActionDestination.Kind.send.id {
           return !networkStore.isCustomChain(chain)
         }
       }

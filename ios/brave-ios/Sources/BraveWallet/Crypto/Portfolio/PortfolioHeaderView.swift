@@ -136,7 +136,7 @@ struct PortfolioHeaderView: View {
         walletActionDestination = WalletActionDestination(kind: .swap)
       }
       PortfolioHeaderButton(style: .deposit) {
-        walletActionDestination = WalletActionDestination(kind: .deposit)
+        walletActionDestination = WalletActionDestination(kind: .deposit(query: nil))
       }
     }
     .padding(.horizontal, 30)

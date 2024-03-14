@@ -123,6 +123,25 @@ struct AssetDetailView: View {
 
   @ViewBuilder private func coinMarketInfoView(_ coinMarket: BraveWallet.CoinMarket) -> some View {
     VStack(spacing: 16) {
+      HStack(alignment: .top, spacing: 40) {
+        if case .coinMarket(let coinMarket) = assetDetailStore.assetDetailType,
+          let depositableToken = assetDetailStore.convertCoinMarketToDepositableToken(
+            symbol: coinMarket.symbol
+          )
+        {
+          PortfolioHeaderButton(style: .deposit) {
+            let destination = WalletActionDestination(
+              kind: .deposit(query: coinMarket.symbol)
+            )
+            if assetDetailStore.allAccountsForTokenCoin.isEmpty {
+              onAccountCreationNeeded(destination)
+            } else {
+              walletActionDestination = destination
+            }
+          }
+        }
+      }
+      .padding(.horizontal, 16)
       VStack(spacing: 12) {
         Text(Strings.Wallet.coinMarketInformation)
           .foregroundColor(Color(braveSystemName: .textPrimary))
@@ -252,7 +271,7 @@ struct AssetDetailView: View {
         } else {
           PortfolioHeaderButton(style: .deposit) {
             let destination = WalletActionDestination(
-              kind: .deposit,
+              kind: .deposit(query: nil),
               initialToken: assetDetailStore.assetDetailToken
             )
             if assetDetailStore.allAccountsForTokenCoin.isEmpty {
@@ -375,7 +394,7 @@ struct AssetDetailView: View {
             Text(Strings.Wallet.deposit),
             action: {
               let destination = WalletActionDestination(
-                kind: .deposit,
+                kind: .deposit(query: nil),
                 initialToken: assetDetailStore.assetDetailToken
               )
               if assetDetailStore.allAccountsForTokenCoin.isEmpty {

@@ -10,11 +10,33 @@ import SwiftUI
 
 /// Used to determine where a user is navigated to when they tap on a buy, send, swap, deposit button
 public struct WalletActionDestination: Identifiable, Equatable, Hashable {
-  enum Kind: String, Identifiable, CaseIterable {
-    case buy, send, swap, deposit
+  public static func == (lhs: WalletActionDestination, rhs: WalletActionDestination) -> Bool {
+    lhs.id == rhs.id
+  }
+
+  public func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
+  enum Kind: Identifiable, CaseIterable {
+    static var allCases: [Kind] {
+      [.buy, .send, .swap, .deposit(query: nil)]
+    }
+
+    case buy, send, swap
+    case deposit(query: String?)
 
     var id: String {
-      rawValue
+      switch self {
+      case .buy:
+        return "buy"
+      case .send:
+        return "send"
+      case .swap:
+        return "swap"
+      case .deposit(_):
+        return "deposit"
+      }
     }
 
     var localizedTitle: String {

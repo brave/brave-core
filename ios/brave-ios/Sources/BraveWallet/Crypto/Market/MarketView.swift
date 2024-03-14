@@ -141,52 +141,31 @@ struct MarketView: View {
 
                   Spacer()
 
-                  HStack(spacing: 8) {
-                    VStack(alignment: .trailing, spacing: 4) {
-                      Text(
-                        marketStore.priceFormatter.coinMarketPriceString(
-                          from: coinMarket.currentPrice
-                        ) ?? "$0.00"
-                      )
-                      .font(.footnote)
-                      .foregroundColor(Color(.braveLabel))
-                      .padding(.vertical, 8)
-                      HStack {
-                        Image(
-                          systemName: coinMarket.priceChangePercentage24h > 0
-                            ? "arrow.up" : "arrow.down"
-                        )
-                        .imageScale(.small)
-                        .accessibilityHidden(true)
-                        Text(
-                          "\(marketStore.priceChangeFormatter.string(from: NSNumber(value: abs(coinMarket.priceChangePercentage24h / 100))) ?? "")"
-                        )
-                        .font(.caption)
-                      }
-                      .foregroundColor(
-                        coinMarket.priceChangePercentage24h > 0
-                          ? Color(.walletGreen) : Color(.walletRed)
-                      )
-                    }
-                    Menu(
-                      content: {
-                        Button {
-                          if let token = marketStore.isDepositable(coinMarket.symbol) {
-                            cryptoStore.walletActionDestination = WalletActionDestination(
-                              kind: .deposit,
-                              initialToken: token
-                            )
-                          }
-                        } label: {
-                          Label(Strings.Wallet.deposit, braveSystemImage: "leo.qr.code")
-                        }
-                      },
-                      label: {
-                        Image(braveSystemName: "leo.more.vertical")
-                          .clipShape(Rectangle())
-                      }
+                  VStack(alignment: .trailing, spacing: 4) {
+                    Text(
+                      marketStore.priceFormatter.coinMarketPriceString(
+                        from: coinMarket.currentPrice
+                      ) ?? "$0.00"
                     )
-                    .hidden(isHidden: marketStore.isDepositable(coinMarket.symbol) == nil)
+                    .font(.footnote)
+                    .foregroundColor(Color(.braveLabel))
+                    .padding(.vertical, 8)
+                    HStack {
+                      Image(
+                        systemName: coinMarket.priceChangePercentage24h > 0
+                          ? "arrow.up" : "arrow.down"
+                      )
+                      .imageScale(.small)
+                      .accessibilityHidden(true)
+                      Text(
+                        "\(marketStore.priceChangeFormatter.string(from: NSNumber(value: abs(coinMarket.priceChangePercentage24h / 100))) ?? "")"
+                      )
+                      .font(.caption)
+                    }
+                    .foregroundColor(
+                      coinMarket.priceChangePercentage24h > 0
+                        ? Color(.walletGreen) : Color(.walletRed)
+                    )
                   }
                 }
               }

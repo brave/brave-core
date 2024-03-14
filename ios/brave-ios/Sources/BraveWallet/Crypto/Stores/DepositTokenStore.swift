@@ -6,6 +6,14 @@
 import BraveCore
 import Foundation
 
+struct DepositTokenViewModel: Identifiable {
+  let token: BraveWallet.BlockchainToken
+  let network: BraveWallet.NetworkInfo
+  var id: String {
+    token.id
+  }
+}
+
 class DepositTokenStore: ObservableObject, WalletObserverStore {
   @Published var networkFilters: [Selectable<BraveWallet.NetworkInfo>] = [] {
     didSet {
@@ -13,13 +21,7 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
       update()
     }
   }
-  @Published var assetViewModels: [AssetViewModel] = []
-  /// Filter displayed tokens by this query
-  @Published var query: String = "" {
-    didSet {
-      update()
-    }
-  }
+  @Published var assetViewModels: [DepositTokenViewModel] = []
 
   private let keyringService: BraveWalletKeyringService
   private let rpcService: BraveWalletJsonRpcService
@@ -27,15 +29,16 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private var allTokens: [BraveWallet.BlockchainToken] = []
   private let assetManager: WalletUserAssetManagerType
+  private var keyringServiceObserver: KeyringServiceObserver?
   private var walletServiceObserver: WalletServiceObserver?
 
-  var prefilledToken: BraveWallet.BlockchainToken?
+  @Published var prefilledToken: BraveWallet.BlockchainToken?
   var prefilledAccount: BraveWallet.AccountInfo?
   @Published var allAccounts: [BraveWallet.AccountInfo] = []
   @Published var allNetworks: [BraveWallet.NetworkInfo] = []
 
   var isObserving: Bool {
-    walletServiceObserver != nil
+    walletServiceObserver != nil && keyringServiceObserver != nil
   }
 
   public init(
@@ -79,6 +82,15 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
         }
       }
     )
+    self.keyringServiceObserver = KeyringServiceObserver(
+      keyringService: keyringService,
+      _accountsChanged: { [weak self] in
+        self?.setup()
+      },
+      _accountsAdded: { [weak self] _ in
+        self?.setup()
+      }
+    )
   }
 
   func setup() {
@@ -119,28 +131,17 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
       let selectedNetworks = networkFilters.filter(\.isSelected).map(\.model)
       let filteredNetworkAssets = (allUserAssets + allBlockchainTokens).filter { networkAssets in
         selectedNetworks.contains {
-          $0.chainId.lowercased() == networkAssets.network.chainId.lowercased()
+          $0.chainId.caseInsensitiveCompare(networkAssets.network.chainId) == .orderedSame
         }
       }
       assetViewModels = filteredNetworkAssets.flatMap { networkAssets in
         networkAssets.tokens
           .sorted { $0.symbol < $1.symbol }
           .compactMap { token in
-            if !query.isEmpty,  // only if we have a filter query
-              !(token.symbol.localizedCaseInsensitiveContains(query)
-                || token.name.localizedCaseInsensitiveContains(query))
-            {
-              // token does not match query
-              return nil
-            }
             if !token.isErc721 && !token.isNft {  // no deposit for NFTs
-              return AssetViewModel(
-                groupType: .none,
+              return DepositTokenViewModel(
                 token: token,
-                network: networkAssets.network,
-                price: "",
-                history: [],
-                balanceForAccounts: [:]
+                network: networkAssets.network
               )
             }
             return nil

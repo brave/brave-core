@@ -188,13 +188,14 @@ public struct CryptoView: View {
                     dismissAction()
                   }
                 )
-              case .deposit:
+              case .deposit(let query):
                 DepositTokenView(
                   networkStore: store.networkStore,
                   depositTokenStore: store.openDepositTokenStore(
                     prefilledToken: destination.initialToken,
                     prefilledAccount: destination.initialAccount
                   ),
+                  prefilledQuery: query,
                   onDismiss: {
                     store.closeWalletActionStores()
                     dismissAction()
@@ -358,13 +359,14 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
               swapTokensStore: cryptoStore.openSwapTokenStore(action.initialToken),
               onDismiss: { cryptoStore.walletActionDestination = nil }
             )
-          case .deposit:
+          case .deposit(let query):
             DepositTokenView(
               networkStore: cryptoStore.networkStore,
               depositTokenStore: cryptoStore.openDepositTokenStore(
                 prefilledToken: action.initialToken,
                 prefilledAccount: action.initialAccount
               ),
+              prefilledQuery: query,
               onDismiss: { cryptoStore.walletActionDestination = nil }
             )
           }

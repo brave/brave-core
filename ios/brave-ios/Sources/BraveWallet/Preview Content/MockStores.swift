@@ -304,15 +304,13 @@ extension BraveWallet.TestSolanaTxManagerProxy {
 
 extension BraveWallet.TestEthTxManagerProxy {
   static var previewProxy: BraveWallet.TestEthTxManagerProxy {
-    let ethTxManagerProxy = BraveWallet.TestEthTxManagerProxy()
-    return ethTxManagerProxy
+    return BraveWallet.TestEthTxManagerProxy()
   }
 }
 
 extension BraveWallet.TestBraveWalletService {
   static var previewWalletService: BraveWallet.TestBraveWalletService {
-    let walletService = BraveWallet.TestBraveWalletService()
-    return walletService
+    return BraveWallet.TestBraveWalletService()
   }
 }
 
@@ -329,8 +327,7 @@ extension BraveWallet.TestAssetRatioService {
 
 extension BraveWallet.TestBlockchainRegistry {
   static var previewBlockchainRegistry: BraveWallet.TestBlockchainRegistry {
-    let blockchainRegistry = BraveWallet.TestBlockchainRegistry()
-    return blockchainRegistry
+    return BraveWallet.TestBlockchainRegistry()
   }
 }
 

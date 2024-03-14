@@ -454,7 +454,10 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
     prefilledToken: BraveWallet.BlockchainToken?,
     prefilledAccount: BraveWallet.AccountInfo?
   ) -> DepositTokenStore {
-    if let store = depositTokenStore {
+    if let store = depositTokenStore,
+      prefilledToken == store.prefilledToken,
+      prefilledAccount == store.prefilledAccount
+    {
       return store
     }
     let store = DepositTokenStore(

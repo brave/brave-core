@@ -34,7 +34,6 @@ public class MarketStore: ObservableObject, WalletObserverStore {
   private let walletService: BraveWalletBraveWalletService
   private let assetManager: WalletUserAssetManagerType
   private let assetsRequestLimit = 250
-  private var depositableTokens: [BraveWallet.BlockchainToken] = []
   let priceFormatter: NumberFormatter = .usdCurrencyFormatter
   let priceChangeFormatter = NumberFormatter().then {
     $0.numberStyle = .percent
@@ -64,15 +63,6 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       // update market coins
       guard !Task.isCancelled else { return }
-      let allNetworks = await rpcService.allNetworksForSupportedCoins()
-      let allUserAssets = assetManager.getAllUserAssetsInNetworkAssets(
-        networks: allNetworks,
-        includingUserDeleted: false
-      )
-      let allUserTokens = allUserAssets.flatMap(\.tokens)
-      let allBlockchainTokens = await blockchainRegistry.allTokens(in: allNetworks)
-        .flatMap(\.tokens)
-      self.depositableTokens = allUserTokens + allBlockchainTokens
       let (success, assets) = await assetRatioService.coinMarkets(
         vsAsset: priceFormatter.currencyCode,
         limit: UInt8(assetsRequestLimit)
@@ -86,9 +76,5 @@ public class MarketStore: ObservableObject, WalletObserverStore {
 
       self.isLoading = false
     }
-  }
-
-  func isDepositable(_ symbol: String) -> BraveWallet.BlockchainToken? {
-    depositableTokens.first { $0.symbol.lowercased() == symbol.lowercased() }
   }
 }
