@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct AdTrackerSliderContentView: View {
+struct FocusAdTrackerSliderContentView: View {
   var body: some View {
     SwipeDifferenceView {
       Image("focus-website-ads", bundle: .module)
@@ -13,6 +13,13 @@ struct AdTrackerSliderContentView: View {
       Image("focus-website-noads", bundle: .module)
     }
     .frame(width: .infinity, height: 420)
+  }
+}
+
+struct FocusVideoAdSliderContentView: View {
+  var body: some View {
+    Image("focus-website-video", bundle: .module)
+      .frame(width: .infinity, height: 420)
   }
 }
 
@@ -117,11 +124,15 @@ struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
   }
 }
 
-#Preview("LTR") {
-  AdTrackerSliderContentView()
+#Preview("AdTrackerLTR") {
+  FocusAdTrackerSliderContentView()
 }
 
-#Preview("RTL") {
-  AdTrackerSliderContentView()
+#Preview("AdTrackerRTL") {
+  FocusAdTrackerSliderContentView()
     .environment(\.layoutDirection, .rightToLeft)
+}
+
+#Preview("VideoTracker") {
+  FocusVideoAdSliderContentView()
 }

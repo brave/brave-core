@@ -4,15 +4,9 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import BraveUI
-import Foundation
-import UIKit
+import SwiftUI
 
 enum FocusOnboarding {
-  static let sliderBackground = UIColor(dynamicProvider: { traits in
-    if traits.userInterfaceStyle == .light {
-      return .white
-    } else {
-      return UIColor(rgb: 0x0D1214)
-    }
-  })
+  static let activeIndicatorTint = Color(braveSystemName: .textDisabled)
+  static let inactiveIndicatorTint = Color(braveSystemName: .dividerStrong)
 }

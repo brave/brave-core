@@ -6,7 +6,7 @@
 import CoreText
 import Foundation
 
-public class OnboardingFonts {
+public class FocusOnboardingFonts {
   /// Registers the custom fonts that exist in the Onboarding bundle
   public static func registerCustomFonts() {
     if let ttfs = Bundle.module.urls(forResourcesWithExtension: "ttf", subdirectory: nil) {

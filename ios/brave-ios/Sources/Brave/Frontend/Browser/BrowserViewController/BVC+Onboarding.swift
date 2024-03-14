@@ -316,7 +316,7 @@ extension BrowserViewController {
       return
     }
 
-    let welcomeView = WelcomeFocusView()
+    let welcomeView = FocusOnboardingView()
     let onboardingController = UIHostingController(rootView: welcomeView).then {
       $0.modalPresentationStyle = .fullScreen
     }
