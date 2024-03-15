@@ -38,24 +38,20 @@ const exitDialog = keyframes`
 
 const enterBackdrop = keyframes`
   from {
-    background: transparent;
     backdrop-filter: blur(0);
   }
 
   to {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(64px);
+    backdrop-filter: blur(2px);
   }
 `
 
 const exitBackdrop = keyframes`
   from {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(64px);
+    backdrop-filter: blur(2px);
   }
 
   to {
-    background: transparent;
     backdrop-filter: blur(0);
   }
 `
@@ -73,8 +69,7 @@ const Dialog = styled.dialog<{ offsetY: number }>`
   animation: ${enterDialog} ${duration} ease-in-out;
 
   &::backdrop {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(64px);
+    backdrop-filter: blur(2px);
     animation: ${enterBackdrop} ${duration} ease-in-out;
   }
 

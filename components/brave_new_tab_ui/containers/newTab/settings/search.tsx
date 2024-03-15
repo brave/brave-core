@@ -18,7 +18,7 @@ import {
   SettingsRow,
   SettingsText
 } from '../../../components/default'
-import { searchEnginesPromise } from '../../../components/search/SearchBox'
+import { searchEnginesPromise } from '../../../components/search/SearchContext'
 import { MediumIcon } from '../../../components/search/SearchEngineIcon'
 import { isSearchEngineEnabled, setEngineEnabled } from '../../../components/search/config'
 import { useNewTabPref } from '../../../hooks/usePref'
