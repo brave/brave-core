@@ -8,6 +8,7 @@
 
 #include <map>
 #include <string>
+#include <vector>
 
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
@@ -48,6 +49,9 @@ class BitcoinTestRpcServer {
                          uint64_t funded,
                          uint64_t spent);
 
+  void FailNextTransactionBroadcast();
+  void ConfirmAllTransactions();
+
   const std::string& Address0() const { return address_0_; }
   const std::string& Address6() const { return address_6_; }
 
@@ -70,6 +74,8 @@ class BitcoinTestRpcServer {
   std::map<std::string, bitcoin_rpc::UnspentOutputs> utxos_map_;
   base::Value fee_estimates_;
   std::string captured_raw_tx_;
+  bool fail_next_transaction_broadcast_ = false;
+  std::vector<bitcoin_rpc::Transaction> broadcasted_transactions_;
 
   mojom::AccountIdPtr account_id_;
 
