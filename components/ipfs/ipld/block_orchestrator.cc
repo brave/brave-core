@@ -10,9 +10,12 @@
 #include <string_view>
 #include <utility>
 
+#include "absl/types/optional.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_forward.h"
 #include "base/ranges/algorithm.h"
+#include "base/strings/string_util.h"
+#include "base/strings/stringprintf.h"
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block_reader.h"
@@ -21,22 +24,6 @@
 namespace {
 
 constexpr char kDefaultMimeType[] = "text/plain";
-
-// TODO may be move next function to separate object
-std::unique_ptr<ipfs::ipld::TrustlessTarget> GetIpfsTarget(const GURL& url) {
-  if (!url.SchemeIs(ipfs::kIPFSScheme)) {
-    return nullptr;
-  }
-  auto target = std::make_unique<ipfs::ipld::TrustlessTarget>();
-  if (!ipfs::ParseCIDAndPathFromIPFSUrl(url, &target->cid, &target->path)) {
-    return nullptr;
-  }
-  return target;
-}
-
-std::unique_ptr<ipfs::ipld::TrustlessTarget> GetIpnsTarget(const GURL& url) {
-  return nullptr;
-}
 
 void EnumerateBlocksFromCid(
     const std::string& cid_to_start,
@@ -91,6 +78,24 @@ void EnumerateBlocksFromCid(
   }
 }
 
+absl::optional<std::string> GetRootCid(
+    const ipfs::ipld::BlockOrchestrator::BlockCollectorMap& dag_nodes) {
+  DCHECK(!dag_nodes.empty());
+
+  auto root_block_iter = dag_nodes.find("");
+  if (root_block_iter == dag_nodes.end()) {
+    return absl::nullopt;
+  }
+  const auto* root_cids_list =
+      root_block_iter->second->Meta().FindList("roots");
+
+  if (!root_cids_list || root_cids_list->empty()) {
+    return absl::nullopt;
+  }
+
+  return root_cids_list->front().GetString();
+}
+
 }  // namespace
 
 namespace ipfs::ipld {
@@ -111,108 +116,128 @@ void BlockOrchestrator::BuildResponse(
 
   request_callback_ = std::move(callback);
   request_ = std::move(request);
+  SendRequest(request_->url);
+}
+
+void BlockOrchestrator::SendRequest(const GURL& url) {
+  LOG(INFO) << "[IPFS] SendRequest #10";
   block_reader_ = BlockReaderFactory().CreateCarBlockReader(
-      request_->url, request_->url_loader_factory, pref_service_,
+      url, request_->url_loader_factory, pref_service_,
       request_->only_structure);
   DCHECK(block_reader_);
   if (!block_reader_) {
     return;
   }
 
+  LOG(INFO) << "[IPFS] SendRequest #20";
   block_reader_->Read(base::BindRepeating(&BlockOrchestrator::OnBlockRead,
                                           weak_ptr_factory_.GetWeakPtr()));
+  LOG(INFO) << "[IPFS] SendRequest #30";
 }
 
 void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
                                     const bool is_completed,
                                     const int& error_code) {
-  LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed:"
+  LOG(INFO) << "[IPFS] OnBlockRead is_completed:"
             << is_completed << " Cid:" << (block ? block->Cid() : "n/a")
             << " error_code:" << error_code;
 
-  if (is_completed && error_code != net::HTTP_OK) {
-    LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead is_completed && error_code != net::HTTP_OK";
-    request_callback_.Run(
-              std::move(request_),
-              std::make_unique<IpfsTrustlessResponse>(
-                  kDefaultMimeType, error_code,
-                  nullptr, "",
-                  0, true));
+  if (!is_completed) {
+    LOG(INFO) << "[IPFS] OnBlockRead Not Completed, Collected block cid:" << (block ? block->Cid() : "n/a");
+    dag_nodes_.try_emplace(block->Cid(), std::move(block));
     return;
   }
-LOG(INFO) << "[IPFS] BlockOrchestrator::OnBlockRead #10";
 
-  if (is_completed && !block && request_callback_) {
-    LOG(INFO)
-        << "[IPFS] BlockOrchestrator::OnBlockRead Block collecting finished";
-    // Here is where we finished to collect all blocks
-    DCHECK(!dag_nodes_.empty());
-    if (auto ipfs_target =
-            GetIpfsTarget(request_->url)) {  // process ipfs target
-      ProcessTarget(std::move(ipfs_target));
-      return;
-    }
+  DCHECK(request_callback_);
 
-    if (auto ipfs_target =
-            GetIpnsTarget(request_->url)) {  // process ipns target
-
-      return;
-    }
-
-    // May be?????    Reset();
+  if (error_code != net::HTTP_OK) {
+    LOG(INFO) << "[IPFS] OnBlockRead is_completed && "
+                 "error_code != net::HTTP_OK";
+    request_callback_.Run(
+        std::move(request_),
+        std::make_unique<IpfsTrustlessResponse>(kDefaultMimeType, error_code,
+                                                nullptr, "", 0, true));
     return;
-  } 
+  }
 
+  if (!block) {
+    LOG(INFO) << "[IPFS] OnBlockRead Block collecting "
+                 "finished Root CID:"
+              << (dag_nodes_.contains("") ? dag_nodes_[""]->Meta().DebugString() : "N/A");
+    // Here is where we finished to collect all blocks
+    auto root_cid = GetRootCid(dag_nodes_);
+
+    DCHECK(root_cid);
+    if (!root_cid || root_cid->empty()) {
+      return;
+    }
+
+    ProcessBlock(*root_cid);
+    return;
+  }
+
+  LOG(INFO) << "[IPFS] OnBlockRead collected block cid:" << (block ? block->Cid() : "n/a");
   dag_nodes_.try_emplace(block->Cid(), std::move(block));
 }
 
-void BlockOrchestrator::ProcessTarget(std::unique_ptr<TrustlessTarget> target) {
-  DCHECK(target);
-  if (!target) {
+void BlockOrchestrator::ProcessBlock(const std::string& cid) {
+  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << cid;
+  DCHECK(!cid.empty());
+  auto block_iter = dag_nodes_.find(cid);
+  if (block_iter == dag_nodes_.end()) {
+    GURL sub_request_url(base::StringPrintf(
+        "ipfs://%s",
+        cid.c_str()));  // TODO change it to manage with replace URL parts
+    SendRequest(sub_request_url);
     return;
   }
 
-  if (target->IsCidTarget()) {
-    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget target->cid:"
-              << target->cid;
-    auto start_block = dag_nodes_.find(target->cid);
-    if (start_block != dag_nodes_.end() && start_block->second->IsContent()) {
-      LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessTarget found target->cid:"
-                << target->cid;
-      std::string_view vontent_view(
-          (const char*)start_block->second->GetContentData()->data(),
-          start_block->second->GetContentData()->size());
-      auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
-      LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
-      request_callback_.Run(
-          std::move(request_),
-          std::make_unique<IpfsTrustlessResponse>(
-              mime_type.value_or(kDefaultMimeType), net::HTTP_OK,
-              start_block->second->GetContentData(), "",
-              start_block->second->GetContentData()->size(), true));
-    } else if (start_block != dag_nodes_.end() &&
-               start_block->second
-                   ->IsMetadata()) {  // If it is multiblock file (TODO: think
-                                      // on better check of the multiblock)
+  const auto* block = block_iter->second.get();
+  DCHECK(block);
+  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:"
+            << block->Cid();
+  if (block->IsContent()) {
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Content";
+    std::string_view vontent_view((const char*)block->GetContentData()->data(),
+                                  block->GetContentData()->size());
+    auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
+    LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
+    request_callback_.Run(std::move(request_),
+                          std::make_unique<IpfsTrustlessResponse>(
+                              mime_type.value_or(kDefaultMimeType),
+                              net::HTTP_OK, block->GetContentData(), "",
+                              block->GetContentData()->size(), true));
+  } else if (block->IsMultiblockFile()) {
+    uint64_t size{0};
+    base::ranges::for_each(*block->GetLinks(), [&size](const auto& item) {
+      LOG(INFO) << "[IPFS] Size Calculation: " << item.size;
+      size += item.size;
+    });
 
-      uint64_t size{0};
-      base::ranges::for_each(
-          *start_block->second->GetLinks(), [&size](const auto& item) {
-            LOG(INFO) << "[IPFS] Size Calculation: " << item.size;
-            size += item.size;
-          });
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock MultiblockFile ";
 
-      LOG(INFO)
-          << "[IPFS] BlockOrchestrator::ProcessTarget NOT found target->cid:"
-          << target->cid
-          << " size:" << size;  // << "\r\nMeta:\r\n" <<
-                                // start_block->second->Meta().DebugString();
-
-      EnumerateBlocksFromCid(
-          start_block->second->Cid(), dag_nodes_,
-          base::BindRepeating(&BlockOrchestrator::BlockChainForCid,
-                              weak_ptr_factory_.GetWeakPtr(), size));
+    EnumerateBlocksFromCid(
+        block->Cid(), dag_nodes_,
+        base::BindRepeating(&BlockOrchestrator::BlockChainForCid,
+                            weak_ptr_factory_.GetWeakPtr(), size));
+  } else if (block->IsFolder()) {
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Folder";
+    auto index_item =
+        base::ranges::find_if(*block->GetLinks(), [](const auto& item) {
+          return base::EqualsCaseInsensitiveASCII(item.name, "index.html");
+        });
+    if (index_item != block->GetLinks()->end()) {
+      LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Found index name:"
+                << index_item->name << " hash:" << index_item->hash;
+      ProcessBlock(index_item->hash);
     }
+  } else {
+    LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock NOT Found in the "
+                 "CAR, must be requested";
+    GURL sub_request_url(base::StringPrintf(
+        "ipfs://%s",
+        cid.c_str()));  // TODO change it to manage with replace URL parts
+    SendRequest(sub_request_url);
   }
 
   //  if(target->IsPathTarget()) {

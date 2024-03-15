@@ -39,7 +39,7 @@ std::unique_ptr<std::vector<ipfs::ipld::DJLink>> ParseLinksFromMeta(
   }
 
   const auto* links = metadata.FindList(kDjLinks);
-  DCHECK(links);
+
   if (!links) {
     return nullptr;
   }
@@ -87,10 +87,10 @@ std::unique_ptr<std::vector<uint8_t>> ParseDataFromMeta(
   }
 
   const auto* data = metadata.FindDict(kDjData);
-  DCHECK(data);
   if (!data) {
     return nullptr;
   }
+  
   const auto* data_slash = data->FindDict(kDjDataDictSlash);
   DCHECK(data_slash);
   if (!data_slash) {
@@ -141,6 +141,14 @@ bool Block::IsRoot() const {
 bool Block::IsMetadata() const {
   return !metadata_.empty() && !metadata_.FindList("roots") &&
          (metadata_.FindList(kDjLinks) || metadata_.FindList(kDjData));
+}
+
+bool Block::IsMultiblockFile() const {
+  return IsMetadata() && djdata_ && djdata_->type == DjDataType::kFile;
+}
+
+bool Block::IsFolder() const {
+  return IsMetadata() && djdata_ && djdata_->type == DjDataType::kDirectory;
 }
 
 bool Block::IsContent() const {

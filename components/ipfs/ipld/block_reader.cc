@@ -23,13 +23,14 @@ void BlockReader::Read(BlockReaderCallback callback) {
   if (!callback || !content_requester_) {
     return;
   }
-
+LOG(INFO) << "[IPFS] Read #10";
   content_requester_->Request(
       base::BindRepeating(&BlockReader::OnRequestDataReceived,
                           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+LOG(INFO) << "[IPFS] Read #20";
 }
 
-base::raw_ptr<BlockFactory> BlockReader::GetBlockFactory() {
+BlockFactory* BlockReader::GetBlockFactory() {
   return block_factory_.get();
 }
 

@@ -22,8 +22,8 @@ constexpr char kGatewayUrlDagScopeParamVal[] = "entity";
 constexpr char kGatewayUrlEntityBytesParamName[] = "entity-bytes";
 constexpr char kGatewayUrlEntityBytesOnlyStructParamVal[] = "0:0";
 
-constexpr char kGatewayUrlBlockOrderParamName[] = "order";
-constexpr char kGatewayUrlBlockOrderParamVal[] = "dfs";
+// constexpr char kGatewayUrlBlockOrderParamName[] = "order";
+// constexpr char kGatewayUrlBlockOrderParamVal[] = "dfs";
 
 void ApplyRequestParameters(GURL& car_request_url) {
   car_request_url = net::AppendQueryParameter(
@@ -31,9 +31,9 @@ void ApplyRequestParameters(GURL& car_request_url) {
   car_request_url =
       net::AppendQueryParameter(car_request_url, kGatewayUrlDagScopeParamName,
                                 kGatewayUrlDagScopeParamVal);
-  car_request_url =
-      net::AppendQueryParameter(car_request_url, kGatewayUrlBlockOrderParamName,
-                                kGatewayUrlBlockOrderParamVal);
+  // car_request_url =
+  //     net::AppendQueryParameter(car_request_url, kGatewayUrlBlockOrderParamName,
+  //                               kGatewayUrlBlockOrderParamVal);
 }
 
 }  // namespace

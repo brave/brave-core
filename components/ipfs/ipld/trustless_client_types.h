@@ -57,6 +57,15 @@ using IpfsRequestCallback =
                                  std::unique_ptr<IpfsTrustlessResponse>)>;
 
 struct TrustlessTarget {
+  TrustlessTarget():TrustlessTarget("", ""){}
+  TrustlessTarget(std::string cid, std::string path)
+      : cid(std::move(cid)), path(std::move(path)) {}
+
+  TrustlessTarget(const TrustlessTarget&) = delete;
+  TrustlessTarget(TrustlessTarget&&) = delete;
+  TrustlessTarget& operator=(const TrustlessTarget&) = delete;
+  TrustlessTarget& operator=(TrustlessTarget&&) = delete;
+
   std::string cid;
   std::string path;
 

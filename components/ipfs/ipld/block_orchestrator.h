@@ -21,6 +21,11 @@ namespace ipfs::ipld {
 
 class BlockOrchestrator {
  public:
+using BlockCollectorMap = std::unordered_map<std::string,
+                     std::unique_ptr<Block>,
+                     StringHash,
+                     std::equal_to<>>;
+
   explicit BlockOrchestrator(PrefService* pref_service);
   ~BlockOrchestrator();
 
@@ -35,18 +40,16 @@ class BlockOrchestrator {
   bool IsActive() const;
  private:
   FRIEND_TEST_ALL_PREFIXES(BlockOrchestratorUnitTest, RequestFile);
+  FRIEND_TEST_ALL_PREFIXES(BlockOrchestratorUnitTest, RequestFolderGetIndexFile);
   friend class BlockOrchestratorUnitTest;
 
   void OnBlockRead(std::unique_ptr<Block> block, const bool is_completed, const int& error_code);
   void Reset();
 
-  void ProcessTarget(std::unique_ptr<TrustlessTarget> target);
+  void SendRequest(const GURL& url);
+  void ProcessBlock(const std::string& cid);
 
-  std::unordered_map<std::string,
-                     std::unique_ptr<Block>,
-                     StringHash,
-                     std::equal_to<>>
-      dag_nodes_;
+  BlockCollectorMap dag_nodes_;
 
   void BlockChainForCid(const uint64_t& size,
                         Block const* block,

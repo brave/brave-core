@@ -16,6 +16,8 @@ class CarBlockReader : public BlockReader {
   explicit CarBlockReader(std::unique_ptr<ContentRequester> content_requester);
   ~CarBlockReader() override;
 
+  void Read(BlockReaderCallback callback) override;
+  
  protected:
   void OnRequestDataReceived(BlockReaderCallback callback,
                              std::unique_ptr<std::vector<uint8_t>> data,

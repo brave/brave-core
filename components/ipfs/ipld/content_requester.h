@@ -30,6 +30,7 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
 
   virtual void Request(ContentRequestBufferCallback callback);
   virtual bool IsStarted() const;
+  virtual void Reset(const GURL& new_url);
 
  protected:
   explicit ContentRequester(

@@ -69,7 +69,12 @@ void IpfsTrustlessClientUrlLoader::StartRequest(
 void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
     std::unique_ptr<ipld::IpfsTrustlessRequest> request,
     std::unique_ptr<ipld::IpfsTrustlessResponse> response) {
-  if (!client_) {
+  if (!client_ || !client_.is_bound()) {
+    return;
+  }
+  if (response->status != net::HTTP_OK) {
+    client_->OnComplete(network::URLLoaderCompletionStatus(net::ERR_FAILED));
+    client_.reset();
     return;
   }
 
@@ -77,7 +82,7 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
 
 LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse #10 response->status:" << response->status << " response->body->size():" << (response->status  == net::HTTP_OK ? response->body->size() : 0);
   auto write_size = static_cast<uint32_t>(response->status == net::HTTP_OK ? response->body->size() : 0);
-  const std::vector<uint8_t> empty_data{' '};
+//  const std::vector<uint8_t> empty_data{' '};
 
   MojoResult result = producer_handle_->WriteData(
       response->status  == net::HTTP_OK ? &(*response->body)[0] : nullptr,

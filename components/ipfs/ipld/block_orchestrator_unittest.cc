@@ -7,8 +7,10 @@
 
 #include <cstdint>
 #include <memory>
+#include <regex>
 #include <thread>
 
+#include "absl/types/optional.h"
 #include "base/containers/contains.h"
 #include "base/files/file_util.h"
 #include "base/functional/bind.h"
@@ -19,6 +21,7 @@
 #include "base/test/bind.h"
 #include "base/test/test_timeouts.h"
 #include "brave/components/constants/brave_paths.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block.h"
 #include "brave/components/ipfs/ipld/car_block_reader.h"
@@ -50,17 +53,41 @@
 namespace {
 constexpr char kSubDirWithMixedBlockFiles[] =
     "subdir-with-mixed-block-files.car";
+constexpr char kSubDirWithSingleBlockFiles[] =
+    "subdir-with-single-block-files.car";
+constexpr char kFolderWithIndexHtmlFiles[] = "folder_with_index_html.car";
+constexpr char kJustFolderWithNoIndexHtmlFiles[] =
+    "folder_with_index_html_just_folder.car";
+
 constexpr char kTestDataSubDir[] = "ipfs/ipld";
 
-const struct {
-  std::string ipfs_url;
+struct CarFileTestData {
+  std::string car_file_name;
   std::string file_content;
-  uint64_t size;
+  uint64_t size;  
+};
+
+const struct {
+  std::string test_name;
+  std::string ipfs_url;
+  std::map<std::string, CarFileTestData> cids_to_car_map;
 } kOneFileExtractInputData[] = {
-    {"ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
-     "subdir_multiblock.txt", 1026},
-    {"ipfs://bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4",
-     "subdir_hello.txt", 12}};
+    {"MultiBlockFileTest",
+     "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
+     {{"bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
+       {kSubDirWithMixedBlockFiles, "subdir_multiblock.txt", 1026}}}},
+    {"SingleBlockFileTest",
+     "ipfs://bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4",
+     {{"bafkreifjjcie6lypi6ny7amxnfftagclbuxndqonfipmb64f2km2devei4",
+       {kSubDirWithSingleBlockFiles, "subdir_hello.txt", 12}}}},
+    {"RequestIndexFileInTheFolderTest",
+     "ipfs://bafybeidtkposquyc4h6lznimdqay6vf3tcrcyso2s4lqb5j2os3z7ebxjm",
+     {{"bafybeidtkposquyc4h6lznimdqay6vf3tcrcyso2s4lqb5j2os3z7ebxjm",
+       {kJustFolderWithNoIndexHtmlFiles, "folder_with_index_html_index.html",
+        362}},
+      {"bafkreibfdmgv63epr2cmhhpbtvrwc4hhc4mjlpbigep3lj5tiexdgnukeq",
+       {kFolderWithIndexHtmlFiles, "folder_with_index_html_index.html",
+        362}}}}};
 
 bool CompareVeAndStr(const std::vector<uint8_t>& vec, const std::string& str) {
   if (vec.size() != str.size()) {
@@ -72,6 +99,15 @@ bool CompareVeAndStr(const std::vector<uint8_t>& vec, const std::string& str) {
     }
   }
   return true;
+}
+
+absl::optional<std::string> GetCidFromUrl(const std::string url) {
+  std::regex pattern("\\/ip.+s\\/([a-z0-9]+)");
+  if (std::smatch match; std::regex_search(url, match, pattern)) {
+    return match[1];
+  }
+  LOG(INFO) << "[IPFS] GetCidFromUrl FAILED url:" << url;
+  return absl::nullopt;
 }
 
 }  // namespace
@@ -113,37 +149,53 @@ class BlockOrchestratorUnitTest : public testing::Test {
     return result;
   }
 
-  void TestGetCarFileByIpfsCid(const std::string& ipfs_url,
-                               const std::string& car_file_name,
-                               const uint64_t& size) {
+  void TestGetCarFileByIpfsCid(
+      const std::string& test_name,
+      const std::string& ipfs_url,
+      const std::map<std::string, CarFileTestData>& cids_to_car_map) {
     GURL url(ipfs_url);
     auto req = std::make_unique<IpfsTrustlessRequest>(
-        url, base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-                 url_loader_factory()));
+        url,
+        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory()),
+        false);
     auto orchestrator = std::make_unique<BlockOrchestrator>(GetPrefs());
+    const CarFileTestData* current_cid_file_test_data_ptr = nullptr;
     url_loader_factory()->SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
-          ASSERT_TRUE(request.url.is_valid());
-          ASSERT_TRUE(ipfs::IsDefaultGatewayURL(request.url, GetPrefs()));
+          LOG(INFO) << "[IPFS] Interceptor url:" << request.url;
+          url_loader_factory()->ClearResponses();
+          ASSERT_TRUE(request.url.is_valid()) << test_name;
+          ASSERT_TRUE(ipfs::IsDefaultGatewayURL(request.url, GetPrefs()))
+              << test_name;
 
-          ASSERT_TRUE(base::Contains(request.url.query(), "format=car"));
-          ASSERT_TRUE(base::Contains(request.url.query(), "dag-scope=entity"));
-          ASSERT_TRUE(base::Contains(
-              net::UnescapePercentEncodedUrl(request.url.query()),
-              "entity-bytes=0:0"));
+          auto current_cid = GetCidFromUrl(request.url.spec());
+          ASSERT_TRUE(current_cid) << test_name;
+
+          ASSERT_TRUE(base::Contains(request.url.query(), "format=car"))
+              << test_name;
+          ASSERT_TRUE(base::Contains(request.url.query(), "dag-scope=entity"))
+              << test_name;
+          // ASSERT_TRUE(base::Contains(
+          //     net::UnescapePercentEncodedUrl(request.url.query()),
+          //     "entity-bytes=0:0")) << test_name;
 
           auto response_head = network::mojom::URLResponseHead::New();
           response_head->headers =
               base::MakeRefCounted<net::HttpResponseHeaders>("");
 
-          response_head->headers->SetHeader(
-              "Content-Type",
-              "application/vnd.ipld.car; version=1; order=dfs; dups=n");
           response_head->headers->ReplaceStatusLine("HTTP/1.1 200 OK");
-          auto content = GetFileContent(kSubDirWithMixedBlockFiles);
+          const auto cids_to_car_map_iter = cids_to_car_map.find(*current_cid);
+          EXPECT_NE(cids_to_car_map_iter, cids_to_car_map.end()) << test_name;
+          current_cid_file_test_data_ptr = &cids_to_car_map_iter->second;
+
+          LOG(INFO) << "[IPFS] Interceptor url:" << request.url << " car_file_name:" << current_cid_file_test_data_ptr->car_file_name;
+          auto content =
+              GetFileContent(current_cid_file_test_data_ptr->car_file_name);
           url_loader_factory()->AddResponse(
               request.url, std::move(response_head), content,
               network::URLLoaderCompletionStatus(net::OK));
+          LOG(INFO) << "[IPFS] Interceptor Finish url:" << request.url << " content.length:" << content.length();
         }));
 
     std::vector<uint8_t> received_data;
@@ -151,25 +203,34 @@ class BlockOrchestratorUnitTest : public testing::Test {
     auto orchestrator_request_callback = base::BindLambdaForTesting(
         [&](std::unique_ptr<IpfsTrustlessRequest> request,
             std::unique_ptr<IpfsTrustlessResponse> response) {
-          EXPECT_TRUE(response);
-          EXPECT_TRUE(response->body);
+          ASSERT_TRUE(current_cid_file_test_data_ptr);
+          EXPECT_TRUE(response) << test_name;
+          EXPECT_TRUE(response->body) << test_name;
           received_data.insert(received_data.end(), response->body->begin(),
                                response->body->end());
           if (response->is_last_chunk) {
             last_chunk_received_counter++;
           }
           LOG(INFO) << "[IPFS] total_size: " << response->total_size;
-          EXPECT_EQ(response->total_size, size);
+          EXPECT_EQ(response->total_size, current_cid_file_test_data_ptr->size)
+              << test_name;
         });
     orchestrator->BuildResponse(std::move(req),
                                 std::move(orchestrator_request_callback));
-    ASSERT_TRUE(orchestrator->IsActive());
+    ASSERT_TRUE(orchestrator->IsActive()) << test_name;
+    LOG(INFO) << "[IPFS] Wait for operation finish";
     task_environment()->RunUntilIdle();
-    EXPECT_TRUE(CompareVeAndStr(received_data, GetFileContent(car_file_name)));
-    EXPECT_EQ(last_chunk_received_counter, 1);
+    ASSERT_TRUE(current_cid_file_test_data_ptr);
+    LOG(INFO) << "[IPFS] current_cid_file_test_data_ptr->file_content:"
+              << current_cid_file_test_data_ptr->file_content;
+    EXPECT_TRUE(CompareVeAndStr(
+        received_data,
+        GetFileContent(current_cid_file_test_data_ptr->file_content)))
+        << test_name;
+    EXPECT_EQ(last_chunk_received_counter, 1) << test_name;
 
     orchestrator->Reset();
-    ASSERT_FALSE(orchestrator->IsActive());
+    ASSERT_FALSE(orchestrator->IsActive()) << test_name;
   }
 
  private:
@@ -180,18 +241,25 @@ class BlockOrchestratorUnitTest : public testing::Test {
   network::TestURLLoaderFactory url_loader_factory_;
 };
 
-TEST_F(BlockOrchestratorUnitTest, RequestFile) {
+TEST_F(BlockOrchestratorUnitTest, RequestCarContent) {
   base::ranges::for_each(
       kOneFileExtractInputData, [this](const auto& item_case) {
-        TestGetCarFileByIpfsCid(item_case.ipfs_url, item_case.file_content,
-                                item_case.size);
+        TestGetCarFileByIpfsCid(item_case.test_name, item_case.ipfs_url,
+                                item_case.cids_to_car_map);
       });
 }
 
-TEST_F(BlockOrchestratorUnitTest, RequestMultiblockFile) {
-  TestGetCarFileByIpfsCid(
-      "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
-      "subdir_multiblock.txt", 1026);
-}
+// TEST_F(BlockOrchestratorUnitTest, RequestMultiblockFile) {
+//   TestGetCarFileByIpfsCid(
+//       "ipfs://bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa",
+//       kSubDirWithMixedBlockFiles, "subdir_multiblock.txt", 1026);
+// }
 
+TEST_F(BlockOrchestratorUnitTest, RequestFolderGetIndexFile) {
+  const auto* test = &kOneFileExtractInputData[2];
+   TestGetCarFileByIpfsCid(
+       test->test_name,
+       test->ipfs_url,
+       test->cids_to_car_map);
+}
 }  // namespace ipfs::ipld

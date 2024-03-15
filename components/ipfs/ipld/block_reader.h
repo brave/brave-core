@@ -32,7 +32,7 @@ class BlockReader {
 
   virtual void Read(BlockReaderCallback callback);
 
-  base::raw_ptr<BlockFactory> GetBlockFactory();
+  BlockFactory* GetBlockFactory();
 
  protected:
   explicit BlockReader(std::unique_ptr<ContentRequester> content_requester);
