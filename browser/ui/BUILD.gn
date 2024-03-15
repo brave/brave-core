@@ -782,7 +782,7 @@ source_set("ui") {
   if (toolkit_views) {
     deps += [
       "//brave/browser/ui/sidebar",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
       "//chrome/app:generated_resources",
       "//chrome/browser/ui/views",
       "//components/favicon_base",
