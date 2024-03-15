@@ -249,7 +249,7 @@ provideStrings({
   braveWalletGoBack: 'Go back',
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
-  braveWalletVerifyRecoveryPhraseTitle: 'Verify your recovery phrase',
+  braveWalletVerifyRecoveryPhraseTitle: 'Let\'s check',
   braveWalletVerifyRecoveryPhraseInstructions:
     'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of ' +
     'your recovery phrase.',

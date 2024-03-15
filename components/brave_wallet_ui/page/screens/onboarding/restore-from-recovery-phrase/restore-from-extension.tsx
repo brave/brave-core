@@ -41,7 +41,7 @@ import {
 } from '../../../../components/shared/password-input/new-password-input'
 import { CreatingWallet } from '../creating_wallet/creating_wallet'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { InputLabel } from './restore-from-recovery-phrase-v3.style'
+import { InputLabel } from './restore-from-recovery-phrase.style'
 
 type RestoreFromExtensionSteps = 'newPassword' | 'currentPassword'
 

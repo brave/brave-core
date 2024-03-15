@@ -1,23 +1,27 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 import { useDispatch } from 'react-redux'
 import { useHistory, useLocation } from 'react-router'
+import * as leo from '@brave/leo/tokens/css'
 
 // utils
-import { getLocale, getLocaleWithTags } from '../../../../../common/locale'
+import { getLocale } from '../../../../../common/locale'
 import {
-  formatOrdinals,
-  getWordIndicesToVerify,
-  ORDINALS
+  // formatOrdinals,
+  getWordIndicesToVerify
 } from '../../../../utils/ordinal-utils'
 import {
   useCompleteWalletBackupMutation,
   useReportOnboardingActionMutation
 } from '../../../../common/slices/api.slice'
+
+// selectors
+import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
+import { PageSelectors } from '../../../selectors'
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
@@ -25,32 +29,28 @@ import { BraveWallet, WalletRoutes } from '../../../../constants/types'
 // actions
 import { WalletPageActions } from '../../../actions'
 
-// styles
-import { ErrorText, ErrorXIcon } from '../../../../components/shared/style'
-import {
-  Description,
-  NextButtonRow,
-  Title,
-  TitleAndDescriptionContainer,
-  PhraseCard,
-  PhraseCardBody
-} from '../../onboarding/onboarding.style'
-import { ErrorTextRow } from './verify-recovery-phrase.style'
-
 // components
-import { NavButton } from '../../../../components/extension/buttons/nav-button/index'
-import { useSafePageSelector } from '../../../../common/hooks/use-safe-selector'
-import { PageSelectors } from '../../../selectors'
-import RecoveryPhrase from '../../../../components/desktop/recovery-phrase/recovery-phrase'
+import Button from '@brave/leo/react/button'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
 
+// styles
+import { Title } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout.style'
+import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
+import { VerificationProgress } from './components/verification-progress'
+import { PhraseInput } from './components/phrase-input'
+import { BackButton } from './verify-recovery-phrase.style'
+import { ContinueButton } from '../../onboarding/onboarding.style'
+
+const numberOfVerificationSteps = 3
+
 export const VerifyRecoveryPhrase = () => {
+  // state
+  const [currentStep, setCurrentStep] = React.useState(0)
+  const [enteredPhrase, setEnteredPhrase] = React.useState('')
+  const [showError, setShowError] = React.useState(false)
+
   // mutations
   const [report] = useReportOnboardingActionMutation()
-
-  // state
-  const [nextStepEnabled, setNextStepEnabled] = React.useState(false)
-  const [hasSelectedWords, setHasSelectedWords] = React.useState(false)
 
   // redux
   const dispatch = useDispatch()
@@ -65,14 +65,6 @@ export const VerifyRecoveryPhrase = () => {
   const [completeWalletBackup] = useCompleteWalletBackupMutation()
 
   // methods
-  const onSelectedWordsUpdated = React.useCallback(
-    (words: any[], doesWordOrderMatch: boolean) => {
-      setHasSelectedWords(words.length === 3)
-      setNextStepEnabled(doesWordOrderMatch)
-    },
-    []
-  )
-
   const onSkipBackup = React.useCallback(() => {
     dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     if (isOnboarding) {
@@ -93,90 +85,91 @@ export const VerifyRecoveryPhrase = () => {
     history.push(WalletRoutes.PortfolioAssets)
   }, [completeWalletBackup, isOnboarding, history, dispatch])
 
+  const onContinue = () => {
+    if (showError) setShowError(false)
+    // check if the word matches
+    if (enteredPhrase === verificationWord) {
+      setEnteredPhrase('')
+
+      if (currentStep === numberOfVerificationSteps - 1) {
+        onNextStep()
+      } else {
+        setCurrentStep(currentStep + 1)
+      }
+    } else {
+      setShowError(true)
+    }
+  }
+
   // memos
   const recoveryPhrase = React.useMemo(() => {
     return (mnemonic || '').split(' ')
   }, [mnemonic])
 
-  // memos
   const verificationIndices = React.useMemo(
     () => getWordIndicesToVerify(recoveryPhrase.length),
     [recoveryPhrase.length]
   )
 
-  // render
+  const [verificationWord, wordPosition] = React.useMemo(() => {
+    const verificationIndex = verificationIndices[currentStep]
+    const expectedWord = recoveryPhrase[verificationIndex]
+    const wordPos = verificationIndex + 1
+    return [expectedWord, wordPos]
+  }, [verificationIndices, currentStep])
+
   return (
     <OnboardingContentLayout
-      title={"Let's check"}
-      subTitle={''}
-    >
-      <TitleAndDescriptionContainer>
-        <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
-        <Description>
-          <span>
-            {getLocaleWithTags(
-              'braveWalletVerifyRecoveryPhraseInstructions',
-              3
-            ).map((text, i) => {
-              return (
-                <span key={text.duringTag || i}>
-                  {text.beforeTag}
-                  <strong>
-                    {text.duringTag
-                      ?.replace('$7', ORDINALS[verificationIndices[0]])
-                      ?.replace(
-                        '$8',
-                        formatOrdinals(verificationIndices[0] + 1)
-                      )
-                      ?.replace('$9', ORDINALS[verificationIndices[1]])
-                      ?.replace(
-                        '$10',
-                        formatOrdinals(verificationIndices[1] + 1)
-                      )
-                      ?.replace('$11', ORDINALS[verificationIndices[2]])
-                      ?.replace(
-                        '$12',
-                        formatOrdinals(verificationIndices[2] + 1)
-                      )}
-                  </strong>
-                  {text.afterTag}
-                </span>
-              )
-            })}
-          </span>
-        </Description>
-      </TitleAndDescriptionContainer>
-
-      <PhraseCard>
-        <PhraseCardBody>
-          <RecoveryPhrase
-            verificationIndices={verificationIndices}
-            verificationModeEnabled={true}
-            recoveryPhrase={recoveryPhrase}
-            onSelectedWordListChange={onSelectedWordsUpdated}
+      title={
+        <Row
+          width='100%'
+          gap='24px'
+          justifyContent='center'
+          alignItems='center'
+        >
+          <Title>{getLocale('braveWalletVerifyRecoveryPhraseTitle')}</Title>
+          <VerificationProgress
+            steps={numberOfVerificationSteps}
+            currentStep={currentStep}
           />
-        </PhraseCardBody>
-      </PhraseCard>
+        </Row>
+      }
+      showBackButton={false}
+    >
+      <VerticalSpace space='120px' />
+      <PhraseInput
+        phrase={enteredPhrase}
+        showError={showError}
+        wordPosition={wordPosition}
+        onHideError={() => setShowError(false)}
+        onChange={setEnteredPhrase}
+      />
+      <VerticalSpace space='18px' />
+      <BackButton
+        onClick={() =>
+          history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
+        }
+      >
+        Forgot to save? Go back
+      </BackButton>
+      <VerticalSpace space='100px' />
 
-      <ErrorTextRow hasError={!nextStepEnabled && hasSelectedWords}>
-        {!nextStepEnabled && hasSelectedWords && (
-          <>
-            <ErrorXIcon />
-            <ErrorText>{getLocale('braveWalletVerifyPhraseError')}</ErrorText>
-          </>
-        )}
-      </ErrorTextRow>
-
-      <NextButtonRow>
-        <NavButton
-          buttonType='primary'
-          text={getLocale('braveWalletButtonNext')}
-          disabled={!nextStepEnabled}
-          onSubmit={onNextStep}
-        />
-      </NextButtonRow>
+      <Column>
+        <ContinueButton
+          isDisabled={enteredPhrase === ''}
+          onClick={onContinue}
+        >
+          {getLocale('braveWalletButtonContinue')}
+        </ContinueButton>
+        <VerticalSpace space='24px' />
+        <Button
+          kind='plain-faint'
+          color={leo.color.text.secondary}
+          onClick={onSkipBackup}
+        >
+          {getLocale('braveWalletButtonSkip')}
+        </Button>
+      </Column>
     </OnboardingContentLayout>
   )
 }
-
-export default VerifyRecoveryPhrase

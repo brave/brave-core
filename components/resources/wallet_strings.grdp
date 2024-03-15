@@ -158,7 +158,7 @@
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_TITLE" desc="Verify Recovery screen title">Verify recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_DESCRIPTION" desc="Verify Recovery screen description">Select the words in your recovery phrase in their correct order.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_ERROR" desc="Verify Recovery screen error">Recovery phrase did not match, please try again.</message>
-  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE" desc="Verify Recovery phrase screen title">Verify your recovery phrase</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_TITLE" desc="Verify Recovery phrase screen title">Let's check</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_INSTRUCTIONS" desc="Verify Recovery phrase screen description">Click the <ph name="FIRST_BEFORE">$1</ph><ph name="FIRST">$7</ph> (<ph name="FIRST_ORDINAL">$8</ph>)<ph name="FIRST_AFTER">$2</ph>, <ph name="SECOND_BEFORE">$3</ph><ph name="SECOND">$9</ph> (<ph name="SECOND_ORDINAL">$10</ph>)<ph name="SECOND_AFTER">$4</ph>, and <ph name="THIRD_BEFORE">$5</ph><ph name="THIRD">$11</ph> (<ph name="THIRD_ORDINAL">$12</ph>)<ph name="THIRD_AFTER">$6</ph> words of your recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_VERIFY_PHRASE_ERROR" desc="Verify Recovery phrase screen error">Recovery phrase didn't match</message>
   <message name="IDS_BRAVE_WALLET_CREATE_PASSWORD_TITLE" desc="Create Password screen title">Create a new password</message>

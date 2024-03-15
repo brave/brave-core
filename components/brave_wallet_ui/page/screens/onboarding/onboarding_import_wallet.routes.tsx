@@ -27,7 +27,7 @@ import {
 } from './import-or-restore-wallet/import-or-restore-wallet'
 import {
   OnboardingRestoreFromRecoveryPhrase //
-} from './restore-from-recovery-phrase/restore-from-recovery-phrase-v3'
+} from './restore-from-recovery-phrase/restore-from-recovery-phrase'
 import {
   OnboardingNetworkSelection //
 } from './network_selection/onboarding_network_selection'
