@@ -12,6 +12,7 @@ import BraveWidgetsModels
 // To open a URL use /open-url or to open a blank tab use /open-url with no params
 public enum DeepLink: String {
   case vpnCrossPlatformPromo = "vpn_promo"
+  case braveLeo = "brave_leo"
 }
 
 // The root navigation for the Router. Look at the tests to see a complete URL
@@ -80,6 +81,8 @@ public enum NavigationPath: Equatable {
     switch link {
     case .vpnCrossPlatformPromo:
       bvc.presentVPNInAppEventCallout()
+    case .braveLeo:
+      bvc.presentBraveLeoDeepLink()
     }
   }
 
