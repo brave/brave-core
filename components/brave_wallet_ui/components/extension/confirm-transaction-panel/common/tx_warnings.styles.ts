@@ -17,14 +17,19 @@ interface WarningProps {
   isCritical?: boolean
 }
 
-export const WarningCloseIcon = styled(Icon).attrs<WarningProps>({
+export const WarningCloseIcon = styled(Icon).attrs({
   name: 'close'
 })`
   --leo-icon-size: 20px;
 `
-export const WarningButton = styled(Button)<WarningProps>`
+
+export const WarningButton = styled(Button)<
+  WarningProps & { isInfo?: boolean }
+>`
   --leo-button-color: ${(p) =>
-    p.isCritical
+    p.isInfo
+      ? leo.color.systemfeedback.infoIcon
+      : p.isCritical
       ? leo.color.systemfeedback.errorIcon
       : leo.color.systemfeedback.warningIcon};
 `
@@ -73,13 +78,21 @@ export const WarningCollapse = styled(Collapse)<WarningProps>`
   }
 `
 
-export const WarningTitle = styled.span<WarningProps & { isBold?: boolean }>`
+export const AlertTitle = styled.span<WarningProps & { isInfo?: boolean }>`
+  margin-left: -16px; /* Remove gap from empty icon in grid */
+  text-align: start;
   vertical-align: middle;
   color: ${(p) =>
-    p.isCritical
+    p.isInfo
+      ? leo.color.systemfeedback.infoText
+      : p.isCritical
       ? leo.color.systemfeedback.errorText
       : leo.color.systemfeedback.warningText};
-  font: ${(p) => (p.isBold ? leo.font.small.semibold : leo.font.small.regular)};
+  font: ${leo.font.small.semibold};
+`
+
+export const CollapseTitle = styled(AlertTitle)`
+  margin-left: 0px;
 `
 
 export const WarningsList = styled.ul`
