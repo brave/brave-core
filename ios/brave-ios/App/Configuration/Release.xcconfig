@@ -12,4 +12,4 @@ MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = NO
 
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = MOZ_CHANNEL_RELEASE
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = BRAVE_CHANNEL_RELEASE $(brave_swift_active_compliation_conditions)

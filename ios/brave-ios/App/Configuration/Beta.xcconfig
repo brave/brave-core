@@ -16,7 +16,7 @@ MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).browser.beta
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = NO
 
-SWIFT_ACTIVE_COMPILATION_CONDITIONS = MOZ_CHANNEL_BETA
+SWIFT_ACTIVE_COMPILATION_CONDITIONS = BRAVE_CHANNEL_BETA $(brave_swift_active_compliation_conditions)
 
 // Manual Code-Signing
 CODE_SIGN_IDENTITY = Apple Distribution: Brave Software, Inc.
