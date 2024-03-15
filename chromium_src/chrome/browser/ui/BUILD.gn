@@ -16,7 +16,7 @@ group("ui") {
   if (toolkit_views) {
     deps += [
       "//brave/components/ai_chat/core/common/buildflags",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
     ]
 
     if (enable_ai_chat) {

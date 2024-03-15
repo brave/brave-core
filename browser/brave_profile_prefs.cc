@@ -123,7 +123,7 @@
 #endif
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
 #if BUILDFLAG(ENABLE_EXTENSIONS)

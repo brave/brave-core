@@ -29,7 +29,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_control_view.h"
 #include "brave/components/constants/pref_names.h"
 #include "brave/components/constants/webui_url_constants.h"
-#include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_window.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
