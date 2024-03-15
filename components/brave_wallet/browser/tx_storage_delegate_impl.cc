@@ -132,8 +132,16 @@ void TxStorageDelegateImpl::RunDBMigrations() {
 }
 
 void TxStorageDelegateImpl::ScheduleWrite() {
+  if (disable_writes_for_testing_) {
+    return;
+  }
+
   DCHECK(initialized_) << "storage is not initialized yet";
   store_->Set(kStorageTransactionsKey, base::Value(txs_.Clone()));
+}
+
+void TxStorageDelegateImpl::DisableWritesForTesting(bool disable) {
+  disable_writes_for_testing_ = disable;
 }
 
 void TxStorageDelegateImpl::Clear() {
