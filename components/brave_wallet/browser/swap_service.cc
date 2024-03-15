@@ -408,7 +408,7 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
     api_request_helper_.Request(net::HttpRequestHeaders::kGetMethod,
                                 GetJupiterQuoteURL(*params, fee_param), "", "",
-                                std::move(internal_callback), {}, {},
+                                std::move(internal_callback), GetHeaders(), {},
                                 std::move(conversion_callback));
 
     return;
@@ -435,8 +435,8 @@ void SwapService::GetQuote(mojom::SwapQuoteParamsPtr params,
 
     api_request_helper_.Request(
         net::HttpRequestHeaders::kPostMethod, GetLiFiQuoteURL(),
-        *encoded_params, "application/json", std::move(internal_callback), {},
-        {}, std::move(conversion_callback));
+        *encoded_params, "application/json", std::move(internal_callback),
+        GetHeaders(), {}, std::move(conversion_callback));
     return;
   }
 
@@ -566,8 +566,8 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
     api_request_helper_.Request(
         net::HttpRequestHeaders::kPostMethod,
         GetJupiterTransactionURL(jupiter_transaction_params->chain_id),
-        *encoded_params, "application/json", std::move(internal_callback), {},
-        {});
+        *encoded_params, "application/json", std::move(internal_callback),
+        GetHeaders(), {});
 
     return;
   }
@@ -591,7 +591,7 @@ void SwapService::GetTransaction(mojom::SwapTransactionParamsUnionPtr params,
     api_request_helper_.Request(net::HttpRequestHeaders::kPostMethod,
                                 GetLiFiTransactionURL(), *encoded_params,
                                 "application/json",
-                                std::move(internal_callback), {}, {});
+                                std::move(internal_callback), GetHeaders(), {});
 
     return;
   }
