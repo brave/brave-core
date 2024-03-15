@@ -511,6 +511,30 @@ TEST(EthResponseParserUnitTest, ParseEthGetFeeHistory) {
   EXPECT_EQ(oldest_block, "0xd6b1b0");
   EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
 
+  // OK: null values in baseFeePerGas array is handled correctly
+  json = R"(
+      {
+        "jsonrpc":"2.0",
+        "id":1,
+        "result": {
+          "baseFeePerGas": [null, "0x0", null, "0x1"],
+          "gasUsedRatio": [],
+          "oldestBlock": "0xd6b1b0",
+          "reward": null
+        }
+      })";
+  base_fee_per_gas.clear();
+  gas_used_ratio.clear();
+  oldest_block.clear();
+  reward.clear();
+  EXPECT_TRUE(ParseEthGetFeeHistory(ParseJson(json), &base_fee_per_gas,
+                                    &gas_used_ratio, &oldest_block, &reward));
+  EXPECT_EQ(base_fee_per_gas,
+            std::vector<std::string>({"0x0", "0x0", "0x0", "0x1"}));
+  EXPECT_EQ(gas_used_ratio, std::vector<double>());
+  EXPECT_EQ(oldest_block, "0xd6b1b0");
+  EXPECT_EQ(reward, std::vector<std::vector<std::string>>());
+
   // Unexpected input
   EXPECT_FALSE(ParseEthGetFeeHistory(base::Value(), &base_fee_per_gas,
                                      &gas_used_ratio, &oldest_block, &reward));
