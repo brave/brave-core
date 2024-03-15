@@ -12,6 +12,12 @@
 		0A5E04FB23FEB53700E5A3E9 /* LaunchScreen.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 0A5E04FA23FEB53700E5A3E9 /* LaunchScreen.xcassets */; };
 		270ECFC82838210F0089B8B7 /* Brave in Frameworks */ = {isa = PBXBuildFile; productRef = 270ECFC72838210F0089B8B7 /* Brave */; };
 		2713FCD82A96429600398A57 /* WidgetBackground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2713FCD72A96429100398A57 /* WidgetBackground.swift */; };
+		2714EE6B2AF2D4CD002090A9 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */; };
+		2714EE6E2AF2D4CD002090A9 /* CredentialProviderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2714EE6D2AF2D4CD002090A9 /* CredentialProviderViewController.swift */; };
+		2714EE762AF2D4CD002090A9 /* AutoFillProvider.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		2714EE8D2AF3F476002090A9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2714EE8C2AF3F476002090A9 /* Main.storyboard */; };
+		2714EE8E2AF3F656002090A9 /* AuthenticationServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */; };
+		271C57792B07F036008D824E /* CredentialProviderUI in Frameworks */ = {isa = PBXBuildFile; productRef = 271C57782B07F036008D824E /* CredentialProviderUI */; };
 		272947DE29C8DB2000BF2FDC /* topics_news.en_US.json in Resources */ = {isa = PBXBuildFile; fileRef = 27444B6A29831BBE002E1EBE /* topics_news.en_US.json */; };
 		272947E329C8F86A00BF2FDC /* NewsTopicsModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */; };
 		272FC5AF2979EA700027C53D /* TopNewsWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 272FC5AE2979E9D60027C53D /* TopNewsWidget.swift */; };
@@ -42,6 +48,7 @@
 		27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */ = {isa = PBXBuildFile; productRef = 27D7FF7229BB816E0096DD93 /* PrivateCDN */; };
 		27D972E628BD4D9900DDCF79 /* BraveNews in Frameworks */ = {isa = PBXBuildFile; productRef = 27D972E528BD4D9900DDCF79 /* BraveNews */; };
 		27DB270828BE9CB4005CB7AC /* LockScreenFavoriteWidget.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DB270728BE9CAE005CB7AC /* LockScreenFavoriteWidget.swift */; };
+		27E998272B7BE1BC00D9ECF7 /* BraveCore in Frameworks */ = {isa = PBXBuildFile; productRef = 27E998262B7BE1BC00D9ECF7 /* BraveCore */; };
 		27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = 27F443952135E11200296C58 /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		27F443AD2135E25300296C58 /* ShareToBraveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27F443AC2135E25300296C58 /* ShareToBraveViewController.swift */; };
 		27FA21752837F8EA00FA2C45 /* BrowserIntentsModels in Frameworks */ = {isa = PBXBuildFile; productRef = 27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */; };
@@ -88,6 +95,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		2714EE742AF2D4CD002090A9 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 2714EE682AF2D4CD002090A9;
+			remoteInfo = AutoFillProvider;
+		};
 		27F4439D2135E11200296C58 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = F84B21B61A090F8100AAB793 /* Project object */;
@@ -144,6 +158,7 @@
 			files = (
 				CA8B4AF0276A8339002120F7 /* BraveWidgetsExtension.appex in Embed App Extensions */,
 				27F4439F2135E11200296C58 /* ShareExtension.appex in Embed App Extensions */,
+				2714EE762AF2D4CD002090A9 /* AutoFillProvider.appex in Embed App Extensions */,
 				2FD860CA29C3D686005AADD1 /* BraveWireGuard.appex in Embed App Extensions */,
 				2FE7D5292B509DA50039FBA4 /* ActionExtension.appex in Embed App Extensions */,
 				2F6931BB260CFB3700ECEB38 /* BrowserIntents.appex in Embed App Extensions */,
@@ -168,6 +183,12 @@
 		2703FC14284FDB6300970FD2 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = Shortcuts/ru.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		270ECFC628381E270089B8B7 /* brave-ios */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = "brave-ios"; path = ..; sourceTree = "<group>"; };
 		2713FCD72A96429100398A57 /* WidgetBackground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WidgetBackground.swift; sourceTree = "<group>"; };
+		2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = AutoFillProvider.appex; sourceTree = BUILT_PRODUCTS_DIR; };
+		2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AuthenticationServices.framework; path = System/Library/Frameworks/AuthenticationServices.framework; sourceTree = SDKROOT; };
+		2714EE6D2AF2D4CD002090A9 /* CredentialProviderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CredentialProviderViewController.swift; sourceTree = "<group>"; };
+		2714EE722AF2D4CD002090A9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2714EE802AF2FFBC002090A9 /* AutoFillProvider.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = AutoFillProvider.entitlements; sourceTree = "<group>"; };
+		2714EE8C2AF3F476002090A9 /* Main.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		271D0F3A284FDB12002BCF91 /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = Shortcuts/it.lproj/BrowserIntents.strings; sourceTree = "<group>"; };
 		27262B4C28BEB3D800A2E526 /* Intents.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Intents.framework; path = System/Library/Frameworks/Intents.framework; sourceTree = SDKROOT; };
 		272947E029C8F6F200BF2FDC /* NewsTopicsModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewsTopicsModel.swift; sourceTree = "<group>"; };
@@ -351,6 +372,16 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		2714EE662AF2D4CD002090A9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				27E998272B7BE1BC00D9ECF7 /* BraveCore in Frameworks */,
+				271C57792B07F036008D824E /* CredentialProviderUI in Frameworks */,
+				2714EE6B2AF2D4CD002090A9 /* AuthenticationServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443922135E11200296C58 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -377,6 +408,7 @@
 				27D7FF5329BA69330096DD93 /* BraveShields in Frameworks */,
 				27FA217F2837FB0100FA2C45 /* BraveShared in Frameworks */,
 				27D7FF7329BB816E0096DD93 /* PrivateCDN in Frameworks */,
+				2714EE8E2AF3F656002090A9 /* AuthenticationServices.framework in Frameworks */,
 				278852E62ACDE795005395CF /* UserAgent in Frameworks */,
 				27FA21812837FB0100FA2C45 /* BraveWallet in Frameworks */,
 				278852E42ACDC26B005395CF /* Playlist in Frameworks */,
@@ -460,6 +492,25 @@
 				E689C6FF1E0C716F008BAADB /* Entitlements */,
 			);
 			path = iOS;
+			sourceTree = "<group>";
+		};
+		2714EE6C2AF2D4CD002090A9 /* AutoFillProvider */ = {
+			isa = PBXGroup;
+			children = (
+				2714EE7F2AF2FFBC002090A9 /* Entitlements */,
+				2714EE6D2AF2D4CD002090A9 /* CredentialProviderViewController.swift */,
+				2714EE722AF2D4CD002090A9 /* Info.plist */,
+				2714EE8C2AF3F476002090A9 /* Main.storyboard */,
+			);
+			path = AutoFillProvider;
+			sourceTree = "<group>";
+		};
+		2714EE7F2AF2FFBC002090A9 /* Entitlements */ = {
+			isa = PBXGroup;
+			children = (
+				2714EE802AF2FFBC002090A9 /* AutoFillProvider.entitlements */,
+			);
+			path = Entitlements;
 			sourceTree = "<group>";
 		};
 		272947DF29C8DE4300BF2FDC /* News Topics */ = {
@@ -556,6 +607,7 @@
 				CA0391B5271E1023000EB13C /* SwiftUI.framework */,
 				27262B4C28BEB3D800A2E526 /* Intents.framework */,
 				2FE7D51C2B509DA40039FBA4 /* UniformTypeIdentifiers.framework */,
+				2714EE6A2AF2D4CD002090A9 /* AuthenticationServices.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -637,6 +689,7 @@
 				2F6931B5260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B7271E1023000EB13C /* BraveWidgets */,
 				2FD860C329C3D686005AADD1 /* BraveWireGuard */,
+				2714EE6C2AF2D4CD002090A9 /* AutoFillProvider */,
 				7B604FC11C496005006EEEC3 /* Frameworks */,
 				F84B21BF1A090F8100AAB793 /* Products */,
 			);
@@ -654,6 +707,7 @@
 				CA0391B2271E1023000EB13C /* BraveWidgetsExtension.appex */,
 				2FD860C129C3D677005AADD1 /* BraveWireGuard.appex */,
 				2FE7D51B2B509DA40039FBA4 /* ActionExtension.appex */,
+				2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -671,6 +725,27 @@
 /* End PBXHeadersBuildPhase section */
 
 /* Begin PBXNativeTarget section */
+		2714EE682AF2D4CD002090A9 /* AutoFillProvider */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2714EE7E2AF2D4CE002090A9 /* Build configuration list for PBXNativeTarget "AutoFillProvider" */;
+			buildPhases = (
+				2714EE652AF2D4CD002090A9 /* Sources */,
+				2714EE662AF2D4CD002090A9 /* Frameworks */,
+				2714EE672AF2D4CD002090A9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AutoFillProvider;
+			packageProductDependencies = (
+				271C57782B07F036008D824E /* CredentialProviderUI */,
+				27E998262B7BE1BC00D9ECF7 /* BraveCore */,
+			);
+			productName = AutoFillProvider;
+			productReference = 2714EE692AF2D4CD002090A9 /* AutoFillProvider.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
 		27F443942135E11200296C58 /* ShareExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */;
@@ -798,6 +873,7 @@
 				2F6931BA260CFB3700ECEB38 /* PBXTargetDependency */,
 				2FD860C929C3D686005AADD1 /* PBXTargetDependency */,
 				2FE7D5282B509DA50039FBA4 /* PBXTargetDependency */,
+				2714EE752AF2D4CD002090A9 /* PBXTargetDependency */,
 			);
 			name = Client;
 			packageProductDependencies = (
@@ -833,6 +909,9 @@
 				LastUpgradeCheck = 1250;
 				ORGANIZATIONNAME = Mozilla;
 				TargetAttributes = {
+					2714EE682AF2D4CD002090A9 = {
+						CreatedOnToolsVersion = 15.0.1;
+					};
 					27F443942135E11200296C58 = {
 						CreatedOnToolsVersion = 10.0;
 						LastSwiftMigration = 1010;
@@ -916,11 +995,20 @@
 				2F6931B3260CFB3700ECEB38 /* BrowserIntents */,
 				CA0391B1271E1023000EB13C /* BraveWidgetsExtension */,
 				2FD860C029C3D676005AADD1 /* BraveWireGuard */,
+				2714EE682AF2D4CD002090A9 /* AutoFillProvider */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		2714EE672AF2D4CD002090A9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2714EE8D2AF3F476002090A9 /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443932135E11200296C58 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -997,6 +1085,14 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		2714EE652AF2D4CD002090A9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2714EE6E2AF2D4CD002090A9 /* CredentialProviderViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		27F443912135E11200296C58 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1069,6 +1165,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		2714EE752AF2D4CD002090A9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 2714EE682AF2D4CD002090A9 /* AutoFillProvider */;
+			targetProxy = 2714EE742AF2D4CD002090A9 /* PBXContainerItemProxy */;
+		};
 		27F4439E2135E11200296C58 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 27F443942135E11200296C58 /* ShareExtension */;
@@ -1255,6 +1356,217 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		2714EE772AF2D4CE002090A9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		2714EE782AF2D4CE002090A9 /* Debug (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS - Development AutoFill Provider";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = "Debug (AppStore)";
+		};
+		2714EE792AF2D4CE002090A9 /* Nightly */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Nightly AutoFill Provider";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Nightly;
+		};
+		2714EE7B2AF2D4CE002090A9 /* Release (AppStore) */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Release AutoFill Provider";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = "Release (AppStore)";
+		};
+		2714EE7C2AF2D4CE002090A9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				CODE_SIGN_STYLE = Automatic;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		2714EE7D2AF2D4CE002090A9 /* Beta */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CODE_SIGN_ENTITLEMENTS = AutoFillProvider/Entitlements/AutoFillProvider.entitlements;
+				CODE_SIGN_STYLE = Manual;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AutoFillProvider/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = AutoFillProvider;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@executable_path/../../Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(inherited).$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "Brave iOS Beta AutoFill Provider";
+				SKIP_INSTALL = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Beta;
+		};
 		2774D3712B682277008A5F42 /* Nightly */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2943,6 +3255,19 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		2714EE7E2AF2D4CE002090A9 /* Build configuration list for PBXNativeTarget "AutoFillProvider" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2714EE772AF2D4CE002090A9 /* Debug */,
+				2714EE782AF2D4CE002090A9 /* Debug (AppStore) */,
+				2714EE792AF2D4CE002090A9 /* Nightly */,
+				2714EE7B2AF2D4CE002090A9 /* Release (AppStore) */,
+				2714EE7C2AF2D4CE002090A9 /* Release */,
+				2714EE7D2AF2D4CE002090A9 /* Beta */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
 		27F443AB2135E11200296C58 /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
@@ -3068,6 +3393,10 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = Brave;
 		};
+		271C57782B07F036008D824E /* CredentialProviderUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = CredentialProviderUI;
+		};
 		272FC5B02979F3AD0027C53D /* CodableHelpers */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = CodableHelpers;
@@ -3140,6 +3469,10 @@
 		27D972E528BD4D9900DDCF79 /* BraveNews */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = BraveNews;
+		};
+		27E998262B7BE1BC00D9ECF7 /* BraveCore */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = BraveCore;
 		};
 		27FA21742837F8EA00FA2C45 /* BrowserIntentsModels */ = {
 			isa = XCSwiftPackageProductDependency;

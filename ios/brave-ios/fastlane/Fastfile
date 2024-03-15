@@ -66,6 +66,7 @@ platform :ios do
           "com.brave.ios.browser.beta.BrowserIntents" => "Brave iOS Beta Intents Extension",
           "com.brave.ios.browser.beta.BraveWidgetsExtension" => "Brave iOS Beta Widgets Extension",
           "com.brave.ios.browser.beta.BraveWireGuard" => "Brave iOS Beta Wireguard Extension",
+          "com.brave.ios.browser.beta.AutoFillProvider" => "Brave iOS Beta AutoFill Provider",
         },
       }
     }
@@ -86,6 +87,7 @@ platform :ios do
           "com.brave.ios.BrowserBeta.BrowserIntents" => "Brave iOS Nightly Intents Extension",
           "com.brave.ios.BrowserBeta.BraveWidgetsExtension" => "Brave iOS Nightly Widgets Extension",
           "com.brave.ios.BrowserBeta.BraveWireGuard" => "Brave iOS Nightly Wireguard Extension",
+          "com.brave.ios.BrowserBeta.AutoFillProvider" => "Brave iOS Nightly AutoFill Provider",
         },
       }
     }
@@ -106,6 +108,7 @@ platform :ios do
           "com.brave.ios.browser.BrowserIntents" => "Brave iOS Release Intents Extension",
           "com.brave.ios.browser.BraveWidgetsExtension" => "Brave iOS Release Widgets Extension",
           "com.brave.ios.browser.BraveWireGuard" => "Brave iOS Release WireGuard Extension",
+          "com.brave.ios.browser.AutoFillProvider" => "Brave iOS Release AutoFill Provider",
         },
         manageAppVersionAndBuildNumber: false
       },

@@ -13,6 +13,7 @@ BRAVE_URL_SCHEME = brave-nightly
 
 // Bundle Identifier
 MOZ_BUNDLE_ID = $(BASE_BUNDLE_ID).BrowserBeta
+BRAVE_GROUP_ID = group.$(MOZ_BUNDLE_ID).unique
 
 // Flag to indicate if we want to include the debug settings bundle or not
 INCLUDE_SETTINGS_BUNDLE = YES

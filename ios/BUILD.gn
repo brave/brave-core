@@ -15,6 +15,7 @@ import("//brave/ios/browser/api/brave_shields/headers.gni")
 import("//brave/ios/browser/api/brave_stats/headers.gni")
 import("//brave/ios/browser/api/brave_wallet/headers.gni")
 import("//brave/ios/browser/api/certificate/headers.gni")
+import("//brave/ios/browser/api/credential_provider/headers.gni")
 import("//brave/ios/browser/api/de_amp/headers.gni")
 import("//brave/ios/browser/api/debounce/headers.gni")
 import("//brave/ios/browser/api/favicon/headers.gni")
@@ -109,6 +110,7 @@ brave_core_public_headers += ntp_background_images_public_headers
 brave_core_public_headers += browser_api_web_ui_public_headers
 brave_core_public_headers += brave_services_key_public_headers
 brave_core_public_headers += browser_api_features_public_headers
+brave_core_public_headers += credential_provider_public_headers
 
 action("brave_core_umbrella_header") {
   script = "//build/config/ios/generate_umbrella_header.py"
@@ -159,6 +161,7 @@ ios_framework_bundle("brave_core_ios_framework") {
   deps += brave_wallet_public_deps
   deps += rewards_public_deps
   deps += skus_public_deps
+  deps += credential_provider_public_deps
 
   sources = brave_core_public_headers
 

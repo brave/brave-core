@@ -5,7 +5,7 @@
 
 import XCTest
 
-@testable import BraveWallet
+import BraveShared
 
 class PasteboardTests: XCTestCase {
   func testExpiringSecureString() {
