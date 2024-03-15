@@ -463,7 +463,7 @@ extension Tab: BraveWalletEventsListener {
     
     let networkVersion = valueOrUndefined(Int(chainId.removingHexPrefix, radix: 16))
     await webView.evaluateSafeJavaScript(
-      functionName: "window.ethereum.networkVersion = \(networkVersion)",
+      functionName: "window.ethereum.networkVersion = \"\(networkVersion)\"",
       contentWorld: EthereumProviderScriptHandler.scriptSandbox,
       asFunction: false
     )
