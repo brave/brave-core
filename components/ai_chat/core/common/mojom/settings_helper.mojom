@@ -21,8 +21,3 @@ interface AIChatSettingsHelper {
   [EnableIf=is_android]
   RefreshOrder(string order_id) => (string response);
 };
-
-[EnableIf=is_android]
-interface IAPSubscription {
-  GetPurchaseTokenOrderId() => (string token, string order_id);
-};

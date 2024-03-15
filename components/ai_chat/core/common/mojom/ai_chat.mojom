@@ -211,3 +211,8 @@ interface ChatUIPage {
   OnSiteInfoChanged(SiteInfo info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
 };
+
+[EnableIf=is_android]
+interface IAPSubscription {
+  GetPurchaseTokenOrderId() => (string token, string order_id);
+};
