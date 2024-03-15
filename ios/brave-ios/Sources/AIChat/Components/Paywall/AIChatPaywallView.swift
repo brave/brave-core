@@ -3,12 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
+import BraveStrings
 import BraveUI
 import DesignSystem
-import Then
 import StoreKit
-import BraveStrings
+import SwiftUI
+import Then
 
 enum AIChatPaymentStatus {
   case ongoing
@@ -24,29 +24,29 @@ enum AIChatSubscriptionTier {
 struct AIChatPaywallView: View {
   @Environment(\.dismiss)
   private var dismiss
-  
-  @State 
+
+  @State
   private var selectedTierType: AIChatSubscriptionTier = .monthly
-  
+
   @State
   private var availableTierTypes: [AIChatSubscriptionTier] = [.monthly]
-  
+
   @ObservedObject
   private(set) var storeSDK = BraveStoreSDK.shared
-  
+
   @State
   private var paymentStatus: AIChatPaymentStatus = .success
-  
+
   @State
   private var isShowingPurchaseAlert = false
-  
+
   @State
   private var shouldDismiss: Bool = false
-  
+
   // Timer used for resetting the restore action to prevent infinite loading
-  @State 
+  @State
   private var iapRestoreTimer: Task<Void, Error>?
-  
+
   var premiumUpgrageSuccessful: ((AIChatSubscriptionTier) -> Void)?
 
   var body: some View {
@@ -56,9 +56,10 @@ struct AIChatPaywallView: View {
           VStack(spacing: 0.0) {
             PremiumUpsellTitleView(
               upsellType: .premium,
-              isPaywallPresented: true)
+              isPaywallPresented: true
+            )
             .padding(16.0)
-            
+
             PremiumUpsellDetailView(isPaywallPresented: true)
               .padding([.top, .horizontal], 8.0)
               .padding(.bottom, 24.0)
@@ -69,21 +70,24 @@ struct AIChatPaywallView: View {
           .navigationBarTitleDisplayMode(.inline)
           .toolbar {
             ToolbarItemGroup(placement: .confirmationAction) {
-              Button(action: {
-                Task { await restorePurchase() }
-              }) {
-                if paymentStatus == .ongoing {
-                  ProgressView()
-                    .tint(Color.white)
-                } else {
-                  Text(Strings.AIChat.restorePaywallButtonTitle)
+              Button(
+                action: {
+                  Task { await restorePurchase() }
+                },
+                label: {
+                  if paymentStatus == .ongoing {
+                    ProgressView()
+                      .tint(Color.white)
+                  } else {
+                    Text(Strings.AIChat.restorePaywallButtonTitle)
+                  }
                 }
-              }
+              )
               .foregroundColor(.white)
               .disabled(paymentStatus == .ongoing)
               .buttonStyle(.plain)
             }
-            
+
             ToolbarItemGroup(placement: .cancellationAction) {
               Button(Strings.CancelString) {
                 dismiss()
@@ -104,24 +108,28 @@ struct AIChatPaywallView: View {
             $0.scrollEdgeAppearance = appearance
           }
         })
-        
+
         paywallActionView
           .padding(.bottom, 16.0)
       }
       .background(
         Color(braveSystemName: .primitivePrimary90)
           .edgesIgnoringSafeArea(.all)
-          .overlay(Image("leo-product", bundle: .module),
-                   alignment: .topTrailing))
+          .overlay(
+            Image("leo-product", bundle: .module),
+            alignment: .topTrailing
+          )
+      )
       .alert(isPresented: $isShowingPurchaseAlert) {
         Alert(
           title: Text(Strings.genericErrorTitle),
           message: Text(Strings.AIChat.paywallPurchaseErrorDescription),
-          dismissButton: .default(Text(Strings.OKString)))
+          dismissButton: .default(Text(Strings.OKString))
+        )
       }
       .onChange(of: shouldDismiss) { shouldDismiss in
         premiumUpgrageSuccessful?(selectedTierType)
-        
+
         if shouldDismiss {
           dismiss()
         }
@@ -129,25 +137,29 @@ struct AIChatPaywallView: View {
     }
     .navigationViewStyle(.stack)
   }
-  
+
   private var tierSelection: some View {
     VStack {
       if availableTierTypes.contains(.yearly) {
-        AIChatPremiumTierSelectionView(title: Strings.AIChat.paywallYearlySubscriptionTitle,
-                                       description: Strings.AIChat.paywallYearlySubscriptionDescription,
-                                       product: storeSDK.leoYearlyProduct,
-                                       type: .yearly,
-                                       selectedTierType: $selectedTierType)
+        AIChatPremiumTierSelectionView(
+          title: Strings.AIChat.paywallYearlySubscriptionTitle,
+          description: Strings.AIChat.paywallYearlySubscriptionDescription,
+          product: storeSDK.leoYearlyProduct,
+          type: .yearly,
+          selectedTierType: $selectedTierType
+        )
       }
-      
+
       if availableTierTypes.contains(.monthly) {
-        AIChatPremiumTierSelectionView(title: Strings.AIChat.paywallMontlySubscriptionTitle,
-                                       description: nil,
-                                       product: storeSDK.leoMonthlyProduct,
-                                       type: .monthly,
-                                       selectedTierType: $selectedTierType)
+        AIChatPremiumTierSelectionView(
+          title: Strings.AIChat.paywallMontlySubscriptionTitle,
+          description: nil,
+          product: storeSDK.leoMonthlyProduct,
+          type: .monthly,
+          selectedTierType: $selectedTierType
+        )
       }
-      
+
       Text(Strings.AIChat.paywallPurchaseDeepNote)
         .multilineTextAlignment(.center)
         .font(.footnote)
@@ -158,46 +170,56 @@ struct AIChatPaywallView: View {
         .padding([.vertical], 12.0)
     }
   }
-  
+
   private var paywallActionView: some View {
     VStack(spacing: 16.0) {
       Rectangle()
         .frame(height: 1.0)
         .foregroundColor(Color(braveSystemName: .primitivePrimary70))
-      
-      VStack {
-        Button(action: {
+
+      Button(
+        action: {
           Task { await purchaseSubscription() }
-        }) {
-          if paymentStatus == .ongoing {
-            ProgressView()
-              .tint(Color.white)
-          } else {
-            Text(Strings.AIChat.paywallPurchaseActionTitle)
-              .font(.body.weight(.semibold))
-              .foregroundColor(Color(.white))
+        },
+        label: {
+          HStack {
+            if paymentStatus == .ongoing {
+              ProgressView()
+                .tint(Color.white)
+                .padding()
+            } else {
+              Text(Strings.AIChat.paywallPurchaseActionTitle)
+                .font(.body.weight(.semibold))
+                .foregroundColor(Color(.white))
+                .padding()
+            }
           }
+          .frame(maxWidth: .infinity)
+          .contentShape(ContainerRelativeShape())
+          .background(
+            LinearGradient(
+              gradient:
+                Gradient(colors: [
+                  Color(UIColor(rgb: 0xFF5500)),
+                  Color(UIColor(rgb: 0xFF006B)),
+                ]),
+              startPoint: .init(x: 0.0, y: 0.0),
+              endPoint: .init(x: 0.0, y: 1.0)
+            )
+          )
         }
-        .frame(maxWidth: .infinity)
-        .padding()
-        .background(LinearGradient(gradient:
-                                    Gradient(colors: [
-                                      Color(UIColor(rgb: 0xFF5500)),
-                                      Color(UIColor(rgb: 0xFF006B))
-                                    ]),
-                                   startPoint: .init(x: 0.0, y: 0.0),
-                                   endPoint: .init(x: 0.0, y: 1.0)))
-        .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
-        .disabled(paymentStatus == .ongoing)
-      }
+      )
+      .clipShape(RoundedRectangle(cornerRadius: 16.0, style: .continuous))
+      .disabled(paymentStatus == .ongoing)
+      .buttonStyle(.plain)
       .padding([.horizontal], 16.0)
     }
   }
-  
+
   @MainActor
   private func purchaseSubscription() async {
     paymentStatus = .ongoing
-    
+
     do {
       switch selectedTierType {
       case .monthly:
@@ -205,43 +227,40 @@ struct AIChatPaywallView: View {
       case .yearly:
         try await storeSDK.purchase(product: BraveStoreProduct.leoYearly)
       }
-      
+
       paymentStatus = .success
-      
-      Task.delayed(bySeconds: 2.0) { @MainActor in
-        shouldDismiss = true
-      }
+      shouldDismiss = true
     } catch {
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
-  
+
   @MainActor
   private func restorePurchase() async {
     paymentStatus = .ongoing
-    
+
     if await storeSDK.restorePurchases() {
       iapRestoreTimer?.cancel()
       paymentStatus = .success
-      shouldDismiss.toggle()
+      shouldDismiss = true
     } else {
       iapRestoreTimer?.cancel()
       paymentStatus = .failure
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
-    
+
     if iapRestoreTimer != nil {
       iapRestoreTimer?.cancel()
       iapRestoreTimer = nil
     }
-    
-    // Adding 1 minute time-out for restore
-    iapRestoreTimer = Task.delayed(bySeconds: 60.0) { @MainActor in
+
+    // Adding 30 seconds time-out for restore
+    iapRestoreTimer = Task.delayed(bySeconds: 30.0) { @MainActor in
       paymentStatus = .failure
 
       // Show Alert for failure of restore
-      isShowingPurchaseAlert.toggle()
+      isShowingPurchaseAlert = true
     }
   }
 }
@@ -251,62 +270,75 @@ private struct AIChatPremiumTierSelectionView: View {
   var description: String?
   var product: Product?
   var type: AIChatSubscriptionTier
-  
+
   @Binding
   var selectedTierType: AIChatSubscriptionTier
-  
+
   var body: some View {
-    Button(action: {
-      selectedTierType = type
-    }) {
-      HStack {
-        VStack(alignment: .leading, spacing: 8.0) {
-          Text(title)
-            .font(.title2.weight(.semibold))
-            .foregroundColor(Color(.white))
-          
-          if let description = description {
-            Text(description)
-              .font(.caption2.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .green50))
-              .padding(4.0)
-              .background(Color(braveSystemName: .green20))
-              .clipShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
+    Button(
+      action: {
+        selectedTierType = type
+      },
+      label: {
+        HStack {
+          VStack(alignment: .leading, spacing: 8.0) {
+            Text(title)
+              .font(.title2.weight(.semibold))
+              .foregroundColor(Color(.white))
+
+            if let description = description {
+              Text(description)
+                .font(.caption2.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .green50))
+                .padding(4.0)
+                .background(Color(braveSystemName: .green20))
+                .clipShape(RoundedRectangle(cornerRadius: 4.0, style: .continuous))
+            }
           }
-        }
-        Spacer()
-        
-        if let product = product {
-          HStack(alignment: .center, spacing: 2) {
-            Text("\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")")
+          Spacer()
+
+          if let product = product {
+            HStack(alignment: .center, spacing: 2) {
+              Text(
+                "\(product.priceFormatStyle.locale.currencyCode ?? "")\(product.priceFormatStyle.locale.currencySymbol ?? "")"
+              )
               .font(.subheadline)
               .foregroundColor(Color(braveSystemName: .primitivePrimary30))
-            
-            Text(product.price.frontSymbolCurrencyFormatted(
-              with: product.priceFormatStyle.locale, isSymbolIncluded: false) ?? product.displayPrice)
+
+              Text(
+                product.price.frontSymbolCurrencyFormatted(
+                  with: product.priceFormatStyle.locale,
+                  isSymbolIncluded: false
+                ) ?? product.displayPrice
+              )
               .font(.title)
               .foregroundColor(.white)
-            
-            Text(" / " + Strings.AIChat.paywallYearlyPriceDividend)
-              .font(.subheadline)
-              .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+
+              Text(" / " + Strings.AIChat.paywallYearlyPriceDividend)
+                .font(.subheadline)
+                .foregroundColor(Color(braveSystemName: .primitivePrimary30))
+            }
+          } else {
+            ProgressView()
+              .tint(Color.white)
           }
-        } else {
-          ProgressView()
-            .tint(Color.white)
         }
+        .padding()
+        .background(
+          Color(
+            braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80
+          )
+        )
+        .overlay(
+          ContainerRelativeShape()
+            .strokeBorder(
+              Color(braveSystemName: .primitivePrimary50),
+              lineWidth: selectedTierType == type ? 2.0 : 0.0
+            )
+        )
+        .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
       }
-      .padding()
-      .background(
-        Color(braveSystemName: selectedTierType == type ? .primitivePrimary60 : .primitivePrimary80)
-      )
-      .overlay(
-        ContainerRelativeShape()
-          .strokeBorder(Color(braveSystemName: .primitivePrimary50),
-                        lineWidth: selectedTierType == type ? 2.0 : 0.0)
-      )
-      .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
-    }
+    )
     .frame(maxWidth: .infinity)
     .buttonStyle(.plain)
   }
