@@ -15,12 +15,16 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/p3a_utils/feature_usage.h"
+#include "brave/components/sidebar/common/features.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
 
 namespace ai_chat {
 
 namespace {
+
+using sidebar::features::SidebarDefaultMode;
+
 constexpr base::TimeDelta kReportInterval = base::Hours(24);
 constexpr base::TimeDelta kReportDebounceDelay = base::Seconds(3);
 const int kChatCountBuckets[] = {1, 5, 10, 20, 50};
@@ -58,6 +62,65 @@ const char* GetContextMenuActionKey(ContextMenuAction action) {
       return kChangeToneActionKey;
     case ContextMenuAction::kChangeLength:
       return kChangeLengthActionKey;
+    default:
+      NOTREACHED();
+      return nullptr;
+  }
+}
+
+void ReportHistogramForSidebarExperiment(
+    int value,
+    const char* (*get_histogram_name)(SidebarDefaultMode)) {
+  auto current_mode = sidebar::features::GetSidebarDefaultMode();
+
+  for (int i = 0; i <= static_cast<int>(SidebarDefaultMode::kMaxValue); i++) {
+    SidebarDefaultMode i_mode = static_cast<SidebarDefaultMode>(i);
+    const char* histogram_name = get_histogram_name(i_mode);
+
+    // If the mode applies for a given histogram name, report it as usual.
+    // If not, do not report & suspend metric, so we don't double count
+    // reporting two or more metrics.
+    int report_value = current_mode == i_mode ? value : INT_MAX - 1;
+    base::UmaHistogramExactLinear(histogram_name, report_value, 3);
+  }
+}
+
+const char* GetEnabledHistogramName(SidebarDefaultMode mode) {
+  switch (mode) {
+    case SidebarDefaultMode::kOff:
+      return kEnabledHistogramName;
+    case SidebarDefaultMode::kAlwaysOn:
+      return kEnabledSidebarEnabledAHistogramName;
+    case SidebarDefaultMode::kOnOneShot:
+      return kEnabledSidebarEnabledBHistogramName;
+    default:
+      NOTREACHED();
+      return nullptr;
+  }
+}
+
+const char* GetUsageWeeklyHistogramName(SidebarDefaultMode mode) {
+  switch (mode) {
+    case SidebarDefaultMode::kOff:
+      return kUsageWeeklyHistogramName;
+    case SidebarDefaultMode::kAlwaysOn:
+      return kUsageWeeklySidebarEnabledAHistogramName;
+    case SidebarDefaultMode::kOnOneShot:
+      return kUsageWeeklySidebarEnabledBHistogramName;
+    default:
+      NOTREACHED();
+      return nullptr;
+  }
+}
+
+const char* GetUsageDailyHistogramName(SidebarDefaultMode mode) {
+  switch (mode) {
+    case SidebarDefaultMode::kOff:
+      return kUsageDailyHistogramName;
+    case SidebarDefaultMode::kAlwaysOn:
+      return kUsageDailySidebarEnabledAHistogramName;
+    case SidebarDefaultMode::kOnOneShot:
+      return kUsageDailySidebarEnabledBHistogramName;
     default:
       NOTREACHED();
       return nullptr;
@@ -143,7 +206,8 @@ void AIChatMetrics::RecordEnabled(
 
   is_enabled_ = true;
 
-  UMA_HISTOGRAM_EXACT_LINEAR(kEnabledHistogramName, is_premium_ ? 2 : 1, 3);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      GetEnabledHistogramName);
   if (is_new_user && acquisition_source_.has_value()) {
     UMA_HISTOGRAM_ENUMERATION(kAcquisitionSourceHistogramName,
                               *acquisition_source_);
@@ -176,8 +240,10 @@ void AIChatMetrics::RecordNewChat() {
 }
 
 void AIChatMetrics::RecordNewPrompt() {
-  UMA_HISTOGRAM_EXACT_LINEAR(kUsageDailyHistogramName, is_premium_ ? 2 : 1, 3);
-  UMA_HISTOGRAM_EXACT_LINEAR(kUsageWeeklyHistogramName, is_premium_ ? 2 : 1, 3);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      GetUsageDailyHistogramName);
+  ReportHistogramForSidebarExperiment(is_premium_ ? 2 : 1,
+                                      GetUsageWeeklyHistogramName);
   UMA_HISTOGRAM_EXACT_LINEAR(kUsageMonthlyHistogramName, is_premium_ ? 2 : 1,
                              3);
   p3a_utils::RecordFeatureUsage(local_state_,
