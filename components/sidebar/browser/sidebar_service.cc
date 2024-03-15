@@ -92,6 +92,7 @@ void SidebarService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(
       kLastUsedBuiltInItemType,
       static_cast<int>(SidebarItem::BuiltInItemType::kNone));
+  registry->RegisterBooleanPref(kSidebarSettingChangeInitialP3AReport, false);
 }
 
 SidebarService::SidebarService(

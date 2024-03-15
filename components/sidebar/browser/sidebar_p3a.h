@@ -14,6 +14,8 @@ namespace sidebar {
 namespace p3a {
 
 inline constexpr char kSidebarEnabledHistogramName[] = "Brave.Sidebar.Enabled";
+inline constexpr char kSettingChangeSidebarEnabledAHistogramName[] = "Brave.Sidebar.SettingChange.SidebarEnabledA";
+inline constexpr char kSettingChangeSidebarEnabledBHistogramName[] = "Brave.Sidebar.SettingChange.SidebarEnabledB";
 
 class SidebarP3A {
  public:
@@ -23,7 +25,7 @@ class SidebarP3A {
   SidebarP3A(const SidebarP3A&) = delete;
   SidebarP3A& operator=(const SidebarP3A&) = delete;
 
-  void RecordEnabledSetting();
+  void RecordEnabledSetting(bool setting_changed);
 
  private:
   raw_ptr<PrefService> profile_prefs_;

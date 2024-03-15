@@ -34,6 +34,9 @@ inline constexpr char kTargetUserForSidebarEnabledTest[] =
 inline constexpr char kSidebarAlignmentChangedTemporarily[] =
     "brave.sidebar.sidebar_alignment_changed_for_vertical_tabs";
 
+inline constexpr char kSidebarSettingChangeInitialP3AReport[] =
+    "brave.sidebar.setting_change_initial_p3a_reported";
+
 }  // namespace sidebar
 
 #endif  // BRAVE_COMPONENTS_SIDEBAR_BROWSER_PREF_NAMES_H_
