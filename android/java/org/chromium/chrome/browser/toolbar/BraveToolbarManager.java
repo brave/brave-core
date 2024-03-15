@@ -174,7 +174,7 @@ public class BraveToolbarManager extends ToolbarManager {
             Supplier<EphemeralTabCoordinator> ephemeralTabCoordinatorSupplier,
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
-            @Nullable BooleanSupplier overviewIncognitoSupplier,
+            @Nullable ObservableSupplier<Integer> overviewColorSupplier,
             @Nullable View baseChromeLayout) {
         super(
                 activity,
@@ -221,7 +221,7 @@ public class BraveToolbarManager extends ToolbarManager {
                 ephemeralTabCoordinatorSupplier,
                 initializeWithIncognitoColors,
                 backPressManager,
-                overviewIncognitoSupplier,
+                overviewColorSupplier,
                 baseChromeLayout);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
