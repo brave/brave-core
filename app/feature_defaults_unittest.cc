@@ -108,7 +108,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kSharedStorageAPIM118,
       &blink::features::kSharedStorageAPIM123,
       &blink::features::kSharedStorageSelectURLLimit,
-      &blink::features::kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
       &blink::features::kSpeculationRulesPrefetchFuture,
       &blink::features::kTextFragmentAnchor,
       &commerce::kCommerceAllowOnDemandBookmarkUpdates,
