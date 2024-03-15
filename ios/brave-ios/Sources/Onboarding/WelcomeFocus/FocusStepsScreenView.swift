@@ -8,69 +8,71 @@ import SwiftUI
 struct FocusStepsView: View {
   var namespace: Namespace.ID
 
-  @State var activeIndex = 0
-  @State private var isP3AActive: Bool = false
+  @State private var indicatorIndex = 0
+  @State private var isP3AViewPresented: Bool = false
 
   var body: some View {
-    VStack {
-      Image("focus-icon-brave", bundle: .module)
-        .resizable()
-        .matchedGeometryEffect(id: "icon", in: namespace)
-        .frame(width: 78, height: 78)
+    NavigationView {
+      VStack {
+        Image("focus-icon-brave", bundle: .module)
+          .resizable()
+          .matchedGeometryEffect(id: "icon", in: namespace)
+          .frame(width: 78, height: 78)
 
-      FocusStepsHeaderTitleView(activeIndex: $activeIndex)
+        FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
+          .padding(.bottom, 24)
+
+        TabView(selection: $indicatorIndex) {
+          FocusAdTrackerSliderContentView()
+            .tag(0)
+          FocusVideoAdSliderContentView()
+            .tag(1)
+        }
+        .frame(maxWidth: .infinity)
+        .frame(height: 420)
+        .background(Color(braveSystemName: .pageBackground))
+        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+        .animation(.easeInOut, value: indicatorIndex)
+        .transition(.slide)
         .padding(.bottom, 24)
 
-      TabView(selection: $activeIndex) {
-        FocusAdTrackerSliderContentView()
-          .tag(0)
-        FocusVideoAdSliderContentView()
-          .tag(1)
-      }
-      .frame(maxWidth: .infinity)
-      .frame(height: 420)
-      .background(Color(braveSystemName: .pageBackground))
-      .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-      .animation(.easeInOut, value: activeIndex)
-      .transition(.slide)
-      .padding(.bottom, 24)
-
-      Spacer()
-
-      Button(
-        action: {
-          if activeIndex > 1 {
-            isP3AActive = true
-          } else {
-            activeIndex += 1
-          }
-        },
-        label: {
-          Text("Continue")
-            .font(.body.weight(.semibold))
-            .foregroundColor(Color(.white))
-            .padding()
-            .foregroundStyle(.white)
-            .frame(maxWidth: .infinity)
-            .background(Color(braveSystemName: .buttonBackground))
+        Spacer()
+        
+        VStack(spacing: 28) {
+          Button(
+            action: {
+              if indicatorIndex > 0 {
+                isP3AViewPresented = true
+              } else {
+                indicatorIndex += 1
+              }
+            },
+            label: {
+              Text("Continue")
+                .font(.body.weight(.semibold))
+                .foregroundColor(Color(.white))
+                .padding()
+                .foregroundStyle(.white)
+                .frame(maxWidth: .infinity)
+                .background(Color(braveSystemName: .buttonBackground))
+            }
+          )
+            .clipShape(RoundedRectangle(cornerRadius: 12.0))
+            .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+          
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
         }
-      )
-      .clipShape(RoundedRectangle(cornerRadius: 12.0))
-      .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-      .padding(.bottom, 24)
-
-      FocusStepsPagingIndicator(totalPages: 4, activeIndex: $activeIndex)
         .padding(.bottom, 20)
-    }
-    .padding(.horizontal, 20)
-    .background(Color(braveSystemName: .pageBackground))
-    .background {
-      NavigationLink(isActive: $isP3AActive) {
-        FocusP3AScreenView()
-      } label: {
-        EmptyView()
+      }
+      .padding(.horizontal, 20)
+      .background(Color(braveSystemName: .pageBackground))
+      .background {
+        NavigationLink("", isActive: $isP3AViewPresented) {
+          FocusP3AScreenView()
+        }
       }
     }
+    .navigationBarHidden(true)
   }
 }
 
@@ -84,10 +86,10 @@ struct FocusStepsHeaderTitleView: View {
 
     VStack(spacing: 10) {
       Text(title)
-        .font(Font.largeTitle)
+        .font(.largeTitle.weight(.medium))
 
       Text(description)
-        .font(.body.weight(.medium))
+        .font(.headline)
         .lineLimit(2)
         .multilineTextAlignment(.center)
         .fixedSize(horizontal: false, vertical: true)
@@ -98,10 +100,6 @@ struct FocusStepsHeaderTitleView: View {
 
 struct FocusStepsPagingIndicator: View {
   var totalPages: Int
-
-  var activeTint = Color(braveSystemName: .textDisabled)
-  var inActiveTint = Color(braveSystemName: .dividerStrong)
-
   @Binding var activeIndex: Int
 
   var body: some View {

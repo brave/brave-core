@@ -10,14 +10,14 @@ import Strings
 import SwiftUI
 
 public struct FocusOnboardingView: View {
-  @State private var splash = true
+  @State private var isSplashViewPresented = true
   @Namespace var namespace
 
   public init() {}
 
   public var body: some View {
     VStack {
-      if splash {
+      if isSplashViewPresented {
         FocusSplashScreenView(namespace: namespace)
       } else {
         FocusStepsView(namespace: namespace)
@@ -25,7 +25,7 @@ public struct FocusOnboardingView: View {
     }
     .onAppear {
       withAnimation(.easeInOut(duration: 1.5).delay(1.5)) {
-        splash = false
+        isSplashViewPresented = false
       }
     }
   }
