@@ -54,6 +54,7 @@ static_library("browser") {
     "//brave/components/l10n/common",
     "//brave/components/p3a_utils",
     "//brave/components/resources:strings_grit",
+    "//brave/components/sidebar/common",
     "//brave/components/skus/common:mojom",
     "//brave/components/time_period_storage",
     "//components/prefs",
