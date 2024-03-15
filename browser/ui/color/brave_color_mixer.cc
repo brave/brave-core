@@ -40,15 +40,6 @@ constexpr SkColor kDarkLocationBarBgBase = kDarkFrame;
 constexpr float kOmniboxOpacityHovered = 0.10f;
 constexpr float kOmniboxOpacitySelected = 0.16f;
 
-SkColor GetToolbarInkDropColor(const ui::ColorMixer& mixer) {
-  // Copied from
-  // chrome/browser/ui/views/toolbar/toolbar_ink_drop_util.h
-  // to use same hover background with toolbar button.
-  constexpr float kToolbarInkDropHighlightVisibleOpacity = 0.08f;
-  return SkColorSetA(mixer.GetResultColor(kColorToolbarInkDrop),
-                     0xFF * kToolbarInkDropHighlightVisibleOpacity);
-}
-
 SkColor PickColorContrastingToOmniboxResultsBackground(
     const ui::ColorProviderKey& key,
     const ui::ColorMixer& mixer,
@@ -302,7 +293,20 @@ void AddChromeColorMixerForAllThemes(ui::ColorProvider* provider,
   ui::ColorMixer& mixer = provider->AddMixer();
 
   // Use same ink drop effect for all themes including custome themes.
-  mixer[kColorToolbarInkDrop] = {SK_ColorBLACK};
+  // Toolbar button's inkdrop highlight/visible colors depends on toolbar color.
+  auto get_toolbar_ink_drop_color = [](float dark_opacity, float light_opacity,
+                                       SkColor input,
+                                       const ui::ColorMixer& mixer) {
+    const float highlight_opacity =
+        color_utils::IsDark(mixer.GetResultColor(kColorToolbar))
+            ? dark_opacity
+            : light_opacity;
+    return SkColorSetA(SK_ColorBLACK, 0xFF * highlight_opacity);
+  };
+  mixer[kColorToolbarInkDropHover] = {
+      base::BindRepeating(get_toolbar_ink_drop_color, 0.25f, 0.05f)};
+  mixer[kColorToolbarInkDropRipple] = {
+      base::BindRepeating(get_toolbar_ink_drop_color, 0.4f, 0.1f)};
 }
 
 void AddBraveColorMixerForAllThemes(ui::ColorProvider* provider,
@@ -418,7 +422,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xF0, 0xF2, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {
       SkColorSetRGB(0x21, 0x25, 0x29)};
-  mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0xE6, 0xE8, 0xF5)};
   mixer[kColorSidebarPanelHeaderSeparator] = {
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kLight)};
@@ -469,7 +473,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleBackground] = {SK_ColorWHITE};
   mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0x42, 0x45, 0x52)};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
-      GetToolbarInkDropColor(mixer)};
+      kColorToolbarInkDropHover};
 
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.15 * 255)};
@@ -525,7 +529,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetRGB(0xF0, 0xF0, 0xFF)};
   mixer[kColorSidebarAddBubbleItemTextNormal] = {
       SkColorSetRGB(0xF0, 0xF0, 0xFF)};
-  mixer[kColorSidebarArrowBackgroundHovered] = {GetToolbarInkDropColor(mixer)};
+  mixer[kColorSidebarArrowBackgroundHovered] = {kColorToolbarInkDropHover};
   mixer[kColorSidebarSeparator] = {SkColorSetRGB(0x5E, 0x61, 0x75)};
   mixer[kColorSidebarPanelHeaderSeparator] = {
       leo::GetColor(leo::Color::kColorDividerSubtle, leo::Theme::kDark)};
@@ -578,7 +582,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorFeaturePromoBubbleBackground] = {SkColorSetRGB(0x12, 0x13, 0x16)};
   mixer[kColorFeaturePromoBubbleForeground] = {SkColorSetRGB(0xC6, 0xC8, 0xD0)};
   mixer[kColorFeaturePromoBubbleCloseButtonInkDrop] = {
-      GetToolbarInkDropColor(mixer)};
+      kColorToolbarInkDropHover};
 
   mixer[kColorTabGroupBackgroundAlpha] = {
       SkColorSetA(SK_ColorBLACK, 0.25 * 255)};

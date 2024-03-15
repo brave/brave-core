@@ -22,11 +22,6 @@ void ConfigureInkDropForToolbar(
   host->SetHasInkDropActionOnClick(true);
   views::HighlightPathGenerator::Install(host, std::move(highlight_generator));
   views::InkDrop::Get(host)->SetMode(views::InkDropHost::InkDropMode::ON);
-
-  const auto* cp = host->GetColorProvider();
-  const bool is_dark = cp && color_utils::IsDark(cp->GetColor(kColorToolbar));
-  views::InkDrop::Get(host)->SetVisibleOpacity(is_dark ? 0.4f : 0.1f);
-  views::InkDrop::Get(host)->SetHighlightOpacity(is_dark ? 0.25f : 0.05f);
-  views::InkDrop::Get(host)->SetBaseColorCallback(
-      base::BindRepeating(&GetToolbarInkDropBaseColor, host));
+  CreateToolbarInkdropCallbacks(host, kColorToolbarInkDropHover,
+                                kColorToolbarInkDropRipple);
 }
