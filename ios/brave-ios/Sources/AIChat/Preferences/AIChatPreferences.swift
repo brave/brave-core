@@ -28,6 +28,10 @@ extension Preferences {
       key: "aichat.autocompletesuggestions-enabled",
       default: true
     )
+    public static let showPremiumFeedbackAd = Option<Bool>(
+      key: "aichat.show-premium-feedback-ad",
+      default: true
+    )
   }
 }
 
