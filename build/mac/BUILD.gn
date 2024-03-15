@@ -35,6 +35,8 @@ if (skip_signing) {
 notarized_dmg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_dmg"
 notarized_pkg_path = "$root_out_dir/$mac_notarized_output_prefix/$brave_pkg"
 
+target_dmg_path = "$root_out_dir/$brave_dmg"
+
 if (is_universal_binary) {
   action("universalize") {
     script = "//chrome/installer/mac/universalizer.py"
@@ -110,7 +112,6 @@ action("generate_dsa_sig_for_dmg") {
   } else {
     sign_update_path = "//build/mac_files/sparkle_binaries/sign_update_dsa"
   }
-  target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_dsa_path = "$root_out_dir/$brave_dmg.dsa"
 
   args = [
@@ -149,7 +150,6 @@ action("generate_eddsa_sig_for_dmg") {
     sign_update_path = "//build/mac_files/sparkle_binaries/sign_update"
   }
 
-  target_dmg_path = "$root_out_dir/$brave_dmg"
   output_dmg_eddsa_path = "$root_out_dir/$brave_dmg.eddsa"
 
   args = [
@@ -188,7 +188,6 @@ action("build_delta_installer") {
     binary_delta_path = "//build/mac_files/sparkle_binaries/BinaryDelta"
   }
 
-  target_dmg_path = "$root_out_dir/$brave_dmg"
   output_delta_path = "$root_out_dir/$brave_delta"
 
   args = [
