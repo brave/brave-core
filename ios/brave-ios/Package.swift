@@ -293,7 +293,7 @@ var package = Package(
         .copy("LottieAssets/onboarding-shields.json"),
         .copy("LottieAssets/playlist-confetti.json"),
         .copy("WelcomeFocus/Resources/Fonts/FlechaM-Medium.otf"),
-        .copy("WelcomeFocus/Resources/Fonts/Popins-Medium.ttf"),
+        .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
         .copy("Welcome/Resources/disconnect-entitylist.json"),
         .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],

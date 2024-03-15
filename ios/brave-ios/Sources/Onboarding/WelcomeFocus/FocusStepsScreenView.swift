@@ -9,6 +9,7 @@ struct FocusStepsView: View {
   var namespace: Namespace.ID
 
   @State var activeIndex = 0
+  @State private var isP3AActive: Bool = false
 
   var body: some View {
     VStack {
@@ -18,6 +19,7 @@ struct FocusStepsView: View {
         .frame(width: 78, height: 78)
 
       FocusStepsHeaderTitleView(activeIndex: $activeIndex)
+        .padding(.bottom, 24)
 
       TabView(selection: $activeIndex) {
         FocusAdTrackerSliderContentView()
@@ -33,9 +35,15 @@ struct FocusStepsView: View {
       .transition(.slide)
       .padding(.bottom, 24)
 
+      Spacer()
+
       Button(
         action: {
-          activeIndex += 1
+          if activeIndex > 1 {
+            isP3AActive = true
+          } else {
+            activeIndex += 1
+          }
         },
         label: {
           Text("Continue")
@@ -52,12 +60,17 @@ struct FocusStepsView: View {
       .padding(.bottom, 24)
 
       FocusStepsPagingIndicator(totalPages: 4, activeIndex: $activeIndex)
-
-      Spacer()
-
+        .padding(.bottom, 20)
     }
     .padding(.horizontal, 20)
     .background(Color(braveSystemName: .pageBackground))
+    .background {
+      NavigationLink(isActive: $isP3AActive) {
+        FocusP3AScreenView()
+      } label: {
+        EmptyView()
+      }
+    }
   }
 }
 
@@ -69,13 +82,17 @@ struct FocusStepsHeaderTitleView: View {
     let description =
       activeIndex == 0 ? "Browse faster and use less data." : "Seriously, we got rid of them."
 
-    Text(title)
-      .font(Font.largeTitle)
+    VStack(spacing: 10) {
+      Text(title)
+        .font(Font.largeTitle)
 
-    Text(description)
-      .font(.body.weight(.medium))
-      .foregroundColor(Color(braveSystemName: .textTertiary))
-      .padding(.bottom, 24)
+      Text(description)
+        .font(.body.weight(.medium))
+        .lineLimit(2)
+        .multilineTextAlignment(.center)
+        .fixedSize(horizontal: false, vertical: true)
+        .foregroundColor(Color(braveSystemName: .textTertiary))
+    }
   }
 }
 
