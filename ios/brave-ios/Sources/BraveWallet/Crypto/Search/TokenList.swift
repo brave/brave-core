@@ -56,8 +56,9 @@ struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView
                 .multilineTextAlignment(.center)
                 .frame(maxWidth: .infinity)
             } else {
-              ForEach(filteredTokens, id: \.id) { token in
+              ForEach(filteredTokens) { token in
                 content(token)
+                  .listRowSeparator(.hidden)
               }
             }
           }
@@ -65,7 +66,7 @@ struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView
         }
       }
     }
-    .listStyle(InsetGroupedListStyle())
+    .listStyle(PlainListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
     .animation(nil, value: query)
     .searchable(

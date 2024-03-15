@@ -76,6 +76,10 @@ struct DepositTokenView: View {
                   .font(.caption)
                   .foregroundColor(Color(.braveLabel))
                 }
+                Spacer()
+                Image(systemName: "chevron.right")
+                  .font(.footnote.weight(.semibold))
+                  .foregroundColor(Color(.separator))
               }
             }
           }
@@ -292,7 +296,7 @@ private struct DepositDetailsView: View {
         $0.coin == .eth && $0.chainId.lowercased() != BraveWallet.MainnetChainId.lowercased()
       }
       .map { $0.chainName }
-    return networks.joined(separator: ",")
+    return networks.joined(separator: ", ")
   }
 
   @ViewBuilder private var ethDisclosureView: some View {
