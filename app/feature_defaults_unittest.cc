@@ -88,7 +88,7 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &blink::features::kBackgroundResourceFetch,
       &blink::features::kBiddingAndScoringDebugReportingAPI,
       &blink::features::kBrowsingTopics,
-      &blink::features::kClientHintsFormFactor,
+      &blink::features::kClientHintsFormFactors,
       &blink::features::kComputePressure,
       &blink::features::kCssSelectorFragmentAnchor,
       &blink::features::kFencedFrames,
