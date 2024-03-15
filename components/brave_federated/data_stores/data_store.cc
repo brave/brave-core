@@ -23,9 +23,8 @@ void DatabaseErrorCallback(sql::Database* db,
                            const base::FilePath& db_file_path,
                            int extended_error,
                            sql::Statement* stmt) {
-  if (sql::BuiltInRecovery::RecoverIfPossible(
-          db, extended_error,
-          sql::BuiltInRecovery::Strategy::kRecoverWithMetaVersionOrRaze)) {
+  if (sql::Recovery::RecoverIfPossible(
+          db, extended_error, sql::Recovery::Strategy::kRecoverOrRaze)) {
     // The DLOG(FATAL) below is intended to draw immediate attention to errors
     // in newly-written code.  Database corruption is generally a result of OS
     // or hardware issues, not coding errors at the client level, so displaying
