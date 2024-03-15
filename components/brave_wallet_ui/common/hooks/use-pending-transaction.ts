@@ -16,9 +16,9 @@ import { PanelActions } from '../../panel/actions'
 // utils
 import Amount from '../../utils/amount'
 import { getPriceIdForToken } from '../../utils/api-utils'
-import { isHardwareAccount } from '../../utils/account-utils'
+import { isHardwareAccount , getAccountType } from '../../utils/account-utils'
 import { getLocale } from '../../../common/locale'
-import { getCoinFromTxDataUnion } from '../../utils/network-utils'
+import { getCoinFromTxDataUnion , hasEIP1559Support } from '../../utils/network-utils'
 import { UISelectors } from '../selectors'
 import {
   accountHasInsufficientFundsForGas,
@@ -158,17 +158,6 @@ export const usePendingTransactions = () => {
   )
 
   const {
-    data: gasEstimates,
-    isLoading: isLoadingGasEstimates,
-    isError: hasEvmFeeEstimatesError
-  } = useGetGasEstimation1559Query(
-    transactionInfo && txCoinType === BraveWallet.CoinType.ETH
-      ? transactionInfo.chainId
-      : skipToken,
-    defaultQuerySubscriptionOptions
-  )
-
-  const {
     data: solFeeEstimate,
     isLoading: isLoadingSolFeeEstimates = txCoinType ===
       BraveWallet.CoinType.SOL,
@@ -186,6 +175,19 @@ export const usePendingTransactions = () => {
   )
 
   const { account: txAccount } = useAccountQuery(transactionInfo?.fromAccountId)
+
+  const {
+    data: gasEstimates,
+    isLoading: isLoadingGasEstimates,
+    isError: hasEvmFeeEstimatesError
+  } = useGetGasEstimation1559Query(
+    txAccount &&
+      transactionsNetwork &&
+      hasEIP1559Support(getAccountType(txAccount), transactionsNetwork)
+      ? transactionsNetwork.chainId
+      : skipToken,
+    defaultQuerySubscriptionOptions
+  )
 
   // tx detail & gas memos
   const gasFee = React.useMemo(() => {
