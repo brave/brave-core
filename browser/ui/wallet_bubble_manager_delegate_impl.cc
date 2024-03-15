@@ -110,12 +110,12 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
     }
     WalletPanelUI* wallet_panel =
         webui->GetController()->template GetAs<WalletPanelUI>();
-    if (!wallet_panel || !browser_ || !browser_->GetDelegateWeakPtr()) {
+    if (!wallet_panel || !browser_ || !browser_->AsWeakPtr()) {
       return bubble_view_weak_ptr;
     }
     // Set Browser delegate to redirect popups to be opened as Popup window
     contents_wrapper->SetWebContentsAddNewContentsDelegate(
-        browser_->GetDelegateWeakPtr());
+        browser_->AsWeakPtr());
     // Pass deactivation callback for wallet panel api calls
     // The bubble disappears by default when Trezor opens a popup window
     // from the wallet panel bubble. In order to prevent it we set a callback
@@ -139,7 +139,8 @@ class WalletWebUIBubbleManager : public BraveWebUIBubbleManager<WalletPanelUI>,
           brave_wallet::GetWebContentsFromTabId(&popup_browser, tab_id);
       if (!popup_contents || !popup_browser)
         continue;
-      auto delegate = popup_browser->GetDelegateWeakPtr();
+      base::WeakPtr<content::WebContentsDelegate> delegate =
+          popup_browser->AsWeakPtr();
       if (!delegate)
         continue;
       delegate->CloseContents(popup_contents);
