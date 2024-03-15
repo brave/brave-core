@@ -10,8 +10,6 @@
 #include "base/files/file_path.h"
 #include "base/logging.h"
 #include "base/task/sequenced_task_runner.h"
-#include "base/values.h"
-#include "brave/components/playlist/browser/playlist_constants.h"
 
 namespace playlist {
 
@@ -115,7 +113,7 @@ PlaylistMediaFileDownloadManager::PopNextJob() {
 std::string
 PlaylistMediaFileDownloadManager::GetCurrentDownloadingPlaylistItemID() const {
   if (IsCurrentDownloadingInProgress()) {
-    return media_file_downloader_->current_playlist_id();
+    return media_file_downloader_->current_item_id();
   }
 
   return {};
