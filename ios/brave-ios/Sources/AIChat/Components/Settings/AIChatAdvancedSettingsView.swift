@@ -3,38 +3,38 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import SwiftUI
-import BraveUI
 import BraveCore
-import Strings
+import BraveUI
 import DesignSystem
 import Preferences
 import StoreKit
+import Strings
+import SwiftUI
 
 public struct AIChatAdvancedSettingsView: View {
-  @Environment(\.openURL) 
+  @Environment(\.openURL)
   private var openURL
-  
+
   @Environment(\.dismiss)
   private var dismiss
-  
+
   @ObservedObject
   private var model: AIChatViewModel
-  
+
   @StateObject
   private var viewModel = AIChatSubscriptionDetailModelView()
-  
-  @State 
+
+  @State
   private var appStoreConnectionErrorPresented = false
 
   @State
   private var resetAndClearAlertErrorPresented = false
-  
+
   @State
   private var isPaywallPresented = false
 
   var isModallyPresented: Bool
-  
+
   public init(model: AIChatViewModel, isModallyPresented: Bool) {
     self.model = model
     self.isModallyPresented = isModallyPresented
@@ -45,14 +45,14 @@ public struct AIChatAdvancedSettingsView: View {
       NavigationView {
         settingsView
           .navigationTitle(Strings.AIChat.leoNavigationTitle)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-          ToolbarItemGroup(placement: .cancellationAction) {
-            Button(Strings.close) {
-              dismiss()
+          .navigationBarTitleDisplayMode(.inline)
+          .toolbar {
+            ToolbarItemGroup(placement: .cancellationAction) {
+              Button(Strings.close) {
+                dismiss()
+              }
             }
           }
-        }
       }
       .navigationViewStyle(.stack)
       .onAppear {
@@ -73,7 +73,7 @@ public struct AIChatAdvancedSettingsView: View {
         }
     }
   }
-  
+
   private var subscriptionMenuTitle: String {
     if model.premiumStatus != .active && model.premiumStatus != .activeDisconnected {
       return Strings.AIChat.goPremiumButtonTitle
@@ -90,20 +90,20 @@ public struct AIChatAdvancedSettingsView: View {
         return Strings.AIChat.goPremiumButtonTitle
       }
     }
-    
+
     // Display the info from SkusSDK
     if viewModel.skuOrderStatus == .active {
       return Strings.AIChat.manageSubscriptionsButtonTitle
     }
-    
+
     // No order found
     return Strings.AIChat.goPremiumButtonTitle
   }
-  
+
   private var subscriptionStatusTitle: String {
     // Display the info from the AppStore
     let inAppPurchaseProductType = viewModel.inAppPurchasedProductType
-    
+
     switch inAppPurchaseProductType {
     case .leoMonthly:
       return Strings.AIChat.monthlySubscriptionTitle
@@ -115,7 +115,7 @@ public struct AIChatAdvancedSettingsView: View {
 
     // Display the info from SkusSDK
     let skuProductType = viewModel.skuOrderProductType
-    
+
     switch skuProductType {
     case .monthly:
       return Strings.AIChat.monthlySubscriptionTitle
@@ -130,18 +130,18 @@ public struct AIChatAdvancedSettingsView: View {
     // No order found
     return "None"
   }
-  
+
   private var expirationDateTitle: String {
     let dateFormatter = ISO8601DateFormatter().then {
       $0.formatOptions = [.withYear, .withMonth, .withDay, .withDashSeparatorInDate]
     }
-    
+
     let periodToDate = { (subscription: StoreKit.Product.SubscriptionPeriod) -> Date? in
       let now = Date.now
       if subscription.value == 0 {
         return now
       }
-      
+
       switch subscription.unit {
       case .day:
         return Calendar.current.date(byAdding: .day, value: subscription.value, to: now)
@@ -155,20 +155,21 @@ public struct AIChatAdvancedSettingsView: View {
         return nil
       }
     }
-    
+
     if let period = viewModel.inAppPurchaseSubscriptionPeriod,
-       let date = periodToDate(period) {
+      let date = periodToDate(period)
+    {
       return dateFormatter.string(from: date)
     }
-    
+
     // Display the info from SkusSDK
     if let expiryDate = viewModel.skuOrderExpirationDate {
       return dateFormatter.string(from: expiryDate)
     }
-    
+
     return Strings.AIChat.leoSubscriptionUnknownDateTitle
   }
-  
+
   private var settingsView: some View {
     Form {
       Section {
@@ -176,7 +177,7 @@ public struct AIChatAdvancedSettingsView: View {
           title: Strings.AIChat.advancedSettingsAutocompleteTitle,
           option: Preferences.AIChat.autocompleteSuggestionsEnabled
         )
-        
+
         NavigationLink {
           AIChatDefaultModelView(aiModel: model)
         } label: {
@@ -189,98 +190,141 @@ public struct AIChatAdvancedSettingsView: View {
         Text(Strings.AIChat.advancedSettingsHeaderTitle)
           .textCase(nil)
       }
-      
+
       Section {
         if viewModel.canDisplaySubscriptionStatus
           && (model.premiumStatus == .active || model.premiumStatus == .activeDisconnected)
         {
           if viewModel.isSubscriptionStatusLoading {
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
-                            detail: subscriptionStatusTitle)
-            
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
-                            detail: expirationDateTitle)
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+              detail: subscriptionStatusTitle
+            )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+              detail: expirationDateTitle
+            )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           } else {
             // Subscription information is loading
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
-                            detail: nil)
-            
-            AIChatAdvancedSettingsLabelDetailView(title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
-                            detail: nil)
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionStatusTitle,
+              detail: nil
+            )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+            AIChatAdvancedSettingsLabelDetailView(
+              title: Strings.AIChat.advancedSettingsSubscriptionExpiresTitle,
+              detail: nil
+            )
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-          
+
           // Check subscription is activated with in-app purchase
           if viewModel.canSubscriptionBeLinked {
-            Button(action: {
-              openURL(.brave.braveLeoLinkReceiptProd)
-            }) {
-              LabelView(
-                title: Strings.AIChat.advancedSettingsLinkPurchaseActionTitle,
-                subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
-              )
-            }
-            
+            Button(
+              action: {
+                openURL(.brave.braveLeoLinkReceiptProd)
+              },
+              label: {
+                LabelView(
+                  title: Strings.AIChat.advancedSettingsLinkPurchaseActionTitle,
+                  subtitle: Strings.AIChat.advancedSettingsLinkPurchaseActionSubTitle
+                )
+                .contentShape(Rectangle())
+              }
+            )
+            .buttonStyle(.plain)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
             if viewModel.isDevReceiptLinkingAvailable {
-              Button(action: {
-                openURL(.brave.braveLeoLinkReceiptStaging)
-              }) {
-                LabelView(
-                  title: "[Staging] Link receipt"
-                )
-              }
-              
-              Button(action: {
-                openURL(.brave.braveLeoLinkReceiptDev)
-              }) {
-                LabelView(
-                  title: "[Dev] Link receipt"
-                )
-              }
+              Button(
+                action: {
+                  openURL(.brave.braveLeoLinkReceiptStaging)
+                },
+                label: {
+                  LabelView(
+                    title: "[Staging] Link receipt"
+                  )
+                  .contentShape(Rectangle())
+                }
+              )
+              .buttonStyle(.plain)
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
+
+              Button(
+                action: {
+                  openURL(.brave.braveLeoLinkReceiptDev)
+                },
+                label: {
+                  LabelView(
+                    title: "[Dev] Link receipt"
+                  )
+                  .contentShape(Rectangle())
+                }
+              )
+              .buttonStyle(.plain)
+              .listRowBackground(Color(.secondaryBraveGroupedBackground))
             }
-            
-            Button(action: {
-              guard let url = URL.apple.manageSubscriptions else {
-                return
+
+            Button(
+              action: {
+                guard let url = URL.apple.manageSubscriptions else {
+                  return
+                }
+
+                // Opens Apple's 'manage subscription' screen
+                if UIApplication.shared.canOpenURL(url) {
+                  UIApplication.shared.open(url, options: [:])
+                }
+              },
+              label: {
+                premiumActionView
+                  .contentShape(Rectangle())
               }
-              
-              // Opens Apple's 'manage subscription' screen
-              if UIApplication.shared.canOpenURL(url) {
-                UIApplication.shared.open(url, options: [:])
-              }
-            }) {
-              premiumActionView
-            }
+            )
+            .buttonStyle(.plain)
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
         } else {
-          Button(action: {
-            if viewModel.inAppPurchaseProductsLoaded {
-              isPaywallPresented = true
-            } else {
-              appStoreConnectionErrorPresented = true
+          Button(
+            action: {
+              if viewModel.inAppPurchaseProductsLoaded {
+                isPaywallPresented = true
+              } else {
+                appStoreConnectionErrorPresented = true
+              }
+            },
+            label: {
+              premiumActionView
+                .contentShape(Rectangle())
             }
-          }) {
-            premiumActionView
+          )
+          .buttonStyle(.plain)
+          .listRowBackground(Color(.secondaryBraveGroupedBackground))
+          .sheet(isPresented: $isPaywallPresented) {
+            AIChatPaywallView(
+              premiumUpgrageSuccessful: { _ in
+                Task { @MainActor in
+                  await model.refreshPremiumStatusOrderCredentials()
+                  await viewModel.fetchOrder()
+                }
+              })
+          }
+          .alert(isPresented: $appStoreConnectionErrorPresented) {
+            Alert(
+              title: Text(Strings.AIChat.appStoreErrorTitle),
+              message: Text(Strings.AIChat.appStoreErrorSubTitle),
+              dismissButton: .default(Text(Strings.OKString))
+            )
           }
         }
       } header: {
         Text(Strings.AIChat.advancedSettingsSubscriptionHeaderTitle.uppercased())
       }
-      .sheet(isPresented: $isPaywallPresented) {
-        AIChatPaywallView(
-          premiumUpgrageSuccessful: { _ in
-            Task { @MainActor in
-              await model.refreshPremiumStatusOrderCredentials()
-              await viewModel.fetchOrder()
-            }
-          })
-      }
-      .alert(isPresented: $appStoreConnectionErrorPresented) {
-        Alert(title: Text(Strings.AIChat.appStoreErrorTitle),
-              message: Text(Strings.AIChat.appStoreErrorSubTitle),
-              dismissButton: .default(Text(Strings.OKString)))
-      }
-      .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      
+
       Section {
         Button(
           action: {
@@ -289,30 +333,33 @@ public struct AIChatAdvancedSettingsView: View {
           label: {
             Text(Strings.AIChat.resetLeoDataActionTitle)
               .foregroundColor(Color(.braveBlurpleTint))
+              .frame(maxWidth: .infinity)
+              .contentShape(Rectangle())
           }
         )
-        .frame(maxWidth: .infinity)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
         .buttonStyle(.plain)
-      }
-      .alert(isPresented: $resetAndClearAlertErrorPresented) {
-        Alert(
-          title: Text(Strings.AIChat.resetLeoDataErrorTitle),
-          message: Text(Strings.AIChat.resetLeoDataErrorDescription),
-          primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
-            model.clearAndResetData()
-          },
-          secondaryButton: .cancel())
+        .alert(isPresented: $resetAndClearAlertErrorPresented) {
+          Alert(
+            title: Text(Strings.AIChat.resetLeoDataErrorTitle),
+            message: Text(Strings.AIChat.resetLeoDataErrorDescription),
+            primaryButton: .destructive(Text(Strings.AIChat.resetLeoDataAlertButtonTitle)) {
+              model.clearAndResetData()
+            },
+            secondaryButton: .cancel()
+          )
+        }
       }
     }
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.insetGrouped)
   }
 
   var premiumActionView: some View {
     HStack {
       LabelView(title: subscriptionMenuTitle)
-      Spacer()
+        .frame(maxWidth: .infinity, alignment: .leading)
+
       Image(braveSystemName: "leo.launch")
         .foregroundStyle(Color(braveSystemName: .iconDefault))
     }
