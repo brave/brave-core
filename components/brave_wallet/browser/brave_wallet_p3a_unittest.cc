@@ -15,6 +15,7 @@
 #include "base/memory/raw_ptr.h"
 #include "base/test/bind.h"
 #include "base/test/metrics/histogram_tester.h"
+#include "base/test/mock_callback.h"
 #include "base/test/scoped_feature_list.h"
 #include "base/test/values_test_util.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_test_utils.h"
@@ -25,16 +26,22 @@
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/browser/pref_names.h"
 #include "brave/components/brave_wallet/browser/test_utils.h"
+#include "brave/components/brave_wallet/browser/tx_service.h"
+#include "brave/components/brave_wallet/browser/zcash/zcash_tx_manager.h"
 #include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/brave_wallet_types.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/brave_wallet/common/switches.h"
+#include "brave/components/brave_wallet/common/zcash_utils.h"
 #include "components/sync_preferences/testing_pref_service_syncable.h"
 #include "content/public/test/browser_task_environment.h"
 #include "services/data_decoder/public/cpp/test_support/in_process_data_decoder.h"
 #include "services/network/public/cpp/weak_wrapper_shared_url_loader_factory.h"
 #include "services/network/test/test_url_loader_factory.h"
 #include "testing/gtest/include/gtest/gtest.h"
+
+using testing::_;
+using testing::SaveArg;
 
 namespace brave_wallet {
 
@@ -64,15 +71,20 @@ class BraveWalletP3AUnitTest : public testing::Test {
     bitcoin_wallet_service_ = std::make_unique<BitcoinWalletService>(
         keyring_service_.get(), &prefs_,
         bitcoin_test_rpc_server_->GetURLLoaderFactory());
+    auto zcash_rpc =
+        std::make_unique<ZCashRpc>(&prefs_, shared_url_loader_factory_);
+    zcash_wallet_service_ = std::make_unique<ZCashWalletService>(
+        keyring_service_.get(), std::move(zcash_rpc));
+
     ASSERT_TRUE(temp_dir_.CreateUniqueTempDir());
     tx_service_ = std::make_unique<TxService>(
         json_rpc_service_.get(), bitcoin_wallet_service_.get(),
-        nullptr /*ZCashWalletService*/, keyring_service_.get(), &prefs_,
+        zcash_wallet_service_.get(), keyring_service_.get(), &prefs_,
         temp_dir_.GetPath(), base::SequencedTaskRunner::GetCurrentDefault());
     brave_wallet_service_ = std::make_unique<BraveWalletService>(
         shared_url_loader_factory_, nullptr /*delegate*/,
         keyring_service_.get(), json_rpc_service_.get(), tx_service_.get(),
-        bitcoin_wallet_service_.get(), nullptr /*ZCashWalletService*/, &prefs_,
+        bitcoin_wallet_service_.get(), zcash_wallet_service_.get(), &prefs_,
         &local_state_, false);
     WaitForTxStorageDelegateInitialized(tx_service_->GetDelegateForTesting());
     json_rpc_service_->SetAPIRequestHelperForTesting(
@@ -107,6 +119,23 @@ class BraveWalletP3AUnitTest : public testing::Test {
 
   mojom::AccountIdPtr BtcAccount(size_t index) {
     return GetAccountUtils().EnsureBtcAccount(index)->account_id->Clone();
+  }
+
+  mojom::AccountIdPtr zec_from() { return ZecAccount(0); }
+
+  mojom::AccountIdPtr ZecAccount(size_t index) {
+    return GetAccountUtils().EnsureZecAccount(index)->account_id->Clone();
+  }
+
+  void ContinueAddUnapprovedZecTransaction(
+      const std::string& chain_id,
+      const mojom::AccountIdPtr& from,
+      const std::optional<url::Origin>& origin,
+      TxService::AddUnapprovedTransactionCallback callback,
+      base::expected<ZCashTransaction, std::string> zcash_transaction) {
+    tx_service_->GetZCashTxManager()->ContinueAddUnapprovedTransaction(
+        chain_id, from, origin, std::move(callback),
+        std::move(zcash_transaction));
   }
 
   void SetInterceptor(const std::string& content) {
@@ -259,8 +288,10 @@ class BraveWalletP3AUnitTest : public testing::Test {
   }
 
  protected:
-  base::test::ScopedFeatureList feature_list_{
+  base::test::ScopedFeatureList feature_btc_feature_{
       features::kBraveWalletBitcoinFeature};
+  base::test::ScopedFeatureList feature_zec_feature_{
+      features::kBraveWalletZCashFeature};
   content::BrowserTaskEnvironment task_environment_;
   base::ScopedTempDir temp_dir_;
   sync_preferences::TestingPrefServiceSyncable prefs_;
@@ -271,6 +302,7 @@ class BraveWalletP3AUnitTest : public testing::Test {
   std::unique_ptr<KeyringService> keyring_service_;
   std::unique_ptr<TxService> tx_service_;
   std::unique_ptr<BitcoinWalletService> bitcoin_wallet_service_;
+  std::unique_ptr<ZCashWalletService> zcash_wallet_service_;
   std::unique_ptr<BraveWalletService> brave_wallet_service_;
   raw_ptr<BraveWalletP3A> wallet_p3a_;
   scoped_refptr<network::SharedURLLoaderFactory> shared_url_loader_factory_;
@@ -684,6 +716,52 @@ TEST_F(BraveWalletP3AUnitTest, BtcTransactionSentObservation) {
 
   // Verify BtcTransactionSent
   histogram_tester_->ExpectUniqueSample(kBtcTransactionSentHistogramName, 1, 1);
+}
+
+TEST_F(BraveWalletP3AUnitTest, ZecTransactionSentObservation) {
+  histogram_tester_->ExpectTotalCount(kZecTransactionSentHistogramName, 0);
+
+  keyring_service_->CreateWallet("testing123", base::DoNothing());
+
+  auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
+                                       std::vector<mojom::BtcTxInputPtr>(),
+                                       std::vector<mojom::BtcTxOutputPtr>());
+
+  ZCashTransaction zcash_transaction;
+  zcash_transaction.set_locktime(2286687);
+  {
+    ZCashTransaction::TxInput input;
+    input.utxo_outpoint.index = 0;
+    input.utxo_address = "t1c61yifRMgyhMsBYsFDBa5aEQkgU65CGau";
+    input.utxo_value = 537000;
+    input.script_pub_key =
+        ZCashAddressToScriptPubkey(input.utxo_address, false);
+    zcash_transaction.inputs().push_back(std::move(input));
+  }
+
+  {
+    ZCashTransaction::TxOutput output;
+    output.address = "t1KrG29yWzoi7Bs2pvsgXozZYPvGG4D3sGi";
+    output.amount = 500000;
+    output.script_pubkey = ZCashAddressToScriptPubkey(output.address, false);
+    zcash_transaction.outputs().push_back(std::move(output));
+  }
+
+  std::string tx_meta_id;
+  base::MockCallback<TxService::AddUnapprovedTransactionCallback> add_callback;
+  EXPECT_CALL(add_callback, Run(true, _, _)).WillOnce(SaveArg<1>(&tx_meta_id));
+  ContinueAddUnapprovedZecTransaction(mojom::kZCashMainnet, zec_from(),
+                                      std::nullopt, add_callback.Get(),
+                                      std::move(zcash_transaction));
+  EXPECT_NE(tx_meta_id, "");
+
+  // Approve the ZEC transaction
+  tx_service_->ApproveTransaction(mojom::CoinType::ZEC, mojom::kZCashMainnet,
+                                  tx_meta_id, base::DoNothing());
+  WaitForResponse();
+
+  // Verify ZecTransactionSent
+  histogram_tester_->ExpectUniqueSample(kZecTransactionSentHistogramName, 1, 1);
 }
 
 }  // namespace brave_wallet

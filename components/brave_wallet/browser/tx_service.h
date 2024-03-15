@@ -243,6 +243,7 @@ class TxService : public KeyedService,
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
   friend class BitcoinTxManagerUnitTest;
+  friend class BraveWalletP3AUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
 
