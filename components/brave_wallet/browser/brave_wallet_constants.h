@@ -1423,7 +1423,7 @@ inline constexpr char kZeroExNativeAssetContractAddress[] =
     "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
 
 // Jupiter swap constants
-inline constexpr char kJupiterBaseAPIURL[] = "https://quote-api.jup.ag";
+inline constexpr char kJupiterBaseAPIURL[] = "https://jupiter.wallet.brave.com";
 inline constexpr double kSolanaBuyTokenFeePercentage = 0.85;
 inline constexpr char kJupiterReferralKey[] =
     "7yke2kxg6ewNsun61qBkdsLdxuXcUiB8CMB47Zv39Aoy";
@@ -1440,7 +1440,7 @@ inline constexpr char kBlowfishAPIVersionHeader[] = "X-Api-Version";
 inline constexpr char kBlowfishAPIVersion[] = "2023-06-05";
 
 // LiFi constants
-inline constexpr char kLiFiBaseAPIURL[] = "https://li.quest";
+inline constexpr char kLiFiBaseAPIURL[] = "https://lifi.wallet.brave.com";
 inline constexpr char kLiFiIntegratorID[] = "brave";
 inline constexpr char kLiFiNativeAssetContractAddress[] =
     "0x0000000000000000000000000000000000000000";
