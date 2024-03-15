@@ -153,7 +153,6 @@ TEST(FeatureDefaultsTest, DisabledFeatures) {
       &features::kKAnonymityService,
       &features::kKAnonymityServiceOHTTPRequests,
       &features::kLegacyTechReportEnableCookieIssueReports,
-      &features::kLegacyTechReportTopLevelUrl,
       &features::kNewTabPageTriggerForPrerender2,
       &features::kNotificationTriggers,
       &features::kOmniboxTriggerForNoStatePrefetch,
