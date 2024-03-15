@@ -6,7 +6,6 @@
 #include "brave/browser/ephemeral_storage/ephemeral_storage_tab_helper.h"
 
 #include "base/feature_list.h"
-#include "base/hash/md5.h"
 #include "brave/browser/ephemeral_storage/ephemeral_storage_service_factory.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
 #include "brave/components/ephemeral_storage/ephemeral_storage_service.h"
@@ -14,7 +13,6 @@
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "content/public/browser/navigation_handle.h"
-#include "content/public/browser/session_storage_namespace.h"
 #include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/base/features.h"
@@ -22,29 +20,9 @@
 
 using content::BrowserContext;
 using content::NavigationHandle;
-using content::SessionStorageNamespace;
 using content::WebContents;
 
 namespace ephemeral_storage {
-
-namespace {
-
-// TODO(bridiver) - share these constants with DOMWindowStorage
-constexpr char kSessionStorageSuffix[] = "/ephemeral-session-storage";
-
-// Session storage ids are expected to be 36 character long GUID strings. Since
-// we are constructing our own ids, we convert our string into a 32 character
-// hash and then use that make up our own GUID-like string. Because of the way
-// we are constructing the string we should never collide with a real GUID and
-// we only need to worry about hash collisions, which are unlikely.
-std::string StringToSessionStorageId(const std::string& string,
-                                     const std::string& suffix) {
-  std::string hash = base::MD5String(string + suffix) + "____";
-  DCHECK_EQ(hash.size(), 36u);
-  return hash;
-}
-
-}  // namespace
 
 // EphemeralStorageTabHelper helps to manage the lifetime of ephemeral storage.
 // For more information about the design of ephemeral storage please see the
@@ -113,33 +91,6 @@ void EphemeralStorageTabHelper::CreateEphemeralStorageAreasForDomainAndURL(
 
   auto* browser_context = web_contents()->GetBrowserContext();
   auto* site_instance = web_contents()->GetSiteInstance();
-  auto* storage_partition = browser_context->GetStoragePartition(site_instance);
-
-  if (!base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    // Session storage is always per-tab and never per-TLD, so we always delete
-    // and recreate the session storage when switching domains.
-    //
-    // We need to explicitly release the storage namespace before recreating a
-    // new one in order to make sure that we remove the final reference and free
-    // it.
-    session_storage_namespace_.reset();
-
-    std::string session_partition_id = StringToSessionStorageId(
-        content::GetSessionStorageNamespaceId(web_contents()),
-        kSessionStorageSuffix);
-
-    auto* opener_rfh = web_contents()->GetOpener();
-    session_storage_namespace_ = content::CreateSessionStorageNamespace(
-        storage_partition, session_partition_id,
-        // clone the namespace if there is an opener
-        // https://html.spec.whatwg.org/multipage/browsers.html#copy-session-storage
-        opener_rfh ? std::make_optional<std::string>(StringToSessionStorageId(
-                         content::GetSessionStorageNamespaceId(
-                             WebContents::FromRenderFrameHost(opener_rfh)),
-                         kSessionStorageSuffix))
-                   : std::nullopt);
-  }
 
   tld_ephemeral_lifetime_ = TLDEphemeralLifetime::GetOrCreate(
       browser_context, new_domain, site_instance->GetStoragePartitionConfig());

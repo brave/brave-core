@@ -10,18 +10,6 @@
 
 #include "third_party/blink/renderer/core/frame/local_frame.h"
 
-#define SetStorageKey                                                        \
-  SetEphemeralStorageOrigin(const SecurityOrigin* ephemeral_storage_origin); \
-  const SecurityOrigin* GetEphemeralStorageOrigin() const;                   \
-  const BlinkStorageKey& GetEphemeralStorageKeyOrStorageKey() const;         \
-  const SecurityOrigin* GetEphemeralStorageOriginOrSecurityOrigin() const;   \
-                                                                             \
- private:                                                                    \
-  std::optional<BlinkStorageKey> ephemeral_storage_key_;                     \
-                                                                             \
- public:                                                                     \
-  void SetStorageKey
-
 #define outerHeight                 \
   outerHeight_ChromiumImpl() const; \
   int outerHeight
@@ -49,12 +37,18 @@
 
 #include "src/third_party/blink/renderer/core/frame/local_dom_window.h"  // IWYU pragma: export
 
-#undef SetStorageKey
 #undef outerHeight
 #undef outerWidth
 #undef screenLeft
 #undef screenTop
 #undef resizeTo
 #undef moveTo
+
+namespace blink {
+
+CORE_EXPORT const SecurityOrigin* GetEphemeralStorageOrigin(
+    LocalDOMWindow* window);
+
+}  // namespace blink
 
 #endif  // BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_CORE_FRAME_LOCAL_DOM_WINDOW_H_

@@ -47,47 +47,37 @@ void BraveEphemeralStorageServiceDelegate::CleanupTLDEphemeralArea(
   storage_partition->GetCookieManagerForBrowserProcess()->DeleteCookies(
       std::move(filter), base::NullCallback());
 
-  if (base::FeatureList::IsEnabled(
-          net::features::kThirdPartyStoragePartitioning)) {
-    const GURL https_url(base::StrCat({"https://", key.first}));
-    if (brave_shields::GetCookieControlType(
-            host_content_settings_map_, cookie_settings_.get(), https_url) ==
-        brave_shields::ControlType::ALLOW) {
-      // All cookies are allowed, Ephemeral Storage is effectively disabled.
-      return;
-    }
-
-    const GURL http_url(base::StrCat({"http://", key.first}));
-
-    // Only cleanup StorageKey-aware areas.
-    content::BrowsingDataRemover::DataType data_to_remove =
-        content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
-
-    content::BrowsingDataRemover::OriginType origin_type =
-        content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
-        content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
-
-    // Cookies are partitioned and cleaned separately.
-    data_to_remove &= ~content::BrowsingDataRemover::DATA_TYPE_COOKIES;
-
-    auto filter_builder = content::BrowsingDataFilterBuilder::Create(
-        content::BrowsingDataFilterBuilder::Mode::kDelete,
-        content::BrowsingDataFilterBuilder::OriginMatchingMode::
-            kThirdPartiesOnly);
-    filter_builder->AddOrigin(url::Origin::Create(https_url));
-    filter_builder->AddOrigin(url::Origin::Create(http_url));
-
-    content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
-    remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
-                              origin_type, std::move(filter_builder));
-  } else {
-    for (const auto& opaque_origin :
-         cookie_settings_->TakeEphemeralStorageOpaqueOrigins(key.first)) {
-      storage_partition->GetDOMStorageContext()->DeleteLocalStorage(
-          blink::StorageKey::CreateFirstParty(opaque_origin),
-          base::DoNothing());
-    }
+  const GURL https_url(base::StrCat({"https://", key.first}));
+  if (brave_shields::GetCookieControlType(host_content_settings_map_,
+                                          cookie_settings_.get(), https_url) ==
+      brave_shields::ControlType::ALLOW) {
+    // All cookies are allowed, Ephemeral Storage is effectively disabled.
+    return;
   }
+
+  const GURL http_url(base::StrCat({"http://", key.first}));
+
+  // Only cleanup StorageKey-aware areas.
+  content::BrowsingDataRemover::DataType data_to_remove =
+      content::BrowsingDataRemover::DATA_TYPE_DOM_STORAGE;
+
+  content::BrowsingDataRemover::OriginType origin_type =
+      content::BrowsingDataRemover::ORIGIN_TYPE_UNPROTECTED_WEB |
+      content::BrowsingDataRemover::ORIGIN_TYPE_PROTECTED_WEB;
+
+  // Cookies are partitioned and cleaned separately.
+  data_to_remove &= ~content::BrowsingDataRemover::DATA_TYPE_COOKIES;
+
+  auto filter_builder = content::BrowsingDataFilterBuilder::Create(
+      content::BrowsingDataFilterBuilder::Mode::kDelete,
+      content::BrowsingDataFilterBuilder::OriginMatchingMode::
+          kThirdPartiesOnly);
+  filter_builder->AddOrigin(url::Origin::Create(https_url));
+  filter_builder->AddOrigin(url::Origin::Create(http_url));
+
+  content::BrowsingDataRemover* remover = context_->GetBrowsingDataRemover();
+  remover->RemoveWithFilter(base::Time(), base::Time::Max(), data_to_remove,
+                            origin_type, std::move(filter_builder));
 }
 
 void BraveEphemeralStorageServiceDelegate::CleanupFirstPartyStorageArea(
