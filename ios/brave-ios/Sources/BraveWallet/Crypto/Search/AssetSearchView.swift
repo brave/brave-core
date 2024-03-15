@@ -84,9 +84,7 @@ struct AssetSearchView: View {
         viewModel.token.symbol.localizedCaseInsensitiveContains(query)
           || viewModel.token.name.localizedCaseInsensitiveContains(query)
       } header: {
-        WalletListHeaderView(
-          title: Text(Strings.Wallet.assetsTitle)
-        )
+        TokenListHeaderView(title: Strings.Wallet.assetsTitle)
       } emptyStateView: {
         Text(Strings.Wallet.assetSearchEmpty)
           .font(.footnote)
@@ -251,7 +249,6 @@ struct SearchAssetView<ImageView: View>: View {
         .font(.body.weight(.semibold))
         .foregroundColor(Color(.separator))
     }
-    .frame(maxWidth: .infinity)
     .padding(.vertical, 6)
     .accessibilityElement()
     .accessibilityLabel("\(title), \(symbol), \(networkName)")

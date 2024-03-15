@@ -8,6 +8,17 @@ import BraveUI
 import Strings
 import SwiftUI
 
+struct TokenListHeaderView: View {
+  let title: String
+
+  var body: some View {
+    Text(title)
+      .font(.body.weight(.semibold))
+      .foregroundColor(Color(uiColor: WalletV2Design.textPrimary))
+      .frame(maxWidth: .infinity, alignment: .leading)
+  }
+}
+
 struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView: View>: View {
   var tokens: [Item]
   var searchRules: (_ query: String, _ token: Item) -> Bool
@@ -42,32 +53,27 @@ struct TokenList<Item: Identifiable, Header: View, Content: View, EmptyStateView
   }
 
   var body: some View {
-    List {
-      Section(header: header) {
-        if tokens.isEmpty {
-          emptyStateView
-            .listRowBackground(Color(.secondaryBraveGroupedBackground))
-        } else {
-          Group {
-            if filteredTokens.isEmpty {
-              Text(Strings.Wallet.assetSearchEmpty)
-                .font(.footnote)
-                .foregroundColor(Color(.secondaryBraveLabel))
-                .multilineTextAlignment(.center)
-                .frame(maxWidth: .infinity)
-            } else {
-              ForEach(filteredTokens) { token in
-                content(token)
-                  .listRowSeparator(.hidden)
-              }
+    ScrollView {
+      LazyVStack(spacing: 8) {
+        Section(header: header) {
+          if tokens.isEmpty {
+            emptyStateView
+          } else if filteredTokens.isEmpty {
+            Text(Strings.Wallet.assetSearchEmpty)
+              .font(.footnote)
+              .foregroundColor(Color(.secondaryBraveLabel))
+              .multilineTextAlignment(.center)
+              .frame(maxWidth: .infinity)
+          } else {
+            ForEach(filteredTokens) { token in
+              content(token)
             }
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
       }
+      .padding()
     }
-    .listStyle(PlainListStyle())
-    .listBackgroundColor(Color(UIColor.braveGroupedBackground))
+    .background(Color(braveSystemName: .containerBackground))
     .animation(nil, value: query)
     .searchable(
       text: $query,

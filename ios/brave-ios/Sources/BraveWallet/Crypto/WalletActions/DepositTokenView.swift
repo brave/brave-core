@@ -48,9 +48,7 @@ struct DepositTokenView: View {
             let nameMatch = viewModel.token.name.localizedCaseInsensitiveContains(query)
             return symbolMatch || nameMatch
           } header: {
-            WalletListHeaderView(
-              title: Text(Strings.Wallet.assetsTitle)
-            )
+            TokenListHeaderView(title: Strings.Wallet.assetsTitle)
           } content: { viewModel in
             Button {
               selectedToken = viewModel.token
@@ -78,10 +76,13 @@ struct DepositTokenView: View {
                 }
                 Spacer()
                 Image(systemName: "chevron.right")
-                  .font(.footnote.weight(.semibold))
+                  .font(.body.weight(.semibold))
                   .foregroundColor(Color(.separator))
               }
             }
+            .padding(.vertical, 6)
+            .accessibilityElement()
+            .accessibilityLabel(accessibilityLabel(viewModel))
           }
           .toolbar {
             ToolbarItemGroup(placement: .bottomBar) {
@@ -154,6 +155,10 @@ struct DepositTokenView: View {
     .task {
       depositTokenStore.setup()
     }
+  }
+
+  private func accessibilityLabel(_ viewModel: DepositTokenViewModel) -> String {
+    "\(viewModel.token.name), \(viewModel.token.symbol), \(viewModel.network.chainName)"
   }
 }
 

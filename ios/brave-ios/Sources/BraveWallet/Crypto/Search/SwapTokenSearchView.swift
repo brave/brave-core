@@ -35,9 +35,7 @@ struct SwapTokenSearchView: View {
       let nameMatch = token.name.localizedCaseInsensitiveContains(query)
       return symbolMatch || nameMatch
     } header: {
-      WalletListHeaderView(
-        title: Text(Strings.Wallet.assetsTitle)
-      )
+      TokenListHeaderView(title: Strings.Wallet.assetsTitle)
     } content: { token in
       Button {
         if searchType == .fromToken {
