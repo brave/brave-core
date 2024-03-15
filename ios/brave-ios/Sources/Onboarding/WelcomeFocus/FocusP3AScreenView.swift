@@ -55,7 +55,7 @@ struct FocusP3AScreenView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .toggleStyle(SwitchToggleStyle(tint: Color(braveSystemName: .buttonBackground)))
           .onChange(of: isP3AToggleOn) { newValue in
-            
+            // TODO: Change Settings P3A
           }
           
           Text("Learn more about our Privacy Preserving Product Analytics (P3A)")

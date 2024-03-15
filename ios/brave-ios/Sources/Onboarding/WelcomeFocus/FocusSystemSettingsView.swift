@@ -6,38 +6,47 @@
 import SwiftUI
 
 struct FocusSystemSettingsView: View {
-  @State var activeIndex = 3
 
   var body: some View {
     NavigationView {
       VStack {
         VStack(spacing: 10) {
           Text("Set Brave as your Default Browser")
-            .font(Font.largeTitle)
+            .font(.largeTitle.weight(.medium))
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
           
           Text("Open every link you tap with Brave’s privacy protections")
-            .font(.body.weight(.medium))
+            .font(.headline)
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
             .foregroundColor(Color(braveSystemName: .textTertiary))
         }
-        .padding(.top, 41)
-        .padding(.bottom, 16)
+        .padding(.top, 25)
+        .padding(.vertical, 16)
         
+        Image("focus-browser-settings", bundle: .module)
+          .frame(width: .infinity, height: 364)
+          .clipShape(RoundedRectangle(cornerRadius: 12.0))
+          .overlay(
+            RoundedRectangle(cornerRadius: 12.0)
+              .stroke(Color(braveSystemName: .textTertiary), lineWidth: 1)
+          )
         Spacer()
         
-        VStack(spacing: 28) {
-          
+      VStack(spacing: 24) {
           Button(
             action: {
+              if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
+                UIApplication.shared.open(settingsUrl)
+              }
               
+              // TODO: Show URL Bar Onboarding
             },
             label: {
-              Text("Continue")
+              (Text("Go to System Settings ") + Text(Image(systemName: "arrow.right")))
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
                 .padding()
@@ -49,7 +58,17 @@ struct FocusSystemSettingsView: View {
             .clipShape(RoundedRectangle(cornerRadius: 12.0))
             .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
           
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: $activeIndex)
+          Button(action: {
+            // TODO: Show URL Bar Onboarding
+          }) {
+            Text("I’ll do this Later...")
+              .font(.subheadline.weight(.semibold))
+              .foregroundColor(Color(braveSystemName: .textSecondary))
+          }
+          .background(Color.clear)
+          .padding(.bottom, 8)
+          
+          FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
         }
         .padding(.bottom, 20)
       }
