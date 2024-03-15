@@ -742,7 +742,14 @@ source_set("ui") {
     deps += [ "//brave/components/brave_wayback_machine" ]
 
     if (toolkit_views) {
-      deps += [ "//brave/browser/ui/views/infobars:brave_wayback_machine" ]
+      sources += [
+        "views/wayback_machine_dialog_view.cc",
+        "views/wayback_machine_dialog_view.h",
+        "views/wayback_machine_fetch_button.cc",
+        "views/wayback_machine_fetch_button.h",
+        "views/wayback_machine_throbber.cc",
+        "views/wayback_machine_throbber.h",
+      ]
     }
   }
 

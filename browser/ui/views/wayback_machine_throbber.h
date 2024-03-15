@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_THROBBER_H_
-#define BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_THROBBER_H_
+#ifndef BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_THROBBER_H_
+#define BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_THROBBER_H_
 
 #include "base/time/time.h"
 #include "base/timer/timer.h"
@@ -12,16 +12,16 @@
 #include "ui/views/view.h"
 
 // White throbber. Most of codes are copied from views::Throbber.
-class BraveWaybackMachineInfoBarThrobber : public views::View {
-  METADATA_HEADER(BraveWaybackMachineInfoBarThrobber, views::View)
+class WaybackMachineThrobber : public views::View {
+  METADATA_HEADER(WaybackMachineThrobber, views::View)
  public:
-  BraveWaybackMachineInfoBarThrobber();
-  ~BraveWaybackMachineInfoBarThrobber() override;
+  WaybackMachineThrobber();
+  ~WaybackMachineThrobber() override;
 
-  BraveWaybackMachineInfoBarThrobber(
-      const BraveWaybackMachineInfoBarThrobber&) = delete;
-  BraveWaybackMachineInfoBarThrobber& operator=(
-      const BraveWaybackMachineInfoBarThrobber&) = delete;
+  WaybackMachineThrobber(
+      const WaybackMachineThrobber&) = delete;
+  WaybackMachineThrobber& operator=(
+      const WaybackMachineThrobber&) = delete;
 
   // Start and stop the throbber animation.
   void Start();
@@ -38,4 +38,4 @@ class BraveWaybackMachineInfoBarThrobber : public views::View {
   base::RepeatingTimer timer_;  // Used to schedule Run calls.
 };
 
-#endif  // BRAVE_BROWSER_UI_VIEWS_INFOBARS_BRAVE_WAYBACK_MACHINE_INFOBAR_THROBBER_H_
+#endif  // BRAVE_BROWSER_UI_VIEWS_WAYBACK_MACHINE_THROBBER_H_
