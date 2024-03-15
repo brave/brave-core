@@ -1,10 +1,10 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_ITEM_H_
-#define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_ITEM_H_
+#ifndef BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
+#define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_
 
 #include "url/gurl.h"
 
@@ -65,4 +65,4 @@ bool IsValidItem(const SidebarItem& item);
 
 }  // namespace sidebar
 
-#endif  // BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_ITEM_H_
+#endif  // BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_ITEM_H_

@@ -8,8 +8,8 @@
 
 #include <optional>
 
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "components/version_info/channel.h"
 
 class Browser;
