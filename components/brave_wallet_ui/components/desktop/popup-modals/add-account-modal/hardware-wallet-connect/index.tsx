@@ -14,21 +14,7 @@ import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
 
 // Styled Components
-import {
-  // ConnectingButton,
-  // ConnectingButtonText,
-  // HardwareButton,
-  // HardwareButtonRow,
-  // HardwareInfoColumn,
-  // HardwareInfoRow,
-  // HardwareTitle,
-  // LedgerIcon,
-  // TrezorIcon,
-  // ErrorText,
-  // LoadIcon,
-  Instructions
-  // Bold
-} from './style'
+import { Instructions } from './style'
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
