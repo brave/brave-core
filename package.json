@@ -120,7 +120,6 @@
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "6.2.0",
-    "follow-redirects": "1.15.4",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
     "https-browserify": "1.0.0",
