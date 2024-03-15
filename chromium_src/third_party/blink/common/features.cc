@@ -50,8 +50,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kSharedStorageAPIM118, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageAPIM123, base::FEATURE_DISABLED_BY_DEFAULT},
     {kSharedStorageSelectURLLimit, base::FEATURE_DISABLED_BY_DEFAULT},
-    {kSpeculationRulesHeaderEnableThirdPartyOriginTrial,
-     base::FEATURE_DISABLED_BY_DEFAULT},
     {kSpeculationRulesPrefetchFuture, base::FEATURE_DISABLED_BY_DEFAULT},
     {kTextFragmentAnchor, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
