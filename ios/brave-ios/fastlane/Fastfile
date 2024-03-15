@@ -7,29 +7,11 @@ fastlane_version "2.86.0"
 default_platform :ios
 
 platform :ios do
-  desc "Deprecated: use build_for_testing and test_without_build"
-  lane :test do |options|
-    defaultScanParams = scan_params()
-    run_tests(defaultScanParams.merge!({
-      devices: ["iPhone 15"],
-      ensure_devices_found: true,
-      skip_testing: skipped_tests()
-    }))
-
-    run_tests(defaultScanParams.merge!({
-      devices: ["iPad (10th generation)"],
-      ensure_devices_found: true,
-      output_files: "junit-ipad.xml",
-      xcargs: "-testPlan Brave_iPad"
-    }))
-  end
-
   desc "Builds the app for testing"
   lane :build_for_testing do |options|
     defaultScanParams = scan_params()
     run_tests(defaultScanParams.merge!({
-      build_for_testing: true,
-      output_style: "raw" # Don't need xcpretty for the build
+      build_for_testing: true
     }))
   end
 
