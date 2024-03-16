@@ -190,6 +190,7 @@ public struct CryptoView: View {
                 )
               case .deposit(let query):
                 DepositTokenView(
+                  keyringStore: keyringStore,
                   networkStore: store.networkStore,
                   depositTokenStore: store.openDepositTokenStore(
                     prefilledToken: destination.initialToken,
@@ -361,6 +362,7 @@ private struct CryptoContainerView<DismissContent: ToolbarContent>: View {
             )
           case .deposit(let query):
             DepositTokenView(
+              keyringStore: keyringStore,
               networkStore: cryptoStore.networkStore,
               depositTokenStore: cryptoStore.openDepositTokenStore(
                 prefilledToken: action.initialToken,

@@ -149,4 +149,19 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
       }
     }
   }
+
+  /// Should be called after dismissing create account. Returns true if an account was created
+  @MainActor func handleDismissAddAccount(
+    _ tokenViewModel: DepositTokenViewModel
+  ) async -> Bool {
+    if await keyringService.isAccountAvailable(
+      for: tokenViewModel.token.coin,
+      chainId: tokenViewModel.network.chainId
+    ) {
+      self.setup()
+      return true
+    } else {
+      return false
+    }
+  }
 }

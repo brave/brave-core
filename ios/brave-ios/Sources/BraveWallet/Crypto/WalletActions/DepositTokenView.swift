@@ -10,6 +10,7 @@ import Strings
 import SwiftUI
 
 struct DepositTokenView: View {
+  @ObservedObject var keyringStore: KeyringStore
   @ObservedObject var networkStore: NetworkStore
   @ObservedObject var depositTokenStore: DepositTokenStore
 
@@ -18,7 +19,14 @@ struct DepositTokenView: View {
 
   @State private var isPresentingNetworkFilter = false
   @State private var selectedAccount: BraveWallet.AccountInfo?
-  @State private var selectedToken: BraveWallet.BlockchainToken?
+  // Assignment happens when user selects a token and user's wallet
+  // has an account is the same coin type as the selected token
+  @State private var selectedTokenViewModel: DepositTokenViewModel?
+  // Assignment happens when user selects a token and user's wallet
+  // has no account is the same coin type as the selected token
+  @State private var savedTokenViewModel: DepositTokenViewModel?
+  @State private var isPresentingAddAccount: Bool = false
+  @State private var isPresentingAddAccountConfirmation: Bool = false
 
   private var availableAccounts: [BraveWallet.AccountInfo] {
     guard let token = depositTokenStore.prefilledToken else { return [] }
@@ -51,7 +59,13 @@ struct DepositTokenView: View {
             TokenListHeaderView(title: Strings.Wallet.assetsTitle)
           } content: { viewModel in
             Button {
-              selectedToken = viewModel.token
+              if depositTokenStore.allAccounts.contains(where: { $0.coin == viewModel.token.coin })
+              {
+                selectedTokenViewModel = viewModel
+              } else {
+                savedTokenViewModel = viewModel
+                isPresentingAddAccountConfirmation = true
+              }
             } label: {
               HStack {
                 AssetIconView(
@@ -130,16 +144,16 @@ struct DepositTokenView: View {
       .background(
         NavigationLink(
           isActive: Binding(
-            get: { selectedToken != nil },
-            set: { if !$0 { selectedToken = nil } }
+            get: { selectedTokenViewModel != nil },
+            set: { if !$0 { selectedTokenViewModel = nil } }
           ),
           destination: {
-            if let selectedToken {
+            if let selectedTokenViewModel {
               DepositDetailsView(
                 type: .prefilledToken(
-                  token: selectedToken,
+                  token: selectedTokenViewModel.token,
                   availableAccounts: depositTokenStore.allAccounts.filter {
-                    $0.coin == selectedToken.coin
+                    $0.coin == selectedTokenViewModel.token.coin
                   }
                 ),
                 allNetworks: depositTokenStore.allNetworks
@@ -155,6 +169,24 @@ struct DepositTokenView: View {
     .task {
       depositTokenStore.setup()
     }
+    .addAccount(
+      keyringStore: keyringStore,
+      networkStore: networkStore,
+      accountNetwork: savedTokenViewModel?.network,
+      isShowingConfirmation: $isPresentingAddAccountConfirmation,
+      isShowingAddAccount: $isPresentingAddAccount,
+      onConfirmAddAccount: { isPresentingAddAccount = true },
+      onCancelAddAccount: nil,
+      onAddAccountDismissed: {
+        Task { @MainActor in
+          guard let savedTokenViewModel else { return }
+          if await self.depositTokenStore.handleDismissAddAccount(savedTokenViewModel) {
+            self.selectedTokenViewModel = savedTokenViewModel
+            self.savedTokenViewModel = nil
+          }
+        }
+      }
+    )
   }
 
   private func accessibilityLabel(_ viewModel: DepositTokenViewModel) -> String {
@@ -367,7 +399,12 @@ private struct DepositDetailsView: View {
         )
       ) {
         if let addressToShare {
-          ShareSheetView(activityItems: [addressToShare])
+          ShareSheetView(
+            activityItems: [addressToShare],
+            applicationActivities: nil,
+            excludedActivityTypes: nil,
+            callback: nil
+          )
         }
       }
     }
@@ -377,6 +414,7 @@ private struct DepositDetailsView: View {
 #if DEBUG
 #Preview {
   DepositTokenView(
+    keyringStore: .previewStore,
     networkStore: .previewStore,
     depositTokenStore: .previewStore,
     onDismiss: {}
