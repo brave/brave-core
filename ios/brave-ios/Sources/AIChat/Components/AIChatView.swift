@@ -253,7 +253,7 @@ public struct AIChatView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await model.refreshPremiumStatus()
+            await model.refreshPremiumStatusOrderCredentials()
           }
         })
     }
@@ -411,6 +411,15 @@ public struct AIChatView: View {
           isPremiumPaywallPresented = true
         },
         dismissAction: {
+          Task { @MainActor in
+            // This is needed to try to mitigate a bug in SkusSDK
+            // See: https://github.com/brave/brave-browser/issues/36824
+            // Also see the comment on the function
+            if model.premiumStatus == .active || model.premiumStatus == .activeDisconnected {
+              await model.refreshPremiumStatusOrderCredentials()
+            }
+          }
+
           if let basicModel = model.models.first(where: { $0.access == .basic }) {
             model.changeModel(modelKey: basicModel.key)
             model.retryLastRequest()
