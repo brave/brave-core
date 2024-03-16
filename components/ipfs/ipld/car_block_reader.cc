@@ -93,9 +93,7 @@ void CarBlockReader::OnRequestDataReceived(
     std::unique_ptr<std::vector<uint8_t>> data,
     const bool is_completed,
     const int& error_code) {
-LOG(INFO) << "[IPFS] OnRequestDataReceived"      ;
   if (is_completed && !data) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #10";
     is_header_retrieved_ = false;
     buffer_.clear();
     callback.Run(nullptr, true, error_code);
@@ -109,16 +107,13 @@ LOG(INFO) << "[IPFS] OnRequestDataReceived"      ;
   base::span<const uint8_t> buffer_span(buffer_);
 
   while (!buffer_span.empty()) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #20";
     uint64_t received_buffer_size = buffer_span.size();
     if (received_buffer_size < sizeof(uint64_t)) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #30";
       return;
     }
 
     const uint64_t current_block_size = DecodeBlockLength(buffer_span);
     if (received_buffer_size < current_block_size) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #40";
       return;
     }
     const size_t block_length_bytes = buffer_.size() - buffer_span.size();
@@ -126,7 +121,6 @@ LOG(INFO) << "[IPFS] OnRequestDataReceived"      ;
     base::span block_span = buffer_span.subspan(0, current_block_size);
     buffer_span = buffer_span.subspan(current_block_size);
 
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #50";
     const std::vector<uint8_t> block_data(block_span.begin(), block_span.end());
     buffer_.erase(
         buffer_.begin(),
@@ -136,23 +130,19 @@ LOG(INFO) << "[IPFS] OnRequestDataReceived"      ;
     if (!is_header_retrieved_) {
       if (!ProcessHeader(block_data, is_header_retrieved_, callback,
                          GetBlockFactory(), error_code)) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #60";
         return;
       }
       continue;
     }
 
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #70";
-
     auto block_info_result = DecodeBlockInfo(0, block_data);
     DCHECK(block_info_result.error.error_code == 0) << block_info_result.error.error.c_str();
     if (block_info_result.error.error_code != 0) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #80";
       return;
     }
 
     if (!block_info_result.is_content) {
-      LOG(INFO) << "[IPFS] block_info_result:\r\n" << block_info_result.data.c_str();
+//      LOG(INFO) << "[IPFS] block_info_result:\r\n" << block_info_result.data.c_str();
       auto json_value = ParseJsonHelper(block_info_result.data.c_str(),
                                         base::Value::Type::DICT);
       callback.Run(GetBlockFactory()->CreateCarBlock(
@@ -161,15 +151,11 @@ LOG(INFO) << "[IPFS] OnRequestDataReceived"      ;
       continue;
     }
 
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #90";
-
     auto block_content = DecodeBlockContent(0, block_data);
     DCHECK(block_content.error.error_code == 0) << block_content.error.error.c_str();
     if (block_content.error.error_code != 0) {
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #100";
       return;
     }
-    LOG(INFO) << "[IPFS] OnRequestDataReceived #110";
 
     const auto verified = absl::make_optional<bool>(block_content.verified);
     callback.Run(GetBlockFactory()->CreateCarBlock(

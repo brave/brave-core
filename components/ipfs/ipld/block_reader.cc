@@ -23,15 +23,17 @@ void BlockReader::Read(BlockReaderCallback callback) {
   if (!callback || !content_requester_) {
     return;
   }
-LOG(INFO) << "[IPFS] Read #10";
   content_requester_->Request(
       base::BindRepeating(&BlockReader::OnRequestDataReceived,
                           weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
-LOG(INFO) << "[IPFS] Read #20";
 }
 
 BlockFactory* BlockReader::GetBlockFactory() {
   return block_factory_.get();
+}
+
+void BlockReader::Reset(const GURL& new_url) {
+  content_requester_->Reset(new_url);
 }
 
 base::RepeatingCallback<void(std::unique_ptr<std::vector<uint8_t>>, const bool, const int&)>
@@ -46,7 +48,7 @@ BlockReaderFactory::~BlockReaderFactory() = default;
 
 std::unique_ptr<BlockReader> BlockReaderFactory::CreateCarBlockReader(
     const GURL& url,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    network::SharedURLLoaderFactory* url_loader_factory,
     PrefService* prefs,
     const bool only_structure) {
   return std::make_unique<CarBlockReader>(

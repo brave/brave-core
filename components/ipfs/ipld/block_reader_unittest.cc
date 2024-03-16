@@ -152,7 +152,7 @@ void TestBlockExisting(
               !header_block->IsMetadata());
   EXPECT_EQ(root_cids->GetList().size(), 1UL);
   EXPECT_EQ(root_cids->GetList()[0].GetString(),
-            "bafybeidh6k2vzukelqtrjsmd4p52cpmltd2ufqrdtdg6yigi73in672fwu");
+            "bafybeigcisqd7m5nf3qmuvjdbakl5bdnh4ocrmacaqkpuh77qjvggmt2sa");
 
   base::ranges::for_each(root_cids->GetList(),
                          [&all_blocks](const base::Value& item) {
@@ -228,6 +228,8 @@ class BlockReaderUnitTest : public testing::Test {
 };
 
 TEST_F(BlockReaderUnitTest, BasicTestSteps) {
+  auto url_loader_factory_ptr = base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory());
   std::unordered_map<std::string, std::unique_ptr<ipfs::ipld::Block>>
       all_blocks;
   int32_t complete_counter{0};
@@ -267,8 +269,7 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
   auto br = std::make_unique<ipfs::ipld::CarBlockReader>(
       std::make_unique<ipfs::ipld::CarContentRequester>(
           url,
-          base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-              url_loader_factory()),
+          url_loader_factory_ptr.get(),
           GetPrefs()));
   br->Read(request_callback);
   task_environment()->RunUntilIdle();
@@ -279,6 +280,8 @@ TEST_F(BlockReaderUnitTest, BasicTestSteps) {
 }
 
 TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
+    auto url_loader_factory_ptr = base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory());
   std::unordered_map<std::string, std::unique_ptr<ipfs::ipld::Block>>
       all_blocks;
   int32_t complete_counter{0};
@@ -296,8 +299,7 @@ TEST_F(BlockReaderUnitTest, ReceiveBlocksByChunks) {
   auto br = std::make_unique<ipfs::ipld::CarBlockReader>(
       std::make_unique<ipfs::ipld::CarContentRequester>(
           url,
-          base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-              url_loader_factory()),
+          url_loader_factory_ptr.get(),
           GetPrefs()));
   br->content_requester_->buffer_ready_callback_ =
       br->GetReadCallbackForTests(std::move(request_callback));

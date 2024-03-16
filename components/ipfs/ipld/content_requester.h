@@ -35,7 +35,7 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
  protected:
   explicit ContentRequester(
       const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      network::SharedURLLoaderFactory* url_loader_factory,
       PrefService* prefs);
 
   virtual GURL GetGatewayRequestUrl() const;
@@ -58,7 +58,7 @@ class ContentRequester : public network::SimpleURLLoaderStreamConsumer {
   std::unique_ptr<network::SimpleURLLoader> url_loader_;
   raw_ptr<PrefService> prefs_;
   bool is_started_{false};
-  scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory_;
+  raw_ptr<network::SharedURLLoaderFactory> url_loader_factory_;
   base::WeakPtrFactory<ContentRequester> weak_ptr_factory_{this};
 };
 
@@ -73,7 +73,7 @@ class ContentRequesterFactory {
 
   std::unique_ptr<ContentRequester> CreateCarContentRequester(
       const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      network::SharedURLLoaderFactory* url_loader_factory,
       PrefService* prefs,
       const bool only_structure);
 };

@@ -62,6 +62,8 @@ static_library("ipfs") {
     "ipld/trustless_client_types.h",
     "ipld/block_mime_sniffer.cc",
     "ipld/block_mime_sniffer.h",
+    "ipld/dag_nodes_collector.cc",
+    "ipld/dag_nodes_collector.h",
   ]
 
   deps = [

@@ -8,13 +8,26 @@
 #include <string>
 
 #include "brave/browser/profiles/profile_util.h"
+#include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
+#include "brave/components/ipfs/pref_names.h"
 #include "chrome/common/channel_info.h"
+#include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "net/base/net_errors.h"
 #include "net/base/url_util.h"
 
+namespace {
+
+bool IsResolveMethod(PrefService* pref_service, const ipfs::IPFSResolveMethodTypes& resolution_method) {
+  auto resolve_method = static_cast<ipfs::IPFSResolveMethodTypes>(
+      pref_service->GetInteger(kIPFSResolveMethod));
+    
+  return resolve_method == resolution_method;
+}
+
+}  // namespace
 namespace ipfs {
 
 int OnBeforeURLRequest_IPFSRedirectWork(
@@ -76,7 +89,9 @@ int OnBeforeURLRequest_IPFSRedirectWork(
     if (ctx->resource_type == blink::mojom::ResourceType::kMainFrame ||
         (IsLocalGatewayURL(new_url) && IsLocalGatewayURL(ctx->initiator_url)) ||
         (IsDefaultGatewayURL(new_url, prefs) &&
-         IsDefaultGatewayURL(ctx->initiator_url, prefs))) {
+         IsDefaultGatewayURL(ctx->initiator_url, prefs)) ||
+         (has_ipfs_scheme && IsResolveMethod(prefs, ipfs::IPFSResolveMethodTypes::IPFS_GATEWAY))) //  TODO may be move this condition to separate function
+    {
       ctx->new_url_spec = new_url.spec();
     } else {
       ctx->blocked_by = brave::kOtherBlocked;

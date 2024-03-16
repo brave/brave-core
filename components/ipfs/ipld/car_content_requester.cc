@@ -42,7 +42,7 @@ namespace ipfs::ipld {
 
 CarContentRequester::CarContentRequester(
     const GURL& url,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    network::SharedURLLoaderFactory* url_loader_factory,
     PrefService* prefs,
     const bool only_metadata)
     : ContentRequester(url, url_loader_factory, prefs),

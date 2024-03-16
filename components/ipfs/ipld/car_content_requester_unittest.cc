@@ -63,21 +63,25 @@ class CarContentRequesterUnitTest : public testing::Test {
 
 TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
   {
+    auto url_loader_factory_ptr = base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory());
     auto request_callback = base::BindLambdaForTesting(
         [&](std::unique_ptr<std::vector<uint8_t>> buffer,
             const bool is_complete, const int& error_code) {
           EXPECT_TRUE(false) << "request_callback must not be called";
         });
+
     auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(
         GURL(""),
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            url_loader_factory()),
+        url_loader_factory_ptr.get(),
         GetPrefs());
     ccr->Request(request_callback);
     EXPECT_FALSE(ccr->IsStarted());
   }
 
   {
+    auto url_loader_factory_ptr = base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory());
     const uint64_t content_size = 1024;
     std::vector<char> content_data;
     for (uint64_t i = 0; i < content_size; i++) {
@@ -126,8 +130,7 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
     GURL url(kDefaultIpfsUrl);
     auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(
         url,
-        base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-            url_loader_factory()),
+        url_loader_factory_ptr.get(),
         GetPrefs());
     ccr->Request(request_callback);
     EXPECT_TRUE(ccr->IsStarted());
@@ -139,6 +142,8 @@ TEST_F(CarContentRequesterUnitTest, BasicTestSteps) {
 }
 
 TEST_F(CarContentRequesterUnitTest, ResponseByChunks) {
+  auto url_loader_factory_ptr = base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
+            url_loader_factory());
   auto data_received_callback_counter = 0;
   auto complete_callback_counter = 0;
   auto request_callback = base::BindLambdaForTesting(
@@ -157,8 +162,7 @@ TEST_F(CarContentRequesterUnitTest, ResponseByChunks) {
       });
   auto ccr = std::make_unique<ipfs::ipld::CarContentRequester>(
       GURL(""),
-      base::MakeRefCounted<network::WeakWrapperSharedURLLoaderFactory>(
-          url_loader_factory()),
+      url_loader_factory_ptr.get(),
       GetPrefs());
   ccr->buffer_ready_callback_ = std::move(request_callback);
   ccr->OnDataReceived("%%%", base::NullCallback());

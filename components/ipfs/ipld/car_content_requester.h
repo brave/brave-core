@@ -14,7 +14,7 @@ class CarContentRequester : public ContentRequester {
  public:
   explicit CarContentRequester(
       const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      network::SharedURLLoaderFactory* url_loader_factory,
       PrefService* prefs,
       const bool only_structure = true);
   ~CarContentRequester() override;

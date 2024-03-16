@@ -19,12 +19,10 @@
 
 namespace ipfs::ipld {
 
+class DagNodesCollector;
+
 class BlockOrchestrator {
  public:
-using BlockCollectorMap = std::unordered_map<std::string,
-                     std::unique_ptr<Block>,
-                     StringHash,
-                     std::equal_to<>>;
 
   explicit BlockOrchestrator(PrefService* pref_service);
   ~BlockOrchestrator();
@@ -49,18 +47,12 @@ using BlockCollectorMap = std::unordered_map<std::string,
   void SendRequest(const GURL& url);
   void ProcessBlock(const std::string& cid);
 
-  BlockCollectorMap dag_nodes_;
 
   void BlockChainForCid(const uint64_t& size,
                         Block const* block,
                         bool last_chunk) const;
 
-  // void CreateDagPathIndex();
-  // std::unordered_map<std::string,
-  //                    Block*,
-  //                    StringHash,
-  //                    std::equal_to<>> darg_nodes_path_index_;
-
+  std::unique_ptr<DagNodesCollector> dag_nodes_collector_{std::make_unique<DagNodesCollector>()};
   IpfsRequestCallback request_callback_;
   std::unique_ptr<IpfsTrustlessRequest> request_;
   std::unique_ptr<BlockReader> block_reader_;
@@ -69,6 +61,7 @@ using BlockCollectorMap = std::unordered_map<std::string,
       std::make_unique<BlockMimeSniffer>()};
   base::WeakPtrFactory<BlockOrchestrator> weak_ptr_factory_{this};
 };
+
 
 }  // namespace ipfs::ipld
 

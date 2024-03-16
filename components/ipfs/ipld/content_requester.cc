@@ -38,7 +38,7 @@ namespace ipfs::ipld {
 std::unique_ptr<ContentRequester>
 ContentRequesterFactory::CreateCarContentRequester(
     const GURL& url,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    network::SharedURLLoaderFactory* url_loader_factory,
     PrefService* prefs,
     const bool only_structure) {
   return std::make_unique<CarContentRequester>(url, url_loader_factory, prefs,
@@ -47,7 +47,7 @@ ContentRequesterFactory::CreateCarContentRequester(
 
 ContentRequester::ContentRequester(
     const GURL& url,
-    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+    network::SharedURLLoaderFactory* url_loader_factory,
     PrefService* prefs)
     : url_(url), prefs_(prefs), url_loader_factory_(url_loader_factory) {}
 
@@ -58,21 +58,18 @@ bool ContentRequester::IsStarted() const {
 }
 
 void ContentRequester::Reset(const GURL& new_url) {
-  LOG(INFO) << "[IPFS] Reset #10";
   url_ = new_url;
   is_started_ = false;
-  url_loader_.release();  
+  url_loader_.reset();
 }
 
 void ContentRequester::Request(ContentRequestBufferCallback callback) {
   if (GetGatewayRequestUrl().is_empty()) {
     return;
   }
-  LOG(INFO) << "[IPFS] Request #10";
   buffer_ready_callback_ = std::move(callback);
   url_loader_ = CreateLoader();
   url_loader_->DownloadAsStream(url_loader_factory_.get(), this);
-  LOG(INFO) << "[IPFS] Request #20";
   is_started_ = true;
 }
 
@@ -89,18 +86,15 @@ GURL ContentRequester::GetGatewayRequestUrl() const {
     url_res = ipfs::ToPublicGatewayURL(url_, prefs_);
   }
 
-  LOG(INFO) << "[IPFS] ContentRequester::GetGatewayRequestUrl() url_res:"
-            << url_res;
   return url_res;
 }
 
 void ContentRequester::OnDataReceived(base::StringPiece string_piece,
                                       base::OnceClosure resume) {
-  LOG(INFO) << "[IPFS] OnDataReceived #10";
   auto data = std::make_unique<std::vector<uint8_t>>(string_piece.begin(),
                                                      string_piece.end());
 
-  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size(); //<< "\r\n" << string_piece;
+  LOG(INFO) << "[IPFS] OnDataReceived bytes_received_:" << data->size();
 
   if (buffer_ready_callback_) {
     buffer_ready_callback_.Run(std::move(data), false, net::HTTP_OK);
@@ -137,6 +131,5 @@ void ContentRequester::OnComplete(bool success) {
   }
 
   is_started_ = false;
-  //url_loader_.release();
 }
 }  // namespace ipfs::ipld

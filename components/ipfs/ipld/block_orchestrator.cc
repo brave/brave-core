@@ -19,29 +19,30 @@
 #include "brave/components/ipfs/ipfs_constants.h"
 #include "brave/components/ipfs/ipfs_utils.h"
 #include "brave/components/ipfs/ipld/block_reader.h"
+#include "brave/components/ipfs/ipld/dag_nodes_collector.h"
 #include "net/http/http_status_code.h"
 
 namespace {
 
 constexpr char kDefaultMimeType[] = "text/plain";
+const char kDefaultHtmlPageName[] = "index.html";
 
 void EnumerateBlocksFromCid(
     const std::string& cid_to_start,
-    const std::unordered_map<std::string,
-                             std::unique_ptr<ipfs::ipld::Block>,
-                             ipfs::ipld::StringHash,
-                             std::equal_to<>>& dag_nodes,
+    const ipfs::ipld::DagNodesCollector* dag_nodes_collector,
     base::RepeatingCallback<void(ipfs::ipld::Block const*, bool is_completed)>
         for_each_block_callback) {
-  std::deque<ipfs::ipld::Block*> blocks_deque;
-  auto current_iter = dag_nodes.find(cid_to_start);
-  DCHECK(current_iter != dag_nodes.end());
-  if (current_iter == dag_nodes.end()) {
+  DCHECK(dag_nodes_collector);
+  std::deque<const ipfs::ipld::Block*> blocks_deque;  
+  const auto* current = dag_nodes_collector->GetBlockByCid(cid_to_start);
+  if (!current) {
+    LOG(INFO) << "[IPFS] EnumerateBlocksFromCid #20 cid_to_start:" << cid_to_start;
     return;
   }
 
-  auto* current = current_iter->second.get();
   while (current != nullptr || !blocks_deque.empty()) {
+    LOG(INFO) << "[IPFS] EnumerateBlocksFromCid #10";
+
     if (current) {
       DCHECK(current != nullptr);
       blocks_deque.push_back(current);
@@ -54,12 +55,12 @@ void EnumerateBlocksFromCid(
       }
 
       base::ranges::for_each(*current->GetLinks(), [&](const auto& item) {
-        auto current_link_iter = dag_nodes.find(item.hash);
+        const auto* current_link_iter =
+            dag_nodes_collector->GetBlockByCid(item.hash);
         //        LOG(INFO) << "[IPFS] try to find hash:" << item.hash;
-        DCHECK(current_link_iter != dag_nodes.end());
-        if (current_link_iter != dag_nodes.end()) {
-          current = current_link_iter->second.get();
-          DCHECK(current != nullptr);
+        DCHECK(current_link_iter);
+        if (current_link_iter) {
+          current = current_link_iter;
           blocks_deque.push_back(current);
         }
       });
@@ -76,18 +77,17 @@ void EnumerateBlocksFromCid(
     }
     current = nullptr;
   }
+
+    LOG(INFO) << "[IPFS] EnumerateBlocksFromCid #30";
+
 }
 
-absl::optional<std::string> GetRootCid(
-    const ipfs::ipld::BlockOrchestrator::BlockCollectorMap& dag_nodes) {
-  DCHECK(!dag_nodes.empty());
-
-  auto root_block_iter = dag_nodes.find("");
-  if (root_block_iter == dag_nodes.end()) {
+absl::optional<std::string> GetRootCid(const ipfs::ipld::Block* root_block) {
+  DCHECK(root_block);
+  if (!root_block) {
     return absl::nullopt;
   }
-  const auto* root_cids_list =
-      root_block_iter->second->Meta().FindList("roots");
+  const auto* root_cids_list = root_block->Meta().FindList("roots");
 
   if (!root_cids_list || root_cids_list->empty()) {
     return absl::nullopt;
@@ -120,31 +120,34 @@ void BlockOrchestrator::BuildResponse(
 }
 
 void BlockOrchestrator::SendRequest(const GURL& url) {
-  LOG(INFO) << "[IPFS] SendRequest #10";
-  block_reader_ = BlockReaderFactory().CreateCarBlockReader(
-      url, request_->url_loader_factory, pref_service_,
-      request_->only_structure);
+  LOG(INFO) << "[IPFS] SendRequest url:" << url;
+  if (!block_reader_) {
+    block_reader_ = BlockReaderFactory().CreateCarBlockReader(
+        url, request_->url_loader_factory.get(), pref_service_,
+        request_->only_structure);
+  } else {
+    block_reader_->Reset(url);
+  }
   DCHECK(block_reader_);
   if (!block_reader_) {
     return;
   }
 
-  LOG(INFO) << "[IPFS] SendRequest #20";
   block_reader_->Read(base::BindRepeating(&BlockOrchestrator::OnBlockRead,
                                           weak_ptr_factory_.GetWeakPtr()));
-  LOG(INFO) << "[IPFS] SendRequest #30";
 }
 
 void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
                                     const bool is_completed,
                                     const int& error_code) {
-  LOG(INFO) << "[IPFS] OnBlockRead is_completed:"
-            << is_completed << " Cid:" << (block ? block->Cid() : "n/a")
+  LOG(INFO) << "[IPFS] OnBlockRead is_completed:" << is_completed
+            << " Cid:" << (block ? block->Cid() : "n/a")
             << " error_code:" << error_code;
 
   if (!is_completed) {
-    LOG(INFO) << "[IPFS] OnBlockRead Not Completed, Collected block cid:" << (block ? block->Cid() : "n/a");
-    dag_nodes_.try_emplace(block->Cid(), std::move(block));
+    LOG(INFO) << "[IPFS] OnBlockRead Not Completed, Collected block cid:"
+              << (block ? block->Cid() : "n/a");
+    dag_nodes_collector_->CollectBlock(std::move(block));
     return;
   }
 
@@ -161,12 +164,15 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
   }
 
   if (!block) {
-    LOG(INFO) << "[IPFS] OnBlockRead Block collecting "
-                 "finished Root CID:"
-              << (dag_nodes_.contains("") ? dag_nodes_[""]->Meta().DebugString() : "N/A");
-    // Here is where we finished to collect all blocks
-    auto root_cid = GetRootCid(dag_nodes_);
+    LOG(INFO)
+        << "[IPFS] OnBlockRead Block collecting "
+           "finished Root CID:"
+        << (dag_nodes_collector_->GetRootBlock()
+                ? dag_nodes_collector_->GetRootBlock()->Meta().DebugString()
+                : "N/A");
 
+    // Here is where we finished to collect all blocks
+    auto root_cid = GetRootCid(dag_nodes_collector_->GetRootBlock());
     DCHECK(root_cid);
     if (!root_cid || root_cid->empty()) {
       return;
@@ -176,15 +182,16 @@ void BlockOrchestrator::OnBlockRead(std::unique_ptr<Block> block,
     return;
   }
 
-  LOG(INFO) << "[IPFS] OnBlockRead collected block cid:" << (block ? block->Cid() : "n/a");
-  dag_nodes_.try_emplace(block->Cid(), std::move(block));
+  LOG(INFO) << "[IPFS] OnBlockRead collected block cid:"
+            << (block ? block->Cid() : "n/a");
+  dag_nodes_collector_->CollectBlock(std::move(block));
 }
 
 void BlockOrchestrator::ProcessBlock(const std::string& cid) {
   LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << cid;
   DCHECK(!cid.empty());
-  auto block_iter = dag_nodes_.find(cid);
-  if (block_iter == dag_nodes_.end()) {
+  const auto* block = dag_nodes_collector_->GetBlockByCid(cid);
+  if (!block) {
     GURL sub_request_url(base::StringPrintf(
         "ipfs://%s",
         cid.c_str()));  // TODO change it to manage with replace URL parts
@@ -192,10 +199,7 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
     return;
   }
 
-  const auto* block = block_iter->second.get();
-  DCHECK(block);
-  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:"
-            << block->Cid();
+  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << block->Cid();
   if (block->IsContent()) {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Content";
     std::string_view vontent_view((const char*)block->GetContentData()->data(),
@@ -217,14 +221,15 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock MultiblockFile ";
 
     EnumerateBlocksFromCid(
-        block->Cid(), dag_nodes_,
+        block->Cid(), dag_nodes_collector_.get(),
         base::BindRepeating(&BlockOrchestrator::BlockChainForCid,
                             weak_ptr_factory_.GetWeakPtr(), size));
   } else if (block->IsFolder()) {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Folder";
     auto index_item =
         base::ranges::find_if(*block->GetLinks(), [](const auto& item) {
-          return base::EqualsCaseInsensitiveASCII(item.name, "index.html");
+          return base::EqualsCaseInsensitiveASCII(item.name,
+                                                  kDefaultHtmlPageName);
         });
     if (index_item != block->GetLinks()->end()) {
       LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Found index name:"
@@ -239,10 +244,6 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
         cid.c_str()));  // TODO change it to manage with replace URL parts
     SendRequest(sub_request_url);
   }
-
-  //  if(target->IsPathTarget()) {
-  // // TODO
-  //  }
 }
 
 // void BlockOrchestrator::CreateDagPathIndex() {
@@ -261,22 +262,19 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
 // }
 
 bool BlockOrchestrator::IsActive() const {
-  return !request_callback_.is_null() || block_reader_ || !dag_nodes_.empty();
+  return !request_callback_.is_null() || block_reader_ ||
+         !dag_nodes_collector_->IsEmpty();
 }
 
 void BlockOrchestrator::Reset() {
   request_callback_.Reset();
   block_reader_ = nullptr;  // TODO Can not reset from itself
-  dag_nodes_.clear();
+  dag_nodes_collector_->Clear();
 }
 
 void BlockOrchestrator::BlockChainForCid(const uint64_t& size,
                                          Block const* block,
                                          bool last_chunk) const {
-  // LOG(INFO) << "[IPFS] BlockOrchestrator::BlockChainForCid #10"
-  //           << "\r\ncid:" << block->Cid()
-  //           << "\r\nsize:" << size
-  //           ;
   if (request_callback_ && block->IsContent()) {
     std::string_view vontent_view((const char*)block->GetContentData()->data(),
                                   block->GetContentData()->size());

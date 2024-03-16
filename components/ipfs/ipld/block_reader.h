@@ -34,6 +34,8 @@ class BlockReader {
 
   BlockFactory* GetBlockFactory();
 
+  virtual void Reset(const GURL& new_url);
+
  protected:
   explicit BlockReader(std::unique_ptr<ContentRequester> content_requester);
 
@@ -69,7 +71,7 @@ class BlockReaderFactory {
 
   std::unique_ptr<BlockReader> CreateCarBlockReader(
       const GURL& url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
+      network::SharedURLLoaderFactory* url_loader_factory,
       PrefService* prefs,
       const bool only_structure);
 

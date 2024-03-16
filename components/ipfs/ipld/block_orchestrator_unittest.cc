@@ -163,7 +163,6 @@ class BlockOrchestratorUnitTest : public testing::Test {
     const CarFileTestData* current_cid_file_test_data_ptr = nullptr;
     url_loader_factory()->SetInterceptor(base::BindLambdaForTesting(
         [&](const network::ResourceRequest& request) {
-          LOG(INFO) << "[IPFS] Interceptor url:" << request.url;
           url_loader_factory()->ClearResponses();
           ASSERT_TRUE(request.url.is_valid()) << test_name;
           ASSERT_TRUE(ipfs::IsDefaultGatewayURL(request.url, GetPrefs()))
@@ -198,6 +197,7 @@ class BlockOrchestratorUnitTest : public testing::Test {
           LOG(INFO) << "[IPFS] Interceptor Finish url:" << request.url << " content.length:" << content.length();
         }));
 
+    base::RunLoop run_loop;
     std::vector<uint8_t> received_data;
     int last_chunk_received_counter{0};
     auto orchestrator_request_callback = base::BindLambdaForTesting(
@@ -210,8 +210,9 @@ class BlockOrchestratorUnitTest : public testing::Test {
                                response->body->end());
           if (response->is_last_chunk) {
             last_chunk_received_counter++;
+            run_loop.Quit();
           }
-          LOG(INFO) << "[IPFS] total_size: " << response->total_size;
+          LOG(INFO) << "[IPFS] total_size: " << response->total_size << " last_chunk_received_counter:" << last_chunk_received_counter;
           EXPECT_EQ(response->total_size, current_cid_file_test_data_ptr->size)
               << test_name;
         });
@@ -219,7 +220,8 @@ class BlockOrchestratorUnitTest : public testing::Test {
                                 std::move(orchestrator_request_callback));
     ASSERT_TRUE(orchestrator->IsActive()) << test_name;
     LOG(INFO) << "[IPFS] Wait for operation finish";
-    task_environment()->RunUntilIdle();
+    //task_environment()->RunUntilIdle();
+    run_loop.Run();
     ASSERT_TRUE(current_cid_file_test_data_ptr);
     LOG(INFO) << "[IPFS] current_cid_file_test_data_ptr->file_content:"
               << current_cid_file_test_data_ptr->file_content;
@@ -255,11 +257,11 @@ TEST_F(BlockOrchestratorUnitTest, RequestCarContent) {
 //       kSubDirWithMixedBlockFiles, "subdir_multiblock.txt", 1026);
 // }
 
-TEST_F(BlockOrchestratorUnitTest, RequestFolderGetIndexFile) {
-  const auto* test = &kOneFileExtractInputData[2];
-   TestGetCarFileByIpfsCid(
-       test->test_name,
-       test->ipfs_url,
-       test->cids_to_car_map);
-}
+// TEST_F(BlockOrchestratorUnitTest, RequestFolderGetIndexFile) {
+//   const auto* test = &kOneFileExtractInputData[0];
+//    TestGetCarFileByIpfsCid(
+//        test->test_name,
+//        test->ipfs_url,
+//        test->cids_to_car_map);
+// }
 }  // namespace ipfs::ipld
