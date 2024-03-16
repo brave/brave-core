@@ -567,12 +567,14 @@ void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
   // To do rewrite in-place, the following conditions must be met:
   // 1) Selected content is editable.
   // 2) User has opted in to Leo.
-  // 3) SSE is enabled, it is required otherwise the UI update will be too slow.
-  // 4) The command is a rewrite command.
-  // 5) There's no in-progress in-place rewrite.
+  // 3) Context menu rewrite in place feature is enabled.
+  // 4) SSE is enabled, it is required otherwise the UI update will be too slow.
+  // 5) The command is a rewrite command.
+  // 6) There's no in-progress in-place rewrite.
   bool rewrite_in_place =
       params_.is_editable &&
       ai_chat::HasUserOptedIn(GetProfile()->GetPrefs()) &&
+      ai_chat::features::IsContextMenuRewriteInPlaceEnabled() &&
       ai_chat::features::kAIChatSSE.Get() && IsRewriteCommand(command) &&
       !source_web_contents_->GetUserData(kAIChatRewriteDataKey);
 
