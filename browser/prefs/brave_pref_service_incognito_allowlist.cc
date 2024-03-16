@@ -21,7 +21,7 @@
 #endif  // BUILDFLAG(ENABLE_AI_CHAT)
 
 #if defined(TOOLKIT_VIEWS)
-#include "brave/components/sidebar/pref_names.h"
+#include "brave/components/sidebar/browser/pref_names.h"
 #endif
 
 namespace brave {

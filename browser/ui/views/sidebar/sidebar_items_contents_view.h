@@ -14,7 +14,7 @@
 #include "base/scoped_observation.h"
 #include "brave/browser/ui/sidebar/sidebar_model.h"
 #include "brave/browser/ui/views/sidebar/sidebar_button_view.h"
-#include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
 #include "ui/base/models/simple_menu_model.h"
 #include "ui/views/context_menu_controller.h"
 #include "ui/views/controls/button/button.h"

@@ -1,7 +1,7 @@
 # Copyright (c) 2021 The Brave Authors. All rights reserved.
 # This Source Code Form is subject to the terms of the Mozilla Public
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
-# You can obtain one at http://mozilla.org/MPL/2.0/.
+# You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import("//brave/components/ai_chat/core/common/buildflags/buildflags.gni")
 import("//brave/components/playlist/common/buildflags/buildflags.gni")
@@ -9,11 +9,9 @@ import("//build/config/ui.gni")
 
 assert(toolkit_views)
 
-static_library("sidebar") {
+static_library("browser") {
   sources = [
     "constants.h",
-    "features.cc",
-    "features.h",
     "pref_names.h",
     "sidebar_item.cc",
     "sidebar_item.h",
@@ -30,6 +28,7 @@ static_library("sidebar") {
     "//brave/components/constants:constants",
     "//brave/components/l10n/common",
     "//brave/components/resources:strings",
+    "//brave/components/sidebar/common",
     "//components/keyed_service/core",
     "//components/prefs",
     "//components/version_info",
@@ -57,7 +56,7 @@ source_set("unit_tests") {
     "//base",
     "//base/test:test_support",
     "//brave/components/ai_chat/core/common/buildflags",
-    "//brave/components/sidebar",
+    "//brave/components/sidebar/browser",
     "//components/prefs",
     "//components/prefs:test_support",
     "//components/sync_preferences:test_support",

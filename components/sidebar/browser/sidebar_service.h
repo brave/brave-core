@@ -1,10 +1,10 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
-#define BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
+#ifndef BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_SERVICE_H_
+#define BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_SERVICE_H_
 
 #include <optional>
 #include <string>
@@ -14,8 +14,8 @@
 #include "base/memory/raw_ptr.h"
 #include "base/observer_list.h"
 #include "base/observer_list_types.h"
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_p3a.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_p3a.h"
 #include "components/keyed_service/core/keyed_service.h"
 #include "components/prefs/pref_change_registrar.h"
 
@@ -129,4 +129,4 @@ class SidebarService : public KeyedService {
 
 }  // namespace sidebar
 
-#endif  // BRAVE_COMPONENTS_SIDEBAR_SIDEBAR_SERVICE_H_
+#endif  // BRAVE_COMPONENTS_SIDEBAR_BROWSER_SIDEBAR_SERVICE_H_

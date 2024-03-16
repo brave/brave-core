@@ -100,7 +100,7 @@ source_set("extensions") {
   ]
 
   if (toolkit_views) {
-    deps += [ "//brave/components/sidebar" ]
+    deps += [ "//brave/components/sidebar/browser" ]
   }
 
   if (enable_speedreader) {

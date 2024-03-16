@@ -17,8 +17,8 @@
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
-#include "brave/components/sidebar/sidebar_item.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/prefs/pref_service.h"
 

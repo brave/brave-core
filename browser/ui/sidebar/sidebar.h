@@ -6,7 +6,7 @@
 #ifndef BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_H_
 #define BRAVE_BROWSER_UI_SIDEBAR_SIDEBAR_H_
 
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 
 namespace sidebar {
 

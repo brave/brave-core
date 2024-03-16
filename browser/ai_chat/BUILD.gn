@@ -42,7 +42,7 @@ source_set("browser_tests") {
       "//brave/components/ai_chat/core/common",
       "//brave/components/constants",
       "//brave/components/l10n/common:test_support",
-      "//brave/components/sidebar",
+      "//brave/components/sidebar/browser",
       "//brave/components/text_recognition/common/buildflags",
       "//chrome/browser",
       "//chrome/test:test_support",

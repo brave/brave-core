@@ -19,7 +19,7 @@
 #include "brave/browser/ui/views/sidebar/sidebar_item_view.h"
 #include "brave/browser/ui/views/sidebar/sidebar_items_contents_view.h"
 #include "brave/components/l10n/common/localization_util.h"
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "cc/paint/paint_flags.h"
 #include "chrome/browser/ui/browser_list.h"

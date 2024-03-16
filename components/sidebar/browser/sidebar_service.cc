@@ -1,9 +1,9 @@
 /* Copyright (c) 2021 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/sidebar/sidebar_service.h"
+#include "brave/components/sidebar/browser/sidebar_service.h"
 
 #include <algorithm>
 #include <codecvt>
@@ -26,10 +26,10 @@
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/l10n/common/localization_util.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
-#include "brave/components/sidebar/constants.h"
-#include "brave/components/sidebar/features.h"
-#include "brave/components/sidebar/pref_names.h"
-#include "brave/components/sidebar/sidebar_item.h"
+#include "brave/components/sidebar/browser/constants.h"
+#include "brave/components/sidebar/browser/pref_names.h"
+#include "brave/components/sidebar/browser/sidebar_item.h"
+#include "brave/components/sidebar/common/features.h"
 #include "components/grit/brave_components_strings.h"
 #include "components/prefs/pref_registry_simple.h"
 #include "components/prefs/pref_service.h"
@@ -92,6 +92,7 @@ void SidebarService::RegisterProfilePrefs(
   registry->RegisterIntegerPref(
       kLastUsedBuiltInItemType,
       static_cast<int>(SidebarItem::BuiltInItemType::kNone));
+  registry->RegisterBooleanPref(kSidebarSettingChangeInitialP3AReport, false);
 }
 
 SidebarService::SidebarService(
