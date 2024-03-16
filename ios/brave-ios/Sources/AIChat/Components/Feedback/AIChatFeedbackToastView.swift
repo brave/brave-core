@@ -96,6 +96,7 @@ struct AIChatFeedbackToastView: View {
     )
     .containerShape(RoundedRectangle(cornerRadius: 8.0, style: .continuous))
     .padding(.horizontal)
+    .colorScheme(.light)
   }
   
   private var title: String {
@@ -125,6 +126,7 @@ struct AIChatFeedbackToastView: View {
         } label: {
           Label {
             Text(Strings.close)
+
           } icon: {
             Image(systemName: "xmark")
               .foregroundStyle(Color(braveSystemName: .primary30))
@@ -138,7 +140,7 @@ struct AIChatFeedbackToastView: View {
         } label: {
           Text(Strings.AIChat.addFeedbackActionTitle)
             .font(.subheadline)
-            .foregroundStyle(.white)
+            .foregroundStyle(Color(braveSystemName: .gray10))
         }
       }
     case .error, .submitted:
