@@ -153,6 +153,38 @@ void ConversationDriver::ChangeModel(const std::string& model_key) {
   InitEngine();
 }
 
+std::string ConversationDriver::GetDefaultModel() {
+  const std::string* current_default =
+      pref_service_->GetUserPrefValue(prefs::kDefaultModelKey)->GetIfString();
+  if (current_default) {
+    return *current_default;
+  }
+
+  if (last_premium_status_ == mojom::PremiumStatus::Active ||
+      last_premium_status_ == mojom::PremiumStatus::ActiveDisconnected) {
+    return features::kAIModelsPremiumDefaultKey.Get();
+  }
+
+  current_default = pref_service_->GetDefaultPrefValue(prefs::kDefaultModelKey)
+                        ->GetIfString();
+
+  return current_default ? *current_default
+                         : features::kAIModelsDefaultKey.Get();
+}
+
+void ConversationDriver::SetDefaultModel(const std::string& model_key) {
+  DCHECK(!model_key.empty());
+  // Check that the key exists
+  auto* new_model = GetModel(model_key);
+  if (!new_model) {
+    NOTREACHED() << "No matching model found for key: " << model_key;
+    return;
+  }
+
+  pref_service_->SetDefaultPrefValue(prefs::kDefaultModelKey,
+                                     base::Value(model_key));
+}
+
 const mojom::Model& ConversationDriver::GetCurrentModel() {
   auto* model = GetModel(model_key_);
   DCHECK(model);
