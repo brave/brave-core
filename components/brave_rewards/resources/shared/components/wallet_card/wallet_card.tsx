@@ -44,7 +44,7 @@ const monthFormatter = new Intl.DateTimeFormat(undefined, {
 })
 
 function getIntegerDigits (num: number) {
-  return num <= 0 ? 1 : Math.floor(Math.log10(num)) + 1
+  return num <= 1 ? 1 : Math.floor(Math.log10(num)) + 1
 }
 
 interface Props {
