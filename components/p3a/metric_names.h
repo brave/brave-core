@@ -28,6 +28,9 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.ContextMenu.FreeUsages",
+    "Brave.AIChat.ContextMenu.MostUsedAction",
+    "Brave.AIChat.ContextMenu.PremiumUsages",
     "Brave.AIChat.Enabled.2",
     "Brave.AIChat.NewUserReturning",
     "Brave.AIChat.OmniboxOpens",
@@ -220,6 +223,7 @@ inline constexpr auto kCollectedTypicalHistograms =
 
 inline constexpr auto kCollectedSlowHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.AIChat.ContextMenu.LastUsageTime",
     "Brave.AIChat.LastUsageTime",
     "Brave.AIChat.UsageMonthly",
     "Brave.Accessibility.DisplayZoomEnabled",
@@ -269,6 +273,10 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.ContextMenu.FreeUsages",
+    "Brave.AIChat.ContextMenu.LastUsageTime",
+    "Brave.AIChat.ContextMenu.MostUsedAction",
+    "Brave.AIChat.ContextMenu.PremiumUsages",
     "Brave.AIChat.LastUsageTime",
     "Brave.AIChat.OmniboxOpens",
     "Brave.AIChat.OmniboxWeekCompare",

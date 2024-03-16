@@ -13,6 +13,9 @@ class PrefService;
 class WeeklyStorage : public TimePeriodStorage {
  public:
   WeeklyStorage(PrefService* prefs, const char* pref_name);
+  WeeklyStorage(PrefService* prefs,
+                const char* pref_name,
+                const char* dict_key);
 
   WeeklyStorage(const WeeklyStorage&) = delete;
   WeeklyStorage& operator=(const WeeklyStorage&) = delete;

@@ -23,13 +23,21 @@ class PrefService;
 // period. Requires |pref_name| to be already registered.
 class TimePeriodStorage {
  public:
+  // Will use a list pref for storage.
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
+                    size_t period_days);
+  // Will use a list within a dictionary pref
+  // for storage.
+  TimePeriodStorage(PrefService* prefs,
+                    const char* pref_name,
+                    const char* dict_key,
                     size_t period_days);
 
   // For tests.
   TimePeriodStorage(PrefService* prefs,
                     const char* pref_name,
+                    const char* dict_key,
                     size_t period_days,
                     std::unique_ptr<base::Clock> clock);
   ~TimePeriodStorage();
@@ -61,6 +69,7 @@ class TimePeriodStorage {
 
   const raw_ptr<PrefService> prefs_;
   const char* pref_name_ = nullptr;
+  const char* dict_key_ = nullptr;
   size_t period_days_;
 
   std::list<DailyValue> daily_values_;

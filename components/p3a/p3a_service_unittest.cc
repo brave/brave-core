@@ -287,7 +287,7 @@ TEST_F(P3AServiceTest, MAYBE_UpdateLogsAndSendSlow) {
   SetUpP3AService();
 
   std::vector<std::string> test_histograms(
-      {std::string(*(p3a::kCollectedSlowHistograms.begin() + 2)),
+      {"Brave.Accessibility.DisplayZoomEnabled",
        std::string(kTestExampleMetric)});
 
   p3a_service_->RegisterDynamicMetric(kTestExampleMetric, MetricLogType::kSlow);

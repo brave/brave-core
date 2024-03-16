@@ -14,6 +14,7 @@
 #include "base/time/default_clock.h"
 #include "base/values.h"
 #include "components/prefs/pref_service.h"
+#include "components/prefs/scoped_user_pref_update.h"
 
 namespace {
 // Used to compensate for DST-related differences. i.e. time
@@ -24,9 +25,16 @@ constexpr base::TimeDelta kPotentialDSTOffset = base::Hours(1);
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
                                      size_t period_days)
+    : TimePeriodStorage(prefs, pref_name, nullptr, period_days) {}
+
+TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
+                                     const char* pref_name,
+                                     const char* dict_key,
+                                     size_t period_days)
     : clock_(std::make_unique<base::DefaultClock>()),
       prefs_(prefs),
       pref_name_(pref_name),
+      dict_key_(dict_key),
       period_days_(period_days) {
   DCHECK(pref_name);
   if (prefs) {
@@ -36,11 +44,13 @@ TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
 
 TimePeriodStorage::TimePeriodStorage(PrefService* prefs,
                                      const char* pref_name,
+                                     const char* dict_key,
                                      size_t period_days,
                                      std::unique_ptr<base::Clock> clock)
     : clock_(std::move(clock)),
       prefs_(prefs),
       pref_name_(pref_name),
+      dict_key_(dict_key),
       period_days_(period_days) {
   DCHECK(prefs);
   DCHECK(pref_name);
@@ -179,8 +189,18 @@ void TimePeriodStorage::FilterToPeriod() {
 
 void TimePeriodStorage::Load() {
   DCHECK(daily_values_.empty());
-  const auto& list = prefs_->GetList(pref_name_);
-  for (const auto& it : list) {
+  const auto& pref_value = prefs_->GetValue(pref_name_);
+
+  const base::Value::List* list;
+  if (dict_key_) {
+    list = pref_value.GetDict().FindList(dict_key_);
+  } else {
+    list = pref_value.GetIfList();
+  }
+  if (!list) {
+    return;
+  }
+  for (const auto& it : *list) {
     DCHECK(it.is_dict());
     const base::Value::Dict& dict = it.GetDict();
     auto day = dict.FindDouble("day");
@@ -209,5 +229,10 @@ void TimePeriodStorage::Save() {
     value.Set("value", static_cast<double>(u.value));
     list.Append(std::move(value));
   }
-  prefs_->SetList(pref_name_, std::move(list));
+  if (dict_key_) {
+    ScopedDictPrefUpdate update(prefs_, pref_name_);
+    update->Set(dict_key_, std::move(list));
+  } else {
+    prefs_->SetList(pref_name_, std::move(list));
+  }
 }
