@@ -61,7 +61,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
     }
 
     do {
-      let credentialSummary = try await BraveSkusSDK().credentialsSummary(for: .leo)
+      let credentialSummary = try await BraveSkusSDK.shared.credentialsSummary(for: .leo)
       self.credentialSummary = credentialSummary
     } catch {
       Logger.module.error("Error Fetching Skus Credential Summary: \(error)")

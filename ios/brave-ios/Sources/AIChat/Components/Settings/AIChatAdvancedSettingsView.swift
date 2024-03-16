@@ -183,7 +183,8 @@ public struct AIChatAdvancedSettingsView: View {
         } label: {
           LabelView(
             title: Strings.AIChat.advancedSettingsDefaultModelTitle,
-            subtitle: model.currentModel.displayName
+            subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?.displayName
+              ?? model.currentModel.displayName
           )
         }.listRowBackground(Color(.secondaryBraveGroupedBackground))
       } header: {
