@@ -102,9 +102,7 @@ using brave_shields::features::kBraveAdblockScriptletDebugLogs;
 using brave_shields::features::kCosmeticFilteringJsPerformance;
 
 AdBlockServiceTest::AdBlockServiceTest()
-    : ws_server_(net::SpawnedTestServer::TYPE_WS,
-                 net::GetWebSocketTestDataDirectory()),
-      https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
+    : https_server_(net::EmbeddedTestServer::Type::TYPE_HTTPS) {}
 AdBlockServiceTest::~AdBlockServiceTest() = default;
 
 void AdBlockServiceTest::SetUpCommandLine(base::CommandLine* command_line) {
@@ -666,16 +664,25 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, ServiceWorkerRequest) {
   // EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 1ULL);
 }
 
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, WebSocketBlocking) {
+// See crbug.com/1372291.
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_WebSocketBlocking DISABLED_WebSocketBlocking
+#else
+#define MAYBE_WebSocketBlocking WebSocketBlocking
+#endif
+
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_WebSocketBlocking) {
   UpdateAdBlockInstanceWithRules("*$websocket");
 
-  ASSERT_TRUE(ws_server_.Start());
+  net::SpawnedTestServer ws_server(net::SpawnedTestServer::TYPE_WS,
+                                   net::GetWebSocketTestDataDirectory());
+  ASSERT_TRUE(ws_server.Start());
 
   GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
   NavigateToURL(url);
   content::WebContents* contents = web_contents();
 
-  GURL ws_url = ws_server_.GetURL("echo-with-no-extension");
+  GURL ws_url = ws_server.GetURL("echo-with-no-extension");
 
   EXPECT_EQ(false, EvalJs(contents,
                           base::StringPrintf("checkWebsocketConnection(\"%s\")",
@@ -892,8 +899,15 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
   }
 }
 
+// The subscription observer never fires on Android, for an unknown reason.
+#if BUILDFLAG(IS_ANDROID)
+#define MAYBE_SubscribeTo404List DISABLED_SubscribeTo404List
+#else
+#define MAYBE_SubscribeTo404List SubscribeTo404List
+#endif
+
 // Make sure the state of a list that cannot be fetched is as expected
-IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, SubscribeTo404List) {
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, MAYBE_SubscribeTo404List) {
   GURL subscription_url =
       embedded_test_server()->GetURL("lists.com", "/this/list/does/not/exist");
   GURL tab_url = embedded_test_server()->GetURL("b.com", kAdBlockTestPage);

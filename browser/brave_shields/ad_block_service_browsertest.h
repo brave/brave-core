@@ -84,7 +84,6 @@ class AdBlockServiceTest : public PlatformBrowserTest {
 
   std::vector<std::unique_ptr<base::ScopedTempDir>> temp_dirs_;
 
-  net::SpawnedTestServer ws_server_;
   net::EmbeddedTestServer dynamic_server_;
   net::EmbeddedTestServer https_server_;
 
