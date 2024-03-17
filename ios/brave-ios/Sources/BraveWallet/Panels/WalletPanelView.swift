@@ -533,7 +533,10 @@ struct WalletPanelView: View {
     )
     .onChange(of: cryptoStore.pendingRequest) { newValue in
       if newValue != nil {
-        presentWalletWithContext(.pendingRequests)
+        // Slight delay to allow dismissal of unlock modal before presenting pending request modal.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+          presentWalletWithContext(.pendingRequests)
+        }
       }
     }
     .onChange(of: keyringStore.selectedAccount) { _ in
@@ -564,7 +567,10 @@ struct WalletPanelView: View {
         }))
       } else if cryptoStore.pendingRequest != nil {
         // race condition for when `pendingRequest` is assigned in CryptoStore before this view visible
-        presentWalletWithContext(.pendingRequests)
+        // Slight delay to allow dismissal of unlock modal before presenting pending request modal.
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
+          presentWalletWithContext(.pendingRequests)
+        }
       } else {
         cryptoStore.prepare()
       }
