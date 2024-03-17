@@ -117,7 +117,7 @@ void NTPBackgroundPrefs::SetSelectedValue(const std::string& value) {
   update->Set(kSelectedValueKey, value);
 }
 
-absl::variant<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
+std::string<GURL, std::string> NTPBackgroundPrefs::GetSelectedValue() const {
   const auto* value = GetPrefValue();
   const auto* selected_value = value->FindString(kSelectedValueKey);
   DCHECK(selected_value);
