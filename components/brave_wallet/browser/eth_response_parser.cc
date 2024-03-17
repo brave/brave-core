@@ -100,7 +100,17 @@ bool ParseEthGetFeeHistory(const base::Value& json_value,
     return false;
   }
 
-  *base_fee_per_gas = fee_item_value->base_fee_per_gas;
+  for (const auto& base_fee_item_value : fee_item_value->base_fee_per_gas) {
+    // BASEFEE of 0x0 indicates pre-EIP-1559 blocks. Some chains like Scroll
+    // may have null values too.
+    if (base_fee_item_value.is_none()) {
+      base_fee_per_gas->push_back("0x0");
+    } else if (base_fee_item_value.is_string()) {
+      base_fee_per_gas->push_back(base_fee_item_value.GetString());
+    } else {
+      return false;
+    }
+  }
 
   for (const auto& gas_used_value : fee_item_value->gas_used_ratio) {
     if (!base::StringToDouble(gas_used_value,
