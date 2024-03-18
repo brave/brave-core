@@ -12,8 +12,14 @@
 #include "ui/base/metadata/metadata_header_macros.h"
 
 #define BrowserCaptionButtonContainer BrowserCaptionButtonContainer_ChromiumImpl
+#define OnWindowControlsOverlayEnabledChanged     \
+  OnWindowControlsOverlayEnabledChanged_Unused(); \
+  friend class BraveBrowserFrameViewWin;          \
+  void OnWindowControlsOverlayEnabledChanged
 
 #include "src/chrome/browser/ui/views/frame/browser_caption_button_container_win.h"  // IWYU pragma: export
+
+#undef OnWindowControlsOverlayEnabledChanged
 #undef BrowserCaptionButtonContainer
 
 class BrowserCaptionButtonContainer

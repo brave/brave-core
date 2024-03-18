@@ -481,6 +481,8 @@ source_set("ui") {
         "views/frame/brave_browser_frame_view_win.cc",
         "views/frame/brave_browser_frame_view_win.h",
       ]
+
+      deps += [ "//chrome/browser:titlebar_config" ]
     }
 
     if (is_linux) {
