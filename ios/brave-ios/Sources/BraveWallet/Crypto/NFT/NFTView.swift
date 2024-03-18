@@ -22,8 +22,8 @@ struct NFTView: View {
   @State private var nftToBeRemoved: NFTAssetViewModel?
   @State private var groupToggleState: [NFTGroupViewModel.ID: Bool] = [:]
 
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+  @Environment(\.walletActionDestination)
+  private var walletActionDestination: Binding<WalletActionDestination?>
   @Environment(\.openURL) private var openWalletURL
 
   private var emptyView: some View {
@@ -321,7 +321,7 @@ struct NFTView: View {
                 nftMetadata: selectedNFTViewModel.nftMetadata,
                 owner: nftStore.owner(for: selectedNFTViewModel.token)
               ),
-              buySendSwapDestination: buySendSwapDestination,
+              walletActionDestination: walletActionDestination,
               onNFTMetadataRefreshed: { nftMetadata in
                 nftStore.updateNFTMetadataCache(
                   for: selectedNFTViewModel.token,

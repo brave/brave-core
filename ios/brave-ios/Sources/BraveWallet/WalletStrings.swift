@@ -544,7 +544,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Buy crypto with Apple Pay, credit or debit card.",
-      comment: "The description of a buy button on the buy/send/swap modal"
+      comment: "The description of a buy button on the buy/send/swap/deposit modal"
     )
     public static let send = NSLocalizedString(
       "wallet.send",
@@ -558,7 +558,7 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Send crypto or transfer from one account to another.",
-      comment: "The description of a send button on the buy/send/swap modal"
+      comment: "The description of a send button on the buy/send/swap/deposit modal"
     )
     public static let swap = NSLocalizedString(
       "wallet.swap",
@@ -572,7 +572,14 @@ extension Strings {
       tableName: "BraveWallet",
       bundle: .module,
       value: "Swap tokens and assets.",
-      comment: "The description of a swap button on the buy/send/swap modal"
+      comment: "The description of a swap button on the buy/send/swap/deposit modal"
+    )
+    public static let depositDescription = NSLocalizedString(
+      "wallet.depositDescription",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Deposit assets",
+      comment: "The description of a swap button on the buy/send/swap/deposit modal"
     )
     public static let more = NSLocalizedString(
       "wallet.more",
@@ -581,6 +588,13 @@ extension Strings {
       value: "More",
       comment:
         "A button title for user to open more option in asset details screen other than buy/send/swap."
+    )
+    public static let deposit = NSLocalizedString(
+      "wallet.deposit",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Deposit",
+      comment: "As in depsit some crypto coins to a specific wallet address."
     )
     public static let infoTitle = NSLocalizedString(
       "wallet.infoTitle",
@@ -2110,6 +2124,14 @@ extension Strings {
       value: "Lock Wallet",
       comment:
         "The title of the lock option inside the menu when user clicks the three dots button beside assets search button."
+    )
+    public static let backUpWallet = NSLocalizedString(
+      "wallet.backUpWallet",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Back Up Now",
+      comment:
+        "The title of the back up wallet option inside the menu when user clicks the three dots button beside assets search button."
     )
     public static let settings = NSLocalizedString(
       "wallet.settings",
@@ -5410,6 +5432,22 @@ extension Strings {
       value: "%d transactions",
       comment:
         "The description of the transactions row in Account Details when user has zero or multiple Transactions."
+    )
+    public static let depositAddressCopy = NSLocalizedString(
+      "wallet.depositAddressCopy",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "Copy",
+      comment:
+        "The button title for user to click to copy the account address for deposit."
+    )
+    public static let depositEthDisclosure = NSLocalizedString(
+      "wallet.depositEthDisclosure",
+      tableName: "BraveWallet",
+      bundle: .module,
+      value: "This is Ethereum wallet which support Ethereum Network and level 2 network such as %@",
+      comment:
+        "The disclosure at the bottom of the deposit view for ETH address indicates ETH wallet supports Ethereum Mainnet as well as the level 2 EVM. `%@` will be replaced with current supported level 2 EVM network names."
     )
   }
 }

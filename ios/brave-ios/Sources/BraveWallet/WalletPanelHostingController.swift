@@ -48,7 +48,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
     rootView.presentBuySendSwap = { [weak self] in
       guard let self = self, let store = walletStore.cryptoStore else { return }
       let controller = FixedHeightHostingPanModalController(
-        rootView: BuySendSwapView(
+        rootView: WalletActionsView(
           networkStore: store.networkStore,
           action: { destination in
             self.dismiss(
@@ -57,7 +57,7 @@ public class WalletPanelHostingController: UIHostingController<WalletPanelContai
                 let walletHostingController = WalletHostingViewController(
                   walletStore: walletStore,
                   webImageDownloader: webImageDownloader,
-                  presentingContext: .buySendSwap(destination)
+                  presentingContext: .walletAction(destination)
                 )
                 walletHostingController.delegate = self.delegate
                 self.present(walletHostingController, animated: true)

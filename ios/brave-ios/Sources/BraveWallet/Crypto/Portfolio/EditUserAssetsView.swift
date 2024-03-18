@@ -94,8 +94,8 @@ struct EditUserAssetsView: View {
     var stores = userAssetsStore.assetStores
     if !normalizedQuery.isEmpty {
       stores = stores.filter {
-        $0.token.symbol.lowercased().contains(normalizedQuery)
-          || $0.token.name.lowercased().contains(normalizedQuery)
+        $0.token.symbol.localizedCaseInsensitiveContains(normalizedQuery)
+          || $0.token.name.localizedCaseInsensitiveContains(normalizedQuery)
       }
     }
     return stores.sorted(by: { $0.isVisible && !$1.isVisible })
