@@ -53,6 +53,10 @@ bool EdgeRequestResponse::IsEdgeRequestComplete() const {
   return false;
 }
 
+bool EdgeRequestResponse::IsEdgeRequestRedirect() const {
+  return false;
+}
+
 bool EdgeRequestResponse::IsEdgeRequestError() const {
   return false;
 }

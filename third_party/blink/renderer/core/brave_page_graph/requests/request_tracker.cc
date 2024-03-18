@@ -19,7 +19,10 @@
 
 namespace brave_page_graph {
 
-RequestTracker::RequestTracker() = default;
+RequestTracker::RequestTracker(PageGraphContext* page_graph_context)
+    : page_graph_context_(page_graph_context) {
+  DCHECK(page_graph_context_);
+}
 
 RequestTracker::~RequestTracker() = default;
 
@@ -31,7 +34,7 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestStart(
   auto item = tracked_requests_.find(request_id);
   if (item == tracked_requests_.end()) {
     auto request_record = std::make_unique<TrackedRequest>(
-        request_id, requester, resource, resource_type);
+        page_graph_context_, request_id, requester, resource, resource_type);
     CheckTracedRequestAgainstHistory(request_record.get());
     auto tracking_record = base::MakeRefCounted<TrackedRequestRecord>();
     tracking_record->request = std::move(request_record);
@@ -41,6 +44,15 @@ scoped_refptr<const TrackedRequestRecord> RequestTracker::RegisterRequestStart(
 
   item->value->request->AddRequest(requester, resource, resource_type);
   return ReturnTrackingRecord(request_id);
+}
+
+void RequestTracker::RegisterRequestRedirect(
+    const InspectorId request_id,
+    const blink::KURL& url,
+    const blink::ResourceResponse& redirect_response,
+    NodeResource* resource) {
+  auto& request = tracked_requests_.at(request_id)->request;
+  request->AddRequestRedirect(url, redirect_response, resource);
 }
 
 scoped_refptr<const TrackedRequestRecord>

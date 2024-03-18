@@ -49,10 +49,6 @@
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_delete.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_insert.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/node/edge_node_remove.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_complete.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_error.h"
-#include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/request/edge_request_start.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_bucket.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_clear.h"
 #include "brave/third_party/blink/renderer/core/brave_page_graph/graph_item/edge/storage/edge_storage_delete.h"
@@ -151,9 +147,6 @@ using brave_page_graph::EdgeJSResult;
 using brave_page_graph::EdgeNodeCreate;
 using brave_page_graph::EdgeNodeInsert;
 using brave_page_graph::EdgeNodeRemove;
-using brave_page_graph::EdgeRequestComplete;
-using brave_page_graph::EdgeRequestError;
-using brave_page_graph::EdgeRequestStart;
 using brave_page_graph::EdgeResourceBlock;
 using brave_page_graph::EdgeShield;
 using brave_page_graph::EdgeStorageBucket;
@@ -192,7 +185,7 @@ namespace blink {
 
 namespace {
 
-constexpr char kPageGraphVersion[] = "0.4.0";
+constexpr char kPageGraphVersion[] = "0.5.0";
 constexpr char kPageGraphUrl[] =
     "https://github.com/brave/brave-browser/wiki/PageGraph";
 
@@ -321,6 +314,7 @@ PageGraph::PageGraph(LocalFrame& local_frame)
     : Supplement<LocalFrame>(local_frame),
       frame_id_(blink::IdentifiersFactory::FrameId(&local_frame)),
       script_tracker_(this),
+      request_tracker_(this),
       start_(base::TimeTicks::Now()) {
   blink::Page* page = local_frame.GetPage();
   if (!page) {
@@ -467,7 +461,7 @@ void PageGraph::WillSendRequest(
     blink::RenderBlockingBehavior render_blocking_behavior,
     base::TimeTicks timestamp) {
   if (request.GetRedirectInfo()) {
-    LOG(INFO) << "Skip request redirect";
+    RegisterRequestRedirect(request, redirect_response);
     return;
   }
 
@@ -1446,44 +1440,6 @@ void PageGraph::DoRegisterRequestStart(const InspectorId request_id,
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestStart(request_id, requesting_node,
                                             requested_node, resource_type);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
-}
-
-void PageGraph::PossiblyWriteRequestsIntoGraph(
-    scoped_refptr<const TrackedRequestRecord> record) {
-  const TrackedRequest* const request = record->request.get();
-
-  // Don't record anything into the graph if we've already recorded
-  // this batch of requests (first condition) or if this batch of requests
-  // hasn't finished yet (e.g. we don't have both a request and a response)
-  // (second condition).
-  if (!record->is_first_reply || !request->IsComplete()) {
-    VLOG(1) << "Not (yet) writing request id: " << request->GetRequestId();
-    return;
-  }
-
-  NodeResource* const resource = request->GetResource();
-  const bool was_error = request->GetIsError();
-  const String& resource_type = request->GetResourceType();
-  const InspectorId request_id = request->GetRequestId();
-
-  if (was_error) {
-    // Handling the case when the requests returned with errors.
-    for (GraphNode* requester : request->GetRequesters()) {
-      AddEdge<EdgeRequestStart>(requester, resource, request_id, resource_type);
-      AddEdge<EdgeRequestError>(resource, requester, request_id,
-                                request->GetResponseMetadata());
-    }
-  } else {
-    for (GraphNode* requester : request->GetRequesters()) {
-      AddEdge<EdgeRequestStart>(requester, resource, request_id, resource_type);
-      AddEdge<EdgeRequestComplete>(
-          resource, requester, request_id, resource_type,
-          request->GetResponseMetadata(), request->GetResponseBodyHash());
-    }
-    return;
-  }
 }
 
 void PageGraph::RegisterRequestStartFromElm(const DOMNodeId node_id,
@@ -1581,14 +1537,21 @@ void PageGraph::RegisterRequestStartForDocument(blink::Document* document,
       request_id, frame_id, normalized_url, is_main_frame, timestamp);
 }
 
+void PageGraph::RegisterRequestRedirect(
+    const ResourceRequest& request,
+    const ResourceResponse& redirect_response) {
+  NodeResource* const requested_node = GetResourceNodeForUrl(request.Url());
+
+  request_tracker_.RegisterRequestRedirect(request.InspectorId(), request.Url(),
+                                           redirect_response, requested_node);
+}
+
 void PageGraph::RegisterRequestComplete(const InspectorId request_id,
                                         int64_t encoded_data_length) {
   VLOG(1) << "RegisterRequestComplete) request id: " << request_id;
 
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestComplete(request_id, encoded_data_length);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
 }
 
 void PageGraph::RegisterRequestCompleteForDocument(
@@ -1607,8 +1570,6 @@ void PageGraph::RegisterRequestError(const InspectorId request_id) {
 
   scoped_refptr<const TrackedRequestRecord> request_record =
       request_tracker_.RegisterRequestError(request_id);
-
-  PossiblyWriteRequestsIntoGraph(std::move(request_record));
 }
 
 void PageGraph::RegisterResourceBlockAd(const blink::WebURL& url,

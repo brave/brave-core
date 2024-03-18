@@ -158,6 +158,7 @@ CORE_EXPORT std::string GraphMLForTypeToString(const GraphMLAttrForType type);
 enum RequestStatus {
   kRequestStatusStart = 0,
   kRequestStatusComplete,
+  kRequestStatusRedirect,
   kRequestStatusError,
   kRequestStatusBlocked
 };
