@@ -12,6 +12,7 @@
 
 #include "base/scoped_observation.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_block_tracker.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_tx_meta.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service.h"
 #include "brave/components/brave_wallet/browser/tx_manager.h"
 
@@ -37,8 +38,14 @@ class BitcoinTxManager : public TxManager,
   ~BitcoinTxManager() override;
   BitcoinTxManager(const BitcoinTxManager&) = delete;
   BitcoinTxManager& operator=(const BitcoinTxManager&) = delete;
+  std::unique_ptr<BitcoinTxMeta> GetTxForTesting(const std::string& tx_meta_id);
 
  private:
+  friend class BitcoinTxManagerUnitTest;
+  FRIEND_TEST_ALL_PREFIXES(BitcoinTxManagerUnitTest, SubmitTransaction);
+  FRIEND_TEST_ALL_PREFIXES(BitcoinTxManagerUnitTest, SubmitTransactionError);
+  FRIEND_TEST_ALL_PREFIXES(BitcoinTxManagerUnitTest, SubmitTransactionError);
+
   BitcoinTxStateManager* GetBitcoinTxStateManager();
   BitcoinBlockTracker* GetBitcoinBlockTracker();
 
