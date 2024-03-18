@@ -149,6 +149,14 @@
   driver_->SetShouldSendPageContents(should_send);
 }
 
+- (NSString*)defaultModelKey {
+  return base::SysUTF8ToNSString(driver_->GetDefaultModel());
+}
+
+- (void)setDefaultModelKey:(NSString*)modelKey {
+  driver_->SetDefaultModel(base::SysNSStringToUTF8(modelKey));
+}
+
 - (void)clearConversationHistory {
   driver_->ClearConversationHistory();
 }
