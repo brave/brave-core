@@ -118,7 +118,6 @@ export default {
         currentSelectedBrowser,
         browserProfiles: payload,
         viewType: ViewType.DefaultBrowser,
-        countryString: 'US',
         scenes
       }
 

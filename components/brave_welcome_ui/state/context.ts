@@ -16,7 +16,6 @@ interface Store {
   browserProfiles: BrowserProfile[] | undefined
   viewType: ViewType | undefined
   scenes: Scenes | undefined
-  countryString: string | undefined
 }
 
 const defaultStore = {

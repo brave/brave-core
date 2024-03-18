@@ -67,7 +67,6 @@ export function useProfileCount () {
 export const shouldPlayAnimations = loadTimeData.getBoolean('hardwareAccelerationEnabledAtStartup') &&
     !window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-
 // This hook is a kind of finite state machine that helps transition between view types.
 // It's intended to put transition logic in one place, so that we can easily understand
 // what's going on and add or remove a state from the graph.
