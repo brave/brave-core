@@ -862,6 +862,24 @@ void PageGraph::RegisterPageGraphJavaScriptUrl(blink::Document* document,
 }
 
 void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
+  blink::ExecutionContext* const execution_context =
+      [&]() -> blink::ExecutionContext* {
+    blink::LocalFrame* frame = console_message->Frame();
+    blink::Document* document = frame ? frame->GetDocument() : nullptr;
+    if (!document) {
+      frame = GetSupplementable();
+      document = frame->GetDocument();
+      if (!document) {
+        return nullptr;
+      }
+    }
+    return document->GetExecutionContext();
+  }();
+
+  if (!execution_context) {
+    return;
+  }
+
   std::ostringstream str;
   base::Value::Dict dict;
   str << console_message->GetSource();
@@ -879,13 +897,9 @@ void PageGraph::ConsoleMessageAdded(blink::ConsoleMessage* console_message) {
   loc.Set("script_id", console_message->Location()->ScriptId());
   dict.Set("location", std::move(loc));
 
-  blink::LocalFrame* frame = console_message->Frame();
-  if (!frame)
-    frame = GetSupplementable();
   base::Value::List args;
   args.Append(std::move(dict));
-  RegisterWebAPICall(frame->GetDocument()->GetExecutionContext(),
-                     "ConsoleMessageAdded", std::move(args));
+  RegisterWebAPICall(execution_context, "ConsoleMessageAdded", std::move(args));
 }
 
 void PageGraph::RegisterV8ScriptCompilationFromEval(
