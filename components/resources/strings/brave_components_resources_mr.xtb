@@ -43,12 +43,11 @@
 <translation id="3798449238516105146">आवृत्ती</translation>
 <translation id="7180611975245234373">रिफ्रेश करा</translation>
 <translation id="4309915981827077375">सामान्य माहिती</translation>
-<translation id="8874184842967597500">कनेक्ट केलेले नाही</translation>
+<translation id="3368922792935385530">कनेक्ट केले</translation>
 <translation id="3587482841069643663">सर्व</translation>
 <translation id="2631006050119455616">सेव्ह केले</translation>
 <translation id="3866249974567520381">वर्णन</translation>
 <translation id="1430915738399379752">प्रिंट</translation>
-<translation id="8725066075913043281">पुन्हा प्रयत्न करा</translation>
 <translation id="2799223571221894425">पुन्हा लाँच करा</translation>
 <translation id="5939518447894949180">रीसेट करा</translation>
 <translation id="8428213095426709021">सेटिंग्ज</translation>
@@ -63,11 +62,11 @@
 <translation id="3202131003361292969">पथ</translation>
 <translation id="1272079795634619415">थांबा</translation>
 <translation id="5895138241574237353">रीस्टार्ट करा</translation>
+<translation id="8725066075913043281">पुन्हा प्रयत्न करा</translation>
 <translation id="1974060860693918893">प्रगत</translation>
 <translation id="3340978935015468852">सेटिंग्ज</translation>
 <translation id="572392919096807438">माझा निर्णय लक्षात ठेवा</translation>
 <translation id="5308380583665731573">कनेक्‍ट करा</translation>
-<translation id="3368922792935385530">कनेक्ट केले</translation>
 <translation id="2359808026110333948">सुरू ठेवा</translation>
 <translation id="6965382102122355670">ठीक आहे</translation>
 <translation id="5234764350956374838">डिसमिस करा</translation>
@@ -104,6 +103,7 @@
 <translation id="7982789257301363584">नेटवर्क</translation>
 <translation id="4804818685124855865">‍डिस्कनेक्ट</translation>
 <translation id="2391762656119864333">मागे घ्या</translation>
+<translation id="8874184842967597500">कनेक्ट केलेले नाही</translation>
 <translation id="5677928146339483299">अवरोधित</translation>
 <translation id="1165039591588034296">एरर</translation>
 <translation id="5916664084637901428">चालू</translation>

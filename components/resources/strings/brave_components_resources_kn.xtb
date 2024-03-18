@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">ವೀಕ್ಷಿಸಲಾಗಿದೆ</translation>
 <translation id="8826352442759228526">ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಪರಿಶೀಲಿಸಲಾಗುವುದಿಲ್ಲ ಏಕೆಂದರೆ ನೀವು ಗರಿಷ್ಠ ಪರಿಶೀಲಿಸಲಾದ ಸಾಧನ ಮಿತಿಯನ್ನು ತಲುಪಿದ್ದೀರಿ.</translation>
 <translation id="1221593978088944142">ದೋಷ: ಸಾಧನ ಮಿತಿ ತಲುಪಿದೆ</translation>
-<translation id="3113653894794167793">ಕ್ಷಮಿಸಿ, ನಿಮ್ಮ ವಿನಂತಿ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸುವಲ್ಲಿ ಸಮಸ್ಯೆ ಕಂಡು ಬಂದಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="6895088073061692390">ದುರದೃಷ್ಟವಶಾತ್, ನಮ್ಮ ಸ್ವಯಂಚಾಲಿತ ಪರಿಶೀಲನೆಗಳಲ್ಲಿ ಕೆಲವು ಅನಿರೀಕ್ಷಿತ Brave ಜಾಹೀರಾತುಗಳ ಚಟುವಟಿಕೆಯು ಕಂಡುಬಂದಿರುವ ಕಾರಣದಿಂದ ನಿಮ್ಮ Brave ರಿವಾರ್ಡ್‌ಗಳ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿದೆ.</translation>
 <translation id="4229056297802204697">ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿರುವ ಕಾರಣದಿಂದ, ಜಾಹೀರಾತುಗಳು ನಿಮಗೆ ಕಾಣುವುದು ಮುಂದುವರಿಯುತ್ತದೆ, ಆದರೆ ಪೇಔಟ್‌ಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ಅರ್ಹರಾಗಿರುವುದಿಲ್ಲ. ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಯನ್ನು Brave ರಿವಾರ್ಡ್‌ಗಳಿಗೆ ಸಂಪರ್ಕಿಸಲು ಸಹ ನಿಮಗೆ ಸಾಧ್ಯವಾಗುವುದಿಲ್ಲ.</translation>
 <translation id="5124846913141379164">ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಅನ್ನು ದೋಷದಲ್ಲಿ ಫ್ಲ್ಯಾಗ್ ಮಾಡಲಾಗಿರುವ ಸಾಧ್ಯತೆ ಇರುತ್ತದೆ ಮತ್ತು ನಿಮ್ಮ ಕಡೆಯಿಂದ ಯಾವುದೇ ತಕ್ಷಣದ ಕ್ರಮ ಅಗತ್ಯವಿರುವುದಿಲ್ಲ. ಭವಿಷ್ಯದಲ್ಲಿ ನಿಮ್ಮ ಪ್ರೊಫೈಲ್ ಮೇಲಿನ ಫ್ಲ್ಯಾಗ್ ಅನ್ನು ತೆಗೆದುಹಾಕಬಹುದು.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">ದೋಷ: ಸೀಮಿತ Uphold ಖಾತೆ ಕಾರ್ಯಕ್ಷಮತೆ</translation>
 <translation id="3274650021044762770">Brave ರಿವಾರ್ಡ್‌ಗಳ ವ್ಯಾಲೆಟ್ ಅನ್ನು ನಿಮ್ಮ<ph name="PROVIDER"/> ಖಾತೆಗೆ ಸಂಪರ್ಕಿಸುವುದಕ್ಕಾಗಿ ನಿಮ್ಮ ಬ್ರೌಸರ್‌ನ ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸುವಾಗ ಸಮಸ್ಯೆ ಇತ್ತು. ಹೆಚ್ಚಿನ ಸಹಾಯಕ್ಕಾಗಿ ನೀವು <ph name="BEGIN_LINK"/>ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಬಹುದು<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">ದೋಷ: ವಿನಂತಿಯನ್ನು ಮೌಲ್ಯೀಕರಿಸಲು ಸಾಧ್ಯವಾಗಲಿಲ್ಲ</translation>
+<translation id="7352651011704765696">ಏನೋ ತಪ್ಪಾಗಿದೆ</translation>
+<translation id="8285276813470932793">ನಿಮ್ಮ ವಿನಂತಿಯ್ನು ಪೂರ್ಣಗೊಳಿಸಲು ನಮಗೆ ಸಾಧ್ಯವಾಗಲಿಲ್ಲ. ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ ಮತ್ತು ಸಮಸ್ಯೆ ಹಾಗೆಯೇ ಇದ್ದರೆ <ph name="LINK_BEGIN"/>ಬೆಂಬಲವನ್ನು ಸಂಪರ್ಕಿಸಿ<ph name="LINK_END"/>.</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> ಆನ್ ಮಾಡುವ ಮೂಲಕ, ನೀವು <ph name="BEGIN_LINK1"/>ಸೇವಾ ನಿಯಮಗಳು<ph name="END_LINK1"/> ಮತ್ತು <ph name="BEGIN_LINK2"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_LINK2"/>ಗೆ ಒಪ್ಪುತ್ತೀರಿ.</translation>
 <translation id="8817096698141999876">ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಗಳು (ID ಪರಿಶೀಲನೆ ಅಗತ್ಯವಿದೆ)</translation>
 <translation id="1539433155512862005">ಕಸ್ಟೋಡಿಯಲ್ ಖಾತೆಗಳು ನಿಮ್ಮ BAT ಅನ್ನು ನಿಮಗಾಗಿ ಹಿಡಿದಿಡಲಾದ ನಂಬಿಕಾರ್ಹ ಮೂರನೇ-ವ್ಯಕ್ತಿ ಸೇವೆಗಳನ್ನು ಒಳಗೊಂಡ ಖಾತೆಗಳಾಗಿವೆ.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900"><ph name="DATE"/> ವರೆಗೆ ಬಾಕಿ ಇದೆ</translation>
 <translation id="7849926087559412554">ಓಹ್! Brave ಖಾಸಗಿ ಜಾಹೀರಾತುಗಳನ್ನು ಸ್ವೀಕರಿಸಲು ನಿಮ್ಮ ಬ್ರೌಸರ್‌ಗೆ ಸಾಧ್ಯವಿಲ್ಲ.</translation>
 <translation id="5177429570315095022">ಜಾಹೀರಾತುಗಳನ್ನು ನೋಡುವುದನ್ನು ಮುಂದುವರಿಸಲು ನಿಮ್ಮ ಬ್ರೌಸರ್ ಅನ್ನು ಅಪ್‌ಡೇಟ್ ಮಾಡಬೇಕಾಗುತ್ತದೆ.</translation>
-<translation id="7352651011704765696">ಏನೋ ತಪ್ಪಾಗಿದೆ</translation>
 <translation id="4593680147181354667">ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ಐಡಿ</translation>
 <translation id="3995471429906554168">ಡಯಾಗ್ನಾಸ್ಟಿಕ್ ಮಾಹಿತಿ</translation>
 <translation id="752216563428219524">ಜಾಹೀರಾತುಗಳನ್ನು ಆರಂಭಿಸಲಾಗಿಲ್ಲ, ದಯವಿಟ್ಟು ಪುಟವನ್ನು ರಿಫ್ರೆಶ್ ಮಾಡಿ.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">ರಿವಾರ್ಡ್‌ಗಳನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="3354337256330577726">ಸ್ವಯಂ-ಕೊಡುಗೆಯನ್ನು ಆಫ್ ಮಾಡಲಾಗಿದೆ</translation>
 <translation id="6727186931929643711">ಮರುಪ್ರಯತ್ನಿಸುವುದನ್ನು ನಿಲ್ಲಿಸಲಾಗಿದೆ</translation>
-<translation id="8978461348341400550">ಕಸ್ಟೋಡಿಯನ್:</translation>
-<translation id="7220161813676251577">ಕಸ್ಟೋಡಿಯನ್ ID:</translation>
+<translation id="6461242868382182003">ಖಾತೆ ಪ್ರಕಾರ:</translation>
+<translation id="4129229983159690026">ಖಾತೆ:</translation>
 <translation id="680983167891198932">ಕೀ</translation>
 <translation id="7535087603100972091">ಮೌಲ್ಯ</translation>
 <translation id="45591635423975492">ಲಾಗ್ ಮಾಡಿರುವುದು</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">ಎಚ್ಚರಿಕೆ: ಈ ಲಾಗ್ ಫೈಲ್ ನಲ್ಲಿ ಸೂಕ್ಷ್ಮ ಡೇಟಾ ಹೊಂದಿರಬಹುದಾಗಿದೆ. ನೀವು ಅದನ್ನು ಯಾರೊಂದಿಗೆ ಹಂಚಿಕೊಳ್ಳುತ್ತೀರಿ ಎಂಬುದರ ಬಗ್ಗೆ ಜಾಗರೂಕರಾಗಿರಿ.</translation>
 <translation id="7375125077091615385">ಪ್ರಕಾರ:</translation>
 <translation id="1924618796077284366">ಪೂರ್ಣ ಲಾಗ್ ಅನ್ನು ಡೌನ್‌ಲೋಡ್ ಮಾಡಿ</translation>
-<translation id="5362600797402074593">ಕಸ್ಟಡಿಯಲ್ ಖಾತೆ ಸಂಪರ್ಕ ಮಾಹಿತಿ</translation>
+<translation id="2129987553148729046">ಸಂಪರ್ಕಿತ ಖಾತೆಗಳ ಮಾಹಿತಿ</translation>
 <translation id="5457113250005438886">ಅಮಾನ್ಯ</translation>
 <translation id="6161467863097205016">ಪ್ರಮುಖ ಮಾಹಿತಿ ಸೀಡ್‌:</translation>
 <translation id="5323604113525002127">ಲಾಗ್‌ನ ಕೊನೆಯ [[numberOfLines]] ಸಾಲುಗಳನ್ನು ನಾವು ತೋರಿಸುತ್ತೇವೆ. ನೀವು ಸಂಪೂರ್ಣ ಲಾಗ್ ಬಯಸಿದರೆ, ನೀವು ಅದನ್ನು ಮೇಲೆ ಡೌನ್‌ಲೋಡ್ ಮಾಡಬಹುದು.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">ಒಟ್ಟು ಬ್ಯಾಲೆನ್ಸ್</translation>
 <translation id="2223892939866251845">ಬಳಕೆದಾರರ ಐಡಿ</translation>
 <translation id="4235360514405112390">ಮಾನ್ಯ</translation>
-<translation id="3902084968737576005">ವಾಲೆಟ್ ವಿಳಾಸ:</translation>
+<translation id="458999179147014626">ಖಾತೆ ಡೆಪಾಸಿಟ್ ವಿಳಾಸ:</translation>
 <translation id="3653417592104122757">ವ್ಯಾಲೆಟ್ ಇತಿಹಾಸ</translation>
 <translation id="3339401101952651943">ರಿವಾರ್ಡ್ಸ್ ಮಾಹಿತಿ</translation>
 <translation id="3363158483789327529">ರಿವಾರ್ಡ್ಸ್ ಪ್ರೊಫೈಲ್ ಅನ್ನು ಇನ್ನೂ ರಚಿಸಲಾಗಿಲ್ಲ</translation>
 <translation id="476272015919848174">ರಿವಾರ್ಡ್ಸ್ ಪಾವತಿ ID:</translation>
 <translation id="9008441690901662695">ರಿವಾರ್ಡ್ಸ್ ಸ್ಥಿತಿ:</translation>
-<translation id="8874184842967597500">ಸಂಪರ್ಕಗೊಳಿಸಿಲ್ಲ</translation>
-<translation id="4569155249847375786">ಪರಿಶೀಲಿಸಲಾಗಿದೆ</translation>
-<translation id="6521149675246672063">ಸಂಪರ್ಕ ಕಡಿತಗೊಂಡಿದೆ (ಪರಿಶೀಲಿಸಲಾಗಿದೆ)</translation>
+<translation id="9069875072411692547">ಸಂಪರ್ಕಗೊಂಡಿಲ್ಲ</translation>
+<translation id="3368922792935385530">ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</translation>
 <translation id="5058161306698404465">ರಚನೆ ಪರಿಸರ:</translation>
 <translation id="5856438412804207598">ಪ್ರಸ್ತುತ ಪರಿಸರ:</translation>
 <translation id="5916290544882167205">Brave ಇದು Brave Software ನ ನೋಂದಾಯಿತ ಟ್ರೇಡ್‌ಮಾರ್ಕ್ ಆಗಿದೆ. ಸೈಟ್ ಹೆಸರುಗಳು ಟ್ರೇಡ್‌ಮಾರ್ಕ್‌ಗಳಿಂದ ಕೂಡಿರಬಹುದು ಅಥವಾ ಸೈಟ್ ಮಾಲೀಕರ ನೋಂದಾಯಿತ ಟ್ರೇಡ್‌ಮಾರ್ಕ್‌ಗಳಾಗಿರಬಹುದು.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">ದಯವಿಟ್ಟು ಗಮನಿಸಿ:</translation>
 <translation id="1430915738399379752">ಮುದ್ರಿಸು</translation>
 <translation id="135956957367307069">ನಿಮ್ಮ ವಿನಂತಿಯನ್ನು ಇನ್ನೂ ಪ್ರಕ್ರಿಯೆಗೊಳಿಸಲಾಗುತ್ತಿದೆ, ದಯವಿಟ್ಟು ಕಾಯಿರಿ.</translation>
-<translation id="8725066075913043281">ಪುನಃ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="2600847485413879104">ರಿವಾರ್ಡ್ಸ್ BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">ಜೆಮಿನಿ</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">ನೀವು WebTorrent ಪುಟವನ್ನು ವೀಕ್ಷಿಸುತ್ತಿದ್ದೀರಿ</translation>
 <translation id="7534079972563542000">ನಿಲ್ಲಿಸಲು ಸಾಧ್ಯವಾಗದ ಡೊಮೇನ್‍ಗಳು</translation>
 <translation id="4492298165410552103">Brave ನಲ್ಲಿ ನಿಲ್ಲಿಸಲಾಗದ ಡೊಮೇನ್‍ಗಳಿಗಾಗಿ ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
-<translation id="9156229987230762013">ನಿಲ್ಲಿಸಲಾಗದೇ ಇರುವ ಡೊಮೇನ್‌ಗಳಲ್ಲಿರುವ .crypto (ಮತ್ತು .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil ಕೂಡ) ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು Infura ಅನ್ನು Brave ಬಳಸುತ್ತದೆ. Brave ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು ಮರೆಮಾಡುತ್ತದೆ. ನೀವು ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರಾದರೂ ಈ ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆ ಆದರೆ ಬೇರೆಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು Infura ನೋಡುತ್ತದೆ. Infura ನ <ph name="BEGIN_INFURA_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_INFURA_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_INFURA_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_INFURA_PRIVACY_LINK"/> ನೋಡಿ.</translation>
+<translation id="5015092481905019948"><ph name="PROVIDER_NAME"/> ನಲ್ಲಿರುವ <ph name="DOMAIN_LIST"/> ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು <ph name="DOMAIN_PROVIDER_NAME"/> ಅನ್ನು Brave ಬಳಸುತ್ತದೆ. ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Brave ಮರೆಮಾಡುತ್ತದೆ. ಇದನ್ನು ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರೋ ಒಬ್ಬರು ಈ ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆ ಹೊರತು ಬೇರೇಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು <ph name="PROVIDER_NAME"/> ನೋಡುತ್ತದೆ. <ph name="PROVIDER_NAME"/>ನ <ph name="BEGIN_PROVIDER_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_PROVIDER_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_PROVIDER_PRIVACY_LINK"/> ನೋಡಿ.</translation>
 <translation id="6513892817556267573">ಈಥೇರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್</translation>
+<translation id="2789190492285945209">Ethereum ನೇಮ್ ಸೇವೆ (ENS)</translation>
 <translation id="4335039108389860301">Brave ನಲ್ಲಿ ಈಥೆರೆಯಮ್ ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
-<translation id="4609973808011229683">Ethereum ನೇಮ್ ಸರ್ವೀಸ್‌ (ENS) ನಲ್ಲಿರುವ .eth ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು Infura ಅನ್ನು Brave ಬಳಸುತ್ತಿದೆ. Brave ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು ಮರೆಮಾಡುತ್ತದೆ. ನೀವು ಇದನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರಾದರೂ ಈ .eth ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆ ಆದರೆ ಬೇರೆಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು Infura ನೋಡುತ್ತದೆ. Infura ನ <ph name="BEGIN_INFURA_TOU_LINK"/>ಬಳಕೆಯ ನಿಯಮಗಳು<ph name="END_INFURA_TOU_LINK"/> ಮತ್ತು <ph name="BEGIN_INFURA_PRIVACY_LINK"/>ಗೌಪ್ಯತೆ ನೀತಿ<ph name="END_INFURA_PRIVACY_LINK"/> ನೋಡಿ.</translation>
 <translation id="807404806385418949">Ethereum ನೇಮ್ ಸರ್ವೀಸ್ ಆಫ್‍ಚೈನ್ ಲುಕ್‍ಅಪ್</translation>
 <translation id="4049590838234508776">Brave ನಲ್ಲಿ Ethereum ನೇಮ್ ಸರ್ವೀಸ್ (ENS) ಬೆಂಬಲ ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
 <translation id="5944991147217767764">ಈ .eth ಡೊಮೇನ್ ಹೆಸರನ್ನು ಆಫ್‌ಚೈನ್‌ನಲ್ಲಿ ಸಂಗ್ರಹಿಸಲಾಗುತ್ತದೆ ಮತ್ತು ಅದನ್ನು ಮೂರನೇ ಪಾರ್ಟಿ ಗೇಟ್‌ವೇನಿಂದ ಪರಿಹರಿಸಲಾಗುತ್ತದೆ. ನೀವು ENS ಆಫ್‌ಚೈನ್ ಲುಕಪ್ ಅನ್ನು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ನೀವು .eth ಡೊಮೇನ್‌ಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿರುವಿರಿ ಎಂಬುದಾಗಿ ಮೂರನೇ ಪಾರ್ಟಿ ಗೇಟ್‌ವೇ ನೋಡುತ್ತದೆ. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>ಇನ್ನಷ್ಟು ತಿಳಿದುಕೊಳ್ಳಿ<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">ಆಫ್‍ಚೈನ್ ಲುಕ್‍ಅಪ್‍ನೊಂದಿಗೆ ಮುಂದುವರೆಯಿರಿ</translation>
 <translation id="531747189990625622">Solana ನೇಮ್ ಸರ್ವೀಸ್</translation>
 <translation id="1090584614351290462">Brave ನಲ್ಲಿ Solana ನೇಮ್ ಸರ್ವೀಸ್ (SNS) ಬೆಂಬಲವನ್ನು ಸಕ್ರಿಯಗೊಳಿಸುವುದೇ?</translation>
-<translation id="1026480261052976838">.sol ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು ಮೂರನೇ-ಪಾರ್ಟಿಯನ್ನು Brave ಬಳಸುತ್ತದೆ. ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Brave ಮರೆಮಾಡುತ್ತದೆ. ಇದನ್ನು ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರೋ ಒಬ್ಬರು ಈ .sol ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆಯೇ ಹೊರತು ಬೇರೆಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು ಮೂರನೇ-ಪಾರ್ಟಿ ನೋಡುತ್ತದೆ. ಯಾವ ಮೂರನೇ-ಪಾರ್ಟಿಗಳನ್ನು ನಾನು ಬಳಸುತ್ತೇವೆ ಎಂಬ ಕುರಿತು ಮತ್ತು ಅವುಗಳ ಗೌಪ್ಯತೆ ನೀತಿಗಳ ಕುರಿತು ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗೆ, ದಯವಿಟ್ಟು ನಮ್ಮ <ph name="BEGIN_SNS_WIKI_LINK"/>ಸಹಾಯ ಪುಟ<ph name="END_SNS_WIKI_LINK"/> ನೋಡಿ.</translation>
-<translation id="7378412287463452336">Infura ಸರ್ವರ್ ಬಳಸಿ ಮುಂದುವರಿಯಿರಿ</translation>
+<translation id="7769345036263036863"><ph name="DOMAIN_LIST"/> ಡೊಮೇನ್ ಹೆಸರುಗಳನ್ನು ಪರಿಹರಿಸಲು ಮೂರನೇ-ಪಾರ್ಟಿಯನ್ನು Brave ಬಳಸುತ್ತದೆ. ನಿಮ್ಮ IP ವಿಳಾಸವನ್ನು Brave ಮರೆಮಾಡುತ್ತದೆ. ಇದನ್ನು ನೀವು ಸಕ್ರಿಯಗೊಳಿಸಿದರೆ, ಯಾರೋ ಒಬ್ಬರು ಈ <ph name="DOMAIN_LIST"/> ಡೊಮೇನ್‌ಗಳಿಗೆ ಭೇಟಿ ನೀಡಲು ಪ್ರಯತ್ನಿಸುತ್ತಿದ್ದಾರೆಯೇ ಹೊರತು ಬೇರೆಯದಕ್ಕೆ ಅಲ್ಲ ಎಂಬುದನ್ನು ಮೂರನೇ-ಪಾರ್ಟಿ ನೋಡುತ್ತದೆ. ಯಾವ ಮೂರನೇ-ಪಾರ್ಟಿಗಳನ್ನು ನಾವು ಬಳಸುತ್ತೇವೆ ಎಂಬ ಕುರಿತು ಮತ್ತು ಅವುಗಳ ಗೌಪ್ಯತೆ ನೀತಿಗಳ ಕುರಿತು ಹೆಚ್ಚಿನ ಮಾಹಿತಿಗೆ, ದಯವಿಟ್ಟು ನಮ್ಮ <ph name="BEGIN_SNS_WIKI_LINK"/>ಸಹಾಯ ಪುಟ<ph name="END_SNS_WIKI_LINK"/> ನೋಡಿ.</translation>
+<translation id="884864496166128252"><ph name="PROVIDER_NAME"/> ಸರ್ವರ್ ಬಳಸಿಕೊಂಡು ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="4388873516324656141">SNS ಸರ್ವರ್ ಬಳಸಿ ಮುಂದುವರಿಯಿರಿ</translation>
 <translation id="2356070529366658676">ಕೇಳಿ</translation>
 <translation id="59174027418879706">ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">ದೋಷ ಸಂಭವಿಸಿದೆ, ದಯವಿಟ್ಟು ಮತ್ತೊಮ್ಮೆ ನೋಡ್ ಸ್ಥಾಪಿಸಲು ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="8428368469058794536">IPFS ಸೇವೆ</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ</translation>
 <translation id="1886162073868201257">IPFS ಸೇವೆ ಪ್ರಾರಂಭ ದೋಷ</translation>
 <translation id="5357895013476183089">IPFS ಸಂಪರ್ಕಿತವಾಗಿಲ್ಲ</translation>
 <translation id="7662930734991751511">Brave ಸ್ಥಳೀಯ IPFS ನೋಡ್ ಬಳಸಿಕೊಂಡು IPFS ಸಂಪನ್ಮೂಲಗಳನ್ನು ಲೋಡ್ ಮಾಡಲಾಗುವುದಿಲ್ಲ</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">ಜಾಹೀರಾತುಗಳಿಂದ ರಿವಾರ್ಡ್‌ಗಳು</translation>
 <translation id="5308380583665731573">ಸಂಪರ್ಕಿಸು</translation>
 <translation id="3026978804849658576">ಸ್ಟೇಟ್‌ಮೆಂಟ್ ವೀಕ್ಷಿಸಿ</translation>
-<translation id="3368922792935385530">ಸಂಪರ್ಕಿಸಲಾಗಿದೆ</translation>
 <translation id="1848737374354350807">ಮೊಬಲಗು</translation>
 <translation id="6516984207843289176">ಖಾತೆ ಸಂಪರ್ಕಿಸಿ</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>ಗಳಿಸುವುದನ್ನು ಆರಂಭಿಸಲು ಸಿದ್ಧವೇ?<ph name="BOLD_END"/> ನಮ್ಮ ಪಾಲುದಾರರೊಬ್ಬರೊಂದಿಗೆ ಖಾತೆಯೊಂದನ್ನು ಸಂಪರ್ಕಿಸಿ ಅಥವಾ ರಚಿಸಿ.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">ಹಿಂತೆಗೆದುಕೊ</translation>
 <translation id="9218424917282368512">ನೆಟ್‌ವರ್ಕ್ ಬದಲಿಸಿ</translation>
 <translation id="7526139040829362392">ಖಾತೆಯನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="8874184842967597500">ಸಂಪರ್ಕಗೊಳಿಸಿಲ್ಲ</translation>
 <translation id="4217695020908122747">ಸಂಪರ್ಕಿತ ಖಾತೆಗಳು</translation>
 <translation id="8497650996740651467">ಲಭ್ಯ ಖಾತೆಗಳು</translation>
 <translation id="5677928146339483299">ನಿರ್ಬಂಧಿಸಲಾಗಿದೆ</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">ಲಿಂಕ್ ಆಗಿರುವ <ph name="COIN_TYPE_SYMBOL"/> ವಿಳಾಸಗಳನ್ನು ಡೊಮೇನ್ ಹೊಂದಿಲ್ಲ</translation>
 <translation id="8971278306757462297">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸ ನಿಮ್ಮ ಸ್ವಂತ ವಿಳಾಸವಲ್ಲ</translation>
 <translation id="3506416339268164412">ಸ್ವೀಕರಿಸುತ್ತಿರುವ ವಿಳಾಸವು ಟೋಕನ್‌ನ ಸಂಪರ್ಕ ವಿಳಾಸವಾಗಿದೆ</translation>
+<translation id="7029817408221097939">ಅಮಾನ್ಯ ಯುನಿಫೈಯ್ಡ್ ವಿಳಾಸ</translation>
 <translation id="6370376419663123629">ವಿಳಾಸ ಸರಿಯಾಗಿ ಕಂಡುಬರುತ್ತಿಲ್ಲ</translation>
 <translation id="3767148796886402380">ನಿಮ್ಮ ವಿಳಾಸವು ಸರಿಯಾದ ವಿಳಾಸವಾಗಿದೆ ಎಂಬುದನ್ನು ಖಚಿತಪಡಿಸಿಕೊಳ್ಳಲು ಅದನ್ನು ಪರಿಶೀಲಿಸಿ (ಉದಾ. ಲೋವರ್ ಅಥವಾ ಅಪ್ಪರ್ ಕೇಸ್ ಹೊಂದಿರುವ ಅಕ್ಷರಗಳು).</translation>
 <translation id="2585599787090762065">ನಾನು ಅದನ್ನು ಹೇಗೆ ಪರಿಹರಿಸಬಹುದು?</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> ನಿಮ್ಮ ವ್ಯಾಲೆಟ್‍ಗೆ ಹಿಂದಿರುಗಿಸಲಾಗಿದೆ</translation>
 <translation id="4577432071459867390">ವಹಿವಾಟು ವಿಫಲವಾಗಿದೆ</translation>
 <translation id="4359235192593147041">ಬೆಲೆಯ ಹೆಚ್ಚಿನ ಚಲನೆಯಿಂದಾಗಿ ವಹಿವಾಟು ವಿಫಲವಾಗಿದೆ. ಬೆಲೆಯ ಹೆಚ್ಚಿನ ಚಲನೆಯಲ್ಲಿ ಯಶಸ್ಸು ಸಾಧಿಸಲು ಸ್ಲಿಪ್ಪೇಜ್ ಟಾಲರೆನ್ಸ್ ಅನ್ನು ಹೆಚ್ಚಿಸಿ.</translation>
+<translation id="8685035971570487250">ಈಗಾಗಲೇ Zcash ವಹಿವಾಟು ಪ್ರಗತಿಯಲ್ಲಿದೆ. ದಯವಿಟ್ಟು ನಂತರ ಮತ್ತೊಮ್ಮೆ ಪ್ರಯತ್ನಿಸಿ.</translation>
 <translation id="8584830404080597280">ಹೊಸ ವ್ಯಾಪಾರ</translation>
 <translation id="8065905913745172640">ಹೊಸ ವಹಿವಾಟು</translation>
 <translation id="9079041000600020902">ದೋಷವನ್ನು ವೀಕ್ಷಿಸಿ</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">ನಿಮ್ಮ ವ್ಯಾಲೆಟ್ ಬ್ಯಾಲೆನ್ಸ್‌ನಲ್ಲಿ ಚೇಂಜ್ ಬಾಕಿ ಇದೆ.</translation>
 <translation id="7700365440186054030">ನಿಮ್ಮ ಲಭ್ಯ ಫಂಡ್‌ಗಳು ಜೊತೆಗೆ ಯಾವುದೇ ಇನ್ನೂ ದೃಢೀಕರಿಸದ ವಹಿವಾಟುಗಳು.</translation>
 <translation id="4118601537508887039">ಕೆಲವು ಬ್ಯಾಲೆನ್ಸ್‌ಗಳು ಲಭ್ಯವಿಲ್ಲದಿರಬಹುದು</translation>
+<translation id="2926654984379239545">ನಮಗೆ <ph name="VALUE"/> ಅಪಾಯಗಳು ಕಂಡುಬಂದಿವೆ.</translation>
+<translation id="8400506417619199876">ಒಪ್ಪಂದ</translation>
+<translation id="5667702863609780570">ನಷ್ಟದ ಅಪಾಯದೊಂದಿಗೆ ಅಸುರಕ್ಷಿತ ಕ್ರಿಯೆ</translation>
+<translation id="6405354572620970908">ಈ ವಿನಂತಿಯು ದುರುದ್ದೇಶಿತವಾಗಿರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ ಮತ್ತು ನಿಮ್ಮನ್ನು ಕಳ್ಳತನಕ್ಕೆ ಈಡಾಗುವಂತೆ ಮಾಡಬಹುದು. ಆ್ಯಪ್ ಅನ್ನು ನೀವು ನಂಬದ ಹೊರತು ಮುಂದುವರಿಯಬೇಡಿ.</translation>
+<translation id="786261184916565476">ನಮಗೆ <ph name="VALUE"/> ಸಮಸ್ಯೆಗಳು ಕಂಡುಬಂದಿವೆ.</translation>
 <translation id="3155170474926428993">Tor ಲಾಂಚರ್</translation>
 <translation id="3745016858329272300">ಸಾಮಾನ್ಯ ಮಾಹಿತಿ</translation>
 <translation id="4045404575593562245">ಟೋರ್ ನಿಯಂತ್ರಣ ಈವೆಂಟ್‌ಗಳು</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">ಪ್ರಸ್ತುತ ಟ್ಯಾಬ್</translation>
 <translation id="7056969230130642253">ನೀವೆಲ್ಲ ಸಿಲುಕಿಕೊಂಡಿದ್ದೀರಿ</translation>
 <translation id="7292242212818928219">ಹೊಸ ವಿಷಯ ಲಭ್ಯವಿದೆ. ಮರುಲೋಡ್ ಮಾಡುವುದೇ?</translation>
+<translation id="6537880577641744343">ಕಮಾಂಡರ್</translation>
 <translation id="7481312909269577407">ಫಾರ್ವರ್ಡ್</translation>
 <translation id="302781076327338683">ರೀಲೋಡ್ ಬೈಪಾಸಿಂಗ್ ಕ್ಯಾಶ್</translation>
 <translation id="7211681214230730336">ರೀಲೋಡ್ ಕ್ಲಿಯರಿಂಗ್ ಕ್ಯಾಶ್</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">ಯಾವಾಗಲೂ ಬುಕ್‌ಮಾರ್ಕ್‌ ಬಾರ್ ತೋರಿಸು</translation>
 <translation id="2960757369920422313">NTP ನಲ್ಲಿ ಬುಕ್‌ಮಾರ್ಕ್ ಬಾರ್ ತೋರಿಸಿ</translation>
 <translation id="522953399371747698">ಬುಕ್‌ಮಾರ್ಕ್ ಬಾರ್ ಮರೆಮಾಡಿ</translation>
+<translation id="134184943774258988">ಎಲ್ಲಾ ಬುಕ್‌ಮಾರ್ಕ್ ಬಟನ್ ಗೋಚರತೆಯನ್ನು ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="2158862020143233462">ಶೀಲ್ಡ್‌ಗಳನ್ನು ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="4610630726762318759">Javascript ಟಾಗಲ್ ಮಾಡಿ</translation>
 <translation id="188822869499214197">ಪ್ಲೇಪಟ್ಟಿ ಬಬಲ್ ತೋರಿಸಿ</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">ಪ್ರತಿಕ್ರಿಯೆಗಾಗಿ ಪುಟ ಸಂದರ್ಭ ಬಳಸಿ</translation>
 <translation id="8599503173207256429">ಈ ಪುಟದ ಕುರಿತು ಕೇಳುವುದಕ್ಕಾಗಿ ಟಾಗಲ್ ಆನ್ ಮಾಡಿ. ಅದರ ವಿಷಯವನ್ನು ನಿಮ್ಮ ಸಂದೇಶಗಳ ಜೊತೆಗೆ Brave Leo ಗೆ ಕಳುಹಿಸಲಾಗುತ್ತದೆ.</translation>
 <translation id="318819763888864209">ಎಲ್ಲಾ ಚಂದಾದಾರಿಕೆಗಳನ್ನ ಸ್ವಯಂ-ನವೀಕರಿಸಲಾಗಿದೆ ಆದರೆ ನವೀಕರಣಕ್ಕೂ ಮೊದಲು ಯಾವುದೇ ಸಮಯದಲ್ಲಿ ರದ್ದುಗೊಳಿಸಬಹುದು.</translation>
+<translation id="5091223967610958">Leo ಅನ್ನು ಉತ್ತಮಗೊಳಿಸಲು ನಮಗೆ ಸಹಾಯ ಮಾಡುವುದಕ್ಕಾಗಿ ನೀವು ಇರುವ ಪುಟದ ಹೋಸ್ಟ್‌ ಹೆಸರನ್ನು (<ph name="HOST_NAME"/>) ಗೆ ಹಂಚಿಕೊಳ್ಳಿ.</translation>
+<translation id="8732450785281947197">Leo AI ಪರಿಕರಗಳು</translation>
+<translation id="6535533770697728087">ತ್ವರಿತ ಕ್ರಿಯೆಗಳು</translation>
+<translation id="3237710083340813756">ಮರುಬರೆಯಿರಿ</translation>
+<translation id="1252805982772190086">ಕಿರು ಪೋಸ್ಟ್</translation>
+<translation id="2087555497198267113">ದೀರ್ಘ ಪೋಸ್ಟ್</translation>
+<translation id="4170307327863874820">ಬ್ಲಾಗ್ ಪೋಸ್ಟ್</translation>
+<translation id="1308864651455614281">ಟ್ಯಾಗ್‌ಲೈನ್</translation>
+<translation id="5258847587364431118">ಪ್ಯಾರಾಫ್ರೇಸ್</translation>
+<translation id="6147279996212084542">ವಿವರಿಸಿ</translation>
+<translation id="1201408613803664464">ಸುಧಾರಿಸಿ</translation>
+<translation id="1310396869741602366">ಟೋನ್ ಬದಲಾಯಿಸಿ</translation>
+<translation id="2200877041397136930">ವೃತ್ತಿಪರ</translation>
+<translation id="5627656897244314351">ಒಪ್ಪಿಸಬಲ್ಲ</translation>
+<translation id="2169719065373500634">ಅಕಾಡೆಮಿಕ್</translation>
+<translation id="2942492342931589800">ಕ್ಯಾಶುವಲ್</translation>
+<translation id="8485016913912679738">ಮೋಜಿನ</translation>
+<translation id="163826442096818926">ಚಿಕ್ಕದಾದ</translation>
+<translation id="42981349822642051">ವಿಸ್ತರಿಸಿ</translation>
+<translation id="3130793786899299931">ಉದ್ದವನ್ನು ಬದಲಾಯಿಸಿ</translation>
+<translation id="6320643499534852464">ಸಾಮಾಜಿಕ ಮಾಧ್ಯಮ</translation>
 <translation id="6303294677342628402">ಶೀಲ್ಡ್‌ಗಳು</translation>
 <translation id="8458987127502506209">Brave ಶೀಲ್ಡ್ಸ್ ಸಕ್ರಿಯಗೊಳಿಸಿ</translation>
 <translation id="7509914170164691086">ಶೀಲ್ಡ್ಸ್‌ ಅನ್ನು <ph name="LINK_BEFORE"/>ಇದಕ್ಕೆ<ph name="LINK_AFTER"/> ಸಕ್ರಿಯಗೊಳಿಸಲಾಗಿದೆ</translation>
@@ -2084,7 +2113,7 @@
 ಆದರೆ, ಈ ಹೆಲ್ಪರ್ ಸೇವೆ ರನ್ ಆಗುತ್ತಿಲ್ಲ ಎಂಬುದಾಗಿ ನಾವು ಗಮನಿಸಿದ್ದೇವೆ ಮತ್ತು ನಿಮ್ಮನ್ನು ಅಸುರಕ್ಷಿತವಾಗಿ ಬಿಡಲು ನಾವು ಬಯಸುವುದಿಲ್ಲ. ಈ ಎಕ್ಸ್‌ಪೋಶರ್ ವಿರುದ್ಧ ರಕ್ಷಣೆ ನೀಡುವುದಕ್ಕಾಗಿ ಬ್ರೌಸರ್‌ನಲ್ಲಿ DNS ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ನಾವು ಬದಲಾಯಿಸಿದ್ದೇವೆ. VPN ಸಂಪರ್ಕಗೊಂಡಿರುವಾಗ ಸೆಟ್ಟಿಂಗ್‌ಗಳು ಜಾರಿಯಲ್ಲಿರುತ್ತವೆ ಮತ್ತು ಲಾಕ್ ಆಗಿ ಇರುತ್ತವೆ.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">WireGuard ಸಂಪರ್ಕದೊಂದಿಗೆ ಕೆಲವು ಸಮಸ್ಯೆಗಳು ಇರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ. ವಿಶ್ವಾಸಾರ್ಹ VPN ಗಾಗಿ IKEv2 ಫಾಲ್‌ಬ್ಯಾಕ್ ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ? ನಿಮ್ಮ ಬ್ರೌಸರ್ ರೀಸ್ಟಾರ್ಟ್ ಮಾಡಿ.
+<translation id="8810743613883230732">WireGuard ಸಂಪರ್ಕದೊಂದಿಗೆ ಕೆಲವು ಸಮಸ್ಯೆಗಳು ಇರುವಂತೆ ಕಂಡುಬರುತ್ತಿದೆ. ವಿಶ್ವಾಸಾರ್ಹ VPN ಗಾಗಿ IKEv2 ಫಾಲ್‌ಬ್ಯಾಕ್ ಸಕ್ರಿಯಗೊಳಿಸಲು ಬಯಸುವಿರಾ? ಸೆಟ್ಟಿಂಗ್‌ಗಳನ್ನು ಬದಲಾಯಿಸಿ.
 
 ಹೊಂದಾಣಿಕೆ ಅಥವಾ ಕಾನ್ಫಿಗರೇಶನ್ ಕುರಿತಾಗಿ ಸಹಾಯ ಬೇಕಾಗಿದೆಯೇ? ನಮ್ಮ ಸ್ನೇಹಪರ ಬೆಂಬಲ ತಂಡವನ್ನು ಸಂಪರ್ಕಿಸಿ.
 ನೀವು ಯಾವಾಗ ಬೇಕಾದರೂ brave://settings/system ನಲ್ಲಿ WireGuard ಗೆ ಹಿಂತಿರುಗಬಹುದು.
@@ -2094,7 +2123,7 @@
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">ಇದರ ಕುರಿತು ಇನ್ನು ಮುಂದೆ ನನಗೆ ಎಚ್ಚರಿಕೆ ನೀಡಬೇಡ.</translation>
 <translation id="2740531572673183784">ಸರಿ</translation>
-<translation id="7896201779114201779">ಬ್ರೌಸರ್ ರೀಸ್ಟಾರ್ಟ್ ಮಾಡಿ</translation>
+<translation id="7423206764347669977">ಸೆಟ್ಟಿಂಗ್‌‌ಗಳನ್ನು ಬದಲಾಯಿಸಿ</translation>
 <translation id="9061845622728745852">ಸಮಯವಲಯ:</translation>
 <translation id="8295393906499561642">ಸೆಷನ್ ಅವಧಿ ಮೀರಿದೆ</translation>
 <translation id="3312623558576021182">ನಿಮ್ಮ VPN ಸೆಷನ್ ರಿಫ್ರೆಶ್ ಮಾಡಲು ನಿಮ್ಮ <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave ಖಾತೆ<ph name="BRAVE_ACCOUNT_END"/>ಗೆ ದಯವಿಟ್ಟು ಲಾಗ್ ಇನ್ ಮಾಡಿ.</translation>
@@ -2115,4 +2144,5 @@
 <translation id="1538335063514960365">ಇಲ್ಲಿ ತೆರೆಯಿರಿ ಬಟನ್, ಅಸ್ತಿತ್ವದಲ್ಲಿರುವ ಟ್ಯಾಬ್‌ಗೆ ಬದಲಾಯಿಸುವ ಬದಲು ಪ್ರಸ್ತುತ ಟ್ಯಾಬ್‌ನಲ್ಲಿ ಈ url ಅನ್ನು ತೆರೆಯಲು
     ಎಂಟರ್ ಒತ್ತಿರಿ</translation>
 <translation id="451189393813405346">Leo ಗೆ ಕೇಳಿ</translation>
+<translation id="8525248723479742219">ನಂತರ ಪ್ಲೇ ಮಾಡಿ</translation>
 </translationbundle>

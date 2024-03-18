@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">点击 Brave 菜单</translation>
 <translation id="8541922081612557424">关于 Brave</translation>
 <translation id="1203500561924088507">感谢您完成安装。您必须重启浏览器才能使用 <ph name="BUNDLE_NAME"/>。</translation>
-<translation id="4658574652223735641">省内存模式提高了 Brave 的运行速度</translation>
 <translation id="8799570501820813406">当此标签页处于闲置状态时，系统会释放一些内存，以让 Brave 保持快速运行。您可以选择始终不让此网站处于闲置状态。</translation>
 <translation id="8767381092474532098">Brave 阻止了此项下载操作，因为该文件具有危险性</translation>
 <translation id="4798342026247191171">设置您的新 Brave 个人资料</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave 无法检查您的密码。请稍后重试。</translation>
 <translation id="8880183781256147665">正在添加到 Brave...</translation>
 <translation id="3038232873781883849">正在等待安装…</translation>
+<translation id="4503085212612536713">其他 Brave 个人资料</translation>
 <translation id="7918740962659365265">将崩溃报告和<ph name="UMA_LINK"/>发送给Brave，帮助我们完善Brave。</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{一个或多个 Brave 扩展程序访问过 1 部 USB 设备}=1{一个或多个 Brave 扩展程序正在访问 1 部 USB 设备}other{一个或多个 Brave 扩展程序正在访问 # 部 USB 设备}}</translation>
 <translation id="5320085753638900910">您的浏览记录会影响您看到的广告以及系统推测出的兴趣（如下所示）。为了保护您的隐私，Brave 每个月都会按保留时间先后顺序自动删除您的部分兴趣。兴趣能够刷新，除非您将其移除。</translation>
@@ -141,7 +141,7 @@
 <translation id="1807774211756215222">在 Brave 新标签页中打开链接(&amp;T)</translation>
 <translation id="2106568569080763501">您可以在 Brave 中点击网上的电话号码，然后通过 Skype 拨打！</translation>
 <translation id="308146532933302843">了解 Brave 为何会拦截部分下载内容</translation>
-<translation id="2189149060536531804">如有任何内容需要您审查，Brave 会通知您</translation>
+<translation id="2189149060536531804">如有任何内容需要您审核，Brave 会通知您</translation>
 <translation id="6324134303015966238">Brave 会预加载您可能访问的网页，以便提高这些网页在您访问时的加载速度</translation>
 <translation id="2401189691232800402">Brave 操作系统</translation>
 <translation id="5381622442243174305"><ph name="PAGE_TITLE"/> - Brave</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">要想应用您的更改，请重新启动 Brave</translation>
 <translation id="300369155175407115">在试用期间，如果 Brave 随机将您加入到了其中某项正在进行的试用活动，您的浏览记录会影响您看到的广告以及系统推测出的兴趣（如下所示）。为了保护您的隐私，Brave 每个月都会按保留时间先后顺序删除您的部分兴趣。</translation>
 <translation id="7573068992266397941">Brave 找到了一些供您审查的安全建议</translation>
+<translation id="8174413867995118050">其他 Brave 个人资料</translation>
 <translation id="7708394612738038097">您目前登录的账号是一个受管理账号，该账号的管理员将能够控制您的 Brave 个人资料。您的 Brave 数据（例如您的应用、书签、历史记录、密码和其他设置）将永远与 <ph name="USER_NAME"/> 相关联。您可以通过 Brave 账号信息中心删除这些数据，但无法将这些数据与其他账号相关联。<ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">额外代码：<ph name="EXTRA_CODE"/>。</translation>
 <translation id="5154625106151193600">了解 Brave 为何屏蔽某些文件</translation>
@@ -309,12 +310,12 @@
 <translation id="9210457680074341078">如果您还将书签保存在 Brave 账号中，则可在 Brave 中跟踪商品价格，并在降价时收到通知</translation>
 <translation id="6676384891291319759">访问互联网</translation>
 <translation id="1363996462118479832">由于登录时发生错误，Brave 操作系统无法同步您的数据。</translation>
+<translation id="5324448127277983819">在 Brave 中，您可以更有效地控制自己看到的广告，并限制网站能根据哪些个人信息向您展示个性化广告</translation>
 <translation id="1257247502847251159">Brave 需要为此网站授予麦克风权限</translation>
 <translation id="6712881677154121168">下载时出错：<ph name="DOWNLOAD_ERROR"/>。</translation>
 <translation id="1489465648257900784">您的个人资料来自更高版本的 Brave，因此无法使用。
 
 某些功能可能会无法使用。请指定其他个人资料目录或使用更高版本的 Brave。</translation>
-<translation id="7870748924073900361">省内存模式提高了 Brave 的运行速度</translation>
 <translation id="6666624454809779082">已为您计算机上的所有用户都安装 Brave。</translation>
 <translation id="5360050006043219962">如需在您的所有设备上访问自己的 Brave 信息，请登录您的账号，然后开启同步功能。</translation>
 <translation id="3136039682492230890">Brave 建议您扫描此文件，因为它可能包含危险因素。</translation>
@@ -367,7 +368,6 @@ Brave 无法恢复您的设置。</translation>
 <translation id="2827121003398607864">Brave现在更好用了</translation>
 <translation id="7649070708921625228">帮助</translation>
 <translation id="7631741717293858595">您可在 Brave 设置中详细了解这些功能。</translation>
-<translation id="8678991866891573053">Brave 团队正在探索新功能，以便网站只需使用您的较少数据就能提供同样的浏览体验</translation>
 <translation id="3343095737966473035">Brave 不是您的默认浏览器</translation>
 <translation id="5477319665405831211">在您的所有设备上同步并个性化设置 Brave</translation>
 <translation id="2339273275658335597">Brave 更新</translation>
@@ -467,6 +467,7 @@ Brave 无法恢复您的设置。</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。}=1{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。您的无痕式窗口不会重新打开。}other{Brave 有一项新的可用更新；一旦您重新启动，系统即会应用这项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用此项更新}=1{您的管理员要求您重新启动 Brave 以应用此项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用此项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{您的管理员要求您重新启动 Brave 以应用一项更新}=1{您的管理员要求您重新启动 Brave 以应用一项更新。您的无痕式窗口不会重新打开。}other{您的管理员要求您重新启动 Brave 以应用一项更新。您的 # 个无痕式窗口不会重新打开。}}</translation>
+<translation id="4104709166890675229">让能获取你上网流量的个人资料更难看到你访问的网站。Brave 使用安全连接在 DNS（域名系统）中查找网站的 IP 地址。</translation>
 <translation id="2176087127109773485">您可以管理已登录的 Brave 同步链。您的 Brave 同步链用于 Brave 浏览器、应用商店、Gmail 等。如果您想为其他人（例如家庭成员）添加帐户，则请将新的个人资料添加到您的 <ph name="DEVICE_TYPE"/> 上。<ph name="LINK_BEGIN"/>了解详情<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">当您在地址栏或搜索框中输入时，Brave 会将您输入的内容发送到默认搜索引擎，以获得更好的建议。这是私密的。</translation>
 <translation id="3739288578188828252">当您在地址栏或搜索框中输入时，Brave 会将您输入的内容发送到谷歌 Drive 以获得项目建议。这是私密的。</translation>

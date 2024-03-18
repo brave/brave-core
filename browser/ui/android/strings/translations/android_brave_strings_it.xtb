@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Inizia a usare Rewards</translation>
 <translation id="8220484609979012449">\n\nPuoi comunque inviare a questo autore dei contributi in criptovalute tramite il portafoglio Web3.</translation>
 <translation id="6385969012847057348">Questo autore non è autorizzato a ricevere contributi da <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Questo autore non è ancora abilitato a ricevere contributi cripto o Web3.</translation>
 <translation id="6268134562674951939">I tuoi token non sono sufficienti</translation>
 <translation id="4529874892536380156">Trasformalo in un contributo mensile ricorrente. Potrai annullarlo in qualsiasi momento.</translation>
 <translation id="5562948772940025260">Non puoi inviare più di <ph name="AMOUNT"/> BAT prelevandoli dal saldo a tua disposizione su Ricompense Brave.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Utilizzando il dispositivo esistente sincronizzato, apri le Impostazioni di Brave e naviga in Impostazioni &gt; Sincronizzazione. Scegli "Aggiungi un nuovo dispositivo" e scansiona il Codice QR mostrato sullo schermo.</translation>
 <translation id="5241263629636958324">Copiato negli Appunti</translation>
 <translation id="5817918615728894473">Accoppia</translation>
-<translation id="7090325819305486658">Preferenze dei dati</translation>
+<translation id="3429575397891106447">Opzioni di sincronizzazione</translation>
 <translation id="1680065323266179640">Elimina l’account Sincronizzazione</translation>
 <translation id="3792563952903751704">L’eliminazione dell’account rimuoverà i tuoi dati crittografati dai server Brave e disabiliterà Sincronizzazione su tutti i tuoi dispositivi connessi. Tuttavia non eliminerà i dati memorizzati localmente su quei dispositivi.
 L’eliminazione è definitiva e non c’è alcun modo di recuperare i dati. Qualora decidessi di ricominciare a utilizzare Sincronizzazione, dovrai creare un nuovo account e riaggiungere ciascun dispositivo, uno alla volta.</translation>
@@ -595,14 +596,18 @@ Confermi di voler procedere?</translation>
 <translation id="1483493594462132177">Invia</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposita</translation>
-<translation id="1420318137760245955">Benvenuto nel nuovo portafoglio Brave</translation>
-<translation id="8339846196588658366">Tieni custoditi i tuoi asset digitali e monitora le prestazioni del portfolio: tutto direttamente dal browser di Brave, pensato per tutelare la privacy.</translation>
-<translation id="4472575034687746823">Come iniziare</translation>
+<translation id="4556086616242530072">Nativo per browser.\nSelf-custody.\nE multi-chain.</translation>
+<translation id="7909462264772842773">Assumi il controllo delle tue criptovalute e dei tuoi NFT. Portafoglio Brave supporta Ethereum, catene EVM, Solana, Filecoin e altro ancora.</translation>
+<translation id="165255193061631296">Hai bisogno di un nuovo portafoglio?</translation>
+<translation id="3485737865439729577">Inizia a usare il Portafoglio Brave in pochi minuti</translation>
 <translation id="2759836790106646094">Esegui il backup del tuo portafoglio adesso!</translation>
 <translation id="1078873179929044999">Nel prossimo passaggio vedrai la frase di recupero di 12 parole che puoi utilizzare per recuperare i tuoi account di criptovalute principali. Salvala in un posto sicuro. La frase di recupero è l'unico modo per recuperare l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
 <translation id="2359808026110333948">Continua</translation>
 <translation id="5488357322146334497">Messaggio</translation>
 <translation id="1904000155026201268">Sono consapevole che se perdo le parole di recupero non potrò accedere al mio portafoglio di criptovalute.</translation>
+<translation id="5333225216561354793">Ti chiediamo di prendere atto dei seguenti punti</translation>
+<translation id="1645800479814134195">Sono consapevole che si tratta di un portafoglio autogestito e che sono l’unica persona responsabile di qualsiasi fondo, asset o conto associato e di dover intraprendere le azioni appropriate per proteggere, tutelare ed eseguire il backup del mio portafoglio. Sono consapevole che Brave non può accedere al mio portafoglio o annullare le transazioni per mio conto e che la mia frase di recupero è l’UNICO modo per riottenere l’accesso in caso di smarrimento della password, furto del dispositivo o circostanze simili.</translation>
+<translation id="4565891212173086999">Ho letto e accetto le <ph name="CLICK_START"/>Condizioni di utilizzo<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">La tua frase di recupero</translation>
 <translation id="5077747669435508720">Annota o copia queste parole nell'ordine esatto mostrato di seguito e salvale in un posto sicuro. La tua frase di recupero è l'unico modo per riottenere l'accesso all'account in caso di password dimenticata, dispositivo smarrito o rubato oppure se vuoi cambiare portafoglio.</translation>
 <translation id="2708402071160162126">AVVISO: non condividere mai la tua chiave di recupero. Chiunque entri in possesso di questa frase può impossessarsi dei tuoi asset per sempre.</translation>
@@ -647,6 +652,9 @@ Confermi di voler procedere?</translation>
 <translation id="3747079125031086337">Seleziona le parole nella tua frase di recupero nell'ordine corretto.</translation>
 <translation id="6518133107902771759">Verifica</translation>
 <translation id="3157931365184549694">Ripristina</translation>
+<translation id="5844138175312846408">Hai già un portafoglio?</translation>
+<translation id="2502258949541727762">Prima di iniziare</translation>
+<translation id="5981303441790732480">Importa il portafoglio esistente</translation>
 <translation id="9111102763498581341">Sblocca</translation>
 <translation id="6657585470893396449">Password</translation>
 <translation id="5619264711680220002">Sblocco con dati biometrici</translation>
@@ -665,7 +673,7 @@ Confermi di voler procedere?</translation>
 <translation id="5483736362376139517">1 anno</translation>
 <translation id="6979737339423435258">Tutto</translation>
 <translation id="6284218950354553099">Invia automaticamente un ping di utilizzo giornaliero a Brave</translation>
-<translation id="5288333155754958121">Questo ping anonimo e privato dà la possibilità a Brave di fare una stima degli utenti attivi.</translation>
+<translation id="2181060149810222381">Questo messaggio privato permette a Brave di calcolare gli utenti attivi.</translation>
 <translation id="3819257035322786455">Backup</translation>
 <translation id="4608713693379664295">Account cripto principali</translation>
 <translation id="4003821417160006384">Account secondari</translation>
@@ -1212,5 +1220,11 @@ Se non accetti questa richiesta, la VPN non si riconnetterà e la tua connession
 <translation id="6637015365469044269">Fai l’upgrade</translation>
 <translation id="614530507403667291">Modello predefinito per le nuove conversazioni</translation>
 <translation id="4071849832011229600">Modello predefinito</translation>
+<translation id="4185473179105062442">Ricevi BAT direttamente a un indirizzo di criptovaluta self-custody</translation>
+<translation id="5802986777701714573">Abbiamo aggiunto una nuova modalità con cui puoi ricevere le ricompense BAT mensili. Collega un account da uno dei nostri partner o usa la nuova opzione self-custody per iniziare subito a guadagnare.</translation>
 <translation id="7557539689487606886">Passa alla versione Premium</translation>
+<translation id="5538904824395606812">Utilizza il tuo provider di servizi attuale o Quad9</translation>
+<translation id="6393423486818299209">Utilizza il tuo provider di servizi attuale o Wikimedia DNS</translation>
+<translation id="3401384982562827787">Utilizza il tuo provider di servizi attuale o Cloudflare</translation>
+<translation id="8812367543786936496">Se il tuo provider di servizi attuale non è sicuro, Brave utilizza un provider DNS alternativo sicuro</translation>
 </translationbundle>

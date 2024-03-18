@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">리워드 사용 시작</translation>
 <translation id="8220484609979012449">\n\nWeb3 월렛을 사용하여 이 제작자에게 암호화폐 후원금을 보낼 수 있습니다.</translation>
 <translation id="6385969012847057348">이 제작자는 <ph name="CUSTODIAN"/>에서 보낸 후원금을 받을 수 없습니다.</translation>
+<translation id="735733310778086206">이 제작자는 아직 Web3 또는 암호화폐 후원금을 수령하도록 설정되어 있지 않습니다.</translation>
 <translation id="6268134562674951939">토큰이 충분하지 않음</translation>
 <translation id="4529874892536380156">이것을 월 정기 후원금으로 설정합니다. 언제든 취소할 수 있습니다.</translation>
 <translation id="5562948772940025260">Brave Rewards 잔액을 사용하여 최대 <ph name="AMOUNT"/> BAT만 보낼 수 있습니다.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">기존 동기화된 장치를 사용하여 Brave 설정을 열고 설정 &gt; 동기화로 이동하세요. "새 장치 추가"를 선택하여 화면에 표시된 QR 코드를 스캔하세요.</translation>
 <translation id="5241263629636958324">클립보드에 복사되었습니다</translation>
 <translation id="5817918615728894473">페어링</translation>
-<translation id="7090325819305486658">카테고리</translation>
+<translation id="3429575397891106447">동기화 옵션</translation>
 <translation id="1680065323266179640">동기화 계정 삭제</translation>
 <translation id="3792563952903751704">계정을 삭제하면 암호화된 데이터가 Brave 서버에서 제거되고 연결된 모든 디바이스에서 동기화가 비활성화됩니다. 이들 디바이스에 로컬로 저장된 데이터는 삭제되지 않습니다.
 삭제는 영구적이며 데이터를 복구할 수 있는 방법이 없습니다. 동기화를 다시 시작하려면 새 계정을 만들고 디바이스 하나씩 다시 추가해야 합니다.</translation>
@@ -595,14 +596,18 @@
 <translation id="1483493594462132177">전송</translation>
 <translation id="538450413584738399">스왑(Swap)</translation>
 <translation id="1366855498335432549">입금</translation>
-<translation id="1420318137760245955">새로운 Brave 월렛에 오신 것을 환영합니다</translation>
-<translation id="8339846196588658366">보호관리 계정에 암호화폐 자산 보유부터 포트폴리오 실적 추적까지. Brave 프라이버시 브라우저에서 모두 이용합니다.</translation>
-<translation id="4472575034687746823">시작하기</translation>
+<translation id="4556086616242530072">브라우저 네이티브.\n자기 보호관리.\n멀티체인.</translation>
+<translation id="7909462264772842773">보유한 암호화폐 및 NFT를 온전히 관리하세요. Brave 월렛은 이더리움, EVM 체인, Solana, Filecoin 등을 지원합니다.</translation>
+<translation id="165255193061631296">새 월렛이 필요하신가요?</translation>
+<translation id="3485737865439729577">Brave 월렛은 몇 분 만에 시작할 수 있습니다.</translation>
 <translation id="2759836790106646094">지금 월렛을 백업하세요!</translation>
 <translation id="1078873179929044999">다음 단계에서는 12단어 복구 문구가 표시되며, 이 문구는 주 암호화폐 계정을 복구하는 데 사용됩니다. 적어두고 안전하게 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="2359808026110333948">계속</translation>
 <translation id="5488357322146334497">메시지</translation>
 <translation id="1904000155026201268">복구 문구를 잊어버리면 내 암호화폐 계정에 액세스할 수 없음을 이해합니다.</translation>
+<translation id="5333225216561354793">아래 항목에 동의해주셔야 합니다.</translation>
+<translation id="1645800479814134195">나는 이것이 자기 보호관리 월렛이므로 연결된 자금, 자산, 계좌에 대한 책임은 전적으로 내게 있고, 적절한 조치를 통해 월렛의 보안을 유지하고 보호하며 백업해야 한다는 사실을 이해합니다. 나는 Brave가 내 월렛에 액세스하거나 나를 대신하여 트랜잭션을 번복할 수 없고, 비밀번호 분실, 디바이스 도난 등의 상황에서 복구 구문이 월렛에 다시 액세스할 수 있는 '유일한' 수단임을 이해합니다.</translation>
+<translation id="4565891212173086999"><ph name="CLICK_START"/>이용 약관<ph name="CLICK_END"/>을 읽었으며 이에 동의합니다.</translation>
 <translation id="3933122286596948824">복구 문구</translation>
 <translation id="5077747669435508720">이들 단어를 표시되는 정확한 순서대로 잘 적어두거나 복사해두었다가 안전한 곳에 보관하세요. 복구 문구는 비밀번호 복구, 디바이스 분실 또는 도난, 월렛 전환 시 계정에 다시 액세스할 수 있는 유일한 수단입니다.</translation>
 <translation id="2708402071160162126">경고: 백복구 문구는 절대 공유하지 마세요. 이 문구를 아는 누군가가 회원님의 자금을 탈취하면 되찾을 수 없습니다.</translation>
@@ -647,6 +652,9 @@
 <translation id="3747079125031086337">복구 문구 내의 단어를 올바른 순서대로 선택하세요.</translation>
 <translation id="6518133107902771759">확인</translation>
 <translation id="3157931365184549694">복구</translation>
+<translation id="5844138175312846408">이미 월렛이 있으십니까?</translation>
+<translation id="2502258949541727762">시작하기 전에</translation>
+<translation id="5981303441790732480">기존 월렛 가져오기</translation>
 <translation id="9111102763498581341">잠금 해제</translation>
 <translation id="6657585470893396449">비밀번호</translation>
 <translation id="5619264711680220002">생체인식 잠금 해제</translation>
@@ -665,7 +673,7 @@
 <translation id="5483736362376139517">1년</translation>
 <translation id="6979737339423435258">전체 기간</translation>
 <translation id="6284218950354553099">일일 사용 Ping을 Brave에 자동으로 보내기</translation>
-<translation id="5288333155754958121">이 익명, 비공개 Ping으로 Brave는 활성 사용자 수를 추산합니다.</translation>
+<translation id="2181060149810222381">이 비공개 Ping으로 Brave가 활성 사용자 수를 추산합니다.</translation>
 <translation id="3819257035322786455">백업</translation>
 <translation id="4608713693379664295">주사용 암호화폐 계정</translation>
 <translation id="4003821417160006384">보조 계정</translation>
@@ -1212,5 +1220,11 @@
 <translation id="6637015365469044269">지금 업그레이드</translation>
 <translation id="614530507403667291">새 대화의 기본 모델</translation>
 <translation id="4071849832011229600">기본 모델</translation>
+<translation id="4185473179105062442">자체 보호관리 암호화폐 주소로 BAT 직접 받기</translation>
+<translation id="5802986777701714573">매월 BAT 리워드를 받을 수 있는 새로운 방법이 추가되었습니다. 파트너 중 한 곳의 계정을 연결하거나 새로 추가된 자체 보호관리 옵션을 사용하여 적립을 시작하세요.</translation>
 <translation id="7557539689487606886">프리미엄 가입</translation>
+<translation id="5538904824395606812">현재 서비스 제공자 또는 Quad9 사용</translation>
+<translation id="6393423486818299209">현재 서비스 제공자 또는 Wikimedia DNS 사용</translation>
+<translation id="3401384982562827787">현재 서비스 제공자 또는 Cloudflare 사용</translation>
+<translation id="8812367543786936496">현재 서비스 제공자가 비보안이면 Brave가 대체 보안 DNS 제공자를 사용합니다.</translation>
 </translationbundle>

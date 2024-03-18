@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Haz clic en el menú de Brave</translation>
 <translation id="8541922081612557424">Acerca de Brave</translation>
 <translation id="1203500561924088507">Gracias por instalar <ph name="BUNDLE_NAME"/>. Debes reiniciar tu navegador antes de usarlo.</translation>
-<translation id="4658574652223735641">El Ahorro de memoria hizo que Brave sea más rápido</translation>
 <translation id="8799570501820813406">Mientras esta pestaña estaba inactiva, se liberó memoria para mantener Brave rápido. Puedes elegir que este sitio nunca esté inactivo.</translation>
 <translation id="8767381092474532098">Brave bloqueó esta descarga porque el archivo es peligroso</translation>
 <translation id="4798342026247191171">Configura tu nuevo perfil de Brave</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave no puede revisar las contraseñas. Vuelve a intentarlo más tarde.</translation>
 <translation id="8880183781256147665">Agregar a Brave...</translation>
 <translation id="3038232873781883849">Esperando para instalar...</translation>
+<translation id="4503085212612536713">Otros perfiles de Brave</translation>
 <translation id="7918740962659365265">Envía a Brave informes de fallos y <ph name="UMA_LINK"/> para ayudar a mejorar Brave.</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Una o más extensiones de Brave tenían acceso a 1 dispositivo USB}=1{Una o más extensiones de Brave tienen acceso a 1 dispositivo USB}other{Una o más extensiones de Brave tienen acceso a # dispositivos USB}}</translation>
 <translation id="5320085753638900910">Tu historial de navegación afecta los anuncios que ves y los intereses como se estima a continuación. Para proteger tu privacidad, Brave quita tus intereses automáticamente de manera continua todos los meses. Los intereses se pueden actualizar a no ser que los quites.</translation>
@@ -212,6 +212,7 @@
 <translation id="8586264863973514035">Para aplicar los cambios, vuelve a ejecutar Brave</translation>
 <translation id="300369155175407115">Cuando comienzan las pruebas, si Brave te ubicó de manera aleatoria en una prueba activa, tu historial de navegación afecta los anuncios que ves y los intereses como se estima a continuación. Para proteger tu privacidad, Brave borra tus intereses de manera continua todos los meses.</translation>
 <translation id="7573068992266397941">Brave encontró algunas recomendaciones de seguridad para que revises</translation>
+<translation id="8174413867995118050">Otros perfiles de Brave</translation>
 <translation id="7708394612738038097">Estás por acceder con una cuenta administrada, lo que significa que proporcionarás al administrador el control sobre tu perfil de Brave. Tus datos de Brave, como las aplicaciones, los favoritos, el historial, las contraseñas y otros parámetros de configuración quedarán vinculados a <ph name="USER_NAME"/> de forma permanente. Podrás eliminar estos datos a través del Panel de control de Cuentas de Brave, pero no podrás asociarlos a otra cuenta. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Código adicional: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Descubre por qué Brave bloquea algunos archivos</translation>
@@ -307,10 +308,10 @@
 <translation id="9210457680074341078">Si también guardas tus favoritos en tu Cuenta de Brave, puedes realizar un seguimiento de precios de productos en Brave y recibir notificaciones cuando haya reducciones de los precios</translation>
 <translation id="6676384891291319759">Acceder a Internet</translation>
 <translation id="1363996462118479832">Brave OS no pudo sincronizar los datos porque se produjo un error de acceso.</translation>
+<translation id="5324448127277983819">Brave te otorga más control sobre los anuncios que ves y limita la información que pueden obtener los sitios sobre ti cuando te muestran anuncios personalizados</translation>
 <translation id="1257247502847251159">Brave necesita permiso de acceso al micrófono para este sitio.</translation>
 <translation id="6712881677154121168">Error de descarga: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Tu perfil no se puede utilizar porque proviene de una versión más actualizada de Brave. Es posible que algunas características no estén disponibles. Especifica un directorio de perfil diferente o utiliza una versión más reciente de Brave.</translation>
-<translation id="7870748924073900361">El Ahorro de memoria hizo que Brave sea más rápido</translation>
 <translation id="6666624454809779082">Brave ya está instalado para todos los usuarios en tu computadora.</translation>
 <translation id="5360050006043219962">A fin de ver tu contenido de Brave en todos tus dispositivos, accede a tu cuenta y activa la sincronización.</translation>
 <translation id="3136039682492230890">Brave recomienda analizar el archivo porque puede ser peligroso.</translation>
@@ -362,7 +363,6 @@
 <translation id="2827121003398607864">Brave mejorado</translation>
 <translation id="7649070708921625228">Ayuda</translation>
 <translation id="7631741717293858595">Puedes obtener más información sobre estas funciones en la configuración de Brave.</translation>
-<translation id="8678991866891573053">Brave está explorando funciones nuevas que les permiten a los sitios ofrecer la misma experiencia de navegación usando menos de tus datos</translation>
 <translation id="3343095737966473035">Brave no es el navegador predeterminado</translation>
 <translation id="5477319665405831211">Sincroniza y personaliza Brave en todos tus dispositivos</translation>
 <translation id="2339273275658335597">actualización de Brave</translation>
@@ -462,6 +462,7 @@ Es posible que los permisos para sitios web y aplicaciones que ya hayas concedid
 <translation id="8274659559228306809">{COUNT,plural, =0{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies.}=1{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies. No se volverá a abrir la ventana de incógnito.}other{Hay una nueva actualización disponible para Brave que se aplicará cuando lo reinicies. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Tu administrador solicita que reinicies Brave para aplicar esta actualización}=1{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador solicita que reinicies Brave para aplicar esta actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Tu administrador necesita que reinicies Brave para aplicar una actualización}=1{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverá a abrir la ventana de incógnito.}other{Tu administrador necesita que reinicies Brave para aplicar una actualización. No se volverán a abrir las # ventanas de incógnito.}}</translation>
+<translation id="4104709166890675229">Evita que los perfiles con acceso a tu tráfico de internet puedan ver qué sitios visitas. Brave usa una conexión segura para buscar la dirección IP de un sitio en el DNS (sistema de nombres de dominio).</translation>
 <translation id="2176087127109773485">Puedes administrar tus cadenas de sincronización de Brave conectadas. Tus cadenas de sincronización de Brave se usan en el navegador de Brave, en Play Store, en Gmail, etc. Si quieres agregar una cuenta de otra persona, como un familiar, agrega un perfil nuevo en tu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Más información<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Cuando escribes en la barra de direcciones o en el cuadro de búsqueda, Brave envía lo que escribes a tu motor de búsqueda predeterminado para obtener mejores sugerencias. Esto está desactivado en el modo de incógnito.</translation>
 <translation id="3739288578188828252">Cuando escribes en la barra de direcciones o en el cuadro de búsqueda, Brave envía lo que escribes a Google Drive para obtener sugerencias de elementos. Esto está desactivado en el modo de incógnito.</translation>

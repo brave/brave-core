@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Brave メニューをクリックする</translation>
 <translation id="8541922081612557424">Brave について</translation>
 <translation id="1203500561924088507">インストールいただきありがとうございます。<ph name="BUNDLE_NAME"/> を使用するにはブラウザを再起動してください。</translation>
-<translation id="4658574652223735641">メモリセーバーで Brave の速度を向上</translation>
 <translation id="8799570501820813406">Brave を高速に保つため、このタブがアクティブでないときにメモリを解放しました。このサイトを常にアクティブにするよう選択できます。</translation>
 <translation id="8767381092474532098">危険なファイルであるため、このダウンロードは Brave でブロックされました</translation>
 <translation id="4798342026247191171">新しい Brave プロファイルの設定</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave でパスワードを確認できません。しばらくしてからもう一度お試しください。</translation>
 <translation id="8880183781256147665">Brave に追加...</translation>
 <translation id="3038232873781883849">インストールの待機中...</translation>
+<translation id="4503085212612536713">その他の Brave プロフィール</translation>
 <translation id="7918740962659365265">障害レポートと<ph name="UMA_LINK"/>を Brave に自動送信して Brave の機能向上に役立てる</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 つ以上の Brave 拡張機能が 1 台の USB デバイスにアクセスしていました}=1{1 つ以上の Brave 拡張機能が 1 台の USB デバイスにアクセスしています}other{1 つ以上の Brave 拡張機能が # 台の USB デバイスにアクセスしています}}</translation>
 <translation id="5320085753638900910">閲覧履歴は、表示される広告と以下の推定された興味 / 関心に影響します。プライバシーを保護するために、Brave ではユーザーの興味 / 関心が毎月順番に自動削除されます。ユーザーが削除しない限り、興味 / 関心は更新される可能性があります。</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">変更を適用するには Brave を再起動してください</translation>
 <translation id="300369155175407115">Brave の試用版がランダムに割り当てられた場合は、閲覧履歴が、表示される広告と以下の推定された興味 / 関心に影響します。プライバシーを保護するために、Brave ではユーザーの興味 / 関心が毎月順番に削除されます。</translation>
 <translation id="7573068992266397941">安全に関する推奨事項をご確認ください</translation>
+<translation id="8174413867995118050">その他の Brave プロフィール</translation>
 <translation id="7708394612738038097">現在、管理対象アカウントでログインしており、あなたの Brave プロフィールを管理者が制御できる状態になっています。あなたの Brave データ（アプリ、ブックマーク、履歴、パスワードなどの設定）は永続的に <ph name="USER_NAME"/> に関連付けられます。このデータは Brave アカウントのダッシュボードを介して削除できますが、このデータを別のアカウントに関連付けることはできなくなります。<ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">他のコード: <ph name="EXTRA_CODE"/>。</translation>
 <translation id="5154625106151193600">Brave で一部のファイルがブロックされる理由</translation>
@@ -309,12 +310,12 @@
 <translation id="9210457680074341078">ブックマークを Brave アカウントにも保存している場合は、Brave で商品価格をトラッキングして、値下げがあったときに通知を受け取ることができます</translation>
 <translation id="6676384891291319759">インターネットにアクセス</translation>
 <translation id="1363996462118479832">ログイン時にエラーが発生したため、Chrome OS はデータを同期できませんでした。</translation>
+<translation id="5324448127277983819">Brave では、表示される広告を細かく管理でき、サイトがパーソナライズド広告を表示する際にユーザーについて把握できる情報も制限されます</translation>
 <translation id="1257247502847251159">このサイトを利用するには、Brave でマイクの使用を許可する必要があります</translation>
 <translation id="6712881677154121168">ダウンロード エラー: <ph name="DOWNLOAD_ERROR"/>。</translation>
 <translation id="1489465648257900784">バージョンが新しい Brave のプロフィールは使用できません。
 
 一部の機能が利用できない可能性があります。別の場所のプロフィールを指定するか、新しいバージョンの Brave をご使用ください。</translation>
-<translation id="7870748924073900361">メモリセーバーで Brave の速度を向上</translation>
 <translation id="6666624454809779082">Brave は既にパソコンのすべてのユーザーに対してインストールされています。</translation>
 <translation id="5360050006043219962">お使いのすべてのデバイスで Brave の設定やデータを使用するには、ログインして同期を有効にしてください。</translation>
 <translation id="3136039682492230890">このファイルは危害を及ぼす可能性があるため、スキャンすることをおすすめします。</translation>
@@ -367,7 +368,6 @@
 <translation id="2827121003398607864">進化する Brave</translation>
 <translation id="7649070708921625228">ヘルプ</translation>
 <translation id="7631741717293858595">これらの機能について詳しくは、Brave の設定をご覧ください。</translation>
-<translation id="8678991866891573053">Brave では、使用されるユーザーデータの量を抑えつつ、同じようにサイトをブラウジングできる新機能をテストしています</translation>
 <translation id="3343095737966473035">Brave はデフォルトのブラウザとして設定されていません</translation>
 <translation id="5477319665405831211">同期してカスタマイズした Brave をどのデバイスでも使用できます</translation>
 <translation id="2339273275658335597">Brave の更新</translation>
@@ -394,7 +394,7 @@
 <translation id="7344826952831915813">危険なファイル形式のため Brave でブロックされました</translation>
 <translation id="8207657266087451193">画像に有効な説明が設定されていない場合に、Brave で説明を自動的に生成できるよう Brave に画像が送信されます。この機能は設定でいつでも無効にできます。</translation>
 <translation id="8622246347342688645">ログインしていないため、Brave でパスワードを確認できません</translation>
-<translation id="976541154724186511">安全でないサイトやダウンロードが見つかると <ph name="BEGIN_LINK"/>Brave が警告<ph name="END_LINK"/></translation>
+<translation id="976541154724186511">安全でないサイトやダウンロードが見つかると <ph name="BEGIN_LINK"/>Brave が警告<ph name="END_LINK"/>します</translation>
 <translation id="89367911614620585">このファイルは危険なファイルの可能性があるため、Brave でブロックしました。</translation>
 <translation id="6098476632210317894"><ph name="TIMEOUT_DURATION"/> 使用しなかったため、Brave は組織によって終了されます。</translation>
 <translation id="5196445203969439095">Brave でもっと便利に</translation>
@@ -467,6 +467,7 @@
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。}=1{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。プライベートウィンドウは、再起動後は自動的には開きません。}other{Brave の新しいアップデートを利用できます。再起動するとすぐにアップデートが適用されます。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{管理者が、このアップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、このアップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{管理者が、アップデートを適用するために Brave を再起動するよう求めています}=1{管理者が、アップデートを適用するために Brave を再起動するよう求めています。プライベートウィンドウは、再起動後は自動的には開きません。}other{管理者が、アップデートを適用するために Brave を再起動するよう求めています。現在開いている # 個のプライベートウィンドウは、再起動後は自動的には開きません。}}</translation>
+<translation id="4104709166890675229">あなたのインターネットトラフィックにアクセスできるプロフィールが、あなたが訪問するサイトを確認しづらくなります。Braveは安全な接続を使用して、DNS (ドメインネームシステム) でサイトのIPアドレスを検索します。</translation>
 <translation id="2176087127109773485">サインイン済みのBrave同期チェーンを管理できます。Brave同期チェーンは、Braveブラウザ、Play ストア、Gmailなどに使用されます。家族など、他のユーザー用にアカウントを追加するには、<ph name="DEVICE_TYPE"/>にプロフィールを新規追加します。<ph name="LINK_BEGIN"/>詳細<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した文字をデフォルトの検索エンジンに送信し、より良い候補を取得します。これはプライベートではオフになっています。</translation>
 <translation id="3739288578188828252">アドレスバーや検索ボックスに文字を入力すると、Braveは入力した内容をGoogleドライブに送信し、アイテムの候補を取得します。これはプライベートではオフになっています。</translation>

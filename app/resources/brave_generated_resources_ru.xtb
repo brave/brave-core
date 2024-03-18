@@ -4,6 +4,8 @@
 <translation id="3333887201479867589">Вознаграждение Brave</translation>
 <translation id="7561196759112975576">Всегда</translation>
 <translation id="7961015016161918242">Никогда</translation>
+<translation id="8507663778530179003">Показывать кнопку «Все закладки»</translation>
+<translation id="9018648632047670921">Показывать кнопку «Все закладки»</translation>
 <translation id="7630214457764713113">Копировать человекопонятную ссылку</translation>
 <translation id="7973394300052703468">Новое &amp;приватное окно</translation>
 <translation id="4615489450165434530">Сообщить о неисправности сайта</translation>
@@ -169,12 +171,12 @@
 <translation id="2533715613366623756">Диспетчер закладок</translation>
 <translation id="3405021928725149239">Диспетчер закладок</translation>
 <translation id="6284218950354553099">Автоматически отправлять ежедневные данные PING в Brave</translation>
-<translation id="5288333155754958121">Закрытые анонимные данные PING позволяют Brave определить число активных пользователей.</translation>
+<translation id="2181060149810222381">Конфиденциальные уведомления помогают Brave оценивать количество активных пользователей.</translation>
 <translation id="1872784258300710671">Brave использует полностью конфиденциальную аналитику для оценки общего использования определенных функций</translation>
 <translation id="8712637175834984815">Готово</translation>
 <translation id="4394049700291259645">Отключить</translation>
 <translation id="7142548388914389999">Разрешить выполнение аналитики продукта, не нарушающей конфиденциальности</translation>
-<translation id="8286082624639565868">Эти полностью анонимные сведения помогают Brave оценивать использование функций в целом и делать их удобнее для вас.</translation>
+<translation id="2604698253988679506">Эти анонимные сведения помогают Brave оценивать, как используются определенные функции, и улучшать работу браузера.</translation>
 <translation id="1947672064022327074">Вы хотите открыть Криптокошельки для работы с Эфириумом?</translation>
 <translation id="7583735190612229830">Настройте Криптовалютные кошельки для взаимодействия с этим и другими похожими приложениями.</translation>
 <translation id="8731422418734770661">Настроить Crypto Wallets</translation>
@@ -191,6 +193,7 @@
 <translation id="4756627014339714615">Перейти</translation>
 <translation id="1338274252864046652">Всегда запускать узел IPFS при запуске браузера?</translation>
 <translation id="3435896845095436175">Включить</translation>
+<translation id="5046066249040287308">Утилита Brave Кошелька</translation>
 <translation id="4552520379838695057">Извините, этой страницы не существует.</translation>
 <translation id="2609895996619941644">Хотите проверить, доступна ли сохраненная версия на Wayback Machine?</translation>
 <translation id="8053093028263274061">К сожалению, сохраненной версии нет.</translation>
@@ -203,12 +206,14 @@
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{Включить звук на вкладке}one{Включить звук на вкладках}few{Включить звук на вкладках}many{Включить звук на вкладках}other{Включить звук на вкладках}}</translation>
 <translation id="2289567621059034186">Новая вкладка ниже</translation>
 <translation id="3228962656492373217">Закрыть вкладки ниже</translation>
+<translation id="8030501904366631501">Перенести все вкладки в это окно</translation>
 <translation id="2336228925368920074">Добавить все вкладки в закладки…</translation>
 <translation id="2523967823495420116">Использовать вертикальные вкладки</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{Отключить звук на вкладке}one{Отключить звук на вкладках}few{Отключить звук на вкладках}many{Отключить звук на вкладках}other{Отключить звук на вкладках}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{Включить звук на вкладке}one{Включить звук на вкладках}few{Включить звук на вкладках}many{Включить звук на вкладках}other{Включить звук на вкладках}}</translation>
 <translation id="4405580203042711503">Новая вкладка ниже</translation>
 <translation id="5611474372949142946">Закрыть вкладки ниже</translation>
+<translation id="573844928911967687">Перенести все вкладки в это окно</translation>
 <translation id="3704707436873245822">Скопировать текст с изображения</translation>
 <translation id="5268098808165185458">Копирование текста с изображения…</translation>
 <translation id="4046485130884276245">Текст скопирован</translation>
@@ -258,8 +263,8 @@
 <translation id="8373664339577369248">пользовательская очередь</translation>
 <translation id="8120600068258956006">Добавить в плейлист</translation>
 <translation id="650694591627983430">Медиафайлы с этой страницы</translation>
-<translation id="8525248723479742219">Воспроизвести позже</translation>
 <translation id="43751811163166570">Добавлено в плейлист «<ph name="PLAYLIST_FOLDER_NAME"/>»</translation>
+<translation id="6900840851173033633">На этой странице нет медиафайлов.</translation>
 <translation id="4830689155681863580">Открыть в плейлисте</translation>
 <translation id="4735626465866524761">Сменить папку</translation>
 <translation id="8101564000331197174">Удалить из плейлиста</translation>
@@ -330,6 +335,7 @@
 <translation id="5860254591544742609">Показывать заголовок окна</translation>
 <translation id="5371926069408837914">Раскрывать вертикальную панель вкладок при наведении мыши, если она свернута</translation>
 <translation id="3367129510799209147">Режим наведения указателя на вкладку</translation>
+<translation id="916373084491701212">Показывать полосу прокрутки</translation>
 <translation id="515949045075831661">Показать справа</translation>
 <translation id="3725395376319291415">Показать слева</translation>
 <translation id="2113977810652731515">Карта</translation>
@@ -644,6 +650,7 @@
 <translation id="3504157706952484145">Сети Filecoin</translation>
 <translation id="1561541094377237745">Сети Solana</translation>
 <translation id="7141438739990875547">Биткойн-сети</translation>
+<translation id="1077567586443625607">Сети Zcash</translation>
 <translation id="3159419679550543837">Показывать тестовые сети</translation>
 <translation id="3215569562674795548">Изменить или добавить новую сеть</translation>
 <translation id="4418993400653250511">Идентификатор цепочки</translation>
@@ -727,6 +734,8 @@
 <translation id="7984721311211272523">Деактивировать функцию отключения звука с помощью значка динамика на вкладке</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показывать значок Leo на боковой панели</translation>
+<translation id="8055509865174199683">Показывать Leo в контекстных меню сайтов</translation>
+<translation id="1529674267267221673">Leo появится в контекстном меню на сайте при нажатии правой кнопкой мыши и получит сведения о текущей странице.</translation>
 <translation id="8172263161008556851">Показывать подсказки в беседах</translation>
 <translation id="1014480593522400586">Очистить данные Leo</translation>
 <translation id="8681157601856387010">Если вы перезапустите чат с ИИ-помощником,
@@ -739,6 +748,9 @@
 <translation id="349846214503465941">Включить плейлист</translation>
 <translation id="7903608716704052878">Автоматически добавлять файлы для просмотра, находясь не в сети</translation>
 <translation id="4193768184502613558">Этот вариант автоматически будет кэшировать медиафайлы, чтобы вы могли воспроизводить их, находясь не в сети.</translation>
+<translation id="8950562208228589873">По умолчанию или Quad9</translation>
+<translation id="5646330590189545860">По умолчанию или Wikimedia</translation>
+<translation id="2026075482948458926">По умолчанию или Cloudflare</translation>
 <translation id="6624718837376802990">Аватар резкие награды</translation>
 <translation id="6617313057407561765">Аватар резкий Brave</translation>
 <translation id="6754445808455578019">Аватар резкий океан</translation>
