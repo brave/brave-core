@@ -337,8 +337,8 @@ public class BraveStoreSDK: AppStoreSDK {
     }
     
     // Create a Skus-SDK for the specified product
-    let skusSDK = BraveSkusSDK()
-    
+    let skusSDK = BraveSkusSDK.shared
+
     // Create an order for the AppStore receipt
     // If an order already exists, refreshes the order information
     if let orderId = Preferences.AIChat.subscriptionOrderId.value {
@@ -366,8 +366,8 @@ public class BraveStoreSDK: AppStoreSDK {
     }
     
     // Create a Skus-SDK for the specified product
-    let skusSDK = BraveSkusSDK()
-    
+    let skusSDK = BraveSkusSDK.shared
+
     // Create an order for the AppStore receipt
     // If an order already exists, refreshes the order information
     var orderId = Preferences.AIChat.subscriptionOrderId.value

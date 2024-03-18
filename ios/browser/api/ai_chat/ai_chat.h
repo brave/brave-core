@@ -35,6 +35,8 @@ OBJC_EXPORT
 
 @property(nonatomic, readonly) bool canShowPremiumPrompt;
 
+@property(nonatomic) NSString* defaultModelKey;
+
 @property(nonatomic) bool shouldSendPageContents;
 
 - (void)changeModel:(NSString*)modelKey;

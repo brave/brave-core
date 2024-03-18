@@ -5,6 +5,7 @@
 
 import BraveCore
 import BraveUI
+import Preferences
 import SwiftUI
 
 struct AIChatDefaultModelView: View {
@@ -36,7 +37,7 @@ struct AIChatDefaultModelView: View {
               if model.access == .premium, aiModel.shouldShowPremiumPrompt {
                 isPresentingPaywallPremium = true
               } else {
-                aiModel.changeModel(modelKey: model.key)
+                aiModel.defaultAIModelKey = model.key
                 dismiss()
               }
             },
@@ -53,7 +54,7 @@ struct AIChatDefaultModelView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
 
                 // If the model is selected show check
-                if model.key == aiModel.currentModel.key {
+                if model.key == aiModel.defaultAIModelKey {
                   Image(braveSystemName: "leo.check.normal")
                     .foregroundStyle(Color(braveSystemName: .textInteractive))
                     .padding(.horizontal, 4.0)
@@ -92,7 +93,7 @@ struct AIChatDefaultModelView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await aiModel.refreshPremiumStatus()
+            await aiModel.refreshPremiumStatusOrderCredentials()
           }
         })
     }

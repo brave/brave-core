@@ -8,26 +8,37 @@ import Preferences
 
 extension Preferences {
   public enum AIChat {
+    /// A boolean indicating whether the user has seen the AI-Chat intro screen at least once
     public static let hasSeenIntro = Option<Bool>(
       key: "aichat.intro.hasBeenSeen",
       default: false
     )
+
+    /// The date the user's current AI-Chat subscription expires
     public static let subscriptionExpirationDate = Option<Date?>(
       key: "aichat.expiration-date",
       default: nil
     )
+
+    /// The Order-ID of the user's current AI-Chat subscription
     public static let subscriptionOrderId = Option<String?>(
       key: "aichat.order-id",
       default: nil
     )
+
+    /// A boolean indicating whether or not the user has any credentials stored locally on device
     public static let subscriptionHasCredentials = Option<Bool>(
       key: "aichat.credentials",
       default: false
     )
+
+    /// A boolean indicating whether or not the user has URL-Bar/Search-Bar auto-complete for AI-Chat
     public static let autocompleteSuggestionsEnabled = Option<Bool>(
       key: "aichat.autocompletesuggestions-enabled",
       default: true
     )
+
+    /// A boolean indicating whether or not the user has dismissed the Premium Prompt on the Feedback Form
     public static let showPremiumFeedbackAd = Option<Bool>(
       key: "aichat.show-premium-feedback-ad",
       default: true
