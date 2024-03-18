@@ -23,7 +23,7 @@
 #include "brave/components/brave_vpn/common/mojom/brave_vpn.mojom.h"
 #endif
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/core/common/mojom/settings_helper.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
 #endif
 
 namespace brave_subscription {
