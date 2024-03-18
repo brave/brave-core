@@ -240,16 +240,10 @@ void BraveSettingsUI::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
 #if BUILDFLAG(ENABLE_AI_CHAT)
-  // A settings helper object is created within LeoAssistantHandler when the
-  // WebUI is a valid object. This takes place within `RegisterMessages`, not in
-  // the constructor. As a result, when `AddMessageHandler` is called, the
-  // caller assumes ownership of the handler. Subsequently, `RegisterMessages`
-  // is invoked on the handler. This sequence ensures the availability of the
-  // settings_helper object, which is essential for binding the interface.
-  auto assistant_handler =
-      std::make_unique<settings::BraveLeoAssistantHandler>();
-  auto* assistant_handler_ptr = assistant_handler.get();
+  auto assistant_handler = std::make_unique<settings::BraveLeoAssistantHandler>(
+      std::make_unique<ai_chat::AIChatSettingsHelper>(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  assistant_handler->BindInterface(std::move(pending_receiver));
   web_ui()->AddMessageHandler(std::move(assistant_handler));
-  assistant_handler_ptr->BindInterface(std::move(pending_receiver));
 #endif
 }

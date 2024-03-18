@@ -21,7 +21,8 @@ namespace settings {
 class BraveLeoAssistantHandler : public settings::SettingsPageUIHandler,
                                  public sidebar::SidebarService::Observer {
  public:
-  BraveLeoAssistantHandler();
+  explicit BraveLeoAssistantHandler(
+      std::unique_ptr<ai_chat::AIChatSettingsHelper> settings_helper);
   ~BraveLeoAssistantHandler() override;
 
   BraveLeoAssistantHandler(const BraveLeoAssistantHandler&) = delete;

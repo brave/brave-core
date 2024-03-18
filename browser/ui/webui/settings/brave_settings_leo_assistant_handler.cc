@@ -61,7 +61,11 @@ bool HideLeoAssistantIconIfNot(sidebar::SidebarService* sidebar_service) {
 
 namespace settings {
 
-BraveLeoAssistantHandler::BraveLeoAssistantHandler() = default;
+BraveLeoAssistantHandler::BraveLeoAssistantHandler(
+    std::unique_ptr<ai_chat::AIChatSettingsHelper> settings_helper) {
+  settings_helper_ = std::move(settings_helper);
+}
+
 BraveLeoAssistantHandler::~BraveLeoAssistantHandler() = default;
 
 void BraveLeoAssistantHandler::RegisterMessages() {
@@ -79,9 +83,6 @@ void BraveLeoAssistantHandler::RegisterMessages() {
       "resetLeoData",
       base::BindRepeating(&BraveLeoAssistantHandler::HandleResetLeoData,
                           base::Unretained(this)));
-
-  settings_helper_ = std::make_unique<ai_chat::AIChatSettingsHelper>(
-      web_ui()->GetWebContents()->GetBrowserContext());
 }
 
 void BraveLeoAssistantHandler::OnJavascriptAllowed() {
@@ -154,6 +155,7 @@ void BraveLeoAssistantHandler::HandleResetLeoData(
 void BraveLeoAssistantHandler::BindInterface(
     mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
         pending_receiver) {
+  DCHECK(settings_helper_);
   settings_helper_->BindInterface(std::move(pending_receiver));
 }
 
