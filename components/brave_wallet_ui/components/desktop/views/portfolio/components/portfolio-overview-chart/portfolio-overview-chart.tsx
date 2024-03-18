@@ -50,6 +50,9 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
     WalletSelectors.hidePortfolioBalances
   )
 
+  // state
+  const [isIframeLoaded, setIsIframeLoaded] = React.useState<boolean>(false)
+
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
 
@@ -69,6 +72,11 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
     hidePortfolioBalances
   ])
 
+  // methods
+  const handleOnLoad = () => {
+    setIsIframeLoaded(true)
+  }
+
   // render
   return (
     <>
@@ -86,11 +94,12 @@ export const PortfolioOverviewChart: React.FC<Props> = ({
         fullWidth
       >
         <iframe
+          onLoad={handleOnLoad}
           width={'100%'}
           height={'130px'}
           frameBorder={0}
           src={`chrome-untrusted://line-chart-display${
-            isLoading ? '' : `?${encodedPriceData}`
+            isLoading || !isIframeLoaded ? '' : `?${encodedPriceData}`
           }`}
           sandbox='allow-scripts'
         />
