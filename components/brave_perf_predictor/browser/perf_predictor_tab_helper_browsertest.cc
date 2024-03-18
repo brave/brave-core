@@ -81,13 +81,12 @@ class PerfPredictorTabHelperTest : public InProcessBrowserTest {
   }
 
   void UpdateAdBlockInstanceWithRules(const std::string& rules) {
-    filters_provider_ = std::make_unique<TestFiltersProvider>(rules, "");
+    filters_provider_ = std::make_unique<TestFiltersProvider>(rules);
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
 
-    ad_block_service->UseSourceProvidersForTest(filters_provider_.get(),
-                                                filters_provider_.get());
+    ad_block_service->UseSourceProviderForTest(filters_provider_.get());
 
     WaitForAdBlockServiceThreads();
   }

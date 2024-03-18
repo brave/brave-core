@@ -142,12 +142,11 @@ class LocalhostAccessBrowserTest : public InProcessBrowserTest {
 
   void AddAdblockRule(const std::string& rule) {
     source_provider_ =
-        std::make_unique<brave_shields::TestFiltersProvider>(rule, "");
+        std::make_unique<brave_shields::TestFiltersProvider>(rule);
 
     brave_shields::AdBlockService* ad_block_service =
         g_brave_browser_process->ad_block_service();
-    ad_block_service->UseSourceProvidersForTest(source_provider_.get(),
-                                                source_provider_.get());
+    ad_block_service->UseSourceProviderForTest(source_provider_.get());
     WaitForAdBlockServiceThreads();
   }
 

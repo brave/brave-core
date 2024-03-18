@@ -34,7 +34,9 @@ const char kLocalhostBadfilters[] = R"(
 }  // namespace
 
 AdBlockLocalhostFiltersProvider::AdBlockLocalhostFiltersProvider()
-    : AdBlockFiltersProvider(true) {}
+    : AdBlockFiltersProvider(true) {
+  NotifyObservers(engine_is_default_);
+}
 
 AdBlockLocalhostFiltersProvider::~AdBlockLocalhostFiltersProvider() {}
 
@@ -55,12 +57,6 @@ void AdBlockLocalhostFiltersProvider::LoadFilterSet(
       FROM_HERE,
       base::BindOnce(std::move(cb),
                      base::BindOnce(&AddDATBufferToFilterSet, buffer)));
-}
-
-void AdBlockLocalhostFiltersProvider::AddObserver(
-    AdBlockFiltersProvider::Observer* observer) {
-  AdBlockFiltersProvider::AddObserver(observer);
-  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields

@@ -66,15 +66,15 @@ class AdBlockComponentServiceManager
 
   // for tests
   const std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>&
-  regional_filters_providers() {
+  component_filters_providers() {
     DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
-    return regional_filters_providers_;
+    return component_filters_providers_;
   }
 
   raw_ptr<PrefService> local_state_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::string locale_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::map<std::string, std::unique_ptr<AdBlockComponentFiltersProvider>>
-      regional_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
+      component_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
 
   std::vector<FilterListCatalogEntry> filter_list_catalog_
       GUARDED_BY_CONTEXT(sequence_checker_);

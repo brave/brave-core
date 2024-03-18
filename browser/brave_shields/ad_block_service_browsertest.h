@@ -10,18 +10,29 @@
 #include <string>
 #include <vector>
 
+#include "base/files/scoped_temp_dir.h"
+#include "base/task/sequenced_task_runner.h"
+#include "base/test/metrics/histogram_tester.h"
 #include "brave/components/brave_shields/content/test/test_filters_provider.h"
-#include "chrome/browser/extensions/extension_browsertest.h"
 #include "content/public/test/content_mock_cert_verifier.h"
 #include "net/test/spawned_test_server/spawned_test_server.h"
+
+#if BUILDFLAG(IS_ANDROID)
+#include "chrome/test/base/android/android_browser_test.h"
+#else
+#include "chrome/test/base/in_process_browser_test.h"
+#endif
 
 class HostContentSettingsMap;
 
 namespace brave_shields {
 class AdBlockService;
+class FilterListCatalogEntry;
 }  // namespace brave_shields
 
-class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
+class Profile;
+
+class AdBlockServiceTest : public PlatformBrowserTest {
  public:
   AdBlockServiceTest();
   ~AdBlockServiceTest() override;
@@ -39,22 +50,22 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   content::ContentMockCertVerifier mock_cert_verifier_;
 
   HostContentSettingsMap* content_settings();
-  void UpdateAdBlockInstanceWithRules(const std::string& rules,
-                                      const std::string& resources = "[]",
-                                      uint8_t permission_mask = 0);
-  void UpdateAdBlockInstanceWithDAT(const base::FilePath& dat_location,
-                                    const std::string& resources = "[]");
-  void UpdateCustomAdBlockInstanceWithRules(
-      const std::string& rules,
-      const std::string& resources = "[]");
+  void AddNewRules(const std::string& rules,
+                   uint8_t permission_mask = 0,
+                   bool first_party_protections = false);
+  void UpdateAdBlockResources(const std::string& resources);
+  void UpdateAdBlockInstanceWithRules(const std::string& rules);
+  void UpdateCustomAdBlockInstanceWithRules(const std::string& rules);
   void AssertTagExists(const std::string& tag, bool expected_exists) const;
   void InitEmbeddedTestServer();
-  void GetTestDataDir(base::FilePath* test_data_dir);
+  base::FilePath GetTestDataDir();
+  void NavigateToURL(GURL url);
   void SetDefaultComponentIdAndBase64PublicKeyForTest();
   void SetRegionalComponentIdAndBase64PublicKeyForTest();
-  bool InstallDefaultAdBlockComponent(
-      const std::string& extension_dir = "adblock-default");
-  bool InstallRegionalAdBlockComponent(const std::string& uuid,
+  void InstallComponent(
+      const brave_shields::FilterListCatalogEntry& catalog_entry);
+  void InstallDefaultAdBlockComponent();
+  void InstallRegionalAdBlockComponent(const std::string& uuid,
                                        bool enable_list = true);
   void SetSubscriptionIntervals();
   void WaitForAdBlockServiceThreads();
@@ -62,14 +73,21 @@ class AdBlockServiceTest : public extensions::ExtensionBrowserTest {
   void DisableAggressiveMode();
   void LoadDAT(base::FilePath path);
   void EnableRedirectUrlParsing();
+  Profile* profile();
   content::WebContents* web_contents();
+  base::FilePath MakeFileInTempDir(const std::string& name,
+                                   const std::string& contents);
+  base::FilePath MakeTestDataCopy(const base::FilePath& source_location);
 
   std::vector<std::unique_ptr<brave_shields::TestFiltersProvider>>
       source_providers_;
 
-  net::SpawnedTestServer ws_server_;
+  std::vector<std::unique_ptr<base::ScopedTempDir>> temp_dirs_;
+
   net::EmbeddedTestServer dynamic_server_;
   net::EmbeddedTestServer https_server_;
+
+  const base::HistogramTester histogram_tester_;
 };
 
 #endif  // BRAVE_BROWSER_BRAVE_SHIELDS_AD_BLOCK_SERVICE_BROWSERTEST_H_

@@ -408,23 +408,21 @@ AdBlockResourceProvider* AdBlockService::resource_provider() {
   return resource_provider_.get();
 }
 
-void AdBlockService::UseSourceProvidersForTest(
-    AdBlockFiltersProvider* source_provider,
-    AdBlockResourceProvider* resource_provider) {
+void AdBlockService::UseSourceProviderForTest(
+    AdBlockFiltersProvider* source_provider) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   default_service_observer_ = std::make_unique<SourceProviderObserver>(
-      default_engine_.get(), source_provider, resource_provider,
+      default_engine_.get(), source_provider, resource_provider_.get(),
       GetTaskRunner());
 }
 
-void AdBlockService::UseCustomSourceProvidersForTest(
-    AdBlockFiltersProvider* source_provider,
-    AdBlockResourceProvider* resource_provider) {
+void AdBlockService::UseCustomSourceProviderForTest(
+    AdBlockFiltersProvider* source_provider) {
   DCHECK_CALLED_ON_VALID_SEQUENCE(sequence_checker_);
   additional_filters_service_observer_ =
       std::make_unique<SourceProviderObserver>(
-          additional_filters_engine_.get(), source_provider, resource_provider,
-          GetTaskRunner());
+          additional_filters_engine_.get(), source_provider,
+          resource_provider_.get(), GetTaskRunner());
 }
 
 void AdBlockService::OnGetDebugInfoFromDefaultEngine(

@@ -31,7 +31,9 @@ const uint8_t kCustomFiltersPermissionLevel = UINT8_MAX;
 
 AdBlockCustomFiltersProvider::AdBlockCustomFiltersProvider(
     PrefService* local_state)
-    : AdBlockFiltersProvider(false), local_state_(local_state) {}
+    : AdBlockFiltersProvider(false), local_state_(local_state) {
+  NotifyObservers(engine_is_default_);
+}
 
 AdBlockCustomFiltersProvider::~AdBlockCustomFiltersProvider() {}
 
@@ -90,14 +92,6 @@ void AdBlockCustomFiltersProvider::LoadFilterSet(
       base::BindOnce(std::move(cb),
                      base::BindOnce(&AddDATBufferToFilterSet,
                                     kCustomFiltersPermissionLevel, buffer)));
-}
-
-// The custom filters provider can provide its filters immediately after being
-// observed.
-void AdBlockCustomFiltersProvider::AddObserver(
-    AdBlockFiltersProvider::Observer* observer) {
-  AdBlockFiltersProvider::AddObserver(observer);
-  NotifyObservers(engine_is_default_);
 }
 
 }  // namespace brave_shields

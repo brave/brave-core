@@ -30,12 +30,10 @@ class AdBlockLocalhostFiltersProvider : public AdBlockFiltersProvider {
   std::string GetLocalhostFilters();
   bool UpdateLocalhostFilters(const std::string& localhost_filters);
 
+  // AdBlockFiltersProvider
   void LoadFilterSet(
       base::OnceCallback<void(
           base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)>) override;
-
-  // AdBlockFiltersProvider
-  void AddObserver(AdBlockFiltersProvider::Observer* observer);
 
   std::string GetNameForDebugging() override;
 
