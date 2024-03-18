@@ -123,7 +123,6 @@
     "ethereum-blockies": "github:brave/blockies#0880fa9867b7da039e6d6f143b8f6c57b9f9eb3b",
     "ethereumjs-util": "7.0.9",
     "file-loader": "6.2.0",
-    "follow-redirects": "1.15.4",
     "font-awesome": "4.7.0",
     "fs-extra": "8.1.0",
     "https-browserify": "1.0.0",
@@ -207,7 +206,7 @@
     "webtorrent": "^0.114.0"
   },
   "overrides": {
-    "axios": "1.6.0",
+    "axios": "1.6.8",
     "loader-utils": "2.0.4",
     "json5": "2.2.3",
     "protobufjs": "7.2.4",
