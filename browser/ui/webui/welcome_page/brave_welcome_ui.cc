@@ -138,10 +138,10 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   // Open additional page in Japanese region
   int country_id = country_codes::GetCountryIDFromPrefs(profile->GetPrefs());
-  const bool isJPN =
+  const bool is_jpn =
       country_id == country_codes::CountryStringToCountryID("JP");
   if (!profile->GetPrefs()->GetBoolean(prefs::kHasSeenWelcomePage)) {
-    if (isJPN) {
+    if (is_jpn) {
       base::SingleThreadTaskRunner::GetCurrentDefault()->PostDelayedTask(
           FROM_HERE, base::BindOnce(&OpenJapanWelcomePage, profile),
           base::Seconds(3));
@@ -166,7 +166,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
 
   source->AddBoolean(
       /*name*/ "showHelpWDP",
-      /*value*/ isJPN || base::FeatureList::IsEnabled(
+      /*value*/ is_jpn || base::FeatureList::IsEnabled(
                              features::kBraveShowHelpWDPInWelcomePage));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
