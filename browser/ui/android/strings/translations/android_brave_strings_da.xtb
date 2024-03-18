@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Begynd at bruge Rewards</translation>
 <translation id="8220484609979012449">\n\nDu kan stadig sende crypto-bidrag til denne skaber via din Web3-tegnebog.</translation>
 <translation id="6385969012847057348">Denne skaber kan ikke modtage bidrag fra <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Denne skaber har ikke gjort klar til at modtage Web3 eller crypto-bidrag endnu.</translation>
 <translation id="6268134562674951939">Du har ikke nok tokens</translation>
 <translation id="4529874892536380156">Gør dette til et månedligt tilbagevendende bidrag. Du kan annullere det når som helst.</translation>
 <translation id="5562948772940025260">Du kan kun sende op til <ph name="AMOUNT"/>BAT med din Brave Rewards-saldo.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Under brug af en eksisterende synkroniseret enhed, skal du åbne Brave-indstillingerne og gå til Indstillinger og Synkronisering. Vælg "Tilføj ny enhed" og scan QR-koden, som vises på skærmen.</translation>
 <translation id="5241263629636958324">Kopieret til udklipsholder</translation>
 <translation id="5817918615728894473">Start parring</translation>
-<translation id="7090325819305486658">Datapræferencer</translation>
+<translation id="3429575397891106447">Synkronisér indstillinger</translation>
 <translation id="1680065323266179640">Slet Sync-konto</translation>
 <translation id="3792563952903751704">Hvis du sletter din konto, bliver dine krypterede data fra Brave-servere fjernet, og Sync bliver deaktiveret på alle dine forbundne enheder. Det sletter dog ikke data, der blev gemt lokalt på de enheder.
   Denne sletning er permanent, og der er ingen måde, dataen kan genskabes. Hvis du beslutter dig for at begynde at bruge Sync igen, skal du oprette en ny konto og tilføje hver enhed igen.</translation>
@@ -595,14 +596,18 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Indsæt</translation>
-<translation id="1420318137760245955">Velkommen til den nye Brave Wallet</translation>
-<translation id="8339846196588658366">Opevar kryptoaktiver i din varetægt, og registrér porteføljepræstation. Det hele kan gøres direkte i din Brave-browser.</translation>
-<translation id="4472575034687746823">Kom godt i gang</translation>
+<translation id="4556086616242530072">Browserindbyggede.\nSelv-varetægt.\nOg multi-chain.</translation>
+<translation id="7909462264772842773">Tag kontrollen med din crypto og NFT. Brave Wallet understøtter Ethereum, EVM chains, Solana, Filecoin og meget mere.</translation>
+<translation id="165255193061631296">Har du brug for en ny wallet?</translation>
+<translation id="3485737865439729577">Kom i gang med Brave Wallet på få minutter.</translation>
 <translation id="2759836790106646094">Lav en sikkerhedskopi af din tegnebog nu!</translation>
 <translation id="1078873179929044999">På det næste trin vil du se en gendannelsessætning på 12 ord, som du kan bruge til at gendanne dine primære crypto-konti. Opbevar den et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang på, hvis du har glemt din adgangskode, du mister din enhed, eller hvis du vil skifte wallet.</translation>
 <translation id="2359808026110333948">Fortsæt</translation>
 <translation id="5488357322146334497">Besked</translation>
 <translation id="1904000155026201268">Jeg er indforstået med, at hvis jeg mister mine gendannelsessætning, vil jeg ikke kunne tilgå min kryptotegnebog.</translation>
+<translation id="5333225216561354793">Vi kræver, at du bekræfter nedenstående</translation>
+<translation id="1645800479814134195">Jeg forstår, at dette er en wallet til selv-varetægt, og at jeg alene er ansvarlig for eventuelle tilknyttede midler, aktiver eller konti og for at træffe passende foranstaltninger for at sikre, beskytte og sikkerhedskopiere min pung. Jeg forstår, at Brave ikke kan få adgang til min pung eller tilbageføre transaktioner på mine vegne, og at min gendannelsessætning i tilfælde af en mistet adgangskode, stjålet enhed eller lignende omstændigheder er den ENESTE måde at få adgang.</translation>
+<translation id="4565891212173086999">Jeg har læst og accepterer <ph name="CLICK_START"/>Brugervilkårene<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Din gendannelsessætning</translation>
 <translation id="5077747669435508720">Nedskriv eller kopiér disse ord i denne præcise rækkefølge, og gem dem et sikkert sted. Din gendannelsessætning er den eneste måde at få adgang til din konto på, hvis du glemmer din adgangskode, mister din enhed, eller hvis du vil skifte wallets.</translation>
 <translation id="2708402071160162126">ADVARSEL: Del aldrig din gendannelsessætning. Personer i besiddelse af sætningen kan tage dine aktiver permanent.</translation>
@@ -647,6 +652,9 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="3747079125031086337">Vælg ordene i din gendannelsessætning i den rigtige rækkefølge.</translation>
 <translation id="6518133107902771759">Bekræft</translation>
 <translation id="3157931365184549694">Gendan</translation>
+<translation id="5844138175312846408">Har du allerede en wallet?</translation>
+<translation id="2502258949541727762">Inden vi begynder</translation>
+<translation id="5981303441790732480">Importér din eksisterende wallet</translation>
 <translation id="9111102763498581341">Lås op</translation>
 <translation id="6657585470893396449">Adgangskode</translation>
 <translation id="5619264711680220002">Biometrisk oplåsning</translation>
@@ -665,7 +673,7 @@ Er du sikker på, du vil gennemføre?</translation>
 <translation id="5483736362376139517">1 år</translation>
 <translation id="6979737339423435258">Altid</translation>
 <translation id="6284218950354553099">Send automatisk dagligt ping om brug til Brave</translation>
-<translation id="5288333155754958121">Det anonyme, private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
+<translation id="2181060149810222381">Det private ping giver Brave mulighed for at estimere antallet af aktive brugere.</translation>
 <translation id="3819257035322786455">Sikkerhedskopi</translation>
 <translation id="4608713693379664295">Primære kryptokonti</translation>
 <translation id="4003821417160006384">Sekundære konti</translation>
@@ -1212,5 +1220,11 @@ Hvis du ikke godkender denne anmodning, vil VPN-forbindelsen ikke blive genopret
 <translation id="6637015365469044269">Opgradér nu</translation>
 <translation id="614530507403667291">Standardmodel for nye samtaler</translation>
 <translation id="4071849832011229600">Standardmodel</translation>
+<translation id="4185473179105062442">Modtag BAT direkte til en kryptoadresse med selv-varetægt</translation>
+<translation id="5802986777701714573">Vi har tilføjet en ny måde, hvorpå du kan modtage dine månedlige BAT-belønninger. Tilslut en konto fra en af vores partnere, eller brug den nye selv-varetægtsløsning for at optjene nu.</translation>
 <translation id="7557539689487606886">Vælg Premium</translation>
+<translation id="5538904824395606812">Brug din nuværende udbyder eller Quad9</translation>
+<translation id="6393423486818299209">Brug din nuværende udbyder eller Wikimedia DNS</translation>
+<translation id="3401384982562827787">Brug din nuværende udbyder eller Cloudflare</translation>
+<translation id="8812367543786936496">Hvis din nuværende tjenesteudbyder er usikker, bruger Brave en sikker alternativ DNS-udbyder</translation>
 </translationbundle>

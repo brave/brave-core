@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">تمت مشاهدته</translation>
 <translation id="8826352442759228526">لا يمكن التحقق من مكافآت Brave الخاصة بك لأنك وصلت إلى الحد الأقصى للتحقق على الجهاز.</translation>
 <translation id="1221593978088944142">خطأ: تم الوصول إلى حد الجهاز</translation>
-<translation id="3113653894794167793">عذراً، كانت هناك مشكلة في معالجة طلبك، يرجى المحاولة مرة أخرى.</translation>
 <translation id="6895088073061692390">للأسف، تم وضع علامة على ملفك الشخصي على Brave Rewards نظرًا لأن عمليات الفحص التلقائية لدينا وجدت بعض أنشطة Brave Ads غير المتوقعة.</translation>
 <translation id="4229056297802204697">أثناء وضع علامة على ملفك الشخصي، قد تستمر في رؤية الإعلانات، ولكنك لن تكون مؤهلاً لتلقي الأرباح. ولن تتمكن أيضًا من ربط الحساب المستضاف بـ Brave Rewards.</translation>
 <translation id="5124846913141379164">يمكن أن يتم وضع علامة على ملفك الشخصي بطريق الخطأ، ولا يلزم اتخاذ أي إجراء فوري من جانبك. قد تتم إزالة العلامة الموجودة على ملفك الشخصي في المستقبل.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">خطأ: وظائف محدودة لحساب Uphold</translation>
 <translation id="3274650021044762770">حدثت مشكلة أثناء التحقق من صحة طلب المتصفح الخاص بك لتوصيل مكافآت Brave الخاصة بك بحساب <ph name="PROVIDER"/>. يمكنك <ph name="BEGIN_LINK"/>التواصل مع الدعم<ph name="END_LINK"/> لمزيد من المساعدة.</translation>
 <translation id="1316066811927496401">خطأ: تعذر التحقق من صحة الطلب</translation>
+<translation id="7352651011704765696">حدث خطأ ما</translation>
+<translation id="8285276813470932793">لم نتمكن من إكمال طلبك، يُرجى إعادة المحاولة، <ph name="LINK_BEGIN"/>والاتصال بالدعم<ph name="LINK_END"/> إذا استمرت المشكلة.</translation>
 <translation id="8167256685618982116">بتفعيل <ph name="TITLE"/>، فأنت توافق على <ph name="BEGIN_LINK1"/>Terms of Service<ph name="END_LINK1"/> and <ph name="BEGIN_LINK2"/>Privacy Policy<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">الحسابات المُستضافة (يتطلب التحقق من الهوية)</translation>
 <translation id="1539433155512862005">الحسابات المُستضافة هي حسابات ذات خدمات تابعة لجهات خارجية موثوقة والتي تحتفظ بـ BAT الخاص بك نيابةً عنك.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900">معلّق حتى <ph name="DATE"/></translation>
 <translation id="7849926087559412554">عذرًا! تعذّر على متصفحك استقبال Brave Private Ads.</translation>
 <translation id="5177429570315095022">يحتاج متصفحك إلى التحديث لمواصلة مشاهدة الإعلانات.</translation>
-<translation id="7352651011704765696">حدث خطأ ما</translation>
 <translation id="4593680147181354667">معرف التشخيص</translation>
 <translation id="3995471429906554168">معلومات التشخيص</translation>
 <translation id="752216563428219524">لم تتم تهيئة الإعلانات، يرجى تحديث الصفحة.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">تم إيقاف المكافآت</translation>
 <translation id="3354337256330577726">تم إيقاف المساهمة التلقائية</translation>
 <translation id="6727186931929643711">تم إيقاف إعادة المحاولة</translation>
-<translation id="8978461348341400550">الخادم:</translation>
-<translation id="7220161813676251577">رقم معرف الخادم:</translation>
+<translation id="6461242868382182003">نوع الحساب:</translation>
+<translation id="4129229983159690026">الحساب:</translation>
 <translation id="680983167891198932">المفتاح</translation>
 <translation id="7535087603100972091">القيمة</translation>
 <translation id="45591635423975492">مسجّل في</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">تحذير: قد يحتوي ملف السجل هذا على معلومات حساسة، لذا يرجى أخذ الحيطة عند مشاركته مع الآخرين.</translation>
 <translation id="7375125077091615385">النوع:</translation>
 <translation id="1924618796077284366">تنزيل السجل بالكامل</translation>
-<translation id="5362600797402074593">معلومات الاتصال بالحساب المستضاف</translation>
+<translation id="2129987553148729046">معلومات الحسابات المتصلة</translation>
 <translation id="5457113250005438886">غير صالح</translation>
 <translation id="6161467863097205016">بذرة معلومات المفتاح:</translation>
 <translation id="5323604113525002127">نعرض آخر عدد [[numberOfLines]] من سطور السجل. إذا كنت تريد السجل بالكامل، يمكنك تنزيله أعلاه.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">الرصيد الإجمالي</translation>
 <translation id="2223892939866251845">هوية المستخدم</translation>
 <translation id="4235360514405112390">صالح</translation>
-<translation id="3902084968737576005">عنوان المحفظة:</translation>
+<translation id="458999179147014626">عنوان إيداع الحساب:</translation>
 <translation id="3653417592104122757">سجل المحفظة</translation>
 <translation id="3339401101952651943">معلومات المكافآت</translation>
 <translation id="3363158483789327529">لم يتم إنشاء ملف المكافآت بعد</translation>
 <translation id="476272015919848174">مُعرف دفع المكافآت:</translation>
 <translation id="9008441690901662695">حالة المكافآت:</translation>
-<translation id="8874184842967597500">غير متصل</translation>
-<translation id="4569155249847375786">محقَّق</translation>
-<translation id="6521149675246672063">غير متصل (مُفعل)</translation>
+<translation id="9069875072411692547">غير متصل</translation>
+<translation id="3368922792935385530">متصل</translation>
 <translation id="5058161306698404465">بيئة الإنشاء:</translation>
 <translation id="5856438412804207598">البيئة الحالية:</translation>
 <translation id="5916290544882167205">Brave Software. تعتبر Brave علامة تجارية مسجلة لشركة Brave Software. قد تكون أسماء المواقع علامات تجارية أو علامات تجارية مسجلة لصاحب الموقع.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">يرجى الملاحظة:</translation>
 <translation id="1430915738399379752">طباعة</translation>
 <translation id="135956957367307069">لا يزال طلبك قيد المعالجة. يرجى الانتظار.</translation>
-<translation id="8725066075913043281">إعادة المحاولة</translation>
 <translation id="2600847485413879104">المكافآت التوكن الأساسي لتبادل العملات المشفرة</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">إنك الآن تقوم بعرض صفحة WebTorrent</translation>
 <translation id="7534079972563542000">النطاقات التي لا يمكن إيقافها</translation>
 <translation id="4492298165410552103">هل تريد تمكين دعم النطاقات التي لا يمكن إيقافها في Brave؟</translation>
-<translation id="9156229987230762013">ستستخدم منصة Brave منصة Infura لحل أسماء نطاقات .crypto (وأيضا .x و.nft و.dao و.wallet و.blockchain و.bitcoin و.zil) الموجودة على نطاقات لا يمكن إيقافها. تقوم Brave بإخفاء عنوان IP الخاص بك. إذا قمت بتمكين هذا، فستتمكن منصة Infura من التعرف على أن شخصًا ما يحاول زيارة هذه النطاقات ولكن لا شيء غير ذلك. راجع <ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_INFURA_PRIVACY_LINK"/> من Infura.</translation>
+<translation id="5015092481905019948">سيستخدم متصفح Brave <ph name="PROVIDER_NAME"/> لحل أسماء نطاقات <ph name="DOMAIN_LIST"/> على<ph name="DOMAIN_PROVIDER_NAME"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن <ph name="PROVIDER_NAME"/> سيلاحظ أن شخصًا ما يحاول زيارة هذه النطاقات لكن لا شيء آخر. راجع شروط استخدام <ph name="BEGIN_PROVIDER_TOU_LINK"/><ph name="END_PROVIDER_TOU_LINK"/>  <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>وسياسة الخصوصية<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">خدمة اسم إيثريوم</translation>
+<translation id="2789190492285945209">خدمة اسم إيثريوم (ENS)</translation>
 <translation id="4335039108389860301">هل تريد تمكين دعم خدمة اسم إيثريوم (ENS) في متصفح Brave؟</translation>
-<translation id="4609973808011229683">ستستخدم منصة Brave منصة Infura لحل أسماء نطاقات .eth الموجودة على خدمة اسم إيثريوم (ENS). ستقوم Brave بإخفاء ‏عنوان IP الخاص بك. إذا قمت بتمكين هذا، فستتمكن منصة Infura من التعرف على أن شخصًا ما يحاول زيارة نطاقات .eth هذه ولكن لا شيء غير ذلك. راجع<ph name="BEGIN_INFURA_TOU_LINK"/>شروط الاستخدام<ph name="END_INFURA_TOU_LINK"/> و <ph name="BEGIN_INFURA_PRIVACY_LINK"/>سياسة الخصوصية<ph name="END_INFURA_PRIVACY_LINK"/> من Infura.</translation>
 <translation id="807404806385418949">بحث لخدمة اسم إيثريوم خارج السلسلة</translation>
 <translation id="4049590838234508776">هل تريد تمكين دعم بحث خدمة اسم إيثريوم (ENS) خارج السلسة في متصفح Brave؟</translation>
 <translation id="5944991147217767764">يتم تخزين اسم النطاق .eth خارج السلسلة وسيتم حله من خلال بوابات الجهات الخارجية. إذا قمت بتمكين بحث خدمة اسم إيثريوم (ENS) خارج السلسة، فستتمكن بوابات الجهات الخارجية من التعرف من أنك تحاول زيارة نطاقeth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>تعرّف على مزيد من المعلومات<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">تابع البحث خارج السلسلة</translation>
 <translation id="531747189990625622">خدمة اسم Solana</translation>
 <translation id="1090584614351290462">هل ترعب في تمكين دعم خدمة اسم Solana (SNS) في Brave؟</translation>
-<translation id="1026480261052976838">سيستخدم متصفح Brave طرفًا ثالثًا لحل أسماء نطاقات ‎.sol. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن الطرف الثالث سيلاحظ أن شخصًا ما يحاول زيارة نطاقات ‎.sol هذه لكن لا شيء آخر. للحصول على مزيد من المعلومات حول الأطراف الثالثة التي نستخدمها وسياسات الخصوصية التي تقرها تلك الأطراف، يرجى الاطلاع على <ph name="BEGIN_SNS_WIKI_LINK"/>صفحة المساعدة<ph name="END_SNS_WIKI_LINK"/>.</translation>
-<translation id="7378412287463452336">متابعة استخدام خادم Infura</translation>
+<translation id="7769345036263036863">سيستخدم متصفح Brave طرفًا ثالثًا لحل أسماء نطاقات <ph name="DOMAIN_LIST"/>. يُخفي متصفح Brave عنوان IP الخاص بك. إذا قمت بتمكين هذه الميزة، فإن الطرف الثالث سيلاحظ أن شخصًا ما يحاول زيارة نطاقات <ph name="DOMAIN_LIST"/> هذه لكن لا شيء آخر. للحصول على مزيد من المعلومات حول الأطراف الثالثة التي نستخدمها وسياسات الخصوصية التي تقرها تلك الأطراف، يُرجى الاطلاع على <ph name="BEGIN_SNS_WIKI_LINK"/>صفحة المساعدة<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="884864496166128252">المتابعة باستخدام خادم <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">المتابعة باستخدام خادم SNS</translation>
 <translation id="2356070529366658676">طلب</translation>
 <translation id="59174027418879706">تم التمكين</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">لقد حدث خطأ ما، يرجى محاولة تثبيت العقدة مرة أخرى</translation>
 <translation id="8428368469058794536">خدمة "أي بي إف إس / IPFS"</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">إعادة المحاولة</translation>
 <translation id="1886162073868201257">خطأ في تشغيل خدمة IPFS</translation>
 <translation id="5357895013476183089">IPFS غير متصل</translation>
 <translation id="7662930734991751511">لا يمكن تحميل موارد شبكة تخزين اللامركزية IPFS (نظام الملفات بين الكواكب) باستخدام عقدة IPFS المحلية من متصفح Brave</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">مكافآت من الإعلانات</translation>
 <translation id="5308380583665731573">اتصال</translation>
 <translation id="3026978804849658576">عرض البيان</translation>
-<translation id="3368922792935385530">متصل</translation>
 <translation id="1848737374354350807">الرصيد</translation>
 <translation id="6516984207843289176">الاتصال بالحساب</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>هل أنت مستعد لبدء الربح؟<ph name="BOLD_END"/> قم بربط أو إنشاء حساب مع أحد شركائنا.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">إبطال</translation>
 <translation id="9218424917282368512">تغيير الشبكة</translation>
 <translation id="7526139040829362392">تغير الحساب</translation>
+<translation id="8874184842967597500">غير متصل</translation>
 <translation id="4217695020908122747">الحسابات المتصلة</translation>
 <translation id="8497650996740651467">الحسابات المتاحة</translation>
 <translation id="5677928146339483299">تم المنع</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">لا يحتوي النطاق على عنوان <ph name="COIN_TYPE_SYMBOL"/> مرتبط</translation>
 <translation id="8971278306757462297">عنوان الاستلام هو العنوان الخاص بك</translation>
 <translation id="3506416339268164412">عنوان الاستلام هو عنوان عقد العملة الرمزية</translation>
+<translation id="7029817408221097939">العنوان الموحد غير صالح</translation>
 <translation id="6370376419663123629">العنوان لا يبدو صحيحًا</translation>
 <translation id="3767148796886402380">تحقق من عنوانك للتأكد من أنه العنوان الصحيح (على سبيل المثال، الأحرف ذات الأحرف الصغيرة أو الكبيرة).</translation>
 <translation id="2585599787090762065">كيف يمكنني حلها؟</translation>
@@ -1260,6 +1260,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> تم إرجاعها إلى محفظتك</translation>
 <translation id="4577432071459867390">فشلت المعاملة</translation>
 <translation id="4359235192593147041">فشلت المعاملة بسبب حركة التسعير الهائلة. ارتفاع تحمل الانزلاق للنجاح في حركة تسعير أكبر حجمًا.</translation>
+<translation id="8685035971570487250">هناك بالفعل معاملة Zcash قيد التقدُّم. يُرجى إعادة المحاولة لاحقًا.</translation>
 <translation id="8584830404080597280">تداول جديد</translation>
 <translation id="8065905913745172640">معاملة جديدة</translation>
 <translation id="9079041000600020902">عرض الخطأ</translation>
@@ -1623,6 +1624,11 @@
 <translation id="2515906149804238711">تغيير معلق في رصيد محفظتك.</translation>
 <translation id="7700365440186054030">الأموال المتاحة لديك إضافة إلى أي معاملات لم تتأكد بعد.</translation>
 <translation id="4118601537508887039">قد تكون بعض الأرصدة غير متوفرة</translation>
+<translation id="2926654984379239545">لقد عثرنا على مخاطر <ph name="VALUE"/>.</translation>
+<translation id="8400506417619199876">العقد</translation>
+<translation id="5667702863609780570">إجراء غير آمن يهدد بفقدان البيانات</translation>
+<translation id="6405354572620970908">يبدو هذا الطلب ضارًا، وقد يجعلك عرضة للسرقة. يُرجى عدم المتابعة إلا إذا كنت تثق بالتطبيق.</translation>
+<translation id="786261184916565476">لقد عثرنا على مشكلات <ph name="VALUE"/>.</translation>
 <translation id="3155170474926428993">مشغِّل تور</translation>
 <translation id="3745016858329272300">معلومات عامة</translation>
 <translation id="4045404575593562245">أحداث تحكم تور</translation>
@@ -1700,6 +1706,7 @@
 <translation id="7948579849190819732">علامة التبويب الحالية</translation>
 <translation id="7056969230130642253">أنت متابع لأحدث المستجدات</translation>
 <translation id="7292242212818928219">ثمَّة محتوى جديد متاح. هل تريد إعادة التحميل؟</translation>
+<translation id="6537880577641744343">أداة توجيه الأوامر</translation>
 <translation id="7481312909269577407">إلى الأمام</translation>
 <translation id="302781076327338683">إعادة تحميل تجاوز ذاكرة التخزين المؤقت</translation>
 <translation id="7211681214230730336">إعادة تحميل حذف بيانات ذاكرة التخزين المؤقت</translation>
@@ -1820,6 +1827,7 @@
 <translation id="5950760360751948276">عرض شريط الإشارات المرجعية دائمًا</translation>
 <translation id="2960757369920422313">عرض شريط الإشارات المرجعية على NTP</translation>
 <translation id="522953399371747698">إخفاء شريط الإشارات المرجعية</translation>
+<translation id="134184943774258988">تبديل رؤية زر كل الإشارات المرجعية</translation>
 <translation id="2158862020143233462">تبديل طرق الحماية</translation>
 <translation id="4610630726762318759">تبديل javascript</translation>
 <translation id="188822869499214197">عرض المخطط الفقاعي لقائمة التشغيل</translation>
@@ -1950,6 +1958,27 @@
 <translation id="1173570303649278801">استخدم سياق الصفحة للرد</translation>
 <translation id="8599503173207256429">قم بالتشغيل لطرح سؤال حول هذه الصفحة. سيتم إرسال محتواها إلى ليو في متصفح Brave إلى جانب رسائلك.</translation>
 <translation id="318819763888864209">تجدد جميع الاشتراكات تلقائيًا ولكن يمكن إلغاؤها في أي وقت قبل التجديد.</translation>
+<translation id="5091223967610958">شارك اسم المضيف للصفحة التي أنت فيها (<ph name="HOST_NAME"/>)  لمساعدتنا على تحسين مساعد Leo.</translation>
+<translation id="8732450785281947197">أدوات Leo للذكاء الاصطناعي</translation>
+<translation id="6535533770697728087">إجراءات سريعة</translation>
+<translation id="3237710083340813756">إعادة الكتابة</translation>
+<translation id="1252805982772190086">منشور قصير</translation>
+<translation id="2087555497198267113">منشور طويل</translation>
+<translation id="4170307327863874820">منشور مدونة</translation>
+<translation id="1308864651455614281">سطر الوصف</translation>
+<translation id="5258847587364431118">إعادة الصياغة</translation>
+<translation id="6147279996212084542">الشرح</translation>
+<translation id="1201408613803664464">التحسين</translation>
+<translation id="1310396869741602366">تغيير النغمة</translation>
+<translation id="2200877041397136930">احترافية</translation>
+<translation id="5627656897244314351">مقنعة</translation>
+<translation id="2169719065373500634">أكاديمية</translation>
+<translation id="2942492342931589800">غير رسمية</translation>
+<translation id="8485016913912679738">مرحة</translation>
+<translation id="163826442096818926">تقصير</translation>
+<translation id="42981349822642051">تكبير</translation>
+<translation id="3130793786899299931">تغيير الطول</translation>
+<translation id="6320643499534852464">وسائل التواصل الاجتماعي</translation>
 <translation id="6303294677342628402">طرق الحماية</translation>
 <translation id="8458987127502506209">تمكين دروع حماية  Brave</translation>
 <translation id="7509914170164691086">دروع حماية حتى <ph name="LINK_BEFORE"/> من أجل <ph name="LINK_AFTER"/></translation>
@@ -2085,17 +2114,17 @@
 ومع ذلك، لاحظنا أن خدمة المساعد هذه لا تعمل، ولا نريد أن نتركك دون حماية. لقد قمنا بتغيير إعدادات DNS في المتصفح للحماية من هذا الكشف. ستظل الإعدادات سارية ومغلقة أثناء اتصال VPN.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">يبدو أن هناك بعض المشكلات في اتصال WireGuard. هل تريد تمكين خيار IKEv2 الاحتياطي لشبكة VPN موثوقة؟ قم بإعادة تشغيل المتصفح الخاص بك بكل سهولة.
+<translation id="8810743613883230732">يبدو أن هناك بعض المشكلات في اتصال WireGuard. هل تريد تمكين خيار IKEv2 الاحتياطي لشبكة VPN موثوقة؟ ما عليك سوى تغيير الإعدادات.
 
 هل تحتاج إلى مساعدة فيما يتعلق بالتوافق أو التكوين؟ تواصل مع فريق الدعم الودود لدينا.
 يمكنك دائمًا الرجوع مرة أخرى إلى WireGuard على brave://settings/system.
 
-لنجعلك متصلا دائمًا!
+لنجعلك متصلًا دائمًا!
 
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">لا تحذرني من هذا الأمر مرة أخرى.</translation>
 <translation id="2740531572673183784">أوافق</translation>
-<translation id="7896201779114201779">إعادة تشغيل المتصفح</translation>
+<translation id="7423206764347669977">تغيير الإعدادات</translation>
 <translation id="9061845622728745852">المنطقة الزمنية:</translation>
 <translation id="8295393906499561642">انتهت صلاحية الجلسة</translation>
 <translation id="3312623558576021182">يُرجى تسجيل الدخول إلى <ph name="BRAVE_ACCOUNT_BEGIN"/>حساب Brave<ph name="BRAVE_ACCOUNT_END"/> لتحديث جلسة VPN الخاصة بك.</translation>
@@ -2114,4 +2143,5 @@
 <translation id="8234327602319965815"><ph name="OPEN_HERE_SUFFIX"/>، مفتوحة حاليًا، اضغط على Tab ثم Enter للانتقال إلى علامة التبويب المفتوحة</translation>
 <translation id="1538335063514960365">زر الفتح من هنا، اضغط على Enter لفتح عنوان url في علامة التبويب الحالية، بدلًا من الانتقال إلى علامة التبويب الموجودة مسبقًا</translation>
 <translation id="451189393813405346">اسأل Leo</translation>
+<translation id="8525248723479742219">تشغيل لاحقًا</translation>
 </translationbundle>

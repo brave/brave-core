@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Begynn å bruke Rewards</translation>
 <translation id="8220484609979012449">\n\nDu kan fortsatt sende kryptobidrag til denne innholdsskaperen ved å bruke Web3-lommeboken din.</translation>
 <translation id="6385969012847057348">Denne innholdsskaperen kan ikke motta bidrag fra <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Denne innholdsskaperen kan ikke motta Web3- eller kryptodonasjoner ennå.</translation>
 <translation id="6268134562674951939">Du har ikke nok tokener</translation>
 <translation id="4529874892536380156">Gjør dette til et fast månedlig bidrag. Du kan kansellere det når som helst.</translation>
 <translation id="5562948772940025260">Du kan bare sende opptil <ph name="AMOUNT"/> BAT med Brave Rewards-saldoen din.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Gjennom den synkroniserte enheten din åpner du Brave-innstillingene og går til Innstillinger &gt; Synkroniser. Velg «Legg til ny enhet» og skann QR-koden som vises på skjermen.</translation>
 <translation id="5241263629636958324">Kopiert til utklippstavle</translation>
 <translation id="5817918615728894473">Koble sammen</translation>
-<translation id="7090325819305486658">Kategorier</translation>
+<translation id="3429575397891106447">Synkroniseringsalternativer</translation>
 <translation id="1680065323266179640">Slett Sync-kontoen</translation>
 <translation id="3792563952903751704">Sletting av kontoen fjerner de krypterte dataene dine fra Brave-serverne og deaktiverer Sync på alle de tilkoblede enhetene dine. Det sletter imidlertid ikke dataene som er lagret lokalt på de aktuelle enhetene.
   Slettingen er permanent, og det finnes ingen måte dataene kan hentes ut igjen på. Hvis du bestemmer deg for at du vil begynne å bruke Sync igjen, må du opprette en ny konto og legge til hver enhet enkeltvis.</translation>
@@ -595,14 +596,18 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="1483493594462132177">Send</translation>
 <translation id="538450413584738399">Bytt</translation>
 <translation id="1366855498335432549">Innskudd</translation>
-<translation id="1420318137760245955">Velkommen til den nye Brave-lommeboken</translation>
-<translation id="8339846196588658366">Hold kryptoaktivaene dine nært og følg prestasjonen til porteføljen din. Alt i den personvernfokuserte nettleseren fra Brave.</translation>
-<translation id="4472575034687746823">Kom i gang</translation>
+<translation id="4556086616242530072">Innebygd i nettleseren.\nSelvoppbevaring.\nOg med flere kjeder.</translation>
+<translation id="7909462264772842773">Ta kontroll over kryptoen din og NFT-ene dine. Brave Wallet støtter Ethereum, EVM-kjeder, Solana, Filecoin og mer.</translation>
+<translation id="165255193061631296">Trenger du en ny lommebok?</translation>
+<translation id="3485737865439729577">Kom i gang med Brave Wallet på noen få minutter</translation>
 <translation id="2759836790106646094">Ta sikkerhetskopi av lommeboken din nå!</translation>
 <translation id="1078873179929044999">I neste trinn får du se en setning for gjenoppretting på 12 ord, som du kan bruke til å gjenopprette de primære kryptokontoene dine. Oppbevar det et trygt sted. Gjenopprettingssetningen din er den eneste måten du kan få tilbake kontotilgangen om du har glemt passordet, tapt eller blitt frastjålet enheten, eller du ønsker å bytte lommebok.</translation>
 <translation id="2359808026110333948">Fortsett</translation>
 <translation id="5488357322146334497">Melding</translation>
 <translation id="1904000155026201268">Jeg forstår at jeg ikke får tilgang til kryptolommeboken min igjen om jeg mister gjenopprettingsfrasen.</translation>
+<translation id="5333225216561354793">Vi krever at du bekrefter elementene nedenfor</translation>
+<translation id="1645800479814134195">Jeg forstår at dette er en lommebok jeg oppbevarer selv og at det bare er jeg som er ansvarlig for tilknyttede midler, ressurser og konti, samt for å gjøre det som kreves for å sikre, beskytte og sikkerhetskopiere lommeboken. Jeg forstår at Brave ikke har tilgang til lommeboken min eller kan reversere transaksjonene mine på mine vegne, og at gjenopprettingsfrasen min er den ENESTE måten å få tilgang til lommeboken på i tilfeller som tapt passord, stjålet enhet eller tilsvarende hendelser.</translation>
+<translation id="4565891212173086999">Jeg har lest og samtykker til <ph name="CLICK_START"/>bruksvilkårene<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Din gjenopprettingsfrase</translation>
 <translation id="5077747669435508720">Skriv ned eller kopier disse ordene i den nøyaktige rekkefølgen vist nedenfor, og lagre informasjonen på et trygt sted. Sikkerhetsfrasen din er den eneste måten du kan gjenopprette kontotilgangen på hvis du glemmer passordet, enheten din går tapt eller du vil bytte lommebøker.</translation>
 <translation id="2708402071160162126">ADVARSEL: Hold sikkerhetsfrasen din hemmelig. Alle som kjenner til frasen, kan ta ut verdiene dine for alltid.</translation>
@@ -647,6 +652,9 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="3747079125031086337">Velg ordene i sikkerhetsfrasen din i riktig rekkefølge.</translation>
 <translation id="6518133107902771759">Bekreft</translation>
 <translation id="3157931365184549694">Gjenopprett</translation>
+<translation id="5844138175312846408">Har du allerede en lommebok?</translation>
+<translation id="2502258949541727762">Før vi begynner</translation>
+<translation id="5981303441790732480">Importer din eksisterende lommebok</translation>
 <translation id="9111102763498581341">Lås opp</translation>
 <translation id="6657585470893396449">Passord</translation>
 <translation id="5619264711680220002">Biometrisk opplåsing</translation>
@@ -665,7 +673,7 @@ Er du sikker på at du vil gjøre dette?</translation>
 <translation id="5483736362376139517">1 år</translation>
 <translation id="6979737339423435258">Alle datoer</translation>
 <translation id="6284218950354553099">Automatisk ping dagsforbruk til Brave</translation>
-<translation id="5288333155754958121">Denne anonyme, private pingen gjør at Brave kan estimere antall aktive brukere.</translation>
+<translation id="2181060149810222381">Denne private pingen lar Brave beregne aktive brukere.</translation>
 <translation id="3819257035322786455">Sikkerhetskopi</translation>
 <translation id="4608713693379664295">Primære kryptokontoer</translation>
 <translation id="4003821417160006384">Sekundære kontoer</translation>
@@ -1212,5 +1220,11 @@ Hvis du ikke godtar forespørselen, kobler ikke VPN seg opp igjen, og internetti
 <translation id="6637015365469044269">Oppgrader nå</translation>
 <translation id="614530507403667291">Standardmodell for nye samtaler</translation>
 <translation id="4071849832011229600">Standardmodellen</translation>
+<translation id="4185473179105062442">Motta BAT direkte på en egenstyrt kryptoadresse</translation>
+<translation id="5802986777701714573">Vi har lagt til en ny måte for du kan motta de månedlige BAT-belønningene dine på. Koble til en konto fra en av partnerne våre eller bruk det nye selvstyrte alternative for å begynne å tjene BAT nå.</translation>
 <translation id="7557539689487606886">Oppgrader til Premium</translation>
+<translation id="5538904824395606812">Bruk din nåværende tjenesteleverandør eller Quad9</translation>
+<translation id="6393423486818299209">Bruk din nåværende tjenesteleverandør eller Wikimedia DNS</translation>
+<translation id="3401384982562827787">Bruk din nåværende tjenesteleverandør eller Cloudflare</translation>
+<translation id="8812367543786936496">Hvis den nåværende tjenesteleverandøren din er utrygg, bruker Brave en trygg alternativ DNS-leverandør</translation>
 </translationbundle>

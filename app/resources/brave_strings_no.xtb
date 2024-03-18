@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Klikk på Brave-menyen</translation>
 <translation id="8541922081612557424">Om Brave</translation>
 <translation id="1203500561924088507">Installasjonen er fullført. Start nettleseren på nytt før du tar i bruk <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="4658574652223735641">Minnesparing har gjort Brave raskere</translation>
 <translation id="8799570501820813406">Mens denne fanen var inaktiv, ble minnet frigjort for å holde Brave rask. Du kan velge å alltid ekskludere dette nettstedet fra å gjøres inaktivt.</translation>
 <translation id="8767381092474532098">Brave har blokkert denne nedlastingen fordi filen er farlig</translation>
 <translation id="4798342026247191171">Konfigurer den nye Brave-profilen din</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave kan ikke sjekke passordene dine. Prøv på nytt senere.</translation>
 <translation id="8880183781256147665">Legger til i Brave …</translation>
 <translation id="3038232873781883849">Venter på installering</translation>
+<translation id="4503085212612536713">Andre Brave-profiler</translation>
 <translation id="7918740962659365265">Bidra til å gjøre Brave bedre ved å sende programstopprapporter og <ph name="UMA_LINK"/> til Brave</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 USB-enhet ble brukt av en eller flere Brave-utvidelser}=1{1 USB-enhet brukes av en eller flere Brave-utvidelser}other{# USB-enheter brukes av en eller flere Brave-utvidelser}}</translation>
 <translation id="5320085753638900910">Nettleserloggen din påvirker hvilke annonser du ser, og interessene som er anslått nedenfor. For å beskytte personvernet ditt sletter Brave interessene dine automatisk på rullerende basis hver måned. Interessene kan fornyes med mindre du fjerner dem.</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">For å bruke endringene dine må du starte Brave på nytt</translation>
 <translation id="300369155175407115">Når prøveprosjekter er påslått, og hvis Brave har plassert deg tilfeldig i et aktivt prøveprosjekt, påvirker nettleserloggen din annonsene du ser, og interessene som er anslått nedenfor. For å beskytte personvernet ditt sletter Brave interessene dine på rullerende basis hver måned.</translation>
 <translation id="7573068992266397941">Brave har noen sikkerhetsanbefalinger til deg</translation>
+<translation id="8174413867995118050">Andre Brave-profiler</translation>
 <translation id="7708394612738038097">Du logger deg på med en administrert konto og gir tilhørende administratorer kontroll over Brave-profilen din. Brave-dataene dine, slik som apper, bokmerker, loggen, passord og andre innstillinger, knyttes permanent til <ph name="USER_NAME"/>. Du kan slette disse dataene via oversikten for Brave-kontoer, men du kan ikke knytte disse dataene til en annen konto. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Ekstrakode: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Finn ut hvorfor Brave blokkerer enkelte filer</translation>
@@ -309,12 +310,12 @@
 <translation id="9210457680074341078">Hvis du også lagrer bokmerkene i Brave-kontoen din, kan du spore produktpriser i Brave og bli varslet om avslag</translation>
 <translation id="6676384891291319759">Gå til Internett</translation>
 <translation id="1363996462118479832">ChromeOS kunne ikke synkronisere dataene dine på grunn av en feil under pålogging.</translation>
+<translation id="5324448127277983819">Med Brave får du mer kontroll over annonsene du ser, og du begrenser hvilke ting nettsteder kan finne ut om deg når de viser deg personlig tilpassede annonser</translation>
 <translation id="1257247502847251159">Brave trenger mikrofontillatelse for dette nettstedet</translation>
 <translation id="6712881677154121168">Nedlastingsfeil: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Profilen din kan ikke brukes fordi den kommer fra en nyere versjon av Brave.
 
 Det er mulig at enkelte funksjoner ikke er tilgjengelige. Angi en annen profilkatalog eller bruk en nyere versjon av Brave.</translation>
-<translation id="7870748924073900361">Minnesparing har gjort Brave raskere</translation>
 <translation id="6666624454809779082">Brave er allerede installert for alle brukerne på datamaskinen din.</translation>
 <translation id="5360050006043219962">For å få tilgang til Brave-tingene dine på alle enhetene dine, logg på og slå på synkronisering.</translation>
 <translation id="3136039682492230890">Brave anbefaler å skanne denne filen ettersom den kan være farlig.</translation>
@@ -367,7 +368,6 @@ Brave kan ikke gjenopprette innstillingen dine.</translation>
 <translation id="2827121003398607864">Nå er Brave blitt enda bedre</translation>
 <translation id="7649070708921625228">Hjelp</translation>
 <translation id="7631741717293858595">Du kan finne ut mer om disse funksjonene i Brave-innstillingene.</translation>
-<translation id="8678991866891573053">Brave utforsker nye funksjoner som gjør det mulig for nettsteder å bruke mindre av dataene dine og likevel gi deg den samme nettlesingsopplevelsen</translation>
 <translation id="3343095737966473035">Brave er ikke standardnettleseren din</translation>
 <translation id="5477319665405831211">Synkroniser og gi Brave et personlig preg på alle enhetene dine</translation>
 <translation id="2339273275658335597">Brave-oppdatering</translation>
@@ -467,6 +467,7 @@ Tillatelser du allerede har gitt til nettsteder og apper kan også være gjelden
 <translation id="8274659559228306809">{COUNT,plural, =0{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt.}=1{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. Inkognitovinduet ditt blir ikke gjenåpnet.}other{En ny oppdatering for Brave er tilgjengelig og tas i bruk når du starter Brave på nytt. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen}=1{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din ber deg om å starte Brave på nytt for å ta i bruk denne oppdateringen. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering}=1{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. Inkognitovinduet ditt blir ikke gjenåpnet.}other{Administratoren din krever at du starter Brave på nytt for å ta i bruk en oppdatering. De # inkognitovinduene dine blir ikke gjenåpnet.}}</translation>
+<translation id="4104709166890675229">Gjør det vanskeligere å se hvilke nettsteder du besøker for profiler med tilgang til Internett-trafikken din. Brave bruker en sikker forbindelse for å slå opp et nettsteds IP-adresse i DNS (domenenavnsystemet).</translation>
 <translation id="2176087127109773485">Du kan administrere innloggede Brave-synkroniseringskjeder. Brave-synkroniseringskjedene brukes for Brave-nettleseren, Play Store, Gmail med mer. Hvis du vil legge inn en konto for noen andre, for eksempel en i familien, må du legge til en ny profil i <ph name="DEVICE_TYPE"/> instead. <ph name="LINK_BEGIN"/>Finn ut mer<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver inn, til søkemotoren du har som standard, for å få opp bedre forslag. Dette er deaktivert i Privat modus.</translation>
 <translation id="3739288578188828252">Når du skriver i adressefeltet eller søkefeltet, sender Brave det du skriver inn, til Google Drive for å få opp bedre forslag. Dette er deaktivert i Privat modus.</translation>

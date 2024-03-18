@@ -17,7 +17,6 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="2627788872035182013">Klik op het Brave-menu</translation>
 <translation id="8541922081612557424">Over Brave</translation>
 <translation id="1203500561924088507">Bedankt voor het installeren. Je moet de browser opnieuw opstarten voordat je <ph name="BUNDLE_NAME"/> kunt gebruiken.</translation>
-<translation id="4658574652223735641">Geheugenbesparing heeft Brave sneller gemaakt</translation>
 <translation id="8799570501820813406">Terwijl dit tabblad inactief was, is er geheugen vrijgemaakt om Brave snel te houden. Je kunt ervoor kiezen deze site altijd uit te sluiten van inactiviteit.</translation>
 <translation id="8767381092474532098">Brave heeft deze download geblokkeerd, omdat het bestand gevaarlijk is</translation>
 <translation id="4798342026247191171">Je nieuwe Brave-profiel instellen</translation>
@@ -107,6 +106,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8755404239607088219">Brave kan je wachtwoorden niet checken. Probeer het later opnieuw.</translation>
 <translation id="8880183781256147665">Toevoegen aan Brave...</translation>
 <translation id="3038232873781883849">Wachten op installatie...</translation>
+<translation id="4503085212612536713">Andere Brave-profielen</translation>
 <translation id="7918740962659365265">Help ons Brave te verbeteren door crashrapporten en <ph name="UMA_LINK"/> naar Brave te verzenden</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Een of meer Brave-extensies hebben toegang gekregen tot 1 USB-apparaat}=1{Een of meer Brave-extensies hebben toegang tot 1 USB-apparaat}other{Een of meer Brave-extensies hebben toegang tot # USB-apparaten}}</translation>
 <translation id="5320085753638900910">Je browsegeschiedenis heeft invloed op de advertenties die je ziet en je interesses. Hieronder staat een schatting. Ter bescherming van je privacy verwijdert Brave je interesses automatisch elke maand op voortschrijdende basis. Interesses kunnen worden vernieuwd, tenzij je ze verwijdert.</translation>
@@ -216,6 +216,7 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="8586264863973514035">Als je de wijzigingen wilt toepassen, start je Brave opnieuw</translation>
 <translation id="300369155175407115">Tijdens actieve proeven en als Brave je willekeurig in een actieve proef heeft geplaatst, heeft je browsegeschiedenis invloed op de advertenties die je te zien krijgt en de interesses zoals hieronder geschat. Ter bescherming van je privacy verwijdert Brave je interesses elke maand op voortschrijdende basis.</translation>
 <translation id="7573068992266397941">Brave heeft een aantal veiligheidsaanbevelingen gevonden die je moet controleren</translation>
+<translation id="8174413867995118050">Andere Brave-profielen</translation>
 <translation id="7708394612738038097">Je logt in op een beheerd account waarmee de eigenaar van dat account beheer krijgt over je Brave-profiel. Je Brave-gegevens zoals je apps, bookmarks, geschiedenis, wachtwoorden en andere instellingen worden permanent gekoppeld aan <ph name="USER_NAME"/>. Je kunt deze gegevens verwijderen via het Brave sync chains Dashboard, maar je kunt deze gegevens niet koppelen aan een ander account.<ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra code: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Meer informatie over waarom Brave bepaalde bestanden blokkeert</translation>
@@ -311,12 +312,12 @@ Sommige functies zijn wellicht niet beschikbaar en wijzigingen in voorkeuren wor
 <translation id="9210457680074341078">Als je je bookmarks ook opslaat in je Brave-account, kun je productprijzen in Brave bijhouden en een melding krijgen als de prijs daalt</translation>
 <translation id="6676384891291319759">Verbinding maken met internet</translation>
 <translation id="1363996462118479832">Brave OS kan je gegevens niet synchroniseren vanwege een fout tijdens het inloggen.</translation>
+<translation id="5324448127277983819">Brave geeft je meer controle over de advertenties die je te zien krijgt en beperkt wat sites over jou te weten kunnen komen als ze je gepersonaliseerde advertenties tonen</translation>
 <translation id="1257247502847251159">Brave heeft microfoonrechten nodig voor deze site</translation>
 <translation id="6712881677154121168">Downloadfout: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Je profiel kan niet worden gebruikt, omdat dit is gemaakt in een recentere versie van Brave.
 
 Sommige functies zijn mogelijk niet beschikbaar. Geef een andere profieldirectory op of gebruik een recentere versie van Brave.</translation>
-<translation id="7870748924073900361">Geheugenbesparing heeft Brave sneller gemaakt</translation>
 <translation id="6666624454809779082">Brave is al geïnstalleerd voor alle gebruikers op je computer.</translation>
 <translation id="5360050006043219962">Log in en zet synchronisatie aan voor toegang tot je Brave-gegevens op al je apparaten</translation>
 <translation id="3136039682492230890">Brave raadt aan dit bestand te scannen omdat het misschien gevaarlijk is.</translation>
@@ -369,7 +370,6 @@ Brave kan je instellingen niet herstellen.</translation>
 <translation id="2827121003398607864">Brave is nu nog beter</translation>
 <translation id="7649070708921625228">Hulp</translation>
 <translation id="7631741717293858595">Bekijk meer informatie over deze functies in de Brave-instellingen.</translation>
-<translation id="8678991866891573053">Brave bevat nieuwe experimentele functies waarmee sites dezelfde browsefunctionaliteit kunnen leveren terwijl er minder van je gegevens worden gebruikt</translation>
 <translation id="3343095737966473035">Brave is niet je standaardbrowser</translation>
 <translation id="5477319665405831211">Brave synchroniseren en personaliseren op al je apparaten</translation>
 <translation id="2339273275658335597">Brave-update</translation>
@@ -469,6 +469,7 @@ Rechten die u al hebt verleend aan websites en apps zijn mogelijk van toepassing
 <translation id="8274659559228306809">{COUNT,plural, =0{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start.}=1{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start. Je incognitovenster kan niet opnieuw worden geopend.}other{Er is een nieuwe update voor Brave beschikbaar die wordt uitgevoerd zodra je het programma opnieuw start. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren.}=1{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren. Je incognitovenster kan niet opnieuw worden geopend.}other{Je beheerder vraagt je Brave opnieuw te starten om deze update uit te voeren. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren.}=1{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren. Je incognitovenster kan niet opnieuw worden geopend.}other{Je beheerder vereist dat je Brave opnieuw start om een update uit te voeren. Je # incognitovensters kunnen niet opnieuw worden geopend.}}</translation>
+<translation id="4104709166890675229">Maak het voor profielen met toegang tot uw internetverkeer moeilijker om te zien welke websites u bezoekt. Brave gebruikt een beveiligde verbinding om een IP-adres van een website op te zoeken in het DNS (Domain Name System).</translation>
 <translation id="2176087127109773485">Je kunt je ingelogde Brave-synchronisatieketens beheren. Je Brave-synchronisatieketens worden gebruikt voor de Brave-browser, Play Store, Gmail en meer. Als je een account voor iemand anders wil toevoegen, zoals een familielid, voeg dan in plaats daarvan een nieuw profiel toe aan je <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Meer informatie<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Wanneer u iets in de adresbalk of het zoekveld typt, stuurt Brave dat naar uw standaard zoekmachine voor betere suggesties. Dit is uitgeschakeld in Privé.</translation>
 <translation id="3739288578188828252">Wanneer u iets in de adresbalk of het zoekveld typt, stuurt Brave dat naar Google Drive voor itemsuggesties. Dit is uitgeschakeld in Privé.</translation>

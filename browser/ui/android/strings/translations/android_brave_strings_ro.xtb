@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Începe să folosești Recompensele</translation>
 <translation id="8220484609979012449">\n\nPuteți trimite în continuare contribuții în criptomonede către acest creator folosind portofelul Web3.</translation>
 <translation id="6385969012847057348">Acest creator nu poate primi contribuții de la <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Acest creator încă nu și-a configurat opțiunea de a primi contribuții Web3 sau cripto.</translation>
 <translation id="6268134562674951939">Nu aveți suficiente tokenuri</translation>
 <translation id="4529874892536380156">Faceți din aceasta o contribuție lunară recurentă. O puteți anula în orice moment.</translation>
 <translation id="5562948772940025260">Puteți trimite doar maximum <ph name="AMOUNT"/> BAT folosind soldul dvs. de Recompense Brave.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Folosind dispozitivul existent sincronizat, deschideți Setările Brave și navigați la Setări &gt; Sincronizare. Alegeți "Adaugă dispozitiv nou" și scanați codul QR afișat pe ecran.</translation>
 <translation id="5241263629636958324">Copiat în clipboard</translation>
 <translation id="5817918615728894473">Asociază</translation>
-<translation id="7090325819305486658">Preferințe date</translation>
+<translation id="3429575397891106447">Opțiuni de sincronizare</translation>
 <translation id="1680065323266179640">Ștergeți contul Sync</translation>
 <translation id="3792563952903751704">Ștergerea contului va elimina datele dvs. criptate de pe serverele Brave și va dezactiva Sync de pe toate dispozitivele dvs. conectate. În schimb, nu vor fi șterse datele stocate local pe dispozitivele respective.
   Eliminarea este permanentă și nu veți avea posibilitatea de a vă recupera datele. Dacă vreți să utilizați Sync din nou, va trebui să creați un nou cont și să vă adăugați din nou dispozitivele, pe rând.</translation>
@@ -595,14 +596,18 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="1483493594462132177">Trimite</translation>
 <translation id="538450413584738399">Schimbați</translation>
 <translation id="1366855498335432549">Depune</translation>
-<translation id="1420318137760245955">Bun venit la noul portofel Brave</translation>
-<translation id="8339846196588658366">Păstrați în custodie criptomonede și monitorizați performanța portofoliului, totul direct din browserul Brave, care protejează confidențialitatea dvs.</translation>
-<translation id="4472575034687746823">Începeți</translation>
+<translation id="4556086616242530072">Nativ în browser.\nCustodie proprie.\nȘi multichain.</translation>
+<translation id="7909462264772842773">Preluați controlul criptomonedelor și al NFT-urilor dvs. Portofelul Brave acceptă Ethereum, chainuri EVM, Solana, Filecoin și altele.</translation>
+<translation id="165255193061631296">Aveți nevoie de un portofel nou?</translation>
+<translation id="3485737865439729577">Începeți cu Portofelul Brave în câteva minute</translation>
 <translation id="2759836790106646094">Realizați o copie de rezervă după portofelul dvs. acum!</translation>
 <translation id="1078873179929044999">La pasul următor, veți vedea o expresie de recuperare din 12 cuvinte, pe care o puteți folosi pentru a recupera principalele dvs. conturi de criptomonede. Salvați expresia într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="2359808026110333948">Continuă</translation>
 <translation id="5488357322146334497">Mesaj</translation>
 <translation id="1904000155026201268">Înțeleg faptul că, dacă pierd expresia de recuperare, nu voi putea accesa portofelul meu cu criptomonede.</translation>
+<translation id="5333225216561354793">Este necesar să confirmați elementele de mai jos</translation>
+<translation id="1645800479814134195">Înțeleg că acesta este un portofel cu custodie proprie și că eu singur sunt responsabil pentru orice fonduri, active sau conturi asociate și pentru luarea măsurilor adecvate pentru a-mi securiza, proteja și a face o copie de rezervă a portofelului. Înțeleg că Brave nu îmi poate accesa portofelul sau inversa tranzacțiile în numele meu și că fraza mea de recuperare este SINGURA modalitate de a recâștiga accesul în cazul unei parole pierdute, al unui dispozitiv furat sau al unei circumstanțe similare.</translation>
+<translation id="4565891212173086999">Am citit și sunt de acord cu <ph name="CLICK_START"/>Termenii de utilizare<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Expresia dvs. de recuperare</translation>
 <translation id="5077747669435508720">Scrieți sau copiați aceste cuvinte exact în ordinea indicată mai jos și salvați-le într-un loc sigur. Expresia de recuperare este singura modalitate de a redobândi accesul la cont în cazul unei parole uitate, dacă ați pierdut sau vi s-a furat dispozitivul ori dacă doriți să schimbați portofelele.</translation>
 <translation id="2708402071160162126">AVERTISMENT: nu divulgați niciodată expresia de recuperare. Oricine știe această expresie vă poate prelua activele definitiv.</translation>
@@ -647,6 +652,9 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="3747079125031086337">Selectați cuvintele din expresia de recuperare în ordinea corectă</translation>
 <translation id="6518133107902771759">Confirmați</translation>
 <translation id="3157931365184549694">Restabilește</translation>
+<translation id="5844138175312846408">Aveți deja un portofel?</translation>
+<translation id="2502258949541727762">Înainte să începem</translation>
+<translation id="5981303441790732480">Importați portofelul dvs. existent</translation>
 <translation id="9111102763498581341">Deblochează</translation>
 <translation id="6657585470893396449">Parolă</translation>
 <translation id="5619264711680220002">Deblocare biometrică</translation>
@@ -665,7 +673,7 @@ Sigur doriți să faceți acest lucru?</translation>
 <translation id="5483736362376139517">1 an</translation>
 <translation id="6979737339423435258">Dintotdeauna</translation>
 <translation id="6284218950354553099">Trimiteți automat la Brave un ping privind utilizarea zilnică</translation>
-<translation id="5288333155754958121">Prin acest ping anonim și confidențial, Brave poate estima numărul de utilizatori activi.</translation>
+<translation id="2181060149810222381">Prin acest ping confidențial, Brave poate estima numărul de utilizatori activi.</translation>
 <translation id="3819257035322786455">Creați copii de rezervă</translation>
 <translation id="4608713693379664295">Principalele conturi pentru criptomonede</translation>
 <translation id="4003821417160006384">Conturi secundare</translation>
@@ -1213,5 +1221,11 @@ Dacă nu acceptați această solicitare, nu se va realiza reconectarea la VPN, i
 <translation id="6637015365469044269">Faceți upgrade acum</translation>
 <translation id="614530507403667291">Model implicit pentru conversații noi</translation>
 <translation id="4071849832011229600">Modul implicit</translation>
+<translation id="4185473179105062442">Primiți BAT direct la o adresă cripto în custodie proprie</translation>
+<translation id="5802986777701714573">Am introdus o nouă modalitate de a primi recompense lunare BAT. Conectați un cont al unuia dintre partenerii noștri sau folosiți noua opțiune de custodie proprie pentru a începe să câștigați bani chiar acum.</translation>
 <translation id="7557539689487606886">Alegeți Premium</translation>
+<translation id="5538904824395606812">Utilizați furnizorul dvs. de servicii actual sau Quad9</translation>
+<translation id="6393423486818299209">Utilizați furnizorul dvs. de servicii actual sau Wikimedia DNS</translation>
+<translation id="3401384982562827787">Utilizați furnizorul dvs. de servicii actual sau Cloudflare</translation>
+<translation id="8812367543786936496">Dacă furnizorul dvs. de servicii actual este nesecurizat, Brave utilizează un furnizor DNS alternativ securizat</translation>
 </translationbundle>

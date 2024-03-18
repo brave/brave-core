@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Alusta preemiate kasutamist</translation>
 <translation id="8220484609979012449">\n\nSaate siiski sellele loojale saata krüptopanuseid, kasutades oma Web3 rahakotti.</translation>
 <translation id="6385969012847057348">See looja ei saa pakkujalt <ph name="CUSTODIAN"/> panuseid vastu võtta.</translation>
+<translation id="735733310778086206">See looja ei ole veel seadistatud saama Web3 või krüptopanuseid.</translation>
 <translation id="6268134562674951939">Teil pole piisavalt tokeneid</translation>
 <translation id="4529874892536380156">Määrake see korduvaks igakuiseks panuseks. Saate selle igal ajal tühistada.</translation>
 <translation id="5562948772940025260">Saate oma Brave’i auhindade saldoga saata ainult kuni <ph name="AMOUNT"/> BAT-i.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Avage olemasolevas sünkroonitud seadmes Brave’i seaded, ja liikuge lehele „Seaded &gt; Sünkroonimine“. Valige „Lisa uus seade“ ja skannige ekraanil kuvatud QR-kood.</translation>
 <translation id="5241263629636958324">Kopeeritud lõikelaule</translation>
 <translation id="5817918615728894473">Seo</translation>
-<translation id="7090325819305486658">Andme-eelistused</translation>
+<translation id="3429575397891106447">Sünkroonimise valikud</translation>
 <translation id="1680065323266179640">Kustuta sünkroonimiskonto</translation>
 <translation id="3792563952903751704">Konto kustutamine eemaldab teie krüptitud andmed Brave'i serveritest ja keelab sünkroonimise kõigis teie ühendatud seadmetes. See ei kustuta aga neis seadmetes lokaalselt salvestatud andmeid.
   See kustutamine on alatine ja andmeid ei ole võimalik taastada. Kui peaksite otsustama hakata uuesti sünkroonimist kasutama, peate looma uue konto ja kõik seadmed ükshaaval uuesti lisama.</translation>
@@ -595,14 +596,18 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="1483493594462132177">Saada</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposiit</translation>
-<translation id="1420318137760245955">Tere tulemast kasutama uut Brave'i rahakotti!</translation>
-<translation id="8339846196588658366">Hoidke krüptovarad oma valduses ja jälgige portfelli tulemusi. Kõik otse Brave'i privaatsest brauserist.</translation>
-<translation id="4472575034687746823">Alustamine</translation>
+<translation id="4556086616242530072">Oma brauser.\nTäielik valdus.\nJa mitmeahelaline.</translation>
+<translation id="7909462264772842773">Võtke oma krüpto- ja NFT-d kontrolli alla. Brave Wallet toetab Ethereumi, EVM-i ahelaid, Solanat, Filecoini ja muud.</translation>
+<translation id="165255193061631296">Vajate uut rahakotti?</translation>
+<translation id="3485737865439729577">Brave Walletiga alustamine võtab vaid mõne minuti</translation>
 <translation id="2759836790106646094">Varundage oma rahakott kohe!</translation>
 <translation id="1078873179929044999">Järgmises etapis näete 12-sõnalist taastefraasi, mille abil saate taastada oma põhikrüptokontod. Hoidke seda turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
 <translation id="2359808026110333948">Jätka</translation>
 <translation id="5488357322146334497">Sõnum</translation>
 <translation id="1904000155026201268">Saan aru, et kui kaotan taastefraasi, pole mul võimalik oma krüptorahakotile juurde pääseda.</translation>
+<translation id="5333225216561354793">Peate nõustuma alljärgnevaga.</translation>
+<translation id="1645800479814134195">Saan aru, et tegu on minu valduses oleva rahakotiga ja mina üksi vastutan mis tahes seotud rahaliste vahendite, varade või kontode eest ning asjakohaste meetmete võtmise eest oma rahakoti turvamiseks, kaitsmiseks ja varundamiseks. Mõistan, et Brave EI saa minu nimel rahakotti avada ega tehinguid tagasi pöörata, ja et parooli kaotamise, seadme varguse või muu sarnase olukorra puhul on minu taastefraas AINUS juurdepääsu taastamise moodus.</translation>
+<translation id="4565891212173086999">Olen <ph name="CLICK_START"/>kasutustingimused<ph name="CLICK_END"/> läbi lugenud ja nõustun nendega.</translation>
 <translation id="3933122286596948824">Teie taastamise lause</translation>
 <translation id="5077747669435508720">Kirjutage need sõnad üles või kopeerige täpselt alltoodud järjekorras ning hoidke neid turvalises kohas. Taastefraas on ainus viis konto juurdepääsu tagasisaamiseks, kui parool on ununenud, seade on kas kadunud või varastatud või soovite rahakotti vahetada.</translation>
 <translation id="2708402071160162126">HOIATUS! Ärge jagage oma taastefraasi. Igaüks, kes seda fraasi teab, saab teie varad jäädavalt endale võtta.</translation>
@@ -647,6 +652,9 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="3747079125031086337">Valige oma taastefraasi sõnad õiges järjekorras.</translation>
 <translation id="6518133107902771759">Kinnita</translation>
 <translation id="3157931365184549694">Taasta</translation>
+<translation id="5844138175312846408">Teil on juba rahakott?</translation>
+<translation id="2502258949541727762">Enne kui me alustame</translation>
+<translation id="5981303441790732480">Importige oma olemasolev rahakott</translation>
 <translation id="9111102763498581341">Ava lukk</translation>
 <translation id="6657585470893396449">Parool</translation>
 <translation id="5619264711680220002">Biomeetriline avamine</translation>
@@ -665,7 +673,7 @@ Kas soovite seda kindlasti teha?</translation>
 <translation id="5483736362376139517">1 aasta</translation>
 <translation id="6979737339423435258">Algusest</translation>
 <translation id="6284218950354553099">Igapäevase kasutuse pingi automaatne saatmine Brave'ile</translation>
-<translation id="5288333155754958121">See anonüümne, privaatne ping võimaldab Brave'il hinnata aktiivsete kasutajate arvu.</translation>
+<translation id="2181060149810222381">See privaatne ping võimaldab Brave'il hinnata aktiivsete kasutajate arvu.</translation>
 <translation id="3819257035322786455">Varunda</translation>
 <translation id="4608713693379664295">Põhikrüptokonto</translation>
 <translation id="4003821417160006384">Teisesed kontod</translation>
@@ -1212,5 +1220,11 @@ Kui te selle taotlusega ei nõustu, siis VPN-i ühendust ei taastata ja teie int
 <translation id="6637015365469044269">Täienda kohe</translation>
 <translation id="614530507403667291">Uute vestluste vaikemudel</translation>
 <translation id="4071849832011229600">Vaikemudel</translation>
+<translation id="4185473179105062442">BAT-i saamine otse omavaldusega krüptoaadressile</translation>
+<translation id="5802986777701714573">Oleme lisanud uue viisi teie igakuiste BAT-i preemiate kättesaamiseks. Ühendage mõne meie partneri konto või kasutage uut omavalduse võimalust, et hakata kohe tulu teenima.</translation>
 <translation id="7557539689487606886">Telli Premium</translation>
+<translation id="5538904824395606812">Kasutage oma praegust teenusepakkujat või Quad9</translation>
+<translation id="6393423486818299209">Kasutage oma praegust teenusepakkujat või Wikimedia DNS-i</translation>
+<translation id="3401384982562827787">Kasutage oma praegust teenusepakkujat või Cloudflare'i</translation>
+<translation id="8812367543786936496">Kui teie praegune teenusepakkuja ei ole turvaline, kasutab Brave turvalist alternatiivset DNS-i teenusepakkujat.</translation>
 </translationbundle>

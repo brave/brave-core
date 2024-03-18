@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Börja använda Belöningar</translation>
 <translation id="8220484609979012449">\n\nDu kan fortfarande skicka kryptobidrag till den här skaparen genom att använda din Web3-plånbok.</translation>
 <translation id="6385969012847057348">Den här kreatören kan inte ta emot bidrag från <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Den här kreatören har ännu inte gjort inställningarna för att ta emot Web3- eller kryptobidrag.</translation>
 <translation id="6268134562674951939">Du har inte tillräckligt med tokens</translation>
 <translation id="4529874892536380156">Gör det här till ett månatligt återkommande bidrag. Du kan avbryta det när som helst.</translation>
 <translation id="5562948772940025260">Du kan endast skicka upp till <ph name="AMOUNT"/> BAT med ditt Brave Rewards-saldo.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Med en befintligt synkroniserad enhet öppnar du Brave-inställningar och navigerar till inställningar &gt; synkronisering. Välj "Lägg till ny enhet" och skanna QR-koden som visas på skärmen.</translation>
 <translation id="5241263629636958324">Kopierat till urklipp</translation>
 <translation id="5817918615728894473">Koppla</translation>
-<translation id="7090325819305486658">Datainställningar</translation>
+<translation id="3429575397891106447">Synkroniseringsalternativ</translation>
 <translation id="1680065323266179640">Ta bort synkroniseringskonto</translation>
 <translation id="3792563952903751704">Om du tar bort ditt konto kommer dina krypterade data att tas bort från Brave-servrar och synkronisering inaktiveras på alla dina anslutna enheter. Data som lagras lokalt på dessa enheter kommer dock inte att tas bort.
 Denna borttagning är permanent och det finns inget sätt att återställa data. Om du bestämmer dig för att börja använda Sync igen måste du skapa ett nytt konto och lägga till varje enhet på nytt.</translation>
@@ -595,14 +596,18 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="1483493594462132177">Skicka</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposition</translation>
-<translation id="1420318137760245955">Välkommen till den nya Brave Wallet</translation>
-<translation id="8339846196588658366">Spara dina kryptotillgångar och övervaka portföljens resultat. Allt från Brave, sekretesswebbläsaren.</translation>
-<translation id="4472575034687746823">Kom igång</translation>
+<translation id="4556086616242530072">Inbyggd webbläsare.\nSjälvförvaring.\nOch flera kedjor.</translation>
+<translation id="7909462264772842773">Ta kontroll över din krypto och NFT:er. Brave Wallet stöder Ethereum, EVM-kedjor, Solana, Filecoin med flera.</translation>
+<translation id="165255193061631296">Behöver du en ny plånbok?</translation>
+<translation id="3485737865439729577">Kom igång med Brave Wallet på några minuter</translation>
 <translation id="2759836790106646094">Säkerhetskopiera din plånbok nu!</translation>
 <translation id="1078873179929044999">I nästa steg kommer du att se en återställningsfras på 12 ord som du kan använda för att återställa dina primära kryptokonton. Spara den på ett säkert ställe. Din återställningsfras är det enda sättet att återfå kontoåtkomst i händelse av glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånböcker.</translation>
 <translation id="2359808026110333948">Fortsätt</translation>
 <translation id="5488357322146334497">Meddelande</translation>
 <translation id="1904000155026201268">Jag förstår att jag inte kommer åt min kryptoplånbok om jag tappar bort min återställningsfras.</translation>
+<translation id="5333225216561354793">Vi kräver att du bekräftar posterna nedan</translation>
+<translation id="1645800479814134195">Jag förstår att detta är en plånbok för självförvar och att jag ensam är ansvarig för alla associerade medel, tillgångar eller konton, och för att vidta lämpliga åtgärder för att säkra, skydda och säkerhetskopiera min plånbok. Jag förstår att Brave inte kan komma åt min plånbok eller vända transaktioner för mina räkningar, och att min återställningsfras är det ENDA sättet att återfå åtkomst i händelse av ett förlorat lösenord, stulen enhet eller liknande omständigheter.</translation>
+<translation id="4565891212173086999">Jag har läst och godkänner <ph name="CLICK_START"/>Användarvillkoren<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Din återställningsfras</translation>
 <translation id="5077747669435508720">Skriv ner eller kopiera dessa ord i exakt ordning som visas nedan och spara dem någonstans säkert. Din återställningsfras är det enda sättet att återfå kontotillgång vid glömt lösenord, förlorad eller stulen enhet, eller om du vill byta plånbok.</translation>
 <translation id="2708402071160162126">VARNING: Dela aldrig din återställningsfras. Alla med denna fras kan ta dina tillgångar för alltid.</translation>
@@ -647,6 +652,9 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="3747079125031086337">Välj orden i din återställningsfras i rätt ordning.</translation>
 <translation id="6518133107902771759">Verifiera</translation>
 <translation id="3157931365184549694">Återställ</translation>
+<translation id="5844138175312846408">Har du redan en plånbok?</translation>
+<translation id="2502258949541727762">Innan vi börjar</translation>
+<translation id="5981303441790732480">Importera din befintliga plånbok</translation>
 <translation id="9111102763498581341">Lås upp</translation>
 <translation id="6657585470893396449">Lösenord</translation>
 <translation id="5619264711680220002">Biometrisk upplåsning</translation>
@@ -665,7 +673,7 @@ Dubbelkolla att dessa kodord genererades av en enhet som du äger.
 <translation id="5483736362376139517">1 år</translation>
 <translation id="6979737339423435258">Sedan kontot skapades</translation>
 <translation id="6284218950354553099">Skicka daglig användningsping till Brave automatiskt</translation>
-<translation id="5288333155754958121">Den här anonyma pingen låter Brave uppskatta antalet aktiva användare.</translation>
+<translation id="2181060149810222381">Den här privata pingen låter Brave uppskatta antalet aktiva användare</translation>
 <translation id="3819257035322786455">Säkerhetskopia</translation>
 <translation id="4608713693379664295">Primära kryptokonton</translation>
 <translation id="4003821417160006384">Sekundära konton</translation>
@@ -1212,5 +1220,11 @@ Om du inte accepterar denna begäran kommer VPN inte att ansluta igen och din in
 <translation id="6637015365469044269">Uppgradera nu</translation>
 <translation id="614530507403667291">Standardmodell för nya konversationer</translation>
 <translation id="4071849832011229600">Standardmodell</translation>
+<translation id="4185473179105062442">Ta emot BAT direkt till en kryptoadress för självförvaring.</translation>
+<translation id="5802986777701714573">Vi har lagt till ett nytt sätt för dig att ta emot dina månatliga BAT-belöningar. Anslut ett konto från en av våra partner eller använd det nya självförvaringsalternativet och börja tjäna BAT nu.</translation>
 <translation id="7557539689487606886">Välj Premium</translation>
+<translation id="5538904824395606812">Använd din nuvarande tjänsteleverantör eller Quad9</translation>
+<translation id="6393423486818299209">Använd din nuvarande tjänsteleverantör eller Wikimedia DNS</translation>
+<translation id="3401384982562827787">Använd din nuvarande tjänsteleverantör eller Cloudflare</translation>
+<translation id="8812367543786936496">Om din nuvarande tjänsteleverantör är osäker använder Brave en säker, alternativ DNS-leverantör</translation>
 </translationbundle>

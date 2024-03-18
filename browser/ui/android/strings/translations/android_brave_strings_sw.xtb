@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Anza kutumia Zawadi</translation>
 <translation id="8220484609979012449">\n\nBado unaweza kutuma mchango wa mali ya kidijitali kwa mtayarishi huyu kwa kutumia pochi yako ya Web3.</translation>
 <translation id="6385969012847057348">Mtayarishi huyu ameshindwa kupokea mchango kutoka kwa <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Mtayarishi huyu bado hajaweka mipangilio ya kupokea michango ya sarafu dijitali au ya Web3.</translation>
 <translation id="6268134562674951939">Huna tokeni za kutosha</translation>
 <translation id="4529874892536380156">Fanya mchango huu ujirudie kila mwezi. Unaweza kuughairi wakati wowote.</translation>
 <translation id="5562948772940025260">Unaweza kutuma hadi kiasi cha BAT <ph name="AMOUNT"/> ukitumia salio lako la Brave Rewards.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Kwa kutumia kifaa kilichosawazishwa, fungua Mipangilio ya Brave na uende kwenye Mipangilio na Usawazishaji. Chagua "Ongeza Kifaa Kipya" na ukague Msimbo wa QR unaoonyeshwa kwenye skrini.</translation>
 <translation id="5241263629636958324">Imenakiliwa kwenye ubao wa kunakilia</translation>
 <translation id="5817918615728894473">Oanisha</translation>
-<translation id="7090325819305486658">Mapendeleo ya Data</translation>
+<translation id="3429575397891106447">Machaguo ya Kusawazisha</translation>
 <translation id="1680065323266179640">Futa akaunti ya Sync</translation>
 <translation id="3792563952903751704">Kufuta akaunti yako kutaondoa data yako iliyosimbwa kwa njia fiche kwenye seva za Brave na kulemaza Sync kwenye vifaa vyako vyote ulivyounganisha. Hata hivyo, hakutafuta data iliyohifadhiwa kwenye vifaa hivyo.
 Ufutaji huu ni wa kudumu na hakuna njia ya kurejesha data. Ukiamua kuanza kutumia Sync tena, utahitaji kufungua akaunti mpya na kuongeza kila kifaa kimoja baada ya kingine.</translation>
@@ -595,14 +596,18 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="1483493594462132177">Tuma</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Weka Pesa</translation>
-<translation id="1420318137760245955">Karibu kwenye Brave Wallet mpya</translation>
-<translation id="8339846196588658366">Shikilia rasilimali za crypto chini ya ulinzi wako na ufuatilie utendaji wa mkoba. Yote moja kwa moja kutoka kwa kivinjari cha faragha cha Brave.</translation>
-<translation id="4472575034687746823">Anza</translation>
+<translation id="4556086616242530072">Browser native.\nSelf-custody.\nNa multi-chain.</translation>
+<translation id="7909462264772842773">Dhibiti crypto na NFT zako. Brave Wallet huwezesha matumizi ya Ethereum, mitungo ya EVM, Solana, Filecoin, na zaidi.</translation>
+<translation id="165255193061631296">Unahitaji pochi mpya?</translation>
+<translation id="3485737865439729577">Anza kutumia Brave Wallet ndani ya dakika chache</translation>
 <translation id="2759836790106646094">Hifadhi nakala ya pochi yako sasa hivi!</translation>
 <translation id="1078873179929044999">Katika hatua inayofuata utaona kauli ya urejeshaji ya maneno 12, ambayo unaweza kutumia kurejesha akaunti zako za msingi za crypto. Ihifadhi eneo salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa kufikia akaunti endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, au unataka kubadilisha pochi.</translation>
 <translation id="2359808026110333948">Endelea</translation>
 <translation id="5488357322146334497">Ujumbe</translation>
 <translation id="1904000155026201268">Ninaelewa kwamba ikiwa nitapoteza uwezo wangu wa kulipa, sitaweza kufikia pochi yangu ya crpto.</translation>
+<translation id="5333225216561354793">Tunahitaji uthibitishe vipengee vilivyo hapa chini</translation>
+<translation id="1645800479814134195">Ninaelewa kuwa hii ni pochi ya uangalizi binafsi, na kwamba ni mimi pekee ninawajibika kwa fedha, mali au akaunti zozote zinazohusiana, na kuchukua hatua inayofaa ili kulinda, kutunza na kuhifadhi nakala rudufu ya pochi yangu. Ninaelewa kuwa Brave haiwezi kufikia pochi yangu au kubatilisha miamala kwa niaba yangu, na kwamba kifungu changu cha maneno cha kurejesha ufikiaji ndicho njia ya PEKEE ya kupata tena ufikiaji ikiwa nenosiri litapotea, kifaa kitaibiwa au hali kama hiyo.</translation>
+<translation id="4565891212173086999">Nimesoma na ninakubali <ph name="CLICK_START"/>Masharti ya Matumizi<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Kaulisiri yako ya urejeshaji</translation>
 <translation id="5077747669435508720">Andika au nakili maneno haya katika mpangilio kamili ulioonyeshwa hapa chini na uyahifadhi mahali salama. Kauli yako ya urejeshaji ni njia tu ya kupata uwezo wa ufikiaji endapo umesahau nenosiri, umepoteza au kifaa kimeibwa, unataka kubadilisha pochi.</translation>
 <translation id="2708402071160162126">ONYO: Usiwahi kushiriki kauli yako ya urejeshaji. Yeyote aliye na kauli hii anaweza kuchukua rasilimali zako kabisa.</translation>
@@ -647,6 +652,9 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="3747079125031086337">Teua maneno katika kauli yako ya urejeshaji katika mpangilio wayo sahihi.</translation>
 <translation id="6518133107902771759">Thibitisha</translation>
 <translation id="3157931365184549694">Rejesha</translation>
+<translation id="5844138175312846408">Je, tayari una pochi?</translation>
+<translation id="2502258949541727762">Kabla hatujaanza</translation>
+<translation id="5981303441790732480">Hamisha pochi yako iliyopo</translation>
 <translation id="9111102763498581341">Fungua</translation>
 <translation id="6657585470893396449">Nenosiri</translation>
 <translation id="5619264711680220002">Kufungua kibiometriki</translation>
@@ -665,7 +673,7 @@ Je, una uhakika unataka kufanya hili?</translation>
 <translation id="5483736362376139517">Mwaka 1</translation>
 <translation id="6979737339423435258">Wakati wote</translation>
 <translation id="6284218950354553099">Tuma kiotomatiki mlio wa matumizi ya kila siku kwa Brave</translation>
-<translation id="5288333155754958121">Mlio huu wa faragha usiotambulisha huruhusu Brave kukadiria watumiaji hai.</translation>
+<translation id="2181060149810222381">Pingi hii ya faragha huruhusu Brave kukadiria watumiaji wanaotumia huduma.</translation>
 <translation id="3819257035322786455">Hifadhi Mbadala</translation>
 <translation id="4608713693379664295">Akaunti za Msingi za Crypto</translation>
 <translation id="4003821417160006384">Akaunti Mbadala</translation>
@@ -1212,5 +1220,11 @@ Usipolikubali ombi hili, VPN haitaunganisha tena na muunganisho wako wa intaneti
 <translation id="6637015365469044269">Sasisha sasa</translation>
 <translation id="614530507403667291">Muundo chaguomsingi wa mazungumzo mapya</translation>
 <translation id="4071849832011229600">Muundo wa chaguomsingi</translation>
+<translation id="4185473179105062442">Pokea BAT moja kwa moja kwenye anwani ya sarafu dijitali ya udhibiti binafsi.</translation>
+<translation id="5802986777701714573">Tumeweka njia mpya ya kupokea zawadi zako za BAT kila mwezi. Unganisha akaunti kutoka kwa mmoja wa washirika wetu au tumia chaguo jipya la udhibiti binafsi ili uanze kuchuma mapato sasa.</translation>
 <translation id="7557539689487606886">Tumia Toleo la Kulipiwa</translation>
+<translation id="5538904824395606812">Tumia mtoa huduma wako wa sasa au Quad9</translation>
+<translation id="6393423486818299209">Tumia mtoa huduma wako wa sasa au Wikimedia DNS</translation>
+<translation id="3401384982562827787">Tumia mtoa huduma wako wa sasa au Cloudflare</translation>
+<translation id="8812367543786936496">Ikiwa mtoa huduma wako wa sasa si salama, Brave hutumia mtoa huduma mbadala wa DNS ambaye ni salama</translation>
 </translationbundle>

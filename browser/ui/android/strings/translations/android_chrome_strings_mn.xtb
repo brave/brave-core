@@ -20,9 +20,10 @@
 <translation id="1105960400813249514">Дэлгэцийн зураг авах</translation>
 <translation id="1108938384783527433">Түүхийг синк хийх</translation>
 <translation id="1111673857033749125">Таны бусад төхөөрөмжид хадгалсан хавчуурга энд харагдах болно</translation>
+<translation id="8833108756805916091">Нэвтрэх үгний шифрлэлтэд Google Pay-н төлбөрийн хэрэгсэл болон хаягууд багтахгүй.
+
+Энэ тохиргоог өөрчлөхийн тулд <ph name="BEGIN_LINK"/>бүртгэлийнхээ Brave-н өгөгдлийг арилгана уу<ph name="END_LINK"/>.</translation>
 <translation id="1113597929977215864">Хялбаршуулсан харагдцыг харуулах</translation>
-<translation id="4470276443668654888">Google Pay-н төлбөрийн хэрэгслүүд болон хаягуудыг шифрлэхгүй. Brave-н хөтчийн түүхийг синк хийхгүй.
-Зөвхөн таны нэвтрэх үгтэй хүн таны шифрлэгдсэн өгөгдлийг унших боломжтой. Нэвтрэх үгийг Brave-д илгээдэггүй эсвэл хадгалдаггүй. Хэрэв та нэвтрэх үгээ мартсан эсвэл энэ тохиргоог өөрчлөхийг хүсвэл синкийг шинэчлэх шаардлагатай. <ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
 <translation id="1295971429974142731">Таныг аюултай вебсайт, таталт болон өргөтгөлөөс хамгаалахгүй. Гэхдээ та Аюулгүй үзэх хамгаалалтыг Gmail, Хайлт зэрэг Brave-н боломжтой бусад үйлчилгээнд авсан хэвээр байна.</translation>
 <translation id="1129510026454351943">Дэлгэрэнгүй: <ph name="ERROR_DESCRIPTION"/></translation>
 <translation id="1142732900304639782">Эдгээр сайтыг орчуулахыг бүү санал болго</translation>
@@ -34,6 +35,7 @@
 <translation id="1177863135347784049">Хэвийн</translation>
 <translation id="1181037720776840403">Хасах</translation>
 <translation id="1181366777303791449"><ph name="MAIN_FRAME_ETLD_PLUS_ONE"/>-д</translation>
+<translation id="4606796610935634842">Та Brave Бүртгэлийнхээ нууц үгнүүдийг үргэлж ашиглах боломжтой болохоо баталгаажуулахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="1193729455103054076">Сайн нууц үг ашигласан уу?</translation>
 <translation id="1197267115302279827">Хавчуургыг шилжүүлэх</translation>
 <translation id="1197761954713363183">Нэвтрэх түлхүүрийн баталгаажуулалтын хүснэгтийг хаасан</translation>
@@ -134,8 +136,10 @@
 <translation id="6493900814829428590">Brave таныг зочилж магадгүй гэж бодсон хуудаснуудыг урьдчилан ачаалсан үед та илүү хурдан үзэж, хайх боломжтой</translation>
 <translation id="5129323533070334129">Нууцлалтай горимоос гадуур нэвтрэх түлхүүрийг хадгалах уу?</translation>
 <translation id="1749561566933687563">Хавчуургаа синхрончлоорой</translation>
+<translation id="12433225238423439">Brave Бүртгэлдээ нууц үгнүүдийг үргэлжлүүлэн ашиглана уу</translation>
 <translation id="1750259112639922169">Табын бүлэг - <ph name="TAB_COUNT"/> таб</translation>
 <translation id="17513872634828108">Нээлттэй цонх</translation>
+<translation id="1755203724116202818">Сайтууд зарынхаа гүйцэтгэлийг хэмжихийн тулд таныг сайтад зочилсны дараа худалдан авалт хийсэн эсэх зэрэг хязгаарлагдмал төрлийн өгөгдлийг хоорондоо хуваалцдаг.</translation>
 <translation id="9207812657123271782">Brave Password Manager-н шинэчлэлт</translation>
 <translation id="1760873718737761808">{FILE_COUNT,plural, =1{Хуудаснууд, жагсаалтад 1 хуудас байна}other{Хуудаснууд, жагсаалтад # хуудас байна}}</translation>
 <translation id="1778457539567749232">Уншаагүй болгож тэмдэглэх</translation>
@@ -165,7 +169,6 @@
 <translation id="1933845786846280168">Сонгосон таб</translation>
 <translation id="1943432128510653496">Нууц үг хадгалах</translation>
 <translation id="1944535645109964458">Боломжтой passkey байхгүй</translation>
-<translation id="1952172573699511566">Вебсайт текстийг таны сонгосон хэлээр (хэрэв тухайн хэл боломжтой бол) харуулна.</translation>
 <translation id="1959679933317802873">Контентыг хүлээж байна</translation>
 <translation id="3968054912784331254">Brave-н шинэчлэлтийг Android-н энэ хувилбарт дэмжихээ больсон байна</translation>
 <translation id="1963976881984600709">Стандарт хамгаалалт</translation>
@@ -177,7 +180,6 @@
 <translation id="1986685561493779662">Ижил нэр ашиглалтад байна</translation>
 <translation id="1995884366040846621">Үргэлжүүлэхийн тулд <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> таны нэр, имэйл хаяг болон профайл зургийг энэ сайттай хуваалцана. Энэ сайтын <ph name="BEGIN_LINK1"/>нууцлалын бодлогыг<ph name="END_LINK1"/> харна уу.</translation>
 <translation id="6968892567705775281">Brave-н хайлтуудад эргэн тойрны текстийг оруулах уу?</translation>
-<translation id="2009341475524975924">Зарын гүйцэтгэлийг хэмжихийн тулд танд зар харуулсан өдрийн цаг зэрэг хязгаарлагдмал төрлийн өгөгдлийг сайтуудын хооронд хуваалцах боломжтой.</translation>
 <translation id="201060170519281460">Таны профайлын түгжээ синк хийсэн нууц үгнүүд, төлбөр болон бусад зүйлийг оруулаад мэдээллийг тань автомашинд аюулгүй байлгадаг.</translation>
 <translation id="2021896219286479412">Бүтэн дэлгэцийн сайтын хяналт</translation>
 <translation id="2038563949887743358">Сайтыг компьютерийн горимоор харах хүсэлтийг асаах</translation>
@@ -188,6 +190,7 @@
 <translation id="2056878612599315956">Сайтыг түр зогсоосон</translation>
 <translation id="2065944887543506430">{FILE_COUNT,plural, =1{1 таталт амжилтгүй боллоо}other{# таталт амжилтгүй боллоо}}</translation>
 <translation id="2067805253194386918">текст</translation>
+<translation id="2079545284768500474">Буцаах</translation>
 <translation id="2082238445998314030"><ph name="TOTAL_RESULTS"/>-ын <ph name="RESULT_NUMBER"/> илэрц байна</translation>
 <translation id="2091863218454846791">Товч тодорхой харагдах байдлыг харуулж байна</translation>
 <translation id="2093731487903423814">сүүлийн 15 минут</translation>
@@ -200,10 +203,12 @@
 <translation id="2132122640199389833">Бүх холбосон төхөөрөмжийг хасах</translation>
 <translation id="213279576345780926">Хаалттай <ph name="TAB_TITLE"/></translation>
 <translation id="2139186145475833000">Нүүр хуудсын дэлгэц рүү нэмэх</translation>
+<translation id="3551984101540668623">Таны Хуудасны статистикийн үйл ажиллагааг Brave Бүртгэлд тань хадгалсан. <ph name="BEGIN_LINK"/>Үүнийг хэрхэн удирдахыг мэдэж авах<ph name="END_LINK"/></translation>
 <translation id="2141396931810938595">Таны ашиглалтад тулгуурласан</translation>
 <translation id="2149973817440762519">Хадгалагдсан хуудсыг засах</translation>
 <translation id="2155214902713132423">Энэ төхөөрөмжид энэ баталгаажуулалтын арга боломжгүй байна. Нөгөө төхөөрөмждөө өөр сонголт сонгоорой.</translation>
 <translation id="4162910516440006395">Brave бүх нууц үгийг шалгаж чадсангүй</translation>
+<translation id="526235294307144732">Brave Бүртгэлийнхээ Brave-н өгөгдлийг ашиглах болон хадгалахын тулд нэвтрэх үгээ оруулна уу</translation>
 <translation id="2172688499998841696">Зургийн тайлбар унтраалттай байна</translation>
 <translation id="2172905120685242547">Цонхыг хаах уу?</translation>
 <translation id="2173302385160625112">Интернэт холболтоо шалгана уу</translation>
@@ -267,6 +272,7 @@
 <translation id="2534155362429831547"><ph name="NUMBER_OF_ITEMS"/> зүйлийг устгасан</translation>
 <translation id="2536728043171574184">Энэ хуудсын офлайн хуулбарыг харж байна</translation>
 <translation id="2546283357679194313">Cookies болон сайтын дата</translation>
+<translation id="254973855621628293">Энэ төхөөрөмжид хадгалсан нууц үгнүүд</translation>
 <translation id="2567385386134582609">ЗУРАГ</translation>
 <translation id="2567545343356994513">Аюултай вебсайтууд, татаж авсан файл болон өргөтгөлийн эсрэг илүү хурдан, идэвхтэй хамгаалалт</translation>
 <translation id="5079947353572974060">Brave Орчуулагчид өөр хэлнүүдийн хуудаснууд илгээх санал тавих</translation>
@@ -311,6 +317,7 @@
 <translation id="2777555524387840389"><ph name="SECONDS"/> секунд үлдсэн</translation>
 <translation id="2779651927720337254">татаж чадсангүй</translation>
 <translation id="2781151931089541271">1 секунд үлдсэн</translation>
+<translation id="2789486458103222910">OK</translation>
 <translation id="2800066122460699237"><ph name="TAB_TITLE"/> табыг хаана</translation>
 <translation id="7068873021383263704"><ph name="BEGIN_LINK"/>Brave Бүртгэл<ph name="END_LINK"/>-дээ хадгалсан нууц үгнүүдийг харах болон удирдах</translation>
 <translation id="2827278682606527653">Feed card menu half height</translation>
@@ -368,7 +375,6 @@
 <translation id="3027644380269727216">Таны сайт дээрх үйл ажиллагаанд тулгуурласан. Энэ тохиргоо асаалттай байна.</translation>
 <translation id="3029276696788198026">Урьдчилан ачаалахгүй</translation>
 <translation id="3029704984691124060">Нэвтрэх хэллэг тохирохгүй байна</translation>
-<translation id="8678991866891573053">Brave нь сайтуудад таны өгөгдлийг бага хэмжээгээр ашиглах боломжийг олгодог шинэ боломжуудыг судалж байна</translation>
 <translation id="3036750288708366620"><ph name="BEGIN_LINK"/>Тусламж авах<ph name="END_LINK"/></translation>
 <translation id="3037177537145227281">Үнийг хянаж байна</translation>
 <translation id="3251012123600267109">Brave-д нэвтрэх сануулгыг харуулна</translation>
@@ -397,7 +403,6 @@
 <translation id="3208584281581115441">Одоо шалгах</translation>
 <translation id="3211426585530211793"><ph name="ITEM_TITLE"/>-г устгасан</translation>
 <translation id="1892217432793359605">Таныг нэвтэрсэн үед <ph name="BEGIN_LINK1"/>хайлтын түүх<ph name="END_LINK1"/> болон <ph name="BEGIN_LINK2"/>бусад төрлийн үйл ажиллагааг<ph name="END_LINK2"/> Brave Бүртгэлд тань хадгалж магадгүй. Та тэдгээрийг хүссэн үедээ устгах боломжтой.</translation>
-<translation id="321773570071367578">Хэрэв та нэвтрэх үгээ мартсан, эсвэл тохиргоог нь өөрчлөхийг хүсвэл <ph name="BEGIN_LINK"/>синкийг дахин тохируулна уу<ph name="END_LINK"/></translation>
 <translation id="3220943972464248773">Нууц үгнүүдээ синк хийхийн тулд өөрийгөө мөн болохыг бататгана уу</translation>
 <translation id="9210457680074341078">Хэрэв та мөн хавчуургаа Brave Бүртгэлдээ хадгалдаг бол бүтээгдэхүүний үнийг Brave-д хянаж, үнэ буурах үед мэдэгдэл авах боломжтой</translation>
 <translation id="9047551989591319903">Brave-г аюулгүй байдлын түлхүүр болгох</translation>
@@ -442,6 +447,7 @@
 <translation id="3443221991560634068">Одоогийн хуудсыг дахин ачаалах</translation>
 <translation id="3444179773590444986">Сайтуудад зориулсан бараан загварын талаар cанал хүсэлт хуваалцах уу?</translation>
 <translation id="7384339501748168186">Таны нууцлалыг хамгаалахын тулд Brave таныг нууц үгийг энэ талбарт автоматаар бөглөхгүй.</translation>
+<translation id="3467081767799433066">Сайтууд зарынхаа гүйцэтгэлийг хэмжихийн тулд зарын хэмжилтийн тусламжтай таныг сайтад зочилсны дараа худалдан авалт хийсэн эсэх зэрэг хязгаарлагдмал төрлийн өгөгдлийг хоорондоо хуваалцдаг.</translation>
 <translation id="3474624961160222204"><ph name="NAME"/>-р үргэлжлүүлэх</translation>
 <translation id="3478363558367712427">Та хайлтын системээ сонгох боломжтой</translation>
 <translation id="3479552764303398839">Одоо биш</translation>
@@ -506,6 +512,7 @@
 <translation id="3847319713229060696">Хүн бүрийн төлөө вебийн аюулгүй байдлыг сайжруулахад туслах</translation>
 <translation id="3856096718352044181">Энэ нь хүчинтэй нийлүүлэгч болохыг бататгах эсвэл дараа дахин оролдоно уу</translation>
 <translation id="3858860766373142691">Нэр</translation>
+<translation id="8163358568498858168">Хэрэв та нэвтрэх үгээ мартсан эсвэл энэ тохиргоог өөрчлөхийг хүсвэл <ph name="BEGIN_LINK"/>бүртгэлийнхээ Brave-н өгөгдлийг арилгана уу<ph name="END_LINK"/>.</translation>
 <translation id="3892148308691398805">Текстийг хуулах</translation>
 <translation id="3894427358181296146">Хавтас нэмэх</translation>
 <translation id="3902562446536395999">А-с Я руу эрэмбэлж байна</translation>
@@ -580,7 +587,6 @@
 <translation id="7404502124231907662">Brave Password Manager-с нууц үгнүүд устгах уу?</translation>
 <translation id="4269820728363426813">Холбоосын хаягийг хуулах</translation>
 <translation id="4277529130885813215">Өөр төхөөрөмж ашиглах</translation>
-<translation id="4283102315569707115">Өгөгдмөлөөр компьютерын сайтын хүсэлт тавих уу?</translation>
 <translation id="4285846616383034558">Күүки, завсрын санах ой болон сайтын бусад өгөгдөл</translation>
 <translation id="4291407919474070700"><ph name="BEGIN_LINK"/>Android-н тохиргоонд дэлгэцийн түгжээг асаана уу<ph name="END_LINK"/></translation>
 <translation id="4298388696830689168">Холбоотой сайтууд</translation>
@@ -589,11 +595,11 @@
 <translation id="4307992518367153382">Үндэс</translation>
 <translation id="4311652497846705514">PDF-г нээх үү?</translation>
 <translation id="4320177379694898372">Интернетийн холболтгүй байна</translation>
+<translation id="6329878711227695496">Brave Бүртгэлдээ Brave-н өгөгдлийг ашиглах болон хадгалахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
 <translation id="433213510553688132">Дагаж байна...</translation>
 <translation id="4335835283689002019">Аюулгүй үзэх тохиргоо унтраалттай байна</translation>
 <translation id="4351244548802238354">Харилцах цонхыг хаах</translation>
 <translation id="4355272626458588338">Та хавчуурга нэмснээр чухал хуудас руугаа буцаж очих боломжтой</translation>
-<translation id="4369735607080757018">Танд зар харуулсан өдрийн цаг зэрэг зарынхаа гүйцэтгэлийг хэмжихийн тулд сайтуудын хооронд хязгаарлагдмал төрлийн өгөгдлийг хуваалцдаг.</translation>
 <translation id="4378154925671717803">Утас</translation>
 <translation id="4380055775103003110">Хэрэв энэ асуудал тохиолдсоор байвал та <ph name="SITE_ETLD_PLUS_ONE"/>-д үргэлжлүүлэх бусад аргыг турших боломжтой.</translation>
 <translation id="4384468725000734951">Sogou-р хайж байна</translation>
@@ -614,11 +620,11 @@
 <translation id="3133489217401741157"><ph name="MODULE"/>-г Brave-д суулгаж байна…</translation>
 <translation id="4484496141267039529">Холболт алга. Дараа дахин оролдоно уу.</translation>
 <translation id="53119194224775367">Brave-н бүх аппын өгөгдлийг бүрмөсөн устгана. Үүнд бүх файл, тохиргоо, бүртгэл, өгөгдлийн сан орно.</translation>
-<translation id="3966104135245031874">Brave Бүртгэлээрээ синк хийсэн нууц үгнүүдийг шифрлэх</translation>
 <translation id="4491323382106587961">Бүртгэл сонгоно уу. Одоогоор <ph name="EMAIL"/>-г сонгосон.</translation>
 <translation id="4494806687727322324">Нууц үг хадгалахыг танай администратор асаасан</translation>
 <translation id="4508528996305412043">Сувгийн картын цэсийг нээсэн байна</translation>
 <translation id="4509501256689523862">Таныг үзэх явцад таны харж буй зарыг хувийн болгосон эсэх нь энэ тохиргоо, <ph name="BEGIN_LINK_1"/>Зарын сэдэв<ph name="END_LINK_1"/>, таны <ph name="BEGIN_LINK_2"/>күүкиний тохиргоо<ph name="END_LINK_2"/> болон таны үзэж буй сайт зарыг хувийн болгосон эсэхээс хамаарна</translation>
+<translation id="4509741852167209430">Сайтууд зарынхаа гүйцэтгэлийг хэмжихийн тулд таныг сайтад зочилсны дараа худалдан авалт хийсэн эсэх зэрэг хязгаарлагдмал төрлийн өгөгдлийг хоорондоо хуваалцдаг</translation>
 <translation id="4513387527876475750">{DAYS,plural, =1{# өдрийн өмнө}other{# өдрийн өмнө}}</translation>
 <translation id="451872707440238414">Хавчуурга хайх</translation>
 <translation id="1664855196866195614">Сонгосон өгөгдлийг таны Brave болон синк хийсэн төхөөрөмжөөс устгасан болно.
@@ -640,10 +646,10 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="4587589328781138893">Сайт</translation>
 <translation id="4594952190837476234">Энэ офлайн хуудсыг <ph name="CREATION_TIME"/>-с харуулж байгаа бөгөөд онлайн хувилбараас өөр байж болзошгүй.</translation>
 <translation id="4601095002996233687">Сэжигтэй татаж авсан файлд хийх нарийвчилсан скан.</translation>
+<translation id="2782276843156939908">Таны Brave-н хадгалсан нууц үгнүүдийн жагсаалт болон <ph name="CHROME_CHANNEL"/>-г нэгтгэсэн. Та хоёр аппад хоёуланд нь хадгалсан бүх нууц үгээ автоматаар бөглөх боломжтой хэвээр байна.</translation>
 <translation id="4616150815774728855"><ph name="WEBAPK_NAME"/>-г нээх</translation>
 <translation id="4619564267100705184">Өөрийгөө мөн болохыг бататгах</translation>
 <translation id="4634124774493850572">Нууц үг ашиглах</translation>
-<translation id="4637420359569396807">Зарын хэмжилтийн тусламжтай танд зар харуулсан өдрийн цаг зэрэг сайтууд болон аппуудын зарын гүйцэтгэлийг хэмжихийн тулд тэдгээрийн хооронд хязгаарлагдмал төрлийн өгөгдлийг хуваалцах боломжтой.</translation>
 <translation id="4640331037679501949">{NUM_PASSWORDS,plural, =1{Алдагдсан 1 нууц үг}other{Алдагдсан # нууц үг}}</translation>
 <translation id="8915136961932734044">Сайтууд нь Нууцлалтай горимд байх үедээ, жишээлбэл зарыг хувийн болгохын тулд өөр өөр сайт дээрх таны хөтчийн үйл ажиллагааг харах зорилгоор таны күүкиг ашиглах боломжгүй. Зарим сайтын онцлог ажиллахгүй байж болзошгүй.</translation>
 <translation id="4650364565596261010">Системийн өгөгдмөл</translation>
@@ -660,6 +666,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="4699172675775169585">Кэшлсэн дүрс ба файл</translation>
 <translation id="4710167854527459075">Шинээр нь эрэмбэлэх</translation>
 <translation id="4719927025381752090">Орчуулахыг санал болгох</translation>
+<translation id="4720556299488643018">Захиалгаа цуцлах</translation>
 <translation id="4732120983431207637">Stack Unwinder</translation>
 <translation id="4736934858538408121">Виртуал карт</translation>
 <translation id="473775607612524610">Шинэчлэх</translation>
@@ -679,8 +686,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="4778653490315793244">Одоогоор харуулах зүйл алга</translation>
 <translation id="4787736314074622408">Та <ph name="ITEM_TITLE"/>-г устгахыг хүсэж байна уу?</translation>
 <translation id="4794291718671962615">(<ph name="MEGABYTES"/>) <ph name="URL"/></translation>
-<translation id="4802417911091824046">Нэвтрэх үгийн шифрлэлтэд Google Pay-н төлбөрийн хэрэгслүүд болон хаягуудыг агуулдаггүй.
-Энэ тохиргоог өөрчлөхийн тулд <ph name="BEGIN_LINK"/>синкийг шинэчилнэ үү<ph name="END_LINK"/></translation>
 <translation id="4807098396393229769">Картан дээрх нэр</translation>
 <translation id="480990236307250886">Нүүр хуудсыг нээх</translation>
 <translation id="481574578487123132">Холбосон төхөөрөмжүүд</translation>
@@ -791,6 +796,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="5355191726083956201">Сайжруулсан хамгаалалт асаалттай байна</translation>
 <translation id="5361107212971249203">текст</translation>
 <translation id="5375577065097716013">Google Lens-р зураг хайх <ph name="BEGIN_NEW"/>Шинэ<ph name="END_NEW"/></translation>
+<translation id="4799771635362945886">Та Brave Бүртгэлдээ Brave-н өгөгдлийг үргэлж ашиглах боломжтой болохоо баталгаажуулна уу</translation>
 <translation id="539881862970320163">Сайн нууц үг санал болгосон. Гарыг нуусан.</translation>
 <translation id="5401851137404501592">Үргэлжүүлэхийн тулд <ph name="IDENTITY_PROVIDER_ETLD_PLUS_ONE"/> таны нэр, имэйл хаяг болон профайл зургийг энэ сайттай хуваалцана.</translation>
 <translation id="5409881200985013443"><ph name="CLIENT_NAME"/> дээр <ph name="ONE_TIME_CODE"/>-г илгээх үү?</translation>
@@ -830,6 +836,8 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="5581519193887989363">Та синк хийх зүйлээ хүссэн үедээ <ph name="BEGIN_LINK1"/>тохиргооноос<ph name="END_LINK1"/> сонгож болно.</translation>
 <translation id="5590372121997663538">Энэ компьютерыг сануулах</translation>
 <translation id="5596627076506792578">Бусад сонголт</translation>
+<translation id="3639069815168269788">Google Pay-н төлбөрийн хэрэгсэл болон хаягуудыг шифрлэхгүй. Brave-н хөтчийн түүхийг синк хийхгүй.
+Зөвхөн таны нэвтрэх үгтэй хэн нэгэн шифрлэгдсэн өгөгдлийг тань унших боломжтой. Нэвтрэх үгийг Brave-д илгээдэггүй эсвэл хадгалдаггүй. Хэрэв та нэвтрэх үгээ мартсан эсвэл энэ тохиргоог өөрчлөхийг хүсвэл <ph name="BEGIN_LINK"/>бүртгэлийнхээ Brave-н өгөгдлийг арилгана уу<ph name="END_LINK"/>.</translation>
 <translation id="5620163320393916465">Хадгалсан ямар ч нууц үг байхгүй байна</translation>
 <translation id="5620928963363755975">Файл, хуудсаа Бусад сонголт товчлуурын Таталт хэсгээс хайна уу</translation>
 <translation id="562289928968387744">Хариу үйлдлийг удирдах</translation>
@@ -851,6 +859,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="5698878456427040674">Сонгосон бүртгэлийг дэмждэг эсэхийг шалгана уу.</translation>
 <translation id="570347048394355941">Таб руу сэлгэх</translation>
 <translation id="5715150588940290235">Хадгалсан аюулгүй байдлын кодуудыг устгах уу?</translation>
+<translation id="8926436246118281502">Таны хавчуурга, түүх болон Brave-н бусад өгөгдлийг цаашид Brave Бүртгэлд тань синк хийхгүй</translation>
 <translation id="572328651809341494">Саяхан нээсэн табууд</translation>
 <translation id="5726692708398506830">Бүгдийг дэлгэцийн хэмжээгээр томсгох</translation>
 <translation id="5744751019568455640">Таны веб хуудаснаасаа уншуулахад сонгож болох дуу хоолойнууд энд байна. Хэрэв танд энэ дуу хоолой таалагдаж байгаа бөгөөд намайг үүнийг ашигласаар байхыг хүсвэл ердөө дуу хоолойн нэрийг товшино уу.</translation>
@@ -938,6 +947,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="6140709049082532940">Сайжруулсан хамгаалалт:</translation>
 <translation id="6140912465461743537">Улс/бүс</translation>
 <translation id="6150320133806434356">Хавчуургыг хадгалсан</translation>
+<translation id="1224606669200461217">Brave Бүртгэлийнхээ Brave-н өгөгдлийг ашиглах болон хадгалахын тулд Brave-г шинэчилнэ үү</translation>
 <translation id="6154478581116148741">Энэ төхөөрөмжөөс нууц үгээ экспортлох бол дэлгэцийн түгжээг Тохиргоо хэсэгт асаах</translation>
 <translation id="7087658909840709934">Brave-н таныг зочилж магадгүй гэж бодсон хуудаснуудыг урьдчилан ачаална.</translation>
 <translation id="6186394685773237175">Алдагдсан нууц үг олдсонгүй</translation>
@@ -1006,6 +1016,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="6482749332252372425">Санах ойн багтаамж хүрэлцээгүйн улмаас <ph name="FILE_NAME"/>-г татаж чадсангүй.</translation>
 <translation id="650224091954855786">{FILE_COUNT,plural, =1{Файл татсан}other{# таталт дууссан}}</translation>
 <translation id="3960299545138990065">Brave-г дахин эхлүүлэх</translation>
+<translation id="6518133107902771759">Баталгаажуул</translation>
 <translation id="6527303717912515753">Хуваалцах</translation>
 <translation id="708829030563435351">Таны Brave-д зочилдог сайтуудыг харуулахгүй. Бүх сайтын цаг хэмжигчийг устгана.</translation>
 <translation id="7723158744459952869">Brave хариу өгөхгүй хэтэрхий удсан</translation>
@@ -1049,6 +1060,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="9145803563102831353">Одоогоор энэ төхөөрөмжид хадгалсан нууц үгнүүдийг Brave сувгуудад ашиглах боломжгүй. Brave 121-ээс хойш Brave болон <ph name="CHROME_CHANNEL"/>-д зориулж таны төхөөрөмжид хадгалсан нууц үгнүүдийг нэгтгэх бөгөөд хоёр аппын аль алинд нь ашиглах боломжтой болно.</translation>
 <translation id="666731172850799929"><ph name="APP_NAME"/> дотор нээ</translation>
 <translation id="6671495933530132209">Зургийг хуулах</translation>
+<translation id="6672697278890207089">Нэвтрэх үгээ оруулна уу</translation>
 <translation id="6672917148207387131"><ph name="DOMAIN"/> нэмэх</translation>
 <translation id="6674571176963658787">Синк хийж эхлэхийн тулд нэвтрэх үгээ оруулна уу</translation>
 <translation id="8581481290581777242">Энэ төхөөрөмжөөс Brave-н өгөгдлөө устгах уу?</translation>
@@ -1057,10 +1069,10 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="670498945988402717">Өчигдөр шалгасан</translation>
 <translation id="6710213216561001401">Өмнөх</translation>
 <translation id="671481426037969117">Таны <ph name="FQDN"/>-н цаг хэмжигчийн хугацаа дууссан байна. Энэ нь маргааш дахин эхэлнэ.</translation>
+<translation id="6714850225831215156">{BOOKMARK_COUNT,plural, =1{Хавчуургыг <ph name="FOLDER_NAME"/>-д хадгалсан. Үүнийг зөвхөн энэ төхөөрөмжид хадгалдаг.}other{Хавчуургуудыг <ph name="FOLDER_NAME"/>-д хадгалсан. Үүнийг зөвхөн энэ төхөөрөмжид хадгалдаг.}}</translation>
 <translation id="6715020873764921614">Та <ph name="FILE_NAME"/> (<ph name="FILE_SIZE"/>)-г ямартай ч татахыг хүсэж байна уу?</translation>
 <translation id="6719634564325948108">QR кодоор холбогдох уу?</translation>
 <translation id="7499197548870160669">Таны Brave бүртгэлд</translation>
-<translation id="6738516213925468394">Таны өгөгдлийг таны <ph name="BEGIN_LINK"/>синкийн нэвтрэх үгтэй<ph name="END_LINK"/> <ph name="TIME"/>-д синк хийсэн байна. Синкийг эхлүүлэхийн тулд үүнийг оруулна уу.</translation>
 <translation id="6738867403308150051">Татаж байна…</translation>
 <translation id="2275686406263739320">Таны зочилсон сайтууд таны хэрэглээг хувийн болгохын тулд таны сонирхдог зүйлсийг санах нь түгээмэл юм. Сайтууд мөн Brave-р таны сонирхлын талаарх мэдээллийг хадгалах боломжтой.</translation>
 <translation id="6751521182688001123">Шинэ табыг шуурхай нээнэ үү. Энэ товчлолыг засахын тулд хүрээд удаан дарна уу.</translation>
@@ -1081,7 +1093,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="6828070228333235514">Үнэ хянахыг зогсоох</translation>
 <translation id="6830728435402077660">Аюултай</translation>
 <translation id="6831043979455480757">Хөрвүүлэх</translation>
-<translation id="6833996806551876956">Нууцлалын sandbox-н туршилт</translation>
 <translation id="6836206421467243968"><ph name="TITLE_OF_GROUP"/> табын бүлгийг шинэ дэвсгэр табын бүлгээр сэргээнэ үү.</translation>
 <translation id="6846298663435243399">Ачаалж байна...</translation>
 <translation id="6850409657436465440">Таны таталт үргэлжилж байна</translation>
@@ -1094,11 +1105,14 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="6869056123412990582">компьютер</translation>
 <translation id="6882836635272038266">Аюултай гэж мэдэгдсэн веб сайт, таталт болон өргөтгөлийн эсрэг стандарт хамгаалалт.</translation>
 <translation id="6883204995689174413">Хуваалцах</translation>
+<translation id="688398477366397178">Вебсайтуудад ярьдаг хэлнүүдээ мэдэгдээрэй. Тэд боломжтой үед тэдгээр хэлээрх контентыг харуулна.</translation>
 <translation id="688738109438487280">Одоо байгаа өгөгдлийг <ph name="TO_ACCOUNT"/>-д нэмнэ үү.</translation>
 <translation id="6891726759199484455">Нууц үгээ хуулахын тулд түгжээг тайлна уу</translation>
 <translation id="6896758677409633944">Хуулах</translation>
+<translation id="3677019108032076044">Brave Бүртгэлийнхээ Brave-н бүх өгөгдлийг шифрлэхийн тулд өөрийн нэвтрэх үгийг ашиглах</translation>
 <translation id="6900532703269623216">Сайжруулсан хамгаалалт</translation>
 <translation id="6903907808598579934">Синк хийхийг асаах</translation>
+<translation id="748044163560741026">Та Brave Бүртгэлдээ нууц үгнүүдийг үргэлж ашиглах боломжтой болохоо баталгаажуулна уу</translation>
 <translation id="6908998565271542516">Бүтэн өндөртэйгээр нээсэн вебсайтыг зөвшөөрөх эсвэл зөвшөөрөхгүй байх сонголт</translation>
 <translation id="6909589135458168665">Хуудаснуудыг урьдчилан ачаалах</translation>
 <translation id="6910211073230771657">Устгасан</translation>
@@ -1134,7 +1148,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8208853227947884571">Brave шинэчлэгдсэн байна</translation>
 <translation id="7105047059074518658">Төхөөрөмжүүд дээр хялбархан үзэхийн тулд нэвтэрнэ үү</translation>
 <translation id="7106762743910369165">Танай байгууллага таны хөтчийг удирддаг</translation>
-<translation id="7116588989735740310">Өөр төхөөрөмжүүдэд зочилсон сайтууддаа буцаж очихын тулд табууд болон түүхээ синк хийгээрэй</translation>
+<translation id="144902786838571419">Brave танд хардаг заруудаа илүү сайн хянах илүү их хяналтыг өгдөг бөгөөд сайтуудыг танд хувийн болгосон зар харуулах үедээ таны талаар юу мэдэж авч болохыг хязгаарладаг.</translation>
 <translation id="7138678301420049075">Бусад</translation>
 <translation id="7140829094791862589">Гар дарааллаар эрэмбэлэх</translation>
 <translation id="7146622961999026732">Эдгээр сайт болон апп танд чухал бололтой:</translation>
@@ -1172,6 +1186,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="7313188324932846546">Синкийг тохируулахын тулд товшино уу</translation>
 <translation id="7324354302972299151">“Do Not Track” хүсэлт илгээх</translation>
 <translation id="7332075081379534664">Нэвтрэлт амжилттай</translation>
+<translation id="7333041109965360609">Мэдэгдлийн захиалгаа цуцалсан</translation>
 <translation id="8716243540027092298">Brave-с хамгийн хамааралтай контент авахын тулд синк хийнэ үү</translation>
 <translation id="7339898014177206373">Шинэ цонх</translation>
 <translation id="7340958967809483333">Discover-н сонголт</translation>
@@ -1218,12 +1233,12 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="750228856503700085">Шинэчлэлтүүд боломжгүй</translation>
 <translation id="7507207699631365376">Энэ хангагчийн <ph name="BEGIN_LINK"/>нууцлалын бодлогыг<ph name="END_LINK"/> харах</translation>
 <translation id="7514365320538308">Татаж авах</translation>
+<translation id="9075033240840348521">Brave Бүртгэлийнхээ нууц үгнүүдэд Brave-н өгөгдмөл шифрлэлтийг ашиглах</translation>
 <translation id="7518079994230200553">Энэ сонголт одоогоор боломжгүй байна.</translation>
 <translation id="751961395872307827">Сайтад холбогдох боломжгүй байна</translation>
 <translation id="752220631458524187">Дууссан үедээ салгана уу</translation>
 <translation id="7523960634226602883">Google Lens ашиглан камераараа хайгаарай</translation>
 <translation id="5722020415664104421">Нууцлалтай горимыг ашиглаж байх үед блоклох</translation>
-<translation id="7539698981064401140">Табууд болон түүхээ синк хийгээрэй</translation>
 <translation id="7562080006725997899">Хөтөчийн мэдээллийг арилгаж байна</translation>
 <translation id="7814200940910057384">Brave-н өгөгдлийг устгасан</translation>
 <translation id="7577900504646297215">Сонирхлыг удирдах</translation>
@@ -1250,6 +1265,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="7658239707568436148">Болих</translation>
 <translation id="7665369617277396874">Бүртгэл нэмэх</translation>
 <translation id="766587987807204883">Офлайн үедээ ч унших боломжтой нийтлэлүүд энд харагддаг</translation>
+<translation id="7670101447063278728"><ph name="USERNAME"/>-д хадгалсан нууц үгнүүд.</translation>
 <translation id="7682724950699840886">Дараах зөвлөмжийг хэрэгжүүлж үзнэ үү: төхөөрөмж дээрээ хангалттай сул зай гаргаад дахин экспорт хийж үзнэ үү.</translation>
 <translation id="7686086654630106285">Сайтаас санал болгож буй зарын талаарх илүү дэлгэрэнгүй</translation>
 <translation id="2667018639405889513">Таны зочилдог зарим хуудсыг урьдчилан ачаална. Brave-н сайтаас холбосон үед хуудаснуудыг Brave-н серверүүдээр урьдчилан ачаалж магадгүй.</translation>
@@ -1324,6 +1340,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8004582292198964060">Хөтөч</translation>
 <translation id="3325020657155065477">Энэ төхөөрөмжөөс Brave-н өгөгдлийг мөн адил устгах</translation>
 <translation id="8015452622527143194">Бүгдийг өгөгдмөл хэмжээнд нь буцаах</translation>
+<translation id="8026238112629815203">Бид энэ төхөөрөмжид нууц үгнүүдийг хэрхэн хадгалдаг болохыг өөрчилсөн</translation>
 <translation id="8026334261755873520">Хайлтын өгөгдлийг цэвэрлэх</translation>
 <translation id="8027863900915310177">Хаана татаж авахыг сонгох</translation>
 <translation id="8030852056903932865">Зөвшөөрөх</translation>
@@ -1358,6 +1375,8 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="813082847718468539">Сайтын мэдээллийг үзэх</translation>
 <translation id="8135406045838672858">Татсан PDF-үүдийг автоматаар <ph name="APP_NAME"/>-р нээнэ</translation>
 <translation id="6337533477704327362">Та энэ нууц үгийг санах шаардлагагүй болно. Үүнийг Brave Password Manager-т хадгална.</translation>
+<translation id="6779735068647643024">Brave Бүртгэлдээ нууц үгнүүд ашиглах болон хадгалахын тулд өөрийгөө мөн болохыг баталгаажуулна уу</translation>
+<translation id="8179976553408161302">Нэвтрэх</translation>
 <translation id="8186512483418048923"><ph name="FILES"/> файл үлдсэн</translation>
 <translation id="8190358571722158785">1 өдөр үлдсэн</translation>
 <translation id="8193953846147532858"><ph name="BEGIN_LINK"/>Таны төхөөрөмжүүд<ph name="END_LINK"/> · <ph name="EMAIL"/></translation>
@@ -1373,6 +1392,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8237871086242677046">Хуудасны статистикийн доод хүснэгт</translation>
 <translation id="8243077599929149377">Хэрэглэгчийн нэрээ нэмэх</translation>
 <translation id="8250920743982581267">Документ</translation>
+<translation id="8253557549177565072">{BOOKMARK_COUNT,plural, =1{Хавчуургыг таны <ph name="ACCOUNT_EMAIL"/> бүртгэл дэх <ph name="FOLDER_NAME"/>-д хадгалсан.}other{Хавчуургуудыг таны <ph name="ACCOUNT_EMAIL"/> бүртгэл дэх <ph name="FOLDER_NAME"/>-д хадгалсан.}}</translation>
 <translation id="8255617931166444521">Сайтууд нь зөвхөн өөрийн сайт дээр таны хөтчийн үйл ажиллагааг харахын тулд күүкиг тань ашиглах боломжтой</translation>
 <translation id="2876689296031086375">Урьдчилан ачаалсан хуудаснууд шифрлэгдсэн тул Brave урьдчилан ачаалсан хуудасны контентын талаар ямар нэг зүйл мэдэж авахгүй. Brave-н серверүүд ямар сайтуудыг нууцлалтайгаар урьдчилан ачаалсан болохыг мэдэж авна. Энэ мэдээллийг зөвхөн хуудаснуудыг урьдчилан ачаалахад ашигладаг бөгөөд таны Brave Бүртгэлийн бусад мэдээлэлтэй холбодоггүй.</translation>
 <translation id="8260126382462817229">Дахин нэвтрэхээр оролдоно уу.</translation>
@@ -1391,6 +1411,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8354977102499939946">Дуу хоолойгоороо шуурхай хайгаарай. Энэ товчлолыг засахын тулд Тохиргоо руу очно уу.</translation>
 <translation id="835847953965672673"><ph name="NUMBER_OF_DOWNLOADS"/> татаж авсан файлыг сэргээсэн</translation>
 <translation id="8368001212524806591">Үнэ хянах</translation>
+<translation id="8378850197701296741">Танд <ph name="FROM_ACCOUNT"/>-н хавчуурга, түүх болон бусад тохиргоо байна.</translation>
 <translation id="8387617938027387193">Өөрийгөө мөн болохыг бататгана уу</translation>
 <translation id="8393700583063109961">Мессеж илгээх</translation>
 <translation id="7651600795135059130">Brave-д хадгалсан аюултай сайтын жагсаалттай URL-г шалгана</translation>
@@ -1411,11 +1432,10 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8445448999790540984">Нууц үгийг экспорт хийх боломжгүй</translation>
 <translation id="8446884382197647889">Дэлгэрэнгүй мэдээлэл</translation>
 <translation id="8453310803815879010">Дино тоглоом эхлүүлэх</translation>
+<translation id="7018408824172283743">Brave Бүртгэлдээ Brave-н өгөгдлийг үргэлжлүүлэн ашиглана уу</translation>
 <translation id="8460448946170646641">Нууцлал болон аюулгүй байдлын үндсэн хяналтуудыг шалгана уу</translation>
-<translation id="8461694314515752532">Синк хийсэн өгөгдлийг синкийн нэвтрэх үгээрээ шифрлэх</translation>
 <translation id="8466613982764129868"><ph name="TARGET_DEVICE_NAME"/> интернэтэд холбогдсон эсэхийг шалгана уу</translation>
 <translation id="8473863474539038330">Хаяг болон бусад</translation>
-<translation id="847433688444405067">Төхөөрөмжүүдэд үзэх</translation>
 <translation id="8485434340281759656"><ph name="FILE_SIZE"/> <ph name="SEPARATOR"/> <ph name="DESCRIPTION"/></translation>
 <translation id="8489271220582375723">Түүхийн хуудсыг нээх</translation>
 <translation id="8493948351860045254">Зай гаргах</translation>
@@ -1427,6 +1447,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8503813439785031346">Хэрэглэгчийн нэр</translation>
 <translation id="8505766168025405649">Таталтын төлөвийн мэдэгдлийг харах</translation>
 <translation id="8506357771923193001">Та татаж авсан файлаа эндээс олно</translation>
+<translation id="8512053371384421952">Та цаашид <ph name="DOMAIN"/>-с мэдэгдэл хүлээн авахгүй.</translation>
 <translation id="133012818630824069">Brave-р хадгалсан нууц үгийг экспортлох</translation>
 <translation id="8516012719330875537">Зураг засагч</translation>
 <translation id="8523928698583292556">Хадгалсан нууц үгийг устгах</translation>
@@ -1463,7 +1484,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8725066075913043281">Дахин оролдож үзнэ үү.</translation>
 <translation id="8731268612289859741">Аюулгүй байдлын код</translation>
 <translation id="8746155870861185046">Тодруулгыг хуваалцах</translation>
-<translation id="874726034427945498">Хаяг оруулах хэсэгтээ илүү сайн зөвлөмж харахын тулд табууд болон түүхээ синк хийгээрэй</translation>
 <translation id="8748850008226585750">Агуулгыг нуусан</translation>
 <translation id="8754448020583829686">Холбоосгүйгээр хуулах</translation>
 <translation id="8756969031206844760">Нууц үгийг шинэчлэх үү?</translation>
@@ -1491,7 +1511,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8856931513242997049">Мэдэгдлийн зөвшөөрлийн урсгалыг хаасан</translation>
 <translation id="1984646864943401749">Шинэ аюул заналыг олж илрүүлэх болон веб дээрх бүх хүнийг хамгаалахад туслахын тулд таны зочилдог зарим хуудасны URL, системийн хязгаарлагдмал мэдээлэл болон хуудасны зарим контентыг Brave рүү илгээдэг.</translation>
 <translation id="8909135823018751308">Мэдээллийг хуваалцах ...</translation>
-<translation id="2684652081942622950">Brave Бүртгэл</translation>
 <translation id="8921980840204105660">Бусад төхөөрөмжөөсөө хавчуургаа авахын тулд синк хийнэ үү</translation>
 <translation id="8922289737868596582">Хуудсыг офлайн үед ашиглахын тулд Бусад сонголт товчлуураас татна уу</translation>
 <translation id="8924575305646776101"><ph name="BEGIN_LINK"/>Нэмэлт мэдээлэл авах<ph name="END_LINK"/></translation>
@@ -1503,7 +1522,7 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="8965591936373831584">хүлээгдэж байна</translation>
 <translation id="8970887620466824814">Алдаа гарлаа.</translation>
 <translation id="8972098258593396643">Өгөгдмөл фолдерт татаж авах уу?</translation>
-<translation id="8987736167266086032">Үйлдлээ зогсоосон газраасаа үргэлжлүүлнэ үү</translation>
+<translation id="2481553173340651149">Таны өгөгдлийг нэвтрэх үгээр тань шифрлэсэн. Brave Бүртгэлийнхээ Brave-н өгөгдлийг ашиглах болон хадгалахын тулд үүнийг оруулна уу.</translation>
 <translation id="8996847606757455498">Өөр үйлчилгээ үзүүлэгч сонгох</translation>
 <translation id="8998289560386111590">Таны төхөөрөмжид боломжгүй</translation>
 <translation id="3275122921244685452">Та <ph name="MANAGED_DOMAIN"/>-н удирддаг бүртгэлээр нэвтэрч байгаа бөгөөд үүний админд таны Brave-н өгөгдлийг хянах зөвшөөрлийг олгож байна. Таны өгөгдөл энэ бүртгэлд бүрмөсөн холбоотой байх болно. Brave-с гарснаар таны өгөгдлийг энэ төхөөрөмжөөс устгах хэдий ч, тэдгээр нь таны Brave бүртгэлд хэвээр үлдэх болно.</translation>
@@ -1524,7 +1543,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="9069999660519089861">Уншаагүй хуудас байхгүй</translation>
 <translation id="9070377983101773829">Дуут хайлтыг эхлүүлэх</translation>
 <translation id="9074739597929991885">Bluetooth</translation>
-<translation id="9084103763810123431">Өөр төхөөрөмжид үргэлжлүүлэн үзэхийн тулд табууд болон түүхээ синк хийгээрэй</translation>
 <translation id="9086302186042011942">Sync хийж байна.</translation>
 <translation id="9086455579313502267">Сүлжээнд хандах боломжгүй байна</translation>
 <translation id="9099220545925418560">Таны хөтчийн түүхэд тулгуурласан. Энэ тохиргоо унтраалттай байна.</translation>
@@ -1563,7 +1581,6 @@ Tаны Brave бүртгэл <ph name="BEGIN_LINK"/>history.google.com<ph name="
 <translation id="5406914950576900927">Brave Хятадад хайлт хийхдээ <ph name="BEGIN_BOLD"/>Sogou-г<ph name="END_BOLD"/> ашиглах боломжтой. Та үүнийг <ph name="BEGIN_LINK"/>Тохиргоо<ph name="END_LINK"/> хэсэгт өөрчлөх боломжтой.</translation>
 <translation id="962979164594783469">Энэ аппыг суулгах</translation>
 <translation id="96681097142096641">Хялбарчилсан хуудсыг үзэх үү?</translation>
-<translation id="968900484120156207">Таны зочилдог хуудас энд харагдана</translation>
 <translation id="970715775301869095"><ph name="MINUTES"/> минут үлдсэн</translation>
 <translation id="981121421437150478">Offline</translation>
 <translation id="983192555821071799">Бүх табыг хаах</translation>

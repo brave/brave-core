@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Comenzar a utilizar Rewards</translation>
 <translation id="8220484609979012449">\n\nPuedes enviar contribuciones en criptomonedas a este creador usando tu billetera Web3.</translation>
 <translation id="6385969012847057348">Este creador no puede recibir contribuciones de <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Este creador aún no recibe contribuciones en Web3 ni en criptomonedas.</translation>
 <translation id="6268134562674951939">No tienes suficientes tokens</translation>
 <translation id="4529874892536380156">Haz que sea una contribución mensual recurrente. Puedes cancelarla en cualquier momento.</translation>
 <translation id="5562948772940025260">Solo puedes enviar hasta <ph name="AMOUNT"/> BAT con tu saldo de Recompensas de Brave.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">En un dispositivo sincronizado, abre los ajustes de Brave y ve a Configuración &gt; Sincronización. Elige "Agregar nuevo dispositivo" y escanea el código QR que aparece en pantalla.</translation>
 <translation id="5241263629636958324">Se ha copiado al portapapeles</translation>
 <translation id="5817918615728894473">Sincronizar</translation>
-<translation id="7090325819305486658">Preferencias de datos</translation>
+<translation id="3429575397891106447">Opciones para sincronizar</translation>
 <translation id="1680065323266179640">Eliminar la cuenta de sincronización</translation>
 <translation id="3792563952903751704">Al eliminar tu cuenta, se borrarán tus datos cifrados de los servidores de Brave y se deshabilitará Sync en todos los dispositivos conectados. Sin embargo, no se borrarán los datos almacenados en esos dispositivos de forma local.
 Esta eliminación es permanente, y no hay forma de recuperar los datos. Si decides volver a usar Sync de nuevo, deberás crear otra cuenta y volver a agregar cada dispositivo.</translation>
@@ -595,14 +596,18 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="1483493594462132177">Enviar</translation>
 <translation id="538450413584738399">Intercambio</translation>
 <translation id="1366855498335432549">Depósito</translation>
-<translation id="1420318137760245955">Le damos la bienvenida a la nueva billetera Brave</translation>
-<translation id="8339846196588658366">Conserve criptoactivos bajo su custodia y consulte el rendimiento de carteras. Todo desde el navegador de Brave para proteger su privacidad.</translation>
-<translation id="4472575034687746823">Comenzar</translation>
+<translation id="4556086616242530072">Navegador nativo.\nAutocustodia.\nMulticadena.</translation>
+<translation id="7909462264772842773">Toma el control de tus criptomonedas y NFT. Billetera de Brave admite Ethereum, cadenas EVM, Solana, Filecoin y mucho más.</translation>
+<translation id="165255193061631296">¿Necesitas una nueva billetera?</translation>
+<translation id="3485737865439729577">Empieza a usar Billetera de Brave en cuestión de minutos.</translation>
 <translation id="2759836790106646094">¡Haz una copia de seguridad de tu billetera ahora!</translation>
 <translation id="1078873179929044999">En el siguiente paso, verá una frase de recuperación de 12 palabras que puede usar para recuperar sus cuentas de criptoactivos principales. Guárdela en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
 <translation id="2359808026110333948">Continuar</translation>
 <translation id="5488357322146334497">Mensaje</translation>
 <translation id="1904000155026201268">Entiendo que no podré acceder a mi billetera de criptomonedas si pierdo mis frase de recuperación.</translation>
+<translation id="5333225216561354793">Necesitamos que confirmes los elementos de abajo</translation>
+<translation id="1645800479814134195">Entiendo que esta es una billetera de custodia propia y que yo soy la única persona responsable de cualquier fondo, activo o cuenta asociados. Por tanto, debo tomar las medidas adecuadas para asegurar, proteger y respaldar mi billetera. Entiendo que Brave no tendrá acceso a mi billetera ni podrá revertir las operaciones en mi nombre, y que mi frase de recuperación es la ÚNICA manera de recuperar el acceso en caso de pérdida de la contraseña, robo del dispositivo o circunstancias similares.</translation>
+<translation id="4565891212173086999">He leído y acepto las <ph name="CLICK_START"/>Condiciones de uso<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Tu frase de recuperación</translation>
 <translation id="5077747669435508720">Escriba o copie estas palabras en el orden exacto que se muestra a continuación y guárdelas en un lugar seguro. Su frase de recuperación es la única forma de recuperar el acceso a la cuenta en caso de que olvide la contraseña, sufra la pérdida o el robo del dispositivo, o quiera cambiar de billetera.</translation>
 <translation id="2708402071160162126">ADVERTENCIA: Nunca comparta la frase de recuperación. Cualquier persona que tenga esta frase puede llevarse sus activos de forma permanente.</translation>
@@ -647,6 +652,9 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="3747079125031086337">Seleccione las palabras de su frase de recuperación en el orden correcto.</translation>
 <translation id="6518133107902771759">Verificar</translation>
 <translation id="3157931365184549694">Restaurar</translation>
+<translation id="5844138175312846408">¿Ya tienes una billetera?</translation>
+<translation id="2502258949541727762">Antes de empezar</translation>
+<translation id="5981303441790732480">Importa tu billetera existente.</translation>
 <translation id="9111102763498581341">Desbloquear</translation>
 <translation id="6657585470893396449">Contraseña</translation>
 <translation id="5619264711680220002">Desbloqueo biométrico</translation>
@@ -665,7 +673,7 @@ Verifique que ha sido un dispositivo suyo el que ha generado estas palabras clav
 <translation id="5483736362376139517">1 año</translation>
 <translation id="6979737339423435258">Todos</translation>
 <translation id="6284218950354553099">Envía a Brave pings de uso diario automáticamente</translation>
-<translation id="5288333155754958121">Estos pings privados y anónimos le permiten a Brave calcular los usuarios activos.</translation>
+<translation id="2181060149810222381">Este ping privado permite a Brave calcular el número de usuarios activos.</translation>
 <translation id="3819257035322786455">Copia de seguridad</translation>
 <translation id="4608713693379664295">Cuentas principales de criptomonedas</translation>
 <translation id="4003821417160006384">Cuentas secundarias</translation>
@@ -1212,5 +1220,11 @@ Si no acepta esta solicitud, la VPN no se volverá a conectar y su conexión a I
 <translation id="6637015365469044269">Pasar a la versión Premium</translation>
 <translation id="614530507403667291">Modelo predeterminado para conversaciones nuevas</translation>
 <translation id="4071849832011229600">Modelo predeterminado</translation>
+<translation id="4185473179105062442">Recibe BAT directamente en una criptodirección de autocustodia</translation>
+<translation id="5802986777701714573">Hemos añadido una nueva forma de recibir tus recompensas mensuales en BAT. Vincula una cuenta de uno de nuestros socios o usa la nueva opción de autocustodia para empezar a ganar ya.</translation>
 <translation id="7557539689487606886">Hazte Premium</translation>
+<translation id="5538904824395606812">Usa tu proveedor de servicios actual o Quad9</translation>
+<translation id="6393423486818299209">Usa tu proveedor de servicios actual o Wikimedia DNS</translation>
+<translation id="3401384982562827787">Usa tu proveedor de servicios actual o Cloudflare</translation>
+<translation id="8812367543786936496">Si tu proveedor de servicios actual es inseguro, Brave utiliza un proveedor de DNS alternativo seguro</translation>
 </translationbundle>

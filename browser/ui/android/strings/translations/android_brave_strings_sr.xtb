@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Počnite da koristite Nagrade</translation>
 <translation id="8220484609979012449">\n\nJoš uvek možete poslati doprinose u kripto valuti ovom kreatoru pomoću vašeg Web3 novčanika.</translation>
 <translation id="6385969012847057348">Ovaj kreator ne može da primi doprinose od <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Ovaj kreator još uvek nije podesio primanje Web3 ili kripto priloga.</translation>
 <translation id="6268134562674951939">Nemate dovoljno tokena</translation>
 <translation id="4529874892536380156">Učini ovo mesečnim ponavljajućim doprinosem. Možete ga otkazati u bilo kom trenutku.</translation>
 <translation id="5562948772940025260">Možete poslati samo do <ph name="AMOUNT"/> BAT koristeći saldo Brave nagrada.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Koristeći postojeći sinhronizovani uređaj, otvorite Brave podešavanja i idite u Postavke &gt; sinhronizacija. Izaberite „Dodaj novi uređaj” i skenirajte QR šifru koja je prikazana na ekranu.</translation>
 <translation id="5241263629636958324">Kopirano na ostavu</translation>
 <translation id="5817918615728894473">Упари</translation>
-<translation id="7090325819305486658">Željene opcije podataka</translation>
+<translation id="3429575397891106447">Opcije sinhronizacije</translation>
 <translation id="1680065323266179640">Obrišite nalog za sinhronizaciju</translation>
 <translation id="3792563952903751704">Brisanjem naloga ćete ukloniti šifrovane podatke sa Brave servera i onemogućiti sinhronizaciju na svim povezanim uređajima. Međutim, nećete izbrisati podatke koji su lokalno uskladišteni na tim uređajima.
   Ovo brisanje je trajno i ne postoji način da se podaci oporave. Ako odlučite da ponovo počnete da koristite Sinhronizaciju, moraćete da kreirate novi nalog i ponovo dodajete svaki uređaj jedan po jedan.</translation>
@@ -595,14 +596,18 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="1483493594462132177">Пошаљи</translation>
 <translation id="538450413584738399">Menjačnica</translation>
 <translation id="1366855498335432549">Depozit</translation>
-<translation id="1420318137760245955">Dobro došli u novi Brave novčanik</translation>
-<translation id="8339846196588658366">Čuvajte kripto sredstva pod svojim nadzorom i pratite učinak portfolija. Sve možete obaviti direktno pomoću Brave pregledača za zaštitu privatnosti.</translation>
-<translation id="4472575034687746823">Започнимо</translation>
+<translation id="4556086616242530072">Izvorni pretraživač.\nSamoodržavanje.\nI sa više lanaca.</translation>
+<translation id="7909462264772842773">Preuzmite kontrolu nad svojim kripto i NFT-ovima. Brave Wallet podržava Ethereum, EVM lance, Solanu, Filecoin i još mnogo toga.</translation>
+<translation id="165255193061631296">Treba vam novi novčanik?</translation>
+<translation id="3485737865439729577">Započnite sa Brave Wallet za nekoliko minuta</translation>
 <translation id="2759836790106646094">Napravite odmah rezervnu kopiju novčanika!</translation>
 <translation id="1078873179929044999">U sledećem koraku ćete videti frazu za oporavak od 12 reči, koju možete upotrebiti za oporavak vaših primarnih kripto računa. Sačuvajte je na nekom bezbednom mestu. Vaša fraza za oporavak je jedini način da ponovo pristupite nalogu u slučaju zaboravljanja lozinke, gubitka ili krađe uređaja ili ako želite da zamenite novčanike.</translation>
 <translation id="2359808026110333948">Nastavi</translation>
 <translation id="5488357322146334497">Poruka</translation>
 <translation id="1904000155026201268">Razumem da ako zaboravim frazu za obnavljanje neću moći da pristupim svom kripto novčaniku.</translation>
+<translation id="5333225216561354793">Zahtevamo da potvrdite dole navedene stavke</translation>
+<translation id="1645800479814134195">Razumem da je ovo novčanik za samostalni nadzor i da sam samo ja odgovoran za sva povezana sredstva, imovinu ili naloge, kao i za preduzimanje odgovarajućih radnji za obezbeđenje, zaštitu i rezervnu kopiju svog novčanika. Razumem da Brave ne može da pristupi mom novčaniku ili poništi transakcije u moje ime, i da je moja fraza za oporavak JEDINI način da povratim pristup u slučaju izgubljene lozinke, ukradenog uređaja ili sličnih okolnosti.</translation>
+<translation id="4565891212173086999">Pročitao/la sam i slažem se sa <ph name="CLICK_START"/>Uslovima korišćenja<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Vaša fraza za obnavljanje</translation>
 <translation id="5077747669435508720">Zapišite ili kopirajte ove reči u tačnom redosledu kojim su prikazane dole i sačuvajte ih na nekom bezbednom mestu. Vaša fraza za oporavak je jedini način da ponovo pristupite nalogu u slučaju zaboravljanja lozinke, gubitka ili krađe uređaja ili ako želite da zamenite novčanike.</translation>
 <translation id="2708402071160162126">UPOZORENJE: Svoju frazu za oporavak nikada nemojte deliti s drugima. Svako ko zna ovu frazu može trajno uzeti vaša sredstva.</translation>
@@ -647,6 +652,9 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="3747079125031086337">Izaberite reči u vašoj frazi za oporavak u njihovom tačnom redosledu.</translation>
 <translation id="6518133107902771759">Верификуј</translation>
 <translation id="3157931365184549694">Поново отвори</translation>
+<translation id="5844138175312846408">Već imate novčanik?</translation>
+<translation id="2502258949541727762">Pre nego što počnemo</translation>
+<translation id="5981303441790732480">Uvezite svoj postojeći novčanik</translation>
 <translation id="9111102763498581341">Откључај</translation>
 <translation id="6657585470893396449">Лозинка</translation>
 <translation id="5619264711680220002">Otključavanje biometrijskim podacima</translation>
@@ -665,7 +673,7 @@ Da li ste sigurni da želite ovo da uradite?</translation>
 <translation id="5483736362376139517">1 godina</translation>
 <translation id="6979737339423435258">Одувек</translation>
 <translation id="6284218950354553099">Automatski šalji dnevni signal provere odziva Brave-u</translation>
-<translation id="5288333155754958121">Ova anonimna, privatna provera odziva omogućava Brave-u da proceni broj aktivnih korisnika.</translation>
+<translation id="2181060149810222381">Ovaj privatni ping omogućava Brave da proceni aktivne korisnike.</translation>
 <translation id="3819257035322786455">Rezervna kopija</translation>
 <translation id="4608713693379664295">Primarni kripto nalozi</translation>
 <translation id="4003821417160006384">Sekundarni nalozi</translation>
@@ -1212,5 +1220,11 @@ Ako ne budete prihvatili ovaj zahtev, VPN se neće ponovo povezati i vaša veza 
 <translation id="6637015365469044269">Nadograditi sada.</translation>
 <translation id="614530507403667291">Podrazumevani model za nove razgovore</translation>
 <translation id="4071849832011229600">Podrazumevani model</translation>
+<translation id="4185473179105062442">Primajte BAT direktno na kripto adresu za samostalno vođenje računa</translation>
+<translation id="5802986777701714573">Dodali smo vam novi način za primanje mesečnih BAT nagrada. Povežite nalog jednog od naših partnera ili koristite novu opciju za samostalno vođenje računa kako biste počeli da zarađujete sada.</translation>
 <translation id="7557539689487606886">Idite na Premium</translation>
+<translation id="5538904824395606812">Koristite svog trenutnog pružaoca usluga ili Quad9</translation>
+<translation id="6393423486818299209">Koristite svog trenutnog pružaoca usluga ili Wikimedia DNS</translation>
+<translation id="3401384982562827787">Koristite svog trenutnog pružaoca usluga ili Cloudflare</translation>
+<translation id="8812367543786936496">Ako vaš trenutni pružalac usluga nije bezbedan, Brave koristi bezbednog alternativnog DNS pružaoca</translation>
 </translationbundle>
