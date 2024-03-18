@@ -296,17 +296,12 @@ extension AdblockFilterListCatalogEntry {
 extension FilterListStorage {
   /// Gives us source representations of all the enabled filter lists
   @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
-    if !filterLists.isEmpty {
-      return filterLists.compactMap { filterList -> CachedAdBlockEngine.Source? in
-        guard filterList.isEnabled else { return nil }
-        return filterList.engineSource
-      }
-    } else {
-      // We may not have the filter lists loaded yet. In which case we load the settings
-      return allFilterListSettings.compactMap { setting -> CachedAdBlockEngine.Source? in
-        guard setting.isEnabled else { return nil }
-        return setting.engineSource
-      }
-    }
+    return filterLists.isEmpty
+      ? allFilterListSettings
+        .filter(\.isEnabled)
+        .compactMap(\.engineSource)
+      : filterLists
+        .filter(\.isEnabled)
+        .map(\.engineSource)
   }
 }

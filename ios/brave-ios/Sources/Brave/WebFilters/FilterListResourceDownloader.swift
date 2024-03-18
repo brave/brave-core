@@ -48,8 +48,7 @@ public actor FilterListResourceDownloader {
     }
 
     let resourcesInfo = await didUpdateResourcesComponent(folderURL: resourcesFolderURL)
-    async let cachedFilterLists: Void = compileCachedFilterLists(resourcesInfo: resourcesInfo)
-    _ = await (cachedFilterLists)
+    await compileCachedFilterLists(resourcesInfo: resourcesInfo)
   }
 
   /// This function adds engine resources to `AdBlockManager` from cached data representing the enabled filter lists.
@@ -154,7 +153,7 @@ public actor FilterListResourceDownloader {
 
     let version = folderURL.lastPathComponent
     let resourcesInfo = CachedAdBlockEngine.ResourcesInfo(
-      localFileURL: folderURL.appendingPathComponent("resources.json", conformingTo: .json),
+      localFileURL: folderURL.appendingPathComponent("resources.json"),
       version: version
     )
 
@@ -171,7 +170,7 @@ public actor FilterListResourceDownloader {
     compileContentBlockers: Bool
   ) async {
     let version = folderURL.lastPathComponent
-    let filterListURL = folderURL.appendingPathComponent("list.txt", conformingTo: .text)
+    let filterListURL = folderURL.appendingPathComponent("list.txt")
 
     guard FileManager.default.fileExists(atPath: filterListURL.relativePath) else {
       // We are loading the old component from cache. We don't want this file to be loaded.

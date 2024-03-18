@@ -58,9 +58,8 @@ actor FilterListCustomURLDownloader: ObservableObject {
     self.startedService = true
     await CustomFilterListStorage.shared.loadCachedFilterLists()
 
-    await CustomFilterListStorage.shared.filterListsURLs.asyncForEach { customURL in
-      // Always fetch this resource so it's ready if the user enables it.
-      await self.startFetching(filterListCustomURL: customURL)
+    for customURL in await CustomFilterListStorage.shared.filterListsURLs {
+      await startFetching(filterListCustomURL: customURL)
     }
   }
 

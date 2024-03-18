@@ -135,6 +135,10 @@ public actor AdBlockStats {
       ContentBlockerManager.log.debug(
         "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
       )
+    } else {
+      ContentBlockerManager.log.debug(
+        "Updated resources component: `\(resourcesInfo.localFileURL.path)`"
+      )
     }
   }
 
