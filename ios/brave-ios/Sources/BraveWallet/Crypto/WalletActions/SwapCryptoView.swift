@@ -37,7 +37,7 @@ struct ShortcutAmountGrid: View {
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
             .foregroundColor(Color(.secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView())
+            .background(WalletActionsGridBackgroundView())
             .padding(.top, 8)
         }
       }
@@ -89,8 +89,16 @@ struct SlippageGrid: View {
             .minimumScaleFactor(0.75)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity)
-            .foregroundColor(Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel))
-            .background(BuySendSwapGridBackgroundView(backgroundColor: Color(isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
+            .foregroundColor(
+              Color(isPredefinedOptionSelected(option.id) ? .white : .secondaryBraveLabel)
+            )
+            .background(
+              WalletActionsGridBackgroundView(
+                backgroundColor: Color(
+                  isSelected ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+                )
+              )
+            )
             .padding(.top, 8)
         }
         .accessibilityAddTraits(isSelected ? .isSelected : [])
@@ -117,7 +125,13 @@ struct SlippageGrid: View {
         .frame(maxWidth: .infinity)
         .accentColor(customSlippage != nil ? .white : nil)
         .foregroundColor(Color(customSlippage != nil ? .white : .secondaryBraveLabel))
-        .background(BuySendSwapGridBackgroundView(backgroundColor: Color(customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground)))
+        .background(
+          WalletActionsGridBackgroundView(
+            backgroundColor: Color(
+              customSlippage != nil ? .braveBlurpleTint : .secondaryBraveGroupedBackground
+            )
+          )
+        )
         .padding(.top, 8)
         .accessibilityAddTraits(customSlippage != nil ? .isSelected : [])
     }
@@ -211,6 +225,9 @@ struct SwapCryptoView: View {
   
   /// The DEX Aggregator for the current network.
   var dexAggregator: DEXAggregator {
+    // TODO(stephenheaps): Once LiFiQuote is supported, we need to
+    // update this disclaimer to include LiFi description & privacy
+    // policy https://github.com/brave/brave-browser/issues/36436
     networkStore.defaultSelectedChain.coin == .sol ? .jupiter : .zeroX
   }
 
@@ -484,17 +501,19 @@ struct SwapCryptoView: View {
   }
   
   @ViewBuilder private var feesFooter: some View {
-    if swapTokensStore.braveFeeForDisplay != nil || swapTokensStore.protocolFeeForDisplay != nil {
+    if swapTokensStore.braveFeeForDisplay != nil {
       VStack(spacing: 4) {
         if let braveFeeForDisplay = swapTokensStore.braveFeeForDisplay {
           if swapTokensStore.isBraveFeeVoided {
-            Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, Strings.Wallet.braveSwapFree) + " ") + Text(braveFeeForDisplay).strikethrough()
+            Text(
+              String.localizedStringWithFormat(
+                Strings.Wallet.braveFeeLabel,
+                Strings.Wallet.braveSwapFree
+              ) + " "
+            ) + Text(braveFeeForDisplay).strikethrough()
           } else {
             Text(String.localizedStringWithFormat(Strings.Wallet.braveFeeLabel, braveFeeForDisplay))
           }
-        }
-        if let protocolFee = swapTokensStore.protocolFeeForDisplay {
-          Text(String.localizedStringWithFormat(Strings.Wallet.protocolFeeLabel, protocolFee))
         }
       }
       .font(.footnote)

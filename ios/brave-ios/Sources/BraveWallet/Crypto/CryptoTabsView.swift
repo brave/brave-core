@@ -41,7 +41,10 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
   @State private var isShowingAddAccount: Bool = false
   @State private var fetchedPendingRequestsThisSession: Bool = false
   @State private var selectedTab: CryptoTab = .portfolio
-  
+
+  @Environment(\.walletActionDestination)
+  private var walletActionDestination: Binding<WalletActionDestination?>
+
   private var isConfirmationButtonVisible: Bool {
     if case .transactions(let txs) = cryptoStore.pendingRequest {
       return !txs.isEmpty
@@ -91,7 +94,8 @@ struct CryptoTabsView<DismissContent: ToolbarContent>: View {
         AccountsView(
           store: cryptoStore.accountsStore,
           cryptoStore: cryptoStore,
-          keyringStore: keyringStore
+          keyringStore: keyringStore,
+          walletActionDestination: walletActionDestination
         )
         .navigationTitle(Strings.Wallet.wallet)
         .navigationBarTitleDisplayMode(.inline)

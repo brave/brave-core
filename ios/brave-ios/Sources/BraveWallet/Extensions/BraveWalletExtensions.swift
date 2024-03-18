@@ -157,6 +157,20 @@ extension BraveWallet.AccountInfo {
       return ""
     }
   }
+
+  var qrCodeImage: UIImage? {
+    guard let data = self.address.data(using: .utf8) else { return nil }
+    let context = CIContext()
+    let filter = CIFilter.qrCodeGenerator()
+    filter.message = data
+    filter.correctionLevel = "H"
+    if let image = filter.outputImage,
+      let cgImage = context.createCGImage(image, from: image.extent)
+    {
+      return UIImage(cgImage: cgImage)
+    }
+    return nil
+  }
 }
 
 extension BraveWallet.CoinType {

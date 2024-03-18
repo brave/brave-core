@@ -97,7 +97,8 @@ class MarketStoreTests: XCTestCase {
       assetRatioService: assetRatioService,
       blockchainRegistry: blockchainRegistry,
       rpcService: rpcService,
-      walletService: walletService
+      walletService: walletService,
+      assetManager: TestableWalletUserAssetManager()
     )
     let coinMarketExpectation = expectation(description: "coinMarketExpectation")
     store.$coins

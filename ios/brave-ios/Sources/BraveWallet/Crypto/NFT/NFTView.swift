@@ -21,9 +21,9 @@ struct NFTView: View {
   @State private var isNFTDiscoveryEnabled: Bool = false
   @State private var nftToBeRemoved: NFTAssetViewModel?
   @State private var groupToggleState: [NFTGroupViewModel.ID: Bool] = [:]
-  
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+
+  @Environment(\.walletActionDestination)
+  private var walletActionDestination: Binding<WalletActionDestination?>
   @Environment(\.openURL) private var openWalletURL
   
   private var emptyView: some View {
@@ -293,8 +293,12 @@ struct NFTView: View {
           if let selectedNFTViewModel {
             NFTDetailView(
               keyringStore: keyringStore,
-              nftDetailStore: cryptoStore.nftDetailStore(for: selectedNFTViewModel.token, nftMetadata: selectedNFTViewModel.nftMetadata, owner: nftStore.owner(for: selectedNFTViewModel.token)),
-              buySendSwapDestination: buySendSwapDestination,
+              nftDetailStore: cryptoStore.nftDetailStore(
+                for: selectedNFTViewModel.token,
+                nftMetadata: selectedNFTViewModel.nftMetadata,
+                owner: nftStore.owner(for: selectedNFTViewModel.token)
+              ),
+              walletActionDestination: walletActionDestination,
               onNFTMetadataRefreshed: { nftMetadata in
                 nftStore.updateNFTMetadataCache(for: selectedNFTViewModel.token, metadata: nftMetadata)
               },
