@@ -31,7 +31,7 @@ struct ContainerShape: InsettableShape {
 struct MultipleCircleIconView<IconView: View, Model>: View {
   let models: [Model]
   var shape: ContainerShape.Shape = .circle
-  let maxIcons = 3
+  var maxIcons = 3
   @ScaledMetric var iconSize = 16.0
   var maxIconSize: CGFloat = 32
   @ScaledMetric var iconDotSize = 2.0

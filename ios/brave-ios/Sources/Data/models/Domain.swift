@@ -253,6 +253,8 @@ public final class Domain: NSManagedObject, CRUD {
       return nil
     case .btc:
       return nil
+    case .zec:
+      return nil
     @unknown default:
       return nil
     }
@@ -271,6 +273,8 @@ public final class Domain: NSManagedObject, CRUD {
     case .fil:
       break
     case .btc:
+      break
+    case .zec:
       break
     @unknown default:
       break
@@ -292,6 +296,8 @@ public final class Domain: NSManagedObject, CRUD {
     case .fil:
       break
     case .btc:
+      break
+    case .zec:
       break
     @unknown default:
       break
@@ -548,6 +554,8 @@ extension Domain {
         break
       case .btc:
         break
+      case .zec:
+        break
       @unknown default:
         break
       }
@@ -570,6 +578,8 @@ extension Domain {
       case .fil:
         break
       case .btc:
+        break
+      case .zec:
         break
       @unknown default:
         break

@@ -23,7 +23,7 @@ struct BiometricView: View {
         return Image(braveSystemName: "leo.face.id")
       case .touchID:
         return Image(braveSystemName: "leo.biometric.login")
-      case .none:
+      case .none, .opticID:
         return nil
       @unknown default:
         return nil

@@ -272,6 +272,9 @@ class AssetDetailStoreTests: XCTestCase {
     rpcService._network = {
       $2(.mockMainnet)
     }
+    rpcService._allNetworks = {
+      $1([.mockMainnet])
+    }
     rpcService._balance = { _, _, _, completion in
       completion(ethBalanceWei, .success, "")
     }

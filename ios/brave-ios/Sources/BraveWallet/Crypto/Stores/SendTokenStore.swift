@@ -417,6 +417,8 @@ public class SendTokenStore: ObservableObject, WalletObserverStore {
         validateFilcoinSendAddress()
       case .btc:
         break
+      case .zec:
+        break
       @unknown default:
         break
       }

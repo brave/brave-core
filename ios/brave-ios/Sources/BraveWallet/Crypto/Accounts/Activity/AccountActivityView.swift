@@ -15,7 +15,8 @@ struct AccountActivityView: View {
   @ObservedObject var store: AccountActivityStore
   var cryptoStore: CryptoStore
   var keyringStore: KeyringStore
-  @Binding var buySendSwapDestination: BuySendSwapDestination?
+
+  @Binding var walletActionDestination: WalletActionDestination?
 
   @State private var didLoad: Bool = false
   @State private var isPresentingEditAccount: Bool = false
@@ -138,13 +139,16 @@ struct AccountActivityView: View {
 
       HStack(spacing: 24) {
         PortfolioHeaderButton(style: .buy) {
-          buySendSwapDestination = .init(kind: .buy)
+          walletActionDestination = .init(kind: .buy)
         }
         PortfolioHeaderButton(style: .send) {
-          buySendSwapDestination = .init(kind: .send)
+          walletActionDestination = .init(kind: .send)
         }
         PortfolioHeaderButton(style: .swap) {
-          buySendSwapDestination = .init(kind: .swap)
+          walletActionDestination = .init(kind: .swap)
+        }
+        PortfolioHeaderButton(style: .deposit) {
+          walletActionDestination = .init(kind: .deposit(query: nil), initialAccount: store.account)
         }
       }
     }
@@ -296,7 +300,7 @@ struct AccountActivityView_Previews: PreviewProvider {
         store: .previewStore,
         cryptoStore: .previewStore,
         keyringStore: .previewStore,
-        buySendSwapDestination: .constant(.none)
+        walletActionDestination: .constant(.none)
       )
     }
     .previewColorSchemes()
@@ -353,8 +357,9 @@ private struct NFTGridDetailView: View {
   var keyringStore: KeyringStore
 
   @State private var nftForDetails: BraveWallet.BlockchainToken?
-  @Environment(\.buySendSwapDestination)
-  private var buySendSwapDestination: Binding<BuySendSwapDestination?>
+
+  @Environment(\.walletActionDestination)
+  private var walletActionDestination: Binding<WalletActionDestination?>
 
   var body: some View {
     NFTsGridView(
@@ -375,7 +380,7 @@ private struct NFTGridDetailView: View {
             NFTDetailView(
               keyringStore: keyringStore,
               nftDetailStore: cryptoStore.nftDetailStore(for: token, nftMetadata: nil, owner: nil),
-              buySendSwapDestination: buySendSwapDestination
+              walletActionDestination: walletActionDestination
             ) { metadata in
 
             }

@@ -32,6 +32,7 @@ public class MarketStore: ObservableObject, WalletObserverStore {
   private let blockchainRegistry: BraveWalletBlockchainRegistry
   private let rpcService: BraveWalletJsonRpcService
   private let walletService: BraveWalletBraveWalletService
+  private let assetManager: WalletUserAssetManagerType
   private let assetsRequestLimit = 250
   let priceFormatter: NumberFormatter = .usdCurrencyFormatter
   let priceChangeFormatter = NumberFormatter().then {
@@ -45,12 +46,14 @@ public class MarketStore: ObservableObject, WalletObserverStore {
     assetRatioService: BraveWalletAssetRatioService,
     blockchainRegistry: BraveWalletBlockchainRegistry,
     rpcService: BraveWalletJsonRpcService,
-    walletService: BraveWalletBraveWalletService
+    walletService: BraveWalletBraveWalletService,
+    assetManager: WalletUserAssetManagerType
   ) {
     self.assetRatioService = assetRatioService
     self.blockchainRegistry = blockchainRegistry
     self.rpcService = rpcService
     self.walletService = walletService
+    self.assetManager = assetManager
   }
 
   private var updateTask: Task<Void, Never>?

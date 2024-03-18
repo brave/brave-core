@@ -5,7 +5,7 @@
 
 import SwiftUI
 
-struct BuySendSwapGridBackgroundView: View {
+struct WalletActionsGridBackgroundView: View {
   @Environment(\.sizeCategory) private var sizeCategory
 
   var backgroundColor: Color = Color(.secondaryBraveGroupedBackground)

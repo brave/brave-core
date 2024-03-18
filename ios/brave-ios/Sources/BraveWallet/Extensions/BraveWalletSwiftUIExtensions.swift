@@ -155,7 +155,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
 
 extension BraveWallet.BlockchainToken: Identifiable {
   public var id: String {
-    contractAddress.lowercased() + chainId + symbol + tokenId
+    contractAddress + chainId + symbol + tokenId
   }
 
   public func contractAddress(in network: BraveWallet.NetworkInfo) -> String {

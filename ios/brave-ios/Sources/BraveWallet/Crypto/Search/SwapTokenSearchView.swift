@@ -26,9 +26,17 @@ struct SwapTokenSearchView: View {
     TokenList(
       tokens: swapTokenStore.allTokens
         .filter {
-          ($0.symbol != excludedToken?.symbol) && (!$0.isNft || $0.symbol == network.symbol)
+          let symbolNotMatch = $0.symbol != excludedToken?.symbol
+          let otherMatch = !$0.isNft || $0.symbol == network.symbol
+          return symbolNotMatch && otherMatch
         }
-    ) { token in
+    ) { query, token in
+      let symbolMatch = token.symbol.localizedCaseInsensitiveContains(query)
+      let nameMatch = token.name.localizedCaseInsensitiveContains(query)
+      return symbolMatch || nameMatch
+    } header: {
+      TokenListHeaderView(title: Strings.Wallet.assetsTitle)
+    } content: { token in
       Button {
         if searchType == .fromToken {
           swapTokenStore.selectedFromToken = token
