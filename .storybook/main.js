@@ -4,7 +4,9 @@ const isCI = Boolean(process.env.JENKINS_URL && process.env.BUILD_ID)
 
 /** @type {import('@storybook/react-webpack5').StorybookConfig} */
 module.exports = {
-  stories: ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
+  stories: process.env.STORYBOOK_STORYPATH
+    ? [`../${process.env.STORYBOOK_STORYPATH}`]
+    : ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
   typescript: {
     check: true,
     reactDocgen: false,
@@ -16,7 +18,7 @@ module.exports = {
     }
   },
   addons: ['@storybook/addon-knobs', '@storybook/addon-essentials'],
-  framework: "@storybook/react-webpack5",
+  framework: '@storybook/react-webpack5',
   staticDirs: [
     { from: '../node_modules/@brave/leo/icons', to: 'icons/' },
     {
