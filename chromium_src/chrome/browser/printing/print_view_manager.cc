@@ -11,82 +11,28 @@
 
 namespace printing {
 
-BravePrintViewManager::BravePrintViewManager(content::WebContents* web_contents)
+PrintViewManager::PrintViewManager(content::WebContents* web_contents)
     : PrintViewManager_ChromiumImpl(web_contents) {}
 
-BravePrintViewManager::~BravePrintViewManager() = default;
+PrintViewManager::~PrintViewManager() = default;
 
 // static
-void BravePrintViewManager::CreateForWebContents(
+void PrintViewManager::CreateForWebContents(
     content::WebContents* web_contents) {
   if (!FromWebContents(web_contents)) {
-    web_contents->SetUserData(
-        PrintViewManager_ChromiumImpl::UserDataKey(),
-        std::make_unique<BravePrintViewManager>(web_contents));
+    web_contents->SetUserData(PrintViewManager_ChromiumImpl::UserDataKey(),
+                              std::make_unique<PrintViewManager>(web_contents));
   }
 }
 
 // static
-BravePrintViewManager* BravePrintViewManager::FromWebContents(
+PrintViewManager* PrintViewManager::FromWebContents(
     content::WebContents* web_contents) {
-  return static_cast<BravePrintViewManager*>(
+  return static_cast<PrintViewManager*>(
       web_contents->GetUserData(PrintViewManager_ChromiumImpl::UserDataKey()));
 }
 
-// static
-void BravePrintViewManager::BindPrintManagerHost(
-    mojo::PendingAssociatedReceiver<mojom::PrintManagerHost> receiver,
-    content::RenderFrameHost* rfh) {
-  PrintViewManager_ChromiumImpl::BindPrintManagerHost(std::move(receiver), rfh);
-}
-
-bool BravePrintViewManager::PrintForSystemDialogNow(
-    base::OnceClosure dialog_shown_callback) {
-  return PrintViewManager_ChromiumImpl::PrintForSystemDialogNow(
-      std::move(dialog_shown_callback));
-}
-
-bool BravePrintViewManager::BasicPrint(content::RenderFrameHost* rfh) {
-  return PrintViewManager_ChromiumImpl::BasicPrint(rfh);
-}
-
-bool BravePrintViewManager::PrintPreviewNow(content::RenderFrameHost* rfh,
-                                            bool has_selection) {
-  return PrintViewManager_ChromiumImpl::PrintPreviewNow(rfh, has_selection);
-}
-
-#if BUILDFLAG(IS_CHROMEOS_ASH)
-bool BravePrintViewManager::PrintPreviewWithPrintRenderer(
-    content::RenderFrameHost* rfh,
-    mojo::PendingAssociatedRemote<mojom::PrintRenderer> print_renderer) {
-  return PrintViewManager_ChromiumImpl::PrintPreviewWithPrintRenderer(
-      rfh, std::move(print_renderer));
-}
-#endif
-
-void BravePrintViewManager::PrintPreviewForNodeUnderContextMenu(
-    content::RenderFrameHost* rfh) {
-  PrintViewManager_ChromiumImpl::PrintPreviewForNodeUnderContextMenu(rfh);
-}
-
-void BravePrintViewManager::PrintPreviewAlmostDone() {
-  PrintViewManager_ChromiumImpl::PrintPreviewAlmostDone();
-}
-
-void BravePrintViewManager::PrintPreviewDone() {
-  PrintViewManager_ChromiumImpl::PrintPreviewDone();
-}
-
-content::RenderFrameHost* BravePrintViewManager::print_preview_rfh() {
-  return PrintViewManager_ChromiumImpl::print_preview_rfh();
-}
-
-// static
-void BravePrintViewManager::SetReceiverImplForTesting(PrintManager* impl) {
-  PrintViewManager_ChromiumImpl::SetReceiverImplForTesting(impl);
-}
-
-void BravePrintViewManager::RejectPrintPreviewRequestIfRestricted(
+void PrintViewManager::RejectPrintPreviewRequestIfRestricted(
     content::GlobalRenderFrameHostId rfh_id,
     base::OnceCallback<void(bool should_proceed)> callback) {
   // Initiated from AIChatUI

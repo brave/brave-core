@@ -68,22 +68,12 @@ async function applyPatches() {
   Log.progressFinish('apply patches')
 }
 
-// Always rebuild typedef export to avoid linkage error.
-const isOverrideExportTypedef = (override) => {
-  const exportedHeaders = ['print_view_manager.h'];
-  if (exportedHeaders.includes(path.basename(override))) {
-    return true
-  }
-  return false
-}
-
 const isOverrideNewer = (original, override) => {
   return (fs.statSync(override).mtimeMs - fs.statSync(original).mtimeMs > 0)
 }
 
 const updateFileUTimesIfOverrideIsNewer = (original, override) => {
-  if (isOverrideNewer(original, override) ||
-      isOverrideExportTypedef(override)) {
+  if (isOverrideNewer(original, override)) {
     const date = new Date()
     fs.utimesSync(original, date, date)
     console.log(original + ' is touched.')
