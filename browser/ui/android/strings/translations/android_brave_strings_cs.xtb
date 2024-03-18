@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Začít používat Rewards</translation>
 <translation id="8220484609979012449">\n\nPříspěvky autorovi lze stále posílat v krypto měnách z Web3 peněženky.</translation>
 <translation id="6385969012847057348">Tento autor nemůže přijímat příspěvky od poskytovatele <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Tento autor zatím nemá nastaven příjem příspěvků přes Web3 nebo krypto peněženku.</translation>
 <translation id="6268134562674951939">Nemáte dostatek tokenů</translation>
 <translation id="4529874892536380156">Přeměnit příspěvek na pravidelný měsíční příspěvek. Můžete jej kdykoli zrušit.</translation>
 <translation id="5562948772940025260">Ze zůstatku odměn Brave můžete odeslat pouze <ph name="AMOUNT"/> BAT.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Na stávajícím synchronizovaném zařízení otevřete Brave a přejděte do Nastavení &gt; Synchronizace. Vyberte možnost „Přidat nové zařízení“ a poté naskenujte z obrazovky QR kód.</translation>
 <translation id="5241263629636958324">Zkopírováno do schránky</translation>
 <translation id="5817918615728894473">Spárovat</translation>
-<translation id="7090325819305486658">Předvolby údajů</translation>
+<translation id="3429575397891106447">Možnosti synchronizace</translation>
 <translation id="1680065323266179640">Odstranit účet synchronizace</translation>
 <translation id="3792563952903751704">Odstranění účtu odebere vaše šifrovaná data ze serverů Brave a deaktivuje synchronizaci na všech vašich připojených zařízeních. Neodstraní však data, která jsou v těchto zařízeních uložena lokálně.
   Toto odstranění je trvalé a data nelze obnovit. Pokud se rozhodnete synchronizaci znovu začít používat, budete muset vytvořit nový účet a znovu přidat jednotlivá zařízení.</translation>
@@ -595,14 +596,18 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="1483493594462132177">Odeslat</translation>
 <translation id="538450413584738399">Vyměnit</translation>
 <translation id="1366855498335432549">Vklad</translation>
-<translation id="1420318137760245955">Vítejte v nové peněžence Brave Wallet</translation>
-<translation id="8339846196588658366">Mějte kryptoaktiva u sebe a sleduje výkonnost portfolia. To vše z prohlížeče Brave s ochranou soukromí.</translation>
-<translation id="4472575034687746823">Začít</translation>
+<translation id="4556086616242530072">Nativní prohlížeč.\nVlastní úschova.\nA pro více řetězců.</translation>
+<translation id="7909462264772842773">Převezměte kontrolu nad svými kryptoměnami a NFT. Peněženka Brave podporuje Ethereum, řetězce EVM, Solana, Filecoin a další.</translation>
+<translation id="165255193061631296">Potřebujete novou peněženku?</translation>
+<translation id="3485737865439729577">Začněte s peněženkou Brave během několika minut</translation>
 <translation id="2759836790106646094">Zálohujte si peněženku hned teď!</translation>
 <translation id="1078873179929044999">V dalším kroku se zobrazí fráze pro obnovení o 12 slovech, kterou můžete použít k obnovení primárních krypto účtů. Uložte si ji na bezpečné místo. Vaše fráze pro obnovení je jediným způsobem, jak znovu získat přístup k účtu v případě zapomenutého hesla, ztráty nebo krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
 <translation id="2359808026110333948">Pokračovat</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">Chápu, že pokud ztratím svoji obnovovací frázi, ztratím přístup ke své kryptopeněžence.</translation>
+<translation id="5333225216561354793">Požadujeme, abyste vzali na vědomí níže uvedené položky</translation>
+<translation id="1645800479814134195">Beru na vědomí, že se jedná o peněženku s vlastní úschovou a že jsem zodpovědný/á za veškeré související finanční prostředky, aktiva nebo účty a za přijetí vhodných opatření k zabezpečení, ochraně a zálohování mé peněženky. Chápu, že Brave nemůže získat přístup k mé peněžence nebo zvrátit transakce mým jménem a že moje fráze pro obnovení je JEDINÝ způsob, jak znovu získat přístup v případě ztráty hesla, odcizení zařízení nebo podobných okolností.</translation>
+<translation id="4565891212173086999">Četl/a jsem a souhlasím s <ph name="CLICK_START"/>Podmínkami použití<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Vaše fráze pro obnovení</translation>
 <translation id="5077747669435508720">Zapište si nebo opište tato slova v přesném pořadí uvedeném níže a uložte je na bezpečné místo. Vaše obnovovací fráze je jediným způsobem, jak získat zpět přístup k účtu v případě zapomenutého hesla, ztráty či krádeže zařízení nebo v případě, že chcete změnit peněženku.</translation>
 <translation id="2708402071160162126">VAROVÁNÍ: Nikdy nesdílejte frázi pro obnovení. Kdokoli, kdo tuto frázi zná, vám může vaše prostředky nevratně odcizit.</translation>
@@ -647,6 +652,9 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="3747079125031086337">Vyberte slova ve frázi pro obnovu ve správném pořadí.</translation>
 <translation id="6518133107902771759">Ověřit</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5844138175312846408">Už máte peněženku?</translation>
+<translation id="2502258949541727762">Než začneme</translation>
+<translation id="5981303441790732480">Importujte svou stávající peněženku</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Heslo</translation>
 <translation id="5619264711680220002">Biometrické odemčení</translation>
@@ -665,7 +673,7 @@ Jste si jisti, že chcete tuto akci provést?</translation>
 <translation id="5483736362376139517">1 rok</translation>
 <translation id="6979737339423435258">Od počátku věků</translation>
 <translation id="6284218950354553099">Automatické odesílání denního pingu do služby Brave</translation>
-<translation id="5288333155754958121">Tento anonymní, soukromý ping umožňuje společnosti Brave odhadnout počet aktivních uživatelů.</translation>
+<translation id="2181060149810222381">Tento soukromý ping umožňuje Brave odhadnout počet aktivních uživatelů.</translation>
 <translation id="3819257035322786455">Zálohovat</translation>
 <translation id="4608713693379664295">Hlavní krypto účty</translation>
 <translation id="4003821417160006384">Sekundární účty</translation>
@@ -1212,5 +1220,11 @@ Pokud tuto žádost nepřijmete, síť VPN se znovu nepřipojí a vaše připoje
 <translation id="6637015365469044269">Upgradovat hned teď</translation>
 <translation id="614530507403667291">Výchozí model pro konverzace</translation>
 <translation id="4071849832011229600">Výchozí model</translation>
+<translation id="4185473179105062442">Tokeny BAT můžete dostávat na adresu vlastní peněženky kryptoměn</translation>
+<translation id="5802986777701714573">Přidali jsme nový způsob zasílání měsíčních odměn BAT. Připojte si účet od některého z našich partnerů nebo využijte novou možnost vlastního úschovy a hned začněte vydělávat.</translation>
 <translation id="7557539689487606886">Přejít na verzi Premium</translation>
+<translation id="5538904824395606812">Použijte svého současného poskytovatele služeb nebo Quad9</translation>
+<translation id="6393423486818299209">Použijte svého současného poskytovatele služeb nebo Wikimedia DNS</translation>
+<translation id="3401384982562827787">Použijte svého současného poskytovatele služeb nebo Cloudflare</translation>
+<translation id="8812367543786936496">Pokud je váš současný poskytovatel služeb nejistý, Brave použije alternativního zabezpečeného poskytovatele DNS</translation>
 </translationbundle>

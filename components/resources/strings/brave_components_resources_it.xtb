@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">Visualizzati</translation>
 <translation id="8826352442759228526">Il tuo profilo Ricompense Brave non può essere verificato perché hai raggiunto il limite massimo di dispositivi verificati.</translation>
 <translation id="1221593978088944142">Errore: limite di dispositivi raggiunto</translation>
-<translation id="3113653894794167793">Spiacenti, si è verificato un problema durante l'elaborazione della tua richiesta, riprova.</translation>
 <translation id="6895088073061692390">Purtroppo il tuo profilo Brave Rewards è stato segnalato perché i nostri controlli automatici hanno rilevato un’attività inaspettata di Brave Ads.</translation>
 <translation id="4229056297802204697">Quando il tuo profilo è segnalato, puoi continuare a vedere gli annunci, ma non hai diritto a ricevere pagamenti. Non puoi inoltre collegare un conto di custodia a Brave Rewards.</translation>
 <translation id="5124846913141379164">È possibile che il tuo profilo sia stato segnalato per errore e che non sia necessaria alcuna azione immediata da parte tua. La segnalazione sul tuo profilo potrebbe essere rimossa in futuro.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">Errore: funzionalità limitata del conto Uphold</translation>
 <translation id="3274650021044762770">Si è verificato un problema e non è stata approvata la richiesta effettuata dal browser di collegare le Ricompense Brave al tuo account <ph name="PROVIDER"/>. Se hai bisogno di aiuto <ph name="BEGIN_LINK"/>contatta l’assistenza<ph name="END_LINK"/>.</translation>
 <translation id="1316066811927496401">Errore: la richiesta non è convalidabile</translation>
+<translation id="7352651011704765696">Qualcosa è andato storto</translation>
+<translation id="8285276813470932793">Non siamo riusciti a completare la tua richiesta. Riprova e, se il problema persiste, <ph name="LINK_BEGIN"/>contatta l’assistenza<ph name="LINK_END"/>.</translation>
 <translation id="8167256685618982116">Attivando <ph name="TITLE"/>, accetti i <ph name="BEGIN_LINK1"/>Termini di servizio<ph name="END_LINK1"/> e l’<ph name="BEGIN_LINK2"/>Informativa sulla privacy<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Account custodial (serve la verifica dell’identità)</translation>
 <translation id="1539433155512862005">Gli account custodial sono dei conti di custodia, forniti da terze parti, che tengono in affidamento i tuoi BAT.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900">In sospeso fino al giorno <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Spiacenti, il tuo browser non può ricevere annunci privati Brave.</translation>
 <translation id="5177429570315095022">Il tuo browser deve essere aggiornato per poter continuare a vedere gli annunci.</translation>
-<translation id="7352651011704765696">Qualcosa è andato storto</translation>
 <translation id="4593680147181354667">ID diagnostica</translation>
 <translation id="3995471429906554168">Informazioni diagnostiche</translation>
 <translation id="752216563428219524">Annunci non inizializzati, aggiorna la pagina.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">Le ricompense sono state disattivate</translation>
 <translation id="3354337256330577726">Le contribuzioni automatiche sono state disabilitate</translation>
 <translation id="6727186931929643711">Nuovi tentativi interrotti</translation>
-<translation id="8978461348341400550">Responsabile</translation>
-<translation id="7220161813676251577">ID membro responsabile</translation>
+<translation id="6461242868382182003">Tipo di conto:</translation>
+<translation id="4129229983159690026">Conto:</translation>
 <translation id="680983167891198932">Chiave</translation>
 <translation id="7535087603100972091">Valore</translation>
 <translation id="45591635423975492">Registrato a</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">ATTENZIONE: questo file di log potrebbe contenere dati sensibili. Controlla bene con chi lo condividi.</translation>
 <translation id="7375125077091615385">Tipo:</translation>
 <translation id="1924618796077284366">Scarica log completo</translation>
-<translation id="5362600797402074593">informazioni sulla connessione del conto di custodia</translation>
+<translation id="2129987553148729046">Informazioni sui conti collegati</translation>
 <translation id="5457113250005438886">Non valido</translation>
 <translation id="6161467863097205016">Chiave info seed:</translation>
 <translation id="5323604113525002127">Mostriamo le ultime [[numberOfLines]] righe del log. Se ti interessa il log intero, puoi scaricarlo da qua sopra.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">Saldo totale</translation>
 <translation id="2223892939866251845">ID Utente</translation>
 <translation id="4235360514405112390">Valido</translation>
-<translation id="3902084968737576005">Indirizzo portafoglio:</translation>
+<translation id="458999179147014626">Indirizzo di deposito del conto:</translation>
 <translation id="3653417592104122757">Cronologia del portafoglio</translation>
 <translation id="3339401101952651943">Informazioni sulle ricompense</translation>
 <translation id="3363158483789327529">Profilo non ancora creato per le ricompense</translation>
 <translation id="476272015919848174">ID di pagamento delle ricompense:</translation>
 <translation id="9008441690901662695">Stato delle ricompense:</translation>
-<translation id="8874184842967597500">Non connessa</translation>
-<translation id="4569155249847375786">Verificato</translation>
-<translation id="6521149675246672063">Disconnesso (Verificato)</translation>
+<translation id="9069875072411692547">Non collegato</translation>
+<translation id="3368922792935385530">Connessa</translation>
 <translation id="5058161306698404465">Ambiente di creazione:</translation>
 <translation id="5856438412804207598">Ambiente attuale:</translation>
 <translation id="5916290544882167205">Brave Software. Brave è un marchio registrato di Brave Software. I nomi sul sito possono essere marchi o marchi registrati del proprietario del sito.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">Nota bene:</translation>
 <translation id="1430915738399379752">Stampa</translation>
 <translation id="135956957367307069">La tua richiesta è ancora in corso di elaborazione, attendere prego.</translation>
-<translation id="8725066075913043281">Riprova</translation>
 <translation id="2600847485413879104">Ricompense BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">Stai visualizzando una pagina di WebTorrent</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Abilitare il supporto di Unstoppable Domains in Brave?</translation>
-<translation id="9156229987230762013">Brave userà Infura per risolvere i nomi di dominio .crypto (e anche .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) che si trovano su Unstoppable Domains. Brave nasconde il tuo indirizzo IP. Se attivi questa opzione, Infura vedrà che qualcuno sta cercando di visitare questi domini ma non potrà vedere nient’altro. Consulta le <ph name="BEGIN_INFURA_TOU_LINK"/>condizioni di utilizzo<ph name="END_INFURA_TOU_LINK"/> e l’<ph name="BEGIN_INFURA_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_INFURA_PRIVACY_LINK"/> di Infura.</translation>
+<translation id="5015092481905019948">Brave userà <ph name="PROVIDER_NAME"/> per risolvere i nomi di dominio da <ph name="DOMAIN_LIST"/> che si trovano su <ph name="DOMAIN_PROVIDER_NAME"/>. Brave nasconde il tuo indirizzo IP. Se attivi questa opzione, <ph name="PROVIDER_NAME"/> vedrà che qualcuno sta cercando di visitare questi domini ma non potrà vedere nient’altro. Consulta le <ph name="BEGIN_PROVIDER_TOU_LINK"/>condizioni di utilizzo<ph name="END_PROVIDER_TOU_LINK"/> e l’<ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_PROVIDER_PRIVACY_LINK"/> di <ph name="PROVIDER_NAME"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="2789190492285945209">Sistema dei nomi di Ethereum (ENS)</translation>
 <translation id="4335039108389860301">Abilitare il supporto di Ethereum Name Service (ENS) in Brave?</translation>
-<translation id="4609973808011229683">Brave userà Infura per risolvere i nomi di domini .eth che si trovano su Ethereum Name Service (ENS). Brave nasconde il tuo indirizzo IP. Se attivi questa opzione, Infura vedrà che qualcuno sta cercando di visitare i domini .eth ma non potrà vedere nient’altro. Consulta le <ph name="BEGIN_INFURA_TOU_LINK"/>condizioni di utilizzo<ph name="END_INFURA_TOU_LINK"/> e l’<ph name="BEGIN_INFURA_PRIVACY_LINK"/>informativa sulla privacy<ph name="END_INFURA_PRIVACY_LINK"/> di Infura.</translation>
 <translation id="807404806385418949">Ricerca off-chain di Ethereum Name Service</translation>
 <translation id="4049590838234508776">Vuoi attivare la ricerca off-chain di Ethereum Name Service (ENS) su Brave?</translation>
 <translation id="5944991147217767764">Il nome di dominio .eth è memorizzato off-chain e verrà risolto da un gateway di terze parti. Dopo l’attivazione della ricerca off-chain di ENS, il gateway di terze parti vedrà che stai cercando di visitare il dominio .eth. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Scopri di più<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Procedi con la ricerca off-chain</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Vuoi attivare il supporto di Solana Name Service (SNS) su Brave?</translation>
-<translation id="1026480261052976838">Per risolvere i nomi di dominio .sol, Brave si affiderà a una terza parte. Brave nasconde però il tuo indirizzo IP. Se si attiva questa opzione, la terza parte vedrà che qualcuno sta tentando di visitare questi domini .sol, ma non saprà nient’altro. Per informazioni sulle terze parti da noi utilizzate e sulle loro politiche in materia di privacy, consulta la nostra <ph name="BEGIN_SNS_WIKI_LINK"/>pagina di assistenza<ph name="END_SNS_WIKI_LINK"/>.</translation>
-<translation id="7378412287463452336">Procedi utilizzando il server Infura</translation>
+<translation id="7769345036263036863">Brave si affiderà a una terza parte per risolvere i nomi di dominio <ph name="DOMAIN_LIST"/>. Brave nasconde il tuo indirizzo IP. Se attivi questa opzione, la terza parte vedrà che qualcuno sta cercando di visitare questi domini <ph name="DOMAIN_LIST"/> ma non potrà vedere nient’altro. Per maggiori informazioni sulle terze parti che utilizziamo e le relative politiche in materia di privacy, consulta la nostra <ph name="BEGIN_SNS_WIKI_LINK"/>pagina di assistenza<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="884864496166128252">Procedi utilizzando il server <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">Continua usando un server SNS</translation>
 <translation id="2356070529366658676">Chiedi</translation>
 <translation id="59174027418879706">Attiva</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">Si è verificato un errore, prova a installare di nuovo il nodo</translation>
 <translation id="8428368469058794536">Servizio IPFS</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">Riprova</translation>
 <translation id="1886162073868201257">Errore di lancio del servizio IPFS</translation>
 <translation id="5357895013476183089">IPFS non connesso</translation>
 <translation id="7662930734991751511">Impossibile caricare le risorse IPFS usando il nodo IPFS locale di Brave</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">Premi di Brave Ads</translation>
 <translation id="5308380583665731573">Connettiti</translation>
 <translation id="3026978804849658576">Visualizza l’estratto conto</translation>
-<translation id="3368922792935385530">Connessa</translation>
 <translation id="1848737374354350807">Bilancio:</translation>
 <translation id="6516984207843289176">Connetti conto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Vuoi iniziare a guadagnare?<ph name="BOLD_END"/> Ti basta collegare un conto o aprirlo con uno dei nostri partner.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">Revoca</translation>
 <translation id="9218424917282368512">Cambia rete</translation>
 <translation id="7526139040829362392">Cambia account</translation>
+<translation id="8874184842967597500">Non connessa</translation>
 <translation id="4217695020908122747">Account connessi</translation>
 <translation id="8497650996740651467">Account disponibili</translation>
 <translation id="5677928146339483299">Bloccato</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">Il dominio non ha un indirizzo <ph name="COIN_TYPE_SYMBOL"/> collegato</translation>
 <translation id="8971278306757462297">L’indirizzo di destinazione è il tuo stesso indirizzo</translation>
 <translation id="3506416339268164412">L’indirizzo di destinazione è l’indirizzo di contratto di un token</translation>
+<translation id="7029817408221097939">Indirizzo unificato non valido</translation>
 <translation id="6370376419663123629">L’indirizzo non è corretto</translation>
 <translation id="3767148796886402380">Controlla l’indirizzo e assicurati che sia corretto (ad es. lettere maiuscole o minuscole).</translation>
 <translation id="2585599787090762065">Come faccio a risolverlo?</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> è stato rinviato al tuo portafoglio</translation>
 <translation id="4577432071459867390">Transazione non riuscita</translation>
 <translation id="4359235192593147041">La transazione non è riuscita a causa di un elevato movimento dei prezzi. Aumenta la tolleranza di slippage per poter eseguire transazioni anche in caso di scostamenti elevati.</translation>
+<translation id="8685035971570487250">È già in corso una transazione Zcash. Riprova più tardi.</translation>
 <translation id="8584830404080597280">Nuovo scambio</translation>
 <translation id="8065905913745172640">Nuova transazione</translation>
 <translation id="9079041000600020902">Visualizza errore</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">Una variazione in sospeso nel saldo del tuo portafoglio.</translation>
 <translation id="7700365440186054030">I fondi disponibili più eventuali transazioni non ancora confermate.</translation>
 <translation id="4118601537508887039">Alcuni saldi potrebbero non essere disponibili</translation>
+<translation id="2926654984379239545">Abbiamo individuato <ph name="VALUE"/> rischi.</translation>
+<translation id="8400506417619199876">Contratto</translation>
+<translation id="5667702863609780570">Azione non sicura con rischio di perdita</translation>
+<translation id="6405354572620970908">Questa richiesta sembra potenzialmente dannosa e potrebbe renderti vulnerabile ai furti. Non continuare a meno che non consideri l’app affidabile.</translation>
+<translation id="786261184916565476">Abbiamo individuato <ph name="VALUE"/> problemi.</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">Informazioni generali</translation>
 <translation id="4045404575593562245">Eventi di controllo di Tor</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">Scheda attuale</translation>
 <translation id="7056969230130642253">È tutto aggiornato</translation>
 <translation id="7292242212818928219">Nuovi contenuti disponibili. Ricaricare?</translation>
+<translation id="6537880577641744343">Comandi</translation>
 <translation id="7481312909269577407">Avanti</translation>
 <translation id="302781076327338683">Ricarica bypassando la cache</translation>
 <translation id="7211681214230730336">Ricarica svuotando la cache</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">Mostra sempre barra dei segnalibri</translation>
 <translation id="2960757369920422313">Mostra la barra dei segnalibri su una nuova scheda</translation>
 <translation id="522953399371747698">Nascondi la barra dei segnalibri</translation>
+<translation id="134184943774258988">Cambia la visibilità del pulsante Tutti i preferiti</translation>
 <translation id="2158862020143233462">Attiva/disattiva protezioni</translation>
 <translation id="4610630726762318759">Attiva/disattiva javascript</translation>
 <translation id="188822869499214197">Mostra la bolla della playlist</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">Usa il contesto della pagina per la risposta</translation>
 <translation id="8599503173207256429">Attiva per chiedere della pagina. I suoi contenuti verranno inviati a Brave Leo insieme ai tuoi messaggi.</translation>
 <translation id="318819763888864209">Tutti gli abbonamenti si rinnovano automaticamente ma possono essere annullati in qualsiasi momento prima del rinnovo.</translation>
+<translation id="5091223967610958">Condividi il nome host della pagina che stai visualizzando (<ph name="HOST_NAME"/>) per aiutarci a migliorare Leo.</translation>
+<translation id="8732450785281947197">Strumenti IA di Leo</translation>
+<translation id="6535533770697728087">Azioni rapide</translation>
+<translation id="3237710083340813756">Riscrivi</translation>
+<translation id="1252805982772190086">Post breve</translation>
+<translation id="2087555497198267113">Post lungo</translation>
+<translation id="4170307327863874820">Articolo per blog</translation>
+<translation id="1308864651455614281">Citazione</translation>
+<translation id="5258847587364431118">Parafrasi</translation>
+<translation id="6147279996212084542">Spiegazione</translation>
+<translation id="1201408613803664464">Migliora</translation>
+<translation id="1310396869741602366">Cambia tono</translation>
+<translation id="2200877041397136930">Professionale</translation>
+<translation id="5627656897244314351">Persuasivo</translation>
+<translation id="2169719065373500634">Accademico</translation>
+<translation id="2942492342931589800">Informale</translation>
+<translation id="8485016913912679738">Divertente</translation>
+<translation id="163826442096818926">Accorcia</translation>
+<translation id="42981349822642051">Espandi</translation>
+<translation id="3130793786899299931">Cambia lunghezza</translation>
+<translation id="6320643499534852464">Social media</translation>
 <translation id="6303294677342628402">Protezioni</translation>
 <translation id="8458987127502506209">Abilita Protezioni Brave</translation>
 <translation id="7509914170164691086">Le Protezioni sono <ph name="LINK_BEFORE"/>ATTIVE<ph name="LINK_AFTER"/> per</translation>
@@ -2084,7 +2113,7 @@ Brave offre un servizio che ti protegge da tale rischio filtrando le query DNS s
 Abbiamo però notato che questo servizio non sta funzionando, e non vogliamo lasciarti senza protezione. Abbiamo modificato le impostazioni del DNS nel browser per proteggerti da tale rischio. Durante la navigazione le impostazioni resteranno in vigore e bloccate.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per un VPN affidabile? Basta riavviare il tuo browser.
+<translation id="8810743613883230732">Sembra ci siano problemi con la connessione WireGuard. Vuoi attivare la riserva IKEv2 per una VPN affidabile? Basta cambiare le impostazioni.
 
 Hai bisogno di aiuto per la compatibilità o la configurazione? Contatta il nostro team di supporto, siamo sempre pronti ad aiutarti.
 Se vuoi, puoi sempre tornare a WireGuard su brave://settings/system.
@@ -2094,7 +2123,7 @@ Ti aiutiamo a connetterti!
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Non avvisarmi più in merito a questo.</translation>
 <translation id="2740531572673183784">OK</translation>
-<translation id="7896201779114201779">Riavvia il browser</translation>
+<translation id="7423206764347669977">Cambia le impostazioni</translation>
 <translation id="9061845622728745852">Fuso orario:</translation>
 <translation id="8295393906499561642">Sessione scaduta</translation>
 <translation id="3312623558576021182">Accedi al tuo <ph name="BRAVE_ACCOUNT_BEGIN"/>Account Brave<ph name="BRAVE_ACCOUNT_END"/> per aggiornare la sessione VPN.</translation>
@@ -2115,4 +2144,5 @@ Ti aiutiamo a connetterti!
 <translation id="1538335063514960365">Pulsante Apri qui: premi Invio per aprire questo URL nella scheda corrente, invece di passare alla
 scheda esistente</translation>
 <translation id="451189393813405346">Chiedi a Leo</translation>
+<translation id="8525248723479742219">Riproduci più tardi</translation>
 </translationbundle>

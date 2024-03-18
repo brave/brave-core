@@ -17,7 +17,6 @@
 <translation id="2627788872035182013">Кликните на Brave мени</translation>
 <translation id="8541922081612557424">О Brave-у</translation>
 <translation id="1203500561924088507">Хвала вам на инсталацији. Потребно је да рестартујете прегледач пре него што почнете да користите <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="4658574652223735641">Уштеда меморије је убрзала Brave</translation>
 <translation id="8799570501820813406">Док је ова картица била неактивна, меморија је ослобођена да би Brave био брз. Можете да одаберете да увек изузмете овај сајт из неактивности.</translation>
 <translation id="8767381092474532098">Brave је блокирао ово преузимање јер је овај фајл опасан</translation>
 <translation id="4798342026247191171">Подесите нов Brave профил</translation>
@@ -107,6 +106,7 @@
 <translation id="8755404239607088219">Brave не може да вам проверава лозинке. Пробајте поново касније.</translation>
 <translation id="8880183781256147665">Додавање у Brave...</translation>
 <translation id="3038232873781883849">Чека се инсталирање...</translation>
+<translation id="4503085212612536713">Други Brave профили</translation>
 <translation id="7918740962659365265">Помозите нам да побољшамо Brave тако што ћете Brave-у слати извештаје о отказивању и <ph name="UMA_LINK"/></translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Један или више додатака за Brave су приступали 1 USB уређају}=1{Један или више додатака за Brave приступају 1 USB уређају}one{Један или више додатака за Brave приступају # USB уређају}few{Један или више додатака за Brave приступају USB уређајима (#)}other{Један или више додатака за Brave приступају USB уређајима (#)}}</translation>
 <translation id="5320085753638900910">Историја прегледања утиче на огласе који вам се приказују и интересовања процењена у наставку. Ради заштите приватности Brave аутоматски брише интересовања сваког месеца чим постану доступна. Интересовања могу да се освежавају ако их не уклоните.</translation>
@@ -216,6 +216,7 @@
 <translation id="8586264863973514035">Да бисте применили промене, поново покрените Brave</translation>
 <translation id="300369155175407115">Док пробни периоди трају и ако вас је Brave насумично поставио у активни пробни период, историја прегледања утиче на огласе које видите и интересовања процењена у наставку. Ради заштите приватности Brave брише интересовања сваког месеца чим постану доступна.</translation>
 <translation id="7573068992266397941">Brave је пронашао безбедносне препоруке које можете да прегледате</translation>
+<translation id="8174413867995118050">Други Brave профили</translation>
 <translation id="7708394612738038097">Пријављујете се помоћу налога којим се управља и дајете његовом администратору контролу над Brave профилом. Brave подаци, као што су апликације, обележивачи, историја, лозинке и друга подешавања, биће трајно повезани са налогом <ph name="USER_NAME"/>. Моћи ћете да избришете те податке преко Контролне табле Brave налога, али нећете моћи да их повежете са неким другим налогом. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Додатни кôд: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Сазнајте зашто Brave блокира неке фајлове</translation>
@@ -311,12 +312,12 @@
 <translation id="9210457680074341078">Ако сачувате обележиваче и на Brave налогу, можете да пратите цене производа у Brave-у и да добијате обавештења када падне цена</translation>
 <translation id="6676384891291319759">Приступите Интернету</translation>
 <translation id="1363996462118479832">Brave ОС не може да синхронизује податке због грешке при пријављивању.</translation>
+<translation id="5324448127277983819">Brave вам пружа већу контролу над огласима које видите и ограничава информације које сајтови могу да сазнају о вама када приказују персонализоване огласе</translation>
 <translation id="1257247502847251159">Brave-у треба дозвола за микрофон за овај сајт</translation>
 <translation id="6712881677154121168">Грешка при преузимању: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Профил не може да се користи јер је из новије верзије Brave-а.
 
 Неке функције ће можда бити недоступне. Наведите други директоријум профила или користите новију верзију Brave-а.</translation>
-<translation id="7870748924073900361">Уштеда меморије је убрзала Brave</translation>
 <translation id="6666624454809779082">Brave је већ инсталиран за све кориснике на рачунару.</translation>
 <translation id="5360050006043219962">Да бисте приступали Brave садржају на свим уређајима, пријавите се, па укључите синхронизацију.</translation>
 <translation id="3136039682492230890">Brave препоручује скенирање овог фајла јер може да буде опасан.</translation>
@@ -370,7 +371,6 @@ Brave не може да врати подешавања.</translation>
 <translation id="2827121003398607864">Управо смо побољшали Brave</translation>
 <translation id="7649070708921625228">Помоћ</translation>
 <translation id="7631741717293858595">Више о овим функцијама можете да сазнате у подешавањима Brave-а.</translation>
-<translation id="8678991866891573053">Brave истражује нове функције које омогућавају сајтовима да пружају исти доживљај прегледања, а да користе мање података</translation>
 <translation id="3343095737966473035">Brave није подразумевани прегледач</translation>
 <translation id="5477319665405831211">Синхронизујте и персонализујте Brave на свим уређајима</translation>
 <translation id="2339273275658335597">Ажурирање за Brave</translation>
@@ -470,6 +470,7 @@ Ovlašćenja koja ste već dali veb-sajtovima i aplikacijama mogu se primeniti n
 <translation id="8274659559228306809">{COUNT,plural, =0{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете.}=1{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. Прозор без архивирања се неће поново отворити.}one{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозор без архивирања се неће поново отворити.}few{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозора без архивирања се неће поново отворити.}other{Ново ажурирање за Brave је доступно и примениће се чим га поново покренете. # прозора без архивирања се неће поново отворити.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Администратор тражи да поново покренете Brave да бисте применили ово ажурирање}=1{Администратор тражи да поново покренете Brave да бисте применили ово ажурирање. Прозор без архивирања се неће поново отворити.}one{Администратор тражи да поново покренете Brave да бисте применили ово ажурирање. # прозор без архивирања се неће поново отворити.}few{Администратор тражи да поново покренете Brave да бисте применили ово ажурирање. # прозора без архивирања се неће поново отворити.}other{Администратор тражи да поново покренете Brave да бисте применили ово ажурирање. # прозора без архивирања се неће поново отворити.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Администратор захтева да поново покренете Brave да бисте применили ажурирање}=1{Администратор захтева да поново покренете Brave да бисте применили ажурирање. Прозор без архивирања се неће поново отворити.}one{Администратор захтева да поново покренете Brave да бисте применили ажурирање. # прозор без архивирања се неће поново отворити.}few{Администратор захтева да поново покренете Brave да бисте применили ажурирање. # прозора без архивирања се неће поново отворити.}other{Администратор захтева да поново покренете Brave да бисте применили ажурирање. # прозора без архивирања се неће поново отворити.}}</translation>
+<translation id="4104709166890675229">Otežajte profilima sa pristupom vašem internet saobraćaju da vide koje stranice posećujete. Brave koristi bezbednu vezu da pronađe IP adresu stranice u DNS-u (sistem imena domena).</translation>
 <translation id="2176087127109773485">Možete upravljati svojim prijavljenim Brave lancima sinhronizacije. Vaši Brave lanci sinhronizacije koriste se za Brave pretraživač, Play Store, Gmail itd. Ako želite da dodate nalog za nekog drugog, kao što je član porodice, dodajte nov profil na svoj <ph name="DEVICE_TYPE"/> umesto toga. <ph name="LINK_BEGIN"/>Saznajte više<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Kada kucate u polje za adresu ili okvir za pretragu, Brave šalje ono što unosite vašem podrazumevanom pretraživaču da bi se dobili bolji predlozi. To se isključuje u delu privatno.</translation>
 <translation id="3739288578188828252">Kada kucate u polje za adresu ili okvir za pretragu, Brave šalje ono što unosite na Google Drive da bi se dobili predlozi o artiklu. To se isključuje u delu privatno.</translation>

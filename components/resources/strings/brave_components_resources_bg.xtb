@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">Прегледан</translation>
 <translation id="8826352442759228526">Вашите Brave награди не могат да бъдат потвърдени, защото сте достигнали максималния лимит за потвърдени устройства.</translation>
 <translation id="1221593978088944142">Грешка: достигнато е ограничението на устройството</translation>
-<translation id="3113653894794167793">За съжаление възникна проблем при обработката на заявката ви, опитайте отново.</translation>
 <translation id="6895088073061692390">За съжаление, вашият профил за награди в Rewards е маркиран с флаг, тъй като нашите автоматизирани проверки откриха неочаквана активност на рекламите в Brave.</translation>
 <translation id="4229056297802204697">Докато профилът ви е маркиран с флаг, може да продължите да виждате реклами, но няма да имате право да получавате изплащания. Също така няма да можете да свържете попечителска сметка към наградите в Brave</translation>
 <translation id="5124846913141379164">Възможно е профилът ви да е маркиран по погрешка и да не се изисква незабавно действие от ваша страна. Флагът на профила може да бъде премахнат в бъдеще.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">Грешка: ограничена функционалност на акаунта в Uphold</translation>
 <translation id="3274650021044762770">Възникна проблем при валидирането на заявката на браузъра ви за свързване на Brave наградите с вашия акаунт в <ph name="PROVIDER"/>. Можете да <ph name="BEGIN_LINK"/>се свържете с поддръжката<ph name="END_LINK"/> за допълнителна помощ.</translation>
 <translation id="1316066811927496401">Грешка: Заявката не може да бъде валидирана</translation>
+<translation id="7352651011704765696">Нещо се обърка</translation>
+<translation id="8285276813470932793">Не успяхме да изпълним вашата заявка. Моля, опитайте отново и<ph name="LINK_BEGIN"/> се свържете с отдел “Поддръжка” <ph name="LINK_END"/>, ако проблемът продължава.</translation>
 <translation id="8167256685618982116">С включването на <ph name="TITLE"/> вие се съгласявате с <ph name="BEGIN_LINK1"/>Условията за ползване<ph name="END_LINK1"/> и <ph name="BEGIN_LINK2"/>Политиката за поверителност<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Попечителски сметки (изисква се проверка на самоличността)</translation>
 <translation id="1539433155512862005">Попечителските сметки са сметки в доверени услуги на трети страни, които съхраняват вашия BAT вместо вас.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900">В процес на изчакване до <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Опа! Браузърът ви не може да получава Brave Private Ads.</translation>
 <translation id="5177429570315095022">Браузърът ви трябва да се актуализира, за да продължите да виждате реклами.</translation>
-<translation id="7352651011704765696">Нещо се обърка</translation>
 <translation id="4593680147181354667">Идентификатор за диагностика</translation>
 <translation id="3995471429906554168">Информация за диагностиката</translation>
 <translation id="752216563428219524">Рекламите не са инициализирани, обновете страницата.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">Наградите са изключени</translation>
 <translation id="3354337256330577726">Автоматичният принос е изключен</translation>
 <translation id="6727186931929643711">Повторните опити са спрени</translation>
-<translation id="8978461348341400550">Пазител:</translation>
-<translation id="7220161813676251577">ИД на член пазител:</translation>
+<translation id="6461242868382182003">Тип на сметката:</translation>
+<translation id="4129229983159690026">Сметка:</translation>
 <translation id="680983167891198932">Ключ</translation>
 <translation id="7535087603100972091">Стойност</translation>
 <translation id="45591635423975492">Влезли в</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">ВНИМАНИЕ: Този лог файл може да съдържа чувствителни данни. Внимавайте с кого го споделяте.</translation>
 <translation id="7375125077091615385">Тип:</translation>
 <translation id="1924618796077284366">Изтегляне на пълния дневник</translation>
-<translation id="5362600797402074593">Информация за връзка на попечителска сметка</translation>
+<translation id="2129987553148729046">Информация за свързани сметки</translation>
 <translation id="5457113250005438886">Невалиден</translation>
 <translation id="6161467863097205016">Информация за ключа:</translation>
 <translation id="5323604113525002127">Показваме последните [[numberOfLines]] реда от дневника. Ако искате целия дневник, можете да го изтеглите по-горе.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">Общ баланс</translation>
 <translation id="2223892939866251845">Самоличност на потребителя</translation>
 <translation id="4235360514405112390">Валиден</translation>
-<translation id="3902084968737576005">Адрес на портфейла:</translation>
+<translation id="458999179147014626">Адрес за депозит в сметката:</translation>
 <translation id="3653417592104122757">История на портфейла</translation>
 <translation id="3339401101952651943">Информация за награди</translation>
 <translation id="3363158483789327529">Все още не е създаден профил в Rewards</translation>
 <translation id="476272015919848174">Идент. № за плащане на Rewards:</translation>
 <translation id="9008441690901662695">Състояние на Rewards:</translation>
-<translation id="8874184842967597500">Няма връзка</translation>
-<translation id="4569155249847375786">Потвърдено</translation>
-<translation id="6521149675246672063">Прекъсната връзка (потвърден)</translation>
+<translation id="9069875072411692547">Несвързани</translation>
+<translation id="3368922792935385530">Установена е връзка</translation>
 <translation id="5058161306698404465">Среда на създаване:</translation>
 <translation id="5856438412804207598">Текуща среда:</translation>
 <translation id="5916290544882167205">Brave Software. Brave е регистрирана търговска марка на Brave Software. Имената на сайтове могат да бъдат търговски марки или регистрирани търговски марки на собственика на сайта.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">Обърнете внимание:</translation>
 <translation id="1430915738399379752">Печат</translation>
 <translation id="135956957367307069">Вашата заявка се обработва, изчакайте.</translation>
-<translation id="8725066075913043281">Нов опит</translation>
 <translation id="2600847485413879104">Възнаграждения BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">Вие разглеждате страница WebTorrent</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Активиране на поддръжката на Unstoppable Domains в Brave?</translation>
-<translation id="9156229987230762013">Brave ще използва Infura за установяване на имена на .crypto домейни (също така и .x, .coin, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) в Unstoppable Domains. Brave скрива вашия IP адрес. Ако активирате това, Infura ще види, че някой се опитва да посети тези домейни, но нищо друго. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>условията за ползване<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политиката за поверителност<ph name="END_INFURA_PRIVACY_LINK"/> на Infura.</translation>
+<translation id="5015092481905019948">Brave ще използва <ph name="PROVIDER_NAME"/> за установяване <ph name="DOMAIN_LIST"/> на имена на домейни, които се намират на <ph name="DOMAIN_PROVIDER_NAME"/>. Brave скрива вашия IP адрес. Ако активирате това,<ph name="PROVIDER_NAME"/> ще види, че някой се опитва да посети тези домейни, но нищо друго. Вижте <ph name="BEGIN_PROVIDER_TOU_LINK"/>условията за ползване <ph name="END_PROVIDER_TOU_LINK"/> и <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/> политиката за поверителност <ph name="END_PROVIDER_PRIVACY_LINK"/> на <ph name="PROVIDER_NAME"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="2789190492285945209">Система за имена Ethereum (ENS)</translation>
 <translation id="4335039108389860301">Активирайте поддръжка на Ethereum Name Service (ENS) в Brave?</translation>
-<translation id="4609973808011229683">Brave ще използва Infura за установяване на имената на .eth домейните в Ethereum Name Service (ENS). Brave скрива вашия IP адрес. Ако активирате това, Infura ще види, че някой се опитва да посети тези .eth домейни, но нищо друго. Вижте <ph name="BEGIN_INFURA_TOU_LINK"/>условията за ползване<ph name="END_INFURA_TOU_LINK"/> и <ph name="BEGIN_INFURA_PRIVACY_LINK"/>политиката за поверителност<ph name="END_INFURA_PRIVACY_LINK"/> на Infura.</translation>
 <translation id="807404806385418949">Търсене извън веригата на услугата за имена на Ethereum</translation>
 <translation id="4049590838234508776">Да се активира ли поддръжката на търсене извън веригата на услугата за имена на Ethereum (ENS) в Brave?</translation>
 <translation id="5944991147217767764">Името на .eth домейна се съхранява извън веригата и ще бъде установено от шлюз на трета страна. Ако активирате ENS търсенето извън веригата, шлюзът на третата страна ще види, че се опитвате да посетите .eth домейна. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Научете повече<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Продължаване с търсенето извън веригата</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Да се активира ли поддръжката на Solana Name Service (SNS) в Brave?</translation>
-<translation id="1026480261052976838">Brave ще използва трето лице за установяване на имена на .sol домейни. Brave скрива вашия IP адрес. Ако разрешите това, третото лице ще види, че някой се опитва да посети тези .sol домейни, но нищо друго. За повече информация относно това кои трети лица използваме и техните политики за поверителност, моля, вижте нашата <ph name="BEGIN_SNS_WIKI_LINK"/>страница за помощ<ph name="END_SNS_WIKI_LINK"/>.</translation>
-<translation id="7378412287463452336">Продължете с помощта на сървъра на Infura</translation>
+<translation id="7769345036263036863">Brave ще използва трето лице за установяване на имена <ph name="DOMAIN_LIST"/> на домейни. Brave скрива вашия IP адрес. Ако разрешите това, третото лице ще види, че някой се опитва да посети тези <ph name="DOMAIN_LIST"/> домейни, но нищо друго. За повече информация относно това кои трети лица използваме и техните политики за поверителност, моля, вижте нашата <ph name="BEGIN_SNS_WIKI_LINK"/>страница за помощ<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="884864496166128252">Продължете с<ph name="PROVIDER_NAME"/> сървър</translation>
 <translation id="4388873516324656141">Продължете с помощта на SNS сървър</translation>
 <translation id="2356070529366658676">Попитайте ме</translation>
 <translation id="59174027418879706">Активирано</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">Възникна грешка, опитайте да инсталирате възела отново</translation>
 <translation id="8428368469058794536">IPFS услуга</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">Нов опит</translation>
 <translation id="1886162073868201257">Грешка при стартиране на услугата IPFS</translation>
 <translation id="5357895013476183089">IPFS не е свързан</translation>
 <translation id="7662930734991751511">Не могат да се заредят IPFS ресурсите с помощта на локален IPFS възел на Brave</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">Награди от реклами</translation>
 <translation id="5308380583665731573">Свързване</translation>
 <translation id="3026978804849658576">Преглед на изявлението</translation>
-<translation id="3368922792935385530">Установена е връзка</translation>
 <translation id="1848737374354350807">Баланс</translation>
 <translation id="6516984207843289176">Свързване на сметка</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Готови ли сте да започнете да печелите?<ph name="BOLD_END"/> Свържете се или създайте профил при някой от нашите партньори.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">Оттегляне</translation>
 <translation id="9218424917282368512">Промяна на мрежата</translation>
 <translation id="7526139040829362392">Смяна на сметка</translation>
+<translation id="8874184842967597500">Няма връзка</translation>
 <translation id="4217695020908122747">Свързани сметки</translation>
 <translation id="8497650996740651467">Налични сметки</translation>
 <translation id="5677928146339483299">Блокирано</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">Домейнът няма свързан <ph name="COIN_TYPE_SYMBOL"/> адрес</translation>
 <translation id="8971278306757462297">Адресът на получаване е вашият собствен адрес</translation>
 <translation id="3506416339268164412">Адресът на получаване е адресът на договора на токена</translation>
+<translation id="7029817408221097939">Невалиден унифициран адрес</translation>
 <translation id="6370376419663123629">Адресът не изглежда правилен</translation>
 <translation id="3767148796886402380">Проверете дали адресът е правилен (напр. думи с главна и малка буква).</translation>
 <translation id="2585599787090762065">Как мога да го разреша?</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> бяха върнати в портфейла Ви</translation>
 <translation id="4577432071459867390">Трансакцията е неуспешна</translation>
 <translation id="4359235192593147041">Трансакцията бе неуспешна поради голямо движение на цената. Увеличете толерантността към слипидж, за да успеете при по-голямо движение на цената.</translation>
+<translation id="8685035971570487250">Вече има Zcash трансакция в процес на обработка. Моля, опитайте отново по-късно.</translation>
 <translation id="8584830404080597280">Нова сделка</translation>
 <translation id="8065905913745172640">Нова трансакция</translation>
 <translation id="9079041000600020902">Преглед на грешка</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">Чакаща промяна в баланса на вашия портфейл.</translation>
 <translation id="7700365440186054030">Вашите налични средства плюс всички все още непотвърдени трансакции.</translation>
 <translation id="4118601537508887039">Някои от салдата може да не са налични.</translation>
+<translation id="2926654984379239545">Открихме <ph name="VALUE"/> риска.</translation>
+<translation id="8400506417619199876">Договор</translation>
+<translation id="5667702863609780570">Опасно действие с риск от загуба</translation>
+<translation id="6405354572620970908">Тази заявка изглежда злонамерена и може да ви направи уязвими на кражба. Не продължавайте, освен ако нямате доверие на приложението.</translation>
+<translation id="786261184916565476">Открихме <ph name="VALUE"/> проблема.</translation>
 <translation id="3155170474926428993">Програма за стартиране на Tor</translation>
 <translation id="3745016858329272300">Обща информация</translation>
 <translation id="4045404575593562245">Събития за контрол на Tor</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">Текущия раздел</translation>
 <translation id="7056969230130642253">Вече сте в крак</translation>
 <translation id="7292242212818928219">Налично е ново съдържание. Презареждане?</translation>
+<translation id="6537880577641744343">Команди</translation>
 <translation id="7481312909269577407">Препращане</translation>
 <translation id="302781076327338683">Презареждане и заобикаляне на кеша</translation>
 <translation id="7211681214230730336">Презареждане и изчистване на кеша</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">Винаги да се показва лентата за отметки</translation>
 <translation id="2960757369920422313">Показване на лентата за отметки на страницата на нов раздел (NTP)</translation>
 <translation id="522953399371747698">Скриване на лентата за отметки</translation>
+<translation id="134184943774258988">Превключване на видимостта на бутона за всички отметки</translation>
 <translation id="2158862020143233462">Превключване на щитовете</translation>
 <translation id="4610630726762318759">Превключване на javascript</translation>
 <translation id="188822869499214197">Показване на прозорчето на плейлиста</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">Използване на контекста на страницата за отговор</translation>
 <translation id="8599503173207256429">Превключете, за да попитате за тази страница. Нейното съдържание ще бъде изпратено на Brave Leo заедно с вашите съобщения.</translation>
 <translation id="318819763888864209">Всички абонаменти се подновяват автоматично, но могат да бъдат отказани по всяко време преди подновяването.</translation>
+<translation id="5091223967610958">Споделете името на хоста на страницата, на която се намирате (<ph name="HOST_NAME"/>), за да ни помогнете да направим Лео по-добър.</translation>
+<translation id="8732450785281947197">ИИ Инструменти от Лео</translation>
+<translation id="6535533770697728087">Бързи действия</translation>
+<translation id="3237710083340813756">Пренаписване</translation>
+<translation id="1252805982772190086">Кратък пост</translation>
+<translation id="2087555497198267113">Дълъг пост</translation>
+<translation id="4170307327863874820">Блог пост</translation>
+<translation id="1308864651455614281">Слоган</translation>
+<translation id="5258847587364431118">Перифразирайте</translation>
+<translation id="6147279996212084542">Пояснете</translation>
+<translation id="1201408613803664464">Подобрете</translation>
+<translation id="1310396869741602366">Промяна на тона</translation>
+<translation id="2200877041397136930">Професионален</translation>
+<translation id="5627656897244314351">Убедителен</translation>
+<translation id="2169719065373500634">Академичен</translation>
+<translation id="2942492342931589800">Неофициален</translation>
+<translation id="8485016913912679738">Забавен</translation>
+<translation id="163826442096818926">Съкратете</translation>
+<translation id="42981349822642051">Разгъване</translation>
+<translation id="3130793786899299931">Промeнете на дължината на текста</translation>
+<translation id="6320643499534852464">Социална мрежа</translation>
 <translation id="6303294677342628402">Щитове</translation>
 <translation id="8458987127502506209">Активиране на щитове на Brave</translation>
 <translation id="7509914170164691086">Щитовете са ВДИГНАТИ <ph name="LINK_BEFORE"/>за<ph name="LINK_AFTER"/></translation>
@@ -2084,9 +2113,9 @@ Brave има помощна услуга, която Ви защитава от 
 Въпреки това, ние забелязахме, че тази помощна услуга не работи, а ние не искаме да Ви оставим незащитени. Променихме DNS настройките в браузъра, за да Ви защитим от разкриване на данни. Тази настройка ще остане включена и активна, докато има свързан VPN.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">Изглежда, че има проблеми с връзката на WireGuard. Искате ли да активирате резервен IKEv2 за надежден VPN? Просто рестартирайте браузъра си.
+<translation id="8810743613883230732">Изглежда, че има проблеми с връзката на WireGuard. Искате ли да активирате резервен IKEv2 за надежден VPN? Просто променете настройките.
 
-Нуждаете се от помощ във връзка със съвместимост или конфигурация? Обърнете се към нашия дружелюбен екип за поддръжка.
+Нуждаете се от помощ във връзка със съвместимост или конфигурация? Обърнете се към нашия любезен екип от поддръжката.
 Винаги можете да се върнете към WireGuard на brave://settings/system.
 
 Нека ви свържем!
@@ -2094,7 +2123,7 @@ Brave има помощна услуга, която Ви защитава от 
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Не ме предупреждавайте отново.</translation>
 <translation id="2740531572673183784">ОК</translation>
-<translation id="7896201779114201779">Рестартирайте браузъра.</translation>
+<translation id="7423206764347669977">Променете настройките</translation>
 <translation id="9061845622728745852">Часова зона:</translation>
 <translation id="8295393906499561642">Сесията е изтекла</translation>
 <translation id="3312623558576021182">Моля, впишете се във Вашия <ph name="BRAVE_ACCOUNT_BEGIN"/>профил в Brave<ph name="BRAVE_ACCOUNT_END"/>, за да опресните Вашата VPN сесия.</translation>
@@ -2115,4 +2144,5 @@ Brave има помощна услуга, която Ви защитава от 
 <translation id="1538335063514960365">Бутон Отвори тук, натиснете Enter, за да отворите този URL адрес в текущия раздел, вместо да преминавате към
 съществуващия раздел</translation>
 <translation id="451189393813405346">Попитайте Leo</translation>
+<translation id="8525248723479742219">Възпроизвеждане по-късно</translation>
 </translationbundle>

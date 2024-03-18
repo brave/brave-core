@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Kattintson a Brave-menüre</translation>
 <translation id="8541922081612557424">A Brave névjegye</translation>
 <translation id="1203500561924088507">Köszönjük, hogy elvégezte a telepítést. A(z) <ph name="BUNDLE_NAME"/> használata előtt újra kell indítania a böngészőt.</translation>
-<translation id="4658574652223735641">A Memóriatakarékos mód felgyorsította a Braveot</translation>
 <translation id="8799570501820813406">Amíg ez a lap inaktív volt, a rendszer memóriát szabadított fel, hogy a Brave gyors maradjon. Dönthet úgy, hogy mindig kizárja ezt a webhelyet az inaktív állapotból.</translation>
 <translation id="8767381092474532098">A Brave letiltotta ezt a letöltést, mert a fájl veszélyes</translation>
 <translation id="4798342026247191171">Új Brave-profil beállítása</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">A Brave nem tudja ellenőrizni a jelszavait. Próbálkozzon később.</translation>
 <translation id="8880183781256147665">Hozzáadás a Bravehoz...</translation>
 <translation id="3038232873781883849">Várakozás a telepítésre…</translation>
+<translation id="4503085212612536713">Egyéb Brave-profilok</translation>
 <translation id="7918740962659365265">Segítse a Brave fejlesztését azáltal, hogy elküldi a Brave-nak a következőket: hibajelentések és <ph name="UMA_LINK"/></translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Valamelyik (akár több is) Brave-bővítmény hozzáfért 1 USB-eszközhöz}=1{Valamelyik (akár több is) Brave-bővítmény éppen hozzáfér 1 USB-eszközhöz}other{Valamelyik (akár több is) Brave-bővítmény éppen hozzáfér # USB-eszközhöz}}</translation>
 <translation id="5320085753638900910">Böngészési előzményei határozzák meg az Ön számára megjelenő hirdetéseket és az alább látható módon felmért érdeklődési köröket. Adatai védelme érdekében a Brave havi rendszerességgel automatikusan törli az Ön érdeklődési köreit. Az érdeklődési körök frissülhetnek, kivéve, ha eltávolítja őket.</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">A módosítások alkalmazásához indítsa újra a Braveot</translation>
 <translation id="300369155175407115">A próbaidőszakok során, ha a Brave véletlenszerű módon regisztrálta Önt egy próbaidőszakra, az Ön böngészési előzményei hatással vannak a megjelenő hirdetésekre és a becslések szerinti érdeklődési körökre. Adatai védelme érdekében a Brave havi rendszerességgel törli az Ön érdeklődési köreit.</translation>
 <translation id="7573068992266397941">A Brave talált néhány áttekintésre érdemes biztonsági javaslatot</translation>
+<translation id="8174413867995118050">Egyéb Brave-profilok</translation>
 <translation id="7708394612738038097">Kezelt fiókkal jelentkezik be, és annak adminisztrátora számára hozzáférést biztosít Brave-profiljához. Brave-adatait – például alkalmazásait, könyvjelzőit, előzményeit, jelszavait és más beállításait – a rendszer véglegesen társítja a(z) <ph name="USER_NAME"/> fiókhoz. Ezen adatokat a Brave-fiók Irányítópultján törölheti, de más fiókhoz nem társíthatja őket. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Extra kód: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">További információ arról, hogy miért tilt le bizonyos fájlokat a Brave</translation>
@@ -309,10 +310,10 @@
 <translation id="9210457680074341078">Ha Brave-fiókjába is menti könyvjelzőit, a Braveban nyomon követheti a termékek árait, és értesítést kaphat, amikor az árak csökkennek.</translation>
 <translation id="6676384891291319759">Internetelérés</translation>
 <translation id="1363996462118479832">A ChromeOS egy bejelentkezési hiba miatt nem tudta szinkronizálni az adatokat.</translation>
+<translation id="5324448127277983819">A Brave nagyobb irányítást ad afelett, hogy milyen hirdetések jelenjenek meg Önnek, és korlátozza, hogy mely webhelyek tudhatnak meg Önről információkat, amikor személyre szabott hirdetéseket jelenítenek meg.</translation>
 <translation id="1257247502847251159">A Bravenak mikrofonhasználati engedélyre van szüksége ehhez a webhelyhez</translation>
 <translation id="6712881677154121168">Letöltési hiba: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">A profilja nem használható, mert az a Brave egy újabb verziójából származik. Előfordulhat, hogy egyes funkciók nem érhetők el. Kérjük, adjon meg egy másik profilmappát, vagy használja a Brave újabb verzióját.</translation>
-<translation id="7870748924073900361">A memóriatakarékos mód felgyorsította a Braveot</translation>
 <translation id="6666624454809779082">A Brave már telepítve van az összes felhasználó számára a számítógépen.</translation>
 <translation id="5360050006043219962">Ha szeretne minden eszközén hozzáférni Brave-anyagaihoz, jelentkezzen be, majd kapcsolja be a szinkronizálást.</translation>
 <translation id="3136039682492230890">A Brave a fájl ellenőrzését javasolja, mert veszélyes lehet.</translation>
@@ -366,7 +367,6 @@ A Brave nem tudja visszaállítani a beállításait.</translation>
 <translation id="2827121003398607864">A Brave még jobb lett</translation>
 <translation id="7649070708921625228">Súgó</translation>
 <translation id="7631741717293858595">A Brave beállításai között többet is megtudhat ezekről a funkciókról.</translation>
-<translation id="8678991866891573053">A Brave olyan funkciók fejlesztésén dolgozik, amelyek ugyanazt a böngészési élményt nyújtják kevesebb adatfelhasználás mellett</translation>
 <translation id="3343095737966473035">A Brave nem az alapértelmezett böngésző</translation>
 <translation id="5477319665405831211">Szinkronizálhatja és személyre szabhatja a Braveot minden eszközén</translation>
 <translation id="2339273275658335597">Brave-frissítés</translation>
@@ -466,6 +466,7 @@ A webhelyeknek és alkalmazásoknak már megadott engedélyek vonatkozhatnak err
 <translation id="8274659559228306809">{COUNT,plural, =0{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép.}=1{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. Az inkognitóablak nem fog újra megnyílni.}other{Új Brave-frissítés jelent meg, amely az újraindítás után azonnal érvénybe lép. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához.}=1{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{Rendszergazdája arra kéri, hogy indítsa újra a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához.}=1{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. Az inkognitóablak nem fog újra megnyílni.}other{A rendszergazda előírta, hogy újra kell indítania a Braveot a frissítés alkalmazásához. A(z) # inkognitóablak nem fog újra megnyílni.}}</translation>
+<translation id="4104709166890675229">Tegye nehezebbé az internetforgalmához hozzáférő profilok számára, hogy láthassák, mely oldalakat látogatja. A Brave biztonságos kapcsolaton keresztül keresi meg az oldalak IP-címét a DNS-ben (Domain Name System).</translation>
 <translation id="2176087127109773485">Kezelheti a bejelentkezett Brave-láncait. A Brave szinkronizációs láncokat a Brave böngésző, a Play Áruház, a Gmail, és még sok más alkalmazás használja. Ha valaki más számára is szeretne fiókot hozzáadni, például egy családtagnak, akkor adjon hozzá egy új profilt ehhez: <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Tudjon meg többet<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Amikor szöveget ír a címsávba vagy keresőmezőbe, a Brave elküldi a beírt szöveget az alapértelmezett keresőmotornak a javaslatok fejlesztése érdekében. Ez Privát módban ki van kapcsolva.</translation>
 <translation id="3739288578188828252">Amikor szöveget ír a címsávba vagy keresőmezőbe, a Brave elküldi a beírt szöveget a Google Drive-nak a tételjavaslatok érdekében. Ez Privát módban ki van kapcsolva.</translation>

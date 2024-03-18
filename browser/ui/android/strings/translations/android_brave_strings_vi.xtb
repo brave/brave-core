@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Bắt đầu sử dụng Rewards</translation>
 <translation id="8220484609979012449">\n\nBạn vẫn có thể gửi các khoản đóng góp bằng tiền điện tử cho người sáng tạo nội dung này bằng cách sử dụng ví Web3 của mình.</translation>
 <translation id="6385969012847057348">Người sáng tạo nội dung này không thể nhận đóng góp từ <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Người sáng tạo nội dung này chưa được thiết lập để nhận các khoản đóng góp cho Web3 hoặc tiền điện tử.</translation>
 <translation id="6268134562674951939">Bạn không có đủ token</translation>
 <translation id="4529874892536380156">Hãy biến khoản này thành khoản đóng góp định kỳ hàng tháng. Bạn có thể hủy bỏ bất cứ lúc nào.</translation>
 <translation id="5562948772940025260">Bạn chỉ có thể gửi tối đa <ph name="AMOUNT"/>BAT bằng số dư Brave Phần thưởng của mình.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Sử dụng thiết bị đã đồng bộ hóa hiện có, mở Cài đặt Brave và đi đến mục Cài đặt &gt; Đồng bộ hóa. Chọn "Thêm Thiết bị Mới" rồi quét Mã QR hiển thị trên màn hình.</translation>
 <translation id="5241263629636958324">Đã sao chép vào bộ nhớ Clipboard</translation>
 <translation id="5817918615728894473">Ghép nối</translation>
-<translation id="7090325819305486658">Tùy chọn Dữ liệu</translation>
+<translation id="3429575397891106447">Tùy chọn đồng bộ</translation>
 <translation id="1680065323266179640">Xóa tài khoản Đồng bộ</translation>
 <translation id="3792563952903751704">Việc xóa tài khoản của bạn sẽ xóa dữ liệu được mã hóa của bạn khỏi máy chủ Brave và tắt Đồng bộ trên tất cả các thiết bị được kết nối của bạn. Tuy nhiên, sẽ không xóa dữ liệu được lưu trữ nội bộ trên các thiết bị đó.
   Việc xóa này là vĩnh viễn và không có cách nào để khôi phục dữ liệu. Nếu bạn quyết định bắt đầu sử dụng lại Đồng bộ hóa, bạn sẽ cần tạo một tài khoản mới và thêm lại từng thiết bị.</translation>
@@ -595,14 +596,18 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="1483493594462132177">Gửi</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Ký quỹ</translation>
-<translation id="1420318137760245955">Chào mừng đến với Ví Brave</translation>
-<translation id="8339846196588658366">Canh giữ tài sản tiền mã hóa của bạn và theo dõi hiệu suất đầu tư. Tất cả ngay trong trình duyệt riêng tư Brave.</translation>
-<translation id="4472575034687746823">Bắt đầu</translation>
+<translation id="4556086616242530072">Trình duyệt gốc.\nTự lưu ký.\nVà đa chuỗi.</translation>
+<translation id="7909462264772842773">Kiểm soát tiền điện tử và NFT của bạn. Ví Brave hỗ trợ Ethereum, chuỗi EVM, Solana, Filecoin, v.v.</translation>
+<translation id="165255193061631296">Cần ví mới?</translation>
+<translation id="3485737865439729577">Bắt đầu với Ví Brave trong vòng vài phút</translation>
 <translation id="2759836790106646094">Sao lưu ví của bạn ngay bây giờ!</translation>
 <translation id="1078873179929044999">Trong bước tiếp theo, bạn sẽ thấy một cụm từ khôi phục gồm 12 từ, mà bạn có thể sử dụng để khôi phục tài khoản tiền mã hóa chính của mình. Hãy lưu giữ cụm từ này ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn chuyển đổi ví.</translation>
 <translation id="2359808026110333948">Tiếp tục</translation>
 <translation id="5488357322146334497">Tin nhắn</translation>
 <translation id="1904000155026201268">Tôi hiểu rằng nếu tôi làm mất cụm từ khôi phục, tôi sẽ không thể truy cập ví tiền điện tử của mình.</translation>
+<translation id="5333225216561354793">Chúng tôi yêu cầu bạn công nhận các mục dưới đây</translation>
+<translation id="1645800479814134195">Tôi hiểu đây là ví tự lưu ký và chỉ mình tôi chịu trách nhiệm về mọi khoản tiền, tài sản hoặc tài khoản liên quan và thực hiện hành động thích hợp để bảo mật, bảo vệ và sao lưu ví của mình. Tôi hiểu rằng Brave không thể thay mặt tôi truy cập vào ví của tôi hoặc đảo ngược các giao dịch và cụm từ khôi phục của tôi là cách DUY NHẤT để lấy lại quyền truy cập trong trường hợp mất mật khẩu, thiết bị bị đánh cắp hoặc trường hợp tương tự.</translation>
+<translation id="4565891212173086999">Tôi đã đọc và đồng ý với <ph name="CLICK_START"/>Điều khoản sử dụng<ph name="CLICK_END"/>&gt;.</translation>
 <translation id="3933122286596948824">Cụm từ khôi phục của bạn</translation>
 <translation id="5077747669435508720">Ghi lại hoặc sao chép những từ này theo thứ tự chính xác được hiển thị bên dưới và lưu chúng ở một nơi an toàn. Cụm từ khôi phục của bạn là cách duy nhất để lấy lại quyền truy cập tài khoản trong trường hợp quên mật khẩu, thiết bị bị thất lạc hoặc mất cắp, hoặc bạn muốn đổi ví.</translation>
 <translation id="2708402071160162126">CẢNH BÁO: Không bao giờ chia sẻ cụm từ khôi phục của bạn. Bất cứ ai có cụm từ này có thể lấy đi vĩnh viễn tài sản của bạn.</translation>
@@ -647,6 +652,9 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="3747079125031086337">Chọn các từ trong cụm từ khôi phục của bạn theo đúng thứ tự.</translation>
 <translation id="6518133107902771759">Xác minh</translation>
 <translation id="3157931365184549694">Restore</translation>
+<translation id="5844138175312846408">Đã có ví?</translation>
+<translation id="2502258949541727762">Trước khi chúng tôi bắt đầu</translation>
+<translation id="5981303441790732480">Nhập khẩu ví hiện có của bạn</translation>
 <translation id="9111102763498581341">Unlock</translation>
 <translation id="6657585470893396449">Mật khẩu</translation>
 <translation id="5619264711680220002">Mở khóa bằng sinh trắc học</translation>
@@ -665,7 +673,7 @@ Bạn có chắc chắn muốn thực hiện điều này không?</translation>
 <translation id="5483736362376139517">1 năm</translation>
 <translation id="6979737339423435258">Từ trước đến nay</translation>
 <translation id="6284218950354553099">Tự động gửi ping sử dụng hàng ngày đến Brave</translation>
-<translation id="5288333155754958121">Ping ẩn danh, riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
+<translation id="2181060149810222381">Ping riêng tư này cho phép Brave ước tính người dùng đang hoạt động.</translation>
 <translation id="3819257035322786455">Sao lưu</translation>
 <translation id="4608713693379664295">Tài khoản tiền điện tử chính</translation>
 <translation id="4003821417160006384">Tài khoản phụ</translation>
@@ -1212,5 +1220,11 @@ Nếu bạn không chấp nhận yêu cầu này, VPN sẽ không kết nối l�
 <translation id="6637015365469044269">Nâng cấp ngay</translation>
 <translation id="614530507403667291">Mô hình mặc định cho các cuộc trò chuyện mới</translation>
 <translation id="4071849832011229600">Mô hình mặc định</translation>
+<translation id="4185473179105062442">Nhận BAT trực tiếp đến địa chỉ tiền điện tử tự lưu ký</translation>
+<translation id="5802986777701714573">Chúng tôi đã thêm một cách mới để bạn nhận phần thưởng BAT hàng tháng. Kết nối tài khoản từ một trong các đối tác của chúng tôi hoặc sử dụng tùy chọn tự quản lý mới để bắt đầu kiếm tiền ngay bây giờ.</translation>
 <translation id="7557539689487606886">Lên Premium</translation>
+<translation id="5538904824395606812">Sử dụng nhà cung cấp dịch vụ hiện tại của bạn hoặc Quad9</translation>
+<translation id="6393423486818299209">Sử dụng nhà cung cấp dịch vụ hiện tại của bạn hoặc DNS Wikimedia</translation>
+<translation id="3401384982562827787">Sử dụng nhà cung cấp dịch vụ hiện tại của bạn hoặc Cloudflare</translation>
+<translation id="8812367543786936496">Nếu nhà cung cấp dịch vụ hiện tại của bạn không an toàn thì Brave sẽ sử dụng nhà cung cấp DNS thay thế an toàn</translation>
 </translationbundle>

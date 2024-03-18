@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Rozpocznij korzystanie z Nagród</translation>
 <translation id="8220484609979012449">\n\nNadal możesz wysłać datki w postaci kryptowaluty do tego twórcy, używając swojego portfela Web3.</translation>
 <translation id="6385969012847057348">Ten twórca nie może otrzymywać datków od <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Ten twórca nie może jeszcze otrzymywać datków Web3 lub w kryptowalucie.</translation>
 <translation id="6268134562674951939">Masz za mało tokenów</translation>
 <translation id="4529874892536380156">Ustaw jako comiesięczny cykliczny datek. Możesz go anulować w każdej chwili.</translation>
 <translation id="5562948772940025260">Używając swojego salda Nagród Brave, możesz wysłać jedynie <ph name="AMOUNT"/> BAT.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Używając istniejącego zsynchronizowanego urządzenia, otwórz Ustawienia i przejdź do sekcji Ustawienia i synchronizacja. Wybierz opcję Dodaj nowe urządzenie i zeskanuj kod QR wyświetlony na ekranie.</translation>
 <translation id="5241263629636958324">Skopiowane do schowka</translation>
 <translation id="5817918615728894473">Sparuj</translation>
-<translation id="7090325819305486658">Preferencje danych</translation>
+<translation id="3429575397891106447">Opcje synchronizacji</translation>
 <translation id="1680065323266179640">Usuń konto synchronizacji</translation>
 <translation id="3792563952903751704">Usunięcie konta spowoduje wykasowanie zaszyfrowanych danych z serwerów Brave i wyłączy synchronizację na wszystkich połączonych urządzeniach. Nie spowoduje to usunięcia danych, które są przechowywane lokalnie na tych urządzeniach.
 Takie usunięcie jest trwałe i nie ma możliwości odzyskania danych. Jeśli zdecydujesz się ponownie zacząć używać funkcji synchronizacji, konieczne będzie utworzenie nowego konta i ponowne dodanie każdego urządzenia po kolei.</translation>
@@ -595,14 +596,18 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="1483493594462132177">Wyślij</translation>
 <translation id="538450413584738399">Wymiana</translation>
 <translation id="1366855498335432549">Wpłać</translation>
-<translation id="1420318137760245955">Witamy w nowym portfelu Brave</translation>
-<translation id="8339846196588658366">Przechowuj kryptowaluty w swojej pieczy i śledź wyniki portfela. Wszystko z poziomu prywatnej przeglądarki Brave.</translation>
-<translation id="4472575034687746823">Podstawowe</translation>
+<translation id="4556086616242530072">Natywna przeglądarka.\nSamodzielne zabezpieczenie.\nWielołańcuchowość.</translation>
+<translation id="7909462264772842773">Kontroluj swoją kryptowalutę i NFT. Portfel Brave obsługuje sieci Ethereum, łańcuchy kompatybilne EVM, sieci Filecon, Solana i inne.</translation>
+<translation id="165255193061631296">Potrzebujesz nowego portfela?</translation>
+<translation id="3485737865439729577">Zacznij korzystać z portfela Brave w kilka minut</translation>
 <translation id="2759836790106646094">Zrób teraz kopię zapasową swojego portfela!</translation>
 <translation id="1078873179929044999">W kolejnym kroku zostanie wyświetlone 12-wyrazowe wyrażenie odzyskiwania, które możesz wykorzystać do odzyskania głównych kont kryptowalutowych. Zapisz je w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione albo zechcesz zmienić portfele.</translation>
 <translation id="2359808026110333948">Kontynuuj</translation>
 <translation id="5488357322146334497">Wiadomość</translation>
 <translation id="1904000155026201268">Rozumiem, że jeśli stracę moje słowa odzyskiwania, nie będę w stanie uzyskać dostępu do mojego portfela kryptowalut.</translation>
+<translation id="5333225216561354793">Prosimy Cię o akceptację poniższych punktów</translation>
+<translation id="1645800479814134195">Rozumiem, że jest to portfel do samodzielnego zabezpieczenia i że tylko ja odpowiadam za wszelkie powiązane fundusze, aktywa lub konta oraz za podjęcie odpowiednich działań w celu zabezpieczenia, ochrony i wykonania kopii zapasowej mojego portfela. Rozumiem, że Brave nie może uzyskać dostępu do mojego portfela ani cofnąć transakcji w moim imieniu i że moja fraza odzyskiwania jest JEDYNYM sposobem na odzyskanie dostępu w przypadku zgubienia hasła, utraty urządzenia lub podobnych okoliczności.</translation>
+<translation id="4565891212173086999">Znam i akceptuję<ph name="CLICK_START"/>Regulamin<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Twoje wyrażenie odzyskiwania</translation>
 <translation id="5077747669435508720">Zapisz lub skopiuj te słowa w dokładnie takiej kolejności, jak pokazano poniżej i przechowaj w bezpiecznym miejscu. Tylko wyrażenie odzyskiwania umożliwi Ci odzyskanie dostępu do konta, jeżeli zapomnisz hasła, Twoje urządzenie zostanie zgubione lub skradzione lub zechcesz zmienić portfele.</translation>
 <translation id="2708402071160162126">UWAGA: Nigdy nie ujawniaj swojego wyrażenia odzyskiwania. Każdy, kto zna to wyrażenie, może zabrać Twoje aktywa na zawsze.</translation>
@@ -647,6 +652,9 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="3747079125031086337">Wprowadź słowa Twojego wyrażenia odzyskiwania w prawidłowej kolejności.</translation>
 <translation id="6518133107902771759">Weryfikuj</translation>
 <translation id="3157931365184549694">Przywróć</translation>
+<translation id="5844138175312846408">Już posiadasz portfel?</translation>
+<translation id="2502258949541727762">Zanim rozpoczniemy</translation>
+<translation id="5981303441790732480">Zaimportuj istniejący portfel</translation>
 <translation id="9111102763498581341">Odblokuj</translation>
 <translation id="6657585470893396449">Hasło</translation>
 <translation id="5619264711680220002">Odblokowanie biometryczne</translation>
@@ -665,7 +673,7 @@ Czy na pewno chcesz to zrobić?</translation>
 <translation id="5483736362376139517">1 rok</translation>
 <translation id="6979737339423435258">Od początku</translation>
 <translation id="6284218950354553099">Automatycznie wysyłaj pingi dziennego użycia do Brave</translation>
-<translation id="5288333155754958121">Ten anonimowy, prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników</translation>
+<translation id="2181060149810222381">Ten prywatny ping pozwala Brave oszacować liczbę aktywnych użytkowników.</translation>
 <translation id="3819257035322786455">Kopia zapasowa</translation>
 <translation id="4608713693379664295">Główne konta kryptowalutowe</translation>
 <translation id="4003821417160006384">Konta dodatkowe</translation>
@@ -1212,5 +1220,11 @@ Jeżeli nie zaakceptujesz tego żądania, połączenie z VPN nie zostanie ponown
 <translation id="6637015365469044269">Uaktualnij teraz</translation>
 <translation id="614530507403667291">Domyślny model dla nowych rozmów</translation>
 <translation id="4071849832011229600">Domyślny model</translation>
+<translation id="4185473179105062442">Otrzymuj BAT bezpośrednio do kryptowalutowego portfela self-custody</translation>
+<translation id="5802986777701714573">Dodaliśmy nowy sposób otrzymywania comiesięcznych nagród BAT. Połącz konto od jednego z naszych partnerów lub skorzystaj z nowej opcji self-custody, aby zacząć zarabiać już teraz.</translation>
 <translation id="7557539689487606886">Przejdź do Premium</translation>
+<translation id="5538904824395606812">Wybierz Twojego dostawcę usług internetowych lub Quad9</translation>
+<translation id="6393423486818299209">Wybierz Twojego dostawcę usług internetowych lub Wikimedia DNS</translation>
+<translation id="3401384982562827787">Wybierz Twojego dostawcę usług internetowych lub Cloudflare</translation>
+<translation id="8812367543786936496">Jeśli Twój dostawca usług jest niepewny, Brave może skorzystać z alternatywnego, bezpiecznego DNS</translation>
 </translationbundle>
