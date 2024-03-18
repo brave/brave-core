@@ -3,15 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-// @ts-nocheck TODO(petemill): Define types and remove ts-nocheck
-
 import {html, RegisterPolymerTemplateModifications, RegisterPolymerComponentReplacement} from 'chrome://resources/brave/polymer_overriding.js'
 import {BraveSettingsPrivacyPageElement} from '../brave_privacy_page/brave_privacy_page.js'
+import {getTrustedHTML} from 'chrome://resources/js/static_types.js'
 import {loadTimeData} from '../i18n_setup.js'
 
-function InsertGoogleSignInSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertGoogleSignInSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -44,9 +41,7 @@ function InsertGoogleSignInSubpage (
     `)
 }
 
-function InsertLocalhostAccessSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertLocalhostAccessSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -79,9 +74,7 @@ function InsertLocalhostAccessSubpage (
     `)
 }
 
-function InsertAutoplaySubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertAutoplaySubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -110,9 +103,7 @@ function InsertAutoplaySubpage (
     `)
 }
 
-function InsertEthereumSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertEthereumSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -142,9 +133,7 @@ function InsertEthereumSubpage (
     `)
 }
 
-function InsertSolanaSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertSolanaSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -174,9 +163,7 @@ function InsertSolanaSubpage (
     `)
 }
 
-function InsertShieldsSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertShieldsSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -195,9 +182,7 @@ function InsertShieldsSubpage (
     `)
 }
 
-function InsertCookiesSubpage (
-  templateContent: DocumentFragment,
-  pages: Element)
+function InsertCookiesSubpage (pages: Element)
 {
   pages.appendChild(
     html`
@@ -241,22 +226,51 @@ RegisterPolymerTemplateModifications({
       const isGoogleSignInFeatureEnabled =
         loadTimeData.getBoolean('isGoogleSignInFeatureEnabled')
       if (isGoogleSignInFeatureEnabled) {
-        InsertGoogleSignInSubpage(templateContent, pages)
+        InsertGoogleSignInSubpage(pages)
       }
       const isLocalhostAccessFeatureEnabled =
         loadTimeData.getBoolean('isLocalhostAccessFeatureEnabled')
       if (isLocalhostAccessFeatureEnabled) {
-        InsertLocalhostAccessSubpage(templateContent, pages)
+        InsertLocalhostAccessSubpage(pages)
       }
-      InsertAutoplaySubpage(templateContent, pages)
+      InsertAutoplaySubpage(pages)
       const isNativeBraveWalletEnabled =
         loadTimeData.getBoolean('isNativeBraveWalletFeatureEnabled')
       if (isNativeBraveWalletEnabled) {
-        InsertEthereumSubpage(templateContent, pages)
-        InsertSolanaSubpage(templateContent, pages)
+        InsertEthereumSubpage(pages)
+        InsertSolanaSubpage(pages)
       }
-      InsertShieldsSubpage(templateContent, pages)
-      InsertCookiesSubpage(templateContent, pages)
+      InsertShieldsSubpage(pages)
+      InsertCookiesSubpage(pages)
+      const permissionsLinkRow =
+        templateContent.getElementById('permissionsLinkRow')
+      if (!permissionsLinkRow) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find permissionsLinkRow')
+      } else {
+        permissionsLinkRow.insertAdjacentHTML(
+          'afterend',
+          getTrustedHTML`
+            <settings-brave-personalization-options prefs="{{prefs}}">
+            </settings-brave-personalization-options>
+          `)
+      }
+      const cookiesTemplate = templateContent.querySelector(
+        'template[is="dom-if"][if="[[!is3pcdRedesignEnabled_]]"]')
+      if (!cookiesTemplate) {
+        console.error(
+          '[Brave Settings Overrides] Couldn\'t find cookies template')
+      } else {
+        const cookiesLinkRow = cookiesTemplate.content.
+          getElementById('thirdPartyCookiesLinkRow')
+        if (!cookiesLinkRow) {
+          console.error(
+            '[Brave Settings Overrides] ' +
+            'Couldn\'t find thirdPartyCookiesLinkRow')
+        } else {
+          cookiesLinkRow.setAttribute('hidden', 'true')
+        }
+      }
     }
     if (!loadTimeData.getBoolean('isPrivacySandboxRestricted')) {
       const privacySandboxSettings3Template = templateContent.
