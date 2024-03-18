@@ -375,10 +375,8 @@ void BraveSyncServiceImpl::OnGotEntityCounts(
   }
 }
 
-void BraveSyncServiceImpl::OnSelectedTypesPrefChange(
-    bool payments_integration_enabled_changed) {
-  SyncServiceImpl::OnSelectedTypesPrefChange(
-      payments_integration_enabled_changed);
+void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
+  SyncServiceImpl::OnSelectedTypesPrefChange();
 
   brave_sync::p3a::RecordEnabledTypes(
       GetUserSettings()->IsSyncEverythingEnabled(),
