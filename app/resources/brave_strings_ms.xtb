@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Klik menu Brave</translation>
 <translation id="8541922081612557424">Mengenai Brave</translation>
 <translation id="1203500561924088507">Terima kasih kerana memasang. Anda perlu memulakan semula penyemak imbas anda sebelum menggunakan <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="4658574652223735641">Penjimat Memori Menjadikan Brave Lebih Pantas</translation>
 <translation id="8799570501820813406">Semasa tab ini tidak aktif, memori dikosongkan untuk mengekalkan kepantasan Brave. Anda boleh memilih untuk sentiasa mengecualikan laman ini daripada menjadi tidak aktif.</translation>
 <translation id="8767381092474532098">Brave menyekat muat turun ini kerana fail ini berbahaya</translation>
 <translation id="4798342026247191171">Sediakan profil Brave baharu anda</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave tidak dapat menyemak kata laluan anda. Cuba lagi nanti.</translation>
 <translation id="8880183781256147665">Menambah ke Brave...</translation>
 <translation id="3038232873781883849">Menunggu untuk memasang...</translation>
+<translation id="4503085212612536713">Profil Brave lain</translation>
 <translation id="7918740962659365265">Bantu jadikan Brave lebih baik dengan menghantar laporan ranap dan <ph name="UMA_LINK"/> kepada Brave.</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{1 peranti USB telah diakses oleh satu atau beberapa sambungan Brave}=1{1 peranti USB sedang diakses oleh satu atau beberapa sambungan Brave}other{# peranti USB sedang diakses oleh satu atau beberapa sambungan Brave}}</translation>
 <translation id="5320085753638900910">Sejarah penyemakan imbas anda mempengaruhi iklan yang anda lihat dan minat seperti yang dianggarkan di bawah. Untuk melindungi privasi anda, Brave memadamkan minat anda secara automatik secara bergilir setiap bulan. Minat akan dimuat semula melainkan anda mengalih keluar minat anda.</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">Untuk menggunakan perubahan anda, mulakan semula Brave</translation>
 <translation id="300369155175407115">Semasa percubaan dihidupkan dan jika Brave telah meletakkan anda secara rawak dalam percubaan aktif, sejarah penyemakan imbas anda mempengaruhi iklan yang anda lihat dan minat seperti yang dianggarkan di bawah. Untuk melindungi privasi anda, Brave memadamkan minat anda secara bergilir setiap bulan.</translation>
 <translation id="7573068992266397941">Brave menemukan beberapa syor keselamatan untuk semakan anda</translation>
+<translation id="8174413867995118050">Profil Brave Lain</translation>
 <translation id="7708394612738038097">Anda log masuk menggunakan akaun yang terurus dan memberikan pentadbirnya kawalan ke atas profil Brave anda. Data Brave anda, seperti apl, penanda halaman, sejarah, kata laluan dan tetapan anda yang lain akan terikat kepada <ph name="USER_NAME"/> secara kekal. Anda akan dapat memadamkan data ini melalui Papan Pemuka Brave sync chain, tetapi anda tidak akan dapat mengaitkan data ini dengan akaun lain. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Kod tambahan: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Ketahui sebab Brave menyekat sesetengah fail</translation>
@@ -309,12 +310,12 @@
 <translation id="9210457680074341078">Jika anda juga menyimpan penanda halaman dalam Brave sync chain anda, anda boleh menjejak harga produk dalam Brave dan mendapatkan pemberitahuan jika harga produk tersebut turun</translation>
 <translation id="6676384891291319759">Akses Internet</translation>
 <translation id="1363996462118479832">Chrome OS tidak dapat menyegerakkan data anda disebabkan oleh ralat melog masuk.</translation>
+<translation id="5324448127277983819">Brave memberi anda lebih banyak kawalan terhadap iklan dan mengehadkan perkara yang laman boleh pelajari tentang anda apabila iklan diperibadikan dipaparkan kepada anda</translation>
 <translation id="1257247502847251159">Brave memerlukan kebenaran mikrofon untuk laman ini</translation>
 <translation id="6712881677154121168">Ralat muat turun: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Profil anda tidak boleh digunakan kerana profil anda dihasilkan dari versi Brave yang lebih baharu.
 
 Beberapa ciri mungkin tidak tersedia. Sila nyatakan direktori profil yang berbeza atau gunakan versi Brave yang lebih baharu.</translation>
-<translation id="7870748924073900361">Penjimat Memori menjadikan Brave lebih pantas</translation>
 <translation id="6666624454809779082">Brave telah dipasang untuk semua pengguna pada komputer anda.</translation>
 <translation id="5360050006043219962">Untuk mengakses bahan Brave anda pada semua peranti anda, log masuk, kemudian hidupkan penyegerakan.</translation>
 <translation id="3136039682492230890">Brave mengesyorkan pengimbasan fail ini kerana fail ini mungkin berbahaya.</translation>
@@ -368,7 +369,6 @@ Brave tidak dapat mengembalikan tetapan anda.</translation>
 <translation id="2827121003398607864">Brave kini lebih baik</translation>
 <translation id="7649070708921625228">Bantuan</translation>
 <translation id="7631741717293858595">Anda boleh mengetahui lebih lanjut tentang ciri ini dalam tetapan Brave.</translation>
-<translation id="8678991866891573053">Brave sedang meneroka ciri baharu yang membolehkan laman menyampaikan pengalaman penyemakan imbas yang sama menggunakan kurang data anda</translation>
 <translation id="3343095737966473035">Brave bukan penyemak imbas lalai anda</translation>
 <translation id="5477319665405831211">Segerakkan dan peribadikan Brave pada semua peranti anda</translation>
 <translation id="2339273275658335597">Kemaskinian Brave</translation>
@@ -468,6 +468,7 @@ Keizinan yang telah anda berikan kepada laman web dan apl mungkin digunakan pada
 <translation id="8274659559228306809">{COUNT,plural, =0{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave.}=1{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Kemas kini baharu tersedia untuk Brave dan akan digunakan sebaik sahaja anda melancarkan semula Brave. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini}=1{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda meminta anda melancarkan semula Brave untuk menggunakan kemas kini ini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini}=1{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. Tetingkap Inkognito anda tidak dapat dibuka semula.}other{Pentadbir anda menghendaki anda melancarkan semula Brave untuk menggunakan kemas kini. # tetingkap Inkognito anda tidak dapat dibuka semula.}}</translation>
+<translation id="4104709166890675229">Jadikan profil dengan akses kepada trafik internet anda lebih susah untuk melihat laman yang anda lawati. Brave menggunakan sambungan selamat untuk mencari alamat IP laman dalam DNS (Sistem Nama Domain).</translation>
 <translation id="2176087127109773485">Anda boleh menguruskan rantaian penyegerakan Brave yang anda daftar masuk. Rantaian penyegerakan Brave anda digunakan untuk pelayar Brave, Play Store, Gmail dan banyak lagi. Sekiranya anda ingin menambah akaun untuk orang lain, seperti ahli keluarga, tambahkan profil baharu ke <ph name="DEVICE_TYPE"/> anda. <ph name="LINK_BEGIN"/>Ketahui lebih lanjut<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Apabila anda menaipkan maklumat ke dalam bar alamat atau kotak carian, Brave menghantar maklumat yang anda taipkan kepada enjin carian lalai anda untuk mendapatkan cadangan lebih baik. Ciri ini dimatikan dalam penyemak imbas Peribadi.</translation>
 <translation id="3739288578188828252">Apabila anda menaipkan maklumat ke dalam bar alamat atau kotak carian, Brave menghantar maklumat yang anda taipkan kepada Google Drive untuk mendapatkan cadangan item. Ciri ini dimatikan dalam penyemak imbas Peribadi.</translation>

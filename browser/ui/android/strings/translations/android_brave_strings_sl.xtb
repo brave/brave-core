@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Začnite uporabljati Rewards</translation>
 <translation id="8220484609979012449">\n\nŠe vedno lahko pošiljate kripto prispevke temu ustvarjalcu s svojo denarnico Web3.</translation>
 <translation id="6385969012847057348">Ta ustvarjalec ne more prejemati prispevkov od <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Ta ustvarjalec še ni nastavljen za prejemanje prispevkov Web3 ali kriptožetonov.</translation>
 <translation id="6268134562674951939">Nimate dovolj žetonov</translation>
 <translation id="4529874892536380156">Naj bo to mesečni ponavljajoči se prispevek. Prekličete ga lahko kadar koli.</translation>
 <translation id="5562948772940025260">Z dobroimetjem Brave Nagrade lahko pošljete samo do <ph name="AMOUNT"/> BAT.</translation>
@@ -324,7 +325,7 @@
 <translation id="2614069607859982576">Z obstoječo sinhronizirano napravo odprite Brave nastavitve in se pomaknite do Nastavitve &gt; Sinhroniziraj. Izberite "Dodaj novo napravo" in skenirajte kodo QR, prikazano na zaslonu.</translation>
 <translation id="5241263629636958324">Kopirano v odložišče!</translation>
 <translation id="5817918615728894473">Seznani</translation>
-<translation id="7090325819305486658">Podatkovne nastavitve</translation>
+<translation id="3429575397891106447">Možnosti sinhronizacije</translation>
 <translation id="1680065323266179640">Izbris sinhronizacije računa</translation>
 <translation id="3792563952903751704">Če izbrišete svoj račun, boste s tem odstranili svoje šifrirane podatke s strežnikov Brave in onemogočili sinhronizacijo v vseh povezanih napravah. Ne boste pa izbrisali podatkov, ki so lokalno shranjeni v teh napravah.
 Ta izbris je trajen in podatkov ni mogoče obnoviti. Če se odločite za ponovno uporabo sinhronizacije, boste morali ustvariti nov račun in posamično znova dodati vsako napravo.</translation>
@@ -602,14 +603,18 @@ je v teku.
 <translation id="1483493594462132177">Pošlji</translation>
 <translation id="538450413584738399">Menjava</translation>
 <translation id="1366855498335432549">Vplačaj</translation>
-<translation id="1420318137760245955">Dobrodošli v novi Brave denarnici</translation>
-<translation id="8339846196588658366">Hranite kripto sredstva in spremljajte uspešnost portfelja. Vse direktno iz Brave brskalnika za zasebnost.</translation>
-<translation id="4472575034687746823">Kako začeti</translation>
+<translation id="4556086616242530072">Nativni brskalnik.\nSamostojno skrbništvo.\nIn več verig.</translation>
+<translation id="7909462264772842773">Prevzemite nadzor nad kriptovalutami in NFT. Denarnica Brave podpira Ethereum, verige EVM, Solana, Filecoin in druge.</translation>
+<translation id="165255193061631296">Potrebujete novo denarnico?</translation>
+<translation id="3485737865439729577">V nekaj minutah začnite uporabljati Denarnico Brave</translation>
 <translation id="2759836790106646094">Naredite varnostno kopijo svoje denarnice!</translation>
 <translation id="1078873179929044999">V naslednjem koraku boste videli obnovitveno frazo z 12 besedami, ki jo lahko uporabite za obnovitev svojih primarnih kripto računov. Shrani ga na varno mesto. Vaš obnovitveni stavek je edini način za ponovno pridobitev dostopa do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
 <translation id="2359808026110333948">Naprej</translation>
 <translation id="5488357322146334497">Sporočilo</translation>
 <translation id="1904000155026201268">Razumem, da če izgubim obnovitveno frazo, ne bom mogel dostopati do svoje kripto denarnice.</translation>
+<translation id="5333225216561354793">Od vas zahtevamo, da potrdite spodaj navedene elemente</translation>
+<translation id="1645800479814134195">Razumem, da je to denarnica s samostojnim skrbništvom in da sem samo jaz odgovoren za vsa povezana sredstva, premoženja ali račune ter za ustrezno ukrepanje za zavarovanje, zaščito in varnostno kopiranje svoje denarnice. Razumem, da Brave ne more dostopati do moje denarnice ali razveljaviti transakcij v mojem imenu in da je moja besedna zveza za obnovitev EDINI način za ponovno pridobitev dostopa v primeru izgubljenega gesla, ukradene naprave ali podobnih okoliščin.</translation>
+<translation id="4565891212173086999">Prebral sem <ph name="CLICK_START"/>pogoje uporabe<ph name="CLICK_END"/> in se z njimi strinjam.</translation>
 <translation id="3933122286596948824">Vaša fraza za obnovitev</translation>
 <translation id="5077747669435508720">Te besede si zapišite ali prepišite v natančnem vrstnem redu, ki je prikazan spodaj, in jih shranite. Vaša fraza za obnovitev je edini način, da ponovno pridobite dostop do računa v primeru pozabljenega gesla, izgubljene ali ukradene naprave ali če želite zamenjati denarnico.</translation>
 <translation id="2708402071160162126">OPOZORILO: Svoje fraze za obnovitev nikoli z nikom ne delite. Vsakdo, ki jo ima, vam lahko vzame sredstva za vedno.</translation>
@@ -654,6 +659,9 @@ je v teku.
 <translation id="3747079125031086337">V frazi za obnovitev izberite besede v pravilnem vrstnem redu.</translation>
 <translation id="6518133107902771759">Preveri</translation>
 <translation id="3157931365184549694">Obnovi</translation>
+<translation id="5844138175312846408">Že imate denarnico?</translation>
+<translation id="2502258949541727762">Preden začnemo</translation>
+<translation id="5981303441790732480">Uvozite obstoječo denarnico</translation>
 <translation id="9111102763498581341">Odkleni</translation>
 <translation id="6657585470893396449">Geslo</translation>
 <translation id="5619264711680220002">Biometrično odklepanje</translation>
@@ -672,7 +680,7 @@ je v teku.
 <translation id="5483736362376139517">1 leto</translation>
 <translation id="6979737339423435258">Od začetka</translation>
 <translation id="6284218950354553099">Samodejno pošlji ping o dnevni uporabi Braveu</translation>
-<translation id="5288333155754958121">Zaradi tega anonimnega, zasebnega pinga lahko Brave oceni število aktivnih uporabnikov.</translation>
+<translation id="2181060149810222381">S tem zasebnim pingom lahko Brave oceni aktivne uporabnike.</translation>
 <translation id="3819257035322786455">Varnostno kopiranje</translation>
 <translation id="4608713693379664295">Primarni kripto računi</translation>
 <translation id="4003821417160006384">Sekundardni računi</translation>
@@ -1219,5 +1227,11 @@ je v teku.
 <translation id="6637015365469044269">Posodobite zdaj</translation>
 <translation id="614530507403667291">Privzeti model za nove pogovore</translation>
 <translation id="4071849832011229600">Privzet model</translation>
+<translation id="4185473179105062442">Prejemanje BAT neposredno na kriptografski naslov za lastno hrambo</translation>
+<translation id="5802986777701714573">Dodali smo nov način prejemanja mesečnih nagrad BAT. Povežite račun enega od naših partnerjev ali uporabite novo možnost samostojnega skrbništva in začnite zaslužiti že zdaj.</translation>
 <translation id="7557539689487606886">Pojdi na Premium</translation>
+<translation id="5538904824395606812">Uporabite svojega trenutnega ponudnika storitev ali Quad9</translation>
+<translation id="6393423486818299209">Uporabite svojega trenutnega ponudnika storitev ali Wikimedia DNS</translation>
+<translation id="3401384982562827787">Uporabite svojega trenutnega ponudnika storitev ali Cloudflare</translation>
+<translation id="8812367543786936496">Če je vaš trenutni ponudnik storitev nezanesljiv, Brave uporablja varnega alternativnega ponudnika DNS.</translation>
 </translationbundle>

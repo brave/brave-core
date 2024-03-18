@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">Vaadatud</translation>
 <translation id="8826352442759228526">Teie Brave'i Preemiaid ei saa kinnitada, sest olete jõudnud kinnitatud seadmete ülemmäärani.</translation>
 <translation id="1221593978088944142">Tõrge: seadme limiit on täis</translation>
-<translation id="3113653894794167793">Kahjuks ilmnes teie päringu töötlemisel probleem, proovige uuesti.</translation>
 <translation id="6895088073061692390">Kahjuks on teie Brave'i preemiate profiil märgitud, sest meie automatiseeritud kontrollid tuvastasid ootamatu tegevuse seoses Brave'i reklaamidega.</translation>
 <translation id="4229056297802204697">Kui teie profiil on märgitud, võite endiselt reklaame näha, aga teile ei saa tasusid välja maksta. Samuti ei saa te ühendada hallatavat kontot Brave'i preemiatega.</translation>
 <translation id="5124846913141379164">Võimalik, et teie profiil märgiti eksikombel ja te ei pea kohe midagi tegema. Teie profiilil olev märk võidakse tulevikus eemaldada.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">Tõrge: Upholdi konto piiratud funktsionaalsus</translation>
 <translation id="3274650021044762770">Ilmnes probleem teie brauseri taotluse valideerimisel, et ühendada Brave'i Preemiad teenusepakkuja <ph name="PROVIDER"/> kontoga. Kui vajate veel abi, võite pöörduda <ph name="BEGIN_LINK"/>kasutajatoe<ph name="END_LINK"/> poole.</translation>
 <translation id="1316066811927496401">Tõrge: taotlust ei õnnestunud valideerida.</translation>
+<translation id="7352651011704765696">Midagi läks valesti</translation>
+<translation id="8285276813470932793">Meil ei õnnestunud teie päringut töödelda. Proovige uuesti ja probleemi püsimisel <ph name="LINK_BEGIN"/>võtke ühendust toega<ph name="LINK_END"/>.</translation>
 <translation id="8167256685618982116">Lülitades sisse funktsiooni <ph name="TITLE"/>, nõustute <ph name="BEGIN_LINK1"/>teenusetingimuste<ph name="END_LINK1"/> ja <ph name="BEGIN_LINK2"/>privaatsuspoliitikaga<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Hallatavad kontod (vajalik on isikusamasuse kontroll)</translation>
 <translation id="1539433155512862005">Hallatavad kontod on usaldusväärsete kolmandate isikute teenustega kontod, millel on teie BAT.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900">Ootel kuni <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Oi-oi! Teie brauser ei saa Brave'i privaatseid reklaame vastu võtta.</translation>
 <translation id="5177429570315095022">Et jätkuvalt reklaame näha, tuleb brauser värskendada.</translation>
-<translation id="7352651011704765696">Midagi läks valesti</translation>
 <translation id="4593680147181354667">Diagnostika ID</translation>
 <translation id="3995471429906554168">Diagnostika teave</translation>
 <translation id="752216563428219524">Ads ei ole lähtestatud, värskendage lehte.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">Rewards on välja lülitatud</translation>
 <translation id="3354337256330577726">Automaatne sissemakse on välja lülitatud</translation>
 <translation id="6727186931929643711">Uuesti proovimine peatati</translation>
-<translation id="8978461348341400550">Andmevaldaja:</translation>
-<translation id="7220161813676251577">Andmevaldaja liikme ID:</translation>
+<translation id="6461242868382182003">Konto tüüp:</translation>
+<translation id="4129229983159690026">Konto:</translation>
 <translation id="680983167891198932">Võti</translation>
 <translation id="7535087603100972091">Väärtus</translation>
 <translation id="45591635423975492">Logimise aeg</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">HOIATUS! See logifail võib sisaldada tundlikke andmeid. Olge ettevaatlik ja jälgige, kellega seda jagate.</translation>
 <translation id="7375125077091615385">Tüüp:</translation>
 <translation id="1924618796077284366">Laadi alla terve logi</translation>
-<translation id="5362600797402074593">Hallatava konto ühendusteave</translation>
+<translation id="2129987553148729046">Ühendatud kontode teave</translation>
 <translation id="5457113250005438886">Kehtetu</translation>
 <translation id="6161467863097205016">Võtmeteave:</translation>
 <translation id="5323604113525002127">Kuvame logi viimased [[numberOfLines]] rida. Kui soovite kogu logi, saate selle ülalt alla laadida.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">Kogusaldo</translation>
 <translation id="2223892939866251845">Kasutaja ID</translation>
 <translation id="4235360514405112390">Kehtiv</translation>
-<translation id="3902084968737576005">Rahakoti aadress:</translation>
+<translation id="458999179147014626">Konto deposiidi aadress:</translation>
 <translation id="3653417592104122757">Rahakoti ajalugu</translation>
 <translation id="3339401101952651943">Preemiate teave</translation>
 <translation id="3363158483789327529">Preemiate profiili ei ole veel loodud</translation>
 <translation id="476272015919848174">Preemiate makse ID:</translation>
 <translation id="9008441690901662695">Preemiate olek:</translation>
-<translation id="8874184842967597500">Ühendus puudub</translation>
-<translation id="4569155249847375786">Kinnitatud</translation>
-<translation id="6521149675246672063">Ühendus katkestatud (kinnitatud)</translation>
+<translation id="9069875072411692547">Ühendus puudub</translation>
+<translation id="3368922792935385530">Ühendatud</translation>
 <translation id="5058161306698404465">Loomiskeskkond:</translation>
 <translation id="5856438412804207598">Praegune keskkond:</translation>
 <translation id="5916290544882167205">Brave Software. Brave on ettevõttele Brave Software kuuluv registreeritud kaubamärk. Veebisaidi nimed võivad olla veebisaidi omanikule kuuluvad kaubamärgid või registreeritud kaubamärgid.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">Pane tähele:</translation>
 <translation id="1430915738399379752">Prindi</translation>
 <translation id="135956957367307069">Teie päringut alles töödeldakse, oodake.</translation>
-<translation id="8725066075913043281">Proovi uuesti</translation>
 <translation id="2600847485413879104">Preemiate BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">Vaatate WebTorrenti lehte</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Kas lubada Brave'is Unstoppable Domainsi tugi?</translation>
-<translation id="9156229987230762013">Brave kasutab Infurat Unstoppable Domainsi domeeninimede .crypto (ja ka .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) lahendamiseks. Brave peidab teie IP-aadressi. Kui selle lubate, näeb Infura, et keegi üritab neid domeene külastada, aga mitte midagi muud. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="5015092481905019948">Brave kasutab <ph name="PROVIDER_NAME"/>, et lahendada <ph name="DOMAIN_LIST"/> domeeninimed, mis on <ph name="DOMAIN_PROVIDER_NAME"/>. Brave peidab teie IP-aadressi. Kui selle lubate, siis <ph name="PROVIDER_NAME"/> näeb, et keegi üritab neid domeene külastada, aga mitte midagi muud. Vaadake <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>kasutustingimusi<ph name="END_PROVIDER_TOU_LINK"/> ja <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereumi nimeteenus</translation>
+<translation id="2789190492285945209">Ethereumi nimeteenused (ENS)</translation>
 <translation id="4335039108389860301">Kas lubada Brave'is Ethereumi nimeteenus (ENS)?</translation>
-<translation id="4609973808011229683">Brave kasutab Infurat Ethereumi nimeteenuse (ENS) domeeninimede .eth lahendamiseks. Brave peidab teie IP-aadressi. Kui selle lubate, näeb Infura, et keegi üritab neid .eth domeene külastada, aga mitte midagi muud. Vaadake Infura <ph name="BEGIN_INFURA_TOU_LINK"/>kasutustingimusi<ph name="END_INFURA_TOU_LINK"/> ja <ph name="BEGIN_INFURA_PRIVACY_LINK"/>privaatsuspõhimõtteid<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="807404806385418949">Ethereumi nimeteenuse ahelaväline otsing</translation>
 <translation id="4049590838234508776">Kas lubada Brave'is Ethereumi nimeteenuse (ENS) ahelaväline otsing?</translation>
 <translation id="5944991147217767764">See .eth domeeninimi salvestatakse ahelaväliselt ja selle lahendab kolmanda isiku lüüs. Kui lubate ENS-i ahelavälise otsingu, näevad kolmandate isikute lüüsid, et üritate külastada seda .eth domeeni. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Lugege lähemalt<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Jätka ahelavälise otsinguga</translation>
 <translation id="531747189990625622">Solana nimeteenus</translation>
 <translation id="1090584614351290462">Kas lubada Brave'is Solana nimeteenuse (SNS) tugi?</translation>
-<translation id="1026480261052976838">Brave kasutab domeeninimede .sol lahendamiseks kolmandat osalist. Brave peidab teie IP-aadressi. Kui selle lubate, näeb kolmas osaline, et keegi üritab neid .sol domeene külastada, aga mitte midagi muud. Lisateavet selle kohta, milliseid kolmandaid osalisi me kasutame ja millised on nende privaatsuspõhimõtted, leiate meie <ph name="BEGIN_SNS_WIKI_LINK"/>spikrilehelt<ph name="END_SNS_WIKI_LINK"/>.</translation>
-<translation id="7378412287463452336">Jätka Infura serveri kasutamisega</translation>
+<translation id="7769345036263036863">Brave kasutab domeeninimede <ph name="DOMAIN_LIST"/> lahendamiseks kolmandat osalist. Brave peidab teie IP-aadressi. Kui selle lubate, näeb kolmas osaline, et keegi üritab neid <ph name="DOMAIN_LIST"/> domeene külastada, aga mitte midagi muud.  Lisateavet selle kohta, milliseid kolmandaid osalisi me kasutame ja millised on nende privaatsuspõhimõtted, leiate meie <ph name="BEGIN_SNS_WIKI_LINK"/>spikrilehelt<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="884864496166128252">Jätkake kasutades serverit <ph name="PROVIDER_NAME"/></translation>
 <translation id="4388873516324656141">Jätka SNS-serveri kasutamist</translation>
 <translation id="2356070529366658676">Küsi</translation>
 <translation id="59174027418879706">Lubatud</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">Ilmnes tõrge, proovige sõlm uuesti installida</translation>
 <translation id="8428368469058794536">IPFS-teenus</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">Proovi uuesti</translation>
 <translation id="1886162073868201257">IPFS-teenuse käivitamise tõrge</translation>
 <translation id="5357895013476183089">IPFS pole ühendatud</translation>
 <translation id="7662930734991751511">Brave'i kohaliku IPFS-i sõlme kaudu ei saa laadida IPFS-i ressursse</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">Preemiad Adsilt</translation>
 <translation id="5308380583665731573">Ühendamine</translation>
 <translation id="3026978804849658576">Kuva väljavõte</translation>
-<translation id="3368922792935385530">Ühendatud</translation>
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="6516984207843289176">Ühenda konto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Kas olete valmis teenimist alustama?<ph name="BOLD_END"/> Looge ühendus või valige üks meie partneritest ja looge konto.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">Tühista</translation>
 <translation id="9218424917282368512">Vaheta võrku</translation>
 <translation id="7526139040829362392">Vaheta kontot</translation>
+<translation id="8874184842967597500">Ühendus puudub</translation>
 <translation id="4217695020908122747">Ühendatud kontod</translation>
 <translation id="8497650996740651467">Olemasolevad kontod</translation>
 <translation id="5677928146339483299">Blokeeritud</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">Domeenil pole seotud <ph name="COIN_TYPE_SYMBOL"/>-aadressi</translation>
 <translation id="8971278306757462297">Vastuvõtja aadress on teie enda aadress</translation>
 <translation id="3506416339268164412">Vastuvõtja aadress on tokeni lepinguaadress</translation>
+<translation id="7029817408221097939">Kehtetu ühtlustatud aadress</translation>
 <translation id="6370376419663123629">Aadress ei tundu olevat õige</translation>
 <translation id="3767148796886402380">Kontrollige, kas teie aadress on õige (nt kas suur- või väiketähed on õigesti kirjutatud).</translation>
 <translation id="2585599787090762065">Kuidas seda lahendada?</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> tagastati teie rahakotti</translation>
 <translation id="4577432071459867390">Tehing nurjus</translation>
 <translation id="4359235192593147041">Tehing nurjus suure hinnaliikumise tõttu. Suurema hinnaliikumise korral edu saavutamiseks suurendage varieeruvuse tolerantsi.</translation>
+<translation id="8685035971570487250">Üks Zcashi tehing on juba pooleli. Proovige hiljem uuesti.</translation>
 <translation id="8584830404080597280">Uus kauplemistoiming</translation>
 <translation id="8065905913745172640">Uus tehing</translation>
 <translation id="9079041000600020902">Kuva tõrge</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">Teie rahakoti saldo ootel muudatus.</translation>
 <translation id="7700365440186054030">Teie käsutuses olevad rahalised vahendid pluss kõik veel kinnitamata tehingud.</translation>
 <translation id="4118601537508887039">Mõni saldo ei pruugi olla kättesaadav.</translation>
+<translation id="2926654984379239545">Leidsime <ph name="VALUE"/> ohtu.</translation>
+<translation id="8400506417619199876">Leping</translation>
+<translation id="5667702863609780570">Ebaturvaline tegevus, millega kaasneb kahjurisk</translation>
+<translation id="6405354572620970908">See päring näib pahatahtlik ja võib teid varguse suhtes haavatavaks muuta. Ärge jätkake, kui te rakendust ei usalda.</translation>
+<translation id="786261184916565476">Leidsime <ph name="VALUE"/> probleemi.</translation>
 <translation id="3155170474926428993">Tor'i käivitaja</translation>
 <translation id="3745016858329272300">Üldine teave</translation>
 <translation id="4045404575593562245">Tori juhtelemendid</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">Praegune vahekaart</translation>
 <translation id="7056969230130642253">Olete kõigega kursis</translation>
 <translation id="7292242212818928219">Saadaval on uus sisu. Kas laadida uuesti?</translation>
+<translation id="6537880577641744343">Käsuklahv</translation>
 <translation id="7481312909269577407">Edasta</translation>
 <translation id="302781076327338683">Laadi ümbersuunamise vahemälu uuesti</translation>
 <translation id="7211681214230730336">Laadi tühjendamise vahemälu uuesti</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">Kuva järjehoidjariba alati</translation>
 <translation id="2960757369920422313">Kuva NTP-s järjehoidjariba</translation>
 <translation id="522953399371747698">Peida järjehoidjariba</translation>
+<translation id="134184943774258988">Vaheldage nupu Kõik järjehoidjad nähtavust</translation>
 <translation id="2158862020143233462">Lülita kaitsed sisse/välja</translation>
 <translation id="4610630726762318759">Lülita Javascript sisse/välja</translation>
 <translation id="188822869499214197">Kuva esitusloendi mull</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">Kasuta vastamiseks lehe konteksti</translation>
 <translation id="8599503173207256429">Lülitage sisse, kui soovite selle lehe kohta midagi küsida. Selle sisu saadetakse koos teie sõnumitega Brave'i Leole.</translation>
 <translation id="318819763888864209">Kõik tellimused uuendatakse automaatselt, kuid enne uuendamist saab need igal ajal tühistada.</translation>
+<translation id="5091223967610958">Jagage selle lehekülje hostinime, millel te olete (<ph name="HOST_NAME"/>), et aidata meil Leod paremaks muuta.</translation>
+<translation id="8732450785281947197">Leo AI tööriistad</translation>
+<translation id="6535533770697728087">Kiirtoimingud</translation>
+<translation id="3237710083340813756">Kirjuta uuesti</translation>
+<translation id="1252805982772190086">Lühike postitus</translation>
+<translation id="2087555497198267113">Pikk postitus</translation>
+<translation id="4170307327863874820">Blogipostitus</translation>
+<translation id="1308864651455614281">Märkrida</translation>
+<translation id="5258847587364431118">Parafraas</translation>
+<translation id="6147279996212084542">Selgita</translation>
+<translation id="1201408613803664464">Paranda</translation>
+<translation id="1310396869741602366">Muuda tooni</translation>
+<translation id="2200877041397136930">Professionaalne</translation>
+<translation id="5627656897244314351">Veenev</translation>
+<translation id="2169719065373500634">Akadeemiline</translation>
+<translation id="2942492342931589800">Lihtne</translation>
+<translation id="8485016913912679738">Naljakas</translation>
+<translation id="163826442096818926">Lühenda</translation>
+<translation id="42981349822642051">Laienda</translation>
+<translation id="3130793786899299931">Muuda pikkust</translation>
+<translation id="6320643499534852464">Sotsiaalmeedia</translation>
 <translation id="6303294677342628402">Kaitse</translation>
 <translation id="8458987127502506209">Luba Brave'i kaitsed</translation>
 <translation id="7509914170164691086">Kaitsed on PEAL, <ph name="LINK_BEFORE"/>kestus<ph name="LINK_AFTER"/></translation>
@@ -2083,7 +2112,7 @@ Brave’il on abiteenus, mis kaitseb teid teabe avaldamise eest, filtreerides vi
 Kuid me märkasime, et see abiteenus ei tööta ja me soovime, et te oleksite ikkagi kaitstud. Muutsime brauseris DNS-seadeid, et vältida teie teabe avaldamist Seaded jäävad jõusse ja lukustatuks, kuni VPN on ühendatud.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">Tundub, et WireGuardi ühendusega on probleeme. Kas soovite turvalise VPN-i ühenduse tagamiseks IKEv2 allakukkumise lubada? Lihtsalt taaskäivitage oma brauser.
+<translation id="8810743613883230732">Tundub, et WireGuardi ühendusega on probleeme. Kas soovite turvalise VPN-ühenduse tagamiseks IKEv2 allakukkumise lubada? Lihtsalt muutke seadeid.
 
 Vajate abi ühilduvuse või konfigureerimisega? Võtke ühendust meie sõbraliku tugimeeskonnaga.
 Saate alati WireGuardi juurde tagasi pöörduda aadressil brave://settings/system.
@@ -2093,7 +2122,7 @@ Saate alati WireGuardi juurde tagasi pöörduda aadressil brave://settings/syste
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Ära hoiata mind enam selle eest.</translation>
 <translation id="2740531572673183784">OK</translation>
-<translation id="7896201779114201779">Brauseri taaskäivitamine</translation>
+<translation id="7423206764347669977">Muuda seaded</translation>
 <translation id="9061845622728745852">Ajavöönd:</translation>
 <translation id="8295393906499561642">Seanss on aegunud</translation>
 <translation id="3312623558576021182">VPN-seansi värskendamiseks logige sisse oma <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave’i kontole<ph name="BRAVE_ACCOUNT_END"/>.</translation>
@@ -2114,4 +2143,5 @@ vajutage tabeldusklahvi ja sisestusklahvi, et teha avatud vaheleht aktiivseks</t
 <translation id="1538335063514960365">Siin avamise nupp. Vajutage sisestusklahvi, et avada see URL praegusel vahelehel, mitte
 olemasoleval vahelehel</translation>
 <translation id="451189393813405346">Küsi Leolt</translation>
+<translation id="8525248723479742219">Esita hiljem</translation>
 </translationbundle>

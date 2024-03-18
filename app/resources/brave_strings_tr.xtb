@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Brave menüsünü tıklayın</translation>
 <translation id="8541922081612557424">Brave hakkında</translation>
 <translation id="1203500561924088507">Yüklediğiniz için teşekkürler. <ph name="BUNDLE_NAME"/> uygulamasını kullanmadan önce tarayıcınızı yeniden başlatmanız gerekir.</translation>
-<translation id="4658574652223735641">Bellek Tasarrufu Sayesinde Brave Artık Daha Hızlı</translation>
 <translation id="8799570501820813406">Bu sekme etkin değilken Brave'un hızlı çalışmaya devam etmesi için bellekte yer açıldı. Bu siteyi, etkin olmayan sitelerden her zaman hariç tutabilirsiniz.</translation>
 <translation id="8767381092474532098">Dosya tehlikeli olduğu için Brave bu indirme işlemini engelledi</translation>
 <translation id="4798342026247191171">Yeni Brave profilinizi oluşturun</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave, şifrelerinizi kontrol edemiyor. Daha sonra tekrar deneyin.</translation>
 <translation id="8880183781256147665">Brave'a ekleniyor ...</translation>
 <translation id="3038232873781883849">Yüklenmesi bekleniyor...</translation>
+<translation id="4503085212612536713">Diğer Brave profilleri</translation>
 <translation id="7918740962659365265">Kilitlenme raporlarını ve <ph name="UMA_LINK"/> bilgilerini Brave'a göndererek, Brave'u daha iyi hale getirmeye yardımcı olun</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Bir veya daha fazla Brave uzantısı, 1 USB cihazına erişiyordu}=1{Bir veya daha fazla Brave uzantısı, 1 USB cihazına erişiyor}other{Bir veya daha fazla Brave uzantısı, # USB cihazına erişiyor}}</translation>
 <translation id="5320085753638900910">Tarama geçmişiniz gördüğünüz reklamları ve aşağıdaki şekilde tahmin edilen ilgi alanlarınızı etkiler. Brave, gizliliğinizi korumak için ilgi alanlarınızı her ay sürekli olarak siler. Silme işlemi otomatik olarak gerçekleştirilir. Kaldırmadığınız sürece ilgi alanlarınız yenilenmeye devam edebilir.</translation>
@@ -212,6 +212,7 @@
 <translation id="8586264863973514035">Yaptığınız değişiklikleri uygulamak için Brave'u yeniden başlatın</translation>
 <translation id="300369155175407115">Denemeler açıksa ve Brave tarafından etkin bir denemeye rastgele yerleştirildiyseniz tarama geçmişiniz gördüğünüz reklamları ve aşağıdaki şekilde tahmin edilen ilgi alanlarınızı etkiler. Brave, gizliliğinizi korumak için ilgi alanlarınızı her ay sürekli olarak siler.</translation>
 <translation id="7573068992266397941">Brave, incelemeniz gereken bazı güvenlik önerileri tespit etti</translation>
+<translation id="8174413867995118050">Diğer Brave Profilleri</translation>
 <translation id="7708394612738038097">Yönetilen bir hesapla oturum açıyor ve hesabın yöneticisine Brave profilinizi denetleme izni veriyorsunuz. Uygulamalarınız, yer işaretleriniz, geçmişiniz, şifreleriniz ve diğer ayarlarınız gibi Brave verileriniz kalıcı olarak <ph name="USER_NAME"/> ile bağlantılandırılacaktır. Brave Hesapları Hesap Özeti'ni kullanarak bu verileri silebilecek, ancak bu verileri başka bir hesapla ilişkilendiremeyeceksiniz. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Ekstra kod: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Brave'un bazı dosyaları neden engellediğini öğrenin</translation>
@@ -307,12 +308,12 @@
 <translation id="9210457680074341078">Brave Hesabınıza yer işaretlerinizi de kaydederseniz Brave'da ürün fiyatlarını takip edebilir ve fiyat düştüğünde bildirim alabilirsiniz</translation>
 <translation id="6676384891291319759">İnternet'e erişin</translation>
 <translation id="1363996462118479832">Oturum açma sırasındaki bir hata nedeniyle ChromeOS, verilerinizi senkronize edemedi.</translation>
+<translation id="5324448127277983819">Brave, gördüğünüz reklamlarda daha fazla kontrol sahibi olmanızı sağlar ve kişiselleştirilmiş reklamlar gösteren sitelerin hakkınızda edinebileceği bilgileri sınırlandırır</translation>
 <translation id="1257247502847251159">Bu site için Brave'un mikrofon iznine ihtiyacı var</translation>
 <translation id="6712881677154121168">İndirme hatası: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Profiliniz daha yeni bir Brave sürümünden olduğundan kullanılamıyor.
 
 Bazı özellikler kullanılamayabilir. Lütfen farklı bir profil dizini belirtin veya daha yeni bir Brave sürümünü kullanın.</translation>
-<translation id="7870748924073900361">Bellek Tasarrufu sayesinde Brave artık daha hızlı</translation>
 <translation id="6666624454809779082">Brave zaten bilgisayarınızdaki tüm kullanıcılar için yüklendi.</translation>
 <translation id="5360050006043219962">Brave öğelerinize tüm cihazlarınızda erişmek için oturum açın ve senkronizasyonu etkinleştirin.</translation>
 <translation id="3136039682492230890">Brave, tehlikeli olabileceği için bu dosyanın taranmasını öneriyor.</translation>
@@ -365,7 +366,6 @@ Brave ayarlarınızı kurtaramıyor.</translation>
 <translation id="2827121003398607864">Brave daha da iyi bir hale geldi</translation>
 <translation id="7649070708921625228">Yardım</translation>
 <translation id="7631741717293858595">Bu özellikler hakkında daha fazla bilgiyi Brave ayarlarında bulabilirsiniz.</translation>
-<translation id="8678991866891573053">Brave, sitelerin daha az veri kullanarak aynı tarama deneyimini sunmasını sağlayan yeni özellikleri keşfediyor</translation>
 <translation id="3343095737966473035">Brave varsayılan tarayıcınız değil</translation>
 <translation id="5477319665405831211">Brave'u cihazlarınız arasında senkronize edin ve kişiselleştirin</translation>
 <translation id="2339273275658335597">Brave güncellemesi</translation>
@@ -465,6 +465,7 @@ Web sitelerine ve uygulamalara önceden vermiş olduğunuz izinler bu hesap içi
 <translation id="8274659559228306809">{COUNT,plural, =0{Brave için yeni bir güncelleme var. Yeniden başlattığınızda güncelleme hemen uygulanacaktır.}=1{Brave için yeni bir güncelleme var. Yeniden başlattığınızda güncelleme hemen uygulanacaktır. Gizli pencereniz yeniden açılmayacak.}other{Brave için yeni bir güncelleme var. Yeniden başlattığınızda güncelleme hemen uygulanacaktır. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor}=1{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bu güncellemeyi uygulamak için Brave'u yeniden başlatmanızı istiyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor}=1{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. Gizli pencereniz yeniden açılmayacak.}other{Yöneticiniz bir güncellemeyi uygulamak için Brave'u yeniden başlatmanızı gerektiriyor. # Gizli pencereniz yeniden açılmayacak.}}</translation>
+<translation id="4104709166890675229">Profillerin hangi siteleri ziyaret ettiğinizi görmek için internet trafiğinize erişmesini zorlaştırın. Brave, DNS'de (Domain Name System) bir sitenin IP adresini bulmak için güvenli bir bağlantı kullanır.</translation>
 <translation id="2176087127109773485">Oturumu açılmış Brave senkronizasyon zincirlerinizi yönetebilirsiniz. Brave senkronizasyon zincirleriniz Brave tarayıcısı, Play Store, Gmail ve daha fazlası için kullanılır. Bir aile üyesi gibi başka biri için bir hesap eklemek istiyorsanız bunun yerine <ph name="DEVICE_TYPE"/> yeni bir profil ekleyin. <ph name="LINK_BEGIN"/>Daha fazla bilgi<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Bir adres çubuğuna veya arama kutusuna yazdığınız zaman, Brave daha iyi öneriler almanız için yazdığınız şeyi varsayılan arama motorunuza gönderir. Bu Gizli modda kapalıdır.</translation>
 <translation id="3739288578188828252">Bir adres çubuğuna veya arama kutusuna yazdığınız zaman, Brave öğe önerileri almanız için yazdığınız şeyi Google Drive'a gönderir. Bu Gizli modda kapalıdır.</translation>
