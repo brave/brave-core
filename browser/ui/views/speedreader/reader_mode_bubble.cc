@@ -129,8 +129,20 @@ void ReaderModeBubble::Init() {
                               gfx::Insets::TLBR(24, 24, 0, 24), gfx::Insets());
     site_toggle_->SetCallback(base::BindRepeating(
         &ReaderModeBubble::OnSiteToggled, base::Unretained(this)));
-    site_toggle_->SetIsOn(
-        GetSpeedreaderService()->IsEnabledForSite(tab_helper_->web_contents()));
+    if (GetSpeedreaderService()->IsExplicitlyEnabledForSite(
+            tab_helper_->web_contents())) {
+      site_toggle_->SetIsOn(true);
+    } else if (GetSpeedreaderService()->IsExplicitlyDisabledForSite(
+                   tab_helper_->web_contents())) {
+      site_toggle_->SetIsOn(false);
+    } else {
+      DistillState state = tab_helper_->PageDistillState();
+      if (IsDistilledAutomatically(state)) {
+        site_toggle_->SetIsOn(true);
+      } else if (DistillStates::IsDistillable(state)) {
+        site_toggle_->SetIsOn(false);
+      }
+    }
   }
 
   // Always use speedreader for all sites
