@@ -230,7 +230,8 @@ export const Swap = () => {
           onSelectAsset={
             selectingFromOrTo === 'from' ? onSelectFromToken : onSelectToToken
           }
-          selectedToken={selectingFromOrTo === 'from' ? toToken : fromToken}
+          selectedFromToken={fromToken}
+          selectedToToken={toToken}
           selectedSendOption='#token'
           selectedNetwork={selectingFromOrTo === 'to' ? fromNetwork : undefined}
           showFullFlatTokenList={selectingFromOrTo === 'to'}

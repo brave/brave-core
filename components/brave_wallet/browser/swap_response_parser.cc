@@ -388,7 +388,7 @@ mojom::BlockchainTokenPtr ParseToken(const swap_responses::LiFiToken& value) {
   auto result = mojom::BlockchainToken::New();
   result->name = value.name;
   result->symbol = value.symbol;
-  result->logo = value.logo_uri;
+  result->logo = value.logo_uri.has_value() ? value.logo_uri.value() : "";
   result->contract_address =
       value.address == kLiFiNativeAssetContractAddress ? "" : value.address;
 
@@ -425,6 +425,10 @@ std::optional<mojom::LiFiStepType> ParseStepType(const std::string& value) {
     return mojom::LiFiStepType::kNative;
   }
 
+  if (value == "protocol") {
+    return mojom::LiFiStepType::kProtocol;
+  }
+
   return std::nullopt;
 }
 
@@ -450,17 +454,7 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
   result->to_amount = value.to_amount;
   result->to_amount_min = value.to_amount_min;
   result->approval_address = value.approval_address;
-
-  for (const auto& fee_cost_value : value.fee_costs) {
-    auto fee_cost = mojom::LiFiFeeCost::New();
-    fee_cost->name = fee_cost_value.name;
-    fee_cost->description = fee_cost_value.description;
-    fee_cost->percentage = fee_cost_value.percentage;
-    fee_cost->token = ParseToken(fee_cost_value.token);
-    fee_cost->amount = fee_cost_value.amount;
-    fee_cost->included = fee_cost_value.included;
-    result->fee_costs.push_back(std::move(fee_cost));
-  }
+  result->execution_duration = value.execution_duration;
 
   for (const auto& gas_cost_value : value.gas_costs) {
     auto gas_cost = mojom::LiFiGasCost::New();
@@ -472,7 +466,22 @@ mojom::LiFiStepEstimatePtr ParseEstimate(
     result->gas_costs.push_back(std::move(gas_cost));
   }
 
-  result->execution_duration = value.execution_duration;
+  if (!value.fee_costs) {
+    return result;
+  }
+
+  std::vector<mojom::LiFiFeeCostPtr> fee_costs = {};
+  for (const auto& fee_cost_value : *value.fee_costs) {
+    auto fee_cost = mojom::LiFiFeeCost::New();
+    fee_cost->name = fee_cost_value.name;
+    fee_cost->description = fee_cost_value.description;
+    fee_cost->percentage = fee_cost_value.percentage;
+    fee_cost->token = ParseToken(fee_cost_value.token);
+    fee_cost->amount = fee_cost_value.amount;
+    fee_cost->included = fee_cost_value.included;
+    fee_costs.push_back(std::move(fee_cost));
+  }
+  result->fee_costs = std::move(fee_costs);
 
   return result;
 }
@@ -608,7 +617,7 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
       value->transaction_request.gas_limit->empty() ||
 
       !value->transaction_request.chain_id ||
-      value->transaction_request.chain_id->empty()) {
+      !value->transaction_request.chain_id.has_value()) {
     return nullptr;
   }
 
@@ -620,8 +629,9 @@ mojom::LiFiTransactionUnionPtr ParseTransactionResponse(
   evm_transaction->gas_price = value->transaction_request.gas_price.value();
   evm_transaction->gas_limit = value->transaction_request.gas_limit.value();
 
-  if (value->transaction_request.chain_id) {
-    auto chain_id = ChainIdToHex(value->transaction_request.chain_id.value());
+  if (value->transaction_request.chain_id.has_value()) {
+    auto chain_id = ChainIdToHex(
+        base::NumberToString(value->transaction_request.chain_id.value()));
     if (!chain_id) {
       return nullptr;
     }

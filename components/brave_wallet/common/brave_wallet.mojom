@@ -639,7 +639,8 @@ struct JupiterError {
 enum LiFiStepType {
   kSwap,
   kCross,
-  kNative
+  kNative,
+  kProtocol
 };
 
 struct LiFiToolDetails {
@@ -688,7 +689,7 @@ struct LiFiStepEstimate {
   string to_amount_min;
   string approval_address;
   string execution_duration;
-  array<LiFiFeeCost> fee_costs;
+  array<LiFiFeeCost>? fee_costs;
   array<LiFiGasCost> gas_costs;
 };
 
