@@ -84,6 +84,17 @@ public class AIChatViewModel: NSObject, ObservableObject {
     }
   }
 
+  public var defaultAIModelKey: String {
+    get {
+      return api.defaultModelKey
+    }
+
+    set {
+      objectWillChange.send()
+      api.defaultModelKey = newValue
+    }
+  }
+
   public init(
     braveCore: BraveCoreMain,
     webView: WKWebView?,
@@ -163,6 +174,10 @@ public class AIChatViewModel: NSObject, ObservableObject {
   // This function should not exist
   // We should not be refreshing credentials in this model at all!
   // This should be done in Brave-Skus-Manager once VPN moves to Skus v2
+  // Note: There is another bug where this function is required due to SkusSDK being broken
+  // See: https://github.com/brave/brave-browser/issues/36851
+  // This happens when the SkusSDK returns `activeDisconnected`, `remaining_credential_count = 0`, and `expires_at = null`
+  // Automatic credential refreshing should take care of it, but it doesn't seem to work at all
   @MainActor
   func refreshPremiumStatusOrderCredentials() async {
     await refreshPremiumStatus()
@@ -171,7 +186,7 @@ public class AIChatViewModel: NSObject, ObservableObject {
     if premiumStatus == .activeDisconnected,
       let orderId = Preferences.AIChat.subscriptionOrderId.value
     {
-      try? await BraveSkusSDK().fetchCredentials(orderId: orderId, for: .leo)
+      try? await BraveSkusSDK.shared.fetchCredentials(orderId: orderId, for: .leo)
 
       // Premium status changed after refresh
       await refreshPremiumStatus()

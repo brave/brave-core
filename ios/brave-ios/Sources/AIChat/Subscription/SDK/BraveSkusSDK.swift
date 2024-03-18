@@ -77,7 +77,10 @@ public struct SkusOrder: Codable {
 /// A class for handling Brave Skus via SkusService
 public class BraveSkusSDK {
 
-  public init() {
+  /// Singleton instance since there can only ever be one instance of SkusService
+  public static let shared = BraveSkusSDK()
+
+  private init() {
     self.skusService = Skus.SkusServiceFactory.get(privateMode: false)
   }
 
