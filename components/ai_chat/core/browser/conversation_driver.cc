@@ -209,8 +209,7 @@ void ConversationDriver::SetDefaultModel(const std::string& model_key) {
     return;
   }
 
-  pref_service_->SetString(prefs::kDefaultModelKey,
-                                     model_key);
+  pref_service_->SetString(prefs::kDefaultModelKey, model_key);
 }
 
 const mojom::Model& ConversationDriver::GetCurrentModel() {
