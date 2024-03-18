@@ -66,7 +66,6 @@ import {
   TabRow,
   Description,
   PanelTitle,
-  AccountCircle,
   AddressAndOrb,
   AddressText,
   WarningBox,
@@ -241,15 +240,14 @@ export const ConfirmTransactionPanel = () => {
           </PanelTitle>
           <AddressAndOrb>
             <Tooltip
-              text={transactionDetails.recipient}
+              text={transactionDetails.approvalTarget}
               isAddress={true}
               position={'right'}
             >
               <AddressText>
-                {reduceAddress(transactionDetails.recipient)}
+                {transactionDetails.approvalTargetLabel}
               </AddressText>
             </Tooltip>
-            <AccountCircle orb={toOrb} />
           </AddressAndOrb>
           <Description>
             {getLocale('braveWalletAllowSpendDescription').replace(
