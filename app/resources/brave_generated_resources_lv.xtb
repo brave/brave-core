@@ -4,6 +4,8 @@
 <translation id="3333887201479867589">Brave balvas</translation>
 <translation id="7561196759112975576">Vienmēr</translation>
 <translation id="7961015016161918242">Nekad</translation>
+<translation id="8507663778530179003">Rādīt Visas grāmatzīmes pogu</translation>
+<translation id="9018648632047670921">Rādīt visu grāmatzīmju pogu</translation>
 <translation id="7630214457764713113">Kopēt tikai saiti</translation>
 <translation id="7973394300052703468">Jauns &amp;inkognito režīma logs</translation>
 <translation id="4615489450165434530">Ziņot par bojātu vietni</translation>
@@ -168,12 +170,12 @@
 <translation id="2533715613366623756">Grāmatzīmju pārvaldnieks</translation>
 <translation id="3405021928725149239">Grāmatzīmju pārvaldnieks</translation>
 <translation id="6284218950354553099">Automātiski nosūtīt dienas lietošanas ehotestu Brave</translation>
-<translation id="5288333155754958121">Šis anonīmais un privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
+<translation id="2181060149810222381">Šis privātais ehotests ļauj Brave aprēķināt aktīvos lietotājus.</translation>
 <translation id="1872784258300710671">Brave izmanto pilnīgi privātu produktu analīzi, lai novērtētu konkrētu funkciju vispārējo lietojumu.</translation>
 <translation id="8712637175834984815">Sapratu!</translation>
 <translation id="4394049700291259645">Atspējot</translation>
 <translation id="7142548388914389999">Atļaut privātuma nodrošināšanas produktu analīzi (P3A)</translation>
-<translation id="8286082624639565868">Šī pilnībā anonimizētā informācija palīdz Brave aprēķināt atsevišķu funkciju kopējo lietojumu un uzlabot tās.</translation>
+<translation id="2604698253988679506">Šīs anonimizētās atbildes palīdz Brave aprēķināt atsevišķu funkciju kopējo lietojumu un uzlabot tās.</translation>
 <translation id="1947672064022327074">Vai vēlaties palaist kripto makus Ethereum atbalstam?</translation>
 <translation id="7583735190612229830">Iestatiet kripto makus, lai tie mijiedarbotos ar šo lietotni un citām tai līdzīgām lietotnēm.</translation>
 <translation id="8731422418734770661">Iestatīt Crypto Wallets</translation>
@@ -190,6 +192,7 @@
 <translation id="4756627014339714615">Pāriet</translation>
 <translation id="1338274252864046652">Vai vēlaties vienmēr palaist IPFS mezglu pārlūkprogrammas startēšanas laikā?</translation>
 <translation id="3435896845095436175">Iespējot</translation>
+<translation id="5046066249040287308">Brave maka ērtības pakalpojums</translation>
 <translation id="4552520379838695057">Diemžēl, šī lapa nav atrodama.</translation>
 <translation id="2609895996619941644">Vai vēlaties pārbaudīt, vai Wayback Machine nav pieejama tās saglabātā versija?</translation>
 <translation id="8053093028263274061">Diemžēl, saglabātā versija nav pieejama.</translation>
@@ -198,16 +201,18 @@
         Varat izlasīt <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>norādījumus un uzzināt, kā pašam izveidot<ph name="END_LINK_BUILD_INSTRUCTIONS"/> konkrēto<ph name="BEGIN_LINK_SOURCE_CODE"/>pirmkodu, kas izmantots šī eksemplāra izveidošanai<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="3987546108749866209">Lietot cilnes vertikāli</translation>
-<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} cits {Izslēgt cilņu skaņu}}</translation>
-<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} cits {Ieslēgt cilņu skaņu}}</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} other {Izslēgt cilņu skaņu}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} other {Ieslēgt cilņu skaņu}}</translation>
 <translation id="2289567621059034186">Jauna cilne apakšā</translation>
 <translation id="3228962656492373217">Aizvērt cilnes apakšā</translation>
+<translation id="8030501904366631501">Salikt visas cilnes šajā logā</translation>
 <translation id="2336228925368920074">Saglabāt visas cilnes kā grāmatzīmes...</translation>
 <translation id="2523967823495420116">Lietot cilnes vertikāli</translation>
-<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} cits {Izslēgt cilņu skaņu}}</translation>
-<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} cits {Ieslēgt cilņu skaņu}}</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Izslēgt cilnes skaņu} other {Izslēgt cilņu skaņu}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Ieslēgt cilnes skaņu} other {Ieslēgt cilņu skaņu}}</translation>
 <translation id="4405580203042711503">Jauna cilne apakšā</translation>
 <translation id="5611474372949142946">Aizvērt cilnes apakšā</translation>
+<translation id="573844928911967687">Salikt Visas cilnes šajā logā</translation>
 <translation id="3704707436873245822">Kopēt tekstu no attēla</translation>
 <translation id="5268098808165185458">Kopē tekstu no attēla...</translation>
 <translation id="4046485130884276245">Teksts nokopēts no attēla</translation>
@@ -257,8 +262,8 @@
 <translation id="8373664339577369248">pielāgots pasūtījums</translation>
 <translation id="8120600068258956006">Pievienot atskaņošanas sarakstam</translation>
 <translation id="650694591627983430">Šajā lapā atrastā multivide</translation>
-<translation id="8525248723479742219">Atskaņot vēlāk</translation>
 <translation id="43751811163166570">Pievienots <ph name="PLAYLIST_FOLDER_NAME"/></translation>
+<translation id="6900840851173033633">Diemžēl mums neizdevās atrast šajā lapā nevienu multividi.</translation>
 <translation id="4830689155681863580">Atvērt atskaņošanas sarakstā</translation>
 <translation id="4735626465866524761">Mainīt mapi</translation>
 <translation id="8101564000331197174">Noņemt no atskaņošanas saraksta</translation>
@@ -329,6 +334,7 @@
 <translation id="5860254591544742609">Rādīt virsrakstjoslu</translation>
 <translation id="5371926069408837914">Ja vertikālo ciļņu panelis ir savērsts, izvērsiet to, pakustinot peli</translation>
 <translation id="3367129510799209147">Tabulācijas kursora režīms</translation>
+<translation id="916373084491701212">Parādīt ritjoslu</translation>
 <translation id="515949045075831661">Parādīt labajā pusē</translation>
 <translation id="3725395376319291415">Parādīt kreisajā pusē</translation>
 <translation id="2113977810652731515">Karte</translation>
@@ -643,6 +649,7 @@ Jums šobrīd ir <ph name="NFT_COUNT"/> piesprausts(-i) NFT.</translation>
 <translation id="3504157706952484145">Filecoin tīkli</translation>
 <translation id="1561541094377237745">Solana tīkli</translation>
 <translation id="7141438739990875547">Bitcoin tīkli</translation>
+<translation id="1077567586443625607">Zcash tīkli</translation>
 <translation id="3159419679550543837">Parādīt testa tīklus</translation>
 <translation id="3215569562674795548">Rediģēt vai pievienot jaunu tīklu</translation>
 <translation id="4418993400653250511">Ķēdes ID</translation>
@@ -726,6 +733,8 @@ Piezīme: Ja ir atlasīts lokālais mezgls, resurss tiks pieprasīts tieši no j
 <translation id="7984721311211272523">Atspējot skaņas izslēgšanas funkciju skaļruņu ikonu cilnē</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Rādīt Leo ikonu sānjoslā</translation>
+<translation id="8055509865174199683">Rādīt Leo tīmekļa vietnēs konteksta izvēlnē</translation>
+<translation id="1529674267267221673">Leo parādīsies konteksta izvēlnē, kad noklikšķināsiet tīmekļa vietnē ar labo peles taustiņu. Tādā veidā konteksts no aktuālās tīmekļa vietnes tiks nosūtīts Leo.</translation>
 <translation id="8172263161008556851">Rādīt sarunā ieteiktos norādījumus</translation>
 <translation id="1014480593522400586">Notīrīt Leo datus</translation>
 <translation id="8681157601856387010">Asistenta Leo atiestatīšanai jums būs jāpiekrīt Brave 
@@ -738,6 +747,9 @@ Leo. Šo darbību nevar atsaukt.</translation>
 <translation id="349846214503465941">Iespējot atskaņošanas sarakstu</translation>
 <translation id="7903608716704052878">Automātiski pievienot failus, lai skatītu bezsaistē</translation>
 <translation id="4193768184502613558">Šī opcija automātiski saglabās multivides failus kešatmiņā, lai jūs varētu tos atskaņot bez interneta savienojuma.</translation>
+<translation id="8950562208228589873">Noklusējuma OS vai Quad9</translation>
+<translation id="5646330590189545860">Noklusējuma OS vai Wikimedia</translation>
+<translation id="2026075482948458926">Noklusējuma OS vai Cloudflare</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

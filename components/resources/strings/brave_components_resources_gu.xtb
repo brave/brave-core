@@ -46,7 +46,7 @@
 <translation id="3798449238516105146">વર્ઝન</translation>
 <translation id="7180611975245234373">તાજું કરો</translation>
 <translation id="4309915981827077375">સામાન્ય માહિતી</translation>
-<translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
+<translation id="3368922792935385530">કનેક્ટેડ</translation>
 <translation id="3587482841069643663">બધા</translation>
 <translation id="2631006050119455616">સાચવ્યો</translation>
 <translation id="13853865024308201">દાવો</translation>
@@ -54,7 +54,6 @@
 <translation id="298067735430872465">જાહેરાતો દ્વારા કમાણી</translation>
 <translation id="3453206261112715431">નિ:શુલ્ક ટોકન અનુદાન</translation>
 <translation id="1430915738399379752">છાપો</translation>
-<translation id="8725066075913043281">ફરી પ્રયાસ કરો</translation>
 <translation id="2799223571221894425">ફરીથી લોંચ કરો</translation>
 <translation id="5939518447894949180">રીસેટ કરો</translation>
 <translation id="3349204812119681938">Brave પુરસ્કારો રીસેટ કરો</translation>
@@ -73,11 +72,11 @@
 <translation id="3202131003361292969">પથ</translation>
 <translation id="1272079795634619415">રોકો</translation>
 <translation id="5895138241574237353">પુનઃપ્રારંભ કરો</translation>
+<translation id="8725066075913043281">ફરી પ્રયાસ કરો</translation>
 <translation id="1974060860693918893">વિગતવાર</translation>
 <translation id="3340978935015468852">સેટિંગ્સ</translation>
 <translation id="572392919096807438">મારો નિર્ણય યાદ રાખો</translation>
 <translation id="5308380583665731573">કનેક્ટ કરો</translation>
-<translation id="3368922792935385530">કનેક્ટેડ</translation>
 <translation id="2359808026110333948">આગળ વધો</translation>
 <translation id="7335371657242627509">આપમેળે-ફાળામાં સામેલ કરો</translation>
 <translation id="6965382102122355670">બરાબર, સમજાઇ ગયું</translation>
@@ -119,6 +118,7 @@
 <translation id="7982789257301363584">નેટવર્ક</translation>
 <translation id="4804818685124855865">ડિસ્કનેક્ટ કરો</translation>
 <translation id="2391762656119864333">રદબાતલ કરો</translation>
+<translation id="8874184842967597500">કનેક્ટેડ નથી</translation>
 <translation id="5677928146339483299">અવરોધિત</translation>
 <translation id="1165039591588034296">ભૂલ</translation>
 <translation id="5916664084637901428">ચાલુ</translation>

@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Start met het gebruik van Rewards</translation>
 <translation id="8220484609979012449">\n\nU kunt nog steeds crypto-bijdragen sturen aan deze maker door uw Web3-wallet te gebruiken.</translation>
 <translation id="6385969012847057348">Deze maker kan geen bijdragen ontvangen van <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Deze gebruiker heeft zich nog niet aangemeld om bijdragen via Web3-wallets of cryptobijdragen te ontvangen.</translation>
 <translation id="6268134562674951939">U hebt niet genoeg tokens</translation>
 <translation id="4529874892536380156">Maak dit een maandelijks herhalende bijdrage. U kunt dit elk moment annuleren.</translation>
 <translation id="5562948772940025260">U kunt met het saldo van uw Brave Beloningen tot <ph name="AMOUNT"/> BAT versturen.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Open met een bestaand gesynchroniseerd apparaat de Brave-instellingen en nafigeer naar Instellingen &gt; Sync. Kies 'Nieuw apparaat toevoegen' en scan de QR-code die op het scherm verschijnt.</translation>
 <translation id="5241263629636958324">Gekopieerd naar het klembord</translation>
 <translation id="5817918615728894473">Koppelen</translation>
-<translation id="7090325819305486658">Gegevensvoorkeuren</translation>
+<translation id="3429575397891106447">Synchronisatieopties</translation>
 <translation id="1680065323266179640">Sync-account verwijderen</translation>
 <translation id="3792563952903751704">Als u uw account verwijdert, worden al uw versleutelde gegevens op Brave-servers verwijderd en wordt Sync op al uw verbonden apparaten uitgeschakeld. De gegevens die lokaal op apparaten zijn opgeslagen, worden echter niet verwijderd.
   Verwijderen is een definitieve actie en de gegevens kunnen daarna op geen enkele manier meer worden hersteld. Als u besluit Sync weer te gaan gebruiken, dan dient u een nieuw account aan te maken en elk apparaat afzonderlijk opnieuw toe te voegen.</translation>
@@ -595,14 +596,18 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="1483493594462132177">Sturen</translation>
 <translation id="538450413584738399">Wisselen</translation>
 <translation id="1366855498335432549">Storting</translation>
-<translation id="1420318137760245955">Welkom bij de nieuwe Brave-wallet</translation>
-<translation id="8339846196588658366">Houd cryptoassets in uw eigen bezit en volg portfolioprestaties. Dit allemaal rechtstreeks vanuit de Brave-privébrowser.</translation>
-<translation id="4472575034687746823">Aan de slag</translation>
+<translation id="4556086616242530072">Direct in de browser.\nEigen beheer.\nEn multi-chain.</translation>
+<translation id="7909462264772842773">Neem de controle over uw crypto en NFT's. Brave Wallet ondersteunt Ethereum, EVM-chains, Solana, Filecoin en meer.</translation>
+<translation id="165255193061631296">Nieuwe wallet nodig?</translation>
+<translation id="3485737865439729577">Aan de slag met Brave Wallet binnen enkele minuten</translation>
 <translation id="2759836790106646094">Maak nu een back-up van je wallet!</translation>
 <translation id="1078873179929044999">Bij de volgende stap zie je een herstelzin van 12 woorden die je kunt gebruiken om je primaire cryptoaccounts te herstellen. Bewaar hem op een veilige plek. Alleen met je herstelzin kun je weer toegang krijgen tot je account wanneer je je wachtwoord bent vergeten, je apparaat kwijt is of is gestolen en wanneer je van wallet wilt wisselen.</translation>
 <translation id="2359808026110333948">Doorgaan met</translation>
 <translation id="5488357322146334497">Message</translation>
 <translation id="1904000155026201268">Ik begrijp dat indien ik mijn herstelwoorden kwijtraak, ik geen toegang meer heb tot mijn cryptowallet.</translation>
+<translation id="5333225216561354793">We vereisen dat u onderstaande items bevestigt</translation>
+<translation id="1645800479814134195">Ik begrijp dat dit een eigen wallet is, en dat ik persoonlijk verantwoordelijk ben voor alle bijbehorende fondsen, activa of rekeningen, en voor het nemen van gepaste maatregelen om mijn wallet te beveiligen, beschermen en back-uppen. Ik begrijp dat Brave geen toegang heeft tot mijn wallet of transacties namens mij kan terugdraaien, en dat mijn herstelzin de ENIGE manier is om weer toegang te krijgen in het geval van een verloren wachtwoord, gestolen apparaat, of soortgelijke omstandigheden.</translation>
+<translation id="4565891212173086999">Ik heb de <ph name="CLICK_START"/>gebruiksvoorwaarden<ph name="CLICK_END"/> gelezen en ga hiermee akkoord.</translation>
 <translation id="3933122286596948824">Jouw herstelwoorden</translation>
 <translation id="5077747669435508720">Noteer deze woorden of kopieer ze in de exacte volgorde zoals hieronder weergegeven en bewaar ze op een veilige plek. Je herstelzin is de enige manier om weer toegang te krijgen tot je account als je je wachtwoord bent vergeten, je apparaat is gestolen of verloren of wanneer je van wallet wilt wisselen.</translation>
 <translation id="2708402071160162126">WAARSCHUWING: deel je herstelzin nooit met anderen. Iedereen met deze zin kan voor altijd toegang krijgen tot jouw assets.</translation>
@@ -647,6 +652,9 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="3747079125031086337">Selecteer de woorden van je herstelzin in de juiste volgorde.</translation>
 <translation id="6518133107902771759">Verifieer</translation>
 <translation id="3157931365184549694">Herstel</translation>
+<translation id="5844138175312846408">Hebt u al een wallet?</translation>
+<translation id="2502258949541727762">Voordat we beginnen</translation>
+<translation id="5981303441790732480">Uw bestaande wallet importeren</translation>
 <translation id="9111102763498581341">Ontsluit</translation>
 <translation id="6657585470893396449">Wachtwoord</translation>
 <translation id="5619264711680220002">Biometrisch ontgrendelen</translation>
@@ -665,7 +673,7 @@ Weet je zeker dat je dit wilt doen?</translation>
 <translation id="5483736362376139517">1 jaar</translation>
 <translation id="6979737339423435258">Alles</translation>
 <translation id="6284218950354553099">Dagelijks automatisch gebruiksping verzenden naar Brave</translation>
-<translation id="5288333155754958121">Met deze anonieme privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
+<translation id="2181060149810222381">Met deze privéping kan Brave het aantal actieve gebruikers inschatten.</translation>
 <translation id="3819257035322786455">Back-up maken</translation>
 <translation id="4608713693379664295">Primaire cryptoaccounts</translation>
 <translation id="4003821417160006384">Secundaire accounts</translation>
@@ -1212,5 +1220,11 @@ Als je dit verzoek niet accepteert, maakt VPN niet opnieuw verbinding en is je i
 <translation id="6637015365469044269">Nu upgraden</translation>
 <translation id="614530507403667291">Standaardmodel voor nieuwe gesprekken</translation>
 <translation id="4071849832011229600">Standaardmodel</translation>
+<translation id="4185473179105062442">BAT rechtstreeks ontvangen op een cryptoadres in eigen beheer</translation>
+<translation id="5802986777701714573">We hebben een nieuwe manier toegevoegd waarop u uw maandelijkse BAT-beloningen kunt ontvangen. Verbind een account van een van onze partners of gebruik de nieuwe optie voor eigen beheer om nu te beginnen met verdienen.</translation>
 <translation id="7557539689487606886">Neem Premium</translation>
+<translation id="5538904824395606812">Uw huidige serviceprovider of Quad9 gebruiken</translation>
+<translation id="6393423486818299209">Uw huidige serviceprovider of Wikimedia DNS gebruiken</translation>
+<translation id="3401384982562827787">Uw huidige serviceprovider of Cloudflare gebruiken</translation>
+<translation id="8812367543786936496">Als uw huidige serviceprovider onbeveiligd is, gebruikt Brave een beveiligde alternatieve DNS-provider</translation>
 </translationbundle>

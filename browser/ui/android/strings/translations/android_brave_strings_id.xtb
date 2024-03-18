@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Mulai gunakan Reward</translation>
 <translation id="8220484609979012449">\n\nAnda dapat tetap mengirim kontribusi kripto untuk kreator ini dengan menggunakan dompet Web3.</translation>
 <translation id="6385969012847057348">Kreator ini tidak dapat menerima kontribusi dari <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Kreator ini belum siap menerima kontribusi Web3 atau kripto.</translation>
 <translation id="6268134562674951939">Anda tidak memiliki cukup token</translation>
 <translation id="4529874892536380156">Jadikan ini kontribusi bulanan yang berulang. Anda dapat membatalkannya kapan saja.</translation>
 <translation id="5562948772940025260">Anda hanya dapat mengirim maksimal <ph name="AMOUNT"/> BAT dengan menggunakan saldo Imbalan Brave Anda.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Dengan perangkat yang disinkronkan yang ada, buka Pengaturan Brave dan navigasikan ke Pengaturan &gt; Sink. Pilih "Tambahkan Perangkat Baru" dan pindai Kode QR yang ditampilkan di layar.</translation>
 <translation id="5241263629636958324">Disalin ke papan klip</translation>
 <translation id="5817918615728894473">Hubungkan</translation>
-<translation id="7090325819305486658">Preferensi Data</translation>
+<translation id="3429575397891106447">Opsi Sinkronisasi</translation>
 <translation id="1680065323266179640">Hapus akun sinkronisasi</translation>
 <translation id="3792563952903751704">Menghapus akun Anda akan menghapus data Anda yang terenkripsi dari peladen Brave dan menonaktifkan Sinkronisasi dari semua perangkat Anda yang terhubung. Namun hal ini tidak akan menghapus data yang disimpan secara lokal pada perangkat-perangkat tersebut.
 Penghapusan ini bersifat permanen dan data tidak akan mungkin dipulihkan. Jika Anda memutuskan untuk kembali menggunakan Sinkronisasi, Anda perlu membuat akun baru dan menambahkan ulang setiap perangkat satu per satu.</translation>
@@ -595,14 +596,18 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="1483493594462132177">Kirim</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Deposit</translation>
-<translation id="1420318137760245955">Selamat datang di Brave Wallet yang baru</translation>
-<translation id="8339846196588658366">Simpan aset kripto di kepemilikan Anda dan lacak kinerja portofolio. Semuanya dari peramban privat Brave.</translation>
-<translation id="4472575034687746823">Memulai</translation>
+<translation id="4556086616242530072">Peramban asli.\nPenyimpanan mandiri.\nDan multirantai.</translation>
+<translation id="7909462264772842773">Ambil kendali atas kripto dan NFT Anda. Dompet Brave mendukung rantai Ethereum, EVM, Solana, Filecoin, dan banyak lagi.</translation>
+<translation id="165255193061631296">Perlu dompet baru?</translation>
+<translation id="3485737865439729577">Mulailah dengan Dompet Brave dalam beberapa menit.</translation>
 <translation id="2759836790106646094">Cadangkan dompet Anda sekarang!</translation>
 <translation id="1078873179929044999">Pada langkah selanjutnya Anda akan melihat frasa pemulihan 12 kata, yang dapat Anda gunakan untuk memulihkan akun kripto primer Anda. Simpanlah di tempat yang aman. Frasa pemulihan Anda adalah satu-satunya cara untuk memperoleh kembali akses akun jika Anda lupa kata sandi, perangkat Anda hilang atau dicuri, atau Anda ingin mengganti dompet.</translation>
 <translation id="2359808026110333948">Lanjutkan</translation>
 <translation id="5488357322146334497">Pesan</translation>
 <translation id="1904000155026201268">Saya mengerti bahwa jika saya kehilangan frasa pemulihan, saya tidak akan dapat mengakses dompet kripto saya.</translation>
+<translation id="5333225216561354793">Kami meminta Anda untuk mengakui hal-hal di bawah ini</translation>
+<translation id="1645800479814134195">Saya memahami bahwa ini adalah dompet penyimpanan kustodian mandiri, dan bahwa saya sendiri yang bertanggung jawab atas dana, aset, atau akun terkait, dan untuk mengambil tindakan yang tepat guna mengamankan, melindungi, dan mencadangkan dompet saya. Saya mengerti bahwa Brave tidak dapat mengakses dompet saya atau membalikkan transaksi atas nama saya, dan bahwa frasa pemulihan saya adalah SATU-SATUNYA cara untuk mendapatkan kembali akses jika kata sandi hilang, perangkat dicuri, atau situasi serupa.</translation>
+<translation id="4565891212173086999">Saya telah membaca dan menyetujui <ph name="CLICK_START"/>Syarat Penggunaan<ph name="CLICK_END"/>.</translation>
 <translation id="3933122286596948824">Frasa pemulihan Anda</translation>
 <translation id="5077747669435508720">Tuliskan atau salin kata-kata ini dengan urutan yang sama seperti yang ditunjukkan berikut ini, dan simpan di tempat yang aman. Frasa pemulihan Anda adalah satu-satunya cara untuk memperoleh kembali akses akun jika Anda lupa kata sandi, perangkat Anda hilang atau dicuri, atau Anda ingin mengganti dompet.</translation>
 <translation id="2708402071160162126">PERINGATAN: Jangan pernah membagikan frasa pemulihan Anda. Siapa pun yang mengetahui frasa ini dapat mengambil aset Anda selamanya.</translation>
@@ -647,6 +652,9 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="3747079125031086337">Pilih kata-kata di frasa pemulihan Anda dengan urutan yang benar.</translation>
 <translation id="6518133107902771759">Verifikasi</translation>
 <translation id="3157931365184549694">Pulihkan</translation>
+<translation id="5844138175312846408">Sudah punya dompet?</translation>
+<translation id="2502258949541727762">Sebelum kita memulai</translation>
+<translation id="5981303441790732480">Impor dompet Anda yang telah ada.</translation>
 <translation id="9111102763498581341">Buka kunci</translation>
 <translation id="6657585470893396449">Sandi</translation>
 <translation id="5619264711680220002">Buka kunci biometrik</translation>
@@ -665,7 +673,7 @@ Anda yakin ingin melakukan hal ini?</translation>
 <translation id="5483736362376139517">1 Tahun</translation>
 <translation id="6979737339423435258">Semua</translation>
 <translation id="6284218950354553099">Kirimkan ping penggunaan harian secara otomatis ke Brave</translation>
-<translation id="5288333155754958121">Ping anonim dan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.</translation>
+<translation id="2181060149810222381">Pesan privat ini memungkinkan Brave memperkirakan pengguna aktifnya.</translation>
 <translation id="3819257035322786455">Cadangkan</translation>
 <translation id="4608713693379664295">Akun Kripto Primer</translation>
 <translation id="4003821417160006384">Akun Sekunder</translation>
@@ -1213,5 +1221,11 @@ riwayat obrolan Anda akan menghapus semua percakapan Anda sebelumnya dengan Leo.
 <translation id="6637015365469044269">Tingkatkan sekarang</translation>
 <translation id="614530507403667291">Model bawaan untuk percakapan baru</translation>
 <translation id="4071849832011229600">Model bawaan</translation>
+<translation id="4185473179105062442">Terima BAT secara langsung dengan alamat kripto kustodian mandiri</translation>
+<translation id="5802986777701714573">Kami menambahkan cara baru bagi Anda untuk menerima imbalan BAT bulanan Anda. Sambungkan akun dari salah satu mitra kami atau gunakan opsi kustodian mandiri baru agar dapat mulai menerima imbalan sekarang.</translation>
 <translation id="7557539689487606886">Jadilah Premium</translation>
+<translation id="5538904824395606812">Gunakan penyedia layanan Anda saat ini atau Quad9</translation>
+<translation id="6393423486818299209">Gunakan penyedia layanan Anda saat ini atau Wikimedia DNS</translation>
+<translation id="3401384982562827787">Gunakan penyedia layanan Anda saat ini atau Cloudfare</translation>
+<translation id="8812367543786936496">Jika penyedia layanan Anda saat ini tidak aman, Brave menggunakan penyedia DNS alternatif yang aman</translation>
 </translationbundle>

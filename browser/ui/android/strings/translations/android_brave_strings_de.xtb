@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Beginnen Sie, Rewards zu nutzen</translation>
 <translation id="8220484609979012449">\n\nSie können trotzdem Kyptobeiträge an diesen Ersteller senden, indem Sie Ihr Web3-Wallet nutzen.</translation>
 <translation id="6385969012847057348">Der Ersteller kann keine Beiträge von <ph name="CUSTODIAN"/> erhalten.</translation>
+<translation id="735733310778086206">Dieser Ersteller kann noch keine Web3- oder Krypto-Zahlungen empfangen.</translation>
 <translation id="6268134562674951939">Sie haben nicht genügend Token</translation>
 <translation id="4529874892536380156">Machen Sie einen monatlich wiederkehrenden Beitrag daraus. Sie können ihn jederzeit beenden.</translation>
 <translation id="5562948772940025260">Sie können mithilfe Ihres Brave Rewards-Guthabens höchstens <ph name="AMOUNT"/> BAT senden.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Während Sie die existierenden synchronisierten Geräte verwenden, öffnen Sie die Brave-Einstellungen &gt; Sync. Wählen Sie "Neues Gerät Hinzufügen" und scannen Sie den QR-Code, der auf dem Bildschirm angezeigt wird.</translation>
 <translation id="5241263629636958324">In die Zwischenablage kopiert</translation>
 <translation id="5817918615728894473">Koppeln</translation>
-<translation id="7090325819305486658">Datenpräferenzen</translation>
+<translation id="3429575397891106447">Synchronisierungs-Optionen</translation>
 <translation id="1680065323266179640">Synchronisierungskonto löschen</translation>
 <translation id="3792563952903751704">Wenn Sie Ihr Konto löschen, werden Ihre verschlüsselten Daten von den Brave-Servern entfernt und die Synchronisierung auf allen Ihren verknüpften Geräten deaktiviert. Die lokal auf diesen Geräten gespeicherten Daten werden dabei jedoch nicht gelöscht.
   Diese Löschung ist dauerhaft und die Daten können nicht wiederhergestellt werden. Falls Sie die Synchronisierung wieder verwenden möchten, müssen Sie ein neues Konto erstellen und jedes Gerät einzeln hinzufügen.</translation>
@@ -595,14 +596,18 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="1483493594462132177">Senden</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Einzahlen</translation>
-<translation id="1420318137760245955">Willkommen zur neuen Brave Wallet</translation>
-<translation id="8339846196588658366">Halten Sie Krypto-Assets in Ihrer Verwahrung und verfolgen Sie die Portfolio-Performance. Alles direkt über den Brave-Datenschutzbrowser.</translation>
-<translation id="4472575034687746823">Start</translation>
+<translation id="4556086616242530072">Browser-nativ.\nSelbstverwahrend.\nUnd Multi-Chain.</translation>
+<translation id="7909462264772842773">Übernehmen Sie die Kontrolle über Ihre Kryptowährungen und NFTs. Brave Wallet unterstützt Ethereum, EVM-Ketten, Solana, Filecoin und mehr.</translation>
+<translation id="165255193061631296">Brauchen Sie eine neue Wallet?</translation>
+<translation id="3485737865439729577">Starten Sie innerhalb weniger Minuten mit Brave Wallet</translation>
 <translation id="2759836790106646094">Sichere jetzt deine Wallet!</translation>
 <translation id="1078873179929044999">Im nächsten Schritt sehen Sie eine 12-Wörter-Wiederherstellungsphrase, mit der Sie Ihre primären Krypto-Konten wiederherstellen können. Speichern Sie sie an einem sicheren Ort. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff im Falle eines vergessenen Passworts, eines verlorenen oder gestohlenen Geräts oder eines Wechsels der Wallet wiederzuerlangen.</translation>
 <translation id="2359808026110333948">Fortfahren</translation>
 <translation id="5488357322146334497">Nachricht</translation>
 <translation id="1904000155026201268">Mir ist bewusst, dass ich keinen Zugriff auf mein Krypto-Wallet mehr habe, wenn ich meine Formulierung zur Wiederherstellung zur Wiederherstellung verliere.</translation>
+<translation id="5333225216561354793">Wir setzen voraus, dass Sie die folgenden Punkte anerkennen</translation>
+<translation id="1645800479814134195">Ich verstehe, dass es sich um eine eigenverwahrte Wallet handelt und dass ich allein für alle damit verbundenen Gelder, Assets oder Konten verantwortlich bin und dass ich angemessene Maßnahmen ergreifen muss, um meine Wallet zu sichern und zu schützen. Ich verstehe, dass Brave nicht auf meine Wallet zugreifen oder Transaktionen in meinem Namen rückgängig machen kann und dass meine Wiederherstellungsphrase die einzige Möglichkeit ist, um im Falle eines verlorenen Passworts, eines gestohlenen Geräts oder ähnlicher Umstände wieder Zugriff zu erhalten.</translation>
+<translation id="4565891212173086999">Ich habe die <ph name="CLICK_START"/>Nutzungsbedingungen<ph name="CLICK_END"/> gelesen und stimme ihnen zu.</translation>
 <translation id="3933122286596948824">Deine Formulierung zur Wiederherstellung</translation>
 <translation id="5077747669435508720">Schreiben oder kopieren Sie diese Wörter in der genauen Reihenfolge, die unten gezeigt wird, und bewahren Sie sie an einem sicheren Ort auf. Ihre Wiederherstellungsphrase ist die einzige Möglichkeit, den Kontozugriff wiederzuerlangen, wenn Sie Ihr Passwort vergessen, Ihr Gerät verloren oder gestohlen haben oder Ihre Wallet wechseln möchten.</translation>
 <translation id="2708402071160162126">WARNUNG: Teilen Sie niemals Ihre Wiederherstellungsphrase. Wer diese Phrase besitzt, kann sich Ihre Assets permanent aneignen.</translation>
@@ -647,6 +652,9 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="3747079125031086337">Wählen Sie die Wörter in Ihrer Wiederherstellungsphrase in der richtigen Reihenfolge aus.</translation>
 <translation id="6518133107902771759">Überprüfen</translation>
 <translation id="3157931365184549694">Wiederherstellen</translation>
+<translation id="5844138175312846408">Haben Sie bereits eine Wallet?</translation>
+<translation id="2502258949541727762">Bevor es losgeht</translation>
+<translation id="5981303441790732480">Ihre vorhandene Wallet importieren</translation>
 <translation id="9111102763498581341">Entsperren</translation>
 <translation id="6657585470893396449">Passwort</translation>
 <translation id="5619264711680220002">Biometrische Entsperrung</translation>
@@ -665,7 +673,7 @@ Sind Sie sicher, dass Sie den Vorgang fortsetzen möchten?</translation>
 <translation id="5483736362376139517">1 Jahr</translation>
 <translation id="6979737339423435258">Gesamte Zeit</translation>
 <translation id="6284218950354553099">Ping der täglichen Nutzung automatisch an Brave senden.</translation>
-<translation id="5288333155754958121">Mit diesem anonymen, privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
+<translation id="2181060149810222381">Mit diesem privaten Ping kann Brave die aktiven Nutzer schätzen.</translation>
 <translation id="3819257035322786455">Sichern</translation>
 <translation id="4608713693379664295">Primäre Kryptokonten</translation>
 <translation id="4003821417160006384">Sekundärkonten</translation>
@@ -1212,5 +1220,11 @@ Wenn Sie diese Anfrage nicht akzeptieren, wird das VPN nicht erneut verbunden un
 <translation id="6637015365469044269">Jetzt Upgrade durchführen</translation>
 <translation id="614530507403667291">Standardmodell für neue Unterhaltungen</translation>
 <translation id="4071849832011229600">Standardmodell</translation>
+<translation id="4185473179105062442">Erhalten Sie BAT direkt an eine Selbstverwahrungs-Kryptoadresse</translation>
+<translation id="5802986777701714573">Wir haben eine neue Möglichkeit für Sie geschaffen, Ihre monatlichen BAT-Belohnungen zu erhalten. Verknüpfen Sie ein Konto von einem unserer Partner oder nutzen Sie die neue Möglichkeit der Selbstverwahrung, um jetzt anzufangen zu verdienen.</translation>
 <translation id="7557539689487606886">Jetzt Premium sichern</translation>
+<translation id="5538904824395606812">Ihren aktuellen Dienstanbieter oder Quad9 nutzen</translation>
+<translation id="6393423486818299209">Ihren aktuellen Dienstanbieter oder Wikimedia DNS nutzen</translation>
+<translation id="3401384982562827787">Ihren aktuellen Dienstanbieter oder Cloudflare nutzen</translation>
+<translation id="8812367543786936496">Wenn Ihr aktueller Dienstanbieter unsicher ist, nutzt Brave einen alternativen, sicheren DNS-Anbieter</translation>
 </translationbundle>

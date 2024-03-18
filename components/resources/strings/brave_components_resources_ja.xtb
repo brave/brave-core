@@ -234,7 +234,6 @@
 <translation id="6805660603861526473">表示済み</translation>
 <translation id="8826352442759228526">認証済みのデバイスの上限に達したため、あなたのBraveリワードを確認できません。</translation>
 <translation id="1221593978088944142">エラー: デバイスの上限に達しました</translation>
-<translation id="3113653894794167793">すみません、リクエストの処理中に問題が発生しました。再試行してください。</translation>
 <translation id="6895088073061692390">自動チェックで予期せぬBrave広告のアクティビティが見つかったため、お客様のBraveリワードプロフィールにフラグが追加されました。</translation>
 <translation id="4229056297802204697">プロフィールにフラグが設定されている間は、広告の表示は継続されますが、報酬を受け取ることはできません。また、カストディアルアカウントをBraveリワードに接続することもできません。</translation>
 <translation id="5124846913141379164">あなたのプロフィールに誤ってフラグが立てられた可能性があります。現時点でのアクションは不要です。プロフィール上のフラグは将来的に削除することができます。</translation>
@@ -258,6 +257,8 @@
 <translation id="6996157559236886133">エラー: Upholdアカウントの機能が制限されています</translation>
 <translation id="3274650021044762770">Braveリワードをお使いの<ph name="PROVIDER"/>アカウントに接続するためのブラウザリクエストの検証中に問題が発生しました。<ph name="BEGIN_LINK"/>サポートに連絡<ph name="END_LINK"/>してヘルプを依頼してください。</translation>
 <translation id="1316066811927496401">エラー: リクエストを検証できませんでした</translation>
+<translation id="7352651011704765696">エラーが発生しました</translation>
+<translation id="8285276813470932793">リクエストを完了できませんでした。もう一度お試しいただき、問題が解決しない場合は<ph name="LINK_BEGIN"/>サポートにお問い合わせ<ph name="LINK_END"/>ください。</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/>をオンにすることで、<ph name="BEGIN_LINK1"/>利用規約<ph name="END_LINK1"/>および<ph name="BEGIN_LINK2"/>プライバシーポリシー<ph name="END_LINK2"/>に同意するものとします。</translation>
 <translation id="8817096698141999876">カストディアルアカウント（ID認証が必要）</translation>
 <translation id="1539433155512862005">カストディアルアカウントは、信頼できる第三者サービスがあなたのBATを保持するアカウントです。</translation>
@@ -276,7 +277,6 @@
 <translation id="1892970806832316900"><ph name="DATE"/>まで保留中</translation>
 <translation id="7849926087559412554">ご使用のブラウザではBraveプライベート広告を受信できません。</translation>
 <translation id="5177429570315095022">引き続き広告を表示するには、ブラウザをアップデートする必要があります。</translation>
-<translation id="7352651011704765696">エラーが発生しました</translation>
 <translation id="4593680147181354667">診断ID</translation>
 <translation id="3995471429906554168">診断情報</translation>
 <translation id="752216563428219524">広告が初期化されていません。ページを更新してください。</translation>
@@ -303,8 +303,8 @@
 <translation id="386483240851194811">Rewardsが停止しました</translation>
 <translation id="3354337256330577726">自動支援はオフになりました</translation>
 <translation id="6727186931929643711">再試行を中断しました</translation>
-<translation id="8978461348341400550">カストディアン:</translation>
-<translation id="7220161813676251577">カストディアンメンバーID:</translation>
+<translation id="6461242868382182003">アカウントタイプ:</translation>
+<translation id="4129229983159690026">アカウント:</translation>
 <translation id="680983167891198932">キー</translation>
 <translation id="7535087603100972091">値</translation>
 <translation id="45591635423975492">ログ日時</translation>
@@ -312,7 +312,7 @@
 <translation id="1792453439109180849">警告: このログには機密性の高いデータが含まれる場合があります。共有する相手には十分注意してください。</translation>
 <translation id="7375125077091615385">タイプ:</translation>
 <translation id="1924618796077284366">ログ全体をダウンロードする</translation>
-<translation id="5362600797402074593">カストディアルアカウントの接続情報</translation>
+<translation id="2129987553148729046">接続済みアカウント情報</translation>
 <translation id="5457113250005438886">無効</translation>
 <translation id="6161467863097205016">重要な情報シード：</translation>
 <translation id="5323604113525002127">ログの最終[[numberOfLines]]行が表示されています。ログの全体は、上記からダウンロードできます。</translation>
@@ -350,15 +350,14 @@
 <translation id="6672180611914406778">合計金額</translation>
 <translation id="2223892939866251845">ユーザーID</translation>
 <translation id="4235360514405112390">有効</translation>
-<translation id="3902084968737576005">ウォレットアドレス：</translation>
+<translation id="458999179147014626">アカウント振込用アドレス:</translation>
 <translation id="3653417592104122757">ウォレット履歴</translation>
 <translation id="3339401101952651943">リワード情報</translation>
 <translation id="3363158483789327529">リワード情報はまだ作成されていません</translation>
 <translation id="476272015919848174">リワード支払い ID:</translation>
 <translation id="9008441690901662695">リワードの状況:</translation>
-<translation id="8874184842967597500">未接続</translation>
-<translation id="4569155249847375786">認証済み</translation>
-<translation id="6521149675246672063">切断（認証済み）</translation>
+<translation id="9069875072411692547">未接続</translation>
+<translation id="3368922792935385530">接続済み</translation>
 <translation id="5058161306698404465">作成環境:</translation>
 <translation id="5856438412804207598">作成環境:</translation>
 <translation id="5916290544882167205">「Brave Software」や「Brave」は、Brave Softwareの登録商標です。サイト名は、サイト所有者の商標または登録商標である可能性があります。</translation>
@@ -416,7 +415,6 @@
 <translation id="5082474983463379713">ご注意ください：</translation>
 <translation id="1430915738399379752">印刷</translation>
 <translation id="135956957367307069">リクエストは処理中です。しばらくお待ちください。</translation>
-<translation id="8725066075913043281">再試行</translation>
 <translation id="2600847485413879104">リワーズBAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -485,18 +483,18 @@
 <translation id="326118736933420687">WebTorrentのページを表示しています</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Braveで「Unstoppable Domains」のサポートを有効にしますか？</translation>
-<translation id="9156229987230762013">BraveはInfuraを使用して、Unstoppable Domainsに存在する.cryptoの（および.x、.nft、.dao、.wallet、.blockchain、.bitcoin、.zilの）ドメイン名を解決します。IPアドレスは非表示になります。これを有効にすると、Infuraは他のユーザーが訪問しようとしているドメインを参照できますが、他のドメインは参照できなくなります。Infuraの<ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>と<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
+<translation id="5015092481905019948">Braveは<ph name="PROVIDER_NAME"/> を使用して、<ph name="DOMAIN_PROVIDER_NAME"/>に存在する<ph name="DOMAIN_LIST"/>のドメイン名を解決します。IPアドレスは非表示になります。 これを有効にすると、<ph name="PROVIDER_NAME"/>は他のユーザーが訪問しようとしているドメインを参照できますが、他のドメインは参照できなくなります。<ph name="PROVIDER_NAME"/>の<ph name="BEGIN_PROVIDER_TOU_LINK"/>利用規約<ph name="END_PROVIDER_TOU_LINK"/>と<ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_PROVIDER_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="6513892817556267573">イーサリアムネームサービス</translation>
+<translation id="2789190492285945209">イーサリアムネームサービス (ENS)</translation>
 <translation id="4335039108389860301">Braveでイーサリアムネームサービス（ENS）のサポートを有効にしますか？</translation>
-<translation id="4609973808011229683">BraveはInfuraを使用して、イーサリアムネームサービス（ENS）に存在する.ethのドメイン名を解決します。IPアドレスは非表示になります。これを有効にすると、Infuraは他のユーザーが訪問しようとしている.ethドメインを参照できますが、他のドメインは参照できなくなります。Infuraの <ph name="BEGIN_INFURA_TOU_LINK"/>利用規約<ph name="END_INFURA_TOU_LINK"/>と<ph name="BEGIN_INFURA_PRIVACY_LINK"/>プライバシーポリシー<ph name="END_INFURA_PRIVACY_LINK"/>をご覧ください。</translation>
 <translation id="807404806385418949">イーサリアムネームサービス オフチェーン検索</translation>
 <translation id="4049590838234508776">Braveでイーサリアムネームサービス (ENS) オフチェーン検索のサポートを有効にしますか？</translation>
 <translation id="5944991147217767764">この.ethのドメイン名はオフチェーンで格納され、サードパーティゲートウェイによって解決されます。ENSオフチェーン検索を有効にすると、サードパーティゲートウェイはあなたが訪問しようとしている.ethドメインを参照できます。<ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>詳細<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">オフチェーン検索を続行</translation>
 <translation id="531747189990625622">ソラナネームサービス</translation>
 <translation id="1090584614351290462">Braveでソラナネームサービス（SNS）のサポートを有効にしますか？</translation>
-<translation id="1026480261052976838">Braveは、今後.solドメイン名の解決にサードパーティを使用します。ユーザーのIPアドレスはBraveには表示されません。これを有効にすると、サードパーティは、他のユーザーがこれらの.solドメインを訪問しようとしているかどうかの確認のみを行います。当社が使用するサードパーティとそのプライバシーポリシーの詳細については、<ph name="BEGIN_SNS_WIKI_LINK"/>ヘルプページ<ph name="END_SNS_WIKI_LINK"/>をご覧ください。</translation>
-<translation id="7378412287463452336">Infuraサーバーを使用して続行する</translation>
+<translation id="7769345036263036863">Braveは、今後<ph name="DOMAIN_LIST"/>ドメイン名の解決にサードパーティを使用します。ユーザーのIPアドレスはBraveには表示されません。これを有効にすると、サードパーティは、他のユーザーがこれらの<ph name="DOMAIN_LIST"/>ドメインを訪問しようとしているかどうかの確認のみを行います。当社が使用するサードパーティとそのプライバシーポリシーの詳細については、<ph name="BEGIN_SNS_WIKI_LINK"/>ヘルプページ<ph name="END_SNS_WIKI_LINK"/>ご覧ください。</translation>
+<translation id="884864496166128252"><ph name="PROVIDER_NAME"/>サーバーを使用して続行する</translation>
 <translation id="4388873516324656141">SNSサーバーを使用して続行する</translation>
 <translation id="2356070529366658676">確認する</translation>
 <translation id="59174027418879706">有効化済み</translation>
@@ -548,6 +546,7 @@
 <translation id="5433704526290922623">エラーが発生しました。ノードのインストールを再試行してください</translation>
 <translation id="8428368469058794536">IPFSサービス</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">やり直す</translation>
 <translation id="1886162073868201257">IPFSサービスローンチエラー</translation>
 <translation id="5357895013476183089">IPFSが接続されていません</translation>
 <translation id="7662930734991751511">BraveローカルIPFSノードを使用してIPFSリソースをロードできません</translation>
@@ -609,7 +608,6 @@
 <translation id="590733288489975971">AdsによるRewards</translation>
 <translation id="5308380583665731573">接続</translation>
 <translation id="3026978804849658576">明細を表示</translation>
-<translation id="3368922792935385530">接続済み</translation>
 <translation id="1848737374354350807">残高:</translation>
 <translation id="6516984207843289176">アカウントの接続</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>獲得の準備はできましたか？<ph name="BOLD_END"/>いずれかのパートナーに接続するか、アカウントを作成してください。</translation>
@@ -1045,6 +1043,7 @@
 <translation id="2391762656119864333">取り消し</translation>
 <translation id="9218424917282368512">ネットワークの変更</translation>
 <translation id="7526139040829362392">アカウントを変更</translation>
+<translation id="8874184842967597500">未接続</translation>
 <translation id="4217695020908122747">接続済みアカウント</translation>
 <translation id="8497650996740651467">利用可能なアカウント</translation>
 <translation id="5677928146339483299">ブロック中</translation>
@@ -1128,6 +1127,7 @@
 <translation id="8684908590733515816">ドメインにリンクされた<ph name="COIN_TYPE_SYMBOL"/>のアドレスがありません</translation>
 <translation id="8971278306757462297">受取アドレスにご自身のアドレスが指定されています</translation>
 <translation id="3506416339268164412">受取アドレスはトークンのコントラクトアドレスとなります</translation>
+<translation id="7029817408221097939">統一アドレスが無効です</translation>
 <translation id="6370376419663123629">アドレスが正しくありません</translation>
 <translation id="3767148796886402380">アドレスが正しいかどうか確認してください。</translation>
 <translation id="2585599787090762065">どうすれば解決できるのでしょうか？</translation>
@@ -1262,6 +1262,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/>がウォレットに返金されました</translation>
 <translation id="4577432071459867390">トランザクションが失敗しました</translation>
 <translation id="4359235192593147041">値動きが大きいためにトランザクションが失敗しました。より大きな値動きで取引ができるよう、価格変動の許容値を上げてください。</translation>
+<translation id="8685035971570487250">すでに実行中のZcashトランザクションがあります。後ほどもう一度お試しください。</translation>
 <translation id="8584830404080597280">新規取引</translation>
 <translation id="8065905913745172640">新規トランザクション</translation>
 <translation id="9079041000600020902">エラーを表示</translation>
@@ -1625,6 +1626,11 @@
 <translation id="2515906149804238711">ウォレットの残高に保留中の変更があります。</translation>
 <translation id="7700365440186054030">利用可能な資金とまだ確認されていないトランザクションです。</translation>
 <translation id="4118601537508887039">一部の残高は利用できない場合があります</translation>
+<translation id="2926654984379239545"><ph name="VALUE"/>件のリスクが見つかりました。</translation>
+<translation id="8400506417619199876">コントラクト</translation>
+<translation id="5667702863609780570">損失のリスクを伴う安全でないアクションです</translation>
+<translation id="6405354572620970908">このリクエストは悪意があり、窃盗の危険にさらされる可能性があります。信頼できるアプリでない限り続行しないでください。</translation>
+<translation id="786261184916565476"><ph name="VALUE"/>件の問題が見つかりました。</translation>
 <translation id="3155170474926428993">Tor Launcher</translation>
 <translation id="3745016858329272300">一般情報</translation>
 <translation id="4045404575593562245">Torコントロールイベント</translation>
@@ -1702,6 +1708,7 @@
 <translation id="7948579849190819732">現在のタブ</translation>
 <translation id="7056969230130642253">情報はすべて最新です</translation>
 <translation id="7292242212818928219">新しいコンテンツが利用可能です。再読み込みしますか？</translation>
+<translation id="6537880577641744343">コマンダー</translation>
 <translation id="7481312909269577407">進む</translation>
 <translation id="302781076327338683">キャッシュをバイパスして再読み込み</translation>
 <translation id="7211681214230730336">キャッシュをクリアして再読み込み</translation>
@@ -1822,6 +1829,7 @@
 <translation id="5950760360751948276">ブックマーク バーを常に表示</translation>
 <translation id="2960757369920422313">ブックマーク バーをNTPで表示</translation>
 <translation id="522953399371747698">ブックマーク バーを非表示</translation>
+<translation id="134184943774258988">「すべてのブックマーク」ボタンの表示を切り替え</translation>
 <translation id="2158862020143233462">シールドをオン/オフ</translation>
 <translation id="4610630726762318759">JavaScriptをオン/オフ</translation>
 <translation id="188822869499214197">プレイリストの説明を表示</translation>
@@ -1952,6 +1960,27 @@
 <translation id="1173570303649278801">回答にページのコンテキストを使用する</translation>
 <translation id="8599503173207256429">このページについて質問するには、トグルをクリックしてください。あなたが入力したメッセージとともに、ページのコンテンツがBrave Leoに送信されます。</translation>
 <translation id="318819763888864209">すべてのサブスクリプションは自動更新されますが、更新前にいつでもキャンセルすることができます。</translation>
+<translation id="5091223967610958">開いているページのホスト名 (<ph name="HOST_NAME"/>) をシェアして、Leoの改善にご協力ください。</translation>
+<translation id="8732450785281947197">LeoのAIツール</translation>
+<translation id="6535533770697728087">クイックアクション</translation>
+<translation id="3237710083340813756">リライト</translation>
+<translation id="1252805982772190086">短文投稿</translation>
+<translation id="2087555497198267113">長文投稿</translation>
+<translation id="4170307327863874820">ブログ投稿</translation>
+<translation id="1308864651455614281">タグライン</translation>
+<translation id="5258847587364431118">言い換え</translation>
+<translation id="6147279996212084542">説明</translation>
+<translation id="1201408613803664464">改善</translation>
+<translation id="1310396869741602366">トーンの変更</translation>
+<translation id="2200877041397136930">プロフェッショナル</translation>
+<translation id="5627656897244314351">説得力</translation>
+<translation id="2169719065373500634">アカデミック</translation>
+<translation id="2942492342931589800">カジュアル</translation>
+<translation id="8485016913912679738">おもしろ</translation>
+<translation id="163826442096818926">省略</translation>
+<translation id="42981349822642051">展開</translation>
+<translation id="3130793786899299931">長さの変更</translation>
+<translation id="6320643499534852464">ソーシャルメディア</translation>
 <translation id="6303294677342628402">シールド</translation>
 <translation id="8458987127502506209">Brave Shieldsを有効にする</translation>
 <translation id="7509914170164691086">次のサイトでシールド<ph name="LINK_BEFORE"/>オン<ph name="LINK_AFTER"/>:</translation>
@@ -2087,7 +2116,7 @@ Braveには、VPN接続で行われるDNSクエリの方法をフィルタリン
 しかし、このヘルパーサービスが実行されていないことに気づき、無防備な状態で放置しておくわけにはいきません。そこで、ブラウザのDNS設定を変更し、この問題から保護することにしました。この設定は、VPN接続中も有効であり、ロックされたままです。
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">WireGuard接続に問題があるようです。IKEv2フォールバックを有効にして信頼性の高いVPNを使用しますか？ブラウザを再起動するだけで完了です。
+<translation id="8810743613883230732">WireGuard接続に問題があるようです。IKEv2フォールバックを有効にして信頼性の高いVPNを使用しますか？設定を変更するだけで完了です。
 
 互換性や設定に関するヘルプが必要ですか? Braveのサポートチームにお問い合わせください。
 brave://settings/systemにアクセスして、いつでもWireGuard に戻すことができます。
@@ -2097,7 +2126,7 @@ brave://settings/systemにアクセスして、いつでもWireGuard に戻す�
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">今後この件に関する警告を表示しない</translation>
 <translation id="2740531572673183784">OK</translation>
-<translation id="7896201779114201779">ブラウザを再起動</translation>
+<translation id="7423206764347669977">設定を変更</translation>
 <translation id="9061845622728745852">タイムゾーン:</translation>
 <translation id="8295393906499561642">セッションの期限が切れました</translation>
 <translation id="3312623558576021182"><ph name="BRAVE_ACCOUNT_BEGIN"/>Braveアカウント<ph name="BRAVE_ACCOUNT_END"/>にログインし、VPNセッションを更新してください。</translation>
@@ -2118,4 +2147,5 @@ Tab + Enterキーの順に操作して開いているタブを切り替えます
 <translation id="1538335063514960365">「このタブで開く」ボタンです。既存のタブに切り替えずに、Enterを押してこのURLを
 現在のタブで開きます</translation>
 <translation id="451189393813405346">Leoに聞く</translation>
+<translation id="8525248723479742219">後で再生する</translation>
 </translationbundle>

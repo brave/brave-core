@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">Aloita Rewardien käyttö</translation>
 <translation id="8220484609979012449">\n\nVoit edelleen lähettää kryptolahjoituksia tälle luojalle käyttämällä Web3-lompakkoasi.</translation>
 <translation id="6385969012847057348">Tämä luoja ei voi vastaanottaa lahjoituksia valvojalta <ph name="CUSTODIAN"/>.</translation>
+<translation id="735733310778086206">Tätä tekijää ei ole vielä asetettu vastaanottamaan Web3- tai krypto-lahjoituksia.</translation>
 <translation id="6268134562674951939">Sinulla ei ole tarpeeksi tokeneita</translation>
 <translation id="4529874892536380156">Tee tästä kuukausittainen lahjoitus. Voit peruuttaa sen milloin tahansa.</translation>
 <translation id="5562948772940025260">Voit lähettää enintään <ph name="AMOUNT"/> BATia käyttämällä Brave-palkintojesi saldoa.</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">Avaa Brave-asetukset käyttämällä olemassa olevaa synkronoitua laitetta ja siirry asetuksiin &gt; Valitse "Lisää uusi laite" ja skanna näytöllä näkyvä QR-koodi.</translation>
 <translation id="5241263629636958324">Kopioitu leikepöydälle</translation>
 <translation id="5817918615728894473">Muodosta laitepari</translation>
-<translation id="7090325819305486658">Data-asetukset</translation>
+<translation id="3429575397891106447">Synkronointivaihtoehdot</translation>
 <translation id="1680065323266179640">Poista synkronointitili</translation>
 <translation id="3792563952903751704">Kun poistat tilisi, salatut tietosi poistetaan Brave-palvelimilta ja synkronointi poistetaan käytöstä kaikilta yhdistetyiltä laitteiltasi. Paikallisesti tallennettuja tietoja ei kuitenkaan poisteta näiltä laitteilta.
   Tämä poisto on pysyvä, eikä tietoja voi palauttaa. Jos päätät, että aloitat synkronoinnin käytön uudelleen, sinun täytyy luoda uusi tili ja lisätä jokainen laite uudelleen yksitellen.</translation>
@@ -595,14 +596,18 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="1483493594462132177">Lähetä</translation>
 <translation id="538450413584738399">Swap</translation>
 <translation id="1366855498335432549">Talleta</translation>
-<translation id="1420318137760245955">Tervetuloa uuteen Brave-lompakkoon</translation>
-<translation id="8339846196588658366">Pidä kryptovaroja mukanasi ja seuraa portfolion kehitystä. Kaikki tämä suoraan yksityisestä Brave-selaimesta.</translation>
-<translation id="4472575034687746823">Aloita</translation>
+<translation id="4556086616242530072">Selaa natiivia.\nOmaa sisältöä.\nJa moniketjua.</translation>
+<translation id="7909462264772842773">Ota kryprovaluuttasi ja NFT:si hallintaan. Brave-lompakko tukee Ethereumia, EVM-ketjuja, Solanaa, Filecoinia ja muita.</translation>
+<translation id="165255193061631296">Tarvitsetko uuden lompakon?</translation>
+<translation id="3485737865439729577">Aloita Brave-lompakon käyttö minuuteissa</translation>
 <translation id="2759836790106646094">Varmuuskopioi lompakkosi nyt!</translation>
 <translation id="1078873179929044999">Seuraavassa vaiheessa näet 12 sanan palautuslauseen, jonka avulla voit palauttaa ensisijaiset kryptotilisi. Säilytä sitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
 <translation id="2359808026110333948">Jatka</translation>
 <translation id="5488357322146334497">Viesti</translation>
 <translation id="1904000155026201268">Ymmärrän, että jos kadotan palautuslauseeni, en voi käyttää kryptolompakkoani.</translation>
+<translation id="5333225216561354793">Vaadimme, että hyväksyt alla olevat kohteet.</translation>
+<translation id="1645800479814134195">Ymmärrän, että tämä on omavarainen lompakko ja että olen yksin vastuussa kaikista lompakkoon liittyvistä varoista, resursseista tai tileistä sekä asianmukaisten toimien toteuttamisesta lompakkoni turvaamiseksi, suojaamiseksi ja varmuuskopioimiseksi. Ymmärrän, että Brave EI voi käyttää lompakkoani tai peruuttaa tapahtumia puolestani ja että palautuslauseeni on AINOA tapa saada käyttöoikeus takaisin, jos salasana katoaa, laite varastetaan tai muu vastaava tilanne ilmanee.</translation>
+<translation id="4565891212173086999">Olen lukenut <ph name="CLICK_START"/>käyttöehdot<ph name="CLICK_END"/> ja hyväksyn ne.</translation>
 <translation id="3933122286596948824">Palautuslauseesi</translation>
 <translation id="5077747669435508720">Kirjoita ylös tai kopioi nämä sanat alla esitetyssä järjestyksessä ja säilytä niitä turvallisessa paikassa. Palautuslause on ainoa tapa saada tilisi takaisin, jos salasana unohtuu, laite katoaa tai varastetaan tai jos haluat vaihtaa lompakkoa.</translation>
 <translation id="2708402071160162126">VAROITUS: Älä koskaan jaa palautuslausetta. Jokainen, jolla on tämä lause hallussaan, voi viedä varasi.</translation>
@@ -647,6 +652,9 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="3747079125031086337">Valitse palautuslauseen sanat oikeassa järjestyksessä.</translation>
 <translation id="6518133107902771759">Vahvista</translation>
 <translation id="3157931365184549694">Palauta</translation>
+<translation id="5844138175312846408">Onko sinulla jo lompakko?</translation>
+<translation id="2502258949541727762">Ennen aloittamista</translation>
+<translation id="5981303441790732480">Tuo olemassa oleva lompakko</translation>
 <translation id="9111102763498581341">Poista lukitus</translation>
 <translation id="6657585470893396449">Salasana</translation>
 <translation id="5619264711680220002">Biometrinen avaus</translation>
@@ -665,7 +673,7 @@ Haluatko varmasti tehdä tämän?</translation>
 <translation id="5483736362376139517">1 vuosi</translation>
 <translation id="6979737339423435258">Kaikki</translation>
 <translation id="6284218950354553099">Lähetä automaattisesti päivittäinen käyttöping Bravelle</translation>
-<translation id="5288333155754958121">Tämä anonyymi, yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.</translation>
+<translation id="2181060149810222381">Tämä yksityinen ping antaa Braven arvioida aktiivisia käyttäjiä.</translation>
 <translation id="3819257035322786455">Varmuuskopiointi</translation>
 <translation id="4608713693379664295">Ensisijaiset kryptotilit</translation>
 <translation id="4003821417160006384">Toissijaiset kryptotilit</translation>
@@ -1212,5 +1220,11 @@ Jos et hyväksy tätä pyyntöä, yhteyttä VPN:ään ei muodosta uudelleen ja I
 <translation id="6637015365469044269">Päivitä nyt</translation>
 <translation id="614530507403667291">Uusien keskustelujen oletusmalli</translation>
 <translation id="4071849832011229600">Oletusmalli</translation>
+<translation id="4185473179105062442">Vastaanota BAT suoraan oman säilön krypto-osoitteeseen.</translation>
+<translation id="5802986777701714573">Olemme lisänneet uuden tavan vastaanottaa kuukausittaiset BAT-palkinnot. Yhdistä jonkin yhteistyökumppanimme tiliin tai käytä uutta oma säilö -vaihtoehtoa ja aloita ansaitseminen nyt.</translation>
 <translation id="7557539689487606886">Siirry Premiumiin</translation>
+<translation id="5538904824395606812">Käytä nykyistä palveluntarjoajaasi tai Quad9:ä</translation>
+<translation id="6393423486818299209">Käytä nykyistä palveluntarjoajaasi tai Wikimedia DNS:ää</translation>
+<translation id="3401384982562827787">Käytä nykyistä palveluntarjoajaasi tai Cloudflarea</translation>
+<translation id="8812367543786936496">Jos nykyinen palveluntarjoajasi ei ole turvallinen, Brave käyttää turvallista vaihtoehtoista DNS-tarjoajaa.</translation>
 </translationbundle>
