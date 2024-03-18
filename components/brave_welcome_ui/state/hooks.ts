@@ -71,7 +71,6 @@ export const shouldPlayAnimations = loadTimeData.getBoolean('hardwareAcceleratio
 // It's intended to put transition logic in one place, so that we can easily understand
 // what's going on and add or remove a state from the graph.
 // Returns three transition functions: forward(), back() and skip().
-// 
 interface ViewTypeState {
   forward: ViewType;
   back?: ViewType;
