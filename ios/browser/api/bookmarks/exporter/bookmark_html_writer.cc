@@ -504,7 +504,8 @@ void BookmarkFaviconFetcher::ExecuteWriter() {
           &Writer::DoWrite,
           base::MakeRefCounted<Writer>(
               ios::LocalOrSyncableBookmarkModelFactory::
-                  GetDedicatedUnderlyingModelForBrowserState(browser_state_),
+                  GetDedicatedUnderlyingModelForBrowserStateIfUnificationDisabledOrDie(
+                      browser_state_),
               path_, favicons_map_.release(), observer_)));
   browser_state_->RemoveUserData(kBookmarkFaviconFetcherKey);
   // |this| is deleted!
