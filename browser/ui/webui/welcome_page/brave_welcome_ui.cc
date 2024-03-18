@@ -167,7 +167,7 @@ BraveWelcomeUI::BraveWelcomeUI(content::WebUI* web_ui, const std::string& name)
   source->AddBoolean(
       /*name*/ "showHelpWDP",
       /*value*/ is_jpn || base::FeatureList::IsEnabled(
-                             features::kBraveShowHelpWDPInWelcomePage));
+                              features::kBraveShowHelpWDPInWelcomePage));
 
   profile->GetPrefs()->SetBoolean(prefs::kHasSeenWelcomePage, true);
 
