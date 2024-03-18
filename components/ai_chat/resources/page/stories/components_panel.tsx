@@ -17,7 +17,7 @@ import AIChatDataContext, {
   AIChatContext,
   defaultContext
 } from '../state/context'
-import { useArgs, useState } from '@storybook/addons'
+import { useArgs } from '@storybook/addons'
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
@@ -208,15 +208,10 @@ export default {
       const apiHasError = currentError !== mojom.APIError.None
       const shouldDisableUserInput = apiHasError || isGenerating
       const currentModel = MODELS.find(m => m.name === options.args.model)
-      const [isFeatureMenuButtonOpen, setIsFeatureMenuButtonOpen] = useState(false)
 
       const switchToBasicModel = () => {
         const nonPremiumModel = MODELS.find(m => m.access === mojom.ModelAccess.BASIC)
         setArgs({ model: nonPremiumModel })
-      }
-
-      const switchModel = () => {
-        setIsFeatureMenuButtonOpen(true)
       }
 
       const store: AIChatContext = {
@@ -241,8 +236,6 @@ export default {
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
         switchToBasicModel,
-        isFeatureMenuButtonOpen,
-        switchModel
       }
 
       return (
