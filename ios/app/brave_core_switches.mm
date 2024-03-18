@@ -7,6 +7,7 @@
 
 #include "base/base_switches.h"
 #include "base/strings/sys_string_conversions.h"
+#include "brave/components/brave_component_updater/browser/switches.h"
 #include "brave/components/p3a/switches.h"
 #include "components/component_updater/component_updater_switches.h"
 #include "components/sync/base/command_line_switches.h"
@@ -53,6 +54,8 @@ const BraveCoreSwitchKey BraveCoreSwitchKeyP3AStarRandomnessHost =
     base::SysUTF8ToNSString(p3a::switches::kP3AStarRandomnessHost);
 const BraveCoreSwitchKey BraveCoreSwitchKeyP3AIgnoreServerErrors =
     base::SysUTF8ToNSString(p3a::switches::kP3AIgnoreServerErrors);
+const BraveCoreSwitchKey BraveCoreSwitchKeyUseDevGoUpdater =
+    base::SysUTF8ToNSString(brave_component_updater::kUseGoUpdateDev);
 
 @implementation BraveCoreSwitch
 - (instancetype)initWithKey:(BraveCoreSwitchKey)key {

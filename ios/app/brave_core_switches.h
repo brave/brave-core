@@ -110,6 +110,9 @@ OBJC_EXPORT const BraveCoreSwitchKey
 /// continue the normal process.
 OBJC_EXPORT const BraveCoreSwitchKey
     BraveCoreSwitchKeyP3AIgnoreServerErrors NS_SWIFT_NAME(p3aIgnoreServerErrors);  // NOLINT
+/// Fetch CRX components from staging instead of production
+OBJC_EXPORT const BraveCoreSwitchKey
+    BraveCoreSwitchKeyUseDevGoUpdater NS_SWIFT_NAME(useDevGoUpdater);  // NOLINT
 
 /// Defines a switch that may be overriden on launch.
 ///
