@@ -1,8 +1,8 @@
 diff --git a/components/content_settings/core/common/content_settings_types.mojom b/components/content_settings/core/common/content_settings_types.mojom
-index 406f182232279b9a5accaa530891de906455b1a1..1dc2cd19cf575f5b4811e523e9aa14fb1afbb6c3 100644
+index 406f182232279b9a5accaa530891de906455b1a1..905f1a7c92e2de5b7186b27c7f3e25e0322ee836 100644
 --- a/components/content_settings/core/common/content_settings_types.mojom
 +++ b/components/content_settings/core/common/content_settings_types.mojom
-@@ -408,4 +408,22 @@ enum ContentSettingsType {
+@@ -408,4 +408,21 @@ enum ContentSettingsType {
    // Pointer Lock API allows a site to hide the cursor and have exclusive access
    // to mouse inputs.
    POINTER_LOCK,
@@ -23,5 +23,4 @@ index 406f182232279b9a5accaa530891de906455b1a1..1dc2cd19cf575f5b4811e523e9aa14fb
 +  BRAVE_HTTPS_UPGRADE,
 +  BRAVE_REMEMBER_1P_STORAGE,
 +  BRAVE_LOCALHOST_ACCESS,
-+  NUM_TYPES,
  };
