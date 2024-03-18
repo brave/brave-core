@@ -10,7 +10,6 @@
 #include <set>
 #include <string>
 #include <utility>
-#include <vector>
 
 #include "base/functional/bind.h"
 #include "base/notreached.h"
@@ -46,6 +45,11 @@ BitcoinTxManager::BitcoinTxManager(
 }
 
 BitcoinTxManager::~BitcoinTxManager() = default;
+
+std::unique_ptr<BitcoinTxMeta> BitcoinTxManager::GetTxForTesting(
+    const std::string& tx_meta_id) {
+  return GetBitcoinTxStateManager()->GetBitcoinTx(tx_meta_id);
+}
 
 void BitcoinTxManager::OnLatestHeightUpdated(const std::string& chain_id,
                                              uint32_t latest_height) {
@@ -111,6 +115,15 @@ void BitcoinTxManager::ApproveTransaction(const std::string& tx_meta_id,
         mojom::ProviderErrorUnion::NewBitcoinProviderError(
             mojom::BitcoinProviderError::kInternalError),
         l10n_util::GetStringUTF8(IDS_BRAVE_WALLET_TRANSACTION_NOT_FOUND));
+    return;
+  }
+
+  meta->set_status(mojom::TransactionStatus::Approved);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(false,
+                            mojom::ProviderErrorUnion::NewBitcoinProviderError(
+                                mojom::BitcoinProviderError::kInternalError),
+                            WalletInternalErrorMessage());
     return;
   }
 

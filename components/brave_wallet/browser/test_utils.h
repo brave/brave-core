@@ -84,6 +84,8 @@ class AccountUtils {
   mojom::AccountInfoPtr EnsureFilTestAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureBtcAccount(uint32_t index);
   mojom::AccountInfoPtr EnsureBtcTestAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureZecAccount(uint32_t index);
+  mojom::AccountInfoPtr EnsureZecTestAccount(uint32_t index);
 
   mojom::AccountInfoPtr CreateEthAccount(const std::string& name);
   mojom::AccountInfoPtr CreateSolAccount(const std::string& name);
@@ -91,6 +93,8 @@ class AccountUtils {
   mojom::AccountInfoPtr CreateFilTestAccount(const std::string& name);
   mojom::AccountInfoPtr CreateBtcAccount(const std::string& name);
   mojom::AccountInfoPtr CreateBtcTestAccount(const std::string& name);
+  mojom::AccountInfoPtr CreateZecAccount(const std::string& name);
+  mojom::AccountInfoPtr CreateZecTestAccount(const std::string& name);
 
   mojom::AccountInfoPtr CreateEthHWAccount();
 
@@ -103,6 +107,8 @@ class AccountUtils {
   std::vector<mojom::AccountInfoPtr> AllFilTestAccounts();
   std::vector<mojom::AccountInfoPtr> AllBtcAccounts();
   std::vector<mojom::AccountInfoPtr> AllBtcTestAccounts();
+  std::vector<mojom::AccountInfoPtr> AllZecAccounts();
+  std::vector<mojom::AccountInfoPtr> AllZecTestAccounts();
 
  private:
   raw_ptr<KeyringService> keyring_service_;

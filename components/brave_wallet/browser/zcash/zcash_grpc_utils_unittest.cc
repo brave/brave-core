@@ -21,32 +21,32 @@ namespace brave_wallet {
 
 namespace {
 
-class TestTxStreamHanlder : public GRrpcMessageStreamHandler {
+class TestTxStreamHandler : public GRrpcMessageStreamHandler {
  public:
-  TestTxStreamHanlder() {}
-  ~TestTxStreamHanlder() override {}
+  TestTxStreamHandler() = default;
+  ~TestTxStreamHandler() override = default;
 
   std::vector<std::string> messages() { return messages_; }
   std::optional<bool> complete_result() { return complete_result_; }
-  void set_should_continue(bool r) { should_continue = r; }
+  void set_should_continue(bool r) { should_continue_ = r; }
 
  private:
   bool ProcessMessage(std::string_view message) override {
-    messages_.push_back(std::string(message));
-    return should_continue;
+    messages_.emplace_back(message);
+    return should_continue_;
   }
 
   void OnComplete(bool success) override { complete_result_ = success; }
 
   std::vector<std::string> messages_;
   std::optional<bool> complete_result_;
-  bool should_continue = true;
+  bool should_continue_ = true;
 };
 
 }  // namespace
 
-TEST(ZCashGrpcUtilsTest, TestTxStreamHanlder) {
-  TestTxStreamHanlder handler;
+TEST(ZCashGrpcUtilsTest, TestTxStreamHandler) {
+  TestTxStreamHandler handler;
   {
     std::optional<bool> resume_called;
     auto resume_closure =

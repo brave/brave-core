@@ -12,6 +12,7 @@
 #include "base/command_line.h"
 #include "base/metrics/histogram_functions.h"
 #include "base/metrics/histogram_macros.h"
+#include "base/notreached.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/time/time.h"
@@ -255,9 +256,13 @@ void BraveWalletP3A::ReportTransactionSent(mojom::CoinType coin,
       histogram_name = kFilTransactionSentHistogramName;
       break;
     case mojom::CoinType::BTC:
-      // TODO(apaymyshev): https://github.com/brave/brave-browser/issues/28464
-      return;
+      histogram_name = kBtcTransactionSentHistogramName;
+      break;
+    case mojom::CoinType::ZEC:
+      histogram_name = kZecTransactionSentHistogramName;
+      break;
     default:
+      NOTREACHED() << coin;
       return;
   }
 
@@ -310,6 +315,7 @@ void BraveWalletP3A::RecordActiveWalletCount(int count,
       histogram_name = kZecActiveAccountHistogramName;
       break;
     default:
+      NOTREACHED() << coin_type;
       return;
   }
 
@@ -391,9 +397,9 @@ void BraveWalletP3A::MigrateUsageProfilePrefsToLocalState() {
 
 void BraveWalletP3A::OnUpdateTimerFired() {
   ReportUsage(false);
-  ReportTransactionSent(mojom::CoinType::ETH, false);
-  ReportTransactionSent(mojom::CoinType::FIL, false);
-  ReportTransactionSent(mojom::CoinType::SOL, false);
+  for (const auto& coin : kAllCoins) {
+    ReportTransactionSent(coin, false);
+  }
 }
 
 void BraveWalletP3A::WriteUsageStatsToHistogram() {
@@ -414,15 +420,11 @@ void BraveWalletP3A::WalletCreated() {
 
 void BraveWalletP3A::OnTransactionStatusChanged(
     mojom::TransactionInfoPtr tx_info) {
-  auto tx_status = tx_info->tx_status;
-  if (tx_status != mojom::TransactionStatus::Approved) {
+  if (tx_info->tx_status != mojom::TransactionStatus::Approved) {
     return;
   }
+
   auto tx_coin = GetCoinTypeFromTxDataUnion(*tx_info->tx_data_union);
-  if (tx_coin == mojom::CoinType::BTC || tx_coin == mojom::CoinType::ZEC) {
-    // BTC, ZEC transactions are not tracked yet
-    return;
-  }
   auto tx_type = tx_info->tx_type;
   auto count_test_networks = base::CommandLine::ForCurrentProcess()->HasSwitch(
       brave_wallet::mojom::kP3ACountTestNetworksSwitch);
@@ -461,6 +463,22 @@ void BraveWalletP3A::OnTransactionStatusChanged(
                                  chain_id == mojom::kLocalhostChainId)) {
       return;
     }
+  } else if (tx_coin == mojom::CoinType::BTC) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
+    if (!count_test_networks && chain_id == mojom::kBitcoinTestnet) {
+      return;
+    }
+  } else if (tx_coin == mojom::CoinType::ZEC) {
+    if (tx_type != mojom::TransactionType::Other) {
+      return;
+    }
+    if (!count_test_networks && chain_id == mojom::kZCashTestnet) {
+      return;
+    }
+  } else {
+    NOTREACHED();
   }
   ReportTransactionSent(tx_coin, true);
 }
