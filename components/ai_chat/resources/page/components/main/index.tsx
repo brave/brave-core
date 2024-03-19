@@ -66,31 +66,30 @@ function Main() {
   let scrollerElement: HTMLDivElement | null = null
   const scrollPos = React.useRef({ isAtBottom: true })
 
-  if (hasAcceptedAgreement) {
-    if (apiHasError && currentError === mojom.APIError.ConnectionIssue) {
-      currentErrorElement = (
-        <ErrorConnection
-          onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
-        />
-      )
-    }
+  if (hasAcceptedAgreement && apiHasError) {
+    switch(currentError) {
+      case mojom.APIError.ConnectionIssue:
+        currentErrorElement = (
+          <ErrorConnection
+            onRetry={() => getPageHandlerInstance().pageHandler.retryAPIRequest()}
+          />
+        )
+        break
 
-    if (apiHasError && currentError === mojom.APIError.RateLimitReached) {
-      currentErrorElement = (
-        <ErrorRateLimit />
-      )
-    }
+      case mojom.APIError.RateLimitReached:
+        currentErrorElement = <ErrorRateLimit />
+        break
 
-    if (apiHasError && currentError === mojom.APIError.ContextLimitReached) {
-      currentErrorElement = (
-        <ErrorConversationEnd />
-      )
-    }
+      case mojom.APIError.ContextLimitReached:
+        currentErrorElement = <ErrorConversationEnd />
+        break
 
-    if (apiHasError && currentError === mojom.APIError.GeneratedQuestionsRateLimitReached) {
-      currentErrorElement = (
-        <ErrorGeneratedQuestionsRateLimit />
-      )
+      case mojom.APIError.GeneratedQuestionsRateLimitReached:
+        currentErrorElement = <ErrorGeneratedQuestionsRateLimit />
+        break
+
+      default:
+        console.error("Unhandled API error:", currentError)
     }
   }
 

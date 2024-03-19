@@ -669,10 +669,11 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::HasGenerated;
   } else {
-    // TODO(nullhook): Set a specialized error state generated questions
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
-    SetAPIError(mojom::APIError::GeneratedQuestionsRateLimitReached);
+    if (result.error() == mojom::APIError::RateLimitReached) {
+      SetAPIError(mojom::APIError::GeneratedQuestionsRateLimitReached);
+    }
   }
 
   // Notify observers
