@@ -4,6 +4,8 @@
 <translation id="3333887201479867589">Brave রিওয়ার্ডস</translation>
 <translation id="7561196759112975576">সবসময়য়</translation>
 <translation id="7961015016161918242">কখনই নয়</translation>
+<translation id="8507663778530179003">সমস্ত বুকমার্ক বোতাম দেখান</translation>
+<translation id="9018648632047670921">সমস্ত বুকমার্ক বোতাম দেখান</translation>
 <translation id="7630214457764713113">ক্লিন লিঙ্ক কপি করুন</translation>
 <translation id="7973394300052703468">নতুন &amp;ছদ্মবেশী উইন্ডো</translation>
 <translation id="4615489450165434530">একটি ভাঙ্গা সাইটের প্রতিবেদন করুন</translation>
@@ -169,12 +171,12 @@
 <translation id="2533715613366623756">বুকমার্ক ম্যানেজার</translation>
 <translation id="3405021928725149239">বুকমার্ক ম্যানেজার</translation>
 <translation id="6284218950354553099">স্বয়ংক্রিয়ভাবে Brave-এ প্রতিদিনের ব্যবহারের পিং পাঠান</translation>
-<translation id="5288333155754958121">এই নামবিহীন, গোপন পিংটি Brave-কে সক্রিয় ব্যবহারকারী অনুমান করতে দেয়।</translation>
+<translation id="2181060149810222381">এই ব্যক্তিগত পিং Brave-কে সক্রিয় ব্যবহারকারীদের অনুমান করতে দেয়।</translation>
 <translation id="1872784258300710671">নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে Brave সম্পূর্ণরূপে ব্যক্তিগত পণ্য বিশ্লেষক ব্যবহার করে</translation>
 <translation id="8712637175834984815">বুঝেছি</translation>
 <translation id="4394049700291259645">অক্ষম</translation>
 <translation id="7142548388914389999">গোপনীয়তা-রক্ষাকারী পণ্য বিশ্লেষককে (P3A) অনুমতি দিন</translation>
-<translation id="8286082624639565868">এই সম্পূর্ন নামহীন তথ্য Brave কে নির্দিষ্ট কিছু বৈশিষ্ট্যের সামগ্রিক ব্যবহার অনুমান করতে এবং আপনার জন্য আরও উন্নত করে তুলতে সহায়তা করে।</translation>
+<translation id="2604698253988679506">এই ব্যক্তিগত প্রতিক্রিয়াগুলি Brave-কে নির্দিষ্ট বৈশিষ্ট্যগুলির সামগ্রিক ব্যবহার অনুমান করতে এবং সেগুলিকে আপনার জন্য আরও ভাল করতে সহায়তা করে।</translation>
 <translation id="1947672064022327074">আপনি কি ইথেরিয়াম সমর্থনের জন্য Crypto ওয়ালেটগুলি শুরু করতে চান?</translation>
 <translation id="7583735190612229830">এই অ্যাপটি এবং এটির মতন অন্যান্য অ্যাপের সাথে ইন্টারঅ্যাক্ট করতে Crypto Wallets সেট আপ করুন৷</translation>
 <translation id="8731422418734770661">ক্রিপ্টো ওয়ালেট সেট আপ করুন</translation>
@@ -191,6 +193,7 @@
 <translation id="4756627014339714615">রিডাইরেক্ট করুন</translation>
 <translation id="1338274252864046652">আপনি কি ব্রাউজার স্টার্টআপে সর্বদা একটি IPFS নোড শুরু করতে চান?</translation>
 <translation id="3435896845095436175">সক্ষম করুন</translation>
+<translation id="5046066249040287308">Brave ওয়ালেট ইউটিলিটি পরিষেবা</translation>
 <translation id="4552520379838695057">দুঃখিত, ঐ পৃষ্ঠাটি পাওয়া যাচ্ছে না।</translation>
 <translation id="2609895996619941644">ওয়েব্যাক মেশিনে একটি সংরক্ষিত সংস্করণ উপলভ্য কিনা তা কি আপনি পরীক্ষা করতে চান?</translation>
 <translation id="8053093028263274061">দুঃখিত, কোনও সংরক্ষিত সংস্করণ উপলভ্য নেই।</translation>
@@ -203,12 +206,14 @@
 <translation id="5179127818058486126">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
 <translation id="2289567621059034186">নীচে নতুন ট্যাব</translation>
 <translation id="3228962656492373217">নীচে ট্যাবগুলো বন্ধ করুন</translation>
+<translation id="8030501904366631501">এই উইন্ডোতে সমস্ত ট্যাব আনুন</translation>
 <translation id="2336228925368920074">সকল ট্যাব বুকমার্ক করুন...</translation>
 <translation id="2523967823495420116">ভার্টিকাল ট্যাব ব্যবহার করুন</translation>
 <translation id="3785071023202624850">{NUM_TABS,plural, =1{ট্যাব মিউট করুন}one{ট্যাব মিউট করুন}other{ট্যাব মিউট করুন}}</translation>
 <translation id="2120478168904746065">{NUM_TABS,plural, =1{ট্যাব আনমিউট করুন}one{ট্যাব আনমিউট করুন}other{ট্যাব আনমিউট করুন}}</translation>
 <translation id="4405580203042711503">নীচে নতুন ট্যাব</translation>
 <translation id="5611474372949142946">নীচে ট্যাবগুলো বন্ধ করুন</translation>
+<translation id="573844928911967687">এই উইন্ডোতে সমস্ত ট্যাব আনুন</translation>
 <translation id="3704707436873245822">ছবি থেকে টেক্সট কপি করুন</translation>
 <translation id="5268098808165185458">ছবি থেকে টেক্সট কপি করা হচ্ছে...</translation>
 <translation id="4046485130884276245">ছবি থেকে টেক্সট কপি করা হয়েছে</translation>
@@ -258,8 +263,8 @@
 <translation id="8373664339577369248">কাস্টম অর্ডার</translation>
 <translation id="8120600068258956006">প্লেলিস্টে যোগ করুন</translation>
 <translation id="650694591627983430">এই পেজে মিডিয়া পাওয়া গেছে</translation>
-<translation id="8525248723479742219">পরে প্লে করুন</translation>
 <translation id="43751811163166570"><ph name="PLAYLIST_FOLDER_NAME"/> যোগ করা হয়েছে</translation>
+<translation id="6900840851173033633">দুঃখিত, আমরা এই পৃষ্ঠায় কোনো মিডিয়া খুঁজে পাইনি।</translation>
 <translation id="4830689155681863580">প্লেলিস্টে খুলুন</translation>
 <translation id="4735626465866524761">ফোল্ডার পরিবর্তন করুন</translation>
 <translation id="8101564000331197174">প্লেলিস্ট থেকে সরান</translation>
@@ -330,6 +335,7 @@
 <translation id="5860254591544742609">টাইটেল বার দেখান</translation>
 <translation id="5371926069408837914">বন্ধ হয়ে গেলে মাউসওভারে উল্লম্ব ট্যাব প্যানেল প্রসারিত করুন</translation>
 <translation id="3367129510799209147">ট্যাব হোভার মোড</translation>
+<translation id="916373084491701212">স্ক্রলবার দেখান</translation>
 <translation id="515949045075831661">ডান দিকে দেখান</translation>
 <translation id="3725395376319291415">বাম দিকে দেখান</translation>
 <translation id="2113977810652731515">কার্ড</translation>
@@ -644,6 +650,7 @@
 <translation id="3504157706952484145">Filecoin নেটওয়ার্ক</translation>
 <translation id="1561541094377237745">Solana নেটওয়ার্ক</translation>
 <translation id="7141438739990875547">Bitcoin নেটওয়ার্ক</translation>
+<translation id="1077567586443625607">Zcash নেটওয়ার্ক</translation>
 <translation id="3159419679550543837">টেস্ট নেটওয়ার্ক দেখান</translation>
 <translation id="3215569562674795548">নতুন নেটওয়ার্ক যোগ করুন বা এডিট করুন</translation>
 <translation id="4418993400653250511">চেইনের Id</translation>
@@ -727,6 +734,8 @@
 <translation id="7984721311211272523">ট্যাব স্পিকার আইকনে মিউট ফাংশন বন্ধ করুন</translation>
 <translation id="6129027151000961048">লিও</translation>
 <translation id="2751872555001636931">সাইডবারে লিও আইকন দেখান</translation>
+<translation id="8055509865174199683">ওয়েবসাইটগুলিতে প্রসঙ্গ মেনুতে Leo দেখান</translation>
+<translation id="1529674267267221673">আপনি যখন কোনও ওয়েবসাইটে ডান-ক্লিক করবেন, তখন প্রসঙ্গ মেনুতে Leo দেখানো হবে। এটি বর্তমান ওয়েব পৃষ্ঠা থেকে Leo-তে প্রসঙ্গ পাঠাবে।</translation>
 <translation id="8172263161008556851">কথোপকথনে প্রস্তাবিত প্রম্পট দেখান</translation>
 <translation id="1014480593522400586">লিও ডেটা সাফ করুন</translation>
 <translation id="8681157601856387010">Leo অ্যাসিস্ট্যান্ট রিসেট করলে আপনাকে ব্যবহার করার জন্য়
@@ -739,6 +748,9 @@
 <translation id="349846214503465941">প্লেলিস্ট সক্রিয় করুন</translation>
 <translation id="7903608716704052878">অফলাইন দেখার জন্য স্বয়ংক্রিয়ভাবে ফাইল যোগ করুন</translation>
 <translation id="4193768184502613558">এই বিকল্পটি স্বয়ংক্রিয়ভাবে মিডিয়া ফাইলগুলিকে ক্যাশে করবে যাতে আপনি সেগুলিকে ইন্টারনেট সংযোগ ছাড়াই চালাতে পারেন।</translation>
+<translation id="8950562208228589873">OS ডিফল্ট বা Quad9</translation>
+<translation id="5646330590189545860">OS ডিফল্ট বা Wikimedia</translation>
+<translation id="2026075482948458926">OS ডিফল্ট বা Cloudflare</translation>
 <translation id="6624718837376802990">অবতার এজি পুরস্কারসমূহ</translation>
 <translation id="6617313057407561765">অবতার এজি ব্রেভ</translation>
 <translation id="6754445808455578019">অবতার এজি ওসান</translation>

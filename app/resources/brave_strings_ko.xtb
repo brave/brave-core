@@ -17,7 +17,6 @@
 <translation id="2627788872035182013">Brave 메뉴를 클릭합니다</translation>
 <translation id="8541922081612557424">Brave 정보</translation>
 <translation id="1203500561924088507">설치해 주셔서 감사합니다. <ph name="BUNDLE_NAME"/>을(를) 사용하려면 브라우저를 다시 시작해야 합니다.</translation>
-<translation id="4658574652223735641">메모리 절약 모드로 더 빨라진 Brave</translation>
 <translation id="8799570501820813406">이 탭이 비활성 상태인 동안 Brave의 속도를 빠르게 유지하기 위해 메모리를 확보했습니다. 이 사이트가 비활성 상태가 되지 않도록 항상 제외할 수 있습니다.</translation>
 <translation id="8767381092474532098">위험한 파일이므로 Brave에서 이 다운로드를 차단했습니다.</translation>
 <translation id="4798342026247191171">새 Brave 프로필 설정</translation>
@@ -107,6 +106,7 @@
 <translation id="8755404239607088219">Brave에서 비밀번호를 확인할 수 없습니다. 나중에 다시 시도하세요.</translation>
 <translation id="8880183781256147665">Brave에 추가하는 중...</translation>
 <translation id="3038232873781883849">설치 대기 중...</translation>
+<translation id="4503085212612536713">기타 Brave 프로필</translation>
 <translation id="7918740962659365265">비정상 종료 보고서와 <ph name="UMA_LINK"/>을(를) Brave로 전송하여 Brave 개선에 참여합니다.</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{하나 이상의 Brave 확장 프로그램에서 USB 기기 1대에 액세스함}=1{하나 이상의 Brave 확장 프로그램에서 USB 기기 1대에 액세스 중}other{하나 이상의 Brave 확장 프로그램에서 USB 기기 #대에 액세스 중}}</translation>
 <translation id="5320085753638900910">방문 기록에 따라 표시되는 광고 및 아래의 예측 관심분야가 달라집니다. 개인 정보를 보호하기 위해 Brave에서는 매월 최소 한 번씩 수시로 관심분야를 자동 삭제합니다. 관심분야는 직접 삭제하지 않는 한 새로고침될 수 있습니다.</translation>
@@ -216,6 +216,7 @@
 <translation id="8586264863973514035">변경사항을 적용하려면 Brave을 다시 실행하세요.</translation>
 <translation id="300369155175407115">무료 체험이 사용 설정되어 있는 경우와 Brave에서 임의로 나에게 현재 진행 중인 무료 체험을 적용한 경우, 표시되는 광고 및 아래의 예측 관심분야에 방문 기록이 영향을 미칩니다. 개인 정보를 보호하기 위해 Brave에서는 매월 최소 한 번씩 수시로 관심분야를 삭제합니다.</translation>
 <translation id="7573068992266397941">Brave에서 발견한 보안 권장사항을 검토해 주세요</translation>
+<translation id="8174413867995118050">기타 Brave 프로필</translation>
 <translation id="7708394612738038097">관리 계정으로 로그인하고 Brave 프로필에 대한 관리자 제어권을 부여하려고 합니다. 앱, 북마크, 방문 기록, 비밀번호 및 기타 설정 등 Brave 데이터가 <ph name="USER_NAME"/> 계정에 영구적으로 연결됩니다. 이후 이 데이터를 Brave 계정 대시보드에서 삭제할 수는 있지만 다른 계정에 연결할 수는 없습니다. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">추가 코드: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Brave에서 일부 파일을 차단하는 이유 알아보기</translation>
@@ -311,12 +312,12 @@
 <translation id="9210457680074341078">Brave 계정에도 북마크를 저장하면 Brave에서 제품 가격을 추적하고 가격이 인하되면 알림을 받을 수 있습니다.</translation>
 <translation id="6676384891291319759">인터넷 연결</translation>
 <translation id="1363996462118479832">로그인 중 오류가 발생하여 ChromeOS에서 데이터를 동기화할 수 없습니다.</translation>
+<translation id="5324448127277983819">Brave을 나에게 표시되는 광고를 보다 세부적으로 관리할 뿐만 아니라 사이트가 개인 맞춤 광고를 표시할 때 나에 관해 얻을 수 있는 정보를 제한할 수 있습니다.</translation>
 <translation id="1257247502847251159">Brave에서 사이트에 대한 마이크 권한이 필요합니다.</translation>
 <translation id="6712881677154121168">다운로드 오류(<ph name="DOWNLOAD_ERROR"/>)가 발생했습니다.</translation>
 <translation id="1489465648257900784">Brave의 최신 버전을 사용하기 때문에 프로필을 사용할 수 없습니다.
 
 일부 기능을 사용할 수 없습니다. 다른 프로필 디렉터리를 지정하거나 Brave의 새로운 버전을 사용하시기 바랍니다.</translation>
-<translation id="7870748924073900361">메모리 절약 모드로 더 빨라진 Brave</translation>
 <translation id="6666624454809779082">모든 사용자가 사용할 수 있도록 컴퓨터에 Brave이 이미 설치되어 있습니다.</translation>
 <translation id="5360050006043219962">모든 기기에서 Brave 계정 정보에 액세스하려면 로그인한 후 동기화를 사용 설정하세요.</translation>
 <translation id="3136039682492230890">위험할 수 있는 파일이므로 검사하는 것이 좋습니다.</translation>
@@ -370,7 +371,6 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="2827121003398607864">더욱 업그레이드된 Brave</translation>
 <translation id="7649070708921625228">도움말</translation>
 <translation id="7631741717293858595">Brave 설정에서 이러한 기능에 관해 자세히 알아볼 수 있습니다.</translation>
-<translation id="8678991866891573053">Brave은 사용자의 데이터를 더 적게 사용하면서도 사이트에서 동일한 탐색 환경을 제공할 수 있는 새로운 기능을 알아보고 있습니다.</translation>
 <translation id="3343095737966473035">Brave이 기본 브라우저로 설정되어 있지 않습니다</translation>
 <translation id="5477319665405831211">모든 기기에서 Brave을 동기화하고 맞춤설정하세요.</translation>
 <translation id="2339273275658335597">Brave 업데이트</translation>
@@ -470,6 +470,7 @@ Brave에서 설정을 복구할 수 없습니다.</translation>
 <translation id="8274659559228306809">{COUNT,plural, =0{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다.}=1{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창이 다시 열리지 않습니다.}other{새 Brave 업데이트가 있습니다. Brave을 다시 실행하면 업데이트가 바로 적용됩니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다.}=1{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자가 이 업데이트를 적용하려면 사용자가 Brave을 다시 시작하도록 설정했습니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다.}=1{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창이 다시 열리지 않습니다.}other{관리자의 요구에 따라 업데이트를 적용하려면 Brave을 다시 실행해야 합니다. 시크릿 창 #개가 다시 열리지 않습니다.}}</translation>
+<translation id="4104709166890675229">인터넷 트래픽에 액세스 가능한 프로필이 귀하가 방문한 사이트를 보기 어렵게 만듭니다. Brave는 보안 연결을 사용하여 DNS(Domain Name System) 내에서 사이트의 IP 주소를 조회합니다.</translation>
 <translation id="2176087127109773485">귀하의 로그인된 Brave 동기화 체인을 관리할 수 있습니다. Brave 동기화 체인은 Brave 브라우저, Play 스토어, Gmail 등에 사용됩니다. 가족 구성원 등 다른 사람을 위한 계정을 추가하려면 <ph name="DEVICE_TYPE"/>에 새 프로필을 추가하세요. <ph name="LINK_BEGIN"/>자세히 알아보기<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 기본 검색 엔진으로 보내 추천 결과를 개선합니다. 비공개 모드에서는 꺼집니다.</translation>
 <translation id="3739288578188828252">주소창이나 검색창에 입력하면 입력하신 내용을 Brave가 Google 드라이브로 보내 항목 추천 결과를 개선합니다. 비공개 모드에서는 꺼집니다.</translation>

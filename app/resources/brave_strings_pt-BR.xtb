@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Clique no menu do Brave</translation>
 <translation id="8541922081612557424">Sobre o Brave</translation>
 <translation id="1203500561924088507">Agradecemos por fazer a instalação. É necessário reiniciar o navegador antes de utilizar o <ph name="BUNDLE_NAME"/>.</translation>
-<translation id="4658574652223735641">A Economia de memória tornou o Brave mais rápido</translation>
 <translation id="8799570501820813406">Enquanto esta guia estava inativa, a memória foi liberada para manter o Brave rápido. Você pode optar por sempre excluir este site do status de inatividade.</translation>
 <translation id="8767381092474532098">O Brave bloqueou o download porque o arquivo é perigoso</translation>
 <translation id="4798342026247191171">Configure seu novo perfil do Brave</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">O Brave não pode verificar suas senhas. Tente mais tarde.</translation>
 <translation id="8880183781256147665">Adicionando ao Brave...</translation>
 <translation id="3038232873781883849">Aguardando instalação...</translation>
+<translation id="4503085212612536713">Outros perfis do Brave</translation>
 <translation id="7918740962659365265">Ajude a melhorar o Brave. Envie relatórios de erros e <ph name="UMA_LINK"/> para o Brave</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{unused plural form}=1{Uma ou mais extensões do Brave estavam acessando 1 dispositivo USB}one{Uma ou mais extensões do Brave estavam acessando # dispositivo USB}other{Uma ou mais extensões do Brave estavam acessando # dispositivos USB}}</translation>
 <translation id="5320085753638900910">Seu histórico de navegação afeta os anúncios que você vê e os interesses estimados abaixo. Para proteger sua privacidade, o Brave exclui automaticamente seus interesses mais antigos do que um mês. Os interesses podem ser atualizados, a menos que você os remova.</translation>
@@ -212,6 +212,7 @@
 <translation id="8586264863973514035">Para que as alterações sejam aplicadas, reinicie o Brave</translation>
 <translation id="300369155175407115">Quando os testes estão ativados e se o Brave colocou você aleatoriamente em um teste ativo, seu histórico de navegação vai afetar os anúncios que você vê e os interesses estimados abaixo. Para proteger sua privacidade, o Brave exclui seus interesses mais antigos do que um mês.</translation>
 <translation id="7573068992266397941">O Brave encontrou algumas recomendações de segurança para sua avaliação</translation>
+<translation id="8174413867995118050">Outros perfis do Brave</translation>
 <translation id="7708394612738038097">Você está fazendo login com uma conta gerenciada e concedendo ao administrador da conta o controle sobre seu perfil do Brave. Seus dados do Brave, como aplicativos, favoritos, histórico, senhas e outras configurações serão permanentemente vinculados a <ph name="USER_NAME"/>. Você pode excluir esses dados pelo painel das Contas do Brave, mas não pode associá-los a outra conta. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Código extra: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Saiba por que o Brave bloqueia alguns arquivos</translation>
@@ -307,10 +308,10 @@
 <translation id="9210457680074341078">Se você também salvar seus favoritos na Conta do Brave, poderá monitorar os preços dos produtos no Brave e receber notificações quando houver reduções</translation>
 <translation id="6676384891291319759">Acessar a internet</translation>
 <translation id="1363996462118479832">O ChromeOS não pôde sincronizar seus dados devido a um erro durante o login.</translation>
+<translation id="5324448127277983819">O Brave oferece mais controle sobre os anúncios mostrados e limita o que os sites podem saber sobre você quando mostram anúncios personalizados</translation>
 <translation id="1257247502847251159">O Brave precisa da permissão de acesso ao microfone para este site</translation>
 <translation id="6712881677154121168">Erro no download: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Seu perfil não pode ser usado porque é de uma versão mais recente do Brave. Alguns recursos podem não estar disponíveis. Especifique outro diretório de perfil ou use uma versão mais recente do Brave.</translation>
-<translation id="7870748924073900361">A Economia de memória tornou o Brave mais rápido</translation>
 <translation id="6666624454809779082">O Brave já está instalado para todos os usuários do seu computador.</translation>
 <translation id="5360050006043219962">Para ter acesso aos recursos do Brave em todos os seus dispositivos, faça login e ative a sincronização.</translation>
 <translation id="3136039682492230890">O Brave recomenda verificar esse arquivo, porque ele pode ser perigoso.</translation>
@@ -362,7 +363,6 @@
 <translation id="2827121003398607864">O Brave ficou ainda melhor</translation>
 <translation id="7649070708921625228">Ajuda</translation>
 <translation id="7631741717293858595">Saiba mais sobre esses recursos nas configurações do Brave.</translation>
-<translation id="8678991866891573053">O Brave está explorando novos recursos que permitem que os sites ofereçam a mesma experiência de navegação usando menos dados</translation>
 <translation id="3343095737966473035">O Brave não é seu navegador padrão</translation>
 <translation id="5477319665405831211">Sincronize e personalize o Brave em todos os seus dispositivos</translation>
 <translation id="2339273275658335597">Atualização do Brave</translation>
@@ -465,6 +465,7 @@ As permissões que você já concedeu a sites e aplicativos podem se aplicar a e
               =1{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Sua janela Privada não será aberta novamente.}one{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Sua janela Privada não será aberta novamente.}
               other{Seu administrador pede que você reinicie o Brave para que esta atualização seja feita. Suas # janelas Privadas não serão abertas novamente.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita.}=1{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Sua janela Privada não será aberta novamente.}one{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Sua janela Privada não será aberta novamente.}other{Seu administrador exige que você reinicie o Brave para que uma atualização seja feita. Suas # janelas Privadas não serão abertas novamente.}}</translation>
+<translation id="4104709166890675229">Torne mais difícil para os perfis com acesso ao tráfego da Internet ver quais sites você visita. O Brave usa uma conexão segura para procurar o endereço IP de um site no DNS (Domain Name System).</translation>
 <translation id="2176087127109773485">Você pode gerenciar suas cadeias de sincronização do Brave com sessão iniciada. Suas cadeias de sincronização do Brave são usadas pelo navegador Brave, pela Play Store, pelo Gmail e muito mais. Se você quiser adicionar uma conta para outra pessoa, como um familiar, adicione um novo perfil ao seu <ph name="DEVICE_TYPE"/>. <ph name="LINK_BEGIN"/>Saiba mais<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Quando você digita na barra de endereços ou na caixa de pesquisa, o Brave envia o que você digita para o mecanismo de pesquisa padrão para obter melhores sugestões. Isso está desativado em Privado.</translation>
 <translation id="3739288578188828252">Quando você digita na barra de endereço ou na caixa de pesquisa, o Brave envia o que você digita para o Google Drive para obter sugestões de itens. Isso está desativado em Privado.</translation>

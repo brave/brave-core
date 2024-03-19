@@ -15,7 +15,6 @@
 <translation id="2627788872035182013">Klõpsake Bravei menüül</translation>
 <translation id="8541922081612557424">Teave Bravei kohta</translation>
 <translation id="1203500561924088507">Täname teid installimise eest. Enne brauseri <ph name="BUNDLE_NAME"/> kasutamist peate selle taaskäivitama.</translation>
-<translation id="4658574652223735641">Mälusäästja muutis Bravei kiiremaks</translation>
 <translation id="8799570501820813406">Ajal, mil see vaheleht oli inaktiivne, vabastati mälu, et Brave oleks jätkuvalt kiire. Soovi korral võite selle saidi inaktiivseks muutumise alati välistada.</translation>
 <translation id="8767381092474532098">Brave blokeeris selle allalaadimise, kuna fail on ohtlik</translation>
 <translation id="4798342026247191171">Uue Bravei profiili seadistamine</translation>
@@ -105,6 +104,7 @@
 <translation id="8755404239607088219">Brave ei saa teie paroole kontrollida. Proovige hiljem uuesti.</translation>
 <translation id="8880183781256147665">Bravei lisamine ...</translation>
 <translation id="3038232873781883849">Installimise ootamine …</translation>
+<translation id="4503085212612536713">Muud Bravei profiilid</translation>
 <translation id="7918740962659365265">Aidake Bravei täiustada, saates Brave'ile krahhiaruandeid ja lingi <ph name="UMA_LINK"/></translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{Üks või mitu Bravei laiendust kasutasid juurdepääsu ühele USB-seadmele}=1{Üks või mitu Bravei laiendust kasutasid juurdepääsu ühele USB-seadmele}other{Üks või mitu Bravei laiendust kasutasid juurdepääsu # USB-seadmele}}</translation>
 <translation id="5320085753638900910">Teie sirvimisajalugu mõjutab kuvatavaid reklaame ja huvisid vastavalt allolevatele prognoosidele. Teie privaatsuse kaitsmiseks kustutab Brave automaatselt teie huvisid jooksvalt iga kuu. Huvisid võidakse värskendada, kui te neid ei eemalda.</translation>
@@ -214,6 +214,7 @@
 <translation id="8586264863973514035">Muudatuste rakendamiseks käivitage Brave uuesti</translation>
 <translation id="300369155175407115">Kui katsed on sisse lülitatud ja Brave on teid juhuslikkuse alusel lisanud aktiivsesse katsesse, mõjutab teie sirvimisajalugu teile esitatavaid reklaame ja allolevaid prognoositud huvisid. Teie privaatsuse kaitsmiseks kustutab Brave teie huvisid jooksvalt iga kuu.</translation>
 <translation id="7573068992266397941">Brave leidis teile ülevaatamiseks mõned turvasoovitused</translation>
+<translation id="8174413867995118050">Muud Bravei profiilid</translation>
 <translation id="7708394612738038097">Logite sisse hallatud kontoga ja annate selle administraatorile üle Bravei profiili juhtimise. Teie Bravei andmed, näiteks rakendused, järjehoidjad, ajalugu, paroolid ja muud seaded seotakse jäädavalt kasutajaga <ph name="USER_NAME"/>. Saate need andmed kustutada Brave'i kontode juhtpaneeli kaudu, kuid te ei saa neid seostada teise kontoga. <ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">Lisakood: <ph name="EXTRA_CODE"/>.</translation>
 <translation id="5154625106151193600">Vaadake, miks Brave mõned failid blokeerib</translation>
@@ -309,12 +310,12 @@
 <translation id="9210457680074341078">Kui salvestate ka oma järjehoidjad Brave'i kontole, saate jälgida Braveis toodete hindu ja saada teateid hinnalanguste kohta</translation>
 <translation id="6676384891291319759">Pääs Internetti</translation>
 <translation id="1363996462118479832">Chrome OS ei saanud sisselogimisvea tõttu teie andmeid sünkroonida.</translation>
+<translation id="5324448127277983819">Brave annab teile suurema kontrolli nähtavate reklaamide üle ja piirab teavet, mida saidid teile isikupärastatud reklaamide näitamisel saavad teie kohta õppida</translation>
 <translation id="1257247502847251159">Brave vajab selle saidi puhul mikrofoni kasutamise luba</translation>
 <translation id="6712881677154121168">Allalaadimisviga: <ph name="DOWNLOAD_ERROR"/>.</translation>
 <translation id="1489465648257900784">Teie profiili ei saa kasutada, kuna see pärineb Bravei uuemast versioonist.
 
 On võimalik, et mõni funktsioon ei ole saadaval. Määrake muu profiilikataloog või kasutage Bravei uuemat versiooni.</translation>
-<translation id="7870748924073900361">Mälusäästja muutis Bravei kiiremaks</translation>
 <translation id="6666624454809779082">Brave on arvutisse kõigi kasutajate jaoks juba installitud.</translation>
 <translation id="5360050006043219962">Selleks et oma Bravei sisule kõigis oma seadmetes juurde pääseda, logige sisse ja lülitage siis sisse sünkroonimine.</translation>
 <translation id="3136039682492230890">Brave soovitab seda faili skannida, kuna see võib olla ohtlik.</translation>
@@ -367,7 +368,6 @@ Brave ei saa teie seadeid taastada.</translation>
 <translation id="2827121003398607864">Brave muutus just paremaks</translation>
 <translation id="7649070708921625228">Abi</translation>
 <translation id="7631741717293858595">Nende funktsioonide kohta leiate lisateavet Bravei seadetest.</translation>
-<translation id="8678991866891573053">Brave katsetab uusi funktsioone, mis võimaldaksid saitidel pakkuda väiksema andmemahu juures samasugust sirvimiskogemust</translation>
 <translation id="3343095737966473035">Brave ei ole teie vaikebrauser</translation>
 <translation id="5477319665405831211">Sünkroonige ja isikupärastage Brave kõigis oma seadmetes</translation>
 <translation id="2339273275658335597">Bravei värskendus</translation>
@@ -467,6 +467,7 @@ Selle konto suhtes võivad kehtida õigused, mille olete veebisaitidele ja raken
 <translation id="8274659559228306809">{COUNT,plural, =0{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel.}=1{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie inkognito akent ei avata uuesti.}other{Saadaval on uus Bravei värskendus, mis rakendatakse taaskäivitamisel. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="3829358914761176693">{COUNT,plural, =0{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada}=1{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie inkognito akent ei avata uuesti.}other{Administraator palub teil Bravei selle värskenduse rakendamiseks uuesti käivitada. Teie # inkognito akent ei avata uuesti.}}</translation>
 <translation id="552349673358711446">{COUNT,plural, =0{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti}=1{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie inkognito akent ei avata uuesti.}other{Administraator nõuab, et käivitaksite Bravei värskenduse rakendamiseks uuesti. Teie # inkognito akent ei avata uuesti.}}</translation>
+<translation id="4104709166890675229">Muutke teie internetiliiklusele juurdepääsu omavatel profiilidel raskemaks näha, milliseid saite te külastate. Brave kasutab DNS-ist (domeeninimede süsteemist) saidi IP-aadressi otsimiseks turvalist ühendust.</translation>
 <translation id="2176087127109773485">Saate hallata oma Brave'i sünkroonimisahelaid, kuhu olete sisse loginud. Brave'i sünkroonimisahelaid kasutatakse Brave'i brauseri, Play Store'i, Gmaili ja muu jaoks. Kui soovite lisada konto kellelegi teisele, näiteks pereliikmele, lisage oma <ph name="DEVICE_TYPE"/> hoopis uus profiil. <ph name="LINK_BEGIN"/>Lisateave<ph name="LINK_END"/></translation>
 <translation id="79269250264141507">Kui sisestate midagi aadressiribale või otsingukasti, saadab Brave sisestatava teie vaikeotsingumootorile, et saada paremaid soovitusi. Privaatses režiimis on see välja lülitatud.</translation>
 <translation id="3739288578188828252">Kui sisestate midagi aadressiribale või otsingukasti, saadab Brave sisestatava Google Drive’i, et saada paremaid soovitusi. Privaatses režiimis on see välja lülitatud.</translation>

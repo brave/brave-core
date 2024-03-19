@@ -4,6 +4,8 @@
 <translation id="3333887201479867589">Винагороди Brave</translation>
 <translation id="7561196759112975576">Завжди</translation>
 <translation id="7961015016161918242">Ніколи</translation>
+<translation id="8507663778530179003">Показати кнопку «Усі закладки»</translation>
+<translation id="9018648632047670921">Показати кнопку «Усі закладки»</translation>
 <translation id="7630214457764713113">Копіювати чисте посилання</translation>
 <translation id="7973394300052703468">Нове &amp;приватне вікно</translation>
 <translation id="4615489450165434530">Повідомити про пошкоджений сайт</translation>
@@ -169,12 +171,12 @@
 <translation id="2533715613366623756">Менеджер закладок</translation>
 <translation id="3405021928725149239">Менеджер закладок</translation>
 <translation id="6284218950354553099">Автоматично надсилати щоденний сигнал використання Brave</translation>
-<translation id="5288333155754958121">Цей анонімний, приватний сигнал дає можливість Brave оцінити активних користувачів.</translation>
+<translation id="2181060149810222381">Це приватне повідомлення дає можливість Brave оцінити активних користувачів.</translation>
 <translation id="1872784258300710671">Brave використовує цілком конфіденційні засоби аналітики продуктів для загальної оцінки використання певних функцій</translation>
 <translation id="8712637175834984815">Зрозуміло</translation>
 <translation id="4394049700291259645">Вимкнути</translation>
 <translation id="7142548388914389999">Дозволити аналітику продуктів зі збереженням конфіденційності (P3A)</translation>
-<translation id="8286082624639565868">Ця цілком анонімізована інформація допомагає Brave отримувати загальну оцінку використання певних функцій і покращувати їх для вас.</translation>
+<translation id="2604698253988679506">Ці приватні відповіді допомагають Brave оцінити загальне використання певних функцій і покращити їх для вас.</translation>
 <translation id="1947672064022327074">Бажаєте відкрити криптогаманці для підтримки Ethereum?</translation>
 <translation id="7583735190612229830">Налаштуйте криптогаманці для роботи з цим застосунком та іншими схожими.</translation>
 <translation id="8731422418734770661">Налаштувати криптогаманці</translation>
@@ -191,24 +193,27 @@
 <translation id="4756627014339714615">Перейти</translation>
 <translation id="1338274252864046652">Завжди починати з вузла IPFS під час запуску браузера?</translation>
 <translation id="3435896845095436175">Увімкнути</translation>
+<translation id="5046066249040287308">Служба утиліти гаманця Brave</translation>
 <translation id="4552520379838695057">Вибачте, сторінка відсутня.</translation>
 <translation id="2609895996619941644">Бажаєте перевірити, чи є збережена версія в Архіві?</translation>
 <translation id="8053093028263274061">На жаль, збереженої версії немає.</translation>
 <translation id="8517321676372639828">Перевірити збережену версію</translation>
-<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL"/>Публічної Ліцензії Mozilla 2.0 <ph name="END_LINK_MPL"/> (MPL) та включає <ph name="BEGIN_LINK_OSS"/>програмне забезпечення з відкритим кодом <ph name="END_LINK_OSS"/> за умовами багатьох інших ліцензій.
-Ви можете прочитати <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>інструкції, як завантажити та створити самостійно <ph name="END_LINK_BUILD_INSTRUCTIONS"/>конкретний <ph name="BEGIN_LINK_SOURCE_CODE"/>вихідний код, використаний для створення цієї копії<ph name="END_LINK_SOURCE_CODE"/>.</translation>
+<translation id="191143826155037518">Brave надається вам за умовами <ph name="BEGIN_LINK_MPL"/>Публічної Ліцензії Mozilla 2.0<ph name="END_LINK_MPL"/> (MPL) і включає <ph name="BEGIN_LINK_OSS"/>програмне забезпечення з відкритим кодом<ph name="END_LINK_OSS"/> за умовами багатьох інших ліцензій.
+Ви можете ознайомитися з <ph name="BEGIN_LINK_BUILD_INSTRUCTIONS"/>інструкціями щодо завантаження і використання для власних потреб<ph name="END_LINK_BUILD_INSTRUCTIONS"/> певного <ph name="BEGIN_LINK_SOURCE_CODE"/>програмного коду, використаного для створення цієї копії<ph name="END_LINK_SOURCE_CODE"/>.</translation>
 <translation id="4474155171896946103">Додати до закладок усі вкладки...</translation>
 <translation id="3987546108749866209">Використовувати вертикальні вкладки</translation>
-<translation id="1904394285866191268">{NUM_TABS,plural, =1{Вимкнути звук на вкладці}one{Вимкнути звук на вкладках}few{Вимкнути звук на вкладках}many{Вимкнути звук на вкладках}other{Вимкнути звук на вкладках}}</translation>
-<translation id="5179127818058486126">{NUM_TABS,plural, =1{Увімкнути звук на вкладці}one{Увімкнути звук на вкладках}few{Увімкнути звук на вкладках}many{Увімкнути звук на вкладках}other{Увімкнути звук на вкладках}}</translation>
+<translation id="1904394285866191268">{NUM_TABS, plural, =1 {Вимкнути звук вкладки} other {Вимкнути звук вкладок}}</translation>
+<translation id="5179127818058486126">{NUM_TABS, plural, =1 {Увімкнути звук вкладки} other {Увімкнути звук вкладок}}</translation>
 <translation id="2289567621059034186">Нова вкладка нижче</translation>
 <translation id="3228962656492373217">Закрити вкладки нижче</translation>
+<translation id="8030501904366631501">Перенести всі вкладки до цього вікна</translation>
 <translation id="2336228925368920074">Додати до закладок усі вкладки...</translation>
 <translation id="2523967823495420116">Використовувати вертикальні вкладки</translation>
-<translation id="3785071023202624850">{NUM_TABS,plural, =1{Вимкнути звук на вкладці}one{Вимкнути звук на вкладках}few{Вимкнути звук на вкладках}many{Вимкнути звук на вкладках}other{Вимкнути звук на вкладках}}</translation>
-<translation id="2120478168904746065">{NUM_TABS,plural, =1{Увімкнути звук на вкладці}one{Увімкнути звук на вкладках}few{Увімкнути звук на вкладках}many{Увімкнути звук на вкладках}other{Увімкнути звук на вкладках}}</translation>
+<translation id="3785071023202624850">{NUM_TABS, plural, =1 {Вимкнути звук вкладки} other {Вимкнути звук вкладок}}</translation>
+<translation id="2120478168904746065">{NUM_TABS, plural, =1 {Увімкнути звук вкладки} other {Увімкнути звук вкладок}}</translation>
 <translation id="4405580203042711503">Нова вкладка нижче</translation>
 <translation id="5611474372949142946">Закрити вкладки нижче</translation>
+<translation id="573844928911967687">Перенести всі вкладки до цього вікна</translation>
 <translation id="3704707436873245822">Копіювати текст із зображення</translation>
 <translation id="5268098808165185458">Копіювання тексту із зображення...</translation>
 <translation id="4046485130884276245">Текст із зображення скопійовано</translation>
@@ -228,27 +233,27 @@
 <translation id="8030169304546394654">Від’єднано</translation>
 <translation id="1863950594388384201">Показувати кнопку VPN на панелі інструментів</translation>
 <translation id="5187139277471084437">Приховати кнопку VPN на панелі інструментів</translation>
-<translation id="1177917174080821247">Показувати значок VPN на панелі завдань</translation>
+<translation id="1177917174080821247">Показувати піктограму VPN на панелі завдань</translation>
 <translation id="8041089156583427627">Надіслати відгук</translation>
-<translation id="4049186905514157504">Керування планом</translation>
+<translation id="4049186905514157504">Керувати планом</translation>
 <translation id="7570585565843385325">Показувати кнопку VPN на панелі інструментів</translation>
 <translation id="5310426188697803101">Приховати кнопку VPN на панелі інструментів</translation>
-<translation id="639450633459241724">Показувати значок VPN на панелі завдань</translation>
+<translation id="639450633459241724">Показувати піктограму VPN на панелі завдань</translation>
 <translation id="945522503751344254">Надіслати відгук</translation>
-<translation id="3015685033234401792">Керування планом</translation>
-<translation id="4989337484121655457">Потрібен Повний Доступ до Диску</translation>
-<translation id="8025559074845816210">Brave потребує Повного Доступу до Диску, щоб імпортувати ваші Закладки з Safari.</translation>
-<translation id="8515328844674404333">Дізнайтесь, як надати Повний Доступ до Диску з ваших Установок Системи.</translation>
-<translation id="6414878884710400018">Відкрити Установки Системи</translation>
+<translation id="3015685033234401792">Керувати планом</translation>
+<translation id="4989337484121655457">Потрібен повний доступ до диска</translation>
+<translation id="8025559074845816210">Brave потребує повного доступу до диска, щоб імпортувати ваші закладки з Safari.</translation>
+<translation id="8515328844674404333">Дізнайтесь, як надати повний доступ до диска за допомогою налаштувань системи.</translation>
+<translation id="6414878884710400018">Відкрити налаштування системи</translation>
 <translation id="796831669370432378">Щоб додати закладку, натисніть кнопку закладки поруч з адресним рядком</translation>
-<translation id="8487693399751278191">Імпортувати закладки зараз...</translation>
-<translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки тут – на панелі закладок.</translation>
+<translation id="8487693399751278191">Імпортувати закладки...</translation>
+<translation id="2557899542277210112">Для швидкого доступу розмістіть свої закладки на панелі закладок.</translation>
 <translation id="1968543937259008435">Готові до найкращої приватності онлайн?</translation>
 <translation id="6817415381278637662">Зробіть Brave своїм типовим браузером, щоб користуватися вбудованими засобами захисту приватності на кожній відвідуваній вебсторінці.</translation>
 <translation id="8722651357687610395">Зробити Brave типовим браузером</translation>
 <translation id="7537601449003285327">Закріпити на панелі завдань</translation>
 <translation id="2307973900865360088">Залишити закріпленим</translation>
-<translation id="961012016278832836">Microsoft Edge застарів</translation>
+<translation id="961012016278832836">Застаріла версія Microsoft Edge</translation>
 <translation id="6436994631426134065">Імпортовано з <ph name="BROWSER_NAME"/>.</translation>
 <translation id="1386966479075994683">Розгорнути вкладки</translation>
 <translation id="480565261566115689">Згорнути вкладки</translation>
@@ -258,69 +263,69 @@
 <translation id="8373664339577369248">користувацький порядок</translation>
 <translation id="8120600068258956006">Додати до списку відтворення</translation>
 <translation id="650694591627983430">Медіадані на цій сторінці</translation>
-<translation id="8525248723479742219">Відтворити пізніше</translation>
-<translation id="43751811163166570">Додано в папку «<ph name="PLAYLIST_FOLDER_NAME"/>»</translation>
+<translation id="43751811163166570">Додано до теки <ph name="PLAYLIST_FOLDER_NAME"/></translation>
+<translation id="6900840851173033633">На жаль, нам не вдалося знайти жодних медіафайлів на цій сторінці.</translation>
 <translation id="4830689155681863580">Відкрити в списку відтворення</translation>
-<translation id="4735626465866524761">Змінити папку</translation>
-<translation id="8101564000331197174">Видалити зі списку відтворення</translation>
-<translation id="838254185387128227">Більше медіаданих на цій сторінці…</translation>
+<translation id="4735626465866524761">Змінити теку</translation>
+<translation id="8101564000331197174">Вилучити зі списку відтворення</translation>
+<translation id="838254185387128227">Інші медіа на цій сторінці…</translation>
 <translation id="326641288623143307">Додати вибране</translation>
 <translation id="5856970744810677796">Відкрити в списку відтворення</translation>
-<translation id="5494357917532817933">Змінити папку</translation>
-<translation id="333558915234875673">Більше медіаданих на цій сторінці…</translation>
+<translation id="5494357917532817933">Змінити теку</translation>
+<translation id="333558915234875673">Інші медіа на цій сторінці…</translation>
 <translation id="5145233969981669502">Додати вибране</translation>
-<translation id="55252794453047936">Переміщення медіафайлів</translation>
+<translation id="55252794453047936">Переміщення медіа</translation>
 <translation id="4418985925423678811">Новий список відтворення</translation>
 <translation id="385051799172605136">Назад</translation>
 <translation id="5317780077021120954">Зберегти</translation>
-<translation id="7930125899031086027">Створити та перемістити</translation>
-<translation id="2860159216666546928">Виберіть папку, у яку потрібно перемістити цей медіафайл</translation>
+<translation id="7930125899031086027">Створити й перемістити</translation>
+<translation id="2860159216666546928">Виберіть теку для переміщення цього медіа</translation>
 <translation id="9130105487623071247">Назва списку відтворення</translation>
 <translation id="1857042171340443373">Вибрано елементів: <ph name="NUM_ITEMS"/></translation>
 <translation id="3596306474342941843">Видалити список відтворення</translation>
 <translation id="7110726588168439924">Дійсно видалити цей список відтворення та весь його вміст? Цю дію неможливо скасувати.</translation>
 <translation id="8261506727792406068">Видалити</translation>
 <translation id="8152485753254079984">Новий список відтворення</translation>
-<translation id="5397019762993984652">Додати з папки «‎Відтворити пізніше»</translation>
+<translation id="5397019762993984652">Додати з теки ‎Відтворити пізніше</translation>
 <translation id="7525067979554623046">Створити</translation>
 <translation id="9065203028668620118">Редагувати</translation>
-<translation id="6527303717912515753">Надіслати</translation>
-<translation id="760410268786807021">Зберегти для оплати офлайн</translation>
-<translation id="705344722465356351">Видалити вміст, що відтворювався</translation>
+<translation id="6527303717912515753">Поширити</translation>
+<translation id="760410268786807021">Зберегти для відтворення офлайн</translation>
+<translation id="705344722465356351">Вилучити відтворений контент</translation>
 <translation id="1173894706177603556">Перейменувати</translation>
 <translation id="7765158879357617694">Перемістити</translation>
-<translation id="6648536728577053364">Видалити офлайн-дані</translation>
-<translation id="5181358966317519720">Видалити зі списку відтворення</translation>
+<translation id="6648536728577053364">Вилучити офлайн-дані</translation>
+<translation id="5181358966317519720">Вилучити зі списку відтворення</translation>
 <translation id="2377705456080309463">Переглянути оригінальну сторінку</translation>
-<translation id="158894735649719362">Найцікавіше почнеться, коли буде що відтворювати. Додайте улюблені медіафайли й відтворюйте їх будь-коли й будь-де. Навіть без підключення до мережі.</translation>
-<translation id="8422349592890097194">Створити нову папку</translation>
+<translation id="158894735649719362">Найцікавіше почнеться, коли буде що відтворювати. Додайте улюблені медіафайли й відтворюйте їх будь-коли й будь-де. Навіть офлайн.</translation>
+<translation id="8422349592890097194">Створити нову теку</translation>
 <translation id="2818704116581303039">Відкрити налаштування списку відтворення</translation>
 <translation id="6790428901817661496">Відтворити</translation>
-<translation id="1178581264944972037">Пауза</translation>
-<translation id="4477350412780666475">Наступна композиція</translation>
-<translation id="3962859241508114581">Попередня композиція</translation>
+<translation id="1178581264944972037">Призупинити</translation>
+<translation id="4477350412780666475">Наступна доріжка</translation>
+<translation id="3962859241508114581">Попередня доріжка</translation>
 <translation id="7544853251252956727">Перемішати</translation>
 <translation id="4330722796577425585">Перемотати назад</translation>
-<translation id="7481312909269577407">Переслати</translation>
+<translation id="7481312909269577407">Далі</translation>
 <translation id="2800828306627475693">Повторення вимкнено</translation>
-<translation id="1748244367114657861">Повторити відтворення одного об’єкта</translation>
-<translation id="6421906998825794164">Повторити відтворення всіх об’єктів</translation>
+<translation id="1748244367114657861">Повторити відтворення одного елемента</translation>
+<translation id="6421906998825794164">Повторити відтворення всіх елементів</translation>
 <translation id="6453210454707928697">Не вдалося відтворити елемент</translation>
-<translation id="8741852840789907931">Можливо, файл [<ph name="ITEM_NAME"/>] застарів. Ви хочете відновити його?</translation>
+<translation id="8741852840789907931">Можливо, файл [<ph name="ITEM_NAME"/>] застарів. Бажаєте його відновити?</translation>
 <translation id="6155018868740116868">Відновити</translation>
 <translation id="1727684853006449697">Програвач Brave</translation>
 <translation id="9156965752763025780">Ваші зміни почнуть діяти після наступного перезапуску Brave.</translation>
 <translation id="7179921470347911571">Перезапустити зараз</translation>
 <translation id="4472575034687746823">Початок роботи</translation>
-<translation id="8081858229109418493">Ім'я та іконка профіля</translation>
+<translation id="8081858229109418493">Ім’я та зображення профілю</translation>
 <translation id="6786747875388722282">Розширення</translation>
 <translation id="984275831282074731">Способи оплати</translation>
-<translation id="2044383478723007273">Кольори Brave</translation>
+<translation id="2044383478723007273">Колірна тема Brave</translation>
 <translation id="1807246157184219062">Світла</translation>
 <translation id="2414886740292270097">Темна</translation>
-<translation id="1360441190790440400">Така ж, як Linux</translation>
-<translation id="1336940801687497203">Такаж як Windows</translation>
-<translation id="8721331068159819483">Як і в macOS</translation>
+<translation id="1360441190790440400">Як у Linux</translation>
+<translation id="1336940801687497203">Як у Windows</translation>
+<translation id="8721331068159819483">Як у macOS</translation>
 <translation id="4171684937791228083">Завжди показувати панель інструментів у повноекранному режимі</translation>
 <translation id="1692470335103807198">Отримати більше тем</translation>
 <translation id="2906510232093002459">Типові зображення Brave</translation>
@@ -330,6 +335,7 @@
 <translation id="5860254591544742609">Показати панель заголовку</translation>
 <translation id="5371926069408837914">Розгортати вертикальну панель вкладок за наведення курсора, якщо вона згорнута</translation>
 <translation id="3367129510799209147">Режим наведення на вкладку</translation>
+<translation id="916373084491701212">Показати панель прокручування</translation>
 <translation id="515949045075831661">Показати праворуч</translation>
 <translation id="3725395376319291415">Показати ліворуч</translation>
 <translation id="2113977810652731515">Картка</translation>
@@ -368,7 +374,7 @@
 <translation id="4057614912106618659">Brave уже закріплено</translation>
 <translation id="3195845168740336657">Налаштування щитів</translation>
 <translation id="754769152790647708">Статус щитів</translation>
-<translation id="4868109105992358853">За допомогою щитів можна блокувати вистежувачі, рекламу та зчитування цифрового відбитка</translation>
+<translation id="4868109105992358853">За допомогою щитів можна блокувати стеження, рекламу та зчитування цифрового відбитка</translation>
 <translation id="5690973901138662477">Щити ввімкнено</translation>
 <translation id="4697275813919189958">Щити вимкнено</translation>
 <translation id="6303294677342628402">Щити</translation>
@@ -423,7 +429,7 @@
 <translation id="5567412479632285879">Brave Rewards вимкнено</translation>
 <translation id="413570371620795359">Відкрийте панель «Нагороди», щоб увімкнути й почати роботу</translation>
 <translation id="1051600834033686945">Відкрити всі налаштування Brave Rewards</translation>
-<translation id="8826461509529116322">Показати кнопку Brave Rewards</translation>
+<translation id="8826461509529116322">Показати кнопку Винагороди Brave</translation>
 <translation id="9185018653595759199">Блокування в соціальних медіа</translation>
 <translation id="863171915776379000">Дозвольте вхід через Facebook та вбудовані публікації</translation>
 <translation id="5165042248369837294">Дозволити вбудовані твіти Twitter</translation>
@@ -594,7 +600,7 @@
 <translation id="1369311132025451972">Автоматично переспрямовувати сайти .onion</translation>
 <translation id="6214393847480015759">У вікнах Tor Brave автоматично переходитиме на версію вебсайту .onion, якщо вона доступна.</translation>
 <translation id="1294350054292274934">Розв’язувати адреси .onion лише у вікнах Tor</translation>
-<translation id="1258903596167452221">Послуги Onion будуть недоступні поза межами вікон Tor.</translation>
+<translation id="1258903596167452221">Служби Onion будуть недоступні поза межами вікон Tor.</translation>
 <translation id="2896916411183256228">Використовує WebTorrent, щоб показувати торренти безпосередньо у браузері. Підтримує торрент файли та magnet посилання.</translation>
 <translation id="5249433283143453448">Використовуйте компонент управління цифровими правами Widevine (DRM) для перегляду захищеного потокового відео та іншого вмісту в браузері.</translation>
 <translation id="1314131187310290315">Розширення Manifest V2</translation>
@@ -644,6 +650,7 @@
 <translation id="3504157706952484145">Мережі Filecoin</translation>
 <translation id="1561541094377237745">Мережі Solana</translation>
 <translation id="7141438739990875547">Мережі Bitcoin</translation>
+<translation id="1077567586443625607">Мережі Zcash</translation>
 <translation id="3159419679550543837">Показувати тестові мережі</translation>
 <translation id="3215569562674795548">Редагування чи додавання нової мережі</translation>
 <translation id="4418993400653250511">Ідентифікатор ланцюга</translation>
@@ -727,6 +734,8 @@
 <translation id="7984721311211272523">Видалити функцію вимкнення звуку в значках динаміків на вкладках</translation>
 <translation id="6129027151000961048">Leo</translation>
 <translation id="2751872555001636931">Показувати значок Leo на бічній панелі</translation>
+<translation id="8055509865174199683">Показувати Leo в контекстному меню на вебсайтах</translation>
+<translation id="1529674267267221673">Leo відображатиметься в контекстному меню, якщо натиснути правою кнопкою миші на вебсайті. При цьому контекст із поточної вебсторінки передаватиметься до Leo.</translation>
 <translation id="8172263161008556851">Показувати запропоновані підказки під час розмови</translation>
 <translation id="1014480593522400586">Очистити дані Leo</translation>
 <translation id="8681157601856387010">Скинувши параметри помічника Leo, вам потрібно буде ще раз погодитися з умовами використання Brave
@@ -739,6 +748,9 @@
 <translation id="349846214503465941">Увімкнути список відтворення</translation>
 <translation id="7903608716704052878">Автоматично додавати файли для перегляду в режимі офлайн</translation>
 <translation id="4193768184502613558">Коли цей параметр увімкнено, медіафайли автоматично зберігаються в кеші, щоб їх можна було відтворювати без інтернет-з’єднання.</translation>
+<translation id="8950562208228589873">За замовчуванням з ОС або Quad9</translation>
+<translation id="5646330590189545860">За замовчуванням з ОС або Wikimedia</translation>
+<translation id="2026075482948458926">За замовчуванням з ОС або Cloudflare</translation>
 <translation id="6624718837376802990">Avatar Edgy Rewards</translation>
 <translation id="6617313057407561765">Avatar Edgy Brave</translation>
 <translation id="6754445808455578019">Avatar Edgy Ocean</translation>

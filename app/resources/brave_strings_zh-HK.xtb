@@ -17,7 +17,6 @@
 <translation id="2627788872035182013">按一下 Brave 選單</translation>
 <translation id="8541922081612557424">關於 Brave</translation>
 <translation id="1203500561924088507">多謝安裝。您必須先重新啟動瀏覽器，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
-<translation id="4658574652223735641">「節省記憶體」模式可讓 Brave 速度更快</translation>
 <translation id="8799570501820813406">當此分頁處於閒置狀態時，系統會釋出記憶體，加快 Brave 的運作速度。您可選擇一律不讓此網站進入閒置狀態。</translation>
 <translation id="8767381092474532098">由於此檔案有危險，因此 Brave 已禁止下載</translation>
 <translation id="4798342026247191171">設定新的 Brave 設定檔</translation>
@@ -114,6 +113,7 @@
 <translation id="8755404239607088219">Brave 無法檢查密碼，請稍後再試。</translation>
 <translation id="8880183781256147665">正在新增至 Brave…</translation>
 <translation id="3038232873781883849">正在等待安裝…</translation>
+<translation id="4503085212612536713">其他 Brave 設定檔</translation>
 <translation id="7918740962659365265">將當機報告和<ph name="UMA_LINK"/>傳送給 Brave，助我們一臂之力，讓 Brave 更臻完美</translation>
 <translation id="2332543193474246254">{NUM_DEVICES,plural, =0{當時至少有一個 Brave 擴充程式正在存取 1 部 USB 裝置}=1{至少有一個 Brave 擴充程式正在存取 1 部 USB 裝置}other{至少有一個 Brave 擴充程式正在存取 # 部 USB 裝置}}</translation>
 <translation id="5320085753638900910">您的瀏覽記錄會影響系統顯示的廣告，以及下列由系統推測的興趣。為保障您的私隱，Brave 每個月都會自動刪除您的興趣。除非您移除興趣，否則系統會重新整理興趣。</translation>
@@ -231,6 +231,7 @@
 <translation id="5994282802285556682">使用無痕模式瀏覽時，Brave 會在使用不安全的連線載入網站前顯示警告</translation>
 <translation id="300369155175407115">在試用期間，如果 Brave 隨機將您加入試用行列，您的瀏覽記錄會影響所看到的廣告，以及系統推測的以下興趣。為保障您的私隱，Brave 每個月都會自動刪除您的興趣。</translation>
 <translation id="7573068992266397941">Brave 發現一些安全性建議需要你審核</translation>
+<translation id="8174413867995118050">其他 Brave 設定檔</translation>
 <translation id="7708394612738038097">您已登入受管理的帳戶，並將管理控制權授予您的 Brave 設定檔。您的 Brave 數據 (例如應用程式、書籤、記錄、密碼和其他設定) 均將永久與 <ph name="USER_NAME"/> 建立關聯。您可以透過 Brave 帳戶資訊主頁刪除這些數據，但您無法將這些數據與其他帳戶建立關聯。<ph name="LEARN_MORE"/></translation>
 <translation id="5368118228313795342">額外代碼：<ph name="EXTRA_CODE"/>。</translation>
 <translation id="5154625106151193600">瞭解 Brave 封鎖部分檔案的原因</translation>
@@ -326,12 +327,12 @@
 <translation id="9210457680074341078">如果一併將書籤儲存在 Brave 帳戶中，便可以在 Brave 中追蹤產品價格，並在降價時收到通知</translation>
 <translation id="6676384891291319759">連線到互聯網</translation>
 <translation id="1363996462118479832">登入時發生錯誤，因此 Brave 作業系統無法同步處理您的資料。</translation>
+<translation id="5324448127277983819">Brave 讓你進一步掌控系統顯示的廣告，並限制網站能根據哪些個人資料放送個人化廣告</translation>
 <translation id="1257247502847251159">Brave 需要麥克風權限，才能執行此網站要求的功能</translation>
 <translation id="6712881677154121168">下載錯誤：<ph name="DOWNLOAD_ERROR"/>。</translation>
 <translation id="1489465648257900784">由於您的設定檔是來自較新版本的 Brave，所以系統無法使用這個檔案。
 
 這表示您可能無法使用部分功能。請指定另一個設定檔目錄，或使用較新版本的 Brave。</translation>
-<translation id="7870748924073900361">「節省記憶體」模式可讓 Brave 速度更快</translation>
 <translation id="6666624454809779082">已為您電腦上的所有使用者安裝 Brave。</translation>
 <translation id="5360050006043219962">如要透過所有裝置存取 Brave 資料，請登入並開啟同步處理功能。</translation>
 <translation id="3136039682492230890">此檔案可能不安全，因此 Brave 建議掃瞄檔案。</translation>
@@ -385,7 +386,6 @@ Brave 無法復原您的設定。</translation>
 <translation id="2827121003398607864">Brave 現在更進一步</translation>
 <translation id="7649070708921625228">說明</translation>
 <translation id="7631741717293858595">您可在 Brave 設定中進一步瞭解這些功能。</translation>
-<translation id="8678991866891573053">Brave 正在探索新功能，讓網站能在使用較少資料的情況下提供相同的瀏覽體驗</translation>
 <translation id="3343095737966473035">Brave 不是您的預設瀏覽器</translation>
 <translation id="5477319665405831211">在不同裝置上同步和設定個人化的 Brave</translation>
 <translation id="2339273275658335597">Brave 更新</translation>
@@ -393,6 +393,7 @@ Brave 無法復原您的設定。</translation>
 <translation id="7747138024166251722">安裝程式無法建立暫時目錄，請檢查可用磁碟空間與權限，以順利安裝軟件。</translation>
 <translation id="1978509466033734608">加快 Brave 的運作速度</translation>
 <translation id="6236814935154483927"><ph name="PAGE_TITLE"/> - Brave Canary</translation>
+<translation id="4104709166890675229">讓可存取你互聯網流量的使用者難以查看你瀏覽的網站。Brave 會透過安全連線在 DNS (網域名稱系統) 中查詢網站的 IP 位址。</translation>
 <translation id="1652855885539187849">此裝置上已有此帳戶的 Brave 設定檔</translation>
 <translation id="7845233973568007926">多謝安裝。您必須先重新啟動電腦，才能使用 <ph name="BUNDLE_NAME"/>。</translation>
 <translation id="79269250264141507">在網址列或搜尋框中輸入內容時，Brave 會將輸入的內容傳送至預設搜尋引擎，以便取得更切合需求的建議。此功能不會在無痕模式下啟用。</translation>

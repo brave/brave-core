@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">조회됨</translation>
 <translation id="8826352442759228526">검증된 디바이스 한도에 도달하여 Brave Rewards를 검증할 수 없습니다.</translation>
 <translation id="1221593978088944142">오류: 디바이스 한도 도달</translation>
-<translation id="3113653894794167793">죄송하지만 요청을 처리하는 중에 문제가 발생했습니다. 다시 시도하시기 바랍니다.</translation>
 <translation id="6895088073061692390">안타깝지만 자동 검사 결과 귀하의 Brave Rewards 프로필에서 비정상적인 Brave Ads 활동이 감지되어 플래깅되었습니다.</translation>
 <translation id="4229056297802204697">프로필이 플래깅되어 있어도 광고를 계속 볼 수 있지만 적립액을 지급받을 수 없습니다. Brave Rewards에 보호관리 계정도 연결할 수 없습니다.</translation>
 <translation id="5124846913141379164">프로필이 착오로 인해 플래깅되었더라도 즉시 가능한 조치는 없습니다. 프로필 플래깅은 향후 검토를 거쳐 해제됩니다.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">오류: Uphold 계정 기능 제한</translation>
 <translation id="3274650021044762770">브라우저가 Brave Rewards를 <ph name="PROVIDER"/> 계정에 연결하는 요청을 보냈으나 유효성 검증에 문제가 있습니다. <ph name="BEGIN_LINK"/>지원팀에 문의<ph name="END_LINK"/>하여 도움을 받으세요.</translation>
 <translation id="1316066811927496401">오류: 요청의 유효성을 검증할 수 없습니다.</translation>
+<translation id="7352651011704765696">문제가 생겼습니다</translation>
+<translation id="8285276813470932793">요청을 완료할 수 없습니다. 다시 시도하세요. 문제가 지속되면 <ph name="LINK_BEGIN"/>지원팀에 문의<ph name="LINK_END"/>하세요.</translation>
 <translation id="8167256685618982116"><ph name="TITLE"/> 기능을 켜면 <ph name="BEGIN_LINK1"/>이용약관<ph name="END_LINK1"/> 및 <ph name="BEGIN_LINK2"/>개인정보처리방침<ph name="END_LINK2"/>에 동의하게 됩니다.</translation>
 <translation id="8817096698141999876">보호관리 계정(ID 검증 필요)</translation>
 <translation id="1539433155512862005">보호관리 계정이란 귀하의 BAT를 믿고 맡겨 두는 타사 서비스 계정입니다.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900"><ph name="DATE"/>까지 보류 중</translation>
 <translation id="7849926087559412554">사용하고 계신 브라우저가 Brave 프라이빗 광고를 수신할 수 없습니다.</translation>
 <translation id="5177429570315095022">광고를 보려면 브라우저를 업데이트해야 합니다.</translation>
-<translation id="7352651011704765696">문제가 생겼습니다</translation>
 <translation id="4593680147181354667">진단 ID</translation>
 <translation id="3995471429906554168">진단 정보</translation>
 <translation id="752216563428219524">광고가 시작되지 않았습니다. 이 페이지를 새로 고치세요.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">리워드가 꺼졌습니다</translation>
 <translation id="3354337256330577726">자동 기부가 꺼졌습니다.</translation>
 <translation id="6727186931929643711">재시도 중지됨</translation>
-<translation id="8978461348341400550">관리 서비스:</translation>
-<translation id="7220161813676251577">관리 서비스 회원 ID:</translation>
+<translation id="6461242868382182003">계정 유형:</translation>
+<translation id="4129229983159690026">계정:</translation>
 <translation id="680983167891198932">키</translation>
 <translation id="7535087603100972091">값</translation>
 <translation id="45591635423975492">기록됨</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">경고: 이 로그 파일에는 민감한 데이터가 포함되었을 수 있습니다. 공유받을 사람을 주의하여 확인하세요.</translation>
 <translation id="7375125077091615385">유형:</translation>
 <translation id="1924618796077284366">전체 로그 다운로드</translation>
-<translation id="5362600797402074593">보호관리 계정 연결 정보</translation>
+<translation id="2129987553148729046">연결된 계정 정보</translation>
 <translation id="5457113250005438886">유효하지 않음</translation>
 <translation id="6161467863097205016">키 정보 시드:</translation>
 <translation id="5323604113525002127">로그의 마지막 {{numberOfLines} 줄을 보여 줍니다. 전체 로그를 원하면 위에서 다운로드할 수 있습니다.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">총 잔액</translation>
 <translation id="2223892939866251845">사용자 ID</translation>
 <translation id="4235360514405112390">유효함</translation>
-<translation id="3902084968737576005">지갑 주소:</translation>
+<translation id="458999179147014626">계정 예치금 주소:</translation>
 <translation id="3653417592104122757">월렛 기록</translation>
 <translation id="3339401101952651943">Rewards 정보</translation>
 <translation id="3363158483789327529">Rewards 프로필이 아직 생성되지 않음</translation>
 <translation id="476272015919848174">Rewards 지급 ID:</translation>
 <translation id="9008441690901662695">Rewards 상태:</translation>
-<translation id="8874184842967597500">연결되지 않음</translation>
-<translation id="4569155249847375786">검증 완료됨</translation>
-<translation id="6521149675246672063">연결 끊김(확인됨)</translation>
+<translation id="9069875072411692547">연결되지 않음</translation>
+<translation id="3368922792935385530">연결됨</translation>
 <translation id="5058161306698404465">생성 시 환경:</translation>
 <translation id="5856438412804207598">현재 환경:</translation>
 <translation id="5916290544882167205">Brave Software. Brave는 Brave Software의 등록 상표입니다. 사이트 이름은 사이트 소유자의 상표 또는 등록 상표일 수 있습니다.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">주의해 주세요:</translation>
 <translation id="1430915738399379752">인쇄</translation>
 <translation id="135956957367307069">귀하의 요청을 아직 처리 중입니다, 기다려주세요:</translation>
-<translation id="8725066075913043281">다시 시도</translation>
 <translation id="2600847485413879104">리워드 BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">제미니</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">WebTorrent 페이지 보는 중</translation>
 <translation id="7534079972563542000">Unstoppable Domains</translation>
 <translation id="4492298165410552103">Brave에서 Unstoppable Domains 지원을 활성화할까요?</translation>
-<translation id="9156229987230762013">Brave는 Infura를 사용하여 Unstoppable Domains에 있는 .crypto (및 .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 도메인을 방문하려고 한다는 사실을 Infura가 볼 수 있지만 다른 정보는 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
+<translation id="5015092481905019948">Brave는 <ph name="PROVIDER_NAME"/>를 사용하여 <ph name="DOMAIN_PROVIDER_NAME"/>에 있는 <ph name="DOMAIN_LIST"/> 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 도메인을 방문하려고 한다는 사실을 <ph name="PROVIDER_NAME"/>가 볼 수 있지만 다른 정보는 볼 수 없습니다. <ph name="PROVIDER_NAME"/> <ph name="BEGIN_PROVIDER_TOU_LINK"/>이용 약관<ph name="END_PROVIDER_TOU_LINK"/> 및 <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_PROVIDER_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="2789190492285945209">이더리움 이름 서비스(ENS)</translation>
 <translation id="4335039108389860301">Brave에서 Ethereum Name Service(ENS) 지원을 활성화할까요?</translation>
-<translation id="4609973808011229683">Brave는 Infura를 사용하여 Ethereum Name Service(ENS)에 있는 .eth 도메인 이름을 해석합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이 기능을 활성화하면 누군가 이들 .eth 도메인을 방문하려고 한다는 사실을 Infura가 볼 수 있지만 다른 정보는 볼 수 없습니다. Infura <ph name="BEGIN_INFURA_TOU_LINK"/>이용 약관<ph name="END_INFURA_TOU_LINK"/> 및 <ph name="BEGIN_INFURA_PRIVACY_LINK"/>개인정보 보호정책<ph name="END_INFURA_PRIVACY_LINK"/>을 참조하세요.</translation>
 <translation id="807404806385418949">ENS(Ethereum Name Service) 오프체인 룩업</translation>
 <translation id="4049590838234508776">Brave는 ENS(Ethereum Name Service) 오프체인 룩업 지원을 활성화할까요?</translation>
 <translation id="5944991147217767764">이 .eth 도메인 이름은 오프체인으로 저장되어 있어 제3자 게이트웨이로 해석합니다. ENS 오프체인 룩업을 왈성화하면 귀하가 방문하려는 .eth 도메인을 제3자 게이트웨이가 볼 수 있습니다. <ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>자세히 알아보기<ph name="END_BRAVE_LEARN_MORE_LINK"/></translation>
 <translation id="4047002754575891955">오프체인 룩업으로 계속</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Brave에서 SNS(Solana Name Service) 지원을 활성화할까요?</translation>
-<translation id="1026480261052976838">Brave는 .sol 도메인 이름을 해석하는 데 타사 서비스를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 .sol 도메인을 방문하려고 한다는 사실 외에는 해당 타사가 확인할 수 없습니다. Brave가 사용하는 타사 서비스는 무엇인지, 해당 서비스의 개인정보 보호정책은 어떻게 되는지 자세히 알아보려면 <ph name="BEGIN_SNS_WIKI_LINK"/>도움말 페이지<ph name="END_SNS_WIKI_LINK"/>를 방문하세요.</translation>
-<translation id="7378412287463452336">Infura 서버를 사용하여 계속하기</translation>
+<translation id="7769345036263036863">Brave는 <ph name="DOMAIN_LIST"/> 도메인 이름을 해석하는 데 타사 서비스를 사용합니다. Brave는 귀하의 IP 주소를 숨깁니다. 이를 활성화하면 누군가 이러한 <ph name="DOMAIN_LIST"/> 도메인을 방문하려고 한다는 사실 외에는 해당 타사가 확인할 수 없습니다. Brave가 사용하는 타사 서비스는 무엇인지, 해당 서비스의 개인정보 보호정책은 어떻게 되는지 자세히 알아보려면 <ph name="BEGIN_SNS_WIKI_LINK"/>도움말 페이지<ph name="END_SNS_WIKI_LINK"/>를 방문하세요.</translation>
+<translation id="884864496166128252"><ph name="PROVIDER_NAME"/> 서버를 사용하여 진행</translation>
 <translation id="4388873516324656141">SNS 서버를 이용하여 계속 진행</translation>
 <translation id="2356070529366658676">확인</translation>
 <translation id="59174027418879706">사용함</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">오류가 발생했습니다, 노드를 다시 설치하시기 바랍니다</translation>
 <translation id="8428368469058794536">IPFS 서비스</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">다시 시도하세요</translation>
 <translation id="1886162073868201257">IPFS 서비스 시작 오류</translation>
 <translation id="5357895013476183089">IPFS가 연결되지 않음</translation>
 <translation id="7662930734991751511">Brave 로컬 IPFS 노드를 사용하여 IPFS 리소스를 로드할 수 없습니다.</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">광고로 받은 리워드</translation>
 <translation id="5308380583665731573">연결</translation>
 <translation id="3026978804849658576">명세서 보기</translation>
-<translation id="3368922792935385530">연결됨</translation>
 <translation id="1848737374354350807">잔액</translation>
 <translation id="6516984207843289176">계정 연결</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>적립을 시작할 준비가 되셨습니까?<ph name="BOLD_END"/> 파트너 중 한 곳에 계정을 만들어 연결하세요.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">취소</translation>
 <translation id="9218424917282368512">네트워크 변경</translation>
 <translation id="7526139040829362392">계정 변경</translation>
+<translation id="8874184842967597500">연결되지 않음</translation>
 <translation id="4217695020908122747">연결된 계정</translation>
 <translation id="8497650996740651467">사용 가능한 계정</translation>
 <translation id="5677928146339483299">차단됨</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">도메인에 연결된 <ph name="COIN_TYPE_SYMBOL"/> 주소 없음</translation>
 <translation id="8971278306757462297">수신 주소가 귀하의 주소입니다.</translation>
 <translation id="3506416339268164412">수신 주소가 토큰의 컨트랙트 주소입니다.</translation>
+<translation id="7029817408221097939">유효하지 않은 통합 주소</translation>
 <translation id="6370376419663123629">주소가 정확하지 않음</translation>
 <translation id="3767148796886402380">정확한 주소인지 확인하세요(대소문자 구분함).</translation>
 <translation id="2585599787090762065">해결 방법</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/>, 월렛으로 반송됨</translation>
 <translation id="4577432071459867390">트랜잭션 실패</translation>
 <translation id="4359235192593147041">가격 변동폭이 커서 트랜잭션이 실패했습니다. 가격 변동폭이 커도 성공하려면 슬리피지 허용 오차를 늘리세요.</translation>
+<translation id="8685035971570487250">이미 Zcash 트랜잭션이 진행 중입니다. 나중에 다시 시도하세요.</translation>
 <translation id="8584830404080597280">새 거래</translation>
 <translation id="8065905913745172640">새 트랜잭션</translation>
 <translation id="9079041000600020902">오류 보기</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">월렛 잔액의 예상 변화량입니다.</translation>
 <translation id="7700365440186054030">가용 자금에 미확정 트랜잭션을 반영한 것입니다.</translation>
 <translation id="4118601537508887039">잔액 중 일부를 사용할 수 없음</translation>
+<translation id="2926654984379239545"><ph name="VALUE"/>개의 리스크를 찾았습니다.</translation>
+<translation id="8400506417619199876">컨트랙트</translation>
+<translation id="5667702863609780570">손실 위험이 있는 안전하지 않은 행동</translation>
+<translation id="6405354572620970908">이 요청은 도난에 취약해질 수 있는 악성으로 판단됩니다. 앱을 신뢰하지 않는 한 계속하지 마세요.</translation>
+<translation id="786261184916565476"><ph name="VALUE"/>개의 문제를 찾았습니다.</translation>
 <translation id="3155170474926428993">Tor 런처</translation>
 <translation id="3745016858329272300">일반 정보</translation>
 <translation id="4045404575593562245">Tor 제어 이벤트</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">현재 탭</translation>
 <translation id="7056969230130642253">다 읽으셨습니다</translation>
 <translation id="7292242212818928219">새 콘텐츠가 있습니다. 새로 고칠까요?</translation>
+<translation id="6537880577641744343">커맨더</translation>
 <translation id="7481312909269577407">앞으로</translation>
 <translation id="302781076327338683">캐시를 건너뛰고 새로고침</translation>
 <translation id="7211681214230730336">캐시를 삭제하고 새로고침</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">북마크바 항상 표시</translation>
 <translation id="2960757369920422313">NTP 위에 북마크바 표시</translation>
 <translation id="522953399371747698">북마크바 숨기기</translation>
+<translation id="134184943774258988">모든 북마크 버튼 표시 여부 토글</translation>
 <translation id="2158862020143233462">Shields 토글</translation>
 <translation id="4610630726762318759">자바스크립트 토글</translation>
 <translation id="188822869499214197">재생목록 버블 표시</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">답변에 페이지 맥락 사용</translation>
 <translation id="8599503173207256429">이 페이지에 대해 물어보시려면 토글하여 켜세요. 입력하신 메시지와 함께 콘텐츠가 Brave 레오에게 전송됩니다.</translation>
 <translation id="318819763888864209">모든 구독은 자동 갱신되지만, 갱신 전 언제든지 취소할 수 있습니다.</translation>
+<translation id="5091223967610958">현재 보고 있는 페이지의 호스트 이름(<ph name="HOST_NAME"/>)을 공유하여 레오 개선에 도움을 줍니다.</translation>
+<translation id="8732450785281947197">레오 AI 도구</translation>
+<translation id="6535533770697728087">빠른 액션</translation>
+<translation id="3237710083340813756">재기술</translation>
+<translation id="1252805982772190086">짧은 게시물</translation>
+<translation id="2087555497198267113">긴 게시물</translation>
+<translation id="4170307327863874820">블로그 게시물</translation>
+<translation id="1308864651455614281">단문</translation>
+<translation id="5258847587364431118">문단</translation>
+<translation id="6147279996212084542">설명</translation>
+<translation id="1201408613803664464">개선</translation>
+<translation id="1310396869741602366">어조 변경</translation>
+<translation id="2200877041397136930">전문적</translation>
+<translation id="5627656897244314351">설득적</translation>
+<translation id="2169719065373500634">학술적</translation>
+<translation id="2942492342931589800">비격식</translation>
+<translation id="8485016913912679738">재미있는</translation>
+<translation id="163826442096818926">축약</translation>
+<translation id="42981349822642051">펼치기</translation>
+<translation id="3130793786899299931">길이 변경</translation>
+<translation id="6320643499534852464">소셜 미디어</translation>
 <translation id="6303294677342628402">보호</translation>
 <translation id="8458987127502506209">Brave Shields 활성화</translation>
 <translation id="7509914170164691086">다음에 대해 실드 <ph name="LINK_BEFORE"/>활성화됨<ph name="LINK_AFTER"/></translation>
@@ -2084,7 +2113,7 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 하지만 이 헬퍼 서비스가 작동되고 있지 않은데, 보호받지 않는 상태로 두면 좋지 않습니다. 브라우저 내 DNS 설정을 변경하여 이 노출로부터 보호하도록 조치했습니다. VPN이 연결된 동안에는 이 설정이 적용되며 변경할 수 없습니다.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 브라우저를 재시작하기만 하면 됩니다.
+<translation id="8810743613883230732">WireGuard 연결에 문제가 있는 것 같습니다. 안정적인 VPN을 위해 IKEv2 폴백을 활성화하시겠습니까? 설정을 변경하기만 하면 됩니다.
 
 호환성 또는 구성에 도움이 필요하십니까? 지원팀에 문의하시면 친절히 안내해드리겠습니다.
 언제든 brave://settings/system 페이지에서 WireGuard로 되돌리실 수 있습니다.
@@ -2094,7 +2123,7 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">이 경고를 다시 표시하지 않습니다.</translation>
 <translation id="2740531572673183784">확인</translation>
-<translation id="7896201779114201779">브라우저 재시작</translation>
+<translation id="7423206764347669977">설정 변경</translation>
 <translation id="9061845622728745852">시간대:</translation>
 <translation id="8295393906499561642">세션 만료됨</translation>
 <translation id="3312623558576021182"><ph name="BRAVE_ACCOUNT_BEGIN"/>Brave 계정<ph name="BRAVE_ACCOUNT_END"/>에 로그인하고 VPN 연결을 새로 고치세요.</translation>
@@ -2115,4 +2144,5 @@ Brave에는 VPN 연결에서 DNS 쿼리가 생성되는 방식을 필터링하�
 <translation id="1538335063514960365">여기서 열기 버튼, Enter를 누르면 기존 탭으로 전환하지 않고 이 URL을 현재
     탭에서 열기</translation>
 <translation id="451189393813405346">레오에게 묻기</translation>
+<translation id="8525248723479742219">나중에 재생</translation>
 </translationbundle>

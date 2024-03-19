@@ -231,7 +231,6 @@
 <translation id="6805660603861526473">Sett</translation>
 <translation id="8826352442759228526">Dina Brave Rewards kan inte verifieras eftersom du har nått den maximala gränsen för verifierade enheter.</translation>
 <translation id="1221593978088944142">Fel: Teckengränsen har nåtts</translation>
-<translation id="3113653894794167793">Tyvärr uppstod ett problem när din begäran skulle behandlas. Vänligen försök igen.</translation>
 <translation id="6895088073061692390">Tyvärr flaggades din Brave Rewards-profil eftersom våra automatiska kontroller hittade en oväntad Brave Ads-aktivitet.</translation>
 <translation id="4229056297802204697">Medan din profil är flaggad kan du fortsätta att se annonser, men du kan inte ta emot utbetalningar. Du kommer inte heller att kunna ansluta ett depåkonto till Brave Rewards.</translation>
 <translation id="5124846913141379164">Det är möjligt att din profil flaggades av misstag och att ingen omedelbar åtgärd krävs från din sida. Flaggan på din profil kan komma att tas bort i framtiden.</translation>
@@ -255,6 +254,8 @@
 <translation id="6996157559236886133">Fel: Begränsad funktionalitet för Uphold-konto</translation>
 <translation id="3274650021044762770">Det gick inte att validera webbläsarens begäran om att ansluta Brave Rewards till ditt <ph name="PROVIDER"/>-konto. Du kan <ph name="BEGIN_LINK"/>kontakta supporten<ph name="END_LINK"/> om du behöver hjälp.</translation>
 <translation id="1316066811927496401">Fel: Begäran kunde inte verifieras</translation>
+<translation id="7352651011704765696">Något gick fel</translation>
+<translation id="8285276813470932793">Vi kunde inte slutföra din begäran. Försök igen och <ph name="LINK_BEGIN"/>kontakta supporten<ph name="LINK_END"/> om problemet kvarstår.</translation>
 <translation id="8167256685618982116">Genom att aktivera <ph name="TITLE"/> godkänner du <ph name="BEGIN_LINK1"/>Användarvillkoren<ph name="END_LINK1"/> och <ph name="BEGIN_LINK2"/>Integritetspolicyn<ph name="END_LINK2"/>.</translation>
 <translation id="8817096698141999876">Depåkonton (kräver id-verifiering)</translation>
 <translation id="1539433155512862005">Depåkonton är konton hos betrodda tredjepartstjänster som håller dina BAT åt dig.</translation>
@@ -273,7 +274,6 @@
 <translation id="1892970806832316900">Väntande tills <ph name="DATE"/></translation>
 <translation id="7849926087559412554">Hoppsan! Din webbläsare kan inte ta emot privata annonser från Brave.</translation>
 <translation id="5177429570315095022">För att fortsätta visa annonser behöver din webbläsare uppdateras.</translation>
-<translation id="7352651011704765696">Något gick fel</translation>
 <translation id="4593680147181354667">Diagnostik-id</translation>
 <translation id="3995471429906554168">Information om diagnostik</translation>
 <translation id="752216563428219524">Annonser har inte initierats, uppdatera sidan.</translation>
@@ -300,8 +300,8 @@
 <translation id="386483240851194811">Rewards stängdes av</translation>
 <translation id="3354337256330577726">Automatiska bidrag stängdes av</translation>
 <translation id="6727186931929643711">Slutade försöka</translation>
-<translation id="8978461348341400550">Custodian:</translation>
-<translation id="7220161813676251577">Custodian medlems-ID:</translation>
+<translation id="6461242868382182003">Kontotyp:</translation>
+<translation id="4129229983159690026">Konto:</translation>
 <translation id="680983167891198932">Nyckel</translation>
 <translation id="7535087603100972091">Värde</translation>
 <translation id="45591635423975492">Loggat</translation>
@@ -309,7 +309,7 @@
 <translation id="1792453439109180849">VARNING: Den här loggfilen kan innehålla känsliga data. Var försiktig med vem du delar den.</translation>
 <translation id="7375125077091615385">Typ:</translation>
 <translation id="1924618796077284366">Ladda ned hela loggen</translation>
-<translation id="5362600797402074593">Anslutningsinformation för depåkonto</translation>
+<translation id="2129987553148729046">Info om anslutna konton</translation>
 <translation id="5457113250005438886">Ogiltig</translation>
 <translation id="6161467863097205016">Nyckelinfo seed:</translation>
 <translation id="5323604113525002127">Vi visar de sista [[numberOfLines]] raderna i loggen. Om du vill ha hela loggen kan du ladda ner den ovan.</translation>
@@ -347,15 +347,14 @@
 <translation id="6672180611914406778">Totalt saldo</translation>
 <translation id="2223892939866251845">Användar-ID</translation>
 <translation id="4235360514405112390">Giltig</translation>
-<translation id="3902084968737576005">Plånboksadress:</translation>
+<translation id="458999179147014626">Adress för kontoinsättning:</translation>
 <translation id="3653417592104122757">Plånbokshistorik</translation>
 <translation id="3339401101952651943">Rewards-info</translation>
 <translation id="3363158483789327529">Rewards-profil har inte skapats ännu</translation>
 <translation id="476272015919848174">Rewards betalningsinfo:</translation>
 <translation id="9008441690901662695">Rewards-status:</translation>
-<translation id="8874184842967597500">Inte ansluten</translation>
-<translation id="4569155249847375786">Verifierad</translation>
-<translation id="6521149675246672063">Frånkopplad (verifierad)</translation>
+<translation id="9069875072411692547">Inte ansluten</translation>
+<translation id="3368922792935385530">Ansluten</translation>
 <translation id="5058161306698404465">Skapandemiljö:</translation>
 <translation id="5856438412804207598">Nuvarande miljö:</translation>
 <translation id="5916290544882167205">Brave Software. Brave är ett registrerat varumärke tillhörande Brave Software. Namn på sajter kan vara skyddade namn eller registrerade varumärken tillhörande respektive sajts ägare.</translation>
@@ -413,7 +412,6 @@
 <translation id="5082474983463379713">Vänligen observera:</translation>
 <translation id="1430915738399379752">Skriv ut</translation>
 <translation id="135956957367307069">Förfrågan behandlas. Vänta.</translation>
-<translation id="8725066075913043281">Försök igen</translation>
 <translation id="2600847485413879104">Belönar BAT</translation>
 <translation id="3439853736976204026">bitFlyer</translation>
 <translation id="8533411848724153701">Gemini</translation>
@@ -482,18 +480,18 @@
 <translation id="326118736933420687">Du visar en WebTorrent-sida</translation>
 <translation id="7534079972563542000">Ostoppbara domäner</translation>
 <translation id="4492298165410552103">Aktivera stöd för ostoppbara domäner i Brave?</translation>
-<translation id="9156229987230762013">Brave kommer att använda Infura för uppslag av .crypto-domännamn (och även .x, .nft, .dao, .wallet, .blockchain, .bitcoin, .zil) som finns på Unstoppable Domains. Brave döljer din IP-adress. Om du aktiverar detta kommer Infura att se att någon försöker besöka dessa domäner men inget annat. Se Infuras<ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och<ph name="BEGIN_INFURA_PRIVACY_LINK"/>sekretesspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
+<translation id="5015092481905019948">Brave kommer att använda <ph name="PROVIDER_NAME"/> för att matcha <ph name="DOMAIN_LIST"/>-domännamn som finns på <ph name="DOMAIN_PROVIDER_NAME"/>. Brave döljer din IP-adress. Om du aktiverar detta kommer <ph name="PROVIDER_NAME"/> att se att någon försöker besöka dessa domäner men inget annat. Se <ph name="PROVIDER_NAME"/>s <ph name="BEGIN_PROVIDER_TOU_LINK"/>användarvillkor<ph name="END_PROVIDER_TOU_LINK"/> och <ph name="BEGIN_PROVIDER_PRIVACY_LINK"/>sekretesspolicy<ph name="END_PROVIDER_PRIVACY_LINK"/>.</translation>
 <translation id="6513892817556267573">Ethereum Name Service</translation>
+<translation id="2789190492285945209">Ethereum Name Service (ENS)</translation>
 <translation id="4335039108389860301">Aktivera stöd för Ethereum Name Service (ENS) i Brave?</translation>
-<translation id="4609973808011229683">Brave kommer att använda Infura för uppslag av .eth-domännamn som finns på Ethereum Name Service (ENS). Brave döljer din IP-adress. Om du aktiverar detta kommer Infura att se att någon försöker besöka dessa .eth-domäner men inget annat. Se Infuras<ph name="BEGIN_INFURA_TOU_LINK"/>användningsvillkor<ph name="END_INFURA_TOU_LINK"/> och<ph name="BEGIN_INFURA_PRIVACY_LINK"/>sekretesspolicy<ph name="END_INFURA_PRIVACY_LINK"/>.</translation>
 <translation id="807404806385418949">Ethereum Name Service-sökning utanför kedja</translation>
 <translation id="4049590838234508776">Aktivera stöd för Ethereum Name Service (ENS) sökning utanför kedja i Brave?</translation>
 <translation id="5944991147217767764">Detta .eth-domännamn lagras utanför kedjan och namnuppslaget görs av en tredjepartsgateway. Om du aktiverar ENS offchain-sökning kommer tredjepartsgatewayen att se att du försöker besöka .eth-domänen.<ph name="BEGIN_BRAVE_LEARN_MORE_LINK"/>Läs mer<ph name="END_BRAVE_LEARN_MORE_LINK"/>.</translation>
 <translation id="4047002754575891955">Fortsätt med sökning utanför kedja</translation>
 <translation id="531747189990625622">Solana Name Service</translation>
 <translation id="1090584614351290462">Aktivera stöd för Solana Name Service (SNS) i Brave?</translation>
-<translation id="1026480261052976838">Brave kommer att använda en tredje part för att matcha .sol-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer den tredje parten att se att någon försöker besöka dessa .sol-domäner men inget annat. För mer information om vilka tredje parter vi använder och deras sekretesspolicyer, se vår <ph name="BEGIN_SNS_WIKI_LINK"/>hjälpsida<ph name="END_SNS_WIKI_LINK"/>.</translation>
-<translation id="7378412287463452336">Fortsätt med Infura-server</translation>
+<translation id="7769345036263036863">Brave kommer att använda en tredje part för att matcha <ph name="DOMAIN_LIST"/>-domännamn. Brave döljer din IP-adress. Om du aktiverar detta kommer den tredje parten att se att någon försöker besöka dessa <ph name="DOMAIN_LIST"/>-domäner men inget annat. För mer information om vilka tredje parter vi använder och deras sekretesspolicyer, se vår <ph name="BEGIN_SNS_WIKI_LINK"/>hjälpsida<ph name="END_SNS_WIKI_LINK"/>.</translation>
+<translation id="884864496166128252">Fortsätt med <ph name="PROVIDER_NAME"/>-server</translation>
 <translation id="4388873516324656141">Fortsätt med en SNS-server</translation>
 <translation id="2356070529366658676">Fråga</translation>
 <translation id="59174027418879706">Aktiverat</translation>
@@ -545,6 +543,7 @@
 <translation id="5433704526290922623">Ett fel uppstod. Försök att installera noden igen</translation>
 <translation id="8428368469058794536">IPFS-tjänst</translation>
 <translation id="7691598647605453992">IPFS</translation>
+<translation id="8725066075913043281">Försök igen</translation>
 <translation id="1886162073868201257">IPFS-tjänst startfel</translation>
 <translation id="5357895013476183089">IPFS är inte ansluten</translation>
 <translation id="7662930734991751511">Det går inte att läsa in IPFS-resurser med Braves lokala IPFS-nod</translation>
@@ -606,7 +605,6 @@
 <translation id="590733288489975971">Belöningar från Ads</translation>
 <translation id="5308380583665731573">Anslut</translation>
 <translation id="3026978804849658576">Visa utdrag</translation>
-<translation id="3368922792935385530">Ansluten</translation>
 <translation id="1848737374354350807">Saldo</translation>
 <translation id="6516984207843289176">Anslut konto</translation>
 <translation id="7415051511657673556"><ph name="BOLD_BEGIN"/>Är du redo att börja tjäna pengar?<ph name="BOLD_END"/> Anslut eller skapa ett konto med någon av våra partner.</translation>
@@ -1042,6 +1040,7 @@
 <translation id="2391762656119864333">Återkalla</translation>
 <translation id="9218424917282368512">Ändra nätverk</translation>
 <translation id="7526139040829362392">Byt konto</translation>
+<translation id="8874184842967597500">Inte ansluten</translation>
 <translation id="4217695020908122747">Anslutna konton</translation>
 <translation id="8497650996740651467">Tillgängliga konton</translation>
 <translation id="5677928146339483299">Blockerade</translation>
@@ -1125,6 +1124,7 @@
 <translation id="8684908590733515816">Domänen har inte en länkad<ph name="COIN_TYPE_SYMBOL"/>-adress</translation>
 <translation id="8971278306757462297">Mottagaradressen är din egen adress</translation>
 <translation id="3506416339268164412">Mottagaradressen är ett tokens kontraktadress</translation>
+<translation id="7029817408221097939">Ogiltig adress</translation>
 <translation id="6370376419663123629">Adressen verkar inte vara korrekt</translation>
 <translation id="3767148796886402380">Kontrollera att adressen verkar rätt (t.ex. bokstäver med gemener eller versaler).</translation>
 <translation id="2585599787090762065">Hur kan jag lösa detta?</translation>
@@ -1259,6 +1259,7 @@
 <translation id="3183790760060544368"><ph name="VALUE"/> har returnerats till din plånbok</translation>
 <translation id="4577432071459867390">Transaktionen misslyckades</translation>
 <translation id="4359235192593147041">Transaktionen misslyckades på grund av en stor prisrörelse. Öka avvikelsetoleransen för att lyckas vid en större prisrörelse.</translation>
+<translation id="8685035971570487250">Det pågår redan en Zcash-transaktion. Försök igen senare.</translation>
 <translation id="8584830404080597280">Ny transaktion</translation>
 <translation id="8065905913745172640">Ny transaktion</translation>
 <translation id="9079041000600020902">Visa fel</translation>
@@ -1622,6 +1623,11 @@
 <translation id="2515906149804238711">En väntande förändring i ditt plånbokssaldo.</translation>
 <translation id="7700365440186054030">Dina tillgängliga medel plus eventuella ännu inte bekräftade transaktioner.</translation>
 <translation id="4118601537508887039">Vissa saldon kan vara otillgängliga</translation>
+<translation id="2926654984379239545">Vi hittade <ph name="VALUE"/> risker.</translation>
+<translation id="8400506417619199876">Kontrakt</translation>
+<translation id="5667702863609780570">Osäker åtgärd med risk för förlust</translation>
+<translation id="6405354572620970908">Denna begäran verkar vara skadlig och kan göra dig sårbar för stöld. Fortsätt inte om du inte litar på appen.</translation>
+<translation id="786261184916565476">Vi hittade <ph name="VALUE"/> problem.</translation>
 <translation id="3155170474926428993">Tor launcher</translation>
 <translation id="3745016858329272300">Allmän information</translation>
 <translation id="4045404575593562245">Tor kontrollhändelse</translation>
@@ -1699,6 +1705,7 @@
 <translation id="7948579849190819732">Aktuell flik</translation>
 <translation id="7056969230130642253">Du har kommit ikapp</translation>
 <translation id="7292242212818928219">Nytt innehåll tillgängligt. Ladda om?</translation>
+<translation id="6537880577641744343">Kommandon</translation>
 <translation id="7481312909269577407">Framåt</translation>
 <translation id="302781076327338683">Läs in sidan på nytt utan att använda cache</translation>
 <translation id="7211681214230730336">Läs in på nytt och rensa cache</translation>
@@ -1819,6 +1826,7 @@
 <translation id="5950760360751948276">Visa alltid bokmärkesfält</translation>
 <translation id="2960757369920422313">Visa bokmärkesfält på ny fliksida</translation>
 <translation id="522953399371747698">Dölj bokmärkesfält</translation>
+<translation id="134184943774258988">Växla synlighet för knappen Alla bokmärken</translation>
 <translation id="2158862020143233462">Växla Shields</translation>
 <translation id="4610630726762318759">Växla javascript</translation>
 <translation id="188822869499214197">Visa spellista-bubbla</translation>
@@ -1949,6 +1957,27 @@
 <translation id="1173570303649278801">Använd sidkontext för svar</translation>
 <translation id="8599503173207256429">Klicka vidare för att fråga om denna sida. Sidans innehåll kommer att skickas till Brave Leo tillsammans med dina meddelanden.</translation>
 <translation id="318819763888864209">Alla prenumerationer förnyas automatiskt men kan avbrytas när som helst före förnyelsen.</translation>
+<translation id="5091223967610958">Dela värdnamnet för sidan du är på (<ph name="HOST_NAME"/>) och hjälp oss att göra Leo bättre.</translation>
+<translation id="8732450785281947197">Leo AI-verktyg</translation>
+<translation id="6535533770697728087">Snabbåtgärder</translation>
+<translation id="3237710083340813756">Skriva om</translation>
+<translation id="1252805982772190086">Kort inlägg</translation>
+<translation id="2087555497198267113">Långt inlägg</translation>
+<translation id="4170307327863874820">Blogginlägg</translation>
+<translation id="1308864651455614281">Tagline</translation>
+<translation id="5258847587364431118">Parafrasera</translation>
+<translation id="6147279996212084542">Förklara</translation>
+<translation id="1201408613803664464">Förbättra</translation>
+<translation id="1310396869741602366">Ändra ton</translation>
+<translation id="2200877041397136930">Professionell</translation>
+<translation id="5627656897244314351">Övertalande</translation>
+<translation id="2169719065373500634">Akademisk</translation>
+<translation id="2942492342931589800">Avslappnad</translation>
+<translation id="8485016913912679738">Rolig</translation>
+<translation id="163826442096818926">Korta</translation>
+<translation id="42981349822642051">Expandera</translation>
+<translation id="3130793786899299931">Ändra längd</translation>
+<translation id="6320643499534852464">Sociala medier</translation>
 <translation id="6303294677342628402">Sköldar</translation>
 <translation id="8458987127502506209">Aktivera Brave Sköld</translation>
 <translation id="7509914170164691086">Shields är UPP <ph name="LINK_BEFORE"/> för <ph name="LINK_AFTER"/></translation>
@@ -2084,17 +2113,17 @@ I Brave finns en hjälptjänst som skyddar dig från sådana avslöjanden genom 
 Denna hjälptjänst körs dock inte på din enhet – och vi vill inte att du ska vara oskyddad. Vi har därför ändrat DNS-inställningarna i webbläsaren för att skydda dig mot sådan exponering. Inställningarna kommer att vara aktiva och låsta medan du är ansluten via VPN.
 
 <ph name="LEARN_MORE"/></translation>
-<translation id="5004375364898143117">Det verkar som om det finns några problem med WireGuard-anslutningen. Vill du aktivera IKEv2 reserv för en pålitlig VPN? Starta bara om webbläsaren.
+<translation id="8810743613883230732">Det verkar som om det finns några problem med WireGuard-anslutningen. Vill du aktivera IKEv2-reserv för ett pålitligt VPN? Ändra helt enkelt inställningarna.
 
-Behöver du hjälp med kompatibilitet eller konfiguration? Kontakta vårt supportteam.
-Du kan alltid återgå till WireGuard på brave://settings/system.
+Behöver du hjälp med kompatibilitet eller konfiguration? Kontakta vårt vänliga supportteam.
+Du kan alltid återgå till WireGuard i brave://settings/system.
 
-Låt oss få dig ansluten!
+Dags att ansluta dig!
 
 <ph name="LEARN_MORE"/></translation>
 <translation id="1657858090675311947">Varna mig inte längre om detta.</translation>
 <translation id="2740531572673183784">OK</translation>
-<translation id="7896201779114201779">Starta om webbläsaren</translation>
+<translation id="7423206764347669977">Ändra inställningarna</translation>
 <translation id="9061845622728745852">Tidszon:</translation>
 <translation id="8295393906499561642">Sessionen har upphört</translation>
 <translation id="3312623558576021182">Logga in till ditt <ph name="BRAVE_ACCOUNT_BEGIN"/>Brave-konto<ph name="BRAVE_ACCOUNT_END"/> för att uppdatera VPN-sessionen.</translation>
@@ -2114,4 +2143,5 @@ Låt oss få dig ansluten!
 tryck på Tab och sedan på Retur för att växla till den öppna fliken</translation>
 <translation id="1538335063514960365">Öppna här-knapp. tryck på Retur för att öppna den här webbadressen på den aktuella fliken, i stället för att växla till den befintliga fliken</translation>
 <translation id="451189393813405346">Fråga Leo</translation>
+<translation id="8525248723479742219">Spela upp senare</translation>
 </translationbundle>

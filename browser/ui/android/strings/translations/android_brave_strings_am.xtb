@@ -17,6 +17,7 @@
 <translation id="2965798296974325760">ሽልማቶችን መጠቀም ይጀምሩ</translation>
 <translation id="8220484609979012449">\n\nየእርስዎን Web3 wallet በመጠቀም አሁንም ይህን ለፈጠረ ሰው የክሪፕቶ አስተዋጽዖዎችን መላክ ይችላሉ።</translation>
 <translation id="6385969012847057348">ይህ ፈጣሪ <ph name="CUSTODIAN"/>አስተዋጾን መቀበል አይችልም።</translation>
+<translation id="735733310778086206">ይህ ፈጣሪ የWeb3 ወይም የcrypto አስተዋጾዎችን ለመቀበል ገና አልተዘጋጀም።</translation>
 <translation id="6268134562674951939">በቂ የሆኑ ቶከኖች የሉዎትም።</translation>
 <translation id="4529874892536380156">ይህንን ወርሃዊ የሚደጋገም መዋጮ ያድርጉ።</translation>
 <translation id="5562948772940025260">የBrave Rewards ቀሪ ሒሳቦን በመጠቀም እስከ 1<ph name="AMOUNT"/> BAT ድረስ መላክ ይችላሉ።</translation>
@@ -322,7 +323,7 @@
 <translation id="2614069607859982576">አሁን ያለውን የተማሳሰለ መሳሪያ በመጠቀም፣ የ Brave ቅንብሮችን ከፍተው ወደ ቅንብሮች &gt; አስምር ይሂዱና ያመሳስሉ። "መሳሪያ አክል" የሚለውን መርጠው በማያው ላይ የሚታየውን የ QR ኮድ ስካን ያድርጉ።</translation>
 <translation id="5241263629636958324">ወደ ቅንጥብ ሰሌዳ ተገልብጧል</translation>
 <translation id="5817918615728894473">አጣምር</translation>
-<translation id="7090325819305486658">የውሂብ ምርጫዎች</translation>
+<translation id="3429575397891106447">የማመሳሰል አማራጮች</translation>
 <translation id="1680065323266179640">የማመሳሰል መለያን ሰርዝ</translation>
 <translation id="3792563952903751704">መለያዎን መሰረዝ የተመሰጠረውን ውሂብዎን ከ Brave አገልጋዮች ያስወግዳል እና በሁሉም የተገናኙ መሳሪያዎችህ ላይ ማመሳሰልን ያሰናክላል። ግን በእነዚያ መሳሪያዎች ላይ በአካባቢው የተከማቸውን ውሂብ አይሰርዝም።
   ይህ ስረዛ ዘላቂ ሲሆን ውሂቡን መልሶ ለማግኘት ምንም መንገድ የለም። ማመሳሰልን እንደገና ለመጠቀም ከወሰኑ አዲስ መለያ መፍጠርና እያንዳንዱን መሳሪያ አንድ በአንድ እንደገና ማከል ያስፈልግዎታል።</translation>
@@ -595,14 +596,18 @@
 <translation id="1483493594462132177">ላክ</translation>
 <translation id="538450413584738399">ይለውጡ</translation>
 <translation id="1366855498335432549">ማጠራቀም</translation>
-<translation id="1420318137760245955">ወደ አዲሱ Brave ዋሌት እንኳን በደህና መጡ</translation>
-<translation id="8339846196588658366">የ crypto ንብረቶችን በራሶ ቁጥጥር ሥር ያድርጉ እና የፖርትፎሊዮ አፈጻጸምን ይከታተሉ። ከ Brave ግላዊነት አሳሽ ሁሉ ደህና ነው።</translation>
-<translation id="4472575034687746823">ይጀምሩ</translation>
+<translation id="4556086616242530072">የአሳሽ ዋና አካል። \nSelf-custody.\nእና ባለብዙ ሰንሰለት።</translation>
+<translation id="7909462264772842773">የእርስዎን crypto እና NFTs ይቆጣጠሩ። Brave Wallet Ethereum፣ EVM ሰንሰለቶችን፣ Solana፣ Filecoin እና ሌሎችንም ይደግፋል።</translation>
+<translation id="165255193061631296">አዲስ የገንዘብ መያዣ ይፈልጋሉ?</translation>
+<translation id="3485737865439729577">በደቂቃዎች ውስጥ  Brave Wallet ን ይጀምሩ</translation>
 <translation id="2759836790106646094">አሁን ዋሌቶን ባክአፕ ያድርጉ!</translation>
 <translation id="1078873179929044999">በቀጣዩ ደረጃ ፣ ቀዳሚ የክሪፕቶ መለያዎችዎን መመለስ የሚችሉበትን የ12 ቃል የዳግም መመለሻ ሀረግ ያያሉ። ድህንነቱ በተጠበቀ ቦታ ያስቀምጡት። የይለፍ ቃልዎ ቢረሳ፣ ቢጠፋ ወይም መሳሪያዎ ቢሰረቅ ወይም ዋሌት ለመቀየር ከፈለጉ የዳግም መመለሻ ሀረግ መለያዎን ዳግም ለመድረስ ብቸኛው መንገድ ነው።</translation>
 <translation id="2359808026110333948">ቀጥል</translation>
 <translation id="5488357322146334497">መልዕክት</translation>
 <translation id="1904000155026201268">የማገገሚያ ሀረግ ከጠፋብኝ ’t በማሸነፍ የ crypto ቦርሳዬን ማግኘት እንደማልችል ተረድቻለሁ።</translation>
+<translation id="5333225216561354793">ከታች ላሉት ነገሮች እውቅና እንዲሰጡ እንጠይቃለን።</translation>
+<translation id="1645800479814134195">ይህ በራስ ቁጥጥር ስር ያለ የገንዘብ መያዣ መሆኑን እና ማንኛውም ተያያዥ ገንዘቦች፣ ንብረቶች ወይም መለያዎች እንዲሁም ለገንዘብ መያዣዬ ዋስትና ለመስጠት፣ ለመጠበቅ እና መጠባበቂያ ለማስቀመጥ ተገቢ እርምጃ የመውሰድ ኃላፊነት የእኔ የብቻዬ መሆኑን ተረድቻለሁ። Brave በእኔ ምትክ የገንዘብ መያዣዬን ማግኘት ወይም ግብይቶችን መቀልበስ እንደማይችል እና የእኔ የመልሶ ማግኛ ሀረግ የጠፋ የይለፍ ቃል፣ የተሰረቀ መሳሪያ ወይም ተመሳሳይ ሁኔታ ሲያጋጥም መልሶ ማግኘት የሚቻልበት ብቸኛው መንገድ እንደሆነ ተረድቻለሁ።</translation>
+<translation id="4565891212173086999">የአጠቃቀም<ph name="CLICK_START"/> ውሉን<ph name="CLICK_END"/> አንብቤ ተስማምቻለሁ።</translation>
 <translation id="3933122286596948824">የእርስዎ የመልሶ ማግኛ ሓረግ</translation>
 <translation id="5077747669435508720">ከዚህ በታች በሚታየው ትክክለኛ ቅደም ተከተል እነዚህን ቃላት ይፃፉ ወይም ይቅዱ እና ደህንነቱ በተጠበቀ ቦታ ያስቀምጧቸው። የተረሳ የይለፍ ቃል ፣ የጠፋ ወይም የተሰረቀ መሣሪያ ቢኖር ወይም walletsን ለመለወጥ ከፈለጉ የመለያ መዳረሻን መልሶ የማገገሚያ ሐረግዎ ብቸኛው መንገድ ነው።</translation>
 <translation id="2708402071160162126">ማስጠንቀቂያ - የመልሶ ማግኛ ሐረግዎን በጭራሽ አያጋሩ። ይህ ሐረግ ያለው ማንኛውም ሰው ንብረትዎን ለዘላለም ሊወስድ ይችላል።</translation>
@@ -647,6 +652,9 @@
 <translation id="3747079125031086337">በመልሶ ማግኛ ሐረግዎ ውስጥ ያሉትን ቃላት በትክክለኛው ቅደም ተከተል ይምረጡ።</translation>
 <translation id="6518133107902771759">አረጋግጥ</translation>
 <translation id="3157931365184549694">እነበረበት መልስ</translation>
+<translation id="5844138175312846408">ቀድሞውኑ የገንዘብ መያዣ አለዎት?</translation>
+<translation id="2502258949541727762">ከመጀመራችን በፊት</translation>
+<translation id="5981303441790732480">ነባር የገንዘብ መያዣዎን ያስመጡ</translation>
 <translation id="9111102763498581341">ክፈት</translation>
 <translation id="6657585470893396449">የይለፍ ቃል፦</translation>
 <translation id="5619264711680220002">Biometric ክፈት</translation>
@@ -665,7 +673,7 @@
 <translation id="5483736362376139517">1 ዓመት</translation>
 <translation id="6979737339423435258">የምንጊዜም</translation>
 <translation id="6284218950354553099">የእለታዊ ፒንጅ ኣጠቃቀም በራስ-ሰር ወደ Brave  ላክ</translation>
-<translation id="5288333155754958121">ይህ ስም አልባ፣ የግል ፒንጅ፣ Brave ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
+<translation id="2181060149810222381">ይህ የግል ፒንግ Brave ንቁ ተጠቃሚዎችን እንዲገምት ያስችለዋል።</translation>
 <translation id="3819257035322786455">ምትክ</translation>
 <translation id="4608713693379664295">ዋና የ ክሪፕቶ መለያዎች</translation>
 <translation id="4003821417160006384">ሁለተኛ መለያዎች</translation>
@@ -1216,5 +1224,11 @@
 <translation id="6637015365469044269">አሁን አሻሽል</translation>
 <translation id="614530507403667291">ነባሪ ሞዴል ለአዳዲስ ውይይቶች</translation>
 <translation id="4071849832011229600">ነባሪ ሞዴል</translation>
+<translation id="4185473179105062442">BATን በቀጥታ በራስ ወደሚተዳደር የ crypto አድራሻ ይቀበሉ</translation>
+<translation id="5802986777701714573">ወርሃዊ የBAT ሽልማቶችን የሚያገኙበት አዲስ መንገድ ጨምረናል። አሁን ገቢ ለመጀመር ከአጋሮቻችን  ከአንዱ አካውንት ጋር ያገናኙ ወይም አዲስ ራስን ማስተዳደሪያ አማራጭን ይጠቀሙ።</translation>
 <translation id="7557539689487606886">ፕሪሚየም አባል ይሁኑ</translation>
+<translation id="5538904824395606812">የአሁኑን አገልግሎት አቅራቢዎን ወይም Quad9 ይጠቀሙ</translation>
+<translation id="6393423486818299209">የአሁኑን አገልግሎት አቅራቢዎን ወይም Wikimedia DNS ይጠቀሙ</translation>
+<translation id="3401384982562827787">የአሁኑን አገልግሎት አቅራቢዎን ወይም Cloudflare ይጠቀሙ</translation>
+<translation id="8812367543786936496">የአሁኑ አገልግሎት አቅራቢዎ ደህንነቱ ካልተጠበቀ፣ Brave ደህንነቱ የተጠበቀ አማራጭ የ DNS አቅራቢን ይጠቀማል</translation>
 </translationbundle>
