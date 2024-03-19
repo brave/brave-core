@@ -29,15 +29,6 @@
   return self;
 }
 
-- (void)registerDefaultComponent:
-    (void (^)(NSString* _Nullable installPath))componentReady {
-  brave_shields::RegisterAdBlockDefaultComponent(
-      _cus, base::BindRepeating(^(const base::FilePath& install_path) {
-        const auto installPath = base::SysUTF8ToNSString(install_path.value());
-        componentReady(installPath);
-      }));
-}
-
 - (void)registerResourceComponent:
     (void (^)(NSString* _Nullable installPath))componentReady {
   brave_shields::RegisterAdBlockDefaultResourceComponent(
@@ -56,7 +47,7 @@
         base::ThreadPool::PostTaskAndReplyWithResult(
             FROM_HERE, {base::MayBlock()},
             base::BindOnce(&brave_component_updater::GetDATFileAsString,
-                           install_path.AppendASCII("regional_catalog.json")),
+                           install_path.AppendASCII("list_catalog.json")),
             base::BindOnce(^(const std::string& json) {
               // Parse data
               auto catalog = brave_shields::FilterListCatalogFromJSON(json);

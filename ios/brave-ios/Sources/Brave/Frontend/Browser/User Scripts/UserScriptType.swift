@@ -92,7 +92,7 @@ extension UserScriptType: CustomDebugStringConvertible {
     case .nacl:
       return "nacl"
     case .gpc(let isEnabled):
-      return "gpc(\(isEnabled)"
+      return "gpc(\(isEnabled))"
     case .siteStateListener:
       return "siteStateListener"
     case .selectorsPoller:

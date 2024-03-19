@@ -76,20 +76,22 @@ struct FilterListsView: View {
 
   @ViewBuilder private var filterListView: some View {
     ForEach($filterListStorage.filterLists) { $filterList in
-      Toggle(isOn: $filterList.isEnabled) {
-        VStack(alignment: .leading) {
-          Text(filterList.entry.title)
-            .foregroundColor(Color(.bravePrimary))
-          Text(filterList.entry.desc)
-            .font(.caption)
-            .foregroundColor(Color(.secondaryBraveLabel))
+      if !filterList.isHidden {
+        Toggle(isOn: $filterList.isEnabled) {
+          VStack(alignment: .leading) {
+            Text(filterList.entry.title)
+              .foregroundColor(Color(.bravePrimary))
+            Text(filterList.entry.desc)
+              .font(.caption)
+              .foregroundColor(Color(.secondaryBraveLabel))
+          }
         }
-      }
-      .onChange(of: filterList.isEnabled) { isEnabled in
-        if isEnabled {
-          expectedEnabledSources.insert(filterList.engineSource)
-        } else {
-          expectedEnabledSources.remove(filterList.engineSource)
+        .onChange(of: filterList.isEnabled) { isEnabled in
+          if isEnabled {
+            expectedEnabledSources.insert(filterList.engineSource)
+          } else {
+            expectedEnabledSources.remove(filterList.engineSource)
+          }
         }
       }
     }

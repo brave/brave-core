@@ -15,11 +15,6 @@ NS_ASSUME_NONNULL_BEGIN
 OBJC_EXPORT
 @interface AdblockService : NSObject
 
-/// Registers the default filter list component and calls `componentReady` each
-/// time the component is updated
-- (void)registerDefaultComponent:
-    (void (^)(NSString* _Nullable installPath))componentReady;
-
 /// Registers the filter list catalog component and calls `componentReady` each
 /// time the component is updated
 - (void)registerFilterListCatalogComponent:
