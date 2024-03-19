@@ -125,7 +125,7 @@ export const QuoteInfo = (props: Props) => {
       '$1',
       coinGeckoDelta.times(-1).format(2)
     )
-  }, [coinGeckoDelta, getLocale])
+  }, [coinGeckoDelta])
 
   const coinGeckoDeltaColor = React.useMemo(() => {
     if (coinGeckoDelta.gte(-1)) {

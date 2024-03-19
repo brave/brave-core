@@ -151,9 +151,10 @@ export const SelectAccountItem = (props: Props) => {
     return new Amount(reducedAmounts).formatAsFiat(defaultFiatCurrency)
   }, [
     tokenListByAccount,
-    spotPriceRegistry,
     defaultFiatCurrency,
-    tokenBalancesRegistry
+    account.accountId,
+    tokenBalancesRegistry,
+    spotPriceRegistry
   ])
 
   return (

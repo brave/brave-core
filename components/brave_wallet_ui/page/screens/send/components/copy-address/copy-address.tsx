@@ -28,7 +28,7 @@ export const CopyAddress = (props: Props) => {
   // Methods
   const handleClick = React.useCallback(async () => {
     await copyToClipboard(address)
-  }, [address])
+  }, [address, copyToClipboard])
 
   return (
     <Row

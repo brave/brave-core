@@ -64,7 +64,7 @@ export const OnboardingWelcome = () => {
       report(BraveWallet.OnboardingAction.Shown)
       dispatch(WalletPageActions.walletSetupComplete(false))
     }
-  }, [setupStillInProgress, report])
+  }, [setupStillInProgress, report, dispatch])
 
   return (
     <WalletPageLayout>

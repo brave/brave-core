@@ -314,7 +314,7 @@ export const PortfolioOverview = () => {
         return a !== '' && b !== '' ? new Amount(a).plus(b).format() : ''
       })
     },
-    [usersFilteredAccounts, tokenBalancesRegistry]
+    [tokenBalancesRegistry, networks, usersFilteredAccounts]
   )
 
   // This looks at the users asset list and returns the full balance for
@@ -490,7 +490,7 @@ export const PortfolioOverview = () => {
         )
       )
     },
-    []
+    [dispatch, history, nftMetadata]
   )
 
   const tokenLists = React.useMemo(() => {

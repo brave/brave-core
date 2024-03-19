@@ -336,7 +336,7 @@ export const ErcTokenApproval = ({
         .formatAsAsset(6, assetSymbol)
     }
     return before.formatAsAsset(6, assetSymbol)
-  }, [approval, isERC20])
+  }, [approval, assetSymbol, isApprovalForAll, isERC20])
 
   const afterAmount = React.useMemo(() => {
     const after = new Amount(approval.amount.after)

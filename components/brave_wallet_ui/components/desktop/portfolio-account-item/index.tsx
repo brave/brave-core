@@ -143,8 +143,8 @@ export const PortfolioAccountItem = (props: Props) => {
   }, [history, account])
 
   const onViewAccountOnBlockExplorer = React.useCallback(
-    onClickViewOnBlockExplorer('address', account.address),
-    [account]
+    () => onClickViewOnBlockExplorer('address', account.address)(),
+    [account.address, onClickViewOnBlockExplorer]
   )
 
   const onHideAccountMenu = React.useCallback(() => {

@@ -50,12 +50,7 @@ export const useAccountOrb = (
     )
     const encodedSvg = btoa(svgString)
     return 'data:image/svg+xml;base64,' + encodedSvg
-  }, [
-    accountInfo?.address,
-    accountInfo?.accountId.uniqueKey,
-    options?.size,
-    options?.scale
-  ])
+  }, [accountInfo, options])
 }
 
 export const useAddressOrb = (
@@ -75,7 +70,7 @@ export const useAddressOrb = (
     )
     const encodedSvg = btoa(svgString)
     return 'data:image/svg+xml;base64,' + encodedSvg
-  }, [address, options?.size, options?.scale])
+  }, [address, options])
 }
 
 export const useNetworkOrb = (
@@ -91,5 +86,5 @@ export const useNetworkOrb = (
       ...applyDefaults(options),
       seed: networkInfo.chainName
     })
-  }, [networkInfo, options?.size, options?.scale])
+  }, [networkInfo, options])
 }

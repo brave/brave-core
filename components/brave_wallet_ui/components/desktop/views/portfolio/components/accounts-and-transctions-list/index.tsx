@@ -183,9 +183,11 @@ export const AccountsAndTransactionsList = ({
       })
   }, [
     selectedAsset,
+    isRewardsToken,
     filteredAccountsByCoinType,
-    spotPriceRegistry,
-    tokenBalancesRegistry
+    externalRewardsAccount,
+    tokenBalancesRegistry,
+    spotPriceRegistry
   ])
 
   const nonRejectedTransactions = React.useMemo(() => {
@@ -215,7 +217,7 @@ export const AccountsAndTransactionsList = ({
       hidePortfolioBalances ? 'false' : 'true'
     )
     dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [hidePortfolioBalances])
+  }, [dispatch, hidePortfolioBalances])
 
   if (
     hash !== WalletRoutes.TransactionsHash &&

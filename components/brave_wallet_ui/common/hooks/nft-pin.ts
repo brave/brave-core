@@ -104,12 +104,7 @@ export function useNftPin() {
       }
 
       return OverallPinningStatus.NO_PINNED_ITEMS
-    }, [
-      nftsPinningStatus,
-      pinnableNfts.length,
-      pinnedNftsCount,
-      inProgressNftCount
-    ])
+    }, [pinnedNftsCount, inProgressNftCount])
 
   const [isIpfsBannerEnabled, setIsIpfsBannerEnabled] = React.useState<boolean>(
     localStorage.getItem(LOCAL_STORAGE_KEYS.IS_IPFS_BANNER_HIDDEN) ===

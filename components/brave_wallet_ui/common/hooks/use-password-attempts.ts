@@ -60,7 +60,7 @@ export const usePasswordAttempts = () => {
       dispatch(WalletActions.setPasswordAttempts(0))
       return isPasswordValid
     },
-    [keyringService, attempts]
+    [keyringService, dispatch, attempts]
   )
 
   return {

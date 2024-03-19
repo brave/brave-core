@@ -126,7 +126,7 @@ export const PortfolioNftAsset = () => {
     }
 
     history.push(makeSendRoute(selectedAssetFromParams, ownerAccount))
-  }, [selectedAssetFromParams, ownerAccount])
+  }, [selectedAssetFromParams, ownerAccount, history])
 
   // asset not found
   if (

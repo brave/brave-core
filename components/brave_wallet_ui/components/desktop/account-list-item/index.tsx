@@ -159,7 +159,7 @@ export const AccountListItem = ({
         name: account.name
       })
     )
-  }, [account])
+  }, [account, dispatch])
 
   const onShowAccountsModal = React.useCallback(
     (modalType: AccountModalTypes) => {

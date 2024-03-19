@@ -42,7 +42,6 @@ import {
 } from '../../../../utils/routes-utils'
 import { getAssetIdKey } from '../../../../utils/asset-utils'
 
-const defaultCurrency = 'usd'
 const assetsRequestLimit = 250
 
 export const MarketView = () => {
@@ -147,7 +146,7 @@ export const MarketView = () => {
         }
       }
     },
-    [buyAssets, combinedTokensList, isMountedRef]
+    [buyAssets, combinedTokensList, history]
   )
 
   const onMarketDataFrameLoad = React.useCallback(() => {
@@ -195,7 +194,7 @@ export const MarketView = () => {
     allCoins,
     buyAssets,
     combinedTokensList,
-    defaultCurrency
+    defaultFiatCurrency
   ])
 
   React.useEffect(() => {
@@ -206,7 +205,7 @@ export const MarketView = () => {
       isMountedRef.current = false
       window.removeEventListener('message', onMessageEventListener)
     }
-  }, [])
+  }, [onMessageEventListener])
 
   return (
     <>

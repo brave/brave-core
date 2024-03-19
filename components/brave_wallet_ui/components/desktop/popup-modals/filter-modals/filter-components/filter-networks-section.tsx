@@ -111,7 +111,7 @@ export const FilterNetworksSection = (props: Props) => {
         networkEntityAdapter.selectId(network).toString()
       )
     )
-  }, [networks, filteredOutNetworkKeys, setFilteredOutNetworkKeys, isSelectAll])
+  }, [networks, setFilteredOutNetworkKeys, isSelectAll])
 
   return (
     <>

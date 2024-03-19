@@ -132,15 +132,18 @@ export const CryptoView = ({ sessionRoute }: Props) => {
       return
     }
     history.push(WalletRoutes.Backup)
-  }, [isPanel, isAndroid])
+  }, [isAndroid, isPanel, history])
 
-  const onShowVisibleAssetsModal = React.useCallback((showModal: boolean) => {
-    if (showModal) {
-      history.push(WalletRoutes.AddAssetModal)
-    } else {
-      history.push(WalletRoutes.PortfolioAssets)
-    }
-  }, [])
+  const onShowVisibleAssetsModal = React.useCallback(
+    (showModal: boolean) => {
+      if (showModal) {
+        history.push(WalletRoutes.AddAssetModal)
+      } else {
+        history.push(WalletRoutes.PortfolioAssets)
+      }
+    },
+    [history]
+  )
 
   const hideVisibleAssetsModal = React.useCallback(
     () => onShowVisibleAssetsModal(false),
@@ -149,7 +152,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
 
   const onClose = React.useCallback(() => {
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [])
+  }, [history])
 
   const onBack = React.useCallback(() => {
     if (location.key) {
@@ -157,7 +160,7 @@ export const CryptoView = ({ sessionRoute }: Props) => {
     } else {
       history.push(WalletRoutes.PortfolioNFTs)
     }
-  }, [location.key])
+  }, [history, location.key])
 
   // computed
   const isCheckingWallets =

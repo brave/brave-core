@@ -44,11 +44,14 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       children
     } = props
 
-    const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key === ESC_KEY) {
-        onClose()
-      }
-    }
+    const handleKeyDown = React.useCallback(
+      (event: KeyboardEvent) => {
+        if (event.key === ESC_KEY) {
+          onClose()
+        }
+      },
+      [onClose]
+    )
 
     React.useEffect(() => {
       document.addEventListener('keydown', handleKeyDown)
@@ -56,7 +59,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       return () => {
         document.removeEventListener('keydown', handleKeyDown)
       }
-    }, [])
+    }, [handleKeyDown])
 
     return (
       <StyledWrapper>

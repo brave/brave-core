@@ -131,7 +131,7 @@ export const AssetDetailsHeader = (props: Props) => {
     if (selectedAsset) {
       openExplorer('token', selectedAsset.contractAddress)()
     }
-  }, [selectedAsset])
+  }, [openExplorer, selectedAsset])
 
   const tokenPriceIds = React.useMemo(
     () => (selectedAsset ? [getPriceIdForToken(selectedAsset)] : []),

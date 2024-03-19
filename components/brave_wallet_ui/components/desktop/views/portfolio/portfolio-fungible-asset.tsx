@@ -344,7 +344,7 @@ export const PortfolioFungibleAsset = () => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.push(WalletRoutes.PortfolioAssets)
-  }, [])
+  }, [dispatch, history])
 
   const onOpenRainbowAppClick = React.useCallback(() => {
     chrome.tabs.create({ url: rainbowbridgeLink }, () => {
@@ -395,13 +395,20 @@ export const PortfolioFungibleAsset = () => {
     if (showHideTokenModel) setShowHideTokenModal(false)
     if (showTokenDetailsModal) setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams, showTokenDetailsModal, updateUserAssetVisible])
+  }, [
+    dispatch,
+    history,
+    selectedAssetFromParams,
+    showHideTokenModel,
+    showTokenDetailsModal,
+    updateUserAssetVisible
+  ])
 
   const onSelectBuy = React.useCallback(() => {
     if (selectedAssetFromParams) {
       history.push(makeFundWalletRoute(getAssetIdKey(selectedAssetFromParams)))
     }
-  }, [selectedAssetFromParams])
+  }, [history, selectedAssetFromParams])
 
   const onSelectDeposit = React.useCallback(() => {
     if (selectedAssetFromParams) {
@@ -409,7 +416,7 @@ export const PortfolioFungibleAsset = () => {
         makeDepositFundsRoute(getAssetIdKey(selectedAssetFromParams))
       )
     }
-  }, [selectedAssetFromParams])
+  }, [history, selectedAssetFromParams])
 
   React.useEffect(() => {
     setDontShowAuroraWarning(

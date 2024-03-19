@@ -121,7 +121,7 @@ export const NFTGridViewItem = (props: Props) => {
       // remove from spam
       await updateNftSpamStatus({ token, isSpam: false })
     }
-  }, [token, updateUserAssetVisible, isTokenSpam])
+  }, [updateUserAssetVisible, token, isTokenSpam, updateNftSpamStatus])
 
   const onUnSpam = async () => {
     setShowMore(false)

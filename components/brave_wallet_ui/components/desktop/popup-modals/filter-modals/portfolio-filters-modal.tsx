@@ -128,7 +128,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     dispatch(
       WalletActions.setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
     )
-  }, [selectedGroupAssetsByOption])
+  }, [dispatch, selectedGroupAssetsByOption])
 
   const onUpdateSelectedAssetFilterOption = React.useCallback(() => {
     // Update Selected Asset Filter Option in Local Storage
@@ -140,7 +140,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     dispatch(
       WalletActions.setSelectedAssetFilterItem(selectedAssetFilterOption)
     )
-  }, [selectedAssetFilterOption])
+  }, [dispatch, selectedAssetFilterOption])
 
   const onUpdateFilteredOutNetworkKeys = React.useCallback(() => {
     // Update Filtered Out Network Keys in Local Storage
@@ -153,7 +153,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     dispatch(
       WalletActions.setFilteredOutPortfolioNetworkKeys(filteredOutNetworkKeys)
     )
-  }, [filteredOutNetworkKeys])
+  }, [dispatch, filteredOutNetworkKeys])
 
   const onUpdateFilteredOutAccountIds = React.useCallback(() => {
     // Update Filtered Out Account Ids in Local Storage
@@ -166,7 +166,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     dispatch(
       WalletActions.setFilteredOutPortfolioAccountIds(filteredOutAccountIds)
     )
-  }, [filteredOutAccountIds])
+  }, [dispatch, filteredOutAccountIds])
 
   const onUpdateHidePortfolioSmallBalances = React.useCallback(() => {
     // Update Hide Small Portfolio Balances in Local Storage
@@ -177,7 +177,7 @@ export const PortfolioFiltersModal = (props: Props) => {
 
     // Update Hide Small Portfolio Balances in Redux
     dispatch(WalletActions.setHidePortfolioSmallBalances(hideSmallBalances))
-  }, [hideSmallBalances])
+  }, [dispatch, hideSmallBalances])
 
   const hideSmallBalancesDescription = React.useMemo(() => {
     const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
@@ -202,7 +202,7 @@ export const PortfolioFiltersModal = (props: Props) => {
 
     // Update Show Network Logo on NFTs in Redux
     dispatch(WalletActions.setShowNetworkLogoOnNfts(showNetworkLogo))
-  }, [showNetworkLogo])
+  }, [dispatch, showNetworkLogo])
 
   // Methods
   const onSaveChanges = React.useCallback(() => {
