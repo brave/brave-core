@@ -58,7 +58,6 @@ function DataContextProvider (props: DataContextProviderProps) {
       }
 
       if (status.event === 'ImportEnded') {
-        console.log('BYE')
         decrementCount()
         if (profileCountRef.current === 0) {
           setViewType(importSucceeded)
