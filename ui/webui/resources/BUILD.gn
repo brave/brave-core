@@ -47,6 +47,11 @@ if (include_polymer) {
         "br_elements/br_toolbar/br_toolbar_search_field.ts",
       ]
 
+      # All the cr_overrides we add should be included in the build.
+      foreach(cr_override, brave_override_cr_elements) {
+        web_component_files += [ "cr_elements/$cr_override/$cr_override.ts" ]
+      }
+
       non_web_component_files = [ "polymer_overriding.ts" ]
     }
 
@@ -54,8 +59,6 @@ if (include_polymer) {
       css_files = [
         "br_elements/br_shared_style.css",
         "br_elements/br_shared_vars.css",
-        "overrides/cr_button_override.css",
-        "overrides/cr_toggle_override.css",
         "page_specific/settings/br_settings_shared.css",
       ]
     }
