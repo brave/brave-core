@@ -16,7 +16,6 @@ import {
 
 const PANEL_TYPES: PanelTypes[] = [
   'accounts',
-  'addEthereumChain',
   'allowReadingEncryptedMessage', // For grep: 'decryptRequest'
   'approveTransaction',
   'assets',

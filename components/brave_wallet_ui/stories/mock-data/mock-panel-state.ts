@@ -9,7 +9,6 @@ import { PanelState } from '../../constants/types'
 // mocks
 import { mockOriginInfo } from './mock-origin-info'
 import {
-  mockAddChainRequest,
   mockSignMessageRequest,
   mockGetEncryptionPublicKeyRequest,
   mockDecryptRequest,
@@ -21,7 +20,6 @@ export const mockPanelState: PanelState = {
   connectToSiteOrigin: mockOriginInfo,
   selectedPanel: 'main',
   connectingAccounts: [],
-  addChainRequest: mockAddChainRequest,
   signMessageData: [mockSignMessageRequest],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],

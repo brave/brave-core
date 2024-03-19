@@ -16,7 +16,6 @@ import {
 } from '../../constants/types'
 import {
   ShowConnectToSitePayload,
-  EthereumChainRequestPayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
   SwitchEthereumChainProcessedPayload,
@@ -62,15 +61,6 @@ async function refreshWalletInfo(store: Store) {
 async function hasPendingUnlockRequest() {
   const keyringService = getWalletPanelApiProxy().keyringService
   return (await keyringService.hasPendingUnlockRequest()).pending
-}
-
-async function getPendingAddChainRequest() {
-  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
-  const requests = (await jsonRpcService.getPendingAddChainRequests()).requests
-  if (requests && requests.length) {
-    return requests[0]
-  }
-  return null
 }
 
 async function getPendingSwitchChainRequest() {
@@ -226,33 +216,6 @@ handler.on(PanelActions.showUnlock.type, async (store: Store) => {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
 })
-
-handler.on(
-  PanelActions.addEthereumChain.type,
-  async (store: Store, request: BraveWallet.AddChainRequest) => {
-    store.dispatch(PanelActions.navigateTo('addEthereumChain'))
-    const apiProxy = getWalletPanelApiProxy()
-    apiProxy.panelHandler.showUI()
-  }
-)
-
-handler.on(
-  PanelActions.addEthereumChainRequestCompleted.type,
-  async (store: any, payload: EthereumChainRequestPayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    const jsonRpcService = apiProxy.jsonRpcService
-    jsonRpcService.addEthereumChainRequestCompleted(
-      payload.chainId,
-      payload.approved
-    )
-    const request = await getPendingAddChainRequest()
-    if (request) {
-      store.dispatch(PanelActions.addEthereumChain(request))
-      return
-    }
-    apiProxy.panelHandler.closeUI()
-  }
-)
 
 handler.on(
   PanelActions.switchEthereumChain.type,
@@ -721,11 +684,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const unlockRequest = await hasPendingUnlockRequest()
     if (unlockRequest) {
       store.dispatch(PanelActions.showUnlock())
-    }
-    const addChainRequest = await getPendingAddChainRequest()
-    if (addChainRequest) {
-      store.dispatch(PanelActions.addEthereumChain(addChainRequest))
-      return
     }
 
     const signTransactionRequests = await getPendingSignTransactionRequests()

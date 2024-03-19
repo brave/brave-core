@@ -15,6 +15,9 @@ import {
   useUnsafePanelSelector //
 } from '../../../common/hooks/use-safe-selector'
 import { PanelSelectors } from '../../../panel/selectors'
+import {
+  useAcknowledgePendingAddChainRequestMutation //
+} from '../../../common/slices/api.slice'
 
 // Components
 import { NavButton } from '../buttons/nav-button'
@@ -74,10 +77,13 @@ export function AllowAddChangeNetworkPanel(props: Props) {
 
   // redux
   const dispatch = useDispatch()
-  const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
   const switchChainRequest = useUnsafePanelSelector(
     PanelSelectors.switchChainRequest
   )
+
+  // mutations
+  const [acknowledgePendingAddChainRequest] =
+    useAcknowledgePendingAddChainRequestMutation()
 
   // state
   const [selectedTab, setSelectedTab] = React.useState<tabs>('network')
@@ -87,13 +93,11 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     setSelectedTab(tab)
   }
 
-  const onApproveAddNetwork = () => {
-    dispatch(
-      PanelActions.addEthereumChainRequestCompleted({
-        chainId: addChainRequest.networkInfo.chainId,
-        approved: true
-      })
-    )
+  const onApproveAddNetwork = async () => {
+    await acknowledgePendingAddChainRequest({
+      chainId: networkPayload.chainId,
+      isApproved: true
+    }).unwrap()
   }
 
   const onApproveChangeNetwork = () => {
@@ -105,13 +109,11 @@ export function AllowAddChangeNetworkPanel(props: Props) {
     )
   }
 
-  const onCancelAddNetwork = () => {
-    dispatch(
-      PanelActions.addEthereumChainRequestCompleted({
-        chainId: addChainRequest.networkInfo.chainId,
-        approved: false
-      })
-    )
+  const onCancelAddNetwork = async () => {
+    await acknowledgePendingAddChainRequest({
+      chainId: networkPayload.chainId,
+      isApproved: false
+    }).unwrap()
   }
 
   const onCancelChangeNetwork = () => {

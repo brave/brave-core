@@ -79,7 +79,6 @@ export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
     panelType === 'signData' ||
     panelType === 'signAllTransactions' ||
     panelType === 'signTransaction' ||
-    panelType === 'addEthereumChain' ||
     panelType === 'showUnlock'
   )
 }

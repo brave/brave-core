@@ -87,7 +87,6 @@ export type PanelHeaderSizes = 'regular' | 'slim'
 
 export type PanelTypes =
   | 'accounts'
-  | 'addEthereumChain'
   | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
   | 'approveTransaction'
   | 'assets'
@@ -224,7 +223,6 @@ export interface PanelState {
   connectToSiteOrigin: BraveWallet.OriginInfo
   selectedPanel: PanelTypes
   connectingAccounts: string[]
-  addChainRequest: BraveWallet.AddChainRequest
   signMessageData: BraveWallet.SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]

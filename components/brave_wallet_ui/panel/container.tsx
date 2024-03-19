@@ -45,6 +45,7 @@ import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetNetworkQuery,
+  useGetPendingAddChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
 import {
@@ -89,7 +90,6 @@ function Container() {
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
-  const addChainRequest = useUnsafePanelSelector(PanelSelectors.addChainRequest)
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
   const switchChainRequest = useUnsafePanelSelector(
     PanelSelectors.switchChainRequest
@@ -114,6 +114,7 @@ function Container() {
   // queries & mutations
   const { accounts } = useAccountsQuery()
   const { data: selectedAccount } = useSelectedAccountQuery()
+  const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequestNetwork } = useGetNetworkQuery(
     switchChainRequest.chainId
       ? {
@@ -194,7 +195,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'addEthereumChain') {
+  if (addChainRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
