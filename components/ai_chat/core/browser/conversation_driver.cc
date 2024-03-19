@@ -904,10 +904,6 @@ bool ConversationDriver::HasPendingConversationEntry() {
 }
 
 int ConversationDriver::GetContentUsedPercentage() {
-  if (article_text_.empty()) {
-    return 0;
-  }
-
   if (GetCurrentModel().max_page_content_length >
       static_cast<uint32_t>(article_text_.length())) {
     return 100;
