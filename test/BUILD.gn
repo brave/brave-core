@@ -19,6 +19,7 @@ import("//brave/components/request_otr/common/buildflags/buildflags.gni")
 import("//brave/components/speedreader/common/buildflags/buildflags.gni")
 import("//brave/components/tor/buildflags/buildflags.gni")
 import("//brave/test/testing.gni")
+import("//brave/updater/config.gni")
 import("//chrome/common/features.gni")
 import("//components/captive_portal/core/features.gni")
 import("//components/gcm_driver/config.gni")
@@ -146,6 +147,9 @@ test("brave_unit_tests") {
     "//components/sync/service/sync_auth_manager_unittest.cc",
     "//components/sync_device_info/device_info_sync_bridge_unittest.cc",
   ]
+  if (brave_enable_updater) {
+    sources += [ "//brave/chromium_src/components/update_client/request_sender_unittest.cc" ]
+  }
 
   deps = [
     ":crypto_unittests",

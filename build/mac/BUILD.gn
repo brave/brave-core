@@ -1,8 +1,16 @@
+# Copyright (c) 2024 The Brave Authors. All rights reserved.
+# This Source Code Form is subject to the terms of the Mozilla Public
+# License, v. 2.0. If a copy of the MPL was not distributed with this file,
+# You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import("//brave/build/config.gni")
 import("//brave/build/mac/config.gni")
+import("//brave/updater/config.gni")
 import("//build/util/branding.gni")
 import("//chrome/common/features.gni")
+import("//chrome/updater/branding.gni")
 import("//chrome/version.gni")
+import("//components/crx_file/crx3.gni")
 import("//third_party/widevine/cdm/widevine.gni")
 
 packaging_dir = "$brave_packaging_base_dir/" +
@@ -411,6 +419,16 @@ action("create_dmg") {
   outputs = [ unsigned_dmg_path ]
 
   deps = [ ":finalize_app" ]
+
+  if (brave_enable_updater) {
+    args += [
+      "--copy",
+      rebase_path(
+          "$root_out_dir/$browser_product_name Packaging/updater/.install",
+          root_build_dir),
+    ]
+    deps += [ "//chrome/updater/mac:browser_install_script" ]
+  }
 }
 
 action("sign_dmg") {
@@ -566,4 +584,18 @@ copy("copy_dmg_pkg") {
   }
 
   outputs = [ "$root_out_dir/{{source_file_part}}" ]
+}
+
+if (brave_enable_updater) {
+  crx3("crx") {
+    inputs = [ target_dmg_path ]
+    output = "$root_out_dir/$chrome_product_full_name.crx3"
+    base_dir = get_path_info(target_dmg_path, "dir")
+
+    # The private key file is not in Git for obvious reasons. It needs to be
+    # copied into this directory manually. Changing the private key requires
+    # also changing kBravePublisherKeyHash in crx_verifier.cc.
+    key = "//brave/updater/crx-private-key.der"
+    deps = [ ":copy_dmg_pkg" ]
+  }
 }

@@ -12,7 +12,10 @@
 
 namespace {
 
-// The brave publisher key in alternative to google one (kPublisherKeyHash).
+// The Brave publisher key that is accepted in addition to upstream's
+// kPublisherKeyHash. This key may be used to verify updates of the browser
+// itself. If you change this constant, then you will likely also need to change
+// the associated file crx-private-key.der, which is not in Git.
 constexpr uint8_t kBravePublisherKeyHash[] = {
     0x93, 0x74, 0xd6, 0x2a, 0x32, 0x76, 0x74, 0x74, 0xac, 0x99, 0xd9,
     0xc0, 0x55, 0xea, 0xf2, 0x6e, 0x10, 0x7,  0x45, 0x6,  0xb9, 0xd5,

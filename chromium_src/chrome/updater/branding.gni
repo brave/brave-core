@@ -57,4 +57,7 @@ brave_updater_branding = {
   IPolicyStatus3SystemGUID = "F7F9F3E7-4EAF-41B4-901F-250B8EBA8D6C"
   IPolicyStatusValueUserGUID = "63107867-A897-46C3-AC56-89A07C0A2044"
   IPolicyStatusValueSystemGUID = "2592AA42-E23E-43C8-829A-46ECE27A5AA3"
+
+  # Development server until we have set it up in Brave's AWS account:
+  update_check_url = "https://omaha4.omaha-consulting.com/6f797447-684d-40cf-8d90-075b21aba1f0/service/update2/json"
 }
