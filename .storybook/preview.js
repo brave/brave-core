@@ -43,6 +43,11 @@ window.loadTimeData = {
     return false
   }
 }
+
+if (!('chrome' in window)) {
+  window.chrome = {}
+}
+
 chrome.extension = {
   inIncognitoContext: false
 }
