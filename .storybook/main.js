@@ -26,5 +26,8 @@ module.exports = {
   ],
   features: {
     storyStoreV7: false
+  },
+  core: {
+    disableTelemetry: true
   }
 }
