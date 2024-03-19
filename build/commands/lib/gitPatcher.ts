@@ -38,6 +38,9 @@ const patchApplyReasonMessages = [
 const regexGitApplyNumStats = /^((\d|-)+\s+){2}/
 
 module.exports = class GitPatcher {
+patchDirPath: any
+repoPath: any
+shouldLogProgress: boolean
   constructor (patchDirPath, repoPath, logProgress = true) {
     this.patchDirPath = patchDirPath
     this.repoPath = repoPath
@@ -50,7 +53,7 @@ module.exports = class GitPatcher {
     }
   }
 
-  logProgress(message) {
+  logProgress(message: string) {
     if (this.shouldLogProgress) {
       process.stdout.write(message)
     }
@@ -84,11 +87,11 @@ module.exports = class GitPatcher {
       throw new Error(`Could not apply patches. Repo at path "${this.repoPath}" does not exist.`)
     }
     const allFilenames = await fs.readdir(this.patchDirPath)
-    const patchFilenames = allFilenames.filter(s => s.endsWith(`.${extPatch}`))
-    const patchInfoFilenames = allFilenames.filter(s => s.endsWith(`.${extPatchInfo}`))
+    const patchFilenames = allFilenames.filter((s: { endsWith: (arg0: string) => any }) => s.endsWith(`.${extPatch}`))
+    const patchInfoFilenames = allFilenames.filter((s: { endsWith: (arg0: string) => any }) => s.endsWith(`.${extPatchInfo}`))
 
-    const patchesToApply = []
-    const patchInfosObsolete = []
+    const patchesToApply: ({ patchPath: any; patchInfoPath: any; reason: number; })[] = []
+    const patchInfosObsolete: any[] = []
 
     for (const filename of patchFilenames) {
       const patchInfoFilename = filename.slice(0, extPatch.length * -1) + extPatchInfo
@@ -115,7 +118,7 @@ module.exports = class GitPatcher {
         patchInfosObsolete.push(fullPath)
       }
     }
-    const pathStatuses = []
+    const pathStatuses: any[] = []
     try {
       if (patchesToApply.length) {
         const appliedPathsStatuses = await this.performApplyForPatches(patchesToApply)
@@ -169,12 +172,12 @@ module.exports = class GitPatcher {
     return null
   }
 
-  async performApplyForPatches (patchesToApply) {
+  async performApplyForPatches (patchesToApply: { patchPath: any; patchInfoPath: any; reason: number }[]) {
     // The actual apply cannot be done in parallel with other write ops,
     // but everything else can.
     // First, find out which files the patch applies to, so we know
     // which files to reset.
-    const prepOps = []
+    const prepOps: Promise<any>[] = []
     this.logProgress(os.EOL + 'Getting patch data...')
     for (const patchData of patchesToApply) {
       prepOps.push(
@@ -197,8 +200,8 @@ module.exports = class GitPatcher {
     const patchSets = await Promise.all(prepOps)
     this.logProgress(os.EOL + 'Resetting...')
     // Reset all repo files
-    const allRepoPaths = patchSets.filter(p => !p.error).reduce(
-      (allPaths, set) => allPaths.concat(set.appliesTo.map(s => s.path)),
+    const allRepoPaths = patchSets.filter((p: { error: any }) => !p.error).reduce(
+      (allPaths: string | any[], set: { appliesTo: any[] }) => allPaths.concat(set.appliesTo.map((s: { path: any }) => s.path)),
       []
     )
     try {
@@ -221,8 +224,8 @@ module.exports = class GitPatcher {
     this.logProgressLine('All patch apply done.')
     // Create Patch Info file using post-patch repo file cheksums
     // (in parallel)
-    const patchInfoOps = []
-    for (const { appliesTo, patchPath, patchInfoPath } of patchSets.filter(p => !p.error)) {
+    const patchInfoOps: Promise<void>[] = []
+    for (const { appliesTo, patchPath, patchInfoPath } of patchSets.filter((p: { error: any }) => !p.error)) {
       patchInfoOps.push(this.writePatchInfo(patchInfoPath, appliesTo, patchPath))
     }
   
@@ -230,7 +233,7 @@ module.exports = class GitPatcher {
   
     // Provide status to caller
     return patchSets.reduce(
-      (all, { appliesTo, patchPath, error, reason }) => {
+      (all: any[], { appliesTo, patchPath, error, reason }) => {
         if (appliesTo && appliesTo.length) {
           return all.concat(appliesTo.map(
             ({ path }) => ({
@@ -259,7 +262,7 @@ module.exports = class GitPatcher {
     .split(os.EOL)
     .filter(s => s)
     // Intrepret `--numstat -z` line format
-    .map(s => ({
+    .map((s: string) => ({
       path: s.replace(regexGitApplyNumStats, '').replace(/\0/g, '')
     }))
   }
@@ -276,24 +279,24 @@ module.exports = class GitPatcher {
     await fs.writeFile(patchInfoPath, JSON.stringify(patchInfo), { encoding: encodingPatchInfo })
   }
 
-  resetRepoFiles (filePaths) {
+  resetRepoFiles (filePaths: any[]) {
     return util.runGitAsync(this.repoPath, ['checkout', ...filePaths])
   }
 
-  async handleObsoletePatchInfos (patchInfosObsolete) {
-    const ops = []
-    const allPaths = []
-    const allStatuses = []
+  async handleObsoletePatchInfos (patchInfosObsolete: any[]) {
+    const ops: any[] = []
+    const allPaths: any[] = []
+    const allStatuses: any[] = []
     for (const patchInfoPath of patchInfosObsolete) {
       const patchInfo = await this.getPatchInfo(patchInfoPath)
       // remove patchinfo file
       const removeOp = fs.unlink(patchInfoPath)
         // Handle error removing patch info, not fatal error
-        .catch(err => {
+        .catch((err: { message: any }) => {
           this.logProgressLine(`Warning: Could not remove obsolete PatchInfo file at path ${patchInfoPath}: "${err.message}"`)
         })
       ops.push(removeOp)
-      allPaths.push(...patchInfo.appliesTo.map(s => s.path))
+      allPaths.push(...patchInfo.appliesTo.map((s: { path: any }) => s.path))
       allStatuses.push(...patchInfo.appliesTo.map(({path}) => ({
         path,
         patchPath: patchInfoPath.replace(/(.patchinfo)$/, `.${extPatch}`),

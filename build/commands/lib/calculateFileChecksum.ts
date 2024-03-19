@@ -11,7 +11,7 @@ module.exports = function CalculateFileChecksum(filePath, algorithm = 'sha256') 
     try {
       const checksumGenerator = crypto.createHash(algorithm);
       const fileStream = fs.createReadStream(filePath)
-      fileStream.on('error', function (err) {
+      fileStream.on('error', function (err: { message: string; }) {
         err.message = `CalculateFileChecksum error in FileStream at path "${filePath}": ${err.message}`
         reject(err)
       })

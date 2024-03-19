@@ -25,8 +25,8 @@ program
   .option('-D, --delete_unused_deps', 'delete from the working copy any dependencies that have been removed since the last sync')
   .option('--nohooks', 'Do not run hooks after updating')
 
-function syncBrave(program) {
-  let args = ['sync', '--nohooks']
+function syncBrave(program: { init: any; force: any; delete_unused_deps: any }) {
+  let args: string[] = ['sync', '--nohooks']
   const syncWithForce = program.init || program.force
   if (syncWithForce) {
     args.push('--force')

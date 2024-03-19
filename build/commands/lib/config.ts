@@ -21,7 +21,7 @@ if (process.platform === 'win32') {
 const rootDir = path.resolve(dirName, '..', '..', '..', '..', '..')
 const braveCoreDir = path.join(rootDir, 'src', 'brave')
 
-var packageConfig = function (key, sourceDir = braveCoreDir) {
+var packageConfig = function (key: string | any[], sourceDir = braveCoreDir) {
   let packages = { config: {} }
   const configAbsolutePath = path.join(sourceDir, 'package.json')
   if (fs.existsSync(configAbsolutePath)) {
@@ -39,7 +39,7 @@ var packageConfig = function (key, sourceDir = braveCoreDir) {
   return obj
 }
 
-const getEnvConfig = (key, default_value = undefined) => {
+const getEnvConfig = (key: any[], default_value = undefined) => {
   if (!envConfig) {
     envConfig = {}
 
@@ -89,7 +89,7 @@ const getEnvConfig = (key, default_value = undefined) => {
   return default_value
 }
 
-const parseExtraInputs = (inputs, accumulator, callback) => {
+const parseExtraInputs = (inputs, accumulator, callback: { (args: any,key: any,value: any): void; (opts: any,key: any,value: any): void; (arg0: any,arg1: any,arg2: any): void }) => {
   for (let input of inputs) {
     let separatorIndex = input.indexOf(':')
     if (separatorIndex < 0) {
@@ -747,7 +747,7 @@ Config.prototype.shouldSign = function () {
   return false
 }
 
-Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
+Config.prototype.addToPath = function (oldPath: string, addPath, prepend = false) {
   const newPath = oldPath ? oldPath.split(path.delimiter) : []
   if (newPath.includes(addPath)) {
     return oldPath
@@ -760,14 +760,14 @@ Config.prototype.addToPath = function (oldPath, addPath, prepend = false) {
   return newPath.join(path.delimiter)
 }
 
-Config.prototype.addPathToEnv = function (env, addPath, prepend = false) {
+Config.prototype.addPathToEnv = function (env: { Path: any; PATH: any }, addPath, prepend = false) {
   // cmd.exe uses Path instead of PATH so just set both
   env.Path && (env.Path = this.addToPath(env.Path, addPath, prepend))
   env.PATH && (env.PATH = this.addToPath(env.PATH, addPath, prepend))
   return env
 }
 
-Config.prototype.addPythonPathToEnv = function (env, addPath) {
+Config.prototype.addPythonPathToEnv = function (env: { PYTHONPATH: any }, addPath) {
   env.PYTHONPATH = this.addToPath(env.PYTHONPATH, addPath)
   return env
 }
@@ -790,7 +790,7 @@ Config.prototype.getProjectRef = function (projectName) {
   return 'origin/master'
 }
 
-Config.prototype.update = function (options) {
+Config.prototype.update = function (options: { sardine_client_secret: any; sardine_client_id: any; universal: any; target_arch: string; target_os: string; target_android_base: any; target_android_output_format: any; android_override_version_name: any; android_aab_to_apk: any; target_environment: any; is_asan: any; use_remoteexec: any; offline: any; force_gn_gen: any; C: any; gclient_file: string; brave_google_api_key: any; brave_safebrowsing_api_key: any; brave_safetynet_api_key: any; brave_google_api_endpoint: any; brave_infura_project_id: any; bitflyer_production_client_id: any; bitflyer_production_client_secret: any; bitflyer_production_fee_address: any; bitflyer_production_url: any; bitflyer_sandbox_client_id: any; bitflyer_sandbox_client_secret: any; bitflyer_sandbox_fee_address: any; bitflyer_sandbox_url: any; gemini_production_api_url: any; gemini_production_client_id: any; gemini_production_client_secret: any; gemini_production_fee_address: any; gemini_production_oauth_url: any; gemini_sandbox_api_url: any; gemini_sandbox_client_id: any; gemini_sandbox_client_secret: any; gemini_sandbox_fee_address: any; gemini_sandbox_oauth_url: any; uphold_production_api_url: any; uphold_production_client_id: any; uphold_production_client_secret: any; uphold_production_fee_address: any; uphold_production_oauth_url: any; uphold_sandbox_api_url: any; uphold_sandbox_client_id: any; uphold_sandbox_client_secret: any; uphold_sandbox_fee_address: any; uphold_sandbox_oauth_url: any; zebpay_production_api_url: any; zebpay_production_client_id: any; zebpay_production_client_secret: any; zebpay_production_oauth_url: any; zebpay_sandbox_api_url: any; zebpay_sandbox_client_id: any; zebpay_sandbox_client_secret: any; zebpay_sandbox_oauth_url: any; safebrowsing_api_endpoint: any; updater_prod_endpoint: any; updater_dev_endpoint: any; webcompat_report_api_endpoint: any; rewards_grant_dev_endpoint: any; rewards_grant_staging_endpoint: any; rewards_grant_prod_endpoint: any; brave_stats_api_key: any; brave_stats_updater_url: any; channel: any; build_omaha: any; tag_ap: any; tag_installdataindex: any; skip_signing: any; build_delta_installer: any; last_chrome_installer: any; mac_signing_identifier: any; mac_installer_signing_identifier: any; mac_signing_keychain: any; notarize: any; gclient_verbose: any; ignore_compile_failure: any; xcode_gen: string; gn: any; ninja: any; target: any; use_libfuzzer: any }) {
   if (options.sardine_client_secret) {
     this.sardineClientSecret = options.sardine_client_secret
   }
@@ -1130,7 +1130,7 @@ Config.prototype.update = function (options) {
   }
 
   if (options.gn) {
-    parseExtraInputs(options.gn, this.extraGnArgs, (args, key, value) => {
+    parseExtraInputs(options.gn, this.extraGnArgs, (args: { [x: string]: any }, key: string | number, value: string) => {
       try {
         value = JSON.parse(value)
       } catch (e) {
@@ -1141,7 +1141,7 @@ Config.prototype.update = function (options) {
   }
 
   if (options.ninja) {
-    parseExtraInputs(options.ninja, this.extraNinjaOpts, (opts, key, value) => {
+    parseExtraInputs(options.ninja, this.extraNinjaOpts, (opts: string[], key, value) => {
       opts.push(`-${key}`)
       opts.push(value)
     })

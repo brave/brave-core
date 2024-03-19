@@ -46,7 +46,7 @@ function maybeInstallDepotTools(options = config.defaultOptions) {
   }
 }
 
-function toGClientConfigItem(name, value, pretty = true) {
+function toGClientConfigItem(name: string, value: { managed: string; name: string; url: any; custom_deps: { 'src/third_party/WebKit/LayoutTests': string; 'src/chrome_frame/tools/test/reference_build/chrome': string; 'src/chrome_frame/tools/test/reference_build/chrome_win': string; 'src/chrome/tools/test/reference_build/chrome': string; 'src/chrome/tools/test/refere... = [': any } } | { managed: string; name: string; url: string }[], pretty = true) {
   // Convert value to json and replace "%True%" -> True, "%False%" -> False,
   // "%None%" -> None.
   const pythonLikeValue =
@@ -55,8 +55,8 @@ function toGClientConfigItem(name, value, pretty = true) {
 }
 
 function buildDefaultGClientConfig(
-  targetOSList, targetArchList, onlyChromium = false) {
-  const items = [
+  targetOSList: { managed: string; name: string; url: any; custom_deps: { 'src/third_party/WebKit/LayoutTests': string; 'src/chrome_frame/tools/test/reference_build/chrome': string; 'src/chrome_frame/tools/test/reference_build/chrome_win': string; 'src/chrome/tools/test/reference_build/chrome': string; 'src/chrome/tools/test/refere... = [': any } } | { managed: string; name: string; url: string }[], targetArchList: { managed: string; name: string; url: any; custom_deps: { 'src/third_party/WebKit/LayoutTests': string; 'src/chrome_frame/tools/test/reference_build/chrome': string; 'src/chrome_frame/tools/test/reference_build/chrome_win': string; 'src/chrome/tools/test/reference_build/chrome': string; 'src/chrome/tools/test/refere... = [': any } } | { managed: string; name: string; url: string }[], onlyChromium = false) {
+  const items: ({ managed: string; name: string; url: string; })[] | { managed: string; name: string; url: any; custom_deps: { 'src/third_party/WebKit/LayoutTests': string; 'src/chrome_frame/tools/test/reference_build/chrome': string; 'src/chrome_frame/tools/test/reference_build/chrome_win': string; 'src/chrome/tools/test/reference_build/chrome': string; 'src/chrome/tools/test/refere... = [
     {
       managed: '%False%',
       name: 'src',
@@ -103,7 +103,7 @@ function buildDefaultGClientConfig(
   fs.writeFileSync(config.defaultGClientFile, out)
 }
 
-function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
+function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo: { chromiumRef: any; gClientTimestamp?: any }) {
   const chromiumRef = expectedSyncInfo.chromiumRef
   const headSHA = util.runGit(config.srcDir, ['rev-parse', 'HEAD'], true)
   const targetSHA = util.runGit(config.srcDir, ['rev-parse', chromiumRef], true)
@@ -128,7 +128,7 @@ function shouldUpdateChromium(latestSyncInfo, expectedSyncInfo) {
 
 function syncChromium(syncWithForce, sync_chromium, delete_unused_deps) {
   const requiredChromiumRef = config.getProjectRef('chrome')
-  let args = [
+  let args: string[] = [
     'sync', '--nohooks', '--revision', 'src@' + requiredChromiumRef, '--reset',
     '--upstream'
   ];

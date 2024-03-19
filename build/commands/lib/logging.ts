@@ -47,7 +47,7 @@ function progressFinish(message) {
   }
 }
 
-function progressScope(message, callable) {
+function progressScope(message, callable: () => void) {
   progressStart(message)
   try {
     callable()
@@ -75,19 +75,19 @@ function updateStatus (projectUpdateStatus) {
   logUpdate(statusLines.join(os.EOL))
 }
 
-function command (dir, cmd, args) {
+function command (dir, cmd, args: any[]) {
   console.log(divider)
   if (dir)
     console.log(cmdDirStyle(dir))
   console.log(`${cmdArrowStyle('>')} ${cmdCmdStyle(cmd)} ${args.join(' ')}`)
 }
 
-function allPatchStatus(allPatchStatus, patchGroupName) {
+function allPatchStatus(allPatchStatus: string | any[], patchGroupName) {
   if (!allPatchStatus.length) {
     console.log(chalk.bold.italic(`There were no ${patchGroupName} code patch updates to apply.`))
   } else {
-    const successfulPatches = []
-    const failedPatches = []
+    const successfulPatches: any[] = []
+    const failedPatches: any[] = []
     for (const patchStatus of allPatchStatus) {
       if (!patchStatus.error) {
         successfulPatches.push(patchStatus)

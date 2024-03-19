@@ -8,7 +8,7 @@ const config = require('../lib/config')
 const path = require('path')
 
 
-const runPerfTests = (passthroughArgs, perf_config, targets) => {
+const runPerfTests = (passthroughArgs, perf_config, targets: string) => {
   args = [
     path.join(
       config.braveCoreDir, 'tools', 'perf', 'run_perftests.py'),

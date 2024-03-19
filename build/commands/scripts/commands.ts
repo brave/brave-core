@@ -25,12 +25,12 @@ const gnCheck = require('../lib/gnCheck')
 const genGradle = require('../lib/genGradle')
 const perfTests = require('../lib/perfTests')
 
-const collect = (value, accumulator) => {
+const collect = (value, accumulator: any[]) => {
   accumulator.push(value)
   return accumulator
 }
 
-function commaSeparatedList(value, dummyPrevious) {
+function commaSeparatedList(value: string, dummyPrevious) {
   return value.split(',')
 }
 
@@ -38,7 +38,7 @@ function commaSeparatedList(value, dummyPrevious) {
 // when defining integer optional parameters, or the default value might get
 // passed as well into the radix parameter of parseInt(), causing wrong results.
 // https://github.com/brave/brave-browser/issues/13724
-function parseInteger(string) {
+function parseInteger(string: string) {
   // As per the spec [1], not passing the optional radix parameter to parseInt()
   // will make parsing to interpret the string passed as a decimal number unless
   // it's prefixed with '0' (octal) or '0x' (hexadecimal). We only need decimal

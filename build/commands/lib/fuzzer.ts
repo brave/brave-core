@@ -12,7 +12,7 @@ const jszip = require('jszip')
 
 const fuzzerBuildConfig = 'Fuzzer'
 
-const buildFuzzer = (fuzzer_test_target, options) => {
+const buildFuzzer = (fuzzer_test_target, options: { use_libfuzzer: boolean; is_asan: boolean; target: any; is_component_build: boolean }) => {
   options.use_libfuzzer = true
   options.is_asan = true
   options.target = fuzzer_test_target
@@ -21,15 +21,15 @@ const buildFuzzer = (fuzzer_test_target, options) => {
   build(fuzzerBuildConfig, options)
 }
 
-const getBinary = (suite) => {
+const getBinary = (suite: string) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
 const unzip = (zip_file, outdir) => {
   fs.readFile(zip_file, (err, data) => {
     if (err) throw err
-    jszip.loadAsync(data).then((zip) => { // Sensitive
-      zip.forEach((relativePath, zipEntry) => {
+    jszip.loadAsync(data).then((zip: { forEach: (arg0: (relativePath: any,zipEntry: any) => void) => void; file: (arg0: any) => { (): any; new(): any; async: { (arg0: string): Promise<any>; new(): any } } }) => { // Sensitive
+      zip.forEach((relativePath, zipEntry: { name: any }) => {
         const resolvedPath = path.join(outdir, zipEntry.name)
         if (!zip.file(zipEntry.name)) {
           if (!fs.existsSync(resolvedPath)) {
@@ -48,11 +48,11 @@ const unzip = (zip_file, outdir) => {
   })
 }
 
-const runFuzzer = (passthroughArgs, suite) => {
+const runFuzzer = (passthroughArgs, suite: string) => {
   config.buildConfig = fuzzerBuildConfig
   config.update({})
 
-  let fuzzerArgs = []
+  let fuzzerArgs: (string | any)[] = []
 
   const dictFile = path.join(config.outputDir, suite + '.dict')
   if (fs.existsSync(dictFile)) {

@@ -8,7 +8,7 @@
 const config = require('../lib/config')
 
 // Helper to convert an environment variable value into a string.
-function envValToString(envVal) {
+function envValToString(envVal: { toString: () => any }) {
   return envVal === undefined ? '' : envVal.toString()
 }
 

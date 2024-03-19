@@ -7,7 +7,7 @@ const config = require('./config')
 const util = require('./util')
 const Log = require('./logging')
 
-const genGradle = (passthroughArgs, buildConfig = config.defaultBuildConfig, options) => {
+const genGradle = (passthroughArgs: any[], buildConfig = config.defaultBuildConfig, options: { target_os: string; continueOnFail: boolean }) => {
   options.target_os = "android"
   options.continueOnFail = false
   config.buildConfig = buildConfig
@@ -19,7 +19,7 @@ const genGradle = (passthroughArgs, buildConfig = config.defaultBuildConfig, opt
       config.outputDir
     ]
     
-    const filteredArgs = passthroughArgs.filter(arg => !arg.includes('target_arch'))
+    const filteredArgs = passthroughArgs.filter((arg: { includes: (arg0: string) => any }) => !arg.includes('target_arch'))
     braveArgs = braveArgs.concat(filteredArgs)
 
     util.run('python3', braveArgs, config.defaultOptions)

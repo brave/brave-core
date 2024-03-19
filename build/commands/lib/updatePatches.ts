@@ -11,10 +11,10 @@ async function getModifiedPaths (gitRepoPath) {
   return cmdOutput.split('\n').filter(s => s)
 }
 
-async function writePatchFiles (modifiedPaths, gitRepoPath, patchDirPath) {
+async function writePatchFiles (modifiedPaths: any[], gitRepoPath, patchDirPath) {
   // replacing forward slashes and adding the patch extension to get nice filenames
   // since git on Windows doesn't use backslashes, this is sufficient
-  const patchFilenames = modifiedPaths.map(s => s.replace(/\//g, desiredReplacementSeparator) + patchExtension)
+  const patchFilenames = modifiedPaths.map((s: string) => s.replace(/\//g, desiredReplacementSeparator) + patchExtension)
 
   // When splitting one large diff into a per-file diff, there are a few ways
   // you can go about it. Because different files can have the same name
@@ -31,7 +31,7 @@ async function writePatchFiles (modifiedPaths, gitRepoPath, patchDirPath) {
   }
 
   let writeOpsDoneCount = 0
-  let writePatchOps = modifiedPaths.map(async (old, i) => {
+  let writePatchOps = modifiedPaths.map(async (old, i: string | number) => {
     const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--full-index', old]
     const patchContents = await util.runAsync('git', singleDiffArgs, { cwd: gitRepoPath })
     const patchFilename = patchFilenames[i]
@@ -57,12 +57,12 @@ const readDirPromise = (pathName) => new Promise((resolve, reject) =>
   })
 )
 
-async function removeStalePatchFiles (patchFilenames, patchDirPath, keepPatchFilenames) {
+async function removeStalePatchFiles (patchFilenames: string | any[], patchDirPath, keepPatchFilenames: any[]) {
   // grab every existing patch file in the dir (at this point, patchfiles for now-unmodified files live on)
   let existingPathFilenames
   try {
     existingPathFilenames = ( (await readDirPromise(patchDirPath)) || [] )
-      .filter(s => s.endsWith('.patch'))
+      .filter((s: { endsWith: (arg0: string) => any }) => s.endsWith('.patch'))
   } catch (err) {
     if (err.code === 'ENOENT') {
       console.log(`Path at ${patchDirPath} does not exist.`)

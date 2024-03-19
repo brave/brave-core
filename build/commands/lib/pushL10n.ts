@@ -3,7 +3,7 @@ const config = require('../lib/config')
 const util = require('../lib/util')
 const l10nUtil = require('./l10nUtil')
 
-const pushL10n = (options) => {
+const pushL10n = (options: { with_translations: any; with_missing_translations: any; extension: string | any[]; extension_path: any; grd_path: any }) => {
   const runOptions = { cwd: config.srcDir }
   const cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
@@ -26,7 +26,7 @@ const pushL10n = (options) => {
     util.run('git', args, runOptions)
     args = ['checkout', '--', '*.grd*']
     util.run('git', args, runOptions)
-    l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
+    l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath: { endsWith: (arg0: any) => any }) => {
       if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path))
         util.run('python3', ['script/push-l10n.py', '--source_string_path', sourceStringPath, extraScriptOptions], cmdOptions)
     })

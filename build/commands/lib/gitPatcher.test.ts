@@ -16,11 +16,11 @@ const file1ModifiedContent = 'this is modified'
 const file1Name = 'file1'
 const writeReadFileOptions = { encoding: 'utf8' }
 
-function runGitAsyncWithErrorLog (repoPath, gitArgs) {
+function runGitAsyncWithErrorLog (repoPath, gitArgs: any[]) {
   return runGitAsync(repoPath, gitArgs, false, true)
 }
 
-function getPatch (gitRepoPath, modifiedFilePath) {
+function getPatch (gitRepoPath, modifiedFilePath: string) {
   const singleDiffArgs = ['diff', '--src-prefix=a/', '--dst-prefix=b/', '--full-index', modifiedFilePath]
   return runGitAsyncWithErrorLog(gitRepoPath, singleDiffArgs)
 }

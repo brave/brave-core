@@ -7,7 +7,7 @@ const path = require('path')
 const config = require('../lib/config')
 const updatePatches = require('../lib/updatePatches')
 
-const chromiumPathFilter = (s) => s.length > 0 &&
+const chromiumPathFilter = (s: string) => s.length > 0 &&
   !s.startsWith('chrome/app/theme/default') &&
   !s.startsWith('chrome/app/theme/brave') &&
   !s.startsWith('chrome/app/theme/chromium') &&

@@ -5,12 +5,12 @@ const config = require('../lib/config')
 const util = require('../lib/util')
 const assert = require('assert')
 
-const getTestBinary = (suite) => {
+const getTestBinary = (suite: string) => {
   return (process.platform === 'win32') ? `${suite}.exe` : suite
 }
 
-const getTestsToRun = (config, suite) => {
-  let testsToRun = [suite]
+const getTestsToRun = (config: { targetOS: string }, suite: string) => {
+  let testsToRun: string[] = [suite]
   if (suite === 'brave_unit_tests') {
     if (config.targetOS !== 'android') {
       testsToRun.push('brave_installer_unittests')
@@ -30,7 +30,7 @@ const getTestsToRun = (config, suite) => {
 //   - unit_tests-windows.filters:    -> Platform specific
 //   - unit_tests-windows-x86.filters -> Platform & Architecture specific
 const getApplicableFilters = (suite) => {
-  let filterFilePaths = []
+  let filterFilePaths: any[] = []
 
   let targetPlatform = process.platform
   if (targetPlatform === "win32") {
@@ -53,12 +53,12 @@ const getApplicableFilters = (suite) => {
   return filterFilePaths
 }
 
-const test = (passthroughArgs, suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+const test = (passthroughArgs: ConcatArray<string>, suite: string, buildConfig = config.defaultBuildConfig, options = {}) => {
   buildTests(suite, buildConfig, options)
   runTests(passthroughArgs, suite, buildConfig, options)
 }
 
-const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}) => {
+const buildTests = (suite: string, buildConfig = config.defaultBuildConfig, options = {}) => {
   config.buildConfig = buildConfig
   config.update(options)
 
@@ -77,11 +77,11 @@ const buildTests = (suite, buildConfig = config.defaultBuildConfig, options = {}
   util.buildTarget()
 }
 
-const runTests = (passthroughArgs, suite, buildConfig, options) => {
+const runTests = (passthroughArgs: ConcatArray<string>, suite, buildConfig, options: { v?: any; vmodule?: any; filter?: any; run_disabled_tests?: any; output?: any; disable_brave_extension?: any; single_process?: any; test_launcher_jobs?: any; manual_android_test_device?: any; android_test_emulator_version?: any }) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  let braveArgs = [
+  let braveArgs: string[] = [
     '--enable-logging=stderr'
   ]
 

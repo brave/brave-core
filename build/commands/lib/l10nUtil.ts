@@ -62,10 +62,10 @@ const braveExtensionMessagesPath = path.resolve(path.join(srcDir, 'brave', 'comp
 const braveAndroidBraveStringsPath = path.resolve(path.join(srcDir, 'brave', 'browser', 'ui', 'android', 'strings', 'android_brave_strings.grd'))
 
 // Helper function to find all grdp parts in a grd.
-function getGrdPartsFromGrd(path) {
+function getGrdPartsFromGrd(path: string) {
   const grd = new JSDOM(fs.readFileSync(path, 'utf8'))
   const partTags = grd.window.document.getElementsByTagName("part")
-  let parts = new Array()
+  let parts: any[] = new Array()
   for (const partTag of partTags) {
     parts.push(partTag.getAttribute('file'));
   }
@@ -73,7 +73,7 @@ function getGrdPartsFromGrd(path) {
 }
 
 // Helper function to create a mapping for grd and all of its grdp parts.
-function addGrd(chromiumPath, bravePath, exclude = new Set()) {
+function addGrd(chromiumPath: string, bravePath, exclude = new Set()) {
   if (verboseLogFindGrd)
     console.log("Adding mappings for GRD: " + chromiumPath)
   if (!fs.existsSync(chromiumPath)) {
@@ -108,12 +108,12 @@ function addGrd(chromiumPath, bravePath, exclude = new Set()) {
 // from the supplied map, determines which GRDP parts are no longer present in
 // the chromium GRD file.
 function getRemovedGRDParts(mapping) {
-  let removedMap = new Map()
+  let removedMap: Map<unknown, Set<unknown>> = new Map()
   for (const [sourcePath, destPath] of Object.entries(mapping)) {
     if (path.extname(destPath) === ".grd") {
       const braveGRDPs = getGrdPartsFromGrd(destPath)
       const chromiumGRDPs = getGrdPartsFromGrd(sourcePath)
-      let removed = new Set()
+      let removed: Set<any> = new Set()
       for (let i = 0; i < braveGRDPs.length; i++) {
         if (!chromiumGRDPs.includes(braveGRDPs[i])) {
           removed.add(braveGRDPs[i])
@@ -204,7 +204,7 @@ const l10nUtil = {
   // Transifex manages files per grd and not per grd or grdp.
   // This is because only 1 xtb is created per grd per locale even if it has multiple grdp files.
   getBraveTopLevelPaths: () => {
-    return l10nUtil.getAllBravePaths().filter((x) => ['grd', 'json'].includes(x.split('.').pop()))
+    return l10nUtil.getAllBravePaths().filter((x: string) => ['grd', 'json'].includes(x.split('.').pop()))
   },
 
 // Helper function to retrieve Greaselion script paths relative to the
@@ -234,8 +234,8 @@ const l10nUtil = {
       return []
     }
 
-    let paths = []
-    greaselionRules.forEach((rule) => {
+    let paths: string[] = []
+    greaselionRules.forEach((rule: { messages: any }) => {
       if (rule.messages) {
         paths.push(`${basePath}/${rule.messages}/en_US/messages.json`)
       }
@@ -245,7 +245,7 @@ const l10nUtil = {
   },
 
   // Helper function to pretty print removed GRDP file names.
-  logRemovedGRDParts: (mapping) => {
+  logRemovedGRDParts: (mapping: { size: any; entries: () => any }) => {
     if (mapping.size) {
       console.log("\n**************************************************************************")
       console.log("The following GRDP files are no longer in the corresponding Chromium GRDs:\n")
@@ -267,7 +267,7 @@ const l10nUtil = {
       async ([sourcePath, destPath]) => {
         console.log("Resetting " + path.relative(srcDir, destPath) + " <- " +
           path.relative(srcDir, sourcePath))
-        return await fs.copyFile(sourcePath, destPath, (err) => {
+        return await fs.copyFile(sourcePath, destPath, (err: string) => {
           if (err) {
             console.log("Error: " + err)
           }

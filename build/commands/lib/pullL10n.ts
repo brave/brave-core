@@ -3,7 +3,7 @@ const config = require('../lib/config')
 const util = require('../lib/util')
 const l10nUtil = require('./l10nUtil')
 
-const pullL10n = (options) => {
+const pullL10n = (options: { extension: string | any[]; extension_path: any; grd_path: any; debug: any }) => {
   const cmdOptions = config.defaultOptions
   cmdOptions.cwd = config.braveCoreDir
   if (options.extension) {
@@ -26,9 +26,9 @@ const pullL10n = (options) => {
     util.run('git', ['checkout', '--', targetFile], { cwd: srcDir })
   })
 
-  l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath) => {
+  l10nUtil.getBraveTopLevelPaths().forEach((sourceStringPath: string) => {
     if (!options.grd_path || sourceStringPath.endsWith(path.sep + options.grd_path)) {
-      let cmd_args = ['script/pull-l10n.py', '--source_string_path', sourceStringPath]
+      let cmd_args: string[] = ['script/pull-l10n.py', '--source_string_path', sourceStringPath]
       if (options.debug)
         cmd_args.push('--debug')
       util.run('python3', cmd_args, cmdOptions)

@@ -5,11 +5,11 @@ const URL = require('url').URL
 const config = require('../lib/config')
 const util = require('../lib/util')
 
-const start = (passthroughArgs, buildConfig = config.defaultBuildConfig, options) => {
+const start = (passthroughArgs: ConcatArray<string>, buildConfig = config.defaultBuildConfig, options: { v: string; vmodule: string; no_sandbox: any; disable_brave_extension: any; disable_brave_rewards_extension: any; disable_pdfjs_extension: any; disable_webtorrent_extension: any; ui_mode: any; enable_brave_update: any; disable_doh: any; single_process: any; show_component_extensions: any; rewards: any; brave_ads_testing: any; brave_ads_debug: any; brave_ads_production: any; brave_ads_staging: any; user_data_dir_name: any; output_path: any }) => {
   config.buildConfig = buildConfig
   config.update(options)
 
-  let braveArgs = [
+  let braveArgs: string[] = [
     '--enable-logging',
     '--v=' + options.v,
   ]

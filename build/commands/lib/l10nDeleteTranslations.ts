@@ -9,7 +9,7 @@ const transifexAPI = require('./transifexAPI')
 // TODO: Read language codes from GRD file, like Python script does
 const langCodes = ['am', 'ar', 'bg', 'bn', 'ca', 'cs', 'da', 'de', 'el', 'en-GB', 'es', 'es-419', 'et', 'fa', 'fi', 'fil', 'fr', 'gu', 'hi', 'hr', 'hu', 'id', 'it', 'he', 'ja', 'kn', 'ko', 'lt', 'lv', 'ml', 'mr', 'ms', 'nl', 'no', 'pl', 'pt-BR', 'pt-PT', 'ro', 'ru', 'sk', 'sl', 'sr', 'sv', 'sw', 'ta', 'te', 'th', 'tr', 'uk', 'vi', 'zh-CN', 'zh-TW']
 
-module.exports = async function RunCommand (options) {
+module.exports = async function RunCommand (options: { string_ids: any; resource_name: any }) {
   const { string_ids, resource_name } = options
   if (!string_ids || !string_ids.length) {
     throw new Error(`Must provide string_id param. Was: ${string_ids}`)
@@ -31,7 +31,7 @@ module.exports = async function RunCommand (options) {
   console.log('Done.')
 }
 
-async function clearTransifexTranslationForKey (transifexResourceName, stringKey) {
+async function clearTransifexTranslationForKey (transifexResourceName, stringKey: string) {
   const transifexProjectName = 'brave'
   const baseUrl = '2/'
   const method = 'PUT'

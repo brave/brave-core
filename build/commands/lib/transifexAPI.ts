@@ -7,7 +7,7 @@ const https = require('https')
 const url = require('url')
 const chalk = require('chalk')
 
-module.exports.request = function transifexRequest (apiUrlPath, options) {
+module.exports.request = function transifexRequest (apiUrlPath, options: { method?: string; data?: any; dataContentType?: string; baseUrl?: string; username?: any; password?: any; api_key?: any; logStatus?: boolean; logError?: boolean }) {
   // Option defaults
   let { 
     method = 'GET', 
@@ -48,9 +48,9 @@ module.exports.request = function transifexRequest (apiUrlPath, options) {
       options.headers['Content-Type'] = dataContentType
     }
     // Send request
-    const req = https.request(requestUrl, options, (resp) => {
+    const req = https.request(requestUrl, options, (resp: { on: (arg0: string,arg1: { (chunk: any): void; (): void }) => void; statusCode: any }) => {
       let data = ''
-      resp.on('data', chunk => { data += chunk })
+      resp.on('data', (chunk: string) => { data += chunk })
       resp.on('end', () => {
         if (logStatus) {
           console.log(chalk.green(`[${resp.statusCode}] ${requestUrl}`))
