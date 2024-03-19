@@ -25,7 +25,7 @@ brave-wallet-cxx = "1"
 adblock-cxx = { version = "1" }
 constellation-cxx = "0.1"
 challenge-bypass-ristretto-cxx = "1"
-cxx = "=1.0.116"
+cxx = "=1"
 
 [patch.crates-io.futures-retry_v0_5]
 path = "../futures_retry/v0_5/crate"
