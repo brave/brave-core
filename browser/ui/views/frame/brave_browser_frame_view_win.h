@@ -21,6 +21,8 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   BraveBrowserFrameViewWin(const BraveBrowserFrameViewWin&) = delete;
   BraveBrowserFrameViewWin& operator=(const BraveBrowserFrameViewWin&) = delete;
 
+  bool ShouldCaptionButtonsBeDrawnOverToolbar() const;
+
  private:
   void OnVerticalTabsPrefsChanged();
 
@@ -28,6 +30,8 @@ class BraveBrowserFrameViewWin : public BrowserFrameViewWin {
   void OnPaint(gfx::Canvas* canvas) override;
   int GetTopInset(bool restored) const override;
   int NonClientHitTest(const gfx::Point& point) override;
+  bool ShouldShowWindowTitle(TitlebarType type) const override;
+  void LayoutCaptionButtons() override;
 
   std::unique_ptr<BraveWindowFrameGraphic> frame_graphic_;
 
