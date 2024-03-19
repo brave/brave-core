@@ -95,10 +95,15 @@ struct FocusStepsHeaderTitleView: View {
 
     VStack(spacing: 10) {
       Text(title)
-        .font(.largeTitle.weight(.medium))
+        .font(
+          Font.custom("FlechaM-Medium", size: 36)
+        )
+        .opacity(0.9)
 
       Text(description)
-        .font(.headline)
+        .font(
+          Font.custom("Poppins-Medium", size: 17)
+        )
         .lineLimit(2)
         .multilineTextAlignment(.center)
         .fixedSize(horizontal: false, vertical: true)
@@ -117,7 +122,7 @@ struct FocusStepsPagingIndicator: View {
         Capsule()
           .fill(
             index == activeIndex
-              ? FocusOnboarding.activeIndicatorTint : FocusOnboarding.inactiveIndicatorTint
+              ? Color(braveSystemName: .textDisabled) : Color(braveSystemName: .dividerStrong)
           )
           .frame(width: index == activeIndex ? 24 : 8, height: 8)
       }

@@ -298,6 +298,7 @@ var package = Package(
         .copy("WelcomeFocus/Resources/LottieAssets/browser-default-light.json"),
         .copy("WelcomeFocus/Resources/Fonts/FlechaM-Medium.otf"),
         .copy("WelcomeFocus/Resources/Fonts/Poppins-Medium.ttf"),
+        .copy("WelcomeFocus/Resources/Fonts/Poppins-Regular.ttf"),
         .copy("Welcome/Resources/disconnect-entitylist.json"),
         .copy("ProductNotifications/Resources/blocking-summary.json"),
       ],

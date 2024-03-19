@@ -15,13 +15,17 @@ struct FocusSystemSettingsView: View {
       VStack {
         VStack(spacing: 10) {
           Text("Set Brave as your Default Browser")
-            .font(.largeTitle.weight(.medium))
+            .font(
+              Font.custom("FlechaM-Medium", size: 32)
+            )
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
 
           Text("Open every link you tap with Brave’s privacy protections")
-            .font(.headline)
+            .font(
+              Font.custom("Poppins-Medium", size: 17)
+            )
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)

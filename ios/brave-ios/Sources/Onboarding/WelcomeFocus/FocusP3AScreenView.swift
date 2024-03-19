@@ -22,10 +22,15 @@ struct FocusP3AScreenView: View {
         VStack {
           VStack(spacing: 8) {
             Text("Make Brave Better")
-              .font(.largeTitle.weight(.medium))
+              .font(
+                Font.custom("FlechaM-Medium", size: 32)
+              )
+              .opacity(0.9)
 
             Text("Let us know which features you’re enjoying the most.")
-              .font(.headline)
+              .font(
+                Font.custom("Poppins-Medium", size: 17)
+              )
               .lineLimit(2)
               .multilineTextAlignment(.center)
               .fixedSize(horizontal: false, vertical: true)
@@ -36,15 +41,20 @@ struct FocusP3AScreenView: View {
           Toggle(isOn: $isP3AToggleOn) {
             VStack(alignment: .leading, spacing: 4) {
               Text("Share Completely Private & Anonymous Product Insights.")
-                .font(.body.weight(.medium))
+                .font(
+                  Font.custom("Poppins-Medium", size: 17)
+                )
                 .foregroundColor(Color(braveSystemName: .textPrimary))
                 .padding(.bottom, 4)
+                .opacity(0.9)
               Text(
                 LocalizedStringKey(
                   "Change this at any time in Brave Settings under ‘Brave Shields and Privacy’."
                 )
               )
-              .font(.footnote)
+              .font(
+                Font.custom("Poppins-Regular", size: 13)
+              )
               .foregroundColor(Color(braveSystemName: .textTertiary))
             }
             .padding(16)
@@ -59,7 +69,9 @@ struct FocusP3AScreenView: View {
           }
 
           Text("Learn more about our Privacy Preserving Product Analytics (P3A)")
-            .font(.footnote)
+            .font(
+              Font.custom("Poppins-Regular", size: 13)
+            )
             .foregroundColor(Color(braveSystemName: .textInteractive))
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
