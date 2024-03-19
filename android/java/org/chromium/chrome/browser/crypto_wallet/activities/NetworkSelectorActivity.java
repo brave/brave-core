@@ -182,12 +182,14 @@ public class NetworkSelectorActivity
                 networkInfo, isSelected -> { updateNetworkUi(networkInfo, isSelected); });
     }
 
-    private void updateNetworkUi(NetworkInfo networkInfo, Boolean isSelected) {
+    private void updateNetworkUi(NetworkInfo networkInfo, boolean isSelected) {
         if (!isSelected) {
-            Toast.makeText(this,
-                         getString(R.string.brave_wallet_network_selection_error,
-                                 networkInfo.chainName),
-                         Toast.LENGTH_SHORT)
+            Toast.makeText(
+                            this,
+                            getString(
+                                    R.string.brave_wallet_network_selection_error,
+                                    networkInfo.chainName),
+                            Toast.LENGTH_SHORT)
                     .show();
         }
         // Add little delay for smooth selection animation
