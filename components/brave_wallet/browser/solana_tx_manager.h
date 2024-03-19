@@ -99,15 +99,34 @@ class SolanaTxManager : public TxManager, public SolanaBlockTracker::Observer {
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, AddAndApproveTransaction);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, DropTxWithInvalidBlockhash);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
+                           DropTxWithInvalidBlockhash_DappBlockhash);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            GetTransactionMessageToSign);
   FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest,
                            ProcessSolanaHardwareSignature);
+  FRIEND_TEST_ALL_PREFIXES(SolanaTxManagerUnitTest, RetryTransaction);
+  friend class SolanaTxManagerUnitTest;
 
   mojom::CoinType GetCoinType() const override;
 
   // TxManager
   void UpdatePendingTransactions(
       const std::optional<std::string>& chain_id) override;
+
+  void OnGetBlockHeightForBlockhash(std::unique_ptr<SolanaTxMeta> meta,
+                                    ApproveTransactionCallback callback,
+                                    const std::string& blockhash,
+                                    uint64_t block_height,
+                                    mojom::SolanaProviderError error,
+                                    const std::string& error_message);
+
+  void OnGetBlockHeightForBlockhashHardware(
+      std::unique_ptr<SolanaTxMeta> meta,
+      GetTransactionMessageToSignCallback callback,
+      const std::string& blockhash,
+      uint64_t block_height,
+      mojom::SolanaProviderError error,
+      const std::string& error_message);
 
   void OnGetBlockHeight(const std::string& chain_id,
                         uint64_t block_height,

@@ -10,6 +10,7 @@
 #include <vector>
 
 #include "base/json/json_reader.h"
+#include "base/sys_byteorder.h"
 #include "base/test/gtest_util.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
@@ -575,6 +576,37 @@ TEST(SolanaMessageUnitTest, FromToValue) {
 
   message_from_value = SolanaMessage::FromValue(value);
   EXPECT_EQ(message2, message_from_value);
+}
+
+TEST(SolanaMessageUnitTest, UsesDurableNonce) {
+  // Mock AdvanceNonceAccount instruction.
+  uint32_t instruction_type = static_cast<uint32_t>(
+      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
+  instruction_type = base::ByteSwapToLE32(instruction_type);
+
+  std::vector<uint8_t> instruction_data(
+      reinterpret_cast<uint8_t*>(&instruction_type),
+      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
+
+  SolanaInstruction instruction = SolanaInstruction(
+      mojom::kSolanaSystemProgramId,
+      std::vector<SolanaAccountMeta>(
+          {SolanaAccountMeta(kTestAccount, std::nullopt, false, true),
+           SolanaAccountMeta(kFromAccount, std::nullopt, false, false),
+           SolanaAccountMeta(kToAccount, std::nullopt, true, false)}),
+      instruction_data);
+
+  auto message1 = GetTestLegacyMessage();
+  auto message2 = GetTestV0Message();
+  for (auto* message : {&message1, &message2}) {
+    EXPECT_FALSE(message->UsesDurableNonce());
+
+    std::vector<SolanaInstruction> vec;
+    vec.emplace_back(instruction);
+    vec.emplace_back(message->instructions()[0]);
+    message->SetInstructionsForTesting(vec);
+    EXPECT_TRUE(message->UsesDurableNonce());
+  }
 }
 
 }  // namespace brave_wallet

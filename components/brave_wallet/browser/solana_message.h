@@ -78,8 +78,15 @@ class SolanaMessage {
       const std::vector<SolanaInstruction>& instructions) {
     instructions_ = instructions;
   }
+  const std::vector<SolanaInstruction>& instructions() const {
+    return instructions_;
+  }
 
   mojom::SolanaMessageVersion version() const { return version_; }
+
+  // Returns true if transaction begins with a valid advance nonce instruction.
+  // https://docs.rs/solana-sdk/1.18.9/src/solana_sdk/transaction/versioned/mod.rs.html#192
+  bool UsesDurableNonce() const;
 
  private:
   FRIEND_TEST_ALL_PREFIXES(SolanaMessageUnitTest, GetUniqueAccountMetas);

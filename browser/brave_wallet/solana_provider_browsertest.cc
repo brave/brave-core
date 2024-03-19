@@ -396,6 +396,9 @@ class SolanaProviderTest : public InProcessBrowserTest {
       base::ReplaceFirstSubstringAfterOffset(
           &reply, 0, "{valid}", mock_blockhash_is_valid_ ? "true" : "false");
       http_response->set_content(reply);
+    } else if (*method == "getBlockHeight") {
+      std::string reply = R"({ "jsonrpc": "2.0", "id": 1, "result": 1233 })";
+      http_response->set_content(reply);
     } else {
       http_response->set_content(R"({
       "jsonrpc": "2.0",
