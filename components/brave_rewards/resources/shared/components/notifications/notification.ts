@@ -3,13 +3,11 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 import { ExternalWalletProvider } from '../../lib/external_wallet'
-import { GrantInfo } from '../../lib/grant_info'
 
 export type NotificationType =
   'auto-contribute-completed' |
   'monthly-tip-completed' |
   'monthly-contribution-failed' |
-  'grant-available' |
   'external-wallet-disconnected' |
   'uphold-bat-not-allowed' |
   'uphold-insufficient-capabilities'
@@ -30,11 +28,6 @@ export interface MonthlyContributionFailedNotification extends Notification {
   reason: 'unknown'
 }
 
-export interface GrantAvailableNotification extends Notification {
-  type: 'grant-available'
-  grantInfo: GrantInfo
-}
-
 export interface ExternalWalletDisconnectedNotification extends Notification {
   type: 'external-wallet-disconnected'
   provider: ExternalWalletProvider
@@ -52,7 +45,6 @@ export interface UpholdInsufficientCapabilitiesNotification extends Notification
 
 export type NotificationActionType =
   'open-link' |
-  'claim-grant' |
   'reconnect-external-wallet'
 
 export interface NotificationAction {
@@ -62,9 +54,4 @@ export interface NotificationAction {
 export interface OpenLinkAction extends NotificationAction {
   type: 'open-link'
   url: string
-}
-
-export interface ClaimGrantAction extends NotificationAction {
-  type: 'claim-grant'
-  grantId: string
 }

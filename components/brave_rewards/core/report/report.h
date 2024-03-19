@@ -35,13 +35,6 @@ class Report {
                  mojom::Result result,
                  mojom::BalanceReportInfoPtr balance_report);
 
-  void OnTransactions(
-      mojom::ActivityMonth month,
-      uint32_t year,
-      mojom::MonthlyReportInfoPtr report,
-      GetMonthlyReportCallback callback,
-      std::vector<mojom::TransactionReportInfoPtr> transaction_report);
-
   void OnContributions(
       mojom::MonthlyReportInfoPtr report,
       GetMonthlyReportCallback callback,

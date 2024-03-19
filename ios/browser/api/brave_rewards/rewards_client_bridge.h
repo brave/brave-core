@@ -136,7 +136,6 @@ NS_ASSUME_NONNULL_BEGIN
                               ShowNotificationCallback)callback;
 - (void)clientInfo:
     (brave_rewards::mojom::RewardsEngineClient::GetClientInfoCallback)callback;
-- (void)unblindedTokensReady;
 - (void)reconcileStampReset;
 - (void)runDbTransaction:(brave_rewards::mojom::DBTransactionPtr)transaction
                 callback:(brave_rewards::mojom::RewardsEngineClient::

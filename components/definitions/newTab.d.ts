@@ -165,7 +165,6 @@ declare namespace NewTab {
     adsAccountStatement: AdsAccountStatement
     dismissedNotifications: string[]
     needsBrowserUpgradeToServeAds: boolean
-    promotions: Promotion[]
     parameters: RewardsParameters
     totalContribution: number
     publishersVisitedCount: number
@@ -192,27 +191,7 @@ declare namespace NewTab {
     ads: number
     contribute: number
     monthly: number
-    grant: number
     tips: number
-  }
-
-  export enum PromotionTypes {
-    UGP = 0,
-    ADS = 1
-  }
-
-  export interface PromotionResponse {
-    result: number
-    promotions: Promotion[]
-  }
-
-  export interface Promotion {
-    type: PromotionTypes
-    promotionId: string
-    createdAt: number
-    claimableUntil?: number
-    expiresAt?: number
-    amount: number
   }
 
   export interface AdsAccountStatement {

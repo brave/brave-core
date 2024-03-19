@@ -61,9 +61,9 @@ inline constexpr char kSelfCustodyInviteDismissed[] =
 inline constexpr char kP3APanelTriggerCount[] =
     "brave.rewards.p3a_panel_trigger_count";
 inline constexpr char kPromotionLastFetchStamp[] =
-    "brave.rewards.promotion_last_fetch_stamp";
+    "brave.rewards.promotion_last_fetch_stamp";  // DEPRECATED
 inline constexpr char kPromotionCorruptedMigrated[] =
-    "brave.rewards.promotion_corrupted_migrated2";
+    "brave.rewards.promotion_corrupted_migrated2";  // DEPRECATED
 inline constexpr char kAnonTransferChecked[] =
     "brave.rewards.anon_transfer_checked";
 inline constexpr char kVersion[] = "brave.rewards.version";
@@ -114,7 +114,7 @@ inline constexpr char kParametersTosVersion[] =
 inline constexpr char kFetchOldBalance[] =
     "brave.rewards.fetch_old_balance";  // DEPRECATED
 inline constexpr char kEmptyBalanceChecked[] =
-    "brave.rewards.empty_balance_checked";
+    "brave.rewards.empty_balance_checked";  // DEPRECATED
 inline constexpr char kWalletBrave[] = "brave.rewards.wallets.brave";
 inline constexpr char kWalletUphold[] = "brave.rewards.wallets.uphold";
 inline constexpr char kWalletBitflyer[] = "brave.rewards.wallets.bitflyer";

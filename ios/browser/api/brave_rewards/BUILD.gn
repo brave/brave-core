@@ -18,8 +18,6 @@ source_set("brave_rewards") {
   sources = [
     "brave_rewards_api.h",
     "brave_rewards_api.mm",
-    "promotion_solution.h",
-    "promotion_solution.mm",
     "rewards_client_bridge.h",
     "rewards_client_ios.h",
     "rewards_client_ios.mm",

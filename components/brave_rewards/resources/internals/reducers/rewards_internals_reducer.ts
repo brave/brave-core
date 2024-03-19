@@ -38,13 +38,6 @@ const rewardsInternalsReducer: Reducer<RewardsInternals.State | undefined> = (st
       state = { ...state }
       state.contributions = action.payload.contributions
       break
-    case types.GET_PROMOTIONS:
-      chrome.send('brave_rewards_internals.getPromotions')
-      break
-    case types.ON_PROMOTIONS:
-      state = { ...state }
-      state.promotions = action.payload.promotions
-      break
     case types.GET_PARTIAL_LOG:
       chrome.send('brave_rewards_internals.getPartialLog')
       break

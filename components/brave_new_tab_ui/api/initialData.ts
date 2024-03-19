@@ -171,9 +171,6 @@ export async function getRewardsInitialData (): Promise<InitialRewardsData> {
       }),
       new Promise(resolve => {
         chrome.braveRewards.getPublishersVisitedCount(resolve)
-      }),
-      new Promise(resolve => {
-        chrome.braveRewards.fetchPromotions(resolve)
       })
     ])
     return {

@@ -18,7 +18,6 @@
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_network_util.h"
-#include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_promotion.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_response.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_util.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
@@ -43,7 +42,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   RewardsP3ABrowserTest() {
     contribution_ =
         std::make_unique<test_util::RewardsBrowserTestContribution>();
-    promotion_ = std::make_unique<test_util::RewardsBrowserTestPromotion>();
     response_ = std::make_unique<test_util::RewardsBrowserTestResponse>();
     histogram_tester_ = std::make_unique<base::HistogramTester>();
   }
@@ -75,7 +73,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
     rewards_service_->SetEngineEnvForTesting();
 
     // Other
-    promotion_->Initialize(browser(), rewards_service_);
     contribution_->Initialize(browser(), rewards_service_);
 
     test_util::SetOnboardingBypassed(browser());
@@ -128,7 +125,6 @@ class RewardsP3ABrowserTest : public InProcessBrowserTest,
   raw_ptr<RewardsServiceImpl> rewards_service_ = nullptr;
   std::unique_ptr<net::EmbeddedTestServer> https_server_;
   std::unique_ptr<test_util::RewardsBrowserTestContribution> contribution_;
-  std::unique_ptr<test_util::RewardsBrowserTestPromotion> promotion_;
   std::unique_ptr<test_util::RewardsBrowserTestResponse> response_;
   std::unique_ptr<base::HistogramTester> histogram_tester_;
 

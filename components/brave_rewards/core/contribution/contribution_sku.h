@@ -30,8 +30,6 @@ class ContributionSKU {
                         const std::string& wallet_type,
                         ResultCallback callback);
 
-  void Merchant(const mojom::SKUTransaction&, ResultCallback callback);
-
   void Retry(mojom::ContributionInfoPtr contribution, ResultCallback callback);
 
  private:
@@ -62,16 +60,6 @@ class ContributionSKU {
   void CredsStepSaved(const std::string& contribution_id,
                       ResultCallback callback,
                       mojom::Result result);
-
-  void GetUnblindedTokens(const mojom::SKUTransaction&,
-                          ResultCallback,
-                          std::vector<mojom::UnblindedTokenPtr> list);
-
-  void GetOrderMerchant(const credential::CredentialsRedeem&,
-                        ResultCallback,
-                        mojom::SKUOrderPtr);
-
-  void OnRedeemTokens(ResultCallback, mojom::Result);
 
   void OnOrder(mojom::ContributionInfoPtr contribution,
                ResultCallback callback,

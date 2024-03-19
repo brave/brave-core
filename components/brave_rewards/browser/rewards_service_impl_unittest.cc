@@ -36,12 +36,6 @@ using ::testing::Return;
 
 class MockRewardsServiceObserver : public RewardsServiceObserver {
  public:
-  MOCK_METHOD3(OnFetchPromotions,
-               void(RewardsService*,
-                    const mojom::Result result,
-                    const std::vector<mojom::PromotionPtr>& list));
-  MOCK_METHOD3(OnPromotionFinished,
-               void(RewardsService*, const mojom::Result, mojom::PromotionPtr));
   MOCK_METHOD6(OnReconcileComplete,
                void(RewardsService*,
                     const mojom::Result,

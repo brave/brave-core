@@ -624,24 +624,6 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_MAIN_TITLE" desc="">Rewards internals</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_NOT_SET" desc="Not set">Not set</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_PERSONA_ID" desc="Wallet persona ID">Persona ID</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ADS" desc="">Ads</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_AMOUNT" desc="">Amount</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIMED_AT" desc="">Claimed at</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_CLAIM_ID" desc="">Claim ID</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_EXPIRES_AT" desc="">Expires at</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_ID" desc="">ID</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_CLAIMED" desc="">Legacy promotion</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_NO" desc="">No</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_LEGACY_YES" desc="">Yes</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTIONS" desc="">Promotions</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS" desc="">Status</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ACTIVE" desc="">Active</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_ATTESTED" desc="">Attested</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_FINISHED" desc="">Finished</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_STATUS_OVER" desc="">Over</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_TYPE" desc="">Type</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_UGP" desc="">UGP</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_PROMOTION_VERSION" desc="">Version</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REFRESH_BUTTON" desc="Refresh button">Refresh</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_RETRY_COUNT" desc="Retry count">Retry Count:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_REWARDS_COUNTRY" desc="Rewards	country">Rewards country:</message>
@@ -653,7 +635,6 @@
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_EVENT_LOGS" desc="">Event logs</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_GENERAL_INFO" desc="">General info</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_LOGS" desc="">Logs</message>
-      <message name="IDS_BRAVE_REWARDS_INTERNALS_TAB_PROMOTIONS" desc="">Promotions</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_AMOUNT" desc="Total Amount">Total amount:</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_TOTAL_BALANCE" desc="Total balance">Total balance</message>
       <message name="IDS_BRAVE_REWARDS_INTERNALS_USER_ID" desc="Wallet user ID">User ID</message>
@@ -680,7 +661,6 @@
       <message name="IDS_BRAVE_UI_ADS_HISTORY_NONE" desc="">No ads viewed in the last <ph name="TOTAL_DAYS">$1</ph> days.</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_SUBTITLE" desc="">Ads you've received in the past [[totalDays]] days</message>
       <message name="IDS_BRAVE_UI_ADS_HISTORY_TITLE" desc="">Ads History</message>
-      <message name="IDS_BRAVE_UI_ADS_GRANT_RECEIVED" desc="">Ads rewards received</message>
       <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE" desc="">Mark As Inappropriate</message>
       <message name="IDS_BRAVE_UI_ADS_MARK_AS_INAPPROPRIATE_CHECKED" desc="">Mark As Inappropriate ✓</message>
       <message name="IDS_BRAVE_UI_ADS_NO_ADS_HISTORY" desc="">There is currently no Brave Ads history</message>
@@ -708,20 +688,10 @@
       <message name="IDS_BRAVE_UI_EARNINGS_VIEW_DEPOSIT_HISTORY" desc="">View deposit history</message>
       <message name="IDS_BRAVE_UI_EXCLUDE_SITE" desc="">Exclude this site</message>
       <message name="IDS_BRAVE_UI_EXCLUDED_SITES" desc="">Total number of sites you excluded from Auto-Contribute:</message>
-      <message name="IDS_BRAVE_UI_GRANT_DISCLAIMER" desc="">[[currency]] not used by the expiration date will be automatically returned to the Brave User Growth Pool.</message>
-      <message name="IDS_BRAVE_UI_GRANT_EXPIRE" desc="">Grant Expiration Date</message>
       <message name="IDS_BRAVE_UI_IMPORT" desc="">import</message>
       <message name="IDS_BRAVE_UI_LEARN_MORE" desc="">Learn More</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS_BANG" desc="">Monthly Contributions!</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIPS" desc="">Monthly Contributions</message>
-      <message name="IDS_BRAVE_UI_GRANT_TITLE_UGP" desc="Title for a reward grant when it has been claimed">It's your lucky day!</message>
-      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_UGP" desc="Subtitle for a reward grant when it has been claimed">Your token grant is on its way.</message>
-      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_UGP" desc="">Free Token Grant</message>
-      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_UGP" desc="">Grant Expiration Date</message>
-      <message name="IDS_BRAVE_UI_GRANT_TITLE_ADS" desc="Title for an ads reward when it has been claimed">Congrats!</message>
-      <message name="IDS_BRAVE_UI_GRANT_SUBTITLE_ADS" desc="Subtitle for an ads reward when it has been claimed">You've successfully claimed ads rewards.</message>
-      <message name="IDS_BRAVE_UI_GRANT_AMOUNT_TITLE_ADS" desc="">Ads Rewards</message>
-      <message name="IDS_BRAVE_UI_GRANT_DATE_TITLE_ADS" desc="">Rewards Period</message>
       <message name="IDS_BRAVE_UI_MONTHLY_TIP" desc="">Monthly Contribution</message>
       <message name="IDS_BRAVE_UI_NO_ACTIVITY" desc="">No activities yet…</message>
       <message name="IDS_BRAVE_UI_OFF" desc="">off</message>
@@ -766,7 +736,6 @@
       <message name="IDS_BRAVE_UI_SETTINGS" desc="">Settings</message>
       <message name="IDS_BRAVE_UI_SITE" desc="">site</message>
       <message name="IDS_BRAVE_UI_TIP_ON_LIKE" desc="">Tip on like</message>
-      <message name="IDS_BRAVE_UI_TOKEN_GRANT_RECEIVED" desc="">Token grant received</message>
       <message name="IDS_BRAVE_UI_TOKENS" desc="">tokens</message>
       <message name="IDS_BRAVE_UI_TOKEN" desc="">Token</message>
       <message name="IDS_BRAVE_UI_TOTAL" desc="">Total</message>

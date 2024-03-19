@@ -125,12 +125,6 @@ class BraveRewardsNativeWorker
       JNIEnv* env,
       const base::android::JavaParamRef<jstring>& notification_id);
 
-  void GetGrant(JNIEnv* env,
-                const base::android::JavaParamRef<jstring>& promotionId);
-
-  base::android::ScopedJavaLocalRef<jobjectArray> GetCurrentGrant(JNIEnv* env,
-                                                                  int position);
-
   void GetRecurringDonations(JNIEnv* env);
 
   bool IsCurrentPublisherInRecurrentDonations(
@@ -151,8 +145,6 @@ class BraveRewardsNativeWorker
 
   void RemoveRecurring(JNIEnv* env,
                        const base::android::JavaParamRef<jstring>& publisher);
-
-  void FetchGrants(JNIEnv* env);
 
   int GetAdsPerHour(JNIEnv* env);
 
@@ -218,9 +210,6 @@ class BraveRewardsNativeWorker
 
   void OnTermsOfServiceUpdateAccepted() override;
 
-  void OnUnblindedTokensReady(
-      brave_rewards::RewardsService* rewards_service) override;
-
   void OnReconcileComplete(
       brave_rewards::RewardsService* rewards_service,
       const brave_rewards::mojom::Result result,
@@ -244,16 +233,8 @@ class BraveRewardsNativeWorker
       const brave_rewards::RewardsNotificationService::RewardsNotification&
           notification) override;
 
-  void OnPromotionFinished(
-      brave_rewards::RewardsService* rewards_service,
-      const brave_rewards::mojom::Result result,
-      brave_rewards::mojom::PromotionPtr promotion) override;
-
   void OnGetRecurringTips(
       std::vector<brave_rewards::mojom::PublisherInfoPtr> list);
-
-  void OnClaimPromotion(const brave_rewards::mojom::Result result,
-                        brave_rewards::mojom::PromotionPtr promotion);
 
   void OnGetExternalWallet(brave_rewards::mojom::ExternalWalletPtr wallet);
 
@@ -292,7 +273,6 @@ class BraveRewardsNativeWorker
   std::map<std::string, brave_rewards::mojom::PublisherInfoPtr>
       map_recurrent_publishers_;
   std::map<std::string, std::string> addresses_;
-  std::vector<brave_rewards::mojom::PromotionPtr> promotions_;
   base::WeakPtrFactory<BraveRewardsNativeWorker> weak_factory_;
 };
 

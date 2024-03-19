@@ -39,7 +39,6 @@ struct UnblindedToken {
 
 enum CredsBatchType {
   NONE = 0,
-  PROMOTION = 1,
   SKU = 2
 };
 

@@ -135,17 +135,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetRewardsParameters(GetRewardsParametersCallback callback) override;
 
-  void FetchPromotions(FetchPromotionsCallback callback) override;
-
-  void ClaimPromotion(
-      const std::string& promotion_id,
-      ClaimPromotionCallback callback) override;
-  void ClaimPromotion(
-      const std::string& promotion_id,
-      AttestPromotionCallback callback) override;
-  void AttestPromotion(const std::string& promotion_id,
-                       const std::string& solution,
-                       AttestPromotionCallback callback) override;
   void GetActivityInfoList(const uint32_t start,
                            const uint32_t limit,
                            mojom::ActivityInfoFilterPtr filter,
@@ -293,8 +282,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
-  void GetAllPromotions(GetAllPromotionsCallback callback) override;
-
   void GetEventLogs(GetEventLogsCallback callback) override;
 
   void StopEngine(StopEngineCallback callback);
@@ -373,10 +360,6 @@ class RewardsServiceImpl : public RewardsService,
       brave_wallet::mojom::SolanaProviderError error,
       const std::string& error_message);
 
-  void StartNotificationTimers();
-  void StopNotificationTimers();
-  void OnNotificationTimerFired();
-
   void MaybeShowNotificationTipsPaid();
   void ShowNotificationTipsPaid(bool ac_enabled);
 
@@ -389,29 +372,9 @@ class RewardsServiceImpl : public RewardsService,
   void OnExternalWalletLoginStarted(BeginExternalWalletLoginCallback callback,
                                     mojom::ExternalWalletLoginParamsPtr params);
 
-  void OnClaimPromotion(ClaimPromotionCallback callback,
-                        const mojom::Result result,
-                        const std::string& response);
-
-  void AttestationAndroid(const std::string& promotion_id,
-                          AttestPromotionCallback callback,
-                          const mojom::Result result,
-                          const std::string& response);
-
-  void OnAttestationAndroid(
-      const std::string& promotion_id,
-      AttestPromotionCallback callback,
-      const std::string& nonce,
-      const bool token_received,
-      const std::string& token,
-      const bool attestation_passed);
-
   // mojom::RewardsEngineClient
   void OnReconcileComplete(mojom::Result result,
                            mojom::ContributionInfoPtr contribution) override;
-  void OnAttestPromotion(AttestPromotionCallback callback,
-                         const mojom::Result result,
-                         mojom::PromotionPtr promotion);
   void LoadLegacyState(LoadLegacyStateCallback callback) override;
   void LoadPublisherState(LoadPublisherStateCallback callback) override;
   void LoadURL(mojom::UrlRequestPtr request, LoadURLCallback callback) override;
@@ -517,8 +480,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void GetClientInfo(GetClientInfoCallback callback) override;
 
-  void UnblindedTokensReady() override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,
@@ -567,10 +528,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnRunDBTransaction(RunDBTransactionCallback callback,
                           mojom::DBCommandResponsePtr response);
 
-  void OnGetAllPromotions(
-      GetAllPromotionsCallback callback,
-      base::flat_map<std::string, mojom::PromotionPtr> promotions);
-
   void OnFilesDeletedForCompleteReset(SuccessCallback callback,
                                       const bool success);
 
@@ -617,8 +574,6 @@ class RewardsServiceImpl : public RewardsService,
   SimpleURLLoaderList url_loaders_;
   std::map<std::string, BitmapFetcherService::RequestId>
       current_media_fetchers_;
-  std::unique_ptr<base::OneShotTimer> notification_startup_timer_;
-  std::unique_ptr<base::RepeatingTimer> notification_periodic_timer_;
   PrefChangeRegistrar profile_pref_change_registrar_;
 
   bool engine_for_testing_ = false;

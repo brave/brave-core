@@ -34,8 +34,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterStringPref(prefs::kExternalWalletType, "");
   registry->RegisterDictionaryPref(prefs::kSelfCustodyAvailable);
   registry->RegisterBooleanPref(prefs::kSelfCustodyInviteDismissed, false);
-  registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
-  registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
   registry->RegisterBooleanPref(prefs::kAnonTransferChecked, false);
   registry->RegisterIntegerPref(prefs::kVersion, 0);
   registry->RegisterIntegerPref(prefs::kMinVisitTime, 8);
@@ -64,8 +62,6 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kParametersVBatDeadline, base::Time());
   registry->RegisterBooleanPref(prefs::kParametersVBatExpired, false);
   registry->RegisterIntegerPref(prefs::kParametersTosVersion, 1);
-  registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
-  registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
   registry->RegisterStringPref(prefs::kWalletBrave, "");
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");
@@ -86,6 +82,11 @@ void RegisterProfilePrefsForMigration(PrefRegistrySimple* registry) {
   registry->RegisterTimePref(prefs::kAdsEnabledTimestamp, base::Time());
   registry->RegisterTimeDeltaPref(prefs::kAdsEnabledTimeDelta,
                                   base::TimeDelta());
+
+  registry->RegisterUint64Pref(prefs::kPromotionLastFetchStamp, 0ull);
+  registry->RegisterBooleanPref(prefs::kPromotionCorruptedMigrated, false);
+  registry->RegisterBooleanPref(prefs::kFetchOldBalance, true);
+  registry->RegisterBooleanPref(prefs::kEmptyBalanceChecked, false);
 }
 
 }  // namespace brave_rewards

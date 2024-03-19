@@ -36,18 +36,6 @@ NS_SWIFT_NAME(RewardsObserver)
 
 @property(nonatomic, copy, nullable) void (^publisherListUpdated)();
 
-///
-@property(nonatomic, copy, nullable) void (^finishedPromotionsAdded)
-    (NSArray<BraveRewardsPromotion*>* promotions);
-
-/// Eligable grants were added to the wallet
-@property(nonatomic, copy, nullable) void (^promotionsAdded)
-    (NSArray<BraveRewardsPromotion*>* promotions);
-
-/// A grant was claimed
-@property(nonatomic, copy, nullable) void (^promotionClaimed)
-    (BraveRewardsPromotion* promotion);
-
 @end
 
 NS_ASSUME_NONNULL_END

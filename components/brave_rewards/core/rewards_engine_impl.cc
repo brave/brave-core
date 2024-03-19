@@ -21,9 +21,7 @@
 #include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
-#include "brave/components/brave_rewards/core/promotion/promotion.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/recovery/recovery.h"
 #include "brave/components/brave_rewards/core/report/report.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
@@ -46,7 +44,6 @@ RewardsEngineImpl::RewardsEngineImpl(
                std::make_unique<URLLoader>(*this),
                std::make_unique<LinkageChecker>(*this),
                std::make_unique<SolanaWalletProvider>(*this)),
-      promotion_(std::make_unique<promotion::Promotion>(*this)),
       publisher_(std::make_unique<publisher::Publisher>(*this)),
       media_(std::make_unique<Media>(*this)),
       contribution_(std::make_unique<contribution::Contribution>(*this)),
@@ -55,7 +52,6 @@ RewardsEngineImpl::RewardsEngineImpl(
       report_(std::make_unique<report::Report>(*this)),
       state_(std::make_unique<state::State>(*this)),
       api_(std::make_unique<api::API>(*this)),
-      recovery_(std::make_unique<recovery::Recovery>(*this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
       gemini_(std::make_unique<gemini::Gemini>(*this)),
       uphold_(std::make_unique<uphold::Uphold>(*this)),
@@ -290,39 +286,6 @@ void RewardsEngineImpl::RestorePublishers(RestorePublishersCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     database()->RestorePublishers(std::move(callback));
   });
-}
-
-void RewardsEngineImpl::FetchPromotions(FetchPromotionsCallback callback) {
-  // The promotion endpoint is no longer supported. The endpoint implementation,
-  // the interface method, and all calling code will be removed when the
-  // "grandfathered" vBAT state is removed from the codebase. Browser tests that
-  // assume vBAT contributions will also need to be modified.
-  if (!options().is_testing) {
-    std::move(callback).Run(mojom::Result::OK, {});
-    return;
-  }
-
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    promotion()->Fetch(std::move(callback));
-  });
-}
-
-void RewardsEngineImpl::ClaimPromotion(const std::string& promotion_id,
-                                       const std::string& payload,
-                                       ClaimPromotionCallback callback) {
-  WhenReady(
-      [this, promotion_id, payload, callback = std::move(callback)]() mutable {
-        promotion()->Claim(promotion_id, payload, std::move(callback));
-      });
-}
-
-void RewardsEngineImpl::AttestPromotion(const std::string& promotion_id,
-                                        const std::string& solution,
-                                        AttestPromotionCallback callback) {
-  WhenReady(
-      [this, promotion_id, solution, callback = std::move(callback)]() mutable {
-        promotion()->Attest(promotion_id, solution, std::move(callback));
-      });
 }
 
 void RewardsEngineImpl::SetPublisherMinVisitTime(int duration_in_seconds) {
@@ -620,15 +583,6 @@ void RewardsEngineImpl::ConnectExternalWallet(
   });
 }
 
-void RewardsEngineImpl::GetTransactionReport(
-    mojom::ActivityMonth month,
-    int year,
-    GetTransactionReportCallback callback) {
-  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
-    database()->GetTransactionReport(month, year, std::move(callback));
-  });
-}
-
 void RewardsEngineImpl::GetContributionReport(
     mojom::ActivityMonth month,
     int year,
@@ -657,12 +611,6 @@ void RewardsEngineImpl::GetAllMonthlyReportIds(
     GetAllMonthlyReportIdsCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     report()->GetAllMonthlyIds(std::move(callback));
-  });
-}
-
-void RewardsEngineImpl::GetAllPromotions(GetAllPromotionsCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    database()->GetAllPromotions(std::move(callback));
   });
 }
 

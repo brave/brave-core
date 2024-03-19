@@ -49,28 +49,6 @@ export const onAutoContributeProperties = (properties: any) => action(types.ON_A
   properties
 })
 
-export const fetchPromotions = () => action(types.FETCH_PROMOTIONS)
-
-export const onPromotions = (properties: Rewards.PromotionResponse) => action(types.ON_PROMOTIONS, {
-  properties
-})
-
-export const claimPromotion = (promotionId: string) => action(types.CLAIM_PROMOTION, {
-  promotionId
-})
-
-export const onPromotionClaimStarted = (promotionId: string) => action(types.ON_PROMOTION_CLAIM_STARTED, {
-  promotionId
-})
-
-export const onPromotionFinish = (properties: Rewards.PromotionFinish) => action(types.ON_PROMOTION_FINISH, {
-  properties
-})
-
-export const deletePromotion = (promotionId: string) => action(types.DELETE_PROMOTION, {
-  promotionId
-})
-
 export const onModalResetClose = () => action(types.ON_MODAL_RESET_CLOSE)
 
 export const onModalResetOpen = () => action(types.ON_MODAL_RESET_OPEN)

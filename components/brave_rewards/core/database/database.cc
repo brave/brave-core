@@ -25,9 +25,7 @@ Database::Database(RewardsEngineImpl& engine)
       creds_batch_(engine),
       event_log_(engine),
       external_transactions_(engine),
-      promotion_(engine),
       media_publisher_info_(engine),
-      multi_tables_(engine),
       publisher_info_(engine),
       publisher_prefix_list_(engine),
       recurring_tip_(engine),
@@ -295,68 +293,6 @@ void Database::SaveMediaPublisherInfo(const std::string& media_key,
 void Database::GetMediaPublisherInfo(const std::string& media_key,
                                      PublisherInfoCallback callback) {
   media_publisher_info_.GetRecord(media_key, std::move(callback));
-}
-
-/**
- * MULTI TABLES
- * for queries that are not limited to one table
- */
-void Database::GetTransactionReport(const mojom::ActivityMonth month,
-                                    const int year,
-                                    GetTransactionReportCallback callback) {
-  multi_tables_.GetTransactionReport(month, year, std::move(callback));
-}
-
-/**
- * PROMOTION
- */
-void Database::SavePromotion(mojom::PromotionPtr info,
-                             ResultCallback callback) {
-  promotion_.InsertOrUpdate(std::move(info), std::move(callback));
-}
-
-void Database::GetPromotion(const std::string& id,
-                            GetPromotionCallback callback) {
-  promotion_.GetRecord(id, std::move(callback));
-}
-
-void Database::GetAllPromotions(GetAllPromotionsCallback callback) {
-  promotion_.GetAllRecords(std::move(callback));
-}
-
-void Database::SavePromotionClaimId(const std::string& promotion_id,
-                                    const std::string& claim_id,
-                                    ResultCallback callback) {
-  promotion_.SaveClaimId(promotion_id, claim_id, std::move(callback));
-}
-
-void Database::UpdatePromotionStatus(const std::string& promotion_id,
-                                     mojom::PromotionStatus status,
-                                     ResultCallback callback) {
-  promotion_.UpdateStatus(promotion_id, status, std::move(callback));
-}
-
-void Database::UpdatePromotionsStatus(
-    const std::vector<std::string>& promotion_ids,
-    mojom::PromotionStatus status,
-    ResultCallback callback) {
-  promotion_.UpdateRecordsStatus(promotion_ids, status, std::move(callback));
-}
-
-void Database::PromotionCredentialCompleted(const std::string& promotion_id,
-                                            ResultCallback callback) {
-  promotion_.CredentialCompleted(promotion_id, std::move(callback));
-}
-
-void Database::GetPromotionList(const std::vector<std::string>& ids,
-                                GetPromotionListCallback callback) {
-  promotion_.GetRecords(ids, std::move(callback));
-}
-
-void Database::UpdatePromotionsBlankPublicKey(
-    const std::vector<std::string>& ids,
-    ResultCallback callback) {
-  promotion_.UpdateRecordsBlankPublicKey(ids, std::move(callback));
 }
 
 /**

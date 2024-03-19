@@ -26,9 +26,6 @@ class WalletBalance {
   void Fetch(FetchBalanceCallback callback);
 
  private:
-  void OnGetUnblindedTokens(FetchBalanceCallback callback,
-                            std::vector<mojom::UnblindedTokenPtr> tokens);
-
   void OnFetchExternalWalletBalance(const std::string& wallet_type,
                                     mojom::BalancePtr balance_ptr,
                                     FetchBalanceCallback callback,

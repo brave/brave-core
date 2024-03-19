@@ -262,35 +262,6 @@ enum PublisherExclude {
   INCLUDED = 2   // user manually changed it to include and is overriding server
 };
 
-enum PromotionType {
-  UGP = 0,
-  ADS = 1
-};
-
-enum PromotionStatus {
-  ACTIVE = 0,
-  ATTESTED = 1,
-  FINISHED = 4,
-  OVER = 5,
-  CORRUPTED = 6
-};
-
-struct Promotion {
-  string id;
-  uint32 version;
-  PromotionType type;
-  string public_keys; // JSONStringArray
-  uint32 suggestions;
-  double approximate_value;
-  PromotionStatus status;
-  uint64 created_at;
-  uint64 claimable_until;
-  uint64 expires_at;
-  uint64 claimed_at;
-  bool legacy_claimed;
-  string claim_id;
-};
-
 enum Platform {
   DESKTOP = 0,
   ANDROID_R = 1,
@@ -315,13 +286,6 @@ struct RecurringTip {
   uint64 created_at;
 };
 
-struct TransactionReportInfo {
-  double amount;
-  ReportType type;
-  ContributionProcessor processor;
-  uint64 created_at;
-};
-
 struct ContributionReportInfo {
   string contribution_id;
   double amount;
@@ -333,7 +297,6 @@ struct ContributionReportInfo {
 
 struct MonthlyReportInfo {
   BalanceReportInfo balance;
-  array<TransactionReportInfo> transactions;
   array<ContributionReportInfo> contributions;
 };
 

@@ -61,14 +61,6 @@ interface RewardsEngine {
 
   RestorePublishers() => (Result result);
 
-  FetchPromotions() => (Result result, array<Promotion> promotion);
-
-  ClaimPromotion(string promotion_id, string payload)
-      => (Result result, string response);
-
-  AttestPromotion(string promotion_id, string solution)
-      => (Result result, Promotion? promotion);
-
   SetPublisherMinVisitTime(int32 duration_in_seconds);
 
   SetPublisherMinVisits(int32 visits);
@@ -146,9 +138,6 @@ interface RewardsEngine {
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);
 
-  GetTransactionReport(ActivityMonth month, int32 year)
-      => (array<TransactionReportInfo> list);
-
   GetContributionReport(ActivityMonth month, int32 year)
       => (array<ContributionReportInfo> list);
 
@@ -158,8 +147,6 @@ interface RewardsEngine {
       => (Result result, MonthlyReportInfo report);
 
   GetAllMonthlyReportIds() => (array<string> ids);
-
-  GetAllPromotions() => (map<string, Promotion> items);
 
   Shutdown() => (Result result);
 
@@ -258,8 +245,6 @@ interface RewardsEngineClient {
 
   [Sync]
   GetClientInfo() => (ClientInfo info);
-
-  UnblindedTokensReady();
 
   ReconcileStampReset();
 

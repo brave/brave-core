@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NS_ENUM(NSInteger, RewardsNotificationKind) {
   RewardsNotificationKindInvalid,
   RewardsNotificationKindAutoContribute,
-  RewardsNotificationKindGrant,
-  RewardsNotificationKindGrantAds,
   RewardsNotificationKindFailedContribution,
   RewardsNotificationKindInsufficientFunds,
   RewardsNotificationKindTipsProcessed,

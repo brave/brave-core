@@ -58,16 +58,6 @@ class BraveRewardsShowRewardsSetupFunction : public ExtensionFunction {
   ResponseAction Run() override;
 };
 
-class BraveRewardsShowGrantCaptchaFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.showGrantCaptcha", UNKNOWN)
-
- protected:
-  ~BraveRewardsShowGrantCaptchaFunction() override;
-
-  ResponseAction Run() override;
-};
-
 class BraveRewardsUpdateMediaDurationFunction : public ExtensionFunction {
  public:
   DECLARE_EXTENSION_FUNCTION("braveRewards.updateMediaDuration", UNKNOWN)
@@ -268,52 +258,6 @@ class BraveRewardsIncludeInAutoContributionFunction : public ExtensionFunction {
   ~BraveRewardsIncludeInAutoContributionFunction() override;
 
   ResponseAction Run() override;
-};
-
-class BraveRewardsFetchPromotionsFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.fetchPromotions", UNKNOWN)
-
- protected:
-  ~BraveRewardsFetchPromotionsFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnPromotionsFetched(
-      std::vector<brave_rewards::mojom::PromotionPtr> promotions);
-};
-
-class BraveRewardsClaimPromotionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.claimPromotion", UNKNOWN)
-
- protected:
-  ~BraveRewardsClaimPromotionFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnClaimPromotion(const std::string& promotion_id,
-                        const brave_rewards::mojom::Result result,
-                        const std::string& captcha_image,
-                        const std::string& hint,
-                        const std::string& captcha_id);
-};
-
-class BraveRewardsAttestPromotionFunction : public ExtensionFunction {
- public:
-  DECLARE_EXTENSION_FUNCTION("braveRewards.attestPromotion", UNKNOWN)
-
- protected:
-  ~BraveRewardsAttestPromotionFunction() override;
-
-  ResponseAction Run() override;
-
- private:
-  void OnAttestPromotion(const std::string& promotion_id,
-                         const brave_rewards::mojom::Result result,
-                         brave_rewards::mojom::PromotionPtr promotion);
 };
 
 class BraveRewardsSetAutoContributeEnabledFunction : public ExtensionFunction {

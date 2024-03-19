@@ -34,8 +34,6 @@ public class BraveRewardsNativeWorker {
     // Taken from components/brave_rewards/browser/rewards_notification_service.h
     public static final int REWARDS_NOTIFICATION_INVALID = 0;
     public static final int REWARDS_NOTIFICATION_AUTO_CONTRIBUTE = 1;
-    public static final int REWARDS_NOTIFICATION_GRANT = 2;
-    public static final int REWARDS_NOTIFICATION_GRANT_ADS = 3;
     public static final int REWARDS_NOTIFICATION_FAILED_CONTRIBUTION = 4;
     public static final int REWARDS_NOTIFICATION_IMPENDING_CONTRIBUTION = 5;
     public static final int REWARDS_NOTIFICATION_TIPS_PROCESSED = 8;
@@ -61,7 +59,6 @@ public class BraveRewardsNativeWorker {
 
     private static BraveRewardsNativeWorker sInstance;
     private static final Object sLock = new Object();
-    private boolean mGrantClaimInProcess; // flag: wallet is being created
 
     public static BraveRewardsNativeWorker getInstance() {
         synchronized (sLock) {
@@ -158,12 +155,6 @@ public class BraveRewardsNativeWorker {
                         }
                     }
                 });
-    }
-
-    public boolean isGrantClaimInProcess() {
-        synchronized (sLock) {
-            return mGrantClaimInProcess;
-        }
     }
 
     public boolean isSupported() {
@@ -392,24 +383,6 @@ public class BraveRewardsNativeWorker {
         }
     }
 
-    public void getGrant(String promotionId) {
-        synchronized (sLock) {
-            if (mGrantClaimInProcess) {
-                return;
-            }
-            mGrantClaimInProcess = true;
-            BraveRewardsNativeWorkerJni.get().getGrant(
-                    mNativeBraveRewardsNativeWorker, promotionId);
-        }
-    }
-
-    public String[] getCurrentGrant(int position) {
-        synchronized (sLock) {
-            return BraveRewardsNativeWorkerJni.get().getCurrentGrant(
-                    mNativeBraveRewardsNativeWorker, position);
-        }
-    }
-
     public void getRecurringDonations() {
         synchronized (sLock) {
             BraveRewardsNativeWorkerJni.get().getRecurringDonations(
@@ -461,12 +434,6 @@ public class BraveRewardsNativeWorker {
     public void resetTheWholeState() {
         synchronized (sLock) {
             BraveRewardsNativeWorkerJni.get().resetTheWholeState(mNativeBraveRewardsNativeWorker);
-        }
-    }
-
-    public void fetchGrants() {
-        synchronized (sLock) {
-            BraveRewardsNativeWorkerJni.get().fetchGrants(mNativeBraveRewardsNativeWorker);
         }
     }
 
@@ -708,14 +675,6 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void onGrantFinish(int result) {
-        mGrantClaimInProcess = false;
-        for(BraveRewardsObserver observer : mObservers) {
-            observer.onGrantFinish(result);
-        }
-    }
-
-    @CalledByNative
     public void onCompleteReset(boolean success) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.onCompleteReset(success);
@@ -786,24 +745,9 @@ public class BraveRewardsNativeWorker {
     }
 
     @CalledByNative
-    public void onClaimPromotion(int errorCode) {
-        mGrantClaimInProcess = false;
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.onClaimPromotion(errorCode);
-        }
-    }
-
-    @CalledByNative
     public void onSendContribution(boolean result) {
         for (BraveRewardsObserver observer : mObservers) {
             observer.onSendContribution(result);
-        }
-    }
-
-    @CalledByNative
-    public void onUnblindedTokensReady() {
-        for (BraveRewardsObserver observer : mObservers) {
-            observer.onUnblindedTokensReady();
         }
     }
 
@@ -877,21 +821,28 @@ public class BraveRewardsNativeWorker {
 
         void deleteNotification(long nativeBraveRewardsNativeWorker, String notificationId);
 
-        void getGrant(long nativeBraveRewardsNativeWorker, String promotionId);
-        String[] getCurrentGrant(long nativeBraveRewardsNativeWorker, int position);
         void getRecurringDonations(long nativeBraveRewardsNativeWorker);
+
         boolean isCurrentPublisherInRecurrentDonations(
                 long nativeBraveRewardsNativeWorker, String publisher);
+
         void getAutoContributeProperties(long nativeBraveRewardsNativeWorker);
+
         boolean isAutoContributeEnabled(long nativeBraveRewardsNativeWorker);
+
         void getReconcileStamp(long nativeBraveRewardsNativeWorker);
+
         double getPublisherRecurrentDonationAmount(
                 long nativeBraveRewardsNativeWorker, String publisher);
+
         void removeRecurring(long nativeBraveRewardsNativeWorker, String publisher);
+
         void resetTheWholeState(long nativeBraveRewardsNativeWorker);
-        void fetchGrants(long nativeBraveRewardsNativeWorker);
+
         int getAdsPerHour(long nativeBraveRewardsNativeWorker);
+
         void setAdsPerHour(long nativeBraveRewardsNativeWorker, int value);
+
         void getExternalWallet(long nativeBraveRewardsNativeWorker);
 
         boolean isTermsOfServiceUpdateRequired(long nativeBraveRewardsNativeWorker);

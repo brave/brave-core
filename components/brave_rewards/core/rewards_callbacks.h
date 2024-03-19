@@ -19,12 +19,8 @@
 
 namespace brave_rewards::internal {
 
-using AttestPromotionCallback = mojom::RewardsEngine::AttestPromotionCallback;
-
 using BeginExternalWalletLoginCallback =
     mojom::RewardsEngine::BeginExternalWalletLoginCallback;
-
-using ClaimPromotionCallback = mojom::RewardsEngine::ClaimPromotionCallback;
 
 using ConnectExternalWalletCallback =
     mojom::RewardsEngine::ConnectExternalWalletCallback;
@@ -33,8 +29,6 @@ using CreateRewardsWalletCallback =
     mojom::RewardsEngine::CreateRewardsWalletCallback;
 
 using FetchBalanceCallback = mojom::RewardsEngine::FetchBalanceCallback;
-
-using FetchPromotionsCallback = mojom::RewardsEngine::FetchPromotionsCallback;
 
 using GetExternalWalletCallback =
     mojom::RewardsEngine::GetExternalWalletCallback;
@@ -62,9 +56,6 @@ using GetActivityInfoListCallback =
 
 using GetAllMonthlyReportIdsCallback =
     mojom::RewardsEngine::GetAllMonthlyReportIdsCallback;
-
-using GetAllPromotionsCallback =
-    base::OnceCallback<void(base::flat_map<std::string, mojom::PromotionPtr>)>;
 
 using GetBalanceReportListCallback = base::OnceCallback<void(
     std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
@@ -95,9 +86,6 @@ using GetPublisherPanelInfoCallback =
 
 using GetRecurringTipsCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
-
-using GetTransactionReportCallback =
-    base::OnceCallback<void(std::vector<mojom::TransactionReportInfoPtr>)>;
 
 using PublisherInfoCallback =
     base::OnceCallback<void(mojom::Result, mojom::PublisherInfoPtr)>;

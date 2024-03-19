@@ -10,7 +10,6 @@ import {
 } from '../../shared/lib/external_wallet'
 
 import { UserType } from '../../shared/lib/user_type'
-import { GrantInfo } from '../../shared/lib/grant_info'
 import { ProviderPayoutStatus } from '../../shared/lib/provider_payout_status'
 import { PublisherPlatform } from '../../shared/lib/publisher_platform'
 import { OnboardingResult } from '../../shared/components/onboarding'
@@ -41,17 +40,6 @@ export interface PublisherInfo {
   autoContributeEnabled: boolean
   monthlyTip: number
   supportedWalletProviders: ExternalWalletProvider[]
-}
-
-export type GrantCaptchaStatus = 'pending' | 'passed' | 'failed' | 'error'
-
-export interface GrantCaptchaInfo {
-  id: string
-  imageURL: string
-  hint: string
-  status: GrantCaptchaStatus
-  verifying: boolean
-  grantInfo: GrantInfo
 }
 
 export type AdaptiveCaptchaStatus =
@@ -88,7 +76,6 @@ export interface HostState {
   balance: Optional<number>
   settings: Settings
   options: Options
-  grantCaptchaInfo: GrantCaptchaInfo | null
   adaptiveCaptchaInfo: AdaptiveCaptchaInfo | null
   exchangeInfo: ExchangeInfo
   earningsInfo: EarningsInfo
@@ -125,8 +112,6 @@ export interface Host {
   dismissSelfCustodyInvite: () => void
   acceptTermsOfServiceUpdate: () => void
   resetRewards: () => void
-  solveGrantCaptcha: (solution: { x: number, y: number }) => void
-  clearGrantCaptcha: () => void
   clearAdaptiveCaptcha: () => void
   handleAdaptiveCaptchaResult: (result: AdaptiveCaptchaResult) => void
   closePanel: () => void

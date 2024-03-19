@@ -10,8 +10,6 @@ export const enum types {
   ON_BALANCE = '@@rewards_internals/ON_BALANCE',
   GET_CONTRIBUTIONS = '@@rewards_internals/GET_CONTRIBUTIONS',
   ON_CONTRIBUTIONS = '@@rewards_internals/ON_CONTRIBUTIONS',
-  GET_PROMOTIONS = '@@rewards_internals/GET_PROMOTIONS',
-  ON_PROMOTIONS = '@@rewards_internals/ON_PROMOTIONS',
   GET_PARTIAL_LOG = '@@rewards_internals/GET_PARTIAL_LOG',
   ON_GET_PARTIAL_LOG = '@@rewards_internals/ON_GET_PARTIAL_LOG',
   GET_FULL_LOG = '@@rewards_internals/GET_FULL_LOG',

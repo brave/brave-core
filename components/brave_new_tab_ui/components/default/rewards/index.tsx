@@ -12,7 +12,6 @@ import { LocaleContext } from '../../../../brave_rewards/resources/shared/lib/lo
 import { createLocaleContextForWebUI } from '../../../../brave_rewards/resources/shared/lib/webui_locale_context'
 import { getProviderPayoutStatus } from '../../../../brave_rewards/resources/shared/lib/provider_payout_status'
 import { WithThemeVariables } from '../../../../brave_rewards/resources/shared/components/with_theme_variables'
-import { GrantInfo } from '../../../../brave_rewards/resources/shared/lib/grant_info'
 import { userTypeFromString } from '../../../../brave_rewards/resources/shared/lib/user_type'
 import {
   optional
@@ -53,7 +52,6 @@ export interface RewardsProps {
   report?: NewTab.RewardsBalanceReport
   adsAccountStatement: NewTab.AdsAccountStatement
   parameters: NewTab.RewardsParameters
-  promotions?: NewTab.Promotion[]
   totalContribution: number
   publishersVisitedCount: number
   selfCustodyInviteDismissed: boolean
@@ -64,21 +62,6 @@ export interface RewardsProps {
   onDismissNotification: (id: string) => void
   onSelfCustodyInviteDismissed: () => void
   onTermsOfServiceUpdateAccepted: () => void
-}
-
-function getVisibleGrant (promotions: NewTab.Promotion[]): GrantInfo | null {
-  if (promotions.length === 0) {
-    return null
-  }
-  const promo = promotions[0]
-  return {
-    id: promo.promotionId,
-    amount: promo.amount,
-    type: promo.type === 1 ? 'ads' : 'ugp',
-    createdAt: promo.createdAt * 1000,
-    claimableUntil: promo.claimableUntil ? promo.claimableUntil * 1000 : null,
-    expiresAt: promo.expiresAt ? promo.expiresAt * 1000 : null
-  }
 }
 
 export const RewardsWidget = createWidget((props: RewardsProps) => {
@@ -94,7 +77,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
   }
 
   const adsInfo = props.adsAccountStatement || null
-  const grantInfo = getVisibleGrant(props.promotions || [])
   const externalWallet = externalWalletFromExtensionData(props.externalWallet)
 
   const providerPayoutStatus = () => {
@@ -126,12 +108,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
     return false
   }
 
-  const onClaimGrant = () => {
-    if (grantInfo) {
-      chrome.braveRewards.showGrantCaptcha(grantInfo.id)
-    }
-  }
-
   const openRewardsPanel = () => {
     chrome.braveRewards.recordNTPPanelTrigger()
     chrome.braveRewards.showRewardsSetup()
@@ -148,7 +124,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       exchangeCurrency='USD'
       exchangeRate={props.parameters.rate}
       providerPayoutStatus={providerPayoutStatus()}
-      grantInfo={grantInfo}
       externalWallet={externalWallet}
       nextPaymentDate={adsInfo ? adsInfo.nextPaymentDate : 0}
       minEarningsThisMonth={adsInfo ? adsInfo.minEarningsThisMonth : 0}
@@ -161,7 +136,6 @@ export const RewardsWidget = createWidget((props: RewardsProps) => {
       publishersVisited={props.publishersVisitedCount || 0}
       onEnableRewards={openRewardsPanel}
       onSelectCountry={openRewardsPanel}
-      onClaimGrant={onClaimGrant}
       onSelfCustodyInviteDismissed={props.onSelfCustodyInviteDismissed}
       onTermsOfServiceUpdateAccepted={props.onTermsOfServiceUpdateAccepted}
     />

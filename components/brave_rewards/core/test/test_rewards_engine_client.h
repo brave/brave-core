@@ -171,8 +171,6 @@ class TestRewardsEngineClient : public mojom::RewardsEngineClient {
 
   void GetClientInfo(GetClientInfoCallback callback) override;
 
-  void UnblindedTokensReady() override;
-
   void ReconcileStampReset() override;
 
   void RunDBTransaction(mojom::DBTransactionPtr transaction,

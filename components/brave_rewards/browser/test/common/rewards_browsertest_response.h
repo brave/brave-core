@@ -41,29 +41,20 @@ class RewardsBrowserTestResponse {
 
   void SetSKUOrder(mojom::SKUOrderPtr order);
 
-  void SetPromotionEmptyKey(const bool empty);
-
   void SetAlternativePublisherList(const bool alternative);
 
   void SetExternalBalance(const std::string& balance);
 
  private:
   std::string wallet_;
-  std::string promotions_;
-  std::string promotion_empty_key_;
-  std::string promotion_claim_;
-  std::string creds_tokens_;
-  std::string creds_tokens_prod_;
   std::string creds_tokens_sku_;
   std::string creds_tokens_sku_prod_;
-  std::string captcha_;
   std::string parameters_;
   std::string uphold_auth_resp_;
   std::string uphold_transactions_resp_;
   std::string uphold_commit_resp_;
 
   std::vector<Request> requests_;
-  bool empty_promotion_key_ = false;
   bool alternative_publisher_list_ = false;
   mojom::SKUOrderPtr order_;
   std::string external_balance_ = "0.0";

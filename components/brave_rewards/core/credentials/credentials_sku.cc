@@ -311,7 +311,6 @@ void CredentialsSKU::Completed(ResultCallback callback,
     return;
   }
 
-  engine_->client()->UnblindedTokensReady();
   std::move(callback).Run(result);
 }
 

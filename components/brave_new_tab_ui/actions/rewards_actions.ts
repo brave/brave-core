@@ -13,11 +13,6 @@ export const onBalanceReport = (properties: { month: number, year: number, repor
   report: properties.report
 })
 
-export const onPromotions = (result: number, promotions: NewTab.Promotion[]) => action(types.ON_PROMOTIONS, {
-  result,
-  promotions
-})
-
 export const dismissNotification = (id: string) => action(types.DISMISS_NOTIFICATION, {
   id
 })
@@ -33,11 +28,6 @@ export const onAdsAccountStatement = (adsAccountStatement: NewTab.AdsAccountStat
 export const setInitialRewardsData = (initialRewardsData: InitialRewardsData) => action(types.SET_INITIAL_REWARDS_DATA, initialRewardsData)
 
 export const setPreInitialRewardsData = (preInitialRewardsData: PreInitialRewardsData) => action(types.SET_PRE_INITIAL_REWARDS_DATA, preInitialRewardsData)
-
-export const onPromotionFinish = (result: NewTab.RewardsResult, promotion: NewTab.Promotion) => action(types.ON_PROMOTION_FINISH, {
-  result,
-  promotion
-})
 
 export const onCompleteReset = (success: boolean) => action(types.ON_COMPLETE_RESET, {
   success

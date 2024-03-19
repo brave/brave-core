@@ -92,7 +92,6 @@ void GetStatisticalVotingWinners(
 
 Unblinded::Unblinded(RewardsEngineImpl& engine)
     : engine_(engine),
-      credentials_promotion_(engine),
       credentials_sku_(engine) {}
 
 Unblinded::~Unblinded() = default;
@@ -432,9 +431,6 @@ void Unblinded::OnProcessTokens(
       credentials_sku_.RedeemTokens(redeem, std::move(redeem_callback));
       return;
     }
-
-    credentials_promotion_.RedeemTokens(redeem, std::move(redeem_callback));
-    return;
   }
 
   // we processed all publishers

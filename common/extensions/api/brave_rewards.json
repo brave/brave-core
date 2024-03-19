@@ -9,42 +9,6 @@
     "compiler_options": {
       "implemented_in": "brave/browser/extensions/api/brave_rewards_api.h"
     },
-    "types": [
-      {
-        "id": "Promotion",
-        "type": "object",
-        "properties": {
-          "promotionId": {
-            "type": "string",
-            "description": "promotion id"
-          },
-          "type": {
-            "type": "integer",
-            "description": "promotion type"
-          },
-          "status": {
-            "type": "integer",
-            "description": "promotion status"
-          },
-          "createdAt": {
-            "type": "number",
-            "description": "when the promotion record was created"
-          },
-          "claimableUntil": {
-            "type": "number",
-            "description": "when the promotion is no longer claimable"
-          },
-          "expiresAt": {
-            "type": "number",
-            "description": "when promotion expires"
-          },
-          "amount": {
-            "type": "number",
-            "description": "how much is this promotion worth"
-          }
-        }
-      }
-    ],
     "events": [
       {
         "name": "initialized",
@@ -61,61 +25,6 @@
         "type": "function",
         "description": "Called when the user's Rewards wallet has been created",
         "parameters": []
-      },
-      {
-        "name": "onPromotions",
-        "type": "function",
-        "description": "Fired when promotion list is received",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
-          },
-          {
-            "name": "promotions",
-            "type": "array",
-            "items": {
-              "$ref": "Promotion"
-            }
-          }
-        ]
-      },
-      {
-        "name": "onPromotionFinish",
-        "type": "function",
-        "description": "Fired when promotion is successfully claimed",
-        "parameters": [
-          {
-            "name": "result",
-            "type": "integer"
-          },
-          {
-            "name": "promotion",
-            "type": "object",
-            "properties": {
-              "promotionId": {
-                "type": "string",
-                "description": "promotion id"
-              },
-              "type": {
-                "type": "integer",
-                "description": "promotion type"
-              },
-              "status": {
-                "type": "integer",
-                "description": "promotion status"
-              },
-              "expiresAt": {
-                "type": "integer",
-                "description": "when promotion expires"
-              },
-              "amount": {
-                "type": "number",
-                "description": "how much is this promotion worth"
-              }
-            }
-          }
-        ]
       },
       {
         "name": "onPublisherData",
@@ -289,12 +198,6 @@
         "parameters": []
       },
       {
-        "name": "onUnblindedTokensReady",
-        "type": "function",
-        "description": "Fired when we get unblinded tokens",
-        "parameters": []
-      },
-      {
         "name": "onCompleteReset",
         "type": "function",
         "description": "Fired when rewards was reset",
@@ -346,17 +249,6 @@
         "type": "function",
         "description": "Opens the Rewards panel in the active window and shows setup.",
         "parameters": []
-      },
-      {
-        "name": "showGrantCaptcha",
-        "type": "function",
-        "description": "Displays a grant captcha in the Rewards panel.",
-        "parameters": [
-          {
-            "name": "grantId",
-            "type": "string"
-          }
-        ]
       },
       {
         "name": "updateMediaDuration",
@@ -838,9 +730,6 @@
                 "monthly": {
                   "type": "number"
                 },
-                "grant": {
-                  "type": "number"
-                },
                 "tips": {
                   "type": "number"
                 }
@@ -864,109 +753,6 @@
             "type": "boolean"
           }
         ]
-      },
-      {
-        "name": "fetchPromotions",
-        "type": "function",
-        "description": "Retrieves promotions (Rewards grants)",
-        "parameters": [],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "promotions",
-              "type": "array",
-              "items": {
-                "$ref": "Promotion"
-              }
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
-      },
-      {
-        "name": "claimPromotion",
-        "type": "function",
-        "description": "Starts claim process for selected promotion",
-        "parameters": [
-          {
-            "name": "promotionId",
-            "type": "string"
-          }
-        ],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "properties",
-              "type": "object",
-              "properties": {
-                "result": {
-                  "type": "integer"
-                },
-                "promotionId": {
-                  "type": "string"
-                },
-                "captchaId": {
-                  "type": "string"
-                },
-                "captchaImage": {
-                  "type": "string"
-                },
-                "hint": {
-                  "type": "string"
-                }
-              }
-            }
-          ]
-        },
-        "does_not_support_promises": "Requires refactoring"
-      },
-      {
-        "name": "attestPromotion",
-        "type": "function",
-        "description": "Sends the user solution to the grant claim captcha",
-        "parameters": [
-          {
-            "name": "promotionId",
-            "type": "string"
-          },
-          {
-            "name": "solution",
-            "type": "string"
-          }
-        ],
-        "returns_async": {
-          "name": "callback",
-          "parameters": [
-            {
-              "name": "result",
-              "type": "integer"
-            },
-            {
-              "name": "promotion",
-              "type": "object",
-              "properties": {
-                "promotionId": {
-                  "type": "string"
-                },
-                "expiresAt": {
-                  "optional": true,
-                  "type": "number"
-                },
-                "amount": {
-                  "optional": true,
-                  "type": "number"
-                },
-                "type": {
-                  "optional": true,
-                  "type": "integer"
-                }
-              }
-            }
-          ],
-          "does_not_support_promises": "Multi-parameter callback"
-        }
       },
       {
         "name": "getRewardsEnabled",
