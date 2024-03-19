@@ -11,7 +11,6 @@ import { NavTypes, TopTabNavTypes } from '../constants/types'
 import { NavOptions } from '../options/side-nav-options'
 import { TopNavOptions } from '../options/top-nav-options'
 import './locale'
-import { SweepstakesBanner } from '../components/desktop/sweepstakes-banner'
 import { LoadingSkeleton } from '../components/shared/loading-skeleton/index'
 import { WalletNav } from '../components/desktop/wallet-nav/wallet-nav'
 import { NftIpfsBanner } from '../components/desktop/nft-ipfs-banner/nft-ipfs-banner'
@@ -86,19 +85,6 @@ export const _DesktopTopTabNav = () => {
 
 _DesktopTopTabNav.story = {
   name: 'Top Tab Nav'
-}
-
-export const _SweepstakesBanner = () => {
-  return (
-    <SweepstakesBanner
-      startDate={new Date(Date.now())}
-      endDate={new Date(Date.now() + 1)}
-    />
-  )
-}
-
-_SweepstakesBanner.story = {
-  name: 'Sweepstakes Banner'
 }
 
 export const _LoadingSkeleton = () => {
