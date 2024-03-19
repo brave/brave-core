@@ -524,7 +524,7 @@ void AIChatUIPageHandler::OnPreviewReady() {
         prefs->GetBoolean(::prefs::kPdfUseSkiaRendererEnabled));
   }
   pdf_to_bitmap_converter_->GetBitmap(
-      std::move(pdf_region.region),
+      std::move(pdf_region.region), kMaxPreviewPages,
       base::BindOnce(&AIChatUIPageHandler::OnGetBitmaps,
                      base::Unretained(this)));
 }

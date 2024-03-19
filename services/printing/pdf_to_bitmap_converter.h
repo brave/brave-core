@@ -23,6 +23,7 @@ class PdfToBitmapConverter : public printing::mojom::PdfToBitmapConverter {
 
   // printing::mojom::PdfToBitmapConverter:
   void GetBitmap(base::ReadOnlySharedMemoryRegion pdf_region,
+                 std::optional<uint8_t> max_pages,
                  GetBitmapCallback callback) override;
 
   void SetUseSkiaRendererPolicy(bool use_skia) override;

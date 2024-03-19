@@ -22,6 +22,7 @@ PdfToBitmapConverter::~PdfToBitmapConverter() = default;
 
 void PdfToBitmapConverter::GetBitmap(
     base::ReadOnlySharedMemoryRegion pdf_region,
+    std::optional<uint8_t> max_pages,
     GetBitmapCallback callback) {
   // Decode memory region as PDF bytes.
   base::ReadOnlySharedMemoryMapping pdf_map = pdf_region.Map();
@@ -37,6 +38,10 @@ void PdfToBitmapConverter::GetBitmap(
     DLOG(ERROR) << "Failed to get PDF document info";
     std::move(callback).Run(std::nullopt);
     return;
+  }
+
+  if (max_pages.has_value() && *max_pages < page_count) {
+    page_count = *max_pages;
   }
 
   std::vector<SkBitmap> bitmaps;

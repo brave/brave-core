@@ -13,6 +13,7 @@
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui_page_handler.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/constants/brave_paths.h"
 #include "brave/components/l10n/common/test/scoped_default_locale.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -191,7 +192,7 @@ IN_PROC_BROWSER_TEST_F(AIChatUIBrowserTest, PrintPreviewPagesLimit) {
   NavigateURL(
       https_server_.GetURL("docs.google.com", "/extra_long_canvas.html"));
   CreatePrintPreview(ai_chat_page_handler);
-  std::string expected_string(19, '\n');
+  std::string expected_string(ai_chat::kMaxPreviewPages - 1, '\n');
   base::StrAppend(&expected_string, {"This is the way."});
   FetchPageContent(FROM_HERE, chat_tab_helper, expected_string);
 }

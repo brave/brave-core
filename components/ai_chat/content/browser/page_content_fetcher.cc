@@ -21,6 +21,7 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -57,7 +58,6 @@ constexpr auto kScreenshotRetrievalHosts =
                                              {
                                                  "twitter.com",
                                              });
-constexpr size_t kMaxPreviewPages = 20;
 #endif
 
 constexpr auto kVideoPageContentTypes =
