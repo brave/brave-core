@@ -39,7 +39,6 @@
 #include "components/omnibox/browser/omnibox_view.h"
 #include "components/prefs/pref_service.h"
 #include "components/search_engines/search_engine_type.h"
-#include "components/search_engines/search_terms_data.h"
 #include "components/search_engines/template_url.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
@@ -300,7 +299,6 @@ void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
     return;
   }
 
-  SearchTermsData data;
   GURL search_url = template_url->GenerateSearchURL(
       service->search_terms_data(), base::UTF8ToUTF16(query));
 

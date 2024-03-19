@@ -10,7 +10,7 @@ import { radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled from 'styled-components';
 import { LargeIcon, MediumIcon } from './SearchEngineIcon';
-import { useSearch } from './SearchContext';
+import { useSearchContext } from './SearchContext';
 
 const SearchInput = styled(Input)`
   --leo-control-padding: 6px;
@@ -20,7 +20,7 @@ const SearchInput = styled(Input)`
 
   /* If we have search results, don't add a radius to the bottom of the search box */
   &:has(+ div) {
-    --leo-control-radius: ${radius.m} ${radius.m} 0 0; 
+    --leo-control-radius: ${radius.m} ${radius.m} 0 0;
   }
 `
 
@@ -38,7 +38,7 @@ const Option = styled.div`
 `
 
 export default function SearchBox() {
-  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery } = useSearch()
+  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery } = useSearchContext()
   const searchInput = React.useRef<HTMLElement>()
   return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.detail.value)} placeholder="Search the web privately">
     <Flex slot="left-icon">

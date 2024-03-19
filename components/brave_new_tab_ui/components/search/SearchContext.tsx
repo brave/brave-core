@@ -2,6 +2,7 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import usePromise from '$web-common/usePromise';
 import { AutocompleteResult, OmniboxPopupSelection, PageHandler, PageHandlerRemote, PageInterface, PageReceiver } from 'gen/components/omnibox/browser/omnibox.mojom.m';
 import { stringToMojoString16 } from 'chrome://resources/js/mojo_type_util.js';
@@ -121,6 +122,6 @@ export function SearchContext(props: React.PropsWithChildren<{}>) {
   </Context.Provider>
 }
 
-export function useSearch() {
+export function useSearchContext() {
   return React.useContext(Context)
 }

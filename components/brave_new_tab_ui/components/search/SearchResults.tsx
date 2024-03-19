@@ -8,7 +8,8 @@ import * as React from 'react'
 import styled from 'styled-components'
 import SearchResult from './SearchResult'
 import getNTPBrowserAPI from '../../api/background'
-import { omniboxController, search, useSearch } from './SearchContext'
+import { omniboxController, search, useSearchContext } from './SearchContext'
+import { braveSearchHost } from './config'
 
 const Container = styled.div`
   background: ${color.container.background};
@@ -28,7 +29,7 @@ const Container = styled.div`
 `
 
 export default function SearchResults() {
-  const { query, searchEngine } = useSearch()
+  const { query, searchEngine } = useSearchContext()
   const [result, setResult] = React.useState<AutocompleteResult>()
   const [selectedMatch, setSelectedMatch] = React.useState<number>();
 
@@ -106,7 +107,7 @@ export default function SearchResults() {
 
       const match = result?.matches[selectedMatch!]
       if (!match) {
-        getNTPBrowserAPI().pageHandler.searchWhatYouTyped(searchEngine?.host!, query, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
+        getNTPBrowserAPI().pageHandler.searchWhatYouTyped(searchEngine?.host ?? braveSearchHost, query, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
         return;
       }
 

@@ -10,7 +10,7 @@ import { SearchEngineInfo } from "../../api/background";
 const ENABLED_SEARCH_ENGINES_KEY = 'search-engines'
 const LAST_SEARCH_ENGINE_KEY = 'last-search-engine'
 
-const braveSearchHost = 'search.brave.com'
+export const braveSearchHost = 'search.brave.com'
 
 let cache: Record<string, boolean> | undefined
 
