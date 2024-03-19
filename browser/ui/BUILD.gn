@@ -743,12 +743,12 @@ source_set("ui") {
 
     if (toolkit_views) {
       sources += [
-        "views/wayback_machine_dialog_view.cc",
-        "views/wayback_machine_dialog_view.h",
-        "views/wayback_machine_fetch_button.cc",
-        "views/wayback_machine_fetch_button.h",
-        "views/wayback_machine_throbber.cc",
-        "views/wayback_machine_throbber.h",
+        "views/page_action/wayback_machine_action_icon_view.cc",
+        "views/page_action/wayback_machine_action_icon_view.h",
+        "views/page_action/wayback_machine_state_manager.cc",
+        "views/page_action/wayback_machine_state_manager.h",
+        "views/wayback_machine_bubble_view.cc",
+        "views/wayback_machine_bubble_view.h",
       ]
     }
   }

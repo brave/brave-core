@@ -12,6 +12,7 @@
 #include "brave/browser/ui/color/color_palette.h"
 #include "brave/browser/ui/color/leo/colors.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/playlist/common/buildflags/buildflags.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/color/chrome_color_id.h"
@@ -473,6 +474,13 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorWebDiscoveryInfoBarNoThanks] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
   mixer[kColorWebDiscoveryInfoBarClose] = {SkColorSetRGB(0x6B, 0x70, 0x84)};
 
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  mixer[kColorWaybackMachineURLLoaded] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kLight)};
+  mixer[kColorWaybackMachineURLNotAvailable] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackErrorIcon, leo::Theme::kLight)};
+#endif
+
   // Color for download button when all completed and button needs user
   // interaction.
   mixer[kColorBraveDownloadToolbarButtonActive] = {
@@ -583,6 +591,13 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
       SkColorSetARGB(0xBF, 0xEC, 0xEF, 0xF2)};
   mixer[kColorWebDiscoveryInfoBarClose] = {
       SkColorSetARGB(0xBF, 0x8C, 0x90, 0xA1)};
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  mixer[kColorWaybackMachineURLLoaded] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackSuccessIcon, leo::Theme::kDark)};
+  mixer[kColorWaybackMachineURLNotAvailable] = {leo::GetColor(
+      leo::Color::kColorSystemfeedbackErrorIcon, leo::Theme::kDark)};
+#endif
 
   mixer[kColorBraveDownloadToolbarButtonActive] = {
       SkColorSetRGB(0x87, 0x84, 0xF4)};

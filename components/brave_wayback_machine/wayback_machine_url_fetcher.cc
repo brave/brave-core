@@ -25,7 +25,7 @@ constexpr int kMaxBodySize = 1024 * 1024;
 
 const net::NetworkTrafficAnnotationTag& GetNetworkTrafficAnnotationTag() {
   static const net::NetworkTrafficAnnotationTag network_traffic_annotation_tag =
-      net::DefineNetworkTrafficAnnotation("wayback_machine_infobar", R"(
+      net::DefineNetworkTrafficAnnotation("wayback_machine_url_fetcher", R"(
         semantics {
           sender:
             "Brave Wayback Machine"

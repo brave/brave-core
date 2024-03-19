@@ -20,6 +20,7 @@
 #include "brave/browser/ui/tabs/split_view_browser_data.h"
 #include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
+#include "brave/components/brave_wayback_machine/buildflags/buildflags.h"
 #include "brave/components/commands/browser/accelerator_pref_manager.h"
 #include "build/build_config.h"
 #include "chrome/browser/ui/tabs/tab_model.h"
@@ -171,6 +172,10 @@ class BraveBrowserView : public BrowserView,
 
 #if BUILDFLAG(ENABLE_PLAYLIST_WEBUI)
   void ShowPlaylistBubble() override;
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+  void ShowWaybackMachineBubble() override;
 #endif
 
   void UpdateSideBarHorizontalAlignment();

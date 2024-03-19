@@ -6,6 +6,7 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_PREF_NAMES_H_
 #define BRAVE_COMPONENTS_BRAVE_WAYBACK_MACHINE_PREF_NAMES_H_
 
+// Deprecated. Only used for prefs cleanup.
 inline constexpr char kBraveWaybackMachineEnabled[] =
     "brave.wayback_machine_enabled";
 

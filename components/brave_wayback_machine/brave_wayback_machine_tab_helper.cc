@@ -5,44 +5,93 @@
 
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_tab_helper.h"
 
+#include <string>
 #include <utility>
 
 #include "base/command_line.h"
 #include "base/containers/flat_set.h"
 #include "base/functional/bind.h"
+#include "base/functional/callback.h"
 #include "base/task/sequenced_task_runner.h"
-#include "brave/components/brave_wayback_machine/brave_wayback_machine_delegate.h"
 #include "brave/components/brave_wayback_machine/brave_wayback_machine_utils.h"
-#include "brave/components/brave_wayback_machine/pref_names.h"
+#include "brave/components/constants/brave_switches.h"
 #include "components/prefs/pref_service.h"
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_context.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/storage_partition.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
 #include "net/http/http_status_code.h"
+#include "ui/views/widget/widget.h"
+
+// static
+void BraveWaybackMachineTabHelper::CreateIfNeeded(
+    content::WebContents* web_contents) {
+  if (base::CommandLine::ForCurrentProcess()->HasSwitch(
+          switches::kDisableBraveWaybackMachineExtension)) {
+    return;
+  }
+
+  BraveWaybackMachineTabHelper::CreateForWebContents(web_contents);
+}
 
 BraveWaybackMachineTabHelper::BraveWaybackMachineTabHelper(
     content::WebContents* contents)
     : WebContentsObserver(contents),
       content::WebContentsUserData<BraveWaybackMachineTabHelper>(*contents),
       pref_service_(*user_prefs::UserPrefs::Get(contents->GetBrowserContext())),
-      weak_factory_(this) {}
+      wayback_machine_url_fetcher_(
+          this,
+          contents->GetBrowserContext()
+              ->GetDefaultStoragePartition()
+              ->GetURLLoaderFactoryForBrowserProcess()) {}
 
-BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() = default;
+BraveWaybackMachineTabHelper::~BraveWaybackMachineTabHelper() {
+  CHECK(!wayback_state_changed_callback_);
+  CloseWindowIfPossible();
+}
 
-void BraveWaybackMachineTabHelper::set_delegate(
-    std::unique_ptr<BraveWaybackMachineDelegate> delegate) {
-  DCHECK(delegate);
-  delegate_ = std::move(delegate);
+void BraveWaybackMachineTabHelper::FetchWaybackURL() {
+  SetWaybackState(WaybackState::kFetching);
+  wayback_machine_url_fetcher_.Fetch(web_contents()->GetVisibleURL());
+}
+
+void BraveWaybackMachineTabHelper::SetWaybackStateChangedCallback(
+    WaybackStateChangedCallback callback) {
+  // callback should be set only once.
+  // And it should be cleared only when there is existing one.
+  if (callback) {
+    CHECK(!wayback_state_changed_callback_);
+  } else {
+    CHECK(wayback_state_changed_callback_);
+  }
+
+  wayback_state_changed_callback_ = std::move(callback);
+}
+
+// When wayback url is loaded via user action,
+// we don't want to clear wayback state.
+void BraveWaybackMachineTabHelper::DidStartNavigation(
+    content::NavigationHandle* navigation_handle) {
+  if (!navigation_handle->IsInMainFrame() ||
+      navigation_handle->IsSameDocument()) {
+    return;
+  }
+
+  // Don't reset current state if it's wayback url navigation.
+  // Otherwise, we lost kLoaded state after loading it.
+  if (wayback_url_navigation_ &&
+      wayback_url_navigation_.get() == navigation_handle) {
+    return;
+  }
+
+  // Reset to initial state whenever new navigation starts.
+  SetWaybackState(WaybackState::kInitial);
 }
 
 void BraveWaybackMachineTabHelper::DidFinishNavigation(
     content::NavigationHandle* navigation_handle) {
-  DCHECK(delegate_);
-  if (!IsWaybackMachineEnabled())
-    return;
-
   if (IsWaybackMachineDisabledFor(navigation_handle->GetURL())) {
     return;
   }
@@ -58,30 +107,45 @@ void BraveWaybackMachineTabHelper::DidFinishNavigation(
     return;
   }
 
-  if (const net::HttpResponseHeaders* header =
-          navigation_handle->GetResponseHeaders()) {
-    if (!ShouldShowWaybackMachineDialog(header->response_code())) {
-      return;
-    }
+  const net::HttpResponseHeaders* header =
+      navigation_handle->GetResponseHeaders();
+  if (!header) {
+    return;
+  }
 
-    // Create infobar in the next loop for not blocking navigation.
-    base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
-        FROM_HERE,
-        base::BindOnce(&BraveWaybackMachineTabHelper::ShowWaybackMachineDialog,
-                       weak_factory_.GetWeakPtr()));
+  if (ShouldCheckWaybackMachine(header->response_code())) {
+    SetWaybackState(WaybackState::kNeedToCheck);
   }
 }
 
-void BraveWaybackMachineTabHelper::ShowWaybackMachineDialog() {
-  DCHECK(delegate_);
-  delegate_->ShowWaybackMachineDialog(web_contents());
+void BraveWaybackMachineTabHelper::OnWaybackURLFetched(
+    const GURL& latest_wayback_url) {
+  // wayback url is not available.
+  if (latest_wayback_url.is_empty()) {
+    SetWaybackState(WaybackState::kNotAvailable);
+    return;
+  }
+
+  SetWaybackState(WaybackState::kLoaded);
+
+  wayback_url_navigation_ = web_contents()->GetController().LoadURL(
+      latest_wayback_url, content::Referrer(), ui::PAGE_TRANSITION_LINK,
+      std::string());
 }
 
-bool BraveWaybackMachineTabHelper::IsWaybackMachineEnabled() const {
-  return pref_service_->GetBoolean(kBraveWaybackMachineEnabled);
+void BraveWaybackMachineTabHelper::SetWaybackState(WaybackState state) {
+  if (wayback_state_ == state) {
+    return;
+  }
+
+  wayback_state_ = state;
+
+  if (wayback_state_changed_callback_) {
+    wayback_state_changed_callback_.Run(wayback_state_);
+  }
 }
 
-bool BraveWaybackMachineTabHelper::ShouldShowWaybackMachineDialog(
+bool BraveWaybackMachineTabHelper::ShouldCheckWaybackMachine(
     int response_code) const {
   static base::flat_set<int> responses = {
       net::HTTP_NOT_FOUND,              // 404
@@ -102,6 +166,13 @@ bool BraveWaybackMachineTabHelper::ShouldShowWaybackMachineDialog(
   };
 
   return responses.find(response_code) != responses.end();
+}
+
+void BraveWaybackMachineTabHelper::CloseWindowIfPossible() {
+  if (auto* widget = views::Widget::GetWidgetForNativeWindow(active_window_)) {
+    widget->CloseWithReason(views::Widget::ClosedReason::kUnspecified);
+    active_window_ = nullptr;
+  }
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(BraveWaybackMachineTabHelper);

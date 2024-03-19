@@ -22,6 +22,15 @@ namespace {
 
 PageActionIconParams& ModifyIconParamsForBrave(PageActionIconParams& params) {
   // Add actions for Brave
+  // |browser| is null for non-browser window. See LocationBarView::Init().
+  if (!params.browser) {
+    return params;
+  }
+
+  params.types_enabled.insert(
+      base::ranges::find(params.types_enabled, PageActionIconType::kSharingHub),
+      brave::kWaybackMachineActionIconType);
+
   if (base::FeatureList::IsEnabled(playlist::features::kPlaylist)) {
     // Browser could be null if the location bar was created for
     // PresentationReceiverWindowView.

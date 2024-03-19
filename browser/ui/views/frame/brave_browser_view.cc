@@ -26,6 +26,7 @@
 #include "brave/browser/ui/color/brave_color_id.h"
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
+#include "brave/browser/ui/page_action/brave_page_action_icon_type.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
 #include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
@@ -87,6 +88,10 @@
 #if BUILDFLAG(ENABLE_SPEEDREADER)
 #include "brave/browser/speedreader/speedreader_tab_helper.h"
 #include "brave/browser/ui/views/speedreader/reader_mode_bubble.h"
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+#include "brave/browser/ui/views/wayback_machine_bubble_view.h"
 #endif
 
 namespace {
@@ -598,6 +603,17 @@ void BraveBrowserView::CleanAndCopySelectedURL() {
 void BraveBrowserView::ShowPlaylistBubble() {
   static_cast<BraveLocationBarView*>(GetLocationBarView())
       ->ShowPlaylistBubble();
+}
+#endif
+
+#if BUILDFLAG(ENABLE_BRAVE_WAYBACK_MACHINE)
+void BraveBrowserView::ShowWaybackMachineBubble() {
+  if (auto* anchor = toolbar_button_provider_->GetPageActionIconView(
+          brave::kWaybackMachineActionIconType)) {
+    DCHECK(anchor->GetVisible());
+    // Launch bubble with this anchor.
+    WaybackMachineBubbleView::Show(browser(), anchor);
+  }
 }
 #endif
 
