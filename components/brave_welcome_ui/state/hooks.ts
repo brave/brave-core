@@ -78,17 +78,10 @@ interface ViewTypeState {
   fail?: ViewType;
 }
 
-export function useFilteredProfiles() {
-  const { browserProfiles, currentSelectedBrowser } = React.useContext(DataContext)
-  return browserProfiles?.filter(
-    profile => profile.browserType === currentSelectedBrowser)
-}
-
 const showHelpWDP = loadTimeData.getBoolean('showHelpWDP')
 
 export function useViewTypeTransition(currentViewType: ViewType | undefined) : ViewTypeState {
-  const { browserProfiles } = React.useContext(DataContext)
-  const filteredProfiles = useFilteredProfiles()
+  const { browserProfiles, currentSelectedBrowserProfiles} = React.useContext(DataContext)
 
   const states = React.useMemo(() => {
     return {
@@ -100,7 +93,7 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         forward: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove
       },
       [ViewType.ImportSelectBrowser]: {
-        forward: filteredProfiles && filteredProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
+        forward: currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 1 ? ViewType.ImportSelectProfile : ViewType.ImportInProgress,
         skip: showHelpWDP ? ViewType.HelpWDP : ViewType.HelpImprove,
       },
       [ViewType.ImportSelectProfile]: {
@@ -124,7 +117,7 @@ export function useViewTypeTransition(currentViewType: ViewType | undefined) : V
         forward: ViewType.HelpImprove   // The end state view
       },
     }
-  }, [browserProfiles, filteredProfiles])
+  }, [browserProfiles, currentSelectedBrowserProfiles])
 
   return states[currentViewType?? ViewType.DefaultBrowser]
 }

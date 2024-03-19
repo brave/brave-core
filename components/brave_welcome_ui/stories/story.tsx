@@ -117,6 +117,9 @@ export default {
         setScenes,
         currentSelectedBrowser,
         browserProfiles: payload,
+        currentSelectedBrowserProfiles: payload.filter(
+          (profile) => profile.browserType === currentSelectedBrowser
+        ),
         viewType: ViewType.DefaultBrowser,
         scenes
       }

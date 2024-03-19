@@ -30,15 +30,22 @@ function DataContextProvider (props: DataContextProviderProps) {
   const { profileCountRef, incrementCount, decrementCount } = useProfileCount()
   const [scenes, setScenes] = React.useState<Scenes | undefined>(undefined)
 
+  const currentSelectedBrowserProfiles = React.useMemo(() => {
+    return browserProfiles?.filter(
+      (profile) => profile.browserType === currentSelectedBrowser
+    )
+  }, [browserProfiles, currentSelectedBrowser])
+
   const store = {
+    viewType,
     setViewType,
-    setCurrentSelectedBrowser,
     incrementCount,
-    setScenes,
     browserProfiles,
     currentSelectedBrowser,
-    viewType,
+    setCurrentSelectedBrowser,
+    currentSelectedBrowserProfiles,
     scenes,
+    setScenes,
     countryString: loadTimeData.getString('countryString')
   }
 

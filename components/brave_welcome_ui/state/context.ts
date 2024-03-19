@@ -14,6 +14,7 @@ interface Store {
   setScenes: React.Dispatch<React.SetStateAction<Scenes | undefined>>
   currentSelectedBrowser: string | undefined
   browserProfiles: BrowserProfile[] | undefined
+  currentSelectedBrowserProfiles: BrowserProfile[] | undefined
   viewType: ViewType | undefined
   scenes: Scenes | undefined
 }
@@ -25,6 +26,7 @@ const defaultStore = {
   setScenes: () => {},
   currentSelectedBrowser: undefined,
   browserProfiles: undefined,
+  currentSelectedBrowserProfiles: undefined,
   viewType: undefined,
   scenes: undefined,
   countryString: undefined,

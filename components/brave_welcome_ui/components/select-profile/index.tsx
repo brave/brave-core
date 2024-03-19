@@ -10,7 +10,7 @@ import Button from '$web-components/button'
 import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
-import { useFilteredProfiles, useViewTypeTransition } from '../../state/hooks'
+import { useViewTypeTransition } from '../../state/hooks'
 import {
   WelcomeBrowserProxyImpl,
   ImportDataBrowserProxyImpl,
@@ -50,9 +50,12 @@ function ProfileItem (props: ProfileItemProps) {
 }
 
 function SelectProfile () {
-  const { viewType, setViewType, incrementCount } =
-    React.useContext(DataContext)
-  const filteredProfiles = useFilteredProfiles()
+  const {
+    viewType,
+    setViewType,
+    incrementCount,
+    currentSelectedBrowserProfiles
+  } = React.useContext(DataContext)
   const [selectedProfiles, setSelectedProfiles] = React.useState<Set<number>>(
     new Set()
   )
@@ -75,7 +78,7 @@ function SelectProfile () {
 
   const selectAll = () => {
     setSelectedProfiles(
-      new Set(filteredProfiles?.map((profile) => profile.index))
+      new Set(currentSelectedBrowserProfiles?.map((profile) => profile.index))
     )
   }
 
@@ -137,7 +140,7 @@ function SelectProfile () {
               </button>
             </div>
           </div>
-          {filteredProfiles?.map((entry) => {
+          {currentSelectedBrowserProfiles?.map((entry) => {
             return (
               <ProfileItem
                 key={entry.index}

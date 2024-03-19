@@ -11,7 +11,7 @@ import classnames from '$web-common/classnames'
 import DataContext from '../../state/context'
 import { ViewType } from '../../state/component_types'
 import { getUniqueBrowserTypes } from '../../state/utils'
-import { useFilteredProfiles, useViewTypeTransition } from '../../state/hooks'
+import { useViewTypeTransition } from '../../state/hooks'
 import {
   WelcomeBrowserProxyImpl,
   ImportDataBrowserProxyImpl,
@@ -94,6 +94,7 @@ function BrowserItemButton (props: BrowserItemButtonProps) {
 function SelectBrowser () {
   const {
     browserProfiles,
+    currentSelectedBrowserProfiles,
     viewType,
     currentSelectedBrowser,
     setCurrentSelectedBrowser,
@@ -107,10 +108,9 @@ function SelectBrowser () {
   }
 
   const { forward, skip } = useViewTypeTransition(viewType)
-  const filteredProfiles = useFilteredProfiles()
 
   const handleImport = () => {
-    if (!currentSelectedBrowser || !filteredProfiles) return
+    if (!currentSelectedBrowser || !currentSelectedBrowserProfiles) return
 
     if (forward === ViewType.ImportSelectProfile) {
       setViewType(ViewType.ImportSelectProfile)
@@ -120,7 +120,7 @@ function SelectBrowser () {
 
     if (forward === ViewType.ImportInProgress) {
       ImportDataBrowserProxyImpl.getInstance().importData(
-        filteredProfiles[0].index,
+        currentSelectedBrowserProfiles[0].index,
         defaultImportTypes
       )
       incrementCount()
@@ -145,7 +145,8 @@ function SelectBrowser () {
       })
   }, [])
 
-  const hasSelectedBrowser = filteredProfiles && filteredProfiles.length > 0
+  const hasSelectedBrowser =
+    currentSelectedBrowserProfiles && currentSelectedBrowserProfiles.length > 0
 
   return (
     <S.MainBox>
