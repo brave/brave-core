@@ -3,9 +3,12 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
+import Lottie
 import SwiftUI
 
 struct FocusSystemSettingsView: View {
+  @Environment(\.colorScheme) private var colorScheme
 
   var body: some View {
     NavigationView {
@@ -16,7 +19,7 @@ struct FocusSystemSettingsView: View {
             .lineLimit(2)
             .multilineTextAlignment(.center)
             .fixedSize(horizontal: false, vertical: true)
-          
+
           Text("Open every link you tap with Brave’s privacy protections")
             .font(.headline)
             .lineLimit(2)
@@ -26,23 +29,30 @@ struct FocusSystemSettingsView: View {
         }
         .padding(.top, 25)
         .padding(.vertical, 16)
-        
-        Image("focus-browser-settings", bundle: .module)
-          .frame(width: .infinity, height: 364)
-          .clipShape(RoundedRectangle(cornerRadius: 12.0))
-          .overlay(
-            RoundedRectangle(cornerRadius: 12.0)
-              .stroke(Color(braveSystemName: .textTertiary), lineWidth: 1)
-          )
+
+        LottieAnimationView(
+          name: colorScheme == .dark ? "browser-default-dark" : "browser-default-light",
+          bundle: .module
+        )
+        .loopMode(.loop)
+        .resizable()
+        .frame(height: 364)
+        .aspectRatio(contentMode: .fill)
+        .clipShape(RoundedRectangle(cornerRadius: 12.0))
+        .overlay(
+          RoundedRectangle(cornerRadius: 12.0)
+            .stroke(Color(braveSystemName: .textTertiary), lineWidth: 1)
+        )
+
         Spacer()
-        
-      VStack(spacing: 24) {
+
+        VStack(spacing: 24) {
           Button(
             action: {
               if let settingsUrl = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsUrl)
               }
-              
+
               // TODO: Show URL Bar Onboarding
             },
             label: {
@@ -55,9 +65,9 @@ struct FocusSystemSettingsView: View {
                 .background(Color(braveSystemName: .buttonBackground))
             }
           )
-            .clipShape(RoundedRectangle(cornerRadius: 12.0))
-            .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-          
+          .clipShape(RoundedRectangle(cornerRadius: 12.0))
+          .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+
           Button(action: {
             // TODO: Show URL Bar Onboarding
           }) {
@@ -67,7 +77,7 @@ struct FocusSystemSettingsView: View {
           }
           .background(Color.clear)
           .padding(.bottom, 8)
-          
+
           FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(3))
         }
         .padding(.bottom, 20)

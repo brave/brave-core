@@ -12,18 +12,18 @@ struct FocusP3AScreenView: View {
   @State private var isSystemSettingsViewPresented = false
 
   var body: some View {
-    NavigationView {   
+    NavigationView {
       VStack {
         Image("focus-product-insight", bundle: .module)
           .resizable()
           .frame(width: 185, height: 224)
           .padding(.bottom, 24)
-        
+
         VStack {
           VStack(spacing: 8) {
             Text("Make Brave Better")
               .font(.largeTitle.weight(.medium))
-            
+
             Text("Let us know which features you’re enjoying the most.")
               .font(.headline)
               .lineLimit(2)
@@ -32,7 +32,7 @@ struct FocusP3AScreenView: View {
               .foregroundColor(Color(braveSystemName: .textTertiary))
           }
           .padding(.bottom, 16)
-          
+
           Toggle(isOn: $isP3AToggleOn) {
             VStack(alignment: .leading, spacing: 4) {
               Text("Share Completely Private & Anonymous Product Insights.")
@@ -44,8 +44,8 @@ struct FocusP3AScreenView: View {
                   "Change this at any time in Brave Settings under ‘Brave Shields and Privacy’."
                 )
               )
-                .font(.footnote)
-                .foregroundColor(Color(braveSystemName: .textTertiary))
+              .font(.footnote)
+              .foregroundColor(Color(braveSystemName: .textTertiary))
             }
             .padding(16)
             .padding(.horizontal, 4)
@@ -57,7 +57,7 @@ struct FocusP3AScreenView: View {
           .onChange(of: isP3AToggleOn) { newValue in
             // TODO: Change Settings P3A
           }
-          
+
           Text("Learn more about our Privacy Preserving Product Analytics (P3A)")
             .font(.footnote)
             .foregroundColor(Color(braveSystemName: .textInteractive))
@@ -71,9 +71,9 @@ struct FocusP3AScreenView: View {
             }
         }
         .padding(.horizontal, 20)
-        
+
         Spacer()
-        
+
         VStack(spacing: 28) {
           Button(
             action: {
@@ -89,9 +89,9 @@ struct FocusP3AScreenView: View {
                 .background(Color(braveSystemName: .buttonBackground))
             }
           )
-            .clipShape(RoundedRectangle(cornerRadius: 12.0))
-            .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-          
+          .clipShape(RoundedRectangle(cornerRadius: 12.0))
+          .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
+
           FocusStepsPagingIndicator(totalPages: 4, activeIndex: .constant(2))
         }
         .padding(.bottom, 20)

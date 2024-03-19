@@ -3,39 +3,83 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveUI
+import Lottie
 import SwiftUI
 
 struct FocusAdTrackerSliderContentView: View {
+  @Environment(\.colorScheme) private var colorScheme
+
+  @State private var progress: CGFloat = 0.75
+
   var body: some View {
-    SwipeDifferenceView {
+    SwipeDifferenceView(progress: $progress) {
       Image("focus-website-ads", bundle: .module)
+        .overlay(
+          LottieAnimationView(
+            name: colorScheme == .dark ? "moving-ads-dark" : "moving-ads-light",
+            bundle: .module
+          )
+          .loopMode(.loop)
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+        )
     } trailing: {
       Image("focus-website-noads", bundle: .module)
     }
-    .frame(width: .infinity, height: 420)
+    .frame(height: 420)
+    .frame(maxWidth: .infinity)
+    .onAppear {
+      Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false) { _ in
+        withAnimation(.easeInOut(duration: 1.5)) {
+          progress = 0.85
+        }
+        Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+          withAnimation(.easeInOut(duration: 1.5)) {
+            progress = 0.15
+          }
+          Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
+            withAnimation(.easeInOut(duration: 1.5)) {
+              progress = 0.25
+            }
+          }
+        }
+      }
+    }
   }
 }
 
 struct FocusVideoAdSliderContentView: View {
+  @Environment(\.colorScheme) private var colorScheme
+
   var body: some View {
-    Image("focus-website-video", bundle: .module)
-      .frame(width: .infinity, height: 420)
+    LottieAnimationView(
+      name: colorScheme == .dark ? "novideo-ads-dark" : "novideo-ads-light",
+      bundle: .module
+    )
+    .loopMode(.loop)
+    .resizable()
+    .aspectRatio(contentMode: .fill)
+    .frame(height: 804)
   }
 }
 
 struct SwipeDifferenceView<Leading: View, Trailing: View>: View {
-  @State private var progress: CGFloat = 0.25
+  @Environment(\.layoutDirection) private var layoutDirection
+
   @GestureState private var initialProgress: CGFloat?
 
-  @Environment(\.layoutDirection) private var layoutDirection
+  @Binding var progress: CGFloat
 
   var leading: Leading
   var trailing: Trailing
 
   init(
+    progress: Binding<CGFloat>,
     @ViewBuilder leading: () -> Leading,
     @ViewBuilder trailing: () -> Trailing
   ) {
+    self._progress = progress
     self.leading = leading()
     self.trailing = trailing()
   }

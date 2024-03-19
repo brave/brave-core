@@ -10,6 +10,7 @@ struct FocusStepsView: View {
 
   @State private var indicatorIndex = 0
   @State private var isP3AViewPresented: Bool = false
+  @State private var opacity = 0.0
 
   var body: some View {
     NavigationView {
@@ -19,50 +20,58 @@ struct FocusStepsView: View {
           .matchedGeometryEffect(id: "icon", in: namespace)
           .frame(width: 78, height: 78)
 
-        FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
+        VStack(spacing: 0) {
+          FocusStepsHeaderTitleView(activeIndex: $indicatorIndex)
+            .padding(.bottom, 24)
+
+          TabView(selection: $indicatorIndex) {
+            FocusAdTrackerSliderContentView()
+              .tag(0)
+            FocusVideoAdSliderContentView()
+              .tag(1)
+          }
+          .frame(maxWidth: .infinity)
+          .frame(height: 420)
+          .background(Color(braveSystemName: .pageBackground))
+          .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+          .animation(.easeInOut, value: indicatorIndex)
+          .transition(.slide)
           .padding(.bottom, 24)
 
-        TabView(selection: $indicatorIndex) {
-          FocusAdTrackerSliderContentView()
-            .tag(0)
-          FocusVideoAdSliderContentView()
-            .tag(1)
-        }
-        .frame(maxWidth: .infinity)
-        .frame(height: 420)
-        .background(Color(braveSystemName: .pageBackground))
-        .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-        .animation(.easeInOut, value: indicatorIndex)
-        .transition(.slide)
-        .padding(.bottom, 24)
+          Spacer()
 
-        Spacer()
-        
-        VStack(spacing: 28) {
-          Button(
-            action: {
-              if indicatorIndex > 0 {
-                isP3AViewPresented = true
-              } else {
-                indicatorIndex += 1
+          VStack(spacing: 28) {
+            Button(
+              action: {
+                if indicatorIndex > 0 {
+                  isP3AViewPresented = true
+                } else {
+                  indicatorIndex += 1
+                }
+              },
+              label: {
+                Text("Continue")
+                  .font(.body.weight(.semibold))
+                  .foregroundColor(Color(.white))
+                  .padding()
+                  .foregroundStyle(.white)
+                  .frame(maxWidth: .infinity)
+                  .background(Color(braveSystemName: .buttonBackground))
               }
-            },
-            label: {
-              Text("Continue")
-                .font(.body.weight(.semibold))
-                .foregroundColor(Color(.white))
-                .padding()
-                .foregroundStyle(.white)
-                .frame(maxWidth: .infinity)
-                .background(Color(braveSystemName: .buttonBackground))
-            }
-          )
+            )
             .clipShape(RoundedRectangle(cornerRadius: 12.0))
             .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
-          
-          FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
+
+            FocusStepsPagingIndicator(totalPages: 4, activeIndex: $indicatorIndex)
+          }
+          .padding(.bottom, 20)
         }
-        .padding(.bottom, 20)
+        .opacity(opacity)
+        .onAppear {
+          withAnimation(.easeInOut(duration: 1.5)) {
+            opacity = 1.0
+          }
+        }
       }
       .padding(.horizontal, 20)
       .background(Color(braveSystemName: .pageBackground))

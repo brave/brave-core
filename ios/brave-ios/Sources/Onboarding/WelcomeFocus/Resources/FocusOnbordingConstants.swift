@@ -4,6 +4,7 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
+import UIKit
 
 class FocusOnboardingConstants {
   static let p3aHelpArticle = URL(
