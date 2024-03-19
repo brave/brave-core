@@ -17,6 +17,8 @@
 namespace body_sniffer {
 
 class BodySnifferURLLoader;
+class BodyHandler;
+class BodyProducer;
 
 // Base throttle used for implementing sniffing functionality
 class BodySnifferThrottle : public blink::URLLoaderThrottle,
@@ -31,14 +33,14 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle,
   ~BodySnifferThrottle() override;
   BodySnifferThrottle& operator=(const BodySnifferThrottle&) = delete;
 
-  void SetBodyProducer(std::unique_ptr<class BodyProducer> producer);
-  void AddHandler(std::unique_ptr<class BodyHandler> handler);
+  void SetBodyProducer(std::unique_ptr<BodyProducer> producer);
+  void AddHandler(std::unique_ptr<BodyHandler> handler);
 
   void Cancel();
 
   void Resume();
 
- protected:
+ private:
   void WillStartRequest(network::ResourceRequest* request,
                         bool* defer) override;
 
@@ -53,8 +55,8 @@ class BodySnifferThrottle : public blink::URLLoaderThrottle,
       mojo::ScopedDataPipeConsumerHandle body);
 
   scoped_refptr<base::SequencedTaskRunner> task_runner_;
-  std::unique_ptr<class BodyProducer> producer_;
-  std::vector<std::unique_ptr<class BodyHandler>> body_handlers_;
+  std::unique_ptr<BodyProducer> producer_;
+  std::vector<std::unique_ptr<BodyHandler>> body_handlers_;
 
   base::WeakPtrFactory<BodySnifferThrottle> weak_factory_{this};
 };

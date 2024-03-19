@@ -23,7 +23,7 @@ SpeedreaderDistilledPageProducer::~SpeedreaderDistilledPageProducer() = default;
 
 // static
 std::unique_ptr<SpeedreaderDistilledPageProducer>
-SpeedreaderDistilledPageProducer::Create(
+SpeedreaderDistilledPageProducer::MaybeCreate(
     base::WeakPtr<SpeedreaderDelegate> speedreader_delegate) {
   if (!speedreader_delegate || !speedreader_delegate->IsPageContentPresent()) {
     return nullptr;

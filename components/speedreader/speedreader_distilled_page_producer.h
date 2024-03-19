@@ -20,7 +20,7 @@ class SpeedreaderDistilledPageProducer : public body_sniffer::BodyProducer {
  public:
   ~SpeedreaderDistilledPageProducer() override;
 
-  static std::unique_ptr<SpeedreaderDistilledPageProducer> Create(
+  static std::unique_ptr<SpeedreaderDistilledPageProducer> MaybeCreate(
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);
 
   void UpdateResponseHead(
