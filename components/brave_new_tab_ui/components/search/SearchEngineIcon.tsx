@@ -21,11 +21,6 @@ function SearchEngineIcon(props: React.DetailedHTMLProps<React.ImgHTMLAttributes
   return <img {...rest} style={loaded ? undefined : hide} src={src} />
 }
 
-export const LargeIcon = styled(SearchEngineIcon)`
-  width: ${icon.l};
-  height: ${icon.l};
-`
-
 export const MediumIcon = styled(SearchEngineIcon)`
   width: ${icon.m};
   height: ${icon.m};

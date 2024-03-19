@@ -9,8 +9,9 @@ import Input from '@brave/leo/react/input';
 import { radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled from 'styled-components';
-import { LargeIcon, MediumIcon } from './SearchEngineIcon';
+import { MediumIcon } from './SearchEngineIcon';
 import { useSearchContext } from './SearchContext';
+import { braveSearchHost } from './config';
 
 const SearchInput = styled(Input)`
   --leo-control-padding: 6px;
@@ -28,6 +29,12 @@ const EnginePicker = styled(Dropdown)`
   --leo-control-radius: ${spacing.m};
 `
 
+const EngineValueSlot = styled.div`
+  display: flex;
+  padding: 2px 0;
+  margin: 0 -4px;
+`
+
 const SearchIconContainer = styled.div`
   padding-right: ${spacing.m};
 `
@@ -39,15 +46,18 @@ const Option = styled.div`
 
 export default function SearchBox() {
   const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery } = useSearchContext()
+  const placeholderText = searchEngine?.host === braveSearchHost
+    ? 'Search the web privately'
+    : 'Search the web'
   const searchInput = React.useRef<HTMLElement>()
-  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.detail.value)} placeholder="Search the web privately">
+  return <SearchInput tabIndex={0} type="text" ref={searchInput} value={query} onInput={e => setQuery(e.detail.value)} placeholder={placeholderText}>
     <Flex slot="left-icon">
       <EnginePicker positionStrategy='fixed' value={searchEngine?.keyword} onChange={e => {
         setSearchEngine(e.detail.value)
       }}>
-        <div slot="value">
-          <LargeIcon src={searchEngine?.faviconUrl.url} />
-        </div>
+        <EngineValueSlot slot="value">
+          <MediumIcon src={searchEngine?.faviconUrl.url} />
+        </EngineValueSlot>
         {filteredSearchEngines.map(s => <leo-option value={s.keyword} key={s.keyword}>
           <Option>
             <MediumIcon src={s.faviconUrl.url} />{s.name}
