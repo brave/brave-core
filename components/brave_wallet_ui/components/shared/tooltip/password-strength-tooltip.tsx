@@ -50,8 +50,6 @@ export const PasswordStrengthTooltip: React.FC<
 > = ({ children, isVisible, passwordStrength }) => {
   return (
     <Tooltip
-      // disableHoverEvents
-      // verticalPosition='below'
       visible={isVisible}
       mode='default'
       flip={true}

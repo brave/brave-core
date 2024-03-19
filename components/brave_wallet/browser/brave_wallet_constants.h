@@ -1093,6 +1093,7 @@ inline constexpr webui::LocalizedString kLocalizedStrings[] = {
      IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING},
     {"braveWalletRecoveryPhraseBackupWarningImportant",
      IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT},
+     {"braveWalletRecoveryWordInstructions", IDS_BRAVE_WALLET_RECOVERY_WORD_INSTRUCTIONS},
     {"braveWalletRecoveryPhraseBackupTitle",
      IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE},
     {"braveWalletCopiedToClipboard", IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD},

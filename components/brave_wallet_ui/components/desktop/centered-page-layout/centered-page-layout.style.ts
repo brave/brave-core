@@ -26,6 +26,4 @@ export const StyledContent = styled('div')<{ isTabView?: boolean }>`
   justify-content: flex-start;
   padding-top: ${(p) => (p.isTabView ? 0 : 32)}px;
   padding-bottom: 0px;
-
-  @
 `

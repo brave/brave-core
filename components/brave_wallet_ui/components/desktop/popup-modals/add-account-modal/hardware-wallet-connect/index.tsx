@@ -15,6 +15,11 @@ import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hard
 
 // Styled Components
 import { Instructions } from './style'
+import { Column, VerticalSpace } from '../../../../shared/style'
+import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
+import { Divider } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button.style'
+import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
+import { HardwareWalletGraphic } from '../../../../../page/screens/onboarding/select-wallet-device/onboarding-select-wallet-device.style'
 
 // Custom types
 import { ErrorMessage, HardwareWalletDerivationPathsMapping } from './types'
@@ -37,11 +42,6 @@ import { useAccountsQuery } from '../../../../../common/slices/api.slice.extra'
 import {
   useImportHardwareAccountsMutation //
 } from '../../../../../common/slices/api.slice'
-import { Column, VerticalSpace } from '../../../../shared/style'
-import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
-import { Divider } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button.style'
-import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
-import { HardwareWalletGraphic } from '../../../../../page/screens/onboarding/select-wallet-device/onboarding-select-wallet-device.style'
 
 export interface Props {
   selectedAccountType: CreateAccountOptionsType
@@ -172,6 +172,7 @@ export const HardwareWalletConnect = ({
   const onChangeDerivationScheme = React.useCallback(
     (scheme: HardwareDerivationScheme) => {
       if (!selectedHardwareWallet) return
+      
       setSelectedDerivationScheme(scheme)
       setAccounts([])
       onConnectHardwareWallet({

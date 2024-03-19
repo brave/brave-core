@@ -18,7 +18,7 @@ export const Input = styled.input<{ hasError: boolean }>`
   background-color: ${leo.color.container.highlight};
   border: ${(p) =>
     p.hasError
-      ? `2px solid ${leo.color.systemfeedback.errorIcon}`
+      ? `2px solid ${leo.color.systemfeedback.errorText}`
       : `2px solid transparent`};
   padding: 10px 8px 10px 16px;
   border-radius: 8px;
@@ -34,11 +34,12 @@ export const Input = styled.input<{ hasError: boolean }>`
     color: ${leo.color.text.tertiary};
   }
 
-  :focus, :focus-visible {
+  :focus,
+  :focus-visible {
     outline: none;
     border: ${(p) =>
       p.hasError
-        ? `2px solid ${leo.color.systemfeedback.errorIcon}`
+        ? `2px solid ${leo.color.systemfeedback.errorText}`
         : `2px solid ${leo.color.text.interactive}`};
   }
 
@@ -54,7 +55,7 @@ export const Input = styled.input<{ hasError: boolean }>`
 `
 
 export const InputLabel = styled.label`
-  font-family: 'Inter Variable', 'Poppins';
+  font-family: 'Poppins';
   font-size: 12px;
   font-style: normal;
   font-weight: 600;
@@ -64,7 +65,7 @@ export const InputLabel = styled.label`
 `
 
 export const Asterisk = styled.span`
-  color: ${leo.color.systemfeedback.errorIcon};
+  color: ${leo.color.systemfeedback.errorText};
   margin-left: 4px;
 `
 

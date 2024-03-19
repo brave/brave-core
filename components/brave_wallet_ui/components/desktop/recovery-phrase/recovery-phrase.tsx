@@ -65,7 +65,7 @@ export const RecoveryPhrase: React.FC<Props> = ({
             <EyeOffIcon />
           </IconWrapper>
         </FrostedGlass>
-        <RecoveryPhraseContainer phraseLength={12}>
+        <RecoveryPhraseContainer phraseLength={FAKE_PHRASE_WORDS.length}>
           {FAKE_PHRASE_WORDS.map((word, index) => (
             <RecoveryBubble key={index}>
               <span>

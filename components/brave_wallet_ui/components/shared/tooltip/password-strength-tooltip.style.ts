@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+
 import LeoTooltip from '@brave/leo/react/tooltip'
 import Icon from '@brave/leo/react/icon'
 import * as leo from '@brave/leo/tokens/css'
@@ -26,15 +27,15 @@ export const CriteriaCheckContainer = styled.div`
   flex-direction: row;
   align-items: center;
   justify-content: flex-start;
-  gap: 4px;k
+  gap: 4px;
 `
 
 export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
-  font-family: Inter, Poppins;
+  font-family: 'Poppins';
   font-size: 12px;
   font-style: normal;
   font-weight: 400;
-  line-height: 20px
+  line-height: 20px;
   margin-bottom: 6px;
   vertical-align: middle;
   color: ${leo.color.text.primary};
@@ -43,7 +44,7 @@ export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
 `
 
 export const PasswordStrengthHeading = styled(PasswordStrengthText)`
-  font-family: Inter, Poppins;
+  font-family: 'Poppins';
   color: ${leo.color.text.primary};
   font-size: 12px;
   font-style: normal;

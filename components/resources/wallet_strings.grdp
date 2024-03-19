@@ -772,9 +772,8 @@
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Save your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION" desc="Recovery phrase backup description">The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING" desc="A warning regarding recovery phrase safety">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</message>
-  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.
-
-</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_WORD_INSTRUCTIONS" desc="Recovery word instructions">Enter the word in position <ph name="VALUE">$1<ex>2</ex></ph> from your recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Back up your wallet recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click to see your phrase</message>

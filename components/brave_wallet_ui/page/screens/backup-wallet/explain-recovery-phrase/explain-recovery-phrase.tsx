@@ -18,7 +18,6 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-// import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // components
 import { SkipWarningDialog } from './skip-warning-dialog'

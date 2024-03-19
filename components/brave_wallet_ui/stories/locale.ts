@@ -235,6 +235,7 @@ provideStrings({
     'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.',
   braveWalletRecoveryPhraseBackupWarningImportant:
     'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
+  braveWalletRecoveryWordInstructions: 'Enter the word in position $1 from your recovery phrase.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',

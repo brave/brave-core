@@ -15,6 +15,7 @@ import {
   CloseIcon
 } from '../verify-recovery-phrase.style'
 import { Column, VerticalSpace } from '../../../../../components/shared/style'
+import { getLocale, splitStringForTag } from '../../../../../../common/locale'
 
 interface Props {
   phrase: string
@@ -31,6 +32,11 @@ export const PhraseInput = ({
   onChange,
   onHideError
 }: Props) => {
+  const { beforeTag, afterTag } = splitStringForTag(
+    getLocale('braveWalletRecoveryWordInstructions'),
+    1
+  )
+
   return (
     <Column gap='25px'>
       <FormInput
@@ -38,8 +44,9 @@ export const PhraseInput = ({
         onInput={(event) => onChange(event.detail.value)}
       >
         <FormLabel>
-          Enter the word in position&nbsp;<Bold>{wordPosition}</Bold>&nbsp; from
-          your recovery phrase.
+          {beforeTag}
+          <Bold>{wordPosition}</Bold>
+          {afterTag}
         </FormLabel>
       </FormInput>
       {showError ? (

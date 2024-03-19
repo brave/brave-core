@@ -19,7 +19,6 @@ import {
 
 // routes
 import { BraveWallet, WalletRoutes } from '../../../../constants/types'
-// import { WALLET_BACKUP_STEPS } from '../backup-wallet.routes'
 
 // hooks
 import { useTemporaryCopyToClipboard } from '../../../../common/hooks/use-copy-to-clipboard'
@@ -128,7 +127,7 @@ export const BackupRecoveryPhrase = () => {
                   </div>
                 </>
               ) : (
-                <CopyText>Click to copy</CopyText>
+                <CopyText>{getLocale('braveWalletClickToCopy')}</CopyText>
               )}
             </CopyButton>
           </PhraseCardBottomRow>
