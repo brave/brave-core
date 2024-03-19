@@ -72,7 +72,15 @@ int BraveBrowserFrameViewWin::GetTopInset(bool restored) const {
   if (auto* browser = browser_view()->browser();
       tabs::utils::ShouldShowVerticalTabs(browser)) {
     if (!tabs::utils::ShouldShowWindowTitleForVerticalTabs(browser)) {
-      return 0;
+      if (auto* widget = GetWidget(); !widget || !widget->IsMaximized()) {
+        return 0;
+      }
+
+      // In case maximized with Mica enabled, we should return system borders
+      // thickness.
+      return ShouldBrowserCustomDrawTitlebar(browser_view())
+                 ? 0
+                 : FrameTopBorderThickness(/*restored*/ false);
     }
 
     if (!ShouldBrowserCustomDrawTitlebar(browser_view())) {
