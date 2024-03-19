@@ -32,11 +32,11 @@ struct FocusAdTrackerSliderContentView: View {
     .onAppear {
       Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false) { _ in
         withAnimation(.easeInOut(duration: 1.5)) {
-          progress = 0.85
+          progress = 0.9
         }
         Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
           withAnimation(.easeInOut(duration: 1.5)) {
-            progress = 0.15
+            progress = 0.1
           }
           Timer.scheduledTimer(withTimeInterval: 1.5, repeats: false) { _ in
             withAnimation(.easeInOut(duration: 1.5)) {

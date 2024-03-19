@@ -16,9 +16,7 @@ struct StatsWidget: Widget {
     .supportedFamilies([.systemMedium])
     .configurationDisplayName(Strings.Widgets.shieldStatsTitle)
     .description(Strings.Widgets.shieldStatsDescription)
-    #if swift(>=5.9)
     .contentMarginsDisabled()
-    #endif
   }
 }
 

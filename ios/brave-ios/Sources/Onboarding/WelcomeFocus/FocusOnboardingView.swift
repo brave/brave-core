@@ -24,7 +24,7 @@ public struct FocusOnboardingView: View {
       }
     }
     .onAppear {
-      withAnimation(.easeInOut(duration: 1.5).delay(1.5)) {
+      withAnimation(.easeInOut(duration: 0.75).delay(1.5)) {
         isSplashViewPresented = false
       }
     }

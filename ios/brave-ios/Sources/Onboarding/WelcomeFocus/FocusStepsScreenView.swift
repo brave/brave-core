@@ -68,7 +68,7 @@ struct FocusStepsView: View {
         }
         .opacity(opacity)
         .onAppear {
-          withAnimation(.easeInOut(duration: 1.5)) {
+          withAnimation(.easeInOut(duration: 1.5).delay(1.5)) {
             opacity = 1.0
           }
         }

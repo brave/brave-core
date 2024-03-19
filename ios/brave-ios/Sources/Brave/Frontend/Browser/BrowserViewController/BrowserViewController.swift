@@ -1253,7 +1253,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  #if swift(>=5.9)
   public override func viewIsAppearing(_ animated: Bool) {
     super.viewIsAppearing(animated)
 
@@ -1267,8 +1266,10 @@ public class BrowserViewController: UIViewController {
         self.updateToolbarStateForTraitCollection(self.traitCollection)
       }
     }
+
+    // Present Onboarding to new users, existing users will not see the onboarding
+    presentOnboardingIntro()
   }
-  #endif
 
   private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
@@ -1301,9 +1302,6 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func viewDidAppear(_ animated: Bool) {
-    // Present Onboarding to new users, existing users will not see the onboarding
-    presentOnboardingIntro()
-
     // Full Screen Callout Presentation
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.presentFullScreenCallouts()
