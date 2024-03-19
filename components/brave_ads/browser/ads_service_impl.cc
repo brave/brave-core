@@ -685,8 +685,6 @@ void AdsServiceImpl::InitializeNotificationAdsPrefChangeRegistrar() {
                           prefs::kMaximumNotificationAdsPerHour));
   auto notification_ad_position_callback = base::BindRepeating(
       &AdsServiceImpl::OnNotificationAdPositionChanged, base::Unretained(this));
-  pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateX,
-                             notification_ad_position_callback);
   pref_change_registrar_.Add(prefs::kNotificationAdLastNormalizedCoordinateY,
                              notification_ad_position_callback);
 }
