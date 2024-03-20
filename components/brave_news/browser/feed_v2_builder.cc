@@ -502,8 +502,8 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
               }
 
               return metadata->publisher_id == content_group.first
-                           ? weight.weighting
-                           : 0.0;
+                         ? weight.weighting
+                         : 0.0;
             },
             is_hero, SampleContentGroup(eligible_content_groups),
             publisher_id_to_channels, locale);
