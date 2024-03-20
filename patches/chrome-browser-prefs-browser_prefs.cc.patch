@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/prefs/browser_prefs.cc b/chrome/browser/prefs/browser_prefs.cc
-index 0328a8c6e8c197424b09f04c5b7c35f06d5b120f..dfccc636aa83b028258dccd4815ca579b5fe8702 100644
+index 5eff3512acbc9dbf555f7dd18827754bb4293b0e..58093b8db307de0e39faad3efbd6806b43c9485b 100644
 --- a/chrome/browser/prefs/browser_prefs.cc
 +++ b/chrome/browser/prefs/browser_prefs.cc
-@@ -1705,6 +1705,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
+@@ -1746,6 +1746,8 @@ void RegisterLocalState(PrefRegistrySimple* registry) {
    DeviceOAuth2TokenStoreDesktop::RegisterPrefs(registry);
  #endif
  
@@ -11,9 +11,9 @@ index 0328a8c6e8c197424b09f04c5b7c35f06d5b120f..dfccc636aa83b028258dccd4815ca579
  #if BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
    screen_ai::RegisterLocalStatePrefs(registry);
  #endif  // BUILDFLAG(ENABLE_SCREEN_AI_SERVICE)
-@@ -2152,6 +2154,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
- #if BUILDFLAG(ENABLE_COMPOSE)
-   registry->RegisterBooleanPref(prefs::kPrefHasCompletedComposeFRE, false);
+@@ -2199,6 +2201,7 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry,
+ #if !BUILDFLAG(IS_ANDROID) && !BUILDFLAG(IS_FUCHSIA)
+   registry->RegisterIntegerPref(prefs::kChromeDataRegionSetting, 0);
  #endif
 +  brave::RegisterProfilePrefs(registry);
  }
