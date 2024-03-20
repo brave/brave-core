@@ -143,6 +143,11 @@ struct Model {
   uint32 long_conversation_warning_character_limit;
 };
 
+struct ModelWithSubtitle {
+  Model model;
+  string subtitle;
+};
+
 // Browser-side handler for requests from WebUI page.
 interface PageHandler {
   SetClientPage(pending_remote<ChatUIPage> page);
@@ -205,21 +210,6 @@ interface ChatUIPage {
   // |is_fetching| will be |true|.
   OnSiteInfoChanged(SiteInfo info);
   OnFaviconImageDataChanged(array<uint8> favicon_image_data);
-};
-
-[EnableIf=is_android]
-struct ModelWithSubtitle {
-  Model model;
-  string subtitle;
-};
-
-[EnableIf=is_android]
-interface AIChatAndroidHelper {
-  GetPremiumStatus() => (PremiumStatus status, PremiumInfo? info);
-  CreateOrderId() => (string order_id);
-  FetchOrderCredentials(string order_id) => (string response);
-  RefreshOrder(string order_id) => (string response);
-  GetModelsWithSubtitles() => (array<ModelWithSubtitle> models);
 };
 
 [EnableIf=is_android]

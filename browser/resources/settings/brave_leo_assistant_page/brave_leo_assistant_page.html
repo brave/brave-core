@@ -70,8 +70,8 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
         <leo-option value$="[[item.key]]">
           <div class="menu-item-with-icon">
             <div>
-              <div>[[item.display_name]]</div>
-              <p class="model-subtitle">[[getModelSubtitle_(item.key)]]</p>
+              <div>[[item.model.displayName]]</div>
+              <p class="model-subtitle">[[item.subtitle]]</p>
             </div>
             <template is="dom-if" if="[[item.is_premium]]">
               <leo-icon name="lock-plain"></leo-icon>
@@ -85,6 +85,9 @@ You can obtain one at https://mozilla.org/MPL/2.0/. -->
   label="$i18n{braveLeoAssistantAutocompleteLink}"
   on-click="openAutocompleteSetting_">
 </cr-link-row>
+<template is="dom-if" if="[[shouldShowManageSubscriptionLink_]]">
+  <cr-link-row on-click="openManageAccountPage_" external="true" class="hr" label="$i18n{braveLeoAssistantManageUrlLabel}"></cr-link-row>
+</template>
 <div class="settings-box " on-click="onResetAssistantData_">
     <div class="flex cr-padded-text reset-leo">
       <div>$i18n{braveLeoAssistantResetAndClearDataLabel}</div>

@@ -98,10 +98,6 @@ BraveSettingsUI::BraveSettingsUI(content::WebUI* web_ui,
   web_ui->AddMessageHandler(std::make_unique<BraveSyncHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveWalletHandler>());
   web_ui->AddMessageHandler(std::make_unique<BraveAdBlockHandler>());
-#if BUILDFLAG(ENABLE_AI_CHAT)
-  web_ui->AddMessageHandler(
-      std::make_unique<settings::BraveLeoAssistantHandler>());
-#endif
 #if BUILDFLAG(ENABLE_TOR)
   web_ui->AddMessageHandler(std::make_unique<BraveTorHandler>());
 #endif
@@ -238,4 +234,16 @@ void BraveSettingsUI::BindInterface(
   commands::AcceleratorServiceFactory::GetForContext(
       web_ui()->GetWebContents()->GetBrowserContext())
       ->BindInterface(std::move(pending_receiver));
+}
+
+void BraveSettingsUI::BindInterface(
+    mojo::PendingReceiver<ai_chat::mojom::AIChatSettingsHelper>
+        pending_receiver) {
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  auto assistant_handler = std::make_unique<settings::BraveLeoAssistantHandler>(
+      std::make_unique<ai_chat::AIChatSettingsHelper>(
+          web_ui()->GetWebContents()->GetBrowserContext()));
+  assistant_handler->BindInterface(std::move(pending_receiver));
+  web_ui()->AddMessageHandler(std::move(assistant_handler));
+#endif
 }

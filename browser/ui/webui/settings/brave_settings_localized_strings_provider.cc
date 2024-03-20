@@ -423,6 +423,8 @@ void BraveAddCommonStrings(content::WebUIDataSource* html_source,
        IDS_CHAT_UI_CHAT_LEO_EXPANDED_SUBTITLE},
       {"braveLeoModelSubtitle-chat-claude-instant",
        IDS_CHAT_UI_CHAT_CLAUDE_INSTANT_SUBTITLE},
+      {"braveLeoAssistantManageUrlLabel",
+       IDS_SETTINGS_LEO_ASSISTANT_MANAGE_URL},
 
       // New Tab Page
       {"braveNewTab", IDS_SETTINGS_NEW_TAB},
