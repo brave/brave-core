@@ -1,0 +1,3 @@
+#overlay-content {
+    padding: 0 var(--cr-toolbar-selection-overlay-padding, 70px);
+}
