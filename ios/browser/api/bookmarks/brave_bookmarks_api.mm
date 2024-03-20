@@ -638,9 +638,9 @@
         bookmarks::QueryFields queryFields;
         queryFields.word_phrase_query.reset(
             new std::u16string(base::SysNSStringToUTF16(query)));
-        std::vector<const bookmarks::BookmarkNode*> results;
-        GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
-                                       queryFields, maxCount, &results);
+        std::vector<const bookmarks::BookmarkNode*> results =
+            GetBookmarksMatchingProperties(bookmarks_api->bookmark_model_,
+                                           queryFields, maxCount);
 
         NSMutableArray<IOSBookmarkNode*>* nodes = [[NSMutableArray alloc] init];
         for (const bookmarks::BookmarkNode* bookmark : results) {
