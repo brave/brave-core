@@ -175,36 +175,33 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    
+    <style name="BraveSyncButtonTransparent">
+        <item name="android:textColor">@color/brave_sync_btn_transparent_text_color</item>
+        <item name="android:background">@drawable/brave_sync_btn_transparent</item>
+        <item name="android:layout_marginStart">15dp</item>
+        <item name="android:layout_marginEnd">15dp</item>
+        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">16sp</item>
+    </style>
+
     <style name="BraveSyncBottomButton">
         <item name="android:layout_marginBottom">15dp</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">16sp</item>
     </style>
 
-    <style name="BraveSyncToggleOffButtonLeft">
-        <item name="android:textColor">@color/brave_theme_color</item>
-        <item name="android:background">@drawable/brave_sync_toggle_off_btn_left</item>
+    <style name="BraveSyncToggleOffButton">
+        <item name="android:textColor">@color/brave_sync_toggle_off_btn_text_color</item>
+        <item name="android:background">@android:color/transparent</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>
 
-    <style name="BraveSyncToggleOffButtonRight">
-        <item name="android:textColor">@color/brave_theme_color</item>
-        <item name="android:background">@drawable/brave_sync_toggle_off_btn_right</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="BraveSyncToggleOnButtonRight">
-        <item name="android:textColor">@color/white_alpha_65</item>
-        <item name="android:background">@drawable/brave_sync_toggle_on_btn_right</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">14sp</item>
-    </style>
-
-    <style name="BraveSyncToggleOnButtonLeft">
-        <item name="android:textColor">@color/white_alpha_65</item>
-        <item name="android:background">@drawable/brave_sync_toggle_on_btn_left</item>
+    <style name="BraveSyncToggleOnButton">
+        <item name="android:textColor">@color/brave_sync_toggle_on_btn_text_color</item>
+        <item name="android:background">@drawable/brave_sync_toggle_on_btn</item>
         <item name="android:textAllCaps">false</item>
         <item name="android:textSize">14sp</item>
     </style>

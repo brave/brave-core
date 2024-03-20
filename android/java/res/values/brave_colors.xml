@@ -90,12 +90,31 @@
     <color name="ad_free_card_cancel_color">#212529</color>
     <color name="ad_free_card_bg_color">@android:color/white</color>
     <color name="ad_free_check_color">#737ADE</color>
-    
+
+    <!-- From src/brave/node_modules/@brave/leo/tokens/android/values/colors.xml -->
+    <color name="systemfeedback_error_background">#ffe8e7</color>
+    <color name="systemfeedback_error_text">#b3002a</color>
+    <color name="systemfeedback_info_background">#e2f0ff</color>
+    <color name="systemfeedback_info_icon">#0061aa</color>
+    <color name="systemfeedback_info_text">#0061aa</color>
+    <color name="text_interactive">#3f39e8</color>
+
     <!-- Sync colors -->
     <color name="brave_sync_bg_color">@android:color/transparent</color>
     <color name="brave_sync_border_color">@color/baseline_neutral_95</color>
     <color name="brave_sync_bg_secondary_color">@android:color/white</color>
-    
+    <color name="brave_sync_stop_watch_icon_color">@color/systemfeedback_info_icon</color>
+    <color name="brave_sync_code_expired_bg_color">@color/systemfeedback_error_background</color>
+    <color name="brave_sync_count_down_text_color">@color/systemfeedback_info_text</color>
+    <color name="brave_sync_expired_block_text_color">@color/systemfeedback_error_text</color>
+    <color name="brave_sync_main_button_color">@color/button_background</color>
+    <color name="brave_sync_copy_words_text_color">@color/text_secondary</color>
+    <color name="brave_sync_btn_transparent_text_color">@color/text_interactive</color>
+    <color name="brave_sync_toggle_off_btn_text_color">@color/text_secondary</color>
+    <color name="brave_sync_toggle_on_btn_text_color">@color/text_interactive</color>
+    <color name="brave_sync_toggle_on_btn_color">@color/button_background</color>
+    <color name="brave_sync_code_countdown_bg_color">@color/systemfeedback_info_background</color>
+
     <!-- Sync informer icon colors -->
     <color name="brave_informer_dark_theme_icon_color">@color/baseline_neutral_90</color>
     <color name="brave_informer_light_theme_icon_color">@color/modern_grey_700</color>

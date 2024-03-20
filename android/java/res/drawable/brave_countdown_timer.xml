@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="15dp"
+    android:height="18dp"
+    android:viewportWidth="15"
+    android:viewportHeight="18">
+  <path
+      android:pathData="M12.947,6.395C13.747,7.526 14.222,8.901 14.222,10.389C14.222,14.218 11.107,17.333 7.278,17.333C3.449,17.333 0.333,14.218 0.333,10.389C0.333,6.794 3.079,3.829 6.583,3.48V2.056H5.888C5.505,2.056 5.194,1.744 5.194,1.361C5.194,0.978 5.505,0.667 5.888,0.667H8.667C9.05,0.667 9.361,0.978 9.361,1.361C9.361,1.744 9.05,2.056 8.667,2.056H7.972V3.48C9.193,3.601 10.318,4.047 11.271,4.719L12.342,3.648C12.613,3.376 13.053,3.376 13.324,3.648L14.019,4.342C14.29,4.614 14.29,5.053 14.019,5.324L12.947,6.395ZM7.278,4.833C4.214,4.833 1.722,7.326 1.722,10.389C1.722,13.452 4.214,15.944 7.278,15.944C10.341,15.944 12.833,13.452 12.833,10.389C12.833,7.326 10.341,4.833 7.278,4.833ZM7.278,11.778C6.512,11.778 5.888,11.155 5.888,10.389C5.888,10.265 5.91,10.148 5.941,10.033L4.367,8.46C4.096,8.189 4.096,7.749 4.367,7.478C4.639,7.207 5.078,7.207 5.349,7.478L6.923,9.051C7.037,9.022 7.154,9 7.278,9C8.043,9 8.667,9.623 8.667,10.389C8.667,11.155 8.043,11.778 7.278,11.778Z"
+      android:fillColor="@color/brave_sync_stop_watch_icon_color"
+      android:fillType="evenOdd"/>
+</vector>

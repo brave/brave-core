@@ -1218,6 +1218,15 @@ This file contains all "about" strings.  It is set to NOT be translated, in tran
       <message name="IDS_BRAVE_SYNC_DEVICE" desc="Text for sync device message.">
 	Sync device
       </message>
+      <message name="IDS_BRAVE_SYNC_GENERATE_NEW_CODE_BUTTON" desc="Text for generate new sync code button.">
+        Generate New Code
+      </message>
+      <message name="IDS_BRAVE_SYNC_CODE_EXPIRED_BLOCK_TEXT" desc="Text for expired sync code block.">
+        Code expired. Generate a new one by clicking the button below.
+      </message>
+      <message name="IDS_BRAVE_SYNC_VALID_FOR_PERIOD_TEXT" desc="Text displaying how long the sync code remains valid.">
+        This temporary code is valid for the next <ph name="TIME_AMOUNT">%1$s</ph>
+      </message>
       <message name="IDS_SETTINGS_EXIT" desc="Text for Settings exit.">
 	Settings exit
       </message>

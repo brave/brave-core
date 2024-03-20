@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (c) 2024 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/.
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical" >
+
+    <LinearLayout 
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/brave_sync_code_countdown_block"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/sync_code_countdown_bg" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/brave_countdown_timer"
+            android:layout_margin="8dp" />
+
+        <TextView
+            android:id="@+id/brave_sync_count_down_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:textColor="@color/brave_sync_count_down_text_color"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            app:drawableTint="@android:color/white" />
+    </LinearLayout>
+
+    <LinearLayout 
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/brave_sync_code_expired_block"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@drawable/sync_code_expired_bg" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="@null"
+            app:srcCompat="@drawable/warning_circle_filled"
+            android:layout_margin="8dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="8dp"
+            android:text="@string/brave_sync_code_expired_block_text"
+            android:textColor="@color/brave_sync_expired_block_text_color"
+            android:gravity="center_vertical"
+            android:textSize="16sp"
+            app:drawableTint="@android:color/white" />
+    </LinearLayout>
+</LinearLayout>

@@ -32,14 +32,14 @@
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_qr_code"
-                style="@style/BraveSyncToggleOnButtonLeft" />
+                style="@style/BraveSyncToggleOnButton" />
 
             <android.widget.Button android:id="@+id/brave_sync_code_words_off_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_code_words"
-                style="@style/BraveSyncToggleOffButtonRight" />
+                style="@style/BraveSyncToggleOffButton" />
 
         </LinearLayout>
 
@@ -80,13 +80,31 @@
                 android:layout_height="300dp"
                 android:layout_gravity="center"
                 android:contentDescription="@string/brave_sync_btn_laptop" />
-
         </LinearLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/brave_sync_count_down_qr"
+            android:name="org.chromium.chrome.browser.settings.BraveSyncCodeCountdownFragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp" />
 
         <TextView android:layout_width="match_parent"
             android:layout_height="0px"
             android:layout_weight="1"
             android:background="@android:color/transparent" />
+
+        <android.widget.Button android:id="@+id/brave_sync_btn_add_mobile_new_code"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/brave_sync_generate_new_code_button"
+            xmlns:tools="http://schemas.android.com/tools"
+            tools:ignore="HardcodedText"
+            style="@style/BraveSyncButtonTransparent"/>
 
         <android.widget.Button android:id="@+id/brave_sync_btn_done"
             android:layout_width="match_parent"

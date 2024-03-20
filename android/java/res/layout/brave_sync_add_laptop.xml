@@ -32,14 +32,14 @@
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_qr_code"
-                style="@style/BraveSyncToggleOffButtonLeft" />
+                style="@style/BraveSyncToggleOffButton" />
 
             <android.widget.Button android:id="@+id/brave_sync_code_words_on_btn"
                 android:layout_width="0px"
                 android:layout_weight="1"
                 android:layout_height="30dp"
                 android:text="@string/brave_sync_code_words"
-                style="@style/BraveSyncToggleOnButtonRight" />
+                style="@style/BraveSyncToggleOnButton" />
 
         </LinearLayout>
 
@@ -64,36 +64,56 @@
 
         </LinearLayout>
 
-        <FrameLayout android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_weight="1"
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:paddingStart="15dip"
             android:paddingEnd="15dip" >
 
             <TextView android:id="@+id/brave_sync_add_device_code_words"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:gravity="start|top"
                 android:textSize="18sp"
                 android:background="@drawable/brave_sync_top_rounded"
                 android:paddingStart="15dip"
                 android:paddingEnd="15dip" />
-
         </FrameLayout>
 
-        <android.widget.Button android:id="@+id/brave_sync_copy_button"
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/brave_sync_count_down_code_words"
+            android:name="org.chromium.chrome.browser.settings.BraveSyncCodeCountdownFragment"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="15dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/brave_sync_copy_button_text"
-            style="@style/BraveSyncBottomButton"
-            android:background="@android:color/transparent"
-            android:textColor="@color/brave_theme_color" />
+            android:layout_gravity="bottom" >
 
-        <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_done"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/brave_sync_btn_done"
-            style="@style/BraveSyncButton"/>
+            <android.widget.Button android:id="@+id/brave_sync_copy_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_copy_button_text"
+                style="@style/BraveSyncBottomButton"
+                android:background="@android:color/transparent"
+                android:textColor="@color/brave_sync_copy_words_text_color" />
 
+            <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_new_code"
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_generate_new_code_button"
+                style="@style/BraveSyncButtonTransparent"/>
+
+            <android.widget.Button android:id="@+id/brave_sync_btn_add_laptop_done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/brave_sync_btn_done"
+                style="@style/BraveSyncButton"/>
+        </LinearLayout>
     </LinearLayout>
 </ScrollView>
