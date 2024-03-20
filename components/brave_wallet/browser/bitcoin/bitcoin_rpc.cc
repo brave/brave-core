@@ -16,6 +16,7 @@
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_constants.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_utils.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/features.h"
 #include "brave/components/json/rs/src/lib.rs.h"
 #include "components/grit/brave_components_strings.h"
@@ -395,6 +396,10 @@ void BitcoinRpc::OnGetUtxoList(GetUtxoListCallback callback,
   for (const auto& item : *items) {
     auto utxo = UnspentOutput::FromValue(item);
     if (!utxo) {
+      return ReplyWithInvalidJsonError(std::move(callback));
+    }
+
+    if (!BitcoinOutpoint::FromRpc(utxo->txid, utxo->vout)) {
       return ReplyWithInvalidJsonError(std::move(callback));
     }
 

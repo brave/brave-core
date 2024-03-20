@@ -1,0 +1,12 @@
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+ * You can obtain one at http://mozilla.org/MPL/2.0/. */
+
+// Bitcoin ordinals RPC structures.
+namespace bitcoin_ordinals_rpc {
+  // https://github.com/ordinals/ord/blob/0.16.0/src/api.rs#L124-L134
+  dictionary OutpointInfo {
+    DOMString[] inscriptions;
+  };
+};

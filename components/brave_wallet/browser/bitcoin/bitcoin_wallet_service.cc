@@ -25,6 +25,8 @@
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_max_send_solver.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_serializer.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_wallet_service_get_ordinals.h"
+#include "brave/components/brave_wallet/browser/bitcoin_ordinals_rpc_responses.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
 #include "brave/components/brave_wallet/common/bitcoin_utils.h"
 #include "brave/components/brave_wallet/common/common_utils.h"
@@ -62,7 +64,9 @@ ChainBalance GetChainBalance(
 }
 
 std::vector<BitcoinTransaction::TxInputGroup> TxInputGroupsFromUtxoMap(
-    const BitcoinWalletService::UtxoMap& utxo_map) {
+    const BitcoinWalletService::UtxoMap& utxo_map,
+    const std::map<BitcoinOutpoint, bitcoin_ordinals_rpc::OutpointInfo>&
+        ordinals_map) {
   std::vector<BitcoinTransaction::TxInputGroup> groups;
   for (const auto& item : utxo_map) {
     if (item.second.empty()) {
@@ -73,12 +77,35 @@ std::vector<BitcoinTransaction::TxInputGroup> TxInputGroupsFromUtxoMap(
     for (const auto& utxo : item.second) {
       if (auto input =
               BitcoinTransaction::TxInput::FromRpcUtxo(item.first, utxo)) {
+        auto ordinals_for_outpoint = ordinals_map.find(input->utxo_outpoint);
+        if (ordinals_for_outpoint != ordinals_map.end()) {
+          input->ordinals_usage =
+              ordinals_for_outpoint->second.inscriptions.empty()
+                  ? mojom::BitcoinOrdinalsUsage::kNotUsed
+                  : mojom::BitcoinOrdinalsUsage::kUsed;
+        }
         group.AddInput(std::move(*input));
       }
     }
   }
 
   return groups;
+}
+
+std::vector<BitcoinOutpoint> GetOutpointsFromUtxos(
+    const BitcoinWalletService::UtxoMap& utxo_map) {
+  std::vector<BitcoinOutpoint> outpoints;
+  for (auto& utxos : utxo_map) {
+    for (auto& utxo : utxos.second) {
+      if (auto outpoint = BitcoinOutpoint::FromRpc(utxo.txid, utxo.vout)) {
+        outpoints.push_back(std::move(*outpoint));
+      } else {
+        NOTREACHED();
+      }
+    }
+  }
+
+  return outpoints;
 }
 
 std::string InternalErrorString() {
@@ -345,6 +372,7 @@ void GetUtxosTask::WorkOnTask() {
 class CreateTransactionTask {
  public:
   using UtxoMap = BitcoinWalletService::UtxoMap;
+  using OrdinalsMap = BitcoinWalletService::OrdinalsMap;
   using CreateTransactionCallback =
       BitcoinWalletService::CreateTransactionCallback;
 
@@ -374,6 +402,7 @@ class CreateTransactionTask {
   void OnGetFeeEstimates(
       base::expected<std::map<uint32_t, double>, std::string> estimates);
   void OnGetUtxos(base::expected<UtxoMap, std::string> utxo_map);
+  void OnGetOrdinals(base::expected<OrdinalsMap, std::string> ordinals_map);
   void OnDiscoverNextUnusedChangeAddress(
       base::expected<mojom::BitcoinAddressPtr, std::string> address);
 
@@ -382,7 +411,9 @@ class CreateTransactionTask {
   CreateTransactionCallback callback_;
 
   std::optional<uint32_t> chain_height_;
-  BitcoinWalletService::UtxoMap utxo_map_;
+  std::optional<BitcoinWalletService::UtxoMap> utxo_map_;
+  std::optional<std::map<BitcoinOutpoint, bitcoin_ordinals_rpc::OutpointInfo>>
+      ordinals_map_;
   mojom::BitcoinAddressPtr change_address_;
   std::map<uint32_t, double> estimates_;  // target block -> fee rate (sat/byte)
 
@@ -471,10 +502,18 @@ void CreateTransactionTask::WorkOnTask() {
     return;
   }
 
-  if (utxo_map_.empty()) {
+  if (!utxo_map_.has_value()) {
     bitcoin_wallet_service_->GetUtxos(
         account_id_.Clone(), base::BindOnce(&CreateTransactionTask::OnGetUtxos,
                                             weak_ptr_factory_.GetWeakPtr()));
+    return;
+  }
+
+  if (!ordinals_map_.has_value()) {
+    bitcoin_wallet_service_->GetOrdinals(
+        account_id_.Clone(), GetOutpointsFromUtxos(*utxo_map_),
+        base::BindOnce(&CreateTransactionTask::OnGetOrdinals,
+                       weak_ptr_factory_.GetWeakPtr()));
     return;
   }
 
@@ -505,8 +544,9 @@ void CreateTransactionTask::WorkOnTask() {
   base::expected<BitcoinTransaction, std::string> solved_transaction;
   if (transaction_.sending_max_amount()) {
     transaction_.AddOutput(CreateTargetOutput());
-    BitcoinMaxSendSolver solver(transaction_, GetFeeRate(),
-                                TxInputGroupsFromUtxoMap(utxo_map_));
+    BitcoinMaxSendSolver solver(
+        transaction_, GetFeeRate(),
+        TxInputGroupsFromUtxoMap(*utxo_map_, *ordinals_map_));
     solved_transaction = solver.Solve();
   } else {
     transaction_.AddOutput(CreateTargetOutput());
@@ -514,7 +554,7 @@ void CreateTransactionTask::WorkOnTask() {
 
     // TODO(apaymyshev): consider moving this calculation to separate thread.
     KnapsackSolver solver(transaction_, GetFeeRate(), GetLongtermFeeRate(),
-                          TxInputGroupsFromUtxoMap(utxo_map_));
+                          TxInputGroupsFromUtxoMap(*utxo_map_, *ordinals_map_));
     solved_transaction = solver.Solve();
   }
 
@@ -568,7 +608,21 @@ void CreateTransactionTask::OnGetUtxos(
     return;
   }
 
-  utxo_map_ = std::move(utxo_map.value());
+  utxo_map_.emplace(std::move(utxo_map.value()));
+
+  WorkOnTask();
+}
+
+void CreateTransactionTask::OnGetOrdinals(
+    base::expected<OrdinalsMap, std::string> ordinals_map) {
+  if (!ordinals_map.has_value()) {
+    SetError(std::move(ordinals_map.error()));
+    WorkOnTask();
+    return;
+  }
+
+  ordinals_map_.emplace(std::move(ordinals_map.value()));
+
   WorkOnTask();
 }
 
@@ -915,8 +969,10 @@ BitcoinWalletService::BitcoinWalletService(
     scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : keyring_service_(keyring_service),
       bitcoin_rpc_(
-          std::make_unique<bitcoin_rpc::BitcoinRpc>(prefs,
-                                                    url_loader_factory)) {}
+          std::make_unique<bitcoin_rpc::BitcoinRpc>(prefs, url_loader_factory)),
+      bitcoin_ordinals_rpc_(
+          std::make_unique<bitcoin_ordinals_rpc::BitcoinOrdinalsRpc>(
+              url_loader_factory)) {}
 
 BitcoinWalletService::~BitcoinWalletService() = default;
 
@@ -1013,6 +1069,18 @@ void BitcoinWalletService::GetUtxos(mojom::AccountIdPtr account_id,
   auto task = base::MakeRefCounted<GetUtxosTask>(
       weak_ptr_factory_.GetWeakPtr(), GetNetworkForBitcoinAccount(account_id),
       std::move(*addresses), std::move(callback));
+  task->ScheduleWorkOnTask();
+}
+
+void BitcoinWalletService::GetOrdinals(
+    mojom::AccountIdPtr account_id,
+    const std::vector<BitcoinOutpoint>& outpoints,
+    GetOrdinalsCallback callback) {
+  CHECK(IsBitcoinAccount(*account_id));
+
+  auto task = base::MakeRefCounted<GetOrdinalsTask>(
+      weak_ptr_factory_.GetWeakPtr(), GetNetworkForBitcoinAccount(account_id),
+      outpoints, std::move(callback));
   task->ScheduleWorkOnTask();
 }
 

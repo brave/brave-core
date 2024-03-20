@@ -604,6 +604,11 @@ export const usePendingTransactions = () => {
       : skipToken
   )
 
+  const maybeSpendsBitcoinOrdinals =
+    isBitcoinTransaction(transactionInfo) &&
+    transactionInfo?.txDataUnion.btcTxData?.bitcoinOrdinalsUsage !==
+      BraveWallet.BitcoinOrdinalsUsage.kNotUsed
+
   return {
     baseFeePerGas,
     currentTokenAllowance,
@@ -642,6 +647,7 @@ export const usePendingTransactions = () => {
     insufficientFundsError,
     insufficientFundsForGasError,
     isZCashTransaction: isZCashTransaction(transactionInfo),
-    isBitcoinTransaction: isBitcoinTransaction(transactionInfo)
+    isBitcoinTransaction: isBitcoinTransaction(transactionInfo),
+    maybeSpendsBitcoinOrdinals
   }
 }

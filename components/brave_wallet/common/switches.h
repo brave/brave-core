@@ -15,10 +15,18 @@ inline constexpr char kDevWalletPassword[] = "dev-wallet-password";
 // Ratios service dev URL
 inline constexpr char kAssetRatioDevUrl[] = "asset-ratio-dev-url";
 
-// ZCash rpc mainnet endpoint.
+// Bitcoin ordinals rpc mainnet endpoint switch.
+inline constexpr char kBitcoinOrdinalsMainnetRpcUrl[] =
+    "bitcoin-ordinals-mainnet-rpc-url";
+
+// Bitcoin ordinals rpc testnet endpoint switch.
+inline constexpr char kBitcoinOrdinalsTestnetRpcUrl[] =
+    "bitcoin-ordinals-testnet-rpc-url";
+
+// ZCash rpc mainnet endpoint switch.
 inline constexpr char kZCashMainnetRpcUrl[] = "zcash-mainnet-rpc-url";
 
-// ZCash rpc testnet endpoint.
+// ZCash rpc testnet endpoint switch.
 inline constexpr char kZCashTestnetRpcUrl[] = "zcash-testnet-rpc-url";
 
 }  // namespace switches

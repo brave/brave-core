@@ -11,30 +11,15 @@
 #include <vector>
 
 #include "brave/components/brave_wallet/browser/bitcoin_rpc_responses.h"
+#include "brave/components/brave_wallet/common/bitcoin_utils.h"
+#include "brave/components/brave_wallet/common/brave_wallet.mojom.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
 class BitcoinTransaction {
  public:
-  // Bitcoin tx outpoint. Pair of transaction id and its output index.
-  struct Outpoint {
-    Outpoint();
-    ~Outpoint();
-    Outpoint(const Outpoint& other);
-    Outpoint& operator=(const Outpoint& other);
-    Outpoint(Outpoint&& other);
-    Outpoint& operator=(Outpoint&& other);
-    bool operator==(const Outpoint& other) const;
-    bool operator!=(const Outpoint& other) const;
-    bool operator<(const Outpoint& other) const;
-
-    base::Value::Dict ToValue() const;
-    static std::optional<Outpoint> FromValue(const base::Value::Dict& value);
-
-    SHA256HashArray txid;
-    uint32_t index = 0;
-  };
+  using Outpoint = BitcoinOutpoint;
 
   // Input of bitcoin transaction.
   struct TxInput {
@@ -57,6 +42,8 @@ class BitcoinTransaction {
     std::string utxo_address;
     Outpoint utxo_outpoint;
     uint64_t utxo_value = 0;
+    mojom::BitcoinOrdinalsUsage ordinals_usage =
+        mojom::BitcoinOrdinalsUsage::kUnknown;
 
     std::vector<uint8_t> script_sig;  // scriptSig aka unlock script.
     std::vector<uint8_t> witness;     // serialized witness stack.
@@ -173,6 +160,8 @@ class BitcoinTransaction {
 
   uint32_t locktime() const { return locktime_; }
   void set_locktime(uint32_t locktime) { locktime_ = locktime; }
+
+  mojom::BitcoinOrdinalsUsage GetOrdinalsUsage() const;
 
   // Shuffle order of inputs and outputs to increase privacy.
   void ShuffleTransaction();

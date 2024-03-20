@@ -133,6 +133,7 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransaction) {
   const auto from_account = BtcAcc(0);
   std::string to_account = kMockBtcAddress;
   auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
+                                       mojom::BitcoinOrdinalsUsage::kUnknown,
                                        std::vector<mojom::BtcTxInputPtr>(),
                                        std::vector<mojom::BtcTxOutputPtr>());
 
@@ -179,6 +180,7 @@ TEST_F(BitcoinTxManagerUnitTest, SubmitTransactionError) {
   const auto from_account = BtcAcc(0);
   std::string to_account = kMockBtcAddress;
   auto tx_data = mojom::BtcTxData::New(kMockBtcAddress, 5000, false, 0,
+                                       mojom::BitcoinOrdinalsUsage::kUnknown,
                                        std::vector<mojom::BtcTxInputPtr>(),
                                        std::vector<mojom::BtcTxOutputPtr>());
 

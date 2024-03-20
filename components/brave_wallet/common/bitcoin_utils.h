@@ -12,6 +12,7 @@
 #include <string>
 #include <vector>
 
+#include "brave/components/brave_wallet/common/hash_utils.h"
 
 namespace brave_wallet {
 
@@ -50,6 +51,30 @@ std::string PubkeyToSegwitAddress(const std::vector<uint8_t>& pubkey,
                                   bool testnet);
 
 uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes);
+
+// Bitcoin tx outpoint. Pair of transaction id and its output index.
+struct BitcoinOutpoint {
+  BitcoinOutpoint();
+  ~BitcoinOutpoint();
+  BitcoinOutpoint(const BitcoinOutpoint& other);
+  BitcoinOutpoint& operator=(const BitcoinOutpoint& other);
+  BitcoinOutpoint(BitcoinOutpoint&& other);
+  BitcoinOutpoint& operator=(BitcoinOutpoint&& other);
+  bool operator==(const BitcoinOutpoint& other) const;
+  bool operator!=(const BitcoinOutpoint& other) const;
+  bool operator<(const BitcoinOutpoint& other) const;
+
+  std::string ToString() const;
+  base::Value::Dict ToValue() const;
+  static std::optional<BitcoinOutpoint> FromValue(
+      const base::Value::Dict& value);
+
+  static std::optional<BitcoinOutpoint> FromRpc(const std::string& txid,
+                                                const std::string& vout);
+
+  SHA256HashArray txid;
+  uint32_t index = 0;
+};
 
 }  // namespace brave_wallet
 

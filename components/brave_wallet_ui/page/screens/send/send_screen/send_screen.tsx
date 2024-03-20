@@ -82,9 +82,6 @@ import {
   DefaultPanelHeader //
 } from '../../../../components/desktop/card-headers/default-panel-header'
 import {
-  OrdinalsWarningMessage //
-} from '../components/ordinals-warning-message/ordinals-warning-message'
-import {
   SelectAddressButton //
 } from '../../composer_ui/select_address_button/select_address_button'
 
@@ -122,8 +119,6 @@ export const SendScreen = React.memo((props: Props) => {
   const [toAddressOrUrl, setToAddressOrUrl] = React.useState<string>('')
   const [resolvedDomainAddress, setResolvedDomainAddress] =
     React.useState<string>('')
-  const [isWarningAcknowledged, setIsWarningAcknowledged] =
-    React.useState<boolean>(false)
 
   // Selectors
   const isPanel = useSafeUISelector(UISelectors.isPanel)
@@ -531,12 +526,6 @@ export const SendScreen = React.memo((props: Props) => {
                     toAddressOrUrl={toAddressOrUrl}
                   />
                 </InputRow>
-                {tokenFromParams?.coin === BraveWallet.CoinType.BTC && (
-                  <OrdinalsWarningMessage
-                    acknowledged={isWarningAcknowledged}
-                    onChange={setIsWarningAcknowledged}
-                  />
-                )}
               </Column>
               <ReviewButtonRow
                 width='100%'
@@ -550,9 +539,7 @@ export const SendScreen = React.memo((props: Props) => {
                     insufficientFundsError ||
                     sendAmount === '' ||
                     parseFloat(sendAmount) === 0 ||
-                    Boolean(sendAmountValidationError) ||
-                    (tokenFromParams?.coin === BraveWallet.CoinType.BTC &&
-                      !isWarningAcknowledged)
+                    Boolean(sendAmountValidationError)
                   }
                 >
                   {getLocale(

@@ -78,9 +78,9 @@ export const TransactionDetailBox = ({
             <div key={'input' + index}>
               <BitcoinDetailLine>{`Input: ${index}`}</BitcoinDetailLine>
               <BitcoinDetailLine>{`Value: ${input.value}`}</BitcoinDetailLine>
-              <BitcoinDetailLine>{`Address: ${
-                input.address //
-              }`}</BitcoinDetailLine>
+              <BitcoinDetailLine>
+                {`Outpoint: ${input.outpointTxid}:${input.outpointIndex}`}
+              </BitcoinDetailLine>
             </div>
           )
         })}

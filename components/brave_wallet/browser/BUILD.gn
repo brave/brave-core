@@ -40,6 +40,8 @@ static_library("browser") {
     "bitcoin/bitcoin_knapsack_solver.h",
     "bitcoin/bitcoin_max_send_solver.cc",
     "bitcoin/bitcoin_max_send_solver.h",
+    "bitcoin/bitcoin_ordinals_rpc.cc",
+    "bitcoin/bitcoin_ordinals_rpc.h",
     "bitcoin/bitcoin_rpc.cc",
     "bitcoin/bitcoin_rpc.h",
     "bitcoin/bitcoin_serializer.cc",
@@ -54,6 +56,8 @@ static_library("browser") {
     "bitcoin/bitcoin_tx_state_manager.h",
     "bitcoin/bitcoin_wallet_service.cc",
     "bitcoin/bitcoin_wallet_service.h",
+    "bitcoin/bitcoin_wallet_service_get_ordinals.cc",
+    "bitcoin/bitcoin_wallet_service_get_ordinals.h",
     "block_tracker.cc",
     "block_tracker.h",
     "blockchain_list_parser.cc",
@@ -241,6 +245,7 @@ static_library("browser") {
   }
   deps = [
     ":constants",
+    ":generated_bitcoin_ordinals_rpc_responses",
     ":generated_bitcoin_rpc_responses",
     ":generated_blockchain_list_schemas",
     ":generated_json_rpc_responses",
@@ -454,6 +459,17 @@ generated_types("generated_blockchain_list_schemas") {
 
 generated_types("generated_bitcoin_rpc_responses") {
   sources = [ "bitcoin_rpc_responses.idl" ]
+  root_namespace = "brave_wallet::%(namespace)s"
+  deps = [ "//base" ]
+  visibility = [
+    ":browser",
+    "test:brave_wallet_unit_tests",
+    "//brave/components/brave_wallet/browser/test:test_support",
+  ]
+}
+
+generated_types("generated_bitcoin_ordinals_rpc_responses") {
+  sources = [ "bitcoin_ordinals_rpc_responses.idl" ]
   root_namespace = "brave_wallet::%(namespace)s"
   deps = [ "//base" ]
   visibility = [

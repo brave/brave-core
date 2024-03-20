@@ -9,6 +9,8 @@
 #include <optional>
 #include <utility>
 
+#include "base/strings/strcat.h"
+#include "base/strings/string_number_conversions.h"
 #include "base/strings/string_util.h"
 #include "brave/components/brave_wallet/common/hash_utils.h"
 #include "brave/third_party/bitcoin-core/src/src/base58.h"
@@ -180,6 +182,75 @@ uint64_t ApplyFeeRate(double fee_rate, uint32_t vbytes) {
   // Bitcoin core does ceiling here.
   // https://github.com/bitcoin/bitcoin/blob/v25.1/src/policy/feerate.cpp#L29
   return static_cast<uint64_t>(std::ceil(fee_rate * vbytes));
+}
+
+BitcoinOutpoint::BitcoinOutpoint() = default;
+BitcoinOutpoint::~BitcoinOutpoint() = default;
+BitcoinOutpoint::BitcoinOutpoint(const BitcoinOutpoint& other) = default;
+BitcoinOutpoint& BitcoinOutpoint::operator=(const BitcoinOutpoint& other) =
+    default;
+BitcoinOutpoint::BitcoinOutpoint(BitcoinOutpoint&& other) = default;
+BitcoinOutpoint& BitcoinOutpoint::operator=(BitcoinOutpoint&& other) = default;
+bool BitcoinOutpoint::operator==(const BitcoinOutpoint& other) const {
+  return std::tie(this->txid, this->index) == std::tie(other.txid, other.index);
+}
+bool BitcoinOutpoint::operator!=(const BitcoinOutpoint& other) const {
+  return !(*this == other);
+}
+bool BitcoinOutpoint::operator<(const BitcoinOutpoint& other) const {
+  return std::tie(this->txid, this->index) < std::tie(other.txid, other.index);
+}
+
+std::string BitcoinOutpoint::ToString() const {
+  return base::StrCat(
+      {base::HexEncode(txid), ":", base::NumberToString(index)});
+}
+
+base::Value::Dict BitcoinOutpoint::ToValue() const {
+  base::Value::Dict dict;
+
+  dict.Set("txid", base::ToLowerASCII(base::HexEncode(txid)));
+  dict.Set("index", static_cast<int>(index));
+
+  return dict;
+}
+
+// static
+std::optional<BitcoinOutpoint> BitcoinOutpoint::FromValue(
+    const base::Value::Dict& value) {
+  BitcoinOutpoint result;
+
+  auto* txid_hex = value.FindString("txid");
+  if (!txid_hex) {
+    return std::nullopt;
+  }
+  if (!base::HexStringToSpan(*txid_hex, result.txid)) {
+    return std::nullopt;
+  }
+
+  auto index_value = value.FindInt("index");
+  if (!index_value) {
+    return std::nullopt;
+  }
+  result.index = *index_value;
+
+  return result;
+}
+
+// static
+std::optional<BitcoinOutpoint> BitcoinOutpoint::FromRpc(
+    const std::string& txid,
+    const std::string& vout) {
+  BitcoinOutpoint result;
+
+  if (!base::HexStringToSpan(txid, result.txid)) {
+    return std::nullopt;
+  }
+  if (!base::StringToUint(vout, &result.index)) {
+    return std::nullopt;
+  }
+
+  return result;
 }
 
 }  // namespace brave_wallet

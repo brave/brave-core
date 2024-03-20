@@ -34,6 +34,7 @@ import AdvancedTransactionSettingsButton from '../advanced-transaction-settings/
 import AdvancedTransactionSettings from '../advanced-transaction-settings'
 import { TransactionInfo } from './transaction-info'
 import { NftIcon } from '../../shared/nft-icon/nft-icon'
+import { OrdinalsWarningMessage } from '../../shared/ordinals-warning-message/ordinals-warning-message'
 import {
   PendingTransactionActionsFooter //
 } from './common/pending_tx_actions_footer'
@@ -132,7 +133,8 @@ export const ConfirmTransactionPanel = () => {
     hasFeeEstimatesError,
     isLoadingGasFee,
     rejectAllTransactions,
-    isConfirmButtonDisabled
+    isConfirmButtonDisabled,
+    maybeSpendsBitcoinOrdinals
   } = usePendingTransactions()
 
   // queries
@@ -163,6 +165,12 @@ export const ConfirmTransactionPanel = () => {
   const [showAdvancedTransactionSettings, setShowAdvancedTransactionSettings] =
     React.useState<boolean>(false)
   const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
+  const [isOrdinalsWarningAcknowledged, setOrdinalsIsWarningAcknowledged] =
+    React.useState<boolean>(false)
+
+  const showOrdinalsWarning = isBitcoinTransaction && maybeSpendsBitcoinOrdinals
+  const isConfirmButtonDisabledByOrdinals =
+    showOrdinalsWarning && !isOrdinalsWarningAcknowledged
 
   // methods
   const onSelectTab = (tab: confirmPanelTabs) => () => setSelectedTab(tab)
@@ -380,6 +388,13 @@ export const ConfirmTransactionPanel = () => {
         </>
       )}
 
+      {showOrdinalsWarning && (
+        <OrdinalsWarningMessage
+          acknowledged={isOrdinalsWarningAcknowledged}
+          onChange={setOrdinalsIsWarningAcknowledged}
+        />
+      )}
+
       <TabRow>
         <PanelTab
           isSelected={selectedTab === 'transaction'}
@@ -435,7 +450,9 @@ export const ConfirmTransactionPanel = () => {
         onConfirm={onConfirm}
         onReject={onReject}
         rejectAllTransactions={rejectAllTransactions}
-        isConfirmButtonDisabled={isConfirmButtonDisabled}
+        isConfirmButtonDisabled={
+          isConfirmButtonDisabled || isConfirmButtonDisabledByOrdinals
+        }
         transactionDetails={transactionDetails}
         transactionsQueueLength={transactionsQueueLength}
         insufficientFundsForGasError={insufficientFundsForGasError}

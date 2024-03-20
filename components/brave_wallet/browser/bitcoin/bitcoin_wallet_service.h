@@ -10,10 +10,12 @@
 #include <map>
 #include <memory>
 #include <string>
+#include <vector>
 
 #include "base/memory/weak_ptr.h"
 #include "base/types/expected.h"
 #include "brave/components/api_request_helper/api_request_helper.h"
+#include "brave/components/brave_wallet/browser/bitcoin/bitcoin_ordinals_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_rpc.h"
 #include "brave/components/brave_wallet/browser/bitcoin/bitcoin_transaction.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -67,6 +69,14 @@ class BitcoinWalletService : public KeyedService,
       base::OnceCallback<void(base::expected<UtxoMap, std::string>)>;
   void GetUtxos(mojom::AccountIdPtr account_id, GetUtxosCallback callback);
 
+  using OrdinalsMap =
+      std::map<BitcoinOutpoint, bitcoin_ordinals_rpc::OutpointInfo>;
+  using GetOrdinalsCallback =
+      base::OnceCallback<void(base::expected<OrdinalsMap, std::string>)>;
+  void GetOrdinals(mojom::AccountIdPtr account_id,
+                   const std::vector<BitcoinOutpoint>& outpoints,
+                   GetOrdinalsCallback callback);
+
   using CreateTransactionCallback =
       base::OnceCallback<void(base::expected<BitcoinTransaction, std::string>)>;
   void CreateTransaction(mojom::AccountIdPtr account_id,
@@ -100,7 +110,11 @@ class BitcoinWalletService : public KeyedService,
                        DiscoverAccountCallback callback);
 
   bitcoin_rpc::BitcoinRpc& bitcoin_rpc() { return *bitcoin_rpc_; }
+  bitcoin_ordinals_rpc::BitcoinOrdinalsRpc& bitcoin_ordinals_rpc() {
+    return *bitcoin_ordinals_rpc_;
+  }
   KeyringService* keyring_service() { return keyring_service_; }
+  OrdinalsMap& ordinals_cache() { return ordinals_cache_; }
 
   void SetUrlLoaderFactoryForTesting(
       scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory);
@@ -136,6 +150,9 @@ class BitcoinWalletService : public KeyedService,
   std::list<std::unique_ptr<CreateTransactionTask>> create_transaction_tasks_;
   mojo::ReceiverSet<mojom::BitcoinWalletService> receivers_;
   std::unique_ptr<bitcoin_rpc::BitcoinRpc> bitcoin_rpc_;
+  OrdinalsMap ordinals_cache_;
+  std::unique_ptr<bitcoin_ordinals_rpc::BitcoinOrdinalsRpc>
+      bitcoin_ordinals_rpc_;
   bool arrange_transactions_for_testing_ = false;
   base::WeakPtrFactory<BitcoinWalletService> weak_ptr_factory_{this};
 };
