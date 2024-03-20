@@ -36,7 +36,7 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
                              *tabs_in_session[kMaxTabsPerSessionToShow]);   \
   }
 
-#include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc"
+#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc"
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
