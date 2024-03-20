@@ -1,19 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="12dp"
-    android:layout_marginHorizontal="12dp"
-    android:layout_marginBottom="16dp"
-    app:cardCornerRadius="16dp"
-    app:cardElevation="5dp">
+<!-- Copyright (c) 2022 The Brave Authors. All rights reserved.
+     This Source Code Form is subject to the terms of the Mozilla Public
+     License, v. 2.0. If a copy of the MPL was not distributed with this file,
+     You can obtain one at https://mozilla.org/MPL/2.0/. -->
+     
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/linearLayout2"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/wallet_balance_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/rewards_settings_gradient_bg">
+        android:layout_marginTop="12dp"
+        android:layout_marginHorizontal="12dp"
+        android:background="@drawable/rewards_wallet_balance_bg">
 
         <TextView
             android:id="@+id/btn_verify_wallet"
@@ -350,4 +349,3 @@
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>
-</androidx.cardview.widget.CardView>
