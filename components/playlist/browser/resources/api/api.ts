@@ -107,6 +107,10 @@ class API {
     this.#nativeUI.openSettingsPage()
   }
 
+  closePanel() {
+    this.#nativeUI.closePanel()
+  }
+
   reorderItemFromPlaylist(
     playlistId: string,
     itemId: string,
