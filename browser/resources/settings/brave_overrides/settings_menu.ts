@@ -85,9 +85,9 @@ RegisterStyleOverride(
       }
 
       .cr-nav-menu-item[selected] {
-        --iron-icon-fill-color: var(--leo-color-icon-interactive);
+        --iron-icon-fill-color: var(--leo-gradient-icons-active);
 
-        color: var(--leo-color-text-interactive) !important;
+        color: var(--cr-link-color) !important;
         background: transparent !important;
       }
 
@@ -144,7 +144,7 @@ RegisterStyleOverride(
         display: block;
         height: 32px;
         width: 4px;
-        background: var(--leo-color-text-interactive);
+        background: linear-gradient(96.98deg, #E51D00 0%, #E5007B 78.13%);
         border-radius: 0px 2px 2px 0px;
       }
 

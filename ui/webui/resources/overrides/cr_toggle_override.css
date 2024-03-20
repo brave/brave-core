@@ -1,0 +1,10 @@
+/* #css_wrapper_metadata_start
+ * #type=style
+ * #scheme=relative
+ * #css_wrapper_metadata_end */
+
+:host {
+  --cr-toggle-checked-bar-color: var(--cr-link-color) !important;
+  --cr-toggle-checked-button-color: var(--cr-link-color) !important;
+  --cr-toggle-checked-ink-color: var(--cr-link-color) !important;
+}
