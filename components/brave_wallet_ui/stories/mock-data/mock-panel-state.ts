@@ -11,8 +11,7 @@ import { mockOriginInfo } from './mock-origin-info'
 import {
   mockSignMessageRequest,
   mockGetEncryptionPublicKeyRequest,
-  mockDecryptRequest,
-  mockSwitchChainRequest
+  mockDecryptRequest
 } from './mock-eth-requests'
 
 export const mockPanelState: PanelState = {
@@ -25,7 +24,6 @@ export const mockPanelState: PanelState = {
   signTransactionRequests: [],
   getEncryptionPublicKeyRequest: mockGetEncryptionPublicKeyRequest,
   decryptRequest: mockDecryptRequest,
-  switchChainRequest: mockSwitchChainRequest,
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: [

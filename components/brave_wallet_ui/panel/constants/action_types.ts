@@ -33,11 +33,6 @@ export type SignAllTransactionsProcessedPayload = {
   error?: string
 }
 
-export type SwitchEthereumChainProcessedPayload = {
-  requestId: string
-  approved: boolean
-}
-
 export type GetEncryptionPublicKeyProcessedPayload = {
   requestId: string
   approved: boolean

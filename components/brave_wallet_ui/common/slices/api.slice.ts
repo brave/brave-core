@@ -160,6 +160,7 @@ export const {
   reducerPath: walletApiReducerPath,
   // hooks
   useAcknowledgePendingAddChainRequestMutation,
+  useAcknowledgeSwitchChainRequestMutation,
   useAddAccountMutation,
   useAddUserTokenMutation,
   useApproveERC20AllowanceMutation,
@@ -216,6 +217,7 @@ export const {
   useGetOnRampAssetsQuery,
   useGetOnRampFiatCurrenciesQuery,
   useGetPendingAddChainRequestQuery,
+  useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery,
   useGetPriceHistoryQuery,
   useGetPricesHistoryQuery,

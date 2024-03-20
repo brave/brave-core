@@ -27,6 +27,5 @@ export const signAllTransactionsRequests = ({ panel }: State) =>
 export const signMessageData = ({ panel }: State) => panel.signMessageData
 export const signTransactionRequests = ({ panel }: State) =>
   panel.signTransactionRequests
-export const switchChainRequest = ({ panel }: State) => panel.switchChainRequest
 export const signMessageErrorData = ({ panel }: State) =>
   panel.signMessageErrorData

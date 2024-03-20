@@ -200,6 +200,35 @@ export const networkEndpoints = ({
       },
       providesTags: ['PendingAddChainRequests']
     }),
+    getPendingSwitchChainRequest: query<
+      BraveWallet.SwitchChainRequest | null,
+      void
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          const { requests } =
+            await api.jsonRpcService.getPendingSwitchChainRequests()
+
+          if (requests.length) {
+            return {
+              data: requests[0]
+            }
+          }
+          return {
+            data: null
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to get pending Switch-Chain requests',
+            error
+          )
+        }
+      },
+      providesTags: ['PendingSwitchChainRequests']
+    }),
     // mutations
     hideNetworks: mutation<
       boolean,
@@ -431,7 +460,15 @@ export const networkEndpoints = ({
             arg.isApproved
           )
 
-          api.panelHandler?.closeUI()
+          // close the panel if there are
+          // no follow-up requests to switch to the new chain
+          const { requests } =
+            await api.jsonRpcService.getPendingSwitchChainRequests()
+
+          if (!requests.length) {
+            api.panelHandler?.closeUI()
+          }
+
           return {
             data: true
           }
@@ -445,8 +482,40 @@ export const networkEndpoints = ({
       },
       invalidatesTags: (res, error, arg) =>
         arg.isApproved
-          ? ['Network', 'PendingAddChainRequests']
-          : ['PendingAddChainRequests']
+          ? ['Network', 'PendingAddChainRequests', 'PendingSwitchChainRequests']
+          : ['PendingAddChainRequests', 'PendingSwitchChainRequests']
+    }),
+    acknowledgeSwitchChainRequest: mutation<
+      /** success */
+      true,
+      {
+        requestId: string
+        isApproved: boolean
+      }
+    >({
+      queryFn: async (arg, { endpoint }, extraOptions, baseQuery) => {
+        try {
+          const { data: api } = baseQuery(undefined)
+
+          api.jsonRpcService.notifySwitchChainRequestProcessed(
+            arg.requestId,
+            arg.isApproved
+          )
+
+          api.panelHandler?.closeUI()
+
+          return {
+            data: true
+          }
+        } catch (error) {
+          return handleEndpointError(
+            endpoint,
+            'Failed to acknowledge Switch-Chain request',
+            error
+          )
+        }
+      },
+      invalidatesTags: ['PendingSwitchChainRequests']
     })
   }
 }
