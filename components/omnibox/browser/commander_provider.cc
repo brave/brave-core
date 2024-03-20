@@ -65,6 +65,11 @@ void CommanderProvider::OnCommanderUpdated() {
 
   matches_.clear();
 
+  // If |last_input_| is empty, don't provide any suggestions.
+  if (last_input_.empty()) {
+    return;
+  }
+
   // We can be triggered explicitly by the prefix, or in a normal search if
   // suggestions are enabled.
   auto has_prefix = last_input_.starts_with(commander::kCommandPrefix.data());

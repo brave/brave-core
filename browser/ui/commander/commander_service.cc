@@ -186,7 +186,7 @@ void CommanderService::UpdateText(const std::u16string& text, bool force) {
     return;
   }
 
-  if (!has_prefix && text.empty()) {
+  if (text.empty()) {
     return;
   }
 
