@@ -458,6 +458,25 @@ IN_PROC_BROWSER_TEST_F(AdBlockServiceTest, CustomBlockDefaultException) {
   EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
 }
 
+// Load a page with an image blocked by custom filters, with a corresponding
+// exception installed in the default filters, and make sure it is not blocked.
+IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
+                       CustomBlockDefaultExceptionStandardMode) {
+  DisableAggressiveMode();
+
+  UpdateAdBlockInstanceWithRules("@@ad_banner.png");
+  UpdateCustomAdBlockInstanceWithRules("*ad_banner.png");
+
+  GURL url = embedded_test_server()->GetURL(kAdBlockTestPage);
+  NavigateToURL(url);
+  content::WebContents* contents = web_contents();
+
+  ASSERT_EQ(true, EvalJs(contents,
+                         "setExpectations(1, 0, 0, 0);"
+                         "addImage('ad_banner.png')"));
+  EXPECT_EQ(profile()->GetPrefs()->GetUint64(kAdsBlocked), 0ULL);
+}
+
 // Load a page with an image which is not an ad, and make sure it is NOT
 // blocked.
 IN_PROC_BROWSER_TEST_F(AdBlockServiceTest,
