@@ -152,6 +152,9 @@ public class AppState {
         #endif
       }
 
+      let isLoggingAccessible =
+        !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value
+
       let level: OSLogType = {
         switch severity {
         case .fatal: return .fault
@@ -159,15 +162,16 @@ public class AppState {
         // No `.warning` level exists for OSLogType. os_Log.warning is an alias for `.error`.
         case .warning: return .error
         case .info: return .info
-        default: return .debug
+        // `debug` log level doesn't show up in Console.app when not building a Debug configuration
+        default: return isLoggingAccessible ? .info : .debug
         }
       }()
 
       let braveCoreLogger = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "brave-core")
-      if AppConstants.buildChannel.isPublic {
-        braveCoreLogger.log(level: level, "\(message, privacy: .private)")
-      } else {
+      if isLoggingAccessible {
         braveCoreLogger.log(level: level, "\(message, privacy: .public)")
+      } else {
+        braveCoreLogger.log(level: level, "\(message, privacy: .private)")
       }
 
       return true
@@ -175,17 +179,15 @@ public class AppState {
 
     // Initialize BraveCore Switches
     var switches: [BraveCoreSwitch] = []
-    if !AppConstants.buildChannel.isPublic {
-      // Check prefs for additional switches
-      let activeSwitches = Set(Preferences.BraveCore.activeSwitches.value)
-      let switchValues = Preferences.BraveCore.switchValues.value
-      for activeSwitch in activeSwitches {
-        let key = BraveCoreSwitchKey(rawValue: activeSwitch)
-        if key.isValueless {
-          switches.append(.init(key: key))
-        } else if let value = switchValues[activeSwitch], !value.isEmpty {
-          switches.append(.init(key: key, value: value))
-        }
+    // Check prefs for additional switches
+    let activeSwitches = Set(Preferences.BraveCore.activeSwitches.value)
+    let switchValues = Preferences.BraveCore.switchValues.value
+    for activeSwitch in activeSwitches {
+      let key = BraveCoreSwitchKey(rawValue: activeSwitch)
+      if key.isValueless {
+        switches.append(.init(key: key))
+      } else if let value = switchValues[activeSwitch], !value.isEmpty {
+        switches.append(.init(key: key, value: value))
       }
     }
     switches.append(.init(key: .rewardsFlags, value: BraveRewards.Configuration.current().flags))

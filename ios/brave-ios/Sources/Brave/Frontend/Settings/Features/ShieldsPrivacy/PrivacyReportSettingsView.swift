@@ -62,31 +62,6 @@ struct PrivacyReportSettingsView: View {
         }
       }
       .listRowBackground(Color(.secondaryBraveGroupedBackground))
-
-      // MARK: - Mini debug section.
-      if !AppConstants.buildChannel.isPublic {
-        Section(
-          footer: Text(
-            "This will force all data to consolidate. All stats for 'last 7 days' should be cleared and 'all time data' views should be preserved."
-          )
-        ) {
-          HStack {
-            Button(
-              action: {
-                Preferences.PrivacyReports.nextConsolidationDate.value = Date().advanced(
-                  by: -2.days
-                )
-                PrivacyReportsManager.consolidateData(dayRange: -10)
-              },
-              label: {
-                Text("[Debug] - Consolidate data")
-                  .frame(maxWidth: .infinity, alignment: .leading)
-              }
-            )
-          }
-        }
-        .listRowBackground(Color(.secondaryBraveGroupedBackground))
-      }
     }
     .navigationTitle(Strings.PrivacyHub.privacyReportsTitle)
     .listStyle(.insetGrouped)

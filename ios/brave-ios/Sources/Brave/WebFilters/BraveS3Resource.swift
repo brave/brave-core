@@ -24,11 +24,11 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// The base s3 environment url that hosts the debouncing (and other) files.
   /// Cannot be used as-is and must be combined with a path
   private static var baseResourceURL: URL = {
-    if AppConstants.buildChannel.isPublic {
+    // TODO: Move these resources to be fetched via component updater
+    if AppConstants.isOfficialBuild {
       return URL(string: "https://adblock-data.s3.brave.com")!
-    } else {
-      return URL(string: "https://adblock-data-staging.s3.bravesoftware.com")!
     }
+    return URL(string: "https://adblock-data-staging.s3.bravesoftware.com")!
   }()
 
   /// The folder name under which this data should be saved under

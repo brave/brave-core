@@ -18,7 +18,6 @@ class DAUTests: XCTestCase {
 
   override func setUp() {
     super.setUp()
-    AppConstants.buildChannel = .debug
 
     Preferences.DAU.weekOfInstallation.reset()
     Preferences.DAU.lastLaunchInfo.reset()

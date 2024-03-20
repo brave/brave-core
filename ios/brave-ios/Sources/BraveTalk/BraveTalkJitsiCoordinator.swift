@@ -5,6 +5,7 @@
 
 import Foundation
 import JitsiMeetSDK
+import Preferences
 import Shared
 
 /// Handles coordinating when to use the Jitsi SDK for better Brave Talk integration
@@ -18,7 +19,7 @@ import Shared
   }
 
   public init() {
-    if !AppConstants.buildChannel.isPublic {
+    if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
       JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
     }
   }
