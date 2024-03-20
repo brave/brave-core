@@ -21,11 +21,8 @@ export const HardwareGraphic = styled.img.attrs({
 export const Description = styled.p`
   color: ${leo.color.text.primary};
   text-align: center;
-  font-family: Poppins;
+  font: ${leo.font.large.regular};
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
   margin: 0;
   padding: 0;
 `

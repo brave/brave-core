@@ -144,7 +144,7 @@ provideStrings({
   braveWalletButtonContinue: 'Continue',
   braveWalletContinueWithXItems: 'Continue with $1 $2',
   braveWalletButtonNext: 'Next',
-  braveWalletButtonGotIt: 'View my recovery phrase',
+  braveWalletButtonVerifyPhrase: 'View my recovery phrase',
   braveWalletButtonCopy: 'Copy',
   braveWalletButtonCopied: 'Copied!',
   braveWalletButtonVerify: 'Verify',
@@ -171,7 +171,7 @@ provideStrings({
   braveWalletWelcomeImportWalletTitle: 'Already have a wallet?',
   braveWalletWelcomeImportWalletDescription: 'Import your existing wallet.',
   braveWalletWelcomeWatchOnlyTitle: 'I need a watch-only wallet',
-  braveWalletWelcomeCopyright:
+  braveWalletCopyright:
     '©2023 Brave Software Inc. Brave and the Brave logo are registered ' +
     'trademarks of Brave. Other product names and logos may be trademarks ' +
     'of their respective companies. All rights reserved.',
@@ -235,7 +235,8 @@ provideStrings({
     'Your recovery phrase is the key to access your wallet in case you forget your password or lose your device.',
   braveWalletRecoveryPhraseBackupWarningImportant:
     'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
-  braveWalletRecoveryWordInstructions: 'Enter the word in position $1 from your recovery phrase.',
+  braveWalletRecoveryWordInstructions:
+    'Enter the word in position $1 from your recovery phrase.',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',
@@ -250,7 +251,7 @@ provideStrings({
   braveWalletGoBack: 'Go back',
 
   // Onboarding - Backup Wallet - Verify Recovery Phrase
-  braveWalletVerifyRecoveryPhraseTitle: 'Let\'s check',
+  braveWalletVerifyRecoveryPhraseTitle: "Let's check",
   braveWalletVerifyRecoveryPhraseInstructions:
     'Click the $1$7 ($8)$2, $3$9 ($10)$4, and $5$11 ($12)$6 words of ' +
     'your recovery phrase.',
@@ -281,7 +282,7 @@ provideStrings({
   braveWalletVerifyRecoveryTitle: 'Verify recovery phrase',
   braveWalletVerifyRecoveryDescription:
     'Select the words in your recovery phrase in their correct order.',
-  braveWalletVerifyError: 'Recovery phrase did not match, please try again.',
+  braveWalletVerifyError: 'Recovery phrase doesn’t match.',
 
   // Create Password
   braveWalletCreatePasswordTitle: 'Create a new password',
@@ -411,7 +412,8 @@ provideStrings({
   braveWalletConnectHardwareInfo2: 'Unlock your device and select the $1 app.',
   braveWalletConnectHardwareTrezor: 'Trezor',
   braveWalletConnectHardwareLedger: 'Ledger',
-  braveWalletConnectHardwareDeviceDescription: 'Connect your $1 device to Brave Wallet',
+  braveWalletConnectHardwareDeviceDescription:
+    'Connect your $1 device to Brave Wallet',
   braveWalletConnectHardwareAuthorizationNeeded:
     'Grant Brave access to your $1 device.',
   braveWalletConnectingHardwareWallet: 'Connecting...',

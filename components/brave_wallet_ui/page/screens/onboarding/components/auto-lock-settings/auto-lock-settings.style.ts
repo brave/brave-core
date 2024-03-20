@@ -27,11 +27,7 @@ export const LockIcon = styled(Icon).attrs({
 `
 
 export const SettingDescription = styled.div`
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font: ${leo.font.default.regular};
   white-space: nowrap;
   color: ${leo.color.text.primary};
 `

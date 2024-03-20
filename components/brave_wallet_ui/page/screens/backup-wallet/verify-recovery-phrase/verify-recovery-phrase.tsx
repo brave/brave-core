@@ -11,7 +11,6 @@ import * as leo from '@brave/leo/tokens/css'
 // utils
 import { getLocale } from '../../../../../common/locale'
 import {
-  // formatOrdinals,
   getWordIndicesToVerify
 } from '../../../../utils/ordinal-utils'
 import {

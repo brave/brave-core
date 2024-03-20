@@ -11,7 +11,7 @@ import * as leo from '@brave/leo/tokens/css'
 import backgroundImageLight from '../../../../assets/svg-icons/onboarding/welcome-background-light.svg'
 import backgroundImageDark from '../../../../assets/svg-icons/onboarding/welcome-background-dark.svg'
 // styles
-import { Column, WalletButton } from '../../../../components/shared/style'
+import { Column } from '../../../../components/shared/style'
 import { layoutPanelWidth } from '../../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
 
 export const WelcomePageBackground = styled.div`
@@ -74,11 +74,7 @@ export const BraveIcon = styled(Icon).attrs({
 `
 
 export const Title = styled.h4`
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 26px;
+  font: ${leo.font.large.semibold};
   color: ${leo.color.text.primary};
   margin: 0;
 
@@ -88,11 +84,7 @@ export const Title = styled.h4`
 `
 
 export const Heading = styled.h1`
-  font-family: Poppins;
-  font-size: 52px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 68px;
+  font: ${leo.font.heading.display1};
   color: ${leo.color.text.primary};
   margin: 0;
 
@@ -102,15 +94,6 @@ export const Heading = styled.h1`
   }
 `
 
-export const SubHeading = styled.h4`
-  font-family: Poppins;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 32px;
-  color: ${leo.color.text.secondary};
-`
-
 export const ActionsContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -118,34 +101,15 @@ export const ActionsContainer = styled.div`
   width: 100%;
   gap: ${leo.spacing['3Xl']};
 
-  // media query for desktop
+  /* media query for desktop */
   @media (min-width: 1025px) {
     flex-direction: row;
   }
 `
 
-export const WatchOnlyWalletButton = styled(WalletButton)`
-  color: ${leo.color.text.interactive};
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 22px;
-  padding: ${leo.spacing.l};
-  width: 100%;
-  text-align: center;
-  border: none;
-  background-color: transparent;
-  cursor: pointer;
-`
-
 export const Footer = styled.footer`
   color: ${leo.color.text.secondary};
-  font-family: 'Inter Variable';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font: ${leo.font.default.regular};
   margin: 0;
   padding-bottom: 72px;
 `

@@ -23,11 +23,7 @@ export const IntroImg = styled.img.attrs({
 export const Title = styled.h2`
   color: ${leo.color.text.primary};
   text-align: center;
-  font-family: Poppins;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 42px;
+  font: ${leo.font.heading.h1};
   margin: 0 0 0 0;
   padding: 0;
 `
@@ -35,10 +31,7 @@ export const Title = styled.h2`
 export const SubTitle = styled.h5`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-family: Poppins;
+  font: ${leo.font.default.regular};
   font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
   margin: 0;
 `

@@ -5,6 +5,7 @@
 
 import * as React from 'react'
 import { useHistory } from 'react-router'
+import Button from '@brave/leo/react/button'
 
 // utils
 import { getLocale } from '../../../../../../common/locale'
@@ -15,7 +16,6 @@ import {
   StyledWrapper,
   ContentWrapper,
   Content,
-  BackButton,
   BackButtonIcon,
   Title,
   Subtitle,
@@ -24,7 +24,8 @@ import {
   BackgroundGradientBottomLayer,
   BraveIcon,
   HeaderWrapper,
-  TitleSection
+  TitleSection,
+  BackButtonWrapper
 } from './onboarding-content-layout.style'
 
 interface Props {
@@ -58,15 +59,19 @@ export const OnboardingContentLayout = ({
         </Row>
       </TitleSection>
       <ContentWrapper>
-        <Row justifyContent='flex-start'>
+        <BackButtonWrapper>
           {showBackButton ? (
-            <BackButton onClick={() => history.goBack()}>
+            <Button
+              kind='plain'
+              size='small'
+              onClick={() => history.goBack()}
+            >
               <BackButtonIcon />
-            </BackButton>
+            </Button>
           ) : (
             <VerticalSpace space='36px' />
           )}
-        </Row>
+        </BackButtonWrapper>
         <VerticalSpace space='7px' />
         <HeaderWrapper>
           {typeof title === 'string' ? <Title>{title}</Title> : title}

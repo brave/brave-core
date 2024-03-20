@@ -72,11 +72,7 @@ export const Content = styled.div`
 export const Title = styled.h3`
   color: ${leo.color.text.primary};
   text-align: center;
-  font-family: Poppins;
-  font-size: 32px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 42px;
+  font: ${leo.font.heading.h1};
   margin: 0;
   padding: 0;
 `
@@ -84,26 +80,26 @@ export const Title = styled.h3`
 export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 26px;
+  font: ${leo.font.default.regular};
   margin: 0;
   padding: 0;
 `
 
-export const BackButton = styled.button`
+export const BackButtonWrapper = styled.div`
   display: flex;
-  width: 36px;
-  min-height: 36px;
-  padding: ${leo.spacing.m} ${leo.spacing.l};
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  border-radius: ${leo.spacing.m};
-  border: 1px solid ${leo.color.divider.interactive};
-  background: ${leo.color.container.background};
-  cursor: pointer;
+  width: 100%;
+
+  & leo-button {
+    flex-grow: 0;
+    width: 36px;
+    min-height: 36px;
+    border: 1px solid ${leo.color.divider.interactive};
+    background: ${leo.color.container.background};
+    border-radius: ${leo.spacing.m};
+    cursor: pointer;
+  }
 `
 
 export const BackButtonIcon = styled(Icon).attrs({
@@ -147,11 +143,7 @@ export const BraveIcon = styled(Icon).attrs({
 `
 
 export const WalletTitle = styled.h4`
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 26px;
+  font: ${leo.font.default.regular};
   color: ${leo.color.text.primary};
   margin: 0;
 `

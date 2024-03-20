@@ -17,6 +17,12 @@ import {
 import { Column, VerticalSpace } from '../../../../../components/shared/style'
 import { getLocale, splitStringForTag } from '../../../../../../common/locale'
 
+const alertSlotStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  height: '20px'
+}
+
 interface Props {
   phrase: string
   wordPosition: number
@@ -51,10 +57,10 @@ export const PhraseInput = ({
       </FormInput>
       {showError ? (
         <ErrorAlert>
-          Recovery phrase doesn’t match.
+          {getLocale('braveWalletVerifyError')}
           <div
             slot='actions'
-            style={{ display: 'flex', alignItems: 'center', height: '20px' }}
+            style={alertSlotStyle}
           >
             <CloseButton onClick={onHideError}>
               <CloseIcon />

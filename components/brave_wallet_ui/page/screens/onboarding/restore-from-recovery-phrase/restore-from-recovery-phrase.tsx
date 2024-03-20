@@ -64,43 +64,33 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   const [hasInvalidSeedError, setHasInvalidSeedError] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [autoLockDuration, setAutoLockDuration] = React.useState(
-    autoLockOptions[0].value
+    autoLockOptions[0].minutes
   )
 
   const isCorrectPhraseLength = VALID_PHRASE_LENGTHS.includes(
     phraseWords.length
   )
 
-  // memos
-  const alternateRecoveryPhraseLength = React.useMemo(
-    () => (recoveryPhraseLength === 12 ? 24 : 12),
-    [recoveryPhraseLength]
-  )
+  const alternateRecoveryPhraseLength = recoveryPhraseLength === 12 ? 24 : 12
+  const recoveryPhrase = phraseWords.join(' ')
 
-  const recoveryPhrase = React.useMemo(
-    () => phraseWords.join(' '),
-    [phraseWords]
-  )
+  let title = ''
+  let subTitle = ''
 
-  const pageText = React.useMemo(() => {
-    switch (currentStep) {
-      case 'phrase':
-        return {
-          title: getLocale('braveWalletRestoreMyBraveWallet'),
-          subTitle: getLocale('braveWalletRestoreMyBraveWalletInstructions')
-        }
-      case 'password':
-        return {
-          title: getLocale('braveWalletCreatePasswordTitle'),
-          subTitle: getLocale('braveWalletCreatePasswordDescription')
-        }
-      default:
-        return {
-          title: '',
-          subTitle: ''
-        }
-    }
-  }, [currentStep])
+  switch (currentStep) {
+    case 'phrase':
+      title = getLocale('braveWalletRestoreMyBraveWallet')
+      subTitle = getLocale('braveWalletRestoreMyBraveWalletInstructions')
+      break
+    case 'password':
+      title = getLocale('braveWalletCreatePasswordTitle')
+      subTitle = getLocale('braveWalletCreatePasswordDescription')
+      break
+    default:
+      title = ''
+      subTitle = ''
+      break
+  }
 
   // methods
   const onPhraseWordChange = React.useCallback(
@@ -167,7 +157,9 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     password,
     isImportingFromLegacySeed,
     restoreWalletFromSeed,
-    recoveryPhrase
+    recoveryPhrase,
+    autoLockDuration,
+    setAutoLockMinutes
   ])
 
   const onContinue = React.useCallback(async () => {
@@ -194,8 +186,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   return (
     <OnboardingContentLayout
-      title={pageText.title}
-      subTitle={pageText.subTitle}
+      title={title}
+      subTitle={subTitle}
     >
       {currentStep === 'phrase' && (
         <>

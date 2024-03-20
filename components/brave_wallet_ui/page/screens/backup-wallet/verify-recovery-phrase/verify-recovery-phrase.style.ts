@@ -24,11 +24,7 @@ export const ErrorTextRow = styled.div<{
 `
 
 export const FormLabel = styled.span`
-  font-family: Poppins;
-  font-size: 16px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 28px;
+  font: ${leo.font.default.regular};
   color: ${leo.color.text.primary};
   margin-bottom: 30px;
 `

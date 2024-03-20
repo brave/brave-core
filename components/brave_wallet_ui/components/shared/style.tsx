@@ -149,7 +149,7 @@ export const Row = styled.div<
     marginBottom?: number | string
     // https://styled-components.com/docs/api#transient-props
     $wrap?: boolean
-    gap?: string | number
+    gap?: string
   }
 >`
   font-family: 'Poppins';

@@ -226,7 +226,7 @@ export const HardwareWalletAccountsList = ({
                   href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
                   target='_blank'
                 >
-                  Need help?
+                  {getLocale('braveWalletHelpCenter')}
                 </HelpLink>
               </Row>
               <div slot='value'>{selectedDerivationScheme}</div>

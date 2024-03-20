@@ -27,7 +27,7 @@ interface Props {
 
 export const AutoLockSettings = ({ options, value, onChange }: Props) => {
   const selectedOption = React.useMemo(() => {
-    return options.find((option) => option.value === value) || options[0]
+    return options.find((option) => option.minutes === value) || options[0]
   }, [options, value])
 
   return (
@@ -46,14 +46,14 @@ export const AutoLockSettings = ({ options, value, onChange }: Props) => {
       </SettingDescription>
       <DurationDropdown
         mode='filled'
-        value={selectedOption?.value?.toString()}
+        value={selectedOption?.minutes?.toString()}
         onChange={(e) => onChange(parseInt(e.detail.value, 10))}
       >
         <div slot='value'>{selectedOption?.label}</div>
         {options.map((option) => (
           <leo-option
-            key={option.value}
-            value={option.value.toString()}
+            key={option.minutes}
+            value={option.minutes.toString()}
           >
             <OptionLabel>{option.label}</OptionLabel>
           </leo-option>

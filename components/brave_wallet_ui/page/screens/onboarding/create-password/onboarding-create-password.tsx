@@ -45,7 +45,7 @@ export const OnboardingCreatePassword = ({
   const [isValid, setIsValid] = React.useState(false)
   const [password, setPassword] = React.useState('')
   const [autoLockDuration, setAutoLockDuration] = React.useState(
-    autoLockOptions[0].value
+    autoLockOptions[0].minutes
   )
 
   // mutations

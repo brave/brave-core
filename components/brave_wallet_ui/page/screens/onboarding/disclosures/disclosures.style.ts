@@ -21,11 +21,7 @@ export const CheckboxText = styled.div`
     text-align: left;
     vertical-align: top;
 
-    font-family: 'Inter', 'Poppins';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 16px;
-    line-height: 26px;
+    font: ${leo.font.large.regular};
     letter-spacing: 0.01em;
 
     color: ${leo.color.text.primary};

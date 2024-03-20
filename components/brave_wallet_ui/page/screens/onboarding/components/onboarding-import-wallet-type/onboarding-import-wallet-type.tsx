@@ -17,6 +17,14 @@ import {
 } from '../../../../../components/shared/style'
 import { ImportTypeAction } from './components/import-type-action'
 
+const softwareWalletIcons = [
+  'brave-icon-release-color',
+  'phantom-color',
+  'metamask-color',
+  'coinbase-color'
+]
+const hardwareWalletIcons = ['trezor-color', 'wallet-ledger']
+
 export const OnboardingImportWalletType = () => {
   const history = useHistory()
   return (
@@ -25,12 +33,7 @@ export const OnboardingImportWalletType = () => {
       <ImportTypeAction
         title='Ethereum/Solana/Filecoin wallet'
         description='Import your seed phrase from an existing wallet'
-        icons={[
-          'brave-icon-release-color',
-          'phantom-color',
-          'metamask-color',
-          'coinbase-color'
-        ]}
+        icons={softwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
       />
       <VerticalSpace space='8px' />
@@ -39,7 +42,7 @@ export const OnboardingImportWalletType = () => {
       <ImportTypeAction
         title='Hardware wallet'
         description='Connect your hardware wallet with Brave'
-        icons={['trezor-color', 'wallet-ledger']}
+        icons={hardwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingHardwareWalletTerms)}
       />
       <VerticalSpace space='165px' />

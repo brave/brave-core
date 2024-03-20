@@ -11,7 +11,7 @@ import { Row } from '../../../../../components/shared/style'
 import { autoLockOptions } from '../../../../../options/auto-lock-options'
 
 export const _AutoLockSettings = () => {
-  const [value, setValue] = React.useState(autoLockOptions[0].value)
+  const [value, setValue] = React.useState(autoLockOptions[0].minutes)
 
   return (
     <WalletPageStory>

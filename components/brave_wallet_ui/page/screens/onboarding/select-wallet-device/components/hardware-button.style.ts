@@ -21,11 +21,7 @@ export const Container = styled.button`
 
 export const Title = styled.p`
   color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 600;
-  line-height: 28px;
+  font: ${leo.font.heading.h3};
   padding: 0;
   margin: 0;
 `
@@ -33,11 +29,7 @@ export const Title = styled.p`
 export const Description = styled.p`
   width: 90%;
   color: ${leo.color.text.primary};
-  font-family: Poppins;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px;
+  font: ${leo.font.default.regular};
   padding: 0;
   margin: 0;
   text-align: left;

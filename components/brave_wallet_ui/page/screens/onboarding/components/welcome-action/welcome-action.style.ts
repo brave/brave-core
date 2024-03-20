@@ -38,12 +38,7 @@ export const Title = styled.h6`
 
 export const Description = styled.p`
   width: 100%;
-  font-family: 'Inter Variable';
-  font-size: 14px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 22px; /* 157.143% */
-  letter-spacing: -0.1px;
+  font: ${leo.font.default.regular};
   color: ${leo.color.text.secondary};
   text-align: left;
   margin: 0;

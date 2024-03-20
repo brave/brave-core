@@ -296,16 +296,6 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
             }
             isLoading={isCheckingImportPassword}
           >
-            {/* {isCheckingImportPassword
-              ? ((
-                  <LoadingIcon
-                    size='24px'
-                    opacity={0.8}
-                    color='interactive08'
-                  />
-                ) as unknown as string)
-              : 
-               */}
             {getLocale('braveWalletButtonContinue')}
           </ContinueButton>
         </NextButtonRow>

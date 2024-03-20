@@ -100,7 +100,7 @@ export const RecoveryPhraseExplainer = () => {
 
         <Column>
           <ContinueButton onClick={onContinue}>
-            {getLocale('braveWalletButtonGotIt')}
+            {getLocale('braveWalletButtonVerifyPhrase')}
           </ContinueButton>
           <VerticalSpace space='24px' />
           <Button

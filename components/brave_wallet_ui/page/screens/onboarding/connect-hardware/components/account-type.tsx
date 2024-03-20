@@ -46,7 +46,7 @@ export const AccountType = ({ title, description, icons, onClick }: Props) => {
                     {typeof icon === 'string' ? (
                       <NetworkIcon name={icon} />
                     ) : (
-                      { icon }
+                      icon
                     )}
                   </React.Fragment>
                 ))}

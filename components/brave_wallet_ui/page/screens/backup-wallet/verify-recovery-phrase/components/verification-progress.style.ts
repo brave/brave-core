@@ -15,9 +15,9 @@ export const Wrapper = styled.span`
 
 export const Rectangle = styled.span<{
   isActive: boolean
-  width: number
+  width: string
 }>`
-  width: ${(p) => p.width}px;
+  width: ${(p) => p.width};
   height: 8px;
   border-radius: 4px;
   background-color: ${(p) =>

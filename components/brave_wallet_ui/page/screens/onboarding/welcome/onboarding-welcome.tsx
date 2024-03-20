@@ -33,7 +33,6 @@ import {
   WelcomePageWrapper,
   Title,
   Heading,
-  SubHeading,
   ActionsContainer,
   Footer
 } from './onboarding-welcome.style'
@@ -81,9 +80,7 @@ export const OnboardingWelcome = () => {
           </Row>
           <VerticalSpace space={leo.spacing['5Xl']} />
           <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
-          <VerticalSpace space={leo.spacing.xl} />
-          <SubHeading></SubHeading>
-          <VerticalSpace space={leo.spacing['5Xl']} />
+          <VerticalSpace space='64px' />
 
           <ActionsContainer>
             <WelcomeAction
@@ -107,9 +104,8 @@ export const OnboardingWelcome = () => {
               }
             />
           </ActionsContainer>
-          <VerticalSpace space={leo.spacing['2Xl']} />
-          <VerticalSpace space='72px' />
-          <Footer>{getLocale('braveWalletWelcomeCopyright')}</Footer>
+          <VerticalSpace space='96px' />
+          <Footer>{getLocale('braveWalletCopyright')}</Footer>
         </Content>
       </WelcomePageWrapper>
     </>

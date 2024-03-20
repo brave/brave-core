@@ -22,17 +22,14 @@ import { OnboardingContentLayout } from '../components/onboarding-content-layout
 import { VerticalSpace } from '../../../../components/shared/style'
 import { Divider } from './components/account-type.style'
 
+const accountOptions = CreateAccountOptions({
+  isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
+  isZCashEnabled: false // No zcash hardware accounts by now.
+})
+
 export const OnboardingConnectHardwareWallet = () => {
   // routing
   const history = useHistory()
-
-  // memos
-  const createAccountOptions = React.useMemo(() => {
-    return CreateAccountOptions({
-      isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
-      isZCashEnabled: false // No zcash hardware accounts by now.
-    })
-  }, [])
 
   // methods
   const onSelectAccountType = React.useCallback(
@@ -50,7 +47,7 @@ export const OnboardingConnectHardwareWallet = () => {
   return (
     <OnboardingContentLayout title='Select a blockchain to import your hardware wallet'>
       <VerticalSpace space='56px' />
-      {createAccountOptions.map((option, index) => {
+      {accountOptions.map((option, index) => {
         return (
           <React.Fragment key={index}>
             <AccountType
@@ -59,7 +56,7 @@ export const OnboardingConnectHardwareWallet = () => {
               icons={option.chainIcons ? option.chainIcons : []}
               onClick={onSelectAccountType(option)}
             />
-            {index !== createAccountOptions.length - 1 && <Divider />}
+            {index !== accountOptions.length - 1 && <Divider />}
           </React.Fragment>
         )
       })}

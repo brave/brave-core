@@ -255,7 +255,7 @@ export const HardwareWalletConnect = ({
 
     selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
     onSelectVendor?.(BraveWallet.TREZOR_HARDWARE_VENDOR)
-  }, [selectedHardwareWallet, selectVendor])
+  }, [selectedHardwareWallet, selectVendor, onSelectVendor])
 
   const onSubmit = React.useCallback(() => {
     if (!selectedHardwareWallet) return

@@ -3,7 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 import Alert from '@brave/leo/react/alert'
 
@@ -49,14 +49,45 @@ export const RecoveryBubble = styled.div`
   border-radius: 4px;
   border: 1px solid ${leo.color.divider.subtle};
 
-  font-family: Poppins;
-  font-size: 12px;
-  font-style: normal;
+  font: ${leo.font.default.semibold};
   font-weight: 600;
-  line-height: 16px;
 
   color: ${leo.color.text.primary};
   background-color: ${leo.color.container.background};
+`
+export const RecoveryBaseCss = css`
+  box-sizing: border-box;
+  width: 100%;
+  border: none;
+  border-radius: 4px;
+  text-align: left;
+  vertical-align: middle;
+  line-height: 40px;
+  word-break: break-word;
+  padding-left: 16px;
+  padding-right: 16px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  letter-spacing: 0.01em;
+
+  color: ${(p) => p.theme.color.text01};
+  background-color: ${(p) => p.theme.color.background02};
+`
+
+export const RecoveryTextArea = styled.textarea`
+  ${RecoveryBaseCss}
+  padding: 16px;
+  height: 166px;
+`
+
+export const RecoveryTextInput = styled.input`
+  ${RecoveryBaseCss}
+  font-weight: 800;
 `
 
 export const AlertWrapper = styled.div`

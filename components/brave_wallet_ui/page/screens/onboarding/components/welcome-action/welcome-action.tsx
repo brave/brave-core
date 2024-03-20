@@ -36,13 +36,7 @@ export const WelcomeAction = ({
   walletIcons,
   onSelect
 }: Props) => {
-  const renderIcon = (icon: string | React.ReactNode) => {
-    if (typeof icon === 'string') {
-      return <WalletIcon name={icon} />
-    } else {
-      return icon
-    }
-  }
+  const renderIcon = 
 
   return (
     <WelcomeActionWrapper onClick={onSelect}>
@@ -66,7 +60,11 @@ export const WelcomeAction = ({
             $wrap
           >
             {walletIcons?.map((icon, index) => (
-              <React.Fragment key={index}>{renderIcon(icon)}</React.Fragment>
+              <React.Fragment key={index}>{
+                typeof icon === 'string' ? 
+                  <WalletIcon name={icon} /> : 
+                  <React.Fragment>{icon}</React.Fragment>
+              }</React.Fragment>
             ))}
           </Row>
         </Column>
