@@ -8,6 +8,7 @@ import { useHistory } from 'react-router'
 import Button from '@brave/leo/react/button'
 import Input from '@brave/leo/react/input'
 import Icon from '@brave/leo/react/icon'
+import Checkbox from '@brave/leo/react/checkbox'
 import * as leo from '@brave/leo/tokens/css'
 
 // utils
@@ -32,6 +33,7 @@ import { autoLockOptions } from '../../../../options/auto-lock-options'
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 import {
   AlertWrapper,
+  CheckboxText,
   ErrorAlert,
   RecoveryPhraseContainer
 } from './restore-from-recovery-phrase.style'
@@ -66,6 +68,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   const [autoLockDuration, setAutoLockDuration] = React.useState(
     autoLockOptions[0].minutes
   )
+  const [isImportingFromLegacySeed, setIsImportingFromLegacySeed] =
+    React.useState(false)
 
   const isCorrectPhraseLength = VALID_PHRASE_LENGTHS.includes(
     phraseWords.length
@@ -140,7 +144,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
       // 12, 15, 18 or 21 long and has a space at the end.
       mnemonic: recoveryPhrase.trimEnd(),
       password,
-      isLegacy: recoveryPhraseLength === 24,
+      isLegacy: isImportingFromLegacySeed,
       // postpone until wallet onboarding success screen
       completeWalletSetup: false
     }).unwrap()
@@ -170,7 +174,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     if (currentStep === 'password' && isPasswordValid) {
       return await restoreWallet()
     }
-  }, [currentStep, isPasswordValid])
+  }, [currentStep, isPasswordValid, restoreWallet])
 
   // effects
   React.useEffect(() => {
@@ -196,7 +200,10 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             {Array.from({ length: recoveryPhraseLength }, (_, index) => (
               <Input
                 key={index}
-                placeholder={`Word #${index + 1}`}
+                placeholder={getLocale('braveWalletRecoveryPhraseWord').replace(
+                  '$1',
+                  `#${index + 1}`
+                )}
                 value={phraseWords[index] || ''}
                 size='small'
                 onChange={(e) => onPhraseWordChange(index, e.detail.value)}
@@ -224,6 +231,29 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
               alternateRecoveryPhraseLength.toString()
             )}
           </Button>
+          <VerticalSpace space='12px' />
+          {alternateRecoveryPhraseLength === 24 ? (
+            <Column
+              justifyContent='center'
+              alignItems='center'
+            >
+              <Checkbox
+                checked={isImportingFromLegacySeed}
+                onChange={() =>
+                  setIsImportingFromLegacySeed(
+                    (isImportingFromLegacySeed) => !isImportingFromLegacySeed
+                  )
+                }
+              >
+                <CheckboxText>
+                  {getLocale('braveWalletRestoreLegacyCheckBox')}
+                </CheckboxText>
+              </Checkbox>
+            </Column>
+          ) : (
+            <VerticalSpace space='22px' />
+          )}
+
           <VerticalSpace space='12px' />
 
           {importableWallets?.isMetaMaskInitialized && (

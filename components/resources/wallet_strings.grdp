@@ -20,6 +20,11 @@
   <message name="IDS_WALLET_REQUEST_PROCESSING_ERROR" desc="There was a request processing error">A generic request processing error has occurred</message>
   <message name="IDS_WALLET_REQUESTED_RESOURCE_NOT_AVAILABLE_ERROR" desc="The text of response when request panel is already open for current dapp">Requested resource not available</message>
   <message name="IDS_WALLET_INVALID_MNEMONIC_ERROR" desc="The text for invalid mnemonic being imported error">The mnemonic being imported is not valid for Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_WALLET_TYPE_TITLE" desc="Title for selection wallet type to import">Which type of wallet would you like to import?</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_WALLET_TYPE_HOT_WALLET_TITLE" desc="Title for hot wallet option">Ethereum/Solana/Filecoin wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_WALLET_TYPE_HOT_WALLET_DESCRIPTION" desc="Description for hot wallet option">Import your seed phrase from an existing wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_WALLET_TYPE_HARDWARE_WALLET_TITLE" desc="Title for hardware wallet option">Hardware wallet</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_WALLET_TYPE_HARDWARE_WALLET_DESCRIPTION" desc="Description for hardware wallet option">Connect your hardware wallet with Brave</message>
   <message name="IDS_WALLET_ALREADY_IN_PROGRESS_ERROR" desc="The text of the response for wallet_(add|switch)EthereumChain call for existing request">A request is already in progress</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_NO_TX_DATA" desc="The text of the response for eth_sendTransaction">Transaction data is missing</message>
   <message name="IDS_WALLET_ETH_SEND_TRANSACTION_TO_OR_DATA" desc="Transaction data is not validated">Transaction data 'to' or 'data' must be specified</message>
@@ -243,6 +248,8 @@
   <message name="IDS_BRAVE_WALLET_LEDGER_LEGACY_DERIVATION_PATH" desc="Connect hardware wallet legacy selection">Legacy (MEW/MyCrypto)</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_SEARCH_NOTHING_FOUND" desc="Nothing found in connect hardware search">No results found.</message>
   <message name="IDS_BRAVE_WALLET_AUTHORIZE_HARDWARE_WALLET" desc="Authorize hardware wallet page title">Authorize your wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET" desc="Title for connect hardware wallet page">Connect hardware wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET_DESCRIPTION" desc="Description for connect hardware wallet page">We currently support <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> and <ph name="HARDWARE_DEVICE1"><ex>Trezor</ex>$2</ph> devices.</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION" desc="Connect a hardware wallet description">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> device to Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR" desc="Connect hardware wallet connection error">Unknown error, please reconnect your hardware wallet and try again.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DETAILS" desc="Account settings modal details button">Details</message>
@@ -764,10 +771,8 @@
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_MEDIUM_STRENGTH" desc="Password is of medium strength">Medium</message>
   <message name="IDS_BRAVE_WALLET_PASSWORD_IS_WEAK" desc="Password is weak">Weak</message>
   <message name="IDS_BRAVE_WALLET_AUTO_LOCK_TITLE" desc="Auto lock title">Brave Wallet will auto-lock after</message>
-  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_FIVE_MINUTES" desc="Auto lock duration - 5 minutes">5 Minutes</message>
-  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_TEN_MINUTES" desc="Auto lock duration - 10 minutes">10 Minutes</message>
-  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_ONE_HOUR" desc="Auto lock duration -  one hour">1 Hour</message>
-  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_THREE_HOURS" desc="Auto lock duration - 3 hours">3 Hours</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_MINUTES" desc="Auto lock duration - in minutes"><ph name="VALUE">$1<ex>10</ex></ph> Minutes</message>
+  <message name="IDS_BRAVE_WALLET_AUTO_LOCK_DURATION_HOURS" desc="Auto lock duration -  one hour"><ph name="VALUE">$1<ex>1</ex></ph> Hour(s)</message>
   <message name="IDS_BRAVE_WALLET_CREATING_WALLET" desc="Is displayed while the wallet is being created.">Creating Wallet...</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_TITLE" desc="Title before backing up wallet">Save your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_ONBOARDING_RECOVERY_PHRASE_BACKUP_INTRO_DESCRIPTION" desc="Recovery phrase backup description">The 12-24 word recovery phrase is a private key you can use to regain access to your wallet in case you lose a connected device(s). Store it someplace safe, and in the exact order it appears below.</message>
@@ -817,6 +822,7 @@
   <message name="IDS_BRAVE_WALLET_IMPORT_WITH_RECOVERY_PHRASE" desc="Label for action to go back to import with recovery phrase">Import using your recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_DETECTED" desc="Metamask detected message">Metamask wallet detected!</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_IMPORT_USE_PASSWORD" desc="Metamask import action message">Use password</message>
+  <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_WORD" desc="Recovery phrase word label">Word <ph name="VALUE">$1</ph></message>
   <message name="IDS_BRAVE_WALLET_IMPORT_FROM_META_MASK_SEED_INSTRUCTIONS" desc="Instructions for importing a MetaMask wallet via recovery phrase">Type your MetaMask 12-24 word recovery phrase.</message>
   <message name="IDS_BRAVE_WALLET_METAMASK_PASSWORD_INPUT_PLACEHOLDER" desc="Placeholder text for MetaMask password input">Type MetaMask password</message>
   <message name="IDS_BRAVE_WALLET_INPUT_LABEL_PASSWORD" desc="Password input field label">Password</message>

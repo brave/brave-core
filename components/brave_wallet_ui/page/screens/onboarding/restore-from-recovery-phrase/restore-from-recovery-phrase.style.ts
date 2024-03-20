@@ -18,7 +18,7 @@ export const RecoveryPhraseContainer = styled.div<{ phraseLength: number }>`
   flex-wrap: wrap;
   width: 100%;
   height: 195px;
-  padding: 0 2px;
+  padding: 2px;
   overflow-y: ${(p) => (p.phraseLength > 12 ? 'auto' : 'hidden')};
 
   &::-webkit-scrollbar {
@@ -110,4 +110,9 @@ export const ErrorAlert = styled(Alert).attrs({
 export const InputLabel = styled(Text)`
   line-height: 18px;
   color: ${leo.color.text.primary};
+`
+
+export const CheckboxText = styled.span`
+  font: ${leo.font.default.semibold};
+  color: ${leo.color.text.interactive};
 `

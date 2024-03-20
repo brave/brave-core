@@ -36,8 +36,6 @@ export const WelcomeAction = ({
   walletIcons,
   onSelect
 }: Props) => {
-  const renderIcon = 
-
   return (
     <WelcomeActionWrapper onClick={onSelect}>
       <Row
@@ -60,11 +58,13 @@ export const WelcomeAction = ({
             $wrap
           >
             {walletIcons?.map((icon, index) => (
-              <React.Fragment key={index}>{
-                typeof icon === 'string' ? 
-                  <WalletIcon name={icon} /> : 
+              <React.Fragment key={index}>
+                {typeof icon === 'string' ? (
+                  <WalletIcon name={icon} />
+                ) : (
                   <React.Fragment>{icon}</React.Fragment>
-              }</React.Fragment>
+                )}
+              </React.Fragment>
             ))}
           </Row>
         </Column>

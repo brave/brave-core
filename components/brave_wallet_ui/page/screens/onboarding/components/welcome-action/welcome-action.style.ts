@@ -26,11 +26,7 @@ export const WelcomeActionWrapper = styled(WalletButton)`
 
 export const Title = styled.h6`
   width: 100%;
-  font-family: Poppins;
-  font-size: 22px;
-  font-style: normal;
-  font-weight: 500;
-  line-height: 32px;
+  font: ${leo.font.heading.h3};
   margin: 0;
   color: ${leo.color.text.primary};
   text-align: left;

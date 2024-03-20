@@ -10,9 +10,7 @@ import * as leo from '@brave/leo/tokens/css'
 
 // utils
 import { getLocale } from '../../../../../common/locale'
-import {
-  getWordIndicesToVerify
-} from '../../../../utils/ordinal-utils'
+import { getWordIndicesToVerify } from '../../../../utils/ordinal-utils'
 import {
   useCompleteWalletBackupMutation,
   useReportOnboardingActionMutation
@@ -110,12 +108,9 @@ export const VerifyRecoveryPhrase = () => {
     [recoveryPhrase.length]
   )
 
-  const [verificationWord, wordPosition] = React.useMemo(() => {
-    const verificationIndex = verificationIndices[currentStep]
-    const expectedWord = recoveryPhrase[verificationIndex]
-    const wordPos = verificationIndex + 1
-    return [expectedWord, wordPos]
-  }, [verificationIndices, currentStep])
+  const verificationIndex = verificationIndices[currentStep]
+  const verificationWord = recoveryPhrase[verificationIndex]
+  const wordPosition = verificationIndex + 1
 
   return (
     <OnboardingContentLayout

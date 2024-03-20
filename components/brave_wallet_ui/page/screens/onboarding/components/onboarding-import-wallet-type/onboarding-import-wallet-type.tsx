@@ -16,6 +16,7 @@ import {
   VerticalSpace
 } from '../../../../../components/shared/style'
 import { ImportTypeAction } from './components/import-type-action'
+import { getLocale } from '../../../../../../common/locale'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',
@@ -28,11 +29,11 @@ const hardwareWalletIcons = ['trezor-color', 'wallet-ledger']
 export const OnboardingImportWalletType = () => {
   const history = useHistory()
   return (
-    <OnboardingContentLayout title='Which type of wallet would you like to import?'>
+    <OnboardingContentLayout title={getLocale('braveWalletImportWalletTypeTitle')}>
       <VerticalSpace space='92px' />
       <ImportTypeAction
-        title='Ethereum/Solana/Filecoin wallet'
-        description='Import your seed phrase from an existing wallet'
+        title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
+        description={getLocale('braveWalletImportWalletTypeHotWalletDescription')}
         icons={softwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
       />
@@ -40,8 +41,8 @@ export const OnboardingImportWalletType = () => {
       <VerticalDivider />
       <VerticalSpace space='8px' />
       <ImportTypeAction
-        title='Hardware wallet'
-        description='Connect your hardware wallet with Brave'
+        title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
+        description={getLocale('braveWalletImportWalletTypeHardwareWalletDescription')}
         icons={hardwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingHardwareWalletTerms)}
       />

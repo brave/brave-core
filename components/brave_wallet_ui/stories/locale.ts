@@ -212,6 +212,7 @@ provideStrings({
   braveWalletImportWithRecoveryPhrase: 'Import using your recovery phrase',
   braveWalletMetamaskDetected: 'Metamask wallet detected!',
   braveWalletMetamaskImportUsePassword: 'Use password',
+  braveWalletRecoveryPhraseWord: 'Word $1',
 
   // onboarding import wallet screen
   braveWalletImportPasswordError: 'Password is not correct',
@@ -227,6 +228,12 @@ provideStrings({
     'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
   braveWalletInvalidMnemonicError:
     'The mnemonic being imported is not valid for Brave Wallet',
+  braveWalletImportWalletTypeTitle: 'Which type of wallet would you like to import?',
+  braveWalletImportWalletTypeHotWalletTitle: 'Ethereum/Solana/Filecoin wallet',
+  braveWalletImportWalletTypeHotWalletDescription: 'Import your seed phrase from an existing wallet',
+  braveWalletImportWalletTypeHardwareWalletTitle: 'Hardware wallet',
+  braveWalletImportWalletTypeHardwareWalletDescription: 'Connect your hardware wallet with Brave',
+
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
@@ -297,10 +304,8 @@ provideStrings({
   braveWalletPasswordIsMediumStrength: 'Medium',
   braveWalletPasswordIsWeak: 'Weak',
   braveWalletAutoLockTitle: 'Brave Wallet will auto-lock after',
-  braveWalletAutoLockDurationFiveMinutes: '5 minutes',
-  braveWalletAutoLockDurationTenMinutes: '10 minutes',
-  braveWalletAutoLockDurationOneHour: '1 hour',
-  braveWalletAutoLockDurationThreeHours: '3 hours',
+  braveWalletAutoLockDurationMinutes: '$1 minutes',
+  braveWalletAutoLockDurationHours: '$1 hour(s)',
 
   // Creating Wallet
   braveWalletCreatingWallet: 'Creating Wallet...',
@@ -430,6 +435,10 @@ provideStrings({
     'Unknown error, please reconnect your hardware wallet and try again.',
   braveWalletConnectHardwareSearchNothingFound: 'No results found.',
   braveWalletAuthorizeHardwareWallet: 'Authorize your wallet',
+  braveWalletConnectHardwareWallet: 'Connect hardware wallet',
+  braveWallectConnectHardwareDescription: 'We currently support $1 and $2 devices.',
+  braveWalletImportHardwareWalletDescription: 'Connect your hardware wallet to manage your assets directly from Brave Wallet',
+
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',

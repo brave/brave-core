@@ -7,7 +7,7 @@ import * as React from 'react'
 import { useHistory } from 'react-router'
 
 // utils
-import { getLocale } from '../../../../../common/locale'
+import { getLocale, splitStringForTag } from '../../../../../common/locale'
 import { WalletRoutes } from '../../../../constants/types'
 
 // components
@@ -29,19 +29,27 @@ export const OnboardingImportHardwareWalletWelcome = () => {
     history.push(WalletRoutes.OnboardingHardwareWalletNetworkSelection)
   }
 
+  const { beforeTag, duringTag, afterTag } = splitStringForTag(
+    getLocale('braveWallectConnectHardwareDescription')
+  )
+
   return (
-    <OnboardingContentLayout title='Connect your hardware wallet'>
+    <OnboardingContentLayout
+      title={getLocale('braveWalletConnectHardwareWallet')}
+    >
       <VerticalSpace space='98px' />
       <HardwareGraphic />
       <VerticalSpace space='40px' />
       <Description>
-        Connect your hardware wallet to manage your assets directly from Brave
-        Wallet
+        {getLocale('braveWalletImportHardwareWalletDescription')}
       </Description>
       <VerticalSpace space='28px' />
       <Description>
-        We currently support <Bold>Ledger</Bold> and <Bold>Trezor</Bold>{' '}
-        devices.
+        {beforeTag}
+        <Bold>{getLocale('braveWalletConnectHardwareLedger')}</Bold>
+        {duringTag}
+        <Bold>{getLocale('braveWalletConnectHardwareTrezor')}</Bold>
+        {afterTag}
       </Description>
       <VerticalSpace space='117px' />
       <Column>
