@@ -1,5 +1,5 @@
 diff --git a/components/omnibox/browser/BUILD.gn b/components/omnibox/browser/BUILD.gn
-index 082452b0555e997ed7685b1733a20a9afb1ec99a..d5321c9de4ccfe0942c2f2de65a4bb97b55200b5 100644
+index 32690b0c7443da251d424726e0ab3f1c7d05f149..7a60e934b3baafa89e1474a3ea026f0c9448b939 100644
 --- a/components/omnibox/browser/BUILD.gn
 +++ b/components/omnibox/browser/BUILD.gn
 @@ -367,6 +367,7 @@ static_library("browser") {
@@ -17,4 +17,4 @@ index 082452b0555e997ed7685b1733a20a9afb1ec99a..d5321c9de4ccfe0942c2f2de65a4bb97
 +  generate_legacy_js_bindings = true
    webui_module_path = "/"
  
-   public_deps = [
+   public_deps = [ "//mojo/public/mojom/base" ]
