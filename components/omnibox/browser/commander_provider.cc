@@ -12,6 +12,7 @@
 #include "base/strings/strcat.h"
 #include "brave/components/commander/browser/commander_frontend_delegate.h"
 #include "brave/components/commander/common/constants.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/omnibox/browser/brave_omnibox_prefs.h"
 #include "brave/components/omnibox/browser/commander_action.h"
 #include "components/omnibox/browser/autocomplete_match.h"
@@ -74,7 +75,9 @@ void CommanderProvider::OnCommanderUpdated() {
   // suggestions are enabled.
   auto has_prefix = last_input_.starts_with(commander::kCommandPrefix.data());
   if (!has_prefix &&
-      !client_->GetPrefs()->GetBoolean(omnibox::kCommanderSuggestionsEnabled)) {
+      (!client_->GetPrefs()->GetBoolean(
+           omnibox::kCommanderSuggestionsEnabled) ||
+       !base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox))) {
     return;
   }
 

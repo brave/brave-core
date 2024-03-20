@@ -30,6 +30,7 @@
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/brave_vpn/common/features.h"
 #include "brave/components/brave_wallet/common/features.h"
+#include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
 #include "brave/components/ntp_background_images/browser/view_counter_service.h"
@@ -215,6 +216,9 @@ void BraveSettingsUI::AddResources(content::WebUIDataSource* html_source,
 #else
   html_source->AddBoolean("isPlaylistAllowed", false);
 #endif
+  html_source->AddBoolean(
+      "showCommandsInOmnibox",
+      base::FeatureList::IsEnabled(features::kBraveCommandsInOmnibox));
 }
 
 // static
