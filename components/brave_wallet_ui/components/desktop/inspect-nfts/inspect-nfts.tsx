@@ -69,7 +69,7 @@ export const InspectNftsScreen = ({ onClose }: Props) => {
       setAutoPinStatus(true)
     }
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [isAutoPinEnabled])
+  }, [history, isAutoPinEnabled, setAutoPinStatus])
 
   const onShowTooltip = React.useCallback(() => setShowTooltip(true), [])
   const onHideTooltip = React.useCallback(() => setShowTooltip(false), [])

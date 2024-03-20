@@ -51,7 +51,7 @@ export function useHasAccount() {
       default:
         return false
     }
-  }, [hasSolAccount, hasFilAccount, selectedNetwork])
+  }, [accounts.length, selectedNetwork?.coin, hasSolAccount, hasFilAccount])
 
   return {
     hasSolAccount,

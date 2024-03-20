@@ -63,7 +63,7 @@ export const Tooltip: React.FC<ToolTipProps> = ({
         verticalPosition={verticalPosition ?? 'below'}
       />
     ),
-    [position, verticalPosition, pointerPosition]
+    [verticalPosition, pointerPosition]
   )
 
   const toolTip = React.useMemo(
@@ -95,9 +95,13 @@ export const Tooltip: React.FC<ToolTipProps> = ({
       isVisible,
       position,
       verticalPosition,
+      isActionVisible,
+      toolTipPointer,
+      actionText,
+      maxWidth,
+      minWidth,
       isAddress,
-      text,
-      isActionVisible
+      text
     ]
   )
 

@@ -49,7 +49,7 @@ export const NftContent = (props: Props) => {
 
     // Clean up the observer when the component unmounts
     return () => observer.disconnect()
-  }, [wrapperRef])
+  }, [onIntersection, wrapperRef])
 
   return (
     <>

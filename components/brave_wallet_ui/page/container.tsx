@@ -118,7 +118,7 @@ export const Container = () => {
     ) {
       dispatch(WalletPageActions.recoveryWordsAvailable({ mnemonic: '' }))
     }
-  }, [walletLocation, mnemonic])
+  }, [walletLocation, mnemonic, dispatch])
 
   // render
   if (!hasInitialized) {

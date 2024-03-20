@@ -150,7 +150,14 @@ export const AssetGroupContainer = (props: Props) => {
       // Update Collapsed Network Keys in Redux
       dispatch(UIActions.setCollapsedPortfolioNetworkKeys(newCollapsedNetworks))
     }
-  }, [account, network, isCollapsed, collapsedAccounts, collapsedNetworks])
+  }, [
+    account,
+    network,
+    isCollapsed,
+    collapsedAccounts,
+    dispatch,
+    collapsedNetworks
+  ])
 
   return (
     <StyledWrapper

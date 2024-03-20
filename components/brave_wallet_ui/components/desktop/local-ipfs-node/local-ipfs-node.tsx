@@ -64,14 +64,14 @@ export const LocalIpfsNodeScreen = (props: Props) => {
   // methods
   const onClickCheckNfts = React.useCallback(() => {
     history.push(WalletRoutes.InspectNfts)
-  }, [])
+  }, [history])
 
   const onClickRunNode = React.useCallback(() => {
     if (!isAutoPinEnabled) {
       setAutoPinStatus(true)
     }
     history.push(WalletRoutes.PortfolioNFTs)
-  }, [isAutoPinEnabled])
+  }, [history, isAutoPinEnabled, setAutoPinStatus])
 
   return (
     <RunNodeWrapper>

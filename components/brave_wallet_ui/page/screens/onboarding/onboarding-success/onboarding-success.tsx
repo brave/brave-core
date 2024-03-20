@@ -57,17 +57,17 @@ export const OnboardingSuccess = () => {
   const onComplete = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.PortfolioAssets)
-  }, [])
+  }, [dispatch, history])
 
   const onClickBuyCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.FundWalletPageStart)
-  }, [])
+  }, [dispatch, history])
 
   const onClickDepositCrypto = React.useCallback(() => {
     dispatch(WalletPageActions.walletSetupComplete(true))
     history.push(WalletRoutes.DepositFundsPageStart)
-  }, [])
+  }, [dispatch, history])
 
   // effects
   React.useEffect(() => {

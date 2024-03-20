@@ -110,9 +110,6 @@ export const PortfolioAssetItem = ({
     )
 
   // state
-  const [assetNameSkeletonWidth, setAssetNameSkeletonWidth] = React.useState(0)
-  const [assetNetworkSkeletonWidth, setAssetNetworkSkeletonWidth] =
-    React.useState(0)
   const [showAssetMenu, setShowAssetMenu] = React.useState<boolean>(false)
   const [showBalanceDetailsModal, setShowBalanceDetailsModal] =
     React.useState<boolean>(false)
@@ -148,7 +145,7 @@ export const PortfolioAssetItem = ({
     return new Amount(assetBalance)
       .divideByDecimals(token.decimals)
       .times(spotPrice)
-  }, [spotPrice, assetBalance, token.chainId])
+  }, [spotPrice, assetBalance, token.decimals])
 
   const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
@@ -173,7 +170,7 @@ export const PortfolioAssetItem = ({
         : tokensNetwork.chainName
     }
     return token.symbol
-  }, [tokensNetwork, token, isRewardsToken, externalProvider])
+  }, [isRewardsToken, tokensNetwork, isPanel, token.symbol, externalProvider])
 
   const network = isRewardsToken
     ? getNormalizedExternalRewardsNetwork(externalProvider)
@@ -186,18 +183,15 @@ export const PortfolioAssetItem = ({
   const showBalanceInfo =
     hasPendingBalance && account && token.coin === BraveWallet.CoinType.BTC
 
-  // effects
-  React.useEffect(() => {
-    // Random value between 100 & 250
-    // Set value only once
-    if (assetNameSkeletonWidth === 0) {
-      setAssetNameSkeletonWidth(unbiasedRandom(100, 250))
-    }
+  const assetNameSkeletonWidth = React.useMemo(
+    () => unbiasedRandom(100, 250),
+    []
+  )
 
-    if (assetNetworkSkeletonWidth === 0) {
-      setAssetNetworkSkeletonWidth(unbiasedRandom(100, 250))
-    }
-  }, [])
+  const assetNetworkSkeletonWidth = React.useMemo(
+    () => unbiasedRandom(100, 250),
+    []
+  )
 
   // render
   return (

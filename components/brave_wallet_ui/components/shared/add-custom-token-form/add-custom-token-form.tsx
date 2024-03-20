@@ -186,6 +186,21 @@ export const AddCustomTokenForm = (props: Props) => {
     []
   )
 
+  const resetBaseInputFields = React.useCallback(() => {
+    setCustomTokenName(undefined)
+    setCustomTokenSymbol(undefined)
+    setCustomTokenDecimals(undefined)
+    setCustomCoingeckoId(undefined)
+    setCustomIconURL(undefined)
+  }, [])
+
+  const resetInputFields = React.useCallback(() => {
+    resetBaseInputFields()
+    if (onChangeContractAddress) {
+      onChangeContractAddress('')
+    }
+  }, [resetBaseInputFields, onChangeContractAddress])
+
   const handleTokenAddressChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setHasError(false)
@@ -199,7 +214,7 @@ export const AddCustomTokenForm = (props: Props) => {
         onChangeContractAddress(event.target.value)
       }
     },
-    [onChangeContractAddress]
+    [onChangeContractAddress, resetInputFields]
   )
 
   const handleTokenDecimalsChanged = React.useCallback(
@@ -227,21 +242,6 @@ export const AddCustomTokenForm = (props: Props) => {
   )
 
   // methods
-  const resetBaseInputFields = React.useCallback(() => {
-    setCustomTokenName(undefined)
-    setCustomTokenSymbol(undefined)
-    setCustomTokenDecimals(undefined)
-    setCustomCoingeckoId(undefined)
-    setCustomIconURL(undefined)
-  }, [])
-
-  const resetInputFields = React.useCallback(() => {
-    resetBaseInputFields()
-    if (onChangeContractAddress) {
-      onChangeContractAddress('')
-    }
-  }, [resetBaseInputFields, onChangeContractAddress])
-
   const onClickAddCustomToken = React.useCallback(async () => {
     if (!tokenInfo) {
       return

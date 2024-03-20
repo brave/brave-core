@@ -37,7 +37,7 @@ export const Checkbox: React.FC<Props> = ({
     if (onChange) {
       onChange(!isChecked)
     }
-  }, [onChange, !isChecked])
+  }, [isChecked, onChange])
 
   const onKeyPress = React.useCallback(
     (event: React.KeyboardEvent) => {

@@ -102,10 +102,11 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }
   }, [
     isPasswordValid,
+    restoreWalletFromSeed,
     phraseInput,
     password,
     isImportingFromLegacySeed,
-    restoreWalletFromSeed
+    history
   ])
 
   const handlePasswordChange = React.useCallback(

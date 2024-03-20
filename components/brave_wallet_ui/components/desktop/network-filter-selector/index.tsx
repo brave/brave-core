@@ -148,7 +148,7 @@ export const NetworkFilterSelector = ({
 
       hideNetworkFilter()
     },
-    [onSelectNetwork, hideNetworkFilter]
+    [onSelectNetwork, hideNetworkFilter, dispatch]
   )
 
   // render

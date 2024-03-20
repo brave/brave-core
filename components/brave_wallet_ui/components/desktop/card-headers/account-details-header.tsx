@@ -197,7 +197,7 @@ export const AccountDetailsHeader = (props: Props) => {
 
   const goBack = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [history])
 
   return (
     <Row

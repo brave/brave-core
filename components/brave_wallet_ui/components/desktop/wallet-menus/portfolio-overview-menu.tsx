@@ -60,7 +60,7 @@ export const PortfolioOverviewMenu = () => {
       hidePortfolioGraph ? 'false' : 'true'
     )
     dispatch(WalletActions.setHidePortfolioGraph(!hidePortfolioGraph))
-  }, [hidePortfolioGraph])
+  }, [dispatch, hidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
     window.localStorage.setItem(
@@ -68,7 +68,7 @@ export const PortfolioOverviewMenu = () => {
       hidePortfolioBalances ? 'false' : 'true'
     )
     dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [hidePortfolioBalances])
+  }, [dispatch, hidePortfolioBalances])
 
   const onToggleHideNFTsTab = React.useCallback(() => {
     if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
@@ -79,7 +79,7 @@ export const PortfolioOverviewMenu = () => {
       hidePortfolioNFTsTab ? 'false' : 'true'
     )
     dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
-  }, [hidePortfolioNFTsTab, walletLocation])
+  }, [dispatch, hidePortfolioNFTsTab, history, walletLocation])
 
   return (
     <StyledWrapper yPosition={42}>

@@ -170,7 +170,7 @@ export const Nfts = (props: Props) => {
       // reset nft metadata
       dispatch(WalletPageActions.updateNFTMetadata(undefined))
     },
-    [dispatch]
+    [dispatch, history]
   )
 
   const onClickIpfsButton = React.useCallback(() => {
@@ -198,7 +198,7 @@ export const Nfts = (props: Props) => {
 
   const onRefresh = React.useCallback(() => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [])
+  }, [dispatch])
 
   const onSelectOption = React.useCallback(
     (selectedOption: NftDropdownOption) => {
@@ -207,7 +207,7 @@ export const Nfts = (props: Props) => {
         search: `?tab=${selectedOption.id}`
       })
     },
-    []
+    [history]
   )
 
   const searchNfts = React.useCallback(
@@ -233,7 +233,7 @@ export const Nfts = (props: Props) => {
 
   React.useEffect(() => {
     braveWalletP3A.recordNFTGalleryView(nftList.length)
-  }, [nftList])
+  }, [braveWalletP3A, nftList])
 
   // memos
   const { userNonSpamNfts, userMarkedSpamNfts } = React.useMemo(() => {
@@ -254,7 +254,7 @@ export const Nfts = (props: Props) => {
       }
     }
     return results
-  }, [userTokensRegistry, nftList])
+  }, [nftList])
 
   const [hiddenNftsIds, userNonSpamNftIds] = React.useMemo(() => {
     if (!userTokensRegistry) {
@@ -406,7 +406,12 @@ export const Nfts = (props: Props) => {
         )}
       </React.Fragment>
     ))
-  }, [accounts, getFilteredNftsByAccount, onSelectAsset])
+  }, [
+    accounts,
+    assetAutoDiscoveryCompleted,
+    getFilteredNftsByAccount,
+    renderGridViewItem
+  ])
 
   const listUiByNetworks = React.useMemo(() => {
     return networks?.map((network) => (
@@ -426,7 +431,12 @@ export const Nfts = (props: Props) => {
         )}
       </React.Fragment>
     ))
-  }, [getAssetsByNetwork, networks])
+  }, [
+    assetAutoDiscoveryCompleted,
+    getAssetsByNetwork,
+    networks,
+    renderGridViewItem
+  ])
 
   const listUi = React.useMemo(() => {
     return selectedGroupAssetsByItem === NetworksGroupByOption.id ? (
@@ -440,16 +450,18 @@ export const Nfts = (props: Props) => {
       </NftGrid>
     )
   }, [
-    listUiByAccounts,
-    listUiByNetworks,
     selectedGroupAssetsByItem,
-    renderedList
+    listUiByNetworks,
+    listUiByAccounts,
+    renderedList,
+    renderGridViewItem,
+    assetAutoDiscoveryCompleted
   ])
 
   // effects
   React.useEffect(() => {
     dispatch(WalletActions.refreshNetworksAndTokens({}))
-  }, [assetAutoDiscoveryCompleted])
+  }, [assetAutoDiscoveryCompleted, dispatch])
 
   return (
     <ContentWrapper

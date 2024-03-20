@@ -295,16 +295,16 @@ export const SendScreen = React.memo((props: Props) => {
   )
 
   const {
-    data: zecAddressValidationResult
-      = BraveWallet.ZCashAddressValidationResult.Unknown
+    data: zecAddressValidationResult = BraveWallet.ZCashAddressValidationResult
+      .Unknown
   } = useValidateUnifiedAddressQuery(
     accountFromParams?.accountId.coin === BraveWallet.CoinType.ZEC &&
-    trimmedToAddressOrUrl
-    ? {
-      address: trimmedToAddressOrUrl,
-      testnet: networkFromParams?.chainId === BraveWallet.Z_CASH_TESTNET
-    }
-    : skipToken
+      trimmedToAddressOrUrl
+      ? {
+          address: trimmedToAddressOrUrl,
+          testnet: networkFromParams?.chainId === BraveWallet.Z_CASH_TESTNET
+        }
+      : skipToken
   )
 
   // memos & computed
@@ -401,7 +401,7 @@ export const SendScreen = React.memo((props: Props) => {
           coinType:
             accountFromParams.accountId.coin ?? BraveWallet.CoinType.ETH,
           token: tokenFromParams,
-          zecAddressValidationResult: zecAddressValidationResult,
+          zecAddressValidationResult: zecAddressValidationResult
         })
       : undefined
     : undefined
@@ -440,14 +440,15 @@ export const SendScreen = React.memo((props: Props) => {
 
   const addressMessageInformation: AddressMessageInfo | undefined =
     React.useMemo(
-      getAddressMessageInfo({
-        showFilecoinFEVMWarning,
-        fevmTranslatedAddresses,
-        toAddressOrUrl,
-        showEnsOffchainWarning,
-        addressErrorKey: addressErrorLocaleKey,
-        addressWarningKey: addressWarningLocaleKey
-      }),
+      () =>
+        getAddressMessageInfo({
+          showFilecoinFEVMWarning,
+          fevmTranslatedAddresses,
+          toAddressOrUrl,
+          showEnsOffchainWarning,
+          addressErrorKey: addressErrorLocaleKey,
+          addressWarningKey: addressWarningLocaleKey
+        }),
       [
         showFilecoinFEVMWarning,
         fevmTranslatedAddresses,
@@ -476,19 +477,22 @@ export const SendScreen = React.memo((props: Props) => {
         history.push(makeSendRoute(asset, account))
       }
     },
-    []
+    [history]
   )
 
-  const resetSendFields = React.useCallback((option?: SendPageTabHashes) => {
-    setToAddressOrUrl('')
-    setSendAmount('')
+  const resetSendFields = React.useCallback(
+    (option?: SendPageTabHashes) => {
+      setToAddressOrUrl('')
+      setSendAmount('')
 
-    if (option) {
-      history.push(`${WalletRoutes.Send}${option}`)
-    } else {
-      history.push(WalletRoutes.Send)
-    }
-  }, [])
+      if (option) {
+        history.push(`${WalletRoutes.Send}${option}`)
+      } else {
+        history.push(WalletRoutes.Send)
+      }
+    },
+    [history]
+  )
 
   const submitSend = React.useCallback(async () => {
     if (!tokenFromParams) {
@@ -649,19 +653,28 @@ export const SendScreen = React.memo((props: Props) => {
     tokenFromParams,
     accountFromParams,
     networkFromParams,
-    sendAmount,
-    sendingMaxAmount,
-    toAddressOrUrl,
     showResolvedDomain,
     resolvedDomainAddress,
-    resetSendFields
+    toAddressOrUrl,
+    sendBtcTransaction,
+    sendingMaxAmount,
+    sendAmount,
+    resetSendFields,
+    sendEvmTransaction,
+    sendERC20Transfer,
+    sendERC721TransferFrom,
+    sendETHFilForwarderTransfer,
+    sendFilTransaction,
+    sendSolTransaction,
+    sendSPLTransfer,
+    sendZecTransaction
   ])
 
   const handleInputAddressChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setToAddressOrUrl(event.target.value)
     },
-    [setToAddressOrUrl, addressWidthRef]
+    [setToAddressOrUrl]
   )
 
   const handleFromAssetValueChange = React.useCallback(
@@ -922,7 +935,7 @@ function getAddressMessageInfo({
   showEnsOffchainWarning: boolean
   addressErrorKey: string | undefined
   addressWarningKey: string | undefined
-}): () =>
+}):
   | AddressMessageInfo
   | {
       placeholder: any
@@ -932,25 +945,23 @@ function getAddressMessageInfo({
       type?: 'error' | 'warning' | undefined
     }
   | undefined {
-  return () => {
-    if (showFilecoinFEVMWarning) {
-      return {
-        ...FEVMAddressConvertionMessage,
-        placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
-      }
+  if (showFilecoinFEVMWarning) {
+    return {
+      ...FEVMAddressConvertionMessage,
+      placeholder: fevmTranslatedAddresses?.[toAddressOrUrl]
     }
-    if (showEnsOffchainWarning) {
-      return ENSOffchainLookupMessage
-    }
-    if (addressErrorKey === 'braveWalletNotValidChecksumAddressError') {
-      return ErrorFailedChecksumMessage
-    }
-
-    if (addressWarningKey === 'braveWalletAddressMissingChecksumInfoWarning') {
-      return WarningFailedChecksumMessage
-    }
-    return undefined
   }
+  if (showEnsOffchainWarning) {
+    return ENSOffchainLookupMessage
+  }
+  if (addressErrorKey === 'braveWalletNotValidChecksumAddressError') {
+    return ErrorFailedChecksumMessage
+  }
+
+  if (addressWarningKey === 'braveWalletAddressMissingChecksumInfoWarning') {
+    return WarningFailedChecksumMessage
+  }
+  return undefined
 }
 
 function getReviewButtonText(
@@ -1057,18 +1068,25 @@ const processEthereumAddress = (
 }
 
 const processZCashAddress = (
-    addressOrUrl: string,
-    zecAddressValidationResult: BraveWallet.ZCashAddressValidationResult) => {
-  if (zecAddressValidationResult ===
-        BraveWallet.ZCashAddressValidationResult.Unknown) {
+  addressOrUrl: string,
+  zecAddressValidationResult: BraveWallet.ZCashAddressValidationResult
+) => {
+  if (
+    zecAddressValidationResult ===
+    BraveWallet.ZCashAddressValidationResult.Unknown
+  ) {
     return undefined
   }
-  if (zecAddressValidationResult ===
-        BraveWallet.ZCashAddressValidationResult.InvalidUnified) {
+  if (
+    zecAddressValidationResult ===
+    BraveWallet.ZCashAddressValidationResult.InvalidUnified
+  ) {
     return 'braveWalletInvalidZcashUnifiedRecipientAddress'
   }
-  if (zecAddressValidationResult !==
-        BraveWallet.ZCashAddressValidationResult.Success) {
+  if (
+    zecAddressValidationResult !==
+    BraveWallet.ZCashAddressValidationResult.Success
+  ) {
     return 'braveWalletInvalidRecipientAddress'
   }
   return undefined

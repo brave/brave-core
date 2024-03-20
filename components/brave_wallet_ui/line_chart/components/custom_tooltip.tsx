@@ -38,7 +38,7 @@ export function CustomTooltip({
     if (viewBox?.height !== undefined) {
       onUpdateViewBoxHeight(Math.trunc(viewBox.height))
     }
-  }, [viewBox?.height])
+  }, [onUpdateViewBoxHeight, viewBox])
 
   if (active && payload && payload[0].value) {
     // Computed

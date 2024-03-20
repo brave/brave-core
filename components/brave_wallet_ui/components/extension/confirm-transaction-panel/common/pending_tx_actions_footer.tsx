@@ -136,7 +136,6 @@ export function PendingTransactionActionsFooter({
     hasWarnings,
     onClickConfirmTransaction,
     isConfirmButtonDisabled,
-    isConfirmButtonDisabled,
     transactionConfirmed,
     onReject
   ])

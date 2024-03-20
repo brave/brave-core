@@ -120,7 +120,13 @@ export const AccountSelector = (props: Props) => {
         account.accountId.keyringId === selectedAccountId.keyringId ||
         (asset?.contractAddress === '' && isFVMAccount(account))
     )
-  }, [accounts, selectedNetwork, selectedAccountId, asset])
+  }, [
+    selectedNetwork,
+    selectedAccountId,
+    accounts,
+    asset?.contractAddress,
+    isFVMAccount
+  ])
 
   const evmAddressesforFVMTranslation = React.useMemo(
     () =>

@@ -517,17 +517,18 @@ export const SelectTokenModal = React.forwardRef<HTMLDivElement, Props>(
         ) : null
       )
     }, [
+      isLoadingBalances,
+      showFullFlatTokenList,
+      emptyTokensList,
       accounts,
+      selectedSendOption,
       handleSelectAsset,
       getTokensBySearchValue,
-      getAccountFiatValue,
-      emptyTokensList,
-      selectedSendOption,
-      tokenBalancesRegistry,
-      isLoadingBalances,
-      isLoadingSpotPrices,
       selectedToken,
-      getIsTokenSelected
+      isLoadingSpotPrices,
+      getAccountFiatValue,
+      tokenBalancesRegistry,
+      spotPriceRegistry
     ])
 
     // computed

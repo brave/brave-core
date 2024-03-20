@@ -31,7 +31,7 @@ export const AddAccountModal = () => {
         )
       )
     },
-    []
+    [history]
   )
 
   return (

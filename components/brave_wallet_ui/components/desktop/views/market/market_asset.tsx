@@ -160,7 +160,7 @@ export const MarketAsset = () => {
     token.symbol = selectedCoinMarket.symbol.toUpperCase()
     token.logo = selectedCoinMarket.image
     return { selectedAssetFromParams: token, foundTokens }
-  }, [selectedCoinMarket, combinedTokensList, selectedTimeline])
+  }, [selectedCoinMarket, combinedTokensList])
 
   const isRewardsToken = getIsRewardsToken(selectedAssetFromParams)
 
@@ -274,7 +274,7 @@ export const MarketAsset = () => {
     dispatch(WalletPageActions.updateNFTMetadata(undefined))
     dispatch(WalletPageActions.updateNftMetadataError(undefined))
     history.push(WalletRoutes.Market)
-  }, [])
+  }, [dispatch, history])
 
   const onCloseTokenDetailsModal = React.useCallback(
     () => setShowTokenDetailsModal(false),
@@ -295,7 +295,7 @@ export const MarketAsset = () => {
     setShowHideTokenModal(false)
     setShowTokenDetailsModal(false)
     history.push(WalletRoutes.PortfolioAssets)
-  }, [selectedAssetFromParams, updateUserAssetVisible])
+  }, [history, selectedAssetFromParams, updateUserAssetVisible])
 
   const onSelectBuy = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -323,7 +323,7 @@ export const MarketAsset = () => {
         })
       )
     }
-  }, [foundTokens, selectedAssetFromParams])
+  }, [foundTokens, history, selectedAssetFromParams])
 
   const onSelectDeposit = React.useCallback(() => {
     if (foundTokens.length === 1) {
@@ -351,7 +351,7 @@ export const MarketAsset = () => {
         })
       )
     }
-  }, [foundTokens, selectedAssetFromParams])
+  }, [foundTokens, history, selectedAssetFromParams])
 
   // token list & market data needs to load before we can find an asset to
   // select from the url params

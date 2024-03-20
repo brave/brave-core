@@ -36,7 +36,7 @@ export const WalletNavButton = (props: Props) => {
   const onClick = React.useCallback(() => {
     props.onClick?.()
     history.push(props.option.route)
-  }, [props])
+  }, [history, props])
 
   return (
     <StyledButton

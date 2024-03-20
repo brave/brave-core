@@ -343,7 +343,7 @@ export const Account = () => {
       dispatch(AccountsTabActions.setAccountModalType(option))
       dispatch(AccountsTabActions.setSelectedAccount(selectedAccount))
     },
-    [onRemoveAccount, selectedAccount]
+    [dispatch, onRemoveAccount, selectedAccount]
   )
 
   const checkIsTransactionFocused = React.useCallback(
@@ -374,7 +374,7 @@ export const Account = () => {
         )
       )
     },
-    []
+    [history]
   )
 
   const showAssetDiscoverySkeleton =

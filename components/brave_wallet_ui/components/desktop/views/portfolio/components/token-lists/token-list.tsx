@@ -162,7 +162,7 @@ export const TokenLists = ({
 
   const showAddAssetsModal = React.useCallback(() => {
     history.push(WalletRoutes.AddAssetModal)
-  }, [])
+  }, [history])
 
   // memos
 
@@ -291,12 +291,7 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
     },
-    [
-      computeFiatAmount,
-      getAssetsByNetwork,
-      filteredAssetList,
-      spotPriceRegistry
-    ]
+    [getAssetsByNetwork, filteredAssetList, spotPriceRegistry]
   )
 
   const doesNetworkHaveBalance = React.useCallback(
@@ -416,7 +411,7 @@ export const TokenLists = ({
 
       return !reducedAmounts.isUndefined() ? reducedAmounts : Amount.empty()
     },
-    [getSortedAssetsByAccount, filteredAssetList]
+    [filteredAssetList.length, getSortedAssetsByAccount, spotPriceRegistry]
   )
 
   const doesAccountHaveBalance = React.useCallback(

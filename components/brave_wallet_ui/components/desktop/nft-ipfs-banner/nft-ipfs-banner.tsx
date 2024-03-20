@@ -42,11 +42,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
   const history = useHistory()
 
   // redux
-  const {
-    pinnableNftsCount,
-    pinnedNftsCount,
-    pinningStatusSummary: status
-  } = useNftPin()
+  const { pinnedNftsCount, pinningStatusSummary: status } = useNftPin()
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries
@@ -64,7 +60,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
       default:
         return 'hidden'
     }
-  }, [status, pinnableNftsCount, isAutoPinEnabled])
+  }, [status, isAutoPinEnabled])
 
   // methods
   const onLearnMore = React.useCallback(() => {
@@ -73,7 +69,7 @@ export const NftIpfsBanner = ({ onDismiss }: Props) => {
     } else {
       history.push(WalletRoutes.LocalIpfsNode)
     }
-  }, [isPanel])
+  }, [history, isPanel])
 
   return (
     <StyledWrapper status={bannerStatus}>

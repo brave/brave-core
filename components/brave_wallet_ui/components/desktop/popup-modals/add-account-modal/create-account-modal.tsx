@@ -128,7 +128,7 @@ export const CreateAccountModal = () => {
   // methods
   const onClickClose = React.useCallback(() => {
     history.push(WalletRoutes.Accounts)
-  }, [])
+  }, [history])
 
   const handleAccountNameChanged = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -172,7 +172,14 @@ export const CreateAccountModal = () => {
     if (walletLocation.includes(WalletRoutes.Accounts)) {
       history.push(WalletRoutes.Accounts)
     }
-  }, [accountName, selectedAccountType, targetKeyringId])
+  }, [
+    accountName,
+    addAccount,
+    history,
+    selectedAccountType,
+    targetKeyringId,
+    walletLocation
+  ])
 
   const handleKeyDown = React.useCallback(
     (event: React.KeyboardEvent<HTMLInputElement>) => {
@@ -192,7 +199,7 @@ export const CreateAccountModal = () => {
         )
       )
     },
-    []
+    [history]
   )
 
   // effects

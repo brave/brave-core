@@ -459,15 +459,17 @@ export const useSwap = () => {
       setAbortController(undefined)
     },
     [
-      editingFromOrToAmount,
       fromAccount,
-      fromAmount,
-      fromToken,
       toAccountId,
+      fromAmount,
       toAmount,
+      fromToken,
       toToken,
+      editingFromOrToAmount,
+      reset,
       generateSwapQuote,
-      slippageTolerance
+      slippageTolerance,
+      zeroEx
     ]
   )
 
@@ -556,12 +558,13 @@ export const useSwap = () => {
     }
     await handleOnSetFromAmount('')
   }, [
-    toToken,
-    fromToken,
-    handleOnSetFromAmount,
     fromAccount,
-    toAddress,
-    toCoin
+    fromToken,
+    toToken,
+    toCoin,
+    handleOnSetFromAmount,
+    history,
+    toAddress
   ])
 
   // Changing the To asset does the following:
@@ -596,12 +599,13 @@ export const useSwap = () => {
       })
     },
     [
-      reset,
-      handleQuoteRefreshInternal,
       fromToken,
       fromAccount,
+      history,
       toAddress,
-      toCoin
+      toCoin,
+      reset,
+      handleQuoteRefreshInternal
     ]
   )
 
@@ -641,7 +645,7 @@ export const useSwap = () => {
       setToAmount('')
       reset()
     },
-    [toToken, toAddress, toCoin, reset]
+    [toToken, reset, history, toAddress, toCoin]
   )
 
   const onSetSelectedSwapAndSendOption = useCallback((value: string) => {
@@ -775,14 +779,17 @@ export const useSwap = () => {
 
       return undefined
     }, [
-      fromToken,
       fromAmount,
-      toToken,
       toAmount,
-      feesWrapped,
-      zeroEx,
+      fromToken,
+      toToken,
       fromAssetBalance,
-      nativeAssetBalance
+      nativeAssetBalance,
+      feesWrapped,
+      quoteUnion?.zeroExQuote,
+      quoteUnion?.jupiterQuote?.routePlan.length,
+      zeroEx.hasAllowance,
+      quoteErrorUnion
     ])
 
   const onSubmit = useCallback(async () => {
@@ -852,7 +859,7 @@ export const useSwap = () => {
     }
 
     return getLocale('braveSwapReviewOrder')
-  }, [fromToken, fromNetwork, swapValidationError, getLocale])
+  }, [fromToken, fromNetwork, swapValidationError])
 
   const isSubmitButtonDisabled = useMemo(() => {
     return (

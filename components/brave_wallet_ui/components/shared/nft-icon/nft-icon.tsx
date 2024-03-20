@@ -94,7 +94,7 @@ export const NftIcon = (props: NftIconProps) => {
         loadingCommand
       )
     }
-  }, [loaded, remoteImage, nftImageIframeRef, remoteCid])
+  }, [loaded, remoteImage, nftImageIframeRef, remoteCid, icon])
 
   // render
   if (isStorybook) {

@@ -212,7 +212,14 @@ export const AddNftForm = (props: Props) => {
     } catch (error) {
       setHasError(true)
     }
-  }, [tokenInfo, selectedAsset, tokenAlreadyExists, addUserToken, onHideForm])
+  }, [
+    tokenInfo,
+    tokenAlreadyExists,
+    selectedAsset,
+    updateUserToken,
+    onHideForm,
+    addUserToken
+  ])
 
   const onHideNetworkDropDown = React.useCallback(() => {
     if (showNetworkDropDown) {

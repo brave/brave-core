@@ -209,7 +209,12 @@ export const NftScreen = (props: Props) => {
       selectedAsset.contractAddress,
       selectedAsset.tokenId
     )()
-  }, [selectedAsset])
+  }, [
+    onClickViewOnBlockExplorer,
+    selectedAsset.coin,
+    selectedAsset.contractAddress,
+    selectedAsset.tokenId
+  ])
 
   const onClickViewAccount = React.useCallback(
     (account: BraveWallet.AccountInfo) => {
