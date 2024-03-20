@@ -34,23 +34,6 @@ const defaultState: PanelState = {
   connectToSiteOrigin: defaultOriginInfo,
   selectedPanel,
   connectingAccounts: [],
-  addChainRequest: {
-    originInfo: defaultOriginInfo,
-    networkInfo: {
-      chainId: BraveWallet.MAINNET_CHAIN_ID,
-      chainName: 'Ethereum Mainnet',
-      activeRpcEndpointIndex: 0,
-      rpcEndpoints: [{ url: 'https://mainnet-infura.brave.com/' }],
-      blockExplorerUrls: [],
-      iconUrls: [],
-      symbol: 'ETH',
-      symbolName: 'Ethereum',
-      decimals: 18,
-      coin: BraveWallet.CoinType.ETH,
-      supportedKeyrings: [BraveWallet.KeyringId.kDefault],
-      isEip1559: true
-    }
-  },
   signMessageData: [],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
@@ -85,16 +68,6 @@ export const createPanelReducer = (initialState: PanelState) => {
         ...state,
         connectToSiteOrigin: payload.originInfo,
         connectingAccounts: payload.accounts
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.addEthereumChain.type,
-    (state: any, request: BraveWallet.AddChainRequest) => {
-      return {
-        ...state,
-        addChainRequest: request
       }
     }
   )

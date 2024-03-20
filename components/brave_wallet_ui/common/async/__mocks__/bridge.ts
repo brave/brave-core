@@ -61,6 +61,7 @@ import {
 } from '../../../stories/mock-data/mock-coin-market-data'
 import { mockOriginInfo } from '../../../stories/mock-data/mock-origin-info'
 import { WalletApiDataOverrides } from '../../../constants/testing_types'
+import { mockAddChainRequest } from '../../../stories/mock-data/mock-eth-requests'
 
 export const makeMockedStoreWithSpy = () => {
   const store = createStore(
@@ -206,6 +207,8 @@ export class MockedWalletApiProxy {
 
   // name service lookups
   requireOffchainConsent: number = BraveWallet.ResolveMethod.kAsk
+
+  private pendingAddChainRequests = [mockAddChainRequest]
 
   constructor(overrides?: WalletApiDataOverrides | undefined) {
     this.applyOverrides(overrides)
@@ -611,6 +614,16 @@ export class MockedWalletApiProxy {
 
       this.chainsForCoins[coin] = foundNetwork
       return { success: true }
+    },
+    getPendingAddChainRequests: async () => {
+      return {
+        requests: this.pendingAddChainRequests
+      }
+    },
+    addEthereumChainRequestCompleted: (chainId, approved) => {
+      this.pendingAddChainRequests = this.pendingAddChainRequests.filter(
+        (req) => req.networkInfo.chainId !== chainId
+      )
     },
     // Native asset balances
     getBalance: async (address: string, coin: number, chainId: string) => {

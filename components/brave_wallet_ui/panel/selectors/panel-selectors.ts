@@ -13,7 +13,6 @@ export const selectedPanel = ({ panel }: State) => panel.selectedPanel
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
-export const addChainRequest = ({ panel }: State) => panel.addChainRequest
 export const connectToSiteOrigin = ({ panel }: State) =>
   panel.connectToSiteOrigin
 export const connectingAccounts = ({ panel }: State) => panel.connectingAccounts

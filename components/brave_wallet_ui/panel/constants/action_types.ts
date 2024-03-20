@@ -14,11 +14,6 @@ export type ShowConnectToSitePayload = {
   originInfo: BraveWallet.OriginInfo
 }
 
-export type EthereumChainRequestPayload = {
-  chainId: string
-  approved: boolean
-}
-
 export type SignMessageHardwarePayload = {
   request: BraveWallet.SignMessageRequest
   account: BraveWallet.AccountInfo
