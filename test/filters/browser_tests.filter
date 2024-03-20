@@ -1293,6 +1293,24 @@
 -ControlledFrameWebTransportApiTest.*
 -PromiseAPIs/ControlledFramePromiseApiTest.*
 
+# These tests fail because we disable Isolated Web Apps
+-BrowserNavigatorIwaNewTabTest.*
+-BrowserNavigatorIwaTest.*
+-ControlledFrameDisabledTest.*
+-ControlledFrameNotAvailableChannels/ControlledFrameNotAvailableChannelTest.*
+-ExtensionWindowCreateIwaTest.*
+-IsolatedWebAppApplyUpdateCommandBrowserTest.*
+-IsolatedWebAppExtensionBrowserTest.*
+-IsolatedWebAppInstallerBrowserTest.*
+-IsolatedWebAppUninstallBrowserTest.*
+-IsolatedWebAppUpdatePrepareAndStoreCommandBrowserTest.*
+-IsolatedWebAppURLLoaderFactoryBrowserTest.*
+-IsolatedWebAppURLLoaderFactoryCSPBrowserTest.*
+-IsolatedWebAppURLLoaderFactoryFrameBrowserTest.*
+-PopupAutomaticFullscreenTest.PopupFullscreenWithoutTransientActivation/*
+-SubAppsPermissionsPolicyBrowserTest.*
+-SubAppsServiceImplBrowserTest.*
+
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
 -AccessCodeCastHandlerBrowserTest.*
