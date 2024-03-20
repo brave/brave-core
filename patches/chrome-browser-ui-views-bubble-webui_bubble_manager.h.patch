@@ -1,15 +1,16 @@
 diff --git a/chrome/browser/ui/views/bubble/webui_bubble_manager.h b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-index ea2b2c5f0e7127677cbeb1a500ca778b544c7709..ac063ba5f52082673d297a5c6e70cc7a559d03ac 100644
+index 875aecf6a900872b47ec858536b7d668a5778e2a..4bb938bad442e27bb0f60f2f7df666f855514f59 100644
 --- a/chrome/browser/ui/views/bubble/webui_bubble_manager.h
 +++ b/chrome/browser/ui/views/bubble/webui_bubble_manager.h
-@@ -149,9 +149,11 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
+@@ -169,10 +169,12 @@ class WebUIBubbleManagerImpl : public WebUIBubbleManager {
   private:
+   // WebUIBubbleManager:
    void MaybeInitPersistentRenderer() override;
- 
 + protected:
    base::WeakPtr<WebUIBubbleDialogView> CreateWebUIBubbleDialog(
        const std::optional<gfx::Rect>& anchor,
        views::BubbleBorder::Arrow arrow) override;
+   WebUIContentsWrapper* GetContentsWrapper() override;
 + private:
  
    const raw_ptr<views::View> anchor_view_;

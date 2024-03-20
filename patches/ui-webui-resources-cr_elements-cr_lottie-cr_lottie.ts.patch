@@ -1,12 +1,12 @@
 diff --git a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
-index bf9d621d74cb32d4c53e5b9c11777d5a6a4dac33..36a449e42b70a4fddb2f4091a30195a97ccf9939 100644
+index 9fa56cc13b42594b59b3dae88bed0a09398f0474..0b7f6e854abf938678e13f139dd4204734661013 100644
 --- a/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
 +++ b/ui/webui/resources/cr_elements/cr_lottie/cr_lottie.ts
-@@ -354,6 +354,7 @@ export class CrLottieElement extends PolymerElement {
-       this.fire_('cr-lottie-paused');
+@@ -344,6 +344,7 @@ export class CrLottieElement extends CrLitElement {
+       this.fire('cr-lottie-paused');
      } else if (event.data.name === 'stopped') {
-       this.fire_('cr-lottie-stopped');
-+    } else if (event.data.name === 'complete') { this.fire_('cr-lottie-complete');
+       this.fire('cr-lottie-stopped');
++    } else if (event.data.name === 'complete') { this.fire('cr-lottie-complete');
      } else if (event.data.name === 'resized') {
-       this.fire_('cr-lottie-resized', event.data.size);
+       this.fire('cr-lottie-resized', event.data.size);
      }

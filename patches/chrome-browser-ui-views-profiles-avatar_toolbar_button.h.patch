@@ -1,9 +1,9 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 249d3cfc09fe444e4ef8684963153b92252f4e85..d61e35e18422ac9d5c978c49f2845e5d9d55e4bd 100644
+index 98b4d0bc541224e8b9304fe8e110b18f7234d263..1061e99a8678414feb8dccbec4f65b1dbab6b31f 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -114,6 +114,7 @@ class AvatarToolbarButton : public ToolbarButton {
-   void NotifyManagementTransientTextClearedForTesting() const;
+@@ -116,6 +116,7 @@ class AvatarToolbarButton : public ToolbarButton {
+   void NotifyShowSigninPausedDelayEnded() const;
  
   private:
 +  BRAVE_AVATAR_BUTTON_H

@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/resources/extensions/sidebar.html b/chrome/browser/resources/extensions/sidebar.html
-index 103812bf71f80ee9acf18cca78adece8b7f87c0b..8fd83fc0cd43622a4d0a1929043e49b2dd83ce7f 100644
+index f8978473aea4b6a2adbdb8c668c0088785fd2326..33249c0e573f8b2b3407a4bbf968e891d9e2fc00 100644
 --- a/chrome/browser/resources/extensions/sidebar.html
 +++ b/chrome/browser/resources/extensions/sidebar.html
 @@ -72,6 +72,7 @@
@@ -11,7 +11,7 @@ index 103812bf71f80ee9acf18cca78adece8b7f87c0b..8fd83fc0cd43622a4d0a1929043e49b2
    <div class="cr-nav-menu-item" id="moreExtensions">
      <iron-icon id="web-store-icon" icon="extensions-icons:web_store">
 @@ -82,3 +83,4 @@
-     <paper-ripple></paper-ripple>
+     <cr-ripple></cr-ripple>
    </div>
  </div>
 +-->

@@ -1,5 +1,5 @@
 diff --git a/tools/crates/gnrt/lib/readme.rs b/tools/crates/gnrt/lib/readme.rs
-index 8532dd95edf5ed2f83731f257589531049eb9255..d4b7890a663c4b8e7df7a0fc14f4970103004f9f 100644
+index 311f85f64281dffe29c0d0e7501c3096824c6f15..738697d0d9841e0adb80665d332a0682ff1dc1d2 100644
 --- a/tools/crates/gnrt/lib/readme.rs
 +++ b/tools/crates/gnrt/lib/readme.rs
 @@ -193,7 +193,7 @@ pub fn readme_file_from_package<'a>(
@@ -21,4 +21,4 @@ index 8532dd95edf5ed2f83731f257589531049eb9255..d4b7890a663c4b8e7df7a0fc14f49701
 +    ("MPL-2.0", "Mozilla Public License 2.0"),
  ];
  
- static EXPECTED_LICENSE_FILE: [(&str, &str); 15] = [
+ static EXPECTED_LICENSE_FILE: [(&str, &str); 20] = [

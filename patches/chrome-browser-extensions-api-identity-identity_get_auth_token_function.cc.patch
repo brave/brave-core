@@ -1,5 +1,5 @@
 diff --git a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
-index a4ac6e9b5c38ab41bb8fbceded940de86eaff2b4..71f64c0dbf4d3f3a1c25a52fa1a92f09e5d3edec 100644
+index e011d94ba84357df42e54ff5c15f290b1bab3577..cd8b6dc23a620a6bc3a1c166897a846944b045b6 100644
 --- a/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 +++ b/chrome/browser/extensions/api/identity/identity_get_auth_token_function.cc
 @@ -172,6 +172,7 @@ ExtensionFunction::ResponseAction IdentityGetAuthTokenFunction::Run() {
@@ -9,7 +9,7 @@ index a4ac6e9b5c38ab41bb8fbceded940de86eaff2b4..71f64c0dbf4d3f3a1c25a52fa1a92f09
 +  BRAVE_RUN
    if (gaia_id.empty() || IsPrimaryAccountOnly()) {
      // Try the primary account.
-     // TODO(https://crbug.com/932400): collapse the asynchronicity
+     // TODO(crbug.com/40614113): collapse the asynchronicity
 @@ -396,10 +397,12 @@ void IdentityGetAuthTokenFunction::StartSigninFlow() {
  void IdentityGetAuthTokenFunction::StartMintTokenFlow(
      IdentityMintRequestQueue::MintType type) {
