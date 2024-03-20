@@ -14,6 +14,7 @@
 #include "brave/browser/ui/views/side_panel/playlist/playlist_side_panel_coordinator.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "ui/base/metadata/metadata_impl_macros.h"
 #include "ui/views/border.h"
@@ -221,6 +222,15 @@ void ShowPlaylistSettings(content::WebContents* contents) {
   auto* browser_view = FindBrowserViewFromSidebarContents(contents);
   CHECK(browser_view);
   ShowSingletonTab(browser_view->browser(), GURL("brave://settings/playlist"));
+}
+
+void ClosePanel(content::WebContents* contents) {
+  auto* browser_view = FindBrowserViewFromSidebarContents(contents);
+  CHECK(browser_view);
+  if (SidePanelUI* ui =
+          SidePanelUI::GetSidePanelUIForBrowser(browser_view->browser())) {
+    ui->Close();
+  }
 }
 
 }  // namespace playlist

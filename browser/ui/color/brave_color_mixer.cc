@@ -429,7 +429,7 @@ void AddBraveLightThemeColorMixer(ui::ColorProvider* provider,
   mixer[kColorSidebarPanelHeaderBackground] = {
       leo::GetColor(leo::Color::kColorContainerBackground, leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderTitle] = {
-      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kLight)};
+      leo::GetColor(leo::Color::kColorTextPrimary, leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
@@ -540,7 +540,7 @@ void AddBraveDarkThemeColorMixer(ui::ColorProvider* provider,
   // Or delete when panel webui renders header view also.
   mixer[kColorSidebarPanelHeaderBackground] = {gfx::kGoogleGrey900};
   mixer[kColorSidebarPanelHeaderTitle] = {
-      leo::GetColor(leo::Color::kColorTextSecondary, leo::Theme::kDark)};
+      leo::GetColor(leo::Color::kColorTextPrimary, leo::Theme::kDark)};
   mixer[kColorSidebarPanelHeaderButton] = {
       leo::GetColor(leo::Color::kColorIconDefault, leo::Theme::kDark)};
   mixer[kColorSidebarPanelHeaderButtonHovered] = {
@@ -636,7 +636,7 @@ void AddBravePrivateThemeColorMixer(ui::ColorProvider* provider,
               : leo::GetColor(leo::Color::kColorContainerBackground,
                               leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderTitle] = {
-      leo::GetColor(leo::Color::kColorTextSecondary,
+      leo::GetColor(leo::Color::kColorTextPrimary,
                     is_dark ? leo::Theme::kDark : leo::Theme::kLight)};
   mixer[kColorSidebarPanelHeaderButton] = {
       leo::GetColor(leo::Color::kColorIconDefault,

@@ -7,9 +7,13 @@
 
 #include <memory>
 
+#include "base/functional/bind.h"
 #include "brave/browser/ui/color/brave_color_id.h"
+#include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/browser.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
 #include "ui/base/l10n/l10n_util.h"
 #include "ui/base/metadata/metadata_header_macros.h"
@@ -18,6 +22,7 @@
 #include "ui/gfx/font_list.h"
 #include "ui/gfx/geometry/insets.h"
 #include "ui/views/background.h"
+#include "ui/views/controls/button/image_button.h"
 #include "ui/views/controls/image_view.h"
 #include "ui/views/controls/label.h"
 #include "ui/views/controls/separator.h"
@@ -31,7 +36,7 @@ class ReadLaterSidePanelHeaderView : public views::View {
   METADATA_HEADER(ReadLaterSidePanelHeaderView, views::View)
 
  public:
-  ReadLaterSidePanelHeaderView() {
+  explicit ReadLaterSidePanelHeaderView(Browser* browser) {
     constexpr int kHeaderInteriorMargin = 16;
     SetLayoutManager(std::make_unique<views::FlexLayout>())
         ->SetOrientation(views::LayoutOrientation::kHorizontal)
@@ -62,6 +67,35 @@ class ReadLaterSidePanelHeaderView : public views::View {
         views::kFlexBehaviorKey,
         views::FlexSpecification(views::MinimumFlexSizeRule::kPreferred,
                                  views::MaximumFlexSizeRule::kPreferred));
+
+    AddChildView(std::make_unique<views::View>())
+        ->SetProperty(
+            views::kFlexBehaviorKey,
+            views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
+                                     views::MaximumFlexSizeRule::kUnbounded)
+                .WithOrder(2));
+
+    constexpr int kHeaderButtonSize = 20;
+    auto* button =
+        AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
+            [](Browser* browser) {
+              if (SidePanelUI* ui =
+                      SidePanelUI::GetSidePanelUIForBrowser(browser)) {
+                ui->Close();
+              }
+            },
+            browser)));
+    button->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP));
+    button->SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(
+            kLeoCloseIcon, kColorSidebarPanelHeaderButton, kHeaderButtonSize));
+    button->SetImageModel(
+        views::Button::STATE_HOVERED,
+        ui::ImageModel::FromVectorIcon(kLeoCloseIcon,
+                                       kColorSidebarPanelHeaderButtonHovered,
+                                       kHeaderButtonSize));
   }
 
   ~ReadLaterSidePanelHeaderView() override = default;
@@ -80,7 +114,7 @@ BraveReadLaterSidePanelView::BraveReadLaterSidePanelView(
     base::RepeatingClosure close_cb) {
   SetLayoutManager(std::make_unique<views::FlexLayout>())
       ->SetOrientation(views::LayoutOrientation::kVertical);
-  AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>());
+  AddChildView(std::make_unique<ReadLaterSidePanelHeaderView>(browser));
   AddChildView(std::make_unique<views::Separator>())
       ->SetColorId(kColorSidebarPanelHeaderSeparator);
   auto* web_view = AddChildView(
