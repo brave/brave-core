@@ -13,7 +13,6 @@ import {
   useProfileCount,
   useViewTypeTransition
 } from '../state/hooks'
-import { loadTimeData } from '$web-common/loadTimeData'
 
 interface DataContextProviderProps {
   children: React.ReactNode
@@ -45,8 +44,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     setCurrentSelectedBrowser,
     currentSelectedBrowserProfiles,
     scenes,
-    setScenes,
-    countryString: loadTimeData.getString('countryString')
+    setScenes
   }
 
   const importInProgress = useViewTypeTransition(
