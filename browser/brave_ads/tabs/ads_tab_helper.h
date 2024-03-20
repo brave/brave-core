@@ -22,6 +22,7 @@
 
 class Browser;
 class GURL;
+class PrefService;
 
 namespace brave_ads {
 
@@ -42,15 +43,38 @@ class AdsTabHelper : public content::WebContentsObserver,
  private:
   friend class content::WebContentsUserData<AdsTabHelper>;
 
-  void TabUpdated();
+  PrefService* GetPrefs() const;
 
-  void RunIsolatedJavaScript(content::RenderFrameHost* render_frame_host);
+  bool UserHasJoinedBraveRewards() const;
 
-  void OnJavaScriptHtmlResult(base::Value value);
+  bool IsVisible() const;
 
-  void OnJavaScriptTextResult(base::Value value);
+  bool IsErrorPage(content::NavigationHandle* navigation_handle);
 
-  // content::WebContentsObserver overrides
+  void ProcessNavigation();
+
+  void MaybeNotifyBrowserDidBecomeActive();
+  void MaybeNotifyBrowserDidResignActive();
+
+  void MaybeNotifyUserGestureEventTriggered(
+      content::NavigationHandle* navigation_handle);
+
+  void MaybeNotifyTabDidChange();
+
+  void MaybeNotifyTabContentDidChange();
+  void MaybeNotifyTabHtmlContentDidChange();
+  void OnMaybeNotifyTabHtmlContentDidChange(base::Value value);
+  void MaybeNotifyTabTextContentDidChange();
+  void OnMaybeNotifyTabTextContentDidChange(base::Value value);
+
+  void MaybeNotifyTabDidStartPlayingMedia();
+  void MaybeNotifyTabDidStopPlayingMedia();
+
+  void MaybeNotifyTabdidClose();
+
+  // content::WebContentsObserver:
+  void DidStartNavigation(
+      content::NavigationHandle* navigation_handle) override;
   void DidFinishNavigation(
       content::NavigationHandle* navigation_handle) override;
   void DocumentOnLoadCompletedInPrimaryMainFrame() override;
@@ -64,20 +88,25 @@ class AdsTabHelper : public content::WebContentsObserver,
   void WebContentsDestroyed() override;
 
 #if !BUILDFLAG(IS_ANDROID)
-  // BrowserListObserver overrides
+  // BrowserListObserver:
   void OnBrowserSetLastActive(Browser* browser) override;
   void OnBrowserNoLongerActive(Browser* browser) override;
 #endif
 
   SessionID tab_id_;
+
   raw_ptr<AdsService> ads_service_ = nullptr;  // NOT OWNED
-  bool is_active_ = false;
-  bool is_browser_active_ = true;
+
+  bool is_web_contents_visible_ = false;
+
+  bool is_restoring_ = false;
   std::vector<GURL> redirect_chain_;
   bool is_error_page_ = false;
-  bool should_process_ = false;
 
-  base::WeakPtrFactory<AdsTabHelper> weak_factory_;
+  bool is_browser_active_ = false;
+
+  base::WeakPtrFactory<AdsTabHelper> weak_factory_{this};
+
   WEB_CONTENTS_USER_DATA_KEY_DECL();
 };
 
