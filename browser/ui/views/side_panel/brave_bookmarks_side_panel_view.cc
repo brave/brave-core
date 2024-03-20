@@ -12,6 +12,7 @@
 #include "brave/components/vector_icons/vector_icons.h"
 #include "brave/grit/brave_generated_resources.h"
 #include "brave/grit/brave_theme_resources.h"
+#include "chrome/browser/ui/side_panel/side_panel_ui.h"
 #include "chrome/browser/ui/singleton_tabs.h"
 #include "chrome/browser/ui/views/side_panel/bookmarks/bookmarks_side_panel_coordinator.h"
 #include "chrome/browser/ui/views/side_panel/read_later_side_panel_web_view.h"
@@ -75,11 +76,12 @@ class BookmarksSidePanelHeaderView : public views::View {
         views::FlexSpecification(views::MinimumFlexSizeRule::kScaleToZero,
                                  views::MaximumFlexSizeRule::kUnbounded)
             .WithOrder(2));
-    // Safe to use Unretained(this) here as |button| will be destroyed before
-    // this class.
-    auto* button = AddChildView(std::make_unique<views::ImageButton>(
-        base::BindRepeating(&BookmarksSidePanelHeaderView::OnButtonPressed,
-                            base::Unretained(this), browser)));
+    auto* button =
+        AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
+            [](Browser* browser, const ui::Event& event) {
+              ShowSingletonTab(browser, GURL(chrome::kChromeUIBookmarksURL));
+            },
+            browser)));
     button->SetTooltipText(l10n_util::GetStringUTF16(
         IDS_SIDEBAR_READING_LIST_PANEL_HEADER_BOOKMARKS_BUTTON_TOOLTIP));
 
@@ -93,17 +95,40 @@ class BookmarksSidePanelHeaderView : public views::View {
         ui::ImageModel::FromVectorIcon(kLeoLaunchIcon,
                                        kColorSidebarPanelHeaderButtonHovered,
                                        kHeaderButtonSize));
+
+    auto* separator = AddChildView(std::make_unique<views::Separator>());
+    separator->SetColorId(kColorSidebarPanelHeaderSeparator);
+    separator->SetPreferredLength(kHeaderButtonSize);
+    constexpr int kSeparatorHorizontalSpacing = 12;
+    separator->SetProperty(views::kMarginsKey,
+                           gfx::Insets::VH(0, kSeparatorHorizontalSpacing));
+
+    button =
+        AddChildView(std::make_unique<views::ImageButton>(base::BindRepeating(
+            [](Browser* browser) {
+              if (SidePanelUI* ui =
+                      SidePanelUI::GetSidePanelUIForBrowser(browser)) {
+                ui->Close();
+              }
+            },
+            browser)));
+    button->SetTooltipText(
+        l10n_util::GetStringUTF16(IDS_SIDEBAR_PANEL_CLOSE_BUTTON_TOOLTIP));
+    button->SetImageModel(
+        views::Button::STATE_NORMAL,
+        ui::ImageModel::FromVectorIcon(
+            kLeoCloseIcon, kColorSidebarPanelHeaderButton, kHeaderButtonSize));
+    button->SetImageModel(
+        views::Button::STATE_HOVERED,
+        ui::ImageModel::FromVectorIcon(kLeoCloseIcon,
+                                       kColorSidebarPanelHeaderButtonHovered,
+                                       kHeaderButtonSize));
   }
 
   ~BookmarksSidePanelHeaderView() override = default;
   BookmarksSidePanelHeaderView(const BookmarksSidePanelHeaderView&) = delete;
   BookmarksSidePanelHeaderView& operator=(const BookmarksSidePanelHeaderView&) =
       delete;
-
- private:
-  void OnButtonPressed(Browser* browser, const ui::Event& event) {
-    ShowSingletonTab(browser, GURL(chrome::kChromeUIBookmarksURL));
-  }
 };
 
 BEGIN_METADATA(BookmarksSidePanelHeaderView)
