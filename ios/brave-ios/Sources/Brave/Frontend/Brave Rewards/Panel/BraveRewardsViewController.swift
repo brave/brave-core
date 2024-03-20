@@ -129,14 +129,18 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
       $0.height.equalTo(rewardsView)
     }
 
-    rewardsView.publisherView.learnMoreButton.addTarget(self, action: #selector(tappedUnverifiedPubLearnMore), for: .touchUpInside)
-    rewardsView.subtitleLabel.text = rewards.isEnabled ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
-    rewardsView.rewardsToggle.addTarget(self, action: #selector(rewardsToggleValueChanged), for: .valueChanged)
-    if !AppConstants.buildChannel.isPublic {
-      let tapGesture = UITapGestureRecognizer(target: self, action: #selector(tappedHostLabel(_:)))
-      rewardsView.publisherView.hostLabel.isUserInteractionEnabled = true
-      rewardsView.publisherView.hostLabel.addGestureRecognizer(tapGesture)
-    }
+    rewardsView.publisherView.learnMoreButton.addTarget(
+      self,
+      action: #selector(tappedUnverifiedPubLearnMore),
+      for: .touchUpInside
+    )
+    rewardsView.subtitleLabel.text =
+      rewards.isEnabled ? Strings.Rewards.enabledBody : Strings.Rewards.disabledBody
+    rewardsView.rewardsToggle.addTarget(
+      self,
+      action: #selector(rewardsToggleValueChanged),
+      for: .valueChanged
+    )
   }
 
   // MARK: - Actions
@@ -167,22 +171,5 @@ class BraveRewardsViewController: UIViewController, PopoverContentComponent {
 
   @objc private func tappedUnverifiedPubLearnMore() {
     actionHandler?(.unverifiedPublisherLearnMoreTapped)
-  }
-
-  // MARK: - Debug Actions
-
-  @objc private func tappedHostLabel(_ gesture: UITapGestureRecognizer) {
-    if gesture.state != .ended { return }
-    guard let publisher = publisher else { return }
-    rewards.rewardsAPI?.refreshPublisher(withId: publisher.id) { [weak self] status in
-      guard let self = self else { return }
-      let copy = publisher.copy() as! BraveCore.BraveRewards.PublisherInfo  // swiftlint:disable:this force_cast
-      copy.status = status
-      self.publisher = copy
-
-      let alert = UIAlertController(title: nil, message: "Refreshed", preferredStyle: .alert)
-      alert.addAction(.init(title: "OK", style: .default, handler: nil))
-      self.present(alert, animated: true, completion: nil)
-    }
   }
 }

@@ -26,7 +26,9 @@ class RewardsNotification: NSObject, BraveNotification {
     guard let adView = view as? AdView else { return .automatic() }
     
     var dismissTimeInterval: TimeInterval = 30
-    if !AppConstants.buildChannel.isPublic, let override = Preferences.Rewards.adsDurationOverride.value, override > 0 {
+    if !AppConstants.isOfficialBuild,
+      let override = Preferences.Rewards.adsDurationOverride.value, override > 0
+    {
       dismissTimeInterval = TimeInterval(override)
     }
     return .automatic(after: dismissTimeInterval)

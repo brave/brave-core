@@ -29,7 +29,7 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
   
   /// The default fetch interval used by this resource downloaded. In production its 6 hours, whereas in debug it's every 10 minutes.
   private static var defaultFetchInterval: TimeInterval {
-    return AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
+    return AppConstants.isOfficialBuild ? 6.hours : 10.minutes
   }
   
   /// The netowrk manager performing the requests
@@ -86,9 +86,10 @@ actor ResourceDownloader<Resource: DownloadResourceInterface>: Sendable {
       let networkResource = try await self.networkManager.downloadResource(
         with: resource.externalURL,
         resourceType: .cached(etag: etag),
-        checkLastServerSideModification: !AppConstants.buildChannel.isPublic,
-        customHeaders: resource.headers)
-      
+        checkLastServerSideModification: !AppConstants.isOfficialBuild,
+        customHeaders: resource.headers
+      )
+
       guard !networkResource.data.isEmpty else {
         throw DownloadResultError.noData
       }
