@@ -84,7 +84,7 @@ public actor AdblockResourceDownloader: Sendable {
 
   /// Start fetching resources
   public func startFetching() {
-    let fetchInterval = AppConstants.buildChannel.isPublic ? 6.hours : 10.minutes
+    let fetchInterval = AppConstants.isOfficialBuild ? 6.hours : 10.minutes
 
     for resource in Self.handledResources {
       startFetching(resource: resource, every: fetchInterval)

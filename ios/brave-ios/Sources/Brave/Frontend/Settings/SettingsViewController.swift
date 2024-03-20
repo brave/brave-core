@@ -137,6 +137,12 @@ class SettingsViewController: TableViewController {
     )
   }
 
+  override func viewWillAppear(_ animated: Bool) {
+    super.viewWillAppear(animated)
+    // Reset dev options access count
+    aboutHeaderTapCount = 0
+  }
+
   private func displayRewardsDebugMenu() {
     guard let rewards = rewards else { return }
     let settings = RewardsDebugSettingsViewController(rewards: rewards)
@@ -198,7 +204,8 @@ class SettingsViewController: TableViewController {
       list.insert(enableBraveVPNSection, at: 0)
     }
 
-    if let debugSection = debugSection {
+    // Always show debug section in local builds and show if previously shown
+    if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
       list.append(debugSection)
     }
 
@@ -887,10 +894,18 @@ class SettingsViewController: TableViewController {
       Bundle.main.object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String ?? "",
       Bundle.main.object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? ""
     )
+    let titleLabel = UITableViewHeaderFooterView().then {
+      $0.textLabel?.text = Strings.about.uppercased()
+      $0.textLabel?.textColor = .braveLabel
+      $0.isUserInteractionEnabled = true
+      $0.addGestureRecognizer(
+        UITapGestureRecognizer(target: self, action: #selector(tappedAboutHeader))
+      )
+    }
     let coreVersion =
       "BraveCore \(BraveCoreVersionInfo.braveCoreVersion) (\(BraveCoreVersionInfo.chromiumVersion))"
     return Static.Section(
-      header: .title(Strings.about),
+      header: .autoLayoutView(titleLabel),
       rows: [
         Row(
           text: version,
@@ -984,10 +999,10 @@ class SettingsViewController: TableViewController {
     )
   }()
 
-  private lazy var debugSection: Static.Section? = {
-    if AppConstants.buildChannel.isPublic { return nil }
-
-    return Static.Section(
+  private let debugSectionUUID = UUID().uuidString
+  private lazy var debugSection: Static.Section = {
+    var section = Static.Section(
+      header: "Developer Options",
       rows: [
         Row(text: "Region: \(Locale.current.regionCode ?? "--")"),
         Row(
@@ -1062,6 +1077,18 @@ class SettingsViewController: TableViewController {
           },
           accessory: .disclosureIndicator,
           cellClass: MultilineValue1Cell.self
+        ),
+        Row(
+          text: "Consolidate Privacy Report Data",
+          detailText:
+            "This will force all data to consolidate. All stats for 'last 7 days' should be cleared and 'all time data' views should be preserved.",
+          selection: {
+            Preferences.PrivacyReports.nextConsolidationDate.value = Date().advanced(
+              by: -2.days
+            )
+            PrivacyReportsManager.consolidateData(dayRange: -10)
+          },
+          cellClass: MultilineButtonCell.self
         ),
         Row(
           text: "View Chromium Local State",
@@ -1192,9 +1219,83 @@ class SettingsViewController: TableViewController {
           },
           cellClass: MultilineButtonCell.self
         ),
-      ]
+      ],
+      uuid: debugSectionUUID
     )
+    if AppConstants.isOfficialBuild {
+      section.rows.append(
+        Row(
+          text: "Hide Developer Options",
+          selection: { [unowned self] in
+            Preferences.Debug.developerOptionsEnabled.value = false
+            self.dataSource.sections.removeAll(where: { $0.uuid == self.debugSectionUUID })
+          },
+          image: nil,
+          cellClass: ButtonCell.self
+        )
+      )
+    }
+    return section
   }()
+
+  private var aboutHeaderTapCount: Int = 0
+
+  @objc private func tappedAboutHeader() {
+    if kBraveDeveloperOptionsCode.isEmpty || !AppConstants.isOfficialBuild
+      || Preferences.Debug.developerOptionsEnabled.value
+    {
+      // No code supplied, or already showing the developer options
+      return
+    }
+
+    aboutHeaderTapCount += 1
+    if aboutHeaderTapCount == 5 {
+      aboutHeaderTapCount = 0
+
+      // We don't need to hide the screen or apply window protection in any way, so just going
+      // to use LAContext directly. Fine to ignore entirely if the user doesn't have a passcode
+      // enabled.
+      let context = LAContext()
+      if context.canEvaluatePolicy(.deviceOwnerAuthentication, error: nil) {
+        context.evaluatePolicy(
+          .deviceOwnerAuthentication,
+          localizedReason: "Grant access to developer options"
+        ) { [weak self] success, _ in
+          if success {
+            DispatchQueue.main.async {
+              self?.displayDeveloperOptions()
+            }
+          }
+        }
+      }
+    }
+  }
+
+  private func displayDeveloperOptions() {
+    let alert = UIAlertController(
+      title: "Show Developer Options",
+      message: nil,
+      preferredStyle: .alert
+    )
+    alert.addTextField { textField in
+      textField.isSecureTextEntry = true
+    }
+    alert.addAction(.init(title: "Cancel", style: .cancel))
+    alert.addAction(
+      .init(
+        title: "Submit",
+        style: .default,
+        handler: { [unowned alert, unowned self] _ in
+          guard let textField = alert.textFields?.first else { return }
+          if textField.text == kBraveDeveloperOptionsCode {
+            Preferences.Debug.developerOptionsEnabled.value = true
+            self.dataSource.sections.append(self.debugSection)
+          }
+        }
+      )
+    )
+    present(alert, animated: true)
+  }
 
   private func setUpSections() {
     var copyOfSections = self.makeSections()

@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
+import Preferences
 import Shared
 import UIKit
 
@@ -23,7 +24,7 @@ public struct DebugLogger {
   public static func log(for type: LoggerType, text: String) {
     // Secure State Logger should not be invoked for public channels
     if type == .secureState {
-      guard !AppConstants.buildChannel.isPublic else {
+      if AppConstants.isOfficialBuild && !Preferences.Debug.developerOptionsEnabled.value {
         return
       }
     }
