@@ -75,7 +75,7 @@
         <item name="buttonTint">@color/brave_wallet_checkbox_color</item>
     </style>
 
-    <style name="PasswordInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="BraveWalletInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
         <!-- border color -->
         <item name="boxStrokeColor">#3F39E8</item>
         <item name="hintTextColor">#3F39E8</item>
