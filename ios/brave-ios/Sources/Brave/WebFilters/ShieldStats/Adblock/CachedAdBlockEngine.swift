@@ -11,7 +11,7 @@ import os
 
 /// An object that wraps around an `AdblockEngine` and caches some results
 /// and ensures information is always returned on the correct thread on the engine.
-public class CachedAdBlockEngine {
+public actor CachedAdBlockEngine {
   public enum Source: Hashable, CustomDebugStringConvertible {
     case filterList(componentId: String, uuid: String)
     case filterListURL(uuid: String)
@@ -134,7 +134,7 @@ public class CachedAdBlockEngine {
   }
 
   /// This returns all the user script types for the given frame
-  @MainActor func makeEngineScriptTypes(
+  func makeEngineScriptTypes(
     frameURL: URL,
     isMainFrame: Bool,
     domain: Domain,

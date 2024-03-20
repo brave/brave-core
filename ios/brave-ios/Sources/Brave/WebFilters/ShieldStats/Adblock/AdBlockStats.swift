@@ -46,7 +46,7 @@ public actor AdBlockStats {
 
   /// Handle memory warnings by freeing up some memory
   func didReceiveMemoryWarning() async {
-    cachedEngines.values.forEach({ $0.clearCaches() })
+    await cachedEngines.values.asyncForEach({ await $0.clearCaches() })
     await removeDisabledEngines()
   }
 
@@ -221,7 +221,7 @@ public actor AdBlockStats {
   ) async -> Bool {
     let sources = await self.enabledSources
     return await cachedEngines(for: sources).asyncConcurrentMap({ cachedEngine in
-      return cachedEngine.shouldBlock(
+      return await cachedEngine.shouldBlock(
         requestURL: requestURL,
         sourceURL: sourceURL,
         resourceType: resourceType,
@@ -280,7 +280,7 @@ public actor AdBlockStats {
     return await cachedEngines(for: domain).asyncConcurrentCompactMap {
       cachedEngine -> CosmeticFilterModelTuple? in
       do {
-        guard let model = try cachedEngine.cosmeticFilterModel(forFrameURL: frameURL) else {
+        guard let model = try await cachedEngine.cosmeticFilterModel(forFrameURL: frameURL) else {
           return nil
         }
         return (cachedEngine.isAlwaysAggressive, model)
