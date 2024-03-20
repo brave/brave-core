@@ -7,14 +7,14 @@
 
 #include "components/grit/brave_components_strings.h"
 
-#define BuildDefaultGroups BuildDefaultGroups_Chromium
+#define BuildDefaultGroups BuildDefaultGroups_ChromiumImpl
 #include "src/components/omnibox/browser/suggestion_group_util.cc"
 #undef BuildDefaultGroups
 
 namespace omnibox {
 const GroupConfigMap& BuildDefaultGroups() {
   if (g_default_groups.Get().empty()) {
-    BuildDefaultGroups_Chromium();
+    BuildDefaultGroups_ChromiumImpl();
     g_default_groups.Get()[GROUP_OTHER_NAVS] = CreateGroup(
         SECTION_OTHER_NAVS,
         GroupConfig::RenderType::GroupConfig_RenderType_DEFAULT_VERTICAL,
