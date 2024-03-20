@@ -6,7 +6,7 @@
 import * as React from 'react'
 import { addWebUiListener } from 'chrome://resources/js/cr.js'
 
-import DataContext from '../state/context'
+import DataContext, { Store } from '../state/context'
 import { ViewType, Scenes } from '../state/component_types'
 import {
   useInitializeImportData,
@@ -35,7 +35,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     )
   }, [browserProfiles, currentSelectedBrowser])
 
-  const store = {
+  const store: Store = {
     viewType,
     setViewType,
     incrementCount,

@@ -7,7 +7,7 @@ import * as React from 'react'
 import { ViewType, Scenes } from './component_types'
 import { BrowserProfile } from '../api/welcome_browser_proxy'
 
-interface Store {
+export interface Store {
   setViewType: (viewType: ViewType) => void
   setCurrentSelectedBrowser: (currentSelection: string) => void
   incrementCount: () => void
