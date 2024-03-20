@@ -1,7 +1,7 @@
 /* Copyright (c) 2020 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at http://mozilla.org/MPL/2.0/. */
+ * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 #include "brave/components/l10n/common/localization_util.h"
 #include "chrome/browser/ui/singleton_tabs.h"
@@ -36,7 +36,7 @@ const char kBraveSyncedTabsUrl[] = "brave://history/syncedTabs";
                              *tabs_in_session[kMaxTabsPerSessionToShow]);   \
   }
 
-#include "src/chrome/browser/ui/toolbar/recent_tabs_sub_menu_model.cc"
+#include "src/chrome/browser/ui/tabs/recent_tabs_sub_menu_model.cc"
 
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD_TABS_FROM_OTHER_DEVICES
 #undef BRAVE_RECENT_TABS_SUB_MENU_MODEL_BUILD
