@@ -35,7 +35,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'signAllTransactions',
   'sitePermissions',
   'swap',
-  'switchEthereumChain',
   'transactionDetails',
   'activity', // Transactions
   'transactionStatus'

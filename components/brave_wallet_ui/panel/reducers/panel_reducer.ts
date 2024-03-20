@@ -39,11 +39,6 @@ const defaultState: PanelState = {
   signTransactionRequests: [],
   getEncryptionPublicKeyRequest: undefined,
   decryptRequest: undefined,
-  switchChainRequest: {
-    requestId: '',
-    originInfo: defaultOriginInfo,
-    chainId: ''
-  },
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: []
@@ -68,16 +63,6 @@ export const createPanelReducer = (initialState: PanelState) => {
         ...state,
         connectToSiteOrigin: payload.originInfo,
         connectingAccounts: payload.accounts
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.switchEthereumChain.type,
-    (state: any, request: BraveWallet.SwitchChainRequest) => {
-      return {
-        ...state,
-        switchChainRequest: request
       }
     }
   )

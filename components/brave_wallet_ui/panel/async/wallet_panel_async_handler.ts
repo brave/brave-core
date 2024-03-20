@@ -18,7 +18,6 @@ import {
   ShowConnectToSitePayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
-  SwitchEthereumChainProcessedPayload,
   GetEncryptionPublicKeyProcessedPayload,
   DecryptProcessedPayload,
   SignTransactionHardwarePayload,
@@ -61,16 +60,6 @@ async function refreshWalletInfo(store: Store) {
 async function hasPendingUnlockRequest() {
   const keyringService = getWalletPanelApiProxy().keyringService
   return (await keyringService.hasPendingUnlockRequest()).pending
-}
-
-async function getPendingSwitchChainRequest() {
-  const jsonRpcService = getWalletPanelApiProxy().jsonRpcService
-  const requests = (await jsonRpcService.getPendingSwitchChainRequests())
-    .requests
-  if (requests && requests.length) {
-    return requests[0]
-  }
-  return null
 }
 
 async function getPendingGetEncryptionPublicKeyRequest() {
@@ -217,18 +206,6 @@ handler.on(PanelActions.showUnlock.type, async (store: Store) => {
   apiProxy.panelHandler.showUI()
 })
 
-handler.on(
-  PanelActions.switchEthereumChain.type,
-  async (store: Store, request: BraveWallet.SwitchChainRequest) => {
-    // We need to get current network list first because switch chain doesn't
-    // require permission connect first.
-    await refreshWalletInfo(store)
-    store.dispatch(PanelActions.navigateTo('switchEthereumChain'))
-    const apiProxy = getWalletPanelApiProxy()
-    apiProxy.panelHandler.showUI()
-  }
-)
-
 handler.on(PanelActions.getEncryptionPublicKey.type, async (store: Store) => {
   store.dispatch(PanelActions.navigateTo('provideEncryptionKey'))
   const apiProxy = getWalletPanelApiProxy()
@@ -240,24 +217,6 @@ handler.on(PanelActions.decrypt.type, async (store: Store) => {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
 })
-
-handler.on(
-  PanelActions.switchEthereumChainProcessed.type,
-  async (store: Store, payload: SwitchEthereumChainProcessedPayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    const jsonRpcService = apiProxy.jsonRpcService
-    jsonRpcService.notifySwitchChainRequestProcessed(
-      payload.requestId,
-      payload.approved
-    )
-    const switchChainRequest = await getPendingSwitchChainRequest()
-    if (switchChainRequest) {
-      store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
-      return
-    }
-    apiProxy.panelHandler.closeUI()
-  }
-)
 
 handler.on(
   PanelActions.getEncryptionPublicKeyProcessed.type,
@@ -710,12 +669,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const signMessageErrors = await getPendingSignMessageErrors()
     if (signMessageErrors) {
       store.dispatch(PanelActions.signMessageError(signMessageErrors))
-      return
-    }
-
-    const switchChainRequest = await getPendingSwitchChainRequest()
-    if (switchChainRequest) {
-      store.dispatch(PanelActions.switchEthereumChain(switchChainRequest))
       return
     }
 

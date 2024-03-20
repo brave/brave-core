@@ -106,7 +106,6 @@ export type PanelTypes =
   | 'signAllTransactions'
   | 'sitePermissions'
   | 'swap'
-  | 'switchEthereumChain'
   | 'transactionDetails'
   | 'activity' // Transactions
   | 'transactionStatus'
@@ -230,7 +229,6 @@ export interface PanelState {
     | BraveWallet.GetEncryptionPublicKeyRequest
     | undefined
   decryptRequest: BraveWallet.DecryptRequest | undefined
-  switchChainRequest: BraveWallet.SwitchChainRequest
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
   signMessageErrorData: BraveWallet.SignMessageError[]
