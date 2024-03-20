@@ -42,9 +42,14 @@
 #include "components/search_engines/template_url.h"
 #include "content/public/browser/browser_task_traits.h"
 #include "content/public/browser/browser_thread.h"
+#include "content/public/browser/page_navigator.h"
 #include "content/public/browser/web_contents.h"
+#include "content/public/common/referrer.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
+#include "ui/base/page_transition_types.h"
+#include "ui/base/window_open_disposition.h"
+#include "ui/base/window_open_disposition_utils.h"
 #include "ui/shell_dialogs/selected_file_info.h"
 #include "url/gurl.h"
 #include "url/origin.h"
@@ -269,8 +274,7 @@ void BraveNewTabPageHandler::GetSearchEngines(
       continue;
     }
     auto search_engine = brave_new_tab_page::mojom::SearchEngineInfo::New();
-    search_engine->origin =
-        url::Origin::Create(GURL(template_url->url())).Serialize();
+    search_engine->host = GURL(template_url->url()).host();
     search_engine->name = base::UTF16ToUTF8(template_url->short_name());
     search_engine->keyword = base::UTF16ToUTF8(template_url->keyword());
     search_engine->favicon_url = template_url->favicon_url();
@@ -278,6 +282,31 @@ void BraveNewTabPageHandler::GetSearchEngines(
   }
 
   std::move(callback).Run(std::move(search_engines));
+}
+
+void BraveNewTabPageHandler::SearchWhatYouTyped(const std::string& host,
+                                                const std::string& query,
+                                                bool alt_key,
+                                                bool ctrl_key,
+                                                bool meta_key,
+                                                bool shift_key) {
+  auto* service = TemplateURLServiceFactory::GetForProfile(profile_);
+  CHECK(service);
+
+  auto* template_url = service->GetTemplateURLForHost(host);
+  DCHECK(template_url);
+  if (!template_url) {
+    return;
+  }
+
+  GURL search_url = template_url->GenerateSearchURL(
+      service->search_terms_data(), base::UTF8ToUTF16(query));
+
+  const WindowOpenDisposition disposition =
+      ui::DispositionFromClick(false, alt_key, ctrl_key, meta_key, shift_key);
+  content::OpenURLParams params(search_url, content::Referrer(), disposition,
+                                ui::PAGE_TRANSITION_FROM_ADDRESS_BAR, false);
+  web_contents_->OpenURL(params);
 }
 
 bool BraveNewTabPageHandler::IsCustomBackgroundImageEnabled() const {

@@ -10,7 +10,7 @@ import { SearchEngineInfo } from "../../api/background";
 const ENABLED_SEARCH_ENGINES_KEY = 'search-engines'
 const LAST_SEARCH_ENGINE_KEY = 'last-search-engine'
 
-const braveSearchOrigin = 'https://search.brave.com'
+export const braveSearchHost = 'search.brave.com'
 
 let cache: Record<string, boolean> | undefined
 
@@ -18,7 +18,7 @@ const getConfig = () => {
   if (!cache) {
     cache = JSON.parse(localStorage.getItem(ENABLED_SEARCH_ENGINES_KEY)!) ?? {
       // Default to enabling Brave Search
-      [braveSearchOrigin]: true
+      [braveSearchHost]: true
     }
   }
   return cache!
@@ -26,17 +26,17 @@ const getConfig = () => {
 
 export const setEngineEnabled = (engine: SearchEngineInfo, enabled: boolean) => {
   const config = getConfig()
-  config[engine.origin] = enabled
+  config[engine.host] = enabled
 
   localStorage.setItem(ENABLED_SEARCH_ENGINES_KEY, JSON.stringify(config))
 }
 
-export const isSearchEngineEnabled = (engine: SearchEngineInfo) => getConfig()[engine.origin]
+export const isSearchEngineEnabled = (engine: SearchEngineInfo) => getConfig()[engine.host]
 
 export const getDefaultSearchEngine = () => {
-  return localStorage.getItem(LAST_SEARCH_ENGINE_KEY) ?? braveSearchOrigin
+  return localStorage.getItem(LAST_SEARCH_ENGINE_KEY) ?? braveSearchHost
 }
 
 export const setDefaultSearchEngine = (engine: SearchEngineInfo) => {
-  localStorage.setItem(LAST_SEARCH_ENGINE_KEY, engine.origin)
+  localStorage.setItem(LAST_SEARCH_ENGINE_KEY, engine.host)
 }

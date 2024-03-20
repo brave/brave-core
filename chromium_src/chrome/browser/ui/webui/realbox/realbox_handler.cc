@@ -12,7 +12,7 @@
 namespace {
 constexpr char kLeoWindowTabNewIconResourceName[] =
     "//resources/brave-icons/window-tab-new.svg";
-}
+}  // namespace
 
 // This patches |PedalVectorIconToResourceName| to include the additional
 // omnibox icons we add in Brave. Unfortunately, the method is used inside the
@@ -24,7 +24,12 @@ constexpr char kLeoWindowTabNewIconResourceName[] =
   }                                             \
   if (icon.name == omnibox::kSwitchIcon
 
-#define set_prefer_keyword(prefer) set_prefer_keyword(true)
+// We tweak a few AutocompleteInput settings because unlike Chromium we only
+// want keyword search results.
+#define set_prefer_keyword(prefer)                    \
+  set_keyword_mode_entry_method(                      \
+      metrics::OmniboxEventProto::KEYBOARD_SHORTCUT); \
+  autocomplete_input.set_prefer_keyword(true)
 #define set_allow_exact_keyword_match(allow) set_allow_exact_keyword_match(true)
 
 #include "src/chrome/browser/ui/webui/realbox/realbox_handler.cc"

@@ -6,13 +6,18 @@ import { color, radius, spacing } from '@brave/leo/tokens/css'
 import { AutocompleteResult, OmniboxPopupSelection } from 'gen/components/omnibox/browser/omnibox.mojom.m'
 import * as React from 'react'
 import styled from 'styled-components'
-import { omniboxController, search } from './SearchBox'
 import SearchResult from './SearchResult'
+import getNTPBrowserAPI from '../../api/background'
+import { omniboxController, search, useSearchContext } from './SearchContext'
+import { braveSearchHost } from './config'
 
 const Container = styled.div`
-  margin-top: ${spacing.m};
   background: ${color.container.background};
-  border-radius: ${radius.m};
+
+  border: 1px solid ${color.divider.subtle};
+  border-bottom-left-radius: ${radius.m};
+  border-bottom-right-radius: ${radius.m};
+
   padding: ${spacing.m} 0;
   gap: ${spacing.m};
   display: flex;
@@ -24,6 +29,7 @@ const Container = styled.div`
 `
 
 export default function SearchResults() {
+  const { query, searchEngine } = useSearchContext()
   const [result, setResult] = React.useState<AutocompleteResult>()
   const [selectedMatch, setSelectedMatch] = React.useState<number>();
 
@@ -100,7 +106,10 @@ export default function SearchResults() {
       e.preventDefault()
 
       const match = result?.matches[selectedMatch!]
-      if (!match) return
+      if (!match) {
+        getNTPBrowserAPI().pageHandler.searchWhatYouTyped(searchEngine?.host ?? braveSearchHost, query, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
+        return;
+      }
 
       omniboxController.openAutocompleteMatch(selectedMatch!, match.destinationUrl, true, 0, e.altKey, e.ctrlKey, e.metaKey, e.shiftKey);
     }
@@ -108,7 +117,7 @@ export default function SearchResults() {
     return () => {
       document.removeEventListener('keydown', handler)
     }
-  }, [result, selectedMatch])
+  }, [result, selectedMatch, query, searchEngine])
   return result && result?.matches.length ? <Container>
     {result?.matches.map((r, i) => <SearchResult key={i} selected={i === selectedMatch} line={i} match={r} />)}
   </Container> : null

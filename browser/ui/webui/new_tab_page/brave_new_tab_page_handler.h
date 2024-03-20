@@ -68,6 +68,12 @@ class BraveNewTabPageHandler : public brave_new_tab_page::mojom::PageHandler,
   void UseColorBackground(const std::string& color,
                           bool use_random_color) override;
   void GetSearchEngines(GetSearchEnginesCallback callback) override;
+  void SearchWhatYouTyped(const std::string& host,
+                          const std::string& query,
+                          bool alt_key,
+                          bool ctrl_key,
+                          bool meta_key,
+                          bool shift_key) override;
 
   // Observe BraveNTPCustomBackgroundService.
   void OnBackgroundUpdated();

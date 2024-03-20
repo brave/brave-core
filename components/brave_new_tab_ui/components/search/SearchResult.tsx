@@ -8,7 +8,7 @@ import { AutocompleteMatch } from 'gen/components/omnibox/browser/omnibox.mojom.
 import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '../../../common/Flex';
-import { omniboxController } from './SearchBox';
+import { omniboxController } from './SearchContext';
 
 interface Props {
   match: AutocompleteMatch
