@@ -241,7 +241,7 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
 #include "brave/components/commands/common/commands.mojom.h"
 #include "brave/components/commands/common/features.h"
-#include "components/omnibox/browser/omnibox.mojom.h"
+#include "ui/webui/resources/cr_components/searchbox/searchbox.mojom.h"
 #endif
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
@@ -645,7 +645,7 @@ void BraveContentBrowserClient::RegisterWebUIInterfaceBrokers(
           .Add<brave_news::mojom::BraveNewsController>();
 
   if (base::FeatureList::IsEnabled(features::kBraveNtpSearchWidget)) {
-    ntp_registration.Add<omnibox::mojom::PageHandler>();
+    ntp_registration.Add<searchbox::mojom::PageHandler>();
   }
 
   if (base::FeatureList::IsEnabled(

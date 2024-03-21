@@ -307,6 +307,7 @@ source_set("ui") {
       "//third_party/abseil-cpp:absl",
       "//ui/color:color_headers",
       "//ui/color:mixers",
+      "//ui/webui/resources/cr_components/searchbox:mojo_bindings",
       "//url",
     ]
 
