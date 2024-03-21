@@ -48,8 +48,6 @@ namespace {
 
 /* publisher_or_channel_id, is_channel */
 using ContentGroup = std::pair<std::string, bool>;
-constexpr char kAllContentGroup[] = "all";
-constexpr float kSampleContentGroupAllRatio = 0.2f;
 
 // Returns a tuple of the feed hash and the number of subscribed publishers.
 std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
@@ -165,7 +163,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
 
   return {
       .pop_recency = pop_recency,
-      .weighting = source_visits_projected + subscribed_weight + pop_recency,
+      .weighting = (source_visits_projected + subscribed_weight) * pop_recency,
       // Note: GetArticleWeight returns the Signal for the Publisher first, and
       // we use that to determine whether this Publisher has ever been visited.
       .visited = signals.at(0)->visit_weight != 0,
@@ -287,9 +285,6 @@ ContentGroup SampleContentGroup(
     return sampled_content_group;
   }
 
-  if (base::RandDouble() < kSampleContentGroupAllRatio) {
-    return std::make_pair(kAllContentGroup, true);
-  }
   return PickRandom<ContentGroup>(eligible_content_groups);
 }
 
@@ -496,8 +491,7 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                 }
               }
 
-              if (/*is_channel*/ content_group.second &&
-                  content_group.first != kAllContentGroup) {
+              if (/*is_channel*/ content_group.second) {
                 auto channels =
                     publisher_id_to_channels.find(metadata->publisher_id);
                 if (base::Contains(channels->second, content_group.first)) {
@@ -505,13 +499,11 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
                 }
 
                 return 0.0;
-              } else if (/*is_channel*/ !content_group.second) {
-                return metadata->publisher_id == content_group.first
-                           ? weight.weighting
-                           : 0.0;
               }
 
-              return weight.weighting;
+              return metadata->publisher_id == content_group.first
+                         ? weight.weighting
+                         : 0.0;
             },
             is_hero, SampleContentGroup(eligible_content_groups),
             publisher_id_to_channels, locale);
