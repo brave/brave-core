@@ -49,10 +49,12 @@ import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.searchwidget.SearchActivity;
+import org.chromium.chrome.browser.searchwidget.SearchActivityUtils;
+import org.chromium.chrome.browser.searchwidget.SearchWidgetProvider;
 import org.chromium.chrome.browser.settings.BraveSearchEngineUtils;
 import org.chromium.chrome.browser.suggestions.tile.Tile;
 import org.chromium.chrome.browser.ui.favicon.FaviconUtils;
-import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityConstants;
+import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityClient;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager;
 import org.chromium.chrome.browser.ui.searchactivityutils.SearchActivityPreferencesManager.SearchActivityPreferences;
 import org.chromium.chrome.browser.widget.quickactionsearchandbookmark.utils.BraveSearchWidgetUtils;
@@ -421,13 +423,19 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static PendingIntent createIntent(@NonNull Context context, boolean startVoiceSearch) {
+        SearchActivityClient client = new SearchActivityUtils();
         Intent searchIntent =
-                new Intent(startVoiceSearch ? SearchActivityConstants.ACTION_START_VOICE_SEARCH
-                                            : SearchActivityConstants.ACTION_START_TEXT_SEARCH);
+                client.createIntent(
+                        context,
+                        SearchActivityClient.IntentOrigin.SEARCH_WIDGET,
+                        null,
+                        startVoiceSearch
+                                ? SearchActivityClient.SearchType.VOICE
+                                : SearchActivityClient.SearchType.TEXT);
+
+        searchIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         searchIntent.setComponent(new ComponentName(context, SearchActivity.class));
         searchIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        searchIntent.putExtra(
-                SearchActivityConstants.EXTRA_BOOLEAN_FROM_QUICK_ACTION_SEARCH_WIDGET, true);
         return createPendingIntent(context, searchIntent);
     }
 
@@ -437,8 +445,7 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
         trustedIncognitoIntent.putExtra(IntentHandler.EXTRA_INVOKED_FROM_APP_WIDGET, true);
         trustedIncognitoIntent.addFlags(
                 Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
-        trustedIncognitoIntent.putExtra(
-                SearchActivityConstants.EXTRA_BOOLEAN_FROM_QUICK_ACTION_SEARCH_WIDGET, true);
+        trustedIncognitoIntent.putExtra(SearchWidgetProvider.EXTRA_FROM_SEARCH_WIDGET, true);
         return createPendingIntent(context, trustedIncognitoIntent);
     }
 
