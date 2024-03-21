@@ -9,8 +9,8 @@ import android.os.Bundle;
 
 import androidx.preference.Preference;
 
-import com.brave.playlist.local_database.PlaylistRepository;
-import com.brave.playlist.util.PlaylistPreferenceUtils;
+import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository;
+import org.chromium.chrome.browser.playlist.util.PlaylistPreferenceUtils;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.supplier.ObservableSupplier;

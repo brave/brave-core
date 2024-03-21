@@ -1,0 +1,20 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="95dp"
+    android:height="64dp"
+    android:viewportWidth="95"
+    android:viewportHeight="64">
+    <path
+        android:fillColor="#1E2029"
+        android:pathData="M8,0L87,0A8,8 0,0 1,95 8L95,56A8,8 0,0 1,87 64L8,64A8,8 0,0 1,0 56L0,8A8,8 0,0 1,8 0z" />
+    <path
+        android:fillColor="#84889C"
+        android:fillType="evenOdd"
+        android:pathData="M32,25.128C32,24.624 32.154,24.131 32.44,23.717C33.212,22.603 34.731,22.332 35.833,23.112L44.672,29.363C44.905,29.528 45.107,29.733 45.271,29.968C46.042,31.082 45.774,32.617 44.672,33.397L35.833,39.648C35.424,39.938 34.936,40.093 34.436,40.093C33.091,40.093 32,38.991 32,37.632V25.128ZM34.436,37.632L43.275,31.38L34.436,25.128V37.632ZM49.053,25.226C49.053,25.906 49.598,26.457 50.271,26.457H62.452C63.125,26.457 63.67,25.906 63.67,25.226C63.67,24.546 63.125,23.995 62.452,23.995H50.271C49.598,23.995 49.053,24.546 49.053,25.226ZM49.053,31.38C49.053,32.06 49.598,32.611 50.271,32.611H62.452C63.125,32.611 63.67,32.06 63.67,31.38C63.67,30.7 63.125,30.149 62.452,30.149H50.271C49.598,30.149 49.053,30.7 49.053,31.38ZM50.271,38.765C49.598,38.765 49.053,38.214 49.053,37.534C49.053,36.854 49.598,36.303 50.271,36.303H62.452C63.125,36.303 63.67,36.854 63.67,37.534C63.67,38.214 63.125,38.765 62.452,38.765H50.271Z" />
+</vector>

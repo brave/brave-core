@@ -1,0 +1,46 @@
+<!--
+  ~ Copyright (c) 2023 The Brave Authors. All rights reserved.
+  ~ This Source Code Form is subject to the terms of the Mozilla Public
+  ~ License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  ~ You can obtain one at https://mozilla.org/MPL/2.0/.
+  -->
+
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    android:width="72dp"
+    android:height="72dp"
+    android:viewportWidth="72"
+    android:viewportHeight="72">
+    <path android:pathData="M0,36C0,16.118 16.118,0 36,0V0C55.882,0 72,16.118 72,36V36C72,55.882 55.882,72 36,72V72C16.118,72 0,55.882 0,36V36Z">
+        <aapt:attr name="android:fillColor">
+            <gradient
+                android:endX="83.82"
+                android:endY="53.471"
+                android:startX="0"
+                android:startY="0"
+                android:type="linear">
+                <item
+                    android:color="#FF4C54D2"
+                    android:offset="0" />
+                <item
+                    android:color="#FFBF14A2"
+                    android:offset="0.563" />
+                <item
+                    android:color="#FFF73A1C"
+                    android:offset="1" />
+            </gradient>
+        </aapt:attr>
+    </path>
+    <path
+        android:fillColor="#F0F2FF"
+        android:fillType="evenOdd"
+        android:pathData="M27,24.43H39.857C41.987,24.43 43.714,26.157 43.714,28.287V38.572C43.714,40.703 41.987,42.43 39.857,42.43H27C24.87,42.43 23.143,40.703 23.143,38.572V28.287C23.143,26.157 24.87,24.43 27,24.43ZM27,27.001C26.29,27.001 25.714,27.577 25.714,28.287V38.572C25.714,39.283 26.29,39.858 27,39.858H39.857C40.567,39.858 41.143,39.283 41.143,38.572V28.287C41.143,27.577 40.567,27.001 39.857,27.001H27Z" />
+    <path
+        android:fillColor="#F0F2FF"
+        android:fillType="evenOdd"
+        android:pathData="M47.571,28.287C48.282,28.287 48.857,28.863 48.857,29.573V41.144C48.857,44.695 45.979,47.573 42.429,47.573H27C26.29,47.573 25.714,46.997 25.714,46.287C25.714,45.577 26.29,45.001 27,45.001H42.429C44.559,45.001 46.286,43.275 46.286,41.144V29.573C46.286,28.863 46.861,28.287 47.571,28.287Z" />
+    <path
+        android:fillColor="#F0F2FF"
+        android:fillType="evenOdd"
+        android:pathData="M34.714,30.858C34.714,30.148 34.139,29.572 33.428,29.572C32.718,29.572 32.143,30.148 32.143,30.858V32.144H30.857C30.147,32.144 29.571,32.719 29.571,33.429C29.571,34.139 30.147,34.715 30.857,34.715H32.143V36.001C32.143,36.711 32.718,37.287 33.428,37.287C34.139,37.287 34.714,36.711 34.714,36.001V34.715H36C36.71,34.715 37.286,34.139 37.286,33.429C37.286,32.719 36.71,32.144 36,32.144H34.714V30.858Z" />
+</vector>

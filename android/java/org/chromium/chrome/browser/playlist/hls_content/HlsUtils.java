@@ -10,10 +10,10 @@ import android.text.TextUtils;
 import androidx.media3.common.util.UriUtil;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.HLSParsingUtil;
-import com.brave.playlist.util.MediaUtils;
-import com.brave.playlist.util.PlaylistUtils;
+import org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.util.HLSParsingUtil;
+import org.chromium.chrome.browser.playlist.util.MediaUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistUtils;
 
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;

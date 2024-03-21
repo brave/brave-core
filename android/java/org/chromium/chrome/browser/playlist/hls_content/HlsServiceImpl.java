@@ -15,13 +15,13 @@ import android.os.IBinder;
 import androidx.annotation.Nullable;
 import androidx.media3.exoplayer.hls.playlist.HlsMediaPlaylist.Segment;
 
-import com.brave.playlist.local_database.PlaylistRepository;
-import com.brave.playlist.model.HlsContentProgressModel;
-import com.brave.playlist.model.HlsContentQueueModel;
-import com.brave.playlist.model.PlaylistItemModel;
-import com.brave.playlist.playback_service.VideoPlaybackService;
-import com.brave.playlist.util.MediaUtils;
-import com.brave.playlist.util.PlaylistUtils;
+import org.chromium.chrome.browser.playlist.local_database.PlaylistRepository;
+import org.chromium.chrome.browser.playlist.model.HlsContentProgressModel;
+import org.chromium.chrome.browser.playlist.model.HlsContentQueueModel;
+import org.chromium.chrome.browser.playlist.model.PlaylistItemModel;
+import org.chromium.chrome.browser.playlist.playback_service.VideoPlaybackService;
+import org.chromium.chrome.browser.playlist.util.MediaUtils;
+import org.chromium.chrome.browser.playlist.util.PlaylistUtils;
 
 import org.chromium.base.BravePreferenceKeys;
 import org.chromium.base.ContextUtils;

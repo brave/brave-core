@@ -65,7 +65,6 @@ brave_chrome_java_deps = [
 ]
 
 brave_chrome_java_deps += brave_app_billing_deps
-brave_chrome_java_deps += brave_app_playlist_deps
 
 brave_chrome_all_java_deps = [
   "//brave/android/features/tab_ui:java",
