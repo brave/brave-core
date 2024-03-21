@@ -85,11 +85,13 @@ net::NetworkTrafficAnnotationTag GetNetworkTrafficAnnotationTag() {
 
 class PageContentFetcher {
  public:
+  explicit PageContentFetcher(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : url_loader_factory_(url_loader_factory) {}
+
   void Start(mojo::Remote<mojom::PageContentExtractor> content_extractor,
              std::string_view invalidation_token,
-             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              FetchPageContentCallback callback) {
-    url_loader_factory_ = url_loader_factory;
     content_extractor_ = std::move(content_extractor);
     if (!content_extractor_) {
       DeleteSelf();
@@ -102,17 +104,6 @@ class PageContentFetcher {
     content_extractor_->ExtractPageContent(base::BindOnce(
         &PageContentFetcher::OnTabContentResult, base::Unretained(this),
         std::move(callback), invalidation_token));
-  }
-
- private:
-  void DeleteSelf() { delete this; }
-
-  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
-                               std::string content = "",
-                               std::string invalidation_token = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video, invalidation_token);
-    delete this;
   }
 
   void OnTabContentResult(FetchPageContentCallback callback,
@@ -175,6 +166,17 @@ class PageContentFetcher {
                        std::move(loader), is_youtube, new_invalidation_token);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
+  }
+
+ private:
+  void DeleteSelf() { delete this; }
+
+  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
+                               std::string content = "",
+                               std::string invalidation_token = "",
+                               bool is_video = false) {
+    std::move(callback).Run(content, is_video, invalidation_token);
+    delete this;
   }
 
   void OnYoutubeTranscriptXMLParsed(
@@ -411,13 +413,12 @@ void FetchPageContent(content::WebContents* web_contents,
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
 
-  auto* fetcher = new PageContentFetcher();
   auto* loader = web_contents->GetBrowserContext()
                      ->GetDefaultStoragePartition()
                      ->GetURLLoaderFactoryForBrowserProcess()
                      .get();
-  fetcher->Start(std::move(extractor), invalidation_token, loader,
-                 std::move(callback));
+  auto* fetcher = new PageContentFetcher(loader);
+  fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 
 }  // namespace ai_chat
