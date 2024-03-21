@@ -13,6 +13,16 @@ window.__firefox__.includeOnce('BraveSearchResultAdScript', function($) {
     });
   });
 
+  let checkIsAdVisible = (placementId) => {
+    let querySelectorString = `div[data-placement-id="${placementId}"]`;
+    const element = document.querySelector(querySelectorString);
+    if (!element) {
+      return false;
+    }
+    const style = window.getComputedStyle(element);
+    return style.display !== 'none' && style.visibility !== 'hidden';
+  };
+
   let getJsonLdCreatives = () => {
     const scripts =
       document.querySelectorAll('script[type="application/ld+json"]');
@@ -46,6 +56,10 @@ window.__firefox__.includeOnce('BraveSearchResultAdScript', function($) {
         jsonLd.creatives.forEach(creative => {
           if (creative['@type'] === 'SearchResultAd') {
             let jsonLdCreative = {};
+            let placementId = creative['data-placement-id'];
+            if (!placementId || !checkIsAdVisible(placementId)) {
+              return;
+            }
             for (let key in creative) {
               if (creativeFieldNamesMapping[key]) {
                 jsonLdCreative[creativeFieldNamesMapping[key]] = creative[key];
@@ -60,5 +74,7 @@ window.__firefox__.includeOnce('BraveSearchResultAdScript', function($) {
     return jsonLdCreatives;
   };
 
-  sendMessage(getJsonLdCreatives());
+  setTimeout(() => {
+    sendMessage(getJsonLdCreatives());
+  }, 300);
 });
