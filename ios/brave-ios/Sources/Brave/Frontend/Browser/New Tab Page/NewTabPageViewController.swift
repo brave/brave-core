@@ -118,6 +118,8 @@ class NewTabPageViewController: UIViewController {
   private var background: NewTabPageBackground
   private let backgroundView = NewTabPageBackgroundView()
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
+  private var videoBackgroundController: NewTabPageVideoBackgroundController
+
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///
@@ -161,6 +163,7 @@ class NewTabPageViewController: UIViewController {
     )
     self.p3aHelper = p3aHelper
     background = NewTabPageBackground(dataSource: dataSource)
+    videoBackgroundController = NewTabPageVideoBackgroundController(background: background)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
     super.init(nibName: nil, bundle: nil)
@@ -298,7 +301,12 @@ class NewTabPageViewController: UIViewController {
 
     view.addSubview(backgroundView)
     view.insertSubview(gradientView, aboveSubview: backgroundView)
+
+    addChild(videoBackgroundController)
+    view.addSubview(videoBackgroundController.view)
+
     view.addSubview(collectionView)
+
     view.addSubview(feedOverlayView)
 
     collectionView.backgroundView = backgroundButtonsView
@@ -328,9 +336,17 @@ class NewTabPageViewController: UIViewController {
     }
 
     setupBackgroundImage()
+
+    setupBackgroundVideo()
+
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
+    videoBackgroundController.view.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -432,6 +448,68 @@ class NewTabPageViewController: UIViewController {
         // visible
         break
       }
+    }
+  }
+
+  private func fadeOutAndHideCollectionView() {
+    UIView.animate(
+      withDuration: 0.3,
+      animations: { [weak self] in
+        self?.collectionView.alpha = 0
+      },
+      completion: { [weak self] _ in
+        self?.collectionView.isHidden = true
+        self?.collectionView.alpha = 1
+      }
+    )
+  }
+
+  private func showAndFadeInCollectionView(animated: Bool) {
+    collectionView.isHidden = false
+    if animated {
+      collectionView.alpha = 0
+      UIView.animate(
+        withDuration: 0.3,
+        animations: { [weak self] in
+          self?.collectionView.alpha = 1
+        }
+      )
+    }
+  }
+
+  func setupBackgroundVideo() {
+    backgroundButtonsView.tappedPlayButton = { [weak self] in
+      self?.fadeOutAndHideCollectionView()
+      self?.videoBackgroundController.startVideoPlayback()
+    }
+
+    videoBackgroundController.videoLoadedEvent = { [weak self] succeeded in
+      if succeeded {
+        self?.backgroundButtonsView.addPlayButton()
+        self?.backgroundButtonsView.isHidden = true
+      }
+    }
+    videoBackgroundController.autoplayFinishedEvent = { [weak self] animated in
+      self?.backgroundButtonsView.isHidden = false
+      if animated {
+        self?.backgroundButtonsView.alpha = 0
+        UIView.animate(
+          withDuration: 0.3,
+          animations: { [weak self] in
+            self?.backgroundButtonsView.alpha = 1
+          }
+        )
+      }
+    }
+    videoBackgroundController.playCancelledEvent = { [weak self] animated in
+      self?.showAndFadeInCollectionView(animated: animated)
+    }
+    videoBackgroundController.playFinishedEvent = { [weak self] in
+      self?.showAndFadeInCollectionView(animated: true)
+    }
+    videoBackgroundController.playStartedEvent = { [weak self] in
+    }
+    videoBackgroundController.played25PercentEvent = { [weak self] in
     }
   }
 

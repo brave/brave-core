@@ -13,7 +13,8 @@ import UIKit
 /// The background view of new tab page which will hold static elements such as
 /// the image credit, brand logos or the share by QR code button
 ///
-/// Currently this view displays only a single active button at a time
+/// Currently this view displays a single active button and a play button if
+/// the video background is shown
 class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   /// The button kind to display
   enum ActiveButton {
@@ -56,6 +57,7 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       activeView?.isHidden = false
     }
   }
+  var tappedPlayButton: (() -> Void)?
 
   private let imageCreditButton = ImageCreditButton().then {
     $0.isHidden = true
@@ -66,6 +68,10 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
   private let qrCodeButton = QRCodeButton().then {
     $0.isHidden = true
   }
+  private let playButton = PlayButton().then {
+    $0.isHidden = true
+  }
+  private var playButtonAdded = false
 
   /// The parent safe area insets (since UICollectionView doesn't feed down
   /// proper `safeAreaInsets` when the `contentInsetAdjustmentBehavior` is set
@@ -96,6 +102,9 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
       addSubview(button)
       button.addTarget(self, action: #selector(tappedButton(_:)), for: .touchUpInside)
     }
+
+    addSubview(playButton)
+    playButton.addTarget(self, action: #selector(tappedVideoPlayButton(_:)), for: .touchUpInside)
   }
 
   @available(*, unavailable)
@@ -142,10 +151,32 @@ class NewTabPageBackgroundButtonsView: UIView, PreferencesObserver {
         $0.centerX.equalToSuperview()
       }
     }
+
+    playButton.snp.remakeConstraints {
+      $0.centerX.equalToSuperview()
+      $0.centerY.equalToSuperview().offset(20)
+    }
+    // Hide the play button if the video is in landscape mode on a phone
+    if isLandscape && UIDevice.isPhone {
+      playButton.isHidden = true
+    } else {
+      playButton.isHidden = !playButtonAdded
+    }
   }
 
   @objc private func tappedButton(_ sender: UIControl) {
     tappedActiveButton?(sender)
+  }
+
+  @objc private func tappedVideoPlayButton(_ sender: UIControl) {
+    tappedPlayButton?()
+  }
+
+  func addPlayButton() {
+    playButtonAdded = true
+    // Hide the play button if the video is in landscape mode on a phone
+    let isLandscape = frame.width > frame.height
+    playButton.isHidden = isLandscape && UIDevice.isPhone
   }
 
   func preferencesDidChange(for key: String) {
@@ -219,6 +250,41 @@ extension NewTabPageBackgroundButtonsView {
 
       layer.cornerRadius = bounds.height / 2.0
       layer.shadowPath = UIBezierPath(ovalIn: bounds).cgPath
+    }
+  }
+  private class PlayButton: SpringButton {
+    let imageView = UIImageView(
+      image: UIImage(named: "ntt_play_button", in: .module, compatibleWith: nil)!
+    )
+
+    private let backgroundView = UIVisualEffectView(
+      effect: UIBlurEffect(style: .systemUltraThinMaterialDark)
+    ).then {
+      $0.clipsToBounds = true
+      $0.isUserInteractionEnabled = false
+    }
+
+    override init(frame: CGRect) {
+      super.init(frame: frame)
+
+      clipsToBounds = true
+
+      addSubview(backgroundView)
+
+      backgroundView.contentView.addSubview(imageView)
+
+      backgroundView.snp.makeConstraints {
+        $0.edges.equalToSuperview()
+      }
+
+      imageView.snp.makeConstraints {
+        $0.edges.equalToSuperview().inset(UIEdgeInsets(equalInset: 10))
+      }
+    }
+
+    override func layoutSubviews() {
+      super.layoutSubviews()
+      layer.cornerRadius = bounds.height / 2.0
     }
   }
 }
