@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 import { color, font, radius, spacing } from '@brave/leo/tokens/css';
 import { mojoString16ToString } from 'chrome://resources/js/mojo_type_util.js';
-import { AutocompleteMatch } from 'gen/components/omnibox/browser/omnibox.mojom.m';
+import { AutocompleteMatch } from 'gen/ui/webui/resources/cr_components/searchbox/searchbox.mojom.m';
 import * as React from 'react';
 import styled from 'styled-components';
 import Flex from '../../../common/Flex';
