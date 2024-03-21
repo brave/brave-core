@@ -33,9 +33,10 @@ function HelpWDP () {
   return (
     <S.MainBox>
       <div className='view-header-box'>
-        <div className='view-logo-box'>
-          <img src={cubeImg} />
-        </div>
+        <img
+          className='view-logo-box'
+          src={cubeImg}
+        />
         <h1 className='view-title'>{getLocale('braveWelcomeHelpWDPTitle')}</h1>
         <h2 className='view-subtitle'>
           {getLocale('braveWelcomeHelpWDPSubtitle')}

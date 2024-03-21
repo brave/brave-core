@@ -20,6 +20,7 @@ export const MainBox = styled.div`
   justify-content: center;
   flex-direction: column;
   padding: 70px 109px 64px 109px;
+  margin-top: 80px;
 
   .view-header-box {
     display: flex;
@@ -29,17 +30,15 @@ export const MainBox = styled.div`
   }
 
   .view-logo-box {
-    width: 150px;
-    height: auto;
-    position: absolute;
-    top: calc(-160px / 2);
-    left: calc(50% - 160px/2);
-    z-index: 2;
+    --width: 194px;
+    --height: 181px;
 
-    img {
-      width: 100%;
-      height: auto;
-    }
+    width: var(--width);
+    height: var(--height);
+    position: absolute;
+    left: calc(50% - var(--width) / 2);
+    top: calc(-1 * var(--height) + 52px);
+    z-index: 2;
   }
 
   .view-title {
