@@ -29,6 +29,7 @@ export class CrToggleElement extends PolymerElement {
         type: Boolean,
         value: false,
         reflectToAttribute: true,
+        notify: true,
       },
 
       disabled: {
