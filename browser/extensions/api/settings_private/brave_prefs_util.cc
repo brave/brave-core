@@ -152,6 +152,8 @@ const PrefsUtil::TypedPrefMap& BravePrefsUtil::GetAllowlistedKeys() {
       settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[omnibox::kBookmarkSuggestionsEnabled] =
       settings_api::PrefType::kBoolean;
+  (*s_brave_allowlist)[omnibox::kCommanderSuggestionsEnabled] =
+      settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kAskEnableWidvine] = settings_api::PrefType::kBoolean;
   (*s_brave_allowlist)[kNewTabPageSuperReferralThemesOption] =
       settings_api::PrefType::kNumber;

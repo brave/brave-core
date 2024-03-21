@@ -15,6 +15,10 @@ namespace features {
 // can replace the upstream flag with it more easily.
 COMPONENT_EXPORT(COMMANDER_COMMON) BASE_DECLARE_FEATURE(kBraveCommander);
 
+// Determines whether we should show quick commands in the omnibox.
+COMPONENT_EXPORT(COMMANDER_COMMON)
+BASE_DECLARE_FEATURE(kBraveCommandsInOmnibox);
+
 }  // namespace features
 
 #endif  // BRAVE_COMPONENTS_COMMANDER_COMMON_FEATURES_H_

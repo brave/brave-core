@@ -78,6 +78,7 @@
 #include "brave/browser/android/preferences/features.h"
 #include "brave/browser/android/safe_browsing/features.h"
 #else
+#include "brave/components/commander/common/features.h"
 #include "brave/components/commands/common/features.h"
 #endif
 
@@ -326,14 +327,19 @@
           }))
 
 #if !BUILDFLAG(IS_ANDROID)
-#define BRAVE_COMMANDS_FEATURE_ENTRIES                                        \
-  EXPAND_FEATURE_ENTRIES({                                                    \
-      "brave-commands",                                                       \
-      "Brave Commands",                                                       \
-      "Enable experimental page for viewing and executing commands in Brave", \
-      kOsWin | kOsMac | kOsLinux,                                             \
-      FEATURE_VALUE_TYPE(commands::features::kBraveCommands),                 \
-  })
+#define BRAVE_COMMANDS_FEATURE_ENTRIES                                      \
+  EXPAND_FEATURE_ENTRIES(                                                   \
+      {                                                                     \
+          "brave-commands",                                                 \
+          "Brave Commands",                                                 \
+          "Enable experimental page for viewing and executing commands in " \
+          "Brave",                                                          \
+          kOsWin | kOsMac | kOsLinux,                                       \
+          FEATURE_VALUE_TYPE(commands::features::kBraveCommands),           \
+      },                                                                    \
+      {"brave-commands-omnibox", "Brave Commands in Omnibox",               \
+       "Enable quick commands in the omnibox", kOsWin | kOsMac | kOsLinux,  \
+       FEATURE_VALUE_TYPE(features::kBraveCommandsInOmnibox)})
 #else
 #define BRAVE_COMMANDS_FEATURE_ENTRIES
 #endif

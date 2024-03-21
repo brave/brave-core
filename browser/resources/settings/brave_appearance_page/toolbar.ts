@@ -98,6 +98,10 @@ class SettingsBraveAppearanceToolbarElement extends SettingsBraveAppearanceToolb
   private showLeoAssistant_() {
     return loadTimeData.getBoolean('isLeoAssistantAllowed')
   }
+
+  private showCommandsInOmnibox_() {
+    return loadTimeData.getBoolean('showCommandsInOmnibox')
+  }
 }
 
 customElements.define(SettingsBraveAppearanceToolbarElement.is, SettingsBraveAppearanceToolbarElement)
