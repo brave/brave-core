@@ -212,6 +212,7 @@ public class BraveRewardsPanel
     private View mRewardsResponseModal;
     private View mConnectAccountModal;
     private View mRewardsVbatExpireNoticeModal;
+    private View mRewardsWalletBalance;
 
     private View mRewardsSolanaEligibleLayout;
 
@@ -364,7 +365,7 @@ public class BraveRewardsPanel
 
         mRewardsVbatExpireNoticeModal =
                 mPopupView.findViewById(R.id.brave_rewards_vbat_expire_notice_modal_id);
-
+        mRewardsWalletBalance = mPopupView.findViewById(R.id.wallet_balance_layout);
         mRewardsSolanaEligibleLayout =
                 mPopupView.findViewById(R.id.brave_rewards_solana_eligible_ui_layout_id);
         mPopupWindow.setContentView(mPopupView);
@@ -1061,10 +1062,16 @@ public class BraveRewardsPanel
     }
 
     @Override
-    public void OnGetAdsAccountStatement(boolean success, double nextPaymentDate,
-            int adsReceivedThisMonth, double minEarningsThisMonth, double maxEarningsThisMonth,
-            double minEarningsLastMonth, double maxEarningsLastMonth) {
-        if (mExternalWallet != null && mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
+    public void OnGetAdsAccountStatement(
+            boolean success,
+            double nextPaymentDate,
+            int adsReceivedThisMonth,
+            double minEarningsThisMonth,
+            double maxEarningsThisMonth,
+            double minEarningsLastMonth,
+            double maxEarningsLastMonth) {
+        if (mExternalWallet != null
+                && mExternalWallet.getStatus() == WalletStatus.NOT_CONNECTED
                 && !PackageUtils.isFirstInstall(mActivity)) {
             mPopupView.findViewById(R.id.estimated_earnings_range_group).setVisibility(View.GONE);
             mPopupView.findViewById(R.id.estimated_not_connected_group).setVisibility(View.VISIBLE);
@@ -1137,9 +1144,11 @@ public class BraveRewardsPanel
 
     private void showPayoutStatusBanner(long nextPaymentDate) {
         String payoutStatus = mBraveRewardsNativeWorker.getPayoutStatus();
-        if (mPayoutStatusBannerLayout != null && mExternalWallet != null
+        if (mPayoutStatusBannerLayout != null
+                && mExternalWallet != null
                 && mExternalWallet.getStatus() == WalletStatus.CONNECTED) {
-            mPayoutStatusBannerLayout.setVisibility(View.VISIBLE);
+            int payoutStatusBannerVisibility = View.VISIBLE;
+            int walletBalanceBg = R.drawable.rewards_wallet_balance_with_payout_bg;
             ImageView payoutBannerImg = mPopupView.findViewById(R.id.payout_banner_img);
             TextView payoutBannerText = mPopupView.findViewById(R.id.payout_banner_text);
             if (payoutStatus.equals(PAYOUT_STATUS_COMPLETE)) {
@@ -1179,9 +1188,23 @@ public class BraveRewardsPanel
                         R.drawable.rewards_panel_payout_processing_bg, null));
                 payoutBannerImg.setImageResource(R.drawable.ic_payout_status_pending);
                 payoutBannerText.setText(
-                        String.format(mPopupView.getResources().getString(
-                                              R.string.rewards_panel_payout_pending_text),
-                                getPaymentMonth(), formatPaymentDate(nextPaymentDate)));
+                        String.format(
+                                mPopupView
+                                        .getResources()
+                                        .getString(R.string.rewards_panel_payout_pending_text),
+                                getPaymentMonth(),
+                                formatPaymentDate(nextPaymentDate)));
+            } else {
+                payoutStatusBannerVisibility = View.GONE;
+                walletBalanceBg = R.drawable.rewards_wallet_balance_bg;
+            }
+            mPayoutStatusBannerLayout.setVisibility(payoutStatusBannerVisibility);
+            if (mRewardsWalletBalance != null) {
+                mRewardsWalletBalance.setBackgroundDrawable(
+                        ResourcesCompat.getDrawable(
+                                ContextUtils.getApplicationContext().getResources(),
+                                walletBalanceBg,
+                                null));
             }
         }
     }
