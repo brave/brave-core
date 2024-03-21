@@ -32,12 +32,12 @@ export const onConnectHardwareWallet = (
   })
 }
 
-export const getBalance = (): Promise<string> => {
-  return new Promise(async (resolve) => {
-    resolve('0')
-  })
-}
-
 export const translateToNftGateway = async (url: string | undefined) => {
   return url
+}
+
+export async function isTokenPinningSupported(
+  token: BraveWallet.BlockchainToken
+) {
+  return token.logo.includes('ipfs')
 }
