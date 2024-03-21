@@ -16,14 +16,14 @@
 namespace ai_chat {
 
 std::optional<std::string> ChooseCaptionTrackUrl(
-    base::Value::List* caption_tracks) {
+    const base::Value::List* caption_tracks) {
   if (!caption_tracks || caption_tracks->empty()) {
     return std::nullopt;
   }
   if (caption_tracks->empty()) {
     return std::nullopt;
   }
-  base::Value::Dict* track;
+  const base::Value::Dict* track;
   // When only single track, use that
   if (caption_tracks->size() == 1) {
     track = caption_tracks->front().GetIfDict();
@@ -63,7 +63,7 @@ std::optional<std::string> ChooseCaptionTrackUrl(
   if (!track) {
     return std::nullopt;
   }
-  std::string* caption_url_raw = track->FindString("baseUrl");
+  const std::string* caption_url_raw = track->FindString("baseUrl");
 
   if (!caption_url_raw) {
     return std::nullopt;
@@ -71,7 +71,8 @@ std::optional<std::string> ChooseCaptionTrackUrl(
   return *caption_url_raw;
 }
 
-std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string& body) {
+std::optional<std::string> ParseAndChooseCaptionTrackUrl(
+    std::string_view body) {
   if (!body.size()) {
     return std::nullopt;
   }
@@ -80,17 +81,17 @@ std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string& body) {
       base::JSONReader::ReadAndReturnValueWithError(body, base::JSON_PARSE_RFC);
 
   if (!result_value.has_value() || result_value->is_string()) {
-    VLOG(1) << __func__ << ": parsing error: " << result_value.ToString();
+    DVLOG(1) << __func__ << ": parsing error: " << result_value.ToString();
     return std::nullopt;
   } else if (!result_value->is_dict()) {
-    VLOG(1) << __func__ << ": parsing error: not a dict";
+    DVLOG(1) << __func__ << ": parsing error: not a dict";
     return std::nullopt;
   }
 
   auto* caption_tracks = result_value->GetDict().FindListByDottedPath(
       "captions.playerCaptionsTracklistRenderer.captionTracks");
   if (!caption_tracks) {
-    VLOG(1) << __func__ << ": no caption tracks found";
+    DVLOG(1) << __func__ << ": no caption tracks found";
     return std::nullopt;
   }
 

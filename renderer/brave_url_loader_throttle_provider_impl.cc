@@ -101,7 +101,7 @@ BraveURLLoaderThrottleProviderImpl::CreateThrottles(
           ai_chat_resource_throttle =
               ai_chat::AIChatResourceSnifferThrottle::MaybeCreateThrottleFor(
                   page_content_delegate->GetWeakPtr(), request.url,
-                  base::SingleThreadTaskRunner::GetCurrentDefault());
+                  base::SequencedTaskRunner::GetCurrentDefault());
       if (ai_chat_resource_throttle) {
         throttles.emplace_back(std::move(ai_chat_resource_throttle));
       }

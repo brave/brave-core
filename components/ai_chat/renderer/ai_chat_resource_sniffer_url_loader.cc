@@ -86,8 +86,6 @@ void AIChatResourceSnifferURLLoader::OnBodyWritable(MojoResult r) {
 }
 
 void AIChatResourceSnifferURLLoader::CompleteLoading(std::string body) {
-  DVLOG(4) << __func__ << ": got body length: " << body.size()
-           << " for url: " << response_url_.spec();
   if (!body.empty()) {
     auto content = std::make_unique<
         AIChatResourceSnifferThrottleDelegate::InterceptedContent>();

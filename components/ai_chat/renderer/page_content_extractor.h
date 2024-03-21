@@ -71,7 +71,7 @@ class PageContentExtractor
   int32_t isolated_world_id_;
 
   std::unique_ptr<AIChatResourceSnifferThrottleDelegate::InterceptedContent>
-      intercepted_content_ = nullptr;
+      intercepted_content_;
 
   base::WeakPtrFactory<PageContentExtractor> weak_ptr_factory_{this};
 };

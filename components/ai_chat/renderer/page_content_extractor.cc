@@ -113,7 +113,7 @@ void PageContentExtractor::ExtractPageContent(
   if (intercepted_content_) {
     auto intercepted_content = std::move(intercepted_content_);
     intercepted_content_.reset();
-    VLOG(1) << "Using intercepted content.";
+    DVLOG(1) << "Using intercepted content.";
     DCHECK_EQ(intercepted_content->type,
               InterceptedContentType::kYouTubeMetadataString)
         << "Unexpected intercepted content type";
@@ -219,11 +219,7 @@ void PageContentExtractor::OnInterceptedPageContentChanged(
   // "page" change.
   mojo::AssociatedRemote<mojom::PageContentExtractorHost> host;
   render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(&host);
-  if (host.is_bound()) {
-    host->OnInterceptedPageContentChanged();
-  } else {
-    DVLOG(1) << __func__ << " - no host bound to forward content event to.";
-  }
+  host->OnInterceptedPageContentChanged();
 }
 
 void PageContentExtractor::BindReceiver(

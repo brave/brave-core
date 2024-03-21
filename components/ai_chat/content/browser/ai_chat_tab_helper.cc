@@ -67,7 +67,7 @@ AIChatTabHelper::PDFA11yInfoLoadObserver::~PDFA11yInfoLoadObserver() = default;
 void AIChatTabHelper::BindPageContentExtractorHost(
     content::RenderFrameHost* rfh,
     mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
-  DCHECK(rfh);
+  CHECK(rfh);
   if (!rfh->IsInPrimaryMainFrame()) {
     DVLOG(4) << "Not binding extractor host to non-main frame";
     return;
@@ -221,7 +221,6 @@ void AIChatTabHelper::OnFaviconUpdated(
 
 // mojom::PageContentExtractorHost
 void AIChatTabHelper::OnInterceptedPageContentChanged() {
-  DVLOG(2) << __func__;
   // Maybe mark that the page changed, if we didn't detect it already via title
   // change after a same-page navigation. This is the main benefit of this
   // function.

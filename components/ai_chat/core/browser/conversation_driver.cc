@@ -472,10 +472,10 @@ void ConversationDriver::OnGeneratePageContentComplete(
     std::string contents_text,
     bool is_video,
     std::string invalidation_token) {
-  VLOG(1) << "OnGeneratePageContentComplete";
-  VLOG(4) << "Contents(is_video=" << is_video
-          << ", invalidation_token=" << invalidation_token
-          << "): " << contents_text;
+  DVLOG(1) << "OnGeneratePageContentComplete";
+  DVLOG(4) << "Contents(is_video=" << is_video
+           << ", invalidation_token=" << invalidation_token
+           << "): " << contents_text;
   if (navigation_id != current_navigation_id_) {
     VLOG(1) << __func__ << " for a different navigation. Ignoring.";
     return;
@@ -483,14 +483,12 @@ void ConversationDriver::OnGeneratePageContentComplete(
 
   // Ignore if we received content from observer in the meantime
   if (!is_page_text_fetch_in_progress_) {
-    VLOG(1) << __func__
-            << " but already received contents from observer. Ignoring.";
+    DVLOG(1) << __func__
+             << " but already received contents from observer. Ignoring.";
     return;
   }
 
   OnPageContentUpdated(contents_text, is_video, invalidation_token);
-
-  VLOG(4) << "calling callback with text: " << article_text_;
 
   std::move(callback).Run(article_text_, is_video_,
                           content_invalidation_token_);
@@ -500,8 +498,8 @@ void ConversationDriver::OnExistingGeneratePageContentComplete(
     GetPageContentCallback callback) {
   // Don't need to check navigation ID since existing event will be
   // deleted when there's a new conversation.
-  VLOG(1) << "Existing page content fetch completed, proceeding with "
-             "the results of that operation.";
+  DVLOG(1) << "Existing page content fetch completed, proceeding with "
+              "the results of that operation.";
   std::move(callback).Run(article_text_, is_video_,
                           content_invalidation_token_);
 }

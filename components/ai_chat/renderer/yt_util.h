@@ -25,11 +25,11 @@ inline constexpr auto kYouTubeHosts =
 // Extract a caption url from an array of YT caption tracks, from the YT page
 // API.
 std::optional<std::string> ChooseCaptionTrackUrl(
-    base::Value::List* caption_tracks);
+    const base::Value::List* caption_tracks);
 
 // Parse YT metadata json string and choose the most appropriate caption track
 // url.
-std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string& body);
+std::optional<std::string> ParseAndChooseCaptionTrackUrl(std::string_view body);
 
 }  // namespace ai_chat
 

@@ -29,7 +29,6 @@ AIChatResourceSnifferThrottle::MaybeCreateThrottleFor(
   // |mojom::PageContent|.
   if (url.SchemeIsHTTPOrHTTPS() && base::Contains(kYouTubeHosts, url.host()) &&
       base::EqualsCaseInsensitiveASCII(url.path(), kYouTubePlayerAPIPath)) {
-    VLOG(1) << __func__ << " Creating throttle for url: " << url.spec();
     return std::make_unique<AIChatResourceSnifferThrottle>(task_runner,
                                                            delegate);
   }
