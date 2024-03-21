@@ -294,7 +294,7 @@ void AdsServiceImpl::RegisterResourceComponentsForCurrentCountryCode() const {
   RegisterResourceComponentsForCountryCode(country_code);
 }
 
-bool AdsServiceImpl::UserHasOptedInToBraveRewards() const {
+bool AdsServiceImpl::UserHasJoinedBraveRewards() const {
   return profile_->GetPrefs()->GetBoolean(brave_rewards::prefs::kEnabled);
 }
 
@@ -342,9 +342,8 @@ void AdsServiceImpl::GetDeviceIdAndMaybeStartBatAdsServiceCallback(
 
 bool AdsServiceImpl::CanStartBatAdsService() const {
   return ShouldAlwaysRunService() || UserHasOptedInToBraveNewsAds() ||
-         (UserHasOptedInToBraveRewards() &&
-          (UserHasOptedInToNotificationAds() ||
-           UserHasOptedInToNewTabPageAds()));
+         (UserHasJoinedBraveRewards() && (UserHasOptedInToNotificationAds() ||
+                                          UserHasOptedInToNewTabPageAds()));
 }
 
 void AdsServiceImpl::MaybeStartBatAdsService() {

@@ -86,6 +86,4 @@ TEST_F(BraveAdsConfirmationQueueItemDelayTest,
                 confirmation_queue_item));
 }
 
-// TODO(tmancey): Add unit tests for `RebuildConfirmationQueueItem`.
-
 }  // namespace brave_ads
