@@ -5,6 +5,7 @@
 
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 
+#include <cstdint>
 #include <memory>
 #include <string>
 #include <utility>
@@ -19,6 +20,7 @@
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
 #include "brave/components/ai_chat/core/common/features.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/favicon/content/content_favicon_driver.h"
 #include "components/grit/brave_components_strings.h"
@@ -31,6 +33,8 @@
 #include "content/public/browser/navigation_entry.h"
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
+#include "content/public/browser/web_contents.h"
+#include "mojo/public/cpp/bindings/self_owned_receiver.h"
 #include "pdf/buildflags.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/base/l10n/l10n_util.h"
@@ -58,6 +62,30 @@ void AIChatTabHelper::PDFA11yInfoLoadObserver::AccessibilityEventReceived(
 }
 
 AIChatTabHelper::PDFA11yInfoLoadObserver::~PDFA11yInfoLoadObserver() = default;
+
+// static
+void AIChatTabHelper::BindPageContentExtractorHost(
+    content::RenderFrameHost* rfh,
+    mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
+  CHECK(rfh);
+  if (!rfh->IsInPrimaryMainFrame()) {
+    DVLOG(4) << "Not binding extractor host to non-main frame";
+    return;
+  }
+  auto* sender = content::WebContents::FromRenderFrameHost(rfh);
+  if (!sender) {
+    DVLOG(1) << "Cannot bind extractor host, no valid WebContents";
+    return;
+  }
+  auto* tab_helper = AIChatTabHelper::FromWebContents(sender);
+  if (!tab_helper) {
+    DVLOG(1) << "Cannot bind extractor host, no AIChatTabHelper - "
+             << sender->GetVisibleURL();
+    return;
+  }
+  DVLOG(4) << "Binding extractor host to AIChatTabHelper";
+  tab_helper->BindPageContentExtractorReceiver(std::move(receiver));
+}
 
 AIChatTabHelper::AIChatTabHelper(
     content::WebContents* web_contents,
@@ -127,6 +155,7 @@ void AIChatTabHelper::DidFinishNavigation(
   // and treating it as a "fresh page".
   is_same_document_navigation_ = navigation_handle->IsSameDocument();
   pending_navigation_id_ = navigation_handle->GetNavigationId();
+
   // Experimentally only call |OnNewPage| for same-page navigations _if_
   // it results in a page title change (see |TtileWasSet|).
   if (!is_same_document_navigation_) {
@@ -137,7 +166,7 @@ void AIChatTabHelper::DidFinishNavigation(
 void AIChatTabHelper::TitleWasSet(content::NavigationEntry* entry) {
   DVLOG(3) << __func__ << entry->GetTitle();
   if (is_same_document_navigation_) {
-    DVLOG(3) << "Same document navigation detected new \"page\" - calling "
+    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
                 "OnNewPage()";
     // Page title modification after same-document navigation seems as good a
     // time as any to assume meaningful changes occured to the content.
@@ -190,6 +219,22 @@ void AIChatTabHelper::OnFaviconUpdated(
   OnFaviconImageDataChanged();
 }
 
+// mojom::PageContentExtractorHost
+void AIChatTabHelper::OnInterceptedPageContentChanged() {
+  // Maybe mark that the page changed, if we didn't detect it already via title
+  // change after a same-page navigation. This is the main benefit of this
+  // function.
+  if (is_same_document_navigation_) {
+    DVLOG(2) << "Same document navigation detected new \"page\" - calling "
+                "OnNewPage()";
+    // Page title modification after same-document navigation seems as good a
+    // time as any to assume meaningful changes occured to the content.
+    OnNewPage(pending_navigation_id_);
+    // Don't respond to further TitleWasSet
+    is_same_document_navigation_ = false;
+  }
+}
+
 // ai_chat::ConversationDriver
 
 GURL AIChatTabHelper::GetPageURL() const {
@@ -212,6 +257,12 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
   return web_contents()->GetTitle();
+}
+
+void AIChatTabHelper::BindPageContentExtractorReceiver(
+    mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost> receiver) {
+  page_content_extractor_receiver_.reset();
+  page_content_extractor_receiver_.Bind(std::move(receiver));
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

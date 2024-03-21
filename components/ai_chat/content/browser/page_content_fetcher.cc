@@ -108,11 +108,13 @@ net::NetworkTrafficAnnotationTag GetGithubNetworkTrafficAnnotationTag() {
 
 class PageContentFetcher {
  public:
+  explicit PageContentFetcher(
+      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+      : url_loader_factory_(url_loader_factory) {}
+
   void Start(mojo::Remote<mojom::PageContentExtractor> content_extractor,
              std::string_view invalidation_token,
-             scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
              FetchPageContentCallback callback) {
-    url_loader_factory_ = url_loader_factory;
     content_extractor_ = std::move(content_extractor);
     if (!content_extractor_) {
       DeleteSelf();
@@ -129,9 +131,7 @@ class PageContentFetcher {
 
   void StartGithub(
       GURL patch_url,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory,
       FetchPageContentCallback callback) {
-    url_loader_factory_ = url_loader_factory;
     auto request = std::make_unique<network::ResourceRequest>();
     request->url = patch_url;
     request->load_flags = net::LOAD_DO_NOT_SAVE_COOKIES;
@@ -151,17 +151,6 @@ class PageContentFetcher {
                                       std::move(callback), std::move(loader));
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
-  }
-
- private:
-  void DeleteSelf() { delete this; }
-
-  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
-                               std::string content = "",
-                               std::string invalidation_token = "",
-                               bool is_video = false) {
-    std::move(callback).Run(content, is_video, invalidation_token);
-    delete this;
   }
 
   void OnTabContentResult(FetchPageContentCallback callback,
@@ -224,6 +213,17 @@ class PageContentFetcher {
                        std::move(loader), is_youtube, new_invalidation_token);
     loader_ptr->DownloadToString(url_loader_factory_.get(),
                                  std::move(on_response), 2 * 1024 * 1024);
+  }
+
+ private:
+  void DeleteSelf() { delete this; }
+
+  void SendResultAndDeleteSelf(FetchPageContentCallback callback,
+                               std::string content = "",
+                               std::string invalidation_token = "",
+                               bool is_video = false) {
+    std::move(callback).Run(content, is_video, invalidation_token);
+    delete this;
   }
 
   void OnYoutubeTranscriptXMLParsed(
@@ -499,16 +499,16 @@ void FetchPageContent(content::WebContents* web_contents,
     }
   }
 #endif
-  auto* fetcher = new PageContentFetcher();
   auto* loader = url_loader_factory_for_test.get()
                      ? url_loader_factory_for_test.get()
                      : web_contents->GetBrowserContext()
                            ->GetDefaultStoragePartition()
                            ->GetURLLoaderFactoryForBrowserProcess()
                            .get();
+  auto* fetcher = new PageContentFetcher(loader);
   auto patch_url = GetGithubPatchURLForPRURL(url);
   if (patch_url) {
-    fetcher->StartGithub(patch_url.value(), loader, std::move(callback));
+    fetcher->StartGithub(patch_url.value(), std::move(callback));
     return;
   }
 
@@ -516,8 +516,7 @@ void FetchPageContent(content::WebContents* web_contents,
   // GetRemoteInterfaces() cannot be null if the render frame is created.
   primary_rfh->GetRemoteInterfaces()->GetInterface(
       extractor.BindNewPipeAndPassReceiver());
-  fetcher->Start(std::move(extractor), invalidation_token, loader,
-                 std::move(callback));
+  fetcher->Start(std::move(extractor), invalidation_token, std::move(callback));
 }
 
 }  // namespace ai_chat
