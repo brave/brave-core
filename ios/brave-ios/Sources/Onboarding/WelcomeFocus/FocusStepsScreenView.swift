@@ -3,14 +3,18 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Preferences
 import SwiftUI
 
 struct FocusStepsView: View {
   var namespace: Namespace.ID
 
+  @Environment(\.dismiss) private var dismiss
+
   @State private var indicatorIndex = 0
-  @State private var isP3AViewPresented: Bool = false
   @State private var opacity = 0.0
+  @State private var isP3AViewPresented = false
+  @State private var shouldDismiss = false
 
   var body: some View {
     NavigationView {
@@ -80,8 +84,29 @@ struct FocusStepsView: View {
           FocusP3AScreenView()
         }
       }
+      .overlay(alignment: .topTrailing) {
+        Button(
+          action: {
+            shouldDismiss = true
+          },
+          label: {
+            Image("focus-icon-close", bundle: .module)
+              .resizable()
+              .frame(width: 32, height: 32)
+              .padding(.trailing, 24)
+          }
+        )
+      }
+      .onChange(of: shouldDismiss) { shouldDismiss in
+        if shouldDismiss {
+          Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          dismiss()
+        }
+      }
+      .navigationBarHidden(true)
     }
-    .navigationBarHidden(true)
   }
 }
 

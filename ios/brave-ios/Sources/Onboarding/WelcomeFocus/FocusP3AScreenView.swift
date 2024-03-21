@@ -3,13 +3,17 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import Preferences
 import SafariServices
 import SwiftUI
 
 struct FocusP3AScreenView: View {
+  @Environment(\.dismiss) private var dismiss
+
   @State private var isP3AToggleOn = true
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
+  @State private var shouldDismiss = false
 
   var body: some View {
     NavigationView {
@@ -114,6 +118,27 @@ struct FocusP3AScreenView: View {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
           FocusSystemSettingsView()
         }
+      }
+    }
+    .overlay(alignment: .topTrailing) {
+      Button(
+        action: {
+          shouldDismiss = true
+        },
+        label: {
+          Image("focus-icon-close", bundle: .module)
+            .resizable()
+            .frame(width: 32, height: 32)
+            .padding(.trailing, 24)
+        }
+      )
+    }
+    .onChange(of: shouldDismiss) { shouldDismiss in
+      if shouldDismiss {
+        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+        dismiss()
       }
     }
     .navigationBarHidden(true)

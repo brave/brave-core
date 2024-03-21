@@ -5,10 +5,14 @@
 
 import BraveUI
 import Lottie
+import Preferences
 import SwiftUI
 
 struct FocusSystemSettingsView: View {
   @Environment(\.colorScheme) private var colorScheme
+  @Environment(\.dismiss) private var dismiss
+
+  @State private var shouldDismiss = false
 
   var body: some View {
     NavigationView {
@@ -57,6 +61,8 @@ struct FocusSystemSettingsView: View {
                 UIApplication.shared.open(settingsUrl)
               }
 
+              finishOnboarding()
+
               // TODO: Show URL Bar Onboarding
             },
             label: {
@@ -73,6 +79,8 @@ struct FocusSystemSettingsView: View {
           .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
 
           Button(action: {
+            finishOnboarding()
+
             // TODO: Show URL Bar Onboarding
           }) {
             Text("I’ll do this Later...")
@@ -89,7 +97,35 @@ struct FocusSystemSettingsView: View {
       .padding(.horizontal, 20)
       .background(Color(braveSystemName: .pageBackground))
     }
+    .overlay(alignment: .topTrailing) {
+      Button(
+        action: {
+          shouldDismiss = true
+        },
+        label: {
+          Image("focus-icon-close", bundle: .module)
+            .resizable()
+            .frame(width: 32, height: 32)
+            .padding(.trailing, 24)
+        }
+      )
+    }
+    .onChange(of: shouldDismiss) { shouldDismiss in
+      if shouldDismiss {
+        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+        Preferences.AppState.shouldDeferPromotedPurchase.value = false
+        
+        finishOnboarding()
+      }
+    }
     .navigationBarHidden(true)
+  }
+  
+  private func finishOnboarding() {
+    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.AppState.shouldDeferPromotedPurchase.value = false
+    
+    dismiss()
   }
 }
 
