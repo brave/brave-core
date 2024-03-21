@@ -8,15 +8,17 @@ import { useHistory } from 'react-router'
 
 // utils
 import { WalletRoutes } from '../../../../../constants/types'
+import { getLocale } from '../../../../../../common/locale'
 
 // components
 import { OnboardingContentLayout } from '../onboarding-content-layout/onboarding-content-layout'
+
+// styles
 import {
   VerticalDivider,
   VerticalSpace
 } from '../../../../../components/shared/style'
 import { ImportTypeAction } from './components/import-type-action'
-import { getLocale } from '../../../../../../common/locale'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',
@@ -29,11 +31,15 @@ const hardwareWalletIcons = ['trezor-color', 'wallet-ledger']
 export const OnboardingImportWalletType = () => {
   const history = useHistory()
   return (
-    <OnboardingContentLayout title={getLocale('braveWalletImportWalletTypeTitle')}>
+    <OnboardingContentLayout
+      title={getLocale('braveWalletImportWalletTypeTitle')}
+    >
       <VerticalSpace space='92px' />
       <ImportTypeAction
         title={getLocale('braveWalletImportWalletTypeHotWalletTitle')}
-        description={getLocale('braveWalletImportWalletTypeHotWalletDescription')}
+        description={getLocale(
+          'braveWalletImportWalletTypeHotWalletDescription'
+        )}
         icons={softwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
       />
@@ -42,7 +48,9 @@ export const OnboardingImportWalletType = () => {
       <VerticalSpace space='8px' />
       <ImportTypeAction
         title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
-        description={getLocale('braveWalletImportWalletTypeHardwareWalletDescription')}
+        description={getLocale(
+          'braveWalletImportWalletTypeHardwareWalletDescription'
+        )}
         icons={hardwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingHardwareWalletTerms)}
       />

@@ -13,9 +13,7 @@ export const Tooltip = styled(LeoTooltip)`
   --leo-tooltip-background: ${leo.color.container.background};
   --leo-tooltip-text-color: red;
   --leo-tooltip-padding: 16px;
-  border-radius: var(--Spacing-None, 0px);
-  opacity: var(--Elevation-xxs, 1);
-
+  border-radius: ${leo.spacing.none};
   --leo-tooltip-shadow: 0px 4px 16px -2px rgba(0, 0, 0, 0.1),
     0px 1px 0px 0px rgba(0, 0, 0, 0.05);
 `
@@ -31,11 +29,7 @@ export const CriteriaCheckContainer = styled.div`
 `
 
 export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
-  font-family: 'Poppins';
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
+  font: ${leo.font.default.regular};
   margin-bottom: 6px;
   vertical-align: middle;
   color: ${leo.color.text.primary};
@@ -44,12 +38,8 @@ export const PasswordStrengthText = styled.p<{ isStrong?: boolean }>`
 `
 
 export const PasswordStrengthHeading = styled(PasswordStrengthText)`
-  font-family: 'Poppins';
+  font: ${leo.font.default.regular};
   color: ${leo.color.text.primary};
-  font-size: 12px;
-  font-style: normal;
-  font-weight: 400;
-  line-height: 20px;
   margin-bottom: ${leo.spacing.xs};
 `
 

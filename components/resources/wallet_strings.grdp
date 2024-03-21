@@ -243,6 +243,7 @@
   <message name="IDS_BRAVE_WALLET_LOAD_MORE_ACCOUNTS_HARDWARE_WALLET" desc="Connect hardware wallet load more button">Load more</message>
   <message name="IDS_BRAVE_WALLET_LOADING_MORE_ACCOUNTS_HARDWARE_WALLET" desc="Connect hardware wallet loading more button">Loading more...</message>
   <message name="IDS_BRAVE_WALLET_SEARCH_SCANNED_ACCOUNTS" desc="Connect hardware wallet search input placeholder">Search account</message>
+  <message name="IDS_BRAVE_WALLET_H_D_PATH" desc="HD Path label text">HD Path</message>
   <message name="IDS_BRAVE_WALLET_SWITCH_H_D_PATH_TEXT_HARDWARE_WALLET" desc="Connect hardware wallet connected description">Try switching HD path (above) if you cannot find the account you are looking for.</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_LIVE_DERIVATION_PATH" desc="Connect hardware wallet ledger live selection">Ledger Live</message>
   <message name="IDS_BRAVE_WALLET_LEDGER_LEGACY_DERIVATION_PATH" desc="Connect hardware wallet legacy selection">Legacy (MEW/MyCrypto)</message>
@@ -250,6 +251,8 @@
   <message name="IDS_BRAVE_WALLET_AUTHORIZE_HARDWARE_WALLET" desc="Authorize hardware wallet page title">Authorize your wallet</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET" desc="Title for connect hardware wallet page">Connect hardware wallet</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET_DESCRIPTION" desc="Description for connect hardware wallet page">We currently support <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> and <ph name="HARDWARE_DEVICE1"><ex>Trezor</ex>$2</ph> devices.</message>
+  <message name="IDS_BRAVE_WALLET_IMPORT_HARDWARE_WALLET_DESCRIPTION" desc="Description for import hardware wallet page">Connect your hardware wallet to manage your assets directly from Brave Wallet</message>
+  <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_WALLET_SELECT_BLOCKCHAIN" desc="Page title for selecting blockchain for hardware wallet">Select a blockchain to import your hardware wallet</message>
   <message name="IDS_BRAVE_WALLET_CONNECT_HARDWARE_DEVICE_DESCRIPTION" desc="Connect a hardware wallet description">Connect your <ph name="HARDWARE_DEVICE"><ex>Ledger</ex>$1</ph> device to Brave Wallet</message>
   <message name="IDS_BRAVE_WALLET_UNKNOWN_INTERNAL_ERROR" desc="Connect hardware wallet connection error">Unknown error, please reconnect your hardware wallet and try again.</message>
   <message name="IDS_BRAVE_WALLET_ACCOUNT_SETTINGS_DETAILS" desc="Account settings modal details button">Details</message>
@@ -779,6 +782,7 @@
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING" desc="A warning regarding recovery phrase safety">Brave cannot access your secret recovery phrase. Keep it safe, and never share it with anyone else.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_WARNING_IMPORTANT" desc="An important warning regarding recovery phrase safety">Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_WORD_INSTRUCTIONS" desc="Recovery word instructions">Enter the word in position <ph name="VALUE">$1<ex>2</ex></ph> from your recovery phrase.</message>
+  <message name="IDS_BRAVE_WALLET_VERIFY_RECOVERY_PHRASE_GO_BACK" desc="Label for button to go back to previous page">Forgot to save? Go back</message>
   <message name="IDS_BRAVE_WALLET_RECOVERY_PHRASE_BACKUP_TITLE" desc="Title to recovery phrase backup screen">Back up your wallet recovery phrase</message>
   <message name="IDS_BRAVE_WALLET_COPIED_TO_CLIPBOARD" desc="Alert confirming that a value was copied to the system clipboard">Copied to clipboard</message>
   <message name="IDS_BRAVE_WALLET_CLICK_TO_SEE_RECOVERY_PHRASE" desc="Reveal hidden recovery phrase button text">Click to see your phrase</message>

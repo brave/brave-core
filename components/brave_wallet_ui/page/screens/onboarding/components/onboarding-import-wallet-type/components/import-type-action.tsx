@@ -4,6 +4,8 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// styles
 import {
   ActionIcon,
   ActionWrapper,
@@ -11,7 +13,7 @@ import {
   RightArrow,
   Subtitle,
   Title
-} from '../onboarding-import-wallet-type.style'
+} from './import-type-action.style'
 import { Row, VerticalSpace } from '../../../../../../components/shared/style'
 
 interface Props {

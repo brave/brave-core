@@ -5,6 +5,9 @@
 
 import * as React from 'react'
 
+// utils
+import { getLocale, splitStringForTag } from '../../../../../../common/locale'
+
 // styles
 import {
   Bold,
@@ -15,7 +18,6 @@ import {
   CloseIcon
 } from '../verify-recovery-phrase.style'
 import { Column, VerticalSpace } from '../../../../../components/shared/style'
-import { getLocale, splitStringForTag } from '../../../../../../common/locale'
 
 const alertSlotStyle = {
   display: 'flex',

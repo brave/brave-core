@@ -29,12 +29,12 @@ import { WalletPageActions } from '../../../actions'
 // components
 import Button from '@brave/leo/react/button'
 import { OnboardingContentLayout } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout'
+import { PhraseInput } from './components/phrase-input'
 
 // styles
 import { Title } from '../../onboarding/components/onboarding-content-layout/onboarding-content-layout.style'
 import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
 import { VerificationProgress } from './components/verification-progress'
-import { PhraseInput } from './components/phrase-input'
 import { BackButton } from './verify-recovery-phrase.style'
 import { ContinueButton } from '../../onboarding/onboarding.style'
 
@@ -144,7 +144,7 @@ export const VerifyRecoveryPhrase = () => {
           history.push(WalletRoutes.OnboardingBackupRecoveryPhrase)
         }
       >
-        Forgot to save? Go back
+        {getLocale('braveWalletVerifyRecoveryPhraseGoBack')}
       </BackButton>
       <VerticalSpace space='100px' />
 

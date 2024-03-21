@@ -55,11 +55,8 @@ export const Input = styled.input<{ hasError: boolean }>`
 `
 
 export const InputLabel = styled.label`
-  font-family: 'Poppins';
-  font-size: 12px;
-  font-style: normal;
+  font: ${leo.font.default.regular};
   font-weight: 600;
-  line-height: 20px;
   color: ${leo.color.text.primary};
   margin-bottom: 4px;
 `

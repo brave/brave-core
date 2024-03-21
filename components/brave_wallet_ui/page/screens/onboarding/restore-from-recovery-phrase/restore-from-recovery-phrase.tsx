@@ -99,6 +99,8 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
   // methods
   const onPhraseWordChange = React.useCallback(
     (index: number, value: string) => {
+      // when the a recovery phrase is pasted,
+      // split the words and fill the input fields
       if (value.includes(' ')) {
         const words = value.split(' ')
         setPhraseWords((prev) => {
@@ -111,6 +113,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
           return newValues
         })
       } else {
+        // update the word at the index with the new value entered
         setPhraseWords((prev) => {
           const newValues = [...prev]
           newValues[index] = value

@@ -87,6 +87,7 @@ export const Heading = styled.h1`
   font: ${leo.font.heading.display1};
   color: ${leo.color.text.primary};
   margin: 0;
+  padding-bottom: 64px;
 
   @media screen and (max-width: ${layoutPanelWidth}px) {
     font-size: 36px;

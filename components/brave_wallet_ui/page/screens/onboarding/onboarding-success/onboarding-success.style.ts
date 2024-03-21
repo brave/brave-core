@@ -24,7 +24,7 @@ export const Title = styled.h2`
   color: ${leo.color.text.primary};
   text-align: center;
   font: ${leo.font.heading.h1};
-  margin: 0 0 0 0;
+  margin: 0;
   padding: 0;
 `
 

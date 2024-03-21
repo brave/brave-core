@@ -14,6 +14,7 @@ import { usePasswordStrength } from '../../../common/hooks/use-password-strength
 // components
 import { PasswordStrengthBar } from './password-strength-bar'
 import { PasswordInput } from './password-input-v2'
+import PasswordStrengthTooltip from '../tooltip/password-strength-tooltip'
 
 // style
 import { Row } from '../../shared/style'
@@ -25,7 +26,6 @@ import {
   TooltipWrapper
 } from './new-password-input.styles'
 import { Asterisk, InputLabel } from './password-input-v2.style'
-import PasswordStrengthTooltip from '../tooltip/password-strength-tooltip'
 
 export interface NewPasswordValues {
   password: string

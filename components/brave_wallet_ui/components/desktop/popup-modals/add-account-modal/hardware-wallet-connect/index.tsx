@@ -172,7 +172,7 @@ export const HardwareWalletConnect = ({
   const onChangeDerivationScheme = React.useCallback(
     (scheme: HardwareDerivationScheme) => {
       if (!selectedHardwareWallet) return
-      
+
       setSelectedDerivationScheme(scheme)
       setAccounts([])
       onConnectHardwareWallet({
@@ -237,6 +237,7 @@ export const HardwareWalletConnect = ({
       Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
     )
     setSelectedHardwareWallet(vendor)
+    onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
   }, [])
 
   const onSelectLedger = React.useCallback(() => {
@@ -245,7 +246,6 @@ export const HardwareWalletConnect = ({
     }
 
     selectVendor(BraveWallet.LEDGER_HARDWARE_VENDOR)
-    onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
   }, [selectedHardwareWallet, selectVendor])
 
   const onSelectTrezor = React.useCallback(() => {
@@ -254,8 +254,7 @@ export const HardwareWalletConnect = ({
     }
 
     selectVendor(BraveWallet.TREZOR_HARDWARE_VENDOR)
-    onSelectVendor?.(BraveWallet.TREZOR_HARDWARE_VENDOR)
-  }, [selectedHardwareWallet, selectVendor, onSelectVendor])
+  }, [selectedHardwareWallet, selectVendor])
 
   const onSubmit = React.useCallback(() => {
     if (!selectedHardwareWallet) return

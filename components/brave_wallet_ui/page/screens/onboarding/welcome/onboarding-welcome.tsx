@@ -80,7 +80,6 @@ export const OnboardingWelcome = () => {
           </Row>
           <VerticalSpace space={leo.spacing['5Xl']} />
           <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
-          <VerticalSpace space='64px' />
 
           <ActionsContainer>
             <WelcomeAction

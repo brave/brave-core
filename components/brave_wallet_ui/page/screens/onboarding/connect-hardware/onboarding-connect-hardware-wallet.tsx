@@ -16,11 +16,12 @@ import { CreateAccountOptions } from '../../../../options/create-account-options
 
 // components
 import { AccountType } from './components/account-type'
+import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 // styles
-import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 import { VerticalSpace } from '../../../../components/shared/style'
 import { Divider } from './components/account-type.style'
+import { getLocale } from '../../../../../common/locale'
 
 const accountOptions = CreateAccountOptions({
   isBitcoinEnabled: false, // No bitcoin hardware accounts by now.
@@ -45,7 +46,7 @@ export const OnboardingConnectHardwareWallet = () => {
   )
 
   return (
-    <OnboardingContentLayout title='Select a blockchain to import your hardware wallet'>
+    <OnboardingContentLayout title={getLocale('braveWalletConnectHardwareWalletSelectBlockchain')}>
       <VerticalSpace space='56px' />
       {accountOptions.map((option, index) => {
         return (

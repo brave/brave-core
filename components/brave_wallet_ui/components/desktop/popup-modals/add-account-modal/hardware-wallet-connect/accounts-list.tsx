@@ -221,7 +221,7 @@ export const HardwareWalletAccountsList = ({
                 justifyContent='space-between'
                 slot='label'
               >
-                <DropdownLabel>HD Path</DropdownLabel>
+                <DropdownLabel>{getLocale('braveWalletHDPath')}</DropdownLabel>
                 <HelpLink
                   href='https://support.brave.com/hc/en-us/categories/360001059151-Brave-Wallet'
                   target='_blank'
@@ -310,11 +310,13 @@ export const HardwareWalletAccountsList = ({
           filteredAccountList.length > 0 && (
             <AccountListContainer>
               <AccountListHeader>
-                <div>Account</div>
-                <div>Connect</div>
+                <div>{getLocale('braveWalletSubviewAccount')}</div>
+                <div>{getLocale('braveWalletAddAccountConnect')}</div>
               </AccountListHeader>
               <AccountListContent>
                 {filteredAccountList.map((account) => {
+                  const isPreAdded = isPreAddedAccount(account)
+
                   return (
                     <AccountListItem
                       key={account.derivationPath}
@@ -323,9 +325,9 @@ export const HardwareWalletAccountsList = ({
                       selected={
                         selectedDerivationPaths.includes(
                           account.derivationPath
-                        ) || isPreAddedAccount(account)
+                        ) || isPreAdded
                       }
-                      disabled={isPreAddedAccount(account)}
+                      disabled={isPreAdded}
                       onSelect={onSelectAccountCheckbox(account)}
                     />
                   )

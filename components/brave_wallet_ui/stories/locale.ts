@@ -228,12 +228,14 @@ provideStrings({
     'Recovery phrase must be 12, 15, 18, 21, or 24 words long',
   braveWalletInvalidMnemonicError:
     'The mnemonic being imported is not valid for Brave Wallet',
-  braveWalletImportWalletTypeTitle: 'Which type of wallet would you like to import?',
+  braveWalletImportWalletTypeTitle:
+    'Which type of wallet would you like to import?',
   braveWalletImportWalletTypeHotWalletTitle: 'Ethereum/Solana/Filecoin wallet',
-  braveWalletImportWalletTypeHotWalletDescription: 'Import your seed phrase from an existing wallet',
+  braveWalletImportWalletTypeHotWalletDescription:
+    'Import your seed phrase from an existing wallet',
   braveWalletImportWalletTypeHardwareWalletTitle: 'Hardware wallet',
-  braveWalletImportWalletTypeHardwareWalletDescription: 'Connect your hardware wallet with Brave',
-
+  braveWalletImportWalletTypeHardwareWalletDescription:
+    'Connect your hardware wallet with Brave',
 
   // Onboarding - Backup Wallet - Intro
   braveWalletOnboardingRecoveryPhraseBackupIntroTitle:
@@ -244,6 +246,7 @@ provideStrings({
     'Keep it in a secure place that is not accessible to others and avoid sharing it with anyone.',
   braveWalletRecoveryWordInstructions:
     'Enter the word in position $1 from your recovery phrase.',
+  braveWalletVerifyRecoveryPhraseGoBack: 'Forgot to save? Go back',
 
   // Onboarding - Backup Wallet - Recovery Phrase Backup
   braveWalletRecoveryPhraseBackupTitle: 'Back up your wallet recovery phrase',
@@ -426,6 +429,7 @@ provideStrings({
   braveWalletLoadMoreAccountsHardwareWallet: 'Load more',
   braveWalletLoadingMoreAccountsHardwareWallet: 'Loading more...',
   braveWalletSearchScannedAccounts: 'Search account',
+  braveWalletHDPath: 'HD path',
   braveWalletSwitchHDPathTextHardwareWallet:
     'Try switching HD path (above) if you ' +
     'cannot find the account you are looking for.',
@@ -436,9 +440,12 @@ provideStrings({
   braveWalletConnectHardwareSearchNothingFound: 'No results found.',
   braveWalletAuthorizeHardwareWallet: 'Authorize your wallet',
   braveWalletConnectHardwareWallet: 'Connect hardware wallet',
-  braveWallectConnectHardwareDescription: 'We currently support $1 and $2 devices.',
-  braveWalletImportHardwareWalletDescription: 'Connect your hardware wallet to manage your assets directly from Brave Wallet',
-
+  braveWallectConnectHardwareDescription:
+    'We currently support $1 and $2 devices.',
+  braveWalletImportHardwareWalletDescription:
+    'Connect your hardware wallet to manage your assets directly from Brave Wallet',
+  braveWalletConnectHardwareWalletSelectBlockchain:
+    'Select a blockchain to import your hardware wallet',
 
   // Account Settings Modal
   braveWalletAccountSettingsDetails: 'Details',
