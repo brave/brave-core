@@ -12,6 +12,7 @@ libipld-core="0.16.0"
 libipld-cbor="0.16.0"
 libipld-pb="0.16.0"
 libipld-json="0.16.0"
+quick-protobuf="0.8.1"
 
 [lib]
 name = "ipfs_cxx"

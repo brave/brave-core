@@ -139,7 +139,12 @@ bool Block::IsRoot() const {
 }
 
 bool Block::IsMetadata() const {
-  return !metadata_.empty() && !metadata_.FindList("roots") &&
+  // LOG(INFO) << "[IPFS] !metadata_.empty():" << !metadata_.empty()
+  // << "\r\n!metadata_.FindList(\"roots\"):" << !metadata_.FindList("roots")
+  // << "\r\nmetadata_.FindList(kDjLinks):" << metadata_.FindList(kDjLinks)
+  // << "\r\nmetadata_.FindList(kDjData):" << metadata_.FindList(kDjData)
+  // ;  
+  return !IsRoot() && !IsContentPackedInsideOfData() &&
          (metadata_.FindList(kDjLinks) || metadata_.FindList(kDjData));
 }
 
@@ -152,7 +157,7 @@ bool Block::IsFolder() const {
 }
 
 bool Block::IsContent() const {
-  return metadata_.empty() && data_ && !data_->empty();
+  return IsContentPackedAsRaw() || IsContentPackedInsideOfData();
 }
 
 absl::optional<bool> Block::IsVerified() const {
@@ -164,7 +169,15 @@ const base::Value::Dict& Block::Meta() const {
 }
 
 const std::vector<uint8_t>* Block::GetContentData() const {
-  return data_.get();
+  if(IsContentPackedAsRaw()) {
+    return data_.get();
+  }
+
+  if(IsContentPackedInsideOfData()) {
+    return &djdata_->data;
+  }
+
+  return nullptr;
 }
 
 const std::vector<DJLink>* Block::GetLinks() const {
@@ -173,6 +186,15 @@ const std::vector<DJLink>* Block::GetLinks() const {
 
 const DjData* Block::GetData() const {
   return djdata_.get();
+}
+
+bool Block::IsContentPackedAsRaw() const {
+  return metadata_.empty() && data_ && !data_->empty();
+}
+
+bool Block::IsContentPackedInsideOfData() const {
+  return !metadata_.empty() && djdata_ && djdata_->type == DjDataType::kFile &&
+         (!djlinks_ || djlinks_->empty()) && !djdata_->data.empty();
 }
 
 std::unique_ptr<Block> BlockFactory::CreateCarBlock(

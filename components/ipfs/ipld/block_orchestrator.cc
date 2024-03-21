@@ -199,7 +199,7 @@ void BlockOrchestrator::ProcessBlock(const std::string& cid) {
     return;
   }
 
-  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << block->Cid();
+  LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock cid:" << block->Cid() << " Block Meta:" << block->Meta().DebugString();
   if (block->IsContent()) {
     LOG(INFO) << "[IPFS] BlockOrchestrator::ProcessBlock Content";
     std::string_view vontent_view((const char*)block->GetContentData()->data(),
@@ -275,15 +275,23 @@ void BlockOrchestrator::Reset() {
 void BlockOrchestrator::BlockChainForCid(const uint64_t& size,
                                          Block const* block,
                                          bool last_chunk) const {
+LOG(INFO) << "[IPFS] BlockChainForCid \r\nblock->IsContent():" << block->IsContent() 
+<< "\r\nCID:" << block->Cid() 
+<< "\r\nMeta:" << block->Meta().DebugString() 
+<< "\r\nblock->Data == null" << (block->GetData() == nullptr)
+<< "\r\nblock->Data length" << (block->GetData() ? block->GetData()->data.size() : 0)
+;
   if (request_callback_ && block->IsContent()) {
     std::string_view vontent_view((const char*)block->GetContentData()->data(),
                                   block->GetContentData()->size());
     auto mime_type{mime_sniffer_->GetMime("", vontent_view, request_->url)};
-    LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A");
+    LOG(INFO) << "[IPFS] MIME type:" << mime_type.value_or("N/A")
+    << " Location:" << request_->url.path_piece()
+    ;
     request_callback_.Run(nullptr,
                           std::make_unique<IpfsTrustlessResponse>(
                               mime_type.value_or(kDefaultMimeType), 200,
-                              block->GetContentData(), "", size, last_chunk));
+                              block->GetContentData(), std::string(request_->url.path_piece()), size, last_chunk));
   }
 }
 

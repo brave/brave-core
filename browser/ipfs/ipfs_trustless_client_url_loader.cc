@@ -20,6 +20,7 @@
 #include "components/user_prefs/user_prefs.h"
 #include "content/public/browser/browser_thread.h"
 #include "content/public/browser/storage_partition.h"
+#include "services/network/public/cpp/parsed_headers.h"
 #include "services/network/public/mojom/url_response_head.mojom.h"
 #include "net/http/http_status_code.h"
 
@@ -79,6 +80,9 @@ void IpfsTrustlessClientUrlLoader::OnIpfsTrustlessClientResponse(
   }
 
   PrepareRespponseHead(response.get());
+  response_head_->parsed_headers =
+      network::PopulateParsedHeaders(response_head_->headers.get(), request->url);
+
 
 LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse #10 response->status:" << response->status << " response->body->size():" << (response->status  == net::HTTP_OK ? response->body->size() : 0);
   auto write_size = static_cast<uint32_t>(response->status == net::HTTP_OK ? response->body->size() : 0);
@@ -135,6 +139,10 @@ LOG(INFO) << "[IPFS] PrepareRespponseHead #30 headers:" << headers;
       response_head_->headers->AddHeader(net::HttpRequestHeaders::kContentType,
                                          response_head_->mime_type.c_str());
     }
+    response_head_->headers =
+      net::HttpResponseHeaders::TryToCreate("access-control-allow-origin: *");
+    response_head_->headers->SetHeader("Access-Control-Allow-Origin", "*");
+    response_head_->headers->AddHeader("Location", response->location);
 
     // LOG(INFO) << "[IPFS] OnIpfsTrustlessClientResponse is_bound:"
     //           << client_.is_bound() << " is_connected:" <<

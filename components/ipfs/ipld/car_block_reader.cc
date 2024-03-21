@@ -135,21 +135,21 @@ void CarBlockReader::OnRequestDataReceived(
       continue;
     }
 
-    auto block_info_result = DecodeBlockInfo(0, block_data);
-    DCHECK(block_info_result.error.error_code == 0) << block_info_result.error.error.c_str();
-    if (block_info_result.error.error_code != 0) {
-      return;
-    }
+//     auto block_info_result = DecodeBlockInfo(0, block_data);
+//     DCHECK(block_info_result.error.error_code == 0) << block_info_result.error.error.c_str();
+//     if (block_info_result.error.error_code != 0) {
+//       return;
+//     }
 
-    if (!block_info_result.is_content) {
-//      LOG(INFO) << "[IPFS] block_info_result:\r\n" << block_info_result.data.c_str();
-      auto json_value = ParseJsonHelper(block_info_result.data.c_str(),
-                                        base::Value::Type::DICT);
-      callback.Run(GetBlockFactory()->CreateCarBlock(
-          block_info_result.cid.c_str(), std::move(json_value), nullptr,
-          absl::nullopt), false, error_code);
-      continue;
-    }
+//     if (!block_info_result.is_content) {
+// //      LOG(INFO) << "[IPFS] block_info_result:\r\n" << block_info_result.data.c_str();
+//       auto json_value = ParseJsonHelper(block_info_result.meta_data.c_str(),
+//                                         base::Value::Type::DICT);
+//       callback.Run(GetBlockFactory()->CreateCarBlock(
+//           block_info_result.cid.c_str(), std::move(json_value), nullptr,
+//           absl::nullopt), false, error_code);
+//       continue;
+//     }
 
     auto block_content = DecodeBlockContent(0, block_data);
     DCHECK(block_content.error.error_code == 0) << block_content.error.error.c_str();
@@ -157,11 +157,18 @@ void CarBlockReader::OnRequestDataReceived(
       return;
     }
 
+    absl::optional<base::Value> json_value;
+
+    if (!block_content.meta_data.empty()) {
+      json_value = ParseJsonHelper(block_content.meta_data.c_str(),
+                                   base::Value::Type::DICT);
+    }
+
     const auto verified = absl::make_optional<bool>(block_content.verified);
     callback.Run(GetBlockFactory()->CreateCarBlock(
-        block_content.cid.c_str(), base::Value(),
-        std::make_unique<std::vector<uint8_t>>(block_content.data.begin(),
-                                               block_content.data.end()),
+        block_content.cid.c_str(), json_value.has_value() ? std::move(json_value) : base::Value(),
+        std::make_unique<std::vector<uint8_t>>(block_content.content_data.begin(),
+                                               block_content.content_data.end()),
         verified), false, error_code);
   }
 }

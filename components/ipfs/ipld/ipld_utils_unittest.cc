@@ -42,15 +42,16 @@ const std::vector<uint8_t> kCarv2HeaderAndPragmaData = {
     0x01, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00};
 
 const std::vector<
-    std::tuple<const std::vector<uint8_t> /*block data*/,
+    std::tuple<const std::string /*test name*/,
+               const std::vector<uint8_t> /*block data*/,
                const std::string /*block cid*/,
                const std::string /*decoded value*/,
                const uint64_t /*start offset*/,
                const uint64_t /*end offset*/,
                const std::vector<uint8_t> /*decoded content bytes*/>>
     kBlocksData{
-        // block #1
-        {{0x01, 0x71, 0x12, 0x20, 0xF8, 0x8B, 0xC8, 0x53, 0x80, 0x4C, 0xF2,
+        { "block #1",
+          {0x01, 0x71, 0x12, 0x20, 0xF8, 0x8B, 0xC8, 0x53, 0x80, 0x4C, 0xF2,
           0x94, 0xFE, 0x41, 0x7E, 0x4F, 0xA8, 0x30, 0x28, 0x68, 0x9F, 0xCD,
           0xB1, 0xB1, 0x59, 0x2C, 0x51, 0x02, 0xE1, 0x47, 0x4D, 0xBC, 0x20,
           0x0F, 0xAB, 0x8B, 0xA2, 0x64, 0x6C, 0x69, 0x6E, 0x6B, 0xD8, 0x2A,
@@ -60,12 +61,12 @@ const std::vector<
           0xB2, 0x7F, 0xD3, 0xDE, 0x64, 0x6E, 0x61, 0x6D, 0x65, 0x64, 0x62,
           0x6C, 0x69, 0x70},
          "bafyreihyrpefhacm6kkp4ql6j6udakdit7g3dmkzfriqfykhjw6cad5lrm",
-         R"({"link": QmNX6Tffavsya4xgBi2VJQnSuqy9GsxongxZZ9uZBqp16d, "name": "blip"})",
+         R"({"link":{"/":"QmNX6Tffavsya4xgBi2VJQnSuqy9GsxongxZZ9uZBqp16d"},"name":"blip"})",
          101,
          192,
          {}},
-        // block #2
-        {{0x12, 0x20, 0x02, 0xAC, 0xEC, 0xC5, 0xDE, 0x24, 0x38, 0xEA, 0x41,
+        { "block #2",
+         {0x12, 0x20, 0x02, 0xAC, 0xEC, 0xC5, 0xDE, 0x24, 0x38, 0xEA, 0x41,
           0x26, 0xA3, 0x01, 0x0E, 0xCB, 0x1F, 0x8A, 0x59, 0x9C, 0x8E, 0xFF,
           0x22, 0xFF, 0xF1, 0xA1, 0xDC, 0xFF, 0xE9, 0x99, 0xB2, 0x7F, 0xD3,
           0xDE, 0x12, 0x2E, 0x0A, 0x24, 0x01, 0x55, 0x12, 0x20, 0xB6, 0xFB,
@@ -78,12 +79,12 @@ const std::vector<
           0x87, 0x0C, 0x0C, 0xB9, 0xE0, 0x92, 0x46, 0xBD, 0x53, 0x0A, 0x12,
           0x06, 0x73, 0x65, 0x63, 0x6F, 0x6E, 0x64, 0x18, 0x95, 0x01},
          "QmNX6Tffavsya4xgBi2VJQnSuqy9GsxongxZZ9uZBqp16d",
-         R"({"Links": [{"Hash": bafkreifw7plhl6mofk6sfvhnfh64qmkq73oeqwl6sloru6rehaoujituke, "Name": "bear", "Tsize": 4}, {"Hash": QmWXZxVQ9yZfhQxLD35eDR8LiMRsYtHxYqTFCBbJoiJVys, "Name": "second", "Tsize": 149}]})",
+         R"({"Links":[{"Hash":{"/":"bafkreifw7plhl6mofk6sfvhnfh64qmkq73oeqwl6sloru6rehaoujituke"},"Name":"bear","Tsize":4},{"Hash":{"/":"QmWXZxVQ9yZfhQxLD35eDR8LiMRsYtHxYqTFCBbJoiJVys"},"Name":"second","Tsize":149}]})",
          194,
          325,
          {}},
-        // block #3
-        {{0x01, 0x55, 0x12, 0x20, 0xB6, 0xFB, 0xD6, 0x75, 0xF9, 0x8E,
+        { "block #3",
+         {0x01, 0x55, 0x12, 0x20, 0xB6, 0xFB, 0xD6, 0x75, 0xF9, 0x8E,
           0x2A, 0xBD, 0x22, 0xD4, 0xED, 0x29, 0xFD, 0xC8, 0x31, 0x50,
           0xFE, 0xDC, 0x48, 0x59, 0x7E, 0x92, 0xDD, 0x1A, 0x7A, 0x24,
           0x38, 0x1D, 0x44, 0xA2, 0x74, 0x51, 0x63, 0x63, 0x63, 0x63},
@@ -92,8 +93,8 @@ const std::vector<
          325,
          365,
          {99, 99, 99, 99}},
-        // block #4
-        {{0x12, 0x20, 0x79, 0xA9, 0x82, 0xDE, 0x3C, 0x99, 0x07, 0x95, 0x3D,
+        { "block #4",
+         {0x12, 0x20, 0x79, 0xA9, 0x82, 0xDE, 0x3C, 0x99, 0x07, 0x95, 0x3D,
           0x4D, 0x32, 0x3C, 0xEE, 0x1D, 0x0F, 0xB1, 0xED, 0x8F, 0x45, 0xF8,
           0xEF, 0x02, 0x87, 0x0C, 0x0C, 0xB9, 0xE0, 0x92, 0x46, 0xBD, 0x53,
           0x0A, 0x12, 0x2D, 0x0A, 0x24, 0x01, 0x55, 0x12, 0x20, 0x81, 0xCC,
@@ -106,12 +107,12 @@ const std::vector<
           0x4E, 0x2A, 0xA2, 0xAF, 0x7B, 0x98, 0x6D, 0x24, 0xD0, 0x12, 0x05,
           0x66, 0x69, 0x72, 0x73, 0x74, 0x18, 0x33},
          "QmWXZxVQ9yZfhQxLD35eDR8LiMRsYtHxYqTFCBbJoiJVys",
-         R"({"Links": [{"Hash": bafkreiebzrnroamgos2adnbpgw5apo3z4iishhbdx77gldnbk57d4zdio4, "Name": "dog", "Tsize": 4}, {"Hash": QmdwjhxpxzcMsR3qUuj7vUL8pbA7MgR3GAxWi2GLHjsKCT, "Name": "first", "Tsize": 51}]})",
+         R"({"Links":[{"Hash":{"/":"bafkreiebzrnroamgos2adnbpgw5apo3z4iishhbdx77gldnbk57d4zdio4"},"Name":"dog","Tsize":4},{"Hash":{"/":"QmdwjhxpxzcMsR3qUuj7vUL8pbA7MgR3GAxWi2GLHjsKCT"},"Name":"first","Tsize":51}]})",
          367,
          495,
          {}},
-        // block #5
-        {{0x01, 0x55, 0x12, 0x20, 0x81, 0xCC, 0x5B, 0x17, 0x01, 0x86,
+        { "block #5",
+         {0x01, 0x55, 0x12, 0x20, 0x81, 0xCC, 0x5B, 0x17, 0x01, 0x86,
           0x74, 0xB4, 0x01, 0xB4, 0x2F, 0x35, 0xBA, 0x07, 0xBB, 0x79,
           0xE2, 0x11, 0x23, 0x9C, 0x23, 0xBF, 0xFE, 0x65, 0x8D, 0xA1,
           0x57, 0x7E, 0x3E, 0x64, 0x68, 0x77, 0x62, 0x62, 0x62, 0x62},
@@ -120,8 +121,8 @@ const std::vector<
          496,
          536,
          {98, 98, 98, 98}},
-        // block #6
-        {{0x12, 0x20, 0xE7, 0xDC, 0x48, 0x6E, 0x97, 0xE6, 0xEB, 0xE5, 0xCD,
+        { "block #6",
+         {0x12, 0x20, 0xE7, 0xDC, 0x48, 0x6E, 0x97, 0xE6, 0xEB, 0xE5, 0xCD,
           0xAB, 0xAB, 0x3E, 0x39, 0x2B, 0xDA, 0xD1, 0x28, 0xB6, 0xE0, 0x9A,
           0xCC, 0x94, 0xBB, 0x4E, 0x2A, 0xA2, 0xAF, 0x7B, 0x98, 0x6D, 0x24,
           0xD0, 0x12, 0x2D, 0x0A, 0x24, 0x01, 0x55, 0x12, 0x20, 0x61, 0xBE,
@@ -130,12 +131,12 @@ const std::vector<
           0x5E, 0xCE, 0xE7, 0xF2, 0x7B, 0x9A, 0xF0, 0xB4, 0x12, 0x03, 0x63,
           0x61, 0x74, 0x18, 0x04},
          "QmdwjhxpxzcMsR3qUuj7vUL8pbA7MgR3GAxWi2GLHjsKCT",
-         R"({"Links": [{"Hash": bafkreidbxzk2ryxwwtqxem4l3xyyjvw35yu4tcct4cqeqxwo47zhxgxqwq, "Name": "cat", "Tsize": 4}]})",
+         R"({"Links":[{"Hash":{"/":"bafkreidbxzk2ryxwwtqxem4l3xyyjvw35yu4tcct4cqeqxwo47zhxgxqwq"},"Name":"cat","Tsize":4}]})",
          537,
          618,
          {}},
-        // block #7
-        {{0x01, 0x55, 0x12, 0x20, 0x61, 0xBE, 0x55, 0xA8, 0xE2, 0xF6,
+        { "block #7",
+         {0x01, 0x55, 0x12, 0x20, 0x61, 0xBE, 0x55, 0xA8, 0xE2, 0xF6,
           0xB4, 0xE1, 0x72, 0x33, 0x8B, 0xDD, 0xF1, 0x84, 0xD6, 0xDB,
           0xEE, 0x29, 0xC9, 0x88, 0x53, 0xE0, 0xA0, 0x48, 0x5E, 0xCE,
           0xE7, 0xF2, 0x7B, 0x9A, 0xF0, 0xB4, 0x61, 0x61, 0x61, 0x61},
@@ -144,14 +145,14 @@ const std::vector<
          619,
          659,
          {97, 97, 97, 97}},
-        // block #8
-        {{0x01, 0x71, 0x12, 0x20, 0x69, 0xEA, 0x07, 0x40, 0xF9, 0x80, 0x7A,
+        { "block #8",
+         {0x01, 0x71, 0x12, 0x20, 0x69, 0xEA, 0x07, 0x40, 0xF9, 0x80, 0x7A,
           0x28, 0xF4, 0xD9, 0x32, 0xC6, 0x2E, 0x7C, 0x1C, 0x83, 0xBE, 0x05,
           0x5E, 0x55, 0x07, 0x2C, 0x90, 0x26, 0x6A, 0xB3, 0xE7, 0x9D, 0xF6,
           0x3A, 0x36, 0x5B, 0xA2, 0x64, 0x6C, 0x69, 0x6E, 0x6B, 0xF6, 0x64,
           0x6E, 0x61, 0x6D, 0x65, 0x65, 0x6C, 0x69, 0x6D, 0x62, 0x6F},
          "bafyreidj5idub6mapiupjwjsyyxhyhedxycv4vihfsicm2vt46o7morwlm",
-         R"({"link": null, "name": "limbo"})",
+         R"({"link":null,"name":"limbo"})",
          660,
          714,
          {}}};
@@ -162,35 +163,36 @@ class IpldUtilsUnitTest : public testing::Test {
   IpldUtilsUnitTest() = default;
   ~IpldUtilsUnitTest() override = default;
 };
-void TestBlockDecoding(const std::vector<uint8_t>& block,
+void TestBlockDecoding(const std::string& test_name,
+                       const std::vector<uint8_t>& block,
                        const std::string& block_cid,
                        const std::string& decoded,
                        const uint64_t& start_offset,
                        const uint64_t& end_offset,
                        const std::vector<uint8_t>& content) {
-  auto block_info = ipfs::ipld::DecodeBlockInfo(start_offset, block);
+  auto block_info = ipfs::ipld::DecodeBlockContent(start_offset, block);
 
-  //   if (block_info.error.error.length() > 0) {
-  //     LOG(INFO) << "Error: " << block_info.error.error.c_str();
-  //   } else {
-  //     LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
-  //               << "\r\ndata_offset:" << block_info.data_offset
-  //               << "\r\nresult.data:" << block_info.data.c_str();
-  //   }
+    // if (block_info.error.error.length() > 0) {
+    //   LOG(INFO) << "Error: " << block_info.error.error.c_str();
+    // } else {
+    //   LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
+    //             << "\r\ndata_offset:" << block_info.data_offset
+    //             << "\r\nmeta_data:" << block_info.meta_data.c_str()
+    //             << "\r\nblock_info.is_content:" << block_info.is_content
+    //             << "\r\nblock_info.content_data.size():" << block_info.content_data.size()
+    //             ;
+    // }
 
-  ASSERT_EQ(block_info.error.error.length(), 0UL);
-  ASSERT_EQ(block_info.is_content, decoded.empty());
-  ASSERT_EQ(block_info.data_offset, end_offset);
-  ASSERT_EQ(block_info.cid, block_cid);
+  ASSERT_EQ(block_info.error.error.length(), 0UL) << "Test:" << test_name;
+  ASSERT_EQ(block_info.meta_data.size(), decoded.size())<< "Test:" << test_name;
+  ASSERT_EQ(block_info.is_content, decoded.empty()) << "Test:" << test_name;
+  ASSERT_EQ(block_info.data_offset, end_offset) << "Test:" << test_name;
+  ASSERT_EQ(block_info.cid, block_cid) << "Test:" << test_name;
 
-  if (block_info.is_content) {
-    auto block_content = ipfs::ipld::DecodeBlockContent(start_offset, block);
-    ASSERT_EQ(block_content.error.error.length(), 0UL);
-    ASSERT_EQ(block_content.cid, block_cid);
-    ASSERT_EQ(block_content.data_offset, end_offset);
-    ASSERT_EQ(block_content.data.size(), content.size());
-    ASSERT_TRUE(std::equal(block_content.data.begin(), block_content.data.end(),
-                           content.begin(), content.end()));
+  if (!content.empty()) {
+    ASSERT_EQ(block_info.content_data.size(), content.size())<< "Test:" << test_name;
+    ASSERT_TRUE(std::equal(block_info.content_data.begin(), block_info.content_data.end(),
+                           content.begin(), content.end())) << "Test:" << test_name;
   }
 }
 
@@ -261,23 +263,23 @@ TEST_F(IpldUtilsUnitTest, DecodeCarv2Header) {
 }
 
 TEST_F(IpldUtilsUnitTest, DecodeBlocks) {
-  for (const auto& [block, cid, decoded, start_offset, end_offset, content] :
+  for (const auto& [test_name, block, cid, decoded, start_offset, end_offset, content] :
        kBlocksData) {
-    TestBlockDecoding(block, cid, decoded, start_offset, end_offset, content);
+    TestBlockDecoding(test_name, block, cid, decoded, start_offset, end_offset, content);
   }
 }
 
 TEST_F(IpldUtilsUnitTest, FailedBlockDecode) {
-  auto block_info = ipfs::ipld::DecodeBlockInfo(0, kCarv2HeaderPragmaData);
-  ASSERT_GT(block_info.error.error.length(), 0UL);
-  ASSERT_EQ(block_info.error.error_code, 90UL);
+  auto result = ipfs::ipld::DecodeBlockContent(0, kCarv2HeaderPragmaData);
+  ASSERT_GT(result.error.error.length(), 0UL);
+  ASSERT_EQ(result.error.error_code, 90UL);
 
-  if (block_info.error.error.length() > 0) {
-    LOG(INFO) << "Error Code:" << block_info.error.error_code
-              << "Error: " << block_info.error.error.c_str();
+  if (result.error.error.length() > 0) {
+    LOG(INFO) << "Error Code:" << result.error.error_code
+              << "Error: " << result.error.error.c_str();
   } else {
-    LOG(INFO) << "\r\nCid:" << block_info.cid.c_str()
-              << "\r\ndata_offset:" << block_info.data_offset
-              << "\r\nresult.data:" << block_info.data.c_str();
+    LOG(INFO) << "\r\nCid:" << result.cid.c_str()
+              << "\r\ndata_offset:" << result.data_offset
+              << "\r\nresult.data:" << result.meta_data.c_str();
   }
 }

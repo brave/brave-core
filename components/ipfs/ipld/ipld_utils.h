@@ -14,10 +14,7 @@ CarV1HeaderResult DecodeCarv1Header(const std::vector<uint8_t>& data);
 
 CarV2HeaderResult DecodeCarv2Header(const std::vector<uint8_t>& data);
 
-BlockDecodeResult DecodeBlockInfo(const uint64_t& offset,
-                                    const std::vector<uint8_t>& data);
-
-BlockContentDecodeResult DecodeBlockContent(const uint64_t& offset,
+BlockDecodeResult DecodeBlockContent(const uint64_t& offset,
                                     const std::vector<uint8_t>& data);
 }  // namespace ipfs::ipld
 

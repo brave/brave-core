@@ -52,6 +52,8 @@ class Block {
                  std::unique_ptr<std::vector<DJLink>> djlinks,
                  std::unique_ptr<DjData> djdata,
                  const absl::optional<bool>& verified);
+  bool IsContentPackedInsideOfData() const;
+  bool IsContentPackedAsRaw() const;
 
   std::string cid_;
   base::Value::Dict metadata_;

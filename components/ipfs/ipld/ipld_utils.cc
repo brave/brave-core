@@ -16,12 +16,7 @@ CarV2HeaderResult DecodeCarv2Header(const std::vector<uint8_t>& data) {
   return ipfs::decode_carv2_header(data);
 }
 
-BlockDecodeResult DecodeBlockInfo(const uint64_t& offset,
-                                    const std::vector<uint8_t>& data) {
-  return ipfs::decode_block_info(offset, data);
-}
-
-BlockContentDecodeResult DecodeBlockContent(const uint64_t& offset,
+BlockDecodeResult DecodeBlockContent(const uint64_t& offset,
                                     const std::vector<uint8_t>& data) {
   return ipfs::decode_block_content(offset, data); 
 }
