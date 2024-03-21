@@ -592,7 +592,10 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
       if let oldestHistoricalValue = historicalBalances.first {
         let priceDifference = currentBalance - oldestHistoricalValue.price
-        let percentageChange = priceDifference / oldestHistoricalValue.price * 100
+        var percentageChange: Double = 0
+        if oldestHistoricalValue.price > 0 {
+          percentageChange = priceDifference / oldestHistoricalValue.price * 100
+        }
         let isBalanceUp = priceDifference > 0
         balanceDifference = .init(
           priceDifference: String(
@@ -603,7 +606,7 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
           percentageChange: String(
             format: "%@%.2f%%",
             isBalanceUp ? "+" : "",  // include plus if balance increased
-            percentageChange
+            percentageChange.isNaN ? 0 : percentageChange
           ),
           isBalanceUp: isBalanceUp
         )
