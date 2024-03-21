@@ -31,6 +31,7 @@ import org.chromium.chrome.browser.ChromeBackgroundServiceImpl;
 import org.chromium.chrome.browser.init.BrowserParts;
 import org.chromium.chrome.browser.init.ChromeBrowserInitializer;
 import org.chromium.chrome.browser.init.EmptyBrowserParts;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.autofill.AutofillProfile;
 import org.chromium.components.autofill.FieldType;
 import org.chromium.components.autofill.Source;
@@ -281,7 +282,11 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
                             fields, nodesMap, context.getResources().getString(R.string.country));
 
             AutofillAddress autofillAddress =
-                    new AutofillAddress(context, AutofillProfile.builder().build());
+                    new AutofillAddress(
+                            context,
+                            AutofillProfile.builder().build(),
+                            PersonalDataManagerFactory.getForProfile(
+                                    ProfileManager.getLastUsedRegularProfile()));
             AutofillProfile profile = autofillAddress.getProfile();
             profile.setSource(Source.ACCOUNT);
             profile.setInfo(FieldType.ADDRESS_HOME_COUNTRY, country);
