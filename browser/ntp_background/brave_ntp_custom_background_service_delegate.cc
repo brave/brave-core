@@ -92,7 +92,7 @@ GURL BraveNTPCustomBackgroundServiceDelegate::GetCustomBackgroundImageURL()
   DCHECK(IsCustomImageBackgroundEnabled());
 
   auto prefs = NTPBackgroundPrefs(profile_->GetPrefs());
-  auto name = absl::get<std::string>(prefs.GetSelectedValue());
+  auto name = prefs.GetSelectedValue();
   return CustomBackgroundFileManager::Converter(name).To<GURL>();
 }
 
@@ -107,8 +107,7 @@ std::string BraveNTPCustomBackgroundServiceDelegate::GetColor() const {
 
   const auto selected_value =
       NTPBackgroundPrefs(profile_->GetPrefs()).GetSelectedValue();
-  DCHECK(absl::holds_alternative<std::string>(selected_value));
-  return absl::get<std::string>(selected_value);
+  return selected_value;
 }
 
 bool BraveNTPCustomBackgroundServiceDelegate::ShouldUseRandomValue() const {
@@ -123,8 +122,9 @@ bool BraveNTPCustomBackgroundServiceDelegate::HasPreferredBraveBackground()
   }
 
   auto selected_value = pref.GetSelectedValue();
-  if (auto* selected_url = absl::get_if<GURL>(&selected_value)) {
-    return selected_url->is_valid();
+  auto selected_url = GURL(selected_value);
+  if(selected_url != NULL) {
+    return selected_url.is_valid();
   }
 
   return false;
@@ -136,7 +136,7 @@ BraveNTPCustomBackgroundServiceDelegate::GetPreferredBraveBackground() const {
 
   auto pref = NTPBackgroundPrefs(profile_->GetPrefs());
   const auto selected_value = pref.GetSelectedValue();
-  const auto image_url = absl::get<GURL>(selected_value);
+  const auto image_url = GURL(selected_value);
 
   const auto* service =
       g_brave_browser_process->ntp_background_images_service();
