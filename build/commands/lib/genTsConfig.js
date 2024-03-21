@@ -18,7 +18,7 @@ const Config = require('./config')
  * @param {*} extendsFrom full path of tsconfig to extend
  * @returns full path to created tsconfig file
  */
-module.exports = async function createGenTsConfig (genPath = process.env.ROOT_GEN_DIR, name = 'tsconfig-webpack.json', atPath = genPath, extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json')) {
+module.exports = async function createGenTsConfig(genPath = process.env.ROOT_GEN_DIR, name = 'tsconfig-webpack.json', atPath = genPath, extendsFrom = path.join(Config.braveCoreDir, 'tsconfig-webpack.json')) {
   const pathMap = require('../../../components/webpack/path-map')(genPath)
   const configExtendsFrom = path.relative(
     atPath,
@@ -37,6 +37,7 @@ module.exports = async function createGenTsConfig (genPath = process.env.ROOT_GE
   // both compile and design time.
   const paths = {}
   for (const path in pathMap) {
+    paths[path] = [ pathMap[path] ]
     paths[`${path}/*`] = [`${pathMap[path]}/*`]
   }
   const config = {

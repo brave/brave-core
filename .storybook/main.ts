@@ -1,17 +1,21 @@
-const path = require('path')
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
-const isCI = Boolean(process.env.JENKINS_URL && process.env.BUILD_ID)
+import path from 'path'
+import { forkTsChecker } from './options'
+import { StorybookConfig } from '@storybook/react-webpack5'
 
-/** @type {import('@storybook/react-webpack5').StorybookConfig} */
-module.exports = {
+const config: StorybookConfig = {
   stories: process.env.STORYBOOK_STORYPATH
     ? [`../${process.env.STORYBOOK_STORYPATH}`]
     : ['../components/**/stories/*.tsx', '../components/**/*.stories.tsx'],
   typescript: {
-    check: true,
+    check: false,
     reactDocgen: false,
     checkOptions: {
-      async: !isCI,
+      async: forkTsChecker,
       typescript: {
         configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json')
       }
@@ -31,5 +35,7 @@ module.exports = {
   },
   core: {
     disableTelemetry: true
-  }
+  },
 }
+
+export default config
