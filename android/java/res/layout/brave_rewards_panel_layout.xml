@@ -73,6 +73,8 @@
                         <include
                             layout="@layout/wallet_balance_layout" />
 
+                        <include layout="@layout/brave_rewards_panel_payout_layout" />
+
                         <include
                             android:id="@+id/brave_rewards_panel_tip_layout_id"
                             layout="@layout/brave_rewards_panel_tip_layout" />
