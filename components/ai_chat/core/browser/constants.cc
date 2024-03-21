@@ -133,4 +133,10 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
   return kLocalizedStrings;
 }
 
+const base::fixed_flat_set<std::string_view, 1> kPrintPreviewRetrievalHosts =
+    base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
+                                             {
+                                                 "docs.google.com",
+                                             });
+
 }  // namespace ai_chat

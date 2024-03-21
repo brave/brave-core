@@ -16,6 +16,7 @@
 #include "base/memory/weak_ptr.h"
 #include "base/scoped_observation.h"
 #include "base/task/cancelable_task_tracker.h"
+#include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_feedback_api.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
@@ -24,6 +25,13 @@
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
+#include "printing/buildflags/buildflags.h"
+
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+#include "brave/services/printing/public/mojom/pdf_to_bitmap_converter.mojom.h"
+#include "components/printing/common/print.mojom.h"
+#include "mojo/public/cpp/bindings/associated_remote.h"
+#endif
 
 namespace content {
 class WebContents;
@@ -33,12 +41,15 @@ namespace favicon {
 class FaviconService;
 }  // namespace favicon
 
+class AIChatUI;
+class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                             public AIChatTabHelper::Observer,
                             public content::WebContentsObserver {
  public:
   AIChatUIPageHandler(
+      AIChatUI* owner,
       content::WebContents* owner_web_contents,
       content::WebContents* chat_context_web_contents,
       Profile* profile,
@@ -87,7 +98,15 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  void OnPreviewReady();
+  void BitmapConverterDisconnected();
+  void OnGetBitmaps(const std::optional<std::vector<SkBitmap>>& bitmaps);
+  void PreviewCleanup();
+#endif
+
  private:
+  friend class ::AIChatUIBrowserTest;
   // AIChatTabHelper::Observer
   void OnHistoryUpdate() override;
   void OnAPIRequestInProgress(bool in_progress) override;
@@ -105,9 +124,14 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                           ai_chat::mojom::PremiumStatus status,
                           ai_chat::mojom::PremiumInfoPtr info);
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  void MaybeCreatePrintPreview();
+#endif
+
   mojo::Remote<ai_chat::mojom::ChatUIPage> page_;
 
   raw_ptr<AIChatTabHelper> active_chat_tab_helper_ = nullptr;
+  raw_ptr<AIChatUI> owner_ = nullptr;
   raw_ptr<favicon::FaviconService> favicon_service_ = nullptr;
   raw_ptr<Profile> profile_ = nullptr;
 
@@ -116,6 +140,11 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   base::ScopedObservation<AIChatTabHelper, AIChatTabHelper::Observer>
       chat_tab_helper_observation_{this};
 
+#if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+  int preview_request_id_ = -1;
+  mojo::Remote<printing::mojom::PdfToBitmapConverter> pdf_to_bitmap_converter_;
+  mojo::AssociatedRemote<printing::mojom::PrintRenderFrame> print_render_frame_;
+#endif
   mojo::Receiver<ai_chat::mojom::PageHandler> receiver_;
 
   base::WeakPtrFactory<AIChatUIPageHandler> weak_ptr_factory_{this};

@@ -1,4 +1,7 @@
 include_rules = [
+  "+brave/services/printing/public/mojom",
+  "+chrome/services/printing/public/mojom",
   "+chrome/services/qrcode_generator/public/mojom",
   "+chrome/services/qrcode_generator/public/cpp",
+  "+printing",
 ]

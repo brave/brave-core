@@ -1,0 +1,12 @@
+diff --git a/chrome/services/printing/BUILD.gn b/chrome/services/printing/BUILD.gn
+index fc2419815457a7a83668589cae9409bbf78d9895..907b174d3673cf63faa3136e0792fa9e45e80e05 100644
+--- a/chrome/services/printing/BUILD.gn
++++ b/chrome/services/printing/BUILD.gn
+@@ -37,6 +37,7 @@ source_set("lib") {
+       "//printing/mojom",
+     ]
+   }
++  import("//brave/services/printing/sources.gni") sources += brave_services_printing_sources deps += brave_services_printing_deps
+ 
+   if (is_chromeos) {
+     sources += [

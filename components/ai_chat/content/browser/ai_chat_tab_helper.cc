@@ -18,6 +18,7 @@
 #include "base/strings/string_util.h"
 #include "brave/components/ai_chat/content/browser/page_content_fetcher.h"
 #include "brave/components/ai_chat/core/browser/ai_chat_metrics.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "components/favicon/content/content_favicon_driver.h"
@@ -32,6 +33,7 @@
 #include "content/public/browser/scoped_accessibility_mode.h"
 #include "content/public/browser/storage_partition.h"
 #include "pdf/buildflags.h"
+#include "third_party/skia/include/core/SkBitmap.h"
 #include "ui/accessibility/ax_mode.h"
 #include "ui/base/l10n/l10n_util.h"
 
@@ -94,12 +96,21 @@ void AIChatTabHelper::OnPDFA11yInfoLoaded() {
   DVLOG(3) << "PDF Loaded";
   is_pdf_a11y_info_loaded_ = true;
   if (pending_get_page_content_callback_) {
-    FetchPageContent(web_contents(), "",
+    FetchPageContent(web_contents(), "", std::nullopt,
+                     GetMaxPageContentLength(),
                      std::move(pending_get_page_content_callback_));
   }
   pdf_load_observer_.reset();
   if (on_pdf_a11y_info_loaded_cb_) {
     std::move(on_pdf_a11y_info_loaded_cb_).Run();
+  }
+}
+
+void AIChatTabHelper::OnPreviewReady(
+    const std::optional<std::vector<SkBitmap>>& bitmaps) {
+  if (pending_get_page_content_callback_) {
+    FetchPageContent(web_contents(), "", bitmaps, GetMaxPageContentLength(),
+                     std::move(pending_get_page_content_callback_));
   }
 }
 
@@ -206,12 +217,24 @@ void AIChatTabHelper::GetPageContent(GetPageContentCallback callback,
     // invalidation_token doesn't matter for PDF extraction.
     pending_get_page_content_callback_ = std::move(callback);
   } else {
-    FetchPageContent(web_contents(), invalidation_token, std::move(callback));
+    if (base::Contains(kPrintPreviewRetrievalHosts, GetPageURL().host())) {
+      pending_get_page_content_callback_ = std::move(callback);
+    } else {
+      FetchPageContent(web_contents(), invalidation_token, std::nullopt,
+                       GetMaxPageContentLength(), std::move(callback));
+    }
   }
 }
 
 std::u16string AIChatTabHelper::GetPageTitle() const {
   return web_contents()->GetTitle();
+}
+
+uint32_t AIChatTabHelper::GetMaxPageContentLength() {
+  if (max_page_content_length_for_testing_) {
+    return *max_page_content_length_for_testing_;
+  }
+  return GetCurrentModel().max_page_content_length;
 }
 
 WEB_CONTENTS_USER_DATA_KEY_IMPL(AIChatTabHelper);

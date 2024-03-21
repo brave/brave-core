@@ -1,0 +1,22 @@
+diff --git a/chrome/services/printing/printing_service.cc b/chrome/services/printing/printing_service.cc
+index ac5f433d983fc20d9f24773ef7474f64a1fbfcb4..41d92bf742403fbdf5c96a8bbee6b770096ce382 100644
+--- a/chrome/services/printing/printing_service.cc
++++ b/chrome/services/printing/printing_service.cc
+@@ -15,7 +15,7 @@
+ #include "chrome/services/printing/pdf_flattener.h"
+ #endif
+ 
+-#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN) || BUILDFLAG(ENABLE_PRINT_PREVIEW)
+ #include "base/memory/discardable_memory_allocator.h"
+ #include "base/memory/scoped_refptr.h"
+ #include "base/task/single_thread_task_runner.h"
+@@ -43,7 +43,7 @@ namespace printing {
+ PrintingService::PrintingService(
+     mojo::PendingReceiver<mojom::PrintingService> receiver)
+     : receiver_(this, std::move(receiver)) {
+-#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN) || BUILDFLAG(ENABLE_PRINT_PREVIEW)
+   // Set up discardable memory for printing and thumbnailer.
+   mojo::PendingRemote<discardable_memory::mojom::DiscardableSharedMemoryManager>
+       manager_remote;

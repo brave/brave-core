@@ -28,6 +28,7 @@ namespace content {
 class ScopedAccessibilityMode;
 }
 
+class AIChatUIBrowserTest;
 namespace ai_chat {
 class AIChatMetrics;
 
@@ -43,8 +44,17 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
 
+  void SetMaxContentLengthForTesting(std::optional<uint32_t> max_length) {
+    max_page_content_length_for_testing_ = max_length;
+  }
+
+  // This will be called when print preview has been composited into image per
+  // page.
+  void OnPreviewReady(const std::optional<std::vector<SkBitmap>>&);
+
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
+  friend class ::AIChatUIBrowserTest;
 
   // To observe PDF InnerWebContents for "Finished loading PDF" event which
   // means PDF content has been loaded to an accessibility tree.
@@ -92,7 +102,11 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
 
+  uint32_t GetMaxPageContentLength();
+
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
+
+  std::optional<uint32_t> max_page_content_length_for_testing_;
 
   bool is_same_document_navigation_ = false;
   int64_t pending_navigation_id_;

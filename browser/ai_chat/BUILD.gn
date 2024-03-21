@@ -34,6 +34,7 @@ source_set("browser_tests") {
       "ai_chat_metrics_browsertest.cc",
       "ai_chat_policy_browsertest.cc",
       "ai_chat_profile_browsertest.cc",
+      "ai_chat_ui_browsertest.cc",
       "page_content_fetcher_browsertest.cc",
     ]
     deps = [
@@ -50,6 +51,7 @@ source_set("browser_tests") {
       "//chrome/browser",
       "//chrome/test:test_support",
       "//chrome/test:test_support_ui",
+      "//printing/buildflags",
     ]
   }
 }

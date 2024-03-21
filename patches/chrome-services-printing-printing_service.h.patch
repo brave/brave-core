@@ -1,0 +1,31 @@
+diff --git a/chrome/services/printing/printing_service.h b/chrome/services/printing/printing_service.h
+index b251b9f8a7f15d7bbdb4249a769140b5b593be28..793ed8723813c7758dfec11c181f388f00f5553f 100644
+--- a/chrome/services/printing/printing_service.h
++++ b/chrome/services/printing/printing_service.h
+@@ -12,7 +12,7 @@
+ #include "mojo/public/cpp/bindings/receiver.h"
+ #include "printing/buildflags/buildflags.h"
+ 
+-#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN) || BUILDFLAG(ENABLE_PRINT_PREVIEW)
+ namespace discardable_memory {
+ class ClientDiscardableSharedMemoryManager;
+ }
+@@ -35,6 +35,8 @@ class PrintingService : public mojom::PrintingService {
+ #if BUILDFLAG(ENABLE_PRINT_PREVIEW)
+   void BindPdfNupConverter(
+       mojo::PendingReceiver<mojom::PdfNupConverter> receiver) override;
++  void BindPdfToBitmapConverter(
++      mojo::PendingReceiver<mojom::PdfToBitmapConverter> receiver) override;
+   void BindPdfToPwgRasterConverter(
+       mojo::PendingReceiver<mojom::PdfToPwgRasterConverter> receiver) override;
+ #endif
+@@ -51,7 +53,7 @@ class PrintingService : public mojom::PrintingService {
+       mojo::PendingReceiver<mojom::PdfToEmfConverterFactory> receiver) override;
+ #endif  // BUILDFLAG(IS_WIN)
+ 
+-#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN)
++#if BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN) || BUILDFLAG(ENABLE_PRINT_PREVIEW)
+   scoped_refptr<discardable_memory::ClientDiscardableSharedMemoryManager>
+       discardable_shared_memory_manager_;
+ #endif  // BUILDFLAG(IS_CHROMEOS_ASH) || BUILDFLAG(IS_WIN)

@@ -21,6 +21,7 @@
 #include "base/task/bind_post_task.h"
 #include "base/task/single_thread_task_runner.h"
 #include "base/task/thread_pool.h"
+#include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "brave/components/l10n/common/locale_util.h"
 #include "brave/components/text_recognition/common/buildflags/buildflags.h"
@@ -55,7 +56,6 @@ namespace {
 constexpr auto kScreenshotRetrievalHosts =
     base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,
                                              {
-                                                 "docs.google.com",
                                                  "twitter.com",
                                              });
 #endif
@@ -440,10 +440,68 @@ std::optional<GURL> GetGithubPatchURLForPRURL(const GURL& url) {
   return GURL(patch_url_str);
 }
 
+#if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+class PreviewPageTextExtractor {
+ public:
+  PreviewPageTextExtractor(const std::vector<SkBitmap>& pages,
+                           FetchPageContentCallback callback,
+                           uint32_t max_page_content_length)
+      : pages_(pages),
+        callback_(std::move(callback)),
+        max_page_content_length_(max_page_content_length) {}
+
+  void StartExtract() {
+    if (pages_.empty()) {
+      std::move(callback_).Run("", false, "");
+      delete this;
+      return;
+    }
+    OnScreenshot(base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
+                                weak_ptr_factory_.GetWeakPtr()),
+                 pages_[current_page_index_]);
+  }
+
+  void OnGetTextFromImage(std::string page_content,
+                          bool is_video,
+                          std::string invalidation_token) {
+    VLOG(4) << "Page index(" << current_page_index_
+            << ") content: " << page_content;
+    preview_text_ << page_content;
+    // Stop processing if we have reached the maximum number of pages or the
+    // maximum length of the content
+    if (current_page_index_ + 1 >= kMaxPreviewPages ||
+        preview_text_.str().length() >= max_page_content_length_) {
+      std::move(callback_).Run(preview_text_.str(), false, "");
+      delete this;
+      return;
+    }
+    if (current_page_index_++ < pages_.size() - 1) {
+      preview_text_ << "\n";
+      OnScreenshot(base::BindOnce(&PreviewPageTextExtractor::OnGetTextFromImage,
+                                  weak_ptr_factory_.GetWeakPtr()),
+                   pages_[current_page_index_]);
+    } else {
+      std::move(callback_).Run(preview_text_.str(), false, "");
+      delete this;
+    }
+  }
+
+ private:
+  std::stringstream preview_text_;
+  size_t current_page_index_ = 0;
+  std::vector<SkBitmap> pages_;
+  FetchPageContentCallback callback_;
+  uint32_t max_page_content_length_;
+  base::WeakPtrFactory<PreviewPageTextExtractor> weak_ptr_factory_{this};
+};
+#endif
+
 }  // namespace
 
 void FetchPageContent(content::WebContents* web_contents,
                       std::string_view invalidation_token,
+                      const std::optional<std::vector<SkBitmap>>& images,
+                      uint32_t max_page_content_length,
                       FetchPageContentCallback callback,
                       scoped_refptr<network::SharedURLLoaderFactory>
                           url_loader_factory_for_test) {
@@ -486,6 +544,12 @@ void FetchPageContent(content::WebContents* web_contents,
 
   auto url = web_contents->GetLastCommittedURL();
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
+  if (images) {
+    auto* preview_page_text_extractor = new PreviewPageTextExtractor(
+        images.value(), std::move(callback), max_page_content_length);
+    preview_page_text_extractor->StartExtract();
+    return;
+  }
   auto host = url.host();
   if (base::Contains(kScreenshotRetrievalHosts, host)) {
     content::RenderWidgetHostView* view =
