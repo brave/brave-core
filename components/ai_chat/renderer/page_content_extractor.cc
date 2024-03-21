@@ -86,8 +86,6 @@ PageContentExtractor::PageContentExtractor(
   if (!render_frame->IsMainFrame()) {
     return;
   }
-  LOG(ERROR) << "New render frame!";
-
   // Bind mojom API to allow browser to communicate with this class
   // Being a RenderFrameObserver, this object is scoped to the RenderFrame.
   // Unretained is safe here because `registry` is also scoped to the
