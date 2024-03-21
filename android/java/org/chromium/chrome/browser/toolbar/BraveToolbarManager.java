@@ -43,6 +43,7 @@ import org.chromium.chrome.browser.lifecycle.ActivityLifecycleDispatcher;
 import org.chromium.chrome.browser.merchant_viewer.MerchantTrustSignalsCoordinator;
 import org.chromium.chrome.browser.omnibox.LocationBar;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.readaloud.ReadAloudController;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabObscuringHandler;
@@ -78,7 +79,6 @@ import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.modaldialog.ModalDialogManager;
 
 import java.util.List;
-import java.util.function.BooleanSupplier;
 
 public class BraveToolbarManager extends ToolbarManager {
     private static final String TAG = "BraveToolbarManager";
@@ -175,7 +175,8 @@ public class BraveToolbarManager extends ToolbarManager {
             boolean initializeWithIncognitoColors,
             @Nullable BackPressManager backPressManager,
             @Nullable ObservableSupplier<Integer> overviewColorSupplier,
-            @Nullable View baseChromeLayout) {
+            @Nullable View baseChromeLayout,
+            ObservableSupplier<ReadAloudController> readAloudControllerSupplier) {
         super(
                 activity,
                 controlsSizer,
@@ -222,7 +223,8 @@ public class BraveToolbarManager extends ToolbarManager {
                 initializeWithIncognitoColors,
                 backPressManager,
                 overviewColorSupplier,
-                baseChromeLayout);
+                baseChromeLayout,
+                readAloudControllerSupplier);
 
         mOmniboxFocusStateSupplier = omniboxFocusStateSupplier;
         mLayoutStateProviderSupplier = layoutStateProviderSupplier;

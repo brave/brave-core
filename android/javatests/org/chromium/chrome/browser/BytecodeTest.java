@@ -821,7 +821,8 @@ public class BytecodeTest {
                         boolean.class,
                         BackPressManager.class,
                         ObservableSupplier.class,
-                        View.class));
+                        View.class,
+                        ObservableSupplier.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
