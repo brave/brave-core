@@ -117,29 +117,6 @@ export const onConnectHardwareWallet = (
   })
 }
 
-export async function isStrongPassword(value: string) {
-  const apiProxy = getAPIProxy()
-  return (await apiProxy.keyringService.isStrongPassword(value)).result
-}
-
-export async function getNFTMetadata(token: BraveWallet.BlockchainToken) {
-  const { jsonRpcService } = getAPIProxy()
-  if (token.coin === BraveWallet.CoinType.ETH) {
-    return await jsonRpcService.getERC721Metadata(
-      token.contractAddress,
-      token.tokenId,
-      token.chainId
-    )
-  } else if (token.coin === BraveWallet.CoinType.SOL) {
-    return await jsonRpcService.getSolTokenMetadata(
-      token.chainId,
-      token.contractAddress
-    )
-  }
-
-  return undefined
-}
-
 export async function isTokenPinningSupported(
   token: BraveWallet.BlockchainToken
 ) {
