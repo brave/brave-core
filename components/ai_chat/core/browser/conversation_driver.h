@@ -146,6 +146,15 @@ class ConversationDriver {
 
   virtual void OnFaviconImageDataChanged();
 
+  // Implementer should call this when the content is updated in a way that
+  // will not be detected by the on-demand techniques used by GetPageContent.
+  // For example for sites where GetPageContent does not read the live DOM but
+  // reads static JS from HTML that doesn't change for same-page navigation and
+  // we need to intercept new JS data from subresource loads.
+  void OnPageContentUpdated(std::string content,
+                            bool is_video,
+                            std::string invalidation_token);
+
   // To be called when a page navigation is detected and a new conversation
   // is expected.
   void OnNewPage(int64_t navigation_id);
