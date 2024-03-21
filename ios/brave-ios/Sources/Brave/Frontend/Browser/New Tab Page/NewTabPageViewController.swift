@@ -118,6 +118,10 @@ class NewTabPageViewController: UIViewController {
   private var background: NewTabPageBackground
   private let backgroundView = NewTabPageBackgroundView()
   private let backgroundButtonsView: NewTabPageBackgroundButtonsView
+
+  private var playerViewController = NewTabPageVideoBackgroundController()
+  private var videoButtonsView: NewTabPageVideoButtons
+
   /// A gradient to display over background images to ensure visibility of
   /// the NTP contents and sponsored logo
   ///
@@ -163,6 +167,7 @@ class NewTabPageViewController: UIViewController {
     background = NewTabPageBackground(dataSource: dataSource)
     notifications = NewTabPageNotifications(rewards: rewards)
     collectionView = NewTabCollectionView(frame: .zero, collectionViewLayout: layout)
+    videoButtonsView = NewTabPageVideoButtons()
     super.init(nibName: nil, bundle: nil)
 
     self.p3aHelper.dataSource = self
@@ -298,7 +303,15 @@ class NewTabPageViewController: UIViewController {
 
     view.addSubview(backgroundView)
     view.insertSubview(gradientView, aboveSubview: backgroundView)
+
+    //addChild(playerViewController)
+    view.addSubview(playerViewController)
+    //playerViewController.didMove(toParent: self)
+    playerViewController.isHidden = true
+
     view.addSubview(collectionView)
+    view.addSubview(videoButtonsView)
+
     view.addSubview(feedOverlayView)
 
     collectionView.backgroundView = backgroundButtonsView
@@ -326,10 +339,20 @@ class NewTabPageViewController: UIViewController {
       self?.tappedActiveBackgroundButton(sender)
     }
 
+    setupPlayerViewController()
+
     setupBackgroundImage()
     backgroundView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
+
+    playerViewController.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+    videoButtonsView.snp.makeConstraints {
+      $0.edges.equalToSuperview()
+    }
+
     collectionView.snp.makeConstraints {
       $0.edges.equalToSuperview()
     }
@@ -374,6 +397,9 @@ class NewTabPageViewController: UIViewController {
     // Make sure that imageView has a frame calculated before we attempt
     // to use it.
     backgroundView.layoutIfNeeded()
+
+    playerViewController.layoutIfNeeded()
+    videoButtonsView.layoutIfNeeded()
 
     calculateBackgroundCenterPoints()
   }
@@ -434,6 +460,41 @@ class NewTabPageViewController: UIViewController {
     }
   }
 
+  func setupPlayerViewController() {
+    playerViewController.playFinishedEvent = { [weak self] in
+      self?.collectionView.isHidden = false
+      self?.videoButtonsView.setPlayFinished()
+    }
+
+    playerViewController.playStartedEvent = { [weak self] in
+      self?.collectionView.isHidden = true
+      self?.videoButtonsView.setPlayStarted()
+    }
+
+    playerViewController.playPausedEvent = { [weak self] in
+      self?.collectionView.isHidden = false
+      self?.videoButtonsView.setPlayPaused()
+    }
+
+    playerViewController.played25PercentEvent = { [weak self] in
+      self?.videoButtonsView.setPlay25Reached()
+    }
+
+    playerViewController.previewPlayFinishedEvent = { [weak self] in
+      if let ntpBackground = self?.background.currentBackground,
+        case .sponsoredImage(let back) = ntpBackground
+      {
+        self?.backgroundButtonsView.activeButton = .brandLogo(back.logo)
+      }
+    }
+
+    videoButtonsView.tappedPlayButton = { [weak self] sender in
+      self?.playerViewController.playOrPauseNTTVideo()
+    }
+
+    videoButtonsView.addPlayPauseButton()
+  }
+
   func setupBackgroundImage() {
     collectionView.reloadData()
 
@@ -447,8 +508,16 @@ class NewTabPageViewController: UIViewController {
         } else {
           backgroundButtonsView.activeButton = .none
         }
-      case .sponsoredImage(let background):
-        backgroundButtonsView.activeButton = .brandLogo(background.logo)
+      case .sponsoredImage(let sponsoredImageBackground):
+        if let backgroundVideoPath = background.backgroundVideoPath {
+          backgroundButtonsView.activeButton = .none
+          playerViewController.setupPlayerAndStartAutoplay(
+            backgroundVideoPath: backgroundVideoPath,
+            backgroundColor: background.backgroundColor
+          )
+        } else {
+          backgroundButtonsView.activeButton = .brandLogo(sponsoredImageBackground.logo)
+        }
       case .superReferral:
         backgroundButtonsView.activeButton = .qrCode
       }
@@ -458,6 +527,9 @@ class NewTabPageViewController: UIViewController {
 
     gradientView.isHidden = background.backgroundImage == nil
     backgroundView.imageView.image = background.backgroundImage
+
+    videoButtonsView.isHidden = background.backgroundVideoPath == nil
+    playerViewController.isHidden = background.backgroundVideoPath == nil
   }
 
   private func calculateBackgroundCenterPoints() {
