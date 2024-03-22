@@ -3,9 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginStart="12dp"
-    android:layout_marginEnd="12dp"
-    android:layout_marginBottom="16dp"
+    android:layout_marginHorizontal="12dp"
+    android:layout_marginTop="16dp"
     app:cardBackgroundColor="@color/rewards_panel_card_bg_color"
     app:cardCornerRadius="16dp"
     app:cardElevation="2dp">
@@ -13,8 +12,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginEnd="16dp"
+        android:layout_marginHorizontal="16dp"
         android:orientation="vertical">
 
         <include layout="@layout/brave_rewards_panel_publisher_layout" />
