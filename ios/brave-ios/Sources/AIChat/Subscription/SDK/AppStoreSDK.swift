@@ -40,9 +40,9 @@ public class AppStoreReceipt {
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API
   /// this function will be obsolete
   static func sync() async throws {
-    let fetcher = AppStoreReceiptRestorer()
+    let fetcher = AppStoreReceiptRefresher()
     return try await withCheckedThrowingContinuation { continuation in
-      fetcher.restoreTransactions { error in
+      fetcher.refreshReceipt { error in
         DispatchQueue.main.async {
           if let error = error {
             continuation.resume(throwing: error)
@@ -64,11 +64,8 @@ public class AppStoreReceipt {
     case invalidReceiptData
   }
 
-  // There are two ways to force the AppStore to add receipts to the Bundle
-  // The first is to use SKRefreshRequest and the second is to restore Transactions
-  // SKReceiptRefreshRequest can be slow, so use only for testing
-  #if USE_SK_REFRESH_RECEIPT
-  private class AppStoreReceiptRestorer: NSObject, SKRequestDelegate {
+  /// Forces the AppStore to add receipts to the Application Bundle.
+  private class AppStoreReceiptRefresher: NSObject, SKRequestDelegate {
     private let request = SKReceiptRefreshRequest()
     private var onRefreshComplete: ((Error?) -> Void)?
 
@@ -77,28 +74,37 @@ public class AppStoreReceipt {
       self.request.delegate = self
     }
 
-    func restoreTransactions(with listener: @escaping (Error?) -> Void) {
+    deinit {
+      self.request.cancel()  // StoreKit background task leak fix
+    }
+
+    /// Triggered a refresh of the AppStore receipt
+    func refreshReceipt(with listener: @escaping (Error?) -> Void) {
       if onRefreshComplete == nil {
         self.onRefreshComplete = listener
         self.request.start()
       }
     }
 
+    /// Restore of receipt completed
     func requestDidFinish(_ request: SKRequest) {
       self.onRefreshComplete?(nil)
       self.onRefreshComplete = nil
       self.request.delegate = nil
+      self.request.cancel()  // StoreKit background task leak fix
     }
 
+    /// Restore of receipt failed
     func request(_ request: SKRequest, didFailWithError error: Error) {
       self.onRefreshComplete?(error)
       self.onRefreshComplete = nil
       self.request.delegate = nil
+      self.request.cancel()  // StoreKit background task leak fix
     }
   }
-  #else
+
   /// Forces the AppStore to add receipts to the Application Bundle, and also to restore In-App Transactions
-  private class AppStoreReceiptRestorer: NSObject, SKPaymentTransactionObserver {
+  private class AppStoreTransactionRestorer: NSObject, SKPaymentTransactionObserver {
     private let queue = SKPaymentQueue()
     private var onRefreshComplete: ((Error?) -> Void)?
 
@@ -192,7 +198,6 @@ public class AppStoreReceipt {
       self.queue.remove(self)
     }
   }
-  #endif
 }
 
 /// A class using StoreKit 2, to handle transactions and purchases
@@ -373,6 +378,17 @@ public class AppStoreSDK: ObservableObject {
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
 
+      // If we cannot force a receipt to be added to the app,
+      // leave the transaction pending.
+      try await AppStoreReceipt.sync()
+
+      if try AppStoreReceipt.receipt.isEmpty {
+        return nil
+      }
+
+      // Do additional purchase processing such as server-side validation
+      try await processPurchase(of: product, transaction: transaction)
+
       // Transactions must be marked as completed once processed
       await transaction.finish()
 
@@ -418,6 +434,14 @@ public class AppStoreSDK: ObservableObject {
       Logger.module.error("[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue)")
       return false
     }
+  }
+
+  /// An abstract function that is called to process a purchase further
+  /// If the transaction for the product cannot be processed, validated, etc, an error must be thrown
+  /// - Parameter product: The product that is currently being purchased
+  /// - Parameter transaction: The verified purchase transaction for the product
+  func processPurchase(of product: Product, transaction: Transaction) async throws {
+    fatalError("[AppStoreSDK] - ProcessTransaction Not Implemented")
   }
 
   // MARK: - Private
