@@ -129,7 +129,7 @@ extension View {
               keyringStore: keyringStore,
               networkStore: networkStore,
               preSelectedCoin: accountNetwork?.coin,
-              preSelectedFilecoinNetwork: accountNetwork
+              preSelectedAccountNetwork: accountNetwork
             )
           }
           .navigationViewStyle(.stack)

@@ -19,13 +19,23 @@ struct AddressView<Content: View>: View {
 
   var body: some View {
     content()
-      .contextMenu {
-        Text(address.zwspOutput)
-        Button {
-          UIPasteboard.general.string = address
-        } label: {
-          Label(Strings.Wallet.copyAddressButtonTitle, braveSystemImage: "leo.copy.plain-text")
+      .osAvailabilityModifiers({ view in
+        if address.isEmpty {
+          view
+        } else {
+          view
+            .contextMenu {
+              Text(address.zwspOutput)
+              Button {
+                UIPasteboard.general.string = address
+              } label: {
+                Label(
+                  Strings.Wallet.copyAddressButtonTitle,
+                  braveSystemImage: "leo.copy.plain-text"
+                )
+              }
+            }
         }
-      }
+      })
   }
 }

@@ -30,7 +30,8 @@ extension WalletStore {
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let walletP3A
+      let walletP3A,
+      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(privateMode: privateMode)
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -46,7 +47,8 @@ extension WalletStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A
+      walletP3A: walletP3A,
+      bitcoinWalletService: bitcoinWalletService
     )
   }
 }
@@ -67,7 +69,10 @@ extension CryptoStore {
       let txService = BraveWallet.TxServiceFactory.get(privateMode: privateMode),
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
-      let walletP3A
+      let walletP3A,
+      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
+        privateMode: privateMode
+      )
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil
@@ -83,7 +88,8 @@ extension CryptoStore {
       ethTxManagerProxy: ethTxManagerProxy,
       solTxManagerProxy: solTxManagerProxy,
       ipfsApi: ipfsApi,
-      walletP3A: walletP3A
+      walletP3A: walletP3A,
+      bitcoinWalletService: bitcoinWalletService
     )
   }
 }
@@ -240,7 +246,7 @@ extension Tab: BraveWalletProviderDelegate {
             completion(.internal, nil)
             return
           }
-        case .fil, .btc:
+        case .fil, .btc, .zec:
           // not supported
           fallthrough
         @unknown default:
@@ -348,7 +354,7 @@ extension Tab: BraveWalletProviderDelegate {
       return !Preferences.Wallet.allowEthProviderAccess.value
     case .sol:
       return !Preferences.Wallet.allowSolProviderAccess.value
-    case .fil, .btc:
+    case .fil, .btc, .zec:
       return true
     @unknown default:
       return true

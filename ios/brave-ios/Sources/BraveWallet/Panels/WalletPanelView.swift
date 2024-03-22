@@ -477,7 +477,7 @@ struct WalletPanelView: View {
             Button {
               presentWalletWithContext(.accountSelection)
             } label: {
-              Blockie(address: keyringStore.selectedAccount.address)
+              Blockie(address: keyringStore.selectedAccount.blockieSeed)
                 .frame(width: blockieSize, height: blockieSize)
                 .overlay(
                   RoundedRectangle(cornerRadius: 4)

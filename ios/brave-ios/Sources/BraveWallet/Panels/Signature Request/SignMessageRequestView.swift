@@ -50,7 +50,7 @@ struct SignMessageRequestView: View {
 
   private var accountInfoAndOrigin: some View {
     VStack(spacing: 8) {
-      Blockie(address: account.address)
+      Blockie(address: account.blockieSeed)
         .frame(width: min(blockieSize, maxBlockieSize), height: min(blockieSize, maxBlockieSize))
       AddressView(address: account.address) {
         VStack(spacing: 4) {

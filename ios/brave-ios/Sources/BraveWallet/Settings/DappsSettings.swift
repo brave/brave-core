@@ -253,6 +253,7 @@ private struct SiteConnectionDetailView: View {
         ForEach(siteConnection.connectedAddresses, id: \.self) { address in
           AccountView(
             address: address,
+            seed: address, // TODO: Should be the same for blockie seed and the address in dapps for all networks including bitcoin. Bitcoin dapp site permission, we should store the AccountInfo.AccountId.UniqueKey.sha256. Might need to update the UI if the permission in bitcoin dapp will be handled differently.
             name: siteConnectionStore.accountInfo(for: address)?.name ?? ""
           )
           .swipeActions(edge: .trailing) {

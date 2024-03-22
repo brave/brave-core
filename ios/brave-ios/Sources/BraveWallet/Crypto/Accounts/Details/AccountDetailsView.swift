@@ -40,11 +40,13 @@ struct AccountDetailsView: View {
   var body: some View {
     NavigationView {
       List {
-        Section {
-          AccountDetailsHeaderView(account: account)
-            .frame(maxWidth: .infinity)
-            .listRowInsets(.zero)
-            .listRowBackground(Color(.braveGroupedBackground))
+        if !account.address.isEmpty {
+          Section {
+            AccountDetailsHeaderView(account: account)
+              .frame(maxWidth: .infinity)
+              .listRowInsets(.zero)
+              .listRowBackground(Color(.braveGroupedBackground))
+          }
         }
         Section(
           content: {
@@ -79,13 +81,15 @@ struct AccountDetailsView: View {
             )
           }
         )
-        Section {
-          NavigationLink(
-            destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
-          ) {
-            Text(Strings.Wallet.accountPrivateKey)
+        if account.coin != .btc {
+          Section {
+            NavigationLink(
+              destination: AccountPrivateKeyView(keyringStore: keyringStore, account: account)
+            ) {
+              Text(Strings.Wallet.accountPrivateKey)
+            }
+            .listRowBackground(Color(.secondaryBraveGroupedBackground))
           }
-          .listRowBackground(Color(.secondaryBraveGroupedBackground))
         }
         if account.isImported {
           Section {
@@ -153,7 +157,7 @@ struct AccountDetailsHeaderView: View {
         .frame(width: 220, height: 220)
         .overlay(
           Group {
-            if let image = account.qrCodeImage?.cgImage {
+            if let image = account.address.qrCodeImage?.cgImage {
               Image(uiImage: UIImage(cgImage: image))
                 .resizable()
                 .interpolation(.none)

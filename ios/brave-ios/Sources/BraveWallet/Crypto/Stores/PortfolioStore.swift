@@ -75,6 +75,68 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
       return partialResult + assetValue
     }
   }
+
+  /// Sort by the group's total fiat/value
+  static func sorted(
+    lhs: AssetGroupViewModel,
+    rhs: AssetGroupViewModel
+  ) -> Bool {
+    if lhs.totalFiatValue == rhs.totalFiatValue {
+      return sameBalanceSort(lhs: lhs, rhs: rhs)
+    } else {
+      return lhs.totalFiatValue > rhs.totalFiatValue
+    }
+  }
+
+  /// Sorts primary networks to be first (Solana Mainnet first primary network),  then sorts alphabetically.
+  /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
+  private static func sameBalanceSort(lhs: AssetGroupViewModel, rhs: AssetGroupViewModel) -> Bool {
+    if case .account(let lhsAccount) = lhs.groupType, case .account(let rhsAccount) = rhs.groupType {
+      if lhsAccount.coin == .fil && rhsAccount.coin == .fil {
+        if lhsAccount.keyringId == .filecoin && rhsAccount.keyringId != .filecoin {
+          return true
+        } else if lhsAccount.keyringId != .filecoin && rhsAccount.keyringId == .filecoin {
+          return false
+        }
+      } else if lhsAccount.coin == .btc && rhsAccount.coin == .btc {
+        if lhsAccount.keyringId == .bitcoin84 && rhsAccount.keyringId != .bitcoin84 {
+          return true
+        } else if lhsAccount.keyringId != .bitcoin84 && rhsAccount.keyringId == .bitcoin84 {
+          return false
+        }
+      } else {
+        if lhsAccount.keyringId == .solana && rhsAccount.keyringId != .solana {
+          return true
+        } else if lhsAccount.keyringId != .solana && rhsAccount.keyringId == .solana {
+          return false
+        }
+      }
+    }
+    if case .network(let lhsNetwork) = lhs.groupType, case .network(let rhsNetwork) = rhs.groupType 
+    {
+      let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhsNetwork.chainId)
+      let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhsNetwork.chainId)
+      if isLHSPrimaryNetwork && !isRHSPrimaryNetwork {
+        return true
+      } else if !isLHSPrimaryNetwork && isRHSPrimaryNetwork {
+        return false
+      } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
+        lhsNetwork.chainId != rhsNetwork.chainId,
+        lhsNetwork.chainId == BraveWallet.SolanaMainnet
+      {
+        // Solana Mainnet to be first primary network
+        return true
+      } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
+        lhsNetwork.chainId != rhsNetwork.chainId,
+        rhsNetwork.chainId == BraveWallet.SolanaMainnet
+      {
+        // Solana Mainnet to be first primary network
+        return false
+      }
+      return lhs.id < rhs.id
+    }
+    return lhs.id < rhs.id
+  }
 }
 
 public struct AssetViewModel: Identifiable, Equatable {
@@ -132,7 +194,7 @@ public struct AssetViewModel: Identifiable, Equatable {
         let lhsValue = (lhsPrice * lhs.totalBalance)
         let rhsValue = (rhsPrice * rhs.totalBalance)
         if lhsValue == rhsValue, lhsValue <= 0 {
-          return emptyBalanceSort(lhs: lhs, rhs: rhs)
+          return sameBalanceSort(lhs: lhs, rhs: rhs)
         }
         if sortOrder == .valueAsc {
           return lhsValue < rhsValue
@@ -146,7 +208,7 @@ public struct AssetViewModel: Identifiable, Equatable {
         return false
       }
       if lhs.totalBalance == rhs.totalBalance, lhs.totalBalance <= 0 {
-        return emptyBalanceSort(lhs: lhs, rhs: rhs)
+        return sameBalanceSort(lhs: lhs, rhs: rhs)
       }
       // price unavailable, sort by balance
       if sortOrder == .valueAsc {
@@ -162,7 +224,7 @@ public struct AssetViewModel: Identifiable, Equatable {
 
   /// Sorts primary networks to be first (Solana Mainnet first primary network), then sorts native assets to be first, then sorts alphabetically.
   /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
-  private static func emptyBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
+  private static func sameBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
     // sort primary networks to be first
     let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhs.network.chainId)
     let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhs.network.chainId)
@@ -664,7 +726,9 @@ public class PortfolioStore: ObservableObject, WalletObserverStore {
 
     return
       groups
-      .sorted(by: { $0.totalFiatValue > $1.totalFiatValue })
+      .sorted(by: {
+        AssetGroupViewModel.sorted(lhs: $0, rhs: $1)
+      })
       .optionallyFilter(  // when grouping assets & hiding small balances
         shouldFilter: filters.groupBy != .none && filters.isHidingSmallBalances,
         isIncluded: { group in

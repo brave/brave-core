@@ -161,7 +161,7 @@ struct SignTransactionView: View {
             }
           }
           VStack(spacing: 12) {
-            Blockie(address: account.address)
+            Blockie(address: account.blockieSeed)
               .frame(
                 width: min(blockieSize, maxBlockieSize),
                 height: min(blockieSize, maxBlockieSize)

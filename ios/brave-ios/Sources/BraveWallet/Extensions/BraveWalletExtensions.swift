@@ -151,25 +151,17 @@ extension BraveWallet.AccountInfo {
       return Strings.Wallet.solAccountDescription
     case .fil:
       return Strings.Wallet.filAccountDescription
-    case .btc, .zec:
+    case .btc:
+      return Strings.Wallet.btcAccountDescription
+    case .zec:
       return ""
     @unknown default:
       return ""
     }
   }
-
-  var qrCodeImage: UIImage? {
-    guard let data = self.address.data(using: .utf8) else { return nil }
-    let context = CIContext()
-    let filter = CIFilter.qrCodeGenerator()
-    filter.message = data
-    filter.correctionLevel = "H"
-    if let image = filter.outputImage,
-      let cgImage = context.createCGImage(image, from: image.extent)
-    {
-      return UIImage(cgImage: cgImage)
-    }
-    return nil
+  
+  var blockieSeed: String {
+    address.isEmpty ? accountId.uniqueKey.sha256 : address
   }
 }
 
@@ -199,7 +191,9 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.coinTypeSolana
     case .fil:
       return Strings.Wallet.coinTypeFilecoin
-    case .btc, .zec:
+    case .btc:
+      return Strings.Wallet.coinTypeBitcoin
+    case .zec:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
@@ -214,7 +208,9 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.coinTypeSolanaDescription
     case .fil:
       return Strings.Wallet.coinTypeFilecoinDescription
-    case .btc, .zec:
+    case .btc:
+      return Strings.Wallet.coinTypeBitcoinDescription
+    case .zec:
       fallthrough
     @unknown default:
       return Strings.Wallet.coinTypeUnknown
@@ -229,7 +225,9 @@ extension BraveWallet.CoinType {
       return "sol-asset-icon"
     case .fil:
       return "filecoin-asset-icon"
-    case .btc, .zec:
+    case .btc:
+      return "bitcoin-asset-icon"
+    case .zec:
       fallthrough
     @unknown default:
       return ""
@@ -244,7 +242,9 @@ extension BraveWallet.CoinType {
       return Strings.Wallet.defaultSolAccountName
     case .fil:
       return Strings.Wallet.defaultFilAccountName
-    case .btc, .zec:
+    case .btc:
+      return Strings.Wallet.defaultBitcoinAccountName
+    case .zec:
       fallthrough
     @unknown default:
       return ""
@@ -260,6 +260,7 @@ extension BraveWallet.CoinType {
     case .fil:
       return Strings.Wallet.defaultSecondaryFilAccountName
     case .btc, .zec:
+      // no secondary/import account for bitcoin
       fallthrough
     @unknown default:
       return ""
@@ -275,7 +276,9 @@ extension BraveWallet.CoinType {
       return 2
     case .fil:
       return 3
-    case .btc, .zec:
+    case .btc:
+      return 4
+    case .zec:
       fallthrough
     @unknown default:
       return 10
@@ -289,6 +292,10 @@ extension BraveWallet.TransactionInfo {
       return .sol
     } else if txDataUnion.filTxData != nil {
       return .fil
+    } else if txDataUnion.btcTxData != nil {
+      return .btc
+    } else if txDataUnion.zecTxData != nil {
+      return .zec
     } else {
       return .eth
     }

@@ -180,7 +180,7 @@ struct PortfolioAssetGroupHeaderView: View {
         if case .network(let networkInfo) = group.groupType {
           NetworkIconView(network: networkInfo, length: 32)
         } else if case .account(let accountInfo) = group.groupType {
-          Blockie(address: accountInfo.address)
+          Blockie(address: accountInfo.blockieSeed)
             .frame(width: 32, height: 32)
             .clipShape(RoundedRectangle(cornerRadius: 4))
         }

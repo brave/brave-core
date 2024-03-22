@@ -73,6 +73,7 @@ struct SignInWithEthereumView: View {
       AddressView(address: account.address) {
         AccountView(
           address: account.address,
+          seed: account.blockieSeed,
           name: account.name
         )
       }

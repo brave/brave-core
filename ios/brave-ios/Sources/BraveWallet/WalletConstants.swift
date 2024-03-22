@@ -75,6 +75,7 @@ public struct WalletConstants {
     BraveWallet.SolanaTestnet,
     BraveWallet.FilecoinTestnet,
     BraveWallet.FilecoinEthereumTestnetChainId,
+    BraveWallet.BitcoinTestnet
   ]
 
   /// Primary network chain ids
@@ -82,6 +83,7 @@ public struct WalletConstants {
     BraveWallet.SolanaMainnet,
     BraveWallet.MainnetChainId,
     BraveWallet.FilecoinMainnet,
+    BraveWallet.BitcoinMainnet
   ]
 
   public enum SupportedCoinTypesMode {
@@ -95,7 +97,7 @@ public struct WalletConstants {
   ) -> OrderedSet<BraveWallet.CoinType> {
     switch mode {
     case .general:
-      return [.eth, .sol, .fil]
+      return [.eth, .sol, .fil, .btc]
     case .dapps:
       return [.eth, .sol]
     }
