@@ -975,7 +975,7 @@ BraveContentBrowserClient::CreateURLLoaderThrottles(
         body_sniffer_throttle->SetBodyProducer(std::move(producer));
       }
 
-      auto handler = speedreader::SpeedreaderBodyDistiller::Create(
+      auto handler = speedreader::SpeedreaderBodyDistiller::MaybeCreate(
           g_brave_browser_process->speedreader_rewriter_service(),
           speedreader_service, tab_helper->GetWeakPtr());
       if (handler) {

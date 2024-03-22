@@ -64,10 +64,10 @@ class BodyHandler {
   virtual bool OnRequest(network::ResourceRequest* request) = 0;
 
   // Called on response received, returns true if the handler wants to process
-  // this response.
-  virtual bool ShouldProcess(
-      const GURL& response_url,
-      network::mojom::URLResponseHead* response_head) = 0;
+  // this response. |defer| assignment is ignored if returns false.
+  virtual bool ShouldProcess(const GURL& response_url,
+                             network::mojom::URLResponseHead* response_head,
+                             bool* defer) = 0;
 
   // Called when the page content reaches the consumer.
   virtual void OnComplete() = 0;

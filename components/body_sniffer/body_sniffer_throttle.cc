@@ -47,16 +47,18 @@ void BodySnifferThrottle::WillProcessResponse(
     network::mojom::URLResponseHead* response_head,
     bool* defer) {
   for (auto& handler : body_handlers_) {
-    if (!handler->ShouldProcess(response_url, response_head)) {
+    bool d = false;
+    if (!handler->ShouldProcess(response_url, response_head, &d)) {
       handler.reset();
+    } else {
+      *defer = *defer || d;
+      handler->UpdateResponseHead(response_head);
     }
   }
   base::EraseIf(body_handlers_, [](auto& h) { return !h; });
   if (body_handlers_.empty() && !producer_) {
     return;
   }
-
-  *defer = true;
 
   Handler handler = std::move(body_handlers_);
   if (producer_) {

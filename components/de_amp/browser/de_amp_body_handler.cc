@@ -98,7 +98,9 @@ bool DeAmpBodyHandler::OnRequest(network::ResourceRequest* request) {
 
 bool DeAmpBodyHandler::ShouldProcess(
     const GURL& response_url,
-    network::mojom::URLResponseHead* response_head) {
+    network::mojom::URLResponseHead* response_head,
+    bool* defer) {
+  *defer = true;
   response_url_ = response_url;
   return navigation_chain_.GetList().size() < kMaxRedirectHops;
 }
@@ -147,9 +149,7 @@ void DeAmpBodyHandler::DeAmpBodyHandler::Transform(
 }
 
 void DeAmpBodyHandler::UpdateResponseHead(
-    network::mojom::URLResponseHead* response_head) {
-  NOTREACHED();
-}
+    network::mojom::URLResponseHead* response_head) {}
 
 bool DeAmpBodyHandler::MaybeRedirectToCanonicalLink(const std::string& body) {
   const auto canonical_link = FindCanonicalAmpUrl(body);

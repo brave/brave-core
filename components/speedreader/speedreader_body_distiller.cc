@@ -58,7 +58,7 @@ SpeedreaderBodyDistiller::SpeedreaderBodyDistiller(
 SpeedreaderBodyDistiller::~SpeedreaderBodyDistiller() = default;
 
 // static
-std::unique_ptr<SpeedreaderBodyDistiller> SpeedreaderBodyDistiller::Create(
+std::unique_ptr<SpeedreaderBodyDistiller> SpeedreaderBodyDistiller::MaybeCreate(
     SpeedreaderRewriterService* rewriter_service,
     SpeedreaderService* speedreader_service,
     base::WeakPtr<SpeedreaderDelegate> speedreader_delegate) {
@@ -76,7 +76,8 @@ bool SpeedreaderBodyDistiller::OnRequest(network::ResourceRequest* request) {
 
 bool SpeedreaderBodyDistiller::ShouldProcess(
     const GURL& response_url,
-    network::mojom::URLResponseHead* response_head) {
+    network::mojom::URLResponseHead* response_head,
+    bool* defer) {
   if (!speedreader_delegate_ ||
       !speedreader_delegate_->IsPageDistillationAllowed()) {
     // The page was redirected to an ineligible URL. Skip.
@@ -89,6 +90,8 @@ bool SpeedreaderBodyDistiller::ShouldProcess(
     // Skip all non-html documents.
     return false;
   }
+
+  *defer = true;
 
   response_url_ = response_url;
   return true;

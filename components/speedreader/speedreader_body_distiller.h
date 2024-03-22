@@ -26,14 +26,15 @@ class SpeedreaderBodyDistiller : public body_sniffer::BodyHandler {
  public:
   ~SpeedreaderBodyDistiller() override;
 
-  static std::unique_ptr<SpeedreaderBodyDistiller> Create(
+  static std::unique_ptr<SpeedreaderBodyDistiller> MaybeCreate(
       SpeedreaderRewriterService* rewriter_service,
       SpeedreaderService* speedreader_service,
       base::WeakPtr<SpeedreaderDelegate> speedreader_delegate);
 
   bool OnRequest(network::ResourceRequest* request) override;
   bool ShouldProcess(const GURL& response_url,
-                     network::mojom::URLResponseHead* response_head) override;
+                     network::mojom::URLResponseHead* response_head,
+                     bool* defer) override;
   void OnComplete() override;
   Action OnBodyUpdated(const std::string& body, bool is_complete) override;
 

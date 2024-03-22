@@ -317,7 +317,6 @@ void BodySnifferURLLoader::CompleteSniffing(bool remove_first,
 
   if (auto* body_handlers = absl::get_if<BodyHandlersPtr>(&handler_)) {
     if (remove_first && !body_handlers->empty()) {
-      body_handlers->front()->UpdateResponseHead(response_head_.get());
       complete_handlers_.push_back(std::move(*body_handlers->begin()));
       body_handlers->erase(body_handlers->begin());
     }

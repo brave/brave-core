@@ -29,7 +29,8 @@ class DeAmpBodyHandler : public body_sniffer::BodyHandler {
 
   bool OnRequest(network::ResourceRequest* request) override;
   bool ShouldProcess(const GURL& response_url,
-                     network::mojom::URLResponseHead* response_head) override;
+                     network::mojom::URLResponseHead* response_head,
+                     bool* defer) override;
 
   void OnComplete() override;
   Action OnBodyUpdated(const std::string& body, bool is_complete) override;
