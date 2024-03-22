@@ -80,11 +80,11 @@ path = "../../../components/challenge_bypass_ristretto/rust/cxx"
 package = "challenge-bypass-ristretto-cxx"
 
 [patch.crates-io.aho_corasick_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.2"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/aho-corasick-1.1.3"
 package = "aho-corasick"
 
 [patch.crates-io.anyhow_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.80"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/anyhow-1.0.81"
 package = "anyhow"
 
 [patch.crates-io.autocfg_v1]
@@ -100,15 +100,15 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/cfg-if-1.0.0"
 package = "cfg-if"
 
 [patch.crates-io.cxx_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.119"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxx-1.0.120"
 package = "cxx"
 
 [patch.crates-io.cxxbridge-flags_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.119"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-flags-1.0.120"
 package = "cxxbridge-flags"
 
 [patch.crates-io.cxxbridge-macro_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.119"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/cxxbridge-macro-1.0.120"
 package = "cxxbridge-macro"
 
 [patch.crates-io.getrandom_v0_2]
@@ -144,7 +144,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/ppv-lite86-0.2.17
 package = "ppv-lite86"
 
 [patch.crates-io.proc_macro2_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.78"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/proc-macro2-1.0.79"
 package = "proc-macro2"
 
 [patch.crates-io.quote_v1]
@@ -164,7 +164,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/rand-0.8.5"
 package = "rand"
 
 [patch.crates-io.regex_v1]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.10.3"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/regex-1.10.4"
 package = "regex"
 
 [patch.crates-io.regex_automata_v0_4]
@@ -208,7 +208,7 @@ path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-1.0.109"
 package = "syn"
 
 [patch.crates-io.syn_v2]
-path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.52"
+path = "../../../../third_party/rust/chromium_crates_io/vendor/syn-2.0.55"
 package = "syn"
 
 [patch.crates-io.unicode-ident_v1]
