@@ -177,14 +177,14 @@ std::array<uint8_t, 32> ZCashSerializer::CalculateTxIdDigest(
     const ZCashTransaction& zcash_transaction) {
   std::array<uint8_t, 32> header_hash = HashHeader(zcash_transaction);
 
-  std::array<uint8_t, 32> transaprent_hash;
+  std::array<uint8_t, 32> transparent_hash;
   {
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
     stream.PushBytes(ZCashSerializer::HashPrevouts(zcash_transaction));
     stream.PushBytes(ZCashSerializer::HashSequences(zcash_transaction));
     stream.PushBytes(ZCashSerializer::HashOutputs(zcash_transaction));
-    transaprent_hash = blake2b256(data, kTransparentHashPersonalizer);
+    transparent_hash = blake2b256(data, kTransparentHashPersonalizer);
   }
 
   std::array<uint8_t, 32> sapling_hash;
@@ -198,7 +198,7 @@ std::array<uint8_t, 32> ZCashSerializer::CalculateTxIdDigest(
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
     stream.PushBytes(header_hash);
-    stream.PushBytes(transaprent_hash);
+    stream.PushBytes(transparent_hash);
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 
@@ -217,7 +217,7 @@ std::array<uint8_t, 32> ZCashSerializer::CalculateSignatureDigest(
     const ZCashTransaction::TxInput& input) {
   std::array<uint8_t, 32> header_hash = HashHeader(zcash_transaction);
 
-  std::array<uint8_t, 32> transaprent_hash;
+  std::array<uint8_t, 32> transparent_hash;
   {
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
@@ -229,7 +229,7 @@ std::array<uint8_t, 32> ZCashSerializer::CalculateSignatureDigest(
     stream.PushBytes(HashOutputs(zcash_transaction));
     stream.PushBytes(HashTxIn(input));
 
-    transaprent_hash = blake2b256(data, kTransparentHashPersonalizer);
+    transparent_hash = blake2b256(data, kTransparentHashPersonalizer);
   }
 
   std::array<uint8_t, 32> sapling_hash;
@@ -243,7 +243,7 @@ std::array<uint8_t, 32> ZCashSerializer::CalculateSignatureDigest(
     std::vector<uint8_t> data;
     BtcLikeSerializerStream stream(&data);
     stream.PushBytes(header_hash);
-    stream.PushBytes(transaprent_hash);
+    stream.PushBytes(transparent_hash);
     stream.PushBytes(sapling_hash);
     stream.PushBytes(orchard_hash);
 

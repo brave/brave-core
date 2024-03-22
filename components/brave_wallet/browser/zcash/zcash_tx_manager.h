@@ -40,6 +40,8 @@ class ZCashTxManager : public TxManager, public ZCashBlockTracker::Observer {
   ZCashTxManager& operator=(const ZCashTxManager&) = delete;
 
  private:
+  friend class BraveWalletP3AUnitTest;
+
   ZCashTxStateManager* GetZCashTxStateManager();
   ZCashBlockTracker* GetZCashBlockTracker();
 

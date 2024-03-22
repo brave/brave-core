@@ -44,8 +44,9 @@ class TxStorageDelegate;
 class TxStorageDelegateImpl;
 class EthTxManager;
 class SolanaTxManager;
+class BitcoinTxManager;
 class FilTxManager;
-class ZecTxManager;
+class ZCashTxManager;
 
 class TxService : public KeyedService,
                   public mojom::TxService,
@@ -241,6 +242,8 @@ class TxService : public KeyedService,
   friend class EthTxManagerUnitTest;
   friend class SolanaTxManagerUnitTest;
   friend class FilTxManagerUnitTest;
+  friend class BitcoinTxManagerUnitTest;
+  friend class BraveWalletP3AUnitTest;
 
   void MigrateTransactionsFromPrefsToDB(PrefService* prefs);
 
@@ -248,7 +251,8 @@ class TxService : public KeyedService,
   EthTxManager* GetEthTxManager();
   SolanaTxManager* GetSolanaTxManager();
   FilTxManager* GetFilTxManager();
-  ZecTxManager* GetZecTxManager();
+  BitcoinTxManager* GetBitcoinTxManager();
+  ZCashTxManager* GetZCashTxManager();
 
   raw_ptr<PrefService> prefs_;  // NOT OWNED
   raw_ptr<JsonRpcService> json_rpc_service_ = nullptr;
