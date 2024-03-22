@@ -160,12 +160,12 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     }
   }, [
     isPasswordValid,
-    phraseInput,
     password,
     isImportingFromLegacySeed,
     restoreWalletFromSeed,
     recoveryPhrase,
     autoLockDuration,
+    history,
     setAutoLockMinutes
   ])
 
@@ -235,7 +235,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             )}
           </Button>
           <VerticalSpace space='12px' />
-          {alternateRecoveryPhraseLength === 24 ? (
+          {recoveryPhraseLength === 24 ? (
             <Column
               justifyContent='center'
               alignItems='center'

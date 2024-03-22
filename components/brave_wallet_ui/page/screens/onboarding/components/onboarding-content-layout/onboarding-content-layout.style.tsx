@@ -80,7 +80,7 @@ export const Title = styled.h3`
 export const Subtitle = styled.p`
   color: ${leo.color.text.secondary};
   text-align: center;
-  font: ${leo.font.default.regular};
+  font: ${leo.font.large.regular};
   margin: 0;
   padding: 0;
 `
