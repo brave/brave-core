@@ -4,7 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useHistory, useParams } from 'react-router'
+import { Redirect, useHistory, useParams } from 'react-router'
 
 // utils
 import { WalletRoutes } from '../../../../constants/types'
@@ -41,23 +41,25 @@ export const OnboardingSelectWalletDevice = () => {
         })
       : undefined
 
+  if (!selectedAccountType) {
+    return <Redirect to={WalletRoutes.OnboardingHardwareWalletConnect} />
+  }
+
   const pageTitle = selectedHardwareWallet
     ? getLocale('braveWalletAuthorizeHardwareWallet')
     : getLocale('braveWalletConnectHardwareTitle')
 
   return (
     <OnboardingContentLayout title={pageTitle}>
-      {selectedAccountType && (
-        <HardwareWalletConnect
-          selectedAccountType={selectedAccountType}
-          onSelectVendor={setSelectedHardwareWallet}
-          onSuccess={() => {
-            if (selectedHardwareWallet) {
-              history.push(WalletRoutes.OnboardingComplete)
-            }
-          }}
-        />
-      )}
+      <HardwareWalletConnect
+        selectedAccountType={selectedAccountType}
+        onSelectVendor={setSelectedHardwareWallet}
+        onSuccess={() => {
+          if (selectedHardwareWallet) {
+            history.push(WalletRoutes.OnboardingComplete)
+          }
+        }}
+      />
     </OnboardingContentLayout>
   )
 }
