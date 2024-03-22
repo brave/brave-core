@@ -390,7 +390,6 @@ bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
          brave::IsRegularProfile(GetProfile()) &&
          GetProfile()->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
-         ai_chat::AIChatTabHelper::FromWebContents(source_web_contents_) &&
          !IsInProgressiveWebApp();
 }
 
