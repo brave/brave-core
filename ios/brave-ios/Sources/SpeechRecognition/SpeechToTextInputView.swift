@@ -13,16 +13,17 @@ public struct SpeechToTextInputView: View {
   @Environment(\.presentationMode) @Binding private var presentationMode
   @ObservedObject var speechModel: SpeechRecognizer
   let disclaimer: String
-  
+
   var onEnterSearchKeyword: (() -> Void)?
   var dismiss: (() -> Void)?
 
-  public init(speechModel: SpeechRecognizer, disclaimer: String, dismissAction: (() -> Void)? = nil) {
+  public init(speechModel: SpeechRecognizer, disclaimer: String, dismissAction: (() -> Void)? = nil)
+  {
     self.speechModel = speechModel
     self.disclaimer = disclaimer
     self.dismiss = dismissAction
   }
-  
+
   public var body: some View {
     inputView
   }
@@ -94,7 +95,7 @@ public struct SpeechToTextInputView: View {
     }
     .padding(.vertical, 45)
   }
-  
+
   private func dismissView() {
     dismiss?()
     speechModel.clearSearch()
@@ -102,8 +103,8 @@ public struct SpeechToTextInputView: View {
   }
 }
 
-public extension SpeechToTextInputView {
-    
+extension SpeechToTextInputView {
+
   private var outerCircleScale: CGFloat {
     switch speechModel.animationType {
     case .pulse(let scale):
@@ -135,27 +136,28 @@ extension UIColor {
 
 public struct SpeechToTextInputContentView: UIViewControllerRepresentable {
   @Binding var isPresented: Bool
-  
+
   var dismissAction: (() -> Void)?
-  
+
   var speechModel: SpeechRecognizer
   var disclaimer: String
-  
+
   public init(
     isPresented: Binding<Bool>,
     dismissAction: (() -> Void)? = nil,
     speechModel: SpeechRecognizer,
-    disclaimer: String) {
-      _isPresented = isPresented
-      self.dismissAction = dismissAction
-      self.speechModel = speechModel
-      self.disclaimer = disclaimer
+    disclaimer: String
+  ) {
+    _isPresented = isPresented
+    self.dismissAction = dismissAction
+    self.speechModel = speechModel
+    self.disclaimer = disclaimer
   }
-  
+
   public func makeUIViewController(context: Context) -> UIViewController {
     .init()
   }
-  
+
   public func updateUIViewController(_ uiViewController: UIViewController, context: Context) {
     if isPresented {
       if uiViewController.presentedViewController != nil {
@@ -166,22 +168,25 @@ public struct SpeechToTextInputContentView: UIViewControllerRepresentable {
         rootView: SpeechToTextInputView(
           speechModel: speechModel,
           disclaimer: disclaimer,
-          dismissAction: dismissAction))
-      
+          dismissAction: dismissAction
+        )
+      )
+
       context.coordinator.presentedViewController = .init(controller)
       uiViewController.present(controller, animated: true)
     } else {
       if let presentedViewController = context.coordinator.presentedViewController?.value,
-         presentedViewController == uiViewController.presentedViewController {
+        presentedViewController == uiViewController.presentedViewController
+      {
         uiViewController.presentedViewController?.dismiss(animated: true)
       }
     }
   }
-  
+
   public class Coordinator {
     var presentedViewController: WeakRef<UIViewController>?
   }
-  
+
   public func makeCoordinator() -> Coordinator {
     Coordinator()
   }

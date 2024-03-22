@@ -54,7 +54,6 @@ void ShowBubble(std::unique_ptr<ActionBubbleView> bubble) {
 class LoadingSpinner : public views::View, public gfx::AnimationDelegate {
   METADATA_HEADER(LoadingSpinner, views::View)
  public:
-
   LoadingSpinner() {
     animation_.SetSlideDuration(base::Milliseconds(2500));
     animation_.SetTweenType(gfx::Tween::LINEAR);

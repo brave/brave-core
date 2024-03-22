@@ -7,11 +7,13 @@ import override_utils
 
 CHROMIUM_POLICY_KEY = 'SOFTWARE\\\\Policies\\\\BraveSoftware\\\\Brave'
 
+
 @override_utils.override_function(globals())
 def _LoadJSONFile(orig_func, json_file):
-  json = orig_func(json_file)
-  AddBravePolicies(json)
-  return json
+    json = orig_func(json_file)
+    AddBravePolicies(json)
+    return json
+
 
 def AddBravePolicies(template_file_contents):
     highest_id = template_file_contents['highest_id_currently_used']

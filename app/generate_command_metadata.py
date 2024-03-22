@@ -252,10 +252,6 @@ EXISTING_TRANSLATIONS = {
     "IDC_PASTE_AND_GO": \
         # Pa&amp;ste and go to
         # <ph name="URL">$1<ex>http://www.google.com/</ex></ph>
-
-
-
-
         "IDS_PASTE_AND_GO",
     "IDC_PASTE": "IDS_PASTE", # &amp;Paste
     "IDC_RESTORE_TAB": "IDS_RESTORE_TAB", # R&amp;eopen closed tab

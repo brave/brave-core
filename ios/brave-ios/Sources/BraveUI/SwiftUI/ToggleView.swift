@@ -8,22 +8,24 @@ import SwiftUI
 
 public struct ToggleView: View {
   public typealias OnChangeCallback = (Bool) -> Void
-  
+
   let title: String
   var subtitle: String?
   @Binding var toggle: Bool
   let onChange: OnChangeCallback?
-  
-  public init(title: String,
-              subtitle: String? = nil,
-              toggle: Binding<Bool>,
-              onChange: OnChangeCallback? = nil) {
+
+  public init(
+    title: String,
+    subtitle: String? = nil,
+    toggle: Binding<Bool>,
+    onChange: OnChangeCallback? = nil
+  ) {
     self.title = title
     self.subtitle = subtitle
     _toggle = toggle
     self.onChange = onChange
   }
-  
+
   public var body: some View {
     Toggle(isOn: $toggle) {
       LabelView(title: title, subtitle: subtitle)

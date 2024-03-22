@@ -14,7 +14,6 @@
 class BraveBrowserFrameViewLinuxNative : public BrowserFrameViewLinuxNative {
   METADATA_HEADER(BraveBrowserFrameViewLinuxNative, BrowserFrameViewLinuxNative)
  public:
-
   BraveBrowserFrameViewLinuxNative(
       BrowserFrame* frame,
       BrowserView* browser_view,

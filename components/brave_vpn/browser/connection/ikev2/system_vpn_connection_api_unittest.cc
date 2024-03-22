@@ -223,8 +223,9 @@ class SystemVPNConnectionAPIUnitTest : public testing::Test {
   }
 
   void LoadCachedRegionData() {
-    GetBraveVPNConnectionManager()->GetRegionDataManager().
-        LoadCachedRegionData();
+    GetBraveVPNConnectionManager()
+        ->GetRegionDataManager()
+        .LoadCachedRegionData();
   }
 
   void ClearRegions() {
@@ -543,8 +544,7 @@ TEST_F(SystemVPNConnectionAPIUnitTest, CancelConnectingTest) {
 
 // Ignore disconnected state change while connected. See the comment at
 // ConnectionAPIImpl::UpdateAndNotifyConnectionStateChange().
-TEST_F(SystemVPNConnectionAPIUnitTest,
-       IgnoreDisconnectedStateWhileConnecting) {
+TEST_F(SystemVPNConnectionAPIUnitTest, IgnoreDisconnectedStateWhileConnecting) {
   auto* test_api = GetConnectionAPI();
 
   test_api->SetConnectionStateForTesting(mojom::ConnectionState::CONNECTING);

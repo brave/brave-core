@@ -113,16 +113,22 @@ public class BraveVPNInAppPurchaseObserver: NSObject, SKPaymentTransactionObserv
   }
 
   // MARK: - Handling promoted in-app purchases
-  
-  public func paymentQueue(_ queue: SKPaymentQueue, shouldAddStorePayment payment: SKPayment, for product: SKProduct) -> Bool {
+
+  public func paymentQueue(
+    _ queue: SKPaymentQueue,
+    shouldAddStorePayment payment: SKPayment,
+    for product: SKProduct
+  ) -> Bool {
     // Check the product triggered from ad is a VPN product
     // This check is done because this observer is used in browser
     let productIdentifier = product.productIdentifier
-    guard productIdentifier == VPNProductInfo.ProductIdentifiers.monthlySub ||
-            productIdentifier == VPNProductInfo.ProductIdentifiers.yearlySub else {
+    guard
+      productIdentifier == VPNProductInfo.ProductIdentifiers.monthlySub
+        || productIdentifier == VPNProductInfo.ProductIdentifiers.yearlySub
+    else {
       return false
     }
-    
+
     // Check if there is an active onboarding happening
     let shouldDeferPayment = Preferences.AppState.isOnboardingActive.value
 

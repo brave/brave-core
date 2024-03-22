@@ -81,8 +81,7 @@ void ConnectionAPIImplSim::CheckConnectionImpl(const std::string& name) {
   check_connection_called_ = true;
 }
 
-void ConnectionAPIImplSim::OnCreated(const std::string& name,
-                                           bool success) {
+void ConnectionAPIImplSim::OnCreated(const std::string& name, bool success) {
   if (!success) {
     return;
   }
@@ -106,8 +105,7 @@ bool ConnectionAPIImplSim::IsConnectionChecked() const {
   return check_connection_called_;
 }
 
-void ConnectionAPIImplSim::OnConnected(const std::string& name,
-                                             bool success) {
+void ConnectionAPIImplSim::OnConnected(const std::string& name, bool success) {
   // Cancelling connecting request simulation.
   if (disconnect_requested_) {
     disconnect_requested_ = false;
@@ -123,7 +121,7 @@ void ConnectionAPIImplSim::OnIsConnecting(const std::string& name) {
 }
 
 void ConnectionAPIImplSim::OnDisconnected(const std::string& name,
-                                                bool success) {
+                                          bool success) {
   if (!success) {
     return;
   }

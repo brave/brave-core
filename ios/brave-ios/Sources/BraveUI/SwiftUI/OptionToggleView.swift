@@ -11,17 +11,19 @@ public struct OptionToggleView: View {
   var subtitle: String?
   @ObservedObject var option: Preferences.Option<Bool>
   let onChange: ToggleView.OnChangeCallback?
-  
- public init(title: String, 
-             subtitle: String? = nil,
-             option: Preferences.Option<Bool>, 
-             onChange: ToggleView.OnChangeCallback? = nil) {
+
+  public init(
+    title: String,
+    subtitle: String? = nil,
+    option: Preferences.Option<Bool>,
+    onChange: ToggleView.OnChangeCallback? = nil
+  ) {
     self.title = title
     self.subtitle = subtitle
     self.option = option
     self.onChange = onChange
   }
-  
+
   public var body: some View {
     ToggleView(
       title: title,

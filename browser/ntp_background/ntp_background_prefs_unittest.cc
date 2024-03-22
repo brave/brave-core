@@ -65,7 +65,7 @@ TEST_F(NTPBackgroundPrefsTest, SelectedValue) {
   EXPECT_TRUE(GURL(selected_value).spec() == kSelectedURL);
 
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kCustomImage);
- 
+
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kColor);
   background_prefs_.SetSelectedValue("red");
   selected_value = background_prefs_.GetSelectedValue();

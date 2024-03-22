@@ -54,7 +54,6 @@ class BrowserBinary:
       raise RuntimeError('No matching browser-type found ' +
                          self.android_package)
 
-
   def __str__(self) -> str:
     if self.binary_path:
       return self.binary_path
