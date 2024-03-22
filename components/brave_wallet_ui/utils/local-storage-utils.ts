@@ -19,6 +19,16 @@ import { networkEntityAdapter } from '../common/slices/entities/network.entity'
 import { LOCAL_STORAGE_KEYS } from '../common/constants/local-storage-keys'
 import { createEmptyTokenBalancesRegistry } from './balance-utils'
 
+/** Set local storage in a way that hooks can detect the change */
+export const setLocalStorageItem = (key: string, stringifiedValue: string) => {
+  window.localStorage.setItem(key, stringifiedValue)
+  window.dispatchEvent(
+    new StorageEvent('local-storage', {
+      key
+    })
+  )
+}
+
 export const parseJSONFromLocalStorage = <T = any>(
   storageString: keyof typeof LOCAL_STORAGE_KEYS,
   fallback: T
