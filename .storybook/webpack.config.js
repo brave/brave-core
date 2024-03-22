@@ -6,34 +6,68 @@
 const path = require('path')
 const webpack = require('webpack')
 const fs = require('fs')
+const config = require('../build/commands/lib/config')
+const genTsConfig = require('../build/commands/lib/genTsConfig')
 const {
   fallback,
   provideNodeGlobals
 } = require('../components/webpack/polyfill')
+const generatePathMap = require('../components/webpack/path-map')
 
 const buildConfigs = ['Component', 'Static', 'Debug', 'Release']
 const extraArchitectures = ['arm64', 'x86']
 
-function getBuildOuptutPathList(buildOutputRelativePath) {
+// Choose which brave-core build directory to look for pre-compiled
+// resource dependencies:
+// 1. Default for local builds for the actual platform / architecture
+// 2. platform / architecture overriden by environment variables
+// 3. most recently built - this caters to the common scenario when a
+// non-standard target has been built but no arguments are provided to storybook.
+
+// This uses environment variables as there is currently no way to pass custom
+// arguments to the |storybook build| cli.
+config.update({
+  target_arch: process.env.TARGET_ARCH,
+  target_os: process.env.TARGET_OS,
+  target_environment: process.env.TARGET_ENVIRONMENT,
+  target: process.env.TARGET,
+  build_config: process.env.BUILD_CONFIG
+})
+
+let outputPath = config.outputDir
+
+function getBuildOutputPathList() {
   return buildConfigs.flatMap((config) => [
-    path.resolve(__dirname, `../../out/${config}/${buildOutputRelativePath}`),
+    path.resolve(__dirname, `../../out/${config}`),
     ...extraArchitectures.map((arch) =>
       path.resolve(
         __dirname,
-        `../../out/${config}_${arch}/${buildOutputRelativePath}`
+        `../../out/${config}_${arch}`
       )
     )
   ])
 }
 
-const genFolder = getBuildOuptutPathList('gen')
-  .filter((a) => fs.existsSync(a))
-  .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)[0]
-if (!genFolder) {
-  throw new Error('Failed to find build output folder!')
+if (fs.existsSync(outputPath)) {
+  console.log('Assuming precompiled dependencies can be found at the existing path found from brave-core configuration: ' + outputPath)
+} else {
+  const outDirectories = getBuildOutputPathList()
+    .filter(a => fs.existsSync(a))
+    .sort((a, b) => fs.statSync(b).mtime - fs.statSync(a).mtime)
+  if (!outDirectories.length) {
+    throw new Error('Cannot find any brave-core build output directories. Have you run a brave-core build yet with the specified (or default) configuration?')
+  }
+  outputPath = outDirectories[0]
 }
 
-const basePathMap = require('../components/webpack/path-map')(genFolder)
+const genPath = path.join(outputPath, 'gen')
+
+if (!fs.existsSync(genPath)) {
+  throw new Error("Failed to find build output 'gen' folder! Have you run a brave-core build yet with the specified (or default) configuration?")
+}
+console.log(`Using brave-core generated dependency path of '${genPath}'`)
+
+const basePathMap = generatePathMap(genPath)
 
 // Override the path map we use in the browser with some additional mock
 // directories, so that we can replace things in Storybook.
@@ -52,12 +86,8 @@ const pathMap = {
  * support for scheme prefixes (like chrome://)
  *
  * Note: This prefixReplacer is slightly different from the one we use in proper
- * builds, as it takes the first match from any build folder, rather than
- * specifying one - we don't know what the user built last, so we just see what
- * we can find.
+ * builds, as some path maps have multiple possible locations (e.g. for mocks).
  *
- * This isn't perfect, and in future it'd be good to pass the build folder in
- * via an environment variable. For now though, this works well.
  * @param {string} prefix The prefix
  * @param {string[] | string} replacements The real path options
  */
@@ -116,6 +146,9 @@ function useMockedModules(moduleNames) {
 
 // Export a function. Accept the base config as the only param.
 module.exports = async ({ config, mode }) => {
+  const tsConfigPath = await genTsConfig(genPath, 'tsconfig-storybook.json', genPath, path.resolve(__dirname, '../tsconfig-storybook.json'))
+  console.log(`Using generated tsconfig path of '${tsConfigPath}'`)
+
   const isDevMode = mode === 'development'
   // Make whatever fine-grained changes you need
   config.module.rules.push(
@@ -148,11 +181,7 @@ module.exports = async ({ config, mode }) => {
       test: /\.(ts|tsx)$/,
       loader: 'ts-loader',
       options: {
-        // TODO(petemill): point to the tsconfig in gen/[target] that
-        // is made during build-time, or generate a new one. For both those
-        // options, use a cli arg or environment variable to obtain the correct
-        // build target.
-        configFile: path.resolve(__dirname, '..', 'tsconfig-storybook.json'),
+        configFile: tsConfigPath,
         getCustomTransformers: path.join(
           __dirname,
           '../components/webpack/webpack-ts-transformers.js'
