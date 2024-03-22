@@ -32,12 +32,11 @@ import { autoLockOptions } from '../../../../options/auto-lock-options'
 // styles
 import { Column, VerticalSpace } from '../../../../components/shared/style'
 import {
-  AlertWrapper,
   CheckboxText,
-  ErrorAlert,
+  InfoAlert,
   RecoveryPhraseContainer
 } from './restore-from-recovery-phrase.style'
-import { ContinueButton } from '../onboarding.style'
+import { AlertWrapper, ContinueButton } from '../onboarding.style'
 import { CreatePassword } from '../create-password/components/create-password'
 
 type RestoreWalletSteps = 'phrase' | 'password'
@@ -261,7 +260,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
           {importableWallets?.isMetaMaskInitialized && (
             <AlertWrapper>
-              <ErrorAlert
+              <InfoAlert
                 type='info'
                 mode='simple'
               >
@@ -269,7 +268,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                   <Icon name='metamask-color' />
                 </div>
                 {getLocale('braveWalletMetamaskDetected')}
-                <div slot='actions'>
+                <div slot='content-after'>
                   <Button
                     kind='plain'
                     size='small'
@@ -280,15 +279,13 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
                     {getLocale('braveWalletMetamaskImportUsePassword')}
                   </Button>
                 </div>
-              </ErrorAlert>
+              </InfoAlert>
             </AlertWrapper>
           )}
 
           {(phraseWords.length > 0 && !isCorrectPhraseLength) ||
           hasInvalidSeedError ? (
-            <ErrorAlert>
-              {getLocale('braveWalletRestoreWalletError')}
-            </ErrorAlert>
+            <InfoAlert>{getLocale('braveWalletRestoreWalletError')}</InfoAlert>
           ) : (
             <VerticalSpace space='54px' />
           )}

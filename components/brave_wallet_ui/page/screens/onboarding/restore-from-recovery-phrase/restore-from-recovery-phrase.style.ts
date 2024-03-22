@@ -90,15 +90,7 @@ export const RecoveryTextInput = styled.input`
   font-weight: 800;
 `
 
-export const AlertWrapper = styled.div`
-  leo-button {
-    display: flex;
-    height: 20px;
-    flex-grow: 0;
-    align-items: center;
-  }
-`
-export const ErrorAlert = styled(Alert).attrs({
+export const InfoAlert = styled(Alert).attrs({
   kind: 'error',
   mode: 'simple'
 })`

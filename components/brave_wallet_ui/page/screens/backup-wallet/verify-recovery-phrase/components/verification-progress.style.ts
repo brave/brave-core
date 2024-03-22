@@ -4,6 +4,7 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import styled from 'styled-components'
+import Alert from '@brave/leo/react/alert'
 import * as leo from '@brave/leo/tokens/css'
 
 export const Wrapper = styled.span`
@@ -22,4 +23,17 @@ export const Rectangle = styled.span<{
   border-radius: 4px;
   background-color: ${(p) =>
     p.isActive ? leo.color.button.background : leo.color.purple[20]};
+`
+
+export const InfoAlert = styled(Alert).attrs({
+  kind: 'info',
+  mode: 'simple'
+})`
+  --leo-alert-center-position: 'center';
+  --leo-alert-center-width: '100%';
+  width: 100%;
+
+  leo-alert {
+    align-items: center;
+  }
 `

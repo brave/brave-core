@@ -144,3 +144,19 @@ export const ContinueButton = styled(Button)`
   --leo-button-radius: 12px;
   min-height: 44px;
 `
+
+export const AlertWrapper = styled.div`
+  width: 100%;
+
+  leo-button {
+    display: flex;
+    height: 20px;
+    flex-grow: 0;
+    align-items: center;
+    padding-top: 4px;
+  }
+
+  .leo-alert {
+    align-items: center;
+  }
+`

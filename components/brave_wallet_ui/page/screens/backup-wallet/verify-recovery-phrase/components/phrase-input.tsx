@@ -13,11 +13,15 @@ import {
   Bold,
   FormLabel,
   FormInput,
-  ErrorAlert,
   CloseButton,
   CloseIcon
 } from '../verify-recovery-phrase.style'
-import { Column, VerticalSpace } from '../../../../../components/shared/style'
+import {
+  Column,
+  VerticalSpace
+} from '../../../../../components/shared/style'
+import { InfoAlert } from './verification-progress.style'
+import { AlertWrapper } from '../../../onboarding/onboarding.style'
 
 const alertSlotStyle = {
   display: 'flex',
@@ -58,17 +62,22 @@ export const PhraseInput = ({
         </FormLabel>
       </FormInput>
       {showError ? (
-        <ErrorAlert>
-          {getLocale('braveWalletVerifyError')}
-          <div
-            slot='actions'
-            style={alertSlotStyle}
+        <AlertWrapper>
+          <InfoAlert
+            type='error'
+            kind='simple'
           >
-            <CloseButton onClick={onHideError}>
-              <CloseIcon />
-            </CloseButton>
-          </div>
-        </ErrorAlert>
+            {getLocale('braveWalletVerifyError')}
+            <div
+              slot='content-after'
+              style={alertSlotStyle}
+            >
+              <CloseButton onClick={onHideError}>
+                <CloseIcon />
+              </CloseButton>
+            </div>
+          </InfoAlert>
+        </AlertWrapper>
       ) : (
         <VerticalSpace space='54px' />
       )}
