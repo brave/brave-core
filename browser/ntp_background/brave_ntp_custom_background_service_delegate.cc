@@ -123,7 +123,7 @@ bool BraveNTPCustomBackgroundServiceDelegate::HasPreferredBraveBackground()
 
   auto selected_value = pref.GetSelectedValue();
   auto selected_url = GURL(selected_value);
-  if(selected_url != NULL) {
+  if (selected_url != NULL) {
     return selected_url.is_valid();
   }
 
