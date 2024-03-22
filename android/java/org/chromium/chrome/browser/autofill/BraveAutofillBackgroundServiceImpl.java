@@ -20,6 +20,7 @@ import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.autofill.AutofillId;
 import android.view.autofill.AutofillValue;
+import android.view.inputmethod.EditorInfo;
 import android.widget.RemoteViews;
 
 import androidx.annotation.NonNull;
@@ -148,7 +149,6 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
                 PersonalDataManager.getInstance().getProfilesToSuggest(true);
         FillResponse.Builder fillResponse = new FillResponse.Builder();
         if (profileList != null && !profileList.isEmpty()) {
-
             for (AutofillProfile profile : profileList) {
 
                 Map<AutofillId, String> autofillDataMap = new HashMap<>();
@@ -387,6 +387,10 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
             return null;
         }
 
+        if (isOmnibox(node, hint)) {
+            return null;
+        }
+
         if (hint.contains(context.getResources().getString(R.string.password))) {
             return View.AUTOFILL_HINT_PASSWORD;
         }
@@ -441,6 +445,16 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
             return hint;
         }
         return null;
+    }
+
+    private boolean isOmnibox(ViewNode node, String hint) {
+
+        int inputType = node.getInputType();
+        if ((inputType & EditorInfo.TYPE_TEXT_VARIATION_URI)
+                == EditorInfo.TYPE_TEXT_VARIATION_URI) {
+            return true;
+        }
+        return false;
     }
 
     private boolean isAutofillAddress(Map<String, AutofillId> fields) {
