@@ -25,19 +25,22 @@ import {
   BraveIcon,
   HeaderWrapper,
   TitleSection,
-  BackButtonWrapper
+  BackButtonWrapper,
+  CenteredContent
 } from './onboarding-content-layout.style'
 
 interface Props {
   title?: string | React.ReactNode
   subTitle?: string
   showBackButton?: boolean
+  centerContent?: boolean
   children: React.ReactNode
 }
 
 export const OnboardingContentLayout = ({
   title,
   subTitle,
+  centerContent,
   showBackButton = true,
   children
 }: Props) => {
@@ -84,7 +87,11 @@ export const OnboardingContentLayout = ({
             </>
           ) : null}
         </HeaderWrapper>
-        <Content>{children}</Content>
+        {centerContent ? (
+          <CenteredContent>{children}</CenteredContent>
+        ) : (
+          <Content>{children}</Content>
+        )}
       </ContentWrapper>
     </StyledWrapper>
   )

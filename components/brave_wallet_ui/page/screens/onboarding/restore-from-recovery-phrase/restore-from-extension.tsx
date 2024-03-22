@@ -39,7 +39,7 @@ import {
   NewPasswordInput,
   NewPasswordValues
 } from '../../../../components/shared/password-input/new-password-input'
-import { CreatingWallet } from '../creating_wallet/creating_wallet'
+import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 
 // styles
@@ -214,7 +214,7 @@ export const OnboardingRestoreFromExtension = ({ restoreFrom }: Props) => {
 
   // render
   if (isCreatingWallet) {
-    return <CreatingWallet />
+    return <OnboardingCreatingWallet />
   }
 
   return (

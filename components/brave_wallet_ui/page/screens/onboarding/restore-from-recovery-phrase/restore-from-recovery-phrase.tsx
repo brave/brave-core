@@ -24,7 +24,7 @@ import {
 // components
 import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
-import { CreatingWallet } from '../creating_wallet/creating_wallet'
+import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
 
 // options
 import { autoLockOptions } from '../../../../options/auto-lock-options'
@@ -188,7 +188,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
   // render
   if (isCreatingWallet) {
-    return <CreatingWallet />
+    return <OnboardingCreatingWallet />
   }
 
   return (

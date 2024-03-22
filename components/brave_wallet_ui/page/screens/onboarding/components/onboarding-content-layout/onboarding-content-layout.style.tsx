@@ -69,6 +69,19 @@ export const Content = styled.div`
   }
 `
 
+export const CenteredContent = styled('div')`
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+  overflow-y: auto;
+`
+
 export const Title = styled.h3`
   color: ${leo.color.text.primary};
   text-align: center;

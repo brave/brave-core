@@ -23,7 +23,7 @@ import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // components
 import { NewPasswordValues } from '../../../../components/shared/password-input/new-password-input'
-import { CreatingWallet } from '../creating_wallet/creating_wallet'
+import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating-wallet'
 import { OnboardingContentLayout } from '../components/onboarding-content-layout/onboarding-content-layout'
 import { CreatePassword } from './components/create-password'
 
@@ -89,7 +89,7 @@ export const OnboardingCreatePassword = ({
   }, [isWalletCreated, onWalletCreated, isCreatingWallet])
 
   if (isCreatingWallet) {
-    return <CreatingWallet />
+    return <OnboardingCreatingWallet />
   }
 
   // render
