@@ -158,7 +158,7 @@ export const PortfolioAccountItem = (props: Props) => {
     <StyledWrapper>
       <NameAndIcon>
         <CreateAccountIcon
-          size='big'
+          size='huge'
           marginRight={12}
           account={account}
           externalProvider={externalProvider}

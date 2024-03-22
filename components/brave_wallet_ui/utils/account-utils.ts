@@ -197,3 +197,15 @@ export const getAccountTypeDescription = (accountId: BraveWallet.AccountId) => {
       assertNotReached(`Unknown coin ${accountId.coin}`)
   }
 }
+
+export const isFVMAccount = (
+  account: BraveWallet.AccountInfo,
+  network: BraveWallet.NetworkInfo
+) => {
+  return (
+    (network.chainId === BraveWallet.FILECOIN_ETHEREUM_MAINNET_CHAIN_ID &&
+      account.accountId.keyringId === BraveWallet.KeyringId.kFilecoin) ||
+    (network.chainId === BraveWallet.FILECOIN_ETHEREUM_TESTNET_CHAIN_ID &&
+      account.accountId.keyringId === BraveWallet.KeyringId.kFilecoinTestnet)
+  )
+}

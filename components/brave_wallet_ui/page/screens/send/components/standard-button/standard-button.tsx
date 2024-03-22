@@ -18,7 +18,7 @@ import {
 
 interface Props extends StandardButtonStyleProps {
   buttonText: string
-  isLoading: boolean
+  isLoading?: boolean
   onClick: () => void
 }
 

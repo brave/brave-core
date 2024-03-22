@@ -99,6 +99,11 @@
   <message name="IDS_BRAVE_WALLET_CHOOSE_ASSET" desc="Send tab choose asset button.">Choose Asset</message>
   <message name="IDS_BRAVE_WALLET_ORDINALS_WARNING_MESSAGE" desc="Warning message when sending BTC.">Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.</message>
   <message name="IDS_BRAVE_WALLET_USER_UNDERSTANDS_LABEL" desc="Message for use to acknowledge a decision">I understand</message>
+  <message name="IDS_BRAVE_WALLET_CHOOSE_RECIPIENT" desc="Select address modal title">Choose recipient</message>
+  <message name="IDS_BRAVE_WALLET_MY_ADDRESSES" desc="Select address modal my addresses label">My addresses</message>
+  <message name="IDS_BRAVE_WALLET_ADDRESS_OR_DOMAIN_PLACEHOLDER" desc="Seach address or domain input placeholder">Enter public address or domain.</message>
+  <message name="IDS_BRAVE_WALLET_SEND_TO" desc="Send screen send to label">Send to</message>
+  <message name="IDS_BRAVE_WALLET_INVALID_DOMAIN_EXTENSION" desc="Send screen invalid domain extension error">Invalid domain extension.</message>
   <message name="IDS_BRAVE_WALLET_BUY_TAB_BUY_NOT_SUPPORTED_MESSAGE" desc="Message shown when the selected network is not supported for buy transactions">Buy not supported for selected network</message>
   <message name="IDS_BRAVE_WALLET_SEARCHING_FOR_DOMAIN" desc="Message shown when searching for a UD or ENS domain">Searching for domain...</message>
   <message name="IDS_BRAVE_WALLET_ENS_OFF_CHAIN_LOOKUP_TITLE" desc="Message title shown when requesting to do an ENS off chain lookup.">Brave supports using off-chain gateways to resolve .eth domains.</message>
@@ -440,10 +445,10 @@
   <message name="IDS_BRAVE_WALLET_EDIT_PERMISSIONS_CUSTOM_ALLOWANCE" desc="Edit allowance panel button">Custom allowance</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_ETH_ADDRESS" desc="Send input not valid ETH address error">Not a valid ETH address</message>
   <message name="IDS_BRAVE_WALLET_NOT_VALID_SOL_ADDRESS" desc="Send input not valid SOL address error">Not a valid SOL address</message>
-  <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid address</message>
-  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address</message>
-  <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address</message>
-  <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address</message>
+  <message name="IDS_BRAVE_WALLET_NOT_VALID_ADDRESS" desc="Send input not valid address error">Not a valid <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address.</message>
+  <message name="IDS_BRAVE_WALLET_NOT_DOMAIN" desc="Send input not registered domain error">Domain doesn't have a linked <ph name="COIN_TYPE_SYMBOL"><ex>ETH</ex>$1</ph> address.</message>
+  <message name="IDS_BRAVE_WALLET_SAME_ADDRESS_ERROR" desc="Send input trying to send crypto to their own address">The receiving address is your own address.</message>
+  <message name="IDS_BRAVE_WALLET_CONTRACT_ADDRESS_ERROR" desc="Send input trying to send crypto to a tokens contract address">The receiving address is a token's contract address.</message>
   <message name="IDS_BRAVE_WALLET_ZCASH_UNIFIED_ADDRESS_ERROR" desc="Send input trying to send zcash crypto to wrong unified address">Invalid unified address</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_TITLE" desc="Send input failed checksum title">Address doesn’t look correct</message>
   <message name="IDS_BRAVE_WALLET_FAILED_CHECKSUM_DESCRIPTION" desc="Send input failed checksum title">Check your address to make sure it’s the right address (e.g. letters with lower or upper case).</message>
@@ -454,10 +459,9 @@
   <message name="IDS_BRAVE_WALLET_MISSING_GAS_LIMIT_ERROR" desc="Transaction has missing gas limit information">Missing gas limit</message>
   <message name="IDS_BRAVE_WALLET_ZERO_BALANCE_ERROR" desc="Send amount must be greater than 0 error">Amount must be greater than 0</message>
   <message name="IDS_BRAVE_WALLET_ADDRESS_REQUIRED_ERROR" desc="Address field is required error">To address is required</message>
-  <message name="IDS_BRAVE_WALLET_INVALID_RECIPIENT_ADDRESS" desc="Invalid recipient address error">Invalid recipient address</message>
   <message name="IDS_BRAVE_WALLET_INVALID_ZCASH_UNIFIED_RECIPIENT_ADDRESS" desc="Invalid recipient zcash unified address error">Transparent part missing</message>
   <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_TITLE" desc="Invalid checksum modal title">How can I find the right address?</message>
-  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION" desc="Invalid checksum modal description">Brave validates and prevents users from sending funds to the wrong address due to incorrect capitalization. This is a "checksum" process to verify that it is a valid Ethereum address.</message>
+  <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_DESCRIPTION" desc="Invalid checksum modal description">Brave prevents users from sending funds to the wrong address due to incorrect capitalization. Make sure that it's the correct address by following the instructions below.</message>
   <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_TITLE" desc="Invalid checksum modal step one title">1. Visit</message>
   <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_ONE_DESCRIPTION" desc="Invalid checksum modal step one description">Visit etherscan and paste the wallet address you want to send tokens. Then enter</message>
   <message name="IDS_BRAVE_WALLET_CHECKSUM_MODAL_STEP_TWO_TITLE" desc="Invalid checksum modal step two title">2. Copy and enter ETH address</message>

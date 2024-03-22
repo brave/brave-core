@@ -314,7 +314,7 @@ export const AccountListItem = ({
       <Row justifyContent='space-between'>
         <NameAndIcon>
           <CreateAccountIcon
-            size='big'
+            size='huge'
             account={account}
             marginRight={16}
             externalProvider={externalProvider}

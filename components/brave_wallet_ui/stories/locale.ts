@@ -128,6 +128,11 @@ provideStrings({
   braveWalletOrdinalsWarningMessage:
     'Brave Wallet does not currently support Bitcoin NFTs (ordinals). Sending BTC from an address that has ordinals may result in its ordinals being transferred inadvertently.',
   braveWalletUserUnderstandsLabel: 'I understand',
+  braveWalletChooseRecipient: 'Choose recipient',
+  braveWalletMyAddresses: 'My addresses',
+  braveWalletAddressOrDomainPlaceholder: 'Enter public address or domain.',
+  braveWalletSendTo: 'Send to',
+  braveWalletInvalidDomainExtension: 'Invalid domain extension.',
 
   // Create Account Tab
   braveWalletCreateAccountDescription:
@@ -838,11 +843,11 @@ provideStrings({
   braveWalletNotValidFilAddress: 'Not a valid FIL address',
   braveWalletNotValidEthAddress: 'Not a valid ETH address',
   braveWalletNotValidSolAddress: 'Not a valid SOL address',
-  braveWalletNotValidAddress: 'Not a valid address',
-  braveWalletNotDomain: "Domain doesn't have a linked $ address",
-  braveWalletSameAddressError: 'The receiving address is your own address',
+  braveWalletNotValidAddress: 'Not a valid $1 address.',
+  braveWalletNotDomain: "Domain doesn't have a linked $1 address.",
+  braveWalletSameAddressError: 'The receiving address is your own address.',
   braveWalletContractAddressError:
-    'The receiving address is a tokens contract address',
+    'The receiving address is a tokens contract address.',
   braveWalletFailedChecksumTitle: 'Address doesn’t look correct',
   braveWalletFailedChecksumDescription:
     'Check your address to make sure it’s the right address ' +
@@ -856,12 +861,11 @@ provideStrings({
   braveWalletMissingGasLimitError: 'Missing gas limit',
   braveWalletZeroBalanceError: 'Amount must be greater than 0',
   braveWalletAddressRequiredError: 'To address is required',
-  braveWalletInvalidRecipientAddress: 'Invalid recipient address',
   braveWalletChecksumModalTitle: 'How can I find the right address?',
   braveWalletChecksumModalDescription:
-    'Brave validates and prevents users from sending funds to the wrong ' +
-    'address due to incorrect capitalization. This is a "checksum" ' +
-    'process to verify that it is a valid Ethereum address.',
+    'Brave prevents users from sending funds to the wrong address due to ' +
+    'incorrect capitalization. Make sure that it’s the correct address by ' +
+    'following the instructions below.',
   braveWalletChecksumModalStepOneTitle: '1. Visit',
   braveWalletChecksumModalStepOneDescription:
     'Visit etherscan and paste the wallet address you want to send ' +
