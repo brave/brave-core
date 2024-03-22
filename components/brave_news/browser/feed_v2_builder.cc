@@ -92,10 +92,11 @@ std::tuple<std::string, size_t> GetFeedHashAndSubscribedCount(
 // Generates a standard block:
 // 1. Hero Article
 // 2. 1 - 5 Inline Articles (a percentage of which might be discover cards).
-std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
-                                                PickArticles hero_picker,
-                                                PickArticles article_picker,
-                                                double inline_discovery_ratio) {
+std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
+    ArticleInfos& articles,
+    PickArticles hero_picker,
+    PickArticles article_picker,
+    std::optional<PickArticles> discovery_picker) {
   DVLOG(1) << __FUNCTION__;
   std::vector<mojom::FeedItemV2Ptr> result;
   if (articles.empty()) {
@@ -114,12 +115,16 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(ArticleInfos& articles,
   const int block_min_inline = features::kBraveNewsMinBlockCards.Get();
   const int block_max_inline = features::kBraveNewsMaxBlockCards.Get();
   auto follow_count = GetNormal(block_min_inline, block_max_inline + 1);
+  const float inline_discovery_ratio =
+      features::kBraveNewsInlineDiscoveryRatio.Get();
   for (auto i = 0; i < follow_count; ++i) {
-    bool is_discover = base::RandDouble() < inline_discovery_ratio;
+    bool is_discover = discovery_picker.has_value() &&
+                       base::RandDouble() < inline_discovery_ratio;
     mojom::FeedItemMetadataPtr generated;
 
     if (is_discover) {
-      generated = PickDiscoveryArticleAndRemove(articles);
+      generated =
+          PickDiscoveryArticleAndRemove(articles, discovery_picker.value());
     } else {
       generated = PickAndRemove(articles, article_picker);
     }
@@ -157,9 +162,28 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlock(
         }));
   });
 
-  return GenerateBlock(articles, std::move(pick_hero),
-                       base::BindRepeating(&PickRoulette),
-                       inline_discovery_ratio);
+  PickArticles pick_discovery =
+      base::BindRepeating([](const ArticleInfos& articles) {
+        return PickRouletteWithWeighting(
+            articles,
+            base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                                   const ArticleWeight& weight) {
+              if (!weight.discoverable) {
+                return 0.0;
+              }
+
+              if (weight.subscribed) {
+                return 0.0;
+              }
+
+              return weight.pop_recency;
+            }));
+      });
+
+  return GenerateBlock(
+      articles, std::move(pick_hero), base::BindRepeating(&PickRoulette),
+      inline_discovery_ratio > 0.0 ? std::optional<PickArticles>(pick_discovery)
+                                   : std::nullopt);
 }
 
 // Generates a block from sampled content groups:
@@ -247,8 +271,28 @@ std::vector<mojom::FeedItemV2Ptr> GenerateBlockFromContentGroups(
       },
       std::move(get_weighting));
 
+  PickArticles pick_discovery =
+      base::BindRepeating([](const ArticleInfos& articles) {
+        return PickRouletteWithWeighting(
+            articles,
+            base::BindRepeating([](const mojom::FeedItemMetadataPtr& metadata,
+                                   const ArticleWeight& weight) {
+              if (!weight.discoverable) {
+                return 0.0;
+              }
+
+              if (weight.subscribed) {
+                return 0.0;
+              }
+
+              return weight.pop_recency;
+            }));
+      });
+
   return GenerateBlock(articles, pick_hero, pick_article,
-                       inline_discovery_ratio);
+                       inline_discovery_ratio > 0.0
+                           ? std::optional<PickArticles>(pick_discovery)
+                           : std::nullopt);
 }
 
 // Generates a Channel Block
@@ -584,7 +628,7 @@ mojom::FeedV2Ptr FeedV2Builder::GenerateBasicFeed(FeedGenerationInfo info,
   size_t blocks = 0;
   while (!articles.empty()) {
     auto items = GenerateBlock(articles, pick_hero, pick_article,
-                               /*inline_discovery_ratio=*/0);
+                               /*pick_discovery=*/std::nullopt);
     if (items.empty()) {
       break;
     }

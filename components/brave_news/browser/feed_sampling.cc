@@ -78,7 +78,8 @@ std::vector<mojom::Signal*> GetSignals(
 }
 
 ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
-                               const std::vector<mojom::Signal*>& signals) {
+                               const std::vector<mojom::Signal*>& signals,
+                               const bool& discoverable) {
   // We should have at least one |Signal| from the |Publisher| for this source.
   CHECK(!signals.empty());
 
@@ -95,6 +96,7 @@ ArticleWeight GetArticleWeight(const mojom::FeedItemMetadataPtr& article,
       // we use that to determine whether this Publisher has ever been visited.
       .visited = signals.at(0)->visit_weight != 0,
       .subscribed = subscribed_weight != 0,
+      .discoverable = discoverable
   };
 }
 
@@ -231,6 +233,14 @@ ArticleInfos GetArticleInfos(const std::string& locale,
                              const Signals& signals) {
   ArticleInfos articles;
   base::flat_set<GURL> seen_articles;
+  base::flat_set<std::string> non_discoverable_publishers;
+
+  for (const auto& [publisher_id, publisher] : publishers) {
+    auto channels = GetChannelsForPublisher(locale, publisher);
+    if (base::Contains(channels, "Politics")) {
+      non_discoverable_publishers.insert(publisher_id);
+    }
+  }
 
   for (const auto& item : feed_items) {
     if (item.is_null()) {
@@ -258,9 +268,12 @@ ArticleInfos GetArticleInfos(const std::string& locale,
         continue;
       }
 
+      const bool discoverable = !base::Contains(non_discoverable_publishers, article->data->publisher_id);
+
+
       ArticleInfo pair =
           std::tuple(article->data->Clone(),
-                     GetArticleWeight(article->data, article_signals));
+                     GetArticleWeight(article->data, article_signals, discoverable));
 
       articles.push_back(std::move(pair));
     }
