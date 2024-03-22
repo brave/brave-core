@@ -35,53 +35,6 @@ public class AppStoreReceipt {
     }
   }
 
-  /// Deprecated since iOS 1.7
-  /// Verifies a receipt
-  /// See: https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
-  static func validate(sandbox: Bool) async throws {
-    let requestBody = try ["receipt-data": AppStoreReceipt.receipt]
-    guard JSONSerialization.isValidJSONObject(requestBody) else {
-      Logger.module.error(
-        "[AppStoreReceipt] - Failed to validate receipt - Invalid JSON"
-      )
-      return
-    }
-
-    do {
-      guard
-        let url = URL(
-          string: sandbox
-            ? "https://sandbox.itunes.apple.com/verifyReceipt"
-            : "https://buy.itunes.apple.com/verifyReceipt"
-        )
-      else {
-        Logger.module.error(
-          "[AppStoreReceipt] - Failed to validate receipt - Invalid URL"
-        )
-        return
-      }
-
-      var request = URLRequest(url: url)
-      request.httpMethod = "POST"
-      request.cachePolicy = .reloadIgnoringCacheData
-
-      let body = try JSONSerialization.data(withJSONObject: requestBody)
-
-      let session = URLSession(configuration: .ephemeral)
-      let (data, response) = try await session.upload(for: request, from: body, delegate: nil)
-      session.finishTasksAndInvalidate()
-
-      let json = try JSONSerialization.jsonObject(with: data)
-      Logger.module.debug(
-        "[AppStoreReceipt] - Validated receipt - \(String(describing: json))"
-      )
-    } catch {
-      Logger.module.error(
-        "[AppStoreReceipt] - Failed to validate receipt - Invalid JSON Response"
-      )
-    }
-  }
-
   /// Forces the AppStore to add the receipt to the Application Bundle
   /// When using StoreKit 2, receipts are no longer stored in the Application
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API
@@ -121,6 +74,10 @@ public class AppStoreReceipt {
       self.request.delegate = self
     }
 
+    deinit {
+      self.request.cancel()  // StoreKit background task leak fix
+    }
+
     /// Triggered a refresh of the AppStore receipt
     func refreshReceipt(with listener: @escaping (Error?) -> Void) {
       if onRefreshComplete == nil {
@@ -134,6 +91,7 @@ public class AppStoreReceipt {
       self.onRefreshComplete?(nil)
       self.onRefreshComplete = nil
       self.request.delegate = nil
+      self.request.cancel()  // StoreKit background task leak fix
     }
 
     /// Restore of receipt failed
@@ -141,6 +99,7 @@ public class AppStoreReceipt {
       self.onRefreshComplete?(error)
       self.onRefreshComplete = nil
       self.request.delegate = nil
+      self.request.cancel()  // StoreKit background task leak fix
     }
   }
 
@@ -419,6 +378,17 @@ public class AppStoreSDK: ObservableObject {
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
 
+      // If we cannot force a receipt to be added to the app,
+      // leave the transaction pending.
+      try await AppStoreReceipt.sync()
+
+      if try AppStoreReceipt.receipt.isEmpty {
+        return nil
+      }
+
+      // Do additional purchase processing such as server-side validation
+      try await processPurchase(of: product, transaction: transaction)
+
       // Transactions must be marked as completed once processed
       await transaction.finish()
 
@@ -464,6 +434,14 @@ public class AppStoreSDK: ObservableObject {
       Logger.module.error("[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue)")
       return false
     }
+  }
+
+  /// An abstract function that is called to process a purchase further
+  /// If the transaction for the product cannot be processed, validated, etc, an error must be thrown
+  /// - Parameter product: The product that is currently being purchased
+  /// - Parameter transaction: The verified purchase transaction for the product
+  func processPurchase(of product: Product, transaction: Transaction) async throws {
+    fatalError("[AppStoreSDK] - ProcessTransaction Not Implemented")
   }
 
   // MARK: - Private

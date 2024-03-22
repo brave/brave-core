@@ -108,6 +108,14 @@ public class BraveStoreSDK: AppStoreSDK {
 
   public static let shared = BraveStoreSDK()
 
+  // MARK: - Error
+
+  /// A BraveStoreSDK Error
+  enum BraveStoreSDKError: Error {
+    /// The product doesn't exist or there is a mismatch between the AppStore product and Brave's offered products
+    case invalidProduct
+  }
+
   // MARK: - VPN
 
   /// The AppStore Vpn Monthly Product offering
@@ -274,11 +282,24 @@ public class BraveStoreSDK: AppStoreSDK {
   public func purchase(product: BraveStoreProduct) async throws {
     if let subscription = await subscription(for: product) {
       if try await super.purchase(subscription) != nil {
-
-        // Update Skus SDK Purchase
-        try await self.updateSkusPurchaseState(for: product)
+        Logger.module.debug("[BraveStoreSDK] - Product Purchase Successful")
       }
     }
+  }
+
+  /// Processes the product purchase transaction with the BraveSkusSDK
+  /// If the transaction cannot be processed (receipt is empty or null), throw an exception
+  /// - Parameter product: The product that is currently being purchased
+  /// - Parameter transaction: The verified purchase transaction for the product
+  override func processPurchase(of product: Product, transaction: Transaction) async throws {
+    // Find the Brave offered product from the AppStore Product ID
+    guard let product = BraveStoreProduct.allCases.first(where: { product.id == $0.rawValue })
+    else {
+      throw BraveStoreSDKError.invalidProduct
+    }
+
+    // Update Skus SDK Purchase
+    try await self.updateSkusPurchaseState(for: product)
   }
 
   // MARK: - Internal
@@ -375,9 +396,9 @@ public class BraveStoreSDK: AppStoreSDK {
     // Attempt to update the Application Bundle's receipt, by force
     try await AppStoreReceipt.sync()
 
-    #if DEBUG
-    try? await AppStoreReceipt.validate(sandbox: environment != .production)
-    #endif
+    if try AppStoreReceipt.receipt.isEmpty {
+      throw AppStoreReceipt.AppStoreReceiptError.invalidReceiptData
+    }
 
     // Create a Skus-SDK for the specified product
     let skusSDK = BraveSkusSDK.shared
