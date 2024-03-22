@@ -23,14 +23,10 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
     .padding(.horizontal)
     // when expanded, padding is applied to entire `LazyVStack`
     .padding(.vertical, isExpanded ? 0 : 6)
-    .osAvailabilityModifiers {
+    .overlay {
       if !isExpanded {
-        $0.overlay {
-          RoundedRectangle(cornerRadius: 16)
-            .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
-        }
-      } else {
-        $0
+        RoundedRectangle(cornerRadius: 16)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
       }
     }
     .contentShape(Rectangle())
@@ -52,18 +48,10 @@ struct WalletDisclosureGroup<Label: View, Content: View>: View {
     }
     // when collapsed, padding is applied to `header`
     .padding(.vertical, isExpanded ? 6 : 0)
-    .osAvailabilityModifiers {
-      if !isNFTGroup {
-        if isExpanded {
-          $0.overlay {
-            RoundedRectangle(cornerRadius: 16)
-              .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
-          }
-        } else {
-          $0
-        }
-      } else {
-        $0
+    .overlay {
+      if !isNFTGroup && isExpanded {
+        RoundedRectangle(cornerRadius: 16)
+          .stroke(Color(braveSystemName: .dividerSubtle), lineWidth: 1)
       }
     }
   }
