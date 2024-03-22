@@ -3,17 +3,13 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import { useHistory } from 'react-router'
 import { getPlaylistAPI } from './api/api'
 import { getPlaylistActions } from './api/getPlaylistActions'
 import { PlayerEventsPayload } from './api/playerEventsNotifier'
 import { types } from './constants/playlist_types'
-import { History } from 'history'
-import { useEffect } from 'react'
 import { showAlert } from '@brave/leo/react/alertCenter'
 import { getLocalizedString } from './utils/l10n'
-
-let history: History | undefined
+import { history } from './components/historyContext'
 
 function handlePlayerEvents(payload: PlayerEventsPayload) {
   switch (payload.type) {
@@ -74,14 +70,6 @@ function handlePlayerEvents(payload: PlayerEventsPayload) {
       break
     }
   }
-}
-
-export function useHistorySynchronization() {
-  const h = useHistory()
-  useEffect(() => {
-    history = h
-    return () => (history = undefined)
-  }, [h])
 }
 
 // Used to mirror state of Player from Playlist side.
