@@ -838,6 +838,10 @@ Config.prototype.update = function (options) {
     this.targetEnvironment = options.target_environment
   }
 
+  if (options.build_config) {
+    this.buildConfig = options.build_config
+  }
+
   if (options.is_asan) {
     this.is_asan = true
   } else {
