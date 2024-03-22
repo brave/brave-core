@@ -35,14 +35,61 @@ public class AppStoreReceipt {
     }
   }
 
+  /// Deprecated since iOS 1.7
+  /// Verifies a receipt
+  /// See: https://developer.apple.com/documentation/appstorereceipts/verifyreceipt
+  static func validate(sandbox: Bool) async throws {
+    let requestBody = try ["receipt-data": AppStoreReceipt.receipt]
+    guard JSONSerialization.isValidJSONObject(requestBody) else {
+      Logger.module.error(
+        "[AppStoreReceipt] - Failed to validate receipt - Invalid JSON"
+      )
+      return
+    }
+
+    do {
+      guard
+        let url = URL(
+          string: sandbox
+            ? "https://sandbox.itunes.apple.com/verifyReceipt"
+            : "https://buy.itunes.apple.com/verifyReceipt"
+        )
+      else {
+        Logger.module.error(
+          "[AppStoreReceipt] - Failed to validate receipt - Invalid URL"
+        )
+        return
+      }
+
+      var request = URLRequest(url: url)
+      request.httpMethod = "POST"
+      request.cachePolicy = .reloadIgnoringCacheData
+
+      let body = try JSONSerialization.data(withJSONObject: requestBody)
+
+      let session = URLSession(configuration: .ephemeral)
+      let (data, response) = try await session.upload(for: request, from: body, delegate: nil)
+      session.finishTasksAndInvalidate()
+
+      let json = try JSONSerialization.jsonObject(with: data)
+      Logger.module.debug(
+        "[AppStoreReceipt] - Validated receipt - \(String(describing: json))"
+      )
+    } catch {
+      Logger.module.error(
+        "[AppStoreReceipt] - Failed to validate receipt - Invalid JSON Response"
+      )
+    }
+  }
+
   /// Forces the AppStore to add the receipt to the Application Bundle
   /// When using StoreKit 2, receipts are no longer stored in the Application
   /// This function forces the AppStore to place it in the bundle. Once back-end services update to use Transactions API
   /// this function will be obsolete
   static func sync() async throws {
-    let fetcher = AppStoreReceiptRestorer()
+    let fetcher = AppStoreReceiptRefresher()
     return try await withCheckedThrowingContinuation { continuation in
-      fetcher.restoreTransactions { error in
+      fetcher.refreshReceipt { error in
         DispatchQueue.main.async {
           if let error = error {
             continuation.resume(throwing: error)
@@ -64,11 +111,8 @@ public class AppStoreReceipt {
     case invalidReceiptData
   }
 
-  // There are two ways to force the AppStore to add receipts to the Bundle
-  // The first is to use SKRefreshRequest and the second is to restore Transactions
-  // SKReceiptRefreshRequest can be slow, so use only for testing
-  #if USE_SK_REFRESH_RECEIPT
-  private class AppStoreReceiptRestorer: NSObject, SKRequestDelegate {
+  /// Forces the AppStore to add receipts to the Application Bundle.
+  private class AppStoreReceiptRefresher: NSObject, SKRequestDelegate {
     private let request = SKReceiptRefreshRequest()
     private var onRefreshComplete: ((Error?) -> Void)?
 
@@ -77,28 +121,31 @@ public class AppStoreReceipt {
       self.request.delegate = self
     }
 
-    func restoreTransactions(with listener: @escaping (Error?) -> Void) {
+    /// Triggered a refresh of the AppStore receipt
+    func refreshReceipt(with listener: @escaping (Error?) -> Void) {
       if onRefreshComplete == nil {
         self.onRefreshComplete = listener
         self.request.start()
       }
     }
 
+    /// Restore of receipt completed
     func requestDidFinish(_ request: SKRequest) {
       self.onRefreshComplete?(nil)
       self.onRefreshComplete = nil
       self.request.delegate = nil
     }
 
+    /// Restore of receipt failed
     func request(_ request: SKRequest, didFailWithError error: Error) {
       self.onRefreshComplete?(error)
       self.onRefreshComplete = nil
       self.request.delegate = nil
     }
   }
-  #else
+
   /// Forces the AppStore to add receipts to the Application Bundle, and also to restore In-App Transactions
-  private class AppStoreReceiptRestorer: NSObject, SKPaymentTransactionObserver {
+  private class AppStoreTransactionRestorer: NSObject, SKPaymentTransactionObserver {
     private let queue = SKPaymentQueue()
     private var onRefreshComplete: ((Error?) -> Void)?
 
@@ -192,7 +239,6 @@ public class AppStoreReceipt {
       self.queue.remove(self)
     }
   }
-  #endif
 }
 
 /// A class using StoreKit 2, to handle transactions and purchases

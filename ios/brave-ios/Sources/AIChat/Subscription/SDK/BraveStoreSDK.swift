@@ -372,10 +372,12 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
-    // Attempt to update the Application Bundle's receipt, if necessary
-    if (try? AppStoreReceipt.receipt) == nil {
-      try await AppStoreReceipt.sync()
-    }
+    // Attempt to update the Application Bundle's receipt, by force
+    try await AppStoreReceipt.sync()
+
+    #if DEBUG
+    try? await AppStoreReceipt.validate(sandbox: environment != .production)
+    #endif
 
     // Create a Skus-SDK for the specified product
     let skusSDK = BraveSkusSDK.shared
