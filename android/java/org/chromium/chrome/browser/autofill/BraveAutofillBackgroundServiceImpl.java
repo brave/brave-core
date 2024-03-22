@@ -146,8 +146,10 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
     }
 
     private void fillAddressAutoFill(Context context, Map<String, AutofillId> fields) {
-        ArrayList<AutofillProfile> profileList =
-                PersonalDataManager.getInstance().getProfilesToSuggest(true);
+        PersonalDataManager personalDataManager =
+                PersonalDataManagerFactory.getForProfile(
+                        ProfileManager.getLastUsedRegularProfile());
+        ArrayList<AutofillProfile> profileList = personalDataManager.getProfilesToSuggest(true);
         FillResponse.Builder fillResponse = new FillResponse.Builder();
         if (profileList != null && !profileList.isEmpty()) {
             for (AutofillProfile profile : profileList) {
@@ -299,7 +301,10 @@ public class BraveAutofillBackgroundServiceImpl extends ChromeBackgroundServiceI
             profile.setInfo(FieldType.ADDRESS_HOME_ZIP, postalCode);
             profile.setInfo(FieldType.ADDRESS_HOME_STATE, state);
 
-            profile.setGUID(PersonalDataManager.getInstance().setProfileToLocal(profile));
+            PersonalDataManager personalDataManager =
+                    PersonalDataManagerFactory.getForProfile(
+                            ProfileManager.getLastUsedRegularProfile());
+            profile.setGUID(personalDataManager.setProfileToLocal(profile));
             autofillAddress.updateAddress(profile);
         }
         mSaveCallback.onSuccess();
