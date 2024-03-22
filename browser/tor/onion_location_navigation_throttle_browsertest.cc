@@ -224,132 +224,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionDomain_AutoOnionRedirect) {
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
-  BrowserList* browser_list = BrowserList::GetInstance();
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com")));
-  EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
-  ASSERT_EQ(browser(), browser_list->get(0));
-
-  content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  content::TestNavigationObserver nav_observer(web_contents);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
-  nav_observer.Wait();
-  // Original request was blocked
-  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_BLOCKED_BY_CLIENT);
-  // Auto redirect only works in Tor windows.
-  EXPECT_EQ(1U, browser_list->size());
-  // We don't close the original tab
-  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionDomain_AutoOnionRedirect_TorWindow) {
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
-  auto* tor_browser = OpenTorWindow();
-  content::WebContents* web_contents =
-      tor_browser->tab_strip_model()->GetActiveWebContents();
-  content::TestNavigationObserver nav_observer(web_contents);
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, GURL(kTestOnionURL)));
-  nav_observer.Wait();
-  // It will load in the same Tor window with same tab
-  EXPECT_EQ(nav_observer.last_net_error_code(), net::ERR_NAME_NOT_RESOLVED);
-  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 1);
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionDomain_AutoOnionRedirect_OffByDefault) {
-  BrowserList* browser_list = BrowserList::GetInstance();
-  ASSERT_TRUE(
-      ui_test_utils::NavigateToURL(browser(), GURL("https://brave.com")));
-
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), GURL(kTestOnionURL)));
-  EXPECT_EQ(1U, browser_list->size());
-  ASSERT_FALSE(browser_list->get(0)->profile()->IsTor());
-
-  content::WebContents* web_contents =
-      browser_list->get(0)->tab_strip_model()->GetActiveWebContents();
-  EXPECT_EQ(web_contents->GetVisibleURL(), GURL(kTestOnionURL));
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionLocationHeader_AutoOnionRedirect) {
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
-  GURL url = test_server()->GetURL("/onion");
-  content::TestNavigationObserver nav_observer(
-      browser()->tab_strip_model()->GetActiveWebContents());
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
-
-  // We don't close the original tab.
-  EXPECT_EQ(browser()->tab_strip_model()->count(), 1);
-  EXPECT_EQ(nav_observer.last_net_error_code(), 0);
-
-  content::WebContents* web_contents =
-      browser()->tab_strip_model()->GetActiveWebContents();
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
-  // In non-Tor windows we always show icon.
-  EXPECT_TRUE(helper->should_show_icon());
-  EXPECT_FALSE(helper->onion_location().is_empty());
-
-  BrowserList* browser_list = BrowserList::GetInstance();
-  EXPECT_EQ(1U, browser_list->size());
-  // Open a new tab and navigate to the url again
-  NavigateParams params(
-      NavigateParams(browser(), url, ui::PAGE_TRANSITION_TYPED));
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  ui_test_utils::NavigateToURL(&params);
-
-  // We still don't close the original tab.
-  EXPECT_EQ(browser()->tab_strip_model()->count(), 2);
-
-  EXPECT_EQ(1U, browser_list->size());
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
-                       OnionLocationHeader_AutoOnionRedirect_TorWindow) {
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
-
-  auto* tor_browser = OpenTorWindow();
-  GURL url = test_server()->GetURL("/onion");
-  ASSERT_TRUE(ui_test_utils::NavigateToURL(tor_browser, url));
-  EXPECT_EQ(tor_browser->tab_strip_model()->count(), 2);
-  EXPECT_EQ(tor_browser->tab_strip_model()->active_index(), 1);
-  content::WebContents* web_contents =
-      tor_browser->tab_strip_model()->GetWebContentsAt(0);
-  tor::OnionLocationTabHelper* helper =
-      tor::OnionLocationTabHelper::FromWebContents(web_contents);
-  EXPECT_FALSE(helper->should_show_icon());
-  EXPECT_TRUE(helper->onion_location().is_empty());
-
-  // Open a new tab and navigate to the url again
-  NavigateParams params(
-      NavigateParams(tor_browser, url, ui::PAGE_TRANSITION_TYPED));
-  params.disposition = WindowOpenDisposition::NEW_FOREGROUND_TAB;
-  ui_test_utils::NavigateToURL(&params);
-
-  // We stll don't close the original tab
-  // No new tab in Tor window and unique one tab per site
-  ASSERT_EQ(tor_browser->tab_strip_model()->count(), 3);
-  EXPECT_EQ(
-      tor_browser->tab_strip_model()->GetWebContentsAt(0)->GetVisibleURL(),
-      url);
-  EXPECT_EQ(
-      tor_browser->tab_strip_model()->GetWebContentsAt(1)->GetVisibleURL(),
-      GURL(kTestOnionURL));
-  EXPECT_EQ(
-      tor_browser->tab_strip_model()->GetWebContentsAt(2)->GetVisibleURL(),
-      url);
-}
-
-IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
                        TorDisabled) {
   // Disable tor
   TorProfileServiceFactory::SetTorDisabled(true);
@@ -369,9 +243,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
 
-  // AutoOnionLocationPref
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   EXPECT_EQ(1U, browser_list->size());
 }
@@ -387,8 +258,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest,
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
@@ -409,8 +278,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, NotOnion) {
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());
@@ -431,8 +298,6 @@ IN_PROC_BROWSER_TEST_F(OnionLocationNavigationThrottleBrowserTest, HTTPHost) {
   EXPECT_FALSE(helper->should_show_icon());
   EXPECT_TRUE(helper->onion_location().is_empty());
 
-  browser()->profile()->GetPrefs()->SetBoolean(tor::prefs::kAutoOnionRedirect,
-                                               true);
   ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), url));
   BrowserList* browser_list = BrowserList::GetInstance();
   EXPECT_EQ(1U, browser_list->size());

@@ -381,7 +381,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
 
   EXPECT_FALSE(is_element_enabled("torEnabled"));
   EXPECT_FALSE(is_element_enabled("useBridges"));
-  EXPECT_FALSE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 
@@ -411,7 +410,6 @@ IN_PROC_BROWSER_TEST_F(BraveTorTestWithCustomProfile, Incognito) {
   web_contents = browser()->tab_strip_model()->GetActiveWebContents();
   EXPECT_TRUE(is_element_enabled("torEnabled"));
   EXPECT_TRUE(is_element_enabled("useBridges"));
-  EXPECT_TRUE(is_element_enabled("autoOnionLocation"));
   EXPECT_TRUE(is_element_enabled("onionOnlyInTorWindows"));
   EXPECT_TRUE(is_element_enabled("torSnowflake"));
 }

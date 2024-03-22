@@ -24,8 +24,6 @@ source_set("tor") {
   ]
 
   sources = [
-    "onion_location_navigation_throttle_delegate.cc",
-    "onion_location_navigation_throttle_delegate.h",
     "tor_profile_manager.cc",
     "tor_profile_manager.h",
     "tor_profile_service_factory.cc",

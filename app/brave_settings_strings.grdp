@@ -1021,12 +1021,6 @@
   <message name="IDS_SETTINGS_TOR_CANCEL_DIALOG_BUTTON" desc="Text fragment for enabling tor component">
     Cancel
   </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_TITLE" desc="Text fragment for onion site component">
-    Automatically redirect .onion sites
-  </message>
-  <message name="IDS_SETTINGS_AUTO_ONION_LOCATION_DESC" desc="Text fragment for onion site component">
-    In Tor windows, Brave will automatically switch to the .onion version of a website when available.
-  </message>
   <message name="IDS_SETTINGS_ONION_ONLY_IN_TOR_WINDOWS_TITLE" desc="">
     Only resolve .onion addresses in Tor windows
   </message>

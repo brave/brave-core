@@ -179,7 +179,6 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 #endif
 
 #if BUILDFLAG(ENABLE_TOR)
-#include "brave/browser/tor/onion_location_navigation_throttle_delegate.h"
 #include "brave/browser/tor/tor_profile_service_factory.h"
 #include "brave/components/tor/onion_location_navigation_throttle.h"
 #include "brave/components/tor/tor_navigation_throttle.h"
@@ -1202,14 +1201,10 @@ BraveContentBrowserClient::CreateThrottlesForNavigation(
   if (tor_navigation_throttle) {
     throttles.push_back(std::move(tor_navigation_throttle));
   }
-  std::unique_ptr<tor::OnionLocationNavigationThrottleDelegate>
-      onion_location_navigation_throttle_delegate =
-          std::make_unique<tor::OnionLocationNavigationThrottleDelegate>();
   std::unique_ptr<content::NavigationThrottle>
       onion_location_navigation_throttle =
           tor::OnionLocationNavigationThrottle::MaybeCreateThrottleFor(
               handle, TorProfileServiceFactory::IsTorDisabled(context),
-              std::move(onion_location_navigation_throttle_delegate),
               context->IsTor());
   if (onion_location_navigation_throttle) {
     throttles.push_back(std::move(onion_location_navigation_throttle));
