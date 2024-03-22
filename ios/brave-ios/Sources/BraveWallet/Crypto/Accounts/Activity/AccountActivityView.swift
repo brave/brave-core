@@ -41,10 +41,12 @@ struct AccountActivityView: View {
             } label: {
               Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
             }
-            Button {
-              isPresentingExportAccount = true
-            } label: {
-              Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+            if store.account.coin != .btc {
+              Button {
+                isPresentingExportAccount = true
+              } label: {
+                Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+              }
             }
           },
           label: {

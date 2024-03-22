@@ -64,7 +64,12 @@ struct AddAccountView: View {
 
   private func addAccount(for coin: BraveWallet.CoinType) {
     let accountName =
-      name.isEmpty ? defaultAccountName(for: coin, chainId: accountNetwork.chainId, isPrimary: privateKey.isEmpty)
+      name.isEmpty
+      ? defaultAccountName(
+        for: coin,
+        chainId: accountNetwork.chainId,
+        isPrimary: privateKey.isEmpty
+      )
       : name
     guard accountName.isValidAccountName else { return }
 
@@ -415,7 +420,7 @@ struct AddAccountView: View {
   private var isKeyringSelectionRequired: Bool {
     guard !selectedCoinNetworks.isEmpty else { return false }
     return (selectedCoin == .fil || selectedCoin == .btc)
-    || (preSelectedCoin == .fil || preSelectedCoin == .btc)
+      || (preSelectedCoin == .fil || preSelectedCoin == .btc)
   }
 }
 

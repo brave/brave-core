@@ -94,7 +94,7 @@ class NFTStoreTests: XCTestCase {
       case .fil:
         completion([.mockFilecoinTestnet])
       case .btc:
-        completion([]) // no NFT in Bitcoin
+        completion([])  // no NFT in Bitcoin
       case .zec:
         XCTFail("Should not fetch zec network")
       @unknown default:

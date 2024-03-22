@@ -130,17 +130,17 @@ import XCTest
         decimals: Int(BraveWallet.NetworkInfo.mockFilecoinTestnet.nativeToken.decimals)
       ) ?? ""
     let mockBtcBalanceInWei =
-    formatter.weiString(
+      formatter.weiString(
         from: mockBTCBalanceAccount1,
         radix: .decimal,
         decimals: Int(BraveWallet.NetworkInfo.mockBitcoinMainnet.nativeToken.decimals)
-    ) ?? ""
+      ) ?? ""
     let mockBtcTestnetBalanceInWei =
-    formatter.weiString(
+      formatter.weiString(
         from: mockBTCTestnetBalanceAccount1,
         radix: .decimal,
         decimals: Int(BraveWallet.NetworkInfo.mockBitcoinTestnet.nativeToken.decimals)
-    ) ?? ""
+      ) ?? ""
 
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }

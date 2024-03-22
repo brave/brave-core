@@ -547,8 +547,7 @@ public class CryptoStore: ObservableObject, WalletObserverStore {
   }
 
   func closeAccountActivityStore(for account: BraveWallet.AccountInfo) {
-    if let store = accountActivityStore, store.account.id == account.id
-    {
+    if let store = accountActivityStore, store.account.id == account.id {
       accountActivityStore?.tearDown()
       accountActivityStore = nil
     }

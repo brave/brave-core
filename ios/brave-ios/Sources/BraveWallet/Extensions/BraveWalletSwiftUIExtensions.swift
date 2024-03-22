@@ -122,7 +122,7 @@ extension BraveWallet.NetworkInfo: Identifiable {
     {
       return AssetImageName.filecoin.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.BitcoinMainnet) == .orderedSame
-      || chainId.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame 
+      || chainId.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame
     {
       return AssetImageName.bitcoin.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {

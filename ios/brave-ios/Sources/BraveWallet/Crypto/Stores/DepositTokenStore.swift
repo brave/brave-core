@@ -104,10 +104,14 @@ class DepositTokenStore: ObservableObject, WalletObserverStore {
         .init(isSelected: true, model: $0)
       }
       if let prefilledAccount, prefilledAccount.coin == .btc {
-        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(accounts: [prefilledAccount])
+        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(accounts: [
+          prefilledAccount
+        ])
       } else {
         self.allAccounts = await keyringService.allAccounts().accounts
-        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(accounts: allAccounts.filter({ $0.coin == .btc }))
+        self.bitcoinAccounts = await bitcoinWalletService.fetchBitcoinAccountInfo(
+          accounts: allAccounts.filter({ $0.coin == .btc })
+        )
       }
       self.allNetworks = await rpcService.allNetworksForSupportedCoins(
         respectTestnetPreference: true

@@ -320,12 +320,12 @@ private struct DepositDetailsView: View {
       }
     }
   }
-  
+
   struct QRCodeViewModel {
     let name: String
     let address: String
   }
-  
+
   @ViewBuilder private func qrCodeView(_ viewModel: QRCodeViewModel) -> some View {
     VStack(spacing: 12) {
       RoundedRectangle(cornerRadius: 20, style: .continuous)

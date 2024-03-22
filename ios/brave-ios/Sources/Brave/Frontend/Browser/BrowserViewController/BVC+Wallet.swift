@@ -31,7 +31,9 @@ extension WalletStore {
       let ethTxManagerProxy = BraveWallet.EthTxManagerProxyFactory.get(privateMode: privateMode),
       let solTxManagerProxy = BraveWallet.SolanaTxManagerProxyFactory.get(privateMode: privateMode),
       let walletP3A,
-      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(privateMode: privateMode)
+      let bitcoinWalletService = BraveWallet.BitcoinWalletServiceFactory.get(
+        privateMode: privateMode
+      )
     else {
       Logger.module.error("Failed to load wallet. One or more services were unavailable")
       return nil

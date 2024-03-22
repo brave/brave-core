@@ -159,7 +159,7 @@ extension BraveWallet.AccountInfo {
       return ""
     }
   }
-  
+
   var blockieSeed: String {
     address.isEmpty ? accountId.uniqueKey.sha256 : address
   }

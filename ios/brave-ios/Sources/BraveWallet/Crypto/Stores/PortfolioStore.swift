@@ -91,7 +91,8 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
   /// Sorts primary networks to be first (Solana Mainnet first primary network),  then sorts alphabetically.
   /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
   private static func sameBalanceSort(lhs: AssetGroupViewModel, rhs: AssetGroupViewModel) -> Bool {
-    if case .account(let lhsAccount) = lhs.groupType, case .account(let rhsAccount) = rhs.groupType {
+    if case .account(let lhsAccount) = lhs.groupType, case .account(let rhsAccount) = rhs.groupType
+    {
       if lhsAccount.coin == .fil && rhsAccount.coin == .fil {
         if lhsAccount.keyringId == .filecoin && rhsAccount.keyringId != .filecoin {
           return true
@@ -112,7 +113,7 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
         }
       }
     }
-    if case .network(let lhsNetwork) = lhs.groupType, case .network(let rhsNetwork) = rhs.groupType 
+    if case .network(let lhsNetwork) = lhs.groupType, case .network(let rhsNetwork) = rhs.groupType
     {
       let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhsNetwork.chainId)
       let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhsNetwork.chainId)

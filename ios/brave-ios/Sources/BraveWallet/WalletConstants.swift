@@ -75,7 +75,7 @@ public struct WalletConstants {
     BraveWallet.SolanaTestnet,
     BraveWallet.FilecoinTestnet,
     BraveWallet.FilecoinEthereumTestnetChainId,
-    BraveWallet.BitcoinTestnet
+    BraveWallet.BitcoinTestnet,
   ]
 
   /// Primary network chain ids
@@ -83,7 +83,7 @@ public struct WalletConstants {
     BraveWallet.SolanaMainnet,
     BraveWallet.MainnetChainId,
     BraveWallet.FilecoinMainnet,
-    BraveWallet.BitcoinMainnet
+    BraveWallet.BitcoinMainnet,
   ]
 
   public enum SupportedCoinTypesMode {

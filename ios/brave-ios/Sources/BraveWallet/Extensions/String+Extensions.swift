@@ -3,8 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
-import Foundation
 import CryptoKit
+import Foundation
 import UIKit
 
 extension String {
@@ -69,7 +69,7 @@ extension String {
     let hashString = hash.map { String(format: "%02hhx", $0) }.joined()
     return hashString
   }
-  
+
   var qrCodeImage: UIImage? {
     guard let data = self.data(using: .utf8) else { return nil }
     let context = CIContext()
@@ -77,7 +77,7 @@ extension String {
     filter.message = data
     filter.correctionLevel = "H"
     if let image = filter.outputImage,
-       let cgImage = context.createCGImage(image, from: image.extent)
+      let cgImage = context.createCGImage(image, from: image.extent)
     {
       return UIImage(cgImage: cgImage)
     }
