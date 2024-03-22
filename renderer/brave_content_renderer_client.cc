@@ -190,7 +190,7 @@ void BraveContentRendererClient::RenderFrameCreated(
 #endif
 }
 
-std::unique_ptr<media::KeySystemSupportObserver>
+std::unique_ptr<media::KeySystemSupportRegistration>
 BraveContentRendererClient::GetSupportedKeySystems(
     media::GetSupportedKeySystemsCB cb) {
   return ChromeContentRendererClient::GetSupportedKeySystems(
