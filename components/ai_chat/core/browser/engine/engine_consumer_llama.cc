@@ -98,7 +98,8 @@ std::string BuildLlamaFirstSequence(
   }
 
   std::string system_prompt = base::StrCat(
-      {system_msg, is_mixtral ? base::StrCat({"\n\n", kMixtralUserTag}) : "", user_message});
+      {system_msg, is_mixtral ? base::StrCat({"\n\n", kMixtralUserTag}) : "",
+       user_message});
 
   // Wrap in [INST] [/INST] tags.
   std::string instruction_prompt = BuildLlamaInstructionPrompt(system_prompt);
@@ -114,7 +115,8 @@ std::string BuildLlamaFirstSequence(
   }
 
   // Add assistant message and wrap in <s> </s> tags.
-  std::string assistant_message = base::StrCat({is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
+  std::string assistant_message = base::StrCat(
+      {is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
   return base::StrCat(
       {kLlama2Bos, instruction_prompt, assistant_message, kLlama2Eos});
 }
@@ -133,7 +135,8 @@ std::string BuildLlamaSubsequentSequence(
   // Hey there! Sure thing! The first few numbers in the Fibonacci sequence are:
   // 1, 1, 2, 3, 5, 8, 13, and so on. </s>
 
-  user_message = BuildLlamaInstructionPrompt(base::StrCat({is_mixtral ? kMixtralUserTag : "",user_message}));
+  user_message = BuildLlamaInstructionPrompt(
+      base::StrCat({is_mixtral ? kMixtralUserTag : "", user_message}));
 
   if (assistant_response_seed) {
     return base::StrCat({kLlama2Bos, user_message, *assistant_response_seed});
@@ -143,7 +146,8 @@ std::string BuildLlamaSubsequentSequence(
     return base::StrCat({kLlama2Bos, user_message});
   }
 
-  std::string assistant_message = base::StrCat({is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
+  std::string assistant_message = base::StrCat(
+      {is_mixtral ? kMixtralAssistantTag : "", *assistant_response});
   return base::StrCat(
       {kLlama2Bos, user_message, assistant_message, kLlama2Eos});
 }
@@ -257,9 +261,10 @@ std::string BuildLlamaPrompt(
                             *conversation_history[i].selected_text})
             : conversation_history[i].text;
     const std::string& assistant_message = conversation_history[i + 1].text;
-    prompt += BuildLlamaSubsequentSequence(prev_user_message, assistant_message,
-                                           (is_mixtral) ? std::optional(kMixtralAssistantTag)
-                   : std::nullopt, is_mixtral);
+    prompt += BuildLlamaSubsequentSequence(
+        prev_user_message, assistant_message,
+        (is_mixtral) ? std::optional(kMixtralAssistantTag) : std::nullopt,
+        is_mixtral);
   }
 
   // Build the final subsequent exchange using the current turn.
@@ -276,11 +281,14 @@ std::string BuildLlamaPrompt(
       cur_user_message, std::nullopt,
       (is_mixtral) ? std::optional(kMixtralAssistantTag)
                    : std::optional(l10n_util::GetStringUTF8(
-                         IDS_AI_CHAT_LLAMA2_GENERAL_SEED)), is_mixtral);
+                         IDS_AI_CHAT_LLAMA2_GENERAL_SEED)),
+      is_mixtral);
 
-  // Trimming recommended by Meta
-  // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
-  prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+  if (!is_mixtral) {
+      // Trimming recommended by Meta
+      // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
+      prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+  }
   return prompt;
 }
 
