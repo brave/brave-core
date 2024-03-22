@@ -406,6 +406,13 @@
           "Shows scroll bar on vertical tab strip when it overflows",     \
           kOsWin | kOsMac | kOsLinux,                                     \
           FEATURE_VALUE_TYPE(tabs::features::kBraveVerticalTabScrollBar), \
+      },                                                                  \
+      {                                                                   \
+          "brave-split-view",                                             \
+          "Enable split view",                                            \
+          "Enables split view",                                           \
+          kOsWin | kOsMac | kOsLinux,                                     \
+          FEATURE_VALUE_TYPE(tabs::features::kBraveSplitView),            \
       })
 #else
 #define BRAVE_TABS_FEATURE_ENTRIES

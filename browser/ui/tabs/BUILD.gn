@@ -28,6 +28,10 @@ source_set("tabs") {
       "shared_pinned_tab_service.h",
       "shared_pinned_tab_service_factory.cc",
       "shared_pinned_tab_service_factory.h",
+      "split_view_browser_data.cc",
+      "split_view_browser_data.h",
+      "split_view_tab_strip_model_adapter.cc",
+      "split_view_tab_strip_model_adapter.h",
     ]
 
     deps = [
