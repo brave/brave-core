@@ -196,6 +196,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Wallet.ActiveFilAccounts",
     "Brave.Wallet.ActiveSolAccounts",
     "Brave.Wallet.ActiveZecAccounts",
+    "Brave.Wallet.BtcTransactionSent",
     "Brave.Wallet.EthProvider.4",
     "Brave.Wallet.EthTransactionSent",
     "Brave.Wallet.FilTransactionSent",
@@ -210,6 +211,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Wallet.SolProvider.2",
     "Brave.Wallet.SolTransactionSent",
     "Brave.Wallet.UsageWeekly",
+    "Brave.Wallet.ZecTransactionSent",
     "Brave.WebTorrent.UsageWeekly",
     "Brave.Welcome.InteractionStatus.2",
 });

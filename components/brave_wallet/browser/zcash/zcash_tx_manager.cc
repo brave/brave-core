@@ -126,6 +126,16 @@ void ZCashTxManager::ApproveTransaction(const std::string& tx_meta_id,
     return;
   }
 
+  meta->set_status(mojom::TransactionStatus::Approved);
+  if (!tx_state_manager_->AddOrUpdateTx(*meta)) {
+    std::move(callback).Run(
+        false,
+        mojom::ProviderErrorUnion::NewZcashProviderError(
+            mojom::ZCashProviderError::kInternalError),
+        l10n_util::GetStringUTF8(IDS_WALLET_INTERNAL_ERROR));
+    return;
+  }
+
   zcash_wallet_service_->SignAndPostTransaction(
       meta->chain_id(), meta->from(), std::move(*meta->tx()),
       base::BindOnce(&ZCashTxManager::ContinueApproveTransaction,
