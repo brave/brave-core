@@ -26,7 +26,7 @@ export const OnboardingImportHardwareWalletWelcome = () => {
   const history = useHistory()
 
   const onClickContinue = () => {
-    history.push(WalletRoutes.OnboardingHardwareWalletNetworkSelection)
+    history.push(WalletRoutes.OnboardingHardwareWalletCreatePassword)
   }
 
   const { beforeTag, duringTag, afterTag } = splitStringForTag(

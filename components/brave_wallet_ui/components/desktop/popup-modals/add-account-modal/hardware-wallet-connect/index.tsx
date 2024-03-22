@@ -356,7 +356,7 @@ export const HardwareWalletConnect = ({
           <VerticalSpace space='32px' />
           <Instructions mode={connectionError ? 'error' : 'info'}>
             {connectionError
-              ? `${connectionError.error}. ${connectionError?.userHint}`
+              ? `${connectionError.error} ${connectionError?.userHint}`
               : getLocale(
                   'braveWalletConnectHardwareAuthorizationNeeded'
                 ).replace('$1', selectedHardwareWallet)}
