@@ -226,8 +226,6 @@
 
         </LinearLayout>
 
-        <include layout="@layout/brave_rewards_panel_payout_layout" />
-
     </LinearLayout>
 
 </merge>

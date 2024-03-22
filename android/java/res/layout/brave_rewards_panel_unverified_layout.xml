@@ -57,7 +57,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/rewards_settings_gradient_bg"
+            android:background="@drawable/rewards_wallet_balance_bg"
             android:padding="16dp"
             android:orientation="vertical">
 

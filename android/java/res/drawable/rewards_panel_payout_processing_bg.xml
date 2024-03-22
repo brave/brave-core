@@ -3,6 +3,6 @@
     android:shape="rectangle">
     <solid android:color="@color/rewards_panel_payout_processing_bg_color" />
     <corners
-        android:bottomRightRadius="8dp" android:bottomLeftRadius="8dp"
+        android:bottomRightRadius="16dp" android:bottomLeftRadius="16dp"
         android:topLeftRadius="0dp" android:topRightRadius="0dp"/>
 </shape>
