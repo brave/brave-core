@@ -58,7 +58,7 @@ inline constexpr char kUsageWeeklySidebarEnabledAHistogramName[] =
 inline constexpr char kUsageWeeklySidebarEnabledBHistogramName[] =
     "Brave.AIChat.UsageWeekly.SidebarEnabledB";
 inline constexpr char kChatCountNebulaHistogramName[] =
-    "Brave.AIChat.ChatCount";
+    "Brave.AIChat.ChatCount.Nebula";
 
 enum class AcquisitionSource {
   kOmnibox = 0,

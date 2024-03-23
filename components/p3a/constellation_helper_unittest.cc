@@ -101,7 +101,7 @@ class P3AConstellationHelperTest : public testing::Test {
         &local_state_, shared_url_loader_factory_,
         base::BindLambdaForTesting(
             [this](std::string histogram_name, MetricLogType log_type,
-                   uint8_t epoch,
+                   uint8_t epoch, bool is_success,
                    std::unique_ptr<std::string> serialized_message) {
               histogram_name_from_callback_ = histogram_name;
               epoch_from_callback_ = epoch;
@@ -253,7 +253,9 @@ TEST_F(P3AConstellationHelperTest, GenerateBasicMessage) {
     helper_->StartMessagePreparation(
         kTestHistogramName, log_type,
         GenerateP3AConstellationMessage(kTestHistogramName, test_epoch,
-                                        meta_info, kP3AUploadType, false));
+                                        meta_info, kP3AUploadType, false,
+                                        false),
+        false);
     task_environment_.RunUntilIdle();
 
     CheckPointsRequestMade(log_type);
@@ -272,7 +274,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", "2022-01-01");
 
   std::string message_with_no_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType, false);
+      kTestHistogramName, 0, meta_info, kP3AUploadType, false, false);
   std::vector<std::string> no_refcode_layers = base::SplitString(
       message_with_no_refcode, kP3AMessageConstellationLayerSeparator,
       base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -282,7 +284,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   EXPECT_FALSE(base::StartsWith(no_refcode_layers.at(7), "ref"));
 
   std::string message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType, true);
+      kTestHistogramName, 0, meta_info, kP3AUploadType, true, false);
   std::vector<std::string> refcode_layers = base::SplitString(
       message_with_refcode, kP3AMessageConstellationLayerSeparator,
       base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -296,7 +298,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", "2022-01-01");
 
   message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType, true);
+      kTestHistogramName, 0, meta_info, kP3AUploadType, true, false);
   refcode_layers = base::SplitString(message_with_refcode,
                                      kP3AMessageConstellationLayerSeparator,
                                      base::WhitespaceHandling::TRIM_WHITESPACE,
@@ -309,7 +311,7 @@ TEST_F(P3AConstellationHelperTest, IncludeRefcode) {
   meta_info.Init(&local_state_, "release", "2022-01-01");
 
   message_with_refcode = GenerateP3AConstellationMessage(
-      kTestHistogramName, 0, meta_info, kP3AUploadType, true);
+      kTestHistogramName, 0, meta_info, kP3AUploadType, true, false);
   refcode_layers = base::SplitString(message_with_refcode,
                                      kP3AMessageConstellationLayerSeparator,
                                      base::WhitespaceHandling::TRIM_WHITESPACE,
