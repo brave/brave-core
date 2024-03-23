@@ -287,6 +287,8 @@ static_library("internal") {
     "ad_units/search_result_ad/search_result_ad_feature.cc",
     "ad_units/search_result_ad/search_result_ad_handler.cc",
     "ad_units/search_result_ad/search_result_ad_handler.h",
+    "ad_units/user_data/page_land_user_data.cc",
+    "ad_units/user_data/page_land_user_data.h",
     "ads.cc",
     "ads_constants.cc",
     "ads_feature.cc",

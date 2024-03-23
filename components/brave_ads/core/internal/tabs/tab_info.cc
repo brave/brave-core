@@ -13,11 +13,11 @@ TabInfo::TabInfo() = default;
 
 TabInfo::TabInfo(const int32_t id,
                  std::vector<GURL> redirect_chain,
-                 const int32_t http_response_status_code,
+                 const bool is_error_page,
                  const bool is_playing_media)
     : id(id),
       redirect_chain(std::move(redirect_chain)),
-      http_response_status_code(http_response_status_code),
+      is_error_page(is_error_page),
       is_playing_media(is_playing_media) {}
 
 TabInfo::TabInfo(const TabInfo& other) = default;

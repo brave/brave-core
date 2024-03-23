@@ -11,7 +11,6 @@
 #include "brave/components/brave_ads/core/internal/account/confirmations/user_data_builder/fixed/confirmation_fixed_user_data_builder.h"
 #include "brave/components/brave_ads/core/internal/account/transactions/transaction_info.h"
 #include "brave/components/brave_ads/core/internal/account/user_data/user_data_info.h"
-#include "brave/components/brave_ads/core/internal/settings/settings.h"
 
 namespace brave_ads {
 
@@ -24,12 +23,8 @@ void BuildFixedUserDataCallback(base::Value::Dict user_data,
   UserDataInfo confirmation_user_data;
 
   confirmation_user_data.dynamic = std::move(dynamic_user_data);
-
   confirmation_user_data.fixed = std::move(fixed_user_data);
-
-  if (UserHasJoinedBraveRewards()) {
-    confirmation_user_data.fixed.Merge(std::move(user_data));
-  }
+  confirmation_user_data.fixed.Merge(std::move(user_data));
 
   std::move(callback).Run(confirmation_user_data);
 }

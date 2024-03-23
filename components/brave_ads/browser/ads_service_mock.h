@@ -124,7 +124,7 @@ class AdsServiceMock : public AdsService {
               NotifyTabDidChange,
               (int32_t tab_id,
                const std::vector<GURL>& redirect_chain,
-               int32_t http_response_status_code,
+               bool is_error_page,
                bool is_visible));
   MOCK_METHOD(void, NotifyDidCloseTab, (int32_t tab_id));
   MOCK_METHOD(void, NotifyUserGestureEventTriggered, (int32_t tab_id));

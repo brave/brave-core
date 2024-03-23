@@ -17,7 +17,6 @@
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "net/http/http_response_headers.h"
-#include "net/http/http_status_code.h"
 #include "ui/base/page_transition_types.h"
 #include "url/gurl.h"
 
@@ -79,7 +78,7 @@ void AdsTabHelper::TabUpdated() {
   const bool is_visible = is_active_ && is_browser_active_;
 
   ads_service_->NotifyTabDidChange(tab_id_.id(), redirect_chain_,
-                                   http_response_status_code_, is_visible);
+                                   is_error_page_, is_visible);
 }
 
 void AdsTabHelper::RunIsolatedJavaScript(
@@ -158,15 +157,16 @@ void AdsTabHelper::DidFinishNavigation(
 
   redirect_chain_ = navigation_handle->GetRedirectChain();
 
-  const net::HttpResponseHeaders* response_headers =
+  is_error_page_ = false;
+  const net::HttpResponseHeaders* const response_headers =
       navigation_handle->GetResponseHeaders();
-  if (!response_headers) {
-    return;
+  if (response_headers) {
+    const int response_code_class = response_headers->response_code() / 100;
+    is_error_page_ = response_code_class == 4 /*client error*/ ||
+                     response_code_class == 5 /*server error*/;
   }
-
-  http_response_status_code_ = response_headers->response_code();
-  if (http_response_status_code_ != net::HTTP_OK) {
-    return;
+  if (navigation_handle->IsErrorPage()) {
+    is_error_page_ = true;
   }
 
   if (!navigation_handle->IsSameDocument()) {

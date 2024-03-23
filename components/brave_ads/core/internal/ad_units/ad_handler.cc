@@ -8,6 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_ads/core/internal/account/account.h"
+#include "brave/components/brave_ads/core/internal/ad_units/user_data/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
 #include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
@@ -140,8 +141,9 @@ void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
 
   BLOG(1, "Landed on page for " << ad.target_url << " on tab id " << tab.id);
 
-  account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kLanded);
+  account_->DepositWithUserData(ad.creative_instance_id, ad.segment, ad.type,
+                                ConfirmationType::kLanded,
+                                BuildPageLandUserData(tab));
 }
 
 void AdHandler::OnDidNotLandOnPage(const AdInfo& ad) {

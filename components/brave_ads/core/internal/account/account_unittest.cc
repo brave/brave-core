@@ -287,6 +287,37 @@ TEST_F(BraveAdsAccountTest, DepositForCash) {
                     AdType::kNotificationAd, ConfirmationType::kViewed);
 }
 
+TEST_F(BraveAdsAccountTest, DepositForCashWithUserData) {
+  // Arrange
+  test::BuildAndSetIssuers();
+
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  const URLResponseMap url_responses = {
+      {BuildCreateRewardConfirmationUrlPath(
+           kTransactionId, kCreateRewardConfirmationCredential),
+       {{net::HTTP_CREATED,
+         test::BuildCreateRewardConfirmationUrlResponseBody()}}},
+      {BuildFetchPaymentTokenUrlPath(kTransactionId),
+       {{net::HTTP_OK, test::BuildFetchPaymentTokenUrlResponseBody()}}}};
+  MockUrlResponses(ads_client_mock_, url_responses);
+
+  const CreativeNotificationAdInfo creative_ad =
+      test::BuildCreativeNotificationAd(/*should_use_random_uuids=*/true);
+  database::SaveCreativeNotificationAds({creative_ad});
+
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
+
+  account_->DepositWithUserData(creative_ad.creative_instance_id,
+                                creative_ad.segment, AdType::kNotificationAd,
+                                ConfirmationType::kViewed, /*user_data=*/{});
+}
+
 TEST_F(BraveAdsAccountTest, DepositForNonCash) {
   // Arrange
   test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
@@ -300,6 +331,22 @@ TEST_F(BraveAdsAccountTest, DepositForNonCash) {
 
   account_->Deposit(kCreativeInstanceId, kSegment, AdType::kNotificationAd,
                     ConfirmationType::kClicked);
+}
+
+TEST_F(BraveAdsAccountTest, DepositForNonCashWithUserData) {
+  // Arrange
+  test::MockTokenGenerator(token_generator_mock_, /*count=*/1);
+
+  test::RefillConfirmationTokens(/*count=*/1);
+
+  // Act & Assert
+  EXPECT_CALL(observer_mock_, OnDidProcessDeposit);
+  EXPECT_CALL(observer_mock_, OnFailedToProcessDeposit).Times(0);
+  EXPECT_CALL(*ads_observer_mock_, OnAdRewardsDidChange);
+
+  account_->DepositWithUserData(kCreativeInstanceId, kSegment,
+                                AdType::kNotificationAd,
+                                ConfirmationType::kClicked, /*user_data=*/{});
 }
 
 TEST_F(BraveAdsAccountTest, DoNotDepositCashIfCreativeInstanceIdDoesNotExist) {

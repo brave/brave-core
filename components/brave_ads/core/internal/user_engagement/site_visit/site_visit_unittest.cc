@@ -14,7 +14,6 @@
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit_observer_mock.h"
 #include "brave/components/brave_ads/core/public/user_engagement/site_visit/site_visit_feature.h"
-#include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
@@ -46,7 +45,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfInvalidAd) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const AdInfo ad;
   site_visit_->SetLastClickedAd(ad);
@@ -60,15 +59,15 @@ TEST_F(BraveAdsSiteVisitTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
   site_visit_->SetLastClickedAd(ad);
-  site_visit_->MaybeLandOnPage(TabInfo{
-      /*id=*/1,
-      /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_playing_media=*/false});
+  site_visit_->MaybeLandOnPage(
+      TabInfo{/*id=*/1,
+              /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
+              /*is_error_page=*/false, /*is_playing_media=*/false});
 
   // Act & Assert
   FastForwardClockBy(kPageLandAfter.Get());
@@ -78,11 +77,11 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameAdIsAlreadyLanding) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
                     /*redirect_chain=*/{GURL("https://brave.com")},
-                    /*http_response_status_code=*/net::HTTP_OK,
+                    /*is_error_page=*/false,
                     /*is_playing_media=*/false};
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -103,7 +102,7 @@ TEST_F(BraveAdsSiteVisitTest, LandOnPageIfAnotherAdIsAlreadyLanded) {
   {
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-        /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+        /*is_error_page=*/false, /*is_visible=*/true);
 
     const AdInfo ad_1 = test::BuildAd(AdType::kNotificationAd,
                                       /*should_use_random_uuids=*/true);
@@ -113,18 +112,18 @@ TEST_F(BraveAdsSiteVisitTest, LandOnPageIfAnotherAdIsAlreadyLanded) {
     site_visit_->MaybeLandOnPage(
         TabInfo{/*id=*/1,
                 /*redirect_chain=*/{GURL("https://brave.com")},
-                /*http_response_status_code=*/net::HTTP_OK,
+                /*is_error_page=*/false,
                 /*is_playing_media=*/false});
   }
 
   {
     NotifyTabDidChange(
         /*tab_id=*/2, /*redirect_chain=*/{GURL("https://brave.com")},
-        /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+        /*is_error_page=*/false, /*is_visible=*/true);
 
     const TabInfo tab{/*id=*/2,
                       /*redirect_chain=*/{GURL("https://brave.com")},
-                      /*http_response_status_code=*/net::HTTP_OK,
+                      /*is_error_page=*/false,
                       /*is_playing_media=*/false};
 
     const AdInfo ad_2 = test::BuildAd(AdType::kNotificationAd,
@@ -145,11 +144,11 @@ TEST_F(BraveAdsSiteVisitTest,
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
                     /*redirect_chain=*/{GURL("https://brave.com")},
-                    /*http_response_status_code=*/net::HTTP_OK,
+                    /*is_error_page=*/false,
                     /*is_playing_media=*/false};
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -166,15 +165,15 @@ TEST_F(BraveAdsSiteVisitTest,
 
 TEST_F(
     BraveAdsSiteVisitTest,
-    LandOnPageIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHostAndTheHttpResponseStatusCodeIsNotOk) {
+    LandOnPageIfTheTabIsVisibleAndTheUrlIsTheSameAsTheDomainOrHostAndAnErrorPage) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_NOT_FOUND, /*is_visible=*/true);
+      /*is_error_page=*/true, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
                     /*redirect_chain=*/{GURL("https://brave.com")},
-                    /*http_response_status_code=*/net::HTTP_NOT_FOUND,
+                    /*is_error_page=*/true,
                     /*is_playing_media=*/false};
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
@@ -193,7 +192,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfNotVisible) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com/new_tab")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/false);
+      /*is_error_page=*/false, /*is_visible=*/false);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -206,7 +205,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfNotVisible) {
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
               /*redirect_chain=*/{GURL("https://brave.com")},
-              /*http_response_status_code=*/net::HTTP_OK,
+              /*is_error_page=*/false,
               /*is_playing_media=*/false});
   FastForwardClockBy(kPageLandAfter.Get());
 }
@@ -217,7 +216,7 @@ TEST_F(BraveAdsSiteVisitTest,
   NotifyTabDidChange(
       /*tab_id=*/1,
       /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -230,7 +229,7 @@ TEST_F(BraveAdsSiteVisitTest,
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
               /*redirect_chain=*/{GURL("https://brave.com")},
-              /*http_response_status_code=*/net::HTTP_OK,
+              /*is_error_page=*/false,
               /*is_playing_media=*/false});
   FastForwardClockBy(kPageLandAfter.Get());
 }
@@ -239,7 +238,7 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   // Arrange
   NotifyTabDidChange(
       /*tab_id=*/1, /*redirect_chain=*/{GURL("https://brave.com")},
-      /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+      /*is_error_page=*/false, /*is_visible=*/true);
 
   const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
                                   /*should_use_random_uuids=*/true);
@@ -252,7 +251,7 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
               /*redirect_chain=*/{GURL("https://brave.com")},
-              /*http_response_status_code=*/net::HTTP_OK,
+              /*is_error_page=*/false,
               /*is_playing_media=*/false});
   NotifyDidCloseTab(/*tab_id=*/1);
 }

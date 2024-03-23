@@ -20,7 +20,6 @@
 #include "brave/components/brave_ads/core/internal/targeting/behavioral/anti_targeting/resource/anti_targeting_resource.h"
 #include "brave/components/brave_ads/core/internal/targeting/geographical/subdivision/subdivision_targeting.h"
 #include "brave/components/brave_ads/core/public/ad_units/inline_content_ad/inline_content_ad_info.h"
-#include "net/http/http_status_code.h"
 
 // npm run test -- brave_unit_tests --filter=BraveAds*
 
@@ -32,7 +31,7 @@ class BraveAdsInlineContentAdServingTest : public UnitTestBase {
                     MaybeServeInlineContentAdCallback callback) {
     NotifyTabDidChange(
         /*tab_id=*/1, /*redirect_chain=*/{GURL("brave://newtab")},
-        /*http_response_status_code=*/net::HTTP_OK, /*is_visible=*/true);
+        /*is_error_page=*/false, /*is_visible=*/true);
 
     SubdivisionTargeting subdivision_targeting;
     AntiTargetingResource anti_targeting_resource;
