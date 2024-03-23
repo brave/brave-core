@@ -6,6 +6,7 @@
 #include "brave/components/misc_metrics/general_browser_usage.h"
 
 #include "base/metrics/histogram_macros.h"
+#include "base/time/time.h"
 #include "brave/components/misc_metrics/pref_names.h"
 #include "brave/components/p3a_utils/bucket.h"
 #include "brave/components/time_period_storage/iso_weekly_storage.h"
@@ -24,9 +25,23 @@ constexpr int kProfileCountBuckets[] = {0, 1, 2, 3, 5};
 
 }  // namespace
 
-GeneralBrowserUsage::GeneralBrowserUsage(PrefService* local_state) {
+GeneralBrowserUsage::GeneralBrowserUsage(PrefService* local_state,
+                                         bool day_zero_experiment_enabled,
+                                         bool is_first_run,
+                                         base::Time first_run_time)
+    : local_state_(local_state), first_run_time_(first_run_time) {
   usage_storage_ = std::make_unique<ISOWeeklyStorage>(
       local_state, kMiscMetricsBrowserUsageList);
+
+  if (is_first_run) {
+    if (day_zero_experiment_enabled) {
+      local_state->SetBoolean(kMiscMetricsDayZeroAtInstall, true);
+    }
+    if (first_run_time.is_null()) {
+      first_run_time_ = base::Time::Now();
+    }
+  }
+
   Update();
 }
 
@@ -34,6 +49,7 @@ GeneralBrowserUsage::~GeneralBrowserUsage() = default;
 
 void GeneralBrowserUsage::RegisterPrefs(PrefRegistrySimple* registry) {
   registry->RegisterListPref(kMiscMetricsBrowserUsageList);
+  registry->RegisterBooleanPref(kMiscMetricsDayZeroAtInstall, false);
 }
 
 void GeneralBrowserUsage::ReportWeeklyUse() {
@@ -41,6 +57,20 @@ void GeneralBrowserUsage::ReportWeeklyUse() {
   UMA_HISTOGRAM_EXACT_LINEAR(kWeeklyUseHistogramName,
                              usage_storage_->GetLastISOWeekSum(), 8);
 }
+
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+void GeneralBrowserUsage::ReportInstallTime() {
+  int days_since_install = (base::Time::Now() - first_run_time_).InDays();
+  if (days_since_install < 0 || days_since_install > 30) {
+    return;
+  }
+  const char* histogram_name =
+      local_state_->GetBoolean(kMiscMetricsDayZeroAtInstall)
+          ? kDayZeroOnInstallTime
+          : kDayZeroOffInstallTime;
+  base::UmaHistogramExactLinear(histogram_name, days_since_install, 31);
+}
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
 void GeneralBrowserUsage::ReportProfileCount(size_t count) {
 #if !BUILDFLAG(IS_ANDROID)
@@ -56,6 +86,9 @@ void GeneralBrowserUsage::SetUpUpdateTimer() {
 
 void GeneralBrowserUsage::Update() {
   ReportWeeklyUse();
+#if BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
+  ReportInstallTime();
+#endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
   SetUpUpdateTimer();
 }

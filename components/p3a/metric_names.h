@@ -257,6 +257,8 @@ inline constexpr auto kCollectedExpressHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.AIChat.UsageDaily.2",
     "Brave.Core.UsageDaily",
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
     "Brave.Rewards.EnabledInstallationTime",
     "Brave.Search.DefaultEngine.4",
     "Brave.Today.IsEnabled",
@@ -284,6 +286,8 @@ inline constexpr auto kEphemeralHistograms =
     "Brave.AIChat.UsageMonthly",
     "Brave.AIChat.UsageWeekly",
     "Brave.Core.FailedHTTPSUpgrades",
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
     "Brave.Playlist.FirstTimeOffset",
     "Brave.Playlist.UsageDaysInWeek",
     "Brave.PrivacyHub.Views",
@@ -325,15 +329,16 @@ inline constexpr auto kEphemeralHistograms =
 inline constexpr auto kConstellationOnlyHistograms =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.Core.PrimaryLang",
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
 });
 
 // List of metrics which will include the stored refcode when transmitted
 // via the STAR/Constellation protocol.
 inline constexpr auto kHistogramsWithRefcodeIncluded =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
-    // TODO(djandries): Replace this metric with the first metric
-    // to include a refcode.
-    "Brave.ExampleMetric"
+    "Brave.DayZero.Off.InstallTime",
+    "Brave.DayZero.On.InstallTime",
 });
 
 // clang-format on

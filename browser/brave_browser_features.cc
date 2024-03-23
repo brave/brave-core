@@ -35,4 +35,10 @@ BASE_FEATURE(kBraveWebViewRoundedCorners,
              "brave-web-view-rounded-corners",
              base::FEATURE_DISABLED_BY_DEFAULT);
 
+// Enable "day zero" experiment modifications, for potential user
+// retention improvements.
+BASE_FEATURE(kBraveDayZeroExperiment,
+             "BraveDayZeroExperiment",
+             base::FEATURE_DISABLED_BY_DEFAULT);
+
 }  // namespace features
