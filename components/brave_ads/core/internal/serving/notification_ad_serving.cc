@@ -167,7 +167,7 @@ base::Time NotificationAdServing::MaybeServeAdAfter(
 
   return timer_.Start(FROM_HERE, delay,
                       base::BindOnce(&NotificationAdServing::MaybeServeAd,
-                                     base::Unretained(this)));
+                                     weak_factory_.GetWeakPtr()));
 }
 
 void NotificationAdServing::ServeAd(const NotificationAdInfo& ad) {

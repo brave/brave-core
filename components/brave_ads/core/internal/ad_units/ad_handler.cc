@@ -10,7 +10,6 @@
 #include "brave/components/brave_ads/core/internal/account/account.h"
 #include "brave/components/brave_ads/core/internal/ad_units/user_data/page_land_user_data.h"
 #include "brave/components/brave_ads/core/internal/common/logging_util.h"
-#include "brave/components/brave_ads/core/internal/common/time/time_formatting_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/conversion/conversion_info.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/site_visit/site_visit.h"
@@ -129,11 +128,23 @@ void AdHandler::OnDidConvertAd(const ConversionInfo& conversion) {
                     conversion.ad_type, ConfirmationType::kConversion);
 }
 
-void AdHandler::OnMaybeLandOnPage(const AdInfo& ad, const base::Time maybe_at) {
+void AdHandler::OnMaybeLandOnPage(const AdInfo& ad,
+                                  const base::TimeDelta after) {
   CHECK(ad.IsValid());
 
-  BLOG(1, "Maybe land page for " << ad.target_url << " "
-                                 << FriendlyDateAndTime(maybe_at));
+  BLOG(1, "Maybe land on page for " << ad.target_url << " in " << after);
+}
+
+void AdHandler::OnDidSuspendPageLand(const TabInfo& tab,
+                                     const base::TimeDelta remaining_time) {
+  BLOG(1, "Suspended page landing on tab id "
+              << tab.id << " with " << remaining_time << " remaining");
+}
+
+void AdHandler::OnDidResumePageLand(const TabInfo& tab,
+                                    const base::TimeDelta remaining_time) {
+  BLOG(1, "Resumed page landing on tab id " << tab.id << " and maybe land in "
+                                            << remaining_time);
 }
 
 void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
@@ -146,17 +157,18 @@ void AdHandler::OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) {
                                 BuildPageLandUserData(tab));
 }
 
-void AdHandler::OnDidNotLandOnPage(const AdInfo& ad) {
+void AdHandler::OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
-  BLOG(1, "Did not land on page for " << ad.target_url);
+  BLOG(1,
+       "Did not land on page for " << ad.target_url << " on tab id " << tab.id);
 }
 
-void AdHandler::OnCanceledPageLand(const AdInfo& ad, int32_t tab_id) {
+void AdHandler::OnCanceledPageLand(const int32_t tab_id, const AdInfo& ad) {
   CHECK(ad.IsValid());
 
   BLOG(1, "Canceled page land for creative instance id "
-              << ad.creative_instance_id << " with tab id " << tab_id);
+              << ad.creative_instance_id << " on tab id " << tab_id);
 }
 
 }  // namespace brave_ads

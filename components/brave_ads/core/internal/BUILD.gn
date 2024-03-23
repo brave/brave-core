@@ -1254,6 +1254,7 @@ static_library("internal") {
     "user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_info.h",
     "user_engagement/reactions/reactions.cc",
     "user_engagement/reactions/reactions.h",
+    "user_engagement/site_visit/page_land/page_land_info.h",
     "user_engagement/site_visit/site_visit.cc",
     "user_engagement/site_visit/site_visit.h",
     "user_engagement/site_visit/site_visit_feature.cc",

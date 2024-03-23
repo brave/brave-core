@@ -102,6 +102,8 @@ bool AdsTabHelper::IsErrorPage(content::NavigationHandle* navigation_handle) {
 void AdsTabHelper::ProcessNavigation() {
   MaybeNotifyTabContentDidChange();
 
+  // Set `is_restoring_` to `false` so that we notify listeners of tab changes
+  // after the tab is restored.
   is_restoring_ = false;
 }
 
@@ -247,9 +249,8 @@ void AdsTabHelper::DidFinishNavigation(
 
   MaybeNotifyTabDidChange();
 
-  // For navigations that lead to a document change,
-  // `MaybeNotifyTabContentDidChange` is called from
-  // `DocumentOnLoadCompletedInPrimaryMainFrame`.
+  // For navigations that lead to a document change, `ProcessNavigation` is
+  // called from `DocumentOnLoadCompletedInPrimaryMainFrame`.
   if (navigation_handle->IsSameDocument()) {
     ProcessNavigation();
   }

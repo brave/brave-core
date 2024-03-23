@@ -84,7 +84,7 @@ void ConfirmationQueue::ProcessQueueItemAfterDelay(
       CalculateDelayBeforeProcessingConfirmationQueueItem(
           confirmation_queue_item),
       base::BindOnce(&ConfirmationQueue::ProcessQueueItem,
-                     base::Unretained(this), confirmation_queue_item));
+                     weak_factory_.GetWeakPtr(), confirmation_queue_item));
 
   NotifyWillProcessConfirmationQueue(confirmation_queue_item.confirmation,
                                      process_at);

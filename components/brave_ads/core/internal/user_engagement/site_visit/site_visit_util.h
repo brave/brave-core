@@ -12,9 +12,7 @@ class GURL;
 
 namespace brave_ads {
 
-struct AdInfo;
-
-bool DidLandOnPage(int32_t tab_id, const AdInfo& ad);
+bool DidLandOnPage(int32_t tab_id, const GURL& url);
 
 }  // namespace brave_ads
 
