@@ -28,6 +28,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.ChatCount.Nebula",
     "Brave.AIChat.ContextMenu.FreeUsages",
     "Brave.AIChat.ContextMenu.MostUsedAction",
     "Brave.AIChat.ContextMenu.PremiumUsages",

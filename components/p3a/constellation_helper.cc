@@ -93,7 +93,7 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
 
-  if (!CheckParticipationAndScrambleForNebula(&layers)) {
+  if (is_nebula && !CheckParticipationAndScrambleForNebula(&layers)) {
     // Do not send measurement since client is unable to participate,
     // but mark the request as successful so the client does not retry
     // transmission.
