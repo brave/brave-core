@@ -137,7 +137,7 @@ TEST(SolanaMessageUnitTest, SerializeDeserialize) {
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto message_without_blockhash =
       SolanaMessage::CreateLegacyMessage("", 0, kFromAccount, {instruction});
   ASSERT_TRUE(message_without_blockhash);
@@ -537,13 +537,6 @@ TEST(SolanaMessageUnitTest, FromToValue) {
 
 TEST(SolanaMessageUnitTest, UsesDurableNonce) {
   // Mock AdvanceNonceAccount instruction.
-  uint32_t instruction_type = static_cast<uint32_t>(
-      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
-  instruction_type = base::ByteSwapToLE32(instruction_type);
-
-  std::vector<uint8_t> instruction_data(
-      reinterpret_cast<uint8_t*>(&instruction_type),
-      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
 
   SolanaInstruction instruction = SolanaInstruction(
       mojom::kSolanaSystemProgramId,
@@ -551,7 +544,9 @@ TEST(SolanaMessageUnitTest, UsesDurableNonce) {
           {SolanaAccountMeta(kTestAccount, std::nullopt, false, true),
            SolanaAccountMeta(kFromAccount, std::nullopt, false, false),
            SolanaAccountMeta(kToAccount, std::nullopt, true, false)}),
-      instruction_data);
+      base::byte_span_from_ref(
+          base::numerics::U32FromLittleEndian(base::byte_span_from_ref(
+              mojom::SolanaSystemInstruction::kAdvanceNonceAccount))));
 
   auto message1 = GetTestLegacyMessage();
   auto message2 = GetTestV0Message();

@@ -3,12 +3,13 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
+#include "brave/components/brave_wallet/browser/solana_test_utils.h"
+
 #include <utility>
 #include <vector>
 
-#include "brave/components/brave_wallet/browser/solana_test_utils.h"
-
-#include "base/sys_byteorder.h"
+#include "base/containers/span.h"
+#include "base/numerics/byte_conversions.h"
 #include "brave/components/brave_wallet/browser/solana_account_meta.h"
 #include "brave/components/brave_wallet/browser/solana_instruction.h"
 #include "brave/components/brave_wallet/browser/solana_message.h"
@@ -53,21 +54,15 @@ SolanaMessage GetTestV0Message() {
 }
 
 SolanaInstruction GetAdvanceNonceAccountInstruction() {
-  uint32_t instruction_type = static_cast<uint32_t>(
-      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
-  instruction_type = base::ByteSwapToLE32(instruction_type);
-
-  std::vector<uint8_t> instruction_data(
-      reinterpret_cast<uint8_t*>(&instruction_type),
-      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
-
   return SolanaInstruction(
       mojom::kSolanaSystemProgramId,
       std::vector<SolanaAccountMeta>(
           {SolanaAccountMeta(kTestAccount, std::nullopt, false, true),
            SolanaAccountMeta(kToAccount, std::nullopt, false, false),
            SolanaAccountMeta(kFromAccount, std::nullopt, true, false)}),
-      instruction_data);
+      base::byte_span_from_ref(
+          base::numerics::U32FromLittleEndian(base::byte_span_from_ref(
+              mojom::SolanaSystemInstruction::kAdvanceNonceAccount))));
 }
 
 }  // namespace brave_wallet
