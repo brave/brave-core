@@ -385,11 +385,12 @@ void BraveRenderViewContextMenu::CopyTextFromImage() {
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 bool BraveRenderViewContextMenu::IsAIChatEnabled() const {
-  return ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
+  return !params_.selection_text.empty() &&
+         ai_chat::IsAIChatEnabled(GetProfile()->GetPrefs()) &&
          brave::IsRegularProfile(GetProfile()) &&
          GetProfile()->GetPrefs()->GetBoolean(
              ai_chat::prefs::kBraveAIChatContextMenuEnabled) &&
-         !params_.selection_text.empty();
+         !IsInProgressiveWebApp();
 }
 
 void BraveRenderViewContextMenu::ExecuteAIChatCommand(int command) {
