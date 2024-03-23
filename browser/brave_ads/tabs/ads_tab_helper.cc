@@ -169,6 +169,8 @@ void AdsTabHelper::DidFinishNavigation(
     is_error_page_ = true;
   }
 
+  TabUpdated();
+
   if (!navigation_handle->IsSameDocument()) {
     should_process_ = tab_not_restored;
     return;
@@ -185,17 +187,6 @@ void AdsTabHelper::DocumentOnLoadCompletedInPrimaryMainFrame() {
   if (should_process_) {
     RunIsolatedJavaScript(render_frame_host);
   }
-}
-
-void AdsTabHelper::DidFinishLoad(content::RenderFrameHost* render_frame_host,
-                                 const GURL& validated_url) {
-  CHECK(render_frame_host);
-
-  if (render_frame_host->GetParent()) {
-    return;
-  }
-
-  TabUpdated();
 }
 
 void AdsTabHelper::MediaStartedPlaying(const MediaPlayerInfo& video_type,
