@@ -122,7 +122,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransaction) {
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, std::nullopt, false, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto msg = SolanaMessage::CreateLegacyMessage(
       kRecentBlockhash, last_valid_block_height, kFromAccount, {instruction});
   ASSERT_TRUE(msg);
@@ -363,7 +363,7 @@ TEST_F(SolanaTransactionUnitTest, FromSignedTransactionBytes) {
       {SolanaAccountMeta(from_account, std::nullopt, true, true),
        SolanaAccountMeta(to_account, std::nullopt, true, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto msg = SolanaMessage::CreateLegacyMessage(
       recent_blockhash, last_valid_block_height, from_account, {instruction});
   ASSERT_TRUE(msg);
@@ -716,7 +716,7 @@ TEST_F(SolanaTransactionUnitTest, GetBase64EncodedMessage) {
       {SolanaAccountMeta(from_account, std::nullopt, true, true),
        SolanaAccountMeta(to_account, std::nullopt, false, true)},
       // Data
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto msg =
       SolanaMessage::CreateLegacyMessage("", 0, from_account, {instruction});
   ASSERT_TRUE(msg);
@@ -819,7 +819,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
       mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kTestAccount2, std::nullopt, false, true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   auto message = SolanaMessage::CreateLegacyMessage(
       "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, kFromAccount,
       {instruction_one_signer});
@@ -842,7 +842,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
       {SolanaAccountMeta(kFromAccount, std::nullopt, true, true),
        SolanaAccountMeta(kTestAccount2, std::nullopt, true, true),
        SolanaAccountMeta(kToAccount, std::nullopt, true, true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   message = SolanaMessage::CreateLegacyMessage(
       "9sHcv6xwn9YkB8nxTUGKDwPwNnmqVp5oAXxU8Fdkm4J6", 0, kFromAccount,
       {instruction_three_signers});
@@ -895,7 +895,7 @@ TEST_F(SolanaTransactionUnitTest, GetSignedTransactionBytes) {
       mojom::kSolanaSystemProgramId,
       {SolanaAccountMeta(kTestAccount, std::nullopt, true, true),
        SolanaAccountMeta(kFromAccount, std::nullopt, true, true)},
-      {2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0});
+      std::vector<uint8_t>({2, 0, 0, 0, 128, 150, 152, 0, 0, 0, 0, 0}));
   message = SolanaMessage::CreateLegacyMessage(
       kRecentBlockhash, 0, kTestAccount, {ins_not_fee_payer});
   ASSERT_TRUE(message);

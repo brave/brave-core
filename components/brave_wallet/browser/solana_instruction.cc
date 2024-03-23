@@ -12,6 +12,7 @@
 
 #include "base/base64.h"
 #include "base/check.h"
+#include "base/containers/span.h"
 #include "base/ranges/algorithm.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/values.h"
@@ -36,20 +37,20 @@ namespace brave_wallet {
 
 SolanaInstruction::SolanaInstruction(const std::string& program_id,
                                      std::vector<SolanaAccountMeta>&& accounts,
-                                     const std::vector<uint8_t>& data)
+                                     base::span<const uint8_t> data)
     : program_id_(program_id),
       accounts_(std::move(accounts)),
-      data_(data),
+      data_(data.begin(), data.end()),
       decoded_data_(solana_ins_data_decoder::Decode(data, program_id)) {}
 
 SolanaInstruction::SolanaInstruction(
     const std::string& program_id,
     std::vector<SolanaAccountMeta>&& accounts,
-    const std::vector<uint8_t>& data,
+    base::span<const uint8_t> data,
     std::optional<SolanaInstructionDecodedData> decoded_data)
     : program_id_(program_id),
       accounts_(std::move(accounts)),
-      data_(data),
+      data_(data.begin(), data.end()),
       decoded_data_(std::move(decoded_data)) {}
 
 SolanaInstruction::SolanaInstruction(const SolanaInstruction&) = default;

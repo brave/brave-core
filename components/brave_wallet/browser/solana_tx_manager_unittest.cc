@@ -1267,13 +1267,6 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
   ASSERT_TRUE(durable_nonce_meta);
 
   // Mock AdvanceNonceAccount instruction.
-  uint32_t instruction_type = static_cast<uint32_t>(
-      mojom::SolanaSystemInstruction::kAdvanceNonceAccount);
-  instruction_type = base::ByteSwapToLE32(instruction_type);
-
-  std::vector<uint8_t> instruction_data(
-      reinterpret_cast<uint8_t*>(&instruction_type),
-      reinterpret_cast<uint8_t*>(&instruction_type) + sizeof(instruction_type));
   SolanaInstruction instruction = SolanaInstruction(
       mojom::kSolanaSystemProgramId,
       std::vector<SolanaAccountMeta>(
@@ -1282,7 +1275,9 @@ TEST_F(SolanaTxManagerUnitTest, RetryTransaction) {
                              false),
            SolanaAccountMeta(sol_account()->address, std::nullopt, true,
                              false)}),
-      instruction_data);
+      base::byte_span_from_ref(
+          base::numerics::U32FromLittleEndian(base::byte_span_from_ref(
+              mojom::SolanaSystemInstruction::kAdvanceNonceAccount))));
 
   // Put AdvanceNonceAccount instruction before the transfer instruction.
   std::vector<SolanaInstruction> vec;
