@@ -107,7 +107,7 @@ class AdsServiceImpl : public AdsService,
 
   void Migrate();
 
-  bool UserHasOptedInToBraveRewards() const;
+  bool UserHasJoinedBraveRewards() const;
   bool UserHasOptedInToBraveNewsAds() const;
   bool UserHasOptedInToNewTabPageAds() const;
   bool UserHasOptedInToNotificationAds() const;
