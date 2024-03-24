@@ -26,6 +26,7 @@ TEST_F(BraveAdsPageLandUserDataTest,
                     })"),
             BuildPageLandUserData(
                 TabInfo{/*id=*/1,
+                        /*is_visible=*/true,
                         /*redirect_chain=*/{GURL("https://brave.com")},
                         /*is_error_page=*/true,
                         /*is_playing_media=*/false}));
@@ -36,6 +37,7 @@ TEST_F(BraveAdsPageLandUserDataTest,
   // Act & Assert
   EXPECT_TRUE(BuildPageLandUserData(
                   TabInfo{/*id=*/1,
+                          /*is_visible=*/true,
                           /*redirect_chain=*/{GURL("https://brave.com")},
                           /*is_error_page=*/false,
                           /*is_playing_media=*/false})

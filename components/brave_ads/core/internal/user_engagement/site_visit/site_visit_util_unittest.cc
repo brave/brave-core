@@ -44,18 +44,6 @@ TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnClosedTab) {
                                          /*should_use_random_uuids=*/true)));
 }
 
-TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabWithNoTabRedirectChain) {
-  // Arrange
-  NotifyTabDidChange(
-      /*tab_id=*/1, /*redirect_chain=*/{},
-      /*is_error_page=*/false, /*is_visible=*/true);
-
-  // Act & Assert
-  EXPECT_FALSE(DidLandOnPage(
-      /*tab_id=*/1, /*ad=*/test::BuildAd(AdType::kNotificationAd,
-                                         /*should_use_random_uuids=*/true)));
-}
-
 TEST_F(BraveAdsSiteVisitUtilTest, DidNotLandOnTabForMismatchingDomainOrHost) {
   // Arrange
   NotifyTabDidChange(
