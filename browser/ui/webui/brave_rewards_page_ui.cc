@@ -177,16 +177,7 @@ class RewardsDOMHandler
                           const brave_rewards::mojom::Result result,
                           brave_rewards::mojom::BalanceReportInfoPtr report);
 
-  void GetMonthlyReport(const base::Value::List& args);
-
-  void GetAllMonthlyReportIds(const base::Value::List& args);
   void GetCountryCode(const base::Value::List& args);
-
-  void OnGetMonthlyReport(const uint32_t month,
-                          const uint32_t year,
-                          brave_rewards::mojom::MonthlyReportInfoPtr report);
-
-  void OnGetAllMonthlyReportIds(const std::vector<std::string>& ids);
 
   void OnGetRewardsParameters(
       brave_rewards::mojom::RewardsParametersPtr parameters);
@@ -424,14 +415,6 @@ void RewardsDOMHandler::RegisterMessages() {
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getBalanceReport",
       base::BindRepeating(&RewardsDOMHandler::GetBalanceReport,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getMonthlyReport",
-      base::BindRepeating(&RewardsDOMHandler::GetMonthlyReport,
-                          base::Unretained(this)));
-  web_ui()->RegisterMessageCallback(
-      "brave_rewards.getMonthlyReportIds",
-      base::BindRepeating(&RewardsDOMHandler::GetAllMonthlyReportIds,
                           base::Unretained(this)));
   web_ui()->RegisterMessageCallback(
       "brave_rewards.getCountryCode",
@@ -1599,100 +1582,6 @@ void RewardsDOMHandler::GetBalanceReport(const base::Value::List& args) {
       month, year,
       base::BindOnce(&RewardsDOMHandler::OnGetBalanceReport,
                      weak_factory_.GetWeakPtr(), month, year));
-}
-
-void RewardsDOMHandler::OnGetMonthlyReport(
-    const uint32_t month,
-    const uint32_t year,
-    brave_rewards::mojom::MonthlyReportInfoPtr report) {
-  if (!IsJavascriptAllowed() || !report) {
-    return;
-  }
-
-  base::Value::Dict data;
-  data.Set("month", static_cast<int>(month));
-  data.Set("year", static_cast<int>(year));
-
-  base::Value::Dict balance_report;
-  balance_report.Set("ads", report->balance->earning_from_ads);
-  balance_report.Set("contribute", report->balance->auto_contribute);
-  balance_report.Set("monthly", report->balance->recurring_donation);
-  balance_report.Set("tips", report->balance->one_time_donation);
-
-  base::Value::List contributions;
-  for (const auto& contribution : report->contributions) {
-    base::Value::List publishers;
-    for (const auto& item : contribution->publishers) {
-      base::Value::Dict publisher;
-      publisher.Set("id", item->id);
-      publisher.Set("percentage", static_cast<double>(item->percent));
-      publisher.Set("weight", item->weight);
-      publisher.Set("publisherKey", item->id);
-      publisher.Set("status", static_cast<int>(item->status));
-      publisher.Set("name", item->name);
-      publisher.Set("provider", item->provider);
-      publisher.Set("url", item->url);
-      publisher.Set("favIcon", item->favicon_url);
-      publishers.Append(std::move(publisher));
-    }
-
-    base::Value::Dict contribution_report;
-    contribution_report.Set("amount", contribution->amount);
-    contribution_report.Set("type", static_cast<int>(contribution->type));
-    contribution_report.Set("processor",
-                            static_cast<int>(contribution->processor));
-    contribution_report.Set("created_at",
-                            static_cast<double>(contribution->created_at));
-    contribution_report.Set("publishers", std::move(publishers));
-    contributions.Append(std::move(contribution_report));
-  }
-
-  base::Value::Dict report_base;
-  report_base.Set("balance", std::move(balance_report));
-  report_base.Set("contributions", std::move(contributions));
-
-  data.Set("report", std::move(report_base));
-
-  CallJavascriptFunction("brave_rewards.monthlyReport", data);
-}
-
-void RewardsDOMHandler::GetMonthlyReport(const base::Value::List& args) {
-  CHECK_EQ(2U, args.size());
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  const uint32_t month = args[0].GetInt();
-  const uint32_t year = args[1].GetInt();
-
-  rewards_service_->GetMonthlyReport(
-      month, year,
-      base::BindOnce(&RewardsDOMHandler::OnGetMonthlyReport,
-                     weak_factory_.GetWeakPtr(), month, year));
-}
-
-void RewardsDOMHandler::OnGetAllMonthlyReportIds(
-    const std::vector<std::string>& ids) {
-  base::Value::List list;
-  for (const auto& item : ids) {
-    list.Append(item);
-  }
-
-  CallJavascriptFunction("brave_rewards.monthlyReportIds", list);
-}
-
-void RewardsDOMHandler::GetAllMonthlyReportIds(const base::Value::List& args) {
-  if (!rewards_service_) {
-    return;
-  }
-
-  AllowJavascript();
-
-  rewards_service_->GetAllMonthlyReportIds(
-      base::BindOnce(&RewardsDOMHandler::OnGetAllMonthlyReportIds,
-                     weak_factory_.GetWeakPtr()));
 }
 
 void RewardsDOMHandler::GetCountryCode(const base::Value::List& args) {

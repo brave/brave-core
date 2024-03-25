@@ -1,8 +1,0 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
-
-exports[`SelectMobile tests basic tests matches the snapshot 1`] = `
-<select
-  className="sc-bdVaJa hvrdRr"
-  onChange={[Function]}
-/>
-`;

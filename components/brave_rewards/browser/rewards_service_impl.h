@@ -273,13 +273,6 @@ class RewardsServiceImpl : public RewardsService,
 
   void SetAutoContributeEnabled(bool enabled) override;
 
-  void GetMonthlyReport(
-      const uint32_t month,
-      const uint32_t year,
-      GetMonthlyReportCallback callback) override;
-
-  void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
-
   void GetAllContributions(GetAllContributionsCallback callback) override;
 
   void GetEventLogs(GetEventLogsCallback callback) override;
@@ -520,10 +513,6 @@ class RewardsServiceImpl : public RewardsService,
   void OnGetBalanceReport(GetBalanceReportCallback callback,
                           const mojom::Result result,
                           mojom::BalanceReportInfoPtr report);
-
-  void OnGetMonthlyReport(GetMonthlyReportCallback callback,
-                          const mojom::Result result,
-                          mojom::MonthlyReportInfoPtr report);
 
   void OnRunDBTransaction(RunDBTransactionCallback callback,
                           mojom::DBCommandResponsePtr response);

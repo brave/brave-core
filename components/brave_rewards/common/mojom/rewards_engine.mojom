@@ -138,15 +138,7 @@ interface RewardsEngine {
   ConnectExternalWallet(string wallet_type, map<string, string> args)
       => (ConnectExternalWalletResult result);
 
-  GetContributionReport(ActivityMonth month, int32 year)
-      => (array<ContributionReportInfo> list);
-
   GetAllContributions() => (array<ContributionInfo> list);
-
-  GetMonthlyReport(ActivityMonth month, int32 year)
-      => (Result result, MonthlyReportInfo report);
-
-  GetAllMonthlyReportIds() => (array<string> ids);
 
   Shutdown() => (Result result);
 

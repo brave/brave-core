@@ -36,10 +36,6 @@ class DatabaseContributionInfo : public DatabaseTable {
                       const int year,
                       GetOneTimeTipsCallback callback);
 
-  void GetContributionReport(const mojom::ActivityMonth month,
-                             const int year,
-                             GetContributionReportCallback callback);
-
   void GetNotCompletedRecords(ContributionInfoListCallback callback);
 
   void UpdateStep(const std::string& contribution_id,
@@ -67,14 +63,6 @@ class DatabaseContributionInfo : public DatabaseTable {
 
   void OnGetOneTimeTips(GetOneTimeTipsCallback callback,
                         mojom::DBCommandResponsePtr response);
-
-  void OnGetContributionReport(GetContributionReportCallback callback,
-                               mojom::DBCommandResponsePtr response);
-
-  void OnGetContributionReportPublishers(
-      std::vector<mojom::ContributionInfoPtr> contributions,
-      GetContributionReportCallback callback,
-      std::vector<ContributionPublisherInfoPair> publisher_pair_list);
 
   void OnGetList(ContributionInfoListCallback callback,
                  mojom::DBCommandResponsePtr response);

@@ -134,11 +134,6 @@ export const reduxState: Rewards.ApplicationState = {
     excludedList: [],
     externalWalletProviderList: ['uphold'],
     balance: optional<number>(),
-    monthlyReport: {
-      month: -1,
-      year: -1
-    },
-    monthlyReportIds: [],
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,

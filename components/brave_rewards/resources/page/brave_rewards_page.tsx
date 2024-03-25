@@ -205,16 +205,8 @@ function onExternalWalletDisconnected () {
   actions.getUserType()
 }
 
-function monthlyReport (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) {
-  actions.onMonthlyReport(properties)
-}
-
 function reconcileStampReset () {
   actions.onReconcileStampReset()
-}
-
-function monthlyReportIds (ids: string[]) {
-  actions.onMonthlyReportIds(ids)
 }
 
 function countryCode (countryCode: string) {
@@ -285,9 +277,7 @@ Object.defineProperty(window, 'brave_rewards', {
     onConnectExternalWallet,
     onExternalWalletLoggedOut,
     onExternalWalletDisconnected,
-    monthlyReport,
     reconcileStampReset,
-    monthlyReportIds,
     countryCode,
     initialized,
     completeReset,

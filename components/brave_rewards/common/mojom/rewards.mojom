@@ -286,20 +286,6 @@ struct RecurringTip {
   uint64 created_at;
 };
 
-struct ContributionReportInfo {
-  string contribution_id;
-  double amount;
-  ReportType type;
-  ContributionProcessor processor;
-  array<PublisherInfo> publishers;
-  uint64 created_at;
-};
-
-struct MonthlyReportInfo {
-  BalanceReportInfo balance;
-  array<ContributionReportInfo> contributions;
-};
-
 struct UrlRequest {
   string url;
   UrlMethod method = UrlMethod.GET;

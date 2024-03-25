@@ -258,30 +258,6 @@ export const hiddenEarningsValue = styled.span`
   opacity: 0.65;
 `
 
-export const viewStatement = styled.div`
-  margin-top: 12px;
-  text-align: center;
-
-  button {
-    font-weight: 500;
-    font-size: 13px;
-    line-height: 20px;
-    padding: 0;
-    border-radius: 48px;
-    border: none;
-    background: transparent;
-    cursor: pointer;
-  }
-
-  .icon {
-    width: 15px;
-    height: auto;
-    vertical-align: middle;
-    margin-right: 6px;
-    margin-bottom: 2px;
-  }
-`
-
 export const summaryBox = styled.div`
   padding: 17px 17px 16px;
 `
