@@ -14,4 +14,13 @@ import iconsMeta from '@brave/leo/icons/meta'
 
 setIconBasePath('//resources/brave-icons')
 
+const variablesUrl = '//resources/brave/leo/css/variables.css'
+const variablesLink = document.querySelector(`link[rel=stylesheet][href$="${variablesUrl}"]`)
+if (!variablesLink) {
+  const link = document.createElement('link')
+  link.setAttribute('rel', 'stylesheet')
+  link.setAttribute('href', variablesUrl)
+  document.head.appendChild(link)
+}
+
 window['leoIcons'] = new Set(Object.keys(iconsMeta.icons))
