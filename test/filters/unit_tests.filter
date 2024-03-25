@@ -420,6 +420,7 @@
 # These tests fail because IdentityManager's primary account has no kSignin
 # consent level
 -EnclaveManagerTest.PrimaryUserChange
+-PeopleHandlerDiceTest.StoredAccountsList
 -PeopleHandlerDiceUnifiedConsentTest.StoredAccountsList
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedAllowed
 -SigninManagerSupervisedUserTest.SignoutOnCookiesDeletedNotAllowed
@@ -470,7 +471,10 @@
 -ClientSideDetectionHostTest.*
 -DownloadBubblePrefsTest.EnhancedProtectionEnabled
 -EnhancedProtectionDownloadTest.*
+-ImmediateDeepScanTest.ESBRequestScan
+-ImmediateDeepScanTest.EncryptedArchive
 -NotificationMetricsLoggerTest.PersistentNotificationSize
+-SafeBrowsingServiceTest.WhenUserIsInEPNormallyReturnsFalse
 -SafetyHubHandlerTest.HandleGetSafeBrowsingCardData_EnabledEnhanced
 -SafetyHubHandlerTest.HandleGetSafeBrowsingState_EnabledEnhanced
 
@@ -615,6 +619,15 @@
 # SidebarService for the test.
 -ExtensionsToolbarButtonFeatureUnitTest.UpdateState
 -MemorySaverChipViewTest.MoreThan2GbMemorySavings
+
+# These tests fail because we disable kPermissionStorageAccessAPI
+-PageInfoTest.NonFactoryDefaultAndRecentlyChangedPermissionsShown
+-PageInfoTest.OnPermissionsChanged
+-PageInfoTest.ShowAutograntedRWSPermissions
+-PageInfoTest.StorageAccessGrantsAreFiltered
+-PageInfoTest.StorageAccessGrantsDisplayedWhenDefaultBlocked
+-StorageAccessAPIServiceImplTest.PermissionDenial_NotRenewed
+-StorageAccessAPIServiceImplTest.RenewPermissionGrant
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -AboutFlagsHistogramTest.*

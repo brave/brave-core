@@ -20,11 +20,9 @@
 # These fail because OsIntegrationTestOverride::GetShortcutPath and
 # OsIntegrationTestOverride::IsRunOnOsLoginEnabled on Linux hard-codes "chrome-"
 # into the shortcut name but our shortcut starts with "brave-".
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_Disabled
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateAndExecute
--All/InstallAppLocallyCommandTest.BasicBehavior/OSIntegrationSubManagers_SaveStateToDB
--All/RunOnOsLoginSubManagerExecuteTest.*
--All/ShortcutSubManagerExecuteTest.*
+-RunOnOsLoginSubManagerExecuteTest.*
+-ShortcutSubManagerExecuteTest.*
+-InstallAppLocallyCommandTest.BasicBehavior
 -WebAppPolicyForceUnregistrationTest.*
 
 -ChromeBrowsingDataRemoverDelegateTest.*
