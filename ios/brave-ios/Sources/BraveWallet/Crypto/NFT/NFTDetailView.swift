@@ -186,13 +186,10 @@ struct NFTDetailView: View {
             .font(.subheadline)
             .foregroundColor(Color(.braveLabel))
             .listRowBackground(Color(.secondaryBraveGroupedBackground))
-            .osAvailabilityModifiers({
-              if horizontalSizeClass == .regular {
-                $0.listRowInsets(EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16))
-              } else {
-                $0
-              }
-            })
+            .listRowInsets(
+              horizontalSizeClass == .regular
+                ? EdgeInsets(top: 16, leading: 16, bottom: 16, trailing: 16) : nil
+            )
         } header: {
           Text(Strings.Wallet.nftDetailDescription)
         }
