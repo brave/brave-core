@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Aggiungi feedback";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "Mostra i suggerimenti del completamento automatico nella barra degli indirizzi";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Modello predefinito per le nuove conversazioni";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo è un assistente smart costruito con l’intelligenza artificiale. È integrato direttamente nel browser.";
@@ -18,7 +20,7 @@
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Scadenza";
 
 /* The title for the header for subscription details */
-"aichat.advancedSettingsSubscriptionHeaderTitle" = "ABBONAMENTO";
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Abbonamento";
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Stato";
@@ -54,7 +56,7 @@
 "aichat.chatIntroWebsiteHelpTitle" = "Hai bisogno d’aiuto con un sito web?";
 
 /* The title for the chat section in the menu */
-"aichat.chatMenuSectionTitle" = "CHAT";
+"aichat.chatMenuSectionTitle" = "Chat";
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Questa conversazione è troppo lunga e non può continuare.\nPotrebbero essere disponibili altri modelli con cui Leo è in grado di mantenere la precisione per conversazioni più lunghe.";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Altro";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium fornisce l’accesso a una vasta serie di modelli linguistici per una maggior ricchezza di sfumature nelle risposte. [Scopri di più](https://brave.com/) - [Ignora](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -226,7 +227,7 @@
 "aichat.paywallYearlySubscriptionTitle" = "Un anno";
 
 /* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "PREMIUM";
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Abbonamento Premium";
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "Riprova";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave non memorizza né condivide le tue ricerche vocali.";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Suggerisci domande…";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "Accetto";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo è un assistente smart di IA che migliora l’uso di internet. Leo può essere utilizzato gratuitamente, con accesso limitato. Brave Leo Premium offre più modelli, limiti più ampi e accesso anticipato alle nuove funzioni per gli abbonati. Il modello predefinito per tutti gli utenti al momento è Mixtral 8x7B. Per maggiori dettagli, consulta la **[wiki di Brave](%1$@)**\n\nPer impostazione predefinita, quando fai una domanda a Leo, potrebbe inviare e usare il contenuto della pagina web che stai visualizzando o l’eventuale testo che hai evidenziato in un pagina per poter rispondere. La correttezza delle risposte non è garantita, e potrebbero includere informazioni errate, fuorvianti o false. Leo usa i dati della Ricerca Brave per migliorare la qualità delle risposte. Non inviare dati sensibili o privati e valuta con cautela le risposte relative a salute, finanza, sicurezza personale o simili. Puoi modificare le opzioni di Leo in qualsiasi momento dalle Impostazioni. Vai a Impostazioni Leo.\n\nLeo non raccoglie identificatori che potrebbero essere collegati a te, come ad esempio il tuo indirizzo IP. Nessun dato viene utilizzato per addestrare i modelli di IA e nessun dato personale viene conservato dai modelli di IA (fatta eccezione per Anthropic che conserva i dati per 30 giorni prima di eliminarli). Per maggiori informazioni, consulta l’ **[Informativa sulla privacy](%2$@)**";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Chatta in privato con Brave Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */

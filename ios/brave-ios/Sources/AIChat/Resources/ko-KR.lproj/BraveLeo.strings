@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "피드백 추가";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "주소 표시줄에 자동 완성 추천 표시";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "새 대화의 기본 모델";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "레오는 브라우저에 바로 통합된 AI 기반 스마트 어시스턴트입니다.";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "기타";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "레오 프리미엄은 확장된 언어 모델 세트에 액세스하여 맥락성이 더욱 뛰어난 답변을 제공합니다. [자세히 알아보기](https://brave.com/) - [닫기](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "재시도";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave는 음성 검색 내역을 저장하거나 공유하지 않습니다.";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "추천 질문...";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "이해했습니다";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave 레오는 인터넷 사용성을 개선해주는 개인용 AI 스마트 어시스턴트입니다. 레오는 무료로 사용할 수 있으며 액세스 한도가 있습니다. Brave 레오 프리미엄은 더 많은 모델을 지원하고 한도가 높으며 구독자가 새로운 기능을 먼저 이용해볼 수 있습니다. 모든 사용자를 위한 기본 모델은 현재 Mixtral 8x7B입니다. 자세한 정보는 **[Brave 위키](%1$@)** 를 참조하세요.\n\n기본적으로, 사용자가 보고 있는 웹페이지나 페이지상에 강조된 텍스트에 대해 레오에게 질문을 하면 그 내용이 Brave 레오에게 전송되어 답변을 제공합니다. 답변의 정확성은 보장되지 않으며 부정확하거나 오인할 수 있거나 잘못된 정보가 포함될 수 있습니다. 레오는 Brave 검색에서 얻어진 데이터를 사용하여 답변의 품질을 개선합니다. 민감하거나 사적인 정보를 입력하지 않아야 하며, 건강, 재무, 개인 안전 등과 관련된 텍스트에는 특별한 주의를 요합니다. 레오 옵션은 설정에서 언제든 조정할 수 있습니다. 설정 &gt; 레오로 이동하세요.\n\n레오는 IP 주소와 같이 개인을 특정할 수 있는 식별자를 수집하지 않습니다. 어떠한 데이터도 AI 모델을 훈련하는 데 사용되지 않으며 AI 모델은 개인 데이터를 보관하지 않습니다(예외적으로 Anthropic의 경우 30일간 보관 후 삭제). 자세한 정보는 **[개인정보 보호정책](%2$@)** 을 참조하세요.";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave 레오와 사적인 채팅하기";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
