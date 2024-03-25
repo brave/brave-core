@@ -16,22 +16,8 @@ struct AdvancedShieldsSettingsView: View {
 
   var openURLAction: ((URL) -> Void)?
 
-  init(
-    profile: Profile,
-    tabManager: TabManager,
-    feedDataSource: FeedDataSource,
-    historyAPI: BraveHistoryAPI,
-    p3aUtilities: BraveP3AUtils,
-    clearDataCallback: @escaping AdvancedShieldsSettings.ClearDataCallback
-  ) {
-    self.settings = AdvancedShieldsSettings(
-      profile: profile,
-      tabManager: tabManager,
-      feedDataSource: feedDataSource,
-      historyAPI: historyAPI,
-      p3aUtilities: p3aUtilities,
-      clearDataCallback: clearDataCallback
-    )
+  init(settings: AdvancedShieldsSettings) {
+    self.settings = settings
   }
 
   var body: some View {

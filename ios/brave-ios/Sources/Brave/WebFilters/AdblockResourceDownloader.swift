@@ -13,9 +13,7 @@ public actor AdblockResourceDownloader: Sendable {
   public static let shared = AdblockResourceDownloader()
 
   /// All the different resources this downloader handles
-  static let handledResources: [BraveS3Resource] = [
-    .adBlockRules, .debounceRules,
-  ]
+  static let handledResources: [BraveS3Resource] = [.adBlockRules]
 
   /// A list of old resources that need to be deleted so as not to take up the user's disk space
   private static let deprecatedResources: [BraveS3Resource] = [.deprecatedGeneralCosmeticFilters]
@@ -163,25 +161,6 @@ public actor AdblockResourceDownloader: Sendable {
       } catch {
         ContentBlockerManager.log.error(
           "Failed to compile rule lists for `\(blocklistType.debugDescription)`: \(error.localizedDescription)"
-        )
-      }
-
-    case .debounceRules:
-      // We don't want to setup the debounce rules more than once for the same cached file
-      guard downloadResult.isModified || DebouncingService.shared.matcher == nil else {
-        return
-      }
-
-      do {
-        guard let data = try resource.downloadedData() else {
-          assertionFailure("We just downloaded this file, how can it not be there?")
-          return
-        }
-
-        try DebouncingService.shared.setup(withRulesJSON: data)
-      } catch {
-        ContentBlockerManager.log.error(
-          "Failed to setup debounce rules: \(error.localizedDescription)"
         )
       }
 

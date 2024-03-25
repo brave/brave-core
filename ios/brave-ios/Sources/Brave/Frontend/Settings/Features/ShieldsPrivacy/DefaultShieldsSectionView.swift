@@ -43,15 +43,15 @@ struct DefaultShieldsViewView: View {
         subtitle: Strings.HTTPSEverywhereDescription,
         option: Preferences.Shields.httpsEverywhere
       )
-      OptionToggleView(
+      ToggleView(
         title: Strings.autoRedirectAMPPages,
         subtitle: Strings.autoRedirectAMPPagesDescription,
-        option: Preferences.Shields.autoRedirectAMPPages
+        toggle: $settings.isDeAmpEnabled
       )
-      OptionToggleView(
+      ToggleView(
         title: Strings.autoRedirectTrackingURLs,
         subtitle: Strings.autoRedirectTrackingURLsDescription,
-        option: Preferences.Shields.autoRedirectTrackingURLs
+        toggle: $settings.isDebounceEnabled
       )
       OptionToggleView(
         title: Strings.blockScripts,

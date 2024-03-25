@@ -370,7 +370,10 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
           isForMainFrame: targetFrame.isMainFrame
         )
         let scriptTypes =
-          await tab.currentPageData?.makeUserScriptTypes(domain: domainForMainFrame) ?? []
+          await tab.currentPageData?.makeUserScriptTypes(
+            domain: domainForMainFrame,
+            isDeAmpEnabled: false
+          ) ?? []
         tab.setCustomUserScript(scripts: scriptTypes)
       }
     }
@@ -438,7 +441,8 @@ extension LivePlaylistWebLoader: WKNavigationDelegate {
       ) == true,
       let domain = tab.currentPageData?.domain(persistent: false)
     {
-      let scriptTypes = await tab.currentPageData?.makeUserScriptTypes(domain: domain) ?? []
+      let scriptTypes =
+        await tab.currentPageData?.makeUserScriptTypes(domain: domain, isDeAmpEnabled: false) ?? []
       tab.setCustomUserScript(scripts: scriptTypes)
     }
 

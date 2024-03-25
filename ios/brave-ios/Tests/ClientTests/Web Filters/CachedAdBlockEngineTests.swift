@@ -136,6 +136,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
             frameURL: url,
             isMainFrame: true,
             domain: domain,
+            isDeAmpEnabled: false,
             index: 0
           )
 
@@ -148,6 +149,7 @@ final class CachedAdBlockEngineTests: XCTestCase {
               frameURL: URL(string: "https://reddit.com")!,
               isMainFrame: true,
               domain: domain,
+              isDeAmpEnabled: false,
               index: 0
             )
             // We should have 1 engine script injected

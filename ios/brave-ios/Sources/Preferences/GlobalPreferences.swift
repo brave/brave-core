@@ -57,14 +57,14 @@ extension Preferences {
       default: true
     )
     /// Enable redirecting of Google's AMP (Accelerated Mobile Page) to the original (non-AMP) pages
-    public static let autoRedirectAMPPages = Option<Bool>(
+    public static let autoRedirectAMPPagesDeprecated = Option<Bool?>(
       key: "shields.auto-redirect-amp-pages",
-      default: true
+      default: nil
     )
     /// Enable redirecting of tracking urls (i.e. debouncing)
-    public static let autoRedirectTrackingURLs = Option<Bool>(
+    public static let autoRedirectTrackingURLsDeprecated = Option<Bool?>(
       key: "shields.auto-redirect-tracking-urls",
-      default: true
+      default: nil
     )
     /// Disables image loading in the browser
     public static let blockImages = Option<Bool>(key: "shields.block-images", default: false)

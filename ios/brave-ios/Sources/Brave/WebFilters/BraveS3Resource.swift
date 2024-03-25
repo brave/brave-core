@@ -8,8 +8,6 @@ import Foundation
 import Shared
 
 enum BraveS3Resource: Hashable, DownloadResourceInterface {
-  /// Rules for debouncing links
-  case debounceRules
   /// The rules processed by slim-list which are filtered out for iOS usage
   ///
   /// Based on the following rules: https://github.com/brave/adblock-resources/blob/master/filter_lists/default.json
@@ -34,8 +32,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// The folder name under which this data should be saved under
   var cacheFolderName: String {
     switch self {
-    case .debounceRules:
-      return "debounce-data"
     case .adBlockRules:
       return "abp-data"
     case .deprecatedGeneralCosmeticFilters:
@@ -46,8 +42,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// Get the file name that is stored on the device
   var cacheFileName: String {
     switch self {
-    case .debounceRules:
-      return "ios-debouce.json"
     case .adBlockRules:
       return "latest.txt"
     case .deprecatedGeneralCosmeticFilters:
@@ -58,8 +52,6 @@ enum BraveS3Resource: Hashable, DownloadResourceInterface {
   /// Get the external path for the given filter list and this resource type
   var externalURL: URL {
     switch self {
-    case .debounceRules:
-      return Self.baseResourceURL.appendingPathComponent("/ios/debounce.json")
     case .adBlockRules:
       return Self.baseResourceURL.appendingPathComponent("/ios/latest.txt")
     case .deprecatedGeneralCosmeticFilters:
