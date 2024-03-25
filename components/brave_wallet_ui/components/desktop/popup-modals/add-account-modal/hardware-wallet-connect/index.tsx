@@ -238,7 +238,7 @@ export const HardwareWalletConnect = ({
     )
     setSelectedHardwareWallet(vendor)
     onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
-  }, [])
+  }, [onSelectVendor])
 
   const onSelectLedger = React.useCallback(() => {
     if (selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR) {
@@ -302,7 +302,6 @@ export const HardwareWalletConnect = ({
   if (showAccountsList && selectedHardwareWallet) {
     return (
       <>
-        <VerticalSpace space='77px' />
         <HardwareWalletAccountsList
           hardwareWallet={selectedHardwareWallet}
           accounts={accounts}
@@ -322,13 +321,10 @@ export const HardwareWalletConnect = ({
   }
 
   if (
-    selectedAccountType.coin !== BraveWallet.CoinType.FIL &&
-    selectedAccountType.coin !== BraveWallet.CoinType.SOL &&
     !selectedHardwareWallet
   ) {
     return (
       <>
-        <VerticalSpace space='98px' />
         <HardwareButton
           title={getLocale('braveWalletConnectHardwareLedger')}
           description={getLocale(
@@ -351,7 +347,6 @@ export const HardwareWalletConnect = ({
     <>
       {selectedHardwareWallet && (
         <Column>
-          <VerticalSpace space='135px' />
           <HardwareWalletGraphic hardwareVendor={selectedHardwareWallet} />
           <VerticalSpace space='32px' />
           <Instructions mode={connectionError ? 'error' : 'info'}>

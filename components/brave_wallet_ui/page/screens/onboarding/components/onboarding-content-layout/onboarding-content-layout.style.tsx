@@ -35,6 +35,7 @@ export const ContentWrapper = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  position: relative;
 
   border-radius: ${leo.spacing['2Xl']};
   opacity: 1;
@@ -58,11 +59,14 @@ export const ContentWrapper = styled.div`
   }
 `
 
-export const Content = styled.div`
+export const Content = styled.div<{ centerContent?: boolean }>`
   display: flex;
   justify-content: center;
   flex-direction: column;
   width: 100%;
+  height: ${(p) => (p.centerContent ? '100%' : 'auto')};
+  align-items: ${(p) => (p.centerContent ? 'center' : 'unset')};
+  flex-grow: ${(p) => (p.centerContent ? 1 : 'unset')};
 
   @media (min-width: 500px) {
     width: 450px;
@@ -76,6 +80,7 @@ export const CenteredContent = styled('div')`
   left: 0;
   right: 0;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   z-index: 2;

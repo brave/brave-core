@@ -25,8 +25,7 @@ import {
   BraveIcon,
   HeaderWrapper,
   TitleSection,
-  BackButtonWrapper,
-  CenteredContent
+  BackButtonWrapper
 } from './onboarding-content-layout.style'
 
 interface Props {
@@ -87,11 +86,7 @@ export const OnboardingContentLayout = ({
             </>
           ) : null}
         </HeaderWrapper>
-        {centerContent ? (
-          <CenteredContent>{children}</CenteredContent>
-        ) : (
-          <Content>{children}</Content>
-        )}
+        <Content centerContent={centerContent}>{children}</Content>
       </ContentWrapper>
     </StyledWrapper>
   )

@@ -50,7 +50,7 @@ export const OnboardingSelectWalletDevice = () => {
     : getLocale('braveWalletConnectHardwareTitle')
 
   return (
-    <OnboardingContentLayout title={pageTitle}>
+    <OnboardingContentLayout title={pageTitle} centerContent={true}>
       <HardwareWalletConnect
         selectedAccountType={selectedAccountType}
         onSelectVendor={setSelectedHardwareWallet}
