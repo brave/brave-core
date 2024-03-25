@@ -4,27 +4,20 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { useLocation } from 'react-router'
 
 // Types
 import { WalletRoutes } from '../../../../constants/types'
 
 // Options
-import { AssetFilterOptions } from '../../../../options/asset-filter-options'
 import {
-  GroupAssetsByOptions //
+  AssetFilterOptions,
+  HighToLowAssetsFilterOption
+} from '../../../../options/asset-filter-options'
+import {
+  GroupAssetsByOptions,
+  NoneGroupByOption
 } from '../../../../options/group-assets-by-options'
-
-// Selectors
-import {
-  useUnsafeWalletSelector,
-  useSafeWalletSelector
-} from '../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../common/selectors'
-
-// Actions
-import { WalletActions } from '../../../../common/actions'
 
 // Constants
 import {
@@ -40,6 +33,13 @@ import Amount from '../../../../utils/amount'
 import {
   useGetDefaultFiatCurrencyQuery //
 } from '../../../../common/slices/api.slice'
+import {
+  useLocalStorage,
+  useSyncedLocalStorage
+} from '../../../../common/hooks/use_local_storage'
+import {
+  makeInitialFilteredOutNetworkKeys //
+} from '../../../../utils/local-storage-utils'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
@@ -74,31 +74,42 @@ export const PortfolioFiltersModal = (props: Props) => {
   // routing
   const { pathname: currentRoute } = useLocation()
 
-  // Redux
-  const dispatch = useDispatch()
+  // Local-Storage
+  // (not synced with other tabs to temporarily allow different portfolio views)
+  const [filteredOutPortfolioNetworkKeys, setFilteredOutPortfolioNetworkKeys] =
+    useLocalStorage(
+      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
+      makeInitialFilteredOutNetworkKeys
+    )
+  const [filteredOutPortfolioAccountIds, setFilteredOutPortfolioAccountIds] =
+    useLocalStorage<string[]>(
+      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
+      []
+    )
+  const [selectedGroupAssetsByItem, setSelectedGroupAssetsByItem] =
+    useLocalStorage<string>(
+      LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+      NoneGroupByOption.id
+    )
+  const [selectedAssetFilter, setSelectedAssetFilter] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION,
+    HighToLowAssetsFilterOption.id
+  )
+  const [hidePortfolioSmallBalances, setHidePortfolioSmallBalances] =
+    useLocalStorage<boolean>(
+      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
+      false
+    )
+
+  // Synced Local-Storage
+  const [showNetworkLogoOnNfts, setShowNetworkLogoOnNfts] =
+    useSyncedLocalStorage<boolean>(
+      LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
+      false
+    )
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
-
-  // Selectors
-  const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioNetworkKeys
-  )
-  const filteredOutPortfolioAccountIds = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioAccountIds
-  )
-  const selectedAssetFilter = useSafeWalletSelector(
-    WalletSelectors.selectedAssetFilter
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
-  )
-  const hidePortfolioSmallBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioSmallBalances
-  )
-  const showNetworkLogoOnNfts = useSafeWalletSelector(
-    WalletSelectors.showNetworkLogoOnNfts
-  )
 
   // State
   const [filteredOutNetworkKeys, setFilteredOutNetworkKeys] = React.useState<
@@ -118,67 +129,7 @@ export const PortfolioFiltersModal = (props: Props) => {
     showNetworkLogoOnNfts
   )
 
-  const onUpdateSelectedGroupAssetsByOption = React.useCallback(() => {
-    // Update Selected Group Assets By Option in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
-      selectedGroupAssetsByOption
-    )
-    // Update Selected Group Assets By Option in Redux
-    dispatch(
-      WalletActions.setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
-    )
-  }, [dispatch, selectedGroupAssetsByOption])
-
-  const onUpdateSelectedAssetFilterOption = React.useCallback(() => {
-    // Update Selected Asset Filter Option in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION,
-      selectedAssetFilterOption
-    )
-    // Update Selected Asset Filter Option in Redux
-    dispatch(
-      WalletActions.setSelectedAssetFilterItem(selectedAssetFilterOption)
-    )
-  }, [dispatch, selectedAssetFilterOption])
-
-  const onUpdateFilteredOutNetworkKeys = React.useCallback(() => {
-    // Update Filtered Out Network Keys in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
-      JSON.stringify(filteredOutNetworkKeys)
-    )
-
-    // Update Filtered Out Network Keys in Redux
-    dispatch(
-      WalletActions.setFilteredOutPortfolioNetworkKeys(filteredOutNetworkKeys)
-    )
-  }, [dispatch, filteredOutNetworkKeys])
-
-  const onUpdateFilteredOutAccountIds = React.useCallback(() => {
-    // Update Filtered Out Account Ids in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
-      JSON.stringify(filteredOutAccountIds)
-    )
-
-    // Update Filtered Out Account Ids in Redux
-    dispatch(
-      WalletActions.setFilteredOutPortfolioAccountIds(filteredOutAccountIds)
-    )
-  }, [dispatch, filteredOutAccountIds])
-
-  const onUpdateHidePortfolioSmallBalances = React.useCallback(() => {
-    // Update Hide Small Portfolio Balances in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
-      JSON.stringify(hideSmallBalances)
-    )
-
-    // Update Hide Small Portfolio Balances in Redux
-    dispatch(WalletActions.setHidePortfolioSmallBalances(hideSmallBalances))
-  }, [dispatch, hideSmallBalances])
-
+  // Memos
   const hideSmallBalancesDescription = React.useMemo(() => {
     const minAmount = new Amount(HIDE_SMALL_BALANCES_FIAT_THRESHOLD)
       .formatAsFiat(defaultFiatCurrency)
@@ -189,40 +140,35 @@ export const PortfolioFiltersModal = (props: Props) => {
     )
   }, [defaultFiatCurrency])
 
-  const showNftFilters = React.useMemo(() => {
-    return currentRoute === WalletRoutes.PortfolioNFTs
-  }, [currentRoute])
-
-  const onUpdateShowNetworkLogoOnNfts = React.useCallback(() => {
-    // Update Show Network Logo on NFTs in Local Storage
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
-      JSON.stringify(showNetworkLogo)
-    )
-
-    // Update Show Network Logo on NFTs in Redux
-    dispatch(WalletActions.setShowNetworkLogoOnNfts(showNetworkLogo))
-  }, [dispatch, showNetworkLogo])
+  // Computed
+  const showNftFilters = currentRoute === WalletRoutes.PortfolioNFTs
 
   // Methods
   const onSaveChanges = React.useCallback(() => {
-    onUpdateSelectedGroupAssetsByOption()
-    onUpdateSelectedAssetFilterOption()
-    onUpdateFilteredOutNetworkKeys()
-    onUpdateFilteredOutAccountIds()
-    onUpdateHidePortfolioSmallBalances()
-    onUpdateShowNetworkLogoOnNfts()
+    setFilteredOutPortfolioNetworkKeys(filteredOutNetworkKeys)
+    setFilteredOutPortfolioAccountIds(filteredOutAccountIds)
+    setSelectedGroupAssetsByItem(selectedGroupAssetsByOption)
+    setSelectedAssetFilter(selectedAssetFilterOption)
+    setHidePortfolioSmallBalances(hideSmallBalances)
+    setShowNetworkLogoOnNfts(showNetworkLogo)
     onClose()
   }, [
-    onUpdateSelectedGroupAssetsByOption,
-    onUpdateSelectedAssetFilterOption,
-    onUpdateFilteredOutNetworkKeys,
-    onUpdateFilteredOutAccountIds,
-    onUpdateHidePortfolioSmallBalances,
-    onUpdateShowNetworkLogoOnNfts,
+    setFilteredOutPortfolioNetworkKeys,
+    filteredOutNetworkKeys,
+    setFilteredOutPortfolioAccountIds,
+    filteredOutAccountIds,
+    setSelectedGroupAssetsByItem,
+    selectedGroupAssetsByOption,
+    setSelectedAssetFilter,
+    selectedAssetFilterOption,
+    setHidePortfolioSmallBalances,
+    hideSmallBalances,
+    setShowNetworkLogoOnNfts,
+    showNetworkLogo,
     onClose
   ])
 
+  // render
   return (
     <PopupModal
       onClose={onClose}

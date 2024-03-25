@@ -12,7 +12,6 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 // selectors
 import {
   useSafeWalletSelector,
-  useUnsafeWalletSelector,
   useUnsafePageSelector,
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
@@ -23,8 +22,12 @@ import { PageSelectors } from '../../../../page/selectors'
 import {
   useBalancesFetcher //
 } from '../../../../common/hooks/use-balances-fetcher'
+import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
 
 // Constants
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 import {
   BraveWallet,
   UserAssetInfoType,
@@ -51,14 +54,16 @@ import {
 import { networkSupportsAccount } from '../../../../utils/network-utils'
 import { getIsRewardsToken } from '../../../../utils/rewards_utils'
 import {
-  getStoredPortfolioTimeframe //
+  getStoredPortfolioTimeframe, //
+  makeInitialFilteredOutNetworkKeys
 } from '../../../../utils/local-storage-utils'
 import { makePortfolioAssetRoute } from '../../../../utils/routes-utils'
 
 // Options
 import { PortfolioNavOptions } from '../../../../options/nav-options'
 import {
-  AccountsGroupByOption //
+  AccountsGroupByOption, //
+  NoneGroupByOption
 } from '../../../../options/group-assets-by-options'
 
 // Components
@@ -115,6 +120,24 @@ export const PortfolioOverview = () => {
   // routing
   const history = useHistory()
 
+  // local-storage
+  const [filteredOutPortfolioNetworkKeys] = useLocalStorage(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
+    makeInitialFilteredOutNetworkKeys
+  )
+  const [filteredOutPortfolioAccountIds] = useLocalStorage<string[]>(
+    LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS,
+    []
+  )
+  const [selectedGroupAssetsByItem] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+    NoneGroupByOption.id
+  )
+  const [hidePortfolioSmallBalances] = useLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
+    false
+  )
+
   // redux
   const dispatch = useDispatch()
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
@@ -126,18 +149,6 @@ export const PortfolioOverview = () => {
   )
   const hidePortfolioNFTsTab = useSafeWalletSelector(
     WalletSelectors.hidePortfolioNFTsTab
-  )
-  const filteredOutPortfolioNetworkKeys = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioNetworkKeys
-  )
-  const filteredOutPortfolioAccountIds = useUnsafeWalletSelector(
-    WalletSelectors.filteredOutPortfolioAccountIds
-  )
-  const hidePortfolioSmallBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioSmallBalances
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 

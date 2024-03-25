@@ -199,8 +199,6 @@ export interface WalletState {
   addUserAssetError: boolean
   activeOrigin: BraveWallet.OriginInfo
   selectedNetworkFilter: NetworkFilterType
-  selectedAssetFilter: string
-  selectedGroupAssetsByItem: string
   selectedAccountFilter: string
   allowedNewWalletAccountTypeNetworkIds: EntityId[]
   passwordAttempts: number
@@ -210,10 +208,6 @@ export interface WalletState {
   hidePortfolioGraph: boolean
   hidePortfolioBalances: boolean
   hidePortfolioNFTsTab: boolean
-  filteredOutPortfolioNetworkKeys: string[]
-  filteredOutPortfolioAccountIds: string[]
-  hidePortfolioSmallBalances: boolean
-  showNetworkLogoOnNfts: boolean
   isRefreshingNetworksAndTokens: boolean
 }
 

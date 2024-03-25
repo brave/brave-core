@@ -11,6 +11,7 @@ import { BraveWallet, WalletRoutes } from '../../../../../constants/types'
 
 // hooks
 import { useNftPin } from '../../../../../common/hooks/nft-pin'
+import { useLocalStorage } from '../../../../../common/hooks/use_local_storage'
 
 // selectors
 import {
@@ -38,7 +39,8 @@ import {
 import { getBalance } from '../../../../../utils/balance-utils'
 import {
   AccountsGroupByOption,
-  NetworksGroupByOption
+  NetworksGroupByOption,
+  NoneGroupByOption
 } from '../../../../../options/group-assets-by-options'
 import { useApiProxy } from '../../../../../common/hooks/use-api-proxy'
 import { getAssetIdKey } from '../../../../../utils/asset-utils'
@@ -103,12 +105,15 @@ export const Nfts = (props: Props) => {
 
   const { braveWalletP3A } = useApiProxy()
 
+  // local-storage
+  const [selectedGroupAssetsByItem] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+    NoneGroupByOption.id
+  )
+
   // redux
   const isNftPinningFeatureEnabled = useSafeWalletSelector(
     WalletSelectors.isNftPinningFeatureEnabled
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
   )
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted

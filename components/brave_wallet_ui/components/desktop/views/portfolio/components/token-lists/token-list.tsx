@@ -13,6 +13,9 @@ import {
 import {
   emptyRewardsInfo //
 } from '../../../../../../common/async/base-query-cache'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../../common/constants/local-storage-keys'
 
 // Selectors
 import {
@@ -40,7 +43,8 @@ import {
 } from '../../../../../../options/asset-filter-options'
 import {
   AccountsGroupByOption,
-  NetworksGroupByOption
+  NetworksGroupByOption,
+  NoneGroupByOption
 } from '../../../../../../options/group-assets-by-options'
 
 // Utils
@@ -60,6 +64,9 @@ import {
   getIsRewardsNetwork,
   getIsRewardsToken
 } from '../../../../../../utils/rewards_utils'
+import {
+  useLocalStorage //
+} from '../../../../../../common/hooks/use_local_storage'
 
 // Components
 import SearchBar from '../../../../../shared/search-bar/index'
@@ -127,17 +134,19 @@ export const TokenLists = ({
   // routing
   const history = useHistory()
 
-  // unsafe selectors
-  const selectedAssetFilter = useSafeWalletSelector(
-    WalletSelectors.selectedAssetFilter
+  // Local-Storage
+  const [selectedAssetFilter] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION,
+    HighToLowAssetsFilterOption.id
+  )
+  const [selectedGroupAssetsByItem] = useLocalStorage<string>(
+    LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY,
+    NoneGroupByOption.id
   )
 
   // safe selectors
   const assetAutoDiscoveryCompleted = useSafeWalletSelector(
     WalletSelectors.assetAutoDiscoveryCompleted
-  )
-  const selectedGroupAssetsByItem = useSafeWalletSelector(
-    WalletSelectors.selectedGroupAssetsByItem
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
