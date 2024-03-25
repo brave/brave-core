@@ -156,6 +156,7 @@
 -LoginProxyBrowserTest.ProxyAuthHTTPS
 -NotificationPermissionBrowserTest.DisablePermissionRecordsUkms
 -NotificationPermissionBrowserTest.NonPersistentNotificationRecordsUkms
+-WebHidWebViewTest.PermissionsAPIEmbedderHasAccessCloseWindowHid
 
 # This test fails with the message:
 # Terminating render process for bad Mojo message: Received bad user message:
@@ -428,6 +429,9 @@
 # signin::ConsentLevel::kSignin
 -All/SupervisedUserURLFilterPrerenderingTest.OnURLChecked/*
 -All/SupervisedUserURLFilterTest.*
+-ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsBlockedByAsyncCheckerForChild
+-ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsDisabledForUrlsNotAccessibleForChild
+-ContextMenuForSupervisedUsersBrowserTest.SaveLinkAsEntryIsEnabledForUrlsAllowedByAsyncCheckerForChild
 -LocalWebApprovalsEnabled/SupervisedUserIframeFilterTest.*/*
 -PasswordStatusCheckServiceBaseTest.CheckTimeUpdatedAfterRunScheduledInThePast
 -PowerBookmarkBubbleViewBrowserTest.InvokeUi_bookmark_details_on_trackable_product
@@ -566,6 +570,13 @@
 # the tests pass when run with --disable-brave-extension.
 -All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationMatched/*
 -All/DeclarativeNetRequestAllowAllRequestsBrowserTest.TestPostNavigationNotMatched/*
+
+# These tests fail because of the shields extension. The tests don't expect
+# permission manager to get a request from 
+# chrome-extension://mnojpmjdmbbfmejpflffifhffcmidifd/ before the callback is
+# set in the tests.
+-PermissionManagerBrowserTest.ServiceWorkerPermissionAfterRendererCrash
+-PermissionManagerBrowserTest.ServiceWorkerPermissionQueryIncognitoClose
 
 # Tests crash due to a vector allocation failure. This seems to be happening
 # because the lambda to which the vector is passed is being called after the
@@ -756,6 +767,9 @@
 
 # These tests fail because of the following CHECK in identity_test_utils.cc:
 # identity_manager->AreRefreshTokensLoaded()
+-AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeNonTransientModeAndSyncPause
+-AvatarToolbarButtonEnterpriseBadgingBrowserTest.WorkBadgeTransientModeAndSyncPause
+-AvatarToolbarButtonWithExplicitBrowserSigninBrowserTest.SigninPaused
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearSiteData
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesAlsoClearsPasswordAccountStorageOptIn
 -BrowsingDataRemoverWithPasswordsAccountStorageBrowserTest.ClearingCookiesWithFilterAlsoClearsPasswordAccountStorageOptIn
@@ -777,6 +791,7 @@
 -GaiaRemoteConsentFlowParamBrowserTest.*
 -PasswordRevampedManagementBubbleBrowserTest.InvokeUi_ManagePasswordBubbleWithRevampedDesign/*
 -PlusAddressServiceBrowserTest.VerifySupportsPlusAddresses
+-PrivacyBudgetMetaExperimentBrowserTestWithUkmRecording.ReportsEncounteredSurfacesAndDocumentCreatedMetrics
 -SyncConfirmationUIDialogPixelTest.InvokeUi_default/*
 -SyncConfirmationUIWindowPixelTest.InvokeUi_default/*
 
@@ -784,25 +799,27 @@
 # !primary_account_info.IsEmpty()
 -All/OptimizationGuideKeyedServiceBrowserWithModelExecutionFeatureDisabledTest.SettingsNotVisible/*
 -All/SigninInterceptFirstRunExperienceDialogWithUnoParamBrowserTest.*
+-All/SupervisedUserExtensionWebstorePrivateApiTest.*
 -All/SupervisedUserRegionalURLFilterTest.RegionIsAdded/*
--All/SupervisedUserServiceBrowserTest.LocalPolicies/Regular
--All/SupervisedUserServiceBrowserTest.LocalPolicies/Supervised
--All/SupervisedUserServiceBrowserTest.ProfileName/Regular
--All/SupervisedUserServiceBrowserTest.ProfileName/Supervised
+-All/SupervisedUserServiceBrowserTest.LocalPolicies/*
+-All/SupervisedUserServiceBrowserTest.ProfileName/*
 -All/SupervisionRemovalExtensionTest.RemoveCustodianApprovalRequirement/*
 -IpProtectionAuthTokenProviderBrowserTest.NetworkServiceCanRequestTokens
 -IpProtectionConfigProviderBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -IpProtectionConfigProviderBrowserTest.ExpectedReceiverSetStateAfterNetworkServiceCrash
 -IpProtectionConfigProviderBrowserTest.NetworkServiceCanRequestTokens
+-IpProtectionConfigProviderIdentityBrowserTest.BackoffTimeResetAfterProfileAvailabilityChange
 -IpProtectionConfigProviderUserSettingBrowserTest.OnIpProtectionEnabledChanged
 -KAnonymityServiceClientBrowserTest.TestJoin
 -KAnonymityServiceClientBrowserTest.TestQuery
+-ModelExecutionComposeLoggingDisabledTest.LoggingForFeatureNotEnabled
 -ModelExecutionNewFeaturesEnabledAutomaticallyTest.NewFeaturesEnabledWhenMainToggleEnabled
 -ModelExecutionValidationBrowserTest.ModelExecutionFailsServerFailure
 -ModelExecutionValidationBrowserTest.ModelExecutionSuccess
 -OptimizationGuideKeyedServiceEnterpriseBrowserTest.CheckUploadWithEnterprisePolicy
 -PersonalizedHintsFetcherBrowserTest.NoUserSignIn
 -PersonalizedHintsFetcherBrowserTest.UserSignedIn
+-PlusAddressContextMenuManagerTest.*
 -PlusAddressCreationDialogTest.*
 -SupervisedUserExtensionWebstorePrivateApiTest.InstallBlockedWhenPermissionsToggleOff
 -SupervisedUserExtensionWebstorePrivateApiTest.NoParentPermissionRequiredForTheme
@@ -900,6 +917,10 @@
 -ModelExecutionEnterprisePolicyBrowserTest.DisableThenEnableWallpaperSearch
 -ModelExecutionEnterprisePolicyBrowserTest.EnableWithoutLogging
 -ModelExecutionInternalsPageBrowserTest.LoggedInInternalsPage
+-PageContentAnnotationsServiceBrowserTest.*
+-PageContentAnnotationsServiceNoHistoryTest.*
+-PageContentAnnotationsServiceRemoteMetadataBrowserTest.*
+-PageContentAnnotationsServiceSalientImageMetadataBrowserTest.*
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
 -SegmentationPlatformTest.NullModelUpdateForUnknownModelShouldBeNoOp
 -SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
@@ -1292,6 +1313,7 @@
 -IsolatedWebAppApplyUpdateCommandBrowserTest.*
 -IsolatedWebAppExtensionBrowserTest.*
 -IsolatedWebAppInstallerBrowserTest.*
+-IsolatedWebAppInstallerViewUiPixelTest.*
 -IsolatedWebAppUninstallBrowserTest.*
 -IsolatedWebAppUpdatePrepareAndStoreCommandBrowserTest.*
 -IsolatedWebAppURLLoaderFactoryBrowserTest.*
@@ -1300,6 +1322,12 @@
 -PopupAutomaticFullscreenTest.PopupFullscreenWithoutTransientActivation/*
 -SubAppsPermissionsPolicyBrowserTest.*
 -SubAppsServiceImplBrowserTest.*
+
+# These tests fail because we disable kPermissionStorageAccessAPI
+-StorageAccessAPIBrowserTest.*
+
+# This test fails because we disable FileSystemAccessAPI
+-PageInfoBubbleViewBrowserTest.InteractedWithFileSystemSubpage
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
