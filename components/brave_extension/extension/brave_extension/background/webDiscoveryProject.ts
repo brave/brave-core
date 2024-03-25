@@ -2,13 +2,33 @@
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
 // you can obtain one at https://mozilla.org/MPL/2.0/.
-
-// TODO(petemill): Put WDP in an extension which only loads
-// after user has opted in to WDP. This will be especially relevant
-// when all shields functionality is removed from this extension.
-import { App } from 'gen/brave/web-discovery-project'
+export {}
 
 declare let window: any
+
+async function startWDP() {
+  if (window.WDP === undefined) {
+    const wdp = await import('gen/brave/web-discovery-project')
+    window.WDP = new wdp.App({
+      version: chrome.runtime.getManifest().version
+    })
+  }
+
+  if (window.WDP.isRunning === true)
+    return
+
+  window.WDP.start()
+}
+
+function stopWDP() {
+  if (window.WDP === undefined)
+    return
+
+  if (!window.WDP.isRunning)
+    return
+
+  window.WDP.stop()
+}
 
 function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallbackDetails) {
   // Only inject if page is acceptable protocol (to skip internal pages like
@@ -31,11 +51,6 @@ function onCommitted (details: chrome.webNavigation.WebNavigationTransitionCallb
 }
 
 if (!chrome.extension.inIncognitoContext) {
-  const APP = new App({
-    version: chrome.runtime.getManifest().version
-  })
-  window.WDP = APP
-
   const WEB_DISCOVERY_PREF_KEY = 'brave.web_discovery_enabled'
 
   const toggleWebDiscovery = (pref?: chrome.settingsPrivate.PrefObject) => {
@@ -43,7 +58,7 @@ if (!chrome.extension.inIncognitoContext) {
       const enable = pref.value
       if (enable) {
         // enable
-        APP.start()
+        startWDP()
           .then(
             () => {
               // Dynamically inject WDP content script so that users with the pref disabled
@@ -59,9 +74,7 @@ if (!chrome.extension.inIncognitoContext) {
         }
 
         // disable
-        if (APP.isRunning) {
-          APP.stop()
-        }
+        stopWDP()
       }
     }
   }
