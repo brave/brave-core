@@ -299,6 +299,7 @@ extension FilterListStorage {
     return filterLists.isEmpty
       ? allFilterListSettings
         .filter(\.isEnabled)
+        .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
         .filter(\.isEnabled)
