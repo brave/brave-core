@@ -13,6 +13,7 @@
 
 #include "base/notreached.h"
 #include "base/strings/utf_string_conversions.h"
+#include "brave/browser/ui/side_panel/ai_chat/ai_chat_side_panel_utils.h"
 #include "brave/components/ai_chat/core/browser/constants.h"
 #include "brave/components/ai_chat/core/browser/models.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom-shared.h"
@@ -424,6 +425,10 @@ void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
   active_chat_tab_helper_->GetPremiumStatus(
       base::BindOnce(&AIChatUIPageHandler::OnGetPremiumStatus,
                      weak_ptr_factory_.GetWeakPtr(), std::move(callback)));
+}
+
+void AIChatUIPageHandler::ClosePanel() {
+  ai_chat::ClosePanel(web_contents());
 }
 
 void AIChatUIPageHandler::OnGetPremiumStatus(

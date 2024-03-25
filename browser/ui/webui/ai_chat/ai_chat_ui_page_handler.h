@@ -86,6 +86,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
                     const std::string& rating_id,
                     bool send_hostname,
                     SendFeedbackCallback callback) override;
+  void ClosePanel() override;
   // content::WebContentsObserver:
   void OnVisibilityChanged(content::Visibility visibility) override;
   void GetPremiumStatus(GetPremiumStatusCallback callback) override;
