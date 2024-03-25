@@ -78,6 +78,32 @@ extension BrowserViewController {
   }
 
   private func presentOmniBoxOnboarding() {
+    func presentNTPURLBarPopover (controller: UIViewController & PopoverContentComponent) {
+      presentPopoverContent(
+        using: controller,
+        with: frame,
+        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
+        didDismiss: { [weak self] in
+          guard let self = self else { return }
+
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
+        },
+        didClickBorderedArea: { [weak self] in
+          guard let self = self else { return }
+
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+          }
+        }
+      )
+    }
+    
     // If a controller is already presented (such as menu), do not show onboarding
     guard presentedViewController == nil else {
       return
@@ -88,46 +114,40 @@ extension BrowserViewController {
       from: topToolbar.locationView
     ).insetBy(dx: -1.0, dy: -1.0)
 
-    // Present the popover
-    let controller = WelcomeOmniBoxOnboardingController()
-    controller.setText(
-      title: Strings.Onboarding.omniboxOnboardingPopOverTitle,
-      details: Strings.Onboarding.omniboxOnboardingPopOverDescription
-    )
-
-    presentPopoverContent(
-      using: controller,
-      with: frame,
-      cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
-      didDismiss: { [weak self] in
-        guard let self = self else { return }
-
-        Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-        Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-        self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-      },
-      didClickBorderedArea: { [weak self] in
-        guard let self = self else { return }
-
-        Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-        Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-          self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+    
+    var controller: UIViewController & PopoverContentComponent
+    
+    if Locale.current.regionCode != "JP" {
+      // Present the popover
+      controller = WelcomeOmniBoxOnboardingController().then {
+        $0.setText(
+          title: Strings.Onboarding.omniboxOnboardingPopOverTitle,
+          details: Strings.Onboarding.omniboxOnboardingPopOverDescription
+        )
+      }
+      presentNTPURLBarPopover(controller: controller)
+    } else {
+      if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
+        controller = FocusNTPOnboardingViewController().then {
+          $0.setText(
+            title: "See the Brave difference",
+            details: "Enter a URL to enjoy Fewer ads & trackers."
+          )
         }
       }
-    )
+    }
   }
 
   private func addNTPTutorialPage() {
-    let basicOnboardingNotCompleted =
-      Preferences.Onboarding.basicOnboardingProgress.value != OnboardingProgress.newTabPage.rawValue
+    // The new onboarding will be only JP Region and this is part of old onboarding
+    guard Locale.current.regionCode != "JP" else {
+      return
+    }
 
     // NTP Education screen should load after onboarding is finished and user is on locale JP
     let (educationPermitted, url) = (Locale.current.regionCode == "JP", URL.brave.ntpTutorialPage)
 
-    if basicOnboardingNotCompleted, educationPermitted {
+    if educationPermitted {
       tabManager.addTab(
         PrivilegedRequest(url: url) as URLRequest,
         afterTab: self.tabManager.selectedTab,

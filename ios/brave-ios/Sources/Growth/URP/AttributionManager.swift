@@ -124,7 +124,7 @@ public class AttributionManager {
   }
 
   public func pingDAUServer(_ isP3AEnabled: Bool) {
-    Task {
+    Task { @MainActor in
       do {
         let attributionData =
           isP3AEnabled ? try await urp.adCampaignLookup(isRetryEnabled: false, timeout: 30) : nil

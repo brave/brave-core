@@ -61,9 +61,9 @@ struct FocusSystemSettingsView: View {
                 UIApplication.shared.open(settingsUrl)
               }
 
+              Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+              
               finishOnboarding()
-
-              // TODO: Show URL Bar Onboarding
             },
             label: {
               (Text("Go to System Settings ") + Text(Image(systemName: "arrow.right")))
@@ -79,9 +79,9 @@ struct FocusSystemSettingsView: View {
           .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
 
           Button(action: {
-            finishOnboarding()
+            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
 
-            // TODO: Show URL Bar Onboarding
+            finishOnboarding()
           }) {
             Text("I’ll do this Later...")
               .font(.subheadline.weight(.semibold))

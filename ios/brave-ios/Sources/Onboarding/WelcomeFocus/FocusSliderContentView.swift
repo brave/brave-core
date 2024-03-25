@@ -27,7 +27,6 @@ struct FocusAdTrackerSliderContentView: View {
     } trailing: {
       Image("focus-website-noads", bundle: .module)
     }
-    .frame(height: 420)
     .frame(maxWidth: .infinity)
     .onAppear {
       Timer.scheduledTimer(withTimeInterval: 2.5, repeats: false) { _ in
