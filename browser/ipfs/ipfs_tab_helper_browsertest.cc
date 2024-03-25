@@ -1076,6 +1076,9 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSAlwaysStartInfobar) {
   const GURL test_url = embedded_test_server()->GetURL(
       "drweb.link",
       "/ipns/k2k4r8ni09jro03sto91pyi070ww4x63iwub4x3sc13qn5pwkjxhfdt4");
+  const GURL second_tab_test_url = embedded_test_server()->GetURL(
+      "drweb.link",
+      "/ipfs/bafybeif2py6p4u763zoj7t2hq6v2nziwv2dwlhbhiibsdsrsx5tw4lle3y");
   const GURL test_non_ipfs_url =
       embedded_test_server()->GetURL("navigate_to.com", "/");
 
@@ -1123,6 +1126,19 @@ IN_PROC_BROWSER_TEST_F(IpfsTabHelperBrowserTest, IPFSAlwaysStartInfobar) {
     auto* another_tab_infobar = find_infobar(
         infobars::ContentInfoBarManager::FromWebContents(active_contents()));
     ASSERT_TRUE(another_tab_infobar);
+  }
+  // Open two IPFS links, show infobar only once
+  prefs->SetBoolean(kIPFSAlwaysStartInfobarShown, false);
+  {
+    ASSERT_TRUE(ui_test_utils::NavigateToURL(browser(), test_url));
+    ASSERT_TRUE(ui_test_utils::NavigateToURLWithDisposition(
+        browser(), second_tab_test_url,
+        WindowOpenDisposition::NEW_FOREGROUND_TAB,
+        ui_test_utils::BrowserTestWaitFlags::BROWSER_TEST_WAIT_FOR_LOAD_STOP));
+    ASSERT_TRUE(WaitForLoadStop(active_contents()));
+    auto* infobar = find_infobar(
+        infobars::ContentInfoBarManager::FromWebContents(active_contents()));
+    ASSERT_TRUE(infobar);
   }
 
   //  Do not show infobar if IPFS always start mode is already enabled
