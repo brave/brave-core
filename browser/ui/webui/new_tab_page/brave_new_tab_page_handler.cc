@@ -367,8 +367,7 @@ void BraveNewTabPageHandler::OnRemoveCustomImageBackground(
   if (background_pref.GetType() == NTPBackgroundPrefs::Type::kCustomImage) {
     if (auto custom_images = background_pref.GetCustomImageList();
         !custom_images.empty() &&
-        absl::get<std::string>(background_pref.GetSelectedValue()) ==
-            file_name) {
+        background_pref.GetSelectedValue() == file_name) {
       // Reset to the next candidate after we've removed the chosen one.
       background_pref.SetSelectedValue(custom_images.front());
     } else if (custom_images.empty()) {
@@ -389,8 +388,7 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
 
     NTPBackgroundPrefs prefs(profile_->GetPrefs());
     auto selected_value = prefs.GetSelectedValue();
-    DCHECK(absl::holds_alternative<std::string>(selected_value));
-    const std::string file_name = absl::get<std::string>(selected_value);
+    const std::string file_name = selected_value;
     if (!file_name.empty()) {
       value->url = CustomBackgroundFileManager::Converter(file_name).To<GURL>();
     }
@@ -404,8 +402,7 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
   if (IsColorBackgroundEnabled()) {
     auto value = brave_new_tab_page::mojom::CustomBackground::New();
     auto selected_value = ntp_background_prefs.GetSelectedValue();
-    DCHECK(absl::holds_alternative<std::string>(selected_value));
-    value->color = absl::get<std::string>(selected_value);
+    value->color = selected_value;
     value->use_random_item = ntp_background_prefs.ShouldUseRandomValue();
     page_->OnBackgroundUpdated(
         brave_new_tab_page::mojom::Background::NewCustom(std::move(value)));
@@ -434,7 +431,7 @@ void BraveNewTabPageHandler::OnBackgroundUpdated() {
   }
 
   auto selected_value = ntp_background_prefs.GetSelectedValue();
-  auto image_url = absl::get<GURL>(selected_value);
+  auto image_url = GURL(selected_value);
 
   auto iter = base::ranges::find_if(
       image_data->backgrounds, [image_data, &image_url](const auto& data) {

@@ -4,10 +4,10 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import AVFoundation
+import BraveShared
 import Foundation
 import Speech
 import SwiftUI
-import BraveShared
 import os.log
 
 protocol SpeechRecognizerDelegate: AnyObject {
@@ -15,7 +15,7 @@ protocol SpeechRecognizerDelegate: AnyObject {
 }
 
 public class SpeechRecognizer: ObservableObject {
-  
+
   private let log = Logger(subsystem: Bundle.main.bundleIdentifier!, category: "voiceRecognizer")
 
   enum RecognizerError: Error {
@@ -41,7 +41,7 @@ public class SpeechRecognizer: ObservableObject {
   @Published var transcriptedIcon: String = "leo.microphone"
   @Published public var finalizedRecognition: String?
   @Published private(set) var animationType: AnimationType = .pulse(scale: 1)
-  
+
   public init() {
     // Default constructor for public initialization
   }
@@ -216,7 +216,7 @@ public class SpeechRecognizer: ObservableObject {
       }
     }
   }
-  
+
   nonisolated public func clearSearch() {
     Task { @MainActor in
       transcript = " "

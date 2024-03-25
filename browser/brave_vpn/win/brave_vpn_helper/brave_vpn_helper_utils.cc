@@ -24,9 +24,9 @@
 #include "brave/components/brave_vpn/common/brave_vpn_utils.h"
 #include "brave/components/brave_vpn/common/win/scoped_sc_handle.h"
 #include "brave/components/brave_vpn/common/win/utils.h"
+#include "chrome/common/channel_info.h"
 #include "chrome/install_static/install_modes.h"
 #include "chrome/install_static/install_util.h"
-#include "chrome/common/channel_info.h"
 #include "components/version_info/channel.h"
 
 namespace brave_vpn {

@@ -13,11 +13,11 @@
 #include "base/functional/bind.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/command_utils.h"
+#include "brave/browser/ui/commander/command_source.h"
+#include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "chrome/browser/ui/accelerator_utils.h"
 #include "chrome/browser/ui/browser.h"
 #include "chrome/browser/ui/browser_commands.h"
-#include "brave/browser/ui/commander/command_source.h"
-#include "brave/browser/ui/commander/fuzzy_finder.h"
 #include "ui/base/accelerators/accelerator.h"
 
 namespace commander {

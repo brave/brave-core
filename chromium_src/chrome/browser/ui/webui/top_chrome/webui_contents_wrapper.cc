@@ -21,7 +21,7 @@
       base::WeakPtr<content::WebContentsDelegate> browser_delegate) {         \
     browser_delegate_ = std::move(browser_delegate);                          \
   }                                                                           \
-  void WebUIContentsWrapper::AddNewContents(                                 \
+  void WebUIContentsWrapper::AddNewContents(                                  \
       content::WebContents* source,                                           \
       std::unique_ptr<content::WebContents> new_contents,                     \
       const GURL& target_url, WindowOpenDisposition disposition,              \
@@ -39,7 +39,7 @@
         sessions::SessionTabHelper::IdForTab(raw_popup_contents).id();        \
     popup_ids_.push_back(tab_id);                                             \
   }                                                                           \
-  void WebUIContentsWrapper::ClearPopupIds() {                               \
+  void WebUIContentsWrapper::ClearPopupIds() {                                \
     popup_ids_.clear();                                                       \
   }                                                                           \
   void WebUIContentsWrapper::PrimaryPageChanged

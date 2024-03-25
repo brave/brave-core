@@ -57,7 +57,6 @@ class PlaylistActionBubbleView : public views::BubbleDialogDelegateView {
 class PlaylistActionAddBubble : public PlaylistActionBubbleView {
   METADATA_HEADER(PlaylistActionAddBubble, PlaylistActionBubbleView)
  public:
-
   static constexpr int kWidth = 288;
 
   PlaylistActionAddBubble(Browser* browser,

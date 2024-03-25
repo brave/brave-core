@@ -43,8 +43,7 @@ void WireguardConnectionAPIImplBase::RequestNewProfileCredentials(
   GetAPIRequest()->GetWireguardProfileCredentials(
       base::BindOnce(&WireguardConnectionAPIImplBase::OnGetProfileCredentials,
                      base::Unretained(this), private_key),
-      GetSubscriberCredential(manager_->local_prefs()),
-      public_key,
+      GetSubscriberCredential(manager_->local_prefs()), public_key,
       GetHostname());
 }
 

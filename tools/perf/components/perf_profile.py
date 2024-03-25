@@ -24,6 +24,7 @@ with path_util.SysPath(path_util.GetDepotToolsDir()):
 def _IsSha1Hash(s: str) -> bool:
   return re.match(r'[a-f0-9]{40}', s) is not None
 
+
 def DownloadFromGoogleStorage(sha1: str, output_path: str) -> None:
   """Download a file from brave perf bucket.
 

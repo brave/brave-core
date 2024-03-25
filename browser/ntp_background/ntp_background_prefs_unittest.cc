@@ -62,16 +62,12 @@ TEST_F(NTPBackgroundPrefsTest, SelectedValue) {
   constexpr char kSelectedURL[] = "http://selected.com/img.jpg";
   background_prefs_.SetSelectedValue(kSelectedURL);
   auto selected_value = background_prefs_.GetSelectedValue();
-  EXPECT_TRUE(absl::holds_alternative<GURL>(selected_value));
-  EXPECT_TRUE(absl::get<GURL>(selected_value).spec() == kSelectedURL);
+  EXPECT_TRUE(GURL(selected_value).spec() == kSelectedURL);
 
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kCustomImage);
-  selected_value = background_prefs_.GetSelectedValue();
-  EXPECT_TRUE(absl::holds_alternative<std::string>(selected_value));
 
   background_prefs_.SetType(NTPBackgroundPrefs::Type::kColor);
   background_prefs_.SetSelectedValue("red");
   selected_value = background_prefs_.GetSelectedValue();
-  EXPECT_TRUE(absl::holds_alternative<std::string>(selected_value));
-  EXPECT_TRUE(absl::get<std::string>(selected_value) == "red");
+  EXPECT_TRUE(selected_value == "red");
 }

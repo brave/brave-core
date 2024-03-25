@@ -9,9 +9,9 @@
 #include <tuple>
 #include <utility>
 
-#include "brave/components/brave_vpn/common/win/utils.h"
 #include "brave/browser/brave_vpn/win/service_details.h"
 #include "brave/browser/brave_vpn/win/wireguard_utils_win.h"
+#include "brave/components/brave_vpn/common/win/utils.h"
 #include "services/network/public/cpp/shared_url_loader_factory.h"
 
 namespace brave_vpn {
@@ -24,8 +24,8 @@ constexpr int kWireguardServiceRestartTimeoutSec = 5;
 using ConnectionState = mojom::ConnectionState;
 
 WireguardConnectionAPIImplWin::WireguardConnectionAPIImplWin(
-      BraveVPNConnectionManager* manager,
-      scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
+    BraveVPNConnectionManager* manager,
+    scoped_refptr<network::SharedURLLoaderFactory> url_loader_factory)
     : WireguardConnectionAPIImplBase(manager, url_loader_factory) {}
 
 WireguardConnectionAPIImplWin::~WireguardConnectionAPIImplWin() = default;
@@ -40,7 +40,7 @@ void WireguardConnectionAPIImplWin::Disconnect() {
 
   brave_vpn::wireguard::DisableBraveVpnWireguardService(
       base::BindOnce(&WireguardConnectionAPIImplWin::OnDisconnected,
-                                weak_factory_.GetWeakPtr()));
+                     weak_factory_.GetWeakPtr()));
 }
 
 void WireguardConnectionAPIImplWin::CheckConnection() {
@@ -64,9 +64,8 @@ void WireguardConnectionAPIImplWin::PlatformConnectImpl(
   }
   brave_vpn::wireguard::EnableBraveVpnWireguardService(
       config.value(),
-      base::BindOnce(
-          &WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
-          weak_factory_.GetWeakPtr()));
+      base::BindOnce(&WireguardConnectionAPIImplWin::OnWireguardServiceLaunched,
+                     weak_factory_.GetWeakPtr()));
 }
 
 void WireguardConnectionAPIImplWin::OnServiceStopped(int mask) {
@@ -88,9 +87,8 @@ void WireguardConnectionAPIImplWin::RunServiceWatcher() {
   if (!service_watcher_->Subscribe(
           brave_vpn::GetBraveVpnWireguardTunnelServiceName(),
           SERVICE_NOTIFY_STOPPED,
-          base::BindRepeating(
-              &WireguardConnectionAPIImplWin::OnServiceStopped,
-              weak_factory_.GetWeakPtr()))) {
+          base::BindRepeating(&WireguardConnectionAPIImplWin::OnServiceStopped,
+                              weak_factory_.GetWeakPtr()))) {
     VLOG(1) << "Unable to set service watcher";
   }
 }
@@ -101,8 +99,7 @@ void WireguardConnectionAPIImplWin::ResetServiceWatcher() {
   }
 }
 
-void WireguardConnectionAPIImplWin::OnWireguardServiceLaunched(
-    bool success) {
+void WireguardConnectionAPIImplWin::OnWireguardServiceLaunched(bool success) {
   UpdateAndNotifyConnectionStateChange(
       success ? ConnectionState::CONNECTED : ConnectionState::CONNECT_FAILED);
 }
