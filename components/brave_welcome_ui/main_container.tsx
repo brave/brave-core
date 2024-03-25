@@ -71,7 +71,9 @@ function MainContainer () {
       static={!shouldPlayAnimations}
       onLoad={onBackgroundImgLoad}
     >
-      <React.Suspense fallback={<Loader />}>{mainEl}</React.Suspense>
+      <React.Suspense fallback={<Loader />}>
+        {mainEl}
+      </React.Suspense>
     </Background>
   )
 }

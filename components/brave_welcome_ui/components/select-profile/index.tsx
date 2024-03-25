@@ -11,12 +11,7 @@ import LeftArrowSVG from '../svg/left-arrow'
 import AvatarIconSVG from '../svg/avatar-icon'
 import DataContext from '../../state/context'
 import { useViewTypeTransition } from '../../state/hooks'
-import {
-  WelcomeBrowserProxyImpl,
-  ImportDataBrowserProxyImpl,
-  defaultImportTypes,
-  P3APhase
-} from '../../api/welcome_browser_proxy'
+import { WelcomeBrowserProxyImpl, ImportDataBrowserProxyImpl, defaultImportTypes, P3APhase } from '../../api/welcome_browser_proxy'
 import { getLocale } from '$web-common/locale'
 
 interface ProfileItemProps {
@@ -28,17 +23,17 @@ interface ProfileItemProps {
 
 function ProfileItem (props: ProfileItemProps) {
   return (
-    <div className='item-box'>
-      <label className='item-grid'>
-        <div className='item-info'>
-          <div className='avatar'>
+    <div className="item-box">
+      <label className="item-grid">
+        <div className="item-info">
+          <div className="avatar">
             <AvatarIconSVG />
           </div>
           <span>{props.profileName}</span>
         </div>
-        <div className='item-action'>
+        <div className="item-action">
           <input
-            type='checkbox'
+            type="checkbox"
             id={`profile-${props.id}`}
             checked={props.isChecked}
             onChange={props.onChange}
@@ -56,9 +51,7 @@ function SelectProfile () {
     incrementCount,
     currentSelectedBrowserProfiles
   } = React.useContext(DataContext)
-  const [selectedProfiles, setSelectedProfiles] = React.useState<Set<number>>(
-    new Set()
-  )
+  const [selectedProfiles, setSelectedProfiles] = React.useState<Set<number>>(new Set())
 
   const { back } = useViewTypeTransition(viewType)
   const handleBackButton = () => setViewType(back!)
@@ -91,15 +84,9 @@ function SelectProfile () {
     })
 
     if (entries.length === 1) {
-      ImportDataBrowserProxyImpl.getInstance().importData(
-        entries[0],
-        defaultImportTypes
-      )
+      ImportDataBrowserProxyImpl.getInstance().importData(entries[0], defaultImportTypes)
     } else {
-      ImportDataBrowserProxyImpl.getInstance().importDataBulk(
-        entries,
-        defaultImportTypes
-      )
+      ImportDataBrowserProxyImpl.getInstance().importDataBulk(entries, defaultImportTypes)
     }
     WelcomeBrowserProxyImpl.getInstance().recordP3A(P3APhase.Consent)
   }
@@ -112,44 +99,33 @@ function SelectProfile () {
   }
   return (
     <S.MainBox>
-      <div className='view-header-box'>
-        <div className='view-header-actions'>
-          <button
-            className='back-button'
-            onClick={handleBackButton}
-          >
+      <div className="view-header-box">
+        <div className="view-header-actions">
+          <button className="back-button" onClick={handleBackButton}>
             <LeftArrowSVG />
             <span>{getLocale('braveWelcomeBackButtonLabel')}</span>
           </button>
         </div>
-        <div className='view-details'>
-          <h1 className='view-title'>
-            {getLocale('braveWelcomeSelectProfileLabel')}
-          </h1>
-          <p className='view-desc'>
-            {getLocale('braveWelcomeSelectProfileDesc')}
-          </p>
+        <div className="view-details">
+          <h1 className="view-title">{getLocale('braveWelcomeSelectProfileLabel')}</h1>
+          <p className="view-desc">{getLocale('braveWelcomeSelectProfileDesc')}</p>
         </div>
       </div>
       <S.ProfileListBox>
-        <div className='profile-list'>
-          <div className='list-actions'>
-            <div className='right'>
-              <button onClick={selectAll}>
-                {getLocale('braveWelcomeSelectAllButtonLabel')}
-              </button>
+        <div className="profile-list">
+          <div className="list-actions">
+            <div className="right">
+              <button onClick={selectAll}>{getLocale('braveWelcomeSelectAllButtonLabel')}</button>
             </div>
           </div>
           {currentSelectedBrowserProfiles?.map((entry) => {
-            return (
-              <ProfileItem
-                key={entry.index}
-                id={entry.index}
-                profileName={getImportEntryName(entry)}
-                onChange={handleChange}
-                isChecked={selectedProfiles.has(entry.index)}
-              />
-            )
+            return (<ProfileItem
+              key={entry.index}
+              id={entry.index}
+              profileName={getImportEntryName(entry)}
+              onChange={handleChange}
+              isChecked={selectedProfiles.has(entry.index)}
+            />)
           })}
         </div>
       </S.ProfileListBox>
@@ -157,7 +133,7 @@ function SelectProfile () {
         <Button
           isPrimary={true}
           onClick={handleImportProfiles}
-          scale='jumbo'
+          scale="jumbo"
         >
           {getLocale('braveWelcomeImportProfilesButtonLabel')}
         </Button>

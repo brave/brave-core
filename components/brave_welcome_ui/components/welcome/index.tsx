@@ -10,11 +10,7 @@ import classnames from '$web-common/classnames'
 import { getLocale } from '$web-common/locale'
 import Button from '$web-components/button'
 
-import {
-  WelcomeBrowserProxyImpl,
-  DefaultBrowserBrowserProxyImpl,
-  P3APhase
-} from '../../api/welcome_browser_proxy'
+import { WelcomeBrowserProxyImpl, DefaultBrowserBrowserProxyImpl, P3APhase } from '../../api/welcome_browser_proxy'
 import WebAnimationPlayer from '../../api/web_animation_player'
 
 import DataContext from '../../state/context'
@@ -53,25 +49,12 @@ function Welcome () {
 
     const s1 = new WebAnimationPlayer()
 
-    s1.to(
-      logoBoxEl,
-      {
+    s1.to(logoBoxEl, {
         transform: 'translateY(-20px)',
-        filter:
-          'drop-shadow(7px 2px 5px rgba(14, 1, 41, 0.2)) drop-shadow(14px 3px 10px rgba(32, 5, 89, 0.3)) drop-shadow(20px 3px 15px rgba(37, 7, 87, 0.2))  drop-shadow(25px 5px 30px rgba(25, 3, 73, 0.1)) drop-shadow(50px 4px 50px rgba(19, 3, 40, 0.1))'
-      },
-      { fill: 'forwards', easing: 'ease-out' }
-    )
-      .to(
-        backdropEl,
-        { scale: 1, opacity: 1 },
-        { duration: 250, delay: 200, easing: 'ease-out' }
-      )
-      .to(
-        contentEl,
-        { transform: 'translateY(0px)', opacity: 1 },
-        { duration: 250, delay: 200, easing: 'ease-out' }
-      )
+        filter: 'drop-shadow(7px 2px 5px rgba(14, 1, 41, 0.2)) drop-shadow(14px 3px 10px rgba(32, 5, 89, 0.3)) drop-shadow(20px 3px 15px rgba(37, 7, 87, 0.2))  drop-shadow(25px 5px 30px rgba(25, 3, 73, 0.1)) drop-shadow(50px 4px 50px rgba(19, 3, 40, 0.1))'
+        }, { fill: 'forwards', easing: 'ease-out' })
+      .to(backdropEl, { scale: 1, opacity: 1 }, { duration: 250, delay: 200, easing: 'ease-out' })
+      .to(contentEl, { transform: 'translateY(0px)', opacity: 1 }, { duration: 250, delay: 200, easing: 'ease-out' })
 
     s1.play()
 
@@ -83,44 +66,34 @@ function Welcome () {
 
   return (
     <S.Box ref={shouldPlayAnimations ? ref : null}>
-      <div className='view-logo-box'>
+      <div className="view-logo-box">
         <img src={braveLogoUrl} />
       </div>
-      <div
-        className={classnames({
-          'view-content': true,
-          'initial': shouldPlayAnimations
-        })}
-      >
-        <div className='view-header-box'>
-          <div className='view-details'>
-            <h1 className='view-title'>{getLocale('braveWelcomeTitle')}</h1>
-            <p className='view-desc'>{getLocale('braveWelcomeDesc')}</p>
+      <div className={classnames({ 'view-content': true, 'initial': shouldPlayAnimations })}>
+        <div className="view-header-box">
+          <div className="view-details">
+            <h1 className="view-title">{getLocale('braveWelcomeTitle')}</h1>
+            <p className="view-desc">{getLocale('braveWelcomeDesc')}</p>
           </div>
         </div>
         <S.ActionBox>
           <Button
             isPrimary={true}
             onClick={handleSetAsDefaultBrowser}
-            scale='jumbo'
+            scale="jumbo"
           >
             {getLocale('braveWelcomeSetDefaultButtonLabel')}
           </Button>
           <Button
             isTertiary={true}
             onClick={handleSkip}
-            scale='jumbo'
+            scale="jumbo"
           >
             {getLocale('braveWelcomeSkipButtonLabel')}
           </Button>
         </S.ActionBox>
       </div>
-      <div
-        className={classnames({
-          'view-backdrop': true,
-          'initial': shouldPlayAnimations
-        })}
-      />
+      <div className={classnames({ 'view-backdrop': true, 'initial': shouldPlayAnimations })} />
     </S.Box>
   )
 }
