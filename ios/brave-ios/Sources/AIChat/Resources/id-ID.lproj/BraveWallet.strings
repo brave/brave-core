@@ -1,5 +1,5 @@
 /* The title of the section where chat models are displayed as a list. */
-"wallet.defaultModelChatSectionTitle" = "OBROLAN";
+"wallet.defaultModelChatSectionTitle" = "Obrolan";
 
 /* The title of the section where language models are displayed as a list. */
 "wallet.defaultModelLanguageSectionTitle" = "MODEL BAHASA";
@@ -8,7 +8,7 @@
 "wallet.defaultModelViewTitle" = "Model Bawaan";
 
 /* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "TERBATAS";
+"wallet.limitedModelStatusTitle" = "Terbatas";
 
 /* The title of action for quick menu which displaying advanced settings */
 "wallet.quickMenuAdvancedSettingsActionTitle" = "Pengaturan Lanjutan";
@@ -26,5 +26,5 @@
 "wallet.resetLeoDataAlertButtonTitle" = "Atur ulang";
 
 /* The title of the badge where a model which can be used unlimited */
-"wallet.unlimitedModelStatusTitle" = "TAK TERBATAS";
+"wallet.unlimitedModelStatusTitle" = "Tanpa batas";
 
