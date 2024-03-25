@@ -112,19 +112,16 @@ struct FocusSystemSettingsView: View {
     }
     .onChange(of: shouldDismiss) { shouldDismiss in
       if shouldDismiss {
-        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-        Preferences.AppState.shouldDeferPromotedPurchase.value = false
-        
         finishOnboarding()
       }
     }
     .navigationBarHidden(true)
   }
-  
+
   private func finishOnboarding() {
     Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
     Preferences.AppState.shouldDeferPromotedPurchase.value = false
-    
+
     dismiss()
   }
 }

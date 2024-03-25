@@ -3,6 +3,8 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import Growth
 import Preferences
 import SafariServices
 import SwiftUI
@@ -14,6 +16,14 @@ struct FocusP3AScreenView: View {
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
   @State private var shouldDismiss = false
+
+  private let attributionManager: AttributionManager?
+  private let p3aUtilities: BraveP3AUtils?
+
+  public init(attributionManager: AttributionManager? = nil, p3aUtilities: BraveP3AUtils? = nil) {
+    self.attributionManager = attributionManager
+    self.p3aUtilities = p3aUtilities
+  }
 
   var body: some View {
     NavigationView {
@@ -69,7 +79,7 @@ struct FocusP3AScreenView: View {
           .listRowBackground(Color(.secondaryBraveGroupedBackground))
           .toggleStyle(SwitchToggleStyle(tint: Color(braveSystemName: .buttonBackground)))
           .onChange(of: isP3AToggleOn) { newValue in
-            // TODO: Change Settings P3A
+            p3aUtilities?.isP3AEnabled = newValue
           }
 
           Text("Learn more about our Privacy Preserving Product Analytics (P3A)")
@@ -80,7 +90,7 @@ struct FocusP3AScreenView: View {
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
             .onTapGesture {
-              self.isP3AHelpPresented = true
+              isP3AHelpPresented = true
             }
             .sheet(isPresented: $isP3AHelpPresented) {
               FocusSafariControllerView(url: FocusOnboardingConstants.p3aHelpArticle)
@@ -93,6 +103,8 @@ struct FocusP3AScreenView: View {
         VStack(spacing: 28) {
           Button(
             action: {
+              handleAdCampaignLookupAndDAUPing(isP3AEnabled: p3aUtilities?.isP3AEnabled ?? false)
+
               isSystemSettingsViewPresented = true
             },
             label: {
@@ -135,13 +147,25 @@ struct FocusP3AScreenView: View {
     }
     .onChange(of: shouldDismiss) { shouldDismiss in
       if shouldDismiss {
-        Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-        Preferences.AppState.shouldDeferPromotedPurchase.value = false
+        handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
 
         dismiss()
       }
     }
     .navigationBarHidden(true)
+  }
+
+  private func handleAdCampaignLookupAndDAUPing(isP3AEnabled: Bool) {
+    // Early quit, ping server with default referral code
+    attributionManager?.pingDAUServer(isP3AEnabled)
+
+    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
+    Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+    p3aUtilities?.isNoticeAcknowledged = true
+    Preferences.Onboarding.p3aOnboardingShown.value = true
+
+    dismiss()
   }
 }
 

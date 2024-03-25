@@ -3,8 +3,11 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
+import Growth
 import Preferences
 import SwiftUI
+import os.log
 
 struct FocusStepsView: View {
   var namespace: Namespace.ID
@@ -15,6 +18,19 @@ struct FocusStepsView: View {
   @State private var opacity = 0.0
   @State private var isP3AViewPresented = false
   @State private var shouldDismiss = false
+
+  private let attributionManager: AttributionManager?
+  private let p3aUtilities: BraveP3AUtils?
+
+  public init(
+    namespace: Namespace.ID,
+    attributionManager: AttributionManager? = nil,
+    p3aUtilities: BraveP3AUtils? = nil
+  ) {
+    self.namespace = namespace
+    self.attributionManager = attributionManager
+    self.p3aUtilities = p3aUtilities
+  }
 
   var body: some View {
     NavigationView {
@@ -81,7 +97,7 @@ struct FocusStepsView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isP3AViewPresented) {
-          FocusP3AScreenView()
+          FocusP3AScreenView(attributionManager: attributionManager, p3aUtilities: p3aUtilities)
         }
       }
       .overlay(alignment: .topTrailing) {
@@ -99,6 +115,9 @@ struct FocusStepsView: View {
       }
       .onChange(of: shouldDismiss) { shouldDismiss in
         if shouldDismiss {
+          // Early quit, ping server with default referral code
+          attributionManager?.pingDAUServer(false)
+
           Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
           Preferences.AppState.shouldDeferPromotedPurchase.value = false
 
