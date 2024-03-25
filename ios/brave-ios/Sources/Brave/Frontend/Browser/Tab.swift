@@ -391,7 +391,7 @@ class Tab: NSObject {
     $0.addTarget(self, action: #selector(reload), for: .valueChanged)
   }
 
-  func createWebview(includeDeAmpScript: Bool) {
+  func createWebview() {
     if webView == nil {
       assert(configuration != nil, "Create webview can only be called once")
       configuration!.userContentController = WKUserContentController()
@@ -444,7 +444,6 @@ class Tab: NSObject {
         .cookieBlocking: Preferences.Privacy.blockAllCookies.value,
         .mediaBackgroundPlay: Preferences.General.mediaAutoBackgrounding.value,
         .nightMode: Preferences.General.nightModeEnabled.value,
-        .deAmp: includeDeAmpScript,
         .playlistMediaSource: Preferences.Playlist.webMediaSourceCompatibility.value,
       ]
 

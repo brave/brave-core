@@ -35,8 +35,8 @@ public class Migration {
       Preferences.Playlist.firstLoadAutoPlay.value = true
     }
 
-    deAmpMigration()
-    debounceMigration()
+    migrateDeAmpPreferences()
+    migrateDebouncePreferences()
 
     // Adding Observer to enable sync types
     NotificationCenter.default.addObserver(
@@ -47,19 +47,22 @@ public class Migration {
     )
   }
 
-  private func deAmpMigration() {
-    if let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value {
-      braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
-      Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
+  private func migrateDeAmpPreferences() {
+    guard let isDeAmpEnabled = Preferences.Shields.autoRedirectAMPPagesDeprecated.value else {
+      return
     }
+    braveCore.deAmpPrefs.isDeAmpEnabled = isDeAmpEnabled
+    Preferences.Shields.autoRedirectAMPPagesDeprecated.value = nil
   }
 
-  private func debounceMigration() {
-    if let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value {
-      let debounceService = DebounceServiceFactory.get(privateMode: false)
-      debounceService?.isEnabled = isDebounceEnabled
-      Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
+  private func migrateDebouncePreferences() {
+    guard let isDebounceEnabled = Preferences.Shields.autoRedirectTrackingURLsDeprecated.value
+    else {
+      return
     }
+    let debounceService = DebounceServiceFactory.get(privateMode: false)
+    debounceService?.isEnabled = isDebounceEnabled
+    Preferences.Shields.autoRedirectTrackingURLsDeprecated.value = nil
   }
 
   @objc private func enableUserSelectedTypesForSync() {

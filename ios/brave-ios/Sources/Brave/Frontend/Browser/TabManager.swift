@@ -97,7 +97,6 @@ class TabManager: NSObject {
   private var syncTabsTask: DispatchWorkItem?
   private var metricsHeartbeat: Timer?
   public let privateBrowsingManager: PrivateBrowsingManager
-  public let deAmpPrefs: DeAmpPrefs?
 
   let windowId: UUID
 
@@ -118,8 +117,7 @@ class TabManager: NSObject {
     prefs: Prefs,
     rewards: BraveRewards?,
     tabGeneratorAPI: BraveTabGeneratorAPI?,
-    privateBrowsingManager: PrivateBrowsingManager,
-    deAmpPrefs: DeAmpPrefs?
+    privateBrowsingManager: PrivateBrowsingManager
   ) {
     assert(Thread.isMainThread)
 
@@ -130,7 +128,6 @@ class TabManager: NSObject {
     self.tabGeneratorAPI = tabGeneratorAPI
     self.privateBrowsingManager = privateBrowsingManager
     self.tabEventHandlers = TabEventHandlers.create(with: prefs)
-    self.deAmpPrefs = deAmpPrefs
     super.init()
 
     self.navDelegate.tabManager = self
@@ -350,7 +347,7 @@ class TabManager: NSObject {
     }
 
     if let t = selectedTab, t.webView == nil {
-      selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
+      selectedTab?.createWebview()
       restoreTab(t)
     }
 
@@ -366,7 +363,7 @@ class TabManager: NSObject {
     }
 
     UIImpactFeedbackGenerator(style: .light).bzzt()
-    selectedTab?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
+    selectedTab?.createWebview()
     selectedTab?.lastExecutedTime = Date.now()
 
     if let selectedTab = selectedTab,
@@ -510,7 +507,7 @@ class TabManager: NSObject {
       let request =
         InternalURL.isValid(url: url)
         ? PrivilegedRequest(url: url) as URLRequest : URLRequest(url: url)
-      $0.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
+      $0.createWebview()
       $0.loadRequest(request)
     }
 
@@ -636,7 +633,7 @@ class TabManager: NSObject {
     delegates.forEach { $0.get()?.tabManager(self, didAddTab: tab) }
 
     if !zombie {
-      tab.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
+      tab.createWebview()
     }
     tab.navigationDelegate = self.navDelegate
 
@@ -931,7 +928,7 @@ class TabManager: NSObject {
     self.isRestoring = false
     delegates.forEach { $0.get()?.tabManagerDidRestoreTabs(self) }
     self.tempTabs?.removeAll()
-    allTabs.first?.createWebview(includeDeAmpScript: deAmpPrefs?.isDeAmpEnabled ?? false)
+    allTabs.first?.createWebview()
   }
 
   func eraseUndoCache() {

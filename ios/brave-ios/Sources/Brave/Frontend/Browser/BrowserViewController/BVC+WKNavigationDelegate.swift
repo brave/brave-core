@@ -327,7 +327,7 @@ extension BrowserViewController: WKNavigationDelegate {
         tab?.setScripts(scripts: [
           // Add de-amp script
           // The user script manager will take care to not reload scripts if this value doesn't change
-          .deAmp: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false,
+          .deAmp: braveCore.deAmpPrefs.isDeAmpEnabled,
 
           // Add request blocking script
           // This script will block certian `xhr` and `window.fetch()` requests
@@ -356,7 +356,7 @@ extension BrowserViewController: WKNavigationDelegate {
         let scriptTypes =
           await tab?.currentPageData?.makeUserScriptTypes(
             domain: domainForMainFrame,
-            isDeAmpEnabled: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false
+            isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
           ) ?? []
         tab?.setCustomUserScript(scripts: scriptTypes)
       }
@@ -611,7 +611,7 @@ extension BrowserViewController: WKNavigationDelegate {
       let scriptTypes =
         await tab?.currentPageData?.makeUserScriptTypes(
           domain: domain,
-          isDeAmpEnabled: tabManager.deAmpPrefs?.isDeAmpEnabled ?? false
+          isDeAmpEnabled: braveCore.deAmpPrefs.isDeAmpEnabled
         ) ?? []
       tab?.setCustomUserScript(scripts: scriptTypes)
     }
