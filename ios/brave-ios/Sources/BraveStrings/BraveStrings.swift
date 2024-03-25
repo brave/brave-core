@@ -1175,7 +1175,7 @@ extension Strings {
   NSLocalizedString("copyAppSizeInfoToClipboard", tableName: "BraveShared",
                     bundle: .module, value: "Copy app size info to clipboard.",
                     comment: "Copy app info to clipboard action sheet action.")
-  public static let viewAllVersionInfo = NSLocalizedString("copyAppSizeInfoToClipboard", tableName: "BraveShared", bundle: .module, value: "View all version info.", comment: "View all version info action sheet action.")
+  public static let viewAllVersionInfo = NSLocalizedString("viewAllVersionInfo", tableName: "BraveShared", bundle: .module, value: "View all version info.", comment: "View all version info action sheet action.")
   public static let blockThirdPartyCookies = NSLocalizedString("Block3rdPartyCookies", tableName: "BraveShared", bundle: .module, value: "Block 3rd party cookies", comment: "cookie settings option")
   public static let blockAllCookies = NSLocalizedString("BlockAllCookies", tableName: "BraveShared", bundle: .module, value: "Block all Cookies", comment: "Title for setting to block all website cookies.")
   public static let blockAllCookiesAction = NSLocalizedString("BlockAllCookiesAction", tableName: "BraveShared", bundle: .module, value: "Block All", comment: "block all cookies settings action title")

@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "添加反馈";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "在網址列顯示自動完成建議";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "新对话的默认模型";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo 是采用 AI 技术的智慧助理，内置于浏览器中。";
@@ -54,7 +56,7 @@
 "aichat.chatIntroWebsiteHelpTitle" = "需要网站帮助？";
 
 /* The title for the chat section in the menu */
-"aichat.chatMenuSectionTitle" = "对话";
+"aichat.chatMenuSectionTitle" = "会话";
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "对话时间太长，无法继续。\n为了让 Leo 能够在较长时间的对话中保持准确性，可以尝试其他模型。";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "其他";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo 高级版提供更丰富的语言模型和更高的回答准确性。[了解更多](https://brave.com/) - [关闭](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -226,7 +227,7 @@
 "aichat.paywallYearlySubscriptionTitle" = "一年";
 
 /* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "高级版";
+"aichat.premiumNavigationBarBadgeTitle" = "高级";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "高级版订阅";
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "重試";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave 不会存储或分享你的语音搜索。";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "建议问题…";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "我理解";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo 是一个私密的人工智能助手，可以增强您对互联网的使用体验。Leo 的基础版是免费的，但功能有限。Brave Leo 高级版提供更多模型、更少限制，并为订阅用户提供新功能的早期访问权限。当前所有用户的默认模型是 Mixtral 8x7B。请参阅 **[Brave 维基](%1$@)** 获取更多详细信息。\n\n默认情况下，当您向 Leo 提问时，它可能会向 Brave Leo 发送并使用您当前浏览的网页内容或您在页面上突出显示的任何文本，以获取回应。回答的准确性不能保证，可能包含不准确、误导或虚假的信息。Leo 使用来自 Brave Search 的数据来提高回答的质量。请不要提交敏感或私人信息，并谨慎对待与健康、财务、个人安全或类似问题相关的任何答案。您可以随时在设定中调整 Leo 的选项。前往设定 Leo。\n\nLeo 不会收集与您相关联的标识符，例如您的 IP 地址。没有数据被用于训练 AI 模型，AI 模型也不会保留个人数据（除了 Anthropic 在删除之前会保留 30 天的数据）。请查看 **[隐私政策](%2$@)** 以获取更多信息。";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "与 Brave Leo 私密聊天";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */

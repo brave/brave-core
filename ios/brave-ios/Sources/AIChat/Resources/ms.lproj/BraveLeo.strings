@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Tambah Maklum Balas";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "Tunjukkan cadangan autolengkap dalam bar alamat";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Model lalai untuk perbualan baharu";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo ialah pembantu pintar yang dikuasakan oleh AI. Terbina terus dalam pelayar.";
@@ -18,7 +20,7 @@
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Tamat tempoh";
 
 /* The title for the header for subscription details */
-"aichat.advancedSettingsSubscriptionHeaderTitle" = "LANGGANAN";
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Langganan";
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Status";
@@ -54,7 +56,7 @@
 "aichat.chatIntroWebsiteHelpTitle" = "Perlukan bantuan berkenaan dengan laman web?";
 
 /* The title for the chat section in the menu */
-"aichat.chatMenuSectionTitle" = "SEMBANG";
+"aichat.chatMenuSectionTitle" = "Sembang";
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Perbualan ini terlalu panjang dan tidak boleh diteruskan.\nMungkin terdapat model lain tersedia untuk digunakan yang mampu Leo kekalkan ketepatan untuk perbualan yang lebih panjang.";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Lain";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium menyediakan akses kepada set model bahasa yang luas untuk nuansa jawapan yang lebih hebat. [Ketahui lebih lanjut](https://brave.com/) - [Ketepikan](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -88,7 +89,7 @@
 "aichat.feedbackSubmittedTitle" = "Maklum balas berjaya dihantar";
 
 /* The title for feedback view when response is sucessfull but disliked */
-"aichat.feedbackSuccessAnswerDisLikedTitle" = "Jawapan Tidak Disukai";
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Jawapan tidak disukai";
 
 /* The title for feedback view when response is sucessfull also liked */
 "aichat.feedbackSuccessAnswerLikedTitle" = "Jawapan Disukai";
@@ -226,7 +227,7 @@
 "aichat.paywallYearlySubscriptionTitle" = "Satu Tahun";
 
 /* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "PREMIUM";
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Langganan Premium";
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "Cuba semula";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave tidak menyimpan atau mengongsikan carian suara anda.";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Cadangkan soalan...";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "Saya Faham";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo ialah pembantu pintar AI peribadi yang meningkatkan penggunaan Internet anda. Leo boleh digunakan secara percuma dengan akses terhad. Brave Leo Premium menawarkan lebih banyak model, had lebih tinggi dan memberi pelanggan akses awal kepada ciri baharu. Model lalai untuk semua pengguna ialah Mixtral 8x7B buat masa ini. Lihat **[Brave wiki](%1$@)** untuk mendapatkan butiran lanjut.\n\nSecara lalai, jika anda mengajukan soalan kepada Leo, ia boleh menghantar dan menggunakan kandungan laman web yang sedang anda layari atau sebarang teks yang anda serlahkan pada suatu halaman kepada Brave Leo untuk memberikan jawapan. Ketepatan jawapan tidak dapat dijamin, dan mungkin termasuk maklumat tidak tepat, mengelirukan atau palsu. Leo menggunakan data daripada Brave Search untuk meningkatkan kualiti jawapan. Jangan serahkan maklumat sensitif atau peribadi, dan berhati-hati dengan sebarang jawapan yang berkaitan dengan kesihatan, kewangan, keselamatan diri, atau seumpamanya. Anda boleh melaraskan pilihan Leo dalam Tetapan pada bila-bila masa. Layari Tetapan Leo.\n\nLeo tidak mengumpulkan pengecam seperti alamat IP anda yang boleh dikaitkan dengan anda. Tiada data digunakan untuk melatih model AI dan tiada data peribadi disimpan oleh model AI (kecuali untuk Anthropic yang menyimpan data selama 30 hari sebelum memadamnya). Lihat **[dasar privasi](%2$@)** untuk mendapatkan maklumat lanjut.";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Bersembang secara Tertutup dengan Brave Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
