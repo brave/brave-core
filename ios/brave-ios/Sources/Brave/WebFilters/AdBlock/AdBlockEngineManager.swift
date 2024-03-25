@@ -105,9 +105,9 @@ import os
 
   /// Checks to see if we need to compile or recompile the engine based on the available info
   func checkNeedsCompile() -> Bool {
-    guard let engine = engine else { return true }
     let compilableInfos = compilableFiles.map({ $0.filterListInfo })
     guard !compilableInfos.isEmpty else { return false }
+    guard let engine = engine else { return true }
     return compilableInfos != engine.group.infos
   }
 
@@ -117,9 +117,9 @@ import os
   }
 
   /// Load the engine from cache so it can be ready during launch
-  func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async {
+  func loadFromCache(resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?) async -> Bool {
     do {
-      guard let cachedGroupInfo = loadCachedInfo() else { return }
+      guard let cachedGroupInfo = loadCachedInfo() else { return false }
       let engineType = self.engineType
       let groupedEngine = try await Task.detached(priority: .high) {
         let engine = try GroupedAdBlockEngine.compile(
@@ -135,10 +135,13 @@ import os
       }.value
 
       self.set(engine: groupedEngine)
+      return true
     } catch {
       ContentBlockerManager.log.error(
         "Failed to load engine from cache for `\(self.cacheFolderName)`: \(String(describing: error))"
       )
+
+      return false
     }
   }
 
@@ -192,8 +195,10 @@ import os
 
   private func set(engine: GroupedAdBlockEngine) {
     let infosString = engine.group.infos.map({ " \($0.debugDescription)" }).joined(separator: "\n")
+    let fileTypeString = engine.group.fileType.debugDescription
+    let count = engine.group.infos.count
     ContentBlockerManager.log.debug(
-      "Set `\(self.cacheFolderName)` (\(engine.group.fileType.debugDescription)) engine from \(engine.group.infos.count) sources:\n\(infosString)"
+      "Set `\(self.cacheFolderName)` (\(fileTypeString)) engine from \(count) sources:\n\(infosString)"
     )
     self.engine = engine
   }

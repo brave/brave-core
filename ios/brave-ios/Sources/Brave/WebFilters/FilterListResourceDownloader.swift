@@ -85,20 +85,14 @@ public actor FilterListResourceDownloader {
     folderURL: URL,
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
-    let version = folderURL.lastPathComponent
-    let localFileURL = folderURL.appendingPathComponent("list.txt")
-
-    guard FileManager.default.fileExists(atPath: localFileURL.relativePath) else {
-      // We are loading the old component from cache. We don't want this file to be loaded.
-      // When we download the new component shortly we will update our cache.
-      // This should only trigger after an app update and eventually this check can be removed.
+    guard
+      let fileInfo = await AdBlockGroupsManager.fileInfo(
+        for: source,
+        folderURL: folderURL
+      )
+    else {
       return
     }
-
-    let fileInfo = AdBlockEngineManager.FileInfo(
-      filterListInfo: GroupedAdBlockEngine.FilterListInfo(source: source, version: version),
-      localFileURL: localFileURL
-    )
 
     await AdBlockGroupsManager.shared.updated(
       fileInfo: fileInfo,

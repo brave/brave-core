@@ -60,7 +60,51 @@ import os
 
   func loadEngineFromCache(for engineType: GroupedAdBlockEngine.EngineType) async {
     let manager = getManager(for: engineType)
-    await manager.loadFromCache(resourcesInfo: resourcesInfo)
+
+    if await !manager.loadFromCache(resourcesInfo: self.resourcesInfo) {
+      // If we didn't load the main engine from cache we need to load using the old cache mechanism
+      // This is only temporary so we're not left with no ad-block during the upgrade.
+      // We can drop all of this in future upgrades as by then we will have files cached in the new format
+      for setting in FilterListStorage.shared.allFilterListSettings
+        .filter({ $0.isAlwaysAggressive == engineType.isAlwaysAggressive })
+        .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
+      {
+        guard let folderURL = setting.folderURL else { continue }
+        guard let source = setting.engineSource else { continue }
+        guard let fileInfo = Self.fileInfo(for: source, folderURL: folderURL) else { continue }
+        manager.add(fileInfo: fileInfo)
+      }
+
+      if manager.checkNeedsCompile() {
+        do {
+          try await manager.compileAvailable(resourcesInfo: self.resourcesInfo)
+        } catch {
+
+        }
+      }
+    }
+  }
+
+  static func fileInfo(
+    for source: GroupedAdBlockEngine.Source,
+    folderURL: URL
+  ) -> AdBlockEngineManager.FileInfo? {
+    let version = folderURL.lastPathComponent
+    let localFileURL = folderURL.appendingPathComponent("list.txt")
+
+    guard FileManager.default.fileExists(atPath: localFileURL.relativePath) else {
+      // We are loading the old component from cache. We don't want this file to be loaded.
+      // When we download the new component shortly we will update our cache.
+      // This should only trigger after an app update and eventually this check can be removed.
+      return nil
+    }
+
+    let filterListInfo = GroupedAdBlockEngine.FilterListInfo(
+      source: source,
+      version: version
+    )
+
+    return AdBlockEngineManager.FileInfo(filterListInfo: filterListInfo, localFileURL: localFileURL)
   }
 
   /// Inform this manager of updates to the resources so our engines can be updated
