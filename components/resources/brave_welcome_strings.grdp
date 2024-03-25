@@ -5,7 +5,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_DESC" desc="A subtitle for screen on the first step of welcome page">
-  Get Brave protection on every link you click. Just set Brave as default and browse. Privately.
+  Get Ping protection on every link you click. Just set Ping as default and browse. Privately.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_IMPORT_SETTINGS_TITLE" desc="A title for screen to select browser">
@@ -49,7 +49,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SET_DEFAULT_BUTTON_LABEL" desc="A button that sets Brave browser as default">
-  Set Brave as default browser
+  Set Ping as default browser
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SELECT_ALL_BUTTON_LABEL" desc="A button label to select all profiles">
@@ -57,7 +57,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_HELP_IMPROVE_BRAVE_TITLE" desc="A title for screen that asks user to opt-in for analytics and reports">
-  Help make Brave better.
+  Help make Ping better.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_REPORTS_LABEL" desc="A checkbox label for user to opt-in opt-out to send diagnostic reports">
@@ -65,7 +65,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SEND_INSIGHTS_LABEL" desc="A checkbox label for user to opt-in opt-out to share anonymous, product insights information">
-  Share completely private and anonymous product insights about what features are being used by Brave's users. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$2</ph>
+  Share completely private and anonymous product insights about what features are being used by Ping's users. <ph name="LINK_BEFORE">$1</ph>Learn more.<ph name="LINK_AFTER">$2</ph>
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SETUP_COMPLETE_LABEL" desc="A title for screen when user has completed all the steps">
@@ -73,7 +73,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_CHANGE_SETTINGS_NOTE" desc="A footnote with a link to change settings.">
-  Change these choices at any time in Brave at <ph name="LINK_BEFORE1">$1</ph>brave://settings/privacy<ph name="LINK_AFTER2">$2</ph>.
+  Change these choices at any time in Ping at <ph name="LINK_BEFORE1">$1</ph>ping://settings/privacy<ph name="LINK_AFTER2">$2</ph>.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_PRIVACY_POLICY_NOTE" desc="A footnote with a link to Brave's privacy polcy.">
@@ -85,7 +85,7 @@
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SELECT_THEME_NOTE" desc="A note for user to change theme in settings">
-  You can change this at any time in Brave settings.
+  You can change this at any time in Ping settings.
 </message>
 
 <message name="IDS_BRAVE_WELCOME_SELECT_THEME_SYSTEM_LABEL" desc="A label to match system setting">
