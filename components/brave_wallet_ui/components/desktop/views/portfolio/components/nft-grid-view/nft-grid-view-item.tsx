@@ -9,6 +9,9 @@ import { skipToken } from '@reduxjs/toolkit/query'
 
 // Types
 import { BraveWallet } from '../../../../../../constants/types'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../../../common/constants/local-storage-keys'
 
 // hooks
 import {
@@ -17,13 +20,12 @@ import {
   useUpdateNftSpamStatusMutation,
   useUpdateUserAssetVisibleMutation
 } from '../../../../../../common/slices/api.slice'
+import {
+  useSyncedLocalStorage //
+} from '../../../../../../common/hooks/use_local_storage'
 
 // actions
 import { WalletActions } from '../../../../../../common/actions'
-
-// selectors
-import { useSafeWalletSelector } from '../../../../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../../../../common/selectors'
 
 // Utils
 import { stripERC20TokenImageURL } from '../../../../../../utils/string-utils'
@@ -64,8 +66,9 @@ export const NFTGridViewItem = (props: Props) => {
     React.useState<boolean>(false)
 
   // redux
-  const showNetworkLogoOnNfts = useSafeWalletSelector(
-    WalletSelectors.showNetworkLogoOnNfts
+  const [showNetworkLogoOnNfts] = useSyncedLocalStorage<boolean>(
+    LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS,
+    false
   )
 
   // state

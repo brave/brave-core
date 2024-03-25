@@ -25,17 +25,11 @@ export const {
   setAssetAutoDiscoveryCompleted,
   setPasswordAttempts,
   setSelectedAccountFilterItem,
-  setSelectedAssetFilterItem,
-  setSelectedGroupAssetsByItem,
   setSelectedNetworkFilter,
   unlocked,
   setHidePortfolioGraph,
   setHidePortfolioBalances,
   setHidePortfolioNFTsTab,
-  setFilteredOutPortfolioNetworkKeys,
-  setFilteredOutPortfolioAccountIds,
-  setHidePortfolioSmallBalances,
-  setShowNetworkLogoOnNfts,
   setIsRefreshingNetworksAndTokens,
   setAllowedNewWalletAccountTypeNetworkIds
 } = WalletActions

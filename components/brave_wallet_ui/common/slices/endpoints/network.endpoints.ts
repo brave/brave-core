@@ -20,9 +20,9 @@ import { getEntitiesListFromEntityState } from '../../../utils/entities.utils'
 import { LOCAL_STORAGE_KEYS } from '../../constants/local-storage-keys'
 import {
   makeInitialFilteredOutNetworkKeys,
-  parseJSONFromLocalStorage
+  parseJSONFromLocalStorage,
+  setLocalStorageItem
 } from '../../../utils/local-storage-utils'
-import { WalletActions } from '../wallet.slice'
 
 export const NETWORK_TAG_IDS = {
   REGISTRY: 'REGISTRY',
@@ -269,16 +269,9 @@ export const networkEndpoints = ({
                   : currentFilteredOutNetworkKeys.concat(networkKey)
 
               // Update filtered-out network keys in Local Storage
-              window.localStorage.setItem(
+              setLocalStorageItem(
                 LOCAL_STORAGE_KEYS.FILTERED_OUT_PORTFOLIO_NETWORK_KEYS,
                 JSON.stringify(newFilteredOutNetworkKeys)
-              )
-
-              // Update Filtered Out Network Keys in Redux
-              dispatch(
-                WalletActions.setFilteredOutPortfolioNetworkKeys(
-                  newFilteredOutNetworkKeys
-                )
               )
 
               if (!success) {

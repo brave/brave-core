@@ -24,14 +24,6 @@ export const hidePortfolioBalances = ({ wallet }: State) =>
   wallet.hidePortfolioBalances
 export const hidePortfolioNFTsTab = ({ wallet }: State) =>
   wallet.hidePortfolioNFTsTab
-export const filteredOutPortfolioNetworkKeys = ({ wallet }: State) =>
-  wallet.filteredOutPortfolioNetworkKeys
-export const filteredOutPortfolioAccountIds = ({ wallet }: State) =>
-  wallet.filteredOutPortfolioAccountIds
-export const hidePortfolioSmallBalances = ({ wallet }: State) =>
-  wallet.hidePortfolioSmallBalances
-export const showNetworkLogoOnNfts = ({ wallet }: State) =>
-  wallet.showNetworkLogoOnNfts
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
@@ -40,10 +32,6 @@ export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const selectedAssetFilter = ({ wallet }: State) =>
-  wallet.selectedAssetFilter
-export const selectedGroupAssetsByItem = ({ wallet }: State) =>
-  wallet.selectedGroupAssetsByItem
 export const selectedNetworkFilter = ({ wallet }: State) =>
   wallet.selectedNetworkFilter
 export const selectedAccountFilter = ({ wallet }: State) =>

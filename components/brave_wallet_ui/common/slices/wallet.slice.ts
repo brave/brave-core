@@ -24,14 +24,9 @@ import {
 import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
-import {
-  parseJSONFromLocalStorage,
-  makeInitialFilteredOutNetworkKeys
-} from '../../utils/local-storage-utils'
+import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
 
 // Options
-import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
-import { NoneGroupByOption } from '../../options/group-assets-by-options'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 
@@ -51,13 +46,6 @@ const defaultState: WalletState = {
     'PORTFOLIO_NETWORK_FILTER_OPTION',
     AllNetworksOptionDefault
   ),
-  selectedAssetFilter:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.PORTFOLIO_ASSET_FILTER_OPTION
-    ) || HighToLowAssetsFilterOption.id,
-  selectedGroupAssetsByItem:
-    window.localStorage.getItem(LOCAL_STORAGE_KEYS.GROUP_PORTFOLIO_ASSETS_BY) ||
-    NoneGroupByOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
@@ -73,22 +61,6 @@ const defaultState: WalletState = {
   hidePortfolioNFTsTab:
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
     'true',
-  filteredOutPortfolioNetworkKeys: parseJSONFromLocalStorage(
-    'FILTERED_OUT_PORTFOLIO_NETWORK_KEYS',
-    makeInitialFilteredOutNetworkKeys()
-  ),
-  filteredOutPortfolioAccountIds: parseJSONFromLocalStorage(
-    'FILTERED_OUT_PORTFOLIO_ACCOUNT_IDS',
-    []
-  ),
-  hidePortfolioSmallBalances:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES
-    ) === 'true',
-  showNetworkLogoOnNfts:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.SHOW_NETWORK_LOGO_ON_NFTS
-    ) === 'true',
   isRefreshingNetworksAndTokens: false
 }
 
@@ -168,53 +140,11 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         state.passwordAttempts = payload
       },
 
-      setSelectedAssetFilterItem(
-        state: WalletState,
-        { payload }: PayloadAction<string>
-      ) {
-        state.selectedAssetFilter = payload
-      },
-
-      setSelectedGroupAssetsByItem(
-        state: WalletState,
-        { payload }: PayloadAction<string>
-      ) {
-        state.selectedGroupAssetsByItem = payload
-      },
-
       setHidePortfolioGraph(
         state: WalletState,
         { payload }: PayloadAction<boolean>
       ) {
         state.hidePortfolioGraph = payload
-      },
-
-      setFilteredOutPortfolioNetworkKeys(
-        state: WalletState,
-        { payload }: PayloadAction<string[]>
-      ) {
-        state.filteredOutPortfolioNetworkKeys = payload
-      },
-
-      setFilteredOutPortfolioAccountIds(
-        state: WalletState,
-        { payload }: PayloadAction<string[]>
-      ) {
-        state.filteredOutPortfolioAccountIds = payload
-      },
-
-      setHidePortfolioSmallBalances(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.hidePortfolioSmallBalances = payload
-      },
-
-      setShowNetworkLogoOnNfts(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.showNetworkLogoOnNfts = payload
       },
 
       setHidePortfolioBalances(

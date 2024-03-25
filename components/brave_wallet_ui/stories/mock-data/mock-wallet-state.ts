@@ -6,9 +6,7 @@
 // types
 import { BraveWallet, WalletState } from '../../constants/types'
 import { AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { HighToLowAssetsFilterOption } from '../../options/asset-filter-options'
 import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
-import { AccountsGroupByOption } from '../../options/group-assets-by-options'
 
 // mocks
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
@@ -60,7 +58,6 @@ export const mockWalletState: WalletState = {
   isWalletCreated: false,
   isWalletLocked: false,
   selectedNetworkFilter: AllNetworksOptionDefault,
-  selectedAssetFilter: HighToLowAssetsFilterOption.id,
   selectedAccountFilter: AllAccountsOptionUniqueKey,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
@@ -68,10 +65,5 @@ export const mockWalletState: WalletState = {
   hidePortfolioBalances: false,
   hidePortfolioGraph: false,
   hidePortfolioNFTsTab: false,
-  filteredOutPortfolioNetworkKeys: [],
-  filteredOutPortfolioAccountIds: [],
-  hidePortfolioSmallBalances: false,
-  selectedGroupAssetsByItem: AccountsGroupByOption.id,
-  showNetworkLogoOnNfts: false,
   isRefreshingNetworksAndTokens: false
 }
