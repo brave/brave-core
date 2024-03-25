@@ -41,6 +41,10 @@ export function useLocalStorage<T>(
         return options.serializer(value)
       }
 
+      if (typeof value === 'string') {
+        return value
+      }
+
       return JSON.stringify(value)
     },
     [options]
@@ -58,6 +62,10 @@ export function useLocalStorage<T>(
 
       const defaultValue =
         initialValue instanceof Function ? initialValue() : initialValue
+
+      if (typeof defaultValue === 'string' && typeof value === 'string') {
+        return value as T
+      }
 
       let parsed: unknown
       try {

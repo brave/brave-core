@@ -37,7 +37,9 @@ import {
   useLocalStorage,
   useSyncedLocalStorage
 } from '../../../../common/hooks/use_local_storage'
-import { makeInitialFilteredOutNetworkKeys } from '../../../../utils/local-storage-utils'
+import {
+  makeInitialFilteredOutNetworkKeys //
+} from '../../../../utils/local-storage-utils'
 
 // Components
 import { PopupModal } from '../../popup-modals/index'
