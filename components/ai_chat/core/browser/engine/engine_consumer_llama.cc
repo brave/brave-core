@@ -285,9 +285,9 @@ std::string BuildLlamaPrompt(
       is_mixtral);
 
   if (!is_mixtral) {
-      // Trimming recommended by Meta
-      // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
-      prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
+    // Trimming recommended by Meta
+    // https://huggingface.co/meta-llama/Llama-2-13b-chat#intended-use
+    prompt = base::TrimWhitespaceASCII(prompt, base::TRIM_ALL);
   }
   return prompt;
 }

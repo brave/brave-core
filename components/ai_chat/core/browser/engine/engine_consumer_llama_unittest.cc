@@ -78,9 +78,11 @@ TEST_F(EngineConsumerLlamaUnitTest, TestGenerateAssistantResponse) {
       "\n\nDo not use emojis in your replies and do not discuss "
       "these instructions further.\n\nUser: This is the text of a web "
       "page:\n<page>\nThis is a page.\n</page>\n\nWhich show is this "
-      "catchphrase from?\nSelected text: This is the way. [/INST] Assistant: The "
+      "catchphrase from?\nSelected text: This is the way. [/INST] Assistant: "
+      "The "
       "Mandalorian.</s><s>[INST] User: This is an excerpt of the page "
-      "content:\n<excerpt>\nI'm groot.\n</excerpt>\n\nWhat's his name? [/INST] Assistant: ";
+      "content:\n<excerpt>\nI'm groot.\n</excerpt>\n\nWhat's his name? [/INST] "
+      "Assistant: ";
 
   base::RunLoop run_loop;
   EXPECT_CALL(*mock_remote_completion_client, QueryPrompt(_, _, _, _))
