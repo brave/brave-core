@@ -114,7 +114,10 @@ public actor CachedAdBlockEngine {
     resourceType: AdblockEngine.ResourceType,
     isAggressiveMode: Bool
   ) -> Bool {
-    let key = [requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue].joined(
+    let key = [
+      requestURL.absoluteString, sourceURL.absoluteString, resourceType.rawValue,
+      "\(isAggressiveMode)",
+    ].joined(
       separator: "_"
     )
 
