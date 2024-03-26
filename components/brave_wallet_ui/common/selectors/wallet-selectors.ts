@@ -18,8 +18,6 @@ export const assetAutoDiscoveryCompleted = ({ wallet }: State) =>
   wallet.assetAutoDiscoveryCompleted
 export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
   wallet.isNftPinningFeatureEnabled
-export const hidePortfolioGraph = ({ wallet }: State) =>
-  wallet.hidePortfolioGraph
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
 export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>

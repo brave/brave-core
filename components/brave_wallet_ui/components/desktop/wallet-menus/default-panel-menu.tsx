@@ -5,12 +5,7 @@
 
 import * as React from 'react'
 import { useLocation, useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import Toggle from '@brave/leo/react/toggle'
-
-// Selectors
-import { useSafeWalletSelector } from '../../../common/hooks/use-safe-selector'
-import { WalletSelectors } from '../../../common/selectors'
 
 // Types
 import {
@@ -23,9 +18,6 @@ import {
 import {
   LOCAL_STORAGE_KEYS //
 } from '../../../common/constants/local-storage-keys'
-
-// actions
-import { WalletActions } from '../../../common/actions'
 
 // Options
 import { CreateAccountOptions } from '../../../options/nav-options'
@@ -68,13 +60,9 @@ export const DefaultPanelMenu = (props: Props) => {
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
     false
   )
-
-  // redux
-  const dispatch = useDispatch()
-
-  // selectors
-  const hidePortfolioGraph = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioGraph
+  const [hidePortfolioGraph, setHidePortfolioGraph] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+    false
   )
 
   // queries
@@ -129,12 +117,8 @@ export const DefaultPanelMenu = (props: Props) => {
 
   // Methods
   const onToggleHideGraph = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
-      hidePortfolioGraph ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioGraph(!hidePortfolioGraph))
-  }, [dispatch, hidePortfolioGraph])
+    setHidePortfolioGraph((prev) => !prev)
+  }, [setHidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
     setHidePortfolioBalances((prev) => !prev)

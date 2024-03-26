@@ -11,11 +11,10 @@ import { Route, Switch, Redirect } from 'react-router-dom'
 
 // selectors
 import {
-  useSafeWalletSelector,
   useUnsafePageSelector,
   useSafeUISelector
 } from '../../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../../common/selectors'
+import { UISelectors } from '../../../../common/selectors'
 import { PageSelectors } from '../../../../page/selectors'
 
 // hooks
@@ -148,13 +147,14 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
     false
   )
+  const [hidePortfolioGraph] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN,
+    false
+  )
 
   // redux
   const dispatch = useDispatch()
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
-  const hidePortfolioGraph = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioGraph
-  )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 
   // queries

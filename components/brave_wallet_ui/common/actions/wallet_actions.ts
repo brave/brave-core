@@ -27,7 +27,6 @@ export const {
   setSelectedAccountFilterItem,
   setSelectedNetworkFilter,
   unlocked,
-  setHidePortfolioGraph,
   setIsRefreshingNetworksAndTokens,
   setAllowedNewWalletAccountTypeNetworkIds
 } = WalletActions
