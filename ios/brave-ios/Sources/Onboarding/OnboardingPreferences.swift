@@ -51,6 +51,12 @@ extension Preferences {
       key: "focus.onboarding.url-bar-indicator",
       default: false
     )
+
+    /// The Bool determining onboarding finished fully
+    public static let focusOnboardingFinished = Option<Bool>(
+      key: "focus.onboarding.onboarding-finished",
+      default: false
+    )
   }
 }
 

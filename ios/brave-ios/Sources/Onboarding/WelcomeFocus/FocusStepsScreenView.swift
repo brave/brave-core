@@ -123,6 +123,7 @@ struct FocusStepsView: View {
         if shouldDismiss {
           Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
           Preferences.AppState.shouldDeferPromotedPurchase.value = false
+          Preferences.FocusOnboarding.focusOnboardingFinished.value = true
 
           dismiss()
         }
