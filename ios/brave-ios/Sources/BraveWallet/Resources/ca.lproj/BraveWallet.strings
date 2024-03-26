@@ -25,6 +25,9 @@
 /* A button title to trigger deleting a secondary account */
 "wallet.accountRemoveButtonTitle" = "Suprimir el compte";
 
+/* The description used below Security title in the row opening DApp settings in Account Details. */
+"wallet.accountSecurityDescription" = "Llocs web connectats i prestacions";
+
 /* The title of the accounts page in the Crypto tab */
 "wallet.accountsPageTitle" = "Comptes";
 
@@ -121,8 +124,14 @@
 /* A subtitle on the asset details screen that uses the name and symbol. Example: Basic Attention Token Price (BAT) */
 "wallet.assetDetailSubtitle" = "%1$@ Preu (%2$@)";
 
+/* The description of the assets row in Account Details when user has zero or multiple Assets. */
+"wallet.assetsDescription" = "%d actius";
+
 /* The text displayed when a user uses a query to search for assets that yields no results */
 "wallet.assetSearchEmpty" = "No s'han trobat actius";
+
+/* The description of the assets row in Account Details when user has 1 Asset. */
+"wallet.assetsSingularDescription" = "%d actiu";
 
 /* The title which is displayed above a list of assets/tokens */
 "wallet.assetsTitle" = "Actius";
@@ -550,6 +559,9 @@
 /* A button title which when pressed displays a new screen with additional details/information */
 "wallet.detailsButtonTitle" = "Detalls";
 
+/* A button title displayed under a Gas Fee title that allows the user to adjust the gas fee/transactions priority, on accounts tab for editing an account name, etc. */
+"wallet.editButtonTitle" = "Edita";
+
 /* The title of form for users to edit an existed custom network. */
 "wallet.editfCustomNetworkTitle" = "Edita la xarxa";
 
@@ -682,6 +694,12 @@
 /* A placeholder for the text field that users will input the custom token symbol */
 "wallet.enterTokenSymbol" = "Introdueix el símbol del token";
 
+/* A description of an Ethereum account, displayed in Accounts tab. */
+"wallet.ethAccountDescription" = "Ethereum + EVM Chains";
+
+/* A button title displayed in a menu to export an account's private key. */
+"wallet.exportButtonTitle" = "Exportar";
+
 /* The title of an alert when the custom network the user attempted to add fails for some reason */
 "wallet.failedToAddCustomNetworkErrorTitle" = "No s'ha pogut afegir la xarxa.";
 
@@ -708,6 +726,9 @@
 
 /* A title of a button which will a new view to display the error. */
 "wallet.failedTransactionViewErrorButtonTitle" = "Visualitza l'error";
+
+/* A description of an Filecoin account, displayed in Accounts tab. */
+"wallet.filAccountDescription" = "Filecoin";
 
 /* The title of the modal for filtering Portfolio and NFT views. */
 "wallet.filtersAndDisplaySettings" = "Configuració de filtres i visualització";
@@ -804,6 +825,9 @@
 
 /* A button title that when tapped will display a file import dialog */
 "wallet.importButtonTitle" = "Importa...";
+
+/* A title above a list of crypto accounts that are imported */
+"wallet.importedCryptoAccountsTitle" = "Comptes importats";
 
 /* A placeholder on a text box for entering the users private key to import accounts */
 "wallet.importNonEthAccountPlaceholder" = "Introdueix o enganxa la teva clau privada.";
@@ -1057,8 +1081,14 @@
 /* The title of the alert when user attempts to remove an NFT from wallet. */
 "wallet.nftRemoveFromWalletAlertTitle" = "Vols suprimir la Cartera de Brave?";
 
+/* The description of the NFTs row in Account Details when user has zero or multiple NFTs. */
+"wallet.nftsDescription" = "%d NFT";
+
 /* The title of an overlay on top left of the junk NFT grid. */
 "wallet.nftSpam" = "Brossa";
+
+/* The description of the NFTs row in Account Details when user has 1 NFT. */
+"wallet.nftsSingularDescription" = "%d NFT";
 
 /* The title of the settings option inside the menu when user clicks the three dots button beside assets search button with Portfolio tab open. */
 "wallet.nftsTab" = "Pestanya d'NFTs";
@@ -1263,6 +1293,9 @@
 
 /* The title of the view shown when a security issue is detected with a Sign In With Ethereum request. */
 "wallet.securityRiskDetectedTitle" = "Risc de seguretat detectat";
+
+/* The title used in the row opening DApp settings in Account Details. */
+"wallet.securityTitle" = "Seguretat";
 
 /* The title of the button to show details. */
 "wallet.seeDetailsButtonTitle" = "Mostra els detalls";
@@ -1533,6 +1566,9 @@
 
 /* Title displayed when users chose Brave to ask them if they want the SNS to be resolved every time they enter one. */
 "wallet.snsDomainInterstitialPageTitle" = "Vols habilitar el suport del Servei de Nom de Solana (SNS) a Brave?";
+
+/* A description of an Solana account, displayed in Accounts tab. */
+"wallet.solAccountDescription" = "Solana + SVM Chains";
 
 /* The title displayed above the System Program AdvanceNonceAccount instruction type for Solana Instruction details. */
 "wallet.solanaAdvanceNonceAccountInstructionName" = "Compte nonce avançat";
@@ -1837,8 +1873,14 @@
 /* A VoiceOver label that will be read out when a user focuses a transactions \"from address\" and \"to address\" labels. \"%@\" will be replaced with either an account name or a truncated ethereum address such as \"Account 1\" or \"0x1234***3003\" */
 "wallet.transactionFromToAccessibilityLabel" = "Des de: %1$@. A: %2$@";
 
+/* The description of the transactions row in Account Details when user has zero or multiple Transactions. */
+"wallet.transactionsDescription" = "%d transaccions";
+
 /* A title shown for a send transaction. The first '%@' becomes the  amount, the second '%@' becomes the symbol for the cryptocurrency and the last '%@' becomes the fiat amount. For example: \"Sent 0.0054 ETH ($22.44)\" */
 "wallet.transactionSendTitle" = "Enviat %1$@ %2$@ (%3$@)";
+
+/* The description of the transactions row in Account Details when user has 1 Transaction. */
+"wallet.transactionsSingularDescription" = "%d transacció";
 
 /* A status that explains that the transaction has been approved by the user */
 "wallet.transactionStatusApproved" = "Aprovat";
@@ -2039,7 +2081,7 @@
 "wallet.web3PreferencesSectionTitle" = "Preferències de Web3";
 
 /* The title of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
-"wallet.web3SettingsEnableNFTDiscovery" = "Activa la detecció de NFT";
+"wallet.web3SettingsEnableNFTDiscovery" = "Activa NFT Discovery";
 
 /* The footer of the toggle for user to enable/disable NFT discovery inside Web3 settings. */
 "wallet.web3SettingsEnableNFTDiscoveryFooter" = "Afegeix automàticament els NFT que tens a la cartera mitjançant API de tercers. [Saber més](%@)";

@@ -166,7 +166,10 @@
 /* No comment provided by engineer. */
 "BraveRewardsOpen" = "Obre";
 
-/* Brave Rewards settings title */
+/* Brave Rewards title in settings */
+"BraveRewardsSettingsTitle" = "Recompenses";
+
+/* Brave Rewards title */
 "BraveRewardsTitle" = "Recompenses de Brave";
 
 /* Brave Search Banner Promotion description content in Search Suggestions */
@@ -192,6 +195,9 @@
 
 /* No comment provided by engineer. */
 "BraveShieldsAndPrivacy" = "Privacitat i Escuts de Brave";
+
+/* No comment provided by engineer. */
+"BraveShieldsAndPrivacyTitle" = "Escuts i privacitat";
 
 /* The number of ads and trackers blocked will be next to this */
 "BraveShieldsBlockedCountLabel" = "Anuncis i altres coses estranyes bloquejats";
@@ -944,6 +950,9 @@
 /* No comment provided by engineer. */
 "learnMore" = "Saber més";
 
+/* Title for Brave Leo menu item. Brave Leo is the name of a product and should not be translated */
+"LeoMenuItem" = "Leo";
+
 /* The message displayed in alert when a login entry deleted */
 "login.loginEntryDeleteAlertMessage" = "L'inici de sessió desat s'eliminarà permanentment.";
 
@@ -1408,6 +1417,9 @@
 
 /* Button title to that opens a website. */
 "OpenWebsite" = "Obre lloc web";
+
+/* The subtitle description of menu item Brave Leo. Brave Leo is the name of a product and should not be translated. */
+"optionsMenu.braveLeoItemDescription" = "Leo és un assistent intel·ligent amb IA, integrat en el navegador";
 
 /* The subtitle description of menu item Brave News */
 "optionsMenu.braveNewsItemDescription" = "Les notícies principals d'avui en un canal de notícies privat";
@@ -3371,6 +3383,9 @@
 /* The name of the feature */
 "today.braveToday" = "Notícies de Brave";
 
+/* The name of the feature in settings */
+"today.braveToday.title" = "Notícies";
+
 /* Shown below 'Channels' explaining what will be shown when tapping on it. */
 "today.channelsButtonSubtitle" = "Segueix els temes que t'interessen";
 
@@ -3574,9 +3589,6 @@
 
 /* Disclaimer for screen to search using voice. */
 "voice.search.screen.disclaimer" = "Brave no emmagatzema ni comparteix les teves cerques per veu.";
-
-/* Title for screen to search using voice. */
-"voice.search.screenn.title" = "Cerca per veu";
 
 /* The button text that starts the subscription action */
 "vpn.activateSubscriptionAction" = "activa";
