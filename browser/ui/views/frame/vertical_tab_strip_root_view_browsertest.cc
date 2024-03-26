@@ -62,17 +62,37 @@ class VerticalTabStripRootViewBrowserTest : public InProcessBrowserTest {
     }
     return nullptr;
   }
+
+  void StartAndFinishDrag(const ui::OSExchangeData& data,
+                          const gfx::Point& location,
+                          ui::mojom::DragOperation& out_drag_op) {
+    ui::DropTargetEvent event(data, gfx::PointF(location),
+                              gfx::PointF(location),
+                              ui::DragDropTypes::DRAG_COPY);
+    VerticalTabStripRootView* root_view = vtab_strip_root_view();
+    EXPECT_NE(nullptr, root_view);
+
+    base::RunLoop run_loop;
+    root_view->SetOnFilteringCompleteClosureForTesting(run_loop.QuitClosure());
+    root_view->OnDragEntered(event);
+
+    // At this point, the drag information will have been set, and a background
+    // task will have been posted to process the dragged URLs
+    // (`GetURLMimeTypes()` -> `FilterURLs()`). Ensure that all background
+    // processing is complete before checking the drag operation or invoking the
+    // drag callback.
+    run_loop.Run();
+
+    EXPECT_NE(ui::DragDropTypes::DRAG_NONE, root_view->OnDragUpdated(event));
+
+    auto drop_cb = root_view->GetDropCallback(event);
+    std::move(drop_cb).Run(event, out_drag_op,
+                           /*drag_image_layer_owner=*/nullptr);
+  }
 };
 
-#if BUILDFLAG(IS_WIN)
-// This test is flaky on Windows.
-#define MAYBE_DragAfterCurrentTab DISABLED_DragAfterCurrentTab
-#else
-#define MAYBE_DragAfterCurrentTab DragAfterCurrentTab
-#endif
-
 IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
-                       MAYBE_DragAfterCurrentTab) {
+                       DragAfterCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
@@ -90,17 +110,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
 
   // To drag after current tab.
   location.Offset(0, current_tab->height());
-  ui::DropTargetEvent event(data, gfx::PointF(location), gfx::PointF(location),
-                            ui::DragDropTypes::DRAG_COPY);
-
-  VerticalTabStripRootView* root_view = vtab_strip_root_view();
-
-  EXPECT_NE(root_view, nullptr);
-  root_view->OnDragUpdated(event);
-  auto drop_cb = root_view->GetDropCallback(event);
   ui::mojom::DragOperation output_drag_op = ui::mojom::DragOperation::kNone;
-  std::move(drop_cb).Run(event, output_drag_op,
-                         /*drag_image_layer_owner=*/nullptr);
+  StartAndFinishDrag(data, location, output_drag_op);
 
   EXPECT_EQ(output_drag_op, ui::mojom::DragOperation::kCopy);
   EXPECT_EQ(tab_strip_model->count(), 2);
@@ -111,14 +122,7 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
                   .EqualsIgnoringRef(url));
 }
 
-#if BUILDFLAG(IS_WIN)
-// This test is flaky on Windows.
-#define MAYBE_DragOnCurrentTab DISABLED_DragOnCurrentTab
-#else
-#define MAYBE_DragOnCurrentTab DragOnCurrentTab
-#endif
-IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
-                       MAYBE_DragOnCurrentTab) {
+IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest, DragOnCurrentTab) {
   ToggleVerticalTabStrip();
 
   ASSERT_TRUE(tabs::utils::ShouldShowVerticalTabs(browser()));
@@ -136,17 +140,8 @@ IN_PROC_BROWSER_TEST_F(VerticalTabStripRootViewBrowserTest,
 
   // To drag on the same tab.
   location.Offset(0, current_tab->height() / 2);
-  ui::DropTargetEvent event(data, gfx::PointF(location), gfx::PointF(location),
-                            ui::DragDropTypes::DRAG_COPY);
-
-  VerticalTabStripRootView* root_view = vtab_strip_root_view();
-
-  EXPECT_NE(root_view, nullptr);
-  root_view->OnDragUpdated(event);
-  auto drop_cb = root_view->GetDropCallback(event);
   ui::mojom::DragOperation output_drag_op = ui::mojom::DragOperation::kNone;
-  std::move(drop_cb).Run(event, output_drag_op,
-                         /*drag_image_layer_owner=*/nullptr);
+  StartAndFinishDrag(data, location, output_drag_op);
 
   EXPECT_EQ(output_drag_op, ui::mojom::DragOperation::kCopy);
   EXPECT_EQ(tab_strip_model->count(), 1);
