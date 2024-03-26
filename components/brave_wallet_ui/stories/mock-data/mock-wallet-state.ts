@@ -62,7 +62,6 @@ export const mockWalletState: WalletState = {
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
-  hidePortfolioBalances: false,
   hidePortfolioGraph: false,
   hidePortfolioNFTsTab: false,
   isRefreshingNetworksAndTokens: false

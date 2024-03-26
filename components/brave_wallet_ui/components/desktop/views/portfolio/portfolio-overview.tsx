@@ -22,7 +22,10 @@ import { PageSelectors } from '../../../../page/selectors'
 import {
   useBalancesFetcher //
 } from '../../../../common/hooks/use-balances-fetcher'
-import { useLocalStorage } from '../../../../common/hooks/use_local_storage'
+import {
+  useLocalStorage,
+  useSyncedLocalStorage
+} from '../../../../common/hooks/use_local_storage'
 
 // Constants
 import {
@@ -137,15 +140,16 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_SMALL_BALANCES,
     false
   )
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
+  )
 
   // redux
   const dispatch = useDispatch()
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
   )
   const hidePortfolioNFTsTab = useSafeWalletSelector(
     WalletSelectors.hidePortfolioNFTsTab

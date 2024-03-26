@@ -7,11 +7,8 @@ import * as React from 'react'
 import { useDispatch } from 'react-redux'
 
 // Selectors
-import {
-  useSafeWalletSelector,
-  useUnsafeUISelector
-} from '../../../common/hooks/use-safe-selector'
-import { UISelectors, WalletSelectors } from '../../../common/selectors'
+import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
+import { UISelectors } from '../../../common/selectors'
 
 // Constants
 import {
@@ -27,6 +24,7 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
+import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -84,10 +82,13 @@ export const AssetGroupContainer = (props: Props) => {
   // Redux
   const dispatch = useDispatch()
 
-  // Selectors
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
+  // Local-Storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
   )
+
+  // Selectors
   const collapsedAccounts = useUnsafeUISelector(
     UISelectors.collapsedPortfolioAccountIds
   )

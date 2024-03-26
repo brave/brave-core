@@ -18,6 +18,9 @@ import {
 
 // constants
 import { emptyRewardsInfo } from '../../../../common/async/base-query-cache'
+import {
+  LOCAL_STORAGE_KEYS //
+} from '../../../../common/constants/local-storage-keys'
 
 // Utils
 import Amount from '../../../../utils/amount'
@@ -48,9 +51,6 @@ import {
 // actions
 import { WalletPageActions } from '../../../../page/actions'
 
-// selectors
-import { WalletSelectors } from '../../../../common/selectors'
-
 // Components
 import {
   LineChartControls //
@@ -73,9 +73,6 @@ import {
   useIsBuySupported //
 } from '../../../../common/hooks/use-multi-chain-buy-assets'
 import {
-  useSafeWalletSelector //
-} from '../../../../common/hooks/use-safe-selector'
-import {
   useGetNetworkQuery,
   useGetTransactionsQuery,
   useGetTokenSpotPricesQuery,
@@ -89,6 +86,9 @@ import { useAccountsQuery } from '../../../../common/slices/api.slice.extra'
 import {
   querySubscriptionOptions60s //
 } from '../../../../common/slices/constants'
+import {
+  useSyncedLocalStorage //
+} from '../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import { StyledWrapper, ButtonRow } from './style'
@@ -135,8 +135,11 @@ export const PortfolioFungibleAsset = () => {
 
   // redux
   const dispatch = useDispatch()
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
+
+  // Local-Storage
+  const [hidePortfolioBalances] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
+    false
   )
 
   // Queries

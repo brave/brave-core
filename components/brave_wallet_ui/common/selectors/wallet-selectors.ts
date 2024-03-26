@@ -20,8 +20,6 @@ export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
   wallet.isNftPinningFeatureEnabled
 export const hidePortfolioGraph = ({ wallet }: State) =>
   wallet.hidePortfolioGraph
-export const hidePortfolioBalances = ({ wallet }: State) =>
-  wallet.hidePortfolioBalances
 export const hidePortfolioNFTsTab = ({ wallet }: State) =>
   wallet.hidePortfolioNFTsTab
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>

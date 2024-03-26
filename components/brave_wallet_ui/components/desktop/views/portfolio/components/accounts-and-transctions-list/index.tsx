@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 import { skipToken } from '@reduxjs/toolkit/query/react'
 import { useLocation } from 'react-router-dom'
 
@@ -15,9 +14,6 @@ import {
 import {
   emptyRewardsInfo //
 } from '../../../../../../common/async/base-query-cache'
-
-// Actions
-import { WalletActions } from '../../../../../../common/actions'
 
 // Types
 import {
@@ -30,7 +26,6 @@ import {
 // Utils
 import { getLocale } from '../../../../../../../common/locale'
 import Amount from '../../../../../../utils/amount'
-import { WalletSelectors } from '../../../../../../common/selectors'
 import { getBalance } from '../../../../../../utils/balance-utils'
 import { computeFiatAmount } from '../../../../../../utils/pricing-utils'
 import { getIsRewardsToken } from '../../../../../../utils/rewards_utils'
@@ -53,9 +48,6 @@ import { LoadingSkeleton } from '../../../../../shared/loading-skeleton/index'
 
 // Hooks
 import {
-  useSafeWalletSelector //
-} from '../../../../../../common/hooks/use-safe-selector'
-import {
   useMultiChainSellAssets //
 } from '../../../../../../common/hooks/use-multi-chain-sell-assets'
 import {
@@ -67,6 +59,9 @@ import {
 import {
   TokenBalancesRegistry //
 } from '../../../../../../common/slices/entities/token-balance.entity'
+import {
+  useSyncedLocalStorage //
+} from '../../../../../../common/hooks/use_local_storage'
 
 // Styled Components
 import {
@@ -108,13 +103,9 @@ export const AccountsAndTransactionsList = ({
   // routing
   const { hash } = useLocation()
 
-  // redux
-  const dispatch = useDispatch()
-
-  // unsafe selectors
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
-  )
+  // local-storage
+  const [hidePortfolioBalances, setHidePortfolioBalances] =
+    useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
 
   // queries
   const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
@@ -212,12 +203,8 @@ export const AccountsAndTransactionsList = ({
   }, [selectedAsset, openSellAssetLink])
 
   const onToggleHideBalances = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [dispatch, hidePortfolioBalances])
+    setHidePortfolioBalances((prev) => !prev)
+  }, [setHidePortfolioBalances])
 
   if (
     hash !== WalletRoutes.TransactionsHash &&
