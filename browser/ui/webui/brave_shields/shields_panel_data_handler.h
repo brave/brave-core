@@ -19,9 +19,7 @@
 
 class TabStripModel;
 
-namespace ui {
-class MojoBubbleWebUIController;
-}  // namespace ui
+class TopChromeWebUIController;
 
 class ShieldsPanelDataHandler
     : public brave_shields::mojom::DataHandler,
@@ -31,7 +29,7 @@ class ShieldsPanelDataHandler
   ShieldsPanelDataHandler(
       mojo::PendingReceiver<brave_shields::mojom::DataHandler>
           data_handler_receiver,
-      ui::MojoBubbleWebUIController* webui_controller,
+      TopChromeWebUIController* webui_controller,
       TabStripModel* browser);
 
   ShieldsPanelDataHandler(const ShieldsPanelDataHandler&) = delete;
@@ -70,7 +68,7 @@ class ShieldsPanelDataHandler
 
   mojo::Receiver<brave_shields::mojom::DataHandler> data_handler_receiver_;
   mojo::Remote<brave_shields::mojom::UIHandler> ui_handler_remote_;
-  raw_ptr<ui::MojoBubbleWebUIController> const webui_controller_ = nullptr;
+  raw_ptr<TopChromeWebUIController> const webui_controller_ = nullptr;
   raw_ptr<brave_shields::BraveShieldsDataController>
       active_shields_data_controller_ = nullptr;
 

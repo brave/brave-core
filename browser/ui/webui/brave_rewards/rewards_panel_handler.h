@@ -10,11 +10,11 @@
 #include "base/memory/weak_ptr.h"
 #include "brave/browser/ui/brave_rewards/rewards_panel_coordinator.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_panel.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 namespace brave_rewards {
 
@@ -26,7 +26,7 @@ class RewardsPanelHandler : public mojom::PanelHandler,
   RewardsPanelHandler(
       mojo::PendingRemote<mojom::Panel> panel,
       mojo::PendingReceiver<mojom::PanelHandler> receiver,
-      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+      base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
       RewardsService* rewards_service,
       RewardsPanelCoordinator* panel_coordinator);
 
@@ -46,7 +46,7 @@ class RewardsPanelHandler : public mojom::PanelHandler,
  private:
   mojo::Receiver<mojom::PanelHandler> receiver_;
   mojo::Remote<mojom::Panel> panel_;
-  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+  base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   raw_ptr<RewardsPanelCoordinator> panel_coordinator_ = nullptr;
   RewardsPanelCoordinator::Observation panel_observation_{this};

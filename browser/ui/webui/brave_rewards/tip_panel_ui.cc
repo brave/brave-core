@@ -71,7 +71,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 TipPanelUI::TipPanelUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   auto* source = content::WebUIDataSource::CreateAndAdd(
       web_ui->GetWebContents()->GetBrowserContext(), kBraveTipPanelHost);
 

@@ -12,9 +12,9 @@
 
 #include "base/memory/weak_ptr.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
 #include "mojo/public/cpp/bindings/receiver_set.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
 namespace content {
@@ -40,10 +40,10 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   void BindInterface(mojo::PendingReceiver<playlist::mojom::PageHandlerFactory>
                          pending_receiver);
 
-  // Set by WebUIContentsWrapperT. MojoBubbleWebUIController provides default
+  // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
   // implementation for this but we don't use it.
   void set_embedder(
-      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder) {
+      base::WeakPtr<TopChromeWebUIController::Embedder> embedder) {
     embedder_ = embedder;
   }
 
@@ -66,7 +66,7 @@ class PlaylistUI : public ui::UntrustedWebUIController,
   static constexpr std::string GetWebUIName() { return "PlaylistPanel"; }
 
  private:
-  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+  base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
 
   mojo::ReceiverSet<playlist::mojom::PlaylistService> service_receivers_;
   mojo::ReceiverSet<playlist::mojom::PlaylistNativeUI> native_ui_receivers_;

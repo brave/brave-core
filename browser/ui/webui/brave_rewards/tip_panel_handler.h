@@ -11,11 +11,11 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_tip_panel.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/receiver.h"
 #include "mojo/public/cpp/bindings/remote.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class Profile;
 
@@ -25,11 +25,10 @@ class RewardsService;
 
 class TipPanelHandler : public mojom::TipPanelHandler {
  public:
-  TipPanelHandler(
-      mojo::PendingRemote<mojom::TipPanel> banner,
-      mojo::PendingReceiver<mojom::TipPanelHandler> receiver,
-      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
-      Profile* profile);
+  TipPanelHandler(mojo::PendingRemote<mojom::TipPanel> banner,
+                  mojo::PendingReceiver<mojom::TipPanelHandler> receiver,
+                  base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
+                  Profile* profile);
 
   TipPanelHandler(const TipPanelHandler&) = delete;
   TipPanelHandler& operator=(const TipPanelHandler&) = delete;
@@ -63,7 +62,7 @@ class TipPanelHandler : public mojom::TipPanelHandler {
  private:
   mojo::Receiver<mojom::TipPanelHandler> receiver_;
   mojo::Remote<mojom::TipPanel> banner_;
-  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+  base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
   raw_ptr<RewardsService> rewards_service_ = nullptr;
   std::string publisher_id_;

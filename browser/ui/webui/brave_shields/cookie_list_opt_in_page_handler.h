@@ -9,9 +9,9 @@
 #include "base/memory/raw_ptr.h"
 #include "base/memory/weak_ptr.h"
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class Profile;
 
@@ -21,7 +21,7 @@ class CookieListOptInPageHandler
   CookieListOptInPageHandler(
       mojo::PendingReceiver<brave_shields::mojom::CookieListOptInPageHandler>
           receiver,
-      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+      base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
       Profile* profile);
 
   CookieListOptInPageHandler(const CookieListOptInPageHandler&) = delete;
@@ -40,7 +40,7 @@ class CookieListOptInPageHandler
 
  private:
   mojo::Receiver<brave_shields::mojom::CookieListOptInPageHandler> receiver_;
-  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+  base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
 };
 
