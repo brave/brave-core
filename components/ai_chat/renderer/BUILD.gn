@@ -9,15 +9,23 @@ assert(enable_ai_chat)
 
 static_library("renderer") {
   sources = [
+    "ai_chat_resource_sniffer_throttle.cc",
+    "ai_chat_resource_sniffer_throttle.h",
+    "ai_chat_resource_sniffer_throttle_delegate.h",
+    "ai_chat_resource_sniffer_url_loader.cc",
+    "ai_chat_resource_sniffer_url_loader.h",
     "page_content_extractor.cc",
     "page_content_extractor.h",
     "page_text_distilling.cc",
     "page_text_distilling.h",
+    "yt_util.cc",
+    "yt_util.h",
   ]
 
   deps = [
     "//base",
     "//brave/components/ai_chat/core/common/mojom",
+    "//brave/components/body_sniffer",
     "//content/public/renderer",
     "//gin",
     "//mojo/public/cpp/bindings",
@@ -28,4 +36,27 @@ static_library("renderer") {
     "//third_party/blink/public/strings",
     "//v8",
   ]
+}
+
+if (!is_ios) {
+  source_set("unit_tests") {
+    testonly = true
+    sources = [
+      "ai_chat_resource_sniffer_throttle_unittest.cc",
+      "yt_util_unittest.cc",
+    ]
+
+    deps = [
+      "//base/test:test_support",
+      "//brave/components/ai_chat/renderer",
+      "//content/test:test_support",
+      "//mojo/public/cpp/bindings",
+      "//mojo/public/cpp/system",
+      "//services/data_decoder/public/cpp:test_support",
+      "//services/network:test_support",
+      "//services/network/public/cpp:cpp",
+      "//testing/gtest:gtest",
+      "//third_party/blink/public:blink",
+    ]
+  }
 }

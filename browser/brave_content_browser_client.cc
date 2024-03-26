@@ -152,10 +152,12 @@ using extensions::ChromeContentBrowserClientExtensionsPart;
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
 #include "brave/browser/ui/webui/ai_chat/ai_chat_ui.h"
+#include "brave/components/ai_chat/content/browser/ai_chat_tab_helper.h"
 #include "brave/components/ai_chat/content/browser/ai_chat_throttle.h"
 #include "brave/components/ai_chat/core/browser/utils.h"
 #include "brave/components/ai_chat/core/common/features.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #if BUILDFLAG(IS_ANDROID)
 #include "brave/components/ai_chat/core/browser/android/ai_chat_iap_subscription_android.h"
 #endif
@@ -594,6 +596,19 @@ void BraveContentBrowserClient::
           &render_frame_host));
 #endif
 
+#if BUILDFLAG(ENABLE_AI_CHAT)
+  // AI Chat page content extraction renderer -> browser interface
+  associated_registry.AddInterface<ai_chat::mojom::PageContentExtractorHost>(
+      base::BindRepeating(
+          [](content::RenderFrameHost* render_frame_host,
+             mojo::PendingAssociatedReceiver<
+                 ai_chat::mojom::PageContentExtractorHost> receiver) {
+            ai_chat::AIChatTabHelper::BindPageContentExtractorHost(
+                render_frame_host, std::move(receiver));
+          },
+          &render_frame_host));
+#endif
+
   ChromeContentBrowserClient::
       RegisterAssociatedInterfaceBindersForRenderFrameHost(render_frame_host,
                                                            associated_registry);
@@ -814,6 +829,7 @@ void BraveContentBrowserClient::RegisterBrowserInterfaceBindersForFrame(
       user_prefs::UserPrefs::Get(render_frame_host->GetBrowserContext());
   if (ai_chat::IsAIChatEnabled(prefs) &&
       brave::IsRegularProfile(render_frame_host->GetBrowserContext())) {
+    // WebUI -> Browser interface
     content::RegisterWebUIControllerInterfaceBinder<ai_chat::mojom::PageHandler,
                                                     AIChatUI>(map);
   }
