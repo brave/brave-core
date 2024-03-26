@@ -49,10 +49,6 @@ namespace database {
 class Database;
 }
 
-namespace report {
-class Report;
-}
-
 namespace state {
 class State;
 }
@@ -237,17 +233,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
       const base::flat_map<std::string, std::string>& args,
       ConnectExternalWalletCallback) override;
 
-  void GetContributionReport(mojom::ActivityMonth month,
-                             int year,
-                             GetContributionReportCallback callback) override;
-
   void GetAllContributions(GetAllContributionsCallback callback) override;
-
-  void GetMonthlyReport(mojom::ActivityMonth month,
-                        int year,
-                        GetMonthlyReportCallback callback) override;
-
-  void GetAllMonthlyReportIds(GetAllMonthlyReportIdsCallback callback) override;
 
   void Shutdown(ShutdownCallback callback) override;
 
@@ -360,8 +346,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
 
   wallet::Wallet* wallet() { return wallet_.get(); }
 
-  report::Report* report() { return report_.get(); }
-
   state::State* state() { return state_.get(); }
 
   api::API* api() { return api_.get(); }
@@ -412,7 +396,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   std::unique_ptr<contribution::Contribution> contribution_;
   std::unique_ptr<wallet::Wallet> wallet_;
   std::unique_ptr<database::Database> database_;
-  std::unique_ptr<report::Report> report_;
   std::unique_ptr<state::State> state_;
   std::unique_ptr<api::API> api_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;

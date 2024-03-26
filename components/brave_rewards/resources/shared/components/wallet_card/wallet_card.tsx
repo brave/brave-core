@@ -28,7 +28,6 @@ import { ExternalWalletView } from './external_wallet_view'
 import { ExternalWalletAction } from './external_wallet_action'
 import { RewardsSummary, RewardsSummaryData } from './rewards_summary'
 import { PendingRewardsView } from './pending_rewards_view'
-import { WalletInfoIcon } from './icons/wallet_info_icon'
 import { ArrowCircleIcon } from '../icons/arrow_circle_icon'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { CaretIcon } from '../icons/caret_icon'
@@ -63,7 +62,6 @@ interface Props {
   summaryData: RewardsSummaryData
   autoContributeEnabled: boolean
   onExternalWalletAction: (action: ExternalWalletAction) => void
-  onViewStatement?: () => void
   onManageAds?: () => void
 }
 
@@ -212,17 +210,6 @@ export function WalletCard (props: Props) {
                 exchangeRate={props.exchangeRate}
                 exchangeCurrency={props.exchangeCurrency}
               />
-              {
-                props.onViewStatement &&
-                  <style.viewStatement>
-                    <button
-                      onClick={props.onViewStatement}
-                      data-test-id='view-statement-button'
-                    >
-                      <WalletInfoIcon />{getString('walletViewStatement')}
-                    </button>
-                  </style.viewStatement>
-              }
             </style.summaryBox>
           : <style.pendingBox>
               {

@@ -68,12 +68,6 @@ using GetBalanceReportCallback =
     base::OnceCallback<void(const mojom::Result,
                             mojom::BalanceReportInfoPtr report)>;
 
-using GetMonthlyReportCallback =
-    base::OnceCallback<void(mojom::MonthlyReportInfoPtr report)>;
-
-using GetAllMonthlyReportIdsCallback =
-    base::OnceCallback<void(const std::vector<std::string>&)>;
-
 using GetAllContributionsCallback = base::OnceCallback<void(
     std::vector<mojom::ContributionInfoPtr> contributions)>;
 
@@ -280,14 +274,6 @@ class RewardsService : public KeyedService {
   virtual void ConnectExternalWallet(const std::string& path,
                                      const std::string& query,
                                      ConnectExternalWalletCallback) = 0;
-
-  virtual void GetMonthlyReport(
-      const uint32_t month,
-      const uint32_t year,
-      GetMonthlyReportCallback callback) = 0;
-
-  virtual void GetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback) = 0;
 
   virtual void GetAllContributions(
       GetAllContributionsCallback callback) = 0;

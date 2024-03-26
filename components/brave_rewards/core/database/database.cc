@@ -144,12 +144,6 @@ void Database::GetOneTimeTips(const mojom::ActivityMonth month,
   contribution_info_.GetOneTimeTips(month, year, std::move(callback));
 }
 
-void Database::GetContributionReport(const mojom::ActivityMonth month,
-                                     const int year,
-                                     GetContributionReportCallback callback) {
-  contribution_info_.GetContributionReport(month, year, std::move(callback));
-}
-
 void Database::GetNotCompletedContributions(
     ContributionInfoListCallback callback) {
   contribution_info_.GetNotCompletedRecords(std::move(callback));

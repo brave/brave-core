@@ -22,7 +22,6 @@
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/report/report.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
@@ -49,7 +48,6 @@ RewardsEngineImpl::RewardsEngineImpl(
       contribution_(std::make_unique<contribution::Contribution>(*this)),
       wallet_(std::make_unique<wallet::Wallet>(*this)),
       database_(std::make_unique<database::Database>(*this)),
-      report_(std::make_unique<report::Report>(*this)),
       state_(std::make_unique<state::State>(*this)),
       api_(std::make_unique<api::API>(*this)),
       bitflyer_(std::make_unique<bitflyer::Bitflyer>(*this)),
@@ -583,34 +581,10 @@ void RewardsEngineImpl::ConnectExternalWallet(
   });
 }
 
-void RewardsEngineImpl::GetContributionReport(
-    mojom::ActivityMonth month,
-    int year,
-    GetContributionReportCallback callback) {
-  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
-    database()->GetContributionReport(month, year, std::move(callback));
-  });
-}
-
 void RewardsEngineImpl::GetAllContributions(
     GetAllContributionsCallback callback) {
   WhenReady([this, callback = std::move(callback)]() mutable {
     database()->GetAllContributions(std::move(callback));
-  });
-}
-
-void RewardsEngineImpl::GetMonthlyReport(mojom::ActivityMonth month,
-                                         int year,
-                                         GetMonthlyReportCallback callback) {
-  WhenReady([this, month, year, callback = std::move(callback)]() mutable {
-    report()->GetMonthly(month, year, std::move(callback));
-  });
-}
-
-void RewardsEngineImpl::GetAllMonthlyReportIds(
-    GetAllMonthlyReportIdsCallback callback) {
-  WhenReady([this, callback = std::move(callback)]() mutable {
-    report()->GetAllMonthlyIds(std::move(callback));
   });
 }
 

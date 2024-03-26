@@ -2336,27 +2336,6 @@ void RewardsServiceImpl::GetClientInfo(GetClientInfoCallback callback) {
 #endif
 }
 
-void RewardsServiceImpl::GetMonthlyReport(
-    const uint32_t month,
-    const uint32_t year,
-    GetMonthlyReportCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback), nullptr);
-  }
-
-  engine_->GetMonthlyReport(
-      static_cast<mojom::ActivityMonth>(month), year,
-      base::BindOnce(&RewardsServiceImpl::OnGetMonthlyReport, AsWeakPtr(),
-                     std::move(callback)));
-}
-
-void RewardsServiceImpl::OnGetMonthlyReport(
-    GetMonthlyReportCallback callback,
-    const mojom::Result result,
-    mojom::MonthlyReportInfoPtr report) {
-  std::move(callback).Run(std::move(report));
-}
-
 void RewardsServiceImpl::ReconcileStampReset() {
   for (auto& observer : observers_) {
     observer.ReconcileStampReset();
@@ -2382,16 +2361,6 @@ void RewardsServiceImpl::OnRunDBTransaction(
 void RewardsServiceImpl::ForTestingSetTestResponseCallback(
     const GetTestResponseCallback& callback) {
   test_response_callback_ = callback;
-}
-
-void RewardsServiceImpl::GetAllMonthlyReportIds(
-      GetAllMonthlyReportIdsCallback callback) {
-  if (!Connected()) {
-    return DeferCallback(FROM_HERE, std::move(callback),
-                         std::vector<std::string>());
-  }
-
-  engine_->GetAllMonthlyReportIds(std::move(callback));
 }
 
 void RewardsServiceImpl::GetAllContributions(

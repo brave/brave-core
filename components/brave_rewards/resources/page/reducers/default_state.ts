@@ -55,11 +55,6 @@ export function defaultState (): Rewards.State {
     excludedList: [],
     externalWalletProviderList: [],
     balance: optional<number>(),
-    monthlyReport: {
-      month: -1,
-      year: -1
-    },
-    monthlyReportIds: [],
     currentCountryCode: '',
     parameters: {
       autoContributeChoice: 0,

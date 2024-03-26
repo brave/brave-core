@@ -104,10 +104,6 @@ class Database {
                       const int year,
                       GetOneTimeTipsCallback callback);
 
-  void GetContributionReport(const mojom::ActivityMonth month,
-                             const int year,
-                             GetContributionReportCallback callback);
-
   void GetNotCompletedContributions(ContributionInfoListCallback callback);
 
   void UpdateContributionInfoStep(const std::string& contribution_id,

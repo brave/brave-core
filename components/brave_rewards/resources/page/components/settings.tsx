@@ -283,7 +283,7 @@ export function Settings () {
           }
         </style.main>
         <style.sidebar>
-          <PageWallet layout={layoutKind} />
+          <PageWallet />
           <SidebarPromotionPanel />
         </style.sidebar>
       </style.content>

@@ -54,23 +54,14 @@ using ContributionInfoListCallback =
 using GetActivityInfoListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
 
-using GetAllMonthlyReportIdsCallback =
-    mojom::RewardsEngine::GetAllMonthlyReportIdsCallback;
-
 using GetBalanceReportListCallback = base::OnceCallback<void(
     std::vector<mojom::BalanceReportInfoPtr>)>;  // TODO(sszaloki): unused?
-
-using GetContributionReportCallback =
-    base::OnceCallback<void(std::vector<mojom::ContributionReportInfoPtr>)>;
 
 using GetEventLogsCallback =
     base::OnceCallback<void(std::vector<mojom::EventLogPtr>)>;
 
 using GetExcludedListCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;
-
-using GetMonthlyReportCallback =
-    base::OnceCallback<void(mojom::Result, mojom::MonthlyReportInfoPtr)>;
 
 using GetOneTimeTipsCallback =
     base::OnceCallback<void(std::vector<mojom::PublisherInfoPtr>)>;

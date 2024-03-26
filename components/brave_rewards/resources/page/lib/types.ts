@@ -48,8 +48,6 @@ export interface State {
   isUnsupportedRegion: boolean
   excludedList: ExcludedPublisher[]
   externalWalletProviderList: string[]
-  monthlyReport: MonthlyReport
-  monthlyReportIds: string[]
   parameters: RewardsParameters
   reconcileStamp: number
   recurringList: Publisher[]
@@ -84,40 +82,6 @@ export interface RewardsParameters {
   walletProviderRegions: Record<string, Regions | undefined>
   vbatDeadline: number | undefined
   vbatExpired: boolean
-}
-
-export interface ComponentProps {
-  rewardsData: State
-  actions: any
-}
-
-export interface MonthlyReport {
-  month: number
-  year: number
-  balance?: BalanceReport
-  contributions?: ContributionReport[]
-}
-
-export enum ReportType {
-  AUTO_CONTRIBUTION = 1,
-  TIP_RECURRING = 4,
-  TIP = 5
-}
-
-export enum Processor {
-  NONE = 0,
-  BRAVE_TOKENS = 1,
-  UPHOLD = 2,
-  BITFLYER = 4,
-  GEMINI = 5
-}
-
-export interface ContributionReport {
-  amount: number
-  type: ReportType
-  processor: Processor
-  created_at: number
-  publishers: Publisher[]
 }
 
 export interface Publisher {
@@ -178,17 +142,6 @@ export interface AdsData {
   adsMaxEarningsThisMonth: number
   adsMinEarningsLastMonth: number
   adsMaxEarningsLastMonth: number
-}
-
-export enum RewardsType {
-  AUTO_CONTRIBUTE = 2,
-  ONE_TIME_TIP = 8,
-  RECURRING_TIP = 16
-}
-
-export interface ContributionSaved {
-  success: boolean
-  type: RewardsType
 }
 
 export type WalletType = 'uphold' | 'bitflyer' | 'gemini' | 'zebpay'

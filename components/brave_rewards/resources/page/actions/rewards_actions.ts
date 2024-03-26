@@ -244,23 +244,7 @@ export const onConnectExternalWallet = (result: mojom.ConnectExternalWalletResul
 
 export const hideRedirectModal = () => action(types.HIDE_REDIRECT_MODAL)
 
-export const getMonthlyReport = (month?: number, year?: number) => action(types.GET_MONTHLY_REPORT, {
-  month,
-  year
-})
-
-export const onMonthlyReport = (properties: { result: number, month: number, year: number, report: Rewards.MonthlyReport }) => action(types.ON_MONTHLY_REPORT, {
-  result: properties.result,
-  month: properties.month,
-  year: properties.year,
-  report: properties.report
-})
-
 export const onReconcileStampReset = () => action(types.ON_RECONCILE_STAMP_RESET)
-
-export const getMonthlyReportIds = () => action(types.GET_MONTHLY_REPORT_IDS)
-
-export const onMonthlyReportIds = (ids: string[]) => action(types.ON_MONTHLY_REPORT_IDS, ids)
 
 export const dismissPromoPrompt = (promo: string) => action(types.DISMISS_PROMO_PROMPT, {
   promo
