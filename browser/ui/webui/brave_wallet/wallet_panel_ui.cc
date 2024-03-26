@@ -55,8 +55,8 @@
 #endif
 
 WalletPanelUI::WalletPanelUI(content::WebUI* web_ui)
-    : ui::MojoBubbleWebUIController(web_ui,
-                                    true /* Needed for webui browser tests */) {
+    : TopChromeWebUIController(web_ui,
+                               true /* Needed for webui browser tests */) {
   auto* profile = Profile::FromWebUI(web_ui);
   content::WebUIDataSource* source =
       content::WebUIDataSource::CreateAndAdd(profile, kWalletPanelHost);

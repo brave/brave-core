@@ -30,7 +30,7 @@
 // to ShieldsPanelDataHandler when this is created because
 // CreatePanelHandler() is run in async.
 ShieldsPanelUI::ShieldsPanelUI(content::WebUI* web_ui)
-    : ui::MojoBubbleWebUIController(web_ui, true),
+    : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   browser_ = chrome::FindLastActiveWithProfile(profile_);
 

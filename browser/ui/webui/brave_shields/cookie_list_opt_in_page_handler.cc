@@ -16,7 +16,7 @@
 CookieListOptInPageHandler::CookieListOptInPageHandler(
     mojo::PendingReceiver<brave_shields::mojom::CookieListOptInPageHandler>
         receiver,
-    base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+    base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
       embedder_(embedder),
