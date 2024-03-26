@@ -5077,8 +5077,8 @@ constexpr auto kComponents =
 
 }  // namespace
 
-std::optional<ComponentInfo> GetComponentInfo(const std::string& id) {
-  const auto* const iter = kComponents.find(id);
+std::optional<ComponentInfo> GetComponentInfo(std::string_view id) {
+  const auto iter = kComponents.find(id);
   if (iter == kComponents.cend()) {
     return std::nullopt;
   }

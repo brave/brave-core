@@ -211,7 +211,7 @@ namespace browser_sync {
 std::optional<sync_preferences::SyncablePrefMetadata>
 ChromeSyncablePrefsDatabase::GetSyncablePrefMetadata(
     const std::string& pref_name) const {
-  const auto* it = BraveSyncablePreferences().find(pref_name);
+  const auto it = BraveSyncablePreferences().find(pref_name);
   if (it != BraveSyncablePreferences().end()) {
     return it->second;
   }
