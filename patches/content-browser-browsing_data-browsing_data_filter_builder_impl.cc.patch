@@ -10,3 +10,11 @@ index 405aeae660784d26be4a44a866dc0848d1395235..e84ce4f3a7510a7accc4c8025cd2118c
    }
  
    switch (match_mode) {
+@@ -81,6 +82,7 @@ bool MatchesStorageKey(const std::set<url::Origin>& origins,
+       return is_delete_list ==
+              base::Contains(registerable_domains, registerable_domain);
+     }
++    BRAVE_MATCHES_STORAGE_KEY_SWITCH
+   }
+ 
+   return !is_delete_list;

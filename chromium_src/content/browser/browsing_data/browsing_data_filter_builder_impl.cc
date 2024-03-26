@@ -11,6 +11,12 @@
     return is_delete_list;                                             \
   }
 
+#define BRAVE_MATCHES_STORAGE_KEY_SWITCH        \
+  case OriginMatchingMode::kThirdPartiesOnly: { \
+    return is_delete_list;                      \
+  }
+
 #include "src/content/browser/browsing_data/browsing_data_filter_builder_impl.cc"
 
 #undef BRAVE_MATCHES_STORAGE_KEY
+#undef BRAVE_MATCHES_STORAGE_KEY_SWITCH
