@@ -88,21 +88,6 @@ class OmniboxPromotionTest : public testing::Test {
 
     scoped_default_locale_ =
         std::make_unique<brave_l10n::test::ScopedDefaultLocale>("en_US");
-
-    PrepareFieldTrialParamsForBannerTypeB();
-  }
-
-  void PrepareFieldTrialParamsForBannerTypeB() {
-    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
-    constexpr char kBannerTypeParamName[] = "banner_type";
-    constexpr char kBannerTypeExperiements[] = "banner_type_b";
-
-    std::map<std::string, std::string> params;
-    params[kBannerTypeParamName] = "type_B";
-    ASSERT_TRUE(base::AssociateFieldTrialParams(
-        kPromotionTrial, kBannerTypeExperiements, params));
-    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
-                                           kBannerTypeExperiements);
   }
 
   void CreateController(bool incognito) {
@@ -209,8 +194,9 @@ TEST_F(OmniboxPromotionTest, PromotionEntrySortTest) {
   // Turn off button type and on banner type search conversion.
   feature_list_button.Reset();
   base::test::ScopedFeatureList feature_list_banner;
-  feature_list_banner.InitAndEnableFeature(
-      brave_search_conversion::features::kOmniboxBanner);
+  feature_list_banner.InitAndEnableFeatureWithParameters(
+      brave_search_conversion::features::kOmniboxBanner,
+      {{brave_search_conversion::features::kBannerTypeParamName, "type_B"}});
 
   CreateController(false);
   EXPECT_TRUE(controller_->result().empty());

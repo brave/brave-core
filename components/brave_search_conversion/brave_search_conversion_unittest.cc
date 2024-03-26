@@ -42,21 +42,6 @@ class BraveSearchConversionTest : public testing::Test {
     provider_data = TemplateURLDataFromPrepopulatedEngine(
         TemplateURLPrepopulateData::brave_bing);
     bing_template_url_ = std::make_unique<TemplateURL>(*provider_data);
-
-    PrepareFieldTrialParamsForBannerTypeA();
-  }
-
-  void PrepareFieldTrialParamsForBannerTypeA() {
-    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
-    constexpr char kBannerTypeParamName[] = "banner_type";
-    constexpr char kBannerTypeExperiements[] = "banner_type_a";
-
-    std::map<std::string, std::string> params;
-    params[kBannerTypeParamName] = "type_A";
-    ASSERT_TRUE(base::AssociateFieldTrialParams(
-        kPromotionTrial, kBannerTypeExperiements, params));
-    base::FieldTrialList::CreateFieldTrial(kPromotionTrial,
-                                           kBannerTypeExperiements);
   }
 
   void ConfigureBingAsDefaultProvider() {
@@ -109,7 +94,9 @@ TEST_F(BraveSearchConversionTest, ConversionTypeTest) {
   ConfigureBingAsDefaultProvider();
 
   feature_list.Reset();
-  feature_list.InitAndEnableFeature(features::kOmniboxBanner);
+  feature_list.InitAndEnableFeatureWithParameters(
+      brave_search_conversion::features::kOmniboxBanner,
+      {{brave_search_conversion::features::kBannerTypeParamName, "type_A"}});
   EXPECT_EQ(ConversionType::kBannerTypeA,
             GetConversionType(&pref_service_, &template_url_service_));
 

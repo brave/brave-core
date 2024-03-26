@@ -6,12 +6,19 @@
 #ifndef BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_FEATURES_H_
 #define BRAVE_COMPONENTS_BRAVE_SEARCH_CONVERSION_FEATURES_H_
 
+#include <string>
+
 #include "base/feature_list.h"
+#include "base/metrics/field_trial_params.h"
 
 namespace brave_search_conversion {
 namespace features {
 
+inline constexpr char kBannerTypeParamName[] = "banner_type";
+
 BASE_DECLARE_FEATURE(kOmniboxBanner);
+extern const base::FeatureParam<std::string> kBannerType;
+
 BASE_DECLARE_FEATURE(kOmniboxButton);
 BASE_DECLARE_FEATURE(kNTP);
 

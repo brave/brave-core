@@ -104,12 +104,7 @@ ConversionType GetConversionType(PrefService* prefs,
       return ConversionType::kNone;
     }
 
-    // Fetch banner type from griffin.
-    constexpr char kPromotionTrial[] = "BraveSearchPromotionBannerStudy";
-    constexpr char kBannerTypeParamName[] = "banner_type";
-    const std::string banner_type =
-        base::GetFieldTrialParamValue(kPromotionTrial, kBannerTypeParamName);
-    return GetConversionTypeFromBannerTypeParam(banner_type);
+    return GetConversionTypeFromBannerTypeParam(features::kBannerType.Get());
   }
 
   return ConversionType::kNone;
