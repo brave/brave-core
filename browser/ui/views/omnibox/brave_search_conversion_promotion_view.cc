@@ -60,6 +60,7 @@ constexpr int kBannerTypeMargin = 12;
 // Use small margin because omnibox popup has its own bottom padding.
 constexpr int kBannerTypeMarginBottom = 4;
 constexpr int kBannerTypeRadius = 8;
+constexpr int kMaxBannerDescLines = 5;
 
 gfx::FontList GetFont(int font_size, gfx::Font::Weight weight) {
   gfx::FontList font_list;
@@ -536,8 +537,11 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   views::Label::CustomFont desc_font = {GetFont(14, gfx::Font::Weight::NORMAL)};
   banner_type_description_ = banner_contents->AddChildView(
       std::make_unique<views::Label>(desc_label, desc_font));
+  // Give right margin to not overlap with background image.
   banner_type_description_->SetProperty(views::kMarginsKey,
-                                        gfx::Insets::TLBR(4, 0, 0, 0));
+                                        gfx::Insets::TLBR(4, 0, 0, 70));
+  banner_type_description_->SetMultiLine(true);
+  banner_type_description_->SetMaxLines(kMaxBannerDescLines);
   banner_type_description_->SetAutoColorReadabilityEnabled(false);
   banner_type_description_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 
@@ -632,6 +636,18 @@ gfx::Size BraveSearchConversionPromotionView::CalculatePreferredSize() const {
   auto size = active_child->GetPreferredSize();
   auto* margin = active_child->GetProperty(views::kMarginsKey);
   size.Enlarge(0, margin->height());
+
+  const auto lines = banner_type_description_->GetRequiredLines();
+  if (lines <= 1) {
+    return size;
+  } else if (lines <= kMaxBannerDescLines) {
+    // Updating preferred height to get proper height for multi-lined label.
+    size.Enlarge(0, banner_type_description_->GetLineHeight() * (lines - 1));
+  } else {
+    size.Enlarge(0, banner_type_description_->GetLineHeight() *
+                        (kMaxBannerDescLines - 1));
+  }
+
   return size;
 }
 
