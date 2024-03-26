@@ -44,15 +44,16 @@ export const PortfolioOverviewMenu = () => {
   // Local-Storage
   const [hidePortfolioBalances, setHidePortfolioBalances] =
     useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
+  const [hidePortfolioNFTsTab, setHidePortfolioNFTsTab] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+    false
+  )
 
   // Redux
   const dispatch = useDispatch()
 
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioNFTsTab = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioNFTsTab
   )
 
   // Methods
@@ -72,12 +73,8 @@ export const PortfolioOverviewMenu = () => {
     if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
       history.push(WalletRoutes.PortfolioAssets)
     }
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-      hidePortfolioNFTsTab ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
-  }, [dispatch, hidePortfolioNFTsTab, history, walletLocation])
+    setHidePortfolioNFTsTab((prev) => !prev)
+  }, [history, setHidePortfolioNFTsTab, walletLocation])
 
   return (
     <StyledWrapper yPosition={42}>
