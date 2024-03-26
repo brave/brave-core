@@ -18,19 +18,12 @@ extension Sequence {
 }
 
 class DiskImageStoreTests: XCTestCase {
-  var files: FileAccessor!
-  var store: DiskImageStore!
-
-  override func setUp() {
-    files = MockFiles()
-    store = try! DiskImageStore(files: files, namespace: "DiskImageStoreTests", quality: 1)
-
-    Task { @MainActor in
-      await store.clearExcluding(Set())
-    }
-  }
-
   @MainActor func testStore() async throws {
+    let files = MockFiles()
+    let store = try DiskImageStore(files: files, namespace: "DiskImageStoreTests", quality: 1)
+
+    await store.clearExcluding(Set())
+
     // Avoid image comparison and use size of the image for equality
     let redImage = makeImageWithColor(UIColor.red, size: CGSize(width: 100, height: 100))
     let blueImage = makeImageWithColor(UIColor.blue, size: CGSize(width: 17, height: 17))
@@ -42,7 +35,7 @@ class DiskImageStoreTests: XCTestCase {
         try await store.put(key, image: image),
         "\(key) image added to store"
       )
-      let storedImage = try! await store.get(key)
+      let storedImage = try await store.get(key)
       XCTAssertEqual(storedImage.size.width, image.size.width, "Images are equal")
       await XCTAssertAsyncThrowsError(
         try await store.put(key, image: image),
