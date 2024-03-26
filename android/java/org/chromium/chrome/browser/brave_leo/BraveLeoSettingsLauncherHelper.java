@@ -48,6 +48,14 @@ public class BraveLeoSettingsLauncherHelper {
         BraveLeoUtils.openURL(url);
     }
 
+    @CalledByNative
+    private static void handleVoiceRecognition(
+            WebContents chatWindowWebContents, WebContents contextWebContents) {
+        new BraveLeoVoiceRecognitionHandler(
+                        chatWindowWebContents.getTopLevelNativeWindow(), contextWebContents)
+                .startVoiceRecognition();
+    }
+
     private static SettingsLauncher getLauncher() {
         return sLauncher != null ? sLauncher : new SettingsLauncherImpl();
     }

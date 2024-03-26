@@ -134,6 +134,15 @@ void AIChatUIPageHandler::SubmitSummarizationRequest() {
   }
 }
 
+void AIChatUIPageHandler::HandleVoiceRecognition() {
+#if BUILDFLAG(IS_ANDROID)
+  auto* context_web_contents = (active_chat_tab_helper_)
+                                   ? active_chat_tab_helper_->web_contents()
+                                   : web_contents();
+  ai_chat::HandleVoiceRecognition(web_contents(), context_web_contents);
+#endif
+}
+
 void AIChatUIPageHandler::GetConversationHistory(
     GetConversationHistoryCallback callback) {
   if (!active_chat_tab_helper_) {
