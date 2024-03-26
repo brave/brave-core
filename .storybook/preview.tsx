@@ -1,7 +1,12 @@
+// Copyright (c) 2021 The Brave Authors. All rights reserved.
+// This Source Code Form is subject to the terms of the Mozilla Public
+// License, v. 2.0. If a copy of the MPL was not distributed with this file,
+// You can obtain one at https://mozilla.org/MPL/2.0/.
+
 import 'emptykit.css'
 import * as React from 'react'
 import { withKnobs, boolean } from '@storybook/addon-knobs'
-import {setIconBasePath} from '@brave/leo/shared/icon'
+import { setIconBasePath } from '@brave/leo/react/icon'
 import '../components/web-components/app.global.scss'
 import { getString } from './locale'
 import ThemeProvider from '../components/common/BraveCoreThemeProvider'
@@ -35,36 +40,36 @@ export const parameters = {
       { name: 'Grey900', value: '#1E2029' }
     ]
   }
-}
+};
 
-window.loadTimeData = {
+const global: any = window
+global.loadTimeData = {
   getString,
-  getBoolean(key) {
+  getBoolean(key: string) {
     return false
   }
 }
 
-if (!('chrome' in window)) {
-  window.chrome = {}
-}
-
-chrome.extension = {
+if (!global.chrome) global.chrome = { extension: {} }
+global.chrome.extension = {
   inIncognitoContext: false
 }
 
-export const decorators = [
-  (Story) => (
-    <div dir={boolean('rtl?', false) ? 'rtl' : ''}>
-      <Story />
-    </div>
-  ),
-  (Story, context) => (
-    <ThemeProvider
-      dark={context.args.darkTheme}
-      light={context.args.lightTheme}
-    >
-      <Story />
-    </ThemeProvider>
-  ),
-  withKnobs
-]
+export default {
+  decorators: [
+    (Story: () => JSX.Element) => (
+      <div dir={boolean('rtl?', false) ? 'rtl' : ''}>
+        <Story />
+      </div>
+    ),
+    (Story: () => JSX.Element, context: any) => (
+      <ThemeProvider
+        dark={context.args.darkTheme}
+        light={context.args.lightTheme}
+      >
+        <Story />
+      </ThemeProvider>
+    ),
+    withKnobs
+  ]
+}
