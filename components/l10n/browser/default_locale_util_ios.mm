@@ -16,7 +16,7 @@ std::optional<std::string> MaybeGetDefaultLocaleString() {
   NSLocale* locale = NSLocale.currentLocale;
   NSString* localeIdentifier = [NSLocale localeIdentifierFromComponents:@{
     NSLocaleLanguageCode : locale.languageCode,
-    NSLocaleCountryCode : locale.countryCode
+    NSLocaleCountryCode : locale.countryCode ?: @"US"
   }];
   return base::SysNSStringToUTF8(localeIdentifier);
 }
