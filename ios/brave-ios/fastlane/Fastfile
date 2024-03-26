@@ -106,6 +106,7 @@ platform :ios do
       changelog: "Bug fixes & improvements",
       distribute_external: true,
       skip_waiting_for_build_processing: false,
+      reject_build_waiting_for_review: true,
       ipa: "build/Client.ipa",
       groups: ["Brave Internal"]
     }
