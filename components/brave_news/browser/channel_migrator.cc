@@ -50,7 +50,7 @@ void MigrateChannels(PrefService& prefs) {
 }
 
 std::string GetMigratedChannel(const std::string& channel) {
-  auto* it = kMigrateChannels.find(channel);
+  const auto it = kMigrateChannels.find(channel);
   return it == kMigrateChannels.end() ? channel : std::string{it->second};
 }
 

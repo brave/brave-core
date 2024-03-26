@@ -553,7 +553,7 @@ void TopSitesProvider::Start(const AutocompleteInput& input,
   const std::string input_text =
       base::ToLowerASCII(base::UTF16ToUTF8(input.text()));
 
-  for (auto* i = kTopSites.begin();
+  for (auto i = kTopSites.begin();
        (i != kTopSites.end()) && (matches_.size() < provider_max_matches());
        ++i) {
     const std::string_view& current_site = *i;
