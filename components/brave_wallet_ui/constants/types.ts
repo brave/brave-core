@@ -87,7 +87,6 @@ export type PanelHeaderSizes = 'regular' | 'slim'
 
 export type PanelTypes =
   | 'accounts'
-  | 'allowReadingEncryptedMessage' // For grep: 'decryptRequest'
   | 'approveTransaction'
   | 'assets'
   | 'buy'
@@ -222,7 +221,6 @@ export interface PanelState {
   getEncryptionPublicKeyRequest:
     | BraveWallet.GetEncryptionPublicKeyRequest
     | undefined
-  decryptRequest: BraveWallet.DecryptRequest | undefined
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
   signMessageErrorData: BraveWallet.SignMessageError[]

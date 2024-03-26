@@ -36,6 +36,7 @@ import { TabRow, URLText } from '../shared-panel-styles'
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
+import { useProcessPendingDecryptRequestMutation } from '../../../common/slices/api.slice'
 
 export interface ProvidePubKeyPanelProps {
   payload: BraveWallet.GetEncryptionPublicKeyRequest
@@ -120,35 +121,31 @@ interface DecryptRequestPanelProps {
 }
 
 export function DecryptRequestPanel({ payload }: DecryptRequestPanelProps) {
-  // redux
-  const dispatch = useDispatch()
-
   // state
   const [isDecrypted, setIsDecrypted] = React.useState<boolean>(false)
 
   // queries
   const { account } = useAccountQuery(payload.accountId)
 
+  // mutations
+  const [processDecryptRequest] = useProcessPendingDecryptRequestMutation()
+
   // custom hooks
   const orb = useAccountOrb(account)
 
   // methods
-  const onAllow = () => {
-    dispatch(
-      PanelActions.decryptProcessed({
-        requestId: payload.requestId,
-        approved: true
-      })
-    )
+  const onAllow = async () => {
+    await processDecryptRequest({
+      requestId: payload.requestId,
+      approved: true
+    }).unwrap()
   }
 
-  const onCancel = () => {
-    dispatch(
-      PanelActions.decryptProcessed({
-        requestId: payload.requestId,
-        approved: false
-      })
-    )
+  const onCancel = async () => {
+    await processDecryptRequest({
+      requestId: payload.requestId,
+      approved: false
+    }).unwrap()
   }
 
   const onDecryptMessage = () => {

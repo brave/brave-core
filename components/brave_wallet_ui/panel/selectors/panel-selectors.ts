@@ -16,7 +16,6 @@ export const selectedPanel = ({ panel }: State) => panel.selectedPanel
 export const connectToSiteOrigin = ({ panel }: State) =>
   panel.connectToSiteOrigin
 export const connectingAccounts = ({ panel }: State) => panel.connectingAccounts
-export const decryptRequest = ({ panel }: State) => panel.decryptRequest
 export const getEncryptionPublicKeyRequest = ({ panel }: State) =>
   panel.getEncryptionPublicKeyRequest
 export const hardwareWalletCode = ({ panel }: State) => panel.hardwareWalletCode
