@@ -9,7 +9,7 @@ import './brave_adblock_subpage.js'
 import '//resources/cr_elements/md_select.css.js'
 
 import {PolymerElement} from '//resources/polymer/v3_0/polymer/polymer_bundled.min.js'
-import {PrefsMixin} from 'chrome://resources/cr_components/settings_prefs/prefs_mixin.js'
+import {PrefsMixin} from '/shared/settings/prefs/prefs_mixin.js'
 import {I18nMixin} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {WebUiListenerMixin} from 'chrome://resources/cr_elements/web_ui_listener_mixin.js'
 import {assertNotReached} from 'chrome://resources/js/assert.js'
