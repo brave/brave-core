@@ -5,9 +5,6 @@
 
 import * as React from 'react'
 
-// Assets
-import WarningIcon from '../../assets/warning-icon.svg'
-
 // Types
 import { AddressMessageInfo } from '../../../../../constants/types'
 
@@ -16,6 +13,7 @@ import { getLocale } from '../../../../../../common/locale'
 
 // Styled Components
 import {
+  Wrapper,
   LearnMoreLink,
   HowToSolveButton,
   ErrorIcon
@@ -24,76 +22,95 @@ import {
   Column,
   Row,
   Text,
-  VerticalDivider,
-  VerticalSpacer
-} from '../../shared.styles'
+  LeoSquaredButton
+} from '../../../../../components/shared/style'
 
 interface Props {
   addressMessageInfo: AddressMessageInfo
   onClickHowToSolve?: () => void
+  onClickEnableENSOffchain?: () => void
 }
 
 export const AddressMessage = (props: Props) => {
-  const { addressMessageInfo, onClickHowToSolve } = props
+  const { addressMessageInfo, onClickHowToSolve, onClickEnableENSOffchain } =
+    props
 
   return (
-    <Column
-      columnWidth='full'
-      horizontalPadding={16}
-      horizontalAlign='flex-start'
+    <Wrapper
+      alignItems='flex-start'
+      justifyContent='flex-start'
+      padding='16px'
+      type={addressMessageInfo.type}
     >
-      <VerticalDivider marginBottom={16} />
-      <Row>
-        {addressMessageInfo.type && (
-          <ErrorIcon
-            icon={WarningIcon}
-            size={15}
-            type={addressMessageInfo.type}
-          />
-        )}
-        <Text
-          textSize='14px'
-          textColor='text01'
-          isBold={true}
-          textAlign='left'
-        >
-          {getLocale(addressMessageInfo.title)}
-        </Text>
-      </Row>
-      {addressMessageInfo.description && (
-        <>
-          <VerticalSpacer size={8} />
-          <Row rowWidth='full'>
-            <Text
-              textSize='12px'
-              textColor='text03'
-              isBold={false}
-              textAlign='left'
-            >
-              {getLocale(addressMessageInfo.description).replace(
-                '$1',
-                addressMessageInfo.placeholder || ''
-              )}{' '}
-              {addressMessageInfo.url && (
-                <LearnMoreLink
-                  href={addressMessageInfo.url}
-                  target='_blank'
-                  rel='noopener noreferrer'
-                >
-                  {getLocale('braveWalletLearnMore')}
-                </LearnMoreLink>
-              )}
-              {onClickHowToSolve && (
-                <HowToSolveButton onClick={onClickHowToSolve}>
-                  {getLocale('braveWalletHowToSolve')}
-                </HowToSolveButton>
-              )}
-            </Text>
-          </Row>
-        </>
+      {addressMessageInfo.type && addressMessageInfo.type !== 'info' && (
+        <ErrorIcon
+          name={
+            addressMessageInfo.type === 'error'
+              ? 'warning-circle-filled'
+              : 'warning-triangle-filled'
+          }
+          type={addressMessageInfo.type}
+        />
       )}
-      <VerticalSpacer size={16} />
-    </Column>
+      <Column
+        alignItems='flex-start'
+        justifyContent='flex-start'
+      >
+        {addressMessageInfo.title && (
+          <Text
+            textSize='12px'
+            textColor={addressMessageInfo.type ?? 'info'}
+            isBold={true}
+            textAlign='left'
+          >
+            {getLocale(addressMessageInfo.title)}
+          </Text>
+        )}
+        {addressMessageInfo.description && (
+          <>
+            <Row>
+              <Text
+                textSize='12px'
+                textColor={addressMessageInfo.type ?? 'info'}
+                isBold={false}
+                textAlign='left'
+              >
+                {getLocale(addressMessageInfo.description).replace(
+                  '$1',
+                  addressMessageInfo.placeholder || ''
+                )}{' '}
+                {addressMessageInfo.url && (
+                  <LearnMoreLink
+                    href={addressMessageInfo.url}
+                    target='_blank'
+                    rel='noopener noreferrer'
+                  >
+                    {getLocale('braveWalletLearnMore')}
+                  </LearnMoreLink>
+                )}
+                {onClickHowToSolve && (
+                  <HowToSolveButton onClick={onClickHowToSolve}>
+                    {getLocale('braveWalletHowToSolve')}
+                  </HowToSolveButton>
+                )}
+              </Text>
+            </Row>
+          </>
+        )}
+        {onClickEnableENSOffchain && (
+          <Row
+            alignItems='flex-start'
+            justifyContent='flex-start'
+            margin='16px 0px 0px 0px'
+            width='unset'
+          >
+            <LeoSquaredButton onClick={onClickEnableENSOffchain}>
+              {getLocale('braveWalletEnsOffChainButton')}
+            </LeoSquaredButton>
+          </Row>
+        )}
+      </Column>
+    </Wrapper>
   )
 }
 

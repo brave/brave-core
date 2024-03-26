@@ -217,7 +217,7 @@ export const AccountDetailsHeader = (props: Props) => {
         </MenuButton>
         <CreateAccountIcon
           account={account}
-          size='big'
+          size='huge'
           marginRight={8}
         />
         <Column alignItems='flex-start'>

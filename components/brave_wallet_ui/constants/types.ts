@@ -952,12 +952,26 @@ export type ERC721Metadata = {
   image_url?: string
 }
 
+export enum AddressMessageInfoIds {
+  sameAddressError = 0,
+  invalidAddressError = 1,
+  invalidUnifiedAddressError = 2,
+  invalidChecksumError = 3,
+  missingChecksumWarning = 4,
+  contractAddressError = 5,
+  FEVMTranslationWarning = 6,
+  ensOffchainLookupWarning = 7,
+  hasNoDomainAddress = 8,
+  invalidDomainExtension = 9
+}
+
 export type AddressMessageInfo = {
   title: string
   description?: string
   placeholder?: string
   url?: string
-  type?: 'error' | 'warning'
+  type?: 'error' | 'warning' | 'info'
+  id: AddressMessageInfoIds
 }
 
 export type AlertType = 'danger' | 'warning' | 'info' | 'success'

@@ -9,7 +9,9 @@ import {
   StyledWrapper,
   Header,
   Title,
-  CloseButton,
+  HeaderButton,
+  CloseIcon,
+  BackIcon,
   Modal,
   Divider
 } from './style'
@@ -17,6 +19,7 @@ import {
 export interface Props {
   children?: React.ReactNode
   onClose: () => void
+  onBack?: () => void
   title: string
   width?: string
   showDivider?: boolean
@@ -40,6 +43,7 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
       showDivider,
       hideHeader,
       onClose,
+      onBack,
       height,
       children
     } = props
@@ -74,8 +78,15 @@ export const PopupModal = React.forwardRef<HTMLDivElement, Props>(
               headerPaddingHorizontal={headerPaddingHorizontal}
               headerPaddingVertical={headerPaddingVertical}
             >
+              {onBack && (
+                <HeaderButton onClick={onBack}>
+                  <BackIcon />
+                </HeaderButton>
+              )}
               <Title>{title}</Title>
-              <CloseButton onClick={onClose} />
+              <HeaderButton onClick={onClose}>
+                <CloseIcon />
+              </HeaderButton>
             </Header>
           )}
           {showDivider && <Divider />}

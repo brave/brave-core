@@ -1,20 +1,30 @@
-// Copyright (c) 2022 The Brave Authors. All rights reserved.
+// Copyright (c) 2024 The Brave Authors. All rights reserved.
 // This Source Code Form is subject to the terms of the Mozilla Public
 // License, v. 2.0. If a copy of the MPL was not distributed with this file,
-// you can obtain one at https://mozilla.org/MPL/2.0/.
+// You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
 
+// Types
 import { BraveWallet } from '../../../../../constants/types'
-
-// Styled Components
-import { Button, ButtonText } from './account-list-item.style'
-import { Column } from '../../shared.styles'
 
 // Hooks
 import {
   CreateAccountIcon //
 } from '../../../../../components/shared/create-account-icon/create-account-icon'
+
+// Utils
+import { reduceAddress } from '../../../../../utils/reduce-address'
+import { getLocale } from '../../../../../../common/locale'
+
+// Styled Components
+import {
+  Button,
+  NameAndBalanceText,
+  AddressText,
+  DisabledLabel
+} from './account_list_item.style'
+import { Column, Row } from '../../../../../components/shared/style'
 
 interface Props {
   account: BraveWallet.AccountInfo
@@ -32,39 +42,45 @@ export const AccountListItem = (props: Props) => {
       onClick={() => onClick(account)}
     >
       <CreateAccountIcon
-        size='medium'
+        size='big'
         account={account}
         marginRight={16}
       />
       <Column
-        horizontalAlign='flex-start'
-        verticalAlign='center'
+        justifyContent='center'
+        alignItems='flex-start'
       >
-        <ButtonText
-          textColor='text03'
+        <Row
+          width='100%'
+          justifyContent='flex-start'
+          alignItems='center'
+        >
+          <NameAndBalanceText
+            textSize='14px'
+            isBold={true}
+            textAlign='left'
+          >
+            {account.name}
+          </NameAndBalanceText>
+          {isSelected && (
+            <DisabledLabel>{getLocale('braveWalletFrom')}</DisabledLabel>
+          )}
+        </Row>
+        <AddressText
           textSize='12px'
           isBold={false}
           textAlign='left'
         >
-          {account.name}
-        </ButtonText>
-        <ButtonText
-          textColor='text01'
-          textSize='12px'
-          isBold={false}
-          textAlign='left'
-        >
-          {account.address}
-        </ButtonText>
+          {reduceAddress(account.address)}
+        </AddressText>
         {accountAlias && accountAlias !== '' && (
-          <ButtonText
-            textColor='text02'
+          <AddressText
             textSize='12px'
             isBold={false}
             textAlign='left'
           >
             {accountAlias}
-          </ButtonText>
+          </AddressText>
         )}
       </Column>
     </Button>
