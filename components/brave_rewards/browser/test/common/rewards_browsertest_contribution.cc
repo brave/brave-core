@@ -7,6 +7,7 @@
 #include <utility>
 
 #include "base/strings/stringprintf.h"
+#include "base/test/bind.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_helper.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_context_util.h"
 #include "brave/components/brave_rewards/browser/test/common/rewards_browsertest_contribution.h"
@@ -369,56 +370,27 @@ mojom::Result RewardsBrowserTestContribution::GetACStatus() {
   return ac_reconcile_status_;
 }
 
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-void RewardsBrowserTestContribution::SetUpGeminiWallet(
+void RewardsBrowserTestContribution::StartProcessWithConnectedWallet(
     RewardsServiceImpl* rewards_service,
-    const double balance,
-    const mojom::WalletStatus status) {
-  if (!base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-    return;
-  }
+    double balance) {
   DCHECK(rewards_service);
-  browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                             "gemini");
-  // we need brave wallet as well
-  test_util::CreateRewardsWallet(rewards_service_);
+  auto* prefs = browser_->profile()->GetPrefs();
 
-  external_balance_ = balance;
+  prefs->SetString(prefs::kDeclaredGeo, "US");
 
-  base::Value::Dict wallet;
-  wallet.Set("token", "token");
-  wallet.Set("address", test_util::GetGeminiExternalAddress());
-  wallet.Set("status", static_cast<int>(status));
-  wallet.Set("user_name", "Brave Test");
+  constexpr char kRewardsWalletJSON[] = R"(
+      {"payment_id":"2b6e71a6-f3c7-5999-9235-11605a60ec93",
+       "recovery_seed":"QgcQHdg6fo53/bGKVwZlL1UkLiql8X7U68jaWgz6FWQ="})";
+  prefs->SetString(prefs::kWalletBrave, kRewardsWalletJSON);
 
-  std::string json;
-  base::JSONWriter::Write(wallet, &json);
-  auto encrypted = test_util::EncryptPrefString(rewards_service_, json);
-  ASSERT_TRUE(encrypted);
-  browser_->profile()->GetPrefs()->SetString(prefs::kWalletGemini, *encrypted);
-}
-#endif
-
-void RewardsBrowserTestContribution::SetUpUpholdWallet(
-    RewardsServiceImpl* rewards_service,
-    const double balance,
-    const mojom::WalletStatus status) {
-  DCHECK(rewards_service);
-#if BUILDFLAG(ENABLE_GEMINI_WALLET)
-  if (base::FeatureList::IsEnabled(features::kGeminiFeature)) {
-    browser_->profile()->GetPrefs()->SetString(prefs::kExternalWalletType,
-                                               "uphold");
-  }
-#endif
-  // we need brave wallet as well
-  test_util::CreateRewardsWallet(rewards_service_);
+  prefs->SetString(prefs::kExternalWalletType, "uphold");
 
   external_balance_ = balance;
 
   base::Value::Dict wallet;
   wallet.Set("token", "token");
   wallet.Set("address", test_util::GetUpholdExternalAddress());
-  wallet.Set("status", static_cast<int>(status));
+  wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));
   wallet.Set("user_name", "Brave Test");
 
   std::string json;
@@ -426,7 +398,35 @@ void RewardsBrowserTestContribution::SetUpUpholdWallet(
   auto encrypted = test_util::EncryptPrefString(rewards_service_, json);
   ASSERT_TRUE(encrypted);
 
-  browser_->profile()->GetPrefs()->SetString(prefs::kWalletUphold, *encrypted);
+  prefs->SetString(prefs::kWalletUphold, *encrypted);
+
+  test_util::StartProcess(rewards_service);
+
+  {
+    // Verify that the payment ID was read correctly.
+    std::string payment_id;
+    base::RunLoop run_loop;
+    rewards_service->GetRewardsWallet(
+        base::BindLambdaForTesting([&](mojom::RewardsWalletPtr rewards_wallet) {
+          payment_id = rewards_wallet->payment_id;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_EQ(payment_id, "2b6e71a6-f3c7-5999-9235-11605a60ec93");
+  }
+
+  {
+    // Verify that the balance is fetched correctly.
+    double user_balance = 0;
+    base::RunLoop run_loop;
+    rewards_service->FetchBalance(
+        base::BindLambdaForTesting([&](mojom::BalancePtr balance) {
+          user_balance = balance->total;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_EQ(user_balance, external_balance_);
+  }
 }
 
 double RewardsBrowserTestContribution::GetReconcileTipTotal() {

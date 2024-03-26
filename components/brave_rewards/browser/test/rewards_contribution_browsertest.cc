@@ -203,10 +203,9 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        AutoContributionMultiplePublishersUphold) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
   SetSKUOrderResponse();
 
   context_helper_->VisitPublisher(
@@ -227,9 +226,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        TipVerifiedPublisherWithCustomAmount) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
-
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   contribution_->TipPublisher(
       test_util::GetUrl(https_server_.get(), "duckduckgo.com"), false, 1, 0,
       1.25);
@@ -237,16 +234,13 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringTipForVerifiedPublisher) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
-
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   contribution_->TipPublisher(
       test_util::GetUrl(https_server_.get(), "duckduckgo.com"), true, 1);
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
 
   const double amount = 5.0;
   contribution_->TipViaCode("duckduckgo.com", amount,
@@ -261,8 +255,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipWithVerifiedWallet) {
 IN_PROC_BROWSER_TEST_F(
     RewardsContributionBrowserTest,
     DISABLED_MultipleTipsProduceMultipleFeesWithVerifiedWallet) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 50.0);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 50);
 
   double total_amount = 0.0;
   const double amount = 5.0;
@@ -292,8 +285,7 @@ IN_PROC_BROWSER_TEST_F(
 
 // Ensure that we can make a one-time tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
 
   rewards_service_->SendContribution("duckduckgo.com", 2.5, false,
                                      base::DoNothing());
@@ -305,9 +297,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, TipNonIntegralAmount) {
 // Ensure that we can make a recurring tip of a non-integral amount.
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringTipNonIntegralAmount) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   rewards_service_->SetAutoContributeEnabled(true);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
 
   const bool verified = true;
   context_helper_->VisitPublisher(
@@ -324,9 +315,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        RecurringAndPartialAutoContribution) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   rewards_service_->SetAutoContributeEnabled(true);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
   SetSKUOrderResponse();
 
   // Visit verified publisher
@@ -362,9 +352,8 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
                        MultipleRecurringOverBudgetAndPartialAutoContribution) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
   rewards_service_->SetAutoContributeEnabled(true);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
   SetSKUOrderResponse();
 
   contribution_->TipViaCode("duckduckgo.com", 3.0,
@@ -403,8 +392,7 @@ IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest,
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsContributionBrowserTest, PanelMonthlyTipAmount) {
-  test_util::CreateRewardsWallet(rewards_service_);
-  contribution_->SetUpUpholdWallet(rewards_service_, 30.0);
+  contribution_->StartProcessWithConnectedWallet(rewards_service_, 30);
 
   test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
                                                  "3zsistemi.si");
