@@ -24,6 +24,10 @@ OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVModule;
 ///
 /// Expected value: A URL string
 OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeySyncURL;
+/// Overrides the variations seed URL. Defaults to production
+///
+/// Expected value: A URL string
+OBJC_EXPORT const BraveCoreSwitchKey BraveCoreSwitchKeyVariationsURL;
 /// Sets a number of overrides for the ads & ledger services such as which
 /// environment its using, debug mode, etc.
 ///
