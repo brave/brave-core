@@ -91,13 +91,28 @@ public struct WalletConstants {
     case dapps
   }
 
+  #if DEBUG
+  public static var isUnitTesting: Bool {
+    ProcessInfo.processInfo.environment["XCTestConfigurationFilePath"] != nil
+  }
+  #endif
+
   /// The currently supported coin types in wallet
   public static func supportedCoinTypes(
     _ mode: SupportedCoinTypesMode = .general
   ) -> OrderedSet<BraveWallet.CoinType> {
     switch mode {
     case .general:
-      return [.eth, .sol, .fil, .btc]
+      #if DEBUG
+      if isUnitTesting {
+        return [.eth, .sol, .fil, .btc]
+      }
+      #endif
+      if FeatureList.kBraveWalletBitcoinFeature.enabled {
+        return [.eth, .sol, .fil, .btc]
+      } else {
+        return [.eth, .sol, .fil]
+      }
     case .dapps:
       return [.eth, .sol]
     }

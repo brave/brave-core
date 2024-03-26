@@ -40,13 +40,12 @@ struct AccountDetailsView: View {
   var body: some View {
     NavigationView {
       List {
-        if !account.address.isEmpty {
-          Section {
-            AccountDetailsHeaderView(account: account)
-              .frame(maxWidth: .infinity)
-              .listRowInsets(.zero)
-              .listRowBackground(Color(.braveGroupedBackground))
-          }
+        Section {
+          // TODO: Cleanup with brave-browser#37029
+          AccountDetailsHeaderView(account: account)
+            .frame(maxWidth: .infinity)
+            .listRowInsets(.zero)
+            .listRowBackground(Color(.braveGroupedBackground))
         }
         Section(
           content: {

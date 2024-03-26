@@ -3,6 +3,7 @@
 // License, v. 2.0. If a copy of the MPL was not distributed with this
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
+import BraveCore
 import SwiftUI
 
 /// Displays basic info around a single account
@@ -13,6 +14,22 @@ struct AccountView: View {
   var seed: String
   /// The account name describing what the account is for
   var name: String
+
+  init(account: BraveWallet.AccountInfo) {
+    self.address = account.address
+    self.seed = account.blockieSeed
+    self.name = account.name
+  }
+
+  init(
+    address: String,
+    seed: String,
+    name: String
+  ) {
+    self.address = address
+    self.seed = seed
+    self.name = name
+  }
 
   @ScaledMetric private var avatarSize = 40.0
   private let maxAvatarSize: CGFloat = 80.0

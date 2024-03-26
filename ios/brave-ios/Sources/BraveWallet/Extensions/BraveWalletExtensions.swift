@@ -163,6 +163,32 @@ extension BraveWallet.AccountInfo {
   var blockieSeed: String {
     address.isEmpty ? accountId.uniqueKey.sha256 : address
   }
+
+  public func sort(
+    with other: BraveWallet.AccountInfo,
+    parentOrder: Bool
+  ) -> Bool {
+    if self.coin == .fil && other.coin == .fil {
+      if self.keyringId == .filecoin && other.keyringId != .filecoin {
+        return true
+      } else if self.keyringId != .filecoin && other.keyringId == .filecoin {
+        return false
+      }
+    } else if self.coin == .btc && other.coin == .btc {
+      if self.keyringId == .bitcoin84 && other.keyringId != .bitcoin84 {
+        return true
+      } else if self.keyringId != .bitcoin84 && other.keyringId == .bitcoin84 {
+        return false
+      }
+    } else {
+      if self.keyringId == .solana && other.keyringId != .solana {
+        return true
+      } else if self.keyringId != .solana && other.keyringId == .solana {
+        return false
+      }
+    }
+    return parentOrder
+  }
 }
 
 extension BraveWallet.CoinType {
@@ -376,6 +402,32 @@ extension BraveWallet.NetworkInfo {
       return tokenURL
     }
     return nil
+  }
+
+  func sort(
+    with other: BraveWallet.NetworkInfo,
+    parentOrder: Bool
+  ) -> Bool {
+    let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(self.chainId)
+    let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(other.chainId)
+    if isLHSPrimaryNetwork && !isRHSPrimaryNetwork {
+      return true
+    } else if !isLHSPrimaryNetwork && isRHSPrimaryNetwork {
+      return false
+    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
+      self.chainId != other.chainId,
+      self.chainId == BraveWallet.SolanaMainnet
+    {
+      // Solana Mainnet to be first primary network
+      return true
+    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
+      self.chainId != other.chainId,
+      other.chainId == BraveWallet.SolanaMainnet
+    {
+      // Solana Mainnet to be first primary network
+      return false
+    }
+    return parentOrder
   }
 }
 

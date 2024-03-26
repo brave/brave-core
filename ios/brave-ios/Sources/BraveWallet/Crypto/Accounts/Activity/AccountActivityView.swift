@@ -190,7 +190,7 @@ struct AccountActivityView: View {
           )
         }
       )
-      if store.account.coin != .fil {
+      if store.account.coin != .fil && store.account.coin != .btc {
         Divider()
         NavigationLink(
           destination: {

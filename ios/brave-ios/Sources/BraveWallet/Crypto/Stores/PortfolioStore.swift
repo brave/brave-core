@@ -93,48 +93,11 @@ public struct AssetGroupViewModel: WalletAssetGroupViewModel, Identifiable, Equa
   private static func sameBalanceSort(lhs: AssetGroupViewModel, rhs: AssetGroupViewModel) -> Bool {
     if case .account(let lhsAccount) = lhs.groupType, case .account(let rhsAccount) = rhs.groupType
     {
-      if lhsAccount.coin == .fil && rhsAccount.coin == .fil {
-        if lhsAccount.keyringId == .filecoin && rhsAccount.keyringId != .filecoin {
-          return true
-        } else if lhsAccount.keyringId != .filecoin && rhsAccount.keyringId == .filecoin {
-          return false
-        }
-      } else if lhsAccount.coin == .btc && rhsAccount.coin == .btc {
-        if lhsAccount.keyringId == .bitcoin84 && rhsAccount.keyringId != .bitcoin84 {
-          return true
-        } else if lhsAccount.keyringId != .bitcoin84 && rhsAccount.keyringId == .bitcoin84 {
-          return false
-        }
-      } else {
-        if lhsAccount.keyringId == .solana && rhsAccount.keyringId != .solana {
-          return true
-        } else if lhsAccount.keyringId != .solana && rhsAccount.keyringId == .solana {
-          return false
-        }
-      }
+      return lhsAccount.sort(with: rhsAccount, parentOrder: lhs.id < rhs.id)
     }
     if case .network(let lhsNetwork) = lhs.groupType, case .network(let rhsNetwork) = rhs.groupType
     {
-      let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhsNetwork.chainId)
-      let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhsNetwork.chainId)
-      if isLHSPrimaryNetwork && !isRHSPrimaryNetwork {
-        return true
-      } else if !isLHSPrimaryNetwork && isRHSPrimaryNetwork {
-        return false
-      } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-        lhsNetwork.chainId != rhsNetwork.chainId,
-        lhsNetwork.chainId == BraveWallet.SolanaMainnet
-      {
-        // Solana Mainnet to be first primary network
-        return true
-      } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-        lhsNetwork.chainId != rhsNetwork.chainId,
-        rhsNetwork.chainId == BraveWallet.SolanaMainnet
-      {
-        // Solana Mainnet to be first primary network
-        return false
-      }
-      return lhs.id < rhs.id
+      return lhsNetwork.sort(with: rhsNetwork, parentOrder: lhs.id < rhs.id)
     }
     return lhs.id < rhs.id
   }
@@ -226,36 +189,20 @@ public struct AssetViewModel: Identifiable, Equatable {
   /// Sorts primary networks to be first (Solana Mainnet first primary network), then sorts native assets to be first, then sorts alphabetically.
   /// Used when two tokens have the same balance or fiat value (typically 0 / $0).
   private static func sameBalanceSort(lhs: AssetViewModel, rhs: AssetViewModel) -> Bool {
-    // sort primary networks to be first
-    let isLHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(lhs.network.chainId)
-    let isRHSPrimaryNetwork = WalletConstants.primaryNetworkChainIds.contains(rhs.network.chainId)
-    if isLHSPrimaryNetwork && !isRHSPrimaryNetwork {
-      return true
-    } else if !isLHSPrimaryNetwork && isRHSPrimaryNetwork {
-      return false
-    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-      lhs.network.chainId != rhs.network.chainId,
-      lhs.network.chainId == BraveWallet.SolanaMainnet
-    {
-      // Solana Mainnet to be first primary network
-      return true
-    } else if isLHSPrimaryNetwork, isRHSPrimaryNetwork,
-      lhs.network.chainId != rhs.network.chainId,
-      rhs.network.chainId == BraveWallet.SolanaMainnet
-    {
-      // Solana Mainnet to be first primary network
-      return false
+    var parentOrder: Bool {
+      // sort native tokens to be first
+      let isLHSNativeToken = lhs.network.isNativeAsset(lhs.token)
+      let isRHSNativeToken = rhs.network.isNativeAsset(rhs.token)
+      if isLHSNativeToken && !isRHSNativeToken {
+        return true
+      } else if !isLHSNativeToken && isRHSNativeToken {
+        return false
+      }
+      // sort by name
+      return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
     }
-    // sort native tokens to be first
-    let isLHSNativeToken = lhs.network.isNativeAsset(lhs.token)
-    let isRHSNativeToken = rhs.network.isNativeAsset(rhs.token)
-    if isLHSNativeToken && !isRHSNativeToken {
-      return true
-    } else if !isLHSNativeToken && isRHSNativeToken {
-      return false
-    }
-    // sort by name
-    return lhs.token.name.localizedStandardCompare(rhs.token.name) == .orderedAscending
+
+    return lhs.network.sort(with: rhs.network, parentOrder: parentOrder)
   }
 }
 

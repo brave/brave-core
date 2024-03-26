@@ -90,11 +90,7 @@ private struct AccountListRowView: View {
     AddressView(address: account.address) {
       Button(action: didSelect) {
         HStack {
-          AccountView(
-            address: account.address,
-            seed: account.blockieSeed,
-            name: account.name
-          )
+          AccountView(account: account)
           checkmark
         }
         .contentShape(Rectangle())

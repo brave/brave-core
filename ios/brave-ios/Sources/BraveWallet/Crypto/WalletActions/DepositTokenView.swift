@@ -321,7 +321,7 @@ private struct DepositDetailsView: View {
     }
   }
 
-  struct QRCodeViewModel {
+  private struct QRCodeViewModel {
     let name: String
     let address: String
   }
