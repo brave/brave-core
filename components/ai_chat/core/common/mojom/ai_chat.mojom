@@ -161,6 +161,7 @@ interface PageHandler {
   GenerateQuestions();
 
   SubmitHumanConversationEntry(string input);
+  HandleVoiceRecognition();
   SubmitSummarizationRequest();
   MarkAgreementAccepted();
   // Get associated page information. If there is none then |site_info| will be

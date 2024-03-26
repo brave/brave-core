@@ -34,4 +34,11 @@ void OpenURL(const std::string& url) {
           base::android::AttachCurrentThread(), url));
 }
 
+void HandleVoiceRecognition(content::WebContents* web_contents,
+                            content::WebContents* context_web_contents) {
+  Java_BraveLeoSettingsLauncherHelper_handleVoiceRecognition(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents(),
+      context_web_contents->GetJavaWebContents());
+}
+
 }  // namespace ai_chat

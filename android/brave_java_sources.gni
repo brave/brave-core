@@ -80,6 +80,7 @@ brave_java_sources = [
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoPrefUtils.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoSettingsLauncherHelper.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoUtils.java",
+  "../../brave/android/java/org/chromium/chrome/browser/brave_leo/BraveLeoVoiceRecognitionHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsBottomSheetDialogFragment.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsConnectionErrorHandler.java",
   "../../brave/android/java/org/chromium/chrome/browser/brave_news/BraveNewsControllerFactory.java",

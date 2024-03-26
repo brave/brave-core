@@ -56,6 +56,7 @@ class AIChatUIPageHandler : public ai_chat::mojom::PageHandler,
   void ChangeModel(const std::string& model_key) override;
   void SubmitHumanConversationEntry(const std::string& input) override;
   void SubmitSummarizationRequest() override;
+  void HandleVoiceRecognition() override;
   void GetConversationHistory(GetConversationHistoryCallback callback) override;
   void MarkAgreementAccepted() override;
   void GetSuggestedQuestions(GetSuggestedQuestionsCallback callback) override;
