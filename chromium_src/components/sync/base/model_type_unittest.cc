@@ -8,19 +8,19 @@
 namespace syncer {
 namespace {
 
-TEST_F(ModelTypeTest, EncryptableUserTypes) {
+TEST(ModelTypeTest, EncryptableUserTypes) {
   EXPECT_TRUE(EncryptableUserTypes().Has(DEVICE_INFO));
   EXPECT_TRUE(EncryptableUserTypes().Has(HISTORY));
 }
 
-TEST_F(ModelTypeTest, LowPriorityUserTypes) {
+TEST(ModelTypeTest, LowPriorityUserTypes) {
   EXPECT_TRUE(LowPriorityUserTypes().Has(HISTORY_DELETE_DIRECTIVES));
   EXPECT_FALSE(LowPriorityUserTypes().Has(HISTORY));
   EXPECT_TRUE(LowPriorityUserTypes().Has(USER_EVENTS));
 }
 
 // This test is supposed to fail when sync types are increased/decreased
-TEST_F(ModelTypeTest, ModelTypeCounts) {
+TEST(ModelTypeTest, ModelTypeCounts) {
   EXPECT_EQ(static_cast<int>(ModelTypeForHistograms::kMaxValue), 66);
 }
 
