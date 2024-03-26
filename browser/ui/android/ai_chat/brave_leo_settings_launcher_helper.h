@@ -22,6 +22,9 @@ void GoPremium(content::WebContents* web_contents);
 void ManagePremium(content::WebContents* web_contents);
 // Opens any other URL
 void OpenURL(const std::string& url);
+// Handles voice recognition for a prompt
+void HandleVoiceRecognition(content::WebContents* web_contents,
+                            content::WebContents* context_web_contents);
 
 }  // namespace ai_chat
 

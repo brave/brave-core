@@ -111,6 +111,6 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     @Override
     public void openLeoQuery(WebContents webContents, String query) {
         mDelegate.clearOmniboxFocus();
-        BraveLeoUtils.openLeoQuery(webContents, query);
+        BraveLeoUtils.openLeoQuery(webContents, query, true);
     }
 }
