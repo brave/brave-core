@@ -69,6 +69,9 @@ export const DropDown = styled.div<{
   position: absolute;
   top: 38px;
   z-index: 9;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  max-height: 300px;
   @media screen and (max-width: 1170px) {
     right: 0px;
   }
