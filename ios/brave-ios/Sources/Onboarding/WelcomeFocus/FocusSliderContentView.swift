@@ -59,7 +59,6 @@ struct FocusVideoAdSliderContentView: View {
     .loopMode(.loop)
     .resizable()
     .aspectRatio(contentMode: .fill)
-    .frame(height: 804)
   }
 }
 

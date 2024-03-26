@@ -10,9 +10,8 @@ import SwiftUI
 
 struct FocusSystemSettingsView: View {
   @Environment(\.colorScheme) private var colorScheme
-  @Environment(\.dismiss) private var dismiss
 
-  @State private var shouldDismiss = false
+  @Binding var shouldDismiss: Bool
 
   var body: some View {
     NavigationView {
@@ -62,8 +61,7 @@ struct FocusSystemSettingsView: View {
               }
 
               Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-              
-              finishOnboarding()
+              shouldDismiss = true
             },
             label: {
               (Text("Go to System Settings ") + Text(Image(systemName: "arrow.right")))
@@ -78,15 +76,17 @@ struct FocusSystemSettingsView: View {
           .clipShape(RoundedRectangle(cornerRadius: 12.0))
           .overlay(RoundedRectangle(cornerRadius: 12.0).strokeBorder(Color.black.opacity(0.2)))
 
-          Button(action: {
-            Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
-
-            finishOnboarding()
-          }) {
-            Text("I’ll do this Later...")
-              .font(.subheadline.weight(.semibold))
-              .foregroundColor(Color(braveSystemName: .textSecondary))
-          }
+          Button(
+            action: {
+              Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value = true
+              shouldDismiss = true
+            },
+            label: {
+              Text("I’ll do this Later...")
+                .font(.subheadline.weight(.semibold))
+                .foregroundColor(Color(braveSystemName: .textSecondary))
+            }
+          )
           .background(Color.clear)
           .padding(.bottom, 8)
 
@@ -110,24 +110,14 @@ struct FocusSystemSettingsView: View {
         }
       )
     }
-    .onChange(of: shouldDismiss) { shouldDismiss in
-      if shouldDismiss {
-        finishOnboarding()
-      }
-    }
     .navigationBarHidden(true)
-  }
-
-  private func finishOnboarding() {
-    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-    Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-    dismiss()
   }
 }
 
 struct FocusSystemSettingsView_Previews: PreviewProvider {
   static var previews: some View {
-    FocusSystemSettingsView()
+    @State var shouldDismiss: Bool = false
+
+    FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
   }
 }

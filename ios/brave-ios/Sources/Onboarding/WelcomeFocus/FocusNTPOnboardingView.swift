@@ -9,8 +9,6 @@ import Foundation
 import SnapKit
 import UIKit
 
-import Foundation
-
 public class FocusNTPOnboardingViewController: UIViewController, PopoverContentComponent {
 
   private let stackView = UIStackView().then {

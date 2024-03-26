@@ -97,12 +97,18 @@ struct FocusStepsView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isP3AViewPresented) {
-          FocusP3AScreenView(attributionManager: attributionManager, p3aUtilities: p3aUtilities)
+          FocusP3AScreenView(
+            attributionManager: attributionManager,
+            p3aUtilities: p3aUtilities,
+            shouldDismiss: $shouldDismiss
+          )
         }
       }
       .overlay(alignment: .topTrailing) {
         Button(
           action: {
+            attributionManager?.pingDAUServer(p3aUtilities?.isP3AEnabled ?? false)
+
             shouldDismiss = true
           },
           label: {
@@ -115,9 +121,6 @@ struct FocusStepsView: View {
       }
       .onChange(of: shouldDismiss) { shouldDismiss in
         if shouldDismiss {
-          // Early quit, ping server with default referral code
-          attributionManager?.pingDAUServer(false)
-
           Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
           Preferences.AppState.shouldDeferPromotedPurchase.value = false
 

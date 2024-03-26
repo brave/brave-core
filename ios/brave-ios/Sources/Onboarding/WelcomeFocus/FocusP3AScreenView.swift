@@ -10,19 +10,23 @@ import SafariServices
 import SwiftUI
 
 struct FocusP3AScreenView: View {
-  @Environment(\.dismiss) private var dismiss
-
   @State private var isP3AToggleOn = true
   @State private var isP3AHelpPresented = false
   @State private var isSystemSettingsViewPresented = false
-  @State private var shouldDismiss = false
+
+  @Binding var shouldDismiss: Bool
 
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
 
-  public init(attributionManager: AttributionManager? = nil, p3aUtilities: BraveP3AUtils? = nil) {
+  public init(
+    attributionManager: AttributionManager? = nil,
+    p3aUtilities: BraveP3AUtils? = nil,
+    shouldDismiss: Binding<Bool>
+  ) {
     self.attributionManager = attributionManager
     self.p3aUtilities = p3aUtilities
+    self._shouldDismiss = shouldDismiss
   }
 
   var body: some View {
@@ -128,13 +132,15 @@ struct FocusP3AScreenView: View {
       .background(Color(braveSystemName: .pageBackground))
       .background {
         NavigationLink("", isActive: $isSystemSettingsViewPresented) {
-          FocusSystemSettingsView()
+          FocusSystemSettingsView(shouldDismiss: $shouldDismiss)
         }
       }
     }
     .overlay(alignment: .topTrailing) {
       Button(
         action: {
+          handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
+
           shouldDismiss = true
         },
         label: {
@@ -145,27 +151,14 @@ struct FocusP3AScreenView: View {
         }
       )
     }
-    .onChange(of: shouldDismiss) { shouldDismiss in
-      if shouldDismiss {
-        handleAdCampaignLookupAndDAUPing(isP3AEnabled: false)
-
-        dismiss()
-      }
-    }
     .navigationBarHidden(true)
   }
 
   private func handleAdCampaignLookupAndDAUPing(isP3AEnabled: Bool) {
-    // Early quit, ping server with default referral code
     attributionManager?.pingDAUServer(isP3AEnabled)
-
-    Preferences.Onboarding.basicOnboardingCompleted.value = OnboardingState.completed.rawValue
-    Preferences.AppState.shouldDeferPromotedPurchase.value = false
 
     p3aUtilities?.isNoticeAcknowledged = true
     Preferences.Onboarding.p3aOnboardingShown.value = true
-
-    dismiss()
   }
 }
 
@@ -182,6 +175,8 @@ struct FocusSafariControllerView: UIViewControllerRepresentable {
 
 struct FocusP3AScreenView_Previews: PreviewProvider {
   static var previews: some View {
-    FocusP3AScreenView()
+    @State var shouldDismiss: Bool = false
+
+    FocusP3AScreenView(shouldDismiss: $shouldDismiss)
   }
 }

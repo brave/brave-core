@@ -78,32 +78,6 @@ extension BrowserViewController {
   }
 
   private func presentOmniBoxOnboarding() {
-    func presentNTPURLBarPopover (controller: UIViewController & PopoverContentComponent) {
-      presentPopoverContent(
-        using: controller,
-        with: frame,
-        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
-        didDismiss: { [weak self] in
-          guard let self = self else { return }
-
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
-        },
-        didClickBorderedArea: { [weak self] in
-          guard let self = self else { return }
-
-          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
-          Preferences.AppState.shouldDeferPromotedPurchase.value = false
-
-          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
-            self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
-          }
-        }
-      )
-    }
-    
     // If a controller is already presented (such as menu), do not show onboarding
     guard presentedViewController == nil else {
       return
@@ -114,9 +88,8 @@ extension BrowserViewController {
       from: topToolbar.locationView
     ).insetBy(dx: -1.0, dy: -1.0)
 
-    
     var controller: UIViewController & PopoverContentComponent
-    
+
     if Locale.current.regionCode != "JP" {
       // Present the popover
       controller = WelcomeOmniBoxOnboardingController().then {
@@ -125,16 +98,70 @@ extension BrowserViewController {
           details: Strings.Onboarding.omniboxOnboardingPopOverDescription
         )
       }
-      presentNTPURLBarPopover(controller: controller)
+      presentNTPURLBarPopover(
+        controller: controller,
+        onDismiss: { [weak self] in
+          guard let self = self else { return }
+          self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
+        },
+        onClickURLBar: { [weak self] in
+          guard let self = self else { return }
+
+          DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+            self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+          }
+        }
+      )
     } else {
       if Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.value {
+        Preferences.FocusOnboarding.urlBarIndicatorShowBeShown.reset()
+
         controller = FocusNTPOnboardingViewController().then {
           $0.setText(
             title: "See the Brave difference",
             details: "Enter a URL to enjoy Fewer ads & trackers."
           )
         }
+
+        presentNTPURLBarPopover(
+          controller: controller,
+          onDismiss: { [weak self] in
+            guard let self = self else { return }
+            self.triggerPromotedInAppPurchase(savedPayment: self.iapObserver.savedPayment)
+          },
+          onClickURLBar: { [weak self] in
+            guard let self = self else { return }
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.25) {
+              self.topToolbar.tabLocationViewDidTapLocation(self.topToolbar.locationView)
+            }
+          }
+        )
       }
+    }
+
+    func presentNTPURLBarPopover(
+      controller: UIViewController & PopoverContentComponent,
+      onDismiss: @escaping () -> Void,
+      onClickURLBar: @escaping () -> Void
+    ) {
+      presentPopoverContent(
+        using: controller,
+        with: frame,
+        cornerRadius: topToolbar.locationContainer.layer.cornerRadius,
+        didDismiss: {
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          onDismiss()
+        },
+        didClickBorderedArea: {
+          Preferences.FullScreenCallout.omniboxCalloutCompleted.value = true
+          Preferences.AppState.shouldDeferPromotedPurchase.value = false
+
+          onClickURLBar()
+        }
+      )
     }
   }
 
