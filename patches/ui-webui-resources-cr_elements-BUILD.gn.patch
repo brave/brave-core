@@ -1,5 +1,5 @@
 diff --git a/ui/webui/resources/cr_elements/BUILD.gn b/ui/webui/resources/cr_elements/BUILD.gn
-index 8619605e2975f..c2e85d72e6e43 100644
+index 8619605e2975f2f6aea6155912906cb6b8e5cfb1..c2e85d72e6e430157b8e61a40714b5c4ceba148c 100644
 --- a/ui/webui/resources/cr_elements/BUILD.gn
 +++ b/ui/webui/resources/cr_elements/BUILD.gn
 @@ -129,6 +129,7 @@ build_webui("build") {
