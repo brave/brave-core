@@ -295,11 +295,14 @@ public class BraveStoreSDK: AppStoreSDK {
     // Find the Brave offered product from the AppStore Product ID
     guard let product = BraveStoreProduct.allCases.first(where: { product.id == $0.rawValue })
     else {
+      Logger.module.debug("[BraveStoreSDK] - Not a Brave Product! - \(product.id)")
       throw BraveStoreSDKError.invalidProduct
     }
 
     // Update Skus SDK Purchase
     try await self.updateSkusPurchaseState(for: product)
+
+    Logger.module.debug("[BraveStoreSDK] - Purchase Successful")
   }
 
   // MARK: - Internal
@@ -364,10 +367,10 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
+    Logger.module.debug("[BraveStoreSDK] - Refreshing Receipt")
+
     // Attempt to update the Application Bundle's receipt, if necessary
-    if (try? AppStoreReceipt.receipt) == nil {
-      try await AppStoreReceipt.sync()
-    }
+    try await AppStoreReceipt.sync()
 
     // Create a Skus-SDK for the specified product
     let skusSDK = BraveSkusSDK.shared
@@ -379,6 +382,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
+    Logger.module.debug("[BraveStoreSDK] - No Order To Refresh")
     throw BraveSkusSDK.SkusError.cannotCreateOrder
   }
 
@@ -393,10 +397,13 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
+    Logger.module.debug("[BraveStoreSDK] - Syncing Receipt")
+
     // Attempt to update the Application Bundle's receipt, by force
     try await AppStoreReceipt.sync()
 
     if try AppStoreReceipt.receipt.isEmpty {
+      Logger.module.error("[BraveStoreSDK] - Receipt is Empty")
       throw AppStoreReceipt.AppStoreReceiptError.invalidReceiptData
     }
 
@@ -406,6 +413,8 @@ public class BraveStoreSDK: AppStoreSDK {
     // Create an order for the AppStore receipt
     // If an order already exists, refreshes the order information
     var orderId = Preferences.AIChat.subscriptionOrderId.value
+    Logger.module.debug("[BraveStoreSDK] - Cached OrderID: \(orderId ?? "None")")
+
     if orderId == nil {
       orderId = try await skusSDK.createOrder(for: product)
       Preferences.AIChat.subscriptionOrderId.value = orderId
@@ -418,6 +427,8 @@ public class BraveStoreSDK: AppStoreSDK {
     // There's an existing with no expiry date, refresh it
     var expiryDate = Preferences.AIChat.subscriptionExpirationDate.value
     if expiryDate == nil {
+      Logger.module.debug("[BraveStoreSDK] - No Expiration Date - Refreshing Order")
+
       let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
       expiryDate = order.expiresAt
       Preferences.AIChat.subscriptionExpirationDate.value = expiryDate
@@ -430,6 +441,8 @@ public class BraveStoreSDK: AppStoreSDK {
 
     // If the order is expired, refresh it
     if Date() > expiryDate {
+      Logger.module.debug("[BraveStoreSDK] - Order Is Expired - Refreshing Order")
+
       let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
       Preferences.AIChat.subscriptionExpirationDate.value = order.expiresAt
       Preferences.AIChat.subscriptionHasCredentials.value = true
@@ -442,5 +455,7 @@ public class BraveStoreSDK: AppStoreSDK {
       try await skusSDK.fetchCredentials(orderId: orderId, for: product.group)
       Preferences.AIChat.subscriptionHasCredentials.value = true
     }
+
+    Logger.module.debug("[BraveStoreSDK] - Order Completed")
   }
 }

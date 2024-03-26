@@ -16,6 +16,9 @@ public struct AIChatView: View {
   @ObservedObject
   var model: AIChatViewModel
 
+  @ObservedObject
+  var speechRecognizer: SpeechRecognizer
+
   @Environment(\.dismiss)
   private var dismiss
 
@@ -42,8 +45,13 @@ public struct AIChatView: View {
 
   var openURL: ((URL) -> Void)
 
-  public init(model: AIChatViewModel, openURL: @escaping (URL) -> Void) {
+  public init(
+    model: AIChatViewModel,
+    speechRecognizer: SpeechRecognizer,
+    openURL: @escaping (URL) -> Void
+  ) {
     self.model = model
+    self.speechRecognizer = speechRecognizer
     self.openURL = openURL
   }
 
@@ -236,7 +244,7 @@ public struct AIChatView: View {
       }
 
       if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView { prompt in
+        AIChatPromptInputView(speechRecognizer: speechRecognizer) { prompt in
           hasSeenIntro.value = true
           model.submitQuery(prompt)
           hideKeyboard()
@@ -441,6 +449,7 @@ public struct AIChatView: View {
 
   private var feedbackView: some View {
     AIChatFeedbackView(
+      speechRecognizer: speechRecognizer,
       premiumStatus: model.premiumStatus,
       shouldShowPremiumAd: shouldShowFeedbackPremiumAd.value,
       onSubmit: { category, feedback in
@@ -537,6 +546,7 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .containerBackground))
 
             AIChatFeedbackView(
+              speechRecognizer: SpeechRecognizer(),
               premiumStatus: .inactive,
               shouldShowPremiumAd: true,
               onSubmit: {
@@ -572,7 +582,7 @@ struct AIChatView_Preview: PreviewProvider {
       )
       .padding()
 
-      AIChatPromptInputView {
+      AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
         print("Prompt Submitted: \($0)")
       }
     }

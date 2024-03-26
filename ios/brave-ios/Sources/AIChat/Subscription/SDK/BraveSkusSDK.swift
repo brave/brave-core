@@ -209,14 +209,24 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
+    Logger.module.debug("[BraveSkusSDK] - Creating Order")
+
     let receipt = try BraveSkusSDK.receipt(for: product)
+
+    Logger.module.debug("[BraveSkusSDK] - Fetched Receipt")
+
+    Logger.module.debug("[BraveSkusSDK] - Creating Order From Receipt")
     let orderId = await skusService.createOrderFromReceipt(
       domain: product.group.skusDomain,
       receipt: receipt
     )
+
     if orderId.isEmpty {
+      Logger.module.debug("[BraveSkusSDK] - No OrderID")
       throw SkusError.cannotCreateOrder
     }
+
+    Logger.module.debug("[BraveSkusSDK] - OrderID: \(orderId)")
     return orderId
   }
 
@@ -262,6 +272,8 @@ public class BraveSkusSDK {
       return try self.jsonDecoder.decode(SkusOrder.self, from: data)
     }
 
+    Logger.module.debug("[BraveSkusSDK] - Refreshing Order: \(orderId)")
+
     guard let skusService = skusService else {
       throw SkusError.skusServiceUnavailable
     }
@@ -306,6 +318,7 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
+    Logger.module.debug("[BraveSkusSDK] - Fetching Order Credentials")
     let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
     if !result.isEmpty {
       Logger.module.error("[BraveSkusSDK] - Failed to Fetch Credentials: \(result)")

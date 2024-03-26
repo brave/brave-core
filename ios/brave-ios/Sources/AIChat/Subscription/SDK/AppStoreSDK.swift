@@ -21,6 +21,7 @@ public class AppStoreReceipt {
   public static var receipt: String {
     get throws {
       guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
+        Logger.module.debug("[AppStoreReceipt] - Invalid Appstore Receipt URL")
         throw AppStoreReceiptError.invalidReceiptURL
       }
 
@@ -45,10 +46,12 @@ public class AppStoreReceipt {
       fetcher.refreshReceipt { error in
         DispatchQueue.main.async {
           if let error = error {
+            Logger.module.error("[AppStoreReceipt] - Error Refreshing Receipt: \(error)")
             continuation.resume(throwing: error)
             return
           }
 
+          Logger.module.debug("[AppStoreReceipt] - Receipt Refreshed Successfully")
           continuation.resume()
         }
       }
@@ -372,25 +375,49 @@ public class AppStoreSDK: ObservableObject {
     let result = try await product.purchase(options: [.simulatesAskToBuyInSandbox(false)])
     switch result {
     case .success(let result):
+      Logger.module.debug("[AppStoreSDK] - Verifying Transaction")
+
       // Verify the transaction
       let transaction = try self.verify(result)
 
+      Logger.module.debug("[AppStoreSDK] - Fetching Purchases")
+
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
+
+      Logger.module.debug("[AppStoreSDK] - Refreshing Receipt")
 
       // If we cannot force a receipt to be added to the app,
       // leave the transaction pending.
       try await AppStoreReceipt.sync()
 
       if try AppStoreReceipt.receipt.isEmpty {
+        Logger.module.debug("[AppStoreSDK] - Receipt is NOT valid!")
         return nil
       }
 
-      // Do additional purchase processing such as server-side validation
-      try await processPurchase(of: product, transaction: transaction)
+      // Try a maximum of 5 times before considering the purchase a failure
+      for i in 0..<5 {
+        do {
+          // Do additional purchase processing such as server-side validation
+          // This function also asks for a receipt refresh
+          try await processPurchase(of: product, transaction: transaction)
+
+          Logger.module.debug("[AppStoreSDK] - Transaction Verified with Backend")
+          break
+        } catch {
+          Logger.module.error("[AppStoreSDK] - Backend Processing Failed: \(error)")
+          Logger.module.debug("[AppStoreSDK] - Waiting 2s and trying again...")
+          try? await Task.sleep(seconds: 1.0)
+        }
+      }
+
+      Logger.module.debug("[AppStoreSDK] - Marking Transaction Completed")
 
       // Transactions must be marked as completed once processed
       await transaction.finish()
+
+      Logger.module.debug("[AppStoreSDK] - Distributing Purchase To User")
 
       // Distribute the purchased products to the customer
       await MainActor.run {
