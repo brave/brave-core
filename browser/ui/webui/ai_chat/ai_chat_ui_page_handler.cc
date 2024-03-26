@@ -428,7 +428,11 @@ void AIChatUIPageHandler::GetPremiumStatus(GetPremiumStatusCallback callback) {
 }
 
 void AIChatUIPageHandler::ClosePanel() {
+#if !BUILDFLAG(IS_ANDROID)
   ai_chat::ClosePanel(web_contents());
+#else
+  ai_chat::CloseActivity(web_contents());
+#endif
 }
 
 void AIChatUIPageHandler::OnGetPremiumStatus(

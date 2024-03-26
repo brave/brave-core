@@ -41,4 +41,9 @@ void HandleVoiceRecognition(content::WebContents* web_contents,
       context_web_contents->GetJavaWebContents());
 }
 
+void CloseActivity(content::WebContents* web_contents) {
+  Java_BraveLeoSettingsLauncherHelper_closeActivity(
+      base::android::AttachCurrentThread(), web_contents->GetJavaWebContents());
+}
+
 }  // namespace ai_chat
