@@ -11,12 +11,12 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal::contribution {
 
-ContributionAC::ContributionAC(RewardsEngineImpl& engine) : engine_(engine) {}
+ContributionAC::ContributionAC(RewardsEngine& engine) : engine_(engine) {}
 
 ContributionAC::~ContributionAC() = default;
 

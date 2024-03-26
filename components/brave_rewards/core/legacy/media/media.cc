@@ -9,12 +9,12 @@
 #include "brave/components/brave_rewards/core/legacy/media/media.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "build/build_config.h"
 
 namespace brave_rewards::internal {
 
-Media::Media(RewardsEngineImpl& engine)
+Media::Media(RewardsEngine& engine)
     : engine_(engine), media_youtube_(engine), media_github_(engine) {}
 
 Media::~Media() = default;

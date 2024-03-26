@@ -32,7 +32,7 @@ std::optional<mojom::UrlRequestPtr> RequestBuilder::Request() const {
                                 ContentType(), SkipLog(), LoadFlags());
 }
 
-RequestBuilder::RequestBuilder(RewardsEngineImpl& engine) : engine_(engine) {}
+RequestBuilder::RequestBuilder(RewardsEngine& engine) : engine_(engine) {}
 
 mojom::UrlMethod RequestBuilder::Method() const {
   return mojom::UrlMethod::POST;

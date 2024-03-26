@@ -16,12 +16,12 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace contribution {
 
-ContributionMonthly::ContributionMonthly(RewardsEngineImpl& engine)
+ContributionMonthly::ContributionMonthly(RewardsEngine& engine)
     : engine_(engine) {}
 
 ContributionMonthly::~ContributionMonthly() = default;

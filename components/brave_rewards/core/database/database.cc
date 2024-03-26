@@ -10,12 +10,12 @@
 
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-Database::Database(RewardsEngineImpl& engine)
+Database::Database(RewardsEngine& engine)
     : engine_(engine),
       initialize_(engine),
       activity_info_(engine),

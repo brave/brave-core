@@ -8,7 +8,7 @@
 #include <memory>
 #include <utility>
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -25,7 +25,7 @@ void RewardsEngineFactory::CreateRewardsEngine(
     CreateRewardsEngineCallback callback) {
   if (!engine_) {
     engine_ = mojo::MakeSelfOwnedAssociatedReceiver(
-        std::make_unique<RewardsEngineImpl>(std::move(client_remote), *options),
+        std::make_unique<RewardsEngine>(std::move(client_remote), *options),
         std::move(engine_receiver));
   }
 

@@ -21,7 +21,7 @@ using GetSKUOrderCallback = base::OnceCallback<void(mojom::SKUOrderPtr)>;
 
 class DatabaseSKUOrder : public DatabaseTable {
  public:
-  explicit DatabaseSKUOrder(RewardsEngineImpl& engine);
+  explicit DatabaseSKUOrder(RewardsEngine& engine);
   ~DatabaseSKUOrder() override;
 
   void InsertOrUpdate(mojom::SKUOrderPtr info, ResultCallback callback);

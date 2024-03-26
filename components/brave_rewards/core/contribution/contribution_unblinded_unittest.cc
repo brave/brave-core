@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_unblinded.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_unblinded_token.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 
 // npm run test -- brave_unit_tests --filter=UnblindedTest.*
 
@@ -22,7 +22,7 @@ namespace contribution {
 class UnblindedTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   Unblinded unblinded_{mock_engine_impl_};
 };
 

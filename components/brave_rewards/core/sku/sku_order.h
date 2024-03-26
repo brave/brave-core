@@ -16,13 +16,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace sku {
 
 class SKUOrder {
  public:
-  explicit SKUOrder(RewardsEngineImpl& engine);
+  explicit SKUOrder(RewardsEngine& engine);
   ~SKUOrder();
 
   void Create(const std::vector<mojom::SKUOrderItem>& items,
@@ -37,7 +37,7 @@ class SKUOrder {
                     SKUOrderCallback callback,
                     mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   endpoint::PaymentServer payment_server_;
   base::WeakPtrFactory<SKUOrder> weak_factory_{this};
 };

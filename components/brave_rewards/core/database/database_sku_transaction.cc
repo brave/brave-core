@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_sku_transaction.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -20,7 +20,7 @@ const char kTableName[] = "sku_transaction";
 
 }  // namespace
 
-DatabaseSKUTransaction::DatabaseSKUTransaction(RewardsEngineImpl& engine)
+DatabaseSKUTransaction::DatabaseSKUTransaction(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseSKUTransaction::~DatabaseSKUTransaction() = default;

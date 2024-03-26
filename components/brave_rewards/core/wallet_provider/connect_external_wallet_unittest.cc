@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,8 +30,7 @@ using Result = endpoints::PostConnect::Result;
 
 class ConnectTestWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectTestWallet(RewardsEngineImpl& engine,
-                             Result post_connect_result)
+  explicit ConnectTestWallet(RewardsEngine& engine, Result post_connect_result)
       : ConnectExternalWallet(engine),
         post_connect_result_(post_connect_result) {}
 
@@ -67,7 +66,7 @@ class ConnectExternalWalletTest
     : public TestWithParam<ConnectExternalWalletTestParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(ConnectExternalWalletTest, Paths) {

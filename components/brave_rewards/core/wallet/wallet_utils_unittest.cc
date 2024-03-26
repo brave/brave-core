@@ -8,7 +8,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
@@ -23,14 +23,14 @@ using testing::WithParamInterface;
 
 namespace brave_rewards::internal::wallet {
 
-mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
                                                    std::string wallet_string,
                                                    std::string wallet_type);
 
 class WalletUtilTest : public Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_F(WalletUtilTest, InvalidJSON) {
@@ -69,7 +69,7 @@ class TransitionWalletCreate
       public WithParamInterface<TransitionWalletCreateParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(TransitionWalletCreate, Paths) {
@@ -153,7 +153,7 @@ class TransitionWalletTransition
       public WithParamInterface<TransitionWalletTransitionParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(TransitionWalletTransition, Paths) {

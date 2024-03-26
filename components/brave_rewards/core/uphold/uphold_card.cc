@@ -8,11 +8,11 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/endpoint/uphold/uphold_server.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::uphold {
 
-UpholdCard::UpholdCard(RewardsEngineImpl& engine)
+UpholdCard::UpholdCard(RewardsEngine& engine)
     : engine_(engine), uphold_server_(engine) {}
 
 UpholdCard::~UpholdCard() = default;

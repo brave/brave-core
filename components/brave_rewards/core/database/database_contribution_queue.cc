@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_queue.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -22,7 +22,7 @@ const char kTableName[] = "contribution_queue";
 
 }  // namespace
 
-DatabaseContributionQueue::DatabaseContributionQueue(RewardsEngineImpl& engine)
+DatabaseContributionQueue::DatabaseContributionQueue(RewardsEngine& engine)
     : DatabaseTable(engine), publishers_(engine) {}
 
 DatabaseContributionQueue::~DatabaseContributionQueue() = default;

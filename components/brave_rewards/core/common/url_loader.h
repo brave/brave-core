@@ -18,7 +18,7 @@ namespace brave_rewards::internal {
 // both requests and responses.
 class URLLoader : public RewardsEngineHelper, public WithHelperKey<URLLoader> {
  public:
-  explicit URLLoader(RewardsEngineImpl& engine);
+  explicit URLLoader(RewardsEngine& engine);
   ~URLLoader() override;
 
   enum class LogLevel {

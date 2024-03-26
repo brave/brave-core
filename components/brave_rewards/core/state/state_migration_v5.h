@@ -10,19 +10,19 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV5 {
  public:
-  explicit StateMigrationV5(RewardsEngineImpl& engine);
+  explicit StateMigrationV5(RewardsEngine& engine);
   ~StateMigrationV5();
 
   void Migrate(ResultCallback callback);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace state

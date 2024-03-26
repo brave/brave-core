@@ -20,7 +20,7 @@ namespace credential {
 
 class CredentialsSKU : public Credentials {
  public:
-  explicit CredentialsSKU(RewardsEngineImpl& engine);
+  explicit CredentialsSKU(RewardsEngine& engine);
   ~CredentialsSKU() override;
 
   void Start(const CredentialsTrigger& trigger,
@@ -80,7 +80,7 @@ class CredentialsSKU : public Credentials {
                       ResultCallback callback,
                       mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   CredentialsCommon common_;
   endpoint::PaymentServer payment_server_;
   base::WeakPtrFactory<CredentialsSKU> weak_factory_{this};

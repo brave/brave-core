@@ -10,11 +10,11 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/uuid.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::wallet_provider {
 
-Transfer::Transfer(RewardsEngineImpl& engine) : engine_(engine) {}
+Transfer::Transfer(RewardsEngine& engine) : engine_(engine) {}
 
 Transfer::~Transfer() = default;
 

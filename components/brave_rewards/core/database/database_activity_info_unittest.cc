@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 
 // npm run test -- brave_unit_tests --filter=DatabaseActivityInfoTest.*
 
@@ -24,7 +24,7 @@ namespace database {
 class DatabaseActivityInfoTest : public ::testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   DatabaseActivityInfo activity_{mock_engine_impl_};
 };
 

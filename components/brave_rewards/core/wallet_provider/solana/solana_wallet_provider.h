@@ -20,7 +20,7 @@ class SolanaWalletProvider : public RewardsEngineHelper,
                              public WithHelperKey<SolanaWalletProvider>,
                              public wallet_provider::WalletProvider {
  public:
-  explicit SolanaWalletProvider(RewardsEngineImpl& engine);
+  explicit SolanaWalletProvider(RewardsEngine& engine);
   ~SolanaWalletProvider() override;
 
   const char* WalletType() const override;

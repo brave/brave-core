@@ -20,7 +20,7 @@ using Result = GetTransactionStatusUphold::Result;
 
 namespace {
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -48,7 +48,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 
 // static
 Result GetTransactionStatusUphold::ProcessResponse(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const mojom::UrlResponse& response) {
   if (URLLoader::IsSuccessCode(response.status_code)) {
     return ParseBody(engine, response.body);

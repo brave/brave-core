@@ -21,13 +21,13 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 
-GitHub::GitHub(RewardsEngineImpl& engine) : engine_(engine) {}
+GitHub::GitHub(RewardsEngine& engine) : engine_(engine) {}
 
 GitHub::~GitHub() = default;
 

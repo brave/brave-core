@@ -35,7 +35,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -53,10 +53,10 @@ struct ResultFor<PostOAuthZebPay> {
 class PostOAuthZebPay final : public RequestBuilder,
                               public ResponseHandler<PostOAuthZebPay> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
-  PostOAuthZebPay(RewardsEngineImpl& engine, const std::string& code);
+  PostOAuthZebPay(RewardsEngine& engine, const std::string& code);
   ~PostOAuthZebPay() override;
 
  private:

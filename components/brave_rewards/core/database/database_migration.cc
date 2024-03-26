@@ -52,7 +52,7 @@
 #include "brave/components/brave_rewards/core/database/migration/migration_v8.h"
 #include "brave/components/brave_rewards/core/database/migration/migration_v9.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "third_party/re2/src/re2/re2.h"
 
 // NOTICE!!
@@ -66,8 +66,7 @@ namespace database {
 
 uint32_t DatabaseMigration::test_target_version_ = 0;
 
-DatabaseMigration::DatabaseMigration(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+DatabaseMigration::DatabaseMigration(RewardsEngine& engine) : engine_(engine) {}
 
 DatabaseMigration::~DatabaseMigration() = default;
 

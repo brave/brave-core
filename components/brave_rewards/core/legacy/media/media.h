@@ -16,11 +16,11 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 class Media {
  public:
-  explicit Media(RewardsEngineImpl& engine);
+  explicit Media(RewardsEngine& engine);
 
   ~Media();
 
@@ -50,7 +50,7 @@ class Media {
                             const std::string& type,
                             uint64_t windowId);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   YouTube media_youtube_;
   GitHub media_github_;
 };

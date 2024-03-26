@@ -24,7 +24,7 @@ class RewardsParametersProvider
     : public RewardsEngineHelper,
       public WithHelperKey<RewardsParametersProvider> {
  public:
-  explicit RewardsParametersProvider(RewardsEngineImpl& engine);
+  explicit RewardsParametersProvider(RewardsEngine& engine);
   ~RewardsParametersProvider() override;
 
   // Begins updating the locally-cached parameters data in the background.

@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/common/callback_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::endpoints {
 
@@ -32,7 +32,7 @@ template <typename Endpoint>
 class RequestFor {
  public:
   template <typename... Ts>
-  RequestFor(RewardsEngineImpl& engine, Ts&&... ts)
+  RequestFor(RewardsEngine& engine, Ts&&... ts)
       : engine_(engine),
         request_(Endpoint(engine, std::forward<Ts>(ts)...).Request()) {
     static_assert(std::is_base_of_v<RequestBuilder, Endpoint>,
@@ -63,7 +63,7 @@ class RequestFor {
                                         : URLLoader::LogLevel::kDetailed;
 
     auto on_response =
-        [](base::WeakPtr<RewardsEngineImpl> engine,
+        [](base::WeakPtr<RewardsEngine> engine,
            base::OnceCallback<void(typename Endpoint::Result&&)> callback,
            mojom::UrlResponsePtr response) {
           if (engine) {
@@ -79,7 +79,7 @@ class RequestFor {
   }
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   std::optional<mojom::UrlRequestPtr> request_;
 };
 

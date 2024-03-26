@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 #include "wally_bip39.h"  // NOLINT
@@ -24,7 +24,7 @@
 namespace brave_rewards::internal {
 namespace wallet {
 
-Wallet::Wallet(RewardsEngineImpl& engine)
+Wallet::Wallet(RewardsEngine& engine)
     : engine_(engine), create_(engine), balance_(engine) {}
 
 Wallet::~Wallet() = default;

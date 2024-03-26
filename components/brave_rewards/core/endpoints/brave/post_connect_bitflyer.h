@@ -26,13 +26,13 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class PostConnectBitflyer final : public PostConnect {
  public:
-  PostConnectBitflyer(RewardsEngineImpl& engine, std::string&& linking_info);
+  PostConnectBitflyer(RewardsEngine& engine, std::string&& linking_info);
   ~PostConnectBitflyer() override;
 
  private:

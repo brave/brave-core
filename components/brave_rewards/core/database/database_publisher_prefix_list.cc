@@ -13,7 +13,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -49,8 +49,7 @@ std::tuple<publisher::PrefixIterator, std::string, size_t> GetPrefixInsertList(
 
 namespace database {
 
-DatabasePublisherPrefixList::DatabasePublisherPrefixList(
-    RewardsEngineImpl& engine)
+DatabasePublisherPrefixList::DatabasePublisherPrefixList(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabasePublisherPrefixList::~DatabasePublisherPrefixList() = default;

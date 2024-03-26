@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info_publishers.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -21,7 +21,7 @@ const char kTableName[] = "contribution_info_publishers";
 }  // namespace
 
 DatabaseContributionInfoPublishers::DatabaseContributionInfoPublishers(
-    RewardsEngineImpl& engine)
+    RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseContributionInfoPublishers::~DatabaseContributionInfoPublishers() =

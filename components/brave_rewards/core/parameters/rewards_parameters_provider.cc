@@ -52,7 +52,7 @@ base::Value::Dict MapToDict(const T& map) {
 
 }  // namespace
 
-RewardsParametersProvider::RewardsParametersProvider(RewardsEngineImpl& engine)
+RewardsParametersProvider::RewardsParametersProvider(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 RewardsParametersProvider::~RewardsParametersProvider() = default;

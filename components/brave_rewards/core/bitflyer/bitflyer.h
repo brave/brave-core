@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace bitflyer {
 
 class Bitflyer final : public wallet_provider::WalletProvider {
  public:
-  explicit Bitflyer(RewardsEngineImpl& engine);
+  explicit Bitflyer(RewardsEngine& engine);
 
   const char* WalletType() const override;
 

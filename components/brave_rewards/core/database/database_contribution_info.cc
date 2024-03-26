@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_contribution_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -24,7 +24,7 @@ const char kChildTableName[] = "contribution_info_publishers";
 
 }  // namespace
 
-DatabaseContributionInfo::DatabaseContributionInfo(RewardsEngineImpl& engine)
+DatabaseContributionInfo::DatabaseContributionInfo(RewardsEngine& engine)
     : DatabaseTable(engine), publishers_(engine) {}
 
 DatabaseContributionInfo::~DatabaseContributionInfo() = default;

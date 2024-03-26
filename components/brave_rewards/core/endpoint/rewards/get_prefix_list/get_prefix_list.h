@@ -20,7 +20,7 @@
 // blob
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace rewards {
@@ -31,7 +31,7 @@ using GetPrefixListCallback =
 
 class GetPrefixList {
  public:
-  explicit GetPrefixList(RewardsEngineImpl& engine);
+  explicit GetPrefixList(RewardsEngine& engine);
   ~GetPrefixList();
 
   void Request(GetPrefixListCallback callback);
@@ -44,7 +44,7 @@ class GetPrefixList {
   void OnRequest(GetPrefixListCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace rewards

@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -30,7 +30,7 @@ using Result = PostConnect::Result;
 
 class PostConnectMock final : public PostConnect {
  public:
-  explicit PostConnectMock(RewardsEngineImpl& engine) : PostConnect(engine) {}
+  explicit PostConnectMock(RewardsEngine& engine) : PostConnect(engine) {}
   ~PostConnectMock() override = default;
 
  private:
@@ -62,7 +62,7 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(PostConnect, Paths) {

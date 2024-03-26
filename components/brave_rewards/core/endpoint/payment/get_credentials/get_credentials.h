@@ -46,7 +46,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace payment {
@@ -56,7 +56,7 @@ using GetCredentialsCallback =
 
 class GetCredentials {
  public:
-  explicit GetCredentials(RewardsEngineImpl& engine);
+  explicit GetCredentials(RewardsEngine& engine);
   ~GetCredentials();
 
   void Request(const std::string& order_id,
@@ -73,7 +73,7 @@ class GetCredentials {
   void OnRequest(GetCredentialsCallback callback,
                  mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace payment

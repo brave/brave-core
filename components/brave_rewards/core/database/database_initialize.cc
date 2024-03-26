@@ -7,13 +7,13 @@
 
 #include "brave/components/brave_rewards/core/database/database_initialize.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 
 namespace brave_rewards::internal {
 namespace database {
 
-DatabaseInitialize::DatabaseInitialize(RewardsEngineImpl& engine)
+DatabaseInitialize::DatabaseInitialize(RewardsEngine& engine)
     : engine_(engine), migration_(engine) {}
 
 DatabaseInitialize::~DatabaseInitialize() = default;

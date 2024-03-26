@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace database {
 
 class DatabaseMigration {
  public:
-  explicit DatabaseMigration(RewardsEngineImpl& engine);
+  explicit DatabaseMigration(RewardsEngine& engine);
   ~DatabaseMigration();
 
   void Start(uint32_t table_version, ResultCallback callback);
@@ -34,7 +34,7 @@ class DatabaseMigration {
                                 int migrated_version,
                                 mojom::DBCommandResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   static uint32_t test_target_version_;
 };
 

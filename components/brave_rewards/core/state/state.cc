@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/parameters/rewards_parameters_provider.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
 namespace brave_rewards::internal::state {
 
-State::State(RewardsEngineImpl& engine) : engine_(engine), migration_(engine) {}
+State::State(RewardsEngine& engine) : engine_(engine), migration_(engine) {}
 
 State::~State() = default;
 

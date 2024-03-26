@@ -11,14 +11,14 @@
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
 
 namespace brave_rewards::internal::wallet {
 
-WalletBalance::WalletBalance(RewardsEngineImpl& engine) : engine_(engine) {}
+WalletBalance::WalletBalance(RewardsEngine& engine) : engine_(engine) {}
 
 WalletBalance::~WalletBalance() = default;
 

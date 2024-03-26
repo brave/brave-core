@@ -17,7 +17,7 @@ namespace database {
 
 class DatabaseServerPublisherLinks : public DatabaseTable {
  public:
-  explicit DatabaseServerPublisherLinks(RewardsEngineImpl& engine);
+  explicit DatabaseServerPublisherLinks(RewardsEngine& engine);
   ~DatabaseServerPublisherLinks() override;
 
   void InsertOrUpdate(mojom::DBTransaction* transaction,

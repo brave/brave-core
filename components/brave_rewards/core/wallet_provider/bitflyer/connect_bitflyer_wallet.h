@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/wallet_provider/connect_external_wallet.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace bitflyer {
 
 class ConnectBitFlyerWallet : public wallet_provider::ConnectExternalWallet {
  public:
-  explicit ConnectBitFlyerWallet(RewardsEngineImpl& engine);
+  explicit ConnectBitFlyerWallet(RewardsEngine& engine);
 
   ~ConnectBitFlyerWallet() override;
 

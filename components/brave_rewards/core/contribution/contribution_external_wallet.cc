@@ -13,13 +13,12 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 
 namespace brave_rewards::internal::contribution {
 
-ContributionExternalWallet::ContributionExternalWallet(
-    RewardsEngineImpl& engine)
+ContributionExternalWallet::ContributionExternalWallet(RewardsEngine& engine)
     : engine_(engine) {}
 
 ContributionExternalWallet::~ContributionExternalWallet() = default;

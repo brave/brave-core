@@ -21,7 +21,7 @@ using GetSKUTransactionCallback = base::OnceCallback<void(
 
 class DatabaseSKUTransaction : public DatabaseTable {
  public:
-  explicit DatabaseSKUTransaction(RewardsEngineImpl& engine);
+  explicit DatabaseSKUTransaction(RewardsEngine& engine);
   ~DatabaseSKUTransaction() override;
 
   void InsertOrUpdate(mojom::SKUTransactionPtr info, ResultCallback callback);

@@ -8,7 +8,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_creds_batch.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -19,7 +19,7 @@ const char kTableName[] = "creds_batch";
 
 }  // namespace
 
-DatabaseCredsBatch::DatabaseCredsBatch(RewardsEngineImpl& engine)
+DatabaseCredsBatch::DatabaseCredsBatch(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseCredsBatch::~DatabaseCredsBatch() = default;

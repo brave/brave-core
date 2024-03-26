@@ -15,11 +15,11 @@
 #include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::contribution {
 
-ContributionTip::ContributionTip(RewardsEngineImpl& engine) : engine_(engine) {}
+ContributionTip::ContributionTip(RewardsEngine& engine) : engine_(engine) {}
 
 ContributionTip::~ContributionTip() = default;
 

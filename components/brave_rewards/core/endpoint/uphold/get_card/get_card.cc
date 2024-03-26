@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/uphold/uphold_card.h"
 #include "net/http/http_status_code.h"
 
@@ -21,7 +21,7 @@ namespace brave_rewards::internal {
 namespace endpoint {
 namespace uphold {
 
-GetCard::GetCard(RewardsEngineImpl& engine) : engine_(engine) {}
+GetCard::GetCard(RewardsEngine& engine) : engine_(engine) {}
 
 GetCard::~GetCard() = default;
 

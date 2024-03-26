@@ -43,7 +43,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace gemini {
@@ -53,7 +53,7 @@ using PostBalanceCallback = base::OnceCallback<void(const mojom::Result result,
 
 class PostBalance {
  public:
-  explicit PostBalance(RewardsEngineImpl& engine);
+  explicit PostBalance(RewardsEngine& engine);
   ~PostBalance();
 
   void Request(const std::string& token, PostBalanceCallback callback);
@@ -65,7 +65,7 @@ class PostBalance {
 
   void OnRequest(PostBalanceCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace gemini

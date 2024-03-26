@@ -39,7 +39,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::gemini {
 
@@ -50,7 +50,7 @@ class PostRecipientId {
  public:
   static inline const std::string kRecipientLabel = "Brave Browser";
 
-  explicit PostRecipientId(RewardsEngineImpl& engine);
+  explicit PostRecipientId(RewardsEngine& engine);
   ~PostRecipientId();
 
   void Request(const std::string& token, PostRecipientIdCallback);
@@ -63,7 +63,7 @@ class PostRecipientId {
   void OnRequest(PostRecipientIdCallback, mojom::UrlResponsePtr);
   std::string GeneratePayload();
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::gemini

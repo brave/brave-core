@@ -23,13 +23,13 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
 #include "brave/components/brave_rewards/core/publisher/server_publisher_fetcher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
 namespace publisher {
 
-Publisher::Publisher(RewardsEngineImpl& engine)
+Publisher::Publisher(RewardsEngine& engine)
     : engine_(engine),
       prefix_list_updater_(engine),
       server_publisher_fetcher_(engine) {}

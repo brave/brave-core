@@ -35,7 +35,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -51,10 +51,10 @@ class GetRecipientIDGemini final
     : public RequestBuilder,
       public ResponseHandler<GetRecipientIDGemini> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
-  GetRecipientIDGemini(RewardsEngineImpl& engine, std::string&& token);
+  GetRecipientIDGemini(RewardsEngine& engine, std::string&& token);
   ~GetRecipientIDGemini() override;
 
  private:

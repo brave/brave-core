@@ -15,7 +15,7 @@
 #include "brave/components/brave_rewards/core/endpoints/brave/post_wallets.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/linkage_checker.h"
@@ -50,7 +50,7 @@ mojom::CreateRewardsWalletResult MapEndpointError(PatchWallets::Error error) {
 
 }  // namespace
 
-WalletCreate::WalletCreate(RewardsEngineImpl& engine) : engine_(engine) {}
+WalletCreate::WalletCreate(RewardsEngine& engine) : engine_(engine) {}
 
 void WalletCreate::CreateWallet(std::optional<std::string>&& geo_country,
                                 CreateRewardsWalletCallback callback) {

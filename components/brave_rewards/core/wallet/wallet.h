@@ -18,13 +18,13 @@
 #include "brave/components/brave_rewards/core/wallet/wallet_create.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace wallet {
 
 class Wallet {
  public:
-  explicit Wallet(RewardsEngineImpl& engine);
+  explicit Wallet(RewardsEngine& engine);
   ~Wallet();
 
   void CreateWalletIfNecessary(std::optional<std::string>&& geo_country,
@@ -38,7 +38,7 @@ class Wallet {
   bool SetWallet(mojom::RewardsWalletPtr wallet);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   WalletCreate create_;
   WalletBalance balance_;
 };

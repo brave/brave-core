@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -75,7 +75,7 @@ class PublisherTest : public testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   Publisher publisher_{mock_engine_impl_};
 
   double a_ = 0;

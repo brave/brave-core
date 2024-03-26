@@ -15,13 +15,13 @@
 #include "brave/components/brave_rewards/core/state/state_migration.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class State {
  public:
-  explicit State(RewardsEngineImpl& engine);
+  explicit State(RewardsEngine& engine);
   ~State();
 
   void Initialize(ResultCallback callback);
@@ -69,7 +69,7 @@ class State {
   bool SetEncryptedString(const std::string& key, const std::string& value);
 
  private:
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   StateMigration migration_;
 };
 

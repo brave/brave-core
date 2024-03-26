@@ -9,12 +9,12 @@
 
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet_util.h"
 
 namespace brave_rewards::internal::wallet_provider {
 
-WalletProvider::WalletProvider(RewardsEngineImpl& engine) : engine_(engine) {}
+WalletProvider::WalletProvider(RewardsEngine& engine) : engine_(engine) {}
 
 WalletProvider::~WalletProvider() = default;
 

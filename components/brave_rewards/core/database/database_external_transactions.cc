@@ -9,14 +9,14 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_external_transactions.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal::database {
 
 constexpr char kTableName[] = "external_transactions";
 
 DatabaseExternalTransactions::DatabaseExternalTransactions(
-    RewardsEngineImpl& engine)
+    RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseExternalTransactions::~DatabaseExternalTransactions() = default;

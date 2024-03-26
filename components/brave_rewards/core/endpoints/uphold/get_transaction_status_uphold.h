@@ -116,7 +116,7 @@ class GetTransactionStatusUphold final
  public:
   using GetTransactionStatus::GetTransactionStatus;
 
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
  private:

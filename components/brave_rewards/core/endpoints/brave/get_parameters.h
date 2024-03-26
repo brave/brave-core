@@ -59,7 +59,7 @@
 // clang-format on
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -74,10 +74,10 @@ struct ResultFor<GetParameters> {
 class GetParameters final : public RequestBuilder,
                             public ResponseHandler<GetParameters> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
-  explicit GetParameters(RewardsEngineImpl& engine);
+  explicit GetParameters(RewardsEngine& engine);
   ~GetParameters() override;
 
   using ProviderRegionsMap = base::flat_map<std::string, mojom::RegionsPtr>;

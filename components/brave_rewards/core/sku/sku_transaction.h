@@ -18,13 +18,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace sku {
 
 class SKUTransaction {
  public:
-  explicit SKUTransaction(RewardsEngineImpl& engine);
+  explicit SKUTransaction(RewardsEngine& engine);
   ~SKUTransaction();
 
   void Run(mojom::SKUOrderPtr order,
@@ -77,7 +77,7 @@ class SKUTransaction {
 
   void OnSendExternalTransaction(ResultCallback callback, mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   endpoint::PaymentServer payment_server_;
   base::WeakPtrFactory<SKUTransaction> weak_factory_{this};
 };

@@ -9,7 +9,7 @@ namespace brave_rewards::internal {
 
 RewardsEngineHelper::~RewardsEngineHelper() = default;
 
-RewardsEngineHelper::RewardsEngineHelper(RewardsEngineImpl& engine)
+RewardsEngineHelper::RewardsEngineHelper(RewardsEngine& engine)
     : engine_(engine) {}
 
 mojom::RewardsEngineClient& RewardsEngineHelper::client() {

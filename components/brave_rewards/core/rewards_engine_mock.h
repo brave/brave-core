@@ -3,12 +3,12 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_MOCK_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_MOCK_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_MOCK_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_MOCK_H_
 
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "mojo/public/cpp/bindings/associated_receiver.h"
 #include "testing/gmock/include/gmock/gmock.h"
 
@@ -25,12 +25,12 @@ class AddMockRewardsClient {
       &mock_client_};
 };
 
-class MockRewardsEngineImpl : private AddMockRewardsClient,
-                              public RewardsEngineImpl {
+class MockRewardsEngine : private AddMockRewardsClient,
+                              public RewardsEngine {
  public:
-  MockRewardsEngineImpl();
+  MockRewardsEngine();
 
-  ~MockRewardsEngineImpl() override;
+  ~MockRewardsEngine() override;
 
   MockRewardsEngineClient* mock_client();
 
@@ -44,4 +44,4 @@ class MockRewardsEngineImpl : private AddMockRewardsClient,
 
 }  // namespace brave_rewards::internal
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_MOCK_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_MOCK_H_

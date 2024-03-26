@@ -13,7 +13,7 @@
 #include "base/strings/strcat.h"
 #include "base/types/expected.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal::endpoints {
@@ -23,8 +23,7 @@ using Result = PostOAuthZebPay::Result;
 namespace {
 
 base::expected<std::pair<std::string, std::string>, Error>
-GetAccessTokenAndLinkingInfo(RewardsEngineImpl& engine,
-                             const std::string& body) {
+GetAccessTokenAndLinkingInfo(RewardsEngine& engine, const std::string& body) {
   auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -46,7 +45,7 @@ GetAccessTokenAndLinkingInfo(RewardsEngineImpl& engine,
   return std::pair{std::move(*access_token), std::move(*linking_info)};
 }
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   auto access_token_linking_info = GetAccessTokenAndLinkingInfo(engine, body);
   if (!access_token_linking_info.has_value()) {
     return base::unexpected(access_token_linking_info.error());
@@ -93,7 +92,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 }  // namespace
 
 // static
-Result PostOAuthZebPay::ProcessResponse(RewardsEngineImpl& engine,
+Result PostOAuthZebPay::ProcessResponse(RewardsEngine& engine,
                                         const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200
@@ -105,8 +104,7 @@ Result PostOAuthZebPay::ProcessResponse(RewardsEngineImpl& engine,
   }
 }
 
-PostOAuthZebPay::PostOAuthZebPay(RewardsEngineImpl& engine,
-                                 const std::string& code)
+PostOAuthZebPay::PostOAuthZebPay(RewardsEngine& engine, const std::string& code)
     : RequestBuilder(engine), code_(code) {}
 
 PostOAuthZebPay::~PostOAuthZebPay() = default;

@@ -10,7 +10,7 @@
 #include "base/types/cxx23_to_underlying.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
@@ -122,7 +122,7 @@ void GenerateActivityFilterBind(mojom::DBCommand* command,
 
 namespace database {
 
-DatabaseActivityInfo::DatabaseActivityInfo(RewardsEngineImpl& engine)
+DatabaseActivityInfo::DatabaseActivityInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseActivityInfo::~DatabaseActivityInfo() = default;

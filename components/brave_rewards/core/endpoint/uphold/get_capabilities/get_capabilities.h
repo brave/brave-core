@@ -167,7 +167,7 @@
 // ]
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace uphold {
@@ -177,7 +177,7 @@ using GetCapabilitiesCallback =
 
 class GetCapabilities {
  public:
-  explicit GetCapabilities(RewardsEngineImpl& engine);
+  explicit GetCapabilities(RewardsEngine& engine);
   ~GetCapabilities();
 
   void Request(const std::string& token,
@@ -199,7 +199,7 @@ class GetCapabilities {
 
   CapabilityMap ParseBody(const std::string& body) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace uphold
