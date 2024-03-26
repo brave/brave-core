@@ -75,4 +75,8 @@ cargo_crate("lib") {
   ]
   rustenv = [ "CARGO_MANIFEST_DIR=" + rebase_path(
                   "//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3") + "" ]
+  if (cargo_pkg_version == "0.18.1") {
+    deps -= [ "//brave/third_party/rust/blake3/v1:lib" ]
+    features -= [ "blake3" ]
+  }
 }

@@ -152,7 +152,7 @@ build_script_outputs = [ "ascii_case_insensitive_html_attributes.rs" ]
 build_script_outputs = [ "const.rs", "const_gen.rs" ]
 
 [crate.multihash]
-extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3\") + \"" ]}
+extra_kv = { rustenv = [ "CARGO_MANIFEST_DIR=\" + rebase_path(\"//brave/third_party/rust/chromium_crates_io/vendor/multihash-0.16.3\") + \"" ], raw_gn = '''if (cargo_pkg_version == "0.18.1") { deps-= ["//brave/third_party/rust/blake3/v1:lib"] features -= [ "blake3" ] }'''}
 
 [crate.curve25519-dalek]
 extra_input_roots = [ "../docs", "../README.md" ]
