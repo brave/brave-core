@@ -66,6 +66,7 @@ TEST_F(BraveAdsSiteVisitTest,
   site_visit_->SetLastClickedAd(ad);
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
+              /*is_visible=*/true,
               /*redirect_chain=*/{GURL("https://basicattentiontoken.org")},
               /*is_error_page=*/false, /*is_playing_media=*/false});
 
@@ -80,6 +81,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfTheSameAdIsAlreadyLanding) {
       /*is_error_page=*/false, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
+                    /*is_visible=*/true,
                     /*redirect_chain=*/{GURL("https://brave.com")},
                     /*is_error_page=*/false,
                     /*is_playing_media=*/false};
@@ -111,6 +113,7 @@ TEST_F(BraveAdsSiteVisitTest, LandOnPageIfAnotherAdIsAlreadyLanded) {
                 OnMaybeLandOnPage(ad_1, Now() + kPageLandAfter.Get()));
     site_visit_->MaybeLandOnPage(
         TabInfo{/*id=*/1,
+                /*is_visible=*/true,
                 /*redirect_chain=*/{GURL("https://brave.com")},
                 /*is_error_page=*/false,
                 /*is_playing_media=*/false});
@@ -122,6 +125,7 @@ TEST_F(BraveAdsSiteVisitTest, LandOnPageIfAnotherAdIsAlreadyLanded) {
         /*is_error_page=*/false, /*is_visible=*/true);
 
     const TabInfo tab{/*id=*/2,
+                      /*is_visible=*/true,
                       /*redirect_chain=*/{GURL("https://brave.com")},
                       /*is_error_page=*/false,
                       /*is_playing_media=*/false};
@@ -147,6 +151,7 @@ TEST_F(BraveAdsSiteVisitTest,
       /*is_error_page=*/false, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
+                    /*is_visible=*/true,
                     /*redirect_chain=*/{GURL("https://brave.com")},
                     /*is_error_page=*/false,
                     /*is_playing_media=*/false};
@@ -172,6 +177,7 @@ TEST_F(
       /*is_error_page=*/true, /*is_visible=*/true);
 
   const TabInfo tab{/*id=*/1,
+                    /*is_visible=*/true,
                     /*redirect_chain=*/{GURL("https://brave.com")},
                     /*is_error_page=*/true,
                     /*is_playing_media=*/false};
@@ -204,6 +210,7 @@ TEST_F(BraveAdsSiteVisitTest, DoNotLandOnPageIfNotVisible) {
   EXPECT_CALL(observer_mock_, OnDidNotLandOnPage(ad));
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
+              /*is_visible=*/true,
               /*redirect_chain=*/{GURL("https://brave.com")},
               /*is_error_page=*/false,
               /*is_playing_media=*/false});
@@ -228,6 +235,7 @@ TEST_F(BraveAdsSiteVisitTest,
   EXPECT_CALL(observer_mock_, OnDidNotLandOnPage(ad));
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
+              /*is_visible=*/true,
               /*redirect_chain=*/{GURL("https://brave.com")},
               /*is_error_page=*/false,
               /*is_playing_media=*/false});
@@ -250,6 +258,7 @@ TEST_F(BraveAdsSiteVisitTest, CancelPageLandIfTheTabIsClosed) {
   EXPECT_CALL(observer_mock_, OnCanceledPageLand(ad, /*tab_id=*/1));
   site_visit_->MaybeLandOnPage(
       TabInfo{/*id=*/1,
+              /*is_visible=*/true,
               /*redirect_chain=*/{GURL("https://brave.com")},
               /*is_error_page=*/false,
               /*is_playing_media=*/false});

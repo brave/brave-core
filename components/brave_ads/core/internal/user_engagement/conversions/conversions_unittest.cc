@@ -585,25 +585,6 @@ TEST_F(BraveAdsConversionsTest, ConvertViewedAdAfterTheSameAdWasDismissed) {
   MaybeConvert(BuildRedirectChain(), kHtml);
 }
 
-TEST_F(BraveAdsConversionsTest, DoNotConvertAdsIfTheRedirectChainIsEmpty) {
-  // Arrange
-  const AdInfo ad = test::BuildAd(AdType::kNotificationAd,
-                                  /*should_use_random_uuids=*/false);
-
-  test::BuildAndSaveCreativeSetConversion(ad.creative_set_id,
-                                          kMatchingUrlPattern,
-                                          /*observation_window=*/base::Days(3));
-
-  RecordAdEventsAdvancingTheClockAfterEach(
-      ad, {ConfirmationType::kDismissed, ConfirmationType::kServed,
-           ConfirmationType::kLanded, ConfirmationType::kMarkAdAsInappropriate,
-           ConfirmationType::kSavedAd, ConfirmationType::kLikedAd,
-           ConfirmationType::kDislikedAd, ConfirmationType::kConversion});
-
-  // Act & Assert
-  MaybeConvert(/*redirect_chain=*/{}, kHtml);
-}
-
 TEST_F(BraveAdsConversionsTest,
        DoNotConvertAdsIfTheRedirectChainContainsAnUnsupportedUrl) {
   // Arrange

@@ -5,6 +5,7 @@
 
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/verifiable_conversion_id_pattern_util.h"
 
+#include "base/check.h"
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/resource/conversion_resource_id_pattern_search_in_types.h"
 #include "brave/components/brave_ads/core/internal/user_engagement/conversions/types/verifiable_conversion/verifiable_conversion_id_pattern/parsers/verifiable_conversion_id_html_meta_tag_parser_util.h"
@@ -20,7 +21,9 @@ std::optional<ConversionResourceIdPatternInfo>
 FindMatchingConversionResourceIdPattern(
     const ConversionResourceIdPatternMap& resource_id_patterns,
     const std::vector<GURL>& redirect_chain) {
-  if (resource_id_patterns.empty() || redirect_chain.empty()) {
+  CHECK(!redirect_chain.empty());
+
+  if (resource_id_patterns.empty()) {
     return std::nullopt;
   }
 

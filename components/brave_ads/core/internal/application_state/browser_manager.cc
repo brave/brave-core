@@ -50,11 +50,7 @@ void BrowserManager::NotifyBrowserDidResignActive() const {
 }
 
 void BrowserManager::LogBrowserActiveState() const {
-  if (is_active_) {
-    BLOG(1, "Browser did become active");
-  } else {
-    BLOG(1, "Browser did resign active");
-  }
+  BLOG(1, "Browser did " << (is_active_ ? "become" : "resign") << " active");
 }
 
 void BrowserManager::NotifyBrowserDidEnterForeground() const {
@@ -70,11 +66,8 @@ void BrowserManager::NotifyBrowserDidEnterBackground() const {
 }
 
 void BrowserManager::LogBrowserForegroundState() const {
-  if (is_in_foreground_) {
-    BLOG(1, "Browser did enter foreground");
-  } else {
-    BLOG(1, "Browser did enter background");
-  }
+  BLOG(1, "Browser did enter "
+              << (is_in_foreground_ ? "foreground" : "background"));
 }
 
 void BrowserManager::OnNotifyDidInitializeAds() {

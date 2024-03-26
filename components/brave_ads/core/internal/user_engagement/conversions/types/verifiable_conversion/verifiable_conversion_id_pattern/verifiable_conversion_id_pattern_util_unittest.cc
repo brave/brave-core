@@ -71,7 +71,8 @@ TEST_F(BraveAdsVerifiableConversionIdPatternUtilTest,
        DoNotParseVerifiableConversionId) {
   // Act & Assert
   EXPECT_FALSE(MaybeParseVerifiableConversionId(
-      /*redirect_chain=*/{}, /*html=*/{}, /*resource_id_patterns=*/{}));
+      /*redirect_chain=*/{GURL("https://foo.com/bar?qux_id=xyzzy")},
+      /*html=*/{}, /*resource_id_patterns=*/{}));
 }
 
 }  // namespace brave_ads
