@@ -21,7 +21,6 @@ import {
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged
 } from '../constants/action_types'
-import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 
 // Utils
 import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
@@ -51,10 +50,6 @@ const defaultState: WalletState = {
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
   isAnkrBalancesFeatureEnabled: false,
-  hidePortfolioGraph:
-    window.localStorage.getItem(
-      LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN
-    ) === 'true',
   isRefreshingNetworksAndTokens: false
 }
 
@@ -132,13 +127,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<number>
       ) {
         state.passwordAttempts = payload
-      },
-
-      setHidePortfolioGraph(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.hidePortfolioGraph = payload
       },
 
       setIsRefreshingNetworksAndTokens: (
