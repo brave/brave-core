@@ -4,6 +4,7 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+import ProgressRing from '@brave/leo/react/progressRing'
 
 // Components
 import {
@@ -31,6 +32,7 @@ import {
   ConnectWithSiteWrapper
 } from '../stories/style'
 import { PanelWrapper, WelcomePanelWrapper } from './style'
+import { FullScreenWrapper } from '../page/screens/page-screen.styles'
 
 import { TransactionStatus } from '../components/extension/post-confirmation'
 import {
@@ -42,6 +44,7 @@ import { WalletSelectors } from '../common/selectors'
 import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
+  useGetPendingDecryptRequestQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
@@ -91,7 +94,6 @@ function Container() {
   const getEncryptionPublicKeyRequest = useUnsafePanelSelector(
     PanelSelectors.getEncryptionPublicKeyRequest
   )
-  const decryptRequest = useUnsafePanelSelector(PanelSelectors.decryptRequest)
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
   )
@@ -110,13 +112,23 @@ function Container() {
   const { data: selectedAccount } = useSelectedAccountQuery()
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
+  const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
   const selectedPendingTransaction = useSelectedPendingTransaction()
 
   if (!hasInitialized) {
-    return null
+    return (
+      <PanelWrapper
+        width={390}
+        height={650}
+      >
+        <FullScreenWrapper>
+          <ProgressRing mode='indeterminate' />
+        </FullScreenWrapper>
+      </PanelWrapper>
+    )
   }
 
   if (!isWalletCreated) {
@@ -183,9 +195,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <AllowAddChangeNetworkPanel
-            addChainRequest={addChainRequest}
-          />
+          <AllowAddChangeNetworkPanel addChainRequest={addChainRequest} />
         </LongWrapper>
       </PanelWrapper>
     )
@@ -195,9 +205,7 @@ function Container() {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>
-          <AllowAddChangeNetworkPanel
-            switchChainRequest={switchChainRequest}
-          />
+          <AllowAddChangeNetworkPanel switchChainRequest={switchChainRequest} />
         </LongWrapper>
       </PanelWrapper>
     )
@@ -224,7 +232,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'allowReadingEncryptedMessage' && decryptRequest) {
+  if (decryptRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>

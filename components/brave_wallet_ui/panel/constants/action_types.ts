@@ -38,11 +38,6 @@ export type GetEncryptionPublicKeyProcessedPayload = {
   approved: boolean
 }
 
-export type DecryptProcessedPayload = {
-  requestId: string
-  approved: boolean
-}
-
 export type SignTransactionHardwarePayload = {
   request: BraveWallet.SignTransactionRequest
   account: BraveWallet.AccountInfo

@@ -10,8 +10,7 @@ import { PanelState } from '../../constants/types'
 import { mockOriginInfo } from './mock-origin-info'
 import {
   mockSignMessageRequest,
-  mockGetEncryptionPublicKeyRequest,
-  mockDecryptRequest
+  mockGetEncryptionPublicKeyRequest
 } from './mock-eth-requests'
 
 export const mockPanelState: PanelState = {
@@ -23,7 +22,6 @@ export const mockPanelState: PanelState = {
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
   getEncryptionPublicKeyRequest: mockGetEncryptionPublicKeyRequest,
-  decryptRequest: mockDecryptRequest,
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: [

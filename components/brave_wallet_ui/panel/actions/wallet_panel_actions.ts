@@ -6,7 +6,6 @@
 import { createAction } from '@reduxjs/toolkit'
 import {
   GetEncryptionPublicKeyProcessedPayload,
-  DecryptProcessedPayload,
   ShowConnectToSitePayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
@@ -48,9 +47,6 @@ export const getEncryptionPublicKeyProcessed =
   createAction<GetEncryptionPublicKeyProcessedPayload>(
     'getEncryptionPublicKeyProcessed'
   )
-export const decrypt = createAction<BraveWallet.DecryptRequest>('decrypt')
-export const decryptProcessed =
-  createAction<DecryptProcessedPayload>('decryptProcessed')
 export const setSelectedTransactionId = createAction<string | undefined>(
   'setSelectedTransactionId'
 )
