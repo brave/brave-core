@@ -8,7 +8,7 @@
 "wallet.defaultModelViewTitle" = "기본 모델";
 
 /* The title of the badge where a model which can be used limited */
-"wallet.limitedModelStatusTitle" = "제한";
+"wallet.limitedModelStatusTitle" = "제한됨";
 
 /* The title of action for quick menu which displaying advanced settings */
 "wallet.quickMenuAdvancedSettingsActionTitle" = "고급 설정";

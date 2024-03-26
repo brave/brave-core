@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "Додати відгук";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "Показувати рекомендації автозаповнення в адресному рядку";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "Типова модель для нових розмов";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leo — це помічник на базі ШІ, вбудований просто в браузер.";
@@ -18,7 +20,7 @@
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "Термін дії збігає";
 
 /* The title for the header for subscription details */
-"aichat.advancedSettingsSubscriptionHeaderTitle" = "ПІДПИСКА";
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "Підписка";
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "Стан";
@@ -54,7 +56,7 @@
 "aichat.chatIntroWebsiteHelpTitle" = "Потрібна допомога з вебсайтом?";
 
 /* The title for the chat section in the menu */
-"aichat.chatMenuSectionTitle" = "ЧАТ";
+"aichat.chatMenuSectionTitle" = "Чат";
 
 /* The title shown on limit reached error view, which is suggesting user to change default model */
 "aichat.contextLimitErrorTitle" = "Ця розмова задовга, її неможливо продовжити.\nМожуть бути інші моделі, з якими Leo має змогу підтримувати точність для довших розмов.";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "Інше";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premium надає доступ до розширеної вибірки мовних моделей для ще точніших відповідей. [Детальніше](https://brave.com/) - [Пропустити](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -88,7 +89,7 @@
 "aichat.feedbackSubmittedTitle" = "Відгук надіслано";
 
 /* The title for feedback view when response is sucessfull but disliked */
-"aichat.feedbackSuccessAnswerDisLikedTitle" = "Відповідь не сподобалася";
+"aichat.feedbackSuccessAnswerDisLikedTitle" = "Відповідь не вподобано";
 
 /* The title for feedback view when response is sucessfull also liked */
 "aichat.feedbackSuccessAnswerLikedTitle" = "Відповідь сподобалася";
@@ -226,7 +227,7 @@
 "aichat.paywallYearlySubscriptionTitle" = "Один рік";
 
 /* Title shown next to Leo in navigation bar when user has premium subcription */
-"aichat.premiumNavigationBarBadgeTitle" = "PREMIUM";
+"aichat.premiumNavigationBarBadgeTitle" = "Premium";
 
 /* Title showing premium subscription - not determined monthly por yearly */
 "aichat.premiumSubscriptionTitle" = "Передплата Premium";
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "Спробувати знову";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Brave не зберігає та не передає іншим сторонам дані ваших голосових пошуків.";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "Запропонувати запитання…";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "Я розумію";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leo — це приватний розумний помічник на базі ШІ, який оптимізує використання вами Інтернету. Leo безкоштовний з обмеженим доступом. Brave Leo Premium пропонує більше моделей, вищі ліміти й надає підписникам ранній доступ до нових функцій. Наразі модель за замовчуванням для всіх користувачів — Mixtral 8x7B. Детальнішу інформацію дивіться у **[вікіпедії Brave](%1$@)**\n\nЗа замовчуванням, коли ви задаєте Leo запитання, може надсилатися й використовуватися контент веб-сторінки, яку ви переглядаєте, або будь-який текст, який ви виділили на сторінці, щоб помічник Brave Leo надав відповідь. Точність відповідей не гарантовано, вони можуть містити неточну, неправильну або хибну інформацію. Leo використовує дані з Пошуку Brave для покращення якості відповідей. Не надсилайте конфіденційну або приватну інформацію й з обережністю використовуйте будь-які відповіді, пов’язані зі здоров’ям, фінансами, безпекою тощо. Ви можете будь-коли відрегулювати опції Brave Leo у налаштуваннях. Перейдіть у «Налаштування» Leo.\n\nLeo не збирає ідентифікуючу інформацію, як от IP-адресу, яка може бути пов’язана з вами. Жодні дані не використовуються для навчання ШІ-моделей і жодні персональні дані не зберігаються ШІ-моделями (окрім Anthropic, де дані зберігаються 30 днів, а потім видаляються). Детальнішу інформацію дивіться в **[політиці конфіденційності](%2$@)**";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Приватно спілкуйтеся з Brave Leo";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */

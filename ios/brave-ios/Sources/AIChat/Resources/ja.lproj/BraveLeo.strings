@@ -1,9 +1,11 @@
 /* The title for button that submits feedback */
 "aichat.addFeedbackActionTitle" = "フィードバックを追加";
 
-/* The title for the settings to change default model for conversations
-   The title for the settings to show search suggestions from Leo in url-address bar */
+/* The title for the settings to show search suggestions from Leo in url-address bar */
 "aichat.advancedSettingsAutocompleteTitle" = "アドレスバー入力中に自動でサイト候補を表示";
+
+/* The title for the settings to change default model for conversations */
+"aichat.advancedSettingsDefaultModelTitle" = "新しい会話向けデフォルトモデル";
 
 /* The title for the header for adjusting leo ai settings */
 "aichat.advancedSettingsHeaderTitle" = "Leoはブラウザに組み込まれたAI搭載のスマートアシスタントです。";
@@ -18,7 +20,7 @@
 "aichat.advancedSettingsSubscriptionExpiresTitle" = "有効期限";
 
 /* The title for the header for subscription details */
-"aichat.advancedSettingsSubscriptionHeaderTitle" = "サブスクリプション";
+"aichat.advancedSettingsSubscriptionHeaderTitle" = "購読";
 
 /* The title for the label showing status if the subscription */
 "aichat.advancedSettingsSubscriptionStatusTitle" = "稼働状況";
@@ -74,8 +76,7 @@
 /* The title for other feedback option */
 "aichat.feedbackOptionTitleOther" = "その他";
 
-/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private.
-   The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
+/* The title for premium ad view. The links are inside parenthesis and the phrases inside square brackets should be translated */
 "aichat.feedbackPremiumAdTitle" = "Leo Premiumでは、さらに拡張された言語モデルセットを利用できるため、さらに豊かなニュアンスの回答を提供できます。[詳細はこちら](https://brave.com/) - [閉じる](braveai://dismiss)";
 
 /* The title for the button that submits feedback */
@@ -264,6 +265,9 @@
 /* The title for button for re-try */
 "aichat.retryActionTitle" = "再試行";
 
+/* The description indicating voice inputs from user is not store or shared and these inpurs are totally private. */
+"aichat.speechRecognizerDisclaimer" = "Braveが音声検索結果を保存または共有することはありません。";
+
 /* The title for the button to generate suggestions */
 "aichat.suggestionsGenerationButtonTitle" = "質問を推奨...";
 
@@ -273,8 +277,10 @@
 /* The title for expressing acknowledgement for the terms and conditions of Brave AI */
 "aichat.termsConditionsApproveActionTitle" = "了解しました";
 
-/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls
-   The title terms and conditions for AI chat usage */
+/* The description terms and conditions for AI chat usage. The links are inside parenthesis %@ will be replaced with urls */
+"aichat.termsConditionsDescription" = "Brave Leoは、インターネット利用を向上させるプライベートAIスマートアシスタントです。Leoは限定的なアクセスで無料です。Brave Leoプレミアムはより多くのモデル、より高い限度を提供し、加入者に新機能の早期アクセスを提供します。全ユーザーの現在のデフォルトモデルはMixtral 8x7Bです。詳細は **[Brave Wiki](%1$@)** をご覧ください。\n\nデフォルトでは、Leoに質問すると、閲覧中のウェブページの内容やページ上でハイライトしたテキストをBrave Leoに送信し、回答を提供するために使用することがあります。回答の正確さは保証されず、不正確な情報、誤解を招く情報、または偽の情報が含まれることがあります。LeoはBrave Searchからのデータを使用して回答の品質を向上させます。機密性の高い情報や個人情報を送信しないでください。また、健康、財務、個人の安全、またはそれに類する内容に関する回答には注意してください。Leoのオプションはいつでも設定で調整できます。設定 &gt; Leoにアクセスしてください。\n\nLeoは、あなたを特定できるIPアドレスなどの識別子を収集しません。AIモデルのトレーニングにデータは使用されませんし、AIモデルによる個人データの保持もありません（Anthropicがデータを30日間保持し、その後削除する場合を除く）。詳細は **[プライバシーポリシー](%2$@)** をご覧ください。";
+
+/* The title terms and conditions for AI chat usage */
 "aichat.termsConditionsTitle" = "Brave Leoとプライベートチャット";
 
 /* The accessibility description when pressing the microphone button to access voice entry. */
