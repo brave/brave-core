@@ -130,8 +130,8 @@ function Main() {
             <FeatureButtonMenu />
             <Button
               kind='plain-faint'
-              aria-label='Close panel'
-              title='Close panel'
+              aria-label='Close'
+              title='Close'
               className={styles.closeButton}
               onClick={() => getPageHandlerInstance().pageHandler.closePanel()}
             >
