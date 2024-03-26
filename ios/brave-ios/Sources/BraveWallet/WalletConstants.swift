@@ -104,10 +104,17 @@ public struct WalletConstants {
     switch mode {
     case .general:
       #if DEBUG
+      // Only enable .btc for unit tests.
+      // Local Debug build need to
+      // 1. Remove this check
+      // 2. Enable bitcoin feature via build argument
       if isUnitTesting {
         return [.eth, .sol, .fil, .btc]
       }
       #endif
+      // Any non-debug build will check bitcoin feature flag from core
+      // TF public build can use BraveCore Switches in Browser Settings,
+      // Debug section in order to enable Bitcoin.
       if FeatureList.kBraveWalletBitcoinFeature.enabled {
         return [.eth, .sol, .fil, .btc]
       } else {
