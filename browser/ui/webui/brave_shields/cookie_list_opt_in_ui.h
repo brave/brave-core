@@ -10,12 +10,12 @@
 #include <string>
 
 #include "brave/components/brave_shields/core/common/cookie_list_opt_in.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/receiver.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 class CookieListOptInUI
-    : public ui::MojoBubbleWebUIController,
+    : public TopChromeWebUIController,
       public brave_shields::mojom::CookieListOptInPageHandlerFactory {
  public:
   explicit CookieListOptInUI(content::WebUI* web_ui);

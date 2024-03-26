@@ -153,7 +153,7 @@ static constexpr webui::LocalizedString kStrings[] = {
 }  // namespace
 
 RewardsPanelUI::RewardsPanelUI(content::WebUI* web_ui)
-    : MojoBubbleWebUIController(web_ui, true) {
+    : TopChromeWebUIController(web_ui, true) {
   auto* profile = Profile::FromWebUI(web_ui);
   if (auto* browser = chrome::FindLastActiveWithProfile(profile)) {
     panel_coordinator_ = RewardsPanelCoordinator::FromBrowser(browser);

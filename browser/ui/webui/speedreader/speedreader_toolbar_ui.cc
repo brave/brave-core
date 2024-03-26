@@ -31,7 +31,7 @@
 
 SpeedreaderToolbarUI::SpeedreaderToolbarUI(content::WebUI* web_ui,
                                            const std::string& name)
-    : ui::MojoBubbleWebUIController(web_ui, true),
+    : TopChromeWebUIController(web_ui, true),
       profile_(Profile::FromWebUI(web_ui)) {
   content::HostZoomMap::Get(web_ui->GetWebContents()->GetSiteInstance())
       ->SetZoomLevelForHostAndScheme(content::kChromeUIScheme,
