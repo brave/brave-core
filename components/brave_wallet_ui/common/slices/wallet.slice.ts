@@ -55,9 +55,6 @@ const defaultState: WalletState = {
     window.localStorage.getItem(
       LOCAL_STORAGE_KEYS.IS_PORTFOLIO_OVERVIEW_GRAPH_HIDDEN
     ) === 'true',
-  hidePortfolioBalances:
-    window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES) ===
-    'true',
   hidePortfolioNFTsTab:
     window.localStorage.getItem(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB) ===
     'true',
@@ -145,13 +142,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
         { payload }: PayloadAction<boolean>
       ) {
         state.hidePortfolioGraph = payload
-      },
-
-      setHidePortfolioBalances(
-        state: WalletState,
-        { payload }: PayloadAction<boolean>
-      ) {
-        state.hidePortfolioBalances = payload
       },
 
       setHidePortfolioNFTsTab(

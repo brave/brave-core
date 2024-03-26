@@ -28,7 +28,6 @@ export const {
   setSelectedNetworkFilter,
   unlocked,
   setHidePortfolioGraph,
-  setHidePortfolioBalances,
   setHidePortfolioNFTsTab,
   setIsRefreshingNetworksAndTokens,
   setAllowedNewWalletAccountTypeNetworkIds

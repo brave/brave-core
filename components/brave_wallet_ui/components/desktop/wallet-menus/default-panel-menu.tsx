@@ -37,6 +37,7 @@ import {
   useLockWalletMutation
 } from '../../../common/slices/api.slice'
 import { openWalletSettings } from '../../../utils/routes-utils'
+import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
 
 // Styled Components
 import {
@@ -60,15 +61,16 @@ export const DefaultPanelMenu = (props: Props) => {
   const history = useHistory()
   const { pathname: walletLocation } = useLocation()
 
+  // local-storage
+  const [hidePortfolioBalances, setHidePortfolioBalances] =
+    useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
+
   // redux
   const dispatch = useDispatch()
 
   // selectors
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioBalances = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioBalances
   )
   const hidePortfolioNFTsTab = useSafeWalletSelector(
     WalletSelectors.hidePortfolioNFTsTab
@@ -134,12 +136,8 @@ export const DefaultPanelMenu = (props: Props) => {
   }, [dispatch, hidePortfolioGraph])
 
   const onToggleHideBalances = React.useCallback(() => {
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
-      hidePortfolioBalances ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioBalances(!hidePortfolioBalances))
-  }, [dispatch, hidePortfolioBalances])
+    setHidePortfolioBalances((prev) => !prev)
+  }, [setHidePortfolioBalances])
 
   const onToggleHideNFTsTab = React.useCallback(() => {
     if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {

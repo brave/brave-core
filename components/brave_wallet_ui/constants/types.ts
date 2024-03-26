@@ -206,7 +206,6 @@ export interface WalletState {
   isNftPinningFeatureEnabled: boolean
   isAnkrBalancesFeatureEnabled: boolean
   hidePortfolioGraph: boolean
-  hidePortfolioBalances: boolean
   hidePortfolioNFTsTab: boolean
   isRefreshingNetworksAndTokens: boolean
 }
