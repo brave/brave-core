@@ -11,6 +11,19 @@
     return is_delete_list;                                             \
   }
 
+#define BRAVE_MATCHES_STORAGE_KEY_SWITCH                                     \
+  case OriginMatchingMode::kThirdPartiesOnly: {                              \
+    return is_delete_list ==                                                 \
+           base::ranges::any_of(registerable_domains, [&](const std::string& \
+                                                              domain) {      \
+             return storage_key.IsThirdPartyContext() &&                     \
+                    storage_key                                              \
+                        .MatchesRegistrableDomainForTrustedStorageDeletion(  \
+                            domain);                                         \
+           });                                                               \
+  }
+
 #include "src/content/browser/browsing_data/browsing_data_filter_builder_impl.cc"
 
 #undef BRAVE_MATCHES_STORAGE_KEY
+#undef BRAVE_MATCHES_STORAGE_KEY_SWITCH
