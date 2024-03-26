@@ -15,11 +15,16 @@
 #include "brave/components/ai_chat/core/browser/conversation_driver.h"
 #include "brave/components/ai_chat/core/browser/engine/engine_consumer.h"
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "brave/components/ai_chat/core/common/mojom/page_content_extractor.mojom.h"
 #include "components/favicon/core/favicon_driver_observer.h"
 #include "components/prefs/pref_change_registrar.h"
 #include "content/public/browser/navigation_handle.h"
+#include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents_observer.h"
 #include "content/public/browser/web_contents_user_data.h"
+#include "mojo/public/cpp/bindings/associated_receiver.h"
+#include "mojo/public/cpp/bindings/pending_associated_receiver.h"
+#include "mojo/public/cpp/bindings/receiver_set.h"
 #include "services/data_decoder/public/cpp/data_decoder.h"
 
 class PrefService;
@@ -34,14 +39,23 @@ class AIChatMetrics;
 // Provides context to an AI Chat conversation in the form of the Tab's content
 class AIChatTabHelper : public content::WebContentsObserver,
                         public content::WebContentsUserData<AIChatTabHelper>,
+                        public mojom::PageContentExtractorHost,
                         public favicon::FaviconDriverObserver,
                         public ConversationDriver {
  public:
+  static void BindPageContentExtractorHost(
+      content::RenderFrameHost* rfh,
+      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
+          receiver);
+
   AIChatTabHelper(const AIChatTabHelper&) = delete;
   AIChatTabHelper& operator=(const AIChatTabHelper&) = delete;
   ~AIChatTabHelper() override;
 
   void SetOnPDFA11yInfoLoadedCallbackForTesting(base::OnceClosure cb);
+
+  // mojom::PageContentExtractorHost
+  void OnInterceptedPageContentChanged() override;
 
  private:
   friend class content::WebContentsUserData<AIChatTabHelper>;
@@ -92,6 +106,10 @@ class AIChatTabHelper : public content::WebContentsObserver,
                       std::string_view invalidation_token) override;
   std::u16string GetPageTitle() const override;
 
+  void BindPageContentExtractorReceiver(
+      mojo::PendingAssociatedReceiver<mojom::PageContentExtractorHost>
+          receiver);
+
   raw_ptr<AIChatMetrics> ai_chat_metrics_;
 
   bool is_same_document_navigation_ = false;
@@ -104,6 +122,9 @@ class AIChatTabHelper : public content::WebContentsObserver,
 
   // A scoper only used for PDF viewing.
   std::unique_ptr<content::ScopedAccessibilityMode> scoped_accessibility_mode_;
+
+  mojo::AssociatedReceiver<mojom::PageContentExtractorHost>
+      page_content_extractor_receiver_{this};
 
   base::WeakPtrFactory<AIChatTabHelper> weak_ptr_factory_{this};
   WEB_CONTENTS_USER_DATA_KEY_DECL();
