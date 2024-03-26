@@ -193,8 +193,11 @@ public class NetworkStore: ObservableObject, WalletObserverStore {
     isForOrigin: Bool
   ) async -> SetSelectedChainError? {
     let allAccounts = await keyringService.allAccounts()
-    let allAccountsForNetworkCoin = allAccounts.accounts.filter { $0.coin == network.coin }
-    if allAccountsForNetworkCoin.isEmpty {
+    let allAccountsForNetwork = allAccounts.accounts.filter { account in
+      account.coin == network.coin
+        && network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+    }
+    if allAccountsForNetwork.isEmpty {
       // Need to prompt user to create new account via alert
       return .selectedChainHasNoAccounts
     } else {
