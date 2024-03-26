@@ -580,7 +580,7 @@ extension BraveWallet.SwapFees {
     )
   }
 
-  static var mockZeroExFees: BraveWallet.SwapFees {
+  static var mockEthFees: BraveWallet.SwapFees {
     BraveWallet.SwapFees(
       feeParam: "0.00875",
       feePct: "0.875",
@@ -589,6 +589,88 @@ extension BraveWallet.SwapFees {
       discountCode: .none
     )
   }
+}
+
+extension BraveWallet.ZeroExQuote {
+  /// Price quote for 1 ETH to BAT (sell amount entered)
+  static let mockOneETHToBATQuote: BraveWallet.ZeroExQuote = .init(
+    price: "10137.516188895530252258",
+    guaranteedPrice: "",
+    to: "",
+    data: "",
+    value: "1000000000000000000",  // 1 ETH
+    gas: "375000",
+    estimatedGas: "375000",
+    gasPrice: "46500000000",
+    protocolFee: "0",
+    minimumProtocolFee: "0",
+    buyTokenAddress: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",  // BAT
+    sellTokenAddress: "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",  // ETH
+    buyAmount: "10137516188895530252258",
+    sellAmount: "1000000000000000000",  // 1 ETH
+    allowanceTarget: "0x0000000000000000000000000000000000000000",
+    sellTokenToEthRate: "1",
+    buyTokenToEthRate: "10439.88960404354826969",
+    estimatedPriceImpact: "1.8958",
+    sources: [],
+    fees: .init(
+      zeroExFee: .init(
+        feeType: "volume",
+        feeToken: "0x0d8775f648430679a709e98d2b0cb6250d2887ef",
+        feeAmount: "15286142457313100889",
+        billingType: "on-chain"
+      )
+    )
+  )
+}
+
+extension BraveWallet.LiFiQuote {
+  /// Price quote for 1 ETH to USDC (sell amount entered)
+  static let mockOneETHtoUSDCQuote: BraveWallet.LiFiQuote = .init(
+    routes: [
+      .init(
+        id: "route.1",
+        from: .previewToken,
+        fromAmount: "1000000000000000000",
+        fromAddress: BraveWallet.AccountInfo.mockEthAccount.address,
+        to: .mockUSDCToken,
+        toAmount: "3537722948",
+        toAmountMin: "",
+        toAddress: BraveWallet.AccountInfo.mockEthAccount.address,
+        steps: [
+          .init(
+            id: "step.1",
+            type: .native,
+            tool: "1inch",
+            toolDetails: .init(key: "", name: "", logo: ""),
+            action: .init(),
+            estimate: .init(
+              tool: "1inch",
+              fromAmount: "1000000000000000000",
+              toAmount: "3537722948",
+              toAmountMin: "3520034333",
+              approvalAddress: "0x1231DEB6f5749EF6cE6943a275A1D3E7486F4EaE",
+              executionDuration: "30",
+              feeCosts: nil,
+              gasCosts: [
+                .init(
+                  type: "SEND",
+                  estimate: "386779",
+                  limit: "729779",
+                  amount: "15403648617462374",
+                  token: .previewToken
+                )
+              ]
+            ),
+            integrator: nil,
+            includedSteps: nil
+          )
+        ],
+        insurance: .init(state: "", feeAmountUsd: "0"),
+        tags: []
+      )
+    ]
+  )
 }
 
 #endif
