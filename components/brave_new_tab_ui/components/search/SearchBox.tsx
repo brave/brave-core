@@ -6,12 +6,13 @@ import Flex from '$web-common/Flex';
 import Dropdown from '@brave/leo/react/dropdown';
 import Icon from '@brave/leo/react/icon';
 import Input from '@brave/leo/react/input';
-import { radius, spacing } from '@brave/leo/tokens/css';
+import { color, radius, spacing } from '@brave/leo/tokens/css';
 import * as React from 'react';
 import styled from 'styled-components';
 import { MediumIcon } from './SearchEngineIcon';
 import { useSearchContext } from './SearchContext';
 import { braveSearchHost } from './config';
+import Button from '@brave/leo/react/button';
 
 const SearchInput = styled(Input)`
   --leo-control-padding: 6px;
@@ -44,8 +45,13 @@ const Option = styled.div`
     gap: ${spacing.m};
 `
 
+const CustomizeButton = styled(Button)`
+  border-top: 1px solid ${color.divider.subtle};
+  color: ${color.text.secondary};
+`
+
 export default function SearchBox() {
-  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery } = useSearchContext()
+  const { filteredSearchEngines, searchEngine, setSearchEngine, query, setQuery, setOpen } = useSearchContext()
   const placeholderText = searchEngine?.host === braveSearchHost
     ? 'Search the web privately'
     : 'Search the web'
@@ -63,6 +69,15 @@ export default function SearchBox() {
             <MediumIcon src={s.faviconUrl.url} />{s.name}
           </Option>
         </leo-option>)}
+        <CustomizeButton kind="plain-faint" size="small" onClick={() => {
+          history.pushState(undefined, '', '?openSettings=Search')
+
+          // For now, close the search box - the Settings dialog doesn't use a
+          // dialog, so it gets rendered underneath.
+          setOpen(false)
+        }}>
+          Customize list
+        </CustomizeButton>
       </EnginePicker>
     </Flex>
     <SearchIconContainer slot="right-icon">
