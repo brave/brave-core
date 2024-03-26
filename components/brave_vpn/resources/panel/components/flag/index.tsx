@@ -12,13 +12,13 @@ const FlagIcon = styled(Icon)`
 `
 
 interface Props {
-  countryCode?: string
+  countryCode: string
 }
 
-const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP', 'MX', 'NL', 'SG', 'US']
+const COUNTRIES = ['AU', 'BR', 'CA', 'CH', 'DE', 'ES', 'FR', 'GB', 'IT', 'JP', 'MX', 'NL', 'SE', 'SG', 'US']
 
 function Flag(props: Props) {
-  return COUNTRIES.includes(props?.countryCode ?? '') ?
+  return COUNTRIES.includes(props.countryCode) ?
     <FlagIcon name={`country-${props.countryCode?.toLocaleLowerCase()}`} /> : null
 }
 
