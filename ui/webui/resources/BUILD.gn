@@ -381,6 +381,7 @@ if (enable_brave_vpn_panel) {
     "country-jp.svg",
     "country-mx.svg",
     "country-nl.svg",
+    "country-se.svg",
     "country-sg.svg",
     "country-us.svg",
   ]
