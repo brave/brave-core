@@ -144,15 +144,16 @@ export const PortfolioOverview = () => {
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
     false
   )
+  const [hidePortfolioNFTsTab] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+    false
+  )
 
   // redux
   const dispatch = useDispatch()
   const nftMetadata = useUnsafePageSelector(PageSelectors.nftMetadata)
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioNFTsTab = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioNFTsTab
   )
   const isPanel = useSafeUISelector(UISelectors.isPanel)
 

@@ -64,6 +64,10 @@ export const DefaultPanelMenu = (props: Props) => {
   // local-storage
   const [hidePortfolioBalances, setHidePortfolioBalances] =
     useSyncedLocalStorage(LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES, false)
+  const [hidePortfolioNFTsTab, setHidePortfolioNFTsTab] = useSyncedLocalStorage(
+    LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
+    false
+  )
 
   // redux
   const dispatch = useDispatch()
@@ -71,9 +75,6 @@ export const DefaultPanelMenu = (props: Props) => {
   // selectors
   const hidePortfolioGraph = useSafeWalletSelector(
     WalletSelectors.hidePortfolioGraph
-  )
-  const hidePortfolioNFTsTab = useSafeWalletSelector(
-    WalletSelectors.hidePortfolioNFTsTab
   )
 
   // queries
@@ -143,12 +144,8 @@ export const DefaultPanelMenu = (props: Props) => {
     if (walletLocation.includes(WalletRoutes.PortfolioNFTs)) {
       history.push(WalletRoutes.PortfolioAssets)
     }
-    window.localStorage.setItem(
-      LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_NFTS_TAB,
-      hidePortfolioNFTsTab ? 'false' : 'true'
-    )
-    dispatch(WalletActions.setHidePortfolioNFTsTab(!hidePortfolioNFTsTab))
-  }, [dispatch, hidePortfolioNFTsTab, history, walletLocation])
+    setHidePortfolioNFTsTab((prev) => !prev)
+  }, [history, setHidePortfolioNFTsTab, walletLocation])
 
   const onClickRoute = (route: WalletRoutes | AccountPageTabs) => {
     if (route === WalletRoutes.AddHardwareAccountModalStart) {
