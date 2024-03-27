@@ -293,11 +293,14 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
 
     private static void setDefaultSearchEngineString(RemoteViews views) {
         final Profile profile = ProfileManager.getLastUsedRegularProfile();
-        TemplateUrl templateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
+        TemplateUrl templateUrl =
+                BraveSearchEngineUtils.getTemplateUrlByShortName(
+                        profile, BraveSearchEngineUtils.getDSEShortName(profile, false));
         if (templateUrl != null) {
-            String searchWithDefaultSearchEngine = ContextUtils.getApplicationContext().getString(
-                    R.string.search_with_search_engine, templateUrl.getShortName());
+            String searchWithDefaultSearchEngine =
+                    ContextUtils.getApplicationContext()
+                            .getString(
+                                    R.string.search_with_search_engine, templateUrl.getShortName());
             views.setTextViewText(R.id.tvSearchWithBrave, searchWithDefaultSearchEngine);
         }
     }
@@ -344,18 +347,24 @@ public class QuickActionSearchAndBookmarkWidgetProvider extends AppWidgetProvide
     }
 
     private static void fetchGurlIcon(final int imageViewId, GURL gurl) {
-        LargeIconBridge largeIconBridge = new LargeIconBridge(ProfileManager.getLastUsedRegularProfile());
-        LargeIconCallback callback = new LargeIconCallback() {
-            @Override
-            public void onLargeIconAvailable(Bitmap icon, int fallbackColor,
-                    boolean isFallbackColorDefault, @IconType int iconType) {
-                if (icon == null)
-                    updateTileIcon(imageViewId,
-                            getTileIconFromColor(gurl, fallbackColor, isFallbackColorDefault));
-                else
-                    updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
-            }
-        };
+        LargeIconBridge largeIconBridge =
+                new LargeIconBridge(ProfileManager.getLastUsedRegularProfile());
+        LargeIconCallback callback =
+                new LargeIconCallback() {
+                    @Override
+                    public void onLargeIconAvailable(
+                            Bitmap icon,
+                            int fallbackColor,
+                            boolean isFallbackColorDefault,
+                            @IconType int iconType) {
+                        if (icon == null)
+                            updateTileIcon(
+                                    imageViewId,
+                                    getTileIconFromColor(
+                                            gurl, fallbackColor, isFallbackColorDefault));
+                        else updateTileIcon(imageViewId, getRoundedTileIconFromBitmap(icon));
+                    }
+                };
         largeIconBridge.getLargeIconForUrl(gurl, DESIRED_ICON_SIZE, callback);
     }
 

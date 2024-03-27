@@ -1233,8 +1233,9 @@ public class BraveNewTabPageLayout
             setBackgroundImage(ntpImage);
 
         } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                && mSponsoredTab != null
+                && NTPUtil.shouldEnableNTPFeature()) {
             setBackgroundImage(ntpImage);
         }
     }
@@ -1489,7 +1490,7 @@ public class BraveNewTabPageLayout
         return ChromeFeatureList.isEnabled(ChromeFeatureList.SHOW_SCROLLABLE_MVT_ON_NTP_ANDROID)
                 && !DeviceFormFactor.isNonMultiDisplayContextOnTablet(mContext)
                 && UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                           .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
+                        .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE);
     }
 
     @Override

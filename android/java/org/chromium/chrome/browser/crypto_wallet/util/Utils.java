@@ -1071,7 +1071,8 @@ public class Utils {
             Log.e(TAG, "getProfile " + e);
         }
         if (chromeActivity == null) chromeActivity = BraveActivity.getChromeTabbedActivity();
-        if (chromeActivity == null) return ProfileManager.getLastUsedRegularProfile(); // Last resort
+        if (chromeActivity == null)
+            return ProfileManager.getLastUsedRegularProfile(); // Last resort
 
         return chromeActivity.getTabModelSelector().getModel(isIncognito).getProfile();
     }

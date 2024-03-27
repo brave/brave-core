@@ -21,6 +21,8 @@ public class BraveTabGroupModelFilterClassAdapter extends BraveClassVisitor {
         deleteField(sTabGroupModelFilterClassName, "mIsResetting");
 
         changeMethodOwner(
-                sTabGroupModelFilterClassName, "shouldUseParentIds", sBraveTabGroupModelFilterClassName);
+                sTabGroupModelFilterClassName,
+                "shouldUseParentIds",
+                sBraveTabGroupModelFilterClassName);
     }
 }

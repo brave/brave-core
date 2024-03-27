@@ -789,8 +789,11 @@ public abstract class BraveActivity extends ChromeActivity
         }
 
         if (isClearBrowsingDataOnExit()) {
-            List<Integer> dataTypes = Arrays.asList(
-                    BrowsingDataType.HISTORY, BrowsingDataType.SITE_DATA, BrowsingDataType.CACHE);
+            List<Integer> dataTypes =
+                    Arrays.asList(
+                            BrowsingDataType.HISTORY,
+                            BrowsingDataType.SITE_DATA,
+                            BrowsingDataType.CACHE);
 
             int[] dataTypesArray = CollectionUtil.integerCollectionToIntArray(dataTypes);
 
@@ -908,7 +911,8 @@ public abstract class BraveActivity extends ChromeActivity
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
         if (BraveQAPreferences.shouldVlogRewards()) {
-            Log.e(AdaptiveCaptchaHelper.TAG,
+            Log.e(
+                    AdaptiveCaptchaHelper.TAG,
                     "captchaID : " + captchaID + " Payment ID : " + paymentID);
         }
         maybeSolveAdaptiveCaptcha();
@@ -936,7 +940,8 @@ public abstract class BraveActivity extends ChromeActivity
         String paymentID =
                 UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                         .getString(BravePref.SCHEDULED_CAPTCHA_PAYMENT_ID);
-        if (!TextUtils.isEmpty(captchaID) && !TextUtils.isEmpty(paymentID)
+        if (!TextUtils.isEmpty(captchaID)
+                && !TextUtils.isEmpty(paymentID)
                 && !BravePrefServiceBridge.getInstance().getSafetynetCheckFailed()) {
             AdaptiveCaptchaHelper.startAttestation(captchaID, paymentID);
         }
@@ -1457,11 +1462,13 @@ public abstract class BraveActivity extends ChromeActivity
         String countryCode = Locale.getDefault().getCountry();
         if (sYandexRegions.contains(countryCode)) {
             Profile lastUsedRegularProfile = ProfileManager.getLastUsedRegularProfile();
-            TemplateUrl yandexTemplateUrl = BraveSearchEngineUtils.getTemplateUrlByShortName(
-                    lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
+            TemplateUrl yandexTemplateUrl =
+                    BraveSearchEngineUtils.getTemplateUrlByShortName(
+                            lastUsedRegularProfile, OnboardingPrefManager.YANDEX);
             if (yandexTemplateUrl != null) {
                 BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl, lastUsedRegularProfile);
-                BraveSearchEngineUtils.setDSEPrefs(yandexTemplateUrl,
+                BraveSearchEngineUtils.setDSEPrefs(
+                        yandexTemplateUrl,
                         lastUsedRegularProfile.getPrimaryOTRProfile(/* createIfNeeded= */ true));
             }
         }

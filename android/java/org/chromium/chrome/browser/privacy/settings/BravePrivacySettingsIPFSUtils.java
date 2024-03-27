@@ -14,16 +14,18 @@ public class BravePrivacySettingsIPFSUtils {
     public static void setIPFSGatewayPref(boolean preference) {
         if (BraveConfig.IPFS_ENABLED) {
             UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                    .setInteger(BravePref.IPFS_RESOLVE_METHOD,
-                            preference ? IPFSResolveMethodTypes.IPFS_ASK
-                                       : IPFSResolveMethodTypes.IPFS_DISABLED);
+                    .setInteger(
+                            BravePref.IPFS_RESOLVE_METHOD,
+                            preference
+                                    ? IPFSResolveMethodTypes.IPFS_ASK
+                                    : IPFSResolveMethodTypes.IPFS_DISABLED);
         }
     }
 
     public static boolean getIPFSGatewayPref() {
         if (BraveConfig.IPFS_ENABLED) {
             return UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                           .getInteger(BravePref.IPFS_RESOLVE_METHOD)
+                            .getInteger(BravePref.IPFS_RESOLVE_METHOD)
                     != IPFSResolveMethodTypes.IPFS_DISABLED;
         } else {
             return false;

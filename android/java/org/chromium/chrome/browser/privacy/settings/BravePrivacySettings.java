@@ -745,23 +745,32 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         mClearBrowsingDataOnExit.setChecked(
                 sharedPreferences.getBoolean(BravePreferenceKeys.BRAVE_CLEAR_ON_EXIT, false));
 
-        boolean autocompleteEnabled = UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                              .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
+        boolean autocompleteEnabled =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.AUTOCOMPLETE_ENABLED);
         mShowAutocompleteInAddressBar.setChecked(autocompleteEnabled);
         mSearchSuggestions.setEnabled(autocompleteEnabled);
         mAutocompleteTopSites.setEnabled(autocompleteEnabled);
-        mFingerprntLanguagePref.setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                                   .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
+        mFingerprntLanguagePref.setChecked(
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.REDUCE_LANGUAGE_ENABLED));
         if (mFilterListAndroidHandler != null) {
-            mFilterListAndroidHandler.isFilterListEnabled(FilterListConstants.COOKIE_LIST_UUID,
-                    isEnabled -> { mBlockCookieConsentNoticesPref.setChecked(isEnabled); });
-            mFilterListAndroidHandler.isFilterListEnabled(FilterListConstants.SWITCH_TO_APP_UUID,
-                    isEnabled -> { mBlockSwitchToAppNoticesPref.setChecked(isEnabled); });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.COOKIE_LIST_UUID,
+                    isEnabled -> {
+                        mBlockCookieConsentNoticesPref.setChecked(isEnabled);
+                    });
+            mFilterListAndroidHandler.isFilterListEnabled(
+                    FilterListConstants.SWITCH_TO_APP_UUID,
+                    isEnabled -> {
+                        mBlockSwitchToAppNoticesPref.setChecked(isEnabled);
+                    });
         }
         // Debounce
         if (mDebouncePref != null) {
-            mDebouncePref.setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                             .getBoolean(BravePref.DEBOUNCE_ENABLED));
+            mDebouncePref.setChecked(
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.DEBOUNCE_ENABLED));
         }
 
         // Social blocking
@@ -787,8 +796,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
         }
 
         if (mDeAmpPref != null) {
-            mDeAmpPref.setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                          .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
+            mDeAmpPref.setChecked(
+                    UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                            .getBoolean(BravePref.DE_AMP_PREF_ENABLED));
         }
 
         if (!ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_REQUEST_OTR_TAB)) {
@@ -799,8 +809,9 @@ public class BravePrivacySettings extends PrivacySettings implements ConnectionE
     }
 
     private void updateRequestOtrPref() {
-        int requestOtrPrefValue = UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                          .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
+        int requestOtrPrefValue =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getInteger(BravePref.REQUEST_OTR_ACTION_OPTION);
         if (requestOtrPrefValue == BraveShieldsContentSettings.ALWAYS) {
             mRequestOtrPref.setCheckedIndex(0);
             mRequestOtrPref.setSummary(

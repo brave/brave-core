@@ -107,9 +107,13 @@ public class BackgroundImagesPreferences
 
     public static void setOnPreferenceValue(String preferenceName, boolean newValue) {
         if (PREF_SHOW_BACKGROUND_IMAGES.equals(preferenceName)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    .setBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE, newValue);
         } else if (PREF_SHOW_SPONSORED_IMAGES.equals(preferenceName)) {
-            UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setBoolean(BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE, (boolean)newValue);
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                    .setBoolean(
+                            BravePref.NEW_TAB_PAGE_SHOW_SPONSORED_IMAGES_BACKGROUND_IMAGE,
+                            (boolean) newValue);
         } else {
             SharedPreferences sharedPreferences = ContextUtils.getAppSharedPreferences();
             SharedPreferences.Editor sharedPreferencesEditor = sharedPreferences.edit();

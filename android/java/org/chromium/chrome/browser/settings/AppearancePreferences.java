@@ -147,8 +147,9 @@ public class AppearancePreferences extends BravePreferenceFragment
             enableSpeedreader.setOnPreferenceChangeListener(this);
             if (enableSpeedreader instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) enableSpeedreader)
-                        .setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                            .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED));
+                        .setChecked(
+                                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED));
             }
         }
     }

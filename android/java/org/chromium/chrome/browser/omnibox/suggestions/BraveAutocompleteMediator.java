@@ -19,7 +19,6 @@ import org.chromium.chrome.browser.brave_leo.BraveLeoUtils;
 import org.chromium.chrome.browser.omnibox.LocationBarDataProvider;
 import org.chromium.chrome.browser.omnibox.UrlBarEditingTextStateProvider;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.share.ShareDelegate;
 import org.chromium.chrome.browser.tab.Tab;
@@ -84,7 +83,7 @@ class BraveAutocompleteMediator extends AutocompleteMediator
     public void onTextChanged(String textWithoutAutocomplete) {
         if (ProfileManager.isInitialized()
                 && !UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                            .getBoolean(AUTOCOMPLETE_ENABLED)) {
+                        .getBoolean(AUTOCOMPLETE_ENABLED)) {
             return;
         }
 

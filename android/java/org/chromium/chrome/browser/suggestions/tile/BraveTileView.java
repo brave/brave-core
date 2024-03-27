@@ -13,7 +13,6 @@ import android.widget.TextView;
 import org.chromium.base.Log;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.tile.TileView;
 import org.chromium.components.user_prefs.UserPrefs;

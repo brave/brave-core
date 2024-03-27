@@ -199,19 +199,22 @@ public class BraveNtpAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 ImageViewCompat.setImageTintList(
                         imageCreditViewHolder.superReferralLogo,
                         ColorStateList.valueOf(mActivity.getColor(floatingButtonIconColor)));
-                imageCreditViewHolder.superReferralLogo.setOnClickListener(view -> {
-                    QRCodeShareDialogFragment qRCodeShareDialogFragment =
-                            new QRCodeShareDialogFragment();
-                    qRCodeShareDialogFragment.setQRCodeText(BraveConstants.BRAVE_REF_URL
-                            + mNTPBackgroundImagesBridge.getSuperReferralCode());
-                    qRCodeShareDialogFragment.show(
-                            ((BraveActivity) mActivity).getSupportFragmentManager(),
-                            "QRCodeShareDialogFragment");
-                });
+                imageCreditViewHolder.superReferralLogo.setOnClickListener(
+                        view -> {
+                            QRCodeShareDialogFragment qRCodeShareDialogFragment =
+                                    new QRCodeShareDialogFragment();
+                            qRCodeShareDialogFragment.setQRCodeText(
+                                    BraveConstants.BRAVE_REF_URL
+                                            + mNTPBackgroundImagesBridge.getSuperReferralCode());
+                            qRCodeShareDialogFragment.show(
+                                    ((BraveActivity) mActivity).getSupportFragmentManager(),
+                                    "QRCodeShareDialogFragment");
+                        });
 
             } else if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                               .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
-                    && mSponsoredTab != null && NTPUtil.shouldEnableNTPFeature()) {
+                            .getBoolean(BravePref.NEW_TAB_PAGE_SHOW_BACKGROUND_IMAGE)
+                    && mSponsoredTab != null
+                    && NTPUtil.shouldEnableNTPFeature()) {
                 if (mNtpImage instanceof BackgroundImage) {
                     BackgroundImage backgroundImage = (BackgroundImage) mNtpImage;
                     imageCreditViewHolder.sponsoredLogo.setVisibility(View.GONE);

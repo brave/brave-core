@@ -174,8 +174,9 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         boolean isFeatureEnabled = ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER);
         if (!isFeatureEnabled) return false;
 
-        boolean isPrefEnabled = UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED);
+        boolean isPrefEnabled =
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED);
         return isPrefEnabled;
     }
 }
