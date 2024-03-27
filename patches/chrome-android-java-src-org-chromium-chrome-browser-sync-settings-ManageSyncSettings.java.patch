@@ -1,5 +1,5 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
-index 328759788286bbd297ae2f255018905e3a8593fd..ec20eaccbe558ffab63e3dac0e6ef099ea5d9f5b 100644
+index 32f1750d53ef256ad27da2526e50f998ca3472dd..8f07095fba13afe4f341979b4a1ef5417e9bc1d9 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/sync/settings/ManageSyncSettings.java
 @@ -51,7 +51,7 @@ import org.chromium.chrome.browser.sync.ui.PassphraseCreationDialogFragment;
@@ -11,7 +11,7 @@ index 328759788286bbd297ae2f255018905e3a8593fd..ec20eaccbe558ffab63e3dac0e6ef099
  import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
  import org.chromium.components.browser_ui.settings.FragmentSettingsLauncher;
  import org.chromium.components.browser_ui.settings.SettingsLauncher;
-@@ -377,7 +377,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
+@@ -390,7 +390,7 @@ public class ManageSyncSettings extends ChromeBaseSettingsFragment
                                  .getIdentityManager(getProfile())
                                  .getPrimaryAccountInfo(ConsentLevel.SYNC));
          // May happen if account is removed from the device while this screen is shown.

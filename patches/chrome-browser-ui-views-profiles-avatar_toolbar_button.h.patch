@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-index 0ed6e1e407325cadc098a3ffd7ea60e64ce3dc45..767269acce0304f922454699114b79da391395f6 100644
+index 249d3cfc09fe444e4ef8684963153b92252f4e85..d61e35e18422ac9d5c978c49f2845e5d9d55e4bd 100644
 --- a/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
 +++ b/chrome/browser/ui/views/profiles/avatar_toolbar_button.h
-@@ -109,6 +109,7 @@ class AvatarToolbarButton : public ToolbarButton {
+@@ -114,6 +114,7 @@ class AvatarToolbarButton : public ToolbarButton {
    void NotifyManagementTransientTextClearedForTesting() const;
  
   private:
