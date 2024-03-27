@@ -29,7 +29,6 @@
 #include "ios/chrome/browser/sync/model/model_type_store_service_factory.h"
 #include "ios/chrome/browser/sync/model/session_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
-#include "ios/chrome/browser/sync/model/sync_setup_service_factory.h"
 #include "ios/chrome/browser/webdata_services/model/web_data_service_factory.h"
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
@@ -60,7 +59,6 @@ void EnsureBrowserStateKeyedServiceFactoriesBuilt() {
   ReadingListModelFactory::GetInstance();
   SessionRestorationServiceFactory::GetInstance();
   SessionSyncServiceFactory::GetInstance();
-  SyncSetupServiceFactory::GetInstance();
 
 #if BUILDFLAG(IOS_CREDENTIAL_PROVIDER_ENABLED)
   CredentialProviderServiceFactory::GetInstance();
