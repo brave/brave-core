@@ -123,7 +123,7 @@ struct FocusP3AScreenView: View {
               isSystemSettingsViewPresented = true
             },
             label: {
-              Text("Continue")
+              Text(Strings.FocusOnboarding.continueButtonTitle)
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
                 .dynamicTypeSize(dynamicTypeRange)

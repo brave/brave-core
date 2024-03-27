@@ -70,7 +70,7 @@ struct FocusStepsView: View {
                 }
               },
               label: {
-                Text("Continue")
+                Text(Strings.FocusOnboarding.continueButtonTitle)
                   .font(.body.weight(.semibold))
                   .foregroundColor(Color(.white))
                   .dynamicTypeSize(dynamicTypeRange)
