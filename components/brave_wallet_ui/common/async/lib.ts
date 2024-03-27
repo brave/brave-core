@@ -9,15 +9,12 @@ import {
   HardwareWalletConnectOpts //
 } from '../../components/desktop/popup-modals/add-account-modal/hardware-wallet-connect/types'
 import { BraveWallet } from '../../constants/types'
-import * as WalletActions from '../actions/wallet_actions'
 
 // Utils
 import { isNativeAsset } from '../../utils/asset-utils'
 import { makeNativeAssetLogo } from '../../options/asset-options'
-import { getVisibleNetworksList } from '../../utils/api-utils'
 
 import getAPIProxy from './bridge'
-import { Dispatch, State } from './types'
 import { getHardwareKeyring } from '../api/hardware_keyrings'
 import {
   GetAccountsHardwareOperationResult,
@@ -27,17 +24,8 @@ import {
 } from '../hardware/types'
 import EthereumLedgerBridgeKeyring from '../hardware/ledgerjs/eth_ledger_bridge_keyring'
 import TrezorBridgeKeyring from '../hardware/trezor/trezor_bridge_keyring'
-import {
-  AllNetworksOption,
-  AllNetworksOptionDefault
-} from '../../options/network-filter-options'
-import {
-  AllAccountsOptionUniqueKey,
-  applySelectedAccountFilter
-} from '../../options/account-filter-options'
 import SolanaLedgerBridgeKeyring from '../hardware/ledgerjs/sol_ledger_bridge_keyring'
 import FilecoinLedgerBridgeKeyring from '../hardware/ledgerjs/fil_ledger_bridge_keyring'
-import { LOCAL_STORAGE_KEYS } from '../../common/constants/local-storage-keys'
 import {
   IPFS_PROTOCOL,
   isIpfs,
@@ -122,36 +110,6 @@ export async function isTokenPinningSupported(
 ) {
   const { braveWalletPinService } = getAPIProxy()
   return await braveWalletPinService.isTokenSupported(token)
-}
-
-export function refreshPortfolioFilterOptions() {
-  return async (dispatch: Dispatch, getState: () => State) => {
-    const { selectedAccountFilter, selectedNetworkFilter } = getState().wallet
-
-    const {
-      allAccounts: { accounts }
-    } = await getAPIProxy().keyringService.getAllAccounts()
-
-    const networkList = await getVisibleNetworksList(getAPIProxy())
-
-    if (
-      selectedNetworkFilter.chainId !== AllNetworksOption.chainId &&
-      !networkList.some(
-        (network) => network.chainId === selectedNetworkFilter.chainId
-      )
-    ) {
-      dispatch(WalletActions.setSelectedNetworkFilter(AllNetworksOptionDefault))
-      window.localStorage.removeItem(
-        LOCAL_STORAGE_KEYS.PORTFOLIO_NETWORK_FILTER_OPTION
-      )
-    }
-
-    if (!applySelectedAccountFilter(accounts, selectedAccountFilter).accounts) {
-      dispatch(
-        WalletActions.setSelectedAccountFilterItem(AllAccountsOptionUniqueKey)
-      )
-    }
-  }
 }
 
 // Checks whether set of urls have ipfs:// scheme or are gateway-like urls

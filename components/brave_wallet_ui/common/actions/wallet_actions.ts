@@ -24,8 +24,6 @@ export const {
   refreshNetworksAndTokens,
   setAssetAutoDiscoveryCompleted,
   setPasswordAttempts,
-  setSelectedAccountFilterItem,
-  setSelectedNetworkFilter,
   unlocked,
   setIsRefreshingNetworksAndTokens,
   setAllowedNewWalletAccountTypeNetworkIds

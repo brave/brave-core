@@ -25,37 +25,3 @@ export const AllAccountsOption: BraveWallet.AccountInfo = {
 export const isAllAccountsOptionFilter = (selectedAccountFilter: string) => {
   return selectedAccountFilter === AllAccountsOptionUniqueKey
 }
-
-export const applySelectedAccountFilter = (
-  accounts: BraveWallet.AccountInfo[],
-  selectedAccountFilter: string
-): {
-  accounts: BraveWallet.AccountInfo[]
-  allAccounts?: BraveWallet.AccountInfo[]
-  oneAccount?: BraveWallet.AccountInfo
-} => {
-  if (selectedAccountFilter === AllAccountsOptionUniqueKey) {
-    return {
-      accounts: accounts,
-      allAccounts: accounts,
-      oneAccount: undefined
-    }
-  }
-
-  const account = accounts.find(
-    (account) => account.accountId.uniqueKey === selectedAccountFilter
-  )
-  if (account) {
-    return {
-      accounts: [account],
-      allAccounts: undefined,
-      oneAccount: account
-    }
-  }
-
-  return {
-    accounts: [],
-    allAccounts: undefined,
-    oneAccount: undefined
-  }
-}

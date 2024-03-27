@@ -14,20 +14,12 @@ import {
   BraveWallet,
   WalletState,
   WalletInitializedPayload,
-  NetworkFilterType,
   RefreshOpts
 } from '../../constants/types'
 import {
   DefaultBaseCryptocurrencyChanged,
   DefaultBaseCurrencyChanged
 } from '../constants/action_types'
-
-// Utils
-import { parseJSONFromLocalStorage } from '../../utils/local-storage-utils'
-
-// Options
-import { AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 
 const defaultState: WalletState = {
   hasInitialized: false,
@@ -41,11 +33,6 @@ const defaultState: WalletState = {
     eTldPlusOne: '',
     originSpec: ''
   },
-  selectedNetworkFilter: parseJSONFromLocalStorage(
-    'PORTFOLIO_NETWORK_FILTER_OPTION',
-    AllNetworksOptionDefault
-  ),
-  selectedAccountFilter: AllAccountsOptionUniqueKey,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: true,
   isNftPinningFeatureEnabled: false,
@@ -77,12 +64,6 @@ export const WalletAsyncActions = {
   ),
   refreshBalancesAndPriceHistory: createAction(
     'refreshBalancesAndPriceHistory'
-  ),
-  setSelectedNetworkFilter: createAction<NetworkFilterType>(
-    'setSelectedNetworkFilter'
-  ),
-  setSelectedAccountFilterItem: createAction<string>(
-    'setSelectedAccountFilterItem'
   ),
   autoLockMinutesChanged: createAction('autoLockMinutesChanged') // No reducer or API logic for this (UNUSED)
 }
@@ -147,20 +128,6 @@ export const createWalletSlice = (initialState: WalletState = defaultState) => {
       builder.addCase(WalletAsyncActions.locked.type, (state) => {
         state.isWalletLocked = true
       })
-
-      builder.addCase(
-        WalletAsyncActions.setSelectedAccountFilterItem,
-        (state, { payload }) => {
-          state.selectedAccountFilter = payload
-        }
-      )
-
-      builder.addCase(
-        WalletAsyncActions.setSelectedNetworkFilter,
-        (state, { payload }) => {
-          state.selectedNetworkFilter = payload
-        }
-      )
     }
   })
 }

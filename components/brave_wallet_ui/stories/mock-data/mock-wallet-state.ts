@@ -5,8 +5,6 @@
 
 // types
 import { BraveWallet, WalletState } from '../../constants/types'
-import { AllNetworksOptionDefault } from '../../options/network-filter-options'
-import { AllAccountsOptionUniqueKey } from '../../options/account-filter-options'
 
 // mocks
 import { networkEntityAdapter } from '../../common/slices/entities/network.entity'
@@ -57,8 +55,6 @@ export const mockWalletState: WalletState = {
   ],
   isWalletCreated: false,
   isWalletLocked: false,
-  selectedNetworkFilter: AllNetworksOptionDefault,
-  selectedAccountFilter: AllAccountsOptionUniqueKey,
   passwordAttempts: 0,
   assetAutoDiscoveryCompleted: false,
   isNftPinningFeatureEnabled: false,
