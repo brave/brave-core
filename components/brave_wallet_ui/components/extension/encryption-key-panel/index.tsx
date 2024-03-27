@@ -4,7 +4,6 @@
 // you can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -12,7 +11,6 @@ import { BraveWallet } from '../../../constants/types'
 // Utils
 import { reduceAccountDisplayName } from '../../../utils/reduce-account-name'
 import { getLocale, splitStringForTag } from '../../../../common/locale'
-import { PanelActions } from '../../../panel/actions'
 
 // Components
 import { NavButton } from '../buttons/nav-button/index'
@@ -36,18 +34,22 @@ import { TabRow, URLText } from '../shared-panel-styles'
 // Hooks
 import { useAccountOrb } from '../../../common/hooks/use-orb'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import { useProcessPendingDecryptRequestMutation } from '../../../common/slices/api.slice'
+import {
+  useProcessPendingDecryptRequestMutation,
+  useProcessPendingGetEncryptionPublicKeyRequestMutation
+} from '../../../common/slices/api.slice'
 
 export interface ProvidePubKeyPanelProps {
   payload: BraveWallet.GetEncryptionPublicKeyRequest
 }
 
 export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
-  // redux
-  const dispatch = useDispatch()
-
   // queries
   const { account } = useAccountQuery(payload.accountId)
+
+  // mutations
+  const [processGetEncryptionPublicKeyRequest] =
+    useProcessPendingGetEncryptionPublicKeyRequestMutation()
 
   const orb = useAccountOrb(account)
 
@@ -57,22 +59,18 @@ export function ProvidePubKeyPanel({ payload }: ProvidePubKeyPanelProps) {
   const { duringTag, afterTag } = splitStringForTag(descriptionString)
 
   // methods
-  const onProvideOrAllow = () => {
-    dispatch(
-      PanelActions.getEncryptionPublicKeyProcessed({
-        requestId: payload.requestId,
-        approved: true
-      })
-    )
+  const onProvideOrAllow = async () => {
+    await processGetEncryptionPublicKeyRequest({
+      requestId: payload.requestId,
+      approved: true
+    }).unwrap()
   }
 
-  const onCancel = (requestId: string) => {
-    dispatch(
-      PanelActions.getEncryptionPublicKeyProcessed({
-        requestId,
-        approved: false
-      })
-    )
+  const onCancel = async (requestId: string) => {
+    await processGetEncryptionPublicKeyRequest({
+      requestId,
+      approved: false
+    }).unwrap()
   }
 
   // render

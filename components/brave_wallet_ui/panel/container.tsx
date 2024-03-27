@@ -45,6 +45,7 @@ import { PanelSelectors } from './selectors'
 import {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
+  useGetPendingGetEncryptionPublicKeyRequestQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingTokenSuggestionRequestsQuery
 } from '../common/slices/api.slice'
@@ -91,9 +92,6 @@ function Container() {
     PanelSelectors.connectToSiteOrigin
   )
   const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
-  const getEncryptionPublicKeyRequest = useUnsafePanelSelector(
-    PanelSelectors.getEncryptionPublicKeyRequest
-  )
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
   )
@@ -113,6 +111,8 @@ function Container() {
   const { data: addChainRequest } = useGetPendingAddChainRequestQuery()
   const { data: switchChainRequest } = useGetPendingSwitchChainRequestQuery()
   const { data: decryptRequest } = useGetPendingDecryptRequestQuery()
+  const { data: getEncryptionPublicKeyRequest } =
+    useGetPendingGetEncryptionPublicKeyRequestQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
@@ -219,10 +219,7 @@ function Container() {
     )
   }
 
-  if (
-    selectedPanel === 'provideEncryptionKey' &&
-    getEncryptionPublicKeyRequest
-  ) {
+  if (getEncryptionPublicKeyRequest) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>

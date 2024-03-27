@@ -96,7 +96,6 @@ export type PanelTypes =
   | 'expanded'
   | 'main'
   | 'networks'
-  | 'provideEncryptionKey' // For grep: 'getEncryptionPublicKey'
   | 'send'
   | 'settings'
   | 'showUnlock'
@@ -215,9 +214,6 @@ export interface PanelState {
   signMessageData: BraveWallet.SignMessageRequest[]
   signTransactionRequests: BraveWallet.SignTransactionRequest[]
   signAllTransactionsRequests: BraveWallet.SignAllTransactionsRequest[]
-  getEncryptionPublicKeyRequest:
-    | BraveWallet.GetEncryptionPublicKeyRequest
-    | undefined
   hardwareWalletCode?: HardwareWalletResponseCodeType
   selectedTransactionId?: string
   signMessageErrorData: BraveWallet.SignMessageError[]

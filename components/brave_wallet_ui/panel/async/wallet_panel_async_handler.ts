@@ -18,7 +18,6 @@ import {
   ShowConnectToSitePayload,
   SignMessageProcessedPayload,
   SignAllTransactionsProcessedPayload,
-  GetEncryptionPublicKeyProcessedPayload,
   SignTransactionHardwarePayload,
   SignAllTransactionsHardwarePayload,
   SignMessageHardwarePayload
@@ -59,17 +58,6 @@ async function refreshWalletInfo(store: Store) {
 async function hasPendingUnlockRequest() {
   const keyringService = getWalletPanelApiProxy().keyringService
   return (await keyringService.hasPendingUnlockRequest()).pending
-}
-
-async function getPendingGetEncryptionPublicKeyRequest() {
-  const braveWalletService = getWalletPanelApiProxy().braveWalletService
-  const requests = (
-    await braveWalletService.getPendingGetEncryptionPublicKeyRequests()
-  ).requests
-  if (requests && requests.length) {
-    return requests[0]
-  }
-  return null
 }
 
 async function getPendingSignMessageRequests() {
@@ -194,33 +182,6 @@ handler.on(PanelActions.showUnlock.type, async (store: Store) => {
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
 })
-
-handler.on(PanelActions.getEncryptionPublicKey.type, async (store: Store) => {
-  store.dispatch(PanelActions.navigateTo('provideEncryptionKey'))
-  const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.showUI()
-})
-
-handler.on(
-  PanelActions.getEncryptionPublicKeyProcessed.type,
-  async (store: Store, payload: GetEncryptionPublicKeyProcessedPayload) => {
-    const apiProxy = getWalletPanelApiProxy()
-    const braveWalletService = apiProxy.braveWalletService
-    braveWalletService.notifyGetPublicKeyRequestProcessed(
-      payload.requestId,
-      payload.approved
-    )
-    const getEncryptionPublicKeyRequest =
-      await getPendingGetEncryptionPublicKeyRequest()
-    if (getEncryptionPublicKeyRequest) {
-      store.dispatch(
-        PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest)
-      )
-      return
-    }
-    apiProxy.panelHandler.closeUI()
-  }
-)
 
 handler.on(PanelActions.signMessage.type, async (store: Store) => {
   store.dispatch(PanelActions.navigateTo('signData'))
@@ -634,15 +595,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
     const signMessageErrors = await getPendingSignMessageErrors()
     if (signMessageErrors) {
       store.dispatch(PanelActions.signMessageError(signMessageErrors))
-      return
-    }
-
-    const getEncryptionPublicKeyRequest =
-      await getPendingGetEncryptionPublicKeyRequest()
-    if (getEncryptionPublicKeyRequest) {
-      store.dispatch(
-        PanelActions.getEncryptionPublicKey(getEncryptionPublicKeyRequest)
-      )
       return
     }
   }

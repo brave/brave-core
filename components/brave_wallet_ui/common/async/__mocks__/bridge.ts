@@ -64,6 +64,7 @@ import { WalletApiDataOverrides } from '../../../constants/testing_types'
 import {
   mockAddChainRequest,
   mockDecryptRequest,
+  mockGetEncryptionPublicKeyRequest,
   mockSwitchChainRequest
 } from '../../../stories/mock-data/mock-eth-requests'
 
@@ -219,6 +220,10 @@ export class MockedWalletApiProxy {
 
   private pendingDecryptRequests: BraveWallet.DecryptRequest[] = [
     mockDecryptRequest
+  ]
+
+  private pendingEncryptionPublicKeyRequests = [
+    mockGetEncryptionPublicKeyRequest
   ]
 
   constructor(overrides?: WalletApiDataOverrides | undefined) {
@@ -423,6 +428,17 @@ export class MockedWalletApiProxy {
       this.pendingDecryptRequests = this.pendingDecryptRequests.filter(
         (req) => req.requestId !== requestId
       )
+    },
+    getPendingGetEncryptionPublicKeyRequests: async () => {
+      return {
+        requests: this.pendingEncryptionPublicKeyRequests
+      }
+    },
+    notifyGetPublicKeyRequestProcessed: (requestId, approved) => {
+      this.pendingEncryptionPublicKeyRequests =
+        this.pendingEncryptionPublicKeyRequests.filter(
+          (req) => req.requestId !== requestId
+        )
     }
   }
 
