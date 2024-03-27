@@ -19,6 +19,8 @@ struct FocusP3AScreenView: View {
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
 
+  let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+
   public init(
     attributionManager: AttributionManager? = nil,
     p3aUtilities: BraveP3AUtils? = nil,
@@ -34,7 +36,7 @@ struct FocusP3AScreenView: View {
       VStack {
         Image("focus-product-insight", bundle: .module)
           .resizable()
-          .frame(width: 185, height: 224)
+          .aspectRatio(contentMode: .fit)
           .padding(.bottom, 24)
 
         VStack {
@@ -43,15 +45,17 @@ struct FocusP3AScreenView: View {
               .font(
                 Font.custom("FlechaM-Medium", size: 32)
               )
+              .dynamicTypeSize(dynamicTypeRange)
+              .fixedSize(horizontal: false, vertical: true)
               .opacity(0.9)
 
             Text("Let us know which features you’re enjoying the most.")
               .font(
                 Font.custom("Poppins-Medium", size: 17)
               )
-              .lineLimit(2)
-              .multilineTextAlignment(.center)
+              .dynamicTypeSize(dynamicTypeRange)
               .fixedSize(horizontal: false, vertical: true)
+              .multilineTextAlignment(.center)
               .foregroundColor(Color(braveSystemName: .textTertiary))
           }
           .padding(.bottom, 16)
@@ -62,6 +66,8 @@ struct FocusP3AScreenView: View {
                 .font(
                   Font.custom("Poppins-Medium", size: 17)
                 )
+                .dynamicTypeSize(dynamicTypeRange)
+                .fixedSize(horizontal: false, vertical: true)
                 .foregroundColor(Color(braveSystemName: .textPrimary))
                 .padding(.bottom, 4)
                 .opacity(0.9)
@@ -73,6 +79,8 @@ struct FocusP3AScreenView: View {
               .font(
                 Font.custom("Poppins-Regular", size: 13)
               )
+              .dynamicTypeSize(dynamicTypeRange)
+              .fixedSize(horizontal: false, vertical: true)
               .foregroundColor(Color(braveSystemName: .textTertiary))
             }
             .padding(16)
@@ -91,8 +99,11 @@ struct FocusP3AScreenView: View {
               Font.custom("Poppins-Regular", size: 13)
             )
             .foregroundColor(Color(braveSystemName: .textInteractive))
+            .fixedSize(horizontal: false, vertical: true)
+            .dynamicTypeSize(dynamicTypeRange)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 20)
+            .padding(.bottom, 20)
             .onTapGesture {
               isP3AHelpPresented = true
             }
@@ -115,6 +126,7 @@ struct FocusP3AScreenView: View {
               Text("Continue")
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
+                .dynamicTypeSize(dynamicTypeRange)
                 .padding()
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)

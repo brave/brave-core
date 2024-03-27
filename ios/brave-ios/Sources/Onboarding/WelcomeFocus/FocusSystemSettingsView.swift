@@ -13,6 +13,8 @@ struct FocusSystemSettingsView: View {
 
   @Binding var shouldDismiss: Bool
 
+  let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+
   var body: some View {
     NavigationView {
       VStack {
@@ -21,17 +23,17 @@ struct FocusSystemSettingsView: View {
             .font(
               Font.custom("FlechaM-Medium", size: 32)
             )
-            .lineLimit(2)
-            .multilineTextAlignment(.center)
+            .dynamicTypeSize(dynamicTypeRange)
             .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.center)
 
           Text("Open every link you tap with Brave’s privacy protections")
             .font(
               Font.custom("Poppins-Medium", size: 17)
             )
-            .lineLimit(2)
-            .multilineTextAlignment(.center)
+            .dynamicTypeSize(dynamicTypeRange)
             .fixedSize(horizontal: false, vertical: true)
+            .multilineTextAlignment(.center)
             .foregroundColor(Color(braveSystemName: .textTertiary))
         }
         .padding(.top, 25)
@@ -43,8 +45,6 @@ struct FocusSystemSettingsView: View {
         )
         .loopMode(.loop)
         .resizable()
-        .frame(height: 364)
-        .aspectRatio(contentMode: .fill)
         .clipShape(RoundedRectangle(cornerRadius: 12.0))
         .overlay(
           RoundedRectangle(cornerRadius: 12.0)
@@ -67,6 +67,7 @@ struct FocusSystemSettingsView: View {
               (Text("Go to System Settings ") + Text(Image(systemName: "arrow.right")))
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
+                .dynamicTypeSize(dynamicTypeRange)
                 .padding()
                 .foregroundStyle(.white)
                 .frame(maxWidth: .infinity)
@@ -85,6 +86,7 @@ struct FocusSystemSettingsView: View {
               Text("I’ll do this Later...")
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(braveSystemName: .textSecondary))
+                .dynamicTypeSize(dynamicTypeRange)
             }
           )
           .background(Color.clear)
@@ -96,19 +98,6 @@ struct FocusSystemSettingsView: View {
       }
       .padding(.horizontal, 20)
       .background(Color(braveSystemName: .pageBackground))
-    }
-    .overlay(alignment: .topTrailing) {
-      Button(
-        action: {
-          shouldDismiss = true
-        },
-        label: {
-          Image("focus-icon-close", bundle: .module)
-            .resizable()
-            .frame(width: 32, height: 32)
-            .padding(.trailing, 24)
-        }
-      )
     }
     .navigationBarHidden(true)
   }

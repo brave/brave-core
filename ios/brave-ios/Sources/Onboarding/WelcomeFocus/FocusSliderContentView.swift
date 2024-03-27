@@ -22,10 +22,11 @@ struct FocusAdTrackerSliderContentView: View {
           )
           .loopMode(.loop)
           .resizable()
-          .aspectRatio(contentMode: .fill)
+          .frame(maxWidth: .infinity)
         )
     } trailing: {
       Image("focus-website-noads", bundle: .module)
+        .frame(maxWidth: .infinity)
     }
     .frame(maxWidth: .infinity)
     .onAppear {

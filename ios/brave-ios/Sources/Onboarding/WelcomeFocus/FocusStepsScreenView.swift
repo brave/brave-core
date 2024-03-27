@@ -22,6 +22,8 @@ struct FocusStepsView: View {
   private let attributionManager: AttributionManager?
   private let p3aUtilities: BraveP3AUtils?
 
+  let dynamicTypeRange = (...DynamicTypeSize.xLarge)
+
   public init(
     namespace: Namespace.ID,
     attributionManager: AttributionManager? = nil,
@@ -50,8 +52,6 @@ struct FocusStepsView: View {
             FocusVideoAdSliderContentView()
               .tag(1)
           }
-          .frame(maxWidth: .infinity)
-          .frame(height: 420)
           .background(Color(braveSystemName: .pageBackground))
           .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
           .animation(.easeInOut, value: indicatorIndex)
@@ -73,6 +73,7 @@ struct FocusStepsView: View {
                 Text("Continue")
                   .font(.body.weight(.semibold))
                   .foregroundColor(Color(.white))
+                  .dynamicTypeSize(dynamicTypeRange)
                   .padding()
                   .foregroundStyle(.white)
                   .frame(maxWidth: .infinity)
@@ -136,6 +137,8 @@ struct FocusStepsView: View {
 struct FocusStepsHeaderTitleView: View {
   @Binding var activeIndex: Int
 
+  let dynamicTypeRange = (...DynamicTypeSize.large)
+
   var body: some View {
     let title = activeIndex == 0 ? "Fewer ads & trackers." : "No more video ads."
     let description =
@@ -144,15 +147,18 @@ struct FocusStepsHeaderTitleView: View {
     VStack(spacing: 10) {
       Text(title)
         .font(
-          Font.custom("FlechaM-Medium", size: 36)
+          Font.custom("FlechaM-Medium", size: 32)
         )
+        .dynamicTypeSize(dynamicTypeRange)
+        .fixedSize(horizontal: false, vertical: true)
         .opacity(0.9)
 
       Text(description)
         .font(
           Font.custom("Poppins-Medium", size: 17)
         )
-        .lineLimit(2)
+        .dynamicTypeSize(dynamicTypeRange)
+        .fixedSize(horizontal: false, vertical: true)
         .multilineTextAlignment(.center)
         .fixedSize(horizontal: false, vertical: true)
         .foregroundColor(Color(braveSystemName: .textTertiary))
