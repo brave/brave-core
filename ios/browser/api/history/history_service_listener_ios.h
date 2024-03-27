@@ -33,8 +33,8 @@ class HistoryServiceListenerIOS : public history::HistoryServiceObserver {
                     const history::VisitRow& new_visit) override;
   void OnURLsModified(history::HistoryService* history_service,
                       const history::URLRows& changed_urls) override;
-  void OnURLsDeleted(history::HistoryService* history_service,
-                     const history::DeletionInfo& deletion_info) override;
+  void OnHistoryDeletions(history::HistoryService* history_service,
+                          const history::DeletionInfo& deletion_info) override;
 
   id<HistoryServiceObserver> observer_;
   history::HistoryService* service_;  // NOT OWNED
