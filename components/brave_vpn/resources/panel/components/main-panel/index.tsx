@@ -118,7 +118,7 @@ function MainPanel () {
           type='button'
           onClick={onSelectRegionButtonClick}
         >
-          <Flag countryCode={currentRegion?.countryIsoCode}/>
+          <Flag countryCode={currentRegion.countryIsoCode}/>
           <S.RegionLabel>{currentRegion?.namePretty}</S.RegionLabel>
           <CaratStrongRightIcon />
         </S.RegionSelectorButton>

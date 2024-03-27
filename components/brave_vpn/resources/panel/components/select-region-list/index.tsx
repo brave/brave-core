@@ -64,7 +64,7 @@ function SelectRegion () {
             size={'small'}
             disabled={false}
           >
-            {regions?.map((entry: Region, i: number) => (
+            {regions.map((entry: Region, i: number) => (
               <div
                 key={i}
                 data-value={entry.name}
