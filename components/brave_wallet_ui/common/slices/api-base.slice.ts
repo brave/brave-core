@@ -70,7 +70,8 @@ export function createWalletApiBase() {
       'IsPrivateWindow',
       'PendingAddChainRequests',
       'PendingSwitchChainRequests',
-      'PendingDecryptRequest'
+      'PendingDecryptRequest',
+      'PendingEncryptRequest'
     ],
     endpoints: ({ mutation, query }) => ({})
   })

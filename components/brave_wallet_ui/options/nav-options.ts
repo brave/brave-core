@@ -25,7 +25,6 @@ const PANEL_TYPES: PanelTypes[] = [
   'expanded',
   'main',
   'networks',
-  'provideEncryptionKey', // For grep: 'getEncryptionPublicKey'
   'send',
   'settings',
   'showUnlock',

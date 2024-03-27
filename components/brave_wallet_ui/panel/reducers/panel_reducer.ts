@@ -37,7 +37,6 @@ const defaultState: PanelState = {
   signMessageData: [],
   signAllTransactionsRequests: [],
   signTransactionRequests: [],
-  getEncryptionPublicKeyRequest: undefined,
   hardwareWalletCode: undefined,
   selectedTransactionId: undefined,
   signMessageErrorData: []
@@ -62,16 +61,6 @@ export const createPanelReducer = (initialState: PanelState) => {
         ...state,
         connectToSiteOrigin: payload.originInfo,
         connectingAccounts: payload.accounts
-      }
-    }
-  )
-
-  reducer.on(
-    PanelActions.getEncryptionPublicKey.type,
-    (state: any, request: BraveWallet.GetEncryptionPublicKeyRequest) => {
-      return {
-        ...state,
-        getEncryptionPublicKeyRequest: request
       }
     }
   )
