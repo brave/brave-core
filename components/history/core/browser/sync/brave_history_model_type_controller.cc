@@ -19,7 +19,7 @@ BraveHistoryModelTypeController::BraveHistoryModelTypeController(
 
 BraveHistoryModelTypeController::~BraveHistoryModelTypeController() = default;
 
-syncer::DataTypeController::PreconditionState
+syncer::ModelTypeController::PreconditionState
 BraveHistoryModelTypeController::GetPreconditionState() const {
   return PreconditionState::kPreconditionsMet;
 }

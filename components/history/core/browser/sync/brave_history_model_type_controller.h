@@ -39,7 +39,7 @@ class BraveHistoryModelTypeController : public HistoryModelTypeController {
 
   ~BraveHistoryModelTypeController() override;
 
-  // syncer::DataTypeController implementation.
+  // syncer::ModelTypeController implementation.
   PreconditionState GetPreconditionState() const override;
 };
 
