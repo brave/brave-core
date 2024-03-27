@@ -334,8 +334,6 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                               GraphNode* requesting_node,
                               const KURL& local_url,
                               const String& resource_type);
-  void PossiblyWriteRequestsIntoGraph(
-      scoped_refptr<const TrackedRequestRecord> record);
   void RegisterRequestStartFromElm(const blink::DOMNodeId node_id,
                                    const InspectorId request_id,
                                    const blink::KURL& url,
@@ -359,6 +357,8 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
                                        const InspectorId request_id,
                                        const blink::KURL& url,
                                        const bool is_main_frame);
+  void RegisterRequestRedirect(const ResourceRequest& request,
+                               const ResourceResponse& redirect_response);
   void RegisterRequestComplete(const InspectorId request_id,
                                int64_t encoded_data_length);
   void RegisterRequestCompleteForDocument(const InspectorId request_id,
@@ -438,11 +438,11 @@ class CORE_EXPORT PageGraph : public GarbageCollected<PageGraph>,
   const String frame_id_;
   // Script tracker helper.
   ScriptTracker script_tracker_;
-  // Page Graph start time stamp.
-  base::TimeTicks start_;
   // Data structure for keeping track of all the in-air requests that
   // have been made, but have not completed.
   RequestTracker request_tracker_;
+  // Page Graph start time stamp.
+  base::TimeTicks start_;
   // Monotonically increasing counter, used so that we can replay the
   // the graph's construction if needed.
   GraphItemId id_counter_ = 0;

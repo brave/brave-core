@@ -3,6 +3,14 @@
 This document shows all the changes and improvements made in each version of
 [Page Graph](https://github.com/brave/brave-browser/wiki/PageGraph).
 
+## Version 0.5.0
+
+#### Tracking resources redirects
+
+The graph now accurately depicts request redirects. When a redirect is
+identified, resource nodes can now establish connections to other resource nodes
+using the `request redirect` edge.
+
 ## Version 0.4.0
 
 #### Better handling of WebAPI values
