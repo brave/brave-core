@@ -149,58 +149,91 @@ public class BraveShieldsContentSettings {
     }
 
     public static void setFingerprintingPref(String value) {
-        setShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING, value, false);
+        setShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
+                value,
+                false);
     }
 
     public static void setHttpsUpgradePref(String value) {
-        setShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE, value, false);
+        setShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE,
+                value,
+                false);
     }
 
     public static void setCookiesPref(String value) {
-        setShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES, value, false);
+        setShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_COOKIES,
+                value,
+                false);
     }
 
     public static void setTrackersPref(String value) {
-        setShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS, value, false);
+        setShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
+                value,
+                false);
     }
 
     public static void setJavascriptPref(boolean value) {
-        setShields(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS, value, false);
+        setShields(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS,
+                value,
+                false);
     }
 
     public static void setForgetFirstPartyStoragePref(boolean value) {
-        setShields(ProfileManager.getLastUsedRegularProfile(), "",
-                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE, value,
+        setShields(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
+                BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE,
+                value,
                 false);
     }
 
     public static boolean getJavascriptPref() {
-        return getShields(ProfileManager.getLastUsedRegularProfile(), "",
+        return getShields(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_JAVASCRIPTS);
     }
 
     public static String getTrackersPref() {
-        return getShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
+        return getShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS);
     }
 
     public static String getFingerprintingPref() {
-        return getShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
+        return getShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING);
     }
 
     public static String getHttpsUpgradePref() {
-        return getShieldsValue(ProfileManager.getLastUsedRegularProfile(), "",
+        return getShieldsValue(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_HTTPS_UPGRADE);
     }
 
     public static boolean getForgetFirstPartyStoragePref() {
-        return getShields(ProfileManager.getLastUsedRegularProfile(), "",
+        return getShields(
+                ProfileManager.getLastUsedRegularProfile(),
+                "",
                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FORGET_FIRST_PARTY_STORAGE);
     }
 

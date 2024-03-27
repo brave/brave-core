@@ -5,7 +5,6 @@
 
 package org.chromium.chrome.browser.firstrun;
 
-
 import org.chromium.base.supplier.OneshotSupplier;
 import org.chromium.chrome.browser.profiles.ProfileProvider;
 import org.chromium.components.signin.AccountManagerFacadeProvider;

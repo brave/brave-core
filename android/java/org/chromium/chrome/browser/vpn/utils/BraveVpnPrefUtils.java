@@ -139,7 +139,8 @@ public class BraveVpnPrefUtils {
         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PURCHASE_TOKEN_ANDROID, value);
         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                .setString(BravePref.BRAVE_VPN_PACKAGE_ANDROID,
+                .setString(
+                        BravePref.BRAVE_VPN_PACKAGE_ANDROID,
                         ContextUtils.getApplicationContext().getPackageName());
     }
 

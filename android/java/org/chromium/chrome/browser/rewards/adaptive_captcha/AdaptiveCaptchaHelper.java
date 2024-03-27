@@ -225,7 +225,8 @@ public class AdaptiveCaptchaHelper {
 
     private static void recordFailureAttempt() {
         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                .setInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS,
+                .setInteger(
+                        BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS,
                         UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                         .getInteger(BravePref.SCHEDULED_CAPTCHA_FAILED_ATTEMPTS)
                                 + 1);

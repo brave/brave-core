@@ -110,8 +110,9 @@ public class BraveQAPreferences extends BravePreferenceFragment
         if (mIsStagingServer != null) {
             mIsStagingServer.setOnPreferenceChangeListener(this);
         }
-        mIsStagingServer.setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
-                                            .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
+        mIsStagingServer.setChecked(
+                UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                        .getBoolean(BravePref.USE_REWARDS_STAGING_SERVER));
 
         mIsSyncStagingServer =
                 (ChromeSwitchPreference) findPreference(PREF_USE_SYNC_STAGING_SERVER);

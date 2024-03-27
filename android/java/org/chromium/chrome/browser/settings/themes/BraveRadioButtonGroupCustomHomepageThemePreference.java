@@ -44,7 +44,11 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
         RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
         if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
             refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-            if(UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
+            if (UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                                    .getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION)
+                            == 1
+                    ? true
+                    : false) {
                 refView.setChecked(true);
                 braveDefaultView.setChecked(false);
             } else {
@@ -59,7 +63,10 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);
-        UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
+                .setInteger(
+                        BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION,
+                        checkedId == R.id.light ? 0 : 1);
         BraveRelaunchUtils.askForRelaunch(getContext());
     }
 }

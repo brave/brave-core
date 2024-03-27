@@ -850,20 +850,35 @@ public class BytecodeTest {
                         OneshotSupplier.class,
                         Supplier.class));
         Assert.assertTrue(
-                constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
+                constructorsMatch(
+                        "org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
-                "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
-                Activity.class, ViewGroup.class, BrowserControlsStateProvider.class,
-                IncognitoStateProvider.class, ScrimCoordinator.class, ObservableSupplier.class,
-                BottomSheetController.class, ActivityLifecycleDispatcher.class, Supplier.class,
-                TabModelSelector.class, TabContentManager.class, ViewGroup.class, Supplier.class,
-                TabCreatorManager.class, OneshotSupplier.class, SnackbarManager.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
-                "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
-                Context.class, Profile.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/tasks/tab_management/TabGroupUiCoordinator",
+                        "org/chromium/chrome/browser/tasks/tab_management/BraveTabGroupUiCoordinator",
+                        Activity.class,
+                        ViewGroup.class,
+                        BrowserControlsStateProvider.class,
+                        IncognitoStateProvider.class,
+                        ScrimCoordinator.class,
+                        ObservableSupplier.class,
+                        BottomSheetController.class,
+                        ActivityLifecycleDispatcher.class,
+                        Supplier.class,
+                        TabModelSelector.class,
+                        TabContentManager.class,
+                        ViewGroup.class,
+                        Supplier.class,
+                        TabCreatorManager.class,
+                        OneshotSupplier.class,
+                        SnackbarManager.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/site_settings/ChromeSiteSettingsDelegate",
+                        "org/chromium/chrome/browser/site_settings/BraveSiteSettingsDelegate",
+                        Context.class,
+                        Profile.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/components/browser_ui/notifications/NotificationManagerProxyImpl",
