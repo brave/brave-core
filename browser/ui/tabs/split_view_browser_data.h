@@ -7,6 +7,7 @@
 #define BRAVE_BROWSER_UI_TABS_SPLIT_VIEW_BROWSER_DATA_H_
 
 #include <memory>
+#include <optional>
 #include <utility>
 #include <vector>
 
@@ -24,16 +25,15 @@ class SplitViewBrowserData : public BrowserUserData<SplitViewBrowserData> {
 
   ~SplitViewBrowserData() override;
 
-  // When calling this, make sure that tile.first is the left tab and
-  // tile.second is the right tab. This order will be persistent across the all
-  // tab strip model operations.
+  // When calling this, make sure that |tile.first| has a smaller model index
+  // than |tile.second| be persistent across the all tab strip model operations.
   void TileTabs(const Tile& tile);
 
   void BreakTile(const tabs::TabHandle& tab);
 
   bool IsTabTiled(const tabs::TabHandle& tab) const;
 
-  const Tile& GetTile(const tabs::TabHandle& tab) const;
+  std::optional<Tile> GetTile(const tabs::TabHandle& tab) const;
   const std::vector<Tile> tiles(TilePassKey) const { return tiles_; }
 
  private:

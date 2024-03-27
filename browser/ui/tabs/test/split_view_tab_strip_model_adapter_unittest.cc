@@ -51,7 +51,7 @@ class SplitViewTabStripModelAdapterUnitTest
     split_view_browser_data_.reset(new SplitViewBrowserData(nullptr));
     split_view_browser_data_->tab_strip_model_adapter_ =
         std::make_unique<SplitViewTabStripModelAdapter>(
-            split_view_browser_data_.get(), model_.get());
+            *split_view_browser_data_, model_.get());
     adapter_ = split_view_browser_data_->tab_strip_model_adapter_.get();
   }
 

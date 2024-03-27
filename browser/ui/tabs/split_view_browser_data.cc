@@ -20,7 +20,7 @@ SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
   }
 
   tab_strip_model_adapter_ = std::make_unique<SplitViewTabStripModelAdapter>(
-      this, browser->tab_strip_model());
+      *this, browser->tab_strip_model());
 }
 
 SplitViewBrowserData::~SplitViewBrowserData() = default;
@@ -74,9 +74,11 @@ bool SplitViewBrowserData::IsTabTiled(const tabs::TabHandle& tab) const {
   return base::Contains(tile_index_for_tab_, tab);
 }
 
-const SplitViewBrowserData::Tile& SplitViewBrowserData::GetTile(
+std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
     const tabs::TabHandle& tab) const {
   auto iter = FindTile(tab);
-  CHECK(iter != tiles_.end());
+  if (iter == tiles_.end()) {
+    return std::nullopt;
+  }
   return *iter;
 }

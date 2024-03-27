@@ -13,9 +13,9 @@
 #include "components/tab_groups/tab_group_id.h"
 
 SplitViewTabStripModelAdapter::SplitViewTabStripModelAdapter(
-    SplitViewBrowserData* split_view_browser_data,
+    SplitViewBrowserData& split_view_browser_data,
     TabStripModel* model)
-    : split_view_browser_data_(*split_view_browser_data), model_(model) {
+    : split_view_browser_data_(split_view_browser_data), model_(model) {
   CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
   CHECK(model);
 
@@ -110,17 +110,18 @@ void SplitViewTabStripModelAdapter::OnTabMoved(
   // together
   auto tab_handle =
       model_->GetTabHandleAt(model_->GetIndexOfWebContents(move->contents));
-  if (!split_view_browser_data_->IsTabTiled(tab_handle)) {
+
+  auto tile = split_view_browser_data_->GetTile(tab_handle);
+  if (!tile.has_value()) {
     return;
   }
 
-  auto tile = split_view_browser_data_->GetTile(tab_handle);
-  const bool move_right_tab = tile.first == tab_handle;
+  const bool move_right_tab = tile->first == tab_handle;
 
   base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
       FROM_HERE,
       base::BindOnce(&SplitViewTabStripModelAdapter::MakeTiledTabsAdjacent,
-                     weak_ptr_factory_.GetWeakPtr(), tile, move_right_tab));
+                     weak_ptr_factory_.GetWeakPtr(), *tile, move_right_tab));
 
   // TODO(sko) We should make sure that tab isn't moved between tiled tabs.
   // Or we should break the tile when it happens.
@@ -136,7 +137,7 @@ void SplitViewTabStripModelAdapter::OnTabWillBeRemoved(
   // In case a tiled tab is removed, we need to remove the corresponding tile
   if (auto tab = model_->GetTabHandleAt(index);
       split_view_browser_data_->IsTabTiled(tab)) {
-    auto [tab1, tab2] = split_view_browser_data_->GetTile(tab);
+    auto [tab1, tab2] = *split_view_browser_data_->GetTile(tab);
 
     tiled_tabs_scheduled_to_be_removed_.emplace_back(
         get_web_contents_from_tab_handle(tab1),
@@ -153,12 +154,13 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
   // In case a tiled tab is pinned or unpinned, we need to synchronize the other
   // tab together.
   auto changed_tab_handle = model_->GetTabHandleAt(index);
-  if (!split_view_browser_data_->IsTabTiled(changed_tab_handle)) {
+
+  auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
+  if (!tile.has_value()) {
     return;
   }
 
-  auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
-  auto [tab1, other_tab] = tile;
+  auto [tab1, other_tab] = *tile;
   if (tab1 != changed_tab_handle) {
     std::swap(tab1, other_tab);
     CHECK(tab1 == changed_tab_handle);
@@ -182,7 +184,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
                            adapter->model_->GetIndexOfTab(tab), pinned);
                        adapter->MakeTiledTabsAdjacent(tile, true);
                      },
-                     weak_ptr_factory_.GetWeakPtr(), tile, other_tab,
+                     weak_ptr_factory_.GetWeakPtr(), *tile, other_tab,
                      model_->IsTabPinned(index)));
 }
 
@@ -193,12 +195,12 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
   // In case a tiled tab is grouped or ungrouped, we need to synchronize the
   // other tab together.
   auto changed_tab_handle = model_->GetTabHandleAt(index);
-  if (!split_view_browser_data_->IsTabTiled(changed_tab_handle)) {
+  auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
+  if (!tile.has_value()) {
     return;
   }
 
-  auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
-  auto [tab1, other_tab] = tile;
+  auto [tab1, other_tab] = *tile;
   if (tab1 != changed_tab_handle) {
     std::swap(tab1, other_tab);
     CHECK(tab1 == changed_tab_handle);
@@ -230,7 +232,7 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
 
             adapter->MakeTiledTabsAdjacent(tile, true);
           },
-          weak_ptr_factory_.GetWeakPtr(), group, tile, other_tab));
+          weak_ptr_factory_.GetWeakPtr(), group, *tile, other_tab));
 }
 
 void SplitViewTabStripModelAdapter::OnTabRemoved(

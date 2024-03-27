@@ -18,7 +18,7 @@
 // with the changed tab be synchronized.
 class SplitViewTabStripModelAdapter : public TabStripModelObserver {
  public:
-  SplitViewTabStripModelAdapter(SplitViewBrowserData* split_view_browser_data,
+  SplitViewTabStripModelAdapter(SplitViewBrowserData& split_view_browser_data,
                                 TabStripModel* model);
   ~SplitViewTabStripModelAdapter() override;
 
