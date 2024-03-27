@@ -5,11 +5,16 @@
 
 package org.chromium.chrome.browser.brave_leo;
 
+import org.chromium.base.BraveFeatureList;
 import org.chromium.base.ContextUtils;
 import org.chromium.base.Log;
+import org.chromium.chrome.browser.BraveConfig;
 import org.chromium.chrome.browser.app.BraveActivity;
+import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.components.browser_ui.site_settings.WebsitePreferenceBridge;
+import org.chromium.components.content_settings.ContentSettingsType;
 import org.chromium.components.prefs.PrefService;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -127,5 +132,24 @@ public class BraveLeoPrefUtils {
             return;
         }
         UserPrefs.get(profileToUse).setString(BravePref.DEFAULT_MODEL_KEY, modelKey);
+    }
+
+    public static boolean isLeoEnabled() {
+        if (!BraveConfig.AI_CHAT_ENABLED
+                || !ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)) {
+            return false;
+        }
+
+        Profile profileToUse = BraveLeoPrefUtils.getProfile();
+        if (profileToUse == null) {
+            Log.e(TAG, "BraveLeoPrefUtils.isLeoEnabled profile is null");
+            // JS is enabled for most users
+            return true;
+        }
+
+        // Disables Leo when a global JAVASCRIPT toggle set to blocked.
+        // We want to fix that in the future.
+        return WebsitePreferenceBridge.isCategoryEnabled(
+                profileToUse, ContentSettingsType.JAVASCRIPT);
     }
 }
