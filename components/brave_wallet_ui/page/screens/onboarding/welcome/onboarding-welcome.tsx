@@ -74,11 +74,11 @@ export const OnboardingWelcome = () => {
           <Row
             gap='10px'
             justifyContent='flex-start'
+            marginBottom={leo.spacing['5Xl']}
           >
             <BraveIcon />
             <Title>{getLocale('braveWalletTitle')}</Title>
           </Row>
-          <VerticalSpace space={leo.spacing['5Xl']} />
           <Heading>{getLocale('braveWalletWelcomeTitle')}</Heading>
 
           <ActionsContainer>

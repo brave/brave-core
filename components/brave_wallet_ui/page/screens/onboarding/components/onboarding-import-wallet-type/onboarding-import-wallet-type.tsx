@@ -12,13 +12,13 @@ import { getLocale } from '../../../../../../common/locale'
 
 // components
 import { OnboardingContentLayout } from '../onboarding-content-layout/onboarding-content-layout'
+import { ImportTypeAction } from './components/import-type-action'
 
 // styles
 import {
   VerticalDivider,
   VerticalSpace
 } from '../../../../../components/shared/style'
-import { ImportTypeAction } from './components/import-type-action'
 
 const softwareWalletIcons = [
   'brave-icon-release-color',
@@ -43,9 +43,7 @@ export const OnboardingImportWalletType = () => {
         icons={softwareWalletIcons}
         onClick={() => history.push(WalletRoutes.OnboardingImportTerms)}
       />
-      <VerticalSpace space='8px' />
-      <VerticalDivider />
-      <VerticalSpace space='8px' />
+      <VerticalDivider margin='8px 0' />
       <ImportTypeAction
         title={getLocale('braveWalletImportWalletTypeHardwareWalletTitle')}
         description={getLocale(

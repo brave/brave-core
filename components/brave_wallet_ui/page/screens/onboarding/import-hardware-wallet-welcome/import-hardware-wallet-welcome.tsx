@@ -37,9 +37,7 @@ export const OnboardingImportHardwareWalletWelcome = () => {
     <OnboardingContentLayout
       title={getLocale('braveWalletConnectHardwareWallet')}
     >
-      <VerticalSpace space='98px' />
       <HardwareGraphic />
-      <VerticalSpace space='40px' />
       <Description>
         {getLocale('braveWalletImportHardwareWalletDescription')}
       </Description>
@@ -52,7 +50,7 @@ export const OnboardingImportHardwareWalletWelcome = () => {
         {afterTag}
       </Description>
       <VerticalSpace space='117px' />
-      <Column>
+      <Column margin='0 0 88px 0'>
         <ContinueButton onClick={onClickContinue}>
           {getLocale('braveWalletButtonContinue')}
         </ContinueButton>

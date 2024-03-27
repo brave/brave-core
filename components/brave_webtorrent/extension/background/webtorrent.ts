@@ -39,7 +39,7 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 
   try {
     server.listen(0, '127.0.0.1', undefined, () => {
-      // Explicitly cast server.address() to AddressInfo to access its
+      // Explicitly cast server.address() to AddressInfo to access itsk
       // properties. It's safe to cast here because the only possible type of
       // server.address() here is AddressInfo since pipe name (as string) is
       // not supported in chrome-net.

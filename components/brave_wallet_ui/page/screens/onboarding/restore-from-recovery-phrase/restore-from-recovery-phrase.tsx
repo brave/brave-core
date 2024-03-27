@@ -30,7 +30,7 @@ import { OnboardingCreatingWallet } from '../creating-wallet/onboarding-creating
 import { autoLockOptions } from '../../../../options/auto-lock-options'
 
 // styles
-import { Column, VerticalSpace } from '../../../../components/shared/style'
+import { Column, Row, VerticalSpace } from '../../../../components/shared/style'
 import {
   CheckboxText,
   InfoAlert,
@@ -197,32 +197,36 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
     >
       {currentStep === 'phrase' && (
         <>
-          <VerticalSpace space='52px' />
-          <RecoveryPhraseContainer phraseLength={recoveryPhraseLength}>
-            {Array.from({ length: recoveryPhraseLength }, (_, index) => (
-              <Input
-                key={index}
-                placeholder={getLocale('braveWalletRecoveryPhraseWord').replace(
-                  '$1',
-                  `#${index + 1}`
-                )}
-                value={phraseWords[index] || ''}
-                size='small'
-                onChange={(e) => onPhraseWordChange(index, e.detail.value)}
-                onInput={(e) => onPhraseWordChange(index, e.detail.value)}
-                type={revealPhrase ? 'text' : 'password'}
-              />
-            ))}
-          </RecoveryPhraseContainer>
-          <Column alignItems='flex-end'>
-            <Button
-              kind='plain'
-              onClick={() => setRevealPhrase((reveal) => !reveal)}
-            >
-              <Icon name={revealPhrase ? 'eye-off' : 'eye-on'} />
-            </Button>
+          <Column
+            alignItems='flex-end'
+            justifyContent='center'
+            margin='52px 0 28px'
+          >
+            <RecoveryPhraseContainer phraseLength={recoveryPhraseLength}>
+              {Array.from({ length: recoveryPhraseLength }, (_, index) => (
+                <Input
+                  key={index}
+                  mode='filled'
+                  placeholder={getLocale(
+                    'braveWalletRecoveryPhraseWord'
+                  ).replace('$1', `#${index + 1}`)}
+                  value={phraseWords[index] || ''}
+                  size='small'
+                  onChange={(e) => onPhraseWordChange(index, e.detail.value)}
+                  onInput={(e) => onPhraseWordChange(index, e.detail.value)}
+                  type={revealPhrase ? 'text' : 'password'}
+                />
+              ))}
+            </RecoveryPhraseContainer>
+            <Column alignItems='flex-end'>
+              <Button
+                kind='plain'
+                onClick={() => setRevealPhrase((reveal) => !reveal)}
+              >
+                <Icon name={revealPhrase ? 'eye-off' : 'eye-on'} />
+              </Button>
+            </Column>
           </Column>
-          <VerticalSpace space='28px' />
           <Button
             kind='plain'
             onClick={onRecoveryPhraseLengthChange}
@@ -233,30 +237,33 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
               alternateRecoveryPhraseLength.toString()
             )}
           </Button>
-          <VerticalSpace space='12px' />
-          {recoveryPhraseLength === 24 ? (
-            <Column
-              justifyContent='center'
-              alignItems='center'
-            >
-              <Checkbox
-                checked={isImportingFromLegacySeed}
-                onChange={() =>
-                  setIsImportingFromLegacySeed(
-                    (isImportingFromLegacySeed) => !isImportingFromLegacySeed
-                  )
-                }
+          <Row
+            alignItems='center'
+            justifyContent='center'
+            margin='12px 0 12px'
+          >
+            {recoveryPhraseLength === 24 ? (
+              <Column
+                justifyContent='center'
+                alignItems='center'
               >
-                <CheckboxText>
-                  {getLocale('braveWalletRestoreLegacyCheckBox')}
-                </CheckboxText>
-              </Checkbox>
-            </Column>
-          ) : (
-            <VerticalSpace space='22px' />
-          )}
-
-          <VerticalSpace space='12px' />
+                <Checkbox
+                  checked={isImportingFromLegacySeed}
+                  onChange={() =>
+                    setIsImportingFromLegacySeed(
+                      (isImportingFromLegacySeed) => !isImportingFromLegacySeed
+                    )
+                  }
+                >
+                  <CheckboxText>
+                    {getLocale('braveWalletRestoreLegacyCheckBox')}
+                  </CheckboxText>
+                </Checkbox>
+              </Column>
+            ) : (
+              <VerticalSpace space='22px' />
+            )}
+          </Row>
 
           {importableWallets?.isMetaMaskInitialized && (
             <AlertWrapper>
@@ -295,9 +302,11 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
 
       {/* Create Password */}
       {currentStep === 'password' && (
-        <>
-          <VerticalSpace space='68px' />
-
+        <Row
+          alignItems='center'
+          justifyContent='center'
+          margin='68px 0 24px'
+        >
           <CreatePassword
             autoLockDuration={autoLockDuration}
             autoLockOptions={autoLockOptions}
@@ -305,9 +314,7 @@ export const OnboardingRestoreFromRecoveryPhrase = () => {
             onSubmit={onContinue}
             onAutoLockDurationChange={setAutoLockDuration}
           />
-
-          <VerticalSpace space='24px' />
-        </>
+        </Row>
       )}
 
       <Column>

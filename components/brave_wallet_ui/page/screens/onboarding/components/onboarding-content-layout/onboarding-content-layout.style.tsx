@@ -100,7 +100,7 @@ export const Subtitle = styled.p`
   text-align: center;
   font: ${leo.font.large.regular};
   margin: 0;
-  padding: 0;
+  padding: 16px 0 19px 0;
 `
 
 export const BackButtonWrapper = styled.div`

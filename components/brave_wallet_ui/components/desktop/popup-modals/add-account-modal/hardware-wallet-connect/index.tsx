@@ -12,11 +12,11 @@ import { onConnectHardwareWallet } from '../../../../../common/async/hardware'
 // components
 import { HardwareWalletAccountsList } from './accounts-list'
 import { AuthorizeHardwareDeviceIFrame } from '../../../../shared/authorize-hardware-device/authorize-hardware-device'
+import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
 
 // Styled Components
 import { Instructions } from './style'
 import { Column, VerticalSpace } from '../../../../shared/style'
-import { HardwareButton } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button'
 import { Divider } from '../../../../../page/screens/onboarding/select-wallet-device/components/hardware-button.style'
 import { ContinueButton } from '../../../../../page/screens/onboarding/onboarding.style'
 import { HardwareWalletGraphic } from '../../../../../page/screens/onboarding/select-wallet-device/onboarding-select-wallet-device.style'
@@ -231,14 +231,17 @@ export const HardwareWalletConnect = ({
     onAddHardwareAccounts
   ])
 
-  const selectVendor = React.useCallback((vendor: HardwareVendor) => {
-    const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
-    setSelectedDerivationScheme(
-      Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
-    )
-    setSelectedHardwareWallet(vendor)
-    onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
-  }, [onSelectVendor])
+  const selectVendor = React.useCallback(
+    (vendor: HardwareVendor) => {
+      const derivationPathsEnum = HardwareWalletDerivationPathsMapping[vendor]
+      setSelectedDerivationScheme(
+        Object.values(derivationPathsEnum)[0] as HardwareDerivationScheme
+      )
+      setSelectedHardwareWallet(vendor)
+      onSelectVendor?.(BraveWallet.LEDGER_HARDWARE_VENDOR)
+    },
+    [onSelectVendor]
+  )
 
   const onSelectLedger = React.useCallback(() => {
     if (selectedHardwareWallet !== BraveWallet.LEDGER_HARDWARE_VENDOR) {
@@ -320,9 +323,7 @@ export const HardwareWalletConnect = ({
     )
   }
 
-  if (
-    !selectedHardwareWallet
-  ) {
+  if (!selectedHardwareWallet) {
     return (
       <>
         <HardwareButton

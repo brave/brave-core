@@ -16,6 +16,7 @@ export const HardwareGraphic = styled.img.attrs({
 })`
   width: 100%;
   height: auto;
+  margin: 98px 0 40px;
 `
 
 export const Description = styled.p`

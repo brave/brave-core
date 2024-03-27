@@ -38,7 +38,6 @@ import {
 } from '../explain-recovery-phrase/explain-recovery-phrase.style'
 import { SkipWarningDialog } from '../explain-recovery-phrase/skip-warning-dialog'
 
-// styles
 import { VerticalSpace } from '../../../../components/shared/style'
 import {
   ContinueButton,
