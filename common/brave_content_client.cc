@@ -5,11 +5,9 @@
 
 #include "brave/common/brave_content_client.h"
 
-#include <optional>
 #include <string>
 
 #include "base/memory/ref_counted_memory.h"
-#include "base/version.h"
 #include "components/grit/brave_components_resources.h"
 #include "components/grit/flags_ui_resources.h"
 #include "content/public/common/url_constants.h"
@@ -55,8 +53,7 @@ void CreateDefaultWidevineCdmHintFile() {
     return;
   }
 
-  DCHECK(UpdateWidevineCdmHintFile(widevine_root_dir_path,
-                                   /*bundled_version=*/std::nullopt));
+  DCHECK(UpdateWidevineCdmHintFile(widevine_root_dir_path));
 }
 #endif
 
