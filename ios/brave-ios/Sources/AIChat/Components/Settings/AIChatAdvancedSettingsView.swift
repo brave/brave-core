@@ -351,40 +351,9 @@ public struct AIChatAdvancedSettingsView: View {
           )
         }
       }
-
-      if swipedLeftCount >= 3 && swipedRightCount >= 3 && swipedUpCount >= 1 && swipedDownCount >= 1
-      {
-        Section {
-          NavigationLink {
-            AIChatLeoPurchaseLogs(model: model)
-          } label: {
-            LabelView(
-              title: "View Leo Purchase Logs",
-              subtitle: model.models.first(where: { $0.key == model.defaultAIModelKey })?
-                .displayName
-                ?? model.currentModel.displayName
-            )
-          }.listRowBackground(Color(.secondaryBraveGroupedBackground))
-        } header: {
-          Text("Leo Purchase Logs")
-            .textCase(nil)
-        }
-      }
     }
     .listBackgroundColor(Color(.braveGroupedBackground))
     .listStyle(.insetGrouped)
-    .gesture(
-      DragGesture(minimumDistance: 5.0, coordinateSpace: .local)
-        .onEnded { value in
-          switch (value.translation.width, value.translation.height) {
-          case (...0, -30...30): swipedLeftCount += 1
-          case (0..., -30...30): swipedRightCount += 1
-          case (-100...100, ...0): swipedUpCount += 1
-          case (-100...100, 0...): swipedDownCount += 1
-          default: break
-          }
-        }
-    )
   }
 
   var premiumActionView: some View {
@@ -396,9 +365,4 @@ public struct AIChatAdvancedSettingsView: View {
         .foregroundStyle(Color(braveSystemName: .iconDefault))
     }
   }
-
-  @State private var swipedLeftCount = 0
-  @State private var swipedRightCount = 0
-  @State private var swipedUpCount = 0
-  @State private var swipedDownCount = 0
 }

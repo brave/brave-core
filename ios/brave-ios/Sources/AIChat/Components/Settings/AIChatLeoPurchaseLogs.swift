@@ -10,15 +10,11 @@ import Preferences
 import SwiftUI
 import os.log
 
-struct AIChatLeoPurchaseLogs: View {
-
-  @ObservedObject
-  var model: AIChatViewModel
-
+public struct AIChatLeoPurchaseLogs: View {
   @State
   private var text = ""
 
-  var body: some View {
+  public var body: some View {
     ScrollView {
       Text(text)
         .font(.caption)

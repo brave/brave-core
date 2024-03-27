@@ -254,7 +254,7 @@ public class BraveStoreSDK: AppStoreSDK {
             didRestore = true
           } catch {
             Logger.module.error(
-              "[BraveStoreSDK] - Failed to restore purchased product receipt: \(error)"
+              "[BraveStoreSDK] - Failed to restore purchased product receipt: \(error, privacy: .public)"
             )
           }
         }
@@ -268,7 +268,7 @@ public class BraveStoreSDK: AppStoreSDK {
       }
       return true
     } catch {
-      Logger.module.error("[BraveStoreSDK] - Failed to restore purchased product receipt: \(error)")
+      Logger.module.error("[BraveStoreSDK] - Failed to restore purchased product receipt: \(error, privacy: .public)")
       return false
     }
     #endif
@@ -282,7 +282,7 @@ public class BraveStoreSDK: AppStoreSDK {
   public func purchase(product: BraveStoreProduct) async throws {
     if let subscription = await subscription(for: product) {
       if try await super.purchase(subscription) != nil {
-        Logger.module.debug("[BraveStoreSDK] - Product Purchase Successful")
+        Logger.module.info("[BraveStoreSDK] - Product Purchase Successful")
       }
     }
   }
@@ -295,14 +295,14 @@ public class BraveStoreSDK: AppStoreSDK {
     // Find the Brave offered product from the AppStore Product ID
     guard let product = BraveStoreProduct.allCases.first(where: { product.id == $0.rawValue })
     else {
-      Logger.module.debug("[BraveStoreSDK] - Not a Brave Product! - \(product.id)")
+      Logger.module.info("[BraveStoreSDK] - Not a Brave Product! - \(product.id, privacy: .public)")
       throw BraveStoreSDKError.invalidProduct
     }
 
     // Update Skus SDK Purchase
     try await self.updateSkusPurchaseState(for: product)
 
-    Logger.module.debug("[BraveStoreSDK] - Purchase Successful")
+    Logger.module.info("[BraveStoreSDK] - Purchase Successful")
   }
 
   // MARK: - Internal
@@ -367,7 +367,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
-    Logger.module.debug("[BraveStoreSDK] - Refreshing Receipt")
+    Logger.module.info("[BraveStoreSDK] - Refreshing Receipt")
 
     // Attempt to update the Application Bundle's receipt, if necessary
     try await AppStoreReceipt.sync()
@@ -382,7 +382,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
-    Logger.module.debug("[BraveStoreSDK] - No Order To Refresh")
+    Logger.module.info("[BraveStoreSDK] - No Order To Refresh")
     throw BraveSkusSDK.SkusError.cannotCreateOrder
   }
 
@@ -397,7 +397,7 @@ public class BraveStoreSDK: AppStoreSDK {
       return
     }
 
-    Logger.module.debug("[BraveStoreSDK] - Syncing Receipt")
+    Logger.module.info("[BraveStoreSDK] - Syncing Receipt")
 
     // Attempt to update the Application Bundle's receipt, by force
     try await AppStoreReceipt.sync()
@@ -456,6 +456,6 @@ public class BraveStoreSDK: AppStoreSDK {
       Preferences.AIChat.subscriptionHasCredentials.value = true
     }
 
-    Logger.module.debug("[BraveStoreSDK] - Order Completed")
+    Logger.module.info("[BraveStoreSDK] - Order Completed")
   }
 }
