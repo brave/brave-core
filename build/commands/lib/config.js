@@ -246,6 +246,7 @@ const Config = function () {
   this.useBraveHermeticToolchain = this.rbeService.includes('.brave.com:')
   this.brave_services_key_id = getEnvConfig(['brave_services_key_id']) || ''
   this.service_key_aichat = getEnvConfig(['service_key_aichat']) || ''
+  this.braveIOSDeveloperOptionsCode = getEnvConfig(['brave_ios_developer_options_code']) || ''
 }
 
 Config.prototype.isReleaseBuild = function () {
@@ -650,6 +651,8 @@ Config.prototype.buildArgs = function () {
     args.ios_enable_share_extension = false
     args.ios_enable_credential_provider_extension = true
     args.ios_enable_widget_kit_extension = false
+
+    args.brave_ios_developer_options_code = this.braveIOSDeveloperOptionsCode
 
     // This is currently being flipped on and off by the Chromium team to test
     // however it causes crashes for us at launch. Check `ios/features.gni`

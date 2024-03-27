@@ -300,30 +300,26 @@ extension BraveRewards {
       retryInterval: Int? = Preferences.Rewards.debugFlagRetryInterval.value,
       reconcileInterval: Int? = Preferences.Rewards.debugFlagReconcileInterval.value
     ) -> Self {
-      var configuration: BraveRewards.Configuration
-      if !buildChannel.isPublic {
-        if let override = Preferences.Rewards.EnvironmentOverride(
-          rawValue: Preferences.Rewards.environmentOverride.value
-        ), override != .none {
-          switch override {
-          case .dev:
-            configuration = .default
-          case .staging:
-            configuration = .staging
-          case .prod:
-            configuration = .production
-          default:
-            configuration = .staging
-          }
-        } else {
-          configuration = AppConstants.buildChannel == .debug ? .staging : .production
+      var configuration: BraveRewards.Configuration = .production
+      if let override = Preferences.Rewards.EnvironmentOverride(
+        rawValue: Preferences.Rewards.environmentOverride.value
+      ), override != .none {
+        switch override {
+        case .dev:
+          configuration = .default
+        case .staging:
+          configuration = .staging
+        case .prod:
+          configuration = .production
+        default:
+          configuration = .staging
         }
-        configuration.isDebug = isDebugFlag
-        configuration.retryInterval = retryInterval
-        configuration.overridenNumberOfSecondsBetweenReconcile = reconcileInterval
       } else {
-        configuration = .production
+        configuration = AppConstants.isOfficialBuild ? .production : .staging
       }
+      configuration.isDebug = isDebugFlag
+      configuration.retryInterval = retryInterval
+      configuration.overridenNumberOfSecondsBetweenReconcile = reconcileInterval
       return configuration
     }
 

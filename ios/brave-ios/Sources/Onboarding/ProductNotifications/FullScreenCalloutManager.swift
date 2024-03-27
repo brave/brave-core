@@ -69,7 +69,7 @@ public struct FullScreenCalloutManager {
     let rightNow = Date()
 
     let nextShowDate = appRetentionLaunchDate.addingTimeInterval(
-      AppConstants.buildChannel.isPublic ? calloutType.period.days : calloutType.period.minutes
+      AppConstants.isOfficialBuild ? calloutType.period.days : calloutType.period.minutes
     )
 
     if rightNow > nextShowDate {

@@ -255,4 +255,12 @@ extension Preferences {
       default: nil
     )
   }
+
+  public final class Debug {
+    /// Whether or not the settings page shows developer options
+    public static let developerOptionsEnabled = Option<Bool>(
+      key: "debug.dev-options-enabled",
+      default: false
+    )
+  }
 }

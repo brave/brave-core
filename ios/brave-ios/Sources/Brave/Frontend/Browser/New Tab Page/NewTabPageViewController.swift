@@ -308,7 +308,8 @@ class NewTabPageViewController: UIViewController {
       action: #selector(tappedBraveNewsSettings),
       for: .touchUpInside
     )
-    if !AppConstants.buildChannel.isPublic {
+    if !AppConstants.isOfficialBuild {
+      // Add a shortcut only available in local builds
       feedOverlayView.headerView.settingsButton.addGestureRecognizer(
         UILongPressGestureRecognizer(
           target: self,
@@ -1005,7 +1006,7 @@ class NewTabPageViewController: UIViewController {
 
   @objc private func longPressedBraveNewsSettingsButton() {
     assert(
-      !AppConstants.buildChannel.isPublic,
+      !AppConstants.isOfficialBuild,
       "Debug settings are not accessible on public builds"
     )
     let settings = BraveNewsDebugSettingsView(dataSource: feedDataSource) { [weak self] in
