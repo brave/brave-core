@@ -55,11 +55,6 @@ async function refreshWalletInfo(store: Store) {
   )
 }
 
-async function hasPendingUnlockRequest() {
-  const keyringService = getWalletPanelApiProxy().keyringService
-  return (await keyringService.hasPendingUnlockRequest()).pending
-}
-
 async function getPendingSignMessageRequests() {
   const braveWalletService = getWalletPanelApiProxy().braveWalletService
   const requests = (await braveWalletService.getPendingSignMessageRequests())
@@ -176,12 +171,6 @@ handler.on(
     apiProxy.panelHandler.showUI()
   }
 )
-
-handler.on(PanelActions.showUnlock.type, async (store: Store) => {
-  store.dispatch(PanelActions.navigateTo('showUnlock'))
-  const apiProxy = getWalletPanelApiProxy()
-  apiProxy.panelHandler.showUI()
-})
 
 handler.on(PanelActions.signMessage.type, async (store: Store) => {
   store.dispatch(PanelActions.navigateTo('signData'))
@@ -566,11 +555,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
     store.dispatch(PanelActions.showConnectToSite({ accounts, originInfo }))
     return
   } else {
-    const unlockRequest = await hasPendingUnlockRequest()
-    if (unlockRequest) {
-      store.dispatch(PanelActions.showUnlock())
-    }
-
     const signTransactionRequests = await getPendingSignTransactionRequests()
     if (signTransactionRequests) {
       store.dispatch(PanelActions.signTransaction(signTransactionRequests))
@@ -608,14 +592,6 @@ handler.on(WalletActions.initialize.type, async (store) => {
 
   const apiProxy = getWalletPanelApiProxy()
   apiProxy.panelHandler.showUI()
-})
-
-handler.on(WalletActions.unlocked.type, async (store: Store) => {
-  const state = getPanelState(store)
-  if (state.selectedPanel === 'showUnlock') {
-    const apiProxy = getWalletPanelApiProxy()
-    apiProxy.panelHandler.closeUI()
-  }
 })
 
 export default handler.middleware

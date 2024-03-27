@@ -98,7 +98,6 @@ export type PanelTypes =
   | 'networks'
   | 'send'
   | 'settings'
-  | 'showUnlock'
   | 'signData'
   | 'signTransaction'
   | 'signAllTransactions'
