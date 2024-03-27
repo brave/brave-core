@@ -112,7 +112,7 @@ void SplitViewTabStripModelAdapter::OnTabMoved(
       model_->GetTabHandleAt(model_->GetIndexOfWebContents(move->contents));
 
   auto tile = split_view_browser_data_->GetTile(tab_handle);
-  if (!tile.has_value()) {
+  if (!tile) {
     return;
   }
 
@@ -156,7 +156,7 @@ void SplitViewTabStripModelAdapter::TabPinnedStateChanged(
   auto changed_tab_handle = model_->GetTabHandleAt(index);
 
   auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
-  if (!tile.has_value()) {
+  if (!tile) {
     return;
   }
 
@@ -196,7 +196,7 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
   // other tab together.
   auto changed_tab_handle = model_->GetTabHandleAt(index);
   auto tile = split_view_browser_data_->GetTile(changed_tab_handle);
-  if (!tile.has_value()) {
+  if (!tile) {
     return;
   }
 
@@ -223,7 +223,7 @@ void SplitViewTabStripModelAdapter::TabGroupedStateChanged(
             }
 
             auto tab_index = adapter->model_->GetIndexOfTab(tab_to_move);
-            if (group_id.has_value()) {
+            if (group_id) {
               adapter->model_->AddToExistingGroup({tab_index},
                                                   group_id.value());
             } else {

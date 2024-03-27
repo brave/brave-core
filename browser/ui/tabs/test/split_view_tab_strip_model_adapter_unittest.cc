@@ -301,15 +301,14 @@ TEST_F(SplitViewTabStripModelAdapterUnitTest, TabGroupedStateChanged) {
 
   // Then the other should be inserted to the group together.
   base::RunLoop().RunUntilIdle();
-  EXPECT_FALSE(
-      model().GetTabGroupForTab(model().GetIndexOfTab(tab2)).has_value());
+  EXPECT_FALSE(model().GetTabGroupForTab(model().GetIndexOfTab(tab2)));
 
   // When adding a tab to a group,
   model().AddToExistingGroup({1}, group_id);
 
   // Then The other tab should be grouped too
   base::RunLoop().RunUntilIdle();
-  EXPECT_TRUE(model().GetTabGroupForTab(0).has_value());
+  EXPECT_TRUE(model().GetTabGroupForTab(0));
   EXPECT_EQ(0, model().GetIndexOfTab(tab1));
   EXPECT_EQ(1, model().GetIndexOfTab(tab2));
 }
