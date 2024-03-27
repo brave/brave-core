@@ -45,7 +45,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConfirmationUserDataForRewardsUser) {
   // Arrange
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
 
   // Act & Assert
@@ -89,7 +90,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
        BuildConversionConfirmationUserDataForRewardsUser) {
   // Arrange
   test::BuildAndSaveConversionQueueItems(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = test::BuildTransaction(
@@ -174,7 +175,8 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   test::DisableBraveRewards();
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/false);
 
   UserDataInfo expected_user_data;
@@ -198,7 +200,7 @@ TEST_F(BraveAdsConfirmationUserDataBuilderTest,
   test::DisableBraveRewards();
 
   test::BuildAndSaveConversionQueueItems(
-      AdType::kNotificationAd, ConfirmationType::kViewed,
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
       /*is_verifiable=*/false, /*should_use_random_uuids=*/false, /*count=*/1);
 
   const TransactionInfo transaction = test::BuildTransaction(

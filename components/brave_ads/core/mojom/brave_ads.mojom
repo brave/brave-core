@@ -70,28 +70,28 @@ struct ConversionInfo {
 };
 
 enum NotificationAdEventType {
-  kServed = 0,
-  kViewed,
+  kServedImpression = 0,
+  kViewedImpression,
   kClicked,
   kDismissed,
   kTimedOut
 };
 
 enum NewTabPageAdEventType {
-  kServed = 0,
-  kViewed,
+  kServedImpression = 0,
+  kViewedImpression,
   kClicked
 };
 
 enum PromotedContentAdEventType {
-  kServed = 0,
-  kViewed,
+  kServedImpression = 0,
+  kViewedImpression,
   kClicked
 };
 
 enum InlineContentAdEventType {
-  kServed = 0,
-  kViewed,
+  kServedImpression = 0,
+  kViewedImpression,
   kClicked
 };
 
@@ -110,8 +110,8 @@ struct SearchResultAdInfo {
 };
 
 enum SearchResultAdEventType {
-  kServed = 0,
-  kViewed,
+  kServedImpression = 0,
+  kViewedImpression,
   kClicked
 };
 

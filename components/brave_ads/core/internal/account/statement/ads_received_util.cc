@@ -16,7 +16,8 @@ size_t GetAdsReceivedForDateRange(const TransactionList& transactions,
                                   const base::Time to_time) {
   return base::ranges::count_if(
       transactions, [from_time, to_time](const TransactionInfo& transaction) {
-        return transaction.confirmation_type == ConfirmationType::kViewed &&
+        return transaction.confirmation_type ==
+                   ConfirmationType::kViewedImpression &&
                transaction.created_at >= from_time &&
                transaction.created_at <= to_time;
       });

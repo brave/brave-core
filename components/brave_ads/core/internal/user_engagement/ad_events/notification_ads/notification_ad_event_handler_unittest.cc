@@ -60,7 +60,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireServedEvent) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdServedEvent(ad));
 
-  FireEvent(ad.placement_id, mojom::NotificationAdEventType::kServed,
+  FireEvent(ad.placement_id, mojom::NotificationAdEventType::kServedImpression,
             /*should_fire_event=*/true);
 }
 
@@ -71,7 +71,7 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest, FireViewedEvent) {
   // Act & Assert
   EXPECT_CALL(delegate_mock_, OnDidFireNotificationAdViewedEvent(ad));
 
-  FireEvent(ad.placement_id, mojom::NotificationAdEventType::kViewed,
+  FireEvent(ad.placement_id, mojom::NotificationAdEventType::kViewedImpression,
             /*should_fire_event=*/true);
 }
 
@@ -114,11 +114,13 @@ TEST_F(BraveAdsNotificationAdEventHandlerTest,
   const NotificationAdInfo ad = BuildAndSaveAd();
 
   // Act & Assert
-  EXPECT_CALL(delegate_mock_, OnFailedToFireNotificationAdEvent(
-                                  kMissingPlacementId,
-                                  mojom::NotificationAdEventType::kViewed));
+  EXPECT_CALL(delegate_mock_,
+              OnFailedToFireNotificationAdEvent(
+                  kMissingPlacementId,
+                  mojom::NotificationAdEventType::kViewedImpression));
 
-  FireEvent(kMissingPlacementId, mojom::NotificationAdEventType::kViewed,
+  FireEvent(kMissingPlacementId,
+            mojom::NotificationAdEventType::kViewedImpression,
             /*should_fire_event=*/false);
 }
 

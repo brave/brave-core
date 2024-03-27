@@ -15,17 +15,17 @@ namespace brave_ads {
 
 TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
   // Arrange
-  HistoryItemInfo ad1;  // Ad 1 (Viewed)
+  HistoryItemInfo ad1;  // Ad 1 (Viewed impression)
   ad1.ad_content.placement_id = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
   ad1.ad_content.type = AdType::kNotificationAd;
   ad1.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
-  ad1.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad1.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
-  HistoryItemInfo ad2;  // Ad 2 (Viewed)
+  HistoryItemInfo ad2;  // Ad 2 (Viewed impression)
   ad2.ad_content.placement_id = "137c7cc0-7923-428a-8598-faee87159d99";
   ad2.ad_content.type = AdType::kNotificationAd;
   ad2.ad_content.creative_instance_id = "a577e7fe-d86c-4997-bbaa-4041dfd4075c";
-  ad2.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad2.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
   HistoryItemInfo ad3;  // Ad 1 (Clicked)
   ad3.ad_content.placement_id = "b7a0aa61-7c3a-40f8-aa29-d416b64cebd9";
@@ -39,23 +39,23 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterActions) {
   ad4.ad_content.creative_instance_id = "4424ff92-fa91-4ca9-a651-96b59cf1f68b";
   ad4.ad_content.confirmation_type = ConfirmationType::kDismissed;
 
-  HistoryItemInfo ad5;  // Ad 3 (Viewed)
+  HistoryItemInfo ad5;  // Ad 3 (Viewed impression)
   ad5.ad_content.placement_id = "fc5c8d59-ba66-443c-8721-f06161e73f23";
   ad5.ad_content.type = AdType::kNotificationAd;
   ad5.ad_content.creative_instance_id = "4424ff92-fa91-4ca9-a651-96b59cf1f68b";
-  ad5.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad5.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
-  HistoryItemInfo ad6;  // Ad 4 (Viewed)
+  HistoryItemInfo ad6;  // Ad 4 (Viewed impression)
   ad6.ad_content.placement_id = "6cbda0fa-5c00-4a49-985a-b76318b404c1";
   ad6.ad_content.type = AdType::kNotificationAd;
   ad6.ad_content.creative_instance_id = "d9253022-b023-4414-a85d-96b78d36435d";
-  ad6.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad6.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
-  HistoryItemInfo ad7;  // Ad 5 (Viewed)
+  HistoryItemInfo ad7;  // Ad 5 (Viewed impression)
   ad7.ad_content.placement_id = "09a30dc0-6645-4bda-ad30-f607e6f43306";
   ad7.ad_content.type = AdType::kNotificationAd;
   ad7.ad_content.creative_instance_id = "dc540882-6927-4e22-8597-aa80f339f0fd";
-  ad7.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad7.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
   HistoryItemList history = {ad1, ad2, ad3, ad4, ad5, ad6, ad7};
 
@@ -107,11 +107,11 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
   ad5.ad_content.creative_instance_id = "b7e1314c-73b0-4291-9cdd-6c5d2374c28f";
   ad5.ad_content.confirmation_type = ConfirmationType::kConversion;
 
-  HistoryItemInfo ad6;  // View
+  HistoryItemInfo ad6;  // View impression
   ad6.ad_content.placement_id = "5c476298-b912-49e1-b827-6096c5829d97";
   ad6.ad_content.type = AdType::kInlineContentAd;
   ad6.ad_content.creative_instance_id = "ab9deba5-01bf-492b-9bb8-7bc4318fe272";
-  ad6.ad_content.confirmation_type = ConfirmationType::kViewed;
+  ad6.ad_content.confirmation_type = ConfirmationType::kViewedImpression;
 
   HistoryItemInfo ad7;  // Dismiss
   ad7.ad_content.placement_id = "1ec4f1ba-4255-4ecf-8701-8e550744cdf8";
@@ -134,7 +134,7 @@ TEST(BraveAdsConfirmationHistoryFilterTest, FilterUnsupportedActions) {
 
   // Assert
   const HistoryItemList expected_history = {
-      ad6,  // View
+      ad6,  // View impression
       ad7,  // Dismiss
       ad8   // Click
   };

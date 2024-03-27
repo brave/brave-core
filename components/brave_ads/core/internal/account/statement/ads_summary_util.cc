@@ -16,7 +16,7 @@ base::flat_map<std::string, int32_t> GetAdsSummaryForDateRange(
   base::flat_map<std::string, int32_t> ads_summary;
 
   for (const auto& transaction : transactions) {
-    if (transaction.confirmation_type == ConfirmationType::kViewed &&
+    if (transaction.confirmation_type == ConfirmationType::kViewedImpression &&
         transaction.created_at >= from_time &&
         transaction.created_at <= to_time) {
       ++ads_summary[ToString(transaction.ad_type)];

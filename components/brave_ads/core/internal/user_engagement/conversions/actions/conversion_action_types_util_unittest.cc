@@ -14,7 +14,7 @@ namespace brave_ads {
 TEST(BraveAdsConversionActionTypesUtilTest, ToViewThroughConversionActionType) {
   // Act & Assert
   EXPECT_EQ(ConversionActionType::kViewThrough,
-            ToConversionActionType(ConfirmationType::kViewed));
+            ToConversionActionType(ConfirmationType::kViewedImpression));
 }
 
 TEST(BraveAdsConversionActionTypesUtilTest,

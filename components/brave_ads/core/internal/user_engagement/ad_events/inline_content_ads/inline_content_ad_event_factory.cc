@@ -16,11 +16,11 @@ std::unique_ptr<AdEventInterface<InlineContentAdInfo>>
 InlineContentAdEventFactory::Build(
     const mojom::InlineContentAdEventType event_type) {
   switch (event_type) {
-    case mojom::InlineContentAdEventType::kServed: {
+    case mojom::InlineContentAdEventType::kServedImpression: {
       return std::make_unique<InlineContentAdEventServed>();
     }
 
-    case mojom::InlineContentAdEventType::kViewed: {
+    case mojom::InlineContentAdEventType::kViewedImpression: {
       return std::make_unique<InlineContentAdEventViewed>();
     }
 

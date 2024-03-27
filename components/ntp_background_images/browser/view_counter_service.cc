@@ -144,7 +144,7 @@ void ViewCounterService::BrandedWallpaperWillBeDisplayed(
   if (ads_service_) {
     ads_service_->TriggerNewTabPageAdEvent(
         wallpaper_id, creative_instance_id,
-        brave_ads::mojom::NewTabPageAdEventType::kViewed,
+        brave_ads::mojom::NewTabPageAdEventType::kViewedImpression,
         /*intentional*/ base::DoNothing());
 
     if (ntp_p3a_helper_) {

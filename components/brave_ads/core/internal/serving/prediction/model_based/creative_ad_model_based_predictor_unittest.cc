@@ -36,9 +36,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, PredictCreativeAd) {
                             TextEmbeddingHtmlEventList{}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kViewedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert
@@ -73,9 +74,10 @@ TEST_F(BraveAdsCreativeAdModelBasedPredictorTest, DoNotPredictCreativeAd) {
                             TextEmbeddingHtmlEventList{}}};
 
   AdEventList ad_events;
-  const AdEventInfo ad_event = test::BuildAdEvent(
-      creative_ad, AdType::kNotificationAd, ConfirmationType::kViewed, Now(),
-      /*should_use_random_uuids=*/true);
+  const AdEventInfo ad_event =
+      test::BuildAdEvent(creative_ad, AdType::kNotificationAd,
+                         ConfirmationType::kViewedImpression, Now(),
+                         /*should_use_random_uuids=*/true);
   ad_events.push_back(ad_event);
 
   // Act & Assert

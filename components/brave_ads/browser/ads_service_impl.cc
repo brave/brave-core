@@ -1104,7 +1104,7 @@ void AdsServiceImpl::SnoozeScheduledCaptcha() {
 void AdsServiceImpl::OnNotificationAdShown(const std::string& placement_id) {
   if (bat_ads_associated_remote_.is_bound()) {
     bat_ads_associated_remote_->TriggerNotificationAdEvent(
-        placement_id, mojom::NotificationAdEventType::kViewed,
+        placement_id, mojom::NotificationAdEventType::kViewedImpression,
         /*intentional*/ base::DoNothing());
   }
 }

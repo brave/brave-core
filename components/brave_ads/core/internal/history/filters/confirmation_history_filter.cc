@@ -17,13 +17,13 @@ namespace {
 
 bool ShouldFilterConfirmationType(const ConfirmationType confirmation_type) {
   switch (confirmation_type) {
-    case ConfirmationType::kViewed:
+    case ConfirmationType::kViewedImpression:
     case ConfirmationType::kClicked:
     case ConfirmationType::kDismissed: {
       return false;
     }
 
-    case ConfirmationType::kServed:
+    case ConfirmationType::kServedImpression:
     case ConfirmationType::kLanded:
     case ConfirmationType::kSavedAd:
     case ConfirmationType::kMarkAdAsInappropriate:

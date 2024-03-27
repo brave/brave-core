@@ -42,12 +42,13 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed,
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   const TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_2);
 
@@ -59,17 +60,17 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForThisMonth) {
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, ConfirmationType::kViewed,
+      /*value=*/0.03, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed,
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
   TransactionInfo transaction_6 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed,
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transaction_6.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_6);
@@ -89,18 +90,20 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
   TransactionInfo transaction_2 = test::BuildTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transaction_2.ad_type = AdType::kNewTabPageAd;
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
@@ -112,7 +115,8 @@ TEST_F(BraveAdsStatementUtilTest, GetEstimatedEarningsForLastMonth) {
   transactions.push_back(transaction_4);
 
   const TransactionInfo transaction_5 = test::BuildTransaction(
-      /*value=*/0.03, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.03, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_5);
 
@@ -131,7 +135,7 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -143,12 +147,12 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsReceivedThisMonth) {
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, ConfirmationType::kViewed,
+      /*value=*/0.03, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed,
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 
@@ -163,7 +167,7 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsSummaryThisMonth) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -175,12 +179,12 @@ TEST_F(BraveAdsStatementUtilTest, GetAdsSummaryThisMonth) {
   transactions.push_back(transaction_2);
 
   const TransactionInfo transaction_3 = test::BuildUnreconciledTransaction(
-      /*value=*/0.03, ConfirmationType::kViewed,
+      /*value=*/0.03, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_3);
 
   const TransactionInfo transaction_4 = test::BuildUnreconciledTransaction(
-      /*value=*/0.02, ConfirmationType::kViewed,
+      /*value=*/0.02, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_4);
 

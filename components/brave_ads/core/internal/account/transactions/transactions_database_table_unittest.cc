@@ -35,7 +35,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, SaveTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -62,7 +62,8 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DoNotSaveDuplicateTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, /*reconciled_at=*/Now(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
+      /*reconciled_at=*/Now(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction);
 
@@ -83,7 +84,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -109,7 +110,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, ReconcileTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -149,7 +150,7 @@ TEST_F(BraveAdsTransactionsDatabaseTableTest, DeleteTransactions) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed, DistantFuture(),
+      /*value=*/0.01, ConfirmationType::kViewedImpression, DistantFuture(),
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 

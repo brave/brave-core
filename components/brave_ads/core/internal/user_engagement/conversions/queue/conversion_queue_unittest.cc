@@ -35,9 +35,9 @@ class BraveAdsConversionQueueTest : public UnitTestBase {
 
 TEST_F(BraveAdsConversionQueueTest, AddConversion) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion));
   EXPECT_CALL(delegate_mock_, OnWillProcessConversionQueue(
@@ -55,9 +55,9 @@ TEST_F(BraveAdsConversionQueueTest, AddConversion) {
 
 TEST_F(BraveAdsConversionQueueTest, ProcessConversion) {
   // Arrange
-  const ConversionInfo conversion =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/false);
+  const ConversionInfo conversion = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/false);
 
   EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion));
   EXPECT_CALL(delegate_mock_, OnWillProcessConversionQueue(
@@ -75,9 +75,9 @@ TEST_F(BraveAdsConversionQueueTest, ProcessConversion) {
 
 TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversions) {
   // Arrange
-  const ConversionInfo conversion_1 =
-      test::BuildConversion(AdType::kNotificationAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/true);
+  const ConversionInfo conversion_1 = test::BuildConversion(
+      AdType::kNotificationAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/true);
   {
     EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion_1));
     EXPECT_CALL(delegate_mock_, OnWillProcessConversionQueue(
@@ -92,9 +92,9 @@ TEST_F(BraveAdsConversionQueueTest, ProcessMultipleConversions) {
 
   const ScopedDelayBeforeProcessingConversionQueueItemForTesting
       scoped_delay_before_processing_conversion_queue_item(base::Minutes(21));
-  const ConversionInfo conversion_2 =
-      test::BuildConversion(AdType::kSearchResultAd, ConfirmationType::kViewed,
-                            /*should_use_random_uuids=*/true);
+  const ConversionInfo conversion_2 = test::BuildConversion(
+      AdType::kSearchResultAd, ConfirmationType::kViewedImpression,
+      /*should_use_random_uuids=*/true);
   {
     EXPECT_CALL(delegate_mock_, OnDidAddConversionToQueue(conversion_2));
 

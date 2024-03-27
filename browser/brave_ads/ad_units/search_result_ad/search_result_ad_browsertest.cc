@@ -271,7 +271,7 @@ class SampleSearchResultAdTest : public SearchResultAdTest {
     auto run_loop2 = std::make_unique<base::RunLoop>();
     EXPECT_CALL(*ads_service(),
                 TriggerSearchResultAdEvent(
-                    _, mojom::SearchResultAdEventType::kViewed, _))
+                    _, mojom::SearchResultAdEventType::kViewedImpression, _))
         .Times(2)
         .WillRepeatedly([this, &run_loop1, &run_loop2](
                             mojom::SearchResultAdInfoPtr ad_mojom,

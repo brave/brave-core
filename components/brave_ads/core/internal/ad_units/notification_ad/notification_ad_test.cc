@@ -82,7 +82,7 @@ TEST_F(BraveAdsNotificationAdIntegrationTest, TriggerViewedEvent) {
         base::MockCallback<TriggerAdEventCallback> callback;
         EXPECT_CALL(callback, Run(/*success=*/true));
         GetAds().TriggerNotificationAdEvent(
-            ad.placement_id, mojom::NotificationAdEventType::kViewed,
+            ad.placement_id, mojom::NotificationAdEventType::kViewedImpression,
             callback.Get());
 
         EXPECT_TRUE(

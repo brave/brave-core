@@ -15,7 +15,7 @@ namespace brave_ads {
 
 bool CanConvertAdEvent(const AdEventInfo& ad_event) {
   // Only convert view-through and click-through ad events.
-  if (ad_event.confirmation_type != ConfirmationType::kViewed &&
+  if (ad_event.confirmation_type != ConfirmationType::kViewedImpression &&
       ad_event.confirmation_type != ConfirmationType::kClicked) {
     return false;
   }

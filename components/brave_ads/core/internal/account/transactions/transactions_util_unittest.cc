@@ -23,7 +23,7 @@ TEST_F(BraveAdsTransactionsUtilTest, GetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 
@@ -49,7 +49,7 @@ TEST_F(BraveAdsTransactionsUtilTest, DoNotGetTransactionsForDateRange) {
   TransactionList transactions;
 
   const TransactionInfo transaction_1 = test::BuildUnreconciledTransaction(
-      /*value=*/0.01, ConfirmationType::kViewed,
+      /*value=*/0.01, ConfirmationType::kViewedImpression,
       /*should_use_random_uuids=*/true);
   transactions.push_back(transaction_1);
 

@@ -49,19 +49,20 @@ void SearchResultAd::TriggerEvent(
     mojom::SearchResultAdInfoPtr ad_mojom,
     const mojom::SearchResultAdEventType event_type,
     TriggerAdEventCallback callback) {
-  CHECK_NE(mojom::SearchResultAdEventType::kServed, event_type)
-      << "Should not be called with kServed as this event is handled when "
-         "calling TriggerEvent with kViewed";
+  CHECK_NE(mojom::SearchResultAdEventType::kServedImpression, event_type)
+      << "Should not be called with kServedImpression as this event is handled "
+         "when calling TriggerEvent with kViewedImpression";
 
   if (!UserHasJoinedBraveRewards() &&
       !ShouldAlwaysTriggerSearchResultAdEvents()) {
     return std::move(callback).Run(/*success=*/false);
   }
 
-  if (event_type == mojom::SearchResultAdEventType::kViewed) {
+  if (event_type == mojom::SearchResultAdEventType::kViewedImpression) {
     mojom::SearchResultAdInfoPtr ad_mojom_copy = ad_mojom.Clone();
     return event_handler_.FireEvent(
-        std::move(ad_mojom_copy), mojom::SearchResultAdEventType::kServed,
+        std::move(ad_mojom_copy),
+        mojom::SearchResultAdEventType::kServedImpression,
         base::BindOnce(&SearchResultAd::FireServedEventCallback,
                        weak_factory_.GetWeakPtr(), std::move(ad_mojom),
                        std::move(callback)));
@@ -121,7 +122,7 @@ void SearchResultAd::MaybeTriggerAdViewedEventFromQueue(
   ad_viewed_event_queue_.pop_back();
 
   event_handler_.FireEvent(
-      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewed,
+      std::move(ad_mojom), mojom::SearchResultAdEventType::kViewedImpression,
       base::BindOnce(&SearchResultAd::FireAdViewedEventCallback,
                      weak_factory_.GetWeakPtr(), std::move(callback)));
 }
@@ -131,7 +132,7 @@ void SearchResultAd::FireAdViewedEventCallback(
     const bool success,
     const std::string& /*placement_id*/,
     const mojom::SearchResultAdEventType event_type) {
-  CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewed);
+  CHECK_EQ(event_type, mojom::SearchResultAdEventType::kViewedImpression);
 
   if (g_defer_triggering_of_ad_viewed_event_for_testing) {
     g_deferred_search_result_ad_for_testing = this;
@@ -144,21 +145,21 @@ void SearchResultAd::FireAdViewedEventCallback(
 
 void SearchResultAd::OnDidFireSearchResultAdServedEvent(
     const SearchResultAdInfo& ad) {
-  BLOG(3, "Served search result ad with placement id "
+  BLOG(3, "Served search result ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 }
 
 void SearchResultAd::OnDidFireSearchResultAdViewedEvent(
     const SearchResultAdInfo& ad) {
-  BLOG(3, "Viewed search result ad with placement id "
+  BLOG(3, "Viewed search result ad impression with placement id "
               << ad.placement_id << " and creative instance id "
               << ad.creative_instance_id);
 
-  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewed);
+  HistoryManager::GetInstance().Add(ad, ConfirmationType::kViewedImpression);
 
   account_->Deposit(ad.creative_instance_id, ad.segment, ad.type,
-                    ConfirmationType::kViewed);
+                    ConfirmationType::kViewedImpression);
 }
 
 void SearchResultAd::OnDidFireSearchResultAdClickedEvent(

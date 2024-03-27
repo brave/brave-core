@@ -28,7 +28,7 @@ class PromotedContentAdEventHandlerDelegate {
   virtual void OnDidFirePromotedContentAdClickedEvent(
       const PromotedContentAdInfo& ad) {}
 
-  // Invoked when the promoted content `ad` event fails for `placement_id`,
+  // Invoked when the promoted content ad event fails for `placement_id`,
   // `creative_instance_id` and `event_type`.
   virtual void OnFailedToFirePromotedContentAdEvent(
       const std::string& placement_id,
