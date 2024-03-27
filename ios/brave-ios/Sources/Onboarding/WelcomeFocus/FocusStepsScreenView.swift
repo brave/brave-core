@@ -140,9 +140,14 @@ struct FocusStepsHeaderTitleView: View {
   let dynamicTypeRange = (...DynamicTypeSize.large)
 
   var body: some View {
-    let title = activeIndex == 0 ? "Fewer ads & trackers." : "No more video ads."
+    let title =
+      activeIndex == 0
+      ? Strings.FocusOnboarding.movingAdsScreenTitle
+      : Strings.FocusOnboarding.movingAdsScreenDescription
     let description =
-      activeIndex == 0 ? "Browse faster and use less data." : "Seriously, we got rid of them."
+      activeIndex == 0
+      ? Strings.FocusOnboarding.noVideoAdsScreenTitle
+      : Strings.FocusOnboarding.noVideoAdsScreenDescription
 
     VStack(spacing: 10) {
       Text(title)

@@ -118,8 +118,8 @@ extension BrowserViewController {
 
         controller = FocusNTPOnboardingViewController().then {
           $0.setText(
-            title: "See the Brave difference",
-            details: "Enter a URL to enjoy Fewer ads & trackers."
+            title: Strings.FocusOnboarding.urlBarIndicatorTitle,
+            details: Strings.FocusOnboarding.urlBarIndicatorDescription
           )
         }
 

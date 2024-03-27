@@ -41,7 +41,7 @@ struct FocusP3AScreenView: View {
 
         VStack {
           VStack(spacing: 8) {
-            Text("Make Brave Better")
+            Text(Strings.FocusOnboarding.p3aScreenTitle)
               .font(
                 Font.custom("FlechaM-Medium", size: 32)
               )
@@ -49,7 +49,7 @@ struct FocusP3AScreenView: View {
               .fixedSize(horizontal: false, vertical: true)
               .opacity(0.9)
 
-            Text("Let us know which features you’re enjoying the most.")
+            Text(Strings.FocusOnboarding.p3aScreenDescription)
               .font(
                 Font.custom("Poppins-Medium", size: 17)
               )
@@ -62,7 +62,7 @@ struct FocusP3AScreenView: View {
 
           Toggle(isOn: $isP3AToggleOn) {
             VStack(alignment: .leading, spacing: 4) {
-              Text("Share Completely Private & Anonymous Product Insights.")
+              Text(Strings.FocusOnboarding.p3aToggleTitle)
                 .font(
                   Font.custom("Poppins-Medium", size: 17)
                 )
@@ -71,17 +71,13 @@ struct FocusP3AScreenView: View {
                 .foregroundColor(Color(braveSystemName: .textPrimary))
                 .padding(.bottom, 4)
                 .opacity(0.9)
-              Text(
-                LocalizedStringKey(
-                  "Change this at any time in Brave Settings under ‘Brave Shields and Privacy’."
+              Text(Strings.FocusOnboarding.p3aToggleDescription)
+                .font(
+                  Font.custom("Poppins-Regular", size: 13)
                 )
-              )
-              .font(
-                Font.custom("Poppins-Regular", size: 13)
-              )
-              .dynamicTypeSize(dynamicTypeRange)
-              .fixedSize(horizontal: false, vertical: true)
-              .foregroundColor(Color(braveSystemName: .textTertiary))
+                .dynamicTypeSize(dynamicTypeRange)
+                .fixedSize(horizontal: false, vertical: true)
+                .foregroundColor(Color(braveSystemName: .textTertiary))
             }
             .padding(16)
             .padding(.horizontal, 4)
@@ -94,7 +90,7 @@ struct FocusP3AScreenView: View {
             p3aUtilities?.isP3AEnabled = newValue
           }
 
-          Text("Learn more about our Privacy Preserving Product Analytics (P3A)")
+          Text(Strings.FocusOnboarding.p3aInformationButtonTitle)
             .font(
               Font.custom("Poppins-Regular", size: 13)
             )

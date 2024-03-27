@@ -19,7 +19,7 @@ struct FocusSystemSettingsView: View {
     NavigationView {
       VStack {
         VStack(spacing: 10) {
-          Text("Set Brave as your Default Browser")
+          Text(Strings.FocusOnboarding.defaultBrowserScreenTitle)
             .font(
               Font.custom("FlechaM-Medium", size: 32)
             )
@@ -27,7 +27,7 @@ struct FocusSystemSettingsView: View {
             .fixedSize(horizontal: false, vertical: true)
             .multilineTextAlignment(.center)
 
-          Text("Open every link you tap with Brave’s privacy protections")
+          Text(Strings.FocusOnboarding.defaultBrowserScreenDescription)
             .font(
               Font.custom("Poppins-Medium", size: 17)
             )
@@ -64,7 +64,8 @@ struct FocusSystemSettingsView: View {
               shouldDismiss = true
             },
             label: {
-              (Text("Go to System Settings ") + Text(Image(systemName: "arrow.right")))
+              (Text("\(Strings.FocusOnboarding.systemSettingsButtonTitle) ")
+                + Text(Image(systemName: "arrow.right")))
                 .font(.body.weight(.semibold))
                 .foregroundColor(Color(.white))
                 .dynamicTypeSize(dynamicTypeRange)
@@ -83,7 +84,7 @@ struct FocusSystemSettingsView: View {
               shouldDismiss = true
             },
             label: {
-              Text("I’ll do this Later...")
+              Text(Strings.FocusOnboarding.laterActionButtonTitle)
                 .font(.subheadline.weight(.semibold))
                 .foregroundColor(Color(braveSystemName: .textSecondary))
                 .dynamicTypeSize(dynamicTypeRange)
