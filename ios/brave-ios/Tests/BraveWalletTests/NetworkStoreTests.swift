@@ -134,6 +134,16 @@ import XCTest
 
   func testSetSelectedNetworkNoAccounts() async {
     let (keyringService, rpcService, walletService, swapService) = setupServices()
+    keyringService._allAccounts = { completion in
+      completion(
+        .init(
+          accounts: [.previewAccount, .mockFilAccount],
+          selectedAccount: .previewAccount,
+          ethDappSelectedAccount: .previewAccount,
+          solDappSelectedAccount: nil
+        )
+      )
+    }
 
     let store = NetworkStore(
       keyringService: keyringService,
@@ -148,8 +158,9 @@ import XCTest
     XCTAssertEqual(error, .selectedChainHasNoAccounts, "Expected chain has no accounts error")
     XCTAssertNotEqual(store.defaultSelectedChainId, BraveWallet.NetworkInfo.mockSolana.chainId)
 
+    // Verify `supportedKeyrings` is checked (Mainnet account exists, no testnet account)
     let selectFilecoinMainnetError = await store.setSelectedChain(
-      .mockFilecoinMainnet,
+      .mockFilecoinTestnet,
       isForOrigin: false
     )
     XCTAssertEqual(
@@ -159,7 +170,7 @@ import XCTest
     )
     XCTAssertNotEqual(
       store.defaultSelectedChainId,
-      BraveWallet.NetworkInfo.mockFilecoinMainnet.chainId
+      BraveWallet.NetworkInfo.mockFilecoinTestnet.chainId
     )
   }
 

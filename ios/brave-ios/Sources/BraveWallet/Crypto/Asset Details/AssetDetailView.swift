@@ -211,7 +211,7 @@ struct AssetDetailView: View {
             kind: .buy,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
+          if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
@@ -224,7 +224,7 @@ struct AssetDetailView: View {
             kind: .send,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
+          if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
@@ -237,7 +237,7 @@ struct AssetDetailView: View {
             kind: .swap,
             initialToken: assetDetailStore.assetDetailToken
           )
-          if assetDetailStore.allAccountsForTokenCoin.isEmpty {
+          if assetDetailStore.allAccountsForToken.isEmpty {
             onAccountCreationNeeded(destination)
           } else {
             buySendSwapDestination = destination
