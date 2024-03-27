@@ -20,7 +20,7 @@ class InitializationManager : public RewardsEngineHelper,
  public:
   enum class State { kUninitialized, kInitializing, kReady, kShuttingDown };
 
-  explicit InitializationManager(RewardsEngineImpl& engine);
+  explicit InitializationManager(RewardsEngine& engine);
   ~InitializationManager() override;
 
   using InitializeCallback = base::OnceCallback<void(bool)>;

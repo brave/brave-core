@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/endpoints/uphold/post_create_transaction_uphold.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -39,7 +39,7 @@ class PostCreateTransactionUphold
     : public TestWithParam<PostCreateTransactionUpholdParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(PostCreateTransactionUphold, Paths) {

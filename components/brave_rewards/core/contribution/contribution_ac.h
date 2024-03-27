@@ -13,13 +13,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class ContributionAC {
  public:
-  explicit ContributionAC(RewardsEngineImpl& engine);
+  explicit ContributionAC(RewardsEngine& engine);
 
   ~ContributionAC();
 
@@ -30,7 +30,7 @@ class ContributionAC {
 
   void QueueSaved(const mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<ContributionAC> weak_factory_{this};
 };
 

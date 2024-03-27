@@ -19,7 +19,7 @@
 
 namespace brave_rewards::internal {
 
-LinkageChecker::LinkageChecker(RewardsEngineImpl& engine)
+LinkageChecker::LinkageChecker(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 LinkageChecker::~LinkageChecker() = default;

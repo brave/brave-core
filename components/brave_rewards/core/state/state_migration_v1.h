@@ -16,13 +16,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV1 {
  public:
-  explicit StateMigrationV1(RewardsEngineImpl& engine);
+  explicit StateMigrationV1(RewardsEngine& engine);
   ~StateMigrationV1();
 
   void Migrate(ResultCallback callback);
@@ -35,7 +35,7 @@ class StateMigrationV1 {
   void BalanceReportsSaved(ResultCallback callback, mojom::Result result);
 
   std::unique_ptr<publisher::LegacyPublisherState> legacy_publisher_;
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   bool legacy_data_migrated_ = false;
   base::WeakPtrFactory<StateMigrationV1> weak_factory_{this};
 };

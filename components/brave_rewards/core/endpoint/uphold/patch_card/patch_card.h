@@ -81,7 +81,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint::uphold {
 
@@ -89,7 +89,7 @@ using PatchCardCallback = base::OnceCallback<void(mojom::Result)>;
 
 class PatchCard {
  public:
-  explicit PatchCard(RewardsEngineImpl& engine);
+  explicit PatchCard(RewardsEngine& engine);
   ~PatchCard();
 
   void Request(const std::string& token,
@@ -105,7 +105,7 @@ class PatchCard {
 
   void OnRequest(PatchCardCallback, mojom::UrlResponsePtr) const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoint::uphold

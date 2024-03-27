@@ -116,7 +116,7 @@ class PostCreateTransactionUphold final
  public:
   using PostCreateTransaction::PostCreateTransaction;
 
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
 
  private:

@@ -5,12 +5,12 @@
 
 #include "brave/components/brave_rewards/core/endpoint/payment/payment_server.h"
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 
-PaymentServer::PaymentServer(RewardsEngineImpl& engine)
+PaymentServer::PaymentServer(RewardsEngine& engine)
     : post_order_(engine),
       post_credentials_(engine),
       get_credentials_(engine),

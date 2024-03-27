@@ -22,7 +22,7 @@ using GetContributionInfoCallback =
 
 class DatabaseContributionInfo : public DatabaseTable {
  public:
-  explicit DatabaseContributionInfo(RewardsEngineImpl& engine);
+  explicit DatabaseContributionInfo(RewardsEngine& engine);
   ~DatabaseContributionInfo() override;
 
   void InsertOrUpdate(mojom::ContributionInfoPtr info, ResultCallback callback);

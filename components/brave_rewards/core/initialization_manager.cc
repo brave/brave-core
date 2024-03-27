@@ -17,7 +17,7 @@
 
 namespace brave_rewards::internal {
 
-InitializationManager::InitializationManager(RewardsEngineImpl& engine)
+InitializationManager::InitializationManager(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 InitializationManager::~InitializationManager() = default;

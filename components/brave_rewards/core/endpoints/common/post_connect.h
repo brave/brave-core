@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/endpoints/result_for.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -31,12 +31,12 @@ struct ResultFor<PostConnect> {
 
 class PostConnect : public RequestBuilder, public ResponseHandler<PostConnect> {
  public:
-  static Result ProcessResponse(RewardsEngineImpl& engine,
+  static Result ProcessResponse(RewardsEngine& engine,
                                 const mojom::UrlResponse&);
   static mojom::ConnectExternalWalletResult ToConnectExternalWalletResult(
       const Result&);
 
-  explicit PostConnect(RewardsEngineImpl& engine);
+  explicit PostConnect(RewardsEngine& engine);
   ~PostConnect() override;
 
  protected:

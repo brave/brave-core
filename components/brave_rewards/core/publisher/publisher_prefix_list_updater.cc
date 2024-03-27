@@ -10,7 +10,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/prefix_list_reader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
@@ -24,8 +24,7 @@ constexpr int64_t kMaxRetryAfterFailureDelay = 4 * base::Time::kSecondsPerHour;
 namespace brave_rewards::internal {
 namespace publisher {
 
-PublisherPrefixListUpdater::PublisherPrefixListUpdater(
-    RewardsEngineImpl& engine)
+PublisherPrefixListUpdater::PublisherPrefixListUpdater(RewardsEngine& engine)
     : engine_(engine), rewards_server_(engine) {}
 
 PublisherPrefixListUpdater::~PublisherPrefixListUpdater() = default;

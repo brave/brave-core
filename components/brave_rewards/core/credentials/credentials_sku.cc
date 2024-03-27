@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/credentials/credentials_sku.h"
 #include "brave/components/brave_rewards/core/credentials/credentials_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -41,7 +41,7 @@ std::string ConvertItemTypeToString(const std::string& type) {
 
 namespace credential {
 
-CredentialsSKU::CredentialsSKU(RewardsEngineImpl& engine)
+CredentialsSKU::CredentialsSKU(RewardsEngine& engine)
     : engine_(engine), common_(engine), payment_server_(engine) {}
 
 CredentialsSKU::~CredentialsSKU() = default;

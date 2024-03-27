@@ -12,7 +12,7 @@
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/core/endpoint/uphold/get_cards/get_cards.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -27,7 +27,7 @@ namespace uphold {
 class GetCardsTest : public testing::Test {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   GetCards card_{mock_engine_impl_};
 };
 

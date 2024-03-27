@@ -11,14 +11,14 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/common/url_helpers.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 namespace payment {
 
-PostTransactionGemini::PostTransactionGemini(RewardsEngineImpl& engine)
+PostTransactionGemini::PostTransactionGemini(RewardsEngine& engine)
     : engine_(engine) {}
 
 PostTransactionGemini::~PostTransactionGemini() = default;

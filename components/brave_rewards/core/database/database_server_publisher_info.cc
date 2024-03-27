@@ -9,7 +9,7 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/database/database_server_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace {
 
@@ -21,8 +21,7 @@ namespace brave_rewards::internal {
 
 namespace database {
 
-DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(
-    RewardsEngineImpl& engine)
+DatabaseServerPublisherInfo::DatabaseServerPublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine), banner_(engine) {}
 
 DatabaseServerPublisherInfo::~DatabaseServerPublisherInfo() = default;

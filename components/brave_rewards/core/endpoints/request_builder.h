@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
@@ -27,7 +27,7 @@ class RequestBuilder {
   std::optional<mojom::UrlRequestPtr> Request() const;
 
  protected:
-  explicit RequestBuilder(RewardsEngineImpl& engine);
+  explicit RequestBuilder(RewardsEngine& engine);
 
   virtual std::optional<std::string> Url() const = 0;
 
@@ -44,7 +44,7 @@ class RequestBuilder {
 
   virtual uint32_t LoadFlags() const;
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace endpoints

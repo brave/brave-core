@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace publisher {
 
@@ -26,7 +26,7 @@ namespace publisher {
 // intervals.
 class PublisherPrefixListUpdater {
  public:
-  explicit PublisherPrefixListUpdater(RewardsEngineImpl& engine);
+  explicit PublisherPrefixListUpdater(RewardsEngine& engine);
 
   PublisherPrefixListUpdater(const PublisherPrefixListUpdater&) = delete;
   PublisherPrefixListUpdater& operator=(const PublisherPrefixListUpdater&) =
@@ -60,7 +60,7 @@ class PublisherPrefixListUpdater {
   base::TimeDelta GetAutoUpdateDelay();
   base::TimeDelta GetRetryAfterFailureDelay();
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::OneShotTimer timer_;
   bool auto_update_ = false;
   int retry_count_ = 0;

@@ -17,7 +17,7 @@
 #include "brave/components/brave_rewards/core/legacy/media/youtube.h"
 #include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
@@ -45,7 +45,7 @@ bool getJSONValue(const std::string& field_name,
 
 }  // namespace
 
-YouTube::YouTube(RewardsEngineImpl& engine) : engine_(engine) {}
+YouTube::YouTube(RewardsEngine& engine) : engine_(engine) {}
 
 YouTube::~YouTube() = default;
 

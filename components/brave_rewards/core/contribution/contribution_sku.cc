@@ -14,7 +14,7 @@
 #include "brave/components/brave_rewards/core/contribution/contribution_util.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -42,7 +42,7 @@ void GetCredentialTrigger(mojom::SKUOrderPtr order,
 
 namespace contribution {
 
-ContributionSKU::ContributionSKU(RewardsEngineImpl& engine)
+ContributionSKU::ContributionSKU(RewardsEngine& engine)
     : engine_(engine), credentials_(engine), sku_(engine) {}
 
 ContributionSKU::~ContributionSKU() = default;

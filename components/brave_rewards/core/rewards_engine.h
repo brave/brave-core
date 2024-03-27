@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
-#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
+#ifndef BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_H_
+#define BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_H_
 
 #include <map>
 #include <memory>
@@ -67,18 +67,18 @@ namespace wallet_provider {
 class WalletProvider;
 }
 
-class RewardsEngineImpl : public mojom::RewardsEngine,
-                          private base::SupportsUserData {
+class RewardsEngine : public mojom::RewardsEngine,
+                      private base::SupportsUserData {
  public:
-  RewardsEngineImpl(
+  RewardsEngine(
       mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
       const mojom::RewardsEngineOptions& options);
 
-  ~RewardsEngineImpl() override;
+  ~RewardsEngine() override;
 
-  RewardsEngineImpl(const RewardsEngineImpl&) = delete;
+  RewardsEngine(const RewardsEngine&) = delete;
 
-  RewardsEngineImpl& operator=(const RewardsEngineImpl&) = delete;
+  RewardsEngine& operator=(const RewardsEngine&) = delete;
 
   // mojom::RewardsEngine implementation begin (in the order of appearance in
   // Mojom)
@@ -317,8 +317,8 @@ class RewardsEngineImpl : public mojom::RewardsEngine,
   std::optional<std::string> DecryptString(const std::string& value);
   // mojom::RewardsEngineClient helpers end
 
-  base::WeakPtr<RewardsEngineImpl> GetWeakPtr();
-  base::WeakPtr<const RewardsEngineImpl> GetWeakPtr() const;
+  base::WeakPtr<RewardsEngine> GetWeakPtr();
+  base::WeakPtr<const RewardsEngine> GetWeakPtr() const;
 
   mojom::RewardsEngineClient* client();
 
@@ -399,9 +399,9 @@ class RewardsEngineImpl : public mojom::RewardsEngine,
   uint32_t last_shown_tab_id_ = -1;
 
   base::OneShotEvent ready_event_;
-  base::WeakPtrFactory<RewardsEngineImpl> weak_factory_{this};
+  base::WeakPtrFactory<RewardsEngine> weak_factory_{this};
 };
 
 }  // namespace brave_rewards::internal
 
-#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_IMPL_H_
+#endif  // BRAVE_COMPONENTS_BRAVE_REWARDS_CORE_REWARDS_ENGINE_H_

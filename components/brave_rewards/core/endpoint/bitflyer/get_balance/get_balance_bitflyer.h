@@ -43,7 +43,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace bitflyer {
@@ -53,7 +53,7 @@ using GetBalanceCallback = base::OnceCallback<void(const mojom::Result result,
 
 class GetBalance {
  public:
-  explicit GetBalance(RewardsEngineImpl& engine);
+  explicit GetBalance(RewardsEngine& engine);
   ~GetBalance();
 
   void Request(const std::string& token, GetBalanceCallback callback);
@@ -67,7 +67,7 @@ class GetBalance {
 
   void OnRequest(GetBalanceCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace bitflyer

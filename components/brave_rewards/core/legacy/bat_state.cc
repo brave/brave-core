@@ -9,11 +9,11 @@
 #include "brave/components/brave_rewards/core/common/time_util.h"
 #include "brave/components/brave_rewards/core/legacy/bat_state.h"
 #include "brave/components/brave_rewards/core/legacy/client_properties.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
-LegacyBatState::LegacyBatState(RewardsEngineImpl& engine) : engine_(engine) {}
+LegacyBatState::LegacyBatState(RewardsEngine& engine) : engine_(engine) {}
 
 LegacyBatState::~LegacyBatState() = default;
 

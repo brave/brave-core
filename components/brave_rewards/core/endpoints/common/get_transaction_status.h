@@ -11,13 +11,13 @@
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class GetTransactionStatus : public RequestBuilder {
  public:
-  GetTransactionStatus(RewardsEngineImpl& engine,
+  GetTransactionStatus(RewardsEngine& engine,
                        std::string&& token,
                        std::string&& transaction_id);
   ~GetTransactionStatus() override;

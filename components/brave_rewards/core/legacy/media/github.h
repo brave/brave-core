@@ -20,11 +20,11 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 class GitHub {
  public:
-  explicit GitHub(RewardsEngineImpl& engine);
+  explicit GitHub(RewardsEngine& engine);
 
   static std::string GetLinkType(const std::string& url);
 
@@ -128,7 +128,7 @@ class GitHub {
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONStringValue);
   FRIEND_TEST_ALL_PREFIXES(MediaGitHubTest, GetJSONIntValue);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<GitHub> weak_factory_{this};
 };
 }  // namespace brave_rewards::internal

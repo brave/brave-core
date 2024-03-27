@@ -19,13 +19,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace publisher {
 
 class Publisher {
  public:
-  explicit Publisher(RewardsEngineImpl& engine);
+  explicit Publisher(RewardsEngine& engine);
 
   ~Publisher();
 
@@ -209,7 +209,7 @@ class Publisher {
                                    GetServerPublisherInfoCallback callback,
                                    mojom::ServerPublisherInfoPtr server_info);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   PublisherPrefixListUpdater prefix_list_updater_;
   ServerPublisherFetcher server_publisher_fetcher_;
   base::WeakPtrFactory<Publisher> weak_factory_{this};

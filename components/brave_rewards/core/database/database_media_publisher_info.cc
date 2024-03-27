@@ -9,7 +9,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/database/database_media_publisher_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace database {
@@ -20,8 +20,7 @@ const char kTableName[] = "media_publisher_info";
 
 }  // namespace
 
-DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(
-    RewardsEngineImpl& engine)
+DatabaseMediaPublisherInfo::DatabaseMediaPublisherInfo(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseMediaPublisherInfo::~DatabaseMediaPublisherInfo() = default;

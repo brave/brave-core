@@ -12,13 +12,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV12 {
  public:
-  explicit StateMigrationV12(RewardsEngineImpl& engine);
+  explicit StateMigrationV12(RewardsEngine& engine);
   ~StateMigrationV12();
 
   void Migrate(ResultCallback);
@@ -26,7 +26,7 @@ class StateMigrationV12 {
  private:
   bool MigrateExternalWallet(const std::string& wallet_type);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace state

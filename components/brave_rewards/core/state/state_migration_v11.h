@@ -11,18 +11,18 @@
 
 namespace brave_rewards::internal {
 
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace state {
 
 class StateMigrationV11 {
  public:
-  explicit StateMigrationV11(RewardsEngineImpl& engine);
+  explicit StateMigrationV11(RewardsEngine& engine);
   ~StateMigrationV11();
 
   void Migrate(ResultCallback callback);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace state

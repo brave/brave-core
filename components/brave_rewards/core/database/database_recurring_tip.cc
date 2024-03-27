@@ -14,7 +14,7 @@
 #include "base/strings/stringprintf.h"
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
@@ -35,7 +35,7 @@ void MapDatabaseResultToSuccess(base::OnceCallback<void(bool)> callback,
 
 }  // namespace
 
-DatabaseRecurringTip::DatabaseRecurringTip(RewardsEngineImpl& engine)
+DatabaseRecurringTip::DatabaseRecurringTip(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseRecurringTip::~DatabaseRecurringTip() = default;

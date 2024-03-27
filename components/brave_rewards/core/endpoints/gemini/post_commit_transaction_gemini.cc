@@ -12,7 +12,7 @@
 #include "base/json/json_reader.h"
 #include "base/json/json_writer.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "net/http/http_status_code.h"
 #include "url/gurl.h"
 
@@ -22,7 +22,7 @@ using Result = PostCommitTransactionGemini::Result;
 
 namespace {
 
-Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
+Result ParseBody(RewardsEngine& engine, const std::string& body) {
   const auto value = base::JSONReader::Read(body);
   if (!value || !value->is_dict()) {
     engine.LogError(FROM_HERE) << "Failed to parse body";
@@ -50,7 +50,7 @@ Result ParseBody(RewardsEngineImpl& engine, const std::string& body) {
 
 // static
 Result PostCommitTransactionGemini::ProcessResponse(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const mojom::UrlResponse& response) {
   switch (response.status_code) {
     case net::HTTP_OK:  // HTTP 200

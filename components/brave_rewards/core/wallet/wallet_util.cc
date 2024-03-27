@@ -20,7 +20,7 @@
 #include "brave/components/brave_rewards/core/initialization_manager.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
 #include "brave/components/brave_rewards/core/notifications/notification_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/wallet_provider/wallet_provider.h"
@@ -48,7 +48,7 @@ std::string WalletTypeToState(const std::string& wallet_type) {
   }
 }
 
-void OnWalletStatusChange(RewardsEngineImpl& engine,
+void OnWalletStatusChange(RewardsEngine& engine,
                           const std::string& wallet_type,
                           std::optional<mojom::WalletStatus> from,
                           mojom::WalletStatus to) {
@@ -62,7 +62,7 @@ void OnWalletStatusChange(RewardsEngineImpl& engine,
                                   oss.str() + " (" + wallet_type + ')');
 }
 
-void MaybeAssignWalletLinks(RewardsEngineImpl& engine,
+void MaybeAssignWalletLinks(RewardsEngine& engine,
                             mojom::ExternalWallet& wallet) {
   if (wallet.status != mojom::WalletStatus::kNotConnected) {
     if (auto* provider = engine.GetExternalWalletProvider(wallet.type)) {
@@ -73,7 +73,7 @@ void MaybeAssignWalletLinks(RewardsEngineImpl& engine,
 
 }  // namespace
 
-mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngine& engine,
                                                    std::string wallet_string,
                                                    std::string wallet_type) {
   std::optional<base::Value> value = base::JSONReader::Read(wallet_string);
@@ -125,7 +125,7 @@ mojom::ExternalWalletPtr ExternalWalletPtrFromJSON(RewardsEngineImpl& engine,
   return wallet;
 }
 
-mojom::ExternalWalletPtr GetWallet(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr GetWallet(RewardsEngine& engine,
                                    const std::string& wallet_type) {
   const auto state = WalletTypeToState(wallet_type);
   if (state.empty()) {
@@ -146,7 +146,7 @@ mojom::ExternalWalletPtr GetWallet(RewardsEngineImpl& engine,
 }
 
 mojom::ExternalWalletPtr GetWalletIf(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     const std::string& wallet_type,
     const std::set<mojom::WalletStatus>& statuses) {
   if (statuses.empty()) {
@@ -170,7 +170,7 @@ mojom::ExternalWalletPtr GetWalletIf(
   return wallet;
 }
 
-bool SetWallet(RewardsEngineImpl& engine, mojom::ExternalWalletPtr wallet) {
+bool SetWallet(RewardsEngine& engine, mojom::ExternalWalletPtr wallet) {
   if (!wallet || wallet->type.empty()) {
     return false;
   }
@@ -203,7 +203,7 @@ bool SetWallet(RewardsEngineImpl& engine, mojom::ExternalWalletPtr wallet) {
 //
 // Invariants:
 // - kNotConnected: token and address are cleared
-mojom::ExternalWalletPtr EnsureValidCreation(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr EnsureValidCreation(RewardsEngine& engine,
                                              const std::string& wallet_type,
                                              mojom::WalletStatus to) {
   if (to != mojom::WalletStatus::kNotConnected) {
@@ -238,7 +238,7 @@ mojom::ExternalWalletPtr EnsureValidCreation(RewardsEngineImpl& engine,
 // - kNotConnected: token and address are cleared
 // - kConnected: needs !token.empty() && !address.empty()
 // - kLoggedOut: token and address are cleared
-mojom::ExternalWalletPtr EnsureValidTransition(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr EnsureValidTransition(RewardsEngine& engine,
                                                mojom::ExternalWalletPtr wallet,
                                                mojom::WalletStatus to) {
   DCHECK(wallet);
@@ -293,7 +293,7 @@ mojom::ExternalWalletPtr EnsureValidTransition(RewardsEngineImpl& engine,
 }
 
 mojom::ExternalWalletPtr TransitionWallet(
-    RewardsEngineImpl& engine,
+    RewardsEngine& engine,
     absl::variant<mojom::ExternalWalletPtr, std::string> wallet_info,
     mojom::WalletStatus to) {
   std::optional<mojom::WalletStatus> from;
@@ -339,7 +339,7 @@ mojom::ExternalWalletPtr TransitionWallet(
   return wallet;
 }
 
-mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngineImpl& engine,
+mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngine& engine,
                                            const std::string& wallet_type) {
   auto wallet = GetWallet(engine, wallet_type);
   if (!wallet) {
@@ -354,7 +354,7 @@ mojom::ExternalWalletPtr MaybeCreateWallet(RewardsEngineImpl& engine,
   return wallet;
 }
 
-bool LogOutWallet(RewardsEngineImpl& engine,
+bool LogOutWallet(RewardsEngine& engine,
                   const std::string& wallet_type,
                   const std::string& notification) {
   DCHECK(!wallet_type.empty());

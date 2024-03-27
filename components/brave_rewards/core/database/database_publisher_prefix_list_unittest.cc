@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/database/database_publisher_prefix_list.h"
 #include "brave/components/brave_rewards/core/publisher/protos/publisher_prefix_list.pb.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 
 // npm run test -- brave_unit_tests --filter=DatabasePublisherPrefixListTest.*
 
@@ -50,7 +50,7 @@ class DatabasePublisherPrefixListTest : public ::testing::Test {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
   DatabasePublisherPrefixList database_prefix_list_{mock_engine_impl_};
 };
 

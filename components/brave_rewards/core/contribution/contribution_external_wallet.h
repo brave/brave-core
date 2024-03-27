@@ -14,13 +14,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class ContributionExternalWallet {
  public:
-  explicit ContributionExternalWallet(RewardsEngineImpl& engine);
+  explicit ContributionExternalWallet(RewardsEngine& engine);
 
   ~ContributionExternalWallet();
 
@@ -44,7 +44,7 @@ class ContributionExternalWallet {
                  ResultCallback callback,
                  mojom::Result result);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   base::WeakPtrFactory<ContributionExternalWallet> weak_factory_{this};
 };
 

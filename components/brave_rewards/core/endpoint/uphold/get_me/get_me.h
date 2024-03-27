@@ -111,7 +111,7 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoint {
 namespace uphold {
@@ -122,7 +122,7 @@ using GetMeCallback =
 
 class GetMe {
  public:
-  explicit GetMe(RewardsEngineImpl& engine);
+  explicit GetMe(RewardsEngine& engine);
   ~GetMe();
 
   void Request(const std::string& token, GetMeCallback callback);
@@ -137,7 +137,7 @@ class GetMe {
 
   void OnRequest(GetMeCallback callback, mojom::UrlResponsePtr response);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
 };
 
 }  // namespace uphold

@@ -27,13 +27,13 @@
 // }
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace endpoints {
 
 class PostConnectGemini final : public PostConnect {
  public:
-  PostConnectGemini(RewardsEngineImpl& engine,
+  PostConnectGemini(RewardsEngine& engine,
                     std::string&& linking_info,
                     std::string&& recipient_id);
   ~PostConnectGemini() override;

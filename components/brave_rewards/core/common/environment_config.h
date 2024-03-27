@@ -18,7 +18,7 @@ namespace brave_rewards::internal {
 class EnvironmentConfig : public RewardsEngineHelper,
                           public WithHelperKey<EnvironmentConfig> {
  public:
-  explicit EnvironmentConfig(RewardsEngineImpl& engine);
+  explicit EnvironmentConfig(RewardsEngine& engine);
   ~EnvironmentConfig() override;
 
   mojom::Environment current_environment() const;

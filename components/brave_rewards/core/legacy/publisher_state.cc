@@ -7,12 +7,12 @@
 
 #include "brave/components/brave_rewards/core/legacy/publisher_settings_properties.h"
 #include "brave/components/brave_rewards/core/legacy/publisher_state.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace publisher {
 
-LegacyPublisherState::LegacyPublisherState(RewardsEngineImpl& engine)
+LegacyPublisherState::LegacyPublisherState(RewardsEngine& engine)
     : engine_(engine) {}
 
 LegacyPublisherState::~LegacyPublisherState() = default;

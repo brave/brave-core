@@ -21,7 +21,7 @@ using GetFirstContributionQueueCallback =
 
 class DatabaseContributionQueue : public DatabaseTable {
  public:
-  explicit DatabaseContributionQueue(RewardsEngineImpl& engine);
+  explicit DatabaseContributionQueue(RewardsEngine& engine);
   ~DatabaseContributionQueue() override;
 
   void InsertOrUpdate(mojom::ContributionQueuePtr info,

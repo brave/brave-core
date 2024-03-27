@@ -12,7 +12,7 @@
 #include "brave/components/brave_rewards/core/endpoints/brave/post_wallets.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -54,7 +54,7 @@ class PostWallets : public TestWithParam<PostWalletsParamType> {
   }
 
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_impl_;
 };
 
 TEST_P(PostWallets, Paths) {

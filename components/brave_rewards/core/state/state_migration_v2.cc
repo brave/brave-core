@@ -6,15 +6,14 @@
 #include <utility>
 
 #include "base/base64.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v2.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV2::StateMigrationV2(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV2::StateMigrationV2(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV2::~StateMigrationV2() = default;
 

@@ -21,7 +21,7 @@ namespace brave_rewards::internal {
 class LinkageChecker : public RewardsEngineHelper,
                        public WithHelperKey<LinkageChecker> {
  public:
-  explicit LinkageChecker(RewardsEngineImpl& engine);
+  explicit LinkageChecker(RewardsEngine& engine);
   ~LinkageChecker() override;
 
   // Starts the wallet linkage checker, if not already started. If not already

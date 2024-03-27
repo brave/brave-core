@@ -18,7 +18,7 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/logging/event_log_keys.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
 #include "crypto/sha2.h"
 
@@ -32,7 +32,7 @@ using wallet_provider::ConnectExternalWallet;
 
 namespace gemini {
 
-ConnectGeminiWallet::ConnectGeminiWallet(RewardsEngineImpl& engine)
+ConnectGeminiWallet::ConnectGeminiWallet(RewardsEngine& engine)
     : ConnectExternalWallet(engine), gemini_server_(engine) {}
 
 ConnectGeminiWallet::~ConnectGeminiWallet() = default;

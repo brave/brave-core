@@ -11,13 +11,13 @@
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/connect_gemini_wallet.h"
 #include "brave/components/brave_rewards/core/wallet_provider/gemini/gemini_transfer.h"
 
 namespace brave_rewards::internal::gemini {
 
-Gemini::Gemini(RewardsEngineImpl& engine)
+Gemini::Gemini(RewardsEngine& engine)
     : WalletProvider(engine), server_(engine) {
   connect_wallet_ = std::make_unique<ConnectGeminiWallet>(engine);
   transfer_ = std::make_unique<GeminiTransfer>(engine);

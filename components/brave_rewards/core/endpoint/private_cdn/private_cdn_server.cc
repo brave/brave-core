@@ -4,12 +4,12 @@
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 #include "brave/components/brave_rewards/core/endpoint/private_cdn/private_cdn_server.h"
 
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 namespace endpoint {
 
-PrivateCDNServer::PrivateCDNServer(RewardsEngineImpl& engine)
+PrivateCDNServer::PrivateCDNServer(RewardsEngine& engine)
     : get_publisher_(engine) {}
 
 PrivateCDNServer::~PrivateCDNServer() = default;

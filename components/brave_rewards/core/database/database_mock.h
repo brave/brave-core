@@ -18,7 +18,7 @@ namespace database {
 
 class MockDatabase : public Database {
  public:
-  explicit MockDatabase(RewardsEngineImpl& engine);
+  explicit MockDatabase(RewardsEngine& engine);
 
   ~MockDatabase() override;
 

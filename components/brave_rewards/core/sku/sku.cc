@@ -8,13 +8,13 @@
 #include "brave/components/brave_rewards/core/common/environment_config.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku.h"
 
 namespace brave_rewards::internal {
 namespace sku {
 
-SKU::SKU(RewardsEngineImpl& engine) : engine_(engine), common_(engine) {}
+SKU::SKU(RewardsEngine& engine) : engine_(engine), common_(engine) {}
 
 SKU::~SKU() = default;
 

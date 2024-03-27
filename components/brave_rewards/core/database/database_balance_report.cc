@@ -11,7 +11,7 @@
 #include "brave/components/brave_rewards/core/database/database_balance_report.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 
 namespace brave_rewards::internal {
 
@@ -47,7 +47,7 @@ std::string GetTypeColumn(mojom::ReportType type) {
 
 namespace database {
 
-DatabaseBalanceReport::DatabaseBalanceReport(RewardsEngineImpl& engine)
+DatabaseBalanceReport::DatabaseBalanceReport(RewardsEngine& engine)
     : DatabaseTable(engine) {}
 
 DatabaseBalanceReport::~DatabaseBalanceReport() = default;

@@ -29,13 +29,13 @@
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 
 namespace brave_rewards::internal {
-class RewardsEngineImpl;
+class RewardsEngine;
 
 namespace contribution {
 
 class Contribution {
  public:
-  explicit Contribution(RewardsEngineImpl& engine);
+  explicit Contribution(RewardsEngine& engine);
 
   ~Contribution();
 
@@ -184,7 +184,7 @@ class Contribution {
   void OnRecurringTipsRead(GetRecurringTipsCallback callback,
                            std::vector<mojom::PublisherInfoPtr> list);
 
-  const raw_ref<RewardsEngineImpl> engine_;
+  const raw_ref<RewardsEngine> engine_;
   Unblinded unblinded_;
   ContributionSKU sku_;
   ContributionMonthly monthly_;

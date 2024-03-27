@@ -8,13 +8,13 @@
 #include "base/json/json_writer.h"
 #include "base/values.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/sku/sku_order.h"
 
 namespace brave_rewards::internal {
 namespace sku {
 
-SKUOrder::SKUOrder(RewardsEngineImpl& engine)
+SKUOrder::SKUOrder(RewardsEngine& engine)
     : engine_(engine), payment_server_(engine) {}
 
 SKUOrder::~SKUOrder() = default;

@@ -45,7 +45,7 @@ std::string UsernameFromAddress(const std::string& address) {
 
 }  // namespace
 
-SolanaWalletProvider::SolanaWalletProvider(RewardsEngineImpl& engine)
+SolanaWalletProvider::SolanaWalletProvider(RewardsEngine& engine)
     : RewardsEngineHelper(engine), WalletProvider(engine) {}
 
 SolanaWalletProvider::~SolanaWalletProvider() = default;

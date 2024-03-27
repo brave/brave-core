@@ -26,7 +26,7 @@
 #include "brave/components/brave_rewards/common/rewards_flags.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_database.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #import "brave/ios/browser/api/brave_rewards/rewards.mojom.objc+private.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_bridge.h"
 #import "brave/ios/browser/api/brave_rewards/rewards_client_ios.h"
@@ -96,9 +96,9 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 @interface BraveRewardsAPI () <RewardsClientBridge> {
   // DO NOT ACCESS DIRECTLY, use `postEngineTask` or ensure you are accessing
   // _engine from a task posted in `_engineTaskRunner`
-  std::unique_ptr<brave_rewards::internal::RewardsEngineImpl,
+  std::unique_ptr<brave_rewards::internal::RewardsEngine,
                   brave_rewards::internal::task_deleter<
-                      brave_rewards::internal::RewardsEngineImpl>>
+                      brave_rewards::internal::RewardsEngine>>
       _engine;
   std::unique_ptr<RewardsClientIOS,
                   brave_rewards::internal::task_deleter<RewardsClientIOS>>
@@ -179,7 +179,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
           auto options = [self
               handleFlags:brave_rewards::RewardsFlags::ForCurrentProcess()];
           self->_engine = brave_rewards::internal::make_task_ptr<
-              brave_rewards::internal::RewardsEngineImpl>(
+              brave_rewards::internal::RewardsEngine>(
               self->_rewardsClient->MakeRemote(), std::move(options));
         }));
 
@@ -230,8 +230,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   return options;
 }
 
-- (void)postEngineTask:
-    (void (^)(brave_rewards::internal::RewardsEngineImpl*))task {
+- (void)postEngineTask:(void (^)(brave_rewards::internal::RewardsEngine*))task {
   _engineTaskRunner->PostTask(FROM_HERE, base::BindOnce(^{
                                 CHECK(self->_engine != nullptr);
                                 task(self->_engine.get());
@@ -244,7 +243,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
   self.initializing = YES;
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->Initialize(base::BindOnce(^(brave_rewards::mojom::Result result) {
       self.initialized =
           (result == brave_rewards::mojom::Result::OK ||
@@ -328,7 +327,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   //   malformed data
   //   - REGISTRATION_VERIFICATION_FAILED: Missing master user token
   self.initializingWallet = YES;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->CreateRewardsWallet(
         "", base::BindOnce(^(
                 brave_rewards::mojom::CreateRewardsWalletResult create_result) {
@@ -389,7 +388,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)currentWalletInfo:
     (void (^)(BraveRewardsRewardsWallet* _Nullable wallet))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsWallet(
         base::BindOnce(^(brave_rewards::mojom::RewardsWalletPtr wallet) {
           const auto bridgedWallet = wallet.get() != nullptr
@@ -405,7 +404,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)getRewardsParameters:
     (void (^)(BraveRewardsRewardsParameters* _Nullable))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsParameters(
         base::BindOnce(^(brave_rewards::mojom::RewardsParametersPtr info) {
           if (info) {
@@ -426,7 +425,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)fetchBalance:(void (^)(BraveRewardsBalance* _Nullable))completion {
   const auto __weak weakSelf = self;
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->FetchBalance(
         base::BindOnce(^(brave_rewards::mojom::BalancePtr balance) {
           const auto strongSelf = weakSelf;
@@ -470,7 +469,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                        completion:
                            (void (^)(NSArray<BraveRewardsPublisherInfo*>*))
                                completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     auto cppFilter = filter ? filter.cppObjPtr
                             : brave_rewards::mojom::ActivityInfoFilter::New();
     if (filter.excluded == BraveRewardsExcludeFilterFilterExcluded) {
@@ -509,7 +508,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
                            faviconURL:(nullable NSURL*)faviconURL
                         publisherBlob:(nullable NSString*)publisherBlob
                                 tabId:(uint64_t)tabId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     if (!URL.absoluteString) {
       return;
     }
@@ -556,7 +555,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     completion(BraveRewardsPublisherStatusNotVerified);
     return;
   }
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->RefreshPublisher(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::PublisherStatus status) {
@@ -571,7 +570,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)listRecurringTips:
     (void (^)(NSArray<BraveRewardsPublisherInfo*>*))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRecurringTips(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::PublisherInfoPtr> list) {
           const auto publishers = NSArrayFromVector(
@@ -588,7 +587,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 }
 
 - (void)removeRecurringTipForPublisherWithId:(NSString*)publisherId {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->RemoveRecurringTip(
         base::SysNSStringToUTF8(publisherId),
         base::BindOnce(^(brave_rewards::mojom::Result result){
@@ -612,7 +611,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 
 - (void)rewardsInternalInfo:
     (void (^)(BraveRewardsRewardsInternalsInfo* _Nullable info))completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetRewardsInternalsInfo(
         base::BindOnce(^(brave_rewards::mojom::RewardsInternalsInfoPtr info) {
           auto bridgedInfo = info.get() != nullptr
@@ -629,7 +628,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (void)allContributions:
     (void (^)(NSArray<BraveRewardsContributionInfo*>* contributions))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetAllContributions(base::BindOnce(
         ^(std::vector<brave_rewards::mojom::ContributionInfoPtr> list) {
           const auto convetedList = NSArrayFromVector(
@@ -648,7 +647,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 - (void)fetchAutoContributeProperties:
     (void (^)(BraveRewardsAutoContributeProperties* _Nullable properties))
         completion {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->GetAutoContributeProperties(base::BindOnce(
         ^(brave_rewards::mojom::AutoContributePropertiesPtr props) {
           auto properties =
@@ -673,13 +672,13 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   const auto time = [[NSDate date] timeIntervalSince1970];
   if (_selectedTabId != selectedTabId) {
     const auto oldTabId = _selectedTabId;
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
       engine->OnHide(oldTabId, time);
     }];
   }
   _selectedTabId = selectedTabId;
   if (_selectedTabId > 0) {
-    [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+    [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
       engine->OnShow(selectedTabId, time);
     }];
   }
@@ -691,7 +690,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnForeground(self.selectedTabId, time);
   }];
 }
@@ -702,7 +701,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnBackground(self.selectedTabId, time);
   }];
 }
@@ -713,7 +712,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     GURL parsedUrl(base::SysNSStringToUTF8(url.absoluteString));
     url::Origin origin = url::Origin::Create(parsedUrl);
     const std::string baseDomain = GetDomainAndRegistry(
@@ -747,7 +746,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
     return;
   }
 
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     base::flat_map<std::string, std::string> partsMap;
     const auto urlComponents = [[NSURLComponents alloc] initWithURL:url
                                             resolvingAgainstBaseURL:NO];
@@ -780,7 +779,7 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
   }
 
   const auto time = [[NSDate date] timeIntervalSince1970];
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->OnUnload(tabId, time);
   }];
 }
@@ -788,25 +787,25 @@ static NSString* const kTransferFeesPrefKey = @"transfer_fees";
 #pragma mark - Preferences
 
 - (void)setMinimumVisitDuration:(int)minimumVisitDuration {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetPublisherMinVisitTime(minimumVisitDuration);
   }];
 }
 
 - (void)setMinimumNumberOfVisits:(int)minimumNumberOfVisits {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetPublisherMinVisits(minimumNumberOfVisits);
   }];
 }
 
 - (void)setContributionAmount:(double)contributionAmount {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetAutoContributionAmount(contributionAmount);
   }];
 }
 
 - (void)setAutoContributeEnabled:(bool)autoContributeEnabled {
-  [self postEngineTask:^(brave_rewards::internal::RewardsEngineImpl* engine) {
+  [self postEngineTask:^(brave_rewards::internal::RewardsEngine* engine) {
     engine->SetAutoContributeEnabled(autoContributeEnabled);
   }];
 }

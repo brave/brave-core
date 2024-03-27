@@ -7,15 +7,14 @@
 
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/state/state_migration_v1.h"
 
 namespace brave_rewards::internal {
 namespace state {
 
-StateMigrationV1::StateMigrationV1(RewardsEngineImpl& engine)
-    : engine_(engine) {}
+StateMigrationV1::StateMigrationV1(RewardsEngine& engine) : engine_(engine) {}
 
 StateMigrationV1::~StateMigrationV1() = default;
 

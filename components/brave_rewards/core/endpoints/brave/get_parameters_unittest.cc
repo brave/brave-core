@@ -13,7 +13,7 @@
 #include "brave/components/brave_rewards/core/endpoints/brave/get_parameters.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl_mock.h"
+#include "brave/components/brave_rewards/core/rewards_engine_mock.h"
 #include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -39,7 +39,7 @@ using GetParametersParamType =
 class GetParameters : public TestWithParam<GetParametersParamType> {
  protected:
   base::test::TaskEnvironment task_environment_;
-  MockRewardsEngineImpl mock_engine_impl_;
+  MockRewardsEngine mock_engine_;
 };
 
 TEST_P(GetParameters, Paths) {
@@ -47,7 +47,7 @@ TEST_P(GetParameters, Paths) {
 
   Result expected_result = make_result.Run();
 
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), LoadURL(_, _))
+  EXPECT_CALL(*mock_engine_.mock_client(), LoadURL(_, _))
       .Times(1)
       .WillOnce([&](mojom::UrlRequestPtr, auto callback) {
         auto response = mojom::UrlResponse::New();
@@ -67,7 +67,7 @@ TEST_P(GetParameters, Paths) {
     }
   });
 
-  RequestFor<endpoints::GetParameters>(mock_engine_impl_).Send(callback.Get());
+  RequestFor<endpoints::GetParameters>(mock_engine_).Send(callback.Get());
 
   task_environment_.RunUntilIdle();
 }

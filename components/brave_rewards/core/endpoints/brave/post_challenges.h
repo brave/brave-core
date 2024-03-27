@@ -32,7 +32,7 @@ namespace brave_rewards::internal::endpoints {
 class PostChallenges : public RewardsEngineHelper,
                        public WithHelperKey<PostChallenges> {
  public:
-  explicit PostChallenges(RewardsEngineImpl& engine);
+  explicit PostChallenges(RewardsEngine& engine);
   ~PostChallenges() override;
 
   enum class Error {

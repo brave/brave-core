@@ -16,7 +16,7 @@
 #include "brave/components/brave_rewards/core/publisher/prefix_util.h"
 #include "brave/components/brave_rewards/core/publisher/protos/channel_response.pb.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_prefix_list_updater.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave_base/random.h"
 
 namespace brave_rewards::internal::publisher {
@@ -34,7 +34,7 @@ int64_t GetCacheExpiryInSeconds() {
 
 }  // namespace
 
-ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngineImpl& engine)
+ServerPublisherFetcher::ServerPublisherFetcher(RewardsEngine& engine)
     : engine_(engine), private_cdn_server_(engine) {}
 
 ServerPublisherFetcher::~ServerPublisherFetcher() = default;

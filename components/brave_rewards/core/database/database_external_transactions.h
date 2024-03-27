@@ -21,7 +21,7 @@ using GetExternalTransactionCallback =
 
 class DatabaseExternalTransactions : public DatabaseTable {
  public:
-  explicit DatabaseExternalTransactions(RewardsEngineImpl& engine);
+  explicit DatabaseExternalTransactions(RewardsEngine& engine);
   ~DatabaseExternalTransactions() override;
 
   void Insert(mojom::ExternalTransactionPtr, ResultCallback);

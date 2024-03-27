@@ -18,7 +18,7 @@
 
 namespace brave_rewards::internal::endpoints {
 
-PostChallenges::PostChallenges(RewardsEngineImpl& engine)
+PostChallenges::PostChallenges(RewardsEngine& engine)
     : RewardsEngineHelper(engine) {}
 
 PostChallenges::~PostChallenges() = default;

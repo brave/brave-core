@@ -25,7 +25,7 @@
 #include "brave/components/brave_rewards/core/gemini/gemini.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/publisher/publisher_status_helper.h"
-#include "brave/components/brave_rewards/core/rewards_engine_impl.h"
+#include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "brave/components/brave_rewards/core/state/state.h"
 #include "brave/components/brave_rewards/core/uphold/uphold.h"
 #include "brave/components/brave_rewards/core/wallet/wallet.h"
@@ -109,7 +109,7 @@ Contribution::ContributionRequest& Contribution::ContributionRequest::operator=(
 
 Contribution::ContributionRequest::~ContributionRequest() = default;
 
-Contribution::Contribution(RewardsEngineImpl& engine)
+Contribution::Contribution(RewardsEngine& engine)
     : engine_(engine),
       unblinded_(engine),
       sku_(engine),
