@@ -9,7 +9,6 @@ import { WalletState, RefreshOpts } from '../../constants/types'
 
 // Utils
 import getAPIProxy from './bridge'
-import { refreshPortfolioFilterOptions } from './lib'
 import { Store } from './types'
 import InteractionNotifier from './interactionNotifier'
 import { walletApi } from '../slices/api.slice'
@@ -56,7 +55,6 @@ handler.on(
     await store
       .dispatch(walletApi.endpoints.invalidateUserTokensRegistry.initiate())
       .unwrap()
-    await store.dispatch(refreshPortfolioFilterOptions())
     store.dispatch(WalletActions.setIsRefreshingNetworksAndTokens(false))
   }
 )
@@ -136,7 +134,6 @@ handler.on(
       store.dispatch(
         walletApi.endpoints.invalidateUserTokensRegistry.initiate()
       )
-      await store.dispatch(refreshPortfolioFilterOptions())
       await braveWalletService.discoverAssetsOnAllSupportedChains(false)
     }
   }

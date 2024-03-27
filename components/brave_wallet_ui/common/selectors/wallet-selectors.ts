@@ -20,15 +20,11 @@ export const isNftPinningFeatureEnabled = ({ wallet }: State) =>
   wallet.isNftPinningFeatureEnabled
 export const isAnkrBalancesFeatureEnabled = ({ wallet }: State) =>
   wallet.isAnkrBalancesFeatureEnabled
-export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
-  wallet.allowedNewWalletAccountTypeNetworkIds
+export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
+  wallet.isRefreshingNetworksAndTokens
 
 // unsafe selectors (will cause re-render if not strictly equal "===") (objects
 // and lists)
+export const allowedNewWalletAccountTypeNetworkIds = ({ wallet }: State) =>
+  wallet.allowedNewWalletAccountTypeNetworkIds
 export const activeOrigin = ({ wallet }: State) => wallet.activeOrigin
-export const selectedNetworkFilter = ({ wallet }: State) =>
-  wallet.selectedNetworkFilter
-export const selectedAccountFilter = ({ wallet }: State) =>
-  wallet.selectedAccountFilter
-export const isRefreshingNetworksAndTokens = ({ wallet }: State) =>
-  wallet.isRefreshingNetworksAndTokens
