@@ -254,11 +254,3 @@ enum PostWalletsError {
   kUnexpectedStatusCode,                // HTTP xxx
   kFailedToParseBody
 };
-
-enum PostChallengesError {
-  kFailedToCreateRequest,
-  kInvalidRequest,                      // HTTP 400
-  kUnexpectedError,                     // HTTP 500
-  kUnexpectedStatusCode,                // HTTP xxx
-  kFailedToParseBody
-};

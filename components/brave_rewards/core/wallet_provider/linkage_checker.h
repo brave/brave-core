@@ -18,7 +18,8 @@ namespace brave_rewards::internal {
 // and then unlinked on the server, then it will transition the user back into
 // an unlinked state. It will also check for the completion of any polling-based
 // linking flow.
-class LinkageChecker : public RewardsEngineHelper {
+class LinkageChecker : public RewardsEngineHelper,
+                       public WithHelperKey<LinkageChecker> {
  public:
   explicit LinkageChecker(RewardsEngineImpl& engine);
   ~LinkageChecker() override;

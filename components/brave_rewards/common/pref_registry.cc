@@ -52,16 +52,7 @@ void RegisterProfilePrefs(PrefRegistrySimple* registry) {
   registry->RegisterBooleanPref(prefs::kInlineTipRedditEnabled, false);
   registry->RegisterBooleanPref(prefs::kInlineTipTwitterEnabled, false);
   registry->RegisterBooleanPref(prefs::kInlineTipGithubEnabled, false);
-  registry->RegisterDoublePref(prefs::kParametersRate, 0.0);
-  registry->RegisterDoublePref(prefs::kParametersAutoContributeChoice, 0.0);
-  registry->RegisterStringPref(prefs::kParametersAutoContributeChoices, "");
-  registry->RegisterStringPref(prefs::kParametersTipChoices, "");
-  registry->RegisterStringPref(prefs::kParametersMonthlyTipChoices, "");
-  registry->RegisterStringPref(prefs::kParametersPayoutStatus, "");
-  registry->RegisterDictionaryPref(prefs::kParametersWalletProviderRegions);
-  registry->RegisterTimePref(prefs::kParametersVBatDeadline, base::Time());
-  registry->RegisterBooleanPref(prefs::kParametersVBatExpired, false);
-  registry->RegisterIntegerPref(prefs::kParametersTosVersion, 1);
+  registry->RegisterDictionaryPref(prefs::kParameters);
   registry->RegisterStringPref(prefs::kWalletBrave, "");
   registry->RegisterStringPref(prefs::kWalletUphold, "");
   registry->RegisterStringPref(prefs::kWalletBitflyer, "");

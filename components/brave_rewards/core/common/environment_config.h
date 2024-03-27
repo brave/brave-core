@@ -15,7 +15,8 @@
 namespace brave_rewards::internal {
 
 // Responsible for providing environment-specific configuration settings.
-class EnvironmentConfig : public RewardsEngineHelper {
+class EnvironmentConfig : public RewardsEngineHelper,
+                          public WithHelperKey<EnvironmentConfig> {
  public:
   explicit EnvironmentConfig(RewardsEngineImpl& engine);
   ~EnvironmentConfig() override;

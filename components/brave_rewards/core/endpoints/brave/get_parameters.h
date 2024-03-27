@@ -9,6 +9,8 @@
 #include <optional>
 #include <string>
 
+#include "base/containers/flat_map.h"
+#include "base/values.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_core.mojom.h"
 #include "brave/components/brave_rewards/core/endpoints/request_builder.h"
@@ -77,6 +79,14 @@ class GetParameters final : public RequestBuilder,
 
   explicit GetParameters(RewardsEngineImpl& engine);
   ~GetParameters() override;
+
+  using ProviderRegionsMap = base::flat_map<std::string, mojom::RegionsPtr>;
+
+  // Converts the specified value to a map of wallet provider type to supported
+  // region data. Returns `std::nullopt` if the value is not in the correct
+  // format and cannot be converted.
+  static std::optional<ProviderRegionsMap> ValueToWalletProviderRegions(
+      const base::Value& value);
 
  private:
   std::optional<std::string> Url() const override;

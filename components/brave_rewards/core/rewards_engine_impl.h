@@ -10,12 +10,12 @@
 #include <memory>
 #include <optional>
 #include <string>
-#include <tuple>
 #include <utility>
 
 #include "base/containers/flat_map.h"
 #include "base/memory/weak_ptr.h"
 #include "base/one_shot_event.h"
+#include "base/supports_user_data.h"
 #include "base/types/always_false.h"
 #include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
@@ -24,12 +24,6 @@
 #include "mojo/public/cpp/bindings/pending_associated_remote.h"
 
 namespace brave_rewards::internal {
-
-class EnvironmentConfig;
-class InitializationManager;
-class URLLoader;
-class LinkageChecker;
-class SolanaWalletProvider;
 
 namespace publisher {
 class Publisher;
@@ -53,10 +47,6 @@ namespace state {
 class State;
 }
 
-namespace api {
-class API;
-}
-
 namespace bitflyer {
 class Bitflyer;
 }
@@ -77,7 +67,8 @@ namespace wallet_provider {
 class WalletProvider;
 }
 
-class RewardsEngineImpl : public mojom::RewardsEngine {
+class RewardsEngineImpl : public mojom::RewardsEngine,
+                          private base::SupportsUserData {
  public:
   RewardsEngineImpl(
       mojo::PendingAssociatedRemote<mojom::RewardsEngineClient> client_remote,
@@ -332,10 +323,20 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   mojom::RewardsEngineClient* client();
 
   template <typename T>
-  T& Get() const {
-    auto& helper = std::get<std::unique_ptr<T>>(helpers_);
-    CHECK(helper) << "Rewards engine helper has not been created";
-    return *helper;
+  T& Get() {
+    auto* key = T::GetHelperKey();
+    if (auto* helper = this->GetUserData(key)) {
+      return *static_cast<T*>(helper);
+    }
+    auto instance = std::make_unique<T>(*this);
+    auto& ref = *instance;
+    this->SetUserData(key, std::move(instance));
+    return ref;
+  }
+
+  template <typename T>
+  void SetHelperForTesting(std::unique_ptr<T> helper) {
+    this->SetUserData(T::GetHelperKey(), std::move(helper));
   }
 
   publisher::Publisher* publisher() { return publisher_.get(); }
@@ -347,8 +348,6 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   wallet::Wallet* wallet() { return wallet_.get(); }
 
   state::State* state() { return state_.get(); }
-
-  api::API* api() { return api_.get(); }
 
   bitflyer::Bitflyer* bitflyer() { return bitflyer_.get(); }
 
@@ -369,7 +368,7 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   mojom::RewardsEngineOptions& GetOptionsForTesting() { return options_; }
 
  private:
-  bool IsReady() const;
+  bool IsReady();
 
   void OnInitializationComplete(InitializeCallback callback, bool success);
 
@@ -384,20 +383,12 @@ class RewardsEngineImpl : public mojom::RewardsEngine {
   mojo::AssociatedRemote<mojom::RewardsEngineClient> client_;
   mojom::RewardsEngineOptions options_;
 
-  std::tuple<std::unique_ptr<EnvironmentConfig>,
-             std::unique_ptr<InitializationManager>,
-             std::unique_ptr<URLLoader>,
-             std::unique_ptr<LinkageChecker>,
-             std::unique_ptr<SolanaWalletProvider>>
-      helpers_;
-
   std::unique_ptr<publisher::Publisher> publisher_;
   std::unique_ptr<Media> media_;
   std::unique_ptr<contribution::Contribution> contribution_;
   std::unique_ptr<wallet::Wallet> wallet_;
   std::unique_ptr<database::Database> database_;
   std::unique_ptr<state::State> state_;
-  std::unique_ptr<api::API> api_;
   std::unique_ptr<bitflyer::Bitflyer> bitflyer_;
   std::unique_ptr<gemini::Gemini> gemini_;
   std::unique_ptr<uphold::Uphold> uphold_;
