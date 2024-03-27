@@ -1,5 +1,5 @@
 diff --git a/tools/gritsettings/resource_ids.spec b/tools/gritsettings/resource_ids.spec
-index 3b6a1acc7deefa79f90d3413a6862bd5b94ed416..6ac8ff77e0590e6257f52b390758736980837aa3 100644
+index f40c610e185f67954dd588f91f4c940e093e6c77..a9400cd593611cb89d1a5787b82db9cf74530c8f 100644
 --- a/tools/gritsettings/resource_ids.spec
 +++ b/tools/gritsettings/resource_ids.spec
 @@ -38,6 +38,9 @@
@@ -30,7 +30,16 @@ index 3b6a1acc7deefa79f90d3413a6862bd5b94ed416..6ac8ff77e0590e6257f52b3907587369
      "includes": [3920],
    },
    "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/settings_shared/resources.grd": {
-@@ -940,6 +943,9 @@
+@@ -725,7 +728,7 @@
+   },
+   "<(SHARED_INTERMEDIATE_DIR)/chrome/browser/resources/key_value_pair_viewer_shared/resources.grd": {
+    "META": {"sizes": {"includes": [10]}},
+-    "includes": [5300],
++    "includes": [5290],
+   },
+   # END chrome/ WebUI resources section
+ 
+@@ -958,6 +961,9 @@
    "components/components_chromium_strings.grd": {
      "messages": [7020],
    },
