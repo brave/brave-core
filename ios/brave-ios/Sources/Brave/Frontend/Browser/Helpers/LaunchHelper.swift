@@ -50,14 +50,10 @@ public actor LaunchHelper {
       // This is done first because compileResources need their results
       await FilterListStorage.shared.loadFilterListSettings()
       await AdBlockGroupsManager.shared.loadResourcesFromCache()
-
-      // Only load the standard engine for now, we will load the other one after launch
-      async let loadEngineFromCache: Void = AdBlockGroupsManager.shared.loadEngineFromCache(
-        for: .standard
-      )
+      async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared
         .loadCachedAndBundledDataIfNeeded(allowedModes: launchBlockModes)
-      _ = await (loadEngineFromCache, adblockResourceCache)
+      _ = await (loadEngines, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
 
       ContentBlockerManager.log.debug("Loaded blocking launch data")
@@ -106,23 +102,10 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
-      Self.signpost.emitEvent(
-        "FilterListResourceDownloader.shared.start",
-        id: signpostID,
-        "Started filter list downloader"
-      )
       await AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(
         allowedModes: Set(remainingModes)
       )
-      Self.signpost.emitEvent(
-        "loadCachedAndBundledDataIfNeeded",
-        id: signpostID,
-        "Reloaded data for remaining modes"
-      )
-      await AdBlockGroupsManager.shared.loadEngineFromCache(for: .aggressive)
       await AdblockResourceDownloader.shared.startFetching()
-      Self.signpost.emitEvent("startFetching", id: signpostID, "Started fetching ad-block data")
-
       /// Cleanup rule lists so we don't have dead rule lists
       let validBlocklistTypes = await self.getAllValidBlocklistTypes()
       await ContentBlockerManager.shared.cleaupInvalidRuleLists(validTypes: validBlocklistTypes)

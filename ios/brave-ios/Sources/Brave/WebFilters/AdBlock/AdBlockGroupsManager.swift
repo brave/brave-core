@@ -9,8 +9,7 @@ import Foundation
 import Preferences
 import os
 
-/// This object holds on to our adblock engines and returns information needed for stats tracking as well as some conveniences
-/// for injected scripts needed during web navigation and cosmetic filters models needed by the `SelectorsPollerScript.js` script.
+/// A class that helps manage file sources and enabled filter lists so that 2 engines (standard and aggressive) are continually updated.
 @MainActor public class AdBlockGroupsManager {
   typealias CosmeticFilterModelTuple = (isAlwaysAggressive: Bool, model: CosmeticFilterModel)
   public static let shared = AdBlockGroupsManager(
@@ -21,12 +20,16 @@ import os
   private let standardManager: AdBlockEngineManager
   private let aggressiveManager: AdBlockEngineManager
 
-  private var allManagers: [AdBlockEngineManager] {
-    return [standardManager, aggressiveManager]
-  }
-
   /// The info for the resource file. This is a shared file used by all filter lists that contain scriplets. This information is used for lazy loading.
   public var resourcesInfo: GroupedAdBlockEngine.ResourcesInfo?
+
+  /// Return an array of all sources that are enabled according to user's settings
+  /// - Note: This does not take into account the domain or global adblock toggle
+  private var enabledSources: [GroupedAdBlockEngine.Source] {
+    var enabledSources = FilterListStorage.shared.enabledSources
+    enabledSources.append(contentsOf: CustomFilterListStorage.shared.enabledSources)
+    return enabledSources
+  }
 
   init(standardManager: AdBlockEngineManager, aggressiveManager: AdBlockEngineManager) {
     self.standardManager = standardManager
@@ -44,21 +47,30 @@ import os
   func loadResourcesFromCache() async {
     if let resourcesFolderURL = FilterListSetting.makeFolderURL(
       forComponentFolderPath: Preferences.AppState.lastAdBlockResourcesFolderPath.value
-    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path),
-      let resourcesInfo = getResourcesInfo(fromFolderURL: resourcesFolderURL)
-    {
+    ), FileManager.default.fileExists(atPath: resourcesFolderURL.path) {
       // We need this for all filter lists so we can't compile anything until we download it
+      let resourcesInfo = getResourcesInfo(fromFolderURL: resourcesFolderURL)
       self.resourcesInfo = resourcesInfo
-      
+
       if #available(iOS 16.0, *) {
         ContentBlockerManager.log.debug(
           "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+        )
+      } else {
+        ContentBlockerManager.log.debug(
+          "Loaded resources component from cache: `\(resourcesInfo.localFileURL.path)`"
         )
       }
     }
   }
 
-  func loadEngineFromCache(for engineType: GroupedAdBlockEngine.EngineType) async {
+  func loadEnginesFromCache() async {
+    await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
+      await self.loadEngineFromCache(for: engineType)
+    }
+  }
+
+  private func loadEngineFromCache(for engineType: GroupedAdBlockEngine.EngineType) async {
     let manager = getManager(for: engineType)
 
     if await !manager.loadFromCache(resourcesInfo: self.resourcesInfo) {
@@ -75,13 +87,11 @@ import os
         manager.add(fileInfo: fileInfo)
       }
 
-      if manager.checkNeedsCompile() {
-        do {
-          try await manager.compileAvailable(resourcesInfo: self.resourcesInfo)
-        } catch {
-
-        }
-      }
+      manager.compileImmediatelyIfNeeded(
+        for: enabledSources,
+        resourcesInfo: self.resourcesInfo,
+        priority: .high
+      )
     }
   }
 
@@ -129,39 +139,38 @@ import os
     engineType: GroupedAdBlockEngine.EngineType
   ) async {
     let manager = getManager(for: engineType)
-    // Always update the info on the manager
-    manager.add(fileInfo: fileInfo)
-    manager.compileDelayedIfNeeded(resourcesInfo: resourcesInfo)
+    let enabledSources = enabledSources
 
     // Compile content blockers if this filter list is enabled
-    if manager.isEnabled(source: fileInfo.filterListInfo.source) {
+    if enabledSources.contains(fileInfo.filterListInfo.source) {
       await manager.ensureContentBlockers(for: fileInfo)
     }
+
+    // Always update the info on the manager
+    manager.add(fileInfo: fileInfo)
+    manager.compileDelayedIfNeeded(
+      for: enabledSources,
+      resourcesInfo: resourcesInfo,
+      priority: .background
+    )
+
   }
 
   /// Ensure all engines and content blockers are compiled
-  func ensureEnabledEngines() async {
-    guard let resourcesInfo = self.resourcesInfo else { return }
-
-    await allManagers.asyncConcurrentForEach { manager in
-      // Compile engines
-      do {
-        if manager.checkNeedsCompile() {
-          try await manager.compileAvailable(resourcesInfo: resourcesInfo)
-        }
-      } catch {
-        // Ignore cancellation errors
-      }
-
-      // Compile all content blockers for the given manager
-      await manager.compilableFiles.asyncForEach { fileInfo in
-        guard manager.isEnabled(source: fileInfo.filterListInfo.source) else { return }
-        await manager.ensureContentBlockers(for: fileInfo)
-      }
+  func compileEnginesIfNeeded() {
+    let enabledSources = enabledSources
+    GroupedAdBlockEngine.EngineType.allCases.forEach { engineType in
+      let manager = self.getManager(for: engineType)
+      manager.compileImmediatelyIfNeeded(
+        for: enabledSources,
+        resourcesInfo: resourcesInfo,
+        priority: .high
+      )
+      manager.ensureContentBlockers(for: enabledSources)
     }
   }
 
-  private func getResourcesInfo(fromFolderURL folderURL: URL) -> GroupedAdBlockEngine.ResourcesInfo?
+  private func getResourcesInfo(fromFolderURL folderURL: URL) -> GroupedAdBlockEngine.ResourcesInfo
   {
     let version = folderURL.lastPathComponent
     return GroupedAdBlockEngine.ResourcesInfo(
@@ -177,7 +186,9 @@ import os
     }
     self.resourcesInfo = resourcesInfo
 
-    allManagers.forEach { manager in
+    GroupedAdBlockEngine.EngineType.allCases.forEach { engineType in
+      let manager = self.getManager(for: engineType)
+
       Task {
         await manager.update(resourcesInfo: resourcesInfo)
       }
@@ -186,6 +197,10 @@ import os
     if #available(iOS 16.0, *) {
       ContentBlockerManager.log.debug(
         "Updated resources component: `\(resourcesInfo.localFileURL.path(percentEncoded: false))`"
+      )
+    } else {
+      ContentBlockerManager.log.debug(
+        "Updated resources component: `\(resourcesInfo.localFileURL.path)`"
       )
     }
   }
@@ -241,7 +256,7 @@ import os
   /// Returns all appropriate engines for the given domain
   func cachedEngines(for domain: Domain) -> [GroupedAdBlockEngine] {
     guard domain.isShieldExpected(.adblockAndTp, considerAllShieldsOption: true) else { return [] }
-    return allManagers.compactMap({ $0.engine })
+    return GroupedAdBlockEngine.EngineType.allCases.compactMap({ getManager(for: $0).engine })
   }
 
   /// Returns all the models for this frame URL
@@ -281,5 +296,18 @@ extension GroupedAdBlockEngine.EngineType {
 
   @MainActor fileprivate func makeDefaultManager() -> AdBlockEngineManager {
     return AdBlockEngineManager(engineType: self, cacheFolderName: defaultCachedFolderName)
+  }
+}
+
+extension FilterListSetting {
+  @MainActor var engineSource: GroupedAdBlockEngine.Source? {
+    guard let componentId = componentId else { return nil }
+    return .filterList(componentId: componentId, uuid: uuid)
+  }
+}
+
+extension FilterList {
+  @MainActor var engineSource: GroupedAdBlockEngine.Source {
+    return .filterList(componentId: entry.componentId, uuid: self.entry.uuid)
   }
 }
