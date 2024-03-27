@@ -16,6 +16,9 @@ public struct AIChatView: View {
   @ObservedObject
   var model: AIChatViewModel
 
+  @ObservedObject
+  var speechRecognizer: SpeechRecognizer
+
   @Environment(\.dismiss)
   private var dismiss
 
@@ -42,8 +45,13 @@ public struct AIChatView: View {
 
   var openURL: ((URL) -> Void)
 
-  public init(model: AIChatViewModel, openURL: @escaping (URL) -> Void) {
+  public init(
+    model: AIChatViewModel,
+    speechRecognizer: SpeechRecognizer,
+    openURL: @escaping (URL) -> Void
+  ) {
     self.model = model
+    self.speechRecognizer = speechRecognizer
     self.openURL = openURL
   }
 
@@ -236,7 +244,7 @@ public struct AIChatView: View {
       }
 
       if model.isAgreementAccepted || (!hasSeenIntro.value && !model.isAgreementAccepted) {
-        AIChatPromptInputView { prompt in
+        AIChatPromptInputView(speechRecognizer: speechRecognizer) { prompt in
           hasSeenIntro.value = true
           model.submitQuery(prompt)
           hideKeyboard()
@@ -253,7 +261,7 @@ public struct AIChatView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await model.refreshPremiumStatusOrderCredentials()
+            await model.refreshPremiumStatus()
           }
         })
     }
@@ -265,7 +273,7 @@ public struct AIChatView: View {
     }
     .onAppear {
       Task { @MainActor in
-        await model.refreshPremiumStatusOrderCredentials()
+        await model.refreshPremiumStatus()
       }
 
       if let query = model.querySubmited {
@@ -412,19 +420,14 @@ public struct AIChatView: View {
         },
         dismissAction: {
           Task { @MainActor in
-            // This is needed to try to mitigate a bug in SkusSDK
-            // See: https://github.com/brave/brave-browser/issues/36824
-            // Also see the comment on the function
-            if model.premiumStatus == .active || model.premiumStatus == .activeDisconnected {
-              await model.refreshPremiumStatusOrderCredentials()
-            }
-          }
+            await model.refreshPremiumStatus()
 
-          if let basicModel = model.models.first(where: { $0.access == .basic }) {
-            model.changeModel(modelKey: basicModel.key)
-            model.retryLastRequest()
-          } else {
-            Logger.module.error("No basic models available")
+            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+              model.changeModel(modelKey: basicModel.key)
+              model.retryLastRequest()
+            } else {
+              Logger.module.error("No basic models available")
+            }
           }
         }
       )
@@ -441,6 +444,7 @@ public struct AIChatView: View {
 
   private var feedbackView: some View {
     AIChatFeedbackView(
+      speechRecognizer: speechRecognizer,
       premiumStatus: model.premiumStatus,
       shouldShowPremiumAd: shouldShowFeedbackPremiumAd.value,
       onSubmit: { category, feedback in
@@ -537,6 +541,7 @@ struct AIChatView_Preview: PreviewProvider {
             .background(Color(braveSystemName: .containerBackground))
 
             AIChatFeedbackView(
+              speechRecognizer: SpeechRecognizer(),
               premiumStatus: .inactive,
               shouldShowPremiumAd: true,
               onSubmit: {
@@ -572,7 +577,7 @@ struct AIChatView_Preview: PreviewProvider {
       )
       .padding()
 
-      AIChatPromptInputView {
+      AIChatPromptInputView(speechRecognizer: SpeechRecognizer()) {
         print("Prompt Submitted: \($0)")
       }
     }

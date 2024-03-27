@@ -3869,6 +3869,7 @@ extension BrowserViewController {
     let chatController = UIHostingController(
       rootView: AIChatView(
         model: model,
+        speechRecognizer: speechRecognizer,
         openURL: openAIChatURL
       )
     )

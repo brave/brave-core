@@ -41,20 +41,6 @@ public class BraveSkusManager {
         )
       }
     }
-
-    if Preferences.AIChat.subscriptionHasCredentials.value,
-      let expirationDate = Preferences.AIChat.subscriptionExpirationDate.value
-    {
-
-      if expirationDate >= Date() {
-        _ = await credentialSummary(for: BraveStoreProductGroup.leo.skusDomain)
-
-      } else {
-        Logger.module.debug(
-          "[SkusManager] - Leo Skus Credentials has not expired yet, no need to refresh it."
-        )
-      }
-    }
   }
 
   // MARK: - Handling SKU methods.
@@ -98,7 +84,6 @@ public class BraveSkusManager {
         }
       case .leo:
         if let cookie = CredentialCookie.from(credential: credential, domain: domain) {
-          Preferences.AIChat.subscriptionHasCredentials.value = true
           Preferences.AIChat.subscriptionExpirationDate.value = cookie.expirationDate
         }
         break
@@ -140,7 +125,7 @@ public class BraveSkusManager {
             _ = await prepareCredentialsPresentation(for: domain, path: "*")
           }
         case .leo:
-          if !Preferences.AIChat.subscriptionHasCredentials.value {
+          if Preferences.AIChat.subscriptionOrderId.value != nil {
             Logger.module.debug("[SkusManager] - Preparing Leo Credentials")
             _ = await prepareCredentialsPresentation(for: domain, path: "*")
           }
