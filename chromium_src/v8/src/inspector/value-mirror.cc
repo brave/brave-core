@@ -13,6 +13,14 @@
 #include "v8-local-handle.h"
 #include "v8-primitive.h"
 
+// This file contains the implementation of the `SerializeValue` function. This
+// function is used in PageGraph for the serialization of JavaScript objects,
+// including those with non-enumerable and internal properties. To handle all
+// potential edge cases, such as invoking getter functions, incorporating
+// try/catch blocks, and appropriately responding to exceptions, the
+// `SerializeValue` function leverages the existing ValueMirror machinery used
+// by the Inspector Protocol.
+
 namespace v8::page_graph {
 
 namespace {
