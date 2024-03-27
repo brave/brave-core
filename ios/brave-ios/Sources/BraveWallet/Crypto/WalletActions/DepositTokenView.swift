@@ -31,9 +31,13 @@ struct DepositTokenView: View {
   private func availableAccounts(
     for token: BraveWallet.BlockchainToken
   ) -> [BraveWallet.AccountInfo] {
+    let keyringIdForToken: BraveWallet.KeyringId = .keyringId(
+      for: token.coin,
+      on: token.chainId
+    )
     guard
       let tokenNetwork = depositTokenStore.allNetworks.first(where: {
-        $0.chainId == token.chainId
+        $0.supportedKeyrings.contains(keyringIdForToken.rawValue as NSNumber)
       })
     else { return [] }
     return depositTokenStore.allAccounts.accountsFor(network: tokenNetwork)
@@ -45,7 +49,10 @@ struct DepositTokenView: View {
         if let prefilledAccount = depositTokenStore.prefilledAccount {
           DepositDetailsView(
             type: .prefilledAccount(account: prefilledAccount),
-            allNetworks: depositTokenStore.allNetworks
+            supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
+              coin: prefilledAccount.coin,
+              keyringId: prefilledAccount.keyringId
+            )
           )
         } else if let prefilledToken = depositTokenStore.prefilledToken,
           !availableAccounts(for: prefilledToken).isEmpty
@@ -55,7 +62,13 @@ struct DepositTokenView: View {
               token: prefilledToken,
               availableAccounts: availableAccounts(for: prefilledToken)
             ),
-            allNetworks: depositTokenStore.allNetworks
+            supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
+              coin: prefilledToken.coin,
+              keyringId: .keyringId(
+                for: prefilledToken.coin,
+                on: prefilledToken.chainId
+              )
+            )
           )
         } else {
           TokenList(
@@ -69,8 +82,16 @@ struct DepositTokenView: View {
             TokenListHeaderView(title: Strings.Wallet.assetsTitle)
           } content: { viewModel in
             Button {
-              if depositTokenStore.allAccounts.contains(where: { $0.coin == viewModel.token.coin })
-              {
+              let keyringIdForToken: BraveWallet.KeyringId = .keyringId(
+                for: viewModel.token.coin,
+                on: viewModel.token.chainId
+              )
+              guard
+                let tokenNetwork = depositTokenStore.allNetworks.first(where: {
+                  $0.supportedKeyrings.contains(keyringIdForToken.rawValue as NSNumber)
+                })
+              else { return }
+              if !depositTokenStore.allAccounts.accountsFor(network: tokenNetwork).isEmpty {
                 selectedTokenViewModel = viewModel
               } else {
                 savedTokenViewModel = viewModel
@@ -164,7 +185,13 @@ struct DepositTokenView: View {
                   token: selectedTokenViewModel.token,
                   availableAccounts: availableAccounts(for: selectedTokenViewModel.token)
                 ),
-                allNetworks: depositTokenStore.allNetworks
+                supportedNetworks: depositTokenStore.allNetworks.supportedNetworks(
+                  coin: selectedTokenViewModel.token.coin,
+                  keyringId: .keyringId(
+                    for: selectedTokenViewModel.token.coin,
+                    on: selectedTokenViewModel.token.chainId
+                  )
+                )
               )
             }
           },
@@ -204,7 +231,7 @@ struct DepositTokenView: View {
 
 private struct DepositDetailsView: View {
   var type: DepositType
-  var allNetworks: [BraveWallet.NetworkInfo]
+  var supportedNetworks: [BraveWallet.NetworkInfo]
 
   @State private var selectedAccount: BraveWallet.AccountInfo?
   @State private var isPresentingAccountPicker: Bool = false
@@ -221,10 +248,10 @@ private struct DepositDetailsView: View {
 
   init(
     type: DepositType,
-    allNetworks: [BraveWallet.NetworkInfo]
+    supportedNetworks: [BraveWallet.NetworkInfo]
   ) {
     self.type = type
-    self.allNetworks = allNetworks
+    self.supportedNetworks = supportedNetworks
     if case .prefilledToken(_, let availableAccounts) = type {
       self._selectedAccount = State(initialValue: availableAccounts.first)
     }
@@ -262,17 +289,17 @@ private struct DepositDetailsView: View {
         Text(Strings.Wallet.ethAccountDescription)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .eth }), maxIcons: 8)
+        MultipleNetworkIconsView(networks: supportedNetworks, maxIcons: 8)
       case .sol:
         Text(Strings.Wallet.solAccountDescription)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .sol }))
+        MultipleNetworkIconsView(networks: supportedNetworks)
       case .fil:
         Text(Strings.Wallet.filAccountDescription)
           .fontWeight(.semibold)
           .foregroundColor(Color(.bravePrimary))
-        MultipleNetworkIconsView(networks: networks.filter({ $0.coin == .fil }))
+        MultipleNetworkIconsView(networks: supportedNetworks)
       case .zec, .btc:
         EmptyView()
       @unknown default:
@@ -336,7 +363,7 @@ private struct DepositDetailsView: View {
 
   private var ethNetworksCombined: String {
     let networks =
-      allNetworks
+      supportedNetworks
       .filter {
         $0.coin == .eth && $0.chainId.lowercased() != BraveWallet.MainnetChainId.lowercased()
       }
@@ -358,7 +385,7 @@ private struct DepositDetailsView: View {
         case .prefilledAccount(let account):
           depositHeader(
             coin: account.coin,
-            networks: allNetworks
+            networks: supportedNetworks
           )
           qrCodeView(account)
           if account.coin == .eth {
@@ -372,7 +399,7 @@ private struct DepositDetailsView: View {
           }
           depositHeader(
             coin: token.coin,
-            networks: allNetworks
+            networks: supportedNetworks
           )
           if let selectedAccount {
             qrCodeView(selectedAccount)
@@ -414,6 +441,21 @@ private struct DepositDetailsView: View {
             callback: nil
           )
         }
+      }
+    }
+  }
+}
+
+extension Array where Element == BraveWallet.NetworkInfo {
+  fileprivate func supportedNetworks(
+    coin: BraveWallet.CoinType,
+    keyringId: BraveWallet.KeyringId
+  ) -> [BraveWallet.NetworkInfo] {
+    if coin == .eth || coin == .sol {
+      return self.filter { $0.coin == coin }
+    } else {
+      return self.filter {
+        $0.supportedKeyrings.contains(keyringId.rawValue as NSNumber)
       }
     }
   }

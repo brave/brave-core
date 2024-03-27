@@ -125,9 +125,9 @@ struct AssetDetailView: View {
     VStack(spacing: 16) {
       HStack(alignment: .top, spacing: 40) {
         if case .coinMarket(let coinMarket) = assetDetailStore.assetDetailType,
-          let _ = assetDetailStore.convertCoinMarketToDepositableToken(
+          assetDetailStore.convertCoinMarketToDepositableToken(
             symbol: coinMarket.symbol
-          )
+          ) != nil
         {
           PortfolioHeaderButton(style: .deposit) {
             let destination = WalletActionDestination(
