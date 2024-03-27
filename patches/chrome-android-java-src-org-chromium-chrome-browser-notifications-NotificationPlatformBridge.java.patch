@@ -1,8 +1,8 @@
 diff --git a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-index b0e54227e04907f04be5b1beaf271fb70e4d40f4..911bc478609228c28bddfcffb8846b7785ecdfe6 100644
+index 3cad8d266abf42a10e6de1fc42b6d10e202f899f..dd48ad0aea49e1e8ea5f5cef3f87cc7fa78ae41d 100644
 --- a/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
 +++ b/chrome/android/java/src/org/chromium/chrome/browser/notifications/NotificationPlatformBridge.java
-@@ -96,7 +96,7 @@ public class NotificationPlatformBridge {
+@@ -97,7 +97,7 @@ public class NotificationPlatformBridge {
      // TODO(crbug.com/1521424): Fine tune this duration, and possibly turn it off for A11Y users.
      private static final long PROVISIONAL_UNSUBSCRIBE_DURATION_MS = 10 * 1000;
  
@@ -11,7 +11,7 @@ index b0e54227e04907f04be5b1beaf271fb70e4d40f4..911bc478609228c28bddfcffb8846b77
  
      private static NotificationManagerProxy sNotificationManagerOverride;
  
-@@ -119,7 +119,7 @@ public class NotificationPlatformBridge {
+@@ -120,7 +120,7 @@ public class NotificationPlatformBridge {
      private TrustedWebActivityClient mTwaClient;
  
      /** Encapsulates attributes that identify a notification and where it originates from. */
@@ -20,7 +20,7 @@ index b0e54227e04907f04be5b1beaf271fb70e4d40f4..911bc478609228c28bddfcffb8846b77
          public final String notificationId;
          public final @NotificationType int notificationType;
          public final String origin;
-@@ -185,7 +185,7 @@ public class NotificationPlatformBridge {
+@@ -186,7 +186,7 @@ public class NotificationPlatformBridge {
          sNotificationManagerOverride = notificationManager;
      }
  
@@ -29,7 +29,7 @@ index b0e54227e04907f04be5b1beaf271fb70e4d40f4..911bc478609228c28bddfcffb8846b77
          mNativeNotificationPlatformBridge = nativeNotificationPlatformBridge;
          Context context = ContextUtils.getApplicationContext();
          if (sNotificationManagerOverride != null) {
-@@ -793,7 +793,7 @@ public class NotificationPlatformBridge {
+@@ -814,7 +814,7 @@ public class NotificationPlatformBridge {
                  .storeNotificationResourcesIfSuspended(notification);
      }
  
