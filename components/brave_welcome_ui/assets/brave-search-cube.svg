@@ -14,11 +14,9 @@
             <path fill="url(#i)" fill-opacity=".32"
                 d="M193.887 35.982 96.81 73.412l-.234 107.497 48.773-26.807 48.538-26.597V35.982Z" />
         </g>
-        <g filter="url(#j)">
-            <path fill="url(#k)" fill-rule="evenodd"
-                d="M104.69 130.794c-28.2 4.039-54.337-15.549-58.377-43.752-4.038-28.198 15.55-54.334 43.75-58.373 28.199-4.04 54.337 15.548 58.375 43.745a51.35 51.35 0 0 1-5.254 31.042l43.429 28.075a7.616 7.616 0 0 1-8.579 12.585l-43.787-28.306a51.362 51.362 0 0 1-29.557 14.984Zm-2.772-16.322c19.388-2.777 32.854-20.746 30.077-40.136-2.777-19.385-20.747-32.852-40.133-30.075-19.387 2.777-32.855 20.746-30.078 40.131 2.777 19.39 20.747 32.857 40.134 30.08Z"
-                clip-rule="evenodd" />
-        </g>
+        <path fill="#D5DCFF" fill-rule="evenodd"
+            d="M96.901 117.191c-20.993 3.007-40.45-11.575-43.457-32.57-3.006-20.99 11.576-40.447 32.568-43.454 20.992-3.007 40.45 11.574 43.456 32.565a38.224 38.224 0 0 1-3.663 22.622l33.081 21.386a5.669 5.669 0 1 1-6.386 9.368l-33.213-21.47a38.236 38.236 0 0 1-22.386 11.553Zm-2.063-12.15c14.432-2.067 24.457-15.444 22.389-29.879-2.067-14.43-15.444-24.455-29.876-22.388-14.432 2.067-24.457 15.444-22.39 29.875 2.067 14.434 15.444 24.459 29.877 22.392Z"
+            clip-rule="evenodd" />
     </g>
     <defs>
         <linearGradient id="c" x1="114.281" x2="136.418" y1="36.806" y2="61.798" gradientUnits="userSpaceOnUse">
@@ -37,49 +35,33 @@
             <stop stop-color="#0094FF" />
             <stop offset="1" stop-color="#fff" stop-opacity="0" />
         </linearGradient>
-        <linearGradient id="k" x1="39" x2="204.743" y1="35.982" y2="115.526" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#4C54D2" />
-            <stop offset=".563" stop-color="#BF14A2" />
-            <stop offset="1" stop-color="#F73A1C" />
-        </linearGradient>
         <filter id="a" width="245.773" height="232.392" x="-25.696" y="-25.589" color-interpolation-filters="sRGB"
             filterUnits="userSpaceOnUse">
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="12.848" />
-            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6001_26875" />
-            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6001_26875" result="shape" />
+            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6164_15669" />
+            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6164_15669" result="shape" />
         </filter>
         <filter id="b" width="204.946" height="84.344" x="-5.473" y="-5.366" color-interpolation-filters="sRGB"
             filterUnits="userSpaceOnUse">
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.737" />
-            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6001_26875" />
-            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6001_26875" result="shape" />
+            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6164_15669" />
+            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6164_15669" result="shape" />
         </filter>
         <filter id="f" width="107.733" height="162.218" x="-5.45" y="24.235" color-interpolation-filters="sRGB"
             filterUnits="userSpaceOnUse">
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.737" />
-            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6001_26875" />
-            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6001_26875" result="shape" />
+            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6164_15669" />
+            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6164_15669" result="shape" />
         </filter>
         <filter id="h" width="108.257" height="155.873" x="91.103" y="30.509" color-interpolation-filters="sRGB"
             filterUnits="userSpaceOnUse">
             <feFlood flood-opacity="0" result="BackgroundImageFix" />
             <feGaussianBlur in="BackgroundImageFix" stdDeviation="2.737" />
-            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6001_26875" />
-            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6001_26875" result="shape" />
-        </filter>
-        <filter id="j" width="206.939" height="201.94" x="11" y="-9.302" color-interpolation-filters="sRGB"
-            filterUnits="userSpaceOnUse">
-            <feFlood flood-opacity="0" result="BackgroundImageFix" />
-            <feColorMatrix in="SourceAlpha" result="hardAlpha" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" />
-            <feOffset dy="1" />
-            <feGaussianBlur stdDeviation="14" />
-            <feComposite in2="hardAlpha" operator="out" />
-            <feColorMatrix values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.84 0" />
-            <feBlend in2="BackgroundImageFix" result="effect1_dropShadow_6001_26875" />
-            <feBlend in="SourceGraphic" in2="effect1_dropShadow_6001_26875" result="shape" />
+            <feComposite in2="SourceAlpha" operator="in" result="effect1_backgroundBlur_6164_15669" />
+            <feBlend in="SourceGraphic" in2="effect1_backgroundBlur_6164_15669" result="shape" />
         </filter>
         <radialGradient id="e" cx="0" cy="0" r="1" gradientTransform="matrix(0 49.0658 -97.0487 0 97.332 131.89)"
             gradientUnits="userSpaceOnUse">
