@@ -52,7 +52,7 @@ public class AIChatSubscriptionDetailModelView: ObservableObject {
   }
 
   @MainActor
-  func fetchOrder() async {
+  func fetchCredentialSummary() async {
     self.isLoading = true
 
     if storeSDK.leoSubscriptionStatus != nil {

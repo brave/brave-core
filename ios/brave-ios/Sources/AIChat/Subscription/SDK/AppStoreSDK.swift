@@ -396,8 +396,8 @@ public class AppStoreSDK: ObservableObject {
         return nil
       }
 
-      // Try a maximum of 5 times before considering the purchase a failure
-      for i in 0..<5 {
+      // Try a maximum of 10 times before considering the purchase a failure
+      for i in 0..<10 {
         do {
           // Do additional purchase processing such as server-side validation
           // This function also asks for a receipt refresh

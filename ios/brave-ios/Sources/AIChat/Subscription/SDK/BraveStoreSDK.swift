@@ -412,49 +412,14 @@ public class BraveStoreSDK: AppStoreSDK {
 
     // Create an order for the AppStore receipt
     // If an order already exists, refreshes the order information
-    var orderId = Preferences.AIChat.subscriptionOrderId.value
-    Logger.module.debug("[BraveStoreSDK] - Cached OrderID: \(orderId ?? "None")")
-
-    if orderId == nil {
-      orderId = try await skusSDK.createOrder(for: product)
-      Preferences.AIChat.subscriptionOrderId.value = orderId
-    }
-
-    guard let orderId = orderId else {
-      throw BraveSkusSDK.SkusError.cannotCreateOrder
-    }
-
-    // There's an existing with no expiry date, refresh it
-    var expiryDate = Preferences.AIChat.subscriptionExpirationDate.value
-    if expiryDate == nil {
-      Logger.module.debug("[BraveStoreSDK] - No Expiration Date - Refreshing Order")
-
-      let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
-      expiryDate = order.expiresAt
-      Preferences.AIChat.subscriptionExpirationDate.value = expiryDate
-      Preferences.AIChat.subscriptionHasCredentials.value = true
-    }
-
-    guard let expiryDate = expiryDate else {
-      throw BraveSkusSDK.SkusError.cannotCreateOrder
-    }
-
-    // If the order is expired, refresh it
-    if Date() > expiryDate {
-      Logger.module.debug("[BraveStoreSDK] - Order Is Expired - Refreshing Order")
-
-      let order = try await skusSDK.refreshOrder(orderId: orderId, for: product.group)
-      Preferences.AIChat.subscriptionExpirationDate.value = order.expiresAt
-      Preferences.AIChat.subscriptionHasCredentials.value = true
-      return
-    }
+    let orderId = try await skusSDK.createOrder(for: product)
 
     // There is an order, and an expiry date, but no credentials
     // Fetch the credentials
-    if !Preferences.AIChat.subscriptionHasCredentials.value {
-      try await skusSDK.fetchCredentials(orderId: orderId, for: product.group)
-      Preferences.AIChat.subscriptionHasCredentials.value = true
-    }
+    try await skusSDK.fetchCredentials(orderId: orderId, for: product.group)
+    
+    // Store the Order-ID
+    Preferences.AIChat.subscriptionOrderId.value = orderId
 
     Logger.module.info("[BraveStoreSDK] - Order Completed")
   }

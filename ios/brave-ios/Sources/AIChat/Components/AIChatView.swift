@@ -261,7 +261,7 @@ public struct AIChatView: View {
       AIChatPaywallView(
         premiumUpgrageSuccessful: { _ in
           Task { @MainActor in
-            await model.refreshPremiumStatusOrderCredentials()
+            await model.refreshPremiumStatus()
           }
         })
     }
@@ -273,7 +273,7 @@ public struct AIChatView: View {
     }
     .onAppear {
       Task { @MainActor in
-        await model.refreshPremiumStatusOrderCredentials()
+        await model.refreshPremiumStatus()
       }
 
       if let query = model.querySubmited {
@@ -420,19 +420,14 @@ public struct AIChatView: View {
         },
         dismissAction: {
           Task { @MainActor in
-            // This is needed to try to mitigate a bug in SkusSDK
-            // See: https://github.com/brave/brave-browser/issues/36824
-            // Also see the comment on the function
-            if model.premiumStatus == .active || model.premiumStatus == .activeDisconnected {
-              await model.refreshPremiumStatusOrderCredentials()
+            await model.refreshPremiumStatus()
+            
+            if let basicModel = model.models.first(where: { $0.access == .basic }) {
+              model.changeModel(modelKey: basicModel.key)
+              model.retryLastRequest()
+            } else {
+              Logger.module.error("No basic models available")
             }
-          }
-
-          if let basicModel = model.models.first(where: { $0.access == .basic }) {
-            model.changeModel(modelKey: basicModel.key)
-            model.retryLastRequest()
-          } else {
-            Logger.module.error("No basic models available")
           }
         }
       )
