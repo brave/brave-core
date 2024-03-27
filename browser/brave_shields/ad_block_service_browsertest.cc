@@ -64,7 +64,7 @@
 
 #if BUILDFLAG(ENABLE_PLAYLIST)
 #include "brave/browser/playlist/playlist_service_factory.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents.h"
+#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/browser/playlist_service.h"
 #include "brave/components/playlist/common/features.h"
 #endif
@@ -1955,12 +1955,12 @@ IN_PROC_BROWSER_TEST_F(CosmeticFilteringPlaylistFlagEnabledTest,
       content_settings(), brave_shields::ControlType::ALLOW, url);
   UpdateAdBlockInstanceWithRules("b.com###ad-banner");
 
-  playlist::PlaylistBackgroundWebContents background_web_contents(
+  playlist::PlaylistBackgroundWebContentses background_web_contentses(
       profile(),
       playlist::PlaylistServiceFactory::GetForBrowserContext(profile()));
-  background_web_contents.Add(url, base::DoNothing());
+  background_web_contentses.Add(url, base::DoNothing());
 
-  auto* web_contents = &background_web_contents.web_contents();
+  auto* web_contents = &background_web_contentses.web_contents();
   EXPECT_TRUE(content::WaitForLoadStop(web_contents));
 
   // Check filter is applied properly.

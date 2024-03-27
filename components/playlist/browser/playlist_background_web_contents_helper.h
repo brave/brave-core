@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
-#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
+#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_
 
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "content/public/browser/web_contents_observer.h"
@@ -19,11 +19,12 @@ namespace playlist {
 
 class PlaylistService;
 
-// `PlaylistBackgroundWebContentsHelper` is attached to background `WebContents`
-// (see `PlaylistBackgroundWebContents`). It's responsible for setting up the
-// `PlaylistMediaHandler` for the background `WebContents`, and initializing
-// renderer-side state (i.e. the scripts that `PlaylistRenderFrameObserver`
-// injects into the page) via `WebContentsObserver::ReadyToCommitNavigation()`.
+// `PlaylistBackgroundWebContentsHelper` is attached to a background
+// `WebContents` (see `PlaylistBackgroundWebContentses`). It's responsible for
+// setting up the `PlaylistMediaHandler` for the background `WebContents`, and
+// initializing renderer-side state (i.e. the scripts that
+// `PlaylistRenderFrameObserver` injects into the page) via
+// `WebContentsObserver::ReadyToCommitNavigation()`.
 class PlaylistBackgroundWebContentsHelper final
     : public content::WebContentsUserData<PlaylistBackgroundWebContentsHelper>,
       public content::WebContentsObserver {
@@ -59,4 +60,4 @@ class PlaylistBackgroundWebContentsHelper final
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_HELPER_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTS_HELPER_H_

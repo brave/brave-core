@@ -191,7 +191,7 @@ interface PlaylistServiceObserver {
 };
 
 interface PlaylistMediaResponder {
-  OnMediaDetected(mojo_base.mojom.ListValue media);
+  OnMediaDetected(array<PlaylistItem> items);
 };
 
 interface PlaylistStreamingObserver {

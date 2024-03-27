@@ -10,7 +10,6 @@
 #include "base/check.h"
 #include "base/functional/callback.h"
 #include "base/functional/overloaded.h"
-#include "brave/components/playlist/browser/playlist_media_handler_helper.h"
 #include "content/public/browser/render_frame_host.h"
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
@@ -48,20 +47,12 @@ PlaylistMediaHandler::PlaylistMediaHandler(
       on_media_detected_callback_));
 }
 
-void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
-  CHECK(!media.empty())
+void PlaylistMediaHandler::OnMediaDetected(
+    std::vector<mojom::PlaylistItemPtr> items) {
+  CHECK(!items.empty())
       << "This invariant should be maintained by the renderer!";
 
-  // TODO(sszaloki):
-  // Should we use RenderFrameHost::GetGlobalFrameToken() instead?
-  const auto render_frame_host_id =
-      media_responder_receivers_.GetCurrentTargetFrame()->GetGlobalId();
-
-  auto* render_frame_host =
-      content::RenderFrameHost::FromID(render_frame_host_id);
-  if (!render_frame_host) {
-    return;
-  }
+  auto* render_frame_host = media_responder_receivers_.GetCurrentTargetFrame();
 
   auto* web_contents =
       content::WebContents::FromRenderFrameHost(render_frame_host);
@@ -69,14 +60,7 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value::List media) {
     return;
   }
 
-  DVLOG(2) << render_frame_host_id << " - " << __FUNCTION__ << ":\n" << media;
-
   auto url = web_contents->GetLastCommittedURL();
-  auto items = ExtractPlaylistItems(url, std::move(media));
-  if (items.empty()) {  // ExtractPlaylistItems() might discard media
-    return;
-  }
-
   std::visit(
       base::Overloaded{[&](OnceCallback& on_media_detected_callback) {
                          if (on_media_detected_callback) {

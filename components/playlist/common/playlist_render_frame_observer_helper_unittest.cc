@@ -10,12 +10,13 @@
 #include "base/json/values_util.h"
 #include "base/ranges/algorithm.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/playlist_media_handler_helper.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace playlist {
+namespace {
 
 auto RequiredProperties() {
   auto item = mojom::PlaylistItem::New();
@@ -97,15 +98,17 @@ auto UnsupportedSrcSchemeBlobHTTP() {
                            .Set("srcIsMediaSourceObjectURL", false)),
                    std::vector<mojom::PlaylistItemPtr>());
 }
+}  // namespace
 
 using ParamType = std::pair<
     std::string,  // test name suffix
     std::pair<base::Value::List, std::vector<mojom::PlaylistItemPtr>> (*)()>;
 
-class PlaylistMediaHandlerHelperTest
+class PlaylistRenderFrameObserverHelperTest
     : public testing::TestWithParam<ParamType> {};
 
-TEST_P(PlaylistMediaHandlerHelperTest, ExtractPlaylistItemsInTheBackground) {
+TEST_P(PlaylistRenderFrameObserverHelperTest,
+       ExtractPlaylistItemsInTheBackground) {
   auto [list, expected_items] = std::get<1>(GetParam())();
   auto items =
       ExtractPlaylistItems(GURL("https://example.com"), std::move(list));
@@ -121,7 +124,7 @@ TEST_P(PlaylistMediaHandlerHelperTest, ExtractPlaylistItemsInTheBackground) {
 
 INSTANTIATE_TEST_SUITE_P(
     Playlist,
-    PlaylistMediaHandlerHelperTest,
+    PlaylistRenderFrameObserverHelperTest,
     testing::Values(
         ParamType("RequiredProperties", &RequiredProperties),
         ParamType("RequiredPropertiesMissing", &RequiredPropertiesMissing),

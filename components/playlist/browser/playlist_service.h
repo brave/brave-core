@@ -52,7 +52,7 @@ class Image;
 namespace playlist {
 
 class MediaDetectorComponentManager;
-class PlaylistBackgroundWebContents;
+class PlaylistBackgroundWebContentses;
 
 // This class is key interface for playlist. Client will ask any playlist
 // related requests to this class. This handles youtube playlist download
@@ -376,7 +376,7 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
-  std::unique_ptr<PlaylistBackgroundWebContents> background_web_contents_;
+  std::unique_ptr<PlaylistBackgroundWebContentses> background_web_contentses_;
 
   raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 

@@ -10,7 +10,7 @@
 #include "brave/browser/playlist/playlist_service_factory.h"
 #include "brave/browser/playlist/test/mock_playlist_render_frame_observer_configurator.h"
 #include "brave/browser/playlist/test/playlist_unittest_base.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
+#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
 #include "content/public/browser/render_frame_host.h"
 #include "testing/gmock/include/gmock/gmock.h"

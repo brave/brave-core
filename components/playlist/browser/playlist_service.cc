@@ -20,7 +20,7 @@
 #include "base/strings/string_split.h"
 #include "base/task/thread_pool.h"
 #include "brave/components/playlist/browser/media_detector_component_manager.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents.h"
+#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 #include "brave/components/playlist/browser/playlist_constants.h"
 #include "brave/components/playlist/browser/playlist_tab_helper.h"
 #include "brave/components/playlist/browser/pref_names.h"
@@ -70,8 +70,8 @@ PlaylistService::PlaylistService(content::BrowserContext* context,
       std::make_unique<PlaylistMediaFileDownloadManager>(context, this);
   thumbnail_downloader_ =
       std::make_unique<PlaylistThumbnailDownloader>(context, this);
-  background_web_contents_ =
-      std::make_unique<PlaylistBackgroundWebContents>(context, this);
+  background_web_contentses_ =
+      std::make_unique<PlaylistBackgroundWebContentses>(context, this);
   playlist_streaming_ = std::make_unique<PlaylistStreaming>(context);
   media_detector_component_manager_ = manager;
 
@@ -91,7 +91,7 @@ PlaylistService::~PlaylistService() = default;
 
 void PlaylistService::Shutdown() {
   observers_.Clear();
-  background_web_contents_.reset();
+  background_web_contentses_.reset();
   media_file_download_manager_.reset();
   thumbnail_downloader_.reset();
   task_runner_.reset();
@@ -533,8 +533,8 @@ void PlaylistService::AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
       std::move(callback)));
 
   if (items.size() == 1 && items[0]->is_blob_from_media_source) {
-    background_web_contents_->Add(items[0]->page_source,
-                                  std::move(add_media_files_from_items));
+    background_web_contentses_->Add(items[0]->page_source,
+                                    std::move(add_media_files_from_items));
   } else {
     std::move(add_media_files_from_items).Run(GURL(), std::move(items));
   }
@@ -902,7 +902,7 @@ void PlaylistService::RecoverLocalDataForItem(
       },
       weak_factory_.GetWeakPtr(), item->Clone(), std::move(callback));
 
-  background_web_contents_->Add(
+  background_web_contentses_->Add(
       item->page_source,
       base::IgnoreArgs<GURL>(std::move(update_media_src_and_recover)));
 }
@@ -1086,7 +1086,7 @@ void PlaylistService::OnMediaFileDownloadFinished(
 
 void PlaylistService::OnEnabledPrefChanged() {
   if (!*enabled_pref_) {
-    background_web_contents_->Reset();
+    background_web_contentses_->Reset();
     thumbnail_downloader_->CancelAllDownloadRequests();
     media_file_download_manager_->CancelAllDownloadRequests();
   }

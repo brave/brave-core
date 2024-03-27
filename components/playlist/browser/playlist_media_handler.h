@@ -66,7 +66,7 @@ class PlaylistMediaHandler final
                        OnMediaDetectedCallback on_media_detected_callback);
 
   // mojom::PlaylistMediaResponder:
-  void OnMediaDetected(base::Value::List media) override;
+  void OnMediaDetected(std::vector<mojom::PlaylistItemPtr> items) override;
 
   content::RenderFrameHostReceiverSet<mojom::PlaylistMediaResponder>
       media_responder_receivers_;

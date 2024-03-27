@@ -3,7 +3,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#include "brave/components/playlist/browser/playlist_background_webcontents.h"
+#include "brave/components/playlist/browser/playlist_background_web_contentses.h"
 
 #include <string>
 #include <utility>
@@ -12,7 +12,7 @@
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
 #include "base/functional/callback_helpers.h"
-#include "brave/components/playlist/browser/playlist_background_webcontents_helper.h"
+#include "brave/components/playlist/browser/playlist_background_web_contents_helper.h"
 #include "brave/components/playlist/common/features.h"
 #include "content/public/browser/navigation_controller.h"
 #include "content/public/browser/web_contents.h"
@@ -42,14 +42,14 @@ const char* GetUserAgentOverride(const GURL& url) {
 
 namespace playlist {
 
-PlaylistBackgroundWebContents::PlaylistBackgroundWebContents(
+PlaylistBackgroundWebContentses::PlaylistBackgroundWebContentses(
     content::BrowserContext* context,
     PlaylistService* service)
     : context_(context), service_(service) {}
 
-PlaylistBackgroundWebContents::~PlaylistBackgroundWebContents() = default;
+PlaylistBackgroundWebContentses::~PlaylistBackgroundWebContentses() = default;
 
-void PlaylistBackgroundWebContents::Add(
+void PlaylistBackgroundWebContentses::Add(
     const GURL& url,
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
     base::TimeDelta timeout) {
@@ -59,7 +59,7 @@ void PlaylistBackgroundWebContents::Add(
 
   auto [callback_for_media_handler, callback_for_timer] =
       base::SplitOnceCallback(base::BindOnce(
-          &PlaylistBackgroundWebContents::Remove, weak_factory_.GetWeakPtr(),
+          &PlaylistBackgroundWebContentses::Remove, weak_factory_.GetWeakPtr(),
           web_contents.get(), std::move(on_media_detected_callback)));
 
   PlaylistBackgroundWebContentsHelper::CreateForWebContents(
@@ -76,25 +76,25 @@ void PlaylistBackgroundWebContents::Add(
   }
   web_contents->GetController().LoadURLWithParams(load_url_params);
 
-  background_web_contents_[std::move(web_contents)].Start(
+  background_web_contentses_[std::move(web_contents)].Start(
       FROM_HERE, timeout,
       base::BindOnce(std::move(callback_for_timer), GURL(),
                      std::vector<mojom::PlaylistItemPtr>()));
 }
 
-void PlaylistBackgroundWebContents::Reset() {
-  background_web_contents_.clear();
+void PlaylistBackgroundWebContentses::Reset() {
+  background_web_contentses_.clear();
 }
 
-void PlaylistBackgroundWebContents::Remove(
+void PlaylistBackgroundWebContentses::Remove(
     content::WebContents* web_contents,
     PlaylistMediaHandler::OnceCallback on_media_detected_callback,
     GURL url,
     std::vector<mojom::PlaylistItemPtr> items) {
-  const auto it = background_web_contents_.find(web_contents);
-  CHECK(it != background_web_contents_.cend());
+  const auto it = background_web_contentses_.find(web_contents);
+  CHECK(it != background_web_contentses_.cend());
   it->second.Stop();  // no-op if called by the timer
-  background_web_contents_.erase(it);
+  background_web_contentses_.erase(it);
 
   std::move(on_media_detected_callback).Run(std::move(url), std::move(items));
 }

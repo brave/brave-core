@@ -10,6 +10,7 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
@@ -156,13 +157,15 @@ void PlaylistRenderFrameObserver::Inject(
 }
 
 void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
-  DVLOG(2) << __FUNCTION__;
+  const auto url = render_frame()->GetWebFrame()->GetDocument().Url();
+  DVLOG(2) << __FUNCTION__ << " - " << url << ":\n" << media;
 
-  if (media.empty()) {
+  auto items = ExtractPlaylistItems(url, std::move(media));
+  if (items.empty()) {  // ExtractPlaylistItems() might discard media
     return;
   }
 
-  GetMediaResponder()->OnMediaDetected(std::move(media));
+  GetMediaResponder()->OnMediaDetected(std::move(items));
 }
 
 }  // namespace playlist

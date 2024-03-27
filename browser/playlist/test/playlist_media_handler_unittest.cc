@@ -12,12 +12,26 @@
 #include "brave/browser/playlist/test/playlist_unittest_base.h"
 #include "brave/components/playlist/browser/playlist_media_handler.h"
 #include "brave/components/playlist/common/mojom/playlist.mojom.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "mojo/public/cpp/bindings/associated_remote.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
 #include "url/gurl.h"
 
 namespace playlist {
+namespace {
+auto GetPlaylistItems() {
+  return ExtractPlaylistItems(
+      GURL(), base::Value::List().Append(
+                  base::Value::Dict()
+                      .Set("name", "")
+                      .Set("pageTitle", "")
+                      .Set("pageSrc", "")
+                      .Set("mimeType", "")
+                      .Set("src", "https://example.com/video.mp4")
+                      .Set("srcIsMediaSourceObjectURL", false)));
+}
+}  // namespace
 
 template <typename>
 class PlaylistMediaHandlerTest : public PlaylistUnitTestBase {};
@@ -49,16 +63,8 @@ TYPED_TEST(PlaylistMediaHandlerTest, Callbacks) {
   PlaylistMediaHandler::BindMediaResponderReceiver(
       content::RenderViewHostTestHarness::main_rfh(),
       remote.BindNewEndpointAndPassDedicatedReceiver());
-  auto list = base::Value::List().Append(
-      base::Value::Dict()
-          .Set("name", "")
-          .Set("pageTitle", "")
-          .Set("pageSrc", "")
-          .Set("mimeType", "")
-          .Set("src", "https://example.com/video.mp4")
-          .Set("srcIsMediaSourceObjectURL", false));
-  remote->OnMediaDetected(list.Clone());
-  remote->OnMediaDetected(std::move(list));
+  remote->OnMediaDetected(GetPlaylistItems());
+  remote->OnMediaDetected(GetPlaylistItems());
 
   run_loop.Run();
 }

@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
-#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
+#ifndef BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTSES_H_
+#define BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTSES_H_
 
 #include <map>
 #include <memory>
@@ -31,21 +31,22 @@ namespace playlist {
 
 class PlaylistService;
 
-// `PlaylistBackgroundWebContents` fulfills background `WebContents` requests.
+// `PlaylistBackgroundWebContentses` fulfills background `WebContents` requests.
 // After creating the background `WebContents`, it waits 10 seconds for the
 // first non-empty media list to arrive. On receiving the media, or if the timer
 // goes off (whichever happens first), it destructs the background
 // `WebContents`, and calls the provided callback with the result.
 // It overrides the user agent if `features::kPlaylistFakeUA` is enabled,
 // or uses a static look-up table to decide if it has to otherwise.
-class PlaylistBackgroundWebContents final {
+class PlaylistBackgroundWebContentses final {
  public:
-  PlaylistBackgroundWebContents(content::BrowserContext* context,
-                                PlaylistService* service);
-  PlaylistBackgroundWebContents(const PlaylistBackgroundWebContents&) = delete;
-  PlaylistBackgroundWebContents& operator=(
-      const PlaylistBackgroundWebContents&) = delete;
-  ~PlaylistBackgroundWebContents();
+  PlaylistBackgroundWebContentses(content::BrowserContext* context,
+                                  PlaylistService* service);
+  PlaylistBackgroundWebContentses(const PlaylistBackgroundWebContentses&) =
+      delete;
+  PlaylistBackgroundWebContentses& operator=(
+      const PlaylistBackgroundWebContentses&) = delete;
+  ~PlaylistBackgroundWebContentses();
 
   void Add(const GURL& url,
            PlaylistMediaHandler::OnceCallback on_media_detected_callback,
@@ -70,8 +71,8 @@ class PlaylistBackgroundWebContents final {
   // PlaylistBackgroundWebContentsTest.ExtractPlaylistItemsInTheBackground, and
   // PlaylistBackgroundWebContentsTest.UserAgentOverride
   content::WebContents& web_contents() const {
-    CHECK(background_web_contents_.size() == 1);
-    return *background_web_contents_.cbegin()->first;
+    CHECK(background_web_contentses_.size() == 1);
+    return *background_web_contentses_.cbegin()->first;
   }
 
   raw_ptr<content::BrowserContext> context_;
@@ -79,11 +80,11 @@ class PlaylistBackgroundWebContents final {
   std::map<std::unique_ptr<content::WebContents>,
            base::OneShotTimer,
            base::UniquePtrComparator>  // for heterogeneous lookups
-      background_web_contents_;
+      background_web_contentses_;
 
-  base::WeakPtrFactory<PlaylistBackgroundWebContents> weak_factory_{this};
+  base::WeakPtrFactory<PlaylistBackgroundWebContentses> weak_factory_{this};
 };
 
 }  // namespace playlist
 
-#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEBCONTENTS_H_
+#endif  // BRAVE_COMPONENTS_PLAYLIST_BROWSER_PLAYLIST_BACKGROUND_WEB_CONTENTSES_H_
