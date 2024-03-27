@@ -88,8 +88,7 @@ export function isPersistanceOfPanelProhibited(panelType: PanelTypes) {
     panelType === 'connectWithSite' ||
     panelType === 'signData' ||
     panelType === 'signAllTransactions' ||
-    panelType === 'signTransaction' ||
-    panelType === 'showUnlock'
+    panelType === 'signTransaction'
   )
 }
 
