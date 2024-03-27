@@ -22,7 +22,3 @@ export const ToText = styled(Text)`
 export const ToRow = styled(Row)`
   min-height: 26px;
 `
-
-export const SendButtonRow = styled(Row)`
-  max-width: 360px;
-`
