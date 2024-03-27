@@ -16,6 +16,10 @@ import Button from '@brave/leo/react/button';
 
 const SearchInput = styled(Input)`
   --leo-control-padding: 6px;
+  --leo-control-color: rgba(255, 255, 255, 0.1);
+  --leo-control-radius: ${radius.m};
+
+  backdrop-filter: blur(64px);
 
   display: inline-block;
   width: 540px;
@@ -24,10 +28,12 @@ const SearchInput = styled(Input)`
   &:has(+ div) {
     --leo-control-radius: ${radius.m} ${radius.m} 0 0;
   }
+
+  border-radius: var(--leo-control-radius);
 `
 
 const EnginePicker = styled(Dropdown)`
-  --leo-control-radius: ${spacing.m};
+  --leo-control-radius: ${radius.m};
 `
 
 const EngineValueSlot = styled.div`
