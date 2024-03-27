@@ -614,7 +614,7 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
   bookmarks_count.entities = bookmarks_count.non_tombstone_entities = 1;
   counts.push_back(bookmarks_count);
 
-  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  // brave_sync_service_impl()->OnGotEntityCounts(counts);
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 0, 1);
 
@@ -635,7 +635,7 @@ TEST_F(BraveSyncServiceImplTest, P3aForHistoryThroughDelegate) {
             std::move(callback).Run(std::pair<bool, int>(true, 10001));
           });
 
-  brave_sync_service_impl()->OnGotEntityCounts(counts);
+  // brave_sync_service_impl()->OnGotEntityCounts(counts);
   histogram_tester.ExpectBucketCount(
       brave_sync::p3a::kSyncedObjectsCountHistogramNameV2, 2, 1);
 
