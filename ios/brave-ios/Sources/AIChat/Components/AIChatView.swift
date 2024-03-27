@@ -421,7 +421,7 @@ public struct AIChatView: View {
         dismissAction: {
           Task { @MainActor in
             await model.refreshPremiumStatus()
-            
+
             if let basicModel = model.models.first(where: { $0.access == .basic }) {
               model.changeModel(modelKey: basicModel.key)
               model.retryLastRequest()

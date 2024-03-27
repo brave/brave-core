@@ -14,6 +14,10 @@ public struct AIChatLeoPurchaseLogs: View {
   @State
   private var text = ""
 
+  public init() {
+
+  }
+
   public var body: some View {
     ScrollView {
       Text(text)

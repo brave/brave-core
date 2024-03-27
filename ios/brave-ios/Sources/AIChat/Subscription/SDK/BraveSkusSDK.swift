@@ -272,7 +272,9 @@ public class BraveSkusSDK {
       return try self.jsonDecoder.decode(SkusOrder.self, from: data)
     }
 
-    Logger.module.info("[BraveSkusSDK] - Refreshing Order: \(orderId, privacy: .private(mask: .hash))")
+    Logger.module.info(
+      "[BraveSkusSDK] - Refreshing Order: \(orderId, privacy: .private(mask: .hash))"
+    )
 
     guard let skusService = skusService else {
       throw SkusError.skusServiceUnavailable
@@ -321,7 +323,9 @@ public class BraveSkusSDK {
     Logger.module.info("[BraveSkusSDK] - Fetching Order Credentials")
     let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
     if !result.isEmpty {
-      Logger.module.error("[BraveSkusSDK] - Failed to Fetch Credentials: \(result, privacy: .public)")
+      Logger.module.error(
+        "[BraveSkusSDK] - Failed to Fetch Credentials: \(result, privacy: .public)"
+      )
       throw SkusError.cannotFetchCredentials
     }
   }

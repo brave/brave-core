@@ -283,7 +283,9 @@ public class AppStoreSDK: ObservableObject {
             self.purchasedProducts = purchasedProducts
           }
         } catch {
-          Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)")
+          Logger.module.error(
+            "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+          )
         }
       }
     }
@@ -345,7 +347,9 @@ public class AppStoreSDK: ObservableObject {
       do {
         return try verify(transaction)
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 
@@ -361,7 +365,9 @@ public class AppStoreSDK: ObservableObject {
       do {
         return try verify(transaction)
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 
@@ -406,7 +412,9 @@ public class AppStoreSDK: ObservableObject {
           Logger.module.info("[AppStoreSDK] - Transaction Verified with Backend")
           break
         } catch {
-          Logger.module.error("[AppStoreSDK] - Backend Processing Failed: \(error, privacy: .public)")
+          Logger.module.error(
+            "[AppStoreSDK] - Backend Processing Failed: \(error, privacy: .public)"
+          )
           Logger.module.info("[AppStoreSDK] - Waiting 2s and trying again...")
           try? await Task.sleep(seconds: 1.0)
         }
@@ -458,7 +466,9 @@ public class AppStoreSDK: ObservableObject {
       return allProducts.autoRenewable.contains(product)
 
     default:
-      Logger.module.error("[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue, privacy: .public)")
+      Logger.module.error(
+        "[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue, privacy: .public)"
+      )
       return false
     }
   }
@@ -528,7 +538,9 @@ public class AppStoreSDK: ObservableObject {
         self.allProducts = availableProducts
       }
     } catch {
-      Logger.module.error("[AppStoreSDK] - Unable to fetch AppStore Products: \(error, privacy: .public)")
+      Logger.module.error(
+        "[AppStoreSDK] - Unable to fetch AppStore Products: \(error, privacy: .public)"
+      )
     }
   }
 
@@ -577,7 +589,9 @@ public class AppStoreSDK: ObservableObject {
           break
         }
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 

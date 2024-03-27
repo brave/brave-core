@@ -268,7 +268,9 @@ public class BraveStoreSDK: AppStoreSDK {
       }
       return true
     } catch {
-      Logger.module.error("[BraveStoreSDK] - Failed to restore purchased product receipt: \(error, privacy: .public)")
+      Logger.module.error(
+        "[BraveStoreSDK] - Failed to restore purchased product receipt: \(error, privacy: .public)"
+      )
       return false
     }
     #endif
@@ -417,7 +419,7 @@ public class BraveStoreSDK: AppStoreSDK {
     // There is an order, and an expiry date, but no credentials
     // Fetch the credentials
     try await skusSDK.fetchCredentials(orderId: orderId, for: product.group)
-    
+
     // Store the Order-ID
     Preferences.AIChat.subscriptionOrderId.value = orderId
 
