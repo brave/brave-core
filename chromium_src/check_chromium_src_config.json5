@@ -44,7 +44,6 @@
         "components/variations/service/field_trial_unittest.cc",
         "net/base/brave_proxy_string_util_unittest.cc",
         "net/cookies/brave_canonical_cookie_unittest.cc",
-        "third_party/blink/renderer/modules/storage/brave_dom_window_storage.h",
         "v8/include/DO NOT PUT FILES HERE",
     ],
 
