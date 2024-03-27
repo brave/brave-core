@@ -28,9 +28,15 @@ struct DepositTokenView: View {
   @State private var isPresentingAddAccount: Bool = false
   @State private var isPresentingAddAccountConfirmation: Bool = false
 
-  private var availableAccounts: [BraveWallet.AccountInfo] {
-    guard let token = depositTokenStore.prefilledToken else { return [] }
-    return depositTokenStore.allAccounts.filter({ $0.coin == token.coin })
+  private func availableAccounts(
+    for token: BraveWallet.BlockchainToken
+  ) -> [BraveWallet.AccountInfo] {
+    guard
+      let tokenNetwork = depositTokenStore.allNetworks.first(where: {
+        $0.chainId == token.chainId
+      })
+    else { return [] }
+    return depositTokenStore.allAccounts.accountsFor(network: tokenNetwork)
   }
 
   var body: some View {
@@ -41,10 +47,14 @@ struct DepositTokenView: View {
             type: .prefilledAccount(account: prefilledAccount),
             allNetworks: depositTokenStore.allNetworks
           )
-        } else if let prefilledToken = depositTokenStore.prefilledToken, !availableAccounts.isEmpty
+        } else if let prefilledToken = depositTokenStore.prefilledToken,
+          !availableAccounts(for: prefilledToken).isEmpty
         {
           DepositDetailsView(
-            type: .prefilledToken(token: prefilledToken, availableAccounts: availableAccounts),
+            type: .prefilledToken(
+              token: prefilledToken,
+              availableAccounts: availableAccounts(for: prefilledToken)
+            ),
             allNetworks: depositTokenStore.allNetworks
           )
         } else {
@@ -152,9 +162,7 @@ struct DepositTokenView: View {
               DepositDetailsView(
                 type: .prefilledToken(
                   token: selectedTokenViewModel.token,
-                  availableAccounts: depositTokenStore.allAccounts.filter {
-                    $0.coin == selectedTokenViewModel.token.coin
-                  }
+                  availableAccounts: availableAccounts(for: selectedTokenViewModel.token)
                 ),
                 allNetworks: depositTokenStore.allNetworks
               )
