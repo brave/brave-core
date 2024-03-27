@@ -37,6 +37,7 @@ export interface TorrentObjMap {
 export interface File {
   name: string
   length: number
+  path: string
 }
 
 export interface TorrentState {

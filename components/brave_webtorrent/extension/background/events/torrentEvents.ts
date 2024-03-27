@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import { Torrent } from 'webtorrent'
+import { Torrent, Instance } from 'webtorrent'
 import * as throttle from 'throttleit'
 
 import webtorrentActions from '../actions/webtorrentActions'
@@ -12,12 +12,12 @@ interface TorrentExtended extends Torrent {
   progressInterval?: number
 }
 
-export const addTorrentEvents = (torrent: TorrentExtended) => {
+export const addTorrentEvents = (client: Instance, torrent: TorrentExtended) => {
   torrent.on('warning', (e: Error) => console.log('warning: ', torrent, e))
   torrent.on('error', (e: Error) => console.log('error: ', torrent, e))
 
   torrent.on('ready', () => {
-    createServer(torrent, (serverURL: string) => {
+    createServer(client, torrent, (serverURL: string) => {
       webtorrentActions.serverUpdated(torrent, serverURL)
     })
   })

@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as ParseTorrent from 'parse-torrent'
+import ParseTorrent from 'parse-torrent'
 import { Torrent } from 'webtorrent'
 import { parse } from 'querystring'
 
@@ -165,9 +165,10 @@ const updateInfo = (state: TorrentsState, torrent: Torrent) => {
     numPeers, timeRemaining, infoHash
 } = torrent
   let length: number = 0
+  console.log(torrent.files)
   const files: File[] = torrent.files.map((file) => {
     length += file.length
-    return { name: file.name, length: file.length }
+    return { name: file.name, length: file.length, path: file.path }
   })
 
   const tabClients: Set<number> = new Set<number>()

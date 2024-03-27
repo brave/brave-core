@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-import * as WebTorrent from 'webtorrent'
+import WebTorrent from 'webtorrent'
 import { addTorrentEvents, removeTorrentEvents } from './events/torrentEvents'
 import { addWebtorrentEvents } from './events/webtorrentEvents'
 import { AddressInfo } from 'net'
@@ -11,18 +11,22 @@ import { basename, extname } from 'path'
 import * as JSZip from 'jszip'
 
 let webTorrent: WebTorrent.Instance | undefined
-let servers: { [key: string]: any } = { }
+let servers: { [key: string]: any } = {}
 
 export const getWebTorrent = () => {
   if (!webTorrent) {
-    webTorrent = new WebTorrent({ tracker: { wrtc: false } })
+    webTorrent = new WebTorrent({ tracker: false })
     addWebtorrentEvents(webTorrent)
   }
 
   return webTorrent
 }
 
-export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string) => void) => {
+export const createServer = (
+  client: WebTorrent.Instance,
+  torrent: WebTorrent.Torrent,
+  cb: (serverURL: string) => void
+) => {
   if (!torrent.infoHash) return // torrent is not ready
 
   const opts = {
@@ -34,11 +38,11 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
     // Ref: https://github.com/brave/browser-laptop/issues/12616
     hostname: '127.0.0.1'
   }
-  const server = torrent.createServer(opts)
+  const server = client.createServer(opts, 'node')
   if (!server) return
 
   try {
-    server.listen(0, '127.0.0.1', undefined, () => {
+    (server as any).listen(0, '127.0.0.1', undefined, () => {
       // Explicitly cast server.address() to AddressInfo to access its
       // properties. It's safe to cast here because the only possible type of
       // server.address() here is AddressInfo since pipe name (as string) is
@@ -53,12 +57,15 @@ export const createServer = (torrent: WebTorrent.Torrent, cb: (serverURL: string
 }
 
 export const addTorrent = (torrentId: string | Instance) => {
-  const torrent = getWebTorrent().add(torrentId)
-  addTorrentEvents(torrent)
+  const client = getWebTorrent()
+  const torrent = client.add(torrentId)
+  addTorrentEvents(client, torrent)
 }
 
 export const findTorrent = (infoHash: string) => {
-  return getWebTorrent().torrents.find(torrent => torrent.infoHash === infoHash)
+  return getWebTorrent().torrents.find(
+    (torrent) => torrent.infoHash === infoHash
+  )
 }
 
 const maybeDestroyWebTorrent = () => {
@@ -109,17 +116,16 @@ export const saveAllFiles = (infoHash: string) => {
       zip = zip.folder(torrent.name)
     }
 
-    zip.generateAsync({ type: 'blob' })
-      .then(
-        (blob: Blob) => downloadBlob(blob),
-        (err: Error) => console.error(err)
-      )
+    zip.generateAsync({ type: 'blob' }).then(
+      (blob: Blob) => downloadBlob(blob),
+      (err: Error) => console.error(err)
+    )
   }
 
   const addFilesToZip = () => {
     let addedFiles = 0
 
-    files.forEach(file => {
+    files.forEach((file) => {
       file.getBlob((err, blob) => {
         if (err) {
           console.error(err)

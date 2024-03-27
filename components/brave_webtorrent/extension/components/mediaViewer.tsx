@@ -13,7 +13,12 @@ import Spinner from './spinner'
 const getSelectedFile = (torrent: TorrentObj, ix: number) => torrent.files?.[ix]
 
 const Container = styled.div`
-  video, audio, image-rendering, object, iframe, img {
+  video,
+  audio,
+  image-rendering,
+  object,
+  iframe,
+  img {
     position: absolute;
     top: 0;
     left: 0;
@@ -24,7 +29,8 @@ const Container = styled.div`
     margin: auto;
   }
 
-  object, iframe {
+  object,
+  iframe {
     width: 100%;
     height: 100%;
   }
@@ -47,26 +53,35 @@ const LoadingContainer = styled.div`
 interface Props {
   torrent: TorrentObj
   ix: number
+  infoHash: string
 }
 
-const playMedia = (element: HTMLMediaElement) => element.play().catch(err => console.error('Autoplay failed', err))
+const playMedia = (element: HTMLMediaElement) =>
+  element.play().catch((err) => console.error('Autoplay failed', err))
 const setMediaElementRef = (element: HTMLMediaElement | null) => {
   if (!element) return
   if (element.readyState >= HTMLMediaElement.HAVE_CURRENT_DATA) {
     playMedia(element)
     return
   }
-  element.addEventListener('loadeddata', () => playMedia(element), { once: true })
+  element.addEventListener('loadeddata', () => playMedia(element), {
+    once: true
+  })
 }
 
-export default function MediaViewer ({ torrent, ix }: Props) {
+export default function MediaViewer({ torrent, ix, infoHash }: Props) {
   const file = getSelectedFile(torrent, ix)
   const fileType = getFileType(file)
-  const fileURL = torrent.serverURL && torrent.serverURL + '/' + ix
+  const fileURL =
+    torrent.serverURL &&
+    torrent.serverURL + '/webtorrent/' + infoHash + '/' + file?.path
   const loading = !file || !fileURL
+  console.log({ torrent, file, fileURL, fileType })
 
   React.useEffect(() => {
-    document.body.style.backgroundColor = isMedia(fileType) ? 'rgb(0, 0, 0)' : ''
+    document.body.style.backgroundColor = isMedia(fileType)
+      ? 'rgb(0, 0, 0)'
+      : ''
 
     // Reset background color when unmounted.
     return () => {
@@ -74,16 +89,54 @@ export default function MediaViewer ({ torrent, ix }: Props) {
     }
   }, [fileType])
 
-  return <Container>
-    {loading
-      ? <LoadingContainer><Spinner/>Loading media...</LoadingContainer>
-      : <>
-        {fileType === 'video' && <video id='video' src={fileURL} ref={setMediaElementRef} controls />}
-        {fileType === 'audio' && <audio id='audio' src={fileURL} ref={setMediaElementRef} controls />}
-        {fileType === 'image' && <img id='image' src={fileURL} />}
-        {fileType === 'pdf' && <object id='object' type='application/pdf' data={fileURL}/>}
-        {fileType === 'iframe' && <iframe id='iframe' src={fileURL} sandbox='allow-same-origin' />}
-        {fileType === 'unknown' && <div>Unsupported file type</div>}
-      </>}
-  </Container>
+  return (
+    <Container>
+      {loading ? (
+        <LoadingContainer>
+          <Spinner />
+          Loading media...
+        </LoadingContainer>
+      ) : (
+        <>
+          {fileType === 'video' && (
+            <video
+              id='video'
+              src={fileURL}
+              ref={setMediaElementRef}
+              controls
+            />
+          )}
+          {fileType === 'audio' && (
+            <audio
+              id='audio'
+              src={fileURL}
+              ref={setMediaElementRef}
+              controls
+            />
+          )}
+          {fileType === 'image' && (
+            <img
+              id='image'
+              src={fileURL}
+            />
+          )}
+          {fileType === 'pdf' && (
+            <object
+              id='object'
+              type='application/pdf'
+              data={fileURL}
+            />
+          )}
+          {fileType === 'iframe' && (
+            <iframe
+              id='iframe'
+              src={fileURL}
+              sandbox='allow-same-origin'
+            />
+          )}
+          {fileType === 'unknown' && <div>Unsupported file type</div>}
+        </>
+      )}
+    </Container>
+  )
 }

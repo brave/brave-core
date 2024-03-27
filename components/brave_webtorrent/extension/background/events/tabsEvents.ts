@@ -9,6 +9,11 @@ import tabActions from '../actions/tabActions'
 // links (as the background page would not be running on that first load).
 // Note: Empty query for {} returns all tabs this extension is interested in.
 chrome.tabs.query({}, tabs => {
+  if (chrome.runtime.lastError) {
+    console.error('Error querying tabs: ', chrome.runtime.lastError);
+    return;
+  }
+
   for (const tab of tabs) {
     tabActions.tabUpdated(tab.id!, { url: tab.url ?? '' })
   }

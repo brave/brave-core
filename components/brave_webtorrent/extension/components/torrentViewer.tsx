@@ -42,21 +42,34 @@ const StyledTorrentViewer = styled.div`
   }
 `
 
-export default function TorrentViewer ({ actions, name, torrent, torrentState }: Props) {
-    const { torrentId, tabId, errorMsg, infoHash } = torrentState
-    return <StyledTorrentViewer>
-        <TorrentViewerHeader
-          name={name}
-          torrent={torrent}
-          torrentId={torrentId}
-          tabId={tabId}
-          onStartTorrent={actions.startTorrent}
-          onStopDownload={actions.stopDownload} />
-        <TorrentStatus torrent={torrent} errorMsg={errorMsg} />
-        <TorrentFileList
-          torrentId={torrentId}
-          torrent={torrent}
-          onSaveAllFiles={() => actions.saveAllFiles(infoHash)} />
-        <TorrentViewerFooter torrent={torrent} />
-      </StyledTorrentViewer>
+export default function TorrentViewer({
+  actions,
+  name,
+  torrent,
+  torrentState
+}: Props) {
+  const { torrentId, tabId, errorMsg, infoHash } = torrentState
+  return (
+    <StyledTorrentViewer>
+      <TorrentViewerHeader
+        name={name}
+        torrent={torrent}
+        torrentId={torrentId}
+        tabId={tabId}
+        onStartTorrent={actions.startTorrent}
+        onStopDownload={actions.stopDownload}
+      />
+      <TorrentStatus
+        torrent={torrent}
+        errorMsg={errorMsg}
+      />
+      <TorrentFileList
+        torrentId={torrentId}
+        torrent={torrent}
+        infoHash={infoHash}
+        onSaveAllFiles={() => actions.saveAllFiles(infoHash)}
+      />
+      <TorrentViewerFooter torrent={torrent} />
+    </StyledTorrentViewer>
+  )
 }
