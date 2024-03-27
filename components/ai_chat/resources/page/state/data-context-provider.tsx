@@ -41,7 +41,6 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
-  const [shouldShowLongPageWarning, setShouldShowLongPageWarning] = React.useState(false);
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -163,17 +162,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.getShouldSendPageContents().then(({ shouldSend }) => setShouldSendPageContents(shouldSend))
   }
 
-  React.useEffect(() => {
-    if (shouldShowLongPageWarning) return
-
-    if (
-      !isGenerating &&
-      conversationHistory.length >= 1 &&
-      siteInfo?.contentUsedPercentage < 100 && siteInfo?.contentUsedPercentage > 0
-    ) {
-      setShouldShowLongPageWarning(true)
-    }
-  }, [conversationHistory, siteInfo?.contentUsedPercentage, isGenerating, shouldShowLongPageWarning])
+  const shouldShowLongPageWarning = React.useMemo(() =>
+    conversationHistory.length >= 1 &&
+    siteInfo?.contentUsedPercentage < 100,
+  [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     if (!currentModel) return false
