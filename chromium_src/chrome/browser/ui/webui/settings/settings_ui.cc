@@ -6,7 +6,6 @@
 #include "brave/browser/ui/webui/settings/brave_import_data_handler.h"
 #include "brave/browser/ui/webui/settings/brave_search_engines_handler.h"
 #include "brave/browser/ui/webui/settings/brave_site_settings_handler.h"
-#include "brave/browser/ui/webui/settings/settings_cookies_view_handler.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "chrome/browser/ui/webui/settings/hats_handler.h"
 #include "chrome/browser/ui/webui/settings/settings_secure_dns_handler.h"
@@ -21,9 +20,7 @@
 #define SiteSettingsHandler BraveSiteSettingsHandler
 #define ImportDataHandler BraveImportDataHandler
 #define SearchEnginesHandler BraveSearchEnginesHandler
-#define HatsHandler HatsHandler>());AddSettingsPageUIHandler(std::make_unique<CookiesViewHandler
 #include "src/chrome/browser/ui/webui/settings/settings_ui.cc"
-#undef HatsHandler
 #undef SearchEnginesHandler
 #undef ImportDataHandler
 #undef SiteSettingsHandler
