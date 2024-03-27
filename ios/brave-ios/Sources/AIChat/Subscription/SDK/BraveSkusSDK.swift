@@ -191,7 +191,7 @@ public class BraveSkusSDK {
       return try JSONEncoder().encode(json).base64EncodedString
     } catch {
       Logger.module.error(
-        "[BraveSkusSDK] - Failed to serialize AppStore Receipt for LocalStorage: \(error.localizedDescription)"
+        "[BraveSkusSDK] - Failed to serialize AppStore Receipt for LocalStorage: \(error.localizedDescription, privacy: .public)"
       )
       throw SkusError.cannotEncodeReceipt
     }
@@ -209,14 +209,24 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
+    Logger.module.info("[BraveSkusSDK] - Creating Order")
+
     let receipt = try BraveSkusSDK.receipt(for: product)
+
+    Logger.module.info("[BraveSkusSDK] - Fetched Receipt")
+
+    Logger.module.info("[BraveSkusSDK] - Creating Order From Receipt")
     let orderId = await skusService.createOrderFromReceipt(
       domain: product.group.skusDomain,
       receipt: receipt
     )
+
     if orderId.isEmpty {
+      Logger.module.info("[BraveSkusSDK] - No OrderID")
       throw SkusError.cannotCreateOrder
     }
+
+    Logger.module.info("[BraveSkusSDK] - OrderID: \(orderId, privacy: .private(mask: .hash))")
     return orderId
   }
 
@@ -262,6 +272,10 @@ public class BraveSkusSDK {
       return try self.jsonDecoder.decode(SkusOrder.self, from: data)
     }
 
+    Logger.module.info(
+      "[BraveSkusSDK] - Refreshing Order: \(orderId, privacy: .private(mask: .hash))"
+    )
+
     guard let skusService = skusService else {
       throw SkusError.skusServiceUnavailable
     }
@@ -306,9 +320,12 @@ public class BraveSkusSDK {
       throw SkusError.skusServiceUnavailable
     }
 
+    Logger.module.info("[BraveSkusSDK] - Fetching Order Credentials")
     let result = await skusService.fetchOrderCredentials(domain: group.skusDomain, orderId: orderId)
     if !result.isEmpty {
-      Logger.module.error("[BraveSkusSDK] - Failed to Fetch Credentials: \(result)")
+      Logger.module.error(
+        "[BraveSkusSDK] - Failed to Fetch Credentials: \(result, privacy: .public)"
+      )
       throw SkusError.cannotFetchCredentials
     }
   }

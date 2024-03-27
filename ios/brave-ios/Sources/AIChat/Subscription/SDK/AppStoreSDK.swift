@@ -21,6 +21,7 @@ public class AppStoreReceipt {
   public static var receipt: String {
     get throws {
       guard let receiptUrl = Bundle.main.appStoreReceiptURL else {
+        Logger.module.info("[AppStoreReceipt] - Invalid Appstore Receipt URL")
         throw AppStoreReceiptError.invalidReceiptURL
       }
 
@@ -45,10 +46,12 @@ public class AppStoreReceipt {
       fetcher.refreshReceipt { error in
         DispatchQueue.main.async {
           if let error = error {
+            Logger.module.error("[AppStoreReceipt] - Error Refreshing Receipt: \(error)")
             continuation.resume(throwing: error)
             return
           }
 
+          Logger.module.info("[AppStoreReceipt] - Receipt Refreshed Successfully")
           continuation.resume()
         }
       }
@@ -280,7 +283,9 @@ public class AppStoreSDK: ObservableObject {
             self.purchasedProducts = purchasedProducts
           }
         } catch {
-          Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
+          Logger.module.error(
+            "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+          )
         }
       }
     }
@@ -342,7 +347,9 @@ public class AppStoreSDK: ObservableObject {
       do {
         return try verify(transaction)
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 
@@ -358,7 +365,9 @@ public class AppStoreSDK: ObservableObject {
       do {
         return try verify(transaction)
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 
@@ -372,25 +381,51 @@ public class AppStoreSDK: ObservableObject {
     let result = try await product.purchase(options: [.simulatesAskToBuyInSandbox(false)])
     switch result {
     case .success(let result):
+      Logger.module.info("[AppStoreSDK] - Verifying Transaction")
+
       // Verify the transaction
       let transaction = try self.verify(result)
 
+      Logger.module.info("[AppStoreSDK] - Fetching Purchases")
+
       // Retrieve all products the user purchased
       let purchasedProducts = await self.fetchPurchasedProducts()
+
+      Logger.module.info("[AppStoreSDK] - Refreshing Receipt")
 
       // If we cannot force a receipt to be added to the app,
       // leave the transaction pending.
       try await AppStoreReceipt.sync()
 
       if try AppStoreReceipt.receipt.isEmpty {
+        Logger.module.info("[AppStoreSDK] - Receipt is NOT valid!")
         return nil
       }
 
-      // Do additional purchase processing such as server-side validation
-      try await processPurchase(of: product, transaction: transaction)
+      // Try a maximum of 10 times before considering the purchase a failure
+      for i in 0..<10 {
+        do {
+          // Do additional purchase processing such as server-side validation
+          // This function also asks for a receipt refresh
+          try await processPurchase(of: product, transaction: transaction)
+
+          Logger.module.info("[AppStoreSDK] - Transaction Verified with Backend")
+          break
+        } catch {
+          Logger.module.error(
+            "[AppStoreSDK] - Backend Processing Failed: \(error, privacy: .public)"
+          )
+          Logger.module.info("[AppStoreSDK] - Waiting 2s and trying again...")
+          try? await Task.sleep(seconds: 1.0)
+        }
+      }
+
+      Logger.module.info("[AppStoreSDK] - Marking Transaction Completed")
 
       // Transactions must be marked as completed once processed
       await transaction.finish()
+
+      Logger.module.info("[AppStoreSDK] - Distributing Purchase To User")
 
       // Distribute the purchased products to the customer
       await MainActor.run {
@@ -431,7 +466,9 @@ public class AppStoreSDK: ObservableObject {
       return allProducts.autoRenewable.contains(product)
 
     default:
-      Logger.module.error("[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue)")
+      Logger.module.error(
+        "[AppStoreSDK] - Unknown Product Type: \(product.type.rawValue, privacy: .public)"
+      )
       return false
     }
   }
@@ -485,7 +522,7 @@ public class AppStoreSDK: ObservableObject {
 
         default:
           Logger.module.error(
-            "[AppStoreSDK] - Fetched Product of Unknown Type: \(product.type.rawValue)"
+            "[AppStoreSDK] - Fetched Product of Unknown Type: \(product.type.rawValue, privacy: .public)"
           )
           break
         }
@@ -501,7 +538,9 @@ public class AppStoreSDK: ObservableObject {
         self.allProducts = availableProducts
       }
     } catch {
-      Logger.module.error("[AppStoreSDK] - Unable to fetch AppStore Products: \(error)")
+      Logger.module.error(
+        "[AppStoreSDK] - Unable to fetch AppStore Products: \(error, privacy: .public)"
+      )
     }
   }
 
@@ -550,7 +589,9 @@ public class AppStoreSDK: ObservableObject {
           break
         }
       } catch {
-        Logger.module.error("[AppStoreSDK] - Transaction Verification Failed: \(error)")
+        Logger.module.error(
+          "[AppStoreSDK] - Transaction Verification Failed: \(error, privacy: .public)"
+        )
       }
     }
 
