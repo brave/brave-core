@@ -291,7 +291,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11ValidWallet) {
 
   const std::string wallet = "wallet";
 
-  const auto encrypted = test_util::EncryptPrefString(rewards_service_, wallet);
+  const auto encrypted = test_util::EncryptPrefString(wallet);
   ASSERT_TRUE(encrypted);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.brave", *encrypted);
 
@@ -312,8 +312,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11CorruptedWallet) {
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
-  const auto decrypted =
-      test_util::DecryptPrefString(rewards_service_, brave_wallet);
+  const auto decrypted = test_util::DecryptPrefString(brave_wallet);
 
   EXPECT_FALSE(decrypted);
 }
@@ -327,8 +326,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V11InvalidWallet) {
 
   const auto brave_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.brave");
-  const auto decrypted =
-      test_util::DecryptPrefString(rewards_service_, brave_wallet);
+  const auto decrypted = test_util::DecryptPrefString(brave_wallet);
 
   EXPECT_FALSE(decrypted);
 }
@@ -810,8 +808,7 @@ IN_PROC_BROWSER_TEST_P_(V10, Paths) {
   const auto& from_wallet = std::get<0>(params);
   const auto& expected_wallet = std::get<1>(params);
 
-  const auto encrypted_from_wallet =
-      test_util::EncryptPrefString(rewards_service_, from_wallet);
+  const auto encrypted_from_wallet = test_util::EncryptPrefString(from_wallet);
   ASSERT_TRUE(encrypted_from_wallet);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.uphold",
                                   *encrypted_from_wallet);
@@ -821,7 +818,7 @@ IN_PROC_BROWSER_TEST_P_(V10, Paths) {
   const auto encrypted_to_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.uphold");
   const auto decrypted_to_wallet =
-      test_util::DecryptPrefString(rewards_service_, encrypted_to_wallet);
+      test_util::DecryptPrefString(encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
   EXPECT_EQ(*decrypted_to_wallet, expected_wallet);
@@ -926,7 +923,7 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   rewards_service_->SetEngineStateTargetVersionForTesting(12);
 
   const auto encrypted_from_wallet =
-      test_util::EncryptPrefString(rewards_service_, std::get<1>(GetParam()));
+      test_util::EncryptPrefString(std::get<1>(GetParam()));
   ASSERT_TRUE(encrypted_from_wallet);
   profile_->GetPrefs()->SetString("brave.rewards.wallets.bitflyer",
                                   *encrypted_from_wallet);
@@ -936,7 +933,7 @@ IN_PROC_BROWSER_TEST_P_(V12, Paths) {
   const auto encrypted_to_wallet =
       profile_->GetPrefs()->GetString("brave.rewards.wallets.bitflyer");
   const auto decrypted_to_wallet =
-      test_util::DecryptPrefString(rewards_service_, encrypted_to_wallet);
+      test_util::DecryptPrefString(encrypted_to_wallet);
   ASSERT_TRUE(decrypted_to_wallet);
 
   const auto value = base::JSONReader::Read(*decrypted_to_wallet);
@@ -992,7 +989,6 @@ IN_PROC_BROWSER_TEST_P_(V13, Paths) {
 
   const auto wallet_status = std::get<1>(GetParam());
   const auto encrypted_wallet = test_util::EncryptPrefString(
-      rewards_service_,
       (std::ostringstream{} << R"({ "status": )"
                             << static_cast<int>(wallet_status) << " }")
           .str());
@@ -1018,8 +1014,7 @@ IN_PROC_BROWSER_TEST_F(RewardsStateBrowserTest, V14EmptyWalletType) {
   rewards_service_->SetEngineStateTargetVersionForTesting(14);
 
   auto store_wallet = [&](const std::string& key, const std::string& json) {
-    auto encrypted_wallet =
-        test_util::EncryptPrefString(rewards_service_, json);
+    auto encrypted_wallet = test_util::EncryptPrefString(json);
     profile_->GetPrefs()->SetString(key, *encrypted_wallet);
   };
 
