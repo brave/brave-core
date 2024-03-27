@@ -1,0 +1,13 @@
+diff --git a/front_end/devtools_compatibility.js b/front_end/devtools_compatibility.js
+index c82fe9b55eaaea524ebb195a2f832065a8afc11b..b56d9e2ab8f2489087f7ead98961881c85421bf9 100644
+--- a/front_end/devtools_compatibility.js
++++ b/front_end/devtools_compatibility.js
+@@ -106,6 +106,8 @@ const DevToolsAPIImpl = class {
+     }
+   }
+ 
++  setEnabledOnChromeUrls() { this._enabledOnChromeUrls = true; }
++  getEnabledOnChromeUrls() { return this._enabledOnChromeUrls; }
+   /**
+    * @param {!Array<string>} forbiddenOrigins
+    */
