@@ -938,24 +938,8 @@ class SettingsViewController: TableViewController {
               )
             }
 
-            let viewMoreDetails = UIAlertAction(title: Strings.viewAllVersionInfo, style: .default)
-            { [unowned self, weak actionSheet] _ in
-              let versionController = ChromeWebViewController(privateBrowsing: false).then {
-                $0.loadURL("brave://version/?show-variations-cmd")
-              }
-              versionController.title = version
-
-              actionSheet?.dismiss(
-                animated: true,
-                completion: {
-                  self.navigationController?.pushViewController(versionController, animated: true)
-                }
-              )
-            }
-
             actionSheet.addAction(copyDebugInfoAction)
             actionSheet.addAction(copyAppInfoAction)
-            actionSheet.addAction(viewMoreDetails)
             actionSheet.addAction(
               UIAlertAction(title: Strings.cancelButtonTitle, style: .cancel, handler: nil)
             )
@@ -1089,62 +1073,6 @@ class SettingsViewController: TableViewController {
             PrivacyReportsManager.consolidateData(dayRange: -10)
           },
           cellClass: MultilineButtonCell.self
-        ),
-        Row(
-          text: "View Chromium Local State",
-          selection: { [unowned self] in
-            let localStateController = ChromeWebViewController(privateBrowsing: false).then {
-              $0.title = "Chromium Local State"
-              $0.loadURL("brave://local-state")
-            }
-            if #available(iOS 16.0, *) {
-              let webView = localStateController.webView
-              webView.isFindInteractionEnabled = true
-              localStateController.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                systemItem: .search,
-                primaryAction: .init { [weak webView] _ in
-                  guard let findInteraction = webView?.findInteraction,
-                    !findInteraction.isFindNavigatorVisible
-                  else {
-                    return
-                  }
-                  findInteraction.searchText = ""
-                  findInteraction.presentFindNavigator(showingReplace: false)
-                }
-              )
-            }
-            self.navigationController?.pushViewController(localStateController, animated: true)
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
-        ),
-        Row(
-          text: "View Brave Histogram (p3a) Logs",
-          selection: { [unowned self] in
-            let histogramsController = ChromeWebViewController(privateBrowsing: false).then {
-              $0.title = "Histograms (p3a)"
-              $0.loadURL("brave://histograms")
-            }
-            if #available(iOS 16.0, *) {
-              let webView = histogramsController.webView
-              webView.isFindInteractionEnabled = true
-              histogramsController.navigationItem.rightBarButtonItem = UIBarButtonItem(
-                systemItem: .search,
-                primaryAction: .init { [weak webView] _ in
-                  guard let findInteraction = webView?.findInteraction,
-                    !findInteraction.isFindNavigatorVisible
-                  else {
-                    return
-                  }
-                  findInteraction.searchText = ""
-                  findInteraction.presentFindNavigator(showingReplace: false)
-                }
-              )
-            }
-            self.navigationController?.pushViewController(histogramsController, animated: true)
-          },
-          accessory: .disclosureIndicator,
-          cellClass: MultilineValue1Cell.self
         ),
         Row(
           text: "VPN Logs",
