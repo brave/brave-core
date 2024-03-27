@@ -156,7 +156,9 @@
 -LoginProxyBrowserTest.ProxyAuthHTTPS
 -NotificationPermissionBrowserTest.DisablePermissionRecordsUkms
 -NotificationPermissionBrowserTest.NonPersistentNotificationRecordsUkms
+-WebHidWebViewTest.PermissionsAPIEmbedderHasAccessAllowHid
 -WebHidWebViewTest.PermissionsAPIEmbedderHasAccessCloseWindowHid
+-WebHidWebViewTest.PermissionsAPIEmbedderHasAccessDenyHid
 
 # This test fails with the message:
 # Terminating render process for bad Mojo message: Received bad user message:
@@ -382,6 +384,12 @@
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportWinDestinationEnrollment/*
 -PrivacySandboxSettingsEventReportingBrowserTest/PrivacySandboxSettingsEventReportingBrowserTest.ReportResultDestinationEnrollment/*
 
+# These tests fail because we override privacy sandbox settings config
+-PrivacySandboxConsentConfirmationTest.ConsentTest/3
+-PrivacySandboxConsentConfirmationTest.ConsentTest/7
+-PrivacySandboxNoticeConfirmationTest.NoticeTest/3
+-PrivacySandboxNoticeConfirmationTest.NoticeTest/7
+-PrivacySandboxNoticeConfirmationTest.NoticeTest/11
 
 # These tests fail because we intentionally disable direct/raw sockets via
 # policy::policy_prefs::kIsolatedAppsDeveloperModeAllowed. See
@@ -736,12 +744,14 @@
 -DiceBrowserTestWithWebAuthFlowInBrowserTabOff.DiceExtensionConsent_GetAuthToken
 -DiceBrowserTestWithWebAuthFlowInBrowserTabOff.NoDiceExtensionConsent_LaunchWebAuthFlow
 -DiceBrowsingDataRemoverBrowserTest.*
+-DiceExplicitSigninBrowserTest.Migration
 -DiceManageAccountBrowserTest.*
 -DiceSigninUiUtilBrowserTest.*
 -DiceWebSigninInterceptionBubbleBrowserTest.*
 -DiceWebSigninInterceptionBubbleV2BrowserTest.OpenLearnMoreLinkInNewTab
 -DiceWebSigninInterceptorBrowserTest.*
 -DiceWebSigninInterceptorEnterpriseBrowserTest.*
+-DiceWebSigninInterceptorWithExplicitSigninEnabledBrowserTest.*
 -DiceWebSigninInterceptorWithUnoDisabledAndPREEnabledBrowserTest.ChromeSignedinWithUnoShouldRevertBackToDefaultWithUnoDisabled 
 -DiceWebSigninInterceptorWithUnoEnabledAndPREDisabledBrowserTest.ChromeSignedInTransitionToUnoEnabled
 -DiceWebSigninInterceptorWithUnoEnabledBrowserTest.ChromeSigninInterceptAccepted
@@ -921,6 +931,7 @@
 -PageContentAnnotationsServiceNoHistoryTest.*
 -PageContentAnnotationsServiceRemoteMetadataBrowserTest.*
 -PageContentAnnotationsServiceSalientImageMetadataBrowserTest.*
+-PageContentAnnotationsServiceValidationBrowserTest.ValidationEnablesService
 -PageInfoBubbleViewAboutThisSiteAllowNonMsbbBrowserTest.AboutThisSiteWithoutOptinAndWithNonMsbbUsers
 -SegmentationPlatformTest.NullModelUpdateForUnknownModelShouldBeNoOp
 -SegmentationPlatformTest.ReceiveModelUpdateFromOptimizationGuide
@@ -1174,6 +1185,7 @@
 -BreadcrumbManagerTabHelperSecurityStateBrowserTest.BrokenAuthentication
 
 # These fail because we disable history_clusters::internal::kJourneys.
+-HistoryClustersPolicyTest.HistoryClustersVisible
 -RenameJourneys/HistoryClustersPolicyTest.HistoryClustersVisible/*
 
 # These tests fail because we disable
@@ -1197,6 +1209,10 @@
 -All/ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.DetectsWebRequestFromContentScript/*
 -All/ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer/*
 -CheckCompleteAfterNavigationFinish/SafeBrowsingBlockingPageAsyncChecksTimingTest*
+-ClientSideDetectionHostPrerenderExclusiveAccessBrowserTest.KeyboardLockClassificationTriggersCSPPPing
+-ClientSideDetectionHostPrerenderExclusiveAccessBrowserTest.KeyboardLockTriggersPreclassificationCheck
+-ClientSideDetectionHostPrerenderExclusiveAccessBrowserTest.PointerLockClassificationTriggersCSPPPing
+-ClientSideDetectionHostPrerenderExclusiveAccessBrowserTest.PointerLockTriggersPreClassificationCheck
 -ExtensionTelemetryServiceBrowserTest.*
 -ExtensionTelemetryServiceBrowserTestWithInterceptRemoteHostsContactedInRendererEnabled.InterceptsRemoteHostContactedSignalInRenderer
 
@@ -1233,6 +1249,11 @@
 # is not in our prepopulated list.
 -TemplateURLServiceBrowserTest.LoadKeywordData
 
+# These tests hang due to
+# https://source.chromium.org/chromium/chromium/src/+/cb2802e which seems to be
+# adding an unnecessary second wait that never completes.
+-All/ContextMenuBrowserTest.OpenLinkInProfileEntryPresent/LinkPreview*
+
 # These tests fail because of disabled kCookieDeprecationFacilitatedTesting and/
 # or TrackingProtectionOnboarding.
 -AdHeuristicTPCDBrowserTestHeuristicsGrant.CookieAllowed
@@ -1244,6 +1265,9 @@
 -AdHeuristicTPCDBrowserTestSkipTrialGrant.CookieBlocked
 -AdHeuristicTPCDBrowserTestTopLevelTrialGrant.CookieAllowed
 -All/EligibilityServiceBrowserTest.EligibilityChanged_OnboardingServiceNotified/*
+-All/EligibilityServiceBrowserTest.EligibilityChanged_NetworkContextUpdated/*
+-All/EligibilityServiceBrowserTest.OnboardingChanged_NetworkContextUpdated/*
+-EligibilityServiceSilentOnboardingBrowserTest.OnboardingChanged_NetworkContextUpdated
 -ExperimentManagerImplDisable3PCsSyntheticTrialTest.RegistersSyntheticTrial
 -ExperimentManagerImplDisable3PCsSyntheticTrialTest.RegistersSyntheticTrialWhenNoticeRequested
 -ThirdPartyCookieDeprecationObserverMechanismBrowserTest.ThirdPartyCookiesReadAndWrite/3
@@ -1328,6 +1352,13 @@
 
 # This test fails because we disable FileSystemAccessAPI
 -PageInfoBubbleViewBrowserTest.InteractedWithFileSystemSubpage
+
+# This test fails because we disable RedirectHeuristicTabHelper (because it
+# crashes because we disable kDIPS).
+-RedirectHeuristicBrowserTest.RecordsRedirectHeuristicCookieAccessEvent
+
+# This test fails because the default search engine is Brave instead of Google.
+-DevToolsTest.TestOpenSearchResultsInNewTab
 
 # Tests below this point have not been diagnosed or had issues created yet.
 -_/WebrtcLoggingPrivateApiStartEventLoggingTestFeatureAndPolicyEnabled.*
@@ -1628,6 +1659,9 @@
 -HeadlessModePrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
 -HeadlessModeScreencastTest.ScreencastBasics
 -HeadlessModeScreencastTest.ScreencastViewport
+-HeadlessModeScreenshotCommandBrowserTest.*
+-HeadlessModeScreenshotCommandWithBackgroundBrowserTest.*
+-HeadlessModeScreenshotCommandWithWindowSizeBrowserTest.*
 -HeadlessModeTaggedPrintToPdfCommandBrowserTest.HeadlessTaggedPrintToPdf/*
 -HintsFetcherBrowserTest.*
 -HintsFetcherSearchPageBrowserTest.*
