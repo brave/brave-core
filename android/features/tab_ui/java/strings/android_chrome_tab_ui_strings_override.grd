@@ -86,10 +86,6 @@
   </translations>
   <release seq="1">
     <messages fallback_to_english="true">
-      <message name="IDS_TAB_GRID_INVITE_BUTTON_TEXT" desc="Text for sharing the current tab group from the tab group dialog bottom toolbar.">
-        Invite profiles
-      </message>
-
       <message name="IDS_CLOSE_ALL_TABS_DIALOG_MESSAGE_WITH_INCOGNITO_TABS" desc="When users click the menu item 'Close all tabs' in tab switcher, a dialog will pop up and this text is the message of the dialog. If there are any Private tabs opened this message would warn users that those Private tabs would be lost.">
       {INCOGNITO_TABS_COUNT, plural,
         =1 {You can find your closed tabs in Recent tabs under the Brave main menu. Your Private tab won't be available.}
