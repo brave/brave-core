@@ -59,8 +59,11 @@ import {
 } from '../../../../common/slices/api.slice.extra'
 
 // Styled Components
-import { InputRow, ToText, ToRow, SendButtonRow } from './send.style'
-import { ToSectionWrapper } from '../../composer_ui/shared_composer.style'
+import { InputRow, ToText, ToRow } from './send.style'
+import {
+  ToSectionWrapper,
+  ReviewButtonRow
+} from '../../composer_ui/shared_composer.style'
 import { Column, LeoSquaredButton } from '../../../../components/shared/style'
 
 // Components
@@ -535,7 +538,7 @@ export const SendScreen = React.memo((props: Props) => {
                   />
                 )}
               </Column>
-              <SendButtonRow
+              <ReviewButtonRow
                 width='100%'
                 padding='0px 16px'
               >
@@ -559,7 +562,7 @@ export const SendScreen = React.memo((props: Props) => {
                     )
                   ).replace('$1', CoinTypesMap[networkFromParams?.coin ?? 0])}
                 </LeoSquaredButton>
-              </SendButtonRow>
+              </ReviewButtonRow>
             </Column>
           </ToSectionWrapper>
         </>

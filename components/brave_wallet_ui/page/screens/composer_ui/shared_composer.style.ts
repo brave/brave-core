@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import * as leo from '@brave/leo/tokens/css'
 
 // Shared Styles
-import { Column, WalletButton } from '../../../components/shared/style'
+import { Column, WalletButton, Row } from '../../../components/shared/style'
 import {
   layoutPanelWidth //
 } from '../../../components/desktop/wallet-page-wrapper/wallet-page-wrapper.style'
@@ -85,4 +85,8 @@ export const PresetButton = styled(WalletButton)`
   color: ${leo.color.gray[50]};
   text-transform: uppercase;
   cursor: pointer;
+`
+
+export const ReviewButtonRow = styled(Row)`
+  max-width: 360px;
 `
