@@ -18,8 +18,9 @@ namespace brave_page_graph {
 EdgeJSResult::EdgeJSResult(GraphItemContext* context,
                            NodeJS* out_node,
                            NodeScript* in_node,
-                           const String& result)
-    : EdgeJS(context, out_node, in_node), result_(result) {}
+                           const blink::PageGraphValue& result)
+    : EdgeJS(context, out_node, in_node),
+      result_(blink::PageGraphValueToString(result)) {}
 
 EdgeJSResult::~EdgeJSResult() = default;
 
@@ -40,7 +41,7 @@ void EdgeJSResult::AddGraphMLAttributes(xmlDocPtr doc,
       ->AddValueNode(doc, parent_node, result_);
 }
 
-const String& EdgeJSResult::GetResult() const {
+const std::string& EdgeJSResult::GetResult() const {
   return result_;
 }
 

@@ -79,7 +79,7 @@ def _add_page_graph_events_to_pidl_source(source):
     if _IS_PG_WEBAPI_PROBES_ENABLED:
         ext += """
             void RegisterPageGraphBindingEvent([Keep] ExecutionContext*, const char* name, PageGraphBindingType type, PageGraphBindingEvent event);
-            void RegisterPageGraphWebAPICallWithResult([Keep] ExecutionContext*, const char* name, const PageGraphBlinkReceiverData& receiver_data, const PageGraphBlinkArgs& args, const ExceptionState* exception_state, const std::optional<String>& result);
+            void RegisterPageGraphWebAPICallWithResult([Keep] ExecutionContext*, const char* name, const PageGraphObject& receiver_data, const PageGraphValues& args, const ExceptionState* exception_state, const std::optional<PageGraphValue>& result);
         """
 
     return source[:idx] + ext + source[idx:]

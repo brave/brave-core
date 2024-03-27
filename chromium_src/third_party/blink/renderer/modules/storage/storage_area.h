@@ -25,8 +25,7 @@
 
 namespace blink {
 
-MODULES_EXPORT PageGraphBlinkReceiverData
-ToPageGraphBlinkReceiverData(StorageArea* storage_area);
+MODULES_EXPORT PageGraphObject ToPageGraphObject(StorageArea* storage_area);
 
 }  // namespace blink
 

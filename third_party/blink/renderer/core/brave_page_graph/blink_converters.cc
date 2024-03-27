@@ -5,87 +5,107 @@
 
 #include "brave/third_party/blink/renderer/core/brave_page_graph/blink_converters.h"
 
+#include <memory>
+
+#include "base/no_destructor.h"
+#include "brave/v8/include/v8-isolate-page-graph-utils.h"
+#include "third_party/blink/public/platform/platform.h"
+#include "third_party/blink/public/platform/web_v8_value_converter.h"
 #include "third_party/blink/renderer/core/dom/document.h"
-#include "third_party/blink/renderer/core/html/canvas/canvas_rendering_context.h"
-#include "third_party/blink/renderer/core/html/canvas/text_metrics.h"
 
 namespace blink {
 
+namespace {
+
+// Serializes v8::Value using Inspector Protocol internals.
+base::Value V8ValueToPageGraphValue(v8::Isolate* isolate,
+                                    v8::Local<v8::Value> v8_value) {
+  v8::Local<v8::Context> context = isolate->GetCurrentContext();
+  v8::Local<v8::Value> serialized_value =
+      v8::page_graph::SerializeValue(context, v8_value);
+  if (!serialized_value.IsEmpty()) {
+    static base::NoDestructor<std::unique_ptr<WebV8ValueConverter>> converter(
+        Platform::Current()->CreateWebV8ValueConverter());
+    auto value =
+        (*converter)
+            ->FromV8Value(serialized_value, isolate->GetCurrentContext());
+    if (value) {
+      return std::move(*value);
+    }
+  }
+  return {};
+}
+
+}  // namespace
+
 template <>
-String ToPageGraphBlinkArg(
-    const bindings::NativeValueTraitsStringAdapter& adapter) {
-  return String(adapter);
+base::Value ToPageGraphValue(
+    ScriptState* script_state,
+    const bindings::NativeValueTraitsAnyAdapter& adapter) {
+  return ToPageGraphValue(script_state, static_cast<ScriptValue>(adapter));
 }
 
 template <>
-String ToPageGraphBlinkArg(const ScriptValue& script_value) {
-  if (script_value.IsEmpty()) {
-    return String();
+base::Value ToPageGraphValue(ScriptState* script_state,
+                             const v8::Local<v8::Value>& arg) {
+  if (arg.IsEmpty()) {
+    return base::Value();
   }
-  if (script_value.IsNull()) {
-    return "null";
+  v8::String::Utf8Value utf8_string(script_state->GetIsolate(), arg);
+  std::string_view result(*utf8_string, utf8_string.length());
+  // If the value is converted to string as [object something], we need to
+  // serialize it using the inspector protocol.
+  if (result.starts_with("[object ")) {
+    return V8ValueToPageGraphValue(script_state->GetIsolate(), arg);
   }
-  if (script_value.IsUndefined()) {
-    return "undefined";
-  }
-  if (script_value.IsFunction()) {
-    return "function";
-  }
-  if (script_value.IsObject()) {
-    return "object";
-  }
-  String result;
-  if (!script_value.ToString(result)) {
-    result = "ScriptValue::ToString failed";
-  }
-  return result;
+  return base::Value(result);
 }
 
-String ToPageGraphBlinkArg(TextMetrics* result) {
-  std::stringstream result_buffer;
-  result_buffer
-      << "width: " << result->width()
-      << ", actualBoundingBoxLeft: " << result->actualBoundingBoxLeft()
-      << ", actualBoundingBoxRight: " << result->actualBoundingBoxRight()
-      << ", fontBoundingBoxAscent: " << result->fontBoundingBoxAscent()
-      << ", fontBoundingBoxDescent: " << result->fontBoundingBoxDescent()
-      << ", actualBoundingBoxAscent: " << result->actualBoundingBoxAscent()
-      << ", actualBoundingBoxDescent: " << result->actualBoundingBoxDescent()
-      << ", emHeightAscent: " << result->emHeightAscent()
-      << ", emHeightDescent: " << result->emHeightDescent();
-
-  result_buffer << ", hangingBaseline: " << result->hangingBaseline()
-                << ", alphabeticBaseline: " << result->alphabeticBaseline()
-                << ", ideographicBaseline: " << result->ideographicBaseline();
-
-  return String(result_buffer.str());
+template <>
+base::Value ToPageGraphValue(ScriptState* script_state,
+                             const ScriptValue& script_value) {
+  ScriptState::Scope scope(script_state);
+  v8::Local<v8::Value> value = script_value.V8Value();
+  return ToPageGraphValue(script_state, value);
 }
 
-String ToPageGraphBlinkArg(CanvasRenderingContext* context) {
-  if (!context) {
-    return "<null>";
-  }
-
-  switch (context->GetRenderingAPI()) {
-    case CanvasRenderingContext::CanvasRenderingAPI::kUnknown:
-      return "CanvasRenderingContext: unknown";
-    case CanvasRenderingContext::CanvasRenderingAPI::k2D:
-      return "CanvasRenderingContext: 2d";
-    case CanvasRenderingContext::CanvasRenderingAPI::kWebgl:
-      return "CanvasRenderingContext: webgl";
-    case CanvasRenderingContext::CanvasRenderingAPI::kWebgl2:
-      return "CanvasRenderingContext: webgl2";
-    case CanvasRenderingContext::CanvasRenderingAPI::kBitmaprenderer:
-      return "CanvasRenderingContext: bitmaprenderer";
-    case CanvasRenderingContext::CanvasRenderingAPI::kWebgpu:
-      return "CanvasRenderingContext: webgpu";
-  }
+template <>
+base::Value ToPageGraphValue(ScriptState* script_state,
+                             const ScriptPromise& script_promise) {
+  return ToPageGraphValue(script_state, script_promise.AsScriptValue());
 }
 
-PageGraphBlinkReceiverData ToPageGraphBlinkReceiverData(Document* document) {
-  return {
-      {"cookie_url", document->CookieURL().GetString()},
-  };
+template <>
+base::Value ToPageGraphValue(ScriptState* script_state,
+                             const FlexibleArrayBufferView& array) {
+  if (array.IsNull()) {
+    return ToPageGraphValue(script_state, base::span<uint8_t>());
+  }
+  const base::span<const uint8_t> data_view(
+      static_cast<const uint8_t*>(array.BaseAddressMaybeOnStack()),
+      array.ByteLength());
+  return ToPageGraphValue(script_state, data_view);
+}
+
+template <>
+base::Value ToPageGraphValue(ScriptState* script_state,
+                             blink::EventListener* const& event_listener) {
+  return event_listener ? base::Value(event_listener->ScriptBody().Utf8())
+                        : base::Value();
+}
+
+template <>
+PageGraphObject ToPageGraphObject(Document* document) {
+  return PageGraphObject().Set(
+      "cookie_url", base::Value(document->CookieURL().GetString().Utf8()));
+}
+
+std::optional<base::AutoReset<bool>> ScopedPageGraphCall() {
+  thread_local static bool in_page_graph_call = false;
+  if (in_page_graph_call) {
+    return std::nullopt;
+  }
+  return base::AutoReset<bool>(&in_page_graph_call, true);
 }
 
 }  // namespace blink
