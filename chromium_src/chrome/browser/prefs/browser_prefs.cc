@@ -15,6 +15,7 @@
 #include "brave/components/brave_ads/core/public/prefs/obsolete_pref_util.h"
 #include "brave/components/brave_news/browser/brave_news_p3a.h"
 #include "brave/components/brave_search_conversion/p3a.h"
+#include "brave/components/brave_shields/content/browser/brave_shields_p3a.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -170,6 +171,8 @@ void MigrateObsoleteProfilePrefs(PrefService* profile_prefs,
 
   // Added 2023-11
   brave_ads::MigrateObsoleteProfilePrefs(profile_prefs);
+
+  brave_shields::MigrateObsoleteProfilePrefs(profile_prefs);
 
 #if !BUILDFLAG(IS_ANDROID)
   // Added 2024-01

@@ -291,6 +291,7 @@ AdBlockService::AdBlockService(
           std::move(subscription_download_manager_getter)),
       component_update_service_(cus),
       task_runner_(task_runner),
+      list_p3a_(local_state),
       default_engine_(std::unique_ptr<AdBlockEngine, base::OnTaskRunnerDeleter>(
           new AdBlockEngine(true /* is_default */),
           base::OnTaskRunnerDeleter(GetTaskRunner()))),
@@ -319,11 +320,11 @@ AdBlockService::AdBlockService(
 
   component_service_manager_ = std::make_unique<AdBlockComponentServiceManager>(
       local_state_, locale_, component_update_service_,
-      filter_list_catalog_provider_.get());
+      filter_list_catalog_provider_.get(), &list_p3a_);
   subscription_service_manager_ =
       std::make_unique<AdBlockSubscriptionServiceManager>(
           local_state_, std::move(subscription_download_manager_getter_),
-          profile_dir_);
+          profile_dir_, &list_p3a_);
   custom_filters_provider_ =
       std::make_unique<AdBlockCustomFiltersProvider>(local_state_);
 

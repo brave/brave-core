@@ -21,6 +21,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/adblock/rs/src/lib.rs.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_download_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "components/component_updater/timer_update_scheduler.h"
 #include "components/prefs/pref_service.h"
 #include "url/gurl.h"
@@ -78,7 +79,9 @@ class AdBlockSubscriptionServiceManager {
   explicit AdBlockSubscriptionServiceManager(
       PrefService* local_state,
       AdBlockSubscriptionDownloadManager::DownloadManagerGetter getter,
-      const base::FilePath& profile_dir);
+      const base::FilePath& profile_dir,
+      AdBlockListP3A* list_p3a);
+
   ~AdBlockSubscriptionServiceManager();
 
   AdBlockSubscriptionServiceManager(const AdBlockSubscriptionServiceManager&) =
@@ -146,6 +149,8 @@ class AdBlockSubscriptionServiceManager {
       subscription_filters_providers_ GUARDED_BY_CONTEXT(sequence_checker_);
   std::unique_ptr<component_updater::TimerUpdateScheduler>
       subscription_update_timer_ GUARDED_BY_CONTEXT(sequence_checker_);
+
+  raw_ptr<AdBlockListP3A> list_p3a_;
 
   base::ObserverList<AdBlockSubscriptionServiceManagerObserver> observers_
       GUARDED_BY_CONTEXT(sequence_checker_);

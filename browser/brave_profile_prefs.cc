@@ -206,10 +206,11 @@ void RegisterProfilePrefsForMigration(
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
 
-// Added 2024-04
+  // Added 2024-04
 #if BUILDFLAG(ENABLE_AI_CHAT)
   ai_chat::prefs::RegisterProfilePrefsForMigration(registry);
 #endif
+  brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {

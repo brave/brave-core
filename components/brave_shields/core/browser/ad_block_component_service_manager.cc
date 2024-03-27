@@ -17,6 +17,7 @@
 #include "base/values.h"
 #include "brave/components/brave_shields/core/browser/ad_block_component_filters_provider.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/browser/filter_list_catalog_entry.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/features.h"
@@ -61,11 +62,13 @@ AdBlockComponentServiceManager::AdBlockComponentServiceManager(
     PrefService* local_state,
     std::string locale,
     component_updater::ComponentUpdateService* cus,
-    AdBlockFilterListCatalogProvider* catalog_provider)
+    AdBlockFilterListCatalogProvider* catalog_provider,
+    AdBlockListP3A* list_p3a)
     : local_state_(local_state),
       locale_(locale),
       component_update_service_(cus),
-      catalog_provider_(catalog_provider) {
+      catalog_provider_(catalog_provider),
+      list_p3a_(list_p3a) {
   catalog_provider_->LoadFilterListCatalog(
       base::BindOnce(&AdBlockComponentServiceManager::OnFilterListCatalogLoaded,
                      weak_factory_.GetWeakPtr()));
@@ -159,12 +162,15 @@ void AdBlockComponentServiceManager::UpdateFilterListPrefs(
   if (!local_state_) {
     return;
   }
-  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
-  base::Value::Dict regional_filter_dict;
-  regional_filter_dict.Set("enabled", enabled);
-  update->Set(uuid, std::move(regional_filter_dict));
+  {
+    ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockRegionalFilters);
+    base::Value::Dict regional_filter_dict;
+    regional_filter_dict.Set("enabled", enabled);
+    update->Set(uuid, std::move(regional_filter_dict));
+  }
 
   RecordP3ACookieListEnabled();
+  list_p3a_->ReportFilterListUsage();
 }
 
 void AdBlockComponentServiceManager::RecordP3ACookieListEnabled() {
@@ -296,6 +302,8 @@ void AdBlockComponentServiceManager::SetFilterListCatalog(
   filter_list_catalog_ = std::move(catalog);
   StartRegionalServices();
   RecordP3ACookieListEnabled();
+
+  list_p3a_->OnFilterListCatalogLoaded(filter_list_catalog_);
 }
 
 const std::vector<FilterListCatalogEntry>&
