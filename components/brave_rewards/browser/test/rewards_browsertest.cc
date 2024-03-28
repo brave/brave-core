@@ -172,7 +172,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ActivateSettingsModal) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  test_util::StartProcessWithConnectedUser(browser()->profile());
   test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
                                                  "3zsistemi.si");
 
@@ -183,7 +183,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultTipChoices) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  test_util::StartProcessWithConnectedUser(browser()->profile());
   test_util::NavigateToPublisherAndWaitForUpdate(browser(), https_server_.get(),
                                                  "laurenwags.github.io");
 
@@ -198,7 +198,7 @@ IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, SiteBannerDefaultPublisherAmounts) {
 }
 
 IN_PROC_BROWSER_TEST_F(RewardsBrowserTest, ShowACPercentInThePanel) {
-  test_util::CreateRewardsWallet(rewards_service_);
+  test_util::StartProcessWithConnectedUser(browser()->profile());
   rewards_service_->SetAutoContributeEnabled(true);
   context_helper_->LoadRewardsPage();
   context_helper_->VisitPublisher(

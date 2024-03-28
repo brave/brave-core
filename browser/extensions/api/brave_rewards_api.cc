@@ -632,8 +632,6 @@ void BraveRewardsGetUserTypeFunction::Callback(
   auto map_user_type =
       [](::brave_rewards::mojom::UserType user_type) -> std::string {
     switch (user_type) {
-      case ::brave_rewards::mojom::UserType::kLegacyUnconnected:
-        return "legacy-unconnected";
       case ::brave_rewards::mojom::UserType::kConnected:
         return "connected";
       case ::brave_rewards::mojom::UserType::kUnconnected:

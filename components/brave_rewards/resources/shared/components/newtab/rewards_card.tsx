@@ -25,7 +25,6 @@ import { NewTabLink } from '../new_tab_link'
 import { TermsOfService } from '../terms_of_service'
 import { SelectCountryCard } from './select_country_card'
 import { PaymentStatusView } from '../payment_status_view'
-import { VBATNotice, shouldShowVBATNotice } from '../vbat_notice'
 import { TosUpdateNotice } from '../tos_update_notice'
 import { LoadingIcon } from '../../../shared/components/icons/loading_icon'
 import { Optional } from '../../../shared/lib/optional'
@@ -55,7 +54,6 @@ export function RewardsCardHeader () {
 interface Props {
   rewardsEnabled: boolean
   userType: UserType
-  vbatDeadline: number | undefined
   declaredCountry: string
   needsBrowserUpgradeToServeAds: boolean
   rewardsBalance: Optional<number>
@@ -82,7 +80,6 @@ export function RewardsCard (props: Props) {
   const { getString, getPluralString } = React.useContext(LocaleContext)
 
   const [publisherCountText, setPublisherCountText] = React.useState('')
-  const [hideVBATNotice, setHideVBATNotice] = React.useState(false)
 
   React.useEffect(() => {
     let active = true
@@ -305,22 +302,6 @@ export function RewardsCard (props: Props) {
     )
   }
 
-  function renderVBATNotice () {
-    const onClose = () => { setHideVBATNotice(true) }
-    return (
-      <style.root>
-        <RewardsCardHeader />
-        <style.vbatNotice>
-          <VBATNotice
-            vbatDeadline={props.vbatDeadline}
-            onConnectAccount={onConnect}
-            onClose={onClose}
-          />
-        </style.vbatNotice>
-      </style.root>
-    )
-  }
-
   function renderSelfCustodyInvite () {
     const onConnectSelfCustody = () => {
       props.onSelfCustodyInviteDismissed()
@@ -397,12 +378,6 @@ export function RewardsCard (props: Props) {
 
   if (props.isTermsOfServiceUpdateRequired) {
     return renderTosUpdateNotice()
-  }
-
-  if (!hideVBATNotice) {
-    if (shouldShowVBATNotice(props.userType, props.vbatDeadline)) {
-      return renderVBATNotice()
-    }
   }
 
   if (props.showSelfCustodyInvite) {
