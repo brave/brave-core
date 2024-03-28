@@ -13,11 +13,15 @@
 #include "content/public/browser/web_contents.h"
 #include "url/gurl.h"
 
+#if !BUILDFLAG(IS_ANDROID)
+#include "brave/browser/ui/geolocation/geolocation_accuracy_tab_helper.h"
+#endif
+
 BraveGeolocationPermissionContextDelegate::
     BraveGeolocationPermissionContextDelegate(
         content::BrowserContext* browser_context)
     : GeolocationPermissionContextDelegate(browser_context),
-      profile_(Profile::FromBrowserContext(browser_context)) {}
+      profile_(*Profile::FromBrowserContext(browser_context)) {}
 
 BraveGeolocationPermissionContextDelegate::
     ~BraveGeolocationPermissionContextDelegate() = default;
@@ -33,6 +37,23 @@ bool BraveGeolocationPermissionContextDelegate::DecidePermission(
     return true;
   }
 
-  return GeolocationPermissionContextDelegate::DecidePermission(
-      id, requesting_origin, user_gesture, callback, context);
+  if (GeolocationPermissionContextDelegate::DecidePermission(
+          id, requesting_origin, user_gesture, callback, context)) {
+    return true;
+  }
+
+#if !BUILDFLAG(IS_ANDROID)
+  content::RenderFrameHost* rfh =
+      content::RenderFrameHost::FromID(id.global_render_frame_host_id());
+  DCHECK(rfh);
+
+  content::WebContents* web_contents =
+      content::WebContents::FromRenderFrameHost(rfh);
+  if (GeolocationAccuracyTabHelper* accuracy_tab_helper =
+          GeolocationAccuracyTabHelper::FromWebContents(web_contents)) {
+    accuracy_tab_helper->LaunchAccuracyHelperDialogIfNeeded();
+  }
+#endif
+
+  return false;
 }

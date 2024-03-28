@@ -25,6 +25,10 @@ void ShowCrashReportPermissionAskDialog(Browser* browser);
 // Run |callback| when dialog closed.
 void ShowObsoleteSystemConfirmDialog(base::OnceCallback<void(bool)> callback);
 
+// Launch dialog to inform that system location service is not enabled.
+void ShowGeolocationAccuracyHelperDialog(content::WebContents* web_contents,
+                                         base::OnceClosure closing_callback);
+
 #if BUILDFLAG(ENABLE_TEXT_RECOGNITION)
 // Show web modal dialog for showing text that recognized from |image|.
 void ShowTextRecognitionDialog(content::WebContents* web_contents,
