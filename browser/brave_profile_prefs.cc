@@ -459,9 +459,11 @@ void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
 
   brave_search_conversion::RegisterPrefs(registry);
 
-  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(false));
-
-  registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, false);
+  // Enabled by default after fixing
+  // https://github.com/brave/brave-browser/issues/18017
+  // kEnableMediaRouterOnRestart is used to remember the user's choice.
+  registry->SetDefaultPrefValue(prefs::kEnableMediaRouter, base::Value(true));
+  registry->RegisterBooleanPref(kEnableMediaRouterOnRestart, true);
 
   // Disable Raw sockets API (see github.com/brave/brave-browser/issues/11546).
   registry->SetDefaultPrefValue(
