@@ -24,6 +24,7 @@
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_filters_provider.h"
 #include "brave/components/brave_shields/content/browser/ad_block_subscription_service_manager_observer.h"
 #include "brave/components/brave_shields/core/browser/ad_block_filters_provider_manager.h"
+#include "brave/components/brave_shields/core/browser/ad_block_list_p3a.h"
 #include "brave/components/brave_shields/core/common/brave_shield_constants.h"
 #include "brave/components/brave_shields/core/common/pref_names.h"
 #include "components/prefs/pref_service.h"
@@ -131,12 +132,14 @@ AdBlockSubscriptionServiceManager::AdBlockSubscriptionServiceManager(
     PrefService* local_state,
     AdBlockSubscriptionDownloadManager::DownloadManagerGetter
         download_manager_getter,
-    const base::FilePath& profile_dir)
+    const base::FilePath& profile_dir,
+    AdBlockListP3A* list_p3a)
     : initialized_(false),
       local_state_(local_state),
       subscription_path_(profile_dir.Append(kSubscriptionsDir)),
       subscription_update_timer_(
-          std::make_unique<component_updater::TimerUpdateScheduler>()) {
+          std::make_unique<component_updater::TimerUpdateScheduler>()),
+      list_p3a_(list_p3a) {
   std::move(download_manager_getter)
       .Run(base::BindOnce(
           &AdBlockSubscriptionServiceManager::OnGetDownloadManager,
@@ -457,25 +460,29 @@ void AdBlockSubscriptionServiceManager::UpdateSubscriptionPrefs(
     return;
   }
 
-  ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
-  base::Value::Dict& subscriptions = update.Get();
-  base::Value::Dict subscription_dict;
-  subscription_dict.Set("enabled", info.enabled);
-  subscription_dict.Set("last_update_attempt",
-                        base::TimeToValue(info.last_update_attempt));
-  subscription_dict.Set("last_successful_update_attempt",
-                        base::TimeToValue(info.last_successful_update_attempt));
-  if (info.homepage) {
-    subscription_dict.Set("homepage", *info.homepage);
-  }
-  if (info.title) {
-    subscription_dict.Set("title", *info.title);
-  }
-  subscription_dict.Set("expires", info.expires);
-  subscriptions.Set(sub_url.spec(), std::move(subscription_dict));
+  {
+    ScopedDictPrefUpdate update(local_state_, prefs::kAdBlockListSubscriptions);
+    base::Value::Dict& subscriptions = update.Get();
+    base::Value::Dict subscription_dict;
+    subscription_dict.Set("enabled", info.enabled);
+    subscription_dict.Set("last_update_attempt",
+                          base::TimeToValue(info.last_update_attempt));
+    subscription_dict.Set(
+        "last_successful_update_attempt",
+        base::TimeToValue(info.last_successful_update_attempt));
+    if (info.homepage) {
+      subscription_dict.Set("homepage", *info.homepage);
+    }
+    if (info.title) {
+      subscription_dict.Set("title", *info.title);
+    }
+    subscription_dict.Set("expires", info.expires);
+    subscriptions.Set(sub_url.spec(), std::move(subscription_dict));
 
-  // TODO(bridiver) - change to pref registrar
-  subscriptions_ = subscriptions.Clone();
+    // TODO(bridiver) - change to pref registrar
+    subscriptions_ = subscriptions.Clone();
+  }
+  list_p3a_->ReportFilterListUsage();
 }
 
 // Updates preferences to remove all state for the specified filter list

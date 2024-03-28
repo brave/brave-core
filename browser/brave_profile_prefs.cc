@@ -205,6 +205,8 @@ void RegisterProfilePrefsForMigration(
 
   // Added 2023-11
   brave_ads::RegisterProfilePrefsForMigration(registry);
+
+  brave_shields::RegisterShieldsP3AProfilePrefsForMigration(registry);
 }
 
 void RegisterProfilePrefs(user_prefs::PrefRegistrySyncable* registry) {
