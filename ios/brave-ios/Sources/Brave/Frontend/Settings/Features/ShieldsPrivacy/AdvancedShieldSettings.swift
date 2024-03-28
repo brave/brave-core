@@ -31,10 +31,6 @@ import os
         for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID,
         isEnabled: cookieConsentBlocking
       )
-
-      Task {
-        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
-      }
     }
   }
   @Published var blockMobileAnnoyances: Bool {
@@ -43,10 +39,6 @@ import os
         for: AdblockFilterListCatalogEntry.mobileAnnoyancesComponentID,
         isEnabled: blockMobileAnnoyances
       )
-
-      Task {
-        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
-      }
     }
   }
   @Published var isP3AEnabled: Bool {

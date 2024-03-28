@@ -13,35 +13,29 @@ import Shared
 import os.log
 
 /// An object responsible for handling filer lists changes on `FilterListStorage` and registering them with the `AdBlockService`.
-public actor FilterListResourceDownloader {
+@MainActor public class FilterListResourceDownloader {
   /// A shared instance of this class
   ///
   /// - Warning: You need to wait for `DataController.shared.initializeOnce()` to be called before using this instance
   public static let shared = FilterListResourceDownloader()
-
-  /// Object responsible for getting component updates
-  private var adBlockService: AdblockService?
-  /// Ad block service tasks per filter list UUID
-  private var adBlockServiceTasks: [String: Task<Void, Error>]
   /// A marker that says that we loaded shield components for the first time.
   /// This boolean is used to configure this downloader only once after `AdBlockService` generic shields have been loaded.
-  private var registeredFilterLists = false
+  private var subscribedToFilterListChange = false
+  /// The filter list change subscription
+  private var filterListSubscription: AnyCancellable?
+  /// This is a task that we use to delay a requested compile.
+  /// This allows us to wait for more sources and limit the number of times we compile
+  private var delayTasks: [GroupedAdBlockEngine.EngineType: Task<Void, Error>] = [:]
 
-  init() {
-    self.adBlockServiceTasks = [:]
-    self.adBlockService = nil
-  }
+  init() {}
 
   /// Start the adblock service to get updates to the `shieldsInstallPath`
   public func start(with adBlockService: AdblockService) {
-    self.adBlockService = adBlockService
-
     // Here we register components in a specific order in order to avoid race conditions:
     // 1. All our filter lists need the resources component. So we register this first
-    // 2. We also register the catalogue component since we don't need the resources for this
-    // 3. When either of the above triggers we check if we have our resources and catalogue
-    // and if we do have both we register all of the filter lists.
-    Task { @MainActor in
+    // 2. We start the custom filter list downloader
+    // 3. We register the filter list changes
+    Task {
       for await folderURL in adBlockService.resourcesComponentStream() {
         guard let folderURL = folderURL else {
           ContentBlockerManager.log.error("Missing folder for filter lists")
@@ -50,103 +44,51 @@ public actor FilterListResourceDownloader {
 
         await AdBlockGroupsManager.shared.didUpdateResourcesComponent(folderURL: folderURL)
         await FilterListCustomURLDownloader.shared.startIfNeeded()
+        await subscribeToFilterListChanges(with: adBlockService)
+      }
+    }
+  }
 
-        if !FilterListStorage.shared.filterLists.isEmpty {
-          await registerAllFilterListsIfNeeded(with: adBlockService)
+  /// Subscribe to filter list changes so we keep the engines up to date
+  private func subscribeToFilterListChanges(with adBlockService: AdblockService) async {
+    guard !subscribedToFilterListChange else { return }
+    self.subscribedToFilterListChange = true
+    filterListSubscription = FilterListStorage.shared.$filterLists
+      .receive(on: DispatchQueue.main)
+      .sink { [weak self] _ in
+        Task { @MainActor in
+          for engineType in GroupedAdBlockEngine.EngineType.allCases {
+            self?.updateEnginesDelayed(for: engineType, adBlockService: adBlockService)
+          }
         }
       }
-    }
 
-    Task { @MainActor in
-      for await filterListEntries in adBlockService.filterListCatalogComponentStream() {
-        FilterListStorage.shared.loadFilterLists(from: filterListEntries)
-        ContentBlockerManager.log.debug("Loaded filter list catalog")
-
-        if AdBlockGroupsManager.shared.resourcesInfo != nil {
-          await registerAllFilterListsIfNeeded(with: adBlockService)
-        }
+    Task {
+      for await engineType in adBlockService.filterListChangesStream() {
+        updateEnginesDelayed(for: engineType, adBlockService: adBlockService)
       }
     }
   }
 
-  /// Register all enabled filter lists and to the default filter list with the `AdBlockService`
-  private func registerAllFilterListsIfNeeded(with adBlockService: AdblockService) async {
-    guard !registeredFilterLists else { return }
-    self.registeredFilterLists = true
-
-    // First prioritize default filter list
-    for filterList in await FilterListStorage.shared.filterLists
-    where filterList.isEnabled && filterList.engineType == .standard {
-      register(filterList: filterList)
-    }
-
-    // Next prioritize the additional lists
-    try? await Task.sleep(seconds: 5)
-    for filterList in await FilterListStorage.shared.filterLists
-    where filterList.isEnabled && filterList.engineType == .aggressive {
-      register(filterList: filterList)
-    }
-
-    // Next get the remaining filter lists after a short delay
-    try? await Task.sleep(seconds: 5)
-    for filterList in await FilterListStorage.shared.filterLists where !filterList.isEnabled {
-      register(filterList: filterList)
-    }
-  }
-
-  /// Load general filter lists (shields) from the given `AdblockService` `shieldsInstallPath` `URL`.
-  private func compileFilterListEngineIfNeeded(
-    source: GroupedAdBlockEngine.Source,
-    folderURL: URL,
-    engineType: GroupedAdBlockEngine.EngineType
-  ) async {
-    guard
-      let fileInfo = AdBlockEngineManager.FileInfo(
-        for: source,
-        downloadedFolderURL: folderURL
-      )
-    else {
-      return
-    }
-
-    ContentBlockerManager.log.debug(
-      "Updated filter list: \(fileInfo.filterListInfo.debugDescription)"
-    )
-
-    await AdBlockGroupsManager.shared.update(
-      fileInfo: fileInfo,
-      engineType: engineType,
-      compileDelayed: true
-    )
-  }
-
-  /// Register this filter list with the `AdBlockService`
-  private func register(filterList: FilterList) {
-    guard adBlockServiceTasks[filterList.entry.componentId] == nil else { return }
-    guard let adBlockService = adBlockService else { return }
-    adBlockServiceTasks[filterList.entry.componentId]?.cancel()
-
-    adBlockServiceTasks[filterList.entry.componentId] = Task { @MainActor in
-      for await folderURL in adBlockService.register(filterList: filterList) {
-        guard let folderURL = folderURL else { continue }
-        let source = filterList.engineSource
-
-        // Add or remove the filter list from the engine depending if it's been enabled or not
-        await self.compileFilterListEngineIfNeeded(
-          source: source,
-          folderURL: folderURL,
-          engineType: filterList.engineType
-        )
-
-        // Save the downloaded folder for later (caching) purposes
-        FilterListStorage.shared.set(folderURL: folderURL, forUUID: filterList.entry.uuid)
-      }
+  private func updateEnginesDelayed(
+    for engineType: GroupedAdBlockEngine.EngineType,
+    adBlockService: AdblockService
+  ) {
+    delayTasks[engineType]?.cancel()
+    delayTasks[engineType] = Task {
+      // A short delay because this gets triggered way to frequently
+      try await Task.sleep(seconds: 5)
+      delayTasks.removeValue(forKey: engineType)
+      let fileInfos = adBlockService.fileInfos(for: engineType)
+      AdBlockGroupsManager.shared.update(fileInfos: fileInfos, engineType: engineType)
+      AdBlockGroupsManager.shared.compileEnginesIfFilesAreReady()
     }
   }
 }
 
 /// Helpful extension to the AdblockService
 extension AdblockService {
+  /// Get a stream of resource component updates
   @MainActor fileprivate func resourcesComponentStream() -> AsyncStream<URL?> {
     return AsyncStream { continuation in
       registerResourceComponent { folderPath in
@@ -161,34 +103,41 @@ extension AdblockService {
     }
   }
 
-  @MainActor fileprivate func filterListCatalogComponentStream() -> AsyncStream<
-    [AdblockFilterListCatalogEntry]
+  /// Get a stream that informs us of filter list file updates
+  @MainActor fileprivate func filterListChangesStream() -> AsyncStream<
+    GroupedAdBlockEngine.EngineType
   > {
     return AsyncStream { continuation in
-      registerFilterListCatalogComponent { filterListEntries in
-        continuation.yield(filterListEntries)
-      }
+      registerFilterListChanges({ isDefaultFilterList in
+        continuation.yield(isDefaultFilterList ? .standard : .aggressive)
+      })
     }
   }
 
-  /// Register the filter list given by the uuid and streams its updates
-  ///
-  /// - Note: Cancelling this task will unregister this filter list from recieving any further updates
-  @MainActor fileprivate func register(filterList: FilterList) -> AsyncStream<URL?> {
-    return AsyncStream { continuation in
-      registerFilterListComponent(filterList.entry) { folderPath in
-        guard let folderPath = folderPath else {
-          continuation.yield(nil)
-          return
-        }
+  /// Get a list of files for the given engine type if the path exists
+  @MainActor fileprivate func fileInfos(
+    for engineType: GroupedAdBlockEngine.EngineType
+  ) -> [AdBlockEngineManager.FileInfo] {
+    return filterListCatalogEntries.compactMap { entry in
+      guard entry.engineType == engineType else { return nil }
+      let source = entry.engineSource
 
-        let folderURL = URL(fileURLWithPath: folderPath)
-        continuation.yield(folderURL)
+      guard
+        let localFileURL = installPath(forFilterListUUID: entry.uuid),
+        FileManager.default.fileExists(atPath: localFileURL.relativePath)
+      else {
+        return nil
       }
 
-      continuation.onTermination = { @Sendable _ in
-        self.unregisterFilterListComponent(filterList.entry)
-      }
+      let version = localFileURL.deletingLastPathComponent().lastPathComponent
+
+      return AdBlockEngineManager.FileInfo(
+        filterListInfo: GroupedAdBlockEngine.FilterListInfo(
+          source: source,
+          version: version
+        ),
+        localFileURL: localFileURL
+      )
     }
   }
 }

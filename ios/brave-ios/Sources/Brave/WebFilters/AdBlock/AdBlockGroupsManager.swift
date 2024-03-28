@@ -84,12 +84,18 @@ import os
     }
   }
 
+  /// Load the engines from cache for all engine types
+  /// Will use the cached dat files to do this, however, for upgrades, it
+  /// will load from legacy storage (using text files) if the dat file is unavailable.
   func loadEnginesFromCache() async {
     await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
       await self.loadEngineFromCache(for: engineType)
     }
   }
 
+  /// Load the engine from cache for the given engine type
+  /// Will use the cached dat files to do this, however, for upgrades, it
+  /// will load from legacy storage (using text files) if the dat file is unavailable.
   private func loadEngineFromCache(for engineType: GroupedAdBlockEngine.EngineType) async {
     let manager = getManager(for: engineType)
 
@@ -125,7 +131,7 @@ import os
     updateIfNeeded(resourcesInfo: resourcesInfo)
   }
 
-  /// Handle updated of multiple filter list infos
+  /// Update the file managers with the latest files and start a delayed task to compile the engines.
   /// - Parameters:
   ///   - fileInfos: The file infos to update on the appropriate engine manager
   ///   - engineType: The type of engine to use
@@ -170,6 +176,7 @@ import os
     update(fileInfos: [fileInfo], engineType: engineType, compileDelayed: compileDelayed)
   }
 
+  /// Remove the file infos from the list that is no longer available and compile the engines if it is needed.
   func removeFileInfos(
     for sources: [GroupedAdBlockEngine.Source],
     engineType: GroupedAdBlockEngine.EngineType
@@ -185,6 +192,7 @@ import os
     )
   }
 
+  /// Remove the file info from the list that is no longer available and compile the engines if it is needed.
   func removeFileInfo(
     for source: GroupedAdBlockEngine.Source,
     engineType: GroupedAdBlockEngine.EngineType
@@ -198,7 +206,25 @@ import os
     )
   }
 
-  /// Ensure all engines and content blockers are compiled
+  /// Immediately compile any engines that have all the files ready.
+  /// Will not compile anything is there is already the same set of files being compiled.
+  func compileEnginesIfFilesAreReady() {
+    let enabledSources = sourceProvider.enabledSources
+    for engineType in GroupedAdBlockEngine.EngineType.allCases {
+      let manager = self.getManager(for: engineType)
+      guard manager.checkHasAllInfo(for: enabledSources) else { continue }
+
+      Task {
+        await manager.compileImmediatelyIfNeeded(
+          for: enabledSources,
+          resourcesInfo: self.resourcesInfo
+        )
+      }
+    }
+  }
+
+  /// Ensure all engines and content blockers are compiled right away.
+  /// Will not compile anything is there is already the same set of files being compiled.
   func compileEnginesIfNeeded() async {
     await GroupedAdBlockEngine.EngineType.allCases.asyncConcurrentForEach { engineType in
       let enabledSources = self.sourceProvider.enabledSources(for: engineType)
@@ -207,8 +233,6 @@ import os
         for: enabledSources,
         resourcesInfo: self.resourcesInfo
       )
-
-      self.ensureContentBlockers(for: enabledSources, engineType: engineType)
     }
   }
 
@@ -254,6 +278,7 @@ import os
     )
   }
 
+  /// Convert the given folder URL to a `ResourcesInfo` object
   private func getResourcesInfo(fromFolderURL folderURL: URL) -> GroupedAdBlockEngine.ResourcesInfo
   {
     let version = folderURL.lastPathComponent
@@ -361,6 +386,7 @@ import os
     }
   }
 
+  /// Get the appropriate manager for the given engine type.
   private func getManager(for engineType: GroupedAdBlockEngine.EngineType) -> AdBlockEngineManager {
     switch engineType {
     case .standard: return standardManager
@@ -396,7 +422,7 @@ extension FilterList {
 }
 
 extension AdBlockEngineManager.FileInfo {
-  init?(
+  fileprivate init?(
     for source: GroupedAdBlockEngine.Source,
     downloadedFolderURL: URL
   ) {

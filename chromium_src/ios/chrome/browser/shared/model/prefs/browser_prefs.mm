@@ -7,6 +7,7 @@
 #include "brave/components/ai_chat/core/common/pref_names.h"
 #include "brave/components/brave_ads/core/public/prefs/pref_registry.h"
 #include "brave/components/brave_rewards/common/pref_registry.h"
+#include "brave/components/brave_shields/core/common/pref_names.h"
 #include "brave/components/brave_sync/brave_sync_prefs.h"
 #include "brave/components/brave_wallet/browser/brave_wallet_prefs.h"
 #include "brave/components/brave_wallet/browser/keyring_service.h"
@@ -58,6 +59,19 @@ void BraveRegisterLocalStatePrefs(PrefRegistrySimple* registry) {
   brave_l10n::RegisterL10nLocalStatePrefs(registry);
   ai_chat::prefs::RegisterLocalStatePrefs(registry);
   ai_chat::AIChatMetrics::RegisterPrefs(registry);
+
+  // brave_shields
+  // Note this can be removed when we use the entire
+  // `brave_shields:AdBlockService` And we can call its
+  // `RegisterPrefsForAdBlockService`
+  registry->RegisterDictionaryPref(
+      brave_shields::prefs::kAdBlockRegionalFilters);
+  registry->RegisterDictionaryPref(
+      brave_shields::prefs::kAdBlockListSubscriptions);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kAdBlockCheckedAllDefaultRegions, false);
+  registry->RegisterBooleanPref(
+      brave_shields::prefs::kAdBlockCheckedDefaultRegion, false);
 }
 
 #define BRAVE_REGISTER_BROWSER_STATE_PREFS \
