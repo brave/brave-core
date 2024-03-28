@@ -119,19 +119,21 @@ MULTIPROCESS_TEST_MAIN(SleepyCrashChildProcess) {
   ::signal(SIGSEGV, SIG_DFL);
 #endif
   // Make this process have a segmentation fault.
-  volatile int* oops = nullptr;
+  // Pointee and pointer are volatile to prevent reordering of instructions,
+  // i.e. for optimization. Reordering may lead to tests erroneously failing
+  volatile int* volatile oops = nullptr;
   *oops = 0xDEAD;
   return 1;
 }
 
 // Some tests are failing for Windows x86 CI,
 // See https://github.com/brave/brave-browser/issues/22767
-#if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
-#define MAYBE_ChildCrash DISABLED_ChildCrash
-#else
-#define MAYBE_ChildCrash ChildCrash
-#endif
-TEST_F(ChildProcessMonitorTest, MAYBE_ChildCrash) {
+// #if BUILDFLAG(IS_WIN) && defined(ARCH_CPU_X86)
+// #define MAYBE_ChildCrash DISABLED_ChildCrash
+// #else
+// #define MAYBE_ChildCrash ChildCrash
+// #endif
+TEST_F(ChildProcessMonitorTest, /*MAYBE_*/ChildCrash) {
   std::unique_ptr<ChildProcessMonitor> monitor =
       std::make_unique<ChildProcessMonitor>();
 
