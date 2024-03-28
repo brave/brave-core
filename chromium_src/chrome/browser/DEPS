@@ -49,6 +49,7 @@ include_rules = [
   "+brave/components/version_info",
   "+brave/net",
   "+brave/services/network/public",
+  "+brave/updater/buildflags.h",
   "+chrome/android",
   "+chrome/app",
   "+chrome/common",
