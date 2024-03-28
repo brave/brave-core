@@ -384,6 +384,10 @@ public class BytecodeTest {
         Assert.assertTrue(classExists("org/chromium/chrome/browser/bookmarks/BookmarkUiPrefs"));
         Assert.assertTrue(
                 classExists("org/chromium/chrome/browser/bookmarks/BraveBookmarkUiPrefs"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/language/LocaleManagerDelegateImpl"));
+        Assert.assertTrue(
+                classExists("org/chromium/components/language/BraveLocaleManagerDelegateImpl"));
     }
 
     @Test
@@ -1284,6 +1288,10 @@ public class BytecodeTest {
                         boolean.class,
                         boolean.class,
                         PartialCustomTabHandleStrategyFactory.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/components/language/LocaleManagerDelegateImpl",
+                        "org/chromium/components/language/BraveLocaleManagerDelegateImpl"));
     }
 
     @Test
