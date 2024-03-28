@@ -48,11 +48,10 @@ export const CardContent = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   width: 100%;
-  padding-top: 24px;
-  padding-left: 24px;
-  padding-right: 24px;
+  height: 100%;
+  padding: 24px 24px 0px 24px;
 `
 
 export const HeadingText = styled.p`

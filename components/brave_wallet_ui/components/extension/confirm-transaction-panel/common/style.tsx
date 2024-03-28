@@ -5,7 +5,9 @@
 
 import styled from 'styled-components'
 
+// shared styles
 import { WalletButton } from '../../../shared/style'
+import { TabRow } from '../../shared-panel-styles'
 
 export const QueueStepRow = styled.div`
   display: flex;
@@ -22,6 +24,8 @@ export const QueueStepText = styled.span`
   margin-right: 9px;
 `
 
+export const queueStepButtonRowPadding = '16px 0px 4px 0px'
+
 export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   font-family: Poppins;
   font-style: normal;
@@ -37,10 +41,14 @@ export const QueueStepButton = styled(WalletButton)<{ needsMargin?: boolean }>`
   margin-bottom: ${(p) => (p.needsMargin ? '12px' : '0px')};
 `
 
-export const FavIcon = styled.img`
+export const FavIcon = styled.img<{ height?: string }>`
   width: auto;
-  height: 40px;
+  height: ${(p) => p?.height || '40px'};
   border-radius: 5px;
   background-color: ${(p) => p.theme.color.background01};
   margin-bottom: 7px;
+`
+
+export const NetworkFeeRow = styled(TabRow)`
+  margin-top: 8px;
 `

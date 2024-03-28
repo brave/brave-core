@@ -4,7 +4,10 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
+
+// components
 import { Origin, TransactionOrigin } from './origin'
+import { Column } from '../../../shared/style'
 
 // mocks
 import {
@@ -13,7 +16,7 @@ import {
   mockUniswapOriginInfo
 } from '../../../../stories/mock-data/mock-origin-info'
 import { mockERC20Token } from '../../../../stories/mock-data/mock-asset-options'
-import { Column } from '../../../shared/style'
+import { mockEthMainnet } from '../../../../stories/mock-data/mock-networks'
 
 export const _LongOrigin = () => {
   return (
@@ -43,6 +46,7 @@ export const _TransactionOrigin = () => {
   return (
     <Column>
       <TransactionOrigin
+        network={mockEthMainnet}
         originInfo={mockUniswapOriginInfo}
         contractAddress={mockERC20Token.contractAddress}
       />

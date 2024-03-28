@@ -40,7 +40,7 @@ export const transactionSimulationEndpoints = ({
           data: status
         }
       },
-      providesTags: ['TransactionSimulationsEnabled']
+      providesTags: ['TransactionSimulationsOptIn']
     }),
 
     setIsTxSimulationOptInStatus: mutation<
@@ -48,13 +48,14 @@ export const transactionSimulationEndpoints = ({
       BraveWallet.BlowfishOptInStatus
     >({
       queryFn: async (status, { endpoint }, extraOptions, baseQuery) => {
-        const { data: api } = baseQuery(undefined)
+        const { data: api, cache } = baseQuery(undefined)
         api.braveWalletService.setTransactionSimulationOptInStatus(status)
+        cache.clearWalletInfo()
         return {
           data: status
         }
       },
-      invalidatesTags: ['TransactionSimulationsEnabled']
+      invalidatesTags: ['TransactionSimulationsOptIn']
     }),
 
     getEVMTransactionSimulation: query<
@@ -134,6 +135,10 @@ export const transactionSimulationEndpoints = ({
 
           if (!response) {
             throw new Error('empty EVM simulation response')
+          }
+
+          if (!response.expectedStateChanges.length) {
+            throw new Error('EVM simulation did not detect any changes')
           }
 
           return {
@@ -263,6 +268,10 @@ export const transactionSimulationEndpoints = ({
 
           if (!response) {
             throw new Error('empty Solana simulation response')
+          }
+
+          if (!response.expectedStateChanges.length) {
+            throw new Error('Solana simulation did not detect any changes')
           }
 
           return {

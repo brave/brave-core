@@ -11,11 +11,12 @@ import { getLocale } from '../../../../common/locale'
 
 // Styled components
 import { HeaderTitle } from './swap.style'
+import { Column, VerticalSpace } from '../../shared/style'
 import { NetworkText, StyledWrapper, TopRow } from './style'
-import { Origin } from './common/origin'
-import { EditPendingTransactionGas } from './common/gas'
 
 // Components
+import { Origin } from './common/origin'
+import { EditPendingTransactionGas } from './common/gas'
 import { TransactionQueueSteps } from './common/queue'
 import {
   PendingTransactionActionsFooter //
@@ -25,6 +26,7 @@ import {
   PendingTransactionNetworkFeeAndSettings //
 } from '../pending-transaction-network-fee/pending-transaction-network-fee'
 import { SwapBase } from '../swap'
+import { TxWarningBanner } from './common/tx_warnings'
 
 // Hooks
 import { usePendingTransactions } from '../../../common/hooks/use-pending-transaction'
@@ -32,7 +34,11 @@ import {
   useUnsafeWalletSelector //
 } from '../../../common/hooks/use-safe-selector'
 
-export function ConfirmSwapTransaction() {
+interface Props {
+  retrySimulation?: () => void
+}
+
+export function ConfirmSwapTransaction({ retrySimulation }: Props) {
   // redux
   const activeOrigin = useUnsafeWalletSelector(WalletSelectors.activeOrigin)
 
@@ -41,6 +47,8 @@ export function ConfirmSwapTransaction() {
     React.useState<boolean>(false)
   const [isEditingGas, setIsEditingGas] = React.useState<boolean>(false)
   const [isWarningCollapsed, setIsWarningCollapsed] = React.useState(true)
+  const [isSimulationWarningDismissed, setIsSimulationWarningDismissed] =
+    React.useState(false)
 
   // hooks
   const {
@@ -49,15 +57,15 @@ export function ConfirmSwapTransaction() {
     toOrb,
     updateUnapprovedTransactionNonce,
     selectedPendingTransaction,
-    onConfirm,
-    onReject,
     queueNextTransaction,
     transactionQueueNumber,
     transactionsQueueLength,
     rejectAllTransactions,
     isConfirmButtonDisabled,
     insufficientFundsError,
-    insufficientFundsForGasError
+    insufficientFundsForGasError,
+    onConfirm,
+    onReject
   } = usePendingTransactions()
 
   // computed
@@ -105,20 +113,18 @@ export function ConfirmSwapTransaction() {
 
       <Origin originInfo={originInfo} />
 
-      {isWarningCollapsed && (
-        <SwapBase
-          sellToken={transactionDetails?.sellToken}
-          buyToken={transactionDetails?.buyToken}
-          sellAmount={transactionDetails?.sellAmountWei?.format()}
-          buyAmount={transactionDetails?.minBuyAmountWei?.format()}
-          senderLabel={transactionDetails?.senderLabel}
-          senderOrb={fromOrb}
-          recipientOrb={toOrb}
-          recipientLabel={transactionDetails?.recipientLabel}
-          // set to true once Swap+Send is supported
-          expectRecipientAddress={false}
-        />
-      )}
+      <SwapBase
+        sellToken={transactionDetails?.sellToken}
+        buyToken={transactionDetails?.buyToken}
+        sellAmount={transactionDetails?.sellAmountWei?.format()}
+        buyAmount={transactionDetails?.minBuyAmountWei?.format()}
+        senderLabel={transactionDetails?.senderLabel}
+        senderOrb={fromOrb}
+        recipientOrb={toOrb}
+        recipientLabel={transactionDetails?.recipientLabel}
+        // set to true once Swap+Send is supported
+        expectRecipientAddress={false}
+      />
 
       <PendingTransactionNetworkFeeAndSettings
         onToggleAdvancedTransactionSettings={
@@ -127,18 +133,36 @@ export function ConfirmSwapTransaction() {
         onToggleEditGas={onToggleEditGas}
       />
 
-      <PendingTransactionActionsFooter
-        onConfirm={onConfirm}
-        onReject={onReject}
-        isConfirmButtonDisabled={isConfirmButtonDisabled}
-        rejectAllTransactions={rejectAllTransactions}
-        transactionDetails={transactionDetails}
-        transactionsQueueLength={transactionsQueueLength}
-        insufficientFundsForGasError={insufficientFundsForGasError}
-        insufficientFundsError={insufficientFundsError}
-        isWarningCollapsed={isWarningCollapsed}
-        setIsWarningCollapsed={setIsWarningCollapsed}
-      />
+      <Column
+        fullWidth
+        flex={1}
+        justifyContent='flex-end'
+        alignItems='flex-end'
+        alignSelf='flex-end'
+      >
+        {retrySimulation && !isSimulationWarningDismissed && (
+          <>
+            <VerticalSpace space='16px' />
+            <TxWarningBanner
+              retrySimulation={retrySimulation}
+              onDismiss={() => setIsSimulationWarningDismissed(true)}
+            />
+          </>
+        )}
+
+        <PendingTransactionActionsFooter
+          onConfirm={onConfirm}
+          onReject={onReject}
+          isConfirmButtonDisabled={isConfirmButtonDisabled}
+          rejectAllTransactions={rejectAllTransactions}
+          transactionDetails={transactionDetails}
+          transactionsQueueLength={transactionsQueueLength}
+          insufficientFundsForGasError={insufficientFundsForGasError}
+          insufficientFundsError={insufficientFundsError}
+          isWarningCollapsed={isWarningCollapsed}
+          setIsWarningCollapsed={setIsWarningCollapsed}
+        />
+      </Column>
     </StyledWrapper>
   )
 }

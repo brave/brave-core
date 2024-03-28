@@ -17,6 +17,7 @@ export const StyledWrapper = styled.div`
   align-items: center;
   justify-content: space-between;
   background-color: ${(p) => p.theme.color.background01};
+  padding: 0px 16px;
 `
 
 export const TopRow = styled.div`
