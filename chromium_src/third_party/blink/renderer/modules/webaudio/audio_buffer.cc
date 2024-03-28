@@ -4,7 +4,7 @@
  * You can obtain one at http://mozilla.org/MPL/2.0/. */
 
 #include "base/functional/callback.h"
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 #include "third_party/blink/renderer/core/dom/document.h"

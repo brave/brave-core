@@ -6,6 +6,29 @@
 module brave_shields.mojom;
 
 import "mojo/public/mojom/base/string16.mojom";
+import "url/mojom/url.mojom";
+
+enum WebcompatFeature {
+  kNone,
+  kAudio,
+  kCanvas,
+  kDeviceMemory,
+  kEventSourcePool,
+  kFont,
+  kHardwareConcurrency,
+  kKeyboard,
+  kLanguage,
+  kMediaDevices,
+  kPlugins,
+  kScreen,
+  kSpeechSynthesis,
+  kUsbDeviceSerialNumber,
+  kUserAgent,
+  kWebGL,
+  kWebGL2,
+  kWebSocketsPool,
+  kAll,
+};
 
 interface BraveShieldsHost {
   // Notify the browser process that JavaScript execution has been blocked,
@@ -14,6 +37,10 @@ interface BraveShieldsHost {
   // Notify the browser process that JavaScript execution has been temporary
   // allowed, passing the details in |details| as a 16-bit string.
   OnJavaScriptAllowedOnce(mojo_base.mojom.String16 details);
+  // As the browser process whether a particular website should be has a
+  // webcompat exception
+  [Sync]
+  GetWebcompatExceptions(url.mojom.Url url) => (array<WebcompatFeature> webcompat_exceptions);
 };
 
 interface BraveShields {

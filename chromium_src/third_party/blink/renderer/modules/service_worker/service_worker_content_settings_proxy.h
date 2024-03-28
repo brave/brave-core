@@ -6,12 +6,15 @@
 #ifndef BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_SERVICE_WORKER_SERVICE_WORKER_CONTENT_SETTINGS_PROXY_H_
 #define BRAVE_CHROMIUM_SRC_THIRD_PARTY_BLINK_RENDERER_MODULES_SERVICE_WORKER_SERVICE_WORKER_CONTENT_SETTINGS_PROXY_H_
 
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "third_party/blink/public/platform/web_content_settings_client.h"
 
-#define AllowStorageAccessSync                         \
-  UnusedFunction() { return false; }                   \
-  BraveFarblingLevel GetBraveFarblingLevel() override; \
+#define AllowStorageAccessSync                                       \
+  UnusedFunction() {                                                 \
+    return false;                                                    \
+  }                                                                  \
+  BraveFarblingLevel GetBraveFarblingLevel(                          \
+      webcompat_exceptions::WebcompatFeature farblingType) override; \
   bool AllowStorageAccessSync
 
 #include "src/third_party/blink/renderer/modules/service_worker/service_worker_content_settings_proxy.h"  // IWYU pragma: export

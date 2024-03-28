@@ -81,6 +81,10 @@ class BraveTorClientUpdater;
 class BraveTorPluggableTransportUpdater;
 }  // namespace tor
 
+namespace webcompat_exceptions {
+class WebcompatExceptionsService;
+}  // namespace webcompat_exceptions
+
 namespace ipfs {
 class BraveIpfsClientUpdater;
 }
@@ -113,6 +117,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   brave_shields::AdBlockService* ad_block_service() override;
   https_upgrade_exceptions::HttpsUpgradeExceptionsService*
   https_upgrade_exceptions_service() override;
+  webcompat_exceptions::WebcompatExceptionsService*
+  webcompat_exceptions_service() override;
   localhost_permission::LocalhostPermissionComponent*
   localhost_permission_component() override;
 #if BUILDFLAG(ENABLE_GREASELION)
@@ -183,6 +189,8 @@ class BraveBrowserProcessImpl : public BraveBrowserProcess,
   std::unique_ptr<brave_shields::AdBlockService> ad_block_service_;
   std::unique_ptr<https_upgrade_exceptions::HttpsUpgradeExceptionsService>
       https_upgrade_exceptions_service_;
+  std::unique_ptr<webcompat_exceptions::WebcompatExceptionsService>
+      webcompat_exceptions_service_;
   std::unique_ptr<localhost_permission::LocalhostPermissionComponent>
       localhost_permission_component_;
 #if BUILDFLAG(ENABLE_GREASELION)

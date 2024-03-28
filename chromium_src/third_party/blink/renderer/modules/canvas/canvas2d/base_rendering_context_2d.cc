@@ -6,6 +6,7 @@
 #include "third_party/blink/renderer/modules/canvas/canvas2d/base_rendering_context_2d.h"
 
 #include "base/notreached.h"
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/graphics/image_data_buffer.h"
 
@@ -17,8 +18,10 @@
         image_data_pixmap.computeByteSize());                                 \
   }
 
-#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT         \
-  if (!brave::AllowFingerprinting(GetTopExecutionContext())) \
+#define BRAVE_BASE_RENDERING_CONTEXT_2D_MEASURE_TEXT        \
+  if (!brave::AllowFingerprinting(                          \
+          GetTopExecutionContext(),                         \
+          webcompat_exceptions::WebcompatFeature::kCanvas)) \
     return MakeGarbageCollected<TextMetrics>();
 
 #define BRAVE_GET_IMAGE_DATA_PARAMS ScriptState *script_state,
@@ -33,7 +36,8 @@ namespace {
 
 bool AllowFingerprintingFromScriptState(blink::ScriptState* script_state) {
   return brave::AllowFingerprinting(
-      blink::ExecutionContext::From(script_state));
+      blink::ExecutionContext::From(script_state),
+      webcompat_exceptions::WebcompatFeature::kCanvas);
 }
 
 }  // namespace

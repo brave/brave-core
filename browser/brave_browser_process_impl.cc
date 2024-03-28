@@ -44,6 +44,7 @@
 #include "brave/components/p3a/histograms_braveizer.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_service.h"
+#include "brave/components/webcompat_exceptions/webcompat_exceptions_service.h"
 #include "brave/services/network/public/cpp/system_request_handler.h"
 #include "build/build_config.h"
 #include "chrome/browser/component_updater/component_updater_utils.h"
@@ -226,6 +227,8 @@ void BraveBrowserProcessImpl::StartBraveServices() {
     localhost_permission_component();
   }
 
+  webcompat_exceptions_service();
+
 #if BUILDFLAG(ENABLE_GREASELION)
   greaselion_download_service();
 #endif
@@ -282,6 +285,16 @@ BraveBrowserProcessImpl::https_upgrade_exceptions_service() {
             local_data_files_service());
   }
   return https_upgrade_exceptions_service_.get();
+}
+
+webcompat_exceptions::WebcompatExceptionsService*
+BraveBrowserProcessImpl::webcompat_exceptions_service() {
+  if (!webcompat_exceptions_service_) {
+    webcompat_exceptions_service_ =
+        webcompat_exceptions::WebcompatExceptionsServiceFactory(
+            local_data_files_service());
+  }
+  return webcompat_exceptions_service_.get();
 }
 
 localhost_permission::LocalhostPermissionComponent*

@@ -15,6 +15,7 @@
 #include "base/containers/flat_set.h"
 #include "base/gtest_prod_util.h"
 #include "brave/components/brave_shields/core/common/brave_shields.mojom.h"
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "components/content_settings/core/common/content_settings.h"
 #include "components/content_settings/core/common/content_settings_types.h"
@@ -64,7 +65,8 @@ class BraveContentSettingsAgentImpl
   void BraveSpecificDidAllowJavaScriptOnce(const GURL& details);
   bool AllowAutoplay(bool play_requested) override;
 
-  BraveFarblingLevel GetBraveFarblingLevel() override;
+  BraveFarblingLevel GetBraveFarblingLevel(
+      webcompat_exceptions::WebcompatFeature webcompat_feature) override;
 
   bool IsReduceLanguageEnabled() override;
 
@@ -111,6 +113,9 @@ class BraveContentSettingsAgentImpl
 
   mojo::AssociatedReceiverSet<brave_shields::mojom::BraveShields>
       brave_shields_receivers_;
+
+  std::vector<brave_shields::mojom::WebcompatFeature> webcompat_features_;
+  bool webcompat_features_read_ = false;
 };
 
 }  // namespace content_settings

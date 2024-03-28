@@ -15,6 +15,7 @@
 #include "brave/browser/brave_browser_process.h"
 #include "brave/components/brave_shields/content/browser/brave_farbling_service.h"
 #include "brave/components/brave_shields/content/browser/brave_shields_util.h"
+#include "brave/components/webcompat_exceptions/webcompat_exceptions_service.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/profiles/profile.h"
 #include "components/content_settings/core/browser/host_content_settings_map.h"
@@ -85,6 +86,13 @@ int OnBeforeStartTransaction_ReduceLanguageWork(
     origin_url = ctx->initiator_url;
   }
   if (origin_url.is_empty()) {
+    return net::OK;
+  }
+  auto* webcompat_exceptions_service =
+      g_brave_browser_process->webcompat_exceptions_service();
+  if (webcompat_exceptions_service &&
+      webcompat_exceptions_service->IsFeatureDisabled(
+          origin_url, webcompat_exceptions::WebcompatFeature::kLanguage)) {
     return net::OK;
   }
   if (!brave_shields::ShouldDoReduceLanguage(content_settings, origin_url,

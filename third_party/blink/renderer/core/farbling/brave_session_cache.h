@@ -9,6 +9,7 @@
 #include <optional>
 #include <string>
 
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "brave/third_party/blink/renderer/brave_farbling_constants.h"
 #include "brave/third_party/blink/renderer/platform/brave_audio_farbling_helper.h"
 #include "third_party/abseil-cpp/absl/random/random.h"
@@ -29,6 +30,7 @@ using blink::ExecutionContext;
 using blink::GarbageCollected;
 using blink::MakeGarbageCollected;
 using blink::Supplement;
+using webcompat_exceptions::WebcompatFeature;
 
 enum FarbleKey : uint64_t {
   kNone,
@@ -48,8 +50,10 @@ CORE_EXPORT blink::WebContentSettingsClient* GetContentSettingsClientFor(
     bool require_filled_content_settings_rules = false);
 CORE_EXPORT BraveFarblingLevel
 GetBraveFarblingLevelFor(ExecutionContext* context,
+                         WebcompatFeature farblingType,
                          BraveFarblingLevel default_value);
-CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context);
+CORE_EXPORT bool AllowFingerprinting(ExecutionContext* context,
+                                     WebcompatFeature farblingType);
 CORE_EXPORT bool AllowFontFamily(ExecutionContext* context,
                                  const AtomicString& family_name);
 CORE_EXPORT int FarbleInteger(ExecutionContext* context,
@@ -75,7 +79,7 @@ class CORE_EXPORT BraveSessionCache final
   static BraveSessionCache& From(ExecutionContext&);
   static void Init();
 
-  BraveFarblingLevel GetBraveFarblingLevel() { return farbling_level_; }
+  BraveFarblingLevel GetBraveFarblingLevel(WebcompatFeature webcompat_feature);
   void FarbleAudioChannel(float* dst, size_t count);
   void PerturbPixels(const unsigned char* data, size_t size);
   WTF::String GenerateRandomString(std::string seed, wtf_size_t length);
@@ -98,6 +102,7 @@ class CORE_EXPORT BraveSessionCache final
   WTF::HashMap<FarbleKey, int> farbled_integers_;
   BraveFarblingLevel farbling_level_;
   std::optional<blink::BraveAudioFarblingHelper> audio_farbling_helper_;
+  WTF::HashMap<WebcompatFeature, BraveFarblingLevel> farbling_levels_;
 
   void PerturbPixelsInternal(const unsigned char* data, size_t size);
 };

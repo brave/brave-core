@@ -5,7 +5,7 @@
 
 #include "third_party/blink/renderer/modules/webusb/usb_device.h"
 
-#include "brave/third_party/blink/renderer/brave_farbling_constants.h"
+#include "brave/components/webcompat_exceptions/webcompat_constants.h"
 #include "brave/third_party/blink/renderer/core/farbling/brave_session_cache.h"
 #include "third_party/blink/renderer/platform/wtf/text/string_builder.h"
 
@@ -17,9 +17,10 @@ String USBDevice::serialNumber() const {
   String realSerialNumber = serialNumber_ChromiumImpl();
   if (realSerialNumber.length() > 0) {
     if (ExecutionContext* context = GetExecutionContext()) {
-      if (brave::GetBraveFarblingLevelFor(context,
-                                          BraveFarblingLevel::BALANCED) !=
-          BraveFarblingLevel::OFF) {
+      if (brave::GetBraveFarblingLevelFor(
+              context,
+              webcompat_exceptions::WebcompatFeature::kUsbDeviceSerialNumber,
+              BraveFarblingLevel::BALANCED) != BraveFarblingLevel::OFF) {
         WTF::StringBuilder result;
         result.Append(realSerialNumber);
         result.Append("WEBUSB_SERIAL_NUMBER");

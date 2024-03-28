@@ -55,6 +55,7 @@ void FarblePlugins(DOMPluginArray* owner,
   // |owner| is guaranteed to be non-null here.
   // |owner->DomWindow()| might be null but function can handle it.
   switch (brave::GetBraveFarblingLevelFor(owner->DomWindow(),
+                                          WebcompatFeature::kPlugins,
                                           BraveFarblingLevel::OFF)) {
     case BraveFarblingLevel::OFF: {
       break;

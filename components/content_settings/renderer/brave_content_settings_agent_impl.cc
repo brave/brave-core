@@ -5,6 +5,7 @@
 
 #include "brave/components/content_settings/renderer/brave_content_settings_agent_impl.h"
 
+#include <algorithm>
 #include <memory>
 #include <optional>
 #include <string>
@@ -325,7 +326,8 @@ void BraveContentSettingsAgentImpl::DidCommitProvisionalLoad(
   cached_ephemeral_storage_origins_.clear();
 }
 
-BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
+BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel(
+    webcompat_exceptions::WebcompatFeature webcompat_feature) {
   blink::WebLocalFrame* frame = render_frame()->GetWebFrame();
 
   ContentSetting setting = CONTENT_SETTING_DEFAULT;
@@ -337,6 +339,16 @@ BraveFarblingLevel BraveContentSettingsAgentImpl::GetBraveFarblingLevel() {
       setting = brave_shields::GetBraveFPContentSettingFromRules(
           content_setting_rules_->fingerprinting_rules, GetOriginOrURL(frame));
     }
+  }
+
+  if (!webcompat_features_read_) {
+    GetOrCreateBraveShieldsRemote()->GetWebcompatExceptions(
+        GetOriginOrURL(frame), &webcompat_features_);
+    webcompat_features_read_ = true;
+  }
+  if (std::find(webcompat_features_.begin(), webcompat_features_.end(),
+                webcompat_feature) != webcompat_features_.end()) {
+    return BraveFarblingLevel::OFF;
   }
 
   if (setting == CONTENT_SETTING_BLOCK) {
