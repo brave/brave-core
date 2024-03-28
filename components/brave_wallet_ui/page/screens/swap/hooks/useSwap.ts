@@ -840,9 +840,9 @@ export const useSwap = () => {
       }
 
       // LiFi specific validations
-      if (quoteErrorUnion?.lifiError?.message) {
-        return quoteErrorUnion?.lifiError?.message?.includes(
-          'Could not find token'
+      if (quoteErrorUnion?.lifiError) {
+        return quoteErrorUnion?.lifiError.codes.includes(
+          BraveWallet.LifiToolErrorCode.INSUFFICIENT_LIQUIDITY
         )
           ? 'insufficientLiquidity'
           : 'unknownError'
