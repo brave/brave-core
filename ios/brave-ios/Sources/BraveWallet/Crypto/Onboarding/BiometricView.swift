@@ -136,7 +136,7 @@ struct BiometricView: View {
           title: Text(Strings.Wallet.biometricsSetupErrorTitle),
           message: Text(
             Strings.Wallet.biometricsSetupErrorMessage
-              + (AppConstants.buildChannel.isPublic ? "" : " (\(biometricError ?? -1))")
+              + (AppConstants.isOfficialBuild ? "" : " (\(biometricError ?? -1))")
           ),
           dismissButton: .default(
             Text(Strings.OKString),

@@ -238,9 +238,5 @@ class PlaylistSettingsViewController: TableViewController {
         footer: .title(Strings.PlayList.playlistResetPlaylistOptionFooterText)
       )
     )
-
-    if !AppConstants.buildChannel.isPublic {
-      // TODO: Add debug settings here
-    }
   }
 }

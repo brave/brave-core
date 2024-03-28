@@ -4,19 +4,19 @@
 // file, You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
+@_spi(AppLaunch) import Shared
 import XCTest
 
 @testable import BraveTalk
 
 class BraveTalkTests: XCTestCase {
   @MainActor func testBraveTalkJitsiIntegrationEnabledOnRelease() {
-    AppConstants.buildChannel = .release
+    AppConstants.setBuildChannel(.release)
     XCTAssertTrue(BraveTalkJitsiCoordinator.isIntegrationEnabled)
   }
 
   @MainActor func testBraveTalkJitsiIntegrationEnabledOnBeta() {
-    AppConstants.buildChannel = .beta
+    AppConstants.setBuildChannel(.beta)
     XCTAssertTrue(BraveTalkJitsiCoordinator.isIntegrationEnabled)
   }
 }

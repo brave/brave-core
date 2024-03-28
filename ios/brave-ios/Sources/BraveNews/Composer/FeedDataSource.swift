@@ -127,8 +127,7 @@ public class FeedDataSource: ObservableObject {
     selectedLocale = Preferences.BraveNews.selectedLocale.value ?? "en_US"
     restoreCachedSources()
 
-    if !AppConstants.buildChannel.isPublic,
-      let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
+    if let savedEnvironment = Preferences.BraveNews.debugEnvironment.value,
       let environment = Environment(rawValue: savedEnvironment)
     {
       self.environment = environment
@@ -169,10 +168,6 @@ public class FeedDataSource: ObservableObject {
   public var environment: Environment = .production {
     didSet {
       if oldValue == environment { return }
-      assert(
-        !AppConstants.buildChannel.isPublic,
-        "Environment cannot be changed on non-public build channels"
-      )
       Preferences.BraveNews.debugEnvironment.value = environment.rawValue
       clearCachedFiles()
     }
@@ -422,7 +417,7 @@ public class FeedDataSource: ObservableObject {
     localeIdentifier: String? = nil,
     data: [FailableDecodable<T>]
   ) -> [T] {
-    if AppConstants.buildChannel.isPublic {
+    if AppConstants.isOfficialBuild {
       return data.compactMap(\.wrappedValue)
     }
     var values: [T] = []

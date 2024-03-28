@@ -36,7 +36,7 @@ public struct PrivacyReportsManager {
   public static func scheduleProcessingBlockedRequests(isPrivateBrowsing: Bool) {
     saveBlockedResourcesTimer?.invalidate()
 
-    let timeInterval = AppConstants.buildChannel.isPublic ? 60.0 : 10.0
+    let timeInterval = AppConstants.isOfficialBuild ? 60.0 : 10.0
 
     saveBlockedResourcesTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true)
     { _ in
@@ -51,7 +51,7 @@ public struct PrivacyReportsManager {
 
     // Because fetching VPN alerts involves making a url request,
     // the time interval to fetch them is longer than the local on-device blocked request processing.
-    let timeInterval = AppConstants.buildChannel.isPublic ? 5.minutes : 1.minutes
+    let timeInterval = AppConstants.isOfficialBuild ? 5.minutes : 1.minutes
     vpnAlertsTimer = Timer.scheduledTimer(withTimeInterval: timeInterval, repeats: true) { _ in
       if Preferences.PrivacyReports.captureVPNAlerts.value {
         BraveVPN.processVPNAlerts()

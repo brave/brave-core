@@ -20,12 +20,11 @@ extension Preferences {
 
     /// Return time interval when to remove old tabs, or nil if no tabs should be removed.
     public var timeInterval: TimeInterval? {
-      let isPublic = AppConstants.buildChannel.isPublic
       switch self {
       case .manually: return nil
-      case .oneDay: return isPublic ? 1.days : 5.minutes
-      case .oneWeek: return isPublic ? 7.days : 10.minutes
-      case .oneMonth: return isPublic ? 30.days : 1.hours
+      case .oneDay: return 1.days
+      case .oneWeek: return 7.days
+      case .oneMonth: return 30.days
       }
     }
   }
@@ -287,7 +286,7 @@ extension Preferences {
     )
   }
 
-  final public class Debug {
+  final public class AdblockDebug {
     /// When general blocklists were last time updated on the device.
     static let lastGeneralAdblockUpdate = Option<Date?>(
       key: "last-general-adblock-update",

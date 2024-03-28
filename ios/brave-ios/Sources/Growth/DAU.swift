@@ -17,8 +17,9 @@ public class DAU {
   private static let apiVersion = 1
 
   private static var baseUrl: String {
+    // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
     let domain =
-      AppConstants.buildChannel.isPublic
+      AppConstants.isOfficialBuild
       ? "https://laptop-updates.brave.com/"
       : "https://laptop-updates.bravesoftware.com/"
 
@@ -251,7 +252,7 @@ public class DAU {
       return true
     }
 
-    let daysThatMustPassToSkipDtoi = AppConstants.buildChannel == .nightly ? 2 : 30
+    let daysThatMustPassToSkipDtoi = 30
 
     return (currentDateOrdinal - referenceDateOrdinal) > daysThatMustPassToSkipDtoi
   }

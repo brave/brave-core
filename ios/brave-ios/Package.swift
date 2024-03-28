@@ -84,7 +84,7 @@ var package = Package(
     ),
     .target(
       name: "BraveShared",
-      dependencies: ["BraveCore", "Shared"],
+      dependencies: ["BraveCore", "Shared", "Preferences"],
       plugins: ["LoggerPlugin"]
     ),
     .target(
@@ -572,7 +572,11 @@ if isNativeTalkEnabled {
   )
   package.products.append(.library(name: "BraveTalk", targets: ["BraveTalk"]))
   package.targets.append(contentsOf: [
-    .target(name: "BraveTalk", dependencies: ["Shared", "JitsiMeet"], plugins: ["LoggerPlugin"]),
+    .target(
+      name: "BraveTalk",
+      dependencies: ["Shared", "Preferences", "JitsiMeet"],
+      plugins: ["LoggerPlugin"]
+    ),
     .testTarget(name: "BraveTalkTests", dependencies: ["BraveTalk", "Shared"]),
   ])
 }
