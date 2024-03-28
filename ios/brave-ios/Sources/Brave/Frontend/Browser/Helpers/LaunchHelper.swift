@@ -48,11 +48,12 @@ public actor LaunchHelper {
 
       // Load cached data
       // This is done first because compileResources need their results
-      async let filterListCache: Void = FilterListResourceDownloader.shared
-        .loadFilterListSettingsAndCachedData()
+      await FilterListStorage.shared.loadFilterListSettings()
+      await AdBlockGroupsManager.shared.loadResourcesFromCache()
+      async let loadEngines: Void = AdBlockGroupsManager.shared.loadEnginesFromCache()
       async let adblockResourceCache: Void = AdblockResourceDownloader.shared
         .loadCachedAndBundledDataIfNeeded(allowedModes: launchBlockModes)
-      _ = await (filterListCache, adblockResourceCache)
+      _ = await (loadEngines, adblockResourceCache)
       Self.signpost.emitEvent("loadedCachedData", id: signpostID, "Loaded cached data")
 
       ContentBlockerManager.log.debug("Loaded blocking launch data")
@@ -101,22 +102,10 @@ public actor LaunchHelper {
       let signpostID = Self.signpost.makeSignpostID()
       let state = Self.signpost.beginInterval("nonBlockingLaunchTask", id: signpostID)
       await FilterListResourceDownloader.shared.start(with: adBlockService)
-      Self.signpost.emitEvent(
-        "FilterListResourceDownloader.shared.start",
-        id: signpostID,
-        "Started filter list downloader"
-      )
       await AdblockResourceDownloader.shared.loadCachedAndBundledDataIfNeeded(
         allowedModes: Set(remainingModes)
       )
-      Self.signpost.emitEvent(
-        "loadCachedAndBundledDataIfNeeded",
-        id: signpostID,
-        "Reloaded data for remaining modes"
-      )
       await AdblockResourceDownloader.shared.startFetching()
-      Self.signpost.emitEvent("startFetching", id: signpostID, "Started fetching ad-block data")
-
       /// Cleanup rule lists so we don't have dead rule lists
       let validBlocklistTypes = await self.getAllValidBlocklistTypes()
       await ContentBlockerManager.shared.cleaupInvalidRuleLists(validTypes: validBlocklistTypes)
@@ -153,9 +142,7 @@ extension FilterListStorage {
       // If we don't have filter lists yet loaded, use the settings
       return Set(
         allFilterListSettings.compactMap { setting -> ContentBlockerManager.BlocklistType? in
-          guard let componentId = setting.componentId else { return nil }
-          return .filterList(
-            componentId: componentId,
+          return setting.engineSource?.blocklistType(
             isAlwaysAggressive: setting.isAlwaysAggressive
           )
         }
@@ -163,10 +150,9 @@ extension FilterListStorage {
     } else {
       // If we do have filter lists yet loaded, use them as they are always the most up to date and accurate
       return Set(
-        filterLists.map { filterList in
-          return .filterList(
-            componentId: filterList.entry.componentId,
-            isAlwaysAggressive: filterList.isAlwaysAggressive
+        filterLists.compactMap { filterList in
+          return filterList.engineSource.blocklistType(
+            isAlwaysAggressive: filterList.engineType.isAlwaysAggressive
           )
         }
       )

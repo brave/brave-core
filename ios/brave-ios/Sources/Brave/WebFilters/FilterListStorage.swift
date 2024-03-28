@@ -56,7 +56,11 @@ import Preferences
       index,
       adBlockFilterList -> FilterList? in
       // Certain filter lists are disabled if they are currently incompatible with iOS
-      guard !FilterList.disabledComponentIDs.contains(adBlockFilterList.componentId) else {
+      guard
+        !AdblockFilterListCatalogEntry.disabledFilterListComponentIDs.contains(
+          adBlockFilterList.componentId
+        )
+      else {
         return nil
       }
       let setting = allFilterListSettings.first(where: {
@@ -125,7 +129,9 @@ import Preferences
 
   /// - Warning: Do not call this before we load core data
   public func isEnabled(for componentId: String) -> Bool {
-    guard !FilterList.disabledComponentIDs.contains(componentId) else { return false }
+    guard !AdblockFilterListCatalogEntry.disabledFilterListComponentIDs.contains(componentId) else {
+      return false
+    }
 
     return filterLists.first(where: { $0.entry.componentId == componentId })?.isEnabled
       ?? allFilterListSettings.first(where: { $0.componentId == componentId })?.isEnabled
@@ -154,7 +160,7 @@ import Preferences
       componentId: filterList.entry.componentId,
       allowCreation: true,
       order: filterList.order,
-      isAlwaysAggressive: filterList.isAlwaysAggressive,
+      isAlwaysAggressive: filterList.engineType.isAlwaysAggressive,
       isDefaultEnabled: filterList.entry.defaultEnabled
     )
   }
@@ -276,7 +282,7 @@ import Preferences
     Task { @MainActor in
       UmaHistogramBoolean(
         "Brave.Shields.CookieListEnabled",
-        isEnabled(for: FilterList.cookieConsentNoticesComponentID)
+        isEnabled(for: AdblockFilterListCatalogEntry.cookieConsentNoticesComponentID)
       )
     }
   }
@@ -295,10 +301,11 @@ extension AdblockFilterListCatalogEntry {
 
 extension FilterListStorage {
   /// Gives us source representations of all the enabled filter lists
-  @MainActor var enabledSources: [CachedAdBlockEngine.Source] {
+  @MainActor var enabledSources: [GroupedAdBlockEngine.Source] {
     return filterLists.isEmpty
       ? allFilterListSettings
         .filter(\.isEnabled)
+        .sorted(by: { $0.order?.intValue ?? 0 <= $1.order?.intValue ?? 0 })
         .compactMap(\.engineSource)
       : filterLists
         .filter(\.isEnabled)

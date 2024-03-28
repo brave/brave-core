@@ -468,7 +468,7 @@ public class BrowserViewController: UIViewController {
     ScriptFactory.shared.clearCaches()
 
     Task {
-      await AdBlockStats.shared.didReceiveMemoryWarning()
+      await AdBlockGroupsManager.shared.didReceiveMemoryWarning()
     }
 
     for tab in tabManager.tabsForCurrentMode where tab.id != tabManager.selectedTab?.id {
