@@ -12,9 +12,11 @@
 #include "base/base64.h"
 #include "base/functional/bind.h"
 #include "base/logging.h"
+#include "base/rand_util.h"
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/p3a/metric_log_type.h"
+#include "brave/components/p3a/features.h"
 #include "brave/components/p3a/p3a_config.h"
 #include "brave/components/p3a/p3a_message.h"
 #include "components/prefs/pref_registry_simple.h"
@@ -28,6 +30,8 @@ namespace p3a {
 namespace {
 
 constexpr std::size_t kP3AConstellationCurrentThreshold = 50;
+constexpr std::size_t kP3ANebulaThreshold = 20;
+constexpr double kP3ANebulaSamplingRate = 0.105;
 
 }  // namespace
 
@@ -73,6 +77,16 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
       base::SplitString(serialized_log, kP3AMessageConstellationLayerSeparator,
                         base::WhitespaceHandling::TRIM_WHITESPACE,
                         base::SplitResult::SPLIT_WANT_NONEMPTY);
+  DLOG(INFO) << "Preparing P3A Constellation message:";
+  for (auto& layer: layers) {
+    DLOG(INFO) << "  " << layer;
+  }
+  bool sample = base::RandDouble() < kP3ANebulaSamplingRate;
+  DLOG(INFO) << "sampling:" << sample;
+  if (!sample) {
+    DCHECK(layers[0].starts_with("metric_name|"));
+    // TODO: poison submission
+  }
 
   uint8_t epoch = rnd_server_info->current_epoch;
 
@@ -85,6 +99,10 @@ bool ConstellationHelper::StartMessagePreparation(std::string histogram_name,
 
   auto req = constellation::construct_randomness_request(*prepare_res.state);
 
+  DLOG(INFO) << "Sending randomness request for points:";
+  for (const auto& point: req) {
+    DLOG(INFO) << "  " << base::Base64Encode(point.data);
+  }
   rand_points_manager_.SendRandomnessRequest(
       histogram_name, log_type, rnd_server_info->current_epoch,
       &rand_meta_manager_, std::move(prepare_res.state), req);
@@ -134,10 +152,11 @@ bool ConstellationHelper::ConstructFinalMessage(
                   "constructing message";
     return false;
   }
+  auto threshold = features::IsNebulaEnabled() ? kP3ANebulaThreshold : kP3AConstellationCurrentThreshold;
   auto msg_res = constellation::construct_message(
       resp_points, resp_proofs, *randomness_request_state,
       resp_proofs.empty() ? *null_public_key_ : *rnd_server_info->public_key,
-      {}, kP3AConstellationCurrentThreshold);
+      {}, threshold);
   if (!msg_res.error.empty()) {
     LOG(ERROR) << "ConstellationHelper: message construction failed: "
                << msg_res.error.c_str();
