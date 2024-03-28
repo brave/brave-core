@@ -28,4 +28,7 @@ interface MiscAndroidMetrics {
   // Records the creation of a new tab via the bottom toolbar button
   // in the tab switcher.
   RecordTabSwitcherNewTab();
+
+  // Records if Brave set as default.
+  RecordSetAsDefault(bool isDefault);
 };
