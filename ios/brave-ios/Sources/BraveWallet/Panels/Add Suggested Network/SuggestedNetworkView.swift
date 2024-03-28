@@ -134,9 +134,11 @@ struct SuggestedNetworkView: View {
       } label: {
         HStack(spacing: 8) {
           Spacer()
-          Text(keyringStore.selectedAccount.address.truncatedAddress)
-            .fontWeight(.semibold)
-          Blockie(address: keyringStore.selectedAccount.address)
+          if !keyringStore.selectedAccount.address.isEmpty {
+            Text(keyringStore.selectedAccount.address.truncatedAddress)
+              .fontWeight(.semibold)
+          }
+          Blockie(address: keyringStore.selectedAccount.blockieSeed)
             .frame(
               width: min(blockieSize, maxBlockieSize),
               height: min(blockieSize, maxBlockieSize)

@@ -132,8 +132,8 @@ public class KeyringStore: ObservableObject, WalletObserverStore {
   /// The users selected account when buying/sending/swapping currencies
   @Published var selectedAccount: BraveWallet.AccountInfo = .init() {
     didSet {
-      guard oldValue.address != selectedAccount.address,  // Same account
-        !oldValue.address.isEmpty  // initializing `KeyringStore`
+      guard oldValue.accountId != selectedAccount.accountId,  // Same account
+        !oldValue.accountId.uniqueKey.isEmpty  // initializing `KeyringStore`
       else {
         return
       }

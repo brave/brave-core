@@ -65,12 +65,17 @@ class TransactionsActivityStoreTests: XCTestCase {
 
     let rpcService = BraveWallet.TestJsonRpcService()
     rpcService._allNetworks = { coin, completion in
-      if coin == .sol {
-        completion([.mockSolana, .mockSolanaTestnet])
-      } else if coin == .eth {
+      switch coin {
+      case .eth:
         completion([.mockMainnet, .mockGoerli])
-      } else {  // .fil
+      case .sol:
+        completion([.mockSolana, .mockSolanaTestnet])
+      case .fil:
         completion([.mockFilecoinMainnet, .mockFilecoinTestnet])
+      case .btc, .zec:
+        completion([])
+      @unknown default:
+        completion([])
       }
     }
     rpcService._erc721Metadata = { _, _, _, completion in

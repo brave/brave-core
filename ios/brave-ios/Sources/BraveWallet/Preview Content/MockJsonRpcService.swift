@@ -545,6 +545,34 @@ extension BraveWallet.NetworkInfo {
     supportedKeyrings: [BraveWallet.KeyringId.filecoinTestnet.rawValue].map(NSNumber.init(value:)),
     isEip1559: true
   )
+  static let mockBitcoinMainnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.BitcoinMainnet,
+    chainName: "Bitcoin Mainnet",
+    blockExplorerUrls: ["https://bitcoin.explorer"],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://bitcoin.rpc")!],
+    symbol: "BTC",
+    symbolName: "Bitcoin",
+    decimals: 8,
+    coin: .btc,
+    supportedKeyrings: [BraveWallet.KeyringId.bitcoin84.rawValue].map(NSNumber.init(value:)),
+    isEip1559: false
+  )
+  static let mockBitcoinTestnet: BraveWallet.NetworkInfo = .init(
+    chainId: BraveWallet.BitcoinTestnet,
+    chainName: "Bitcoin Testnet",
+    blockExplorerUrls: ["https://bitcoin.explorer"],
+    iconUrls: [],
+    activeRpcEndpointIndex: 0,
+    rpcEndpoints: [URL(string: "https://bitcoin.rpc/test")!],
+    symbol: "BTC",
+    symbolName: "Bitcoin",
+    decimals: 8,
+    coin: .btc,
+    supportedKeyrings: [BraveWallet.KeyringId.bitcoin84Testnet.rawValue].map(NSNumber.init(value:)),
+    isEip1559: false
+  )
 }
 
 #endif

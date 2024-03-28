@@ -12,6 +12,7 @@ import XCTest
 class AssetDetailStoreTests: XCTestCase {
   private var cancellables: Set<AnyCancellable> = .init()
 
+  // TODO: Add a test case for fetching BTC balance in AssetDetails once issue https://github.com/brave/brave-browser/issues/36966 is integrated
   func testUpdateWithBlockchainToken() {
     let currencyFormatter = NumberFormatter().then { $0.numberStyle = .currency }
     let formatter = WeiFormatter(decimalFormatStyle: .decimals(precision: 18))

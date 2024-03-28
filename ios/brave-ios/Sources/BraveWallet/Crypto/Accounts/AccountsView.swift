@@ -213,7 +213,7 @@ private struct AccountCardView: View {
   private func topSectionContent(hidingButtons: Bool = true) -> some View {
     HStack {
       HStack(spacing: 8) {
-        Blockie(address: account.address)
+        Blockie(address: account.blockieSeed)
           .frame(width: min(avatarSize, maxAvatarSize), height: min(avatarSize, maxAvatarSize))
         VStack(alignment: .leading) {
           AddressView(address: account.address) {
@@ -222,8 +222,10 @@ private struct AccountCardView: View {
               Text(account.name)
                 .font(.headline.weight(.semibold))
                 .foregroundColor(Color(braveSystemName: .textPrimary))
-              Text(account.address.truncatedAddress)
-                .font(.footnote)
+              if !account.address.isEmpty {
+                Text(account.address.truncatedAddress)
+                  .font(.footnote)
+              }
             }
           }
           Text(account.accountSupportDisplayString)
@@ -268,10 +270,12 @@ private struct AccountCardView: View {
           Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
         }
         Divider()
-        Button {
-          action(.exportAccount)
-        } label: {
-          Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+        if account.coin != .btc {
+          Button {
+            action(.exportAccount)
+          } label: {
+            Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+          }
         }
         Button {
           action(.depositToAccount)
@@ -347,7 +351,7 @@ private struct AccountCardView: View {
   }
 
   private var cardBackground: some View {
-    BlockieMaterial(address: account.address)
+    BlockieMaterial(address: account.blockieSeed)
       .blur(radius: 25, opaque: true)
       .opacity(0.3)
       .clipShape(RoundedRectangle(cornerRadius: 8))

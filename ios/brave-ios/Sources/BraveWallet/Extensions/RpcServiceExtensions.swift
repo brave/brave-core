@@ -231,6 +231,9 @@ extension BraveWalletJsonRpcService {
         }
       }
     case .btc:
+      // Bitcoin balance should be fetched using `BraveWallet.BitcoinWalletService`
+      completion(nil)
+    case .zec:
       completion(nil)
     @unknown default:
       completion(nil)

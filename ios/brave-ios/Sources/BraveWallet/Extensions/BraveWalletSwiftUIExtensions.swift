@@ -9,7 +9,7 @@ import SwiftUI
 
 extension BraveWallet.AccountInfo: Identifiable {
   public var id: String {
-    "\(address)\(coin.rawValue)"
+    accountId.uniqueKey
   }
   public var isPrimary: Bool {
     // no hardware support on iOS
@@ -37,6 +37,7 @@ public enum AssetImageName: String {
   case ethereum = "eth-asset-icon"
   case solana = "sol-asset-icon"
   case filecoin = "filecoin-asset-icon"
+  case bitcoin = "bitcoin-asset-icon"
   case polygon = "matic"
   case binance = "bnb-asset-icon"
   case celo = "celo"
@@ -120,6 +121,10 @@ extension BraveWallet.NetworkInfo: Identifiable {
       || chainId.caseInsensitiveCompare(BraveWallet.FilecoinEthereumTestnetChainId) == .orderedSame
     {
       return AssetImageName.filecoin.rawValue
+    } else if chainId.caseInsensitiveCompare(BraveWallet.BitcoinMainnet) == .orderedSame
+      || chainId.caseInsensitiveCompare(BraveWallet.BitcoinTestnet) == .orderedSame
+    {
+      return AssetImageName.bitcoin.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.PolygonMainnetChainId) == .orderedSame {
       return AssetImageName.polygon.rawValue
     } else if chainId.caseInsensitiveCompare(BraveWallet.BinanceSmartChainMainnetChainId)
@@ -148,6 +153,8 @@ extension BraveWallet.NetworkInfo: Identifiable {
       return AssetImageName.solana.rawValue
     } else if symbol.caseInsensitiveCompare("FIL") == .orderedSame {
       return AssetImageName.filecoin.rawValue
+    } else if symbol.caseInsensitiveCompare("BTC") == .orderedSame {
+      return AssetImageName.bitcoin.rawValue
     }
     return nil
   }

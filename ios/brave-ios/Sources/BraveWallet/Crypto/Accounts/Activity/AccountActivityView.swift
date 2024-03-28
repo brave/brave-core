@@ -41,10 +41,12 @@ struct AccountActivityView: View {
             } label: {
               Label(Strings.Wallet.editButtonTitle, braveSystemImage: "leo.edit.pencil")
             }
-            Button {
-              isPresentingExportAccount = true
-            } label: {
-              Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+            if store.account.coin != .btc {
+              Button {
+                isPresentingExportAccount = true
+              } label: {
+                Label(Strings.Wallet.exportButtonTitle, braveSystemImage: "leo.key")
+              }
             }
           },
           label: {
@@ -105,16 +107,18 @@ struct AccountActivityView: View {
   private var headerSection: some View {
     VStack(spacing: 0) {
       VStack(spacing: 8) {
-        Blockie(address: store.account.address)
+        Blockie(address: store.account.blockieSeed)
           .frame(width: 44, height: 44)
           .clipShape(RoundedRectangle(cornerRadius: 4))
           .accessibilityHidden(true)
         VStack(spacing: 0) {
           Text(store.account.name)
             .font(.title2.weight(.semibold))
-          AddressView(address: store.account.address) {
-            Text(store.account.address.truncatedAddress)
-              .font(.caption)
+          if !store.account.address.isEmpty {
+            AddressView(address: store.account.address) {
+              Text(store.account.address.truncatedAddress)
+                .font(.caption)
+            }
           }
         }
       }
@@ -186,7 +190,7 @@ struct AccountActivityView: View {
           )
         }
       )
-      if store.account.coin != .fil {
+      if store.account.coin != .fil && store.account.coin != .btc {
         Divider()
         NavigationLink(
           destination: {

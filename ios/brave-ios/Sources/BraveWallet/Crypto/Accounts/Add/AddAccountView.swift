@@ -11,6 +11,7 @@ import SwiftUI
 
 struct AddAccountView: View {
   @ObservedObject var keyringStore: KeyringStore
+  @ObservedObject var networkStore: NetworkStore
 
   @State private var name: String = ""
   @State private var privateKey: String = ""
@@ -19,53 +20,62 @@ struct AddAccountView: View {
   @State private var originPassword: String = ""
   @State private var failedToImport: Bool = false
   @State private var selectedCoin: BraveWallet.CoinType?
-  @State private var filNetwork: BraveWallet.NetworkInfo
+  @State private var accountNetwork: BraveWallet.NetworkInfo
   @ScaledMetric(relativeTo: .body) private var privateKeyFieldHeight: CGFloat = 140.0
   @Environment(\.presentationMode) @Binding var presentationMode
   @Environment(\.appRatingRequestAction) private var appRatingRequest
 
   @ScaledMetric private var iconSize = 40.0
   private let maxIconSize: CGFloat = 80.0
-  private var allFilNetworks: [BraveWallet.NetworkInfo]
 
   var preSelectedCoin: BraveWallet.CoinType?
-  var preSelectedFilecoinNetwork: BraveWallet.NetworkInfo?
+  var preSelectedAccountNetwork: BraveWallet.NetworkInfo?
   var onCreate: (() -> Void)?
   var onDismiss: (() -> Void)?
+
+  private var selectedCoinNetworks: [BraveWallet.NetworkInfo] {
+    guard let coin: BraveWallet.CoinType = preSelectedCoin ?? selectedCoin else { return [] }
+    return networkStore.allChains.filter { $0.coin == coin }
+  }
 
   init(
     keyringStore: KeyringStore,
     networkStore: NetworkStore,
     preSelectedCoin: BraveWallet.CoinType? = nil,
-    preSelectedFilecoinNetwork: BraveWallet.NetworkInfo? = nil,
+    preSelectedAccountNetwork: BraveWallet.NetworkInfo? = nil,
     onCreate: (() -> Void)? = nil,
     onDismiss: (() -> Void)? = nil
   ) {
     self.keyringStore = keyringStore
-    self.allFilNetworks = networkStore.allChains.filter { $0.coin == .fil }
+    self.networkStore = networkStore
     self.preSelectedCoin = preSelectedCoin
     self.onCreate = onCreate
     self.onDismiss = onDismiss
     // make sure the prefilled
-    if let preSelectedFilecoinNetwork, preSelectedFilecoinNetwork.coin == .fil {
+    if let preSelectedAccountNetwork {
       // network is a Filecoin network
-      self.preSelectedFilecoinNetwork = preSelectedFilecoinNetwork
-      _filNetwork = .init(initialValue: preSelectedFilecoinNetwork)
+      self.preSelectedAccountNetwork = preSelectedAccountNetwork
+      _accountNetwork = .init(initialValue: preSelectedAccountNetwork)
     } else {
-      _filNetwork = .init(initialValue: self.allFilNetworks.first ?? .init())
+      let networks = networkStore.allChains.filter { $0.coin == preSelectedCoin }
+      _accountNetwork = .init(initialValue: networks.first ?? .init())
     }
   }
 
   private func addAccount(for coin: BraveWallet.CoinType) {
     let accountName =
       name.isEmpty
-      ? defaultAccountName(for: coin, chainId: filNetwork.chainId, isPrimary: privateKey.isEmpty)
+      ? defaultAccountName(
+        for: coin,
+        chainId: accountNetwork.chainId,
+        isPrimary: privateKey.isEmpty
+      )
       : name
     guard accountName.isValidAccountName else { return }
 
     if privateKey.isEmpty {
       // Add normal account
-      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: filNetwork.chainId) {
+      keyringStore.addPrimaryAccount(accountName, coin: coin, chainId: accountNetwork.chainId) {
         success in
         if success {
           onCreate?()
@@ -94,7 +104,7 @@ struct AddAccountView: View {
         keyringStore.addSecondaryAccount(
           accountName,
           coin: coin,
-          chainId: filNetwork.chainId,
+          chainId: accountNetwork.chainId,
           privateKey: privateKey,
           completion: handler
         )
@@ -131,11 +141,11 @@ struct AddAccountView: View {
 
   @ViewBuilder private var addAccountView: some View {
     List {
-      if (selectedCoin == .fil || preSelectedCoin == .fil) && !allFilNetworks.isEmpty {
+      if isKeyringSelectionRequired {
         Menu(
           content: {
-            Picker(selection: $filNetwork) {
-              ForEach(allFilNetworks) { network in
+            Picker(selection: $accountNetwork) {
+              ForEach(selectedCoinNetworks) { network in
                 Text(network.chainName)
                   .foregroundColor(Color(.secondaryBraveLabel))
                   .tag(network)
@@ -150,21 +160,23 @@ struct AddAccountView: View {
                 .foregroundColor(Color(.braveLabel))
               Spacer()
               Group {
-                Text(filNetwork.chainName)
+                Text(accountNetwork.chainName)
                 Image(systemName: "chevron.up.chevron.down")
               }
               .foregroundColor(Color(.secondaryBraveLabel))
             }
           }
         )
-        .disabled(preSelectedFilecoinNetwork != nil)
+        .disabled(preSelectedAccountNetwork != nil)
         .listRowBackground(Color(.secondaryBraveGroupedBackground))
       }
       accountNameSection
       if isJSONImported {
         originPasswordSection
       }
-      privateKeySection
+      if selectedCoin != .btc && preSelectedCoin != .btc {
+        privateKeySection
+      }
     }
     .listStyle(InsetGroupedListStyle())
     .listBackgroundColor(Color(UIColor.braveGroupedBackground))
@@ -254,6 +266,11 @@ struct AddAccountView: View {
           Text(Strings.cancelButtonTitle)
             .foregroundColor(Color(.braveBlurpleTint))
         }
+      }
+    }
+    .onChange(of: selectedCoin) { coin in
+      if coin == .fil || coin == .btc {
+        accountNetwork = selectedCoinNetworks.first(where: { $0.coin == coin }) ?? .init()
       }
     }
     .sheet(isPresented: $isPresentingImport) {
@@ -398,6 +415,12 @@ struct AddAccountView: View {
         numberOfImportedAccounts + 1
       )
     }
+  }
+
+  private var isKeyringSelectionRequired: Bool {
+    guard !selectedCoinNetworks.isEmpty else { return false }
+    return (selectedCoin == .fil || selectedCoin == .btc)
+      || (preSelectedCoin == .fil || preSelectedCoin == .btc)
   }
 }
 

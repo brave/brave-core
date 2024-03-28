@@ -46,7 +46,7 @@ public struct WalletPanelContainerView: View {
       return .onboarding
     }
     // keyring fetched & wallet setup, but selected account not fetched
-    if keyringStore.selectedAccount.address.isEmpty {
+    if keyringStore.selectedAccount.accountId.uniqueKey.isEmpty {
       return .loading
     }
     // keyring fetched & wallet setup, wallet is locked
@@ -391,17 +391,20 @@ struct WalletPanelView: View {
   /// A boolean value indicates to hide or unhide `Connect` button
   private func isConnectButtonHidden() -> Bool {
     let account = keyringStore.selectedAccount
-    if account.coin == .sol {
+    switch account.coin {
+    case .eth:
+      return false
+    case .sol:
       for domain in Domain.allDomainsWithWalletPermissions(for: .sol) {
         if let accounts = domain.wallet_solanaPermittedAcccounts, !accounts.isEmpty {
           return false
         }
       }
       return true
-    } else if account.coin == .fil {
+    case .fil, .btc, .zec:
       return true
-    } else {
-      return false
+    default:
+      return true
     }
   }
 
@@ -477,7 +480,7 @@ struct WalletPanelView: View {
             Button {
               presentWalletWithContext(.accountSelection)
             } label: {
-              Blockie(address: keyringStore.selectedAccount.address)
+              Blockie(address: keyringStore.selectedAccount.blockieSeed)
                 .frame(width: blockieSize, height: blockieSize)
                 .overlay(
                   RoundedRectangle(cornerRadius: 4)
