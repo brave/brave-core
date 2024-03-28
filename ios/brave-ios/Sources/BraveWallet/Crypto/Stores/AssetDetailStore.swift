@@ -125,7 +125,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
 
   // All account info that has the same coin type as this asset's
-  var allAccountsForTokenCoin: [BraveWallet.AccountInfo] = []
+  var allAccountsForToken: [BraveWallet.AccountInfo] = []
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -201,6 +201,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
+      let allAccounts = await keyringService.allAccounts()
 
       switch assetDetailType {
       case .blockchainToken(let token):
@@ -214,10 +215,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSwapSupported = await swapService.isSwapSupported(chainId: token.chainId)
 
         // fetch accounts
-        self.allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter {
-          $0.coin == token.coin
-        }
-        var updatedAccounts = allAccountsForTokenCoin.map {
+        self.allAccountsForToken = allAccounts.accounts.accountsFor(network: network)
+        var updatedAccounts = allAccountsForToken.map {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
 
@@ -262,7 +261,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         )
         let allTransactions = await txService.allTransactions(
           networksForCoin: [network.coin: [network]],
-          for: allAccountsForTokenCoin
+          for: allAccountsForToken
         )
 
         let ethTransactions = allTransactions.filter { $0.coin == .eth }
@@ -278,7 +277,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -297,7 +296,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -313,7 +312,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -347,7 +346,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
-        self.allAccountsForTokenCoin = []
+        self.allAccountsForToken = []
         self.nonZeroBalanceAccounts = []
         self.transactionSections = []
       }
