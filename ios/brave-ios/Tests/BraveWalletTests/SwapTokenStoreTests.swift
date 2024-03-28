@@ -442,54 +442,6 @@ class SwapStoreTests: XCTestCase {
     }
   }
 
-  /// Test change to `sellAmount` (from value) will fetch LiFi price quote and assign to `buyAmount`
-  func testFetchLiFiPriceQuoteSell() {
-    let (
-      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
-      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
-    ) = setupServices()
-    let lifiQuote: BraveWallet.LiFiQuote = .mockOneETHtoUSDCQuote
-    swapService._quote = { _, completion in
-      completion(.init(lifiQuote: lifiQuote), .mockEthFees, nil, "")
-    }
-    let store = SwapTokenStore(
-      keyringService: keyringService,
-      blockchainRegistry: blockchainRegistry,
-      rpcService: rpcService,
-      swapService: swapService,
-      txService: txService,
-      walletService: walletService,
-      ethTxManagerProxy: ethTxManagerProxy,
-      solTxManagerProxy: solTxManagerProxy,
-      userAssetManager: mockAssetManager,
-      prefilledToken: nil
-    )
-
-    let buyAmountExpectation = expectation(description: "buyAmountExpectation")
-    store.$buyAmount
-      .dropFirst()
-      .collect(3)
-      .sink { buyAmounts in
-        defer { buyAmountExpectation.fulfill() }
-        guard let buyAmount = buyAmounts.last else {
-          XCTFail("Expected multiple buyAmount assignments.")
-          return
-        }
-        XCTAssertFalse(buyAmount.isEmpty)
-        XCTAssertEqual(buyAmount, "3537.7229")
-      }
-      .store(in: &cancellables)
-
-    XCTAssertTrue(store.buyAmount.isEmpty)
-    // non-empty assignment to `sellAmount` calls fetchPriceQuote
-    store.setUpTest(sellAmount: "1")
-    waitForExpectations(timeout: 2) { error in
-      XCTAssertNil(error)
-      // Verify fees
-      XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
-    }
-  }
-
   /// Test change to `buyAmount` (to value) will fetch ZeroEx price quote and assign to `buyAmount`
   func testFetchZeroExPriceQuoteBuy() {
     let (
@@ -695,6 +647,114 @@ class SwapStoreTests: XCTestCase {
       fromAccount: .mockSolAccount,
       selectedFromToken: .mockSolToken,
       selectedToToken: .mockSpdToken,
+      sellAmount: "0.01"
+    )
+    waitForExpectations(timeout: 2) { error in
+      XCTAssertNil(error)
+    }
+  }
+
+  /// Test change to `sellAmount` (from value) will fetch LiFi price quote and assign to `buyAmount`
+  func testFetchLiFiPriceQuoteSell() {
+    let (
+      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
+      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
+    ) = setupServices()
+    let lifiQuote: BraveWallet.LiFiQuote = .mockOneETHtoUSDCQuote
+    swapService._quote = { _, completion in
+      completion(.init(lifiQuote: lifiQuote), .mockEthFees, nil, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager,
+      prefilledToken: nil
+    )
+
+    let buyAmountExpectation = expectation(description: "buyAmountExpectation")
+    store.$buyAmount
+      .dropFirst()
+      .collect(3)
+      .sink { buyAmounts in
+        defer { buyAmountExpectation.fulfill() }
+        guard let buyAmount = buyAmounts.last else {
+          XCTFail("Expected multiple buyAmount assignments.")
+          return
+        }
+        XCTAssertFalse(buyAmount.isEmpty)
+        XCTAssertEqual(buyAmount, "3537.7229")
+      }
+      .store(in: &cancellables)
+
+    XCTAssertTrue(store.buyAmount.isEmpty)
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(sellAmount: "1")
+    waitForExpectations(timeout: 2) { error in
+      XCTAssertNil(error)
+      // Verify fees
+      XCTAssertEqual(store.braveFeeForDisplay, "0.875%")
+    }
+  }
+
+  /// Test change to `sellAmount` (from value) will fetch LiFi price quote and display insufficient liquidity (when returned by LiFi price quote)
+  func testFetchLiFiPriceQuoteInsufficientLiquidity() {
+    let (
+      keyringService, blockchainRegistry, rpcService, swapService, txService, walletService,
+      ethTxManagerProxy, solTxManagerProxy, mockAssetManager
+    ) = setupServices(
+      network: .mockMainnet,
+      coin: .eth
+    )
+    swapService._quote = { _, completion in
+      let errorUnion: BraveWallet.SwapErrorUnion = .init(
+        lifiError: .init(
+          message: "",
+          codes: [
+            BraveWallet.LifiToolErrorCode.insufficientLiquidity.rawValue as NSNumber
+          ]
+        )
+      )
+      completion(nil, nil, errorUnion, "")
+    }
+    let store = SwapTokenStore(
+      keyringService: keyringService,
+      blockchainRegistry: blockchainRegistry,
+      rpcService: rpcService,
+      swapService: swapService,
+      txService: txService,
+      walletService: walletService,
+      ethTxManagerProxy: ethTxManagerProxy,
+      solTxManagerProxy: solTxManagerProxy,
+      userAssetManager: mockAssetManager,
+      prefilledToken: nil
+    )
+
+    let stateExpectation = expectation(description: "stateExpectation")
+    store.$state
+      .dropFirst()
+      .collect(5)  // sellAmount, buyAmount didSet to `.idle`
+      .sink { states in
+        defer { stateExpectation.fulfill() }
+        guard let state = states.last else {
+          XCTFail("Expected multiple state updates.")
+          return
+        }
+        XCTAssertEqual(state, .error(Strings.Wallet.insufficientLiquidity))
+      }
+      .store(in: &cancellables)
+
+    XCTAssertNotEqual(store.state, .error(Strings.Wallet.insufficientLiquidity))
+    // non-empty assignment to `sellAmount` calls fetchPriceQuote
+    store.setUpTest(
+      fromAccount: .mockEthAccount,
+      selectedFromToken: .previewToken,
+      selectedToToken: .mockUSDCToken,
       sellAmount: "0.01"
     )
     waitForExpectations(timeout: 2) { error in
