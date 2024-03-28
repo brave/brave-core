@@ -46,6 +46,8 @@ import {
   useGetPendingAddChainRequestQuery,
   useGetPendingDecryptRequestQuery,
   useGetPendingGetEncryptionPublicKeyRequestQuery,
+  useGetPendingSignMessageErrorsQuery,
+  useGetPendingSignMessageRequestsQuery,
   useGetPendingSwitchChainRequestQuery,
   useGetPendingSignAllTransactionsRequestsQuery,
   useGetPendingTokenSuggestionRequestsQuery,
@@ -93,12 +95,8 @@ function Container() {
   const connectToSiteOrigin = useUnsafePanelSelector(
     PanelSelectors.connectToSiteOrigin
   )
-  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
   const connectingAccounts = useUnsafePanelSelector(
     PanelSelectors.connectingAccounts
-  )
-  const signMessageErrorData = useUnsafePanelSelector(
-    PanelSelectors.signMessageErrorData
   )
 
   // queries & mutations
@@ -113,6 +111,8 @@ function Container() {
     useGetPendingSignTransactionRequestsQuery()
   const { data: signAllTransactionsRequests } =
     useGetPendingSignAllTransactionsRequestsQuery()
+  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
+  const { data: signMessageErrorData } = useGetPendingSignMessageErrorsQuery()
   const { data: addTokenRequests = [] } =
     useGetPendingTokenSuggestionRequestsQuery()
 
@@ -172,12 +172,12 @@ function Container() {
   }
 
   if (
+    selectedPanel === 'connectHardwareWallet' &&
     selectedAccount &&
     (selectedPendingTransaction ||
-      signMessageData.length ||
+      signMessageData?.length ||
       signAllTransactionsRequests?.length ||
-      signTransactionRequests?.length) &&
-    selectedPanel === 'connectHardwareWallet'
+      signTransactionRequests?.length)
   ) {
     return (
       <PanelWrapper isLonger={false}>
@@ -211,7 +211,7 @@ function Container() {
     )
   }
 
-  if (signMessageErrorData.length !== 0) {
+  if (signMessageErrorData?.length) {
     return (
       <PanelWrapper>
         <SignInWithEthereumError />
@@ -239,7 +239,7 @@ function Container() {
     )
   }
 
-  if (selectedPanel === 'signData') {
+  if (signMessageData?.length) {
     return (
       <PanelWrapper isLonger={true}>
         <LongWrapper>

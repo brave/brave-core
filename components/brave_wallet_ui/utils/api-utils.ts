@@ -107,7 +107,8 @@ export function navigateToConnectHardwareWallet(
 ) {
   panelHandler.setCloseOnDeactivate(false)
 
-  const selectedPanel: string = store.getState()?.panel?.selectedPanel
+  const selectedPanel: string | undefined =
+    store.getState()?.panel?.selectedPanel
 
   if (selectedPanel === 'connectHardwareWallet') {
     return

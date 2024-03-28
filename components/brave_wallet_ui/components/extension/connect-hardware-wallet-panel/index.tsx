@@ -10,7 +10,6 @@ import { useHistory } from 'react-router'
 // utils
 import { getLocale } from '../../../../common/locale'
 import { isHardwareAccount } from '../../../utils/account-utils'
-import { PanelSelectors } from '../../../panel/selectors'
 import { UISelectors } from '../../../common/selectors'
 import { PanelActions } from '../../../panel/actions'
 
@@ -22,13 +21,15 @@ import { HardwareWalletResponseCodeType } from '../../../common/hardware/types'
 import useInterval from '../../../common/hooks/interval'
 import { useDispatch } from 'react-redux'
 import { useAccountQuery } from '../../../common/slices/api.slice.extra'
-import {
-  useSafeUISelector,
-  useUnsafePanelSelector
-} from '../../../common/hooks/use-safe-selector'
+import { useSafeUISelector } from '../../../common/hooks/use-safe-selector'
 import {
   usePendingTransactions //
 } from '../../../common/hooks/use-pending-transaction'
+import {
+  useGetPendingSignMessageRequestsQuery,
+  useProcessSignMessageRequestMutation,
+  useSignMessageHardwareMutation
+} from '../../../common/slices/api.slice'
 
 // components
 import { NavButton } from '../buttons/nav-button/index'
@@ -80,22 +81,22 @@ export const ConnectHardwareWalletPanel = ({
   const dispatch = useDispatch<ThunkDispatch<any, any, any>>()
   const history = useHistory()
 
-  /**
-   * signMessageData by default initialized as:
-   *
-   * ```[{ id: -1, address: '', message: '' }]```
-   */
-  const signMessageData = useUnsafePanelSelector(PanelSelectors.signMessageData)
-  const request = signMessageData.at(0)
   const selectedPendingTransactionId = useSafeUISelector(
     UISelectors.selectedPendingTransactionId
   )
-  const isSigning = request && request.id !== -1
 
   const isConfirming = !!selectedPendingTransactionId
   const coinType = account.accountId.coin
 
+  // mutations
+  const [signMessageHardware] = useSignMessageHardwareMutation()
+  const [processSignMessageRequest] = useProcessSignMessageRequestMutation()
+
   // queries
+  const { data: signMessageData } = useGetPendingSignMessageRequestsQuery()
+  const request = signMessageData?.at(0)
+  const isSigning = request && request.id !== -1
+
   const { account: messageAccount } = useAccountQuery(request?.accountId)
 
   // pending transactions
@@ -137,27 +138,23 @@ export const ConnectHardwareWalletPanel = ({
     dispatch(PanelActions.cancelConnectHardwareWallet(account))
   }, [account, dispatch])
 
-  const onSignData = React.useCallback(() => {
+  const onSignData = React.useCallback(async () => {
     if (!messageAccount || !request) {
       return
     }
 
     if (isHardwareAccount(messageAccount.accountId)) {
-      dispatch(
-        PanelActions.signMessageHardware({
-          account: messageAccount,
-          request: request
-        })
-      )
+      await signMessageHardware({
+        account: messageAccount,
+        request: request
+      }).unwrap()
     } else {
-      dispatch(
-        PanelActions.signMessageProcessed({
-          approved: true,
-          id: request.id
-        })
-      )
+      await processSignMessageRequest({
+        approved: true,
+        id: request.id
+      }).unwrap()
     }
-  }, [dispatch, messageAccount, request])
+  }, [messageAccount, processSignMessageRequest, request, signMessageHardware])
 
   const retryHardwareOperation = React.useCallback(() => {
     if (isSigning) {

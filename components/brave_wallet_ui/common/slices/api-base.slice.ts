@@ -74,7 +74,9 @@ export function createWalletApiBase() {
       'PendingEncryptRequest',
       'PendingSignTransactionRequests',
       'PendingSignAllTransactionsRequests',
-      'PinnableNftIds'
+      'PinnableNftIds',
+      'PendingSignMessageRequests',
+      'PendingSignMessageErrors'
     ],
     endpoints: ({ mutation, query }) => ({})
   })
