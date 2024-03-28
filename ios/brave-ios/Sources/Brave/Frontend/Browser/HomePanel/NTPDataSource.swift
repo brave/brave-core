@@ -13,7 +13,23 @@ enum NTPWallpaper {
   case sponsoredImage(NTPSponsoredImageBackground)
   case superReferral(NTPSponsoredImageBackground, code: String)
 
+  var backgroundVideoPath: URL? {
+    let videoPath: URL?
+    switch self {
+    case .image(let background):
+      videoPath = nil
+    case .sponsoredImage(let background):
+      videoPath = isVideoSponsored() ? background.imagePath : nil
+    case .superReferral(let background, _):
+      videoPath = nil
+    }
+    return videoPath
+  }
+
   var backgroundImage: UIImage? {
+    if isVideoSponsored() {
+      return nil
+    }
     let imagePath: URL
     switch self {
     case .image(let background):
@@ -47,6 +63,30 @@ enum NTPWallpaper {
       return background.focalPoint
     case .superReferral(let background, _):
       return background.focalPoint
+    }
+  }
+
+  var backgroundColor: String? {
+    let backgroundColor: String?
+    switch self {
+    case .image(let background):
+      backgroundColor = nil
+    case .sponsoredImage(let background):
+      backgroundColor = background.backgroundColor
+    case .superReferral(let background, _):
+      backgroundColor = background.backgroundColor
+    }
+    return backgroundColor
+  }
+
+  func isVideoSponsored() -> Bool {
+    switch self {
+    case .image:
+      return false
+    case .sponsoredImage(let background):
+      return background.imagePath.pathExtension == "mp4"
+    case .superReferral:
+      return false
     }
   }
 }
