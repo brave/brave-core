@@ -12,8 +12,9 @@
 #include "base/memory/weak_ptr.h"
 #include "base/run_loop.h"
 #include "base/test/task_environment.h"
-#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle.h"
+#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
 #include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle_delegate.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #include "mojo/public/cpp/bindings/pending_receiver.h"
 #include "mojo/public/cpp/bindings/pending_remote.h"
 #include "mojo/public/cpp/bindings/remote.h"
@@ -224,11 +225,18 @@ class MockDelegate : public blink::URLLoaderThrottle::Delegate {
 
 class AIChatResourceSnifferThrottleTest : public testing::Test {
  public:
-  std::unique_ptr<AIChatResourceSnifferThrottle> MaybeCreateThrottleForUrl(
+  std::unique_ptr<blink::URLLoaderThrottle> MaybeCreateThrottleForUrl(
       GURL url) {
-    return AIChatResourceSnifferThrottle::MaybeCreateThrottleFor(
-        ai_chat_throttle_delegate_.weak_factory_.GetWeakPtr(), url,
-        task_environment_.GetMainThreadTaskRunner());
+    auto ai_chat_resource_sniffer = AIChatResourceSniffer::MaybeCreate(
+        url, ai_chat_throttle_delegate_.weak_factory_.GetWeakPtr());
+    if (ai_chat_resource_sniffer) {
+      auto body_sniffer_throttle =
+          std::make_unique<body_sniffer::BodySnifferThrottle>(
+              task_environment_.GetMainThreadTaskRunner());
+      body_sniffer_throttle->AddHandler(std::move(ai_chat_resource_sniffer));
+      return body_sniffer_throttle;
+    }
+    return nullptr;
   }
 
   void InterceptBodyRequestFor(const std::string& body) {

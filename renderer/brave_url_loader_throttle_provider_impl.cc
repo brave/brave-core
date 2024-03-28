@@ -17,7 +17,8 @@
 #include "third_party/blink/public/web/web_local_frame.h"
 
 #if BUILDFLAG(ENABLE_AI_CHAT)
-#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer_throttle.h"
+#include "brave/components/ai_chat/renderer/ai_chat_resource_sniffer.h"
+#include "brave/components/body_sniffer/body_sniffer_throttle.h"
 #endif  // ENABLE_AI_CHAT
 
 #if BUILDFLAG(ENABLE_TOR)
@@ -97,13 +98,15 @@ BraveURLLoaderThrottleProviderImpl::CreateThrottles(
     auto* page_content_delegate =
         ai_chat::PageContentExtractor::Get(render_frame);
     if (page_content_delegate) {
-      std::unique_ptr<ai_chat::AIChatResourceSnifferThrottle>
-          ai_chat_resource_throttle =
-              ai_chat::AIChatResourceSnifferThrottle::MaybeCreateThrottleFor(
-                  page_content_delegate->GetWeakPtr(), request.url,
-                  base::SequencedTaskRunner::GetCurrentDefault());
-      if (ai_chat_resource_throttle) {
-        throttles.emplace_back(std::move(ai_chat_resource_throttle));
+      auto ai_chat_resource_sniffer =
+          ai_chat::AIChatResourceSniffer::MaybeCreate(
+              request.url, page_content_delegate->GetWeakPtr());
+      if (ai_chat_resource_sniffer) {
+        auto body_sniffer_throttle =
+            std::make_unique<body_sniffer::BodySnifferThrottle>(
+                base::SequencedTaskRunner::GetCurrentDefault());
+        body_sniffer_throttle->AddHandler(std::move(ai_chat_resource_sniffer));
+        throttles.emplace_back(std::move(body_sniffer_throttle));
       }
     }
   }

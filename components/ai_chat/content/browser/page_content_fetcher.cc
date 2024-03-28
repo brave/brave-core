@@ -242,7 +242,8 @@ class PageContentFetcher {
     //   see in a moment. And this  </text>
     // </transcript>
 
-    if (!data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
+    if (!result.has_value() ||
+        !data_decoder::IsXmlElementNamed(result.value(), "transcript")) {
       VLOG(1) << "Could not find transcript element.";
       return;
     }
@@ -329,7 +330,7 @@ class PageContentFetcher {
     }
     bool is_ok =
         loader->NetError() == net::OK && response_body && response_code == 200;
-    ;
+
     std::string patch_content = is_ok ? *response_body : "";
     if (!is_ok || patch_content.empty()) {
       DVLOG(1) << __func__ << " invalid patch response from url: "

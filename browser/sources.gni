@@ -136,6 +136,7 @@ brave_chrome_browser_deps = [
   "//brave/browser/ui/tabs",
   "//brave/common",
   "//brave/components/ai_chat/core/common/buildflags",
+  "//brave/components/body_sniffer",
   "//brave/components/brave_ads/browser",
   "//brave/components/brave_ads/core",
   "//brave/components/brave_component_updater/browser",

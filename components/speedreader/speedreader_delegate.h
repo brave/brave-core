@@ -3,8 +3,8 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
-#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_DELEGATE_H_
-#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_DELEGATE_H_
+#ifndef BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DELEGATE_H_
+#define BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DELEGATE_H_
 
 #include <string>
 
@@ -12,9 +12,9 @@ namespace speedreader {
 
 enum class DistillationResult : int;
 
-// SpeedreaderThrottleDelegate is an interface for the speedreader component to
+// SpeedreaderDelegate is an interface for the speedreader component to
 // notify a tab_helper.
-class SpeedreaderThrottleDelegate {
+class SpeedreaderDelegate {
  public:
   virtual bool IsPageDistillationAllowed() = 0;
   virtual bool IsPageContentPresent() = 0;
@@ -22,9 +22,9 @@ class SpeedreaderThrottleDelegate {
   virtual void OnDistillComplete(DistillationResult result) = 0;
 
  protected:
-  virtual ~SpeedreaderThrottleDelegate() = default;
+  virtual ~SpeedreaderDelegate() = default;
 };
 
 }  // namespace speedreader
 
-#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_THROTTLE_DELEGATE_H_
+#endif  // BRAVE_COMPONENTS_SPEEDREADER_SPEEDREADER_DELEGATE_H_
