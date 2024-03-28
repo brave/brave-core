@@ -15,6 +15,8 @@
 #include "net/test/embedded_test_server/default_handlers.h"
 #include "url/gurl.h"
 
+class Profile;
+
 namespace brave_rewards::test_util {
 
 void GetTestDataDir(base::FilePath* test_data_dir);
@@ -26,6 +28,8 @@ GURL GetRewardsInternalsUrl();
 GURL GetNewTabUrl();
 
 void StartProcess(RewardsServiceImpl* rewards_service);
+
+void StartProcessWithConnectedUser(Profile* profile);
 
 GURL GetUrl(
     net::EmbeddedTestServer* https_server,
@@ -59,15 +63,9 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
-// TODO(zenparsing): Remove these functions when browser tests that read or
-// write encrypted "state" are migrated to the bat rewards library.
-std::optional<std::string> EncryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value);
+std::optional<std::string> EncryptPrefString(const std::string& value);
 
-std::optional<std::string> DecryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value);
+std::optional<std::string> DecryptPrefString(const std::string& value);
 
 }  // namespace brave_rewards::test_util
 

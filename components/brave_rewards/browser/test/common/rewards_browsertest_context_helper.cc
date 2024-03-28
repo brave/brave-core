@@ -158,7 +158,7 @@ void RewardsBrowserTestContextHelper::LoadRewardsPage() {
 
   // Wait for the content to be fully rendered before continuing.
   test_util::WaitForElementToAppear(tab_strip->GetActiveWebContents(),
-                                    "[data-test-id=rewards-balance-text]");
+                                    "#rewardsPage");
 }
 
 void RewardsBrowserTestContextHelper::ReloadCurrentSite() {

@@ -568,43 +568,19 @@ void RewardsServiceImpl::CreateRewardsWallet(
 
 void RewardsServiceImpl::GetUserType(
     base::OnceCallback<void(mojom::UserType)> callback) {
-  using mojom::UserType;
-
   if (!Connected()) {
     return DeferCallback(FROM_HERE, std::move(callback),
-                         UserType::kUnconnected);
+                         mojom::UserType::kUnconnected);
   }
 
-  auto on_external_wallet = [](base::WeakPtr<RewardsServiceImpl> self,
-                               base::OnceCallback<void(UserType)> callback,
-                               mojom::ExternalWalletPtr wallet) {
-    if (!self) {
-      std::move(callback).Run(UserType::kUnconnected);
-      return;
-    }
+  auto on_external_wallet =
+      [](base::OnceCallback<void(mojom::UserType)> callback,
+         mojom::ExternalWalletPtr wallet) {
+        std::move(callback).Run(wallet ? mojom::UserType::kConnected
+                                       : mojom::UserType::kUnconnected);
+      };
 
-    if (wallet) {
-      std::move(callback).Run(UserType::kConnected);
-      return;
-    }
-
-    auto* prefs = self->profile_->GetPrefs();
-    base::Version version(prefs->GetString(prefs::kUserVersion));
-    if (!version.IsValid()) {
-      version = base::Version({1});
-    }
-
-    if (!RewardsParametersFromPrefs(*prefs)->vbat_expired &&
-        version.CompareTo(base::Version({2, 5})) < 0) {
-      std::move(callback).Run(UserType::kLegacyUnconnected);
-      return;
-    }
-
-    std::move(callback).Run(UserType::kUnconnected);
-  };
-
-  GetExternalWallet(
-      base::BindOnce(on_external_wallet, AsWeakPtr(), std::move(callback)));
+  GetExternalWallet(base::BindOnce(on_external_wallet, std::move(callback)));
 }
 
 bool RewardsServiceImpl::IsTermsOfServiceUpdateRequired() {

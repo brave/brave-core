@@ -13,7 +13,6 @@ import { isSelfCustodyProvider } from '../../shared/lib/external_wallet'
 
 import PageWallet from './pageWallet'
 
-import { VBATNotice, shouldShowVBATNotice } from '../../shared/components/vbat_notice'
 import { AdsPanel } from './ads_panel'
 import { AutoContributePanel } from './auto_contribute_panel'
 import { TipsPanel } from './tips_panel'
@@ -214,21 +213,6 @@ export function Settings () {
     )
   }
 
-  function renderVBATNotice () {
-    const { vbatDeadline } = rewardsData.parameters
-    if (!shouldShowVBATNotice(rewardsData.userType, vbatDeadline)) {
-      return null
-    }
-
-    const onConnect = () => { actions.onModalConnectOpen() }
-
-    return (
-      <style.vbatNotice>
-        <VBATNotice vbatDeadline={vbatDeadline} onConnectAccount={onConnect} />
-      </style.vbatNotice>
-    )
-  }
-
   function renderContent () {
     // Do not display content until the user's onboarding status has been
     // determined.
@@ -260,7 +244,6 @@ export function Settings () {
               </button>
             </style.manageAction>
           </style.header>
-          {renderVBATNotice()}
           <style.settingGroup>
             <AdsPanel />
           </style.settingGroup>

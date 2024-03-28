@@ -10,6 +10,7 @@
 
 #include "base/base64.h"
 #include "base/files/file_util.h"
+#include "base/json/json_writer.h"
 #include "base/path_service.h"
 #include "base/run_loop.h"
 #include "base/strings/stringprintf.h"
@@ -18,11 +19,11 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards::test_util {
@@ -79,6 +80,64 @@ void StartProcess(RewardsServiceImpl* rewards_service) {
   rewards_service->StartProcessForTesting(
       base::BindLambdaForTesting([&]() { run_loop.Quit(); }));
   run_loop.Run();
+}
+
+void StartProcessWithConnectedUser(Profile* profile) {
+  auto* prefs = profile->GetPrefs();
+
+  prefs->SetString(prefs::kDeclaredGeo, "US");
+
+  constexpr char kRewardsWalletJSON[] = R"(
+      {"payment_id":"2b6e71a6-f3c7-5999-9235-11605a60ec93",
+       "recovery_seed":"QgcQHdg6fo53/bGKVwZlL1UkLiql8X7U68jaWgz6FWQ="})";
+
+  prefs->SetString(prefs::kWalletBrave, kRewardsWalletJSON);
+
+  base::Value::Dict wallet;
+  wallet.Set("token", "token");
+  wallet.Set("address", GetUpholdExternalAddress());
+  wallet.Set("status", static_cast<int>(mojom::WalletStatus::kConnected));
+  wallet.Set("user_name", "Brave Test");
+
+  std::string json;
+  base::JSONWriter::Write(wallet, &json);
+  auto encrypted = EncryptPrefString(json);
+  ASSERT_TRUE(encrypted);
+
+  prefs->SetString(prefs::kExternalWalletType, "uphold");
+  prefs->SetString(prefs::kWalletUphold, *encrypted);
+
+  auto* rewards_service = RewardsServiceFactory::GetForProfile(profile);
+  DCHECK(rewards_service);
+
+  test_util::StartProcess(static_cast<RewardsServiceImpl*>(rewards_service));
+
+  {
+    // Verify that the payment ID was read correctly.
+    std::string payment_id;
+    base::RunLoop run_loop;
+    rewards_service->GetRewardsWallet(
+        base::BindLambdaForTesting([&](mojom::RewardsWalletPtr rewards_wallet) {
+          payment_id = rewards_wallet->payment_id;
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_EQ(payment_id, "2b6e71a6-f3c7-5999-9235-11605a60ec93");
+  }
+
+  {
+    // Verify that the external wallet data was read correctly.
+    mojom::ExternalWalletPtr external_wallet;
+    base::RunLoop run_loop;
+    rewards_service->GetExternalWallet(
+        base::BindLambdaForTesting([&](mojom::ExternalWalletPtr wallet) {
+          external_wallet = std::move(wallet);
+          run_loop.Quit();
+        }));
+    run_loop.Run();
+    ASSERT_TRUE(external_wallet);
+    ASSERT_EQ(external_wallet->address, GetUpholdExternalAddress());
+  }
 }
 
 GURL GetUrl(
@@ -180,30 +239,24 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   prefs->SetBoolean(prefs::kEnabled, bypassed);
 }
 
-std::optional<std::string> EncryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value) {
-  DCHECK(rewards_service);
-
-  auto encrypted = mojom::RewardsEngineClientAsyncWaiter(rewards_service)
-                       .EncryptString(value);
-  if (!encrypted) {
+std::optional<std::string> EncryptPrefString(const std::string& value) {
+  std::string encrypted;
+  if (!OSCrypt::EncryptString(value, &encrypted)) {
     return {};
   }
-  return base::Base64Encode(*encrypted);
+  return base::Base64Encode(encrypted);
 }
 
-std::optional<std::string> DecryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value) {
-  DCHECK(rewards_service);
+std::optional<std::string> DecryptPrefString(const std::string& value) {
   std::string decoded;
   if (!base::Base64Decode(value, &decoded)) {
     return {};
   }
-
-  return mojom::RewardsEngineClientAsyncWaiter(rewards_service)
-      .DecryptString(decoded);
+  std::string decrypted;
+  if (!OSCrypt::DecryptString(decoded, &decrypted)) {
+    return {};
+  }
+  return decrypted;
 }
 
 }  // namespace brave_rewards::test_util

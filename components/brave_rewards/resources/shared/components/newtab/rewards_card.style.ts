@@ -509,44 +509,6 @@ export const settings = styled.div`
   }
 `
 
-export const vbatNotice = styled.div`
-  margin: 10px -12px 0;
-  border-radius: 8px;
-  overflow: hidden;
-
-  .vbat-notice-header {
-    font-size: 14px;
-    line-height: 20px;
-    padding: 16px;
-
-    .icon {
-      width: 20px;
-      height: auto;
-    }
-  }
-
-  .vbat-notice-close .icon {
-    width: 11px;
-    height: auto;
-  }
-
-  .vbat-notice-content {
-    font-size: 12px;
-    line-height: 18px;
-    padding: 16px;
-  }
-
-  .vbat-notice-actions {
-    display: block;
-    text-align: center;
-  }
-
-  .vbat-notice-connect button {
-    width: 100%;
-    margin-bottom: 10px;
-  }
-`
-
 export const selfCustodyInvite = styled.div.attrs({
   'data-theme': 'light'
 })`
