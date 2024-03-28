@@ -9,6 +9,7 @@
 #include "brave/components/misc_metrics/language_metrics.h"
 #include "brave/components/misc_metrics/page_metrics.h"
 #include "chrome/browser/autofill/personal_data_manager_factory.h"
+#include "chrome/browser/bookmarks/bookmark_model_factory.h"
 #include "chrome/browser/browser_process.h"
 #include "chrome/browser/content_settings/host_content_settings_map_factory.h"
 #include "chrome/browser/history/history_service_factory.h"
@@ -38,9 +39,11 @@ ProfileMiscMetricsService::ProfileMiscMetricsService(
       Profile::FromBrowserContext(context), ServiceAccessType::EXPLICIT_ACCESS);
   auto* host_content_settings_map =
       HostContentSettingsMapFactory::GetForProfile(context);
+  auto* bookmark_model = BookmarkModelFactory::GetForBrowserContext(context);
   if (history_service && host_content_settings_map) {
-    page_metrics_ = std::make_unique<PageMetrics>(
-        local_state, host_content_settings_map, history_service);
+    page_metrics_ =
+        std::make_unique<PageMetrics>(local_state, host_content_settings_map,
+                                      history_service, bookmark_model);
   }
 #if BUILDFLAG(IS_ANDROID)
   auto* search_engine_tracker =

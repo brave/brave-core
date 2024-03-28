@@ -36,7 +36,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.AIChat.OmniboxOpens",
     "Brave.AIChat.OmniboxWeekCompare",
     "Brave.AIChat.UsageWeekly",
-    "Brave.Core.BookmarksCountOnProfileLoad.2",
+    "Brave.Core.BookmarkCount",
     "Brave.Core.CrashReportsEnabled",
     "Brave.Core.DomainsLoaded",
     "Brave.Core.FailedHTTPSUpgrades",
