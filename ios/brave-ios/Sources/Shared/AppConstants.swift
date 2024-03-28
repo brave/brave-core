@@ -10,19 +10,6 @@ public enum AppBuildChannel: String {
   case nightly
   case debug
 
-  /// Whether this release channel is used/seen by external users (app store or testers)
-  public var isPublic: Bool {
-    // Using switch to force a return definition for each enum value
-    // Simply using `return [.release, .beta].includes(self)` could lead to easily missing a definition
-    //  if enum is ever expanded
-    switch self {
-    case .release, .beta:
-      return true
-    case .nightly, .debug:
-      return false
-    }
-  }
-
   public var serverChannelParam: String {
     switch self {
     case .release:
@@ -71,9 +58,18 @@ public struct AppConstants {
   public static let isRunningTest = NSClassFromString("XCTestCase") != nil
 
   /// Build Channel.
-  public static var buildChannel: AppBuildChannel = .release
+  public fileprivate(set) static var buildChannel: AppBuildChannel = .debug
 
-  public static let webServerPort: Int = {
-    AppConstants.buildChannel.isPublic ? 6571 : Int.random(in: 6572..<6600)
-  }()
+  /// Whether or not this is an official build
+  public fileprivate(set) static var isOfficialBuild: Bool = false
+}
+
+@_spi(AppLaunch)
+extension AppConstants {
+  public static func setBuildChannel(_ buildChannel: AppBuildChannel) {
+    self.buildChannel = buildChannel
+  }
+  public static func setOfficialBuild(_ isOfficialBuild: Bool) {
+    self.isOfficialBuild = isOfficialBuild
+  }
 }

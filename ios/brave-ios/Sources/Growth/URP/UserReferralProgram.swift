@@ -30,7 +30,7 @@ public class UserReferralProgram {
     var timer: Timer?
     var currentCount = 0
     let retryLimit = 10
-    let retryTimeInterval = AppConstants.buildChannel.isPublic ? 3.minutes : 1.minutes
+    let retryTimeInterval = 3.minutes
   }
 
   private var referralLookupRetry = ReferralLookupRetry()
@@ -39,7 +39,7 @@ public class UserReferralProgram {
 
   public init() {
     // This should _probably_ correspond to the baseUrl for NTPDownloader
-    let host = AppConstants.buildChannel == .debug ? HostUrl.staging : HostUrl.prod
+    let host = AppConstants.isOfficialBuild ? HostUrl.prod : HostUrl.staging
 
     let apiKey = kBraveStatsAPIKey
 
@@ -152,13 +152,13 @@ public class UserReferralProgram {
   }
 
   private func initRetryPingConnection(numberOfTimes: Int32) {
-    if AppConstants.buildChannel.isPublic {
+    if AppConstants.isOfficialBuild {
       // Adding some time offset to be extra safe.
       let offset = 1.hours
       let _30daysFromToday = Date().timeIntervalSince1970 + 30.days + offset
       Preferences.URP.nextCheckDate.value = _30daysFromToday
     } else {
-      // For local and beta builds use a short timer
+      // For local builds use a short timer
       Preferences.URP.nextCheckDate.value = Date().timeIntervalSince1970 + 10.minutes
     }
 
@@ -242,8 +242,7 @@ public class UserReferralProgram {
       // Appending ref code to dau ping if user used installed the app via
       // user referral program or apple search ad
       if Preferences.URP.referralCodeDeleteDate.value == nil {
-        UrpLog.log("Setting new date for deleting referral code.")
-        let timeToDelete = AppConstants.buildChannel.isPublic ? 90.days : 20.minutes
+        let timeToDelete = AppConstants.isOfficialBuild ? 90.days : 20.minutes
         Preferences.URP.referralCodeDeleteDate.value = Date().timeIntervalSince1970 + timeToDelete
       }
 

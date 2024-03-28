@@ -68,7 +68,7 @@ public class BraveVPN {
       }
     }
 
-    helper.dummyDataForDebugging = !AppConstants.buildChannel.isPublic
+    helper.dummyDataForDebugging = !AppConstants.isOfficialBuild
     helper.tunnelLocalizedDescription = connectionName
     helper.grdTunnelProviderManagerLocalizedDescription = connectionName
     helper.tunnelProviderBundleIdentifier = AppInfo.baseBundleIdentifier + ".BraveWireGuard"

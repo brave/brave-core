@@ -2,7 +2,7 @@
  * License, v. 2.0. If a copy of the MPL was not distributed with this
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 
-import Shared
+@_spi(AppLaunch) import Shared
 import Storage
 import AVFoundation
 import MessageUI
@@ -51,13 +51,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     // Application Constants must be initialized first
     #if BRAVE_CHANNEL_RELEASE
-    AppConstants.buildChannel = .release
+    AppConstants.setBuildChannel(.release)
     #elseif BRAVE_CHANNEL_BETA
-    AppConstants.buildChannel = .beta
+    AppConstants.setBuildChannel(.beta)
     #elseif BRAVE_CHANNEL_NIGHTLY
-    AppConstants.buildChannel = .nightly
+    AppConstants.setBuildChannel(.nightly)
     #elseif BRAVE_CHANNEL_DEBUG
-    AppConstants.buildChannel = .debug
+    AppConstants.setBuildChannel(.debug)
+    #endif
+
+    #if OFFICIAL_BUILD
+    AppConstants.setOfficialBuild(true)
     #endif
     
     AppState.shared.state = .launching(options: launchOptions ?? [:], active: false)
@@ -224,9 +228,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 #endif
     
     // DAU may not have pinged on the first launch so weekOfInstallation pref may not be set yet
-    if let weekOfInstall = Preferences.DAU.weekOfInstallation.value ??
-        Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
-       AppConstants.buildChannel != .debug {
+    if let weekOfInstall = Preferences.DAU.weekOfInstallation.value
+      ?? Preferences.DAU.installationDate.value?.mondayOfCurrentWeekFormatted,
+      AppConstants.isOfficialBuild
+    {
       AppState.shared.braveCore.initializeP3AService(
         forChannel: AppConstants.buildChannel.serverChannelParam,
         weekOfInstall: weekOfInstall

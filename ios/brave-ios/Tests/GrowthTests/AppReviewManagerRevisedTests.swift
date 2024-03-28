@@ -163,7 +163,6 @@ class AppReviewManagerTests: XCTestCase {
   }
   
   private func resetAppReviewConstants() {
-    AppConstants.buildChannel = .debug
     Preferences.Review.launchCount.reset()
     Preferences.Review.daysInUse.reset()
     Preferences.AppState.backgroundedCleanly.reset()

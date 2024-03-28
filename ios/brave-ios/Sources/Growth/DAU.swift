@@ -14,13 +14,12 @@ public class DAU {
   private static let apiVersion = 1
 
   private static var baseUrl: String {
-    get {
-      let domain = AppConstants.buildChannel.isPublic
-        ? "https://laptop-updates.brave.com/"
-        : "https://laptop-updates.bravesoftware.com/"
-
-      return "\(domain)\(apiVersion)/usage/ios?platform=ios"
-    }
+    // TODO: Handle via brave-stats-updater-server switch and get URL from brave_stats_updater_url
+    let domain =
+      AppConstants.isOfficialBuild
+      ? "https://laptop-updates.brave.com/"
+      : "https://laptop-updates.bravesoftware.com/"
+    return "\(domain)\(apiVersion)/usage/ios?platform=ios"
   }
   /// Number of seconds that determins when a user is "active"
   private let pingRefreshDuration = 5.minutes
@@ -241,7 +240,7 @@ public class DAU {
       return true
     }
 
-    let daysThatMustPassToSkipDtoi = AppConstants.buildChannel == .nightly ? 2 : 30
+    let daysThatMustPassToSkipDtoi = 30
 
     return (currentDateOrdinal - referenceDateOrdinal) > daysThatMustPassToSkipDtoi
   }

@@ -272,9 +272,19 @@ class NewTabPageViewController: UIViewController {
 
     collectionView.backgroundView = backgroundButtonsView
 
-    feedOverlayView.headerView.settingsButton.addTarget(self, action: #selector(tappedBraveNewsSettings), for: .touchUpInside)
-    if !AppConstants.buildChannel.isPublic {
-      feedOverlayView.headerView.settingsButton.addGestureRecognizer(UILongPressGestureRecognizer(target: self, action: #selector(longPressedBraveNewsSettingsButton)))
+    feedOverlayView.headerView.settingsButton.addTarget(
+      self,
+      action: #selector(tappedBraveNewsSettings),
+      for: .touchUpInside
+    )
+    if !AppConstants.isOfficialBuild {
+      // Add a shortcut only available in local builds
+      feedOverlayView.headerView.settingsButton.addGestureRecognizer(
+        UILongPressGestureRecognizer(
+          target: self,
+          action: #selector(longPressedBraveNewsSettingsButton)
+        )
+      )
     }
     feedOverlayView.newContentAvailableButton.addTarget(self, action: #selector(tappedNewContentAvailable), for: .touchUpInside)
 
@@ -903,8 +913,9 @@ class NewTabPageViewController: UIViewController {
 
   @objc private func longPressedBraveNewsSettingsButton() {
     assert(
-      !AppConstants.buildChannel.isPublic,
-      "Debug settings are not accessible on public builds")
+      !AppConstants.isOfficialBuild,
+      "Debug settings are not accessible on public builds"
+    )
     let settings = BraveNewsDebugSettingsView(dataSource: feedDataSource) { [weak self] in
       self?.dismiss(animated: true)
     }

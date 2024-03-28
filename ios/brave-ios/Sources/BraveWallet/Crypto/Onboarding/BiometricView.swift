@@ -117,11 +117,17 @@ struct BiometricView: View {
       ) {
         Alert(
           title: Text(Strings.Wallet.biometricsSetupErrorTitle),
-          message: Text(Strings.Wallet.biometricsSetupErrorMessage + (AppConstants.buildChannel.isPublic ? "" : " (\(biometricError ?? -1))")),
-          dismissButton: .default(Text( Strings.OKString), action: {
-            keyringStore.passwordToSaveInBiometric = nil
-            completion()
-          })
+          message: Text(
+            Strings.Wallet.biometricsSetupErrorMessage
+              + (AppConstants.isOfficialBuild ? "" : " (\(biometricError ?? -1))")
+          ),
+          dismissButton: .default(
+            Text(Strings.OKString),
+            action: {
+              keyringStore.passwordToSaveInBiometric = nil
+              completion()
+            }
+          )
         )
       }
       .interactiveDismissDisabled()

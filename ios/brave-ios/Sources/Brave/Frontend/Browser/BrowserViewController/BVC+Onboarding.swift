@@ -131,8 +131,9 @@ extension BrowserViewController {
       return
     }
 
-    let trackerCountThresholdForOnboarding = AppConstants.buildChannel.isPublic ? 250 : 20
-    let trackerAdsTotal = BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
+    let trackerCountThresholdForOnboarding = AppConstants.isOfficialBuild ? 250 : 20
+    let trackerAdsTotal =
+      BraveGlobalShieldStats.shared.adblock + BraveGlobalShieldStats.shared.trackingProtection
 
     if trackerAdsTotal < trackerCountThresholdForOnboarding {
       return

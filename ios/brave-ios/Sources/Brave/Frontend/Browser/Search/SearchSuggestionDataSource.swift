@@ -102,8 +102,10 @@ class SearchSuggestionDataSource {
     
     let rightNow = Date()
     let nextShowDate = braveSearchPromotionLaunchDate.addingTimeInterval(
-      AppConstants.buildChannel.isPublic ? maxPeriodBraveSearchPromotion.days : maxPeriodBraveSearchPromotion.minutes)
-    
+      AppConstants.isOfficialBuild
+        ? maxPeriodBraveSearchPromotion.days : maxPeriodBraveSearchPromotion.minutes
+    )
+
     if rightNow > nextShowDate {
       return false
     }

@@ -144,8 +144,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
       // Trigger install attribution fetch only first launch
       Preferences.URP.installAttributionLookupOutstanding.value = Preferences.General.isFirstLaunch.value
     }
-        
-    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.buildChannel.isPublic)
+
+    PrivacyReportsManager.scheduleNotification(debugMode: !AppConstants.isOfficialBuild)
     PrivacyReportsManager.consolidateData()
     PrivacyReportsManager.scheduleProcessingBlockedRequests(isPrivateBrowsing: browserViewController.privateBrowsingManager.isPrivateBrowsing)
     PrivacyReportsManager.scheduleVPNAlertsTask()
@@ -464,8 +464,9 @@ extension SceneDelegate {
 
     // Don't track crashes if we're building the development environment due to the fact that terminating/stopping
     // the simulator via Xcode will count as a "crash" and lead to restore popups in the subsequent launch
-    let crashedLastSession = !Preferences.AppState.backgroundedCleanly.value && AppConstants.buildChannel != .debug
-    
+    let crashedLastSession =
+      !Preferences.AppState.backgroundedCleanly.value && AppConstants.isOfficialBuild
+
     // Store the scene's activities
     let windowId: UUID
     let isPrivate: Bool

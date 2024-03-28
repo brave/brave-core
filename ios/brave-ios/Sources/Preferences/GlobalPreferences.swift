@@ -162,4 +162,12 @@ extension Preferences {
     /// Node Id for last bookmark folder
     public static let lastBookmarksFolderNodeId = Option<Int?>(key: "chromium.last.bookmark.folder.node.id", default: nil)
   }
+
+  public final class Debug {
+    /// Whether or not the settings page shows developer options
+    public static let developerOptionsEnabled = Option<Bool>(
+      key: "debug.dev-options-enabled",
+      default: false
+    )
+  }
 }

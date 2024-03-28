@@ -4,8 +4,9 @@
 // file, You can obtain one at http://mozilla.org/MPL/2.0/.
 
 import Foundation
-import Shared
 import JitsiMeetSDK
+import Preferences
+import Shared
 
 /// Handles coordinating when to use the Jitsi SDK for better Brave Talk integration
 ///
@@ -18,7 +19,7 @@ import JitsiMeetSDK
   }
   
   public init() {
-    if !AppConstants.buildChannel.isPublic {
+    if !AppConstants.isOfficialBuild || Preferences.Debug.developerOptionsEnabled.value {
       JitsiMeetLogger.add(BraveTalkJitsiLogHandler())
     }
   }
