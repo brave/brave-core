@@ -7,29 +7,19 @@
 
 #include "brave/components/brave_ads/core/internal/common/url/url_util.h"
 #include "brave/components/brave_ads/core/internal/tabs/tab_manager.h"
-#include "brave/components/brave_ads/core/public/ad_units/ad_info.h"
+#include "url/gurl.h"
 
 namespace brave_ads {
 
-bool DidLandOnPage(const int32_t tab_id, const AdInfo& ad) {
-  if (!TabManager::GetInstance().IsVisible(tab_id)) {
-    // The tab is occluded.
-    return false;
-  }
-
+bool DidLandOnPage(const int32_t tab_id, const GURL& url) {
   const std::optional<TabInfo> tab =
       TabManager::GetInstance().MaybeGetForId(tab_id);
   if (!tab) {
-    // The tab was closed.
+    // The tab does not exist.
     return false;
   }
 
-  if (tab->redirect_chain.empty()) {
-    // The tab did not load successfully.
-    return false;
-  }
-
-  return DomainOrHostExists(tab->redirect_chain, ad.target_url);
+  return DomainOrHostExists(tab->redirect_chain, url);
 }
 
 }  // namespace brave_ads

@@ -85,10 +85,14 @@ class AdHandler final : public ConversionsObserver, SiteVisitObserver {
   void OnDidConvertAd(const ConversionInfo& conversion) override;
 
   // SiteVisitObserver:
-  void OnMaybeLandOnPage(const AdInfo& ad, base::Time maybe_at) override;
+  void OnMaybeLandOnPage(const AdInfo& ad, base::TimeDelta after) override;
+  void OnDidSuspendPageLand(const TabInfo& tab,
+                            base::TimeDelta remaining_time) override;
+  void OnDidResumePageLand(const TabInfo& tab,
+                           base::TimeDelta remaining_time) override;
   void OnDidLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
-  void OnDidNotLandOnPage(const AdInfo& ad) override;
-  void OnCanceledPageLand(const AdInfo& ad, int32_t tab_id) override;
+  void OnDidNotLandOnPage(const TabInfo& tab, const AdInfo& ad) override;
+  void OnCanceledPageLand(int32_t tab_id, const AdInfo& ad) override;
 
   const raw_ref<Account> account_;
 
