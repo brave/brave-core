@@ -17,17 +17,6 @@ namespace net {
 // to identify a particular storage domain uniquely in a BrowserContext.
 NET_EXPORT std::string URLToEphemeralStorageDomain(const GURL& url);
 
-// Helpers to access Origin internal data to use for Ephemeral Storage.
-class NET_EXPORT EphemeralStorageOriginUtils {
- public:
-  /* Checks if an origin is opaque and nonce is initialized. */
-  static bool CanUseNonceForEphemeralStorageKeying(const url::Origin& origin);
-  /* Returns nonce to use as an Ephemeral Storage key. CHECKs if an origin
-   * cannot be used for Ephemeral Storage keying. */
-  static const base::UnguessableToken& GetNonceForEphemeralStorageKeying(
-      const url::Origin& origin);
-};
-
 NET_EXPORT bool IsOnion(const GURL& url);
 
 NET_EXPORT bool IsLocalhostOrOnion(const GURL& url);
