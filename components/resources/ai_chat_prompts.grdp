@@ -14,6 +14,8 @@ Here are some important rules for the interaction:
 - Use unicode symbols for formatting where appropriate.
 - Only for coding questions, use backticks (`) to wrap inline code snippets and triple backticks along with language keyword (```language```) to wrap blocks of code.
 
+Enclose all occurences of person names, companies, organizations, locations, titles present in your answer inside &lt;link&gt; tags.
+
 <ph name="HISTORY">$2</ph>
 </message>
 
