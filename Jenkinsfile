@@ -24,6 +24,7 @@ pipeline {
             steps {
                 script {
                     PLATFORM = JOB_NAME.substring(JOB_NAME.indexOf('-build-pr') + 10, JOB_NAME.indexOf('/PR-'))
+                    echo sh(script: 'env|sort', returnStdout: true)
                     PIPELINE_NAME = 'pr-brave-browser-' + CHANGE_BRANCH.replace('/', '-') + '-' + PLATFORM
 
                     withCredentials([usernamePassword(credentialsId: 'brave-builds-github-token-for-pr-builder', usernameVariable: 'PR_BUILDER_USER', passwordVariable: 'PR_BUILDER_TOKEN')]) {
@@ -42,11 +43,66 @@ pipeline {
                         STORYBOOK = prDetails.labels.count { label -> label.name.equalsIgnoreCase('CI/storybook-url') }.equals(1)
                     }
 
-                    if (SKIP && PLATFORM != 'noplatform') {
+                    if (true) {
                         echo "Skipping build, not required"
+                        jobDsl(scriptText: """
+                            pipelineJob('skip-${PIPELINE_NAME}') {
+                                parameters {
+                                    stringParam('GIT_URL', '')
+                                    stringParam('GIT_COMMIT', '')
+                                    stringParam('GITHUB_COMMIT_CONTEXT', '')
+                                    stringParam('GITHUB_CONTEXT_MESSAGE', '')
+                                    stringParam('GITHUB_CONTEXT_STATE', '')
+                                }
+                                definition {
+                                    cps {
+                                        script('''
+                                            pipeline {
+                                                agent { label 'master' }
+                                                parameters {
+                                                    stringParam('GIT_URL', '')
+                                                    stringParam('GIT_COMMIT', '')
+                                                    stringParam('GITHUB_COMMIT_CONTEXT', '')
+                                                    stringParam('GITHUB_CONTEXT_MESSAGE', '')
+                                                    stringParam('GITHUB_CONTEXT_STATE', '')
+                                                }
+                                                stages {
+                                                    stage('set-status') {
+                                                        steps {
+                                                            script {
+                                                                step([
+                                                                    \$class: 'GitHubCommitStatusSetter',
+                                                                    reposSource: [\$class: 'ManuallyEnteredRepositorySource', url: params.GIT_URL],
+                                                                    commitShaSource: [\$class: 'ManuallyEnteredShaSource', sha: params.GIT_COMMIT],
+                                                                    contextSource: [\$class: 'ManuallyEnteredCommitContextSource', context: params.GITHUB_COMMIT_CONTEXT],
+                                                                    errorHandlers: [[\$class: 'ChangingBuildStatusErrorHandler', result: 'UNSTABLE']],
+                                                                    statusResultSource: [\$class: 'ConditionalStatusResultSource', results: [[\$class: 'AnyBuildResult', message: params.GITHUB_CONTEXT_MESSAGE, state: params.GITHUB_CONTEXT_STATE]] ]
+                                                                ])
+                                                            }
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        '''.stripIndent())
+                                    }
+                                }
+                            }
+                        """)
+                        params = [
+                            string(name: 'GIT_URL', value: env.GIT_URL),
+                            string(name: 'GIT_COMMIT', value: env.GIT_COMMIT),
+                            string(name: 'GITHUB_COMMIT_CONTEXT', value: 'continuous-integration/' + PLATFORM + '/pr-head'),
+                            string(name: 'GITHUB_CONTEXT_MESSAGE', value: 'Skipped'),
+                            string(name: 'GITHUB_CONTEXT_STATE', value: 'SUCCESS')
+                        ]
+                        build(job: "skip-${PIPELINE_NAME}", parameters: params, propagate: false, wait: false)
                         currentBuild.result = 'SUCCESS'
                         return
                     }
+
+                    currentBuild.result = 'SUCCESS'
+                    return
 
                     for (build in Jenkins.instance.getItemByFullName(JOB_NAME).builds) {
                         if (build.isBuilding() && build.getNumber() < BUILD_NUMBER.toInteger()) {
