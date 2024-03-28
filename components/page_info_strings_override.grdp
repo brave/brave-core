@@ -31,6 +31,8 @@
     <message name="IDS_PAGE_INFO_STATE_TEXT_NOT_ALLOWED_IN_INCOGNITO" desc="The Page Info permission subpage and the main page info page contain a label which shows the state of the site permission. This is the text shown if the permission is not allowed in private mode.">
       Not allowed in Private
     </message>
+    <if expr="is_macosx">
+      </if>
     <if expr="not is_android">
       </if>
 

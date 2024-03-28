@@ -1,8 +1,8 @@
 diff --git a/content/browser/zygote_host/zygote_host_impl_linux.cc b/content/browser/zygote_host/zygote_host_impl_linux.cc
-index 0be4e3042ac9e38cb4c524cb5e242560d9c296de..40b83c65e80d2454ac66f957c6e21df2de7a662e 100644
+index 3d0198d38d37fa7f0f936fce77172fef02560685..f15e284e79ec299943ecf5738e206c4ee39d624d 100644
 --- a/content/browser/zygote_host/zygote_host_impl_linux.cc
 +++ b/content/browser/zygote_host/zygote_host_impl_linux.cc
-@@ -125,6 +125,7 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
+@@ -124,6 +124,7 @@ void ZygoteHostImpl::Init(const base::CommandLine& command_line) {
      use_suid_sandbox_for_adj_oom_score_ = use_suid_sandbox_;
    } else {
      LOG(FATAL)

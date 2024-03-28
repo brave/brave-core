@@ -30,6 +30,7 @@ import org.chromium.chrome.browser.tabmodel.TabModelSelector;
 import org.chromium.chrome.browser.theme.ThemeColorProvider;
 import org.chromium.chrome.browser.toolbar.LocationBarModel;
 import org.chromium.chrome.browser.ui.appmenu.AppMenuButtonHelper;
+import org.chromium.chrome.browser.ui.edge_to_edge.EdgeToEdgeController;
 import org.chromium.ui.base.WindowAndroid;
 import org.chromium.ui.resources.ResourceManager;
 
@@ -52,22 +53,40 @@ public class BraveBottomControlsCoordinator extends BottomControlsCoordinator {
 
     public BraveBottomControlsCoordinator(
             OneshotSupplier<LayoutStateProvider> layoutStateProviderSupplier,
-            OnLongClickListener tabSwitcherLongclickListener, ActivityTabProvider tabProvider,
-            Runnable openHomepageAction, Callback<Integer> setUrlBarFocusAction,
+            OnLongClickListener tabSwitcherLongclickListener,
+            ActivityTabProvider tabProvider,
+            Runnable openHomepageAction,
+            Callback<Integer> setUrlBarFocusAction,
             ObservableSupplier<AppMenuButtonHelper> menuButtonHelperSupplier,
             ThemeColorProvider themeColorProvider,
-            /* Below are parameters from BottomControlsCoordinator */
-            Activity activity, WindowAndroid windowAndroid, LayoutManager layoutManager,
-            ResourceManager resourceManager, BrowserControlsSizer controlsSizer,
-            FullscreenManager fullscreenManager, ScrollingBottomViewResourceFrameLayout root,
-            BottomControlsContentDelegate contentDelegate, TabObscuringHandler tabObscuringHandler,
-            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
-            ObservableSupplier<Integer> constraintsSupplier,
             ObservableSupplier<BookmarkModel> bookmarkModelSupplier,
-            LocationBarModel locationBarModel) {
-        super(activity, windowAndroid, layoutManager, resourceManager, controlsSizer,
-                fullscreenManager, root, contentDelegate, tabObscuringHandler,
-                overlayPanelVisibilitySupplier, constraintsSupplier);
+            LocationBarModel locationBarModel,
+            /* Below are parameters from BottomControlsCoordinator */
+            Activity activity,
+            WindowAndroid windowAndroid,
+            LayoutManager layoutManager,
+            ResourceManager resourceManager,
+            BrowserControlsSizer controlsSizer,
+            FullscreenManager fullscreenManager,
+            ObservableSupplier<EdgeToEdgeController> edgeToEdgeControllerSupplier,
+            ScrollingBottomViewResourceFrameLayout root,
+            BottomControlsContentDelegate contentDelegate,
+            TabObscuringHandler tabObscuringHandler,
+            ObservableSupplier<Boolean> overlayPanelVisibilitySupplier,
+            ObservableSupplier<Integer> constraintsSupplier) {
+        super(
+                activity,
+                windowAndroid,
+                layoutManager,
+                resourceManager,
+                controlsSizer,
+                fullscreenManager,
+                edgeToEdgeControllerSupplier,
+                root,
+                contentDelegate,
+                tabObscuringHandler,
+                overlayPanelVisibilitySupplier,
+                constraintsSupplier);
 
         mTabSwitcherLongclickListener = tabSwitcherLongclickListener;
         mTabProvider = tabProvider;

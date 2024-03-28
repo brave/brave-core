@@ -87,7 +87,7 @@ void HistoryServiceListenerIOS::OnURLsModified(
   }
 }
 
-void HistoryServiceListenerIOS::OnURLsDeleted(
+void HistoryServiceListenerIOS::OnHistoryDeletions(
     history::HistoryService* history_service,
     const history::DeletionInfo& deletion_info) {
   bool isAllHistory = false;

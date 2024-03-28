@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/common/client_hints/client_hints.cc b/third_party/blink/common/client_hints/client_hints.cc
-index 8172639a0a556ccde3fa878336ad48702919452b..be05ae342d28ecb24fdba1216e1ceb19df09f491 100644
+index 835cf4c6aa282026fa9f94beb906094177843792..a96e7aaf56904e1dc670a4cb4fd8b8de54d15199 100644
 --- a/third_party/blink/common/client_hints/client_hints.cc
 +++ b/third_party/blink/common/client_hints/client_hints.cc
 @@ -105,6 +105,7 @@ const PolicyFeatureToClientHintMap& GetPolicyFeatureToClientHintMap() {

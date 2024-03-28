@@ -29,7 +29,7 @@ class BravePrefsUtil : public PrefsUtil {
   // manipulate.
   const PrefsUtil::TypedPrefMap& GetAllowlistedKeys() override;
 
-  absl::optional<api::settings_private::PrefObject> GetPref(
+  std::optional<api::settings_private::PrefObject> GetPref(
       const std::string& name) override;
 };
 

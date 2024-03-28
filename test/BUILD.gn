@@ -635,12 +635,14 @@ static_library("browser_test_support") {
   deps = [
     "//chrome/browser",
     "//chrome/browser/ui",
+    "//chrome/test:chrome_test_launcher",
   ]
 }
 
 static_library("browser_tests_runner") {
   testonly = true
   deps = [
+    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support",
     "//ui/compositor",
   ]
@@ -675,6 +677,7 @@ if (!is_android) {
       "//chrome/browser",
       "//chrome/browser/profiles:profile",
       "//chrome/browser/ui",
+      "//chrome/test:chrome_test_launcher",
       "//chrome/test:test_support_ui",
       "//components/prefs",
       "//content/public/browser",
@@ -915,6 +918,7 @@ test("brave_browser_tests") {
     "//chrome/browser/ui/color:color_headers",
     "//chrome/browser/ui/color:mixers",
     "//chrome/browser/web_applications",
+    "//chrome/test:chrome_test_launcher",
     "//chrome/test:test_support_ui",
     "//components/bookmarks/browser",
     "//components/commerce/core:feature_list",
@@ -1122,6 +1126,7 @@ test("brave_browser_tests") {
       "//brave/app/theme:brave_theme_resources_grit",
       "//brave/app/theme:brave_unscaled_resources_grit",
       "//brave/browser/sharing_hub:browser_tests",
+      "//brave/browser/storage_access_api:browser_tests",
       "//brave/browser/ui/whats_new:browser_test",
       "//brave/components/brave_wallet/browser:test_support",
       "//chrome/browser/apps/app_service:app_service",
@@ -1242,7 +1247,6 @@ if (is_android) {
       "//base:base_shared_preferences_java",
       "//brave/components/brave_wallet/common:mojom_java",
       "//cc:cc_java",
-      "//chrome/android:chrome_apk_pak_assets",
       "//chrome/browser/android/browserservices/intents:java",
       "//chrome/browser/android/lifecycle:java",
       "//chrome/browser/back_press/android:java",

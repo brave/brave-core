@@ -10,9 +10,9 @@
 #include <string>
 
 #include "brave/components/ai_chat/core/common/mojom/ai_chat.mojom.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "content/public/browser/web_ui_controller.h"
 #include "content/public/browser/webui_config.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 #include "ui/webui/mojo_web_ui_controller.h"
 #include "ui/webui/untrusted_web_ui_controller.h"
 
@@ -32,10 +32,10 @@ class AIChatUI : public ui::UntrustedWebUIController {
   void BindInterface(
       mojo::PendingReceiver<ai_chat::mojom::PageHandler> receiver);
 
-  // Set by WebUIContentsWrapperT. MojoBubbleWebUIController provides default
+  // Set by WebUIContentsWrapperT. TopChromeWebUIController provides default
   // implementation for this but we don't use it.
   void set_embedder(
-      base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder) {
+      base::WeakPtr<TopChromeWebUIController::Embedder> embedder) {
     embedder_ = embedder;
   }
 
@@ -44,7 +44,7 @@ class AIChatUI : public ui::UntrustedWebUIController {
  private:
   std::unique_ptr<ai_chat::mojom::PageHandler> page_handler_;
 
-  base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder_;
+  base::WeakPtr<TopChromeWebUIController::Embedder> embedder_;
   raw_ptr<Profile> profile_ = nullptr;
 
   WEB_UI_CONTROLLER_TYPE_DECL();

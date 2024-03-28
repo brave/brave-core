@@ -15,7 +15,7 @@ import org.chromium.base.supplier.Supplier;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tab.EmptyTabObserver;
 import org.chromium.chrome.browser.tab.Tab;
 import org.chromium.chrome.browser.tab.TabSelectionType;
@@ -174,7 +174,7 @@ public class BraveSpeedReaderManager extends EmptyTabObserver implements UserDat
         boolean isFeatureEnabled = ChromeFeatureList.isEnabled(BraveFeatureList.BRAVE_SPEEDREADER);
         if (!isFeatureEnabled) return false;
 
-        boolean isPrefEnabled = UserPrefs.get(Profile.getLastUsedRegularProfile())
+        boolean isPrefEnabled = UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                         .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED);
         return isPrefEnabled;
     }

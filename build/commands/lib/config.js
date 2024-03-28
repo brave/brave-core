@@ -1229,7 +1229,7 @@ Object.defineProperty(Config.prototype, 'defaultOptions', {
       // Use hermetic toolchain only internally.
       env.USE_BRAVE_HERMETIC_TOOLCHAIN = '1'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN = '1'
-      env.GYP_MSVS_HASH_27370823e7 = '01b3b59461'
+      env.GYP_MSVS_HASH_7393122652 = 'd325744cf9'
       env.DEPOT_TOOLS_WIN_TOOLCHAIN_BASE_URL = `${this.internalDepsUrl}/windows-hermetic-toolchain/`
     }
 

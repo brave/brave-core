@@ -17,7 +17,7 @@ namespace brave_rewards {
 RewardsPanelHandler::RewardsPanelHandler(
     mojo::PendingRemote<mojom::Panel> panel,
     mojo::PendingReceiver<mojom::PanelHandler> receiver,
-    base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+    base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
     RewardsService* rewards_service,
     RewardsPanelCoordinator* panel_coordinator)
     : receiver_(this, std::move(receiver)),

@@ -11,7 +11,7 @@ package org.chromium.chrome.browser.vpn.utils;
 import org.chromium.base.ContextUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.vpn.models.BraveVpnPrefModel;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -136,9 +136,9 @@ public class BraveVpnPrefUtils {
 
     public static void setPurchaseToken(String value) {
         ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_PURCHASE_TOKEN, value);
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PURCHASE_TOKEN_ANDROID, value);
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PACKAGE_ANDROID,
                         ContextUtils.getApplicationContext().getPackageName());
     }
@@ -149,7 +149,7 @@ public class BraveVpnPrefUtils {
 
     public static void setProductId(String value) {
         ChromeSharedPreferences.getInstance().writeString(PREF_BRAVE_VPN_PRODUCT_ID, value);
-        UserPrefs.get(Profile.getLastUsedRegularProfile())
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                 .setString(BravePref.BRAVE_VPN_PRODUCT_ID_ANDROID, value);
     }
 

@@ -24,7 +24,7 @@ bool BraveTabSearchBubbleHost::ShowTabSearchBubble(
     return result;
   }
 
-  auto* widget = webui_bubble_manager_.GetBubbleWidget();
+  auto* widget = webui_bubble_manager_->GetBubbleWidget();
   DCHECK(widget && widget->widget_delegate());
 
   auto* bubble_delegate = widget->widget_delegate()->AsBubbleDialogDelegate();

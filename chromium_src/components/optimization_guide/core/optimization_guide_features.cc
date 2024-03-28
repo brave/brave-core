@@ -17,7 +17,6 @@ OVERRIDE_FEATURE_DEFAULT_STATES({{
     {kRemoteOptimizationGuideFetching, base::FEATURE_DISABLED_BY_DEFAULT},
     {kRemoteOptimizationGuideFetchingAnonymousDataConsent,
      base::FEATURE_DISABLED_BY_DEFAULT},
-    {kTextEmbeddingPageContentAnnotations, base::FEATURE_DISABLED_BY_DEFAULT},
 }});
 
 }  // namespace features

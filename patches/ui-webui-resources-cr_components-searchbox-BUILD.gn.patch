@@ -1,0 +1,12 @@
+diff --git a/ui/webui/resources/cr_components/searchbox/BUILD.gn b/ui/webui/resources/cr_components/searchbox/BUILD.gn
+index 06e00897007b44a8418379dc0f54496c7edf5b93..b6203af9bbe82caf14d690495a1f530357a59255 100644
+--- a/ui/webui/resources/cr_components/searchbox/BUILD.gn
++++ b/ui/webui/resources/cr_components/searchbox/BUILD.gn
+@@ -9,6 +9,7 @@ assert(!is_android && !is_ios)
+ 
+ mojom("mojo_bindings") {
+   sources = [ "searchbox.mojom" ]
++  generate_legacy_js_bindings = true
+   webui_module_path = "/"
+ 
+   public_deps = [

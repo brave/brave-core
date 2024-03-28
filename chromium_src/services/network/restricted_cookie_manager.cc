@@ -26,11 +26,11 @@
 
 #define FromStorage(NAME, VALUE, DOMAIN, PATH, CREATION, EXPIRY, LAST_ACCESS, \
                     LAST_UPDATE, SECURE, HTTP_ONLY, SAME_SITE, PRIORITY,      \
-                    PARTITION, SOURCE_SCHEME, PORT)                           \
+                    PARTITION, SOURCE_SCHEME, PORT, COOKIE_SOURCE)            \
   FromStorage(NAME, VALUE, DOMAIN, PATH, CREATION,                            \
               ModifyExpiration(EXPIRY, CREATION), LAST_ACCESS, LAST_UPDATE,   \
               SECURE, HTTP_ONLY, SAME_SITE, PRIORITY, PARTITION,              \
-              SOURCE_SCHEME, PORT)
+              SOURCE_SCHEME, PORT, COOKIE_SOURCE)
 
 #include "src/services/network/restricted_cookie_manager.cc"
 

@@ -1,8 +1,8 @@
 diff --git a/third_party/android_deps/BUILD.gn b/third_party/android_deps/BUILD.gn
-index 895de161f26d7b0ed88bcfe96f113b4944b35fa7..e9565a3612d3588cf413160f4a8a923adddbb9d6 100644
+index 34a42a8f6e5317a4bac2c1d882dcf9c8b803deee..362c8538ef6ede55941d8e17c92d4bfa9f78f601 100644
 --- a/third_party/android_deps/BUILD.gn
 +++ b/third_party/android_deps/BUILD.gn
-@@ -458,6 +458,7 @@ java_prebuilt("com_google_auto_value_auto_value_annotations_java") {
+@@ -465,6 +465,7 @@ java_prebuilt("com_google_auto_value_auto_value_annotations_java") {
      ":*",
      "//third_party/androidx:*",
    ]

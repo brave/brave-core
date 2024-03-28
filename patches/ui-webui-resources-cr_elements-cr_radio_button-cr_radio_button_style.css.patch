@@ -1,9 +1,9 @@
 diff --git a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
-index e37d6bd00442915ece35a9021f45aa4d9b9d29c9..eb067c13c8a94d4fb7d78f5114ca8a540d6f5635 100644
+index 409850c828d62281576f7f47f6e12d9270b66a46..f85691d772b487091e37cef5270d44ee12b87a29 100644
 --- a/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
 +++ b/ui/webui/resources/cr_elements/cr_radio_button/cr_radio_button_style.css
-@@ -6,6 +6,8 @@
-  * #type=style
+@@ -7,6 +7,8 @@
+  * #scheme=relative
   * #import=../cr_shared_vars.css.js
   * #import=../cr_shared_vars.css.js
 + * #import=//resources/brave/br_elements/br_shared_style.css.js

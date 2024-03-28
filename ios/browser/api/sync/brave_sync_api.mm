@@ -33,8 +33,6 @@
 #include "ios/chrome/browser/shared/model/browser_state/chrome_browser_state.h"
 #include "ios/chrome/browser/sync/model/device_info_sync_service_factory.h"
 #include "ios/chrome/browser/sync/model/sync_service_factory.h"
-#include "ios/chrome/browser/sync/model/sync_setup_service.h"
-#include "ios/chrome/browser/sync/model/sync_setup_service_factory.h"
 
 #if !defined(__has_feature) || !__has_feature(objc_arc)
 #error "This file requires ARC support."

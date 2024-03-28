@@ -5,7 +5,6 @@
 
 import 'chrome://resources/cr_elements/cr_button/cr_button.js';
 import 'chrome://resources/cr_elements/cr_dialog/cr_dialog.js';
-import 'chrome://resources/cr_elements/cr_searchable_drop_down/cr_searchable_drop_down.js';
 import {PolymerElement} from 'chrome://resources/polymer/v3_0/polymer/polymer_bundled.min.js';
 import {I18nMixin, I18nMixinInterface} from 'chrome://resources/cr_elements/i18n_mixin.js'
 import {BaseMixin} from '../base_mixin.js'
@@ -13,6 +12,7 @@ import {loadTimeData} from '../i18n_setup.js'
 import {NetworkInfo, BraveWalletBrowserProxy, BraveWalletBrowserProxyImpl} from './brave_wallet_browser_proxy.js';
 import {CrInputElement} from 'chrome://resources/cr_elements/cr_input/cr_input.js'
 import {getTemplate} from './add_wallet_network_dialog.html.js'
+import '../ui/searchable_drop_down_cros.js';
 
 const SettingsBraveAddWalletNetworkDialogElementBase =
   I18nMixin(BaseMixin(PolymerElement)) as {

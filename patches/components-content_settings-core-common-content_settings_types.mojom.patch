@@ -1,12 +1,11 @@
 diff --git a/components/content_settings/core/common/content_settings_types.mojom b/components/content_settings/core/common/content_settings_types.mojom
-index 5e704d5151311dad1550ce63487a9a7f4ea823e1..c2765f06bc2d3337f8b2ad687be9510092119734 100644
+index 9704ba0e7cd3636b54581ce1aee80de21b782320..76d0936d0e538d2cdee6811659227aa7b31d4f5e 100644
 --- a/components/content_settings/core/common/content_settings_types.mojom
 +++ b/components/content_settings/core/common/content_settings_types.mojom
-@@ -398,6 +398,21 @@ enum ContentSettingsType {
-   // Whether an application can enumerate audio output device.
-   SPEAKER_SELECTION,
- 
--
+@@ -412,4 +412,20 @@ enum ContentSettingsType {
+   // Website setting which is used for UnusedSitePermissionsService to store
+   // auto-revoked notification permissions from abusive sites.
+   REVOKED_ABUSIVE_NOTIFICATION_PERMISSIONS,
 +  BRAVE_START,
 +  BRAVE_ADS = BRAVE_START,
 +  BRAVE_COSMETIC_FILTERING,
@@ -23,5 +22,4 @@ index 5e704d5151311dad1550ce63487a9a7f4ea823e1..c2765f06bc2d3337f8b2ad687be95100
 +  BRAVE_HTTPS_UPGRADE,
 +  BRAVE_REMEMBER_1P_STORAGE,
 +  BRAVE_LOCALHOST_ACCESS,
-   NUM_TYPES,
  };

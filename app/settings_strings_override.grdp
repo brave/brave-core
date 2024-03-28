@@ -121,9 +121,6 @@
   </message>
   <if expr="_google_chrome">
     </if>
-  <message name="IDS_SETTINGS_PRIVACY_GUIDE_SEARCH_SUGGESTIONS_FEATURE_DESCRIPTION1" desc="A part of the feature description of 'search suggestions' in the 'Privacy Guide'.">
-    When you click or type in the address bar or search box, you'll see suggestions from your default search engine. This is off in Private.
-  </message>
 
   <message name="IDS_SETTINGS_SAFETY_CHECK_REVIEW_EXTENSIONS" desc="This text describes that potentially harmful extensions need to be reviewed by the user. The placeholder will be a numeral.">
     {NUM_EXTENSIONS, plural,

@@ -13,6 +13,7 @@ import org.chromium.base.IntentUtils;
 import org.chromium.base.Log;
 import org.chromium.base.ThreadUtils;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.search_engines.TemplateUrlServiceFactory;
 import org.chromium.content_public.browser.BrowserStartupController;
 
@@ -69,7 +70,7 @@ public class BraveIntentHandler {
                 @Override
                 public String call() {
                     return TemplateUrlServiceFactory
-                            .getForProfile(Profile.getLastUsedRegularProfile())
+                            .getForProfile(ProfileManager.getLastUsedRegularProfile())
                             .getUrlForSearchQuery(query);
                 }
             });

@@ -28,6 +28,7 @@ import org.chromium.chrome.R;
 import org.chromium.chrome.browser.app.BraveActivity;
 import org.chromium.chrome.browser.preferences.BravePrefServiceBridge;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.misc_metrics.mojom.MiscAndroidMetrics;
 
 import java.io.File;
@@ -301,7 +302,7 @@ public class BraveStatsUtil {
 
     public static List<Pair<String, String>> getStatsPairs() {
         List<Pair<String, String>> statsPair = new ArrayList<>();
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);
@@ -323,7 +324,7 @@ public class BraveStatsUtil {
     }
 
     public static Pair<String, String> getAdsTrackersBlocked() {
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         long trackersBlockedCount =
                 BravePrefServiceBridge.getInstance().getTrackersBlockedCount(mProfile);
         long adsBlockedCount = BravePrefServiceBridge.getInstance().getAdsBlockedCount(mProfile);

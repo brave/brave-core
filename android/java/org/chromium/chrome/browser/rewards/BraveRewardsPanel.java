@@ -1,9 +1,7 @@
-/**
- * Copyright (c) 2021 The Brave Authors. All rights reserved.
- * This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this file,
- * You can obtain one at https://mozilla.org/MPL/2.0/.
- */
+ /* Copyright (c) 2021 The Brave Authors. All rights reserved.
+  * This Source Code Form is subject to the terms of the Mozilla Public
+  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
+  * You can obtain one at https://mozilla.org/MPL/2.0/. */
 
 package org.chromium.chrome.browser.rewards;
 
@@ -74,7 +72,7 @@ import org.chromium.chrome.browser.customtabs.CustomTabActivity;
 import org.chromium.chrome.browser.notifications.BraveNotificationWarningDialog;
 import org.chromium.chrome.browser.notifications.BravePermissionUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.rewards.onboarding.RewardsOnboarding;
 import org.chromium.chrome.browser.rewards.tipping.PopupWindowTippingTabletUI;
 import org.chromium.chrome.browser.rewards.tipping.RewardsTippingBannerActivity;
@@ -1485,7 +1483,7 @@ public class BraveRewardsPanel
         BraveTouchUtils.ensureMinTouchTarget(learnMoreUnverifiedText);
 
         if (BraveAdsNativeHelper.nativeIsOptedInToNotificationAds(
-                    Profile.getLastUsedRegularProfile())) {
+                    ProfileManager.getLastUsedRegularProfile())) {
             if (mRewardsMainLayout != null) {
                 mRewardsMainLayout.setVisibility(View.GONE);
             }

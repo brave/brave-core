@@ -18,7 +18,7 @@ public class ProfileUtils {
         } catch (BraveActivity.BraveActivityNotFoundException e) {
             Log.e(TAG, "getProfile " + e);
         }
-        if (braveActivity == null) return Profile.getLastUsedRegularProfile();
+        if (braveActivity == null) return ProfileManager.getLastUsedRegularProfile();
         return braveActivity.getCurrentProfile();
     }
 }

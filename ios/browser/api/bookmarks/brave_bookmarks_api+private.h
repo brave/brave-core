@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 namespace bookmarks {
 class BookmarkModel;
 }
+
 class BookmarkUndoService;
 
 @interface BraveBookmarksAPI (Private)

@@ -13,6 +13,8 @@
 #include "ui/views/border.h"
 #include "ui/views/controls/highlight_path_generator.h"
 
+namespace tab_groups {
+
 namespace {
 
 constexpr int kBorderRadius = 4;
@@ -74,3 +76,5 @@ void BraveSavedTabGroupButton::UpdateButtonLayout() {
 
 BEGIN_METADATA(BraveSavedTabGroupButton)
 END_METADATA
+
+}  // namespace tab_groups

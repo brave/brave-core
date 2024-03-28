@@ -52,7 +52,7 @@ gfx::Size GetCurrentBrowserSize(Profile* profile) {
 TipPanelHandler::TipPanelHandler(
     mojo::PendingRemote<mojom::TipPanel> banner,
     mojo::PendingReceiver<mojom::TipPanelHandler> receiver,
-    base::WeakPtr<ui::MojoBubbleWebUIController::Embedder> embedder,
+    base::WeakPtr<TopChromeWebUIController::Embedder> embedder,
     Profile* profile)
     : receiver_(this, std::move(receiver)),
       banner_(std::move(banner)),

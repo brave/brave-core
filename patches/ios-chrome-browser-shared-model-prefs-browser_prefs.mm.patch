@@ -1,8 +1,8 @@
 diff --git a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-index f9cd984bcee58e89f0033f0e1fb1c72dce67a4c9..4eb825f1c40bd219a4fadaf3ffbbb858ac80dbb9 100644
+index 8fe3d3f4d45d88524a7e505fa28faf3483617379..34e65b6f9f494e69e1054181aef18ff79d35e75a 100644
 --- a/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
 +++ b/ios/chrome/browser/shared/model/prefs/browser_prefs.mm
-@@ -498,6 +498,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
+@@ -513,6 +513,7 @@ void RegisterLocalStatePrefs(PrefRegistrySimple* registry) {
    registry->RegisterStringPref(kIOSChromeNextVersionKey, std::string());
    registry->RegisterStringPref(kIOSChromeUpgradeURLKey, std::string());
    registry->RegisterTimePref(kLastInfobarDisplayTimeKey, base::Time());
@@ -10,10 +10,10 @@ index f9cd984bcee58e89f0033f0e1fb1c72dce67a4c9..4eb825f1c40bd219a4fadaf3ffbbb858
  }
  
  void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-@@ -752,6 +753,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
-   registry->RegisterTimePref(kLastCookieDeletionDate, base::Time());
+@@ -778,6 +779,7 @@ void RegisterBrowserStatePrefs(user_prefs::PrefRegistrySyncable* registry) {
+       kObsoleteAccountStorageNewFeatureIconImpressions, 0);
  
-   registry->RegisterDictionaryPref(prefs::kWebAnnotationsPolicy);
+   registry->RegisterBooleanPref(kObsoleteAccountStorageNoticeShown, false);
 +  BRAVE_REGISTER_BROWSER_STATE_PREFS
  }
  

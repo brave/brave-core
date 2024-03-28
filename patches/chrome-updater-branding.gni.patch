@@ -1,8 +1,8 @@
 diff --git a/chrome/updater/branding.gni b/chrome/updater/branding.gni
-index ab7574451171a5a4fb496946b2656df8f49e4081..5cb0e36745263ca043020a7093c9c1d13c04a18c 100644
+index e250669ab36610e20e16bd916b2162910037fa0c..c59c68e13711d69bddf98b002bd080dee17e0af0 100644
 --- a/chrome/updater/branding.gni
 +++ b/chrome/updater/branding.gni
-@@ -180,3 +180,4 @@ if (is_chrome_branded) {
+@@ -184,3 +184,4 @@ if (is_chrome_branded) {
  # Chrome and Chromium share the same endpoints for now.
  update_check_url = "https://update.googleapis.com/service/update2/json"
  device_management_server_url = "https://m.google.com/devicemanagement/data/api"

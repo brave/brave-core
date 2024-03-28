@@ -1,8 +1,8 @@
 diff --git a/front_end/panels/application/ApplicationPanelSidebar.ts b/front_end/panels/application/ApplicationPanelSidebar.ts
-index 1567b59dfe788c87005d874a576e8452cbc678b5..3735941ac0fffe5dff84384d03892c7b0d26e536 100644
+index ba715b1b6b82afe9b65ded0d9aa548485f1e4061..c713707925d40a0daa981fc8956741f3476a528a 100644
 --- a/front_end/panels/application/ApplicationPanelSidebar.ts
 +++ b/front_end/panels/application/ApplicationPanelSidebar.ts
-@@ -472,6 +472,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
+@@ -447,6 +447,7 @@ export class ApplicationPanelSidebar extends UI.Widget.VBox implements SDK.Targe
      // Work-around for crbug.com/1152713: Something is wrong with custom scrollbars and size containment.
      // @ts-ignore
      this.contentElement.style.contain = 'layout style';

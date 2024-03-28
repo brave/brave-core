@@ -32,6 +32,7 @@ source_set("unit_tests") {
     "//brave/components/search_engines",
     "//chrome/test:test_support",
     "//components/bookmarks/browser",
+    "//components/bookmarks/test",
     "//components/omnibox/browser",
     "//components/omnibox/browser:test_support",
     "//components/prefs",

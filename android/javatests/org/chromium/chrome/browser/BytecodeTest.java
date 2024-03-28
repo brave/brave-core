@@ -13,7 +13,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.AttributeSet;
-import android.util.Pair;
 import android.view.ActionMode;
 import android.view.View;
 import android.view.ViewGroup;
@@ -84,7 +83,6 @@ import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteControllerPro
 import org.chromium.chrome.browser.omnibox.suggestions.AutocompleteDelegate;
 import org.chromium.chrome.browser.omnibox.suggestions.OmniboxSuggestionsDropdownScrollListener;
 import org.chromium.chrome.browser.omnibox.suggestions.basic.BasicSuggestionProcessor.BookmarkState;
-import org.chromium.chrome.browser.omnibox.suggestions.history_clusters.HistoryClustersProcessor.OpenHistoryClustersDelegate;
 import org.chromium.chrome.browser.profiles.Profile;
 import org.chromium.chrome.browser.share.ShareDelegateImpl;
 import org.chromium.chrome.browser.suggestions.tile.TileRenderer;
@@ -708,9 +706,9 @@ public class BytecodeTest {
         Assert.assertTrue(
                 methodExists(
                         "org/chromium/chrome/browser/tasks/tab_groups/TabGroupModelFilter",
-                        "getParentIds",
+                        "shouldUseParentIds",
                         true,
-                        Pair.class,
+                        boolean.class,
                         Tab.class));
         Assert.assertTrue(
                 methodExists(
@@ -750,7 +748,6 @@ public class BytecodeTest {
                         View.class,
                         AppMenuDelegate.class,
                         OneshotSupplier.class,
-                        OneshotSupplier.class,
                         ObservableSupplier.class,
                         WebFeedSnackbarController.FeedLauncher.class,
                         ModalDialogManager.class,
@@ -778,6 +775,7 @@ public class BytecodeTest {
                         AppCompatActivity.class,
                         BrowserControlsSizer.class,
                         FullscreenManager.class,
+                        ObservableSupplier.class,
                         ToolbarControlContainer.class,
                         CompositorViewHolder.class,
                         Callback.class,
@@ -818,22 +816,35 @@ public class BytecodeTest {
                         Supplier.class,
                         boolean.class,
                         BackPressManager.class,
-                        OpenHistoryClustersDelegate.class,
-                        BooleanSupplier.class,
-                        View.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
-                "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
-                WindowAndroid.class, PropertyModel.class, BrowserControlsSizer.class,
-                FullscreenManager.class, TabObscuringHandler.class, int.class,
-                ObservableSupplier.class));
-        Assert.assertTrue(constructorsMatch(
-                "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
-                "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
-                Context.class, ActivityTabProvider.class, MultiWindowModeStateDispatcher.class,
-                TabModelSelector.class, ToolbarManager.class, View.class, OneshotSupplier.class,
-                OneshotSupplier.class, ObservableSupplier.class, OneshotSupplier.class,
-                Supplier.class));
+                        ObservableSupplier.class,
+                        View.class,
+                        ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/toolbar/bottom/BottomControlsMediator",
+                        "org/chromium/chrome/browser/toolbar/bottom/BraveBottomControlsMediator",
+                        WindowAndroid.class,
+                        PropertyModel.class,
+                        BrowserControlsSizer.class,
+                        FullscreenManager.class,
+                        TabObscuringHandler.class,
+                        int.class,
+                        ObservableSupplier.class,
+                        ObservableSupplier.class));
+        Assert.assertTrue(
+                constructorsMatch(
+                        "org/chromium/chrome/browser/app/appmenu/AppMenuPropertiesDelegateImpl",
+                        "org/chromium/chrome/browser/app/appmenu/BraveAppMenuPropertiesDelegateImpl",
+                        Context.class,
+                        ActivityTabProvider.class,
+                        MultiWindowModeStateDispatcher.class,
+                        TabModelSelector.class,
+                        ToolbarManager.class,
+                        View.class,
+                        OneshotSupplier.class,
+                        ObservableSupplier.class,
+                        OneshotSupplier.class,
+                        Supplier.class));
         Assert.assertTrue(
                 constructorsMatch("org/chromium/chrome/browser/settings/SettingsLauncherImpl",
                         "org/chromium/chrome/browser/settings/BraveSettingsLauncherImpl"));
@@ -925,7 +936,6 @@ public class BytecodeTest {
                         OfflineDownloader.class,
                         boolean.class,
                         Callback.class,
-                        boolean.class,
                         ObservableSupplier.class,
                         ObservableSupplier.class,
                         BrowserStateBrowserControlsVisibilityDelegate.class,
@@ -961,8 +971,7 @@ public class BytecodeTest {
                         Callback.class,
                         Supplier.class,
                         BookmarkState.class,
-                        OmniboxActionDelegate.class,
-                        OpenHistoryClustersDelegate.class));
+                        OmniboxActionDelegate.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/feed/FeedSurfaceMediator",
@@ -1004,8 +1013,7 @@ public class BytecodeTest {
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListBuilder",
                         "org/chromium/chrome/browser/omnibox/suggestions/BraveDropdownItemViewInfoListBuilder",
                         Supplier.class,
-                        BookmarkState.class,
-                        OpenHistoryClustersDelegate.class));
+                        BookmarkState.class));
         Assert.assertTrue(
                 constructorsMatch(
                         "org/chromium/chrome/browser/omnibox/suggestions/DropdownItemViewInfoListManager",
@@ -1044,7 +1052,6 @@ public class BytecodeTest {
                         Callback.class,
                         BackPressManager.class,
                         OmniboxSuggestionsDropdownScrollListener.class,
-                        OpenHistoryClustersDelegate.class,
                         ObservableSupplier.class,
                         boolean.class,
                         View.class));
@@ -1161,7 +1168,7 @@ public class BytecodeTest {
                         BackPressManager.class,
                         Bundle.class,
                         MultiInstanceManager.class,
-                        BooleanSupplier.class,
+                        ObservableSupplier.class,
                         View.class));
         Assert.assertTrue(
                 constructorsMatch(

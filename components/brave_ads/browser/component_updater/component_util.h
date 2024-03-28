@@ -7,13 +7,13 @@
 #define BRAVE_COMPONENTS_BRAVE_ADS_BROWSER_COMPONENT_UPDATER_COMPONENT_UTIL_H_
 
 #include <optional>
-#include <string>
+#include <string_view>
 
 #include "brave/components/brave_ads/browser/component_updater/component_info.h"
 
 namespace brave_ads {
 
-std::optional<ComponentInfo> GetComponentInfo(const std::string& id);
+std::optional<ComponentInfo> GetComponentInfo(std::string_view id);
 
 }  // namespace brave_ads
 

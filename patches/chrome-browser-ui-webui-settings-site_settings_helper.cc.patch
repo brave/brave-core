@@ -1,16 +1,16 @@
 diff --git a/chrome/browser/ui/webui/settings/site_settings_helper.cc b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-index 485d05957276197dcf38517cb37747a4c68a169a..a32b320aa9ff2ccca744cb979268107cd5a18fde 100644
+index 566a9a93cf5610d3e9caaf74dbd5e674f6271f07..5ef3c1ca1d426b47dd90ad39f8a4cc0d6ed2de81 100644
 --- a/chrome/browser/ui/webui/settings/site_settings_helper.cc
 +++ b/chrome/browser/ui/webui/settings/site_settings_helper.cc
-@@ -215,6 +215,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
-     // TODO(crbug.com/1501130): Add WebUI for Automatic Fullscreen.
-     {ContentSettingsType::AUTOMATIC_FULLSCREEN, nullptr},
+@@ -219,6 +219,7 @@ const ContentSettingsTypeNameEntry kContentSettingsTypeGroupNames[] = {
      {ContentSettingsType::SUB_APP_INSTALLATION_PROMPTS, nullptr},
+     {ContentSettingsType::DIRECT_SOCKETS, nullptr},
+     {ContentSettingsType::REVOKED_ABUSIVE_NOTIFICATION_PERMISSIONS, nullptr},
 +    BRAVE_CONTENT_SETTINGS_TYPE_GROUP_NAMES_LIST
  };
  
- static_assert(std::size(kContentSettingsTypeGroupNames) ==
-@@ -475,6 +476,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
+ static_assert(
+@@ -481,6 +482,7 @@ bool HasRegisteredGroupName(ContentSettingsType type) {
  }
  
  ContentSettingsType ContentSettingsTypeFromGroupName(base::StringPiece name) {

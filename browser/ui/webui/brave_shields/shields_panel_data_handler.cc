@@ -9,7 +9,7 @@
 
 #include "brave/browser/ui/webui/webcompat_reporter/webcompat_reporter_dialog.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 
 using brave_shields::BraveShieldsDataController;
 using brave_shields::mojom::SiteSettings;
@@ -17,7 +17,7 @@ using brave_shields::mojom::SiteSettings;
 ShieldsPanelDataHandler::ShieldsPanelDataHandler(
     mojo::PendingReceiver<brave_shields::mojom::DataHandler>
         data_handler_receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
+    TopChromeWebUIController* webui_controller,
     TabStripModel* tab_strip_model)
     : data_handler_receiver_(this, std::move(data_handler_receiver)),
       webui_controller_(webui_controller) {

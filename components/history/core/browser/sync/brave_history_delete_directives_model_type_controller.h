@@ -36,7 +36,7 @@ class BraveHistoryDeleteDirectivesModelTypeController
 
   ~BraveHistoryDeleteDirectivesModelTypeController() override;
 
-  // DataTypeController overrides.
+  // ModelTypeController overrides.
   PreconditionState GetPreconditionState() const override;
 };
 

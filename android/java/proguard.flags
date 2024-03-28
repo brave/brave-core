@@ -53,6 +53,6 @@
 -keep,allowobfuscation,allowshrinking class com.google.gson.reflect.TypeToken
 
 -keep class org.chromium.chrome.browser.tasks.tab_groups.TabGroupModelFilter {
-    *** getParentIds(...);
+    *** shouldUseParentIds(...);
     *** getOrCreateTabGroupId(...);
 }

@@ -8,13 +8,13 @@
 
 #include "components/infobars/core/infobar_container.h"
 
-#define PlatformSpecificInfoBarStateChanged       \
-  PlatformSpecificInfoBarStateChanged_UnUsed() {} \
-  friend class BraveInfoBarContainerView;         \
-  void PlatformSpecificInfoBarStateChanged
+#define PlatformSpecificRemoveInfoBar       \
+  PlatformSpecificRemoveInfoBar_UnUsed() {} \
+  friend class BraveInfoBarContainerView;   \
+  void PlatformSpecificRemoveInfoBar
 
 #include "src/chrome/browser/ui/views/infobars/infobar_container_view.h"  // IWYU pragma: export
 
-#undef PlatformSpecificInfoBarStateChanged
+#undef PlatformSpecificRemoveInfoBar
 
 #endif  // BRAVE_CHROMIUM_SRC_CHROME_BROWSER_UI_VIEWS_INFOBARS_INFOBAR_CONTAINER_VIEW_H_

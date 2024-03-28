@@ -20,8 +20,7 @@ class BravePrimaryAccountMutatorImpl : public PrimaryAccountMutatorImpl {
 
 #if !BUILDFLAG(IS_CHROMEOS_ASH)
   bool ClearPrimaryAccount(
-      signin_metrics::ProfileSignout source_metric,
-      signin_metrics::SignoutDelete delete_metric) override;
+      signin_metrics::ProfileSignout source_metric) override;
 #endif
 };
 

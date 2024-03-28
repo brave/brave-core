@@ -17,7 +17,7 @@ cargo_crate("lib") {
   sources = [
     "//brave/third_party/rust/chromium_crates_io/vendor/servo_arc-0.1.1/lib.rs",
   ]
-  inputs = []
+  inputs = [ "//brave/third_party/rust/chromium_crates_io/vendor/servo_arc-0.1.1/.cargo-checksum.json" ]
 
   build_native_rust_unit_tests = false
   edition = "2015"

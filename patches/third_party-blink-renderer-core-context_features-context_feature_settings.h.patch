@@ -1,5 +1,5 @@
 diff --git a/third_party/blink/renderer/core/context_features/context_feature_settings.h b/third_party/blink/renderer/core/context_features/context_feature_settings.h
-index 43fd8291ed61df8562ed6199f9cfb7a98f6394aa..0387a51b85f86c587acf5ddafee66d26d10c08a6 100644
+index 096d49ecd53d7e17811ad7d70ea6a9b2af9acd6f..eed64a36e45779db4a16e75f40b02b76b480673a 100644
 --- a/third_party/blink/renderer/core/context_features/context_feature_settings.h
 +++ b/third_party/blink/renderer/core/context_features/context_feature_settings.h
 @@ -64,6 +64,7 @@ class CORE_EXPORT ContextFeatureSettings final

@@ -22,7 +22,7 @@ import org.chromium.base.ContextUtils;
 import org.chromium.chrome.R;
 import org.chromium.chrome.browser.preferences.website.BraveShieldsContentSettings;
 import org.chromium.chrome.browser.privacy.settings.BravePrivacySettings;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 
 public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompat {
     public static final String TAG = "BravePreferenceDialogFragment";
@@ -61,12 +61,12 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
             if (currentPreference.equals(BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
                 onPreferenceChangeListener.onPreferenceChange(dialogPreference,
                         BraveShieldsContentSettings.getShieldsValue(
-                                Profile.getLastUsedRegularProfile(), "",
+                                ProfileManager.getLastUsedRegularProfile(), "",
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING));
             } else if (currentPreference.equals(BravePrivacySettings.PREF_BLOCK_TRACKERS_ADS)) {
                 onPreferenceChangeListener.onPreferenceChange(dialogPreference,
                         BraveShieldsContentSettings.getShieldsValue(
-                                Profile.getLastUsedRegularProfile(), "",
+                                ProfileManager.getLastUsedRegularProfile(), "",
                                 BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS));
             } else {
                 onPreferenceChangeListener.onPreferenceChange(
@@ -90,17 +90,17 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                                 BravePrivacySettings.PREF_FINGERPRINTING_PROTECTION)) {
                         if ((int) newValue == 0) {
                             BraveShieldsContentSettings.setShieldsValue(
-                                    Profile.getLastUsedRegularProfile(), "",
+                                    ProfileManager.getLastUsedRegularProfile(), "",
                                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
                                     BraveShieldsContentSettings.BLOCK_RESOURCE, false);
                         } else if ((int) newValue == 1) {
                             BraveShieldsContentSettings.setShieldsValue(
-                                    Profile.getLastUsedRegularProfile(), "",
+                                    ProfileManager.getLastUsedRegularProfile(), "",
                                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
                                     BraveShieldsContentSettings.DEFAULT, false);
                         } else {
                             BraveShieldsContentSettings.setShieldsValue(
-                                    Profile.getLastUsedRegularProfile(), "",
+                                    ProfileManager.getLastUsedRegularProfile(), "",
                                     BraveShieldsContentSettings.RESOURCE_IDENTIFIER_FINGERPRINTING,
                                     BraveShieldsContentSettings.ALLOW_RESOURCE, false);
                         }
@@ -109,19 +109,19 @@ public class BravePreferenceDialogFragment extends PreferenceDialogFragmentCompa
                         switch ((int) newValue) {
                             case 0:
                                 BraveShieldsContentSettings.setShieldsValue(
-                                        Profile.getLastUsedRegularProfile(), "",
+                                        ProfileManager.getLastUsedRegularProfile(), "",
                                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
                                         BraveShieldsContentSettings.BLOCK_RESOURCE, false);
                                 break;
                             case 1:
                                 BraveShieldsContentSettings.setShieldsValue(
-                                        Profile.getLastUsedRegularProfile(), "",
+                                        ProfileManager.getLastUsedRegularProfile(), "",
                                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
                                         BraveShieldsContentSettings.DEFAULT, false);
                                 break;
                             default:
                                 BraveShieldsContentSettings.setShieldsValue(
-                                        Profile.getLastUsedRegularProfile(), "",
+                                        ProfileManager.getLastUsedRegularProfile(), "",
                                         BraveShieldsContentSettings.RESOURCE_IDENTIFIER_TRACKERS,
                                         BraveShieldsContentSettings.ALLOW_RESOURCE, false);
                                 break;

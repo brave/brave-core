@@ -1,8 +1,8 @@
 diff --git a/chrome/browser/resources/bookmarks/BUILD.gn b/chrome/browser/resources/bookmarks/BUILD.gn
-index 562af13549e34882869414e7576db7d8742bcea9..e60d1fbc62f81681ec52783c1c54a9506e34ae5a 100644
+index 6f74c52de2cc2b73c7a63ee8a93d7e8e893dc01e..b45d31d158a68637171ca0df0bf2db1a4da960d0 100644
 --- a/chrome/browser/resources/bookmarks/BUILD.gn
 +++ b/chrome/browser/resources/bookmarks/BUILD.gn
-@@ -71,4 +71,5 @@ build_webui("build") {
+@@ -72,4 +72,5 @@ build_webui("build") {
      optimize_webui_host = "bookmarks"
      optimize_webui_in_files = [ "bookmarks.js" ]
    }

@@ -18,6 +18,7 @@ import org.chromium.chrome.browser.night_mode.settings.RadioButtonGroupThemePref
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.widget.RadioButtonWithDescription;
 import org.chromium.components.user_prefs.UserPrefs;
 
@@ -29,7 +30,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
 
     public BraveRadioButtonGroupCustomHomepageThemePreference(Context context, AttributeSet attrs) {
         super(context, attrs);
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
     }
 
@@ -43,7 +44,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
         RadioButtonWithDescription refView = (RadioButtonWithDescription)holder.findViewById(R.id.dark);
         if (mNTPBackgroundImagesBridge != null && mNTPBackgroundImagesBridge.isSuperReferral()) {
             refView.setPrimaryText(mNTPBackgroundImagesBridge.getSuperReferralThemeName());
-            if(UserPrefs.get(Profile.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
+            if(UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).getInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION) == 1 ? true : false) {
                 refView.setChecked(true);
                 braveDefaultView.setChecked(false);
             } else {
@@ -58,7 +59,7 @@ public class BraveRadioButtonGroupCustomHomepageThemePreference extends RadioBut
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
         super.onCheckedChanged(group, checkedId);
-        UserPrefs.get(Profile.getLastUsedRegularProfile()).setInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
+        UserPrefs.get(ProfileManager.getLastUsedRegularProfile()).setInteger(BravePref.NEW_TAB_PAGE_SUPER_REFERRAL_THEMES_OPTION, checkedId == R.id.light ? 0 : 1 );
         BraveRelaunchUtils.askForRelaunch(getContext());
     }
 }

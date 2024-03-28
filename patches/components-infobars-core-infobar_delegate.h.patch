@@ -1,11 +1,11 @@
 diff --git a/components/infobars/core/infobar_delegate.h b/components/infobars/core/infobar_delegate.h
-index 706319fdf5dea1cde8f5e08ecb82a9ab358e9588..2462c2b1e663e32f06125ca2f6033e05f7a83e04 100644
+index b4a145be5b70b15df390967114c55e0d53beac51..1b1fae16b05abac12ac559618f26c4e7bb4c1b11 100644
 --- a/components/infobars/core/infobar_delegate.h
 +++ b/components/infobars/core/infobar_delegate.h
-@@ -191,6 +191,7 @@ class InfoBarDelegate {
-     PARCEL_TRACKING_INFOBAR_DELEGATE = 117,
+@@ -185,6 +185,7 @@ class InfoBarDelegate {
      TEST_THIRD_PARTY_COOKIE_PHASEOUT_DELEGATE = 118,
      ENABLE_LINK_CAPTURING_INFOBAR_DELEGATE = 119,
+     DEV_TOOLS_SHARED_PROCESS_DELEGATE = 120,
 +    BRAVE_INFOBAR_DELEGATE_IDENTIFIERS
    };
  

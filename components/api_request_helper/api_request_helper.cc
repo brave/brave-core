@@ -11,7 +11,6 @@
 
 #include "base/check.h"
 #include "base/check_op.h"
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/debug/alias.h"
 #include "base/debug/dump_without_crashing.h"
 #include "base/json/json_reader.h"

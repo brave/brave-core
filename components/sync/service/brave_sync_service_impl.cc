@@ -349,36 +349,35 @@ void BraveSyncServiceImpl::OnSyncCycleCompleted(
 }
 
 void BraveSyncServiceImpl::UpdateP3AObjectsNumber() {
-  GetEntityCountsForDebugging(BindOnce(&BraveSyncServiceImpl::OnGotEntityCounts,
-                                       weak_ptr_factory_.GetWeakPtr()));
+  GetEntityCountsForDebugging(
+      BindRepeating(&BraveSyncServiceImpl::OnGotEntityCounts,
+                    weak_ptr_factory_.GetWeakPtr()));
 }
 
 void BraveSyncServiceImpl::OnGotEntityCounts(
-    const std::vector<syncer::TypeEntitiesCount>& entity_counts) {
-  int total_entities = 0;
-  for (const syncer::TypeEntitiesCount& count : entity_counts) {
-    total_entities += count.non_tombstone_entities;
-  }
+    const syncer::TypeEntitiesCount& entity_count) {
+  // int total_entities = 0;
+  // for (const syncer::TypeEntitiesCount& count : entity_counts) {
+  //   total_entities += count.non_tombstone_entities;
+  // }
 
-  if (GetUserSettings()->GetSelectedTypes().Has(
-          syncer::UserSelectableType::kHistory)) {
-    // History stores info about synced objects in a different way than the
-    // others types. Issue a separate request to achieve this info
-    sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
-        [](int total_entities, std::pair<bool, int> known_to_sync_count) {
-          brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
-                                                    known_to_sync_count.second);
-        },
-        total_entities));
-  } else {
-    brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
-  }
+  // if (GetUserSettings()->GetSelectedTypes().Has(
+  //         syncer::UserSelectableType::kHistory)) {
+  //   // History stores info about synced objects in a different way than the
+  //   // others types. Issue a separate request to achieve this info
+  //   sync_service_impl_delegate_->GetKnownToSyncHistoryCount(base::BindOnce(
+  //       [](int total_entities, std::pair<bool, int> known_to_sync_count) {
+  //         brave_sync::p3a::RecordSyncedObjectsCount(total_entities +
+  //                                                   known_to_sync_count.second);
+  //       },
+  //       total_entities));
+  // } else {
+  //   brave_sync::p3a::RecordSyncedObjectsCount(total_entities);
+  // }
 }
 
-void BraveSyncServiceImpl::OnSelectedTypesPrefChange(
-    bool payments_integration_enabled_changed) {
-  SyncServiceImpl::OnSelectedTypesPrefChange(
-      payments_integration_enabled_changed);
+void BraveSyncServiceImpl::OnSelectedTypesPrefChange() {
+  SyncServiceImpl::OnSelectedTypesPrefChange();
 
   brave_sync::p3a::RecordEnabledTypes(
       GetUserSettings()->IsSyncEverythingEnabled(),

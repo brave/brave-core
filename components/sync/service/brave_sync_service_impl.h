@@ -42,8 +42,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void OnSyncCycleCompleted(const SyncCycleSnapshot& snapshot) override;
 
   // SyncPrefObserver implementation.
-  void OnSelectedTypesPrefChange(
-      bool payments_integration_enabled_changed) override;
+  void OnSelectedTypesPrefChange() override;
 
   std::string GetOrCreateSyncCode();
   bool SetSyncCode(const std::string& sync_code);
@@ -101,8 +100,7 @@ class BraveSyncServiceImpl : public SyncServiceImpl {
   void LocalDeviceAppeared();
 
   void UpdateP3AObjectsNumber();
-  void OnGotEntityCounts(
-      const std::vector<syncer::TypeEntitiesCount>& entity_counts);
+  void OnGotEntityCounts(const syncer::TypeEntitiesCount& entity_count);
 
   brave_sync::Prefs brave_sync_prefs_;
 

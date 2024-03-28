@@ -1,5 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <grit-part>
+  <if expr="is_macosx">
+    </if>
   <message name="IDS_APP_MANAGEMENT_APP_DETAILS_INSTALL_SOURCE_WEB_STORE" desc="Text for Web Store installation source">
     Web Store
   </message>

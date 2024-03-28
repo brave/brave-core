@@ -24,7 +24,7 @@ import org.chromium.chrome.browser.flags.ChromeFeatureList;
 import org.chromium.chrome.browser.night_mode.NightModeUtils;
 import org.chromium.chrome.browser.preferences.BravePref;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
-import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.chrome.browser.tasks.tab_management.BraveTabUiFeatureUtilities;
 import org.chromium.chrome.browser.toolbar.bottom.BottomToolbarConfiguration;
 import org.chromium.components.browser_ui.settings.ChromeSwitchPreference;
@@ -147,7 +147,7 @@ public class AppearancePreferences extends BravePreferenceFragment
             enableSpeedreader.setOnPreferenceChangeListener(this);
             if (enableSpeedreader instanceof ChromeSwitchPreference) {
                 ((ChromeSwitchPreference) enableSpeedreader)
-                        .setChecked(UserPrefs.get(Profile.getLastUsedRegularProfile())
+                        .setChecked(UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                                             .getBoolean(BravePref.SPEEDREADER_PREF_ENABLED));
             }
         }
@@ -201,7 +201,7 @@ public class AppearancePreferences extends BravePreferenceFragment
             ChromeSharedPreferences.getInstance()
                     .writeBoolean(BravePreferenceKeys.BRAVE_TAB_GROUPS_ENABLED, (boolean) newValue);
         } else if (PREF_BRAVE_ENABLE_SPEEDREADER.equals(key)) {
-            UserPrefs.get(Profile.getLastUsedRegularProfile())
+            UserPrefs.get(ProfileManager.getLastUsedRegularProfile())
                     .setBoolean(BravePref.SPEEDREADER_PREF_ENABLED, (boolean) newValue);
             shouldRelaunch = true;
         }

@@ -6,6 +6,8 @@
 #ifndef BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_H_
 #define BRAVE_CHROMIUM_SRC_CONTENT_PUBLIC_BROWSER_VIDEO_PICTURE_IN_PICTURE_WINDOW_CONTROLLER_H_
 
+#include "base/time/time.h"
+
 #define NextSlide                      \
   SeekTo(base::TimeDelta seek_time) {} \
   virtual void RequestFullscreen() {}  \

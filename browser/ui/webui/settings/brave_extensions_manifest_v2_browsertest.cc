@@ -60,12 +60,10 @@ class BraveExtensionsManifestV2BrowserTest : public InProcessBrowserTest {
     feature_list_.InitAndEnableFeature(kExtensionsManifestV2);
 
     // Disabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
   ~BraveExtensionsManifestV2BrowserTest() override {
-    BraveSettingsUI::ShouldDisableCSPForTesting() = false;
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 

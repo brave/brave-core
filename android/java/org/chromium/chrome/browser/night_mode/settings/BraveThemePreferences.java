@@ -22,6 +22,7 @@ import org.chromium.chrome.browser.night_mode.WebContentsDarkModeController;
 import org.chromium.chrome.browser.ntp_background_images.NTPBackgroundImagesBridge;
 import org.chromium.chrome.browser.preferences.ChromeSharedPreferences;
 import org.chromium.chrome.browser.profiles.Profile;
+import org.chromium.chrome.browser.profiles.ProfileManager;
 import org.chromium.components.browser_ui.settings.SettingsUtils;
 
 public class BraveThemePreferences extends ThemeSettingsFragment {
@@ -35,7 +36,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
         SettingsUtils.addPreferencesFromResource(this, R.xml.brave_theme_preferences);
         getActivity().setTitle(getResources().getString(R.string.theme_settings));
 
-        Profile mProfile = Profile.getLastUsedRegularProfile();
+        Profile mProfile = ProfileManager.getLastUsedRegularProfile();
         NTPBackgroundImagesBridge mNTPBackgroundImagesBridge = NTPBackgroundImagesBridge.getInstance(mProfile);
         if (!NTPBackgroundImagesBridge.enableSponsoredImages()
                 || (mNTPBackgroundImagesBridge != null
@@ -59,7 +60,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
         }
 
         mWebContentsDarkModeEnabled = WebContentsDarkModeController.isGlobalUserSettingsEnabled(
-                Profile.getLastUsedRegularProfile());
+                ProfileManager.getLastUsedRegularProfile());
         radioButtonGroupThemePreference.initialize(
                 sharedPreferencesManager.readInt(UI_THEME_SETTING, defaultThemePref),
                 mWebContentsDarkModeEnabled);
@@ -72,7 +73,7 @@ public class BraveThemePreferences extends ThemeSettingsFragment {
                     mWebContentsDarkModeEnabled =
                             radioButtonGroupThemePreference.isDarkenWebsitesEnabled();
                     WebContentsDarkModeController.setGlobalUserSettings(
-                            Profile.getLastUsedRegularProfile(), mWebContentsDarkModeEnabled);
+                            ProfileManager.getLastUsedRegularProfile(), mWebContentsDarkModeEnabled);
                 }
             }
             int theme = (int) newValue;

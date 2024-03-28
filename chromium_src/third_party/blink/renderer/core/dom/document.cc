@@ -13,9 +13,8 @@
 
 namespace blink {
 
-void Document::ProcessJavaScriptUrl(
-    const KURL& url,
-    scoped_refptr<const DOMWrapperWorld> world) {
+void Document::ProcessJavaScriptUrl(const KURL& url,
+                                    const DOMWrapperWorld* world) {
 #if BUILDFLAG(ENABLE_BRAVE_PAGE_GRAPH)
   probe::RegisterPageGraphJavaScriptUrl(this, url);
 #endif

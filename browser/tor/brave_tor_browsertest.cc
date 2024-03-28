@@ -152,12 +152,10 @@ class BraveTorTest : public InProcessBrowserTest {
 
   BraveTorTest() {
     // Disabling CSP on webui pages so EvalJS could be run in main world.
-    BraveSettingsUI::ShouldDisableCSPForTesting() = true;
     BraveSettingsUI::ShouldExposeElementsForTesting() = true;
   }
 
   ~BraveTorTest() override {
-    BraveSettingsUI::ShouldDisableCSPForTesting() = false;
     BraveSettingsUI::ShouldExposeElementsForTesting() = false;
   }
 

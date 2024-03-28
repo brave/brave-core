@@ -1,8 +1,8 @@
 diff --git a/crypto/unexportable_key_metrics.cc b/crypto/unexportable_key_metrics.cc
-index 662424286d08afbdb9d187ab9712656df9d67063..aaa8eb168b2d50dbf9acac2950cb7d99410c7bb1 100644
+index e3161335a9764c8a8bbc4c16e4eff3426d899250..64634b8af62af7f59fe40c0db2af681f2d0feb10 100644
 --- a/crypto/unexportable_key_metrics.cc
 +++ b/crypto/unexportable_key_metrics.cc
-@@ -28,6 +28,7 @@ enum class KeyType {
+@@ -30,6 +30,7 @@ enum class KeyType {
  };
  
  const SignatureVerifier::SignatureAlgorithm kAllAlgorithms[] = {
@@ -10,7 +10,7 @@ index 662424286d08afbdb9d187ab9712656df9d67063..aaa8eb168b2d50dbf9acac2950cb7d99
      SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256,
      SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256,
  };
-@@ -137,6 +138,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
+@@ -139,6 +140,7 @@ internal::TPMSupport MeasureVirtualTpmOperations() {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:
@@ -18,7 +18,7 @@ index 662424286d08afbdb9d187ab9712656df9d67063..aaa8eb168b2d50dbf9acac2950cb7d99
          supported_virtual_algo = internal::TPMSupport::kECDSA;
          break;
        case SignatureVerifier::SignatureAlgorithm::RSA_PKCS1_SHA256:
-@@ -216,6 +218,7 @@ void MeasureTpmOperationsInternal() {
+@@ -218,6 +220,7 @@ void MeasureTpmOperationsInternal(UnexportableKeyProvider::Config config) {
    if (algo) {
      switch (*algo) {
        case SignatureVerifier::SignatureAlgorithm::ECDSA_SHA256:

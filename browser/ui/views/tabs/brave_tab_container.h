@@ -46,8 +46,9 @@ class BraveTabContainer : public TabContainerImpl {
   void PaintChildren(const views::PaintInfo& paint_info) override;
 
   // BrowserRootView::DropTarget
-  BrowserRootView::DropIndex GetDropIndex(
-      const ui::DropTargetEvent& event) override;
+  std::optional<BrowserRootView::DropIndex> GetDropIndex(
+      const ui::DropTargetEvent& event,
+      bool allow_replacement) override;
   void HandleDragUpdate(
       const std::optional<BrowserRootView::DropIndex>& index) override;
   void HandleDragExited() override;

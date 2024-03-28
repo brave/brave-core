@@ -18,7 +18,7 @@
 // the panel will not be shared across tabs.
 WalletPanelHandler::WalletPanelHandler(
     mojo::PendingReceiver<brave_wallet::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
+    TopChromeWebUIController* webui_controller,
     content::WebContents* active_web_contents,
     PanelCloseOnDeactivationCallback close_on_deactivation)
     : receiver_(this, std::move(receiver)),

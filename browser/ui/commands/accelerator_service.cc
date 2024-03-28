@@ -12,7 +12,6 @@
 #include <vector>
 
 #include "base/containers/contains.h"
-#include "base/containers/cxx20_erase_vector.h"
 #include "base/containers/flat_map.h"
 #include "base/containers/flat_set.h"
 #include "base/ranges/algorithm.h"

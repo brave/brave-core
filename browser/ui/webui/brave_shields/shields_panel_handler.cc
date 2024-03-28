@@ -14,12 +14,12 @@
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/browser/ui/browser_finder.h"
 #include "chrome/browser/ui/browser_tabstrip.h"
+#include "chrome/browser/ui/webui/top_chrome/top_chrome_web_ui_controller.h"
 #include "ui/gfx/geometry/vector2d.h"
-#include "ui/webui/mojo_bubble_web_ui_controller.h"
 
 ShieldsPanelHandler::ShieldsPanelHandler(
     mojo::PendingReceiver<brave_shields::mojom::PanelHandler> receiver,
-    ui::MojoBubbleWebUIController* webui_controller,
+    TopChromeWebUIController* webui_controller,
     BraveBrowserWindow* brave_browser_window,
     Profile* profile)
     : receiver_(this, std::move(receiver)),

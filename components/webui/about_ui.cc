@@ -43,7 +43,7 @@ std::string ReplaceAboutUIChromeURLs(std::string chrome_urls) {
   // URLs in html should be sorted so it's okay to iterate over sorted
   // kURLsToRemove.
   auto html_line_it = html_lines.begin();
-  auto* url_to_remove_it = kURLsToRemove.begin();
+  auto url_to_remove_it = kURLsToRemove.begin();
   while (html_line_it != html_lines.end() &&
          url_to_remove_it != kURLsToRemove.end()) {
     if (base::Contains(*html_line_it, *url_to_remove_it)) {
