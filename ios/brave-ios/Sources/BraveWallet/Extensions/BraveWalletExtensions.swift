@@ -571,3 +571,12 @@ public extension URL {
     return WalletConstants.supportedIPFSSchemes.contains(scheme)
   }
 }
+
+extension Array where Element == BraveWallet.AccountInfo {
+  func accountsFor(network: BraveWallet.NetworkInfo) -> [BraveWallet.AccountInfo] {
+    filter { account in
+      account.coin == network.coin
+        && network.supportedKeyrings.contains(account.keyringId.rawValue as NSNumber)
+    }
+  }
+}

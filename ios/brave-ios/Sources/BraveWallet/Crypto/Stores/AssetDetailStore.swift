@@ -121,7 +121,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   }
   
   // All account info that has the same coin type as this asset's
-  var allAccountsForTokenCoin: [BraveWallet.AccountInfo] = []
+  var allAccountsForToken: [BraveWallet.AccountInfo] = []
 
   init(
     assetRatioService: BraveWalletAssetRatioService,
@@ -197,7 +197,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
     updateTask = Task { @MainActor in
       self.isLoadingPrice = true
       self.isLoadingChart = true
-      
+      let allAccounts = await keyringService.allAccounts()
+
       switch assetDetailType {
       case .blockchainToken(let token):
         // not come from Market tab
@@ -210,8 +211,8 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.isSwapSupported = await swapService.isSwapSupported(token.chainId)
         
         // fetch accounts
-        self.allAccountsForTokenCoin = await keyringService.allAccounts().accounts.filter { $0.coin == token.coin }
-        var updatedAccounts = allAccountsForTokenCoin.map {
+        self.allAccountsForToken = allAccounts.accounts.accountsFor(network: network)
+        var updatedAccounts = self.allAccountsForToken.map {
           AccountAssetViewModel(account: $0, decimalBalance: 0.0, balance: "", fiatBalance: "")
         }
         
@@ -241,7 +242,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         // fetch transactions
         let userAssets = assetManager.getAllUserAssetsInNetworkAssets(networks: [network], includingUserDeleted: true).flatMap { $0.tokens }
         let allTokens = await blockchainRegistry.allTokens(network.chainId, coin: network.coin)
-        let allTransactions = await txService.allTransactions(networksForCoin: [network.coin: [network]], for: allAccountsForTokenCoin)
+        let allTransactions = await txService.allTransactions(networksForCoin: [network.coin: [network]], for: allAccountsForToken)
         
         let ethTransactions = allTransactions.filter { $0.coin == .eth }
         if !ethTransactions.isEmpty { // we can only fetch unknown Ethereum tokens
@@ -256,7 +257,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -275,7 +276,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -291,7 +292,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         self.transactionSections = buildTransactionSections(
           transactions: allTransactions,
           network: network,
-          accountInfos: allAccountsForTokenCoin,
+          accountInfos: allAccountsForToken,
           userAssets: userAssets,
           allTokens: allTokens,
           assetRatios: assetPricesCache,
@@ -318,7 +319,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
         // below is all not supported from Market tab
         self.isSendSupported = false
         self.isSwapSupported = false
-        self.allAccountsForTokenCoin = []
+        self.allAccountsForToken = []
         self.nonZeroBalanceAccounts = []
         self.transactionSections =  []
       }
