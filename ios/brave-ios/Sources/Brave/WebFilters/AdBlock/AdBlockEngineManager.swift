@@ -195,7 +195,7 @@ import os
 
   func checkHasAllInfo(for sources: [GroupedAdBlockEngine.Source]) -> Bool {
     let availableSources = compilableFiles(for: sources).map({ $0.filterListInfo.source })
-    return sources.allSatisfy({ availableSources.contains($0) })
+    return availableSources.allSatisfy({ sources.contains($0) })
   }
 
   /// This will compile available data right away if it is needed

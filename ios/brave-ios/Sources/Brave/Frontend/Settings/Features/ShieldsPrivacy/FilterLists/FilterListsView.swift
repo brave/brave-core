@@ -63,11 +63,6 @@ struct FilterListsView: View {
         customFilterListStorage.filterListsURLs.isEmpty && editMode?.wrappedValue.isEditing == false
       )
     }
-    .onDisappear {
-      Task {
-        await AdBlockGroupsManager.shared.compileEnginesIfNeeded()
-      }
-    }
   }
 
   @ViewBuilder private var filterListView: some View {

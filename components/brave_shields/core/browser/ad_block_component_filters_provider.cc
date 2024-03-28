@@ -107,17 +107,26 @@ bool AdBlockComponentFiltersProvider::IsInitialized() const {
   return !component_path_.empty();
 }
 
+base::FilePath AdBlockComponentFiltersProvider::GetFilterSetPath() {
+  if (component_path_.empty()) {
+    // Since we know it's empty return it as is.
+    return component_path_;
+  }
+
+  return component_path_.AppendASCII(kListFile);
+}
+
 void AdBlockComponentFiltersProvider::LoadFilterSet(
     base::OnceCallback<
         void(base::OnceCallback<void(rust::Box<adblock::FilterSet>*)>)> cb) {
-  if (component_path_.empty()) {
+  base::FilePath list_file_path = GetFilterSetPath();
+
+  if (list_file_path.empty()) {
     // If the path is not ready yet, provide a no-op callback immediately. An
     // update will be pushed later to notify about the newly available list.
     std::move(cb).Run(base::BindOnce(AddNothingToFilterSet));
     return;
   }
-
-  base::FilePath list_file_path = component_path_.AppendASCII(kListFile);
 
   base::ThreadPool::PostTaskAndReplyWithResult(
       FROM_HERE, {base::MayBlock()},
