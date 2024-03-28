@@ -536,8 +536,9 @@ void BraveSearchConversionPromotionView::ConfigureForBannerType() {
   views::Label::CustomFont desc_font = {GetFont(14, gfx::Font::Weight::NORMAL)};
   banner_type_description_ = banner_contents->AddChildView(
       std::make_unique<views::Label>(desc_label, desc_font));
+  // Give right margin to not overlap with background image.
   banner_type_description_->SetProperty(views::kMarginsKey,
-                                        gfx::Insets::TLBR(4, 0, 0, 0));
+                                        gfx::Insets::TLBR(4, 0, 0, 70));
   banner_type_description_->SetAutoColorReadabilityEnabled(false);
   banner_type_description_->SetHorizontalAlignment(gfx::ALIGN_LEFT);
 

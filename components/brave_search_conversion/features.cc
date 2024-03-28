@@ -5,8 +5,6 @@
 
 #include "brave/components/brave_search_conversion/features.h"
 
-#include "base/feature_list.h"
-
 namespace brave_search_conversion {
 
 namespace features {
@@ -16,6 +14,9 @@ namespace features {
 BASE_FEATURE(kOmniboxBanner,
              "BraveSearchOmniboxBanner",
              base::FEATURE_DISABLED_BY_DEFAULT);
+
+const base::FeatureParam<std::string> kBannerType{&kOmniboxBanner,
+                                                  kBannerTypeParamName, ""};
 
 // Brave search promotion match located at second low in omnibox popup.
 // This looks very similar with other normal matches.
