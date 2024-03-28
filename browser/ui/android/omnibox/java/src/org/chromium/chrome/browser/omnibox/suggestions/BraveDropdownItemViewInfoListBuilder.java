@@ -161,7 +161,7 @@ class BraveDropdownItemViewInfoListBuilder extends DropdownItemViewInfoListBuild
     private boolean isBraveLeoEnabled() {
         Tab tab = mActivityTabSupplier.get();
         if (mLeoAutocompleteDelegate != null
-                && ChromeFeatureList.isEnabled(BraveFeatureList.AI_CHAT)
+                && mLeoAutocompleteDelegate.isLeoEnabled()
                 && tab != null
                 && !tab.isIncognito()
                 && ChromeSharedPreferences.getInstance()
