@@ -26,6 +26,10 @@ use crate::httpclient::{HttpRoundtripContext, WakeupContext};
 use crate::storage::{StorageGetContext, StoragePurgeContext, StorageSetContext};
 use errors::result_to_string;
 
+thread_local! {
+    static INIT_COUNT: RefCell<u8> = RefCell::new(0);
+}
+
 pub struct NativeClientExecutor {
     is_shutdown: bool,
     pool: Option<LocalPool>,
@@ -291,6 +295,12 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         Err(_) => println!("tracing_subscriber - maybe already initialized"),
     };
 
+    let mut id = 0;
+    INIT_COUNT.with(|f| {
+        id = *f.borrow();
+        *f.borrow_mut() = id + 1;
+    });
+
     let env = env.parse::<skus::Environment>().unwrap_or(skus::Environment::Local);
 
     let executor = Rc::new(RefCell::new(NativeClientExecutor::new()));
@@ -306,6 +316,7 @@ fn initialize_sdk(ctx: UniquePtr<ffi::SkusContext>, env: String) -> Box<CppSDK> 
         env,
         None,
         None,
+        id,
     );
     let sdk = Rc::new(sdk);
     {

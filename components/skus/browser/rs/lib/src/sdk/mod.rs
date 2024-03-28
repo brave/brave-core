@@ -21,11 +21,14 @@ pub struct SDK<U> {
     pub base_url: String,
     pub remote_sdk_url: String,
     pub cache: RefCell<CacheNode<http::Response<Vec<u8>>>>,
+    pub id: u8,
 }
 
 impl<U> fmt::Debug for SDK<U> {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        f.debug_struct("SDK").finish()
+        f.debug_struct("SDK")
+            .field("id", &self.id)
+            .finish()
     }
 }
 
@@ -38,6 +41,7 @@ where
         environment: Environment,
         base_url: Option<&str>,
         remote_sdk_url: Option<&str>,
+        id: u8,
     ) -> Self {
         let base_url = base_url.unwrap_or(match environment {
             Environment::Local => "http://localhost:3333",
@@ -61,6 +65,7 @@ where
             base_url: base_url.to_string(),
             remote_sdk_url: remote_sdk_url.to_string(),
             cache: RefCell::new(CacheNode::default()),
+            id,
         }
     }
 
