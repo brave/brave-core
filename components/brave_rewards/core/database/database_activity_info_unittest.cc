@@ -9,6 +9,7 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
@@ -162,10 +163,10 @@ TEST_F(DatabaseActivityInfoTest, DeleteRecordEmpty) {
 }
 
 TEST_F(DatabaseActivityInfoTest, DeleteRecordOk) {
-  EXPECT_CALL(*mock_engine_impl_.mock_client(), GetUint64State(_, _))
-      .Times(1)
-      .WillOnce([](const std::string&, auto callback) {
-        std::move(callback).Run(1597744617);
+  EXPECT_CALL(*mock_engine_impl_.mock_client(),
+              GetUserPreferenceValue(prefs::kNextReconcileStamp, _))
+      .WillRepeatedly([](const std::string&, auto callback) {
+        std::move(callback).Run(base::Value("1597744617"));
       });
 
   EXPECT_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))

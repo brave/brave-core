@@ -67,4 +67,8 @@ bool IsUnsupportedRegion() {
   return IsOFACSanctionedRegion(GetCountryCode());
 }
 
+bool IsAutoContributeSupportedForCountry(const std::string& country_code) {
+  return country_code != "JP" && country_code != "IN";
+}
+
 }  // namespace brave_rewards

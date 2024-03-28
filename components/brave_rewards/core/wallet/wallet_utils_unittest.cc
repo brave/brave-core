@@ -7,9 +7,9 @@
 
 #include "base/test/task_environment.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/global_constants.h"
 #include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "brave/components/brave_rewards/core/test/test_rewards_engine_client.h"
 #include "testing/gmock/include/gmock/gmock.h"
 #include "testing/gtest/include/gtest/gtest.h"
@@ -76,12 +76,13 @@ TEST_P(TransitionWalletCreate, Paths) {
   const auto& [ignore, to, wallet_already_exists, expected] = GetParam();
 
   EXPECT_CALL(*mock_engine_impl_.mock_client(),
-              GetStringState(state::kWalletUphold, _))
+              GetUserPreferenceValue(prefs::kWalletUphold, _))
       .Times(1)
       .WillOnce([&](const std::string&, auto callback) {
-        std::move(callback).Run(wallet_already_exists
-                                    ? FakeEncryption::Base64EncryptString("{}")
-                                    : "");
+        std::move(callback).Run(
+            wallet_already_exists
+                ? base::Value(FakeEncryption::Base64EncryptString("{}"))
+                : base::Value(""));
       });
 
   ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))

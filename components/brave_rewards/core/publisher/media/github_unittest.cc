@@ -7,7 +7,7 @@
 
 #include "brave/components/brave_rewards/core/constants.h"
 #include "brave/components/brave_rewards/core/publisher/media/github.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "testing/gtest/include/gtest/gtest.h"
 

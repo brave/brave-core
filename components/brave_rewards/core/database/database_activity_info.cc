@@ -8,10 +8,10 @@
 
 #include "base/strings/stringprintf.h"
 #include "base/types/cxx23_to_underlying.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database_activity_info.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 
 namespace brave_rewards::internal {
 
@@ -320,7 +320,7 @@ void DatabaseActivityInfo::DeleteRecord(const std::string& publisher_key,
   command->command = query;
 
   BindString(command.get(), 0, publisher_key);
-  BindInt64(command.get(), 1, engine_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 1, engine_->contribution()->GetReconcileStamp());
 
   transaction->commands.push_back(std::move(command));
 
@@ -343,7 +343,7 @@ void DatabaseActivityInfo::GetPublishersVisitedCount(
   auto command = mojom::DBCommand::New();
   command->type = mojom::DBCommand::Type::READ;
   command->command = query;
-  BindInt64(command.get(), 0, engine_->state()->GetReconcileStamp());
+  BindInt64(command.get(), 0, engine_->contribution()->GetReconcileStamp());
   command->record_bindings = {mojom::DBCommand::RecordBindingType::INT_TYPE};
   transaction->commands.push_back(std::move(command));
 

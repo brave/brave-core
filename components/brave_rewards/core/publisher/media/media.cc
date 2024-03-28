@@ -7,8 +7,8 @@
 
 #include "base/containers/flat_map.h"
 #include "brave/components/brave_rewards/core/publisher/media/media.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
 #include "build/build_config.h"
 

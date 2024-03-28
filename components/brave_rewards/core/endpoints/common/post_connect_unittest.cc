@@ -9,11 +9,11 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/endpoints/common/post_connect.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -50,14 +50,14 @@ class PostConnect : public TestWithParam<PostConnectParamType> {
  protected:
   void SetUp() override {
     ON_CALL(*mock_engine_impl_.mock_client(),
-            GetStringState(state::kWalletBrave, _))
+            GetUserPreferenceValue(prefs::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
-          std::move(callback).Run(R"(
+          std::move(callback).Run(base::Value(R"(
             {
               "payment_id":"fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
               "recovery_seed":"AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
             }
-          )");
+          )"));
         });
   }
 

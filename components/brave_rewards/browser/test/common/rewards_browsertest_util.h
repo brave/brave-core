@@ -59,15 +59,7 @@ void CreateRewardsWallet(RewardsServiceImpl* rewards_service,
 
 void SetOnboardingBypassed(Browser* browser, bool bypassed = true);
 
-// TODO(zenparsing): Remove these functions when browser tests that read or
-// write encrypted "state" are migrated to the bat rewards library.
-std::optional<std::string> EncryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value);
-
-std::optional<std::string> DecryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value);
+std::optional<std::string> EncryptPrefString(const std::string& value);
 
 }  // namespace brave_rewards::test_util
 

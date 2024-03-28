@@ -77,9 +77,10 @@ TEST_P(ConnectExternalWalletTest, Paths) {
       R"({ "status": )" +
       base::NumberToString(static_cast<int>(wallet_status)) + "}");
 
-  ON_CALL(*mock_engine_impl_.mock_client(), GetStringState("wallets.test", _))
+  ON_CALL(*mock_engine_impl_.mock_client(),
+          GetUserPreferenceValue("brave.rewards.wallets.test", _))
       .WillByDefault([&](const std::string&, auto callback) {
-        std::move(callback).Run(test_wallet);
+        std::move(callback).Run(base::Value(test_wallet));
       });
 
   ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))

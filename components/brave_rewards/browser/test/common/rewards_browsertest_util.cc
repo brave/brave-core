@@ -18,11 +18,11 @@
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/components/brave_rewards/browser/rewards_service_observer.h"
 #include "brave/components/brave_rewards/common/mojom/rewards.mojom.h"
-#include "brave/components/brave_rewards/common/mojom/rewards_engine.mojom-test-utils.h"
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/constants/brave_paths.h"
 #include "chrome/browser/profiles/profile.h"
 #include "chrome/test/base/ui_test_utils.h"
+#include "components/os_crypt/sync/os_crypt.h"
 #include "components/prefs/pref_service.h"
 
 namespace brave_rewards::test_util {
@@ -180,30 +180,12 @@ void SetOnboardingBypassed(Browser* browser, bool bypassed) {
   prefs->SetBoolean(prefs::kEnabled, bypassed);
 }
 
-std::optional<std::string> EncryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value) {
-  DCHECK(rewards_service);
-
-  auto encrypted = mojom::RewardsEngineClientAsyncWaiter(rewards_service)
-                       .EncryptString(value);
-  if (!encrypted) {
-    return {};
+std::optional<std::string> EncryptPrefString(const std::string& value) {
+  std::string encrypted;
+  if (OSCrypt::EncryptString(value, &encrypted)) {
+    return base::Base64Encode(encrypted);
   }
-  return base::Base64Encode(*encrypted);
-}
-
-std::optional<std::string> DecryptPrefString(
-    RewardsServiceImpl* rewards_service,
-    const std::string& value) {
-  DCHECK(rewards_service);
-  std::string decoded;
-  if (!base::Base64Decode(value, &decoded)) {
-    return {};
-  }
-
-  return mojom::RewardsEngineClientAsyncWaiter(rewards_service)
-      .DecryptString(decoded);
+  return {};
 }
 
 }  // namespace brave_rewards::test_util

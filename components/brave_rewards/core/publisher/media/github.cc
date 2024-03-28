@@ -18,11 +18,11 @@
 #include "base/strings/utf_string_conversions.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
 #include "brave/components/brave_rewards/core/constants.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -277,7 +277,7 @@ void GitHub::GetPublisherPanelInfo(uint64_t window_id,
                                    const std::string& publisher_key) {
   auto filter = engine_->publisher()->CreateActivityFilter(
       publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
-      engine_->state()->GetReconcileStamp(), true, false);
+      engine_->contribution()->GetReconcileStamp(), true, false);
   engine_->database()->GetPanelPublisherInfo(
       std::move(filter),
       base::BindOnce(&GitHub::OnPublisherPanelInfo, weak_factory_.GetWeakPtr(),

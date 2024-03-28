@@ -8,6 +8,7 @@
 
 #include "base/strings/string_util.h"
 #include "base/strings/stringprintf.h"
+#include "brave/components/brave_rewards/core/common/user_prefs.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/database/database_migration.h"
 #include "brave/components/brave_rewards/core/database/database_util.h"
@@ -95,7 +96,7 @@ void DatabaseMigration::Start(uint32_t table_version, ResultCallback callback) {
   // order to prevent display of BAP historical information in monthly reports.
   std::string migration_v30 = "";
   std::string migration_v32 = "";
-  if (engine_->GetClientCountryCode() == "JP") {
+  if (engine_->Get<UserPrefs>().GetString(prefs::kDeclaredGeo) == "JP") {
     migration_v30 = migration::v30;
     migration_v32 = migration::v32;
   }

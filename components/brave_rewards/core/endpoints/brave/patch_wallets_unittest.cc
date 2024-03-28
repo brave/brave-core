@@ -9,11 +9,11 @@
 
 #include "base/test/mock_callback.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/endpoints/brave/patch_wallets.h"
 #include "brave/components/brave_rewards/core/endpoints/request_for.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "net/http/http_status_code.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
@@ -41,7 +41,7 @@ class PatchWallets : public TestWithParam<PatchWalletsParamType> {
  protected:
   void SetUp() override {
     ON_CALL(*mock_engine_impl_.mock_client(),
-            GetStringState(state::kWalletBrave, _))
+            GetUserPreferenceValue(prefs::kWalletBrave, _))
         .WillByDefault([](const std::string&, auto callback) {
           std::string wallet = R"(
             {
@@ -49,7 +49,7 @@ class PatchWallets : public TestWithParam<PatchWalletsParamType> {
               "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
             }
           )";
-          std::move(callback).Run(std::move(wallet));
+          std::move(callback).Run(base::Value(std::move(wallet)));
         });
   }
 

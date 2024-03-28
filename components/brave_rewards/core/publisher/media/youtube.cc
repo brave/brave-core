@@ -12,13 +12,13 @@
 #include "base/strings/string_number_conversions.h"
 #include "base/strings/string_split.h"
 #include "brave/components/brave_rewards/core/common/url_loader.h"
+#include "brave/components/brave_rewards/core/contribution/contribution.h"
 #include "brave/components/brave_rewards/core/database/database.h"
 #include "brave/components/brave_rewards/core/publisher/media/helper.h"
 #include "brave/components/brave_rewards/core/publisher/media/youtube.h"
-#include "brave/components/brave_rewards/core/legacy/static_values.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
+#include "brave/components/brave_rewards/core/publisher/static_values.h"
 #include "brave/components/brave_rewards/core/rewards_engine.h"
-#include "brave/components/brave_rewards/core/state/state.h"
 #include "net/http/http_status_code.h"
 
 namespace brave_rewards::internal {
@@ -539,7 +539,7 @@ void YouTube::GetPublisherPanleInfo(uint64_t window_id,
                                     bool is_custom_path) {
   auto filter = engine_->publisher()->CreateActivityFilter(
       publisher_key, mojom::ExcludeFilter::FILTER_ALL, false,
-      engine_->state()->GetReconcileStamp(), true, false);
+      engine_->contribution()->GetReconcileStamp(), true, false);
   engine_->database()->GetPanelPublisherInfo(
       std::move(filter),
       base::BindOnce(&YouTube::OnPublisherPanleInfo, weak_factory_.GetWeakPtr(),

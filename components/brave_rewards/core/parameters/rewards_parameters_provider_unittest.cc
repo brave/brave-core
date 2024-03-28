@@ -12,7 +12,7 @@
 
 #include "base/json/json_reader.h"
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/common/user_prefs.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "net/http/http_status_code.h"
 
@@ -137,8 +137,8 @@ TEST_F(RewardsParametersProviderTest, DictToParameters) {
 }
 
 TEST_F(RewardsParametersProviderTest, GetParametersCached) {
-  engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+  engine().Get<UserPrefs>().Set(prefs::kParameters,
+                                *base::JSONReader::Read(kCachedParametersJSON));
 
   auto [params] = WaitFor<mojom::RewardsParametersPtr>([&](auto callback) {
     engine().Get<RewardsParametersProvider>().GetParameters(
@@ -173,8 +173,8 @@ TEST_F(RewardsParametersProviderTest, EndpointError) {
   response->status_code = net::HttpStatusCode::HTTP_INTERNAL_SERVER_ERROR;
   AddParametersResponse(std::move(response));
 
-  engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+  engine().Get<UserPrefs>().Set(prefs::kParameters,
+                                *base::JSONReader::Read(kCachedParametersJSON));
 
   auto& provider = engine().Get<RewardsParametersProvider>();
 
@@ -189,8 +189,8 @@ TEST_F(RewardsParametersProviderTest, GetCachedParameters) {
   auto& provider = engine().Get<RewardsParametersProvider>();
   EXPECT_FALSE(provider.GetCachedParameters());
 
-  engine().SetState(state::kParameters,
-                    *base::JSONReader::Read(kCachedParametersJSON));
+  engine().Get<UserPrefs>().Set(prefs::kParameters,
+                                *base::JSONReader::Read(kCachedParametersJSON));
 
   auto params = provider.GetCachedParameters();
   ASSERT_TRUE(params);

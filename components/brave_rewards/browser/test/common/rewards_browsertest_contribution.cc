@@ -395,7 +395,7 @@ void RewardsBrowserTestContribution::StartProcessWithConnectedWallet(
 
   std::string json;
   base::JSONWriter::Write(wallet, &json);
-  auto encrypted = test_util::EncryptPrefString(rewards_service_, json);
+  auto encrypted = test_util::EncryptPrefString(json);
   ASSERT_TRUE(encrypted);
 
   prefs->SetString(prefs::kWalletUphold, *encrypted);

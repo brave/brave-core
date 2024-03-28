@@ -8,12 +8,12 @@
 
 #include "base/containers/flat_map.h"
 #include "base/test/task_environment.h"
+#include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_rewards/core/database/database_mock.h"
 #include "brave/components/brave_rewards/core/publisher/publisher.h"
 #include "brave/components/brave_rewards/core/rewards_callbacks.h"
 #include "brave/components/brave_rewards/core/rewards_engine_client_mock.h"
 #include "brave/components/brave_rewards/core/rewards_engine_mock.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
 #include "testing/gtest/include/gtest/gtest.h"
 
 using ::testing::_;
@@ -44,28 +44,28 @@ class PublisherTest : public testing::Test {
   }
 
   void SetUp() override {
-    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreA, _))
+    ON_CALL(*mock_engine_impl_.mock_client(),
+            GetUserPreferenceValue(prefs::kScoreA, _))
         .WillByDefault([this](const std::string&, auto callback) {
-          std::move(callback).Run(a_);
+          std::move(callback).Run(base::Value(a_));
         });
 
-    ON_CALL(*mock_engine_impl_.mock_client(), GetDoubleState(state::kScoreB, _))
+    ON_CALL(*mock_engine_impl_.mock_client(),
+            GetUserPreferenceValue(prefs::kScoreB, _))
         .WillByDefault([this](const std::string&, auto callback) {
-          std::move(callback).Run(b_);
+          std::move(callback).Run(base::Value(b_));
         });
 
-    ON_CALL(*mock_engine_impl_.mock_client(), SetDoubleState(_, _, _))
+    ON_CALL(*mock_engine_impl_.mock_client(), SetUserPreferenceValue(_, _, _))
         .WillByDefault(
-            [this](const std::string& key, double value, auto callback) {
-              if (key == state::kScoreA) {
-                a_ = value;
-                std::move(callback).Run();
+            [this](const std::string& key, base::Value value, auto callback) {
+              if (key == prefs::kScoreA) {
+                a_ = value.GetDouble();
               }
-
-              if (key == state::kScoreB) {
-                b_ = value;
-                std::move(callback).Run();
+              if (key == prefs::kScoreB) {
+                b_ = value.GetDouble();
               }
+              std::move(callback).Run();
             });
 
     ON_CALL(*mock_engine_impl_.mock_client(), RunDBTransaction(_, _))

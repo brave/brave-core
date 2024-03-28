@@ -28,10 +28,6 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
 
   ~MockRewardsEngineClient() override;
 
-  MOCK_METHOD1(LoadLegacyState, void(LoadLegacyStateCallback));
-
-  MOCK_METHOD1(LoadPublisherState, void(LoadPublisherStateCallback));
-
   MOCK_METHOD2(OnReconcileComplete,
                void(mojom::Result, mojom::ContributionInfoPtr));
 
@@ -57,68 +53,21 @@ class MockRewardsEngineClient : public mojom::RewardsEngineClient {
 
   MOCK_METHOD1(OnPublisherUpdated, void(const std::string&));
 
-  MOCK_METHOD2(GetBooleanState,
-               void(const std::string&, GetBooleanStateCallback));
+  MOCK_METHOD2(GetUserPreferenceValue,
+               void(const std::string&, GetUserPreferenceValueCallback));
 
-  MOCK_METHOD3(SetBooleanState,
-               void(const std::string&, bool, SetBooleanStateCallback));
-
-  MOCK_METHOD2(GetIntegerState,
-               void(const std::string&, GetIntegerStateCallback));
-
-  MOCK_METHOD3(SetIntegerState,
-               void(const std::string&, int32_t, SetIntegerStateCallback));
-
-  MOCK_METHOD2(GetDoubleState,
-               void(const std::string&, GetDoubleStateCallback));
-
-  MOCK_METHOD3(SetDoubleState,
-               void(const std::string&, double, SetDoubleStateCallback));
-
-  MOCK_METHOD2(GetStringState,
-               void(const std::string&, GetStringStateCallback));
-
-  MOCK_METHOD3(SetStringState,
+  MOCK_METHOD3(SetUserPreferenceValue,
                void(const std::string&,
-                    const std::string&,
-                    SetStringStateCallback));
+                    base::Value,
+                    SetUserPreferenceValueCallback));
 
-  MOCK_METHOD2(GetInt64State, void(const std::string&, GetInt64StateCallback));
-
-  MOCK_METHOD3(SetInt64State,
-               void(const std::string&, int64_t, SetInt64StateCallback));
-
-  MOCK_METHOD2(GetUint64State,
-               void(const std::string&, GetUint64StateCallback));
-
-  MOCK_METHOD3(SetUint64State,
-               void(const std::string&, uint64_t, SetUint64StateCallback));
-
-  MOCK_METHOD2(GetValueState, void(const std::string&, GetValueStateCallback));
-
-  MOCK_METHOD3(SetValueState,
-               void(const std::string&, base::Value, SetValueStateCallback));
-
-  MOCK_METHOD2(GetTimeState, void(const std::string&, GetTimeStateCallback));
-
-  MOCK_METHOD3(SetTimeState,
-               void(const std::string&, base::Time, SetTimeStateCallback));
-
-  MOCK_METHOD2(ClearState, void(const std::string&, ClearStateCallback));
-
-  MOCK_METHOD1(GetClientCountryCode, void(GetClientCountryCodeCallback));
-
-  MOCK_METHOD1(IsAutoContributeSupportedForClient,
-               void(IsAutoContributeSupportedForClientCallback));
-
-  MOCK_METHOD1(GetLegacyWallet, void(GetLegacyWalletCallback));
+  MOCK_METHOD2(ClearUserPreferenceValue,
+               void(const std::string&, ClearUserPreferenceValueCallback));
 
   MOCK_METHOD3(ShowNotification,
                void(const std::string&,
                     const std::vector<std::string>&,
                     ShowNotificationCallback));
-
-  MOCK_METHOD1(GetClientInfo, void(GetClientInfoCallback));
 
   MOCK_METHOD0(ReconcileStampReset, void());
 

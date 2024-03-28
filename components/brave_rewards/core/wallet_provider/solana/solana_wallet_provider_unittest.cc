@@ -8,7 +8,7 @@
 #include <utility>
 
 #include "brave/components/brave_rewards/core/common/environment_config.h"
-#include "brave/components/brave_rewards/core/state/state_keys.h"
+#include "brave/components/brave_rewards/core/common/user_prefs.h"
 #include "brave/components/brave_rewards/core/test/rewards_engine_test.h"
 #include "brave/components/brave_rewards/core/wallet_provider/solana/solana_wallet_provider.h"
 #include "net/http/http_status_code.h"
@@ -24,7 +24,7 @@ class RewardsSolanaWalletProviderTest : public RewardsEngineTest {
           "payment_id": "fa5dea51-6af4-44ca-801b-07b6df3dcfe4",
           "recovery_seed": "AN6DLuI2iZzzDxpzywf+IKmK1nzFRarNswbaIDI3pQg="
         })";
-    engine().SetState(state::kWalletBrave, std::move(json));
+    engine().Get<UserPrefs>().SetString(prefs::kWalletBrave, std::move(json));
     InitializeEngine();
   }
 
