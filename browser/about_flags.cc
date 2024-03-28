@@ -448,9 +448,18 @@
       kOsWin | kOsMac | kOsLinux,                            \
       FEATURE_VALUE_TYPE(ai_chat::features::kAIChatHistory), \
   })
+#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                      \
+  EXPAND_FEATURE_ENTRIES({                                               \
+      "brave-ai-chat-context-menu-rewrite-in-place",                     \
+      "Brave AI Chat Rewrite In Place From Context Menu",                \
+      "Enables AI Chat rewrite in place feature from the context menu",  \
+      kOsDesktop,                                                        \
+      FEATURE_VALUE_TYPE(ai_chat::features::kContextMenuRewriteInPlace), \
+  })
 #else
 #define BRAVE_AI_CHAT
 #define BRAVE_AI_CHAT_HISTORY
+#define BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE
 #endif
 
 #define BRAVE_OMNIBOX_FEATURES                                                \
@@ -1000,6 +1009,7 @@
   BRAVE_TABS_FEATURE_ENTRIES                                                   \
   BRAVE_AI_CHAT                                                                \
   BRAVE_AI_CHAT_HISTORY                                                        \
+  BRAVE_AI_CHAT_CONTEXT_MENU_REWRITE_IN_PLACE                                  \
   BRAVE_OMNIBOX_FEATURES                                                       \
   BRAVE_PLAYER_FEATURE_ENTRIES                                                 \
   BRAVE_MIDDLE_CLICK_AUTOSCROLL_FEATURE_ENTRY                                  \

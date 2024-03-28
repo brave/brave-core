@@ -144,6 +144,24 @@ std::string BuildLlamaSubsequentSequence(
       {kLlama2Bos, user_message, *assistant_response, kLlama2Eos});
 }
 
+std::string BuildLlamaGenerateRewriteSuggestionPrompt(
+    const std::string& text,
+    const std::string& question,
+    bool is_mixtral) {
+  std::string user_message = base::ReplaceStringPlaceholders(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_GENERATE_REWRITE_SUGGESTION_PROMPT),
+      {text, question}, nullptr);
+
+  return BuildLlamaFirstSequence(
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_REWRITE_SUGGESTION),
+      user_message, std::nullopt,
+      l10n_util::GetStringUTF8(
+          IDS_AI_CHAT_LLAMA2_SYSTEM_MESSAGE_GENERATE_REWRITE_SUGGESTION_RESPONSE_SEED),
+      is_mixtral);
+}
+
 std::string BuildLlamaGenerateQuestionsPrompt(bool is_video,
                                               const std::string content,
                                               bool is_mixtral) {
@@ -302,6 +320,22 @@ EngineConsumerLlamaRemote::~EngineConsumerLlamaRemote() = default;
 
 void EngineConsumerLlamaRemote::ClearAllQueries() {
   api_->ClearAllQueries();
+}
+
+void EngineConsumerLlamaRemote::GenerateRewriteSuggestion(
+    std::string text,
+    const std::string& question,
+    GenerationDataCallback received_callback,
+    GenerationCompletedCallback completed_callback) {
+  SanitizeInput(text);
+  const std::string& truncated_text = text.substr(0, max_page_content_length_);
+
+  std::string prompt = BuildLlamaGenerateRewriteSuggestionPrompt(
+      truncated_text, question, is_mixtral_);
+
+  DCHECK(api_);
+  api_->QueryPrompt(prompt, {"</response>"}, std::move(completed_callback),
+                    std::move(received_callback));
 }
 
 void EngineConsumerLlamaRemote::GenerateQuestionSuggestions(

@@ -43,4 +43,11 @@ bool IsAIChatHistoryEnabled() {
   return base::FeatureList::IsEnabled(features::kAIChatHistory);
 }
 
+BASE_FEATURE(kContextMenuRewriteInPlace,
+             "AIChatContextMenuRewriteInPlace",
+             base::FEATURE_ENABLED_BY_DEFAULT);
+bool IsContextMenuRewriteInPlaceEnabled() {
+  return base::FeatureList::IsEnabled(features::kContextMenuRewriteInPlace);
+}
+
 }  // namespace ai_chat::features

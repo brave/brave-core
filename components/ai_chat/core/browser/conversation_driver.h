@@ -108,8 +108,17 @@ class ConversationDriver {
   mojom::SiteInfoPtr BuildSiteInfo();
   bool HasPendingConversationEntry();
 
-  void SubmitSelectedText(const std::string& selected_text,
-                          mojom::ActionType action_type);
+  void AddSubmitSelectedTextError(const std::string& selected_text,
+                                  mojom::ActionType action_type,
+                                  mojom::APIError error);
+
+  void SubmitSelectedText(
+      const std::string& selected_text,
+      mojom::ActionType action_type,
+      EngineConsumer::GenerationDataCallback received_callback =
+          base::NullCallback(),
+      EngineConsumer::GenerationCompletedCallback completed_callback =
+          base::NullCallback());
 
   void RateMessage(bool is_liked,
                    uint32_t turn_id,
@@ -129,6 +138,8 @@ class ConversationDriver {
 
   bool IsArticleTextEmptyForTesting() const { return article_text_.empty(); }
   bool IsSuggestionsEmptyForTesting() const { return suggestions_.empty(); }
+
+  EngineConsumer* GetEngineForTesting() { return engine_.get(); }
 
  protected:
   virtual GURL GetPageURL() const = 0;

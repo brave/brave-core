@@ -1,0 +1,67 @@
+<!DOCTYPE HTML>
+<html>
+  <head>
+    <title>Text Rewrite</title>
+  </head>
+  <style>
+    .container {
+      display: flex;
+      flex-direction: row;
+    }
+    .container > * {
+      margin-right: 200px;
+    }
+  </style>
+  </head>
+  <script>
+    function get_contenteditable_text() {
+      var contenteditable = document.getElementById("contenteditable");
+      var text = contenteditable.innerHTML;
+      return text;
+    }
+
+    function get_text(id) {
+      if (id === "contenteditable") {
+        return get_contenteditable_text();
+      }
+      var element = document.getElementById(id);
+      var text = element.value;
+      return text;
+    }
+
+    function select_all(id) {
+      var element = document.getElementById(id);
+      if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+        element.select();
+        return element.value.substring(
+            element.selectionStart, element.selectionEnd);
+      } else {
+        var selection = window.getSelection();
+        var range = document.createRange();
+        range.selectNodeContents(element);
+        selection.removeAllRanges();
+        selection.addRange(range);
+        return selection.toString();
+      }
+    }
+
+    function getRectX(id) {
+      var element = document.getElementById(id);
+      var rect = element.getBoundingClientRect();
+      return Math.ceil(rect.x);
+    }
+
+    function getRectY(id) {
+      var element = document.getElementById(id);
+      var rect = element.getBoundingClientRect();
+      return Math.ceil(rect.y);
+    }
+  </script>
+  <body>
+    <div class="container">
+      <div id="contenteditable" contenteditable="true">I'm contenteditable.</div>
+      <div><textarea id="textarea">I'm textarea.</textarea></div>
+      <div><input type="input_text" id="input_text" value="I'm input."></div>
+    </div>
+  </body>
+</html>

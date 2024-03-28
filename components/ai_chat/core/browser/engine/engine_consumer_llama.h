@@ -51,6 +51,11 @@ class EngineConsumerLlamaRemote : public EngineConsumer {
       const std::string& human_input,
       GenerationDataCallback data_received_callback,
       GenerationCompletedCallback completed_callback) override;
+  void GenerateRewriteSuggestion(
+      std::string text,
+      const std::string& question,
+      GenerationDataCallback received_callback,
+      GenerationCompletedCallback completed_callback) override;
   void SanitizeInput(std::string& input) override;
   void ClearAllQueries() override;
 

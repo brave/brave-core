@@ -12,6 +12,8 @@ namespace ai_chat {
 
 // Check both policy and feature flag to determine if AI Chat is enabled.
 bool IsAIChatEnabled(PrefService* prefs);
+bool HasUserOptedIn(PrefService* prefs);
+void SetUserOptedIn(PrefService* prefs, bool opted_in);
 
 }  // namespace ai_chat
 
