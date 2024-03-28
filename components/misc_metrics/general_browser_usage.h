@@ -26,6 +26,10 @@ inline constexpr char kDayZeroOffInstallTime[] =
     "Brave.DayZero.Off.InstallTime";
 #endif  // BUILDFLAG(IS_ANDROID) || BUILDFLAG(IS_WIN)
 
+// TODO(djandries): remove this metric when Nebula experiment is over
+inline constexpr char kWeeklyUseNebulaHistogramName[] =
+    "Brave.Core.WeeklyUsage.Nebula";
+
 class GeneralBrowserUsage {
  public:
   GeneralBrowserUsage(PrefService* local_state,

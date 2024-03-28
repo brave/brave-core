@@ -21,6 +21,9 @@ BASE_FEATURE(kTypicalJSONDeprecation,
 BASE_FEATURE(kOtherJSONDeprecation,
              "BraveP3AOtherJSONDeprecation",
              base::FEATURE_DISABLED_BY_DEFAULT);
+BASE_FEATURE(kNebula,
+             "BraveP3ADifferentialSampling",
+             base::FEATURE_DISABLED_BY_DEFAULT);
 
 bool IsConstellationEnabled() {
   return base::FeatureList::IsEnabled(features::kConstellation);
@@ -36,6 +39,10 @@ bool IsJSONDeprecated(MetricLogType log_type) {
     return base::FeatureList::IsEnabled(features::kTypicalJSONDeprecation);
   }
   return base::FeatureList::IsEnabled(features::kOtherJSONDeprecation);
+}
+
+bool IsNebulaEnabled() {
+  return base::FeatureList::IsEnabled(features::kNebula);
 }
 
 }  // namespace features

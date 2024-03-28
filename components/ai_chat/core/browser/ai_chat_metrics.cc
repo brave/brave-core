@@ -252,6 +252,10 @@ void AIChatMetrics::ReportChatCounts() {
   p3a_utils::RecordToHistogramBucket(kAvgPromptCountHistogramName,
                                      kAvgPromptCountBuckets,
                                      average_prompts_per_chat);
+
+  // TODO(djandries): remove the following report when Nebula experiment is over
+  p3a_utils::RecordToHistogramBucket(kChatCountNebulaHistogramName,
+                                     kChatCountBuckets, chat_count);
 }
 
 void AIChatMetrics::ReportOmniboxCounts() {

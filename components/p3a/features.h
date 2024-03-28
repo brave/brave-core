@@ -23,9 +23,13 @@ BASE_DECLARE_FEATURE(kTypicalJSONDeprecation);
 // Disables JSON measurements for all other cadences.
 BASE_DECLARE_FEATURE(kOtherJSONDeprecation);
 
+// See https://github.com/brave/brave-browser/issues/35841 for more info.
+BASE_DECLARE_FEATURE(kNebula);
+
 bool IsConstellationEnabled();
 bool IsConstellationEnclaveAttestationEnabled();
 bool IsJSONDeprecated(MetricLogType log_type);
+bool IsNebulaEnabled();
 
 }  // namespace features
 }  // namespace p3a

@@ -25,6 +25,9 @@ class SharedURLLoaderFactory;
 
 namespace p3a {
 
+inline constexpr size_t kConstellationDefaultThreshold = 50;
+inline constexpr size_t kNebulaThreshold = 20;
+
 struct P3AConfig;
 
 // Class that contains high-level methods for preparing/generating
@@ -35,6 +38,7 @@ class ConstellationHelper {
       std::string histogram_name,
       MetricLogType log_type,
       uint8_t epoch,
+      bool is_success,
       std::unique_ptr<std::string> serialized_message)>;
 
   ConstellationHelper(
@@ -54,13 +58,15 @@ class ConstellationHelper {
 
   bool StartMessagePreparation(std::string histogram_name,
                                MetricLogType log_type,
-                               std::string serialized_log);
+                               std::string serialized_log,
+                               bool is_nebula);
 
  private:
   void HandleRandomnessData(
       std::string histogram_name,
       MetricLogType log_type,
       uint8_t epoch,
+      bool is_nebula,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>
           randomness_request_state,
       std::unique_ptr<rust::Vec<constellation::VecU8>> resp_points,
@@ -68,6 +74,7 @@ class ConstellationHelper {
 
   bool ConstructFinalMessage(
       MetricLogType log_type,
+      size_t threshold,
       ::rust::Box<constellation::RandomnessRequestStateWrapper>&
           randomness_request_state,
       const rust::Vec<constellation::VecU8>& resp_points,

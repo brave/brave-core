@@ -46,6 +46,10 @@ inline constexpr char kContextMenuFreeUsageCountHistogramName[] =
 inline constexpr char kContextMenuPremiumUsageCountHistogramName[] =
     "Brave.AIChat.ContextMenu.PremiumUsages";
 
+// TODO(djandries): remove this metric when Nebula experiment is over
+inline constexpr char kChatCountNebulaHistogramName[] =
+    "Brave.AIChat.ChatCount.Nebula";
+
 enum class AcquisitionSource {
   kOmnibox = 0,
   kSidebar = 1,

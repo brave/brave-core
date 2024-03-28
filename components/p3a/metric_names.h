@@ -28,6 +28,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.AIChat.AcquisitionSource",
     "Brave.AIChat.AvgPromptCount",
     "Brave.AIChat.ChatCount",
+    "Brave.AIChat.ChatCount.Nebula",
     "Brave.AIChat.ContextMenu.FreeUsages",
     "Brave.AIChat.ContextMenu.MostUsedAction",
     "Brave.AIChat.ContextMenu.PremiumUsages",
@@ -50,6 +51,7 @@ inline constexpr auto kCollectedTypicalHistograms =
     "Brave.Core.TabCount",
     "Brave.Core.TorEverUsed",
     "Brave.Core.WeeklyUsage",
+    "Brave.Core.WeeklyUsage.Nebula",
     "Brave.Core.WindowCount.2",
     "Brave.DNS.AutoSecureRequests",
     "Brave.DNS.SecureSetting",
@@ -339,6 +341,13 @@ inline constexpr auto kHistogramsWithRefcodeIncluded =
   base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
     "Brave.DayZero.Off.InstallTime",
     "Brave.DayZero.On.InstallTime",
+});
+
+// List of metrics that should be protected by Nebula.
+inline constexpr auto kNebulaOnlyHistograms =
+  base::MakeFixedFlatSet<std::string_view>(base::sorted_unique,{
+    "Brave.AIChat.ChatCount.Nebula",
+    "Brave.Core.WeeklyUsage.Nebula",
 });
 
 // clang-format on
