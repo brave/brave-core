@@ -48,18 +48,20 @@ BraveExtensionManagement::BraveExtensionManagement(Profile* profile)
   extension_registry_observer_.Observe(
       ExtensionRegistry::Get(static_cast<content::BrowserContext*>(profile)));
   providers_.push_back(std::make_unique<BraveExtensionProvider>());
-  local_state_pref_change_registrar_.Init(g_browser_process->local_state());
+  if (g_browser_process->local_state()) {
+    local_state_pref_change_registrar_.Init(g_browser_process->local_state());
 #if BUILDFLAG(ENABLE_TOR)
-  local_state_pref_change_registrar_.Add(
-      tor::prefs::kTorDisabled,
-      base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
-                          base::Unretained(this)));
-  local_state_pref_change_registrar_.Add(
-      tor::prefs::kBridgesConfig,
-      base::BindRepeating(
-          &BraveExtensionManagement::OnTorPluggableTransportChanged,
-          base::Unretained(this)));
+    local_state_pref_change_registrar_.Add(
+        tor::prefs::kTorDisabled,
+        base::BindRepeating(&BraveExtensionManagement::OnTorDisabledChanged,
+                            base::Unretained(this)));
+    local_state_pref_change_registrar_.Add(
+        tor::prefs::kBridgesConfig,
+        base::BindRepeating(
+            &BraveExtensionManagement::OnTorPluggableTransportChanged,
+            base::Unretained(this)));
 #endif
+  }
   // Make IsInstallationExplicitlyAllowed to be true
 #if BUILDFLAG(ETHEREUM_REMOTE_CLIENT_ENABLED)
   AccessById(kEthereumRemoteClientExtensionId)->installation_mode =
@@ -115,8 +117,10 @@ void BraveExtensionManagement::OnTorPluggableTransportChanged() {
 void BraveExtensionManagement::Cleanup(content::BrowserContext* context) {
   // BrowserPolicyConnector enforce policy earlier than this constructor so we
   // have to manully cleanup tor executable when tor is disabled by gpo
-  OnTorDisabledChanged();
-  OnTorPluggableTransportChanged();
+  if (g_browser_process->local_state()) {
+    OnTorDisabledChanged();
+    OnTorPluggableTransportChanged();
+  }
 
 #if BUILDFLAG(ENABLE_IPFS)
   // Remove ipfs executable if it is disabled by GPO.
