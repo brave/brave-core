@@ -108,7 +108,10 @@ public actor AdBlockStats {
       filterListInfo: engine.filterListInfo,
       isAlwaysAggressive: engine.isAlwaysAggressive
     )
-    ContentBlockerManager.log.debug("Added engine for \(engine.filterListInfo.debugDescription)")
+    let typeString = engine.isAlwaysAggressive ? "aggressive" : "standard"
+    ContentBlockerManager.log.debug(
+      "Added \(typeString) engine for \(engine.filterListInfo.debugDescription)"
+    )
   }
 
   /// Add or update `filterListInfo` if it is a newer version. This information is used for lazy loading.
