@@ -30,15 +30,14 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [siteInfo, setSiteInfo] = React.useState<mojom.SiteInfo>({
     title: undefined,
     isContentAssociationPossible: false,
-    isContentTruncated: false,
     hostname: undefined,
+    contentUsedPercentage: 0
   })
   const [favIconUrl, setFavIconUrl] = React.useState<string>()
   const [currentError, setCurrentError] = React.useState<mojom.APIError>(mojom.APIError.None)
   const [hasAcceptedAgreement, setHasAcceptedAgreement] = React.useState(loadTimeData.getBoolean("hasAcceptedAgreement"))
   const [premiumStatus, setPremiumStatus] = React.useState<mojom.PremiumStatus | undefined>(undefined)
   const [canShowPremiumPrompt, setCanShowPremiumPrompt] = React.useState<boolean | undefined>()
-  const [hasDismissedLongPageWarning, setHasDismissedLongPageWarning] = React.useState<boolean>(false)
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
@@ -163,17 +162,10 @@ function DataContextProvider (props: DataContextProviderProps) {
     getPageHandlerInstance().pageHandler.getShouldSendPageContents().then(({ shouldSend }) => setShouldSendPageContents(shouldSend))
   }
 
-  const shouldShowLongPageWarning = React.useMemo(() => {
-    if (
-      !hasDismissedLongPageWarning &&
-      conversationHistory.length >= 1 &&
-      siteInfo?.isContentTruncated
-    ) {
-      return true
-    }
-
-    return false
-  }, [conversationHistory, hasDismissedLongPageWarning, siteInfo?.isContentTruncated])
+  const shouldShowLongPageWarning = React.useMemo(() =>
+    conversationHistory.length >= 1 &&
+    siteInfo?.contentUsedPercentage < 100,
+  [conversationHistory.length, siteInfo?.contentUsedPercentage])
 
   const shouldShowLongConversationInfo = React.useMemo(() => {
     if (!currentModel) return false
@@ -193,10 +185,6 @@ function DataContextProvider (props: DataContextProviderProps) {
 
     return false
   }, [conversationHistory, currentModel, hasDismissedLongConversationInfo, siteInfo])
-
-  const dismissLongPageWarning = () => {
-    setHasDismissedLongPageWarning(true)
-  }
 
   const dismissLongConversationInfo = () => {
     setHasDismissedLongConversationInfo(true)
@@ -303,7 +291,6 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissPremiumPrompt,
     getCanShowPremiumPrompt,
     userRefreshPremiumSession,
-    dismissLongPageWarning,
     dismissLongConversationInfo,
     updateShouldSendPageContents,
   }

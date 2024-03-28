@@ -5,29 +5,26 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
-import Alert from '@brave/leo/react/alert'
-import Button from '@brave/leo/react/button'
+import Icon from '@brave/leo/react/icon'
 import DataContext from '../../state/context'
 import styles from './alerts.module.scss'
+import formatMessage from '$web-common/formatMessage'
 
-export default function WarningLongPage() {
+export default function LongPageInfo() {
   const context = React.useContext(DataContext)
 
+  const warningText = formatMessage(getLocale('pageContentTooLongWarning'), {
+    placeholders: {
+      $1: context.siteInfo.contentUsedPercentage + '%'
+    }
+  })
+
   return (
-    <div className={styles.alert}>
-      <Alert
-        mode='full'
-        type='warning'
-      >
-        {getLocale('pageContentTooLongWarning')}
-        <Button
-          slot='actions'
-          kind='filled'
-          onClick={context.dismissLongPageWarning}
-        >
-            {getLocale('gotItButtonLabel')}
-        </Button>
-      </Alert>
+    <div className={styles.info}>
+      <div className={styles.infoIcon}>
+        <Icon name='info-outline' />
+      </div>
+      <div className={styles.infoText}>{warningText}</div>
     </div>
   )
 }

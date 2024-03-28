@@ -71,12 +71,12 @@ enum SuggestionGenerationStatus {
 struct SiteInfo {
   // Title is present if the site has associated page content
   string? title;
-  // the content so long that it's being truncated
-  bool is_content_truncated;
   // Indicates if the URL scheme is of a type that allows for content association.
   bool is_content_association_possible;
   // Current tab's hostname
   string? hostname;
+  // Percentage of the content that has been utilized by remote LLM (0-100)
+  int32 content_used_percentage;
 };
 
 enum ActionType {

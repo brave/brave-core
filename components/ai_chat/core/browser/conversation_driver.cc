@@ -903,12 +903,18 @@ bool ConversationDriver::HasPendingConversationEntry() {
   return pending_conversation_entry_ != nullptr;
 }
 
-bool ConversationDriver::IsPageContentsTruncated() {
-  if (article_text_.empty()) {
-    return false;
+int ConversationDriver::GetContentUsedPercentage() {
+  if (GetCurrentModel().max_page_content_length >
+      static_cast<uint32_t>(article_text_.length())) {
+    return 100;
   }
-  return (static_cast<uint32_t>(article_text_.length()) >
-          GetCurrentModel().max_page_content_length);
+
+  // Convert to float to avoid integer division, which truncates towards zero
+  // and could lead to inaccurate results before multiplication.
+  float pct = static_cast<float>(GetCurrentModel().max_page_content_length) /
+              static_cast<float>(article_text_.length()) * 100;
+
+  return base::ClampRound(pct);
 }
 
 void ConversationDriver::SubmitSummarizationRequest() {
@@ -927,7 +933,7 @@ void ConversationDriver::SubmitSummarizationRequest() {
 mojom::SiteInfoPtr ConversationDriver::BuildSiteInfo() {
   mojom::SiteInfoPtr site_info = mojom::SiteInfo::New();
   site_info->title = base::UTF16ToUTF8(GetPageTitle());
-  site_info->is_content_truncated = IsPageContentsTruncated();
+  site_info->content_used_percentage = GetContentUsedPercentage();
   site_info->is_content_association_possible = IsContentAssociationPossible();
   const GURL url = GetPageURL();
 

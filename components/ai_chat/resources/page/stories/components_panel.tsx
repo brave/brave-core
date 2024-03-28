@@ -21,14 +21,14 @@ import { useArgs } from '@storybook/addons'
 
 const HISTORY: mojom.ConversationTurn[] = [
   {
-    text: 'hello',
+    text: 'Summarize this page',
     characterType: mojom.CharacterType.HUMAN,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
-    actionType: mojom.ActionType.UNSPECIFIED,
+    actionType: mojom.ActionType.SUMMARIZE_PAGE,
     selectedText: undefined
   },
   {
-    text: 'Hi, How are you?',
+    text: 'The ways that animals move are just about as myriad as the animal kingdom itself. They walk, run, swim, crawl, fly and slither — and within each of those categories lies a tremendous number of subtly different movement types. A seagull and a hummingbird both have wings, but otherwise their flight techniques and abilities are poles apart. Orcas and piranhas both have tails, but they accomplish very different types of swimming. Even a human walking or running is moving their body in fundamentally different ways.',
     characterType: mojom.CharacterType.ASSISTANT,
     visibility: mojom.ConversationTurnVisibility.VISIBLE,
     actionType: mojom.ActionType.UNSPECIFIED,
@@ -150,10 +150,10 @@ const SAMPLE_QUESTIONS = [
 ]
 
 const SITE_INFO: mojom.SiteInfo = {
-  title: 'Microsoft is hiking the price of Xbox Series X and Xbox Game Pass',
-  isContentTruncated: false,
+  title: 'Tiny Tweaks to Neurons Can Rewire Animal Motion',
+  contentUsedPercentage: 40,
   isContentAssociationPossible: true,
-  hostname: 'www.example.com'
+  hostname: 'www.example.com',
 }
 
 export default {
@@ -189,6 +189,8 @@ export default {
     model: MODELS[0].name,
     showAgreementModal: false,
     isMobile: false,
+    shouldShowLongConversationInfo: false,
+    shouldShowLongPageWarning: false,
   },
   decorators: [
     (Story: any, options: any) => {
@@ -235,7 +237,9 @@ export default {
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
-        switchToBasicModel
+        switchToBasicModel,
+        shouldShowLongPageWarning: options.args.shouldShowLongPageWarning,
+        shouldShowLongConversationInfo: options.args.shouldShowLongConversationInfo
       }
 
       return (

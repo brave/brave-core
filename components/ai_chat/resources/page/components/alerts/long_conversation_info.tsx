@@ -5,42 +5,32 @@
 
 import * as React from 'react'
 import { getLocale } from '$web-common/locale'
-import Alert from '@brave/leo/react/alert'
+import Icon from '@brave/leo/react/icon'
 import Button from '@brave/leo/react/button'
 import DataContext from '../../state/context'
 import styles from './alerts.module.scss'
 import getPageHandlerInstance from '../../api/page_handler'
 
-export default function InfoLongConversation() {
+export default function LongConversationInfo() {
   const context = React.useContext(DataContext)
 
-  const handleClearChat = () => {
+  const handleClearChat = (e: any) => {
+    e.preventDefault()
     getPageHandlerInstance().pageHandler.clearConversationHistory()
     context.dismissLongConversationInfo()
   }
 
   return (
-    <div className={styles.alert}>
-      <Alert
-        mode='full'
-        type='info'
-      >
+    <div className={styles.info}>
+      <div className={styles.infoIcon}>
+        <Icon name='info-outline' />
+      </div>
+      <div className={styles.infoText}>
         {getLocale('errorContextLimitReaching')}
-        <Button
-          slot='actions'
-          kind='plain-faint'
-          onClick={handleClearChat}
-        >
-          {getLocale('clearChatButtonLabel')}
+        <Button kind="plain-faint" className={styles.link} onClick={handleClearChat}>
+          <span>{getLocale('clearChatButtonLabel')}</span>
         </Button>
-        <Button
-          slot='actions'
-          kind='plain-faint'
-          onClick={context.dismissLongConversationInfo}
-        >
-          {getLocale('dismissButtonLabel')}
-        </Button>
-      </Alert>
+      </div>
     </div>
   )
 }
