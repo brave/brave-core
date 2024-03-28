@@ -20,6 +20,10 @@ import UniformTypeIdentifiers
 import WebKit
 import os.log
 
+#if compiler(>=5.10)
+import MarketplaceKit
+#endif
+
 extension WKNavigationAction {
   /// Allow local requests only if the request is privileged.
   /// If the request is internal or unprivileged, we should deny it.
@@ -206,6 +210,14 @@ extension BrowserViewController: WKNavigationDelegate {
       )
       return (shouldOpen ? .allow : .cancel, preferences)
     }
+
+    #if compiler(>=5.10)
+    if #available(iOS 17.4, *) {
+      if requestURL.scheme == MarketplaceKitURIScheme {
+        return (.allow, preferences)
+      }
+    }
+    #endif
 
     if isStoreURL(requestURL) {
       let shouldOpen = await handleExternalURL(
