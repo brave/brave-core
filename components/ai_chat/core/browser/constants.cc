@@ -128,7 +128,13 @@ base::span<const webui::LocalizedString> GetLocalizedStrings() {
       {"funnyToneLabel", IDS_AI_CHAT_CONTEXT_FUNNY_TONE},
       {"shortenLabel", IDS_AI_CHAT_CONTEXT_SHORTEN},
       {"expandLabel", IDS_AI_CHAT_CONTEXT_EXPAND},
-      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL}};
+      {"sendSiteHostnameLabel", IDS_CHAT_UI_SEND_SITE_HOSTNAME_LABEL},
+      {"goPremiumLabel", IDS_AI_CHAT_GO_PREMIUM_LABEL},
+      {"rateLimitErrorForGeneratedQuestionsLabel",
+       IDS_AI_CHAT_RATE_LIMIT_ERROR_FOR_GENERATED_QUESTIONS_LABEL},
+      {"premiumRateLimitErrorForGeneratedQuestionsLabel",
+       IDS_AI_CHAT_PREMIUM_RATE_LIMIT_ERROR_FOR_GENERATED_QUESTIONS_LABEL},
+      {"switchModelLabel", IDS_AI_CHAT_SWITCH_MODEL_LABEL}};
 
   return kLocalizedStrings;
 }

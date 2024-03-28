@@ -22,7 +22,8 @@ enum APIError {
   None,
   ConnectionIssue,
   RateLimitReached,
-  ContextLimitReached
+  ContextLimitReached,
+  GeneratedQuestionsRateLimitReached
 };
 
 enum ModelEngineType {
@@ -184,6 +185,7 @@ interface PageHandler {
   ClearConversationHistory();
   RetryAPIRequest();
   GetAPIResponseError() => (APIError error);
+  ResetAPIResponseError();
   GetCanShowPremiumPrompt() => (bool can_show);
   DismissPremiumPrompt();
 

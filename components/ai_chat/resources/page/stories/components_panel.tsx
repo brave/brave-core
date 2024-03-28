@@ -184,7 +184,7 @@ export default {
     isPremiumModel: false,
     isPremiumUser: true,
     isPremiumUserDisconnected: false,
-    currentErrorState: 'ConnectionIssue' satisfies keyof typeof mojom.APIError,
+    currentErrorState: mojom.APIError.None,
     suggestionStatus: 'None' satisfies keyof typeof mojom.SuggestionGenerationStatus,
     model: MODELS[0].name,
     showAgreementModal: false,
@@ -235,7 +235,7 @@ export default {
         isPremiumUserDisconnected: options.args.isPremiumUserDisconnected,
         showAgreementModal: options.args.showAgreementModal,
         isMobile: options.args.isMobile,
-        switchToBasicModel
+        switchToBasicModel,
       }
 
       return (

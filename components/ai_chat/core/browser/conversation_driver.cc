@@ -601,6 +601,10 @@ mojom::APIError ConversationDriver::GetCurrentAPIError() {
   return current_error_;
 }
 
+void ConversationDriver::ResetCurrentAPIError() {
+  SetAPIError(mojom::APIError::None);
+}
+
 void ConversationDriver::GenerateQuestions() {
   DVLOG(1) << __func__;
   // This function should not be presented in the UI if the user has not
@@ -665,9 +669,11 @@ void ConversationDriver::OnSuggestedQuestionsResponse(
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::HasGenerated;
   } else {
-    // TODO(nullhook): Set a specialized error state generated questions
     suggestion_generation_status_ =
         mojom::SuggestionGenerationStatus::CanGenerate;
+    if (result.error() == mojom::APIError::RateLimitReached) {
+      SetAPIError(mojom::APIError::GeneratedQuestionsRateLimitReached);
+    }
   }
 
   // Notify observers

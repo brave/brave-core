@@ -90,4 +90,8 @@ provideStrings({
   summarizeLabel: 'Summarize',
   changeLengthLabel: 'Change length',
   shortenLabel: 'Shorten',
+  goPremiumLabel: 'Go Premium',
+  rateLimitErrorForGeneratedQuestionsLabel: 'Couldn\'t generate suggested questions because you\'ve reached the response limit. Switch to Premium to get a higher response limit and more advanced models, or try again.',
+  premiumRateLimitErrorForGeneratedQuestionsLabel: 'Couldn\'t generate suggested questions because you\'ve reached the response limit. In the meantime, you can switch to another model model to continue.',
+  switchModelLabel: 'Switch model'
 })

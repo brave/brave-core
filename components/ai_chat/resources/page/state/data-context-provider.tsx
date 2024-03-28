@@ -42,6 +42,7 @@ function DataContextProvider (props: DataContextProviderProps) {
   const [hasDismissedLongConversationInfo, setHasDismissedLongConversationInfo] = React.useState<boolean>(false)
   const [showAgreementModal, setShowAgreementModal] = React.useState(false)
   const [shouldSendPageContents, setShouldSendPageContents] = React.useState(true)
+  const [isFeatureMenuButtonOpen, setIsFeatureMenuButtonOpen] = React.useState(false)
 
   // Provide a custom handler for setCurrentModel instead of a useEffect
   // so that we can track when the user has changed a model in
@@ -294,6 +295,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     showAgreementModal,
     shouldSendPageContents: shouldSendPageContents && siteInfo?.isContentAssociationPossible,
     isMobile,
+    isFeatureMenuButtonOpen,
     setCurrentModel,
     switchToBasicModel,
     goPremium,
@@ -306,6 +308,7 @@ function DataContextProvider (props: DataContextProviderProps) {
     dismissLongPageWarning,
     dismissLongConversationInfo,
     updateShouldSendPageContents,
+    setIsFeatureMenuButtonOpen,
   }
 
   return (
