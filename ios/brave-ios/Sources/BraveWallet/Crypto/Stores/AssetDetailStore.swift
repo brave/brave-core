@@ -328,7 +328,7 @@ class AssetDetailStore: ObservableObject, WalletObserverStore {
   
   @MainActor private func isBuyButtonSupported(in network: BraveWallet.NetworkInfo, for symbol: String) async -> Bool {
     let buyOptions: [BraveWallet.OnRampProvider] = Array(BraveWallet.OnRampProvider.allSupportedOnRampProviders)
-    self.allBuyTokensAllOptions = await blockchainRegistry.allBuyTokens(in: network, for: buyOptions)
+    self.allBuyTokensAllOptions = await blockchainRegistry.allBuyTokens(in: [network], for: buyOptions)
     let buyTokens = allBuyTokensAllOptions.flatMap { $0.value }
     return buyTokens.first(where: { $0.symbol.caseInsensitiveCompare(symbol) == .orderedSame }) != nil
   }

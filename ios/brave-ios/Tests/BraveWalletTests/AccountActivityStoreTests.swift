@@ -39,7 +39,13 @@ class AccountActivityStoreTests: XCTestCase {
     mockFilBalance: String = "",
     mockFilTestnetBalance: String = "",
     transactions: [BraveWallet.TransactionInfo]
-  ) -> (BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService, BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry, BraveWallet.TestAssetRatioService, BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy, IpfsAPI) {
+  ) -> (
+    BraveWallet.TestKeyringService, BraveWallet.TestJsonRpcService,
+    BraveWallet.TestBraveWalletService, BraveWallet.TestBlockchainRegistry,
+    BraveWallet.TestAssetRatioService, BraveWallet.TestSwapService,
+    BraveWallet.TestTxService, BraveWallet.TestSolanaTxManagerProxy,
+    IpfsAPI
+  ) {
     let keyringService = BraveWallet.TestKeyringService()
     keyringService._addObserver = { _ in }
     keyringService._allAccounts = {
@@ -109,12 +115,26 @@ class AccountActivityStoreTests: XCTestCase {
     blockchainRegistry._allTokens = { chainId, coin, completion in
       completion(self.tokenRegistry[coin] ?? [])
     }
+    blockchainRegistry._buyTokens = { _, chainId, completion in
+      let tokensForChainId = self.tokenRegistry
+        .flatMap(\.value)
+        .filter { $0.chainId == chainId }
+      completion(tokensForChainId)
+    }
 
     let assetRatioService = BraveWallet.TestAssetRatioService()
     assetRatioService._price = { _, _, _, completion in
       completion(true, self.mockAssetPrices)
     }
-    
+
+    let swapService = BraveWallet.TestSwapService()
+    swapService._isSwapSupported = { chainId, completion in
+      let isSupported =
+        chainId == BraveWallet.MainnetChainId
+        || chainId == BraveWallet.SolanaMainnet
+      completion(isSupported)
+    }
+
     let txService = BraveWallet.TestTxService()
     txService._addObserver = { _ in }
     txService._allTransactionInfo = { coin, chainId, _, completion in
@@ -126,7 +146,10 @@ class AccountActivityStoreTests: XCTestCase {
     
     let ipfsApi = TestIpfsAPI()
 
-    return (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi)
+    return (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    )
   }
   
   func testUpdateEthereumAccount() {
@@ -147,8 +170,11 @@ class AccountActivityStoreTests: XCTestCase {
     let ethSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSend.copy() as! BraveWallet.TransactionInfo // default in mainnet
     let goerliSwapTxCopy = BraveWallet.TransactionInfo.previewConfirmedSwap.copy() as! BraveWallet.TransactionInfo
     goerliSwapTxCopy.chainId = BraveWallet.GoerliChainId
-    
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockEthBalanceWei: mockEthBalanceWei,
       mockERC20BalanceWei: mockERC20BalanceWei,
       mockERC721BalanceWei: mockERC721BalanceWei,
@@ -183,6 +209,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
@@ -287,8 +314,11 @@ class AccountActivityStoreTests: XCTestCase {
     let solSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolSystemTransfer.copy() as! BraveWallet.TransactionInfo // default in mainnet
     let solTestnetSendTxCopy = BraveWallet.TransactionInfo.previewConfirmedSolTokenTransfer.copy() as! BraveWallet.TransactionInfo
     solTestnetSendTxCopy.chainId = BraveWallet.SolanaTestnet
-    
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockLamportBalance: mockLamportBalance,
       mockSplTokenBalances: mockSplTokenBalances,
       transactions: [solTestnetSendTxCopy, solSendTxCopy].enumerated().map { (index, tx) in
@@ -325,6 +355,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
@@ -449,7 +480,10 @@ class AccountActivityStoreTests: XCTestCase {
     let filecoinTestnetDecimals = Int(BraveWallet.NetworkInfo.mockFilecoinTestnet.decimals)
     let mockFilTestnetDecimalBalanceInWei = formatter.weiString(from: "\(mockFileTestnetDecimalBalance)", radix: .decimal, decimals: filecoinTestnetDecimals) ?? ""
     
-    let (keyringService, rpcService, walletService, blockchainRegistry, assetRatioService, txService, solTxManagerProxy, ipfsApi) = setupServices(
+    let (
+      keyringService, rpcService, walletService, blockchainRegistry, assetRatioService,
+      swapService, txService, solTxManagerProxy, ipfsApi
+    ) = setupServices(
       mockFilBalance: mockFilDecimalBalanceInWei,
       mockFilTestnetBalance: mockFilTestnetDecimalBalanceInWei,
       transactions: [transaction, transactionCopy].enumerated().map { (index, tx) in
@@ -484,6 +518,7 @@ class AccountActivityStoreTests: XCTestCase {
       walletService: walletService,
       rpcService: rpcService,
       assetRatioService: assetRatioService,
+      swapService: swapService,
       txService: txService,
       blockchainRegistry: blockchainRegistry,
       solTxManagerProxy: solTxManagerProxy,
