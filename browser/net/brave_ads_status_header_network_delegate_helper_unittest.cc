@@ -72,7 +72,6 @@ class AdsStatusHeaderDelegateHelperTest : public testing::Test {
 };
 
 TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
-  // pref_service_.SetBoolean(brave_rewards::prefs::kEnabled, true);
   profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
 
   auto request_info = std::make_shared<brave::BraveRequestInfo>();
@@ -84,9 +83,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
     request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     std::string ads_status_header;
     EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
@@ -98,9 +97,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
     request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     std::string ads_status_header;
     EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
@@ -112,9 +111,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
     request_info->resource_type = blink::mojom::ResourceType::kImage;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     std::string ads_status_header;
     EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
@@ -128,9 +127,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchTabAdsEnabled) {
     request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     std::string ads_status_header;
     EXPECT_TRUE(headers.GetHeader(brave::kAdsStatusHeader, &ads_status_header));
@@ -151,9 +150,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
     request_info->initiator_url = GURL();
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
   }
@@ -163,9 +162,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchTabAdsEnabled) {
     request_info->initiator_url = GURL(kNonBraveSearchTabUrl);
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
   }
@@ -182,9 +181,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, NonBraveSearchRequestAdsEnabled) {
   request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
   net::HttpRequestHeaders headers;
-  const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+  const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
       &headers, brave::ResponseCallback(), request_info);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(result_code, net::OK);
 
   EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
 }
@@ -202,9 +201,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostAdsDisabled) {
     request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
   }
@@ -213,9 +212,9 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostAdsDisabled) {
     request_info->resource_type = blink::mojom::ResourceType::kXhr;
 
     net::HttpRequestHeaders headers;
-    const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+    const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
         &headers, brave::ResponseCallback(), request_info);
-    EXPECT_EQ(rc, net::OK);
+    EXPECT_EQ(result_code, net::OK);
 
     EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
   }
@@ -233,9 +232,31 @@ TEST_F(AdsStatusHeaderDelegateHelperTest, BraveSearchHostIncognitoProfile) {
   request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
 
   net::HttpRequestHeaders headers;
-  const int rc = brave::OnBeforeStartTransaction_AdsStatusHeader(
+  const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
       &headers, brave::ResponseCallback(), request_info);
-  EXPECT_EQ(rc, net::OK);
+  EXPECT_EQ(result_code, net::OK);
+
+  EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
+}
+
+TEST_F(AdsStatusHeaderDelegateHelperTest,
+       BraveSearchHostIncognitoProfileWhenRewardsEnabledInMainProfile) {
+  profile_->GetPrefs()->SetBoolean(brave_rewards::prefs::kEnabled, true);
+
+  TestingProfile* incognito_profile =
+      TestingProfile::Builder().BuildIncognito(profile_.get());
+
+  auto request_info =
+      std::make_shared<brave::BraveRequestInfo>(GURL(kBraveSearchRequestUrl));
+  request_info->browser_context = incognito_profile;
+  request_info->tab_origin = GURL(kBraveSearchTabUrl);
+  request_info->initiator_url = GURL(kBraveSearchTabUrl);
+  request_info->resource_type = blink::mojom::ResourceType::kMainFrame;
+
+  net::HttpRequestHeaders headers;
+  const int result_code = brave::OnBeforeStartTransaction_AdsStatusHeader(
+      &headers, brave::ResponseCallback(), request_info);
+  EXPECT_EQ(result_code, net::OK);
 
   EXPECT_FALSE(headers.HasHeader(brave::kAdsStatusHeader));
 }

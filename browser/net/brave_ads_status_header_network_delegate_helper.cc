@@ -5,9 +5,6 @@
 
 #include "brave/browser/net/brave_ads_status_header_network_delegate_helper.h"
 
-#include <string>
-#include <vector>
-
 #include "brave/components/brave_rewards/common/pref_names.h"
 #include "brave/components/brave_search/common/brave_search_utils.h"
 #include "chrome/browser/profiles/profile.h"
@@ -22,6 +19,11 @@ int OnBeforeStartTransaction_AdsStatusHeader(
     const ResponseCallback& next_callback,
     std::shared_ptr<BraveRequestInfo> ctx) {
   Profile* profile = Profile::FromBrowserContext(ctx->browser_context);
+  // The X-Brave-Ads-Enabled header is not added for Incognito mode because
+  // Brave Private Ads are not supported in this mode.
+  if (!profile || profile->IsOffTheRecord()) {
+    return net::OK;
+  }
 
   // The X-Brave-Ads-Enabled header should be added when Brave Private Ads are
   // enabled, the requested URL host is one of the Brave Search domains, and the
