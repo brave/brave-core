@@ -52,14 +52,8 @@ RegisterPolymerTemplateModifications({
     } else {
       link.setAttribute('hidden', 'true')
     }
-    const certsTemplate = templateContent.querySelector(
-      'template[is=dom-if][if="[[showChromeRootStoreCertificates_]]"]')
-    if (!certsTemplate) {
-      console.error('[Brave Settings Overrides] Could not find certs template')
-      return
-    }
-    const chromeCertificates = certsTemplate.content.
-      getElementById('chromeCertificates')
+    const chromeCertificates = templateContent.getElementById(
+        'chromeCertificates')
     if (!chromeCertificates) {
       console.error(
         '[Brave Settings Overrides] Could not find chromeCertificates id ' +
