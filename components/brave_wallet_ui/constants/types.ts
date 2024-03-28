@@ -183,8 +183,6 @@ export interface UIState {
   selectedPendingTransactionId?: string | undefined
   transactionProviderErrorRegistry: TransactionProviderErrorRegistry
   isPanel: boolean
-  collapsedPortfolioAccountIds: string[]
-  collapsedPortfolioNetworkKeys: string[]
 }
 
 export interface WalletState {

@@ -4,11 +4,6 @@
 // You can obtain one at https://mozilla.org/MPL/2.0/.
 
 import * as React from 'react'
-import { useDispatch } from 'react-redux'
-
-// Selectors
-import { useUnsafeUISelector } from '../../../common/hooks/use-safe-selector'
-import { UISelectors } from '../../../common/selectors'
 
 // Constants
 import {
@@ -16,7 +11,6 @@ import {
 } from '../../../common/constants/local-storage-keys'
 
 // Slices
-import { UIActions } from '../../../common/slices/ui.slice'
 import {
   networkEntityAdapter //
 } from '../../../common/slices/entities/network.entity'
@@ -24,7 +18,10 @@ import {
 // Utils
 import { reduceAddress } from '../../../utils/reduce-address'
 import { getLocale } from '../../../../common/locale'
-import { useSyncedLocalStorage } from '../../../common/hooks/use_local_storage'
+import {
+  useLocalStorage,
+  useSyncedLocalStorage
+} from '../../../common/hooks/use_local_storage'
 
 // Types
 import { BraveWallet } from '../../../constants/types'
@@ -79,22 +76,17 @@ export const AssetGroupContainer = (props: Props) => {
     externalProvider
   } = props
 
-  // Redux
-  const dispatch = useDispatch()
-
   // Local-Storage
   const [hidePortfolioBalances] = useSyncedLocalStorage(
     LOCAL_STORAGE_KEYS.HIDE_PORTFOLIO_BALANCES,
     false
   )
-
-  // Selectors
-  const collapsedAccounts = useUnsafeUISelector(
-    UISelectors.collapsedPortfolioAccountIds
-  )
-  const collapsedNetworks = useUnsafeUISelector(
-    UISelectors.collapsedPortfolioNetworkKeys
-  )
+  const [collapsedAccounts, setCollapsedPortfolioAccountIds] = useLocalStorage<
+    string[]
+  >(LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_ACCOUNT_IDS, [])
+  const [collapsedNetworks, setCollapsedPortfolioNetworkKeys] = useLocalStorage<
+    string[]
+  >(LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_NETWORK_KEYS, [])
 
   // Memos & Computed
   const externalRewardsDescription = network
@@ -124,14 +116,7 @@ export const AssetGroupContainer = (props: Props) => {
           )
         : [...collapsedAccounts, account.accountId.uniqueKey]
 
-      // Update Collapsed Account Ids in Local Storage
-      window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_ACCOUNT_IDS,
-        JSON.stringify(newCollapsedAccounts)
-      )
-
-      // Update Collapsed Account Ids in Redux
-      dispatch(UIActions.setCollapsedPortfolioAccountIds(newCollapsedAccounts))
+      setCollapsedPortfolioAccountIds(newCollapsedAccounts)
     }
 
     if (network) {
@@ -142,22 +127,16 @@ export const AssetGroupContainer = (props: Props) => {
         ? collapsedNetworks.filter((networkKey) => networkKey !== networksKey)
         : [...collapsedNetworks, networksKey]
 
-      // Update Collapsed Network Keys in Local Storage
-      window.localStorage.setItem(
-        LOCAL_STORAGE_KEYS.COLLAPSED_PORTFOLIO_NETWORK_KEYS,
-        JSON.stringify(newCollapsedNetworks)
-      )
-
-      // Update Collapsed Network Keys in Redux
-      dispatch(UIActions.setCollapsedPortfolioNetworkKeys(newCollapsedNetworks))
+      setCollapsedPortfolioNetworkKeys(newCollapsedNetworks)
     }
   }, [
     account,
     network,
     isCollapsed,
     collapsedAccounts,
-    dispatch,
-    collapsedNetworks
+    setCollapsedPortfolioAccountIds,
+    collapsedNetworks,
+    setCollapsedPortfolioNetworkKeys
   ])
 
   return (
