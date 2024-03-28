@@ -63,149 +63,157 @@ const ICON_CONFIG = { size: 'big', marginLeft: 0, marginRight: 0 } as const
 const AssetIconWithPlaceholder = withPlaceholderIcon(AssetIcon, ICON_CONFIG)
 const NftIconWithPlaceholder = withPlaceholderIcon(NftIcon, ICON_CONFIG)
 
-export const TokenListItem = (props: Props) => {
-  const {
-    onClick,
-    token,
-    balance,
-    spotPrice,
-    isLoadingSpotPrice,
-    disabledText
-  } = props
+export const TokenListItem = React.forwardRef<HTMLDivElement, Props>(
+  (props: Props, forwardedRef) => {
+    const {
+      onClick,
+      token,
+      balance,
+      spotPrice,
+      isLoadingSpotPrice,
+      disabledText
+    } = props
 
-  // Queries
-  const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
-  const { data: defaultFiatCurrency = 'usd' } = useGetDefaultFiatCurrencyQuery()
+    // Queries
+    const { data: tokensNetwork } = useGetNetworkQuery(token ?? skipToken)
+    const { data: defaultFiatCurrency = 'usd' } =
+      useGetDefaultFiatCurrencyQuery()
 
-  const fiatBalance = React.useMemo(() => {
-    return balance && spotPrice
-      ? new Amount(balance).divideByDecimals(token.decimals).times(spotPrice)
-      : Amount.empty()
-  }, [spotPrice, balance, token.decimals])
+    const fiatBalance = React.useMemo(() => {
+      return balance && spotPrice
+        ? new Amount(balance).divideByDecimals(token.decimals).times(spotPrice)
+        : Amount.empty()
+    }, [spotPrice, balance, token.decimals])
 
-  const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
+    const formattedFiatBalance = fiatBalance.formatAsFiat(defaultFiatCurrency)
 
-  const networkDescription = React.useMemo(() => {
-    if (tokensNetwork) {
-      return token.symbol !== ''
-        ? getLocale('braveWalletPortfolioAssetNetworkDescription')
-            .replace('$1', token.symbol)
-            .replace('$2', tokensNetwork.chainName ?? '')
-        : tokensNetwork.chainName
-    }
-    return token.symbol
-  }, [tokensNetwork, token.symbol])
+    const networkDescription = React.useMemo(() => {
+      if (tokensNetwork) {
+        return token.symbol !== ''
+          ? getLocale('braveWalletPortfolioAssetNetworkDescription')
+              .replace('$1', token.symbol)
+              .replace('$2', tokensNetwork.chainName ?? '')
+          : tokensNetwork.chainName
+      }
+      return token.symbol
+    }, [tokensNetwork, token.symbol])
 
-  const tokenDisplayName = React.useMemo(() => {
-    if (token.isNft) {
-      const id = token.tokenId ? `#${new Amount(token.tokenId).toNumber()}` : ''
-      return `${token.name} ${id}`
-    }
-    if (disabledText) {
-      return token.name.length > 12
-        ? `${token.name.substring(0, 10)}...`
-        : token.name
-    }
-    return token.name
-  }, [token, disabledText])
+    const tokenDisplayName = React.useMemo(() => {
+      if (token.isNft) {
+        const id = token.tokenId
+          ? `#${new Amount(token.tokenId).toNumber()}`
+          : ''
+        return `${token.name} ${id}`
+      }
+      if (disabledText) {
+        return token.name.length > 12
+          ? `${token.name.substring(0, 10)}...`
+          : token.name
+      }
+      return token.name
+    }, [token, disabledText])
 
-  return (
-    <ButtonWrapper width='100%'>
-      <Button
-        onClick={onClick}
-        disabled={!!disabledText}
+    return (
+      <ButtonWrapper
+        width='100%'
+        ref={forwardedRef}
       >
-        <IconAndName justifyContent='flex-start'>
-          <IconsWrapper>
-            {token.isErc721 || token.isNft ? (
-              <NftIconWithPlaceholder
-                asset={token}
-                network={tokensNetwork}
-              />
-            ) : (
-              <AssetIconWithPlaceholder
-                asset={token}
-                network={tokensNetwork}
-              />
-            )}
-            {tokensNetwork &&
-              checkIfTokenNeedsNetworkIcon(
-                tokensNetwork,
-                token.contractAddress
-              ) && (
-                <NetworkIconWrapper>
-                  <CreateNetworkIcon
-                    network={tokensNetwork}
-                    marginRight={0}
-                  />
-                </NetworkIconWrapper>
-              )}
-          </IconsWrapper>
-          <Column alignItems='flex-start'>
-            <Row width='unset'>
-              <NameAndBalanceText
-                textSize='14px'
-                isBold={true}
-                textAlign='left'
-              >
-                {tokenDisplayName}
-              </NameAndBalanceText>
-              {disabledText && (
-                <>
-                  <HorizontalSpace space='8px' />
-                  <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
-                </>
-              )}
-            </Row>
-            <NetworkAndFiatText
-              textSize='12px'
-              isBold={false}
-              textAlign='left'
-            >
-              {networkDescription}
-            </NetworkAndFiatText>
-          </Column>
-        </IconAndName>
-        {balance && !token.isErc721 && !token.isNft && (
-          <Column alignItems='flex-end'>
-            <NameAndBalanceText
-              textSize='14px'
-              isBold={true}
-              textAlign='right'
-            >
-              {formatTokenBalanceWithSymbol(
-                balance,
-                token.decimals,
-                token.symbol
-              )}
-            </NameAndBalanceText>
-            {isLoadingSpotPrice ? (
-              <Column padding='3px 0px'>
-                <LoadingSkeleton
-                  width={40}
-                  height={12}
+        <Button
+          onClick={onClick}
+          disabled={!!disabledText}
+        >
+          <IconAndName justifyContent='flex-start'>
+            <IconsWrapper>
+              {token.isErc721 || token.isNft ? (
+                <NftIconWithPlaceholder
+                  asset={token}
+                  network={tokensNetwork}
                 />
-              </Column>
-            ) : (
+              ) : (
+                <AssetIconWithPlaceholder
+                  asset={token}
+                  network={tokensNetwork}
+                />
+              )}
+              {tokensNetwork &&
+                checkIfTokenNeedsNetworkIcon(
+                  tokensNetwork,
+                  token.contractAddress
+                ) && (
+                  <NetworkIconWrapper>
+                    <CreateNetworkIcon
+                      network={tokensNetwork}
+                      marginRight={0}
+                    />
+                  </NetworkIconWrapper>
+                )}
+            </IconsWrapper>
+            <Column alignItems='flex-start'>
+              <Row width='unset'>
+                <NameAndBalanceText
+                  textSize='14px'
+                  isBold={true}
+                  textAlign='left'
+                >
+                  {tokenDisplayName}
+                </NameAndBalanceText>
+                {disabledText && (
+                  <>
+                    <HorizontalSpace space='8px' />
+                    <DisabledLabel>{getLocale(disabledText)}</DisabledLabel>
+                  </>
+                )}
+              </Row>
               <NetworkAndFiatText
                 textSize='12px'
                 isBold={false}
+                textAlign='left'
+              >
+                {networkDescription}
+              </NetworkAndFiatText>
+            </Column>
+          </IconAndName>
+          {balance && !token.isErc721 && !token.isNft && (
+            <Column alignItems='flex-end'>
+              <NameAndBalanceText
+                textSize='14px'
+                isBold={true}
                 textAlign='right'
               >
-                {formattedFiatBalance}
-              </NetworkAndFiatText>
-            )}
-          </Column>
+                {formatTokenBalanceWithSymbol(
+                  balance,
+                  token.decimals,
+                  token.symbol
+                )}
+              </NameAndBalanceText>
+              {isLoadingSpotPrice ? (
+                <Column padding='3px 0px'>
+                  <LoadingSkeleton
+                    width={40}
+                    height={12}
+                  />
+                </Column>
+              ) : (
+                <NetworkAndFiatText
+                  textSize='12px'
+                  isBold={false}
+                  textAlign='right'
+                >
+                  {formattedFiatBalance}
+                </NetworkAndFiatText>
+              )}
+            </Column>
+          )}
+        </Button>
+        {(token.isErc721 || token.isNft) && (
+          <NFTInfoTooltip
+            network={tokensNetwork}
+            token={token}
+          />
         )}
-      </Button>
-      {(token.isErc721 || token.isNft) && (
-        <NFTInfoTooltip
-          network={tokensNetwork}
-          token={token}
-        />
-      )}
-    </ButtonWrapper>
-  )
-}
+      </ButtonWrapper>
+    )
+  }
+)
 
 export default TokenListItem
