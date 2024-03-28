@@ -1,4 +1,4 @@
-/* Copyright (c) 2023 The Brave Authors. All rights reserved.
+/* Copyright (c) 2024 The Brave Authors. All rights reserved.
  * This Source Code Form is subject to the terms of the Mozilla Public
  * License, v. 2.0. If a copy of the MPL was not distributed with this file,
  * You can obtain one at https://mozilla.org/MPL/2.0/. */
@@ -7,32 +7,52 @@
 
 #include <utility>
 
-#include "brave/components/playlist/browser/playlist_service.h"
+#include "base/check.h"
+#include "base/functional/callback.h"
+#include "base/functional/overloaded.h"
+#include "content/public/browser/render_frame_host.h"
+#include "content/public/browser/web_contents.h"
+#include "url/gurl.h"
 
 namespace playlist {
 
+PlaylistMediaHandler::~PlaylistMediaHandler() = default;
+
+void PlaylistMediaHandler::BindMediaResponderReceiver(
+    content::RenderFrameHost* render_frame_host,
+    mojo::PendingAssociatedReceiver<mojom::PlaylistMediaResponder> receiver) {
+  auto* web_contents =
+      content::WebContents::FromRenderFrameHost(render_frame_host);
+  if (!web_contents) {
+    return;
+  }
+
+  if (auto* media_handler =
+          PlaylistMediaHandler::FromWebContents(web_contents)) {
+    media_handler->media_responder_receivers_.Bind(render_frame_host,
+                                                   std::move(receiver));
+  }
+}
+
 PlaylistMediaHandler::PlaylistMediaHandler(
-    content::GlobalRenderFrameHostId frame_id,
-    const base::WeakPtr<PlaylistService>& service)
-    : frame_id_(frame_id), service_(service) {
-  DVLOG(2) << __FUNCTION__ << " " << frame_id_;
+    content::WebContents* web_contents,
+    OnMediaDetectedCallback on_media_detected_callback)
+    : content::WebContentsUserData<PlaylistMediaHandler>(*web_contents),
+      media_responder_receivers_(web_contents, this),
+      on_media_detected_callback_(std::move(on_media_detected_callback)) {
+  CHECK(std::visit(
+      [](auto& on_media_detected_callback) {
+        return !on_media_detected_callback.is_null();
+      },
+      on_media_detected_callback_));
 }
 
-PlaylistMediaHandler::~PlaylistMediaHandler() {
-  DVLOG(2) << __FUNCTION__ << " " << frame_id_;
-}
+void PlaylistMediaHandler::OnMediaDetected(
+    std::vector<mojom::PlaylistItemPtr> items) {
+  CHECK(!items.empty())
+      << "This invariant should be maintained by the renderer!";
 
-void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
-  DVLOG(2) << __FUNCTION__ << " " << frame_id_;
-
-  if (!service_) {
-    return;
-  }
-
-  auto* render_frame_host = content::RenderFrameHost::FromID(frame_id_);
-  if (!render_frame_host) {
-    return;
-  }
+  auto* render_frame_host = media_responder_receivers_.GetCurrentTargetFrame();
 
   auto* web_contents =
       content::WebContents::FromRenderFrameHost(render_frame_host);
@@ -40,7 +60,21 @@ void PlaylistMediaHandler::OnMediaDetected(base::Value media) {
     return;
   }
 
-  service_->OnMediaDetected(std::move(media), web_contents);
+  auto url = web_contents->GetLastCommittedURL();
+  std::visit(
+      base::Overloaded{[&](OnceCallback& on_media_detected_callback) {
+                         if (on_media_detected_callback) {
+                           std::move(on_media_detected_callback)
+                               .Run(std::move(url), std::move(items));
+                         }
+                       },
+                       [&](RepeatingCallback& on_media_detected_callback) {
+                         on_media_detected_callback.Run(std::move(url),
+                                                        std::move(items));
+                       }},
+      on_media_detected_callback_);
 }
+
+WEB_CONTENTS_USER_DATA_KEY_IMPL(PlaylistMediaHandler);
 
 }  // namespace playlist

@@ -16,7 +16,6 @@
 #include "base/memory/weak_ptr.h"
 #include "base/time/time.h"
 #include "base/values.h"
-#include "brave/components/playlist/browser/playlist_download_request_manager.h"
 #include "brave/components/playlist/browser/playlist_media_file_download_manager.h"
 #include "brave/components/playlist/browser/playlist_p3a.h"
 #include "brave/components/playlist/browser/playlist_streaming.h"
@@ -30,13 +29,11 @@
 #include "mojo/public/cpp/bindings/receiver_set.h"
 #endif  // BUILDFLAG(IS_ANDROID)
 
+class GURL;
+
 namespace base {
 class SequencedTaskRunner;
 }  // namespace base
-
-namespace blink::web_pref {
-struct WebPreferences;
-}  // namespace blink::web_pref
 
 namespace content {
 class BrowserContext;
@@ -45,8 +42,7 @@ class WebContents;
 
 class CosmeticFilteringPlaylistFlagEnabledTest;
 class PlaylistBrowserTest;
-class PlaylistRenderFrameObserverBrowserTest;
-class PlaylistDownloadRequestManagerBrowserTest;
+class PlaylistMediaDiscoveryBrowserTest;
 class PrefService;
 
 namespace gfx {
@@ -56,6 +52,7 @@ class Image;
 namespace playlist {
 
 class MediaDetectorComponentManager;
+class PlaylistBackgroundWebContentses;
 
 // This class is key interface for playlist. Client will ask any playlist
 // related requests to this class. This handles youtube playlist download
@@ -131,22 +128,7 @@ class PlaylistService : public KeyedService,
 
   base::FilePath GetPlaylistItemDirPath(const std::string& id) const;
 
-  // Update |web_prefs| if we want for |web_contents|.
-  void ConfigureWebPrefsForBackgroundWebContents(
-      content::WebContents* web_contents,
-      blink::web_pref::WebPreferences* web_prefs);
-
   base::WeakPtr<PlaylistService> GetWeakPtr();
-
-  // Find media from |contents| using corresponding background web contents.
-  // The background web contents will load the same url as |contents| but
-  // does trick to get plain media urls that we can cache from.
-  using ExtractMediaFromBackgroundWebContentsCallback =
-      base::OnceCallback<void(const GURL& target_url,
-                              std::vector<mojom::PlaylistItemPtr> items)>;
-  void ExtractMediaFromBackgroundWebContents(
-      content::WebContents* contents,
-      ExtractMediaFromBackgroundWebContentsCallback callback);
 
   // Synchronous versions of mojom::PlaylistService implementations
   std::vector<mojom::PlaylistItemPtr> GetAllPlaylistItems();
@@ -168,8 +150,7 @@ class PlaylistService : public KeyedService,
       const std::string& playlist_id,
       bool can_cache,
       AddMediaFilesFromActiveTabToPlaylistCallback callback) override;
-  void FindMediaFilesFromActiveTab(
-      FindMediaFilesFromActiveTabCallback callback) override;
+  void FindMediaFilesFromActiveTab() override;
   void AddMediaFiles(std::vector<mojom::PlaylistItemPtr> items,
                      const std::string& playlist_id,
                      bool can_cache,
@@ -217,7 +198,7 @@ class PlaylistService : public KeyedService,
   void AddObserver(
       mojo::PendingRemote<mojom::PlaylistServiceObserver> observer) override;
 
-  void OnMediaDetected(base::Value media, content::WebContents* contents);
+  void OnMediaDetected(GURL url, std::vector<mojom::PlaylistItemPtr> items);
 
   bool HasPlaylistItem(const std::string& id) const;
 
@@ -232,20 +213,15 @@ class PlaylistService : public KeyedService,
   void OnDataReceived(api_request_helper::ValueOrError result);
   void OnDataComplete(api_request_helper::APIRequestResult result);
 
-  // Returns true when any of items contains blob: scheme, which we can't cache
-  // media directly from.
-  bool ShouldExtractMediaFromBackgroundWebContents(
-      const std::vector<mojom::PlaylistItemPtr>& items);
-
   bool playlist_enabled() const { return *enabled_pref_; }
 
+  const std::string& GetMediaSourceAPISuppressorScript() const;
   std::string GetMediaDetectorScript(const GURL& url) const;
 
  private:
   friend class ::CosmeticFilteringPlaylistFlagEnabledTest;
   friend class ::PlaylistBrowserTest;
-  friend class ::PlaylistRenderFrameObserverBrowserTest;
-  friend class ::PlaylistDownloadRequestManagerBrowserTest;
+  friend class ::PlaylistMediaDiscoveryBrowserTest;
 
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylist);
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceUnitTest, CreatePlaylistItem);
@@ -270,6 +246,8 @@ class PlaylistService : public KeyedService,
   FRIEND_TEST_ALL_PREFIXES(PlaylistServiceWithFakeUAUnitTest,
                            ShouldAlwaysGetMediaFromBackgroundWebContents);
 
+  void SetUpForTesting() const;
+
   // Finds media files from |contents| or |url| and adds them to given
   // |playlist_id|.
   void AddMediaFilesFromContentsToPlaylist(
@@ -282,15 +260,6 @@ class PlaylistService : public KeyedService,
                               bool cache,
                               AddMediaFilesCallback callback,
                               std::vector<mojom::PlaylistItemPtr> items);
-
-  // Returns true when we should try getting media from a background web
-  // contents that is different from the given |contents|. which means it could
-  // have impact on performance/memory.
-  bool ShouldGetMediaFromBackgroundWebContents(
-      content::WebContents* contents) const;
-  bool ShouldGetMediaFromBackgroundWebContents(const GURL& url) const;
-
-  bool ShouldUseFakeUA(const GURL& url) const;
 
   void CreatePlaylistItem(const mojom::PlaylistItemPtr& item, bool cache);
   void DownloadThumbnail(const mojom::PlaylistItemPtr& item);
@@ -311,9 +280,6 @@ class PlaylistService : public KeyedService,
   // https://github.com/brave/brave-browser/issues/30735
   void NotifyPlaylistChanged(mojom::PlaylistEvent playlist_event,
                              const std::string& playlist_id);
-  void NotifyMediaFilesUpdated(
-      const GURL& url,
-      const std::vector<mojom::PlaylistItemPtr>& items);
 
   void UpdatePlaylistItemValue(const std::string& id, base::Value value);
   void RemovePlaylistItemValue(const std::string& id);
@@ -332,8 +298,6 @@ class PlaylistService : public KeyedService,
   //         it is notified.
 
   void OnGetMetadata(base::Value value);
-
-  content::WebContents* GetBackgroundWebContentsForTesting();
 
   std::string GetDefaultSaveTargetListID();
 
@@ -412,7 +376,9 @@ class PlaylistService : public KeyedService,
 
   std::unique_ptr<PlaylistStreaming> playlist_streaming_;
 
-  std::unique_ptr<PlaylistDownloadRequestManager> download_request_manager_;
+  std::unique_ptr<PlaylistBackgroundWebContentses> background_web_contentses_;
+
+  raw_ptr<MediaDetectorComponentManager> media_detector_component_manager_;
 
   PlaylistP3A playlist_p3a_;
 

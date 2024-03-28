@@ -10,12 +10,13 @@
 
 #include "base/functional/bind.h"
 #include "base/values.h"
+#include "brave/components/playlist/common/playlist_render_frame_observer_helper.h"
 #include "content/public/renderer/render_frame.h"
 #include "content/public/renderer/v8_value_converter.h"
 #include "gin/converter.h"
 #include "gin/function_template.h"
+#include "third_party/blink/public/common/associated_interfaces/associated_interface_provider.h"
 #include "third_party/blink/public/common/associated_interfaces/associated_interface_registry.h"
-#include "third_party/blink/public/common/browser_interface_broker_proxy.h"
 #include "third_party/blink/public/platform/scheduler/web_agent_group_scheduler.h"
 #include "third_party/blink/public/web/blink.h"
 #include "third_party/blink/public/web/web_local_frame.h"
@@ -24,22 +25,18 @@
 namespace gin {
 
 template <>
-struct Converter<base::Value> {
+struct Converter<base::Value::List> {
   static bool FromV8(v8::Isolate* isolate,
                      v8::Local<v8::Value> v8_value,
-                     base::Value* out) {
-    if (v8_value.IsEmpty()) {
-      return false;
-    }
-
+                     base::Value::List* out) {
     std::unique_ptr<base::Value> base_value =
         content::V8ValueConverter::Create()->FromV8Value(
             v8_value, isolate->GetCurrentContext());
-    if (!base_value) {
+    if (!base_value || !base_value->is_list()) {
       return false;
     }
 
-    *out = std::move(*base_value);
+    *out = std::move(*base_value).TakeList();
     return true;
   }
 };
@@ -90,15 +87,15 @@ void PlaylistRenderFrameObserver::BindConfigurator(
   configurator_receiver_.Bind(std::move(receiver));
 }
 
-const mojo::Remote<playlist::mojom::PlaylistMediaHandler>&
-PlaylistRenderFrameObserver::GetMediaHandler() {
-  if (!media_handler_) {
-    render_frame()->GetBrowserInterfaceBroker()->GetInterface(
-        media_handler_.BindNewPipeAndPassReceiver());
-    media_handler_.reset_on_disconnect();
+const mojo::AssociatedRemote<mojom::PlaylistMediaResponder>&
+PlaylistRenderFrameObserver::GetMediaResponder() {
+  if (!media_responder_) {
+    render_frame()->GetRemoteAssociatedInterfaces()->GetInterface(
+        &media_responder_);
+    media_responder_.reset_on_disconnect();
   }
 
-  return media_handler_;
+  return media_responder_;
 }
 
 void PlaylistRenderFrameObserver::RunScriptsAtDocumentStart() {
@@ -159,10 +156,16 @@ void PlaylistRenderFrameObserver::Inject(
                                args.empty() ? nullptr : args.data());
 }
 
-void PlaylistRenderFrameObserver::OnMediaDetected(base::Value media) {
-  DVLOG(2) << __FUNCTION__;
+void PlaylistRenderFrameObserver::OnMediaDetected(base::Value::List media) {
+  const auto url = render_frame()->GetWebFrame()->GetDocument().Url();
+  DVLOG(2) << __FUNCTION__ << " - " << url << ":\n" << media;
 
-  GetMediaHandler()->OnMediaDetected(std::move(media));
+  auto items = ExtractPlaylistItems(url, std::move(media));
+  if (items.empty()) {  // ExtractPlaylistItems() might discard media
+    return;
+  }
+
+  GetMediaResponder()->OnMediaDetected(std::move(items));
 }
 
 }  // namespace playlist

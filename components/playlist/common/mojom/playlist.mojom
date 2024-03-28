@@ -97,8 +97,7 @@ interface PlaylistService {
   // Store or find all media files from the active tab.
   AddMediaFilesFromActiveTabToPlaylist(string playlist_id, bool can_cache)
       => (array<PlaylistItem> items);
-  FindMediaFilesFromActiveTab() => (url.mojom.Url page_url,
-                                    array<PlaylistItem> items);
+  FindMediaFilesFromActiveTab();
 
   AddMediaFiles(array<PlaylistItem> items, string playlist_id, bool can_cache)
       => (array<PlaylistItem> items);
@@ -191,10 +190,8 @@ interface PlaylistServiceObserver {
       array<PlaylistItem> items);
 };
 
-// Interface that is used to notify that found media from renderer process to
-// browser process.
-interface PlaylistMediaHandler {
-  OnMediaDetected(mojo_base.mojom.Value media);
+interface PlaylistMediaResponder {
+  OnMediaDetected(array<PlaylistItem> items);
 };
 
 interface PlaylistStreamingObserver {

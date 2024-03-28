@@ -409,9 +409,9 @@ PlaylistActionAddBubble::PlaylistActionAddBubble(
                  l10n_util::GetStringUTF16(IDS_PLAYLIST_ADD_SELECTED));
   SetButtonEnabled(ui::DIALOG_BUTTON_OK, false);
 
-  playlist_tab_helper_->ExtractMediaFromBackgroundWebContents(
-      base::BindOnce(&PlaylistActionAddBubble::OnMediaExtracted,
-                     weak_ptr_factory_.GetWeakPtr()));
+  // TODO(sszaloki): https://github.com/brave/brave-browser/issues/36846
+  // UI needs to accommodate the architectural changes
+  OnMediaExtracted(true);
 }
 
 PlaylistActionAddBubble::~PlaylistActionAddBubble() = default;
