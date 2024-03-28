@@ -209,8 +209,11 @@ class BuyTokenStoreTests: XCTestCase {
   /// Test that given a `prefilledToken` that is not on the current network, the `BuyTokenStore` will switch networks to the `chainId` of the token.
   @MainActor func testPrefilledTokenSwitchNetwork() async {
     var selectedNetwork: BraveWallet.NetworkInfo = .mockMainnet
-    let (blockchainRegistry, keyringService, rpcService, walletService, assetRatioService, bitcoinWalletService) =
-      setupServices()
+    let (
+      blockchainRegistry, keyringService,
+      rpcService, walletService,
+      assetRatioService, bitcoinWalletService
+    ) = setupServices()
     rpcService._network = { coin, origin, completion in
       completion(selectedNetwork)
     }
