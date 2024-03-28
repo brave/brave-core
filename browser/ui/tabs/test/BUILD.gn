@@ -40,7 +40,7 @@ source_set("unit_tests") {
     ]
 
     deps = [
-      ":test_tab_strip_model_delegate",
+      ":test_support",
       "//brave/browser/ui/tabs",
       "//chrome/browser",
       "//chrome/browser/ui",
@@ -53,7 +53,7 @@ source_set("unit_tests") {
 
 # In order to resolve circular deps to the test_tab_strip_model_delegate,
 # declares source set here instead of adding these files to //brave/test/BUILD.gn
-source_set("test_tab_strip_model_delegate") {
+source_set("test_support") {
   if (!is_android) {
     sources = [
       "//chrome/browser/ui/tabs/test_tab_strip_model_delegate.cc",
