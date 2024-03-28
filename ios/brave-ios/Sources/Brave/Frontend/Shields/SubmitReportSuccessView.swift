@@ -25,8 +25,6 @@ struct SubmitReportSuccessView: View {
   }
 }
 
-#if swift(>=5.9)
 #Preview {
   SubmitReportSuccessView()
 }
-#endif

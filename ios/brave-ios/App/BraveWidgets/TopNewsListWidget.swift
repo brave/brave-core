@@ -22,9 +22,7 @@ struct TopNewsListWidget: Widget {
     .supportedFamilies([.systemMedium, .systemLarge])
     .configurationDisplayName(Strings.Widgets.newsClusteringWidgetTitle)
     .description(Strings.Widgets.newsClusteringWidgetDescription)
-    #if swift(>=5.9)
     .contentMarginsDisabled()
-    #endif
   }
 }
 

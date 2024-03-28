@@ -7,6 +7,7 @@ import Combine
 import Foundation
 import Preferences
 import Shared
+import os.log
 
 public enum FeatureLinkageType: CaseIterable {
   case vpn, playlist, leoAI
@@ -122,6 +123,20 @@ public class AttributionManager {
     }
   }
 
+  public func pingDAUServer(_ isP3AEnabled: Bool) {
+    Task { @MainActor in
+      do {
+        let attributionData =
+          isP3AEnabled ? try await urp.adCampaignLookup(isRetryEnabled: false, timeout: 30) : nil
+        generateReferralCodeAndPingServer(with: attributionData)
+
+      } catch {
+        generateReferralCodeAndPingServer(with: nil)
+        Logger.module.error("Error Campaign Lookup: \(error)")
+      }
+    }
+  }
+
   @MainActor public func handleAdsReportingFeatureLinkage() async throws -> FeatureLinkageType? {
     // This function should run multiple tasks first adCampaignLookup
     // and adReportsKeywordLookup depending on adCampaignLookup result.
@@ -181,7 +196,7 @@ public class AttributionManager {
     dau.sendPingToServer()
   }
 
-  public func generateReferralCodeAndPingServer(with attributionData: AdAttributionData) {
+  public func generateReferralCodeAndPingServer(with attributionData: AdAttributionData?) {
     let refCode = generateReferralCode(attributionData: attributionData)
     setupReferralCodeAndPingServer(refCode: refCode)
   }

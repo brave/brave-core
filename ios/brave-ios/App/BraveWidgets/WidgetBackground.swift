@@ -11,7 +11,6 @@ struct WidgetBackgroundViewModifier<BackgroundContent: View>: ViewModifier {
   var backgroundView: BackgroundContent
 
   func body(content: Content) -> some View {
-    #if swift(>=5.9)
     if #available(iOS 17.0, *) {
       content.containerBackground(for: .widget) {
         backgroundView
@@ -19,9 +18,6 @@ struct WidgetBackgroundViewModifier<BackgroundContent: View>: ViewModifier {
     } else {
       content.background(backgroundView)
     }
-    #else
-    content.background(backgroundView)
-    #endif
   }
 }
 

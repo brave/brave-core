@@ -249,7 +249,7 @@ public class BrowserViewController: UIViewController {
 
   /// Boolean which is tracking If a product notification is presented
   /// in order to not to try to present another one over existing popover
-  var benchmarkNotificationPresented = false
+  var adblockProductNotificationPresented = false
   /// The string domain will be kept temporarily which is tracking site notification presented
   /// in order to not to process site list again and again
   var currentBenchmarkWebsite = ""
@@ -961,7 +961,7 @@ public class BrowserViewController: UIViewController {
       )
       $0.addObserver(
         self,
-        selector: #selector(updateShieldNotifications),
+        selector: #selector(showEducationalNotifications),
         name: NSNotification.Name(rawValue: BraveGlobalShieldStats.didUpdateNotification),
         object: nil
       )
@@ -1253,7 +1253,6 @@ public class BrowserViewController: UIViewController {
     }
   }
 
-  #if swift(>=5.9)
   public override func viewIsAppearing(_ animated: Bool) {
     super.viewIsAppearing(animated)
 
@@ -1267,8 +1266,10 @@ public class BrowserViewController: UIViewController {
         self.updateToolbarStateForTraitCollection(self.traitCollection)
       }
     }
+
+    // Present Onboarding to new users, existing users will not see the onboarding
+    presentOnboardingIntro()
   }
-  #endif
 
   private func checkCrashRestorationOrSetupTabs() {
     if crashedLastSession {
@@ -1301,10 +1302,6 @@ public class BrowserViewController: UIViewController {
   }
 
   override public func viewDidAppear(_ animated: Bool) {
-
-    // Present Onboarding to new users, existing users will not see the onboarding
-    presentOnboardingIntro()
-
     // Full Screen Callout Presentation
     DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
       self.presentFullScreenCallouts()
