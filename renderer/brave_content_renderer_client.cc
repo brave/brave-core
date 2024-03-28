@@ -23,10 +23,10 @@
 #include "brave/components/skus/renderer/skus_render_frame_observer.h"
 #include "brave/components/speedreader/common/buildflags/buildflags.h"
 #include "brave/renderer/brave_render_thread_observer.h"
-#include "brave/renderer/brave_url_loader_throttle_provider_impl.h"
 #include "brave/renderer/brave_wallet/brave_wallet_render_frame_observer.h"
 #include "chrome/common/chrome_isolated_world_ids.h"
 #include "chrome/renderer/chrome_render_thread_observer.h"
+#include "chrome/renderer/url_loader_throttle_provider_impl.h"
 #include "content/public/renderer/render_thread.h"
 #include "third_party/blink/public/common/features.h"
 #include "third_party/blink/public/platform/web_runtime_features.h"
@@ -261,8 +261,8 @@ void BraveContentRendererClient::WillDestroyServiceWorkerContextOnWorkerThread(
 std::unique_ptr<blink::URLLoaderThrottleProvider>
 BraveContentRendererClient::CreateURLLoaderThrottleProvider(
     blink::URLLoaderThrottleProviderType provider_type) {
-  return BraveURLLoaderThrottleProviderImpl::Create(
-      provider_type, this, browser_interface_broker_.get());
+  return URLLoaderThrottleProviderImpl::Create(provider_type, this,
+                                               browser_interface_broker_.get());
 }
 
 bool BraveContentRendererClient::IsOnionAllowed() const {
