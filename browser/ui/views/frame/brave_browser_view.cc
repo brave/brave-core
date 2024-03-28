@@ -16,6 +16,7 @@
 #include "base/containers/contains.h"
 #include "base/feature_list.h"
 #include "base/functional/bind.h"
+#include "base/task/sequenced_task_runner.h"
 #include "brave/browser/brave_rewards/rewards_service_factory.h"
 #include "brave/browser/sparkle_buildflags.h"
 #include "brave/browser/translate/brave_translate_utils.h"
@@ -26,11 +27,13 @@
 #include "brave/browser/ui/commands/accelerator_service.h"
 #include "brave/browser/ui/commands/accelerator_service_factory.h"
 #include "brave/browser/ui/sidebar/sidebar_utils.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/ui/views/brave_actions/brave_actions_container.h"
 #include "brave/browser/ui/views/brave_actions/brave_shields_action_view.h"
 #include "brave/browser/ui/views/brave_help_bubble/brave_help_bubble_host_view.h"
 #include "brave/browser/ui/views/brave_rewards/tip_panel_bubble_host.h"
 #include "brave/browser/ui/views/brave_shields/cookie_list_opt_in_bubble_host.h"
+#include "brave/browser/ui/views/frame/brave_contents_layout_manager.h"
 #include "brave/browser/ui/views/frame/brave_contents_view_util.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_region_view.h"
 #include "brave/browser/ui/views/frame/vertical_tab_strip_widget_delegate_view.h"
@@ -52,6 +55,7 @@
 #include "chrome/browser/ui/exclusive_access/exclusive_access_manager.h"
 #include "chrome/browser/ui/exclusive_access/fullscreen_controller.h"
 #include "chrome/browser/ui/frame/window_frame_util.h"
+#include "chrome/browser/ui/views/frame/browser_view.h"
 #include "chrome/browser/ui/views/frame/contents_layout_manager.h"
 #include "chrome/browser/ui/views/frame/tab_strip_region_view.h"
 #include "chrome/browser/ui/views/frame/top_container_view.h"
@@ -59,6 +63,7 @@
 #include "chrome/browser/ui/views/tabs/tab_search_button.h"
 #include "chrome/browser/ui/views/toolbar/browser_app_menu_button.h"
 #include "chrome/common/pref_names.h"
+#include "content/public/browser/page_navigator.h"
 #include "extensions/buildflags/buildflags.h"
 #include "ui/base/accelerators/accelerator.h"
 #include "ui/base/accelerators/accelerator_manager.h"
@@ -263,6 +268,36 @@ BraveBrowserView::BraveBrowserView(std::unique_ptr<Browser> browser)
                             base::Unretained(this)));
   }
 
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser_->is_type_normal()) {
+    SplitViewBrowserData::CreateForBrowser(browser_.get());
+
+    auto devtools_web_view =
+        std::make_unique<views::WebView>(browser_->profile());
+    devtools_web_view->SetVisible(false);
+    auto contents_web_view =
+        std::make_unique<ContentsWebView>(browser_->profile());
+    contents_web_view->SetVisible(false);
+
+    secondary_devtools_web_view_ =
+        contents_container_->AddChildView(std::move(devtools_web_view));
+    secondary_contents_web_view_ =
+        contents_container_->AddChildView(std::move(contents_web_view));
+
+    auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+        contents_container()->GetLayoutManager());
+    contents_layout_manager->set_secondary_contents_view(
+        secondary_contents_web_view_);
+    contents_layout_manager->set_secondary_devtools_view(
+        secondary_devtools_web_view_);
+
+    auto* split_view_browser_data =
+        SplitViewBrowserData::FromBrowser(browser_.get());
+    contents_layout_manager->set_split_view_browser_data(
+        split_view_browser_data);
+    split_view_observation_.Observe(split_view_browser_data);
+  }
+
   const bool supports_vertical_tabs =
       tabs::utils::SupportsVerticalTabs(browser_.get());
   if (supports_vertical_tabs) {
@@ -308,6 +343,74 @@ void BraveBrowserView::UpdateSideBarHorizontalAlignment() {
   sidebar_container_view_->SetSidebarOnLeft(on_left);
 
   DeprecatedLayoutImmediately();
+}
+
+tabs::TabHandle BraveBrowserView::GetActiveTabHandle() const {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+
+  auto* model = browser()->tab_strip_model();
+  return model->GetTabHandleAt(
+      model->GetIndexOfWebContents(GetActiveWebContents()));
+}
+
+bool BraveBrowserView::IsActiveWebContentsTiled(
+    const SplitViewBrowserData::Tile& tile) const {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+
+  auto active_tab_handle = GetActiveTabHandle();
+  return tile.first == active_tab_handle || tile.second == active_tab_handle;
+}
+
+void BraveBrowserView::UpdateSecondaryContentsWebViewVisibility() {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  if (browser()->IsBrowserClosing()) {
+    secondary_contents_web_view_->SetWebContents(nullptr);
+    return;
+  }
+
+  auto active_tab_handle = GetActiveTabHandle();
+
+  auto* split_view_browser_data =
+      SplitViewBrowserData::FromBrowser(browser_.get());
+  if (auto tile = split_view_browser_data->GetTile(active_tab_handle)) {
+    const bool second_tile_is_active_web_contents =
+        active_tab_handle == tile->second;
+
+    // Active tab should be put in the original |contents_web_view_| as many
+    // other UI components are dependent on it. So, in case |tile.second| is the
+    // active tab, we let it be held by |contents_web_view_| and |tile.first| by
+    // |secondary_contents_web_view_|. But we should rotate the layout order.
+    // The layout rotation is done by BraveContentsLayoutManager.
+    //
+    // ex1) When tile.first is the active tab
+    //  Tiled tabs | tile.first(active) |         tile.second          |
+    //                        ||                        ||
+    //  Contents   | contents_web_view_ | secondary_contents_web_view_ |
+    //
+    // ex2) When tile.second is the active tab
+    //  Tiled tabs |           tile.first         | tile.second(active) |
+    //                             ||                        ||
+    //  Contents   | secondary_contents_web_view_ | contents_web_view_  |
+    auto* model = browser()->tab_strip_model();
+    auto* contents = model->GetWebContentsAt(model->GetIndexOfTab(
+        second_tile_is_active_web_contents ? tile->first : tile->second));
+    CHECK_NE(contents, contents_web_view_->web_contents());
+    if (secondary_contents_web_view_->web_contents() != contents) {
+      secondary_contents_web_view_->SetWebContents(nullptr);
+      secondary_contents_web_view_->SetWebContents(contents);
+    }
+
+    secondary_contents_web_view_->SetVisible(true);
+    auto* contents_layout_manager = static_cast<BraveContentsLayoutManager*>(
+        contents_container()->GetLayoutManager());
+    contents_layout_manager->show_main_web_contents_at_tail(
+        second_tile_is_active_web_contents);
+  } else {
+    secondary_contents_web_view_->SetWebContents(nullptr);
+    secondary_contents_web_view_->SetVisible(false);
+  }
+
+  contents_container()->DeprecatedLayoutImmediately();
 }
 
 void BraveBrowserView::UpdateSearchTabsButtonState() {
@@ -550,6 +653,26 @@ void BraveBrowserView::OnAcceleratorsChanged(
   }
 }
 
+void BraveBrowserView::OnTileTabs(const SplitViewBrowserData::Tile& tile) {
+  if (!IsActiveWebContentsTiled(tile)) {
+    return;
+  }
+
+  UpdateSecondaryContentsWebViewVisibility();
+}
+
+void BraveBrowserView::OnWillBreakTile(const SplitViewBrowserData::Tile& tile) {
+  if (!IsActiveWebContentsTiled(tile)) {
+    return;
+  }
+
+  base::SequencedTaskRunner::GetCurrentDefault()->PostTask(
+      FROM_HERE,
+      base::BindOnce(
+          &BraveBrowserView::UpdateSecondaryContentsWebViewVisibility,
+          weak_ptr_.GetWeakPtr()));
+}
+
 void BraveBrowserView::CreateWalletBubble() {
   DCHECK(GetWalletButton());
   GetWalletButton()->ShowWalletBubble();
@@ -722,6 +845,20 @@ void BraveBrowserView::OnWidgetActivationChanged(views::Widget* widget,
   }
 }
 
+void BraveBrowserView::GetAccessiblePanes(std::vector<views::View*>* panes) {
+  BrowserView::GetAccessiblePanes(panes);
+
+  if (secondary_contents_web_view_ &&
+      secondary_contents_web_view_->GetVisible()) {
+    panes->push_back(secondary_contents_web_view_);
+  }
+
+  if (secondary_devtools_web_view_ &&
+      secondary_devtools_web_view_->GetVisible()) {
+    panes->push_back(secondary_devtools_web_view_);
+  }
+}
+
 bool BraveBrowserView::ShouldShowWindowTitle() const {
   if (BrowserView::ShouldShowWindowTitle()) {
     return true;
@@ -754,6 +891,24 @@ TabSearchBubbleHost* BraveBrowserView::GetTabSearchBubbleHost() {
       ->GetTabSearchBubbleHost();
 }
 
+void BraveBrowserView::OnActiveTabChanged(content::WebContents* old_contents,
+                                          content::WebContents* new_contents,
+                                          int index,
+                                          int reason) {
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      new_contents == secondary_contents_web_view_->web_contents()) {
+    secondary_contents_web_view_->SetWebContents(nullptr);
+  }
+
+  BrowserView::OnActiveTabChanged(old_contents, new_contents, index, reason);
+
+  if (base::FeatureList::IsEnabled(tabs::features::kBraveSplitView) &&
+      browser()->is_type_normal()) {
+    // Setting nullptr doesn't detach the previous contents.
+    UpdateSecondaryContentsWebViewVisibility();
+  }
+}
+
 bool BraveBrowserView::IsSidebarVisible() const {
   return sidebar_container_view_ && sidebar_container_view_->IsSidebarVisible();
 }
@@ -783,8 +938,8 @@ void BraveBrowserView::UpdateWebViewRoundedCorners() {
   // contents and devtools.
   contents_container_->layer()->SetRoundedCornerRadius(corners);
 
-  // In addition to giving the contents container rounded corners, we also need
-  // to round the corners of the native view holder that displays the web
+  // In addition to giving the contents container rounded corners, we also
+  // need to round the corners of the native view holder that displays the web
   // contents.
 
   // Devtools lies underneath the contents webview. Round all four corners.

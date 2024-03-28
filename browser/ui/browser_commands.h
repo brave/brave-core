@@ -100,6 +100,10 @@ void ScrollTabToBottom(Browser* browser);
 
 void ToggleAllBookmarksButtonVisibility(Browser* browser);
 
+bool CanOpenNewSplitViewForActiveTab(Browser* browser);
+void NewSplitViewForActiveTab(Browser* browser);
+void CloseSplitViewForActiveTab(Browser* browser);
+
 }  // namespace brave
 
 #endif  // BRAVE_BROWSER_UI_BROWSER_COMMANDS_H_

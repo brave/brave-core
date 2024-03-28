@@ -8,6 +8,7 @@
 #include "base/check_is_test.h"
 #include "base/notreached.h"
 #include "brave/browser/ui/tabs/features.h"
+#include "brave/browser/ui/tabs/split_view_browser_data_observer.h"
 #include "brave/browser/ui/tabs/split_view_tab_strip_model_adapter.h"
 
 SplitViewBrowserData::SplitViewBrowserData(Browser* browser)
@@ -29,6 +30,12 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
   CHECK(!IsTabTiled(tile.first));
   CHECK(!IsTabTiled(tile.second));
 
+  if (!is_testing_) {
+    auto* model = GetBrowser().tab_strip_model();
+    CHECK_LT(model->GetIndexOfTab(tile.first),
+             model->GetIndexOfTab(tile.second));
+  }
+
   tiles_.push_back(tile);
 
   tile_index_for_tab_[tile.first] = tiles_.size() - 1;
@@ -37,10 +44,18 @@ void SplitViewBrowserData::TileTabs(const Tile& tile) {
   if (tab_strip_model_adapter_) {
     tab_strip_model_adapter_->MakeTiledTabsAdjacent(tile);
   }
+
+  for (auto& observer : observers_) {
+    observer.OnTileTabs(tile);
+  }
 }
 
 void SplitViewBrowserData::BreakTile(const tabs::TabHandle& tab) {
   if (auto iter = FindTile(tab); iter != tiles_.end()) {
+    for (auto& observer : observers_) {
+      observer.OnWillBreakTile(*iter);
+    }
+
     auto index = tile_index_for_tab_[iter->first];
     tile_index_for_tab_.erase(iter->first);
     tile_index_for_tab_.erase(iter->second);
@@ -81,6 +96,15 @@ std::optional<SplitViewBrowserData::Tile> SplitViewBrowserData::GetTile(
     return std::nullopt;
   }
   return *iter;
+}
+
+void SplitViewBrowserData::AddObserver(SplitViewBrowserDataObserver* observer) {
+  observers_.AddObserver(observer);
+}
+
+void SplitViewBrowserData::RemoveObserver(
+    SplitViewBrowserDataObserver* observer) {
+  observers_.RemoveObserver(observer);
 }
 
 BROWSER_USER_DATA_KEY_IMPL(SplitViewBrowserData);

@@ -31,9 +31,11 @@
 #define kAlignRight kHorizontalAlignRight
 #define SidePanelCoordinator BraveSidePanelCoordinator
 #define BookmarkBarView BraveBookmarkBarView
+#define ContentsLayoutManager BraveContentsLayoutManager
 
 #include "src/chrome/browser/ui/views/frame/browser_view.cc"
 
+#undef ContentsLayoutManager
 #undef BookmarkBarView
 #undef SidePanelCoordinator
 #undef kAlignLeft

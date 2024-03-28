@@ -6,6 +6,8 @@
 #ifndef BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 #define BRAVE_BROWSER_UI_TABS_BRAVE_TAB_MENU_MODEL_H_
 
+#include <vector>
+
 #include "base/memory/raw_ptr.h"
 #include "chrome/browser/ui/tabs/tab_menu_model.h"
 #include "chrome/browser/ui/tabs/tab_strip_model.h"
@@ -18,6 +20,8 @@ namespace sessions {
 class TabRestoreService;
 }  // namespace sessions
 
+class Browser;
+
 class BraveTabMenuModel : public TabMenuModel {
  public:
   enum BraveTabContextMenuCommand {
@@ -28,6 +32,10 @@ class BraveTabMenuModel : public TabMenuModel {
     CommandToggleTabMuted,
     CommandBringAllTabsToThisWindow,
     CommandCloseDuplicateTabs,
+    CommandNewSplitView,
+    CommandCloseSplitView,
+    CommandTileTabs,
+    CommandBreakTile,
     CommandLast,
   };
 
@@ -46,7 +54,12 @@ class BraveTabMenuModel : public TabMenuModel {
   std::u16string GetLabelAt(size_t index) const override;
 
  private:
-  void Build(int selected_tab_count);
+  void Build(Browser* browser,
+             TabStripModel* tab_strip_model,
+             const std::vector<int>& indices);
+  void BuildItemsForSplitView(Browser* browser,
+                              TabStripModel* tab_strip_model,
+                              const std::vector<int>& indices);
   int GetRestoreTabCommandStringId() const;
 
   raw_ptr<content::WebContents> web_contents_ = nullptr;

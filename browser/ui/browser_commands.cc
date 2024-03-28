@@ -12,6 +12,7 @@
 #include <utility>
 #include <vector>
 
+#include "base/feature_list.h"
 #include "base/strings/utf_string_conversions.h"
 #include "brave/app/brave_command_ids.h"
 #include "brave/browser/debounce/debounce_service_factory.h"
@@ -20,6 +21,7 @@
 #include "brave/browser/ui/sidebar/sidebar_service_factory.h"
 #include "brave/browser/ui/tabs/brave_tab_prefs.h"
 #include "brave/browser/ui/tabs/brave_tab_strip_model.h"
+#include "brave/browser/ui/tabs/features.h"
 #include "brave/browser/url_sanitizer/url_sanitizer_service_factory.h"
 #include "brave/components/brave_vpn/common/buildflags/buildflags.h"
 #include "brave/components/constants/pref_names.h"
@@ -843,6 +845,60 @@ void ToggleAllBookmarksButtonVisibility(Browser* browser) {
   prefs->SetBoolean(
       brave::bookmarks::prefs::kShowAllBookmarksButton,
       !prefs->GetBoolean(brave::bookmarks::prefs::kShowAllBookmarksButton));
+}
+
+bool CanOpenNewSplitViewForActiveTab(Browser* browser) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  if (!browser->is_type_normal()) {
+    return false;
+  }
+
+  auto* model = browser->tab_strip_model();
+  auto* active_contents = model->GetActiveWebContents();
+  if (!active_contents) {
+    return false;
+  }
+
+  const int active_tab_index = model->GetIndexOfWebContents(active_contents);
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  if (!split_view_data) {
+    //  can happen on startup
+    return false;
+  }
+
+  return !split_view_data->IsTabTiled(model->GetTabHandleAt(active_tab_index));
+}
+
+void NewSplitViewForActiveTab(Browser* browser) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  if (!CanOpenNewSplitViewForActiveTab(browser)) {
+    return;
+  }
+
+  auto* model = browser->tab_strip_model();
+  int active_tab_index =
+      model->GetIndexOfWebContents(model->GetActiveWebContents());
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  chrome::AddTabAt(browser, GURL("chrome://newtab"), active_tab_index + 1,
+                   /*foreground*/ true);
+  split_view_data->TileTabs(
+      std::make_pair(model->GetTabHandleAt(active_tab_index),
+                     model->GetTabHandleAt(active_tab_index + 1)));
+}
+
+void CloseSplitViewForActiveTab(Browser* browser) {
+  CHECK(base::FeatureList::IsEnabled(tabs::features::kBraveSplitView));
+  auto* model = browser->tab_strip_model();
+  auto active_tab_handle = model->GetTabHandleAt(
+      model->GetIndexOfWebContents(model->GetActiveWebContents()));
+  auto* split_view_data = SplitViewBrowserData::FromBrowser(browser);
+  auto tile = split_view_data->GetTile(active_tab_handle);
+  if (!tile) {
+    return;
+  }
+
+  model->CloseWebContentsAt(model->GetIndexOfTab(tile->second),
+                            CLOSE_USER_GESTURE);
 }
 
 }  // namespace brave
